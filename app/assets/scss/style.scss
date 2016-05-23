@@ -1,0 +1,42 @@
+/*!--------------------------------------------------------------------------------
+
+    Theme Name: WTHApps
+    Version:    1.0.0
+    Author:     John <john@wthapps.com>
+
+-----------------------------------------------------------------------------------*/
+//  Bootstrap
+//  Fonts
+//  Global
+//  Third party
+//  Layout
+//  Content
+//---------------------------------------------------------------------------------*/
+//
+// =Bootstrap
+// --------------------------------------------------
+@import "custom-bootstrap";
+//
+// =Fonts
+// --------------------------------------------------
+@import "partials/fonts";
+//
+// =Global
+// --------------------------------------------------
+@import "general/mixin";
+@import "general/setting";
+@import "partials/colors";
+@import "partials/typography";
+@import "partials/buttons";
+//
+// =Third party
+// --------------------------------------------------
+//
+// =Layout
+// --------------------------------------------------
+@import "layout/header";
+@import "layout/footer";
+@import "layout/content";
+//
+// =Content
+// --------------------------------------------------

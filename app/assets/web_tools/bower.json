@@ -1,0 +1,25 @@
+{
+  "name": "WTHApps",
+  "homepage": "",
+  "description": "WTHApss provides fast and secure world-wide VPN services with easy-to-use apps for PC, Mac, iOS, Android, and Linux. Unblock and secure your Internet today!",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "authors": [
+    "John <john@wthapps.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "~3.3.6",
+    "modernizr": "~2.8.3",
+    "jquery-placeholder": "mathiasbynens/jquery-placeholder#~2.1.3"
+  }
+}

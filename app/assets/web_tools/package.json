@@ -1,0 +1,41 @@
+{
+  "name": "WTHApps",
+  "version": "1.0.0",
+  "description": "WTHApss provides fast and secure world-wide VPN services with easy-to-use apps for PC, Mac, iOS, Android, and Linux. Unblock and secure your Internet today!",
+  "homepage": "https://github.com/trungnghia112/generator-frontend",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "name": "John",
+    "email": "John"
+  },
+  "author": "John <john@wthapps.com>",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^5.0.9",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-compress": "~0.13.0",
+    "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-csslint": "^0.4.0",
+    "grunt-contrib-cssmin": "^0.12.3",
+    "grunt-contrib-imagemin": "^1.0.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-githooks": "^0.3.1",
+    "grunt-jsdoc": "^0.6.4",
+    "grunt-notify": "^0.4.1",
+    "grunt-sass": "^1.0.0",
+    "grunt-svgmin": "^2.0.1",
+    "node-path": "^0.0.3"
+  }
+}
