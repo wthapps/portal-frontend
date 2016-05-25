@@ -20,7 +20,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
         execute: function() {
             HomeComponent = (function () {
                 function HomeComponent() {
-                    this.pageTitle = "Home page";
+                    this.pageTitle = "Home page1";
                 }
                 HomeComponent = __decorate([
                     core_1.Component({

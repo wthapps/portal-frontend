@@ -1,0 +1,42 @@
+<div class="container">
+    <div class='panel panel-primary' *ngIf='product'>
+        <div class='panel-heading'>
+            <h1>{{pageTitle}} {{product.productName}}</h1>
+        </div>
+
+        <div class='panel-body'>
+            <div class='row'>
+                <div class='col-xs-6'>
+                    <dl class="dl-horizontal">
+                        <dt>Name:</dt>
+                        <dd>{{product.productName}}</dd>
+                        <dt>Code:</dt>
+                        <dd>{{product.productCode}}</dd>
+                        <dt>Description:</dt>
+                        <dd>{{product.description}}</dd>
+                        <dt>Availability:</dt>
+                        <dd>{{product.releaseDate}}</dd>
+                        <dt>Price:</dt>
+                        <dd>{{product.price}}s</dd>
+                        <dt>5 Star Rating:</dt>
+                        <dd>
+                            <ai-star [rating]='product.starRating'
+                                     (ratingClicked)='onRatingClicked($event)'>
+                            </ai-star>
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class='col-xs-6'>
+                    <img [src]="product.imageUrl"
+                         [style.width.px]="imageWidth"
+                         alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class='panel-footer'>
+            <div (click)="onBack()" class="btn btn-primary">Back</div>
+        </div>
+    </div>
+</div>

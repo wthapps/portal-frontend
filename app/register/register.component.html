@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+            <h2>
+                Join WTHApps today.
+            </h2>
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="Last Name">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="registerInputEmail">Email address</label>
+                    <input type="email" class="form-control" id="registerInputEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="registerInputPassword">Password</label>
+                    <input type="password" class="form-control" id="registerInputPassword" placeholder="Password">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Be the first one to know about services!
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-block btn-danger">Register</button>
+                </div>
+                <small>By signing up, you agree to the <a href="#" class="legal-link" target="_blank">Terms of
+                    Service</a> and <a
+                        href="#" target="_blank">Privacy Policy</a>, including <a
+                        href="#" target="_blank">Cookie Use</a>.
+                </small>
+            </form>
+            <hr>
+            <h2>
+                Already have an account?
+            </h2>
+            <a [routerLink]="['/login']" class="btn btn-block btn-primary">Login</a>
+        </div>
+    </div>
+</div>
