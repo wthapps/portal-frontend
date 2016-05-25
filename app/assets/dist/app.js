@@ -303,4 +303,20 @@ if (Modernizr.touch === true && $(window).width() <= 767) {
 
     init();
 
+
+    //home js
+    /*if ($('.banner-wrap').length) {
+        var mySwiper = new Swiper('.banner-wrap .swiper-container', {
+            loop: true,
+
+            // If we need pagination
+            //pagination: '.banner-wrap .swiper-pagination',
+
+            // Navigation arrows
+            nextButton: '.banner-wrap .swiper-button-next',
+            prevButton: '.banner-wrap .swiper-button-prev'
+        });
+    }*/
+
+
 })(jQuery);

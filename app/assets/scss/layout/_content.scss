@@ -1,3 +1,72 @@
-/* ==========================================================================
-Content
-========================================================================== */
+.banner-wrap {
+  position: relative;
+  z-index: 1;
+  .banner-img {
+    height: 580px;
+    position: relative;
+    overflow: hidden;
+    img {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      margin: 0 0 0 -960px;
+    }
+  }
+  .banner-txt {
+    position: absolute;
+    top: 50%;
+    margin-top: -150px;
+    max-width: 380px;
+  }
+}
+
+.main {
+  .title {
+    text-align: center;
+  }
+  .boxes-tabs {
+    text-align: center;
+    ul {
+      border-width: 0;
+      li {
+        width: 25%;
+        a {
+          &, &:hover, &:focus {
+            border-width: 0;
+            margin: 0;
+            padding: 15px 20px;
+            background-color: transparent;
+            color: $color-inverse;
+          }
+        }
+        &.active {
+          a {
+            background-color: $color-inverse;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+    .tab-content {
+      .tab-pane {
+        padding: 50px;
+        min-height: 230px;
+        .table {
+          margin-top: 30px;
+          tr {
+            th {
+              text-align: center;
+            }
+            td {
+              vertical-align: middle;
+            }
+            td:first-child {
+              text-align: left;
+            }
+          }
+        }
+      }
+    }
+  }
+}
