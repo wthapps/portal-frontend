@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 @Component({
     templateUrl: 'app/login/login.component.html',
@@ -9,5 +9,10 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 })
 
 export class LoginComponent {
-    pageTitle:string = "Login page";
+    constructor(private router:Router) {
+    }
+
+    onSubmit():void {
+        this.router.navigate(['/account']);
+    }
 }

@@ -32,5 +32,15 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
+typings
+**/app/**/*.js
+**/app/**/*.map
+!app/
+
+app/**/*.js
+app/**/*.map
+!app/assets/**/*.js
+!app/assets/**/*.map
+
 # PhpStorm
 .idea

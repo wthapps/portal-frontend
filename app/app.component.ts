@@ -16,6 +16,10 @@ import {ResetEmailSentComponent} from './account/reset-email-sent.component';
 import {PasswordResetComponent} from './account/password-reset.component';
 import {PasswordResetCompleteComponent} from './account/password-reset-complete.component';
 
+// Account
+import {MyAccountComponent} from './account/setting/my-account.component';
+import {ChangePasswordComponent} from './account/setting/change-password.component';
+
 @Component({
     selector: 'wth-app',
     templateUrl: 'app/app.component.html',
@@ -38,7 +42,12 @@ import {PasswordResetCompleteComponent} from './account/password-reset-complete.
     {path: '/account/forgot_password', component: ForgotPasswordComponent},
     {path: '/account/reset_email_sent', component: ResetEmailSentComponent},
     {path: '/account/password_reset', component: PasswordResetComponent},
-    {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent}
+    {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
+
+    {path: '/account/change_password', component: ChangePasswordComponent},
+    {path: '/account', component: MyAccountComponent}
+
+
 ])
 
 export class AppComponent {
