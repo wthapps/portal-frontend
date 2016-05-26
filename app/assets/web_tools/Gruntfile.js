@@ -133,7 +133,7 @@ module.exports = function (grunt) {
                 optimizationLevel: 7,
                 files: [{
                     expand: true,
-                    cwd: basePath + '/images_upload/',
+                    cwd: basePath + '/images_temp/',
                     src: ['**/*.{png,jpg,gif,svg}'],
                     dest: basePath + '/images/'
                 }]

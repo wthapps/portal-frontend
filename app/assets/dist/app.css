@@ -6617,30 +6617,39 @@ Header
   text-align: center; }
 
 .main .boxes-tabs {
-  text-align: center; }
-  .main .boxes-tabs ul {
-    border-width: 0; }
-    .main .boxes-tabs ul li {
-      width: 25%; }
-      .main .boxes-tabs ul li a, .main .boxes-tabs ul li a:hover, .main .boxes-tabs ul li a:focus {
-        border-width: 0;
-        margin: 0;
-        padding: 15px 20px;
-        background-color: transparent;
-        color: #ED1C24; }
-      .main .boxes-tabs ul li.active a {
-        background-color: #ED1C24;
-        color: #ffffff; }
-  .main .boxes-tabs .tab-content .tab-pane {
-    padding: 50px;
-    min-height: 230px; }
-    .main .boxes-tabs .tab-content .tab-pane .table {
-      margin-top: 30px; }
-      .main .boxes-tabs .tab-content .tab-pane .table tr th {
-        text-align: center; }
-      .main .boxes-tabs .tab-content .tab-pane .table tr td {
-        vertical-align: middle; }
-      .main .boxes-tabs .tab-content .tab-pane .table tr td:first-child {
-        text-align: left; }
+  text-align: center;
+  margin: 100px 0; }
+  .main .boxes-tabs .table-plan {
+    margin-top: 30px; }
+    .main .boxes-tabs .table-plan tr th {
+      text-align: center; }
+    .main .boxes-tabs .table-plan tr td {
+      vertical-align: middle; }
+    .main .boxes-tabs .table-plan tr td:first-child {
+      text-align: left; }
+  .main .boxes-tabs.boxes-tabs-2 {
+    background-image: url(../images/too-many-apps.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    color: #ffffff;
+    padding: 150px 0; }
+    .main .boxes-tabs.boxes-tabs-2 h2, .main .boxes-tabs.boxes-tabs-2 h3 {
+      text-shadow: 1px 1px 5px #000000; }
+  .main .boxes-tabs.boxes-tabs-4 {
+    background-image: url(../images/no-commitments.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    color: #ffffff;
+    padding: 150px 0;
+    margin-bottom: 0; }
+    .main .boxes-tabs.boxes-tabs-4 h2, .main .boxes-tabs.boxes-tabs-4 h3, .main .boxes-tabs.boxes-tabs-4 p {
+      text-shadow: 1px 1px 5px #000000; }
+
+.statement {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px; }
 
 /*# sourceMappingURL=style.css.map */

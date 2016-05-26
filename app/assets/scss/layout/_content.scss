@@ -26,48 +26,52 @@
   .title {
     text-align: center;
   }
+
   .boxes-tabs {
     text-align: center;
-    ul {
-      border-width: 0;
-      li {
-        width: 25%;
-        a {
-          &, &:hover, &:focus {
-            border-width: 0;
-            margin: 0;
-            padding: 15px 20px;
-            background-color: transparent;
-            color: $color-inverse;
-          }
+    margin: 100px 0;
+    .table-plan {
+      margin-top: 30px;
+      tr {
+        th {
+          text-align: center;
         }
-        &.active {
-          a {
-            background-color: $color-inverse;
-            color: #ffffff;
-          }
+        td {
+          vertical-align: middle;
+        }
+        td:first-child {
+          text-align: left;
         }
       }
     }
-    .tab-content {
-      .tab-pane {
-        padding: 50px;
-        min-height: 230px;
-        .table {
-          margin-top: 30px;
-          tr {
-            th {
-              text-align: center;
-            }
-            td {
-              vertical-align: middle;
-            }
-            td:first-child {
-              text-align: left;
-            }
-          }
-        }
+    &.boxes-tabs-2 {
+      background-image: url(../images/too-many-apps.jpg);
+      -webkit-background-size: cover;
+      background-size: cover;
+      background-position: center center;
+      color: #ffffff;
+      padding: 150px 0;
+      h2, h3 {
+        text-shadow: 1px 1px 5px #000000;
       }
+    }
+    &.boxes-tabs-4 {
+      background-image: url(../images/no-commitments.jpg);
+      -webkit-background-size: cover;
+      background-size: cover;
+      background-position: center center;
+      color: #ffffff;
+      padding: 150px 0;
+      h2, h3, p {
+        text-shadow: 1px 1px 5px #000000;
+      }
+      margin-bottom: 0;
     }
   }
+}
+
+.statement {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
 }

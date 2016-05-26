@@ -19,6 +19,14 @@ import {PasswordResetCompleteComponent} from './account/password-reset-complete.
 // Account
 import {MyAccountComponent} from './account/setting/my-account.component';
 import {ChangePasswordComponent} from './account/setting/change-password.component';
+// Account Services
+import {AccountServicesDNSComponent} from './account/services/dns/dns.component';
+
+// Services
+import {ServicesComponent} from './services/services.component';
+import {ApplicationsComponent} from './apps/apps.component';
+import {SupportComponent} from './support/support.component';
+
 
 @Component({
     selector: 'wth-app',
@@ -35,6 +43,11 @@ import {ChangePasswordComponent} from './account/setting/change-password.compone
 
 @Routes([
     {path: '/', component: HomeComponent},
+
+    {path: '/services', component: ServicesComponent},
+    {path: '/apps', component: ApplicationsComponent},
+    {path: '/support', component: SupportComponent},
+
     {path: '/products/:id', component: ProductDetailComponent},
     {path: '/products', component: ProductListComponent},
     {path: '/login', component: LoginComponent},
@@ -45,6 +58,7 @@ import {ChangePasswordComponent} from './account/setting/change-password.compone
     {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
 
     {path: '/account/change_password', component: ChangePasswordComponent},
+    {path: '/account/dns', component: AccountServicesDNSComponent},
     {path: '/account', component: MyAccountComponent}
 
 
