@@ -6652,4 +6652,12 @@ Header
   margin-top: 40px;
   font-size: 18px; }
 
+.panel-heading-action {
+  position: relative; }
+  .panel-heading-action .btn {
+    float: right;
+    padding: 3px 10px;
+    font-size: 11px;
+    margin-top: -3px; }
+
 /*# sourceMappingURL=style.css.map */

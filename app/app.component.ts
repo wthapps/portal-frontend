@@ -17,8 +17,11 @@ import {PasswordResetComponent} from './account/password-reset.component';
 import {PasswordResetCompleteComponent} from './account/password-reset-complete.component';
 
 // Account
+import {AccountServicesListComponent} from './account/services/services-list.component';
 import {MyAccountComponent} from './account/setting/my-account.component';
 import {ChangePasswordComponent} from './account/setting/change-password.component';
+import {AccountDashboardComponent} from './account/dashboard.component';
+
 // Account Services
 import {AccountServicesDNSComponent} from './account/services/dns/dns.component';
 import {AccountServicesDNSAddComponent} from './account/services/dns/dns-add.component';
@@ -60,10 +63,12 @@ import {SupportComponent} from './support/support.component';
     {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
 
     {path: '/account/change_password', component: ChangePasswordComponent},
+    {path: '/account/setting', component: MyAccountComponent},
     {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
     {path: '/account/dns/update', component: AccountServicesDNSUpdateComponent},
     {path: '/account/dns', component: AccountServicesDNSComponent},
-    {path: '/account', component: MyAccountComponent}
+    {path: '/account/services', component: AccountServicesListComponent},
+    {path: '/account', component: AccountDashboardComponent}
 
 
 ])
