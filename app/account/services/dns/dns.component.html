@@ -10,7 +10,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <a href="#" class="btn btn-success">Add</a>
+                        <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
                     </div>
                     <table class="table table-bordered">
                         <tr>
@@ -37,7 +37,7 @@
                             <td>192.168.1.1</td>
                             <td>
                                 <a class="btn btn-sm btn-info" href="#" role="button">Disable</a>
-                                <a class="btn btn-sm btn-primary" href="#" role="button">Edit</a>
+                                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update']" role="button">Edit</a>
                                 <a class="btn btn-sm btn-danger" href="#" role="button">Delete</a>
                             </td>
                         </tr>
