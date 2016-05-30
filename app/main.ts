@@ -14,6 +14,9 @@ import { ROUTER_PROVIDERS } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
+/*import {enableProdMode} from '@angular/core';
+enableProdMode();*/
+
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     provide(APP_BASE_HREF, { useValue: '/' }) // this line

@@ -11,15 +11,20 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
+                        <button class="btn pull-right btn-danger">Delete</button>
                     </div>
                     <table class="table table-bordered">
                         <tr>
-                            <th></th>
-                            <th>Hostname</th>
-                            <th>Type</th>
-                            <th>Create At</th>
-                            <th>Update At</th>
-                            <th>IP</th>
+                            <th>
+                                <label>
+                                    <input type="checkbox">
+                                </label>
+                            </th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Domain</th>
+                            <th>IP Adress</th>
+                            <th>Last Update</th>
                             <th>Action</th>
                         </tr>
                         <tr>
@@ -29,12 +34,12 @@
                                 </label>
                             </td>
                             <td>
-                                Ben
+                                MyCamera
                             </td>
-                            <td>A</td>
-                            <td>5/26/2016 8:09:10 AM</td>
-                            <td>5/26/2016 12:00:34 PM</td>
-                            <td>192.168.1.1</td>
+                            <td>Active</td>
+                            <td>mycamera.wthapps.com</td>
+                            <td>114.65.11.22</td>
+                            <td>05/12/2016 4:56:00 AM</td>
                             <td>
                                 <a class="btn btn-sm btn-info" href="#" role="button">Disable</a>
                                 <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update']" role="button">Edit</a>
@@ -48,15 +53,15 @@
                                 </label>
                             </td>
                             <td>
-                                Ben
+                                MyCamera
                             </td>
-                            <td>A</td>
-                            <td>5/26/2016 8:09:10 AM</td>
-                            <td>5/26/2016 12:00:34 PM</td>
-                            <td>192.168.1.1</td>
+                            <td>Active</td>
+                            <td>mycamera.wthapps.com</td>
+                            <td>114.65.11.22</td>
+                            <td>05/12/2016 4:56:00 AM</td>
                             <td>
                                 <a class="btn btn-sm btn-info" href="#" role="button">Disable</a>
-                                <a class="btn btn-sm btn-primary" href="#" role="button">Edit</a>
+                                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update']" role="button">Edit</a>
                                 <a class="btn btn-sm btn-danger" href="#" role="button">Delete</a>
                             </td>
                         </tr>
