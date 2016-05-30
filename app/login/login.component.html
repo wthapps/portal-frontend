@@ -4,14 +4,14 @@
             <h2>
                 Have an account?
             </h2>
-            <form (ngSubmit)="onSubmit()">
+            <form (ngSubmit)="login(loginInputEmail.value, loginInputPassword.value)">
                 <div class="form-group">
                     <label class="sr-only" for="loginInputEmail">Email address</label>
-                    <input type="email" class="form-control" id="loginInputEmail" placeholder="Email">
+                    <input type="email" class="form-control" #loginInputEmail id="loginInputEmail" placeholder="Email">
                 </div>
                 <div class="form-group">
                     <label class="sr-only" for="loginInputPassword">Password</label>
-                    <input type="password" class="form-control" id="loginInputPassword" placeholder="Password">
+                    <input type="password" class="form-control" #loginInputPassword id="loginInputPassword" placeholder="Password">
                 </div>
                 <div class="checkbox">
                     <label>
