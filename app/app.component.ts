@@ -1,7 +1,17 @@
 import {Component} from '@angular/core';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
+import {
+    ROUTER_PROVIDERS, 
+    ROUTER_DIRECTIVES, 
+    Routes, 
+    Router
+} from '@angular/router';
 import 'rxjs/Rx';   // Load all features
+
+// Base services
+import {ApiBaseService} from './shared/services/apibase.service';
+import {UserService} from './shared/services/user.service';
+
 
 import {HomeComponent} from './home/home.component';
 import {ProductListComponent} from './products/product-list.component';
@@ -34,6 +44,7 @@ import {AccountPlansComponent,AccountBillingComponent,AccountAddCardComponent} f
 import {ServicesComponent} from './services/services.component';
 import {ApplicationsComponent} from './apps/apps.component';
 import {SupportComponent} from './support/support.component';
+import {LoginComponent} from './login/login.component';
 
 
 @Component({
@@ -43,7 +54,9 @@ import {SupportComponent} from './support/support.component';
         ROUTER_DIRECTIVES
     ],
     providers: [
-        ProductService,
+        ProductService,  
+        ApiBaseService,  
+        UserService,    
         HTTP_PROVIDERS,
         ROUTER_PROVIDERS
     ]
@@ -83,4 +96,26 @@ import {SupportComponent} from './support/support.component';
 
 export class AppComponent {
     pageTitle:string = "Welcome to WTHApps";
+
+    constructor(private _userService: UserService, private _router: Router){ }
+
+    logout($event){ 
+        $event.preventDefault();
+            
+        console.log("loggedout:");
+        this._userService.logout('users/sign_out')
+            .subscribe(
+                response => {
+                    localStorage.removeItem('jwt');
+                },
+                error => {
+                    console.log("logout error:", error);
+                }
+            );              
+    } 
+
+    currentPath(): string{
+        return this._router._location.path();
+        // return this._router._location.path() === '' ? '/' : this._router._location.path();
+    }  
 }
