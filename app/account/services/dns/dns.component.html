@@ -11,58 +11,28 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
-                        <button class="btn pull-right btn-danger">Delete</button>
                     </div>
                     <table class="table table-bordered">
                         <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox">
-                                </label>
-                            </th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Domain</th>
+                            <th>Hostname</th>
                             <th>IP Adress</th>
+                            <th>Type</th>
                             <th>Last Update</th>
                             <th>Action</th>
                         </tr>
-                        <tr>
+                        <tr *ngFor="let record of Records">
                             <td>
-                                <label>
-                                    <input type="checkbox">
-                                </label>
+                                {{record.name}}@wthdns.com
                             </td>
+                            <!--<td>{{record.content == '127.0.0.1' ? 'UNKNOW' : record.content}}</td>-->
+                            <input type="text" class="form-control" placeholder="" value="{{record.content}}" [(ngModel)]="record.content" disabled="true">
+                            <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
+                            <td>{{record.updated_at}}</td>
                             <td>
-                                MyCamera
-                            </td>
-                            <td>Active</td>
-                            <td>mycamera.wthapps.com</td>
-                            <td>114.65.11.22</td>
-                            <td>05/12/2016 4:56:00 AM</td>
-                            <td>
-                                <a class="btn btn-sm btn-info" href="#" role="button">Disable</a>
-                                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update']" role="button">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="#" role="button">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    <input type="checkbox">
-                                </label>
-                            </td>
-                            <td>
-                                MyCamera
-                            </td>
-                            <td>Active</td>
-                            <td>mycamera.wthapps.com</td>
-                            <td>114.65.11.22</td>
-                            <td>05/12/2016 4:56:00 AM</td>
-                            <td>
-                                <a class="btn btn-sm btn-info" href="#" role="button">Disable</a>
-                                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update']" role="button">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="#" role="button">Delete</a>
+                                <a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
+                                {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>
+                                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update', record.id]" role="button">Edit</a>
+                                <a class="btn btn-sm btn-danger" [routerLink]="['/account/dns/']" role="button" (click)="onDeleteHost($event, record.id)">Delete</a>
                             </td>
                         </tr>
                     </table>

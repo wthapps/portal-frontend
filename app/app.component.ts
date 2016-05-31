@@ -51,6 +51,8 @@ import {ApplicationsComponent} from './apps/apps.component';
 import {SupportComponent} from './support/support.component';
 import {LoginComponent} from './login/login.component';
 
+// Dns Services
+import {DnsService} from './account/services/dns/dns.service';
 
 @Component({
     selector: 'wth-app',
@@ -61,7 +63,8 @@ import {LoginComponent} from './login/login.component';
     providers: [
         ProductService,  
         ApiBaseService,  
-        UserService,    
+        UserService,
+        DnsService,
         HTTP_PROVIDERS,
         ROUTER_PROVIDERS
     ]
@@ -87,7 +90,7 @@ import {LoginComponent} from './login/login.component';
     {path: '/account/setting', component: MyAccountComponent},
 
     {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
-    {path: '/account/dns/update', component: AccountServicesDNSUpdateComponent},
+    {path: '/account/dns/update/:id', component: AccountServicesDNSUpdateComponent},
     {path: '/account/dns', component: AccountServicesDNSComponent},
 
     {path: '/account/vpn', component: AccountServicesVPNComponent},
