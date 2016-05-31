@@ -27,6 +27,9 @@ import {AccountServicesDNSComponent} from './account/services/dns/dns.component'
 import {AccountServicesDNSAddComponent} from './account/services/dns/dns-add.component';
 import {AccountServicesDNSUpdateComponent} from './account/services/dns/dns-update.component';
 
+// Account Payment
+import {AccountPlansComponent,AccountBillingComponent,AccountAddCardComponent} from './account/payment/index';
+
 // Services
 import {ServicesComponent} from './services/services.component';
 import {ApplicationsComponent} from './apps/apps.component';
@@ -68,6 +71,11 @@ import {SupportComponent} from './support/support.component';
     {path: '/account/dns/update', component: AccountServicesDNSUpdateComponent},
     {path: '/account/dns', component: AccountServicesDNSComponent},
     {path: '/account/services', component: AccountServicesListComponent},
+
+    {path: '/account/plans', component: AccountPlansComponent},
+    {path: '/account/billing', component: AccountBillingComponent},
+    {path: '/account/add_card', component: AccountAddCardComponent},
+
     {path: '/account', component: AccountDashboardComponent}
 
 

@@ -11,5 +11,6 @@
     `cd app/assets/web_tools`
     `npm install` & `bower install`
     `grunt build`
-    
+
+
     Assets ready for use are now available in a `dist` folder
