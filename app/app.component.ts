@@ -38,6 +38,10 @@ import {AccountServicesDNSComponent} from './account/services/dns/dns.component'
 import {AccountServicesDNSAddComponent} from './account/services/dns/dns-add.component';
 import {AccountServicesDNSUpdateComponent} from './account/services/dns/dns-update.component';
 
+import {AccountServicesVPNComponent} from './account/services/vpn/vpn.component';
+
+import {AccountServicesEFaxComponent} from './account/services/efax/efax.component';
+
 // Account Payment
 import {AccountPlansComponent, AccountBillingComponent, AccountAddCardComponent} from './account/payment/index';
 
@@ -81,9 +85,15 @@ import {LoginComponent} from './login/login.component';
 
     {path: '/account/change_password', component: ChangePasswordComponent},
     {path: '/account/setting', component: MyAccountComponent},
+
     {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
     {path: '/account/dns/update', component: AccountServicesDNSUpdateComponent},
     {path: '/account/dns', component: AccountServicesDNSComponent},
+
+    {path: '/account/vpn', component: AccountServicesVPNComponent},
+        
+    {path: '/account/efax', component: AccountServicesEFaxComponent},
+
     {path: '/account/services', component: AccountServicesListComponent},
 
     {path: '/account/plans', component: AccountPlansComponent},

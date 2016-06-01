@@ -12,5 +12,5 @@ import {AccountMenuComponent} from '../menu/account-menu.component';
 })
 
 export class AccountServicesListComponent {
-    PanelTitle:string = "Find Services and add-ons";
+    PanelTitle:string = "Find Services";
 }
