@@ -4,27 +4,27 @@
             <h2>
                 Have an account?
             </h2>
-            <form (ngSubmit)="login(loginInputEmail.value, loginInputPassword.value)">
+            <form (ngSubmit)="login(email.value, password.value)">
                 <div class="form-group">
-                    <label class="sr-only" for="loginInputEmail">Email address</label>
-                    <input type="email" class="form-control" #loginInputEmail id="loginInputEmail" placeholder="Email">
+                    <label class="sr-only" for="email">Email address</label>
+                    <input type="email" class="form-control" #email id="email" placeholder="Email">
                 </div>
                 <div class="form-group">
-                    <label class="sr-only" for="loginInputPassword">Password</label>
-                    <input type="password" class="form-control" #loginInputPassword id="loginInputPassword" placeholder="Password">
+                    <label class="sr-only" for="password">Password</label>
+                    <input type="password" class="form-control" #password id="password" placeholder="Password">
                 </div>
                 <div class="checkbox">
-                    <label>
-                        <input type="checkbox"> Remember me
-                    </label>
+                    <!--<label>-->
+                        <!--<input type="checkbox"> Remember me-->
+                    <!--</label>-->
                     <span class="separator">·</span>
-                    <a class="forgot" [routerLink]="['/account/forgot_password']">Forgot password?</a>
+                    <a class="forgot" [routerLink]="['/account/forgot_password']">Forgot account?</a>
                 </div>
-                <button type="submit" class="btn btn-block btn-danger">Sign in</button>
+                <button type="submit" class="btn btn-block btn-danger">Log In</button>
             </form>
             <hr>
             <h2>New to WTHApps?</h2>
-            <a [routerLink]="['/register']" class="btn btn-block btn-primary">Sign up</a>
+            <a [routerLink]="['/signup']" class="btn btn-block btn-primary">Sign Up</a>
         </div>
     </div>
 </div>

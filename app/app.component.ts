@@ -9,6 +9,7 @@ import {
 import 'rxjs/Rx';   // Load all features
 
 // Base services
+import { AuthHttp, tokenNotExpired } from 'angular2-jwt';
 import {ApiBaseService} from './shared/services/apibase.service';
 import {UserService} from './shared/services/user.service';
 
@@ -72,7 +73,7 @@ import {LoginComponent} from './login/login.component';
     {path: '/products/:id', component: ProductDetailComponent},
     {path: '/products', component: ProductListComponent},
     {path: '/login', component: LoginComponent},
-    {path: '/register', component: RegisterComponent},
+    {path: '/signup', component: RegisterComponent},
     {path: '/account/forgot_password', component: ForgotPasswordComponent},
     {path: '/account/reset_email_sent', component: ResetEmailSentComponent},
     {path: '/account/password_reset', component: PasswordResetComponent},
@@ -107,6 +108,7 @@ export class AppComponent {
             .subscribe(
                 response => {
                     localStorage.removeItem('jwt');
+                    this._router.navigateByUrl('/login');
                 },
                 error => {
                     console.log("logout error:", error);
@@ -117,5 +119,10 @@ export class AppComponent {
     currentPath(): string{
         return this._router._location.path();
         // return this._router._location.path() === '' ? '/' : this._router._location.path();
-    }  
+    }
+
+    public isLoggedIn() {
+        // Check if there's an unexpired JWT
+        return this._userService.isLoggedIn();
+    }
 }
