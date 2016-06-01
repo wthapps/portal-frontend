@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, AfterViewInit} from '@angular/core';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
 import {
     ROUTER_PROVIDERS, 
@@ -39,7 +39,7 @@ import {AccountServicesDNSAddComponent} from './account/services/dns/dns-add.com
 import {AccountServicesDNSUpdateComponent} from './account/services/dns/dns-update.component';
 
 // Account Payment
-import {AccountPlansComponent,AccountBillingComponent,AccountAddCardComponent} from './account/payment/index';
+import {AccountPlansComponent, AccountBillingComponent, AccountAddCardComponent} from './account/payment/index';
 
 // Services
 import {ServicesComponent} from './services/services.component';
@@ -95,9 +95,14 @@ import {LoginComponent} from './login/login.component';
 
 ])
 
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
     pageTitle:string = "Welcome to WTHApps";
 
+    ngAfterViewInit() {
+        // Your jQuery code goes here
+        //$('.navbar-brand').hide();
+    }
+    
     constructor(private _userService: UserService, private _router: Router){ }
 
     logout($event){ 
@@ -114,7 +119,7 @@ export class AppComponent {
                     console.log("logout error:", error);
                 }
             );              
-    } 
+    }
 
     currentPath(): string{
         return this._router._location.path();

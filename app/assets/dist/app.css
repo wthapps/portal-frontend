@@ -3781,8 +3781,7 @@ tbody.collapse.in {
   @media (min-width: 768px) {
     .navbar > .container .navbar-brand,
     .navbar > .container-fluid .navbar-brand {
-      /*margin-left: -15px;*/
-    } }
+      margin-left: -15px; } }
 
 .navbar-toggle {
   position: relative;
@@ -6583,7 +6582,8 @@ Header
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
     .navbar .navbar-brand {
-      padding: 0; }
+      padding: 0;
+      margin-left: 0 !important; }
       .navbar .navbar-brand img {
         height: 50px; } }
 
