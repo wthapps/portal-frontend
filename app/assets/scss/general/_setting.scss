@@ -96,7 +96,6 @@ $i_marginpadding: 50;
   #{$list} {
     padding-left: ceil(($grid-gutter-width-custom / 2));
     padding-right: floor(($grid-gutter-width-custom / 2));
-    margin-bottom: $grid-gutter-width-custom;
   }
 }
 

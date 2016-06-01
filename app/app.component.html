@@ -33,7 +33,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li *ngIf="!isLoggedIn()"><a [routerLink]="['/login']">Log in</a></li>
                     <li *ngIf="isLoggedIn()"><a [routerLink]="['/account']">Settings</a></li>
-                    <li *ngIf="isLoggedIn()"><a (click)="logout($event)">Log out</a></li>
+                    <li *ngIf="isLoggedIn()"><a href="javascript:;" (click)="logout($event)">Log out</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
