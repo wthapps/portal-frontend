@@ -20,9 +20,7 @@ export class UserService extends ApiBaseService {
             .map(res => res.json())
             .map((res) => {
                 if(res){
-                    localStorage.setItem('jwt', res.token);
-                    // TODO store user's profile
-                    this._loggedIn = true;
+                    this.storeLoggedUserInfo(res)
                 }
                 return res;
             });
@@ -34,7 +32,9 @@ export class UserService extends ApiBaseService {
             .map(res => res.json())
             .map((res) => {
                 localStorage.removeItem('jwt');
+                localStorage.removeItem('profile');
                 this._loggedIn = false;
+                return res;
             });
     }
     
@@ -42,7 +42,14 @@ export class UserService extends ApiBaseService {
      * `sign up` new an account.
      */
     public signup(path: string, body: string): Observable<Response>{    
-        return super.post(path, body);
+        return super.post(path, body)
+        .map(res => res.json())
+            .map((res) => {
+                if(res){
+                    this.storeLoggedUserInfo(res);
+                }
+                return res;
+            });
     }
 
     /*
@@ -50,5 +57,11 @@ export class UserService extends ApiBaseService {
      */
     public isLoggedIn(){
     	return this._loggedIn;
+    }
+
+    private storeLoggedUserInfo(response){
+        localStorage.setItem('jwt', response.token);
+        localStorage.setItem('profile', JSON.stringify(response.data));           
+        this._loggedIn = true;
     }    
 }
