@@ -1,0 +1,50 @@
+<header class="header">
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" [routerLink]="['/']">
+          <img src="assets/images/logo.png" height="40" alt="">
+        </a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <!--<li><a [routerLink]="['/products']">Products</a></li>
+          <li><a [routerLink]="['/services']">Services</a></li>
+          <li><a [routerLink]="['/apps']">Apps</a></li>-->
+          <li><a [routerLink]="['/']">About us</a></li>
+          <li><a [routerLink]="['/support']">Support</a></li>
+        </ul>
+        <form *ngIf="isLoggedIn()" class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Search</button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li *ngIf="!isLoggedIn()"><a [routerLink]="['/login']">Log in</a></li>
+          <li *ngIf="isLoggedIn()"><a [routerLink]="['/account']">Settings</a></li>
+          <li *ngIf="isLoggedIn()"><a href="javascript:;" (click)="logout($event)">Log out</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+</header>
+<main class="main">
+  <router-outlet></router-outlet>
+</main>
+<footer class="footer">
+  <div class="container">
+    <p><a href="http://wthapps.com">WTHApps</a> © 2016 • All rights reserved.</p>
+  </div>
+</footer>
+

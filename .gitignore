@@ -1,7 +1,6 @@
 # Logs
 logs
 *.log
-npm-debug.log*
 
 # Runtime data
 pids
@@ -17,30 +16,33 @@ coverage
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
-# node-waf configuration
-.lock-wscript
-
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
 # Dependency directory
-node_modules
+# Commenting this out is preferred by some people, see
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
+/node_modules/
+/typings/
 
-# Optional npm cache directory
-.npm
+# Users Environment Variables
+.lock-wscript
+.tsdrc
+.typingsrc
 
-# Optional REPL history
-.node_repl_history
-
-typings
-**/app/**/*.js
-**/app/**/*.map
-!app/
-
-app/**/*.js
-app/**/*.map
-!app/assets/**/*.js
-!app/assets/**/*.map
-
-# PhpStorm
+#IDE configuration files
 .idea
+.vscode
+*.iml
+
+/tools/**/*.js
+dist
+dev
+docs
+lib
+test
+tmp
+
+gulpfile.js
+gulpfile.js.map
+
