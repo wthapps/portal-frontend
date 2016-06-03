@@ -18,6 +18,8 @@ import {ProductListComponent} from './products/product-list.component';
 import {ProductDetailComponent} from './products/product-detail.component';
 import {ProductService} from './products/product.service';
 
+import {DnsService} from './account/services/dns/dns.service';
+
 import {
   AccountDashboardComponent,
   ForgotPasswordComponent,
@@ -61,6 +63,7 @@ import {RegisterComponent} from './register/register.component';
     ProductService,
     ApiBaseService,
     UserService,
+    DnsService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS
   ]
@@ -84,7 +87,7 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/setting', component: MyAccountComponent},
 
   {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
-  {path: '/account/dns/update', component: AccountServicesDNSUpdateComponent},
+  {path: '/account/dns/update/:id', component: AccountServicesDNSUpdateComponent},
   {path: '/account/dns', component: AccountServicesDNSComponent},
 
   {path: '/account/vpn', component: AccountServicesVPNComponent},
