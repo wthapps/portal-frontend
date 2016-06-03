@@ -25,8 +25,10 @@
                 {{record.name}}@wthdns.com
               </td>
               <!--<td>{{record.content == '127.0.0.1' ? 'UNKNOW' : record.content}}</td>-->
-              <input type="text" class="form-control" placeholder="" value="{{record.content}}"
-                     [(ngModel)]="record.content" disabled="true">
+              <td>
+                <input type="text" class="sr-only form-control" placeholder="" value=""
+                       [(ngModel)]="record.content" disabled="true">
+              </td>
               <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
               <td>{{record.updated_at}}</td>
               <td>

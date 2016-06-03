@@ -30,10 +30,19 @@
           </div>
           <button type="submit" class="btn btn-default">Search</button>
         </form>
-        <ul class="nav navbar-nav navbar-right">
-          <li *ngIf="!isLoggedIn()"><a [routerLink]="['/login']">Log in</a></li>
-          <li *ngIf="isLoggedIn()"><a [routerLink]="['/account']">Settings</a></li>
-          <li *ngIf="isLoggedIn()"><a href="javascript:;" (click)="logout($event)">Log out</a></li>
+        <ul *ngIf="!isLoggedIn()" class="nav navbar-nav navbar-right">
+          <li><a [routerLink]="['/login']">Log in</a></li>
+        </ul>
+
+        <ul *ngIf="isLoggedIn()" class="nav navbar-nav navbar-right">
+          <li dropdown>
+            <a href="javascript:;" id="single-button" dropdownToggle> username <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+              <li role="menuitem"><a [routerLink]="['/account']">Settings</a></li>
+              <li class="divider dropdown-divider"></li>
+              <li role="menuitem"><a href="javascript:;" (click)="logout($event)">Log out</a></li>
+            </ul>
+          </li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

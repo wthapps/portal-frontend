@@ -18,6 +18,7 @@ Header
     }
   }
   @media (min-width: $screen-sm) {
+    border-radius: 0;
     padding: 18px 0 14px;
     background-color: transparent;
     border-width: 0;
@@ -28,6 +29,16 @@ Header
       img {
         height: 50px;
       }
+    }
+  }
+}
+
+.navbar-nav {
+  > li.open > a {
+    &:hover,
+    &:focus {
+      background-color: transparent;
+      color: $color;
     }
   }
 }

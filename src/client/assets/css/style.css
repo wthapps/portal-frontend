@@ -6575,6 +6575,7 @@ Header
 
 @media (min-width: 768px) {
   .navbar {
+    border-radius: 0;
     padding: 18px 0 14px;
     background-color: transparent;
     border-width: 0;
@@ -6585,6 +6586,10 @@ Header
       margin-left: 0 !important; }
       .navbar .navbar-brand img {
         height: 50px; } }
+
+.navbar-nav > li.open > a:hover, .navbar-nav > li.open > a:focus {
+  background-color: transparent;
+  color: #2a363f; }
 
 .footer {
   margin-top: 40px;

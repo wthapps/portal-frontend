@@ -1,4 +1,5 @@
 import {Component, AfterViewInit} from '@angular/core';
+import {CORE_DIRECTIVES} from '@angular/common';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
 import {
   ROUTER_PROVIDERS,
@@ -7,6 +8,8 @@ import {
   Router
 } from '@angular/router';
 import 'rxjs/Rx';   // Load all features
+
+import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 
 // Base services
 import {AuthHttp, tokenNotExpired} from 'angular2-jwt';
@@ -57,7 +60,9 @@ import {RegisterComponent} from './register/register.component';
   selector: 'wth-app',
   templateUrl: 'app.component.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    DROPDOWN_DIRECTIVES,
+    CORE_DIRECTIVES
   ],
   providers: [
     ProductService,
