@@ -6,22 +6,22 @@
     <div class="col-sm-9">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">YOUR BILLING DETAILS</h3>
+          <h3 class="panel-title">Upgrade plan for username</h3>
         </div>
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
-                <input class="form-control" type="text" id="billing-nameOnCard" name="billing-nameOnCard"
-                       placeholder="Name On Card">
+                <input class="form-control" type="text" id="cardholdername" #cardholdername name="cardholdername"
+                       placeholder="Card Holder Name">
               </div>
               <div class="form-group">
-                <input class="form-control" type="text" id="billing-cardNumber" name="billing-cardNumber"
+                <input class="form-control" type="text" id="cardnumber" #cardnumber name="cardnumber"
                        placeholder="Card Number">
               </div>
               <div class="row row-16 form-group">
-                <div class="mb0 col-xs-4">
-                  <select class="form-control" id="billing-expiryMonth" name="billing-expiryMonth" placeholder="Month">
+                <div class="mb0 col-xs-3">
+                  <select class="form-control" id="cardexpirymonth" #expirymonth name="expirymonth" placeholder="Month">
                     <option value="month">Month</option>
                     <option value="01">01</option>
                     <option value="02">02</option>
@@ -37,8 +37,8 @@
                     <option value="12">12</option>
                   </select>
                 </div>
-                <div class="mb0 col-xs-4">
-                  <select class="form-control" id="billing-expiryYear" name="billing-expiryYear" placeholder="YYYY">
+                <div class="mb0 col-xs-3">
+                  <select class="form-control" id="expiryyear" #expiryyear name="expiryyear" placeholder="YYYY">
                     <option selected="selected" value="0">YYYY</option>
                     <option value="16">2016</option>
                     <option value="17">2017</option>
@@ -53,36 +53,38 @@
                     <option value="26">2026</option>
                   </select>
                 </div>
-                <div class="mb0 col-xs-3">
+                <div class="mb0 col-xs-4">
                   <div class="form-group">
-                    <input class="form-control" type="text" id="billing-cvv" name="billing-cvv" value=""
+                    <input class="form-control" type="text" id="securitycode" #securitycode name="securitycode" value=""
                            autocomplete="off"
-                           placeholder="CVV">
+                           placeholder="Security code">
                   </div>
                 </div>
-                <div class="mb0 col-xs-1">
+
+                <div class="mb0 col-xs-2">
                   <p class="form-control-static"><i class="glyphicon glyphicon-info-sign"></i></p>
                 </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-group">
-                <input class="form-control" type="text" id="billing-address" name="billing-address" maxlength="64" placeholder="Street Address">
+                <input class="form-control" type="text" id="billing-address" #address name="billing-address" maxlength="64" placeholder="Street Address">
               </div>
               <div class="row row-16 form-group">
                 <div class="mb0 col-xs-6">
-                  <input class="form-control" type="text" id="billing-city" name="billing-city" placeholder="City">
+                  <input class="form-control" type="text" id="billing-city" #city name="billing-city" placeholder="City">
                 </div>
                 <div class="mb0 col-xs-6">
-                  <input class="form-control" type="text" id="billing-zipcode" name="billing-zipcode" placeholder="Zip Code">
+                  <input class="form-control" type="text" id="billing-zipcode" #zipcode name="billing-zipcode" placeholder="Zip Code">
                 </div>
               </div>
               <div class="row row-16 form-group">
                 <div class="mb0 col-xs-6">
-                  <input class="form-control" type="text" placeholder="State (leave blank if none)" id="billing-state" name="billing-state" value="">
+                  <input class="form-control" type="text" placeholder="State" id="billing-state" #state name="billing-state" value="">
                 </div>
                 <div class="mb0 col-xs-6">
-                  <select class="form-control" id="billing-country" name="billing-country">
+                  <select class="form-control" id="billing-country" #country name="billing-country">
+                    <option value="">Country</option>
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Åland Islands</option>
                     <option value="AL">Albania</option>
@@ -121,7 +123,7 @@
                     <option value="BI">Burundi</option>
                     <option value="KH">Cambodia</option>
                     <option value="CM">Cameroon</option>
-                    <option value="CA">Canada</option>
+                    <option value="CA" selected="selected" >Canada</option>
                     <option value="CV">Cabo Verde</option>
                     <option value="KY">Cayman Islands</option>
                     <option value="CF">Central African Republic</option>
@@ -317,7 +319,7 @@
                     <option value="UZ">Uzbekistan</option>
                     <option value="VU">Vanuatu</option>
                     <option value="VE">Venezuela, Bolivarian Republic of</option>
-                    <option selected="selected" value="VN">Viet Nam</option>
+                    <option value="VN">Viet Nam</option>
                     <option value="VG">Virgin Islands, British</option>
                     <option value="VI">Virgin Islands, U.S.</option>
                     <option value="WF">Wallis and Futuna</option>
@@ -329,9 +331,30 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-12 text-center">
-              <button type="button" class="btn btn-default mr10">Cancel</button>
-              <button type="button" class="btn btn-danger ml10">Save Credit Card</button>
+            </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <p class="billing-price">
+                <strong class="billing-currency fz24 ">$9.99</strong><span class="billing-price-monthly">/mo</span>
+                <span class="billing-tax-help">for ALL services and apps</span>
+              </p>
+            </div>
+            <div class="col-sm-6 text-right">
+              <a [routerLink]="['/account']" class="btn btn-default">Cancel</a>
+              <button type="button" class="btn btn-danger ml10"
+                      (click)="create(
+                                cardholdername.value,
+                                cardnumber.value,
+                                expirymonth.value,
+                                expiryyear.value,
+                                securitycode.value,
+                                address.value,
+                                city.value,
+                                state.value,
+                                zipcode.value,
+                                country.value
+                              )"
+              >Save</button>
             </div>
           </div>
         </div>

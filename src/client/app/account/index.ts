@@ -23,7 +23,7 @@ export * from './menu/account-menu.component';
  */
 export * from './payment/plans.component';
 export * from './payment/billing.component';
-export * from './payment/add-card.component';
+export * from './payment/payment.component';
 
 /**
  *  Services
