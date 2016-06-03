@@ -302,7 +302,8 @@ export class SeedConfig {
       'rxjs/*': `${this.APP_BASE}node_modules/rxjs/*`,
       'app/*': `/app/*`,
       '*': `${this.APP_BASE}node_modules/*`,
-      'angular2-jwt': `${this.APP_BASE}node_modules/angular2-jwt/angular2-jwt.js`
+      'angular2-jwt': `${this.APP_BASE}node_modules/angular2-jwt/angular2-jwt.js`,
+      'ng2-bootstrap': `${this.APP_BASE}node_modules/ng2-bootstrap/ng2-bootstrap.js`
 
     },
     packages: {
@@ -366,6 +367,10 @@ export class SeedConfig {
       },
       'angular2-jwt': {
         main: 'angular2-jwt.js',
+        defaultExtension: 'js'
+      },
+      'ng2-bootstrap': {
+        main: 'ng2-bootstrap.js',
         defaultExtension: 'js'
       }
     }

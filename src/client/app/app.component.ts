@@ -111,7 +111,7 @@ export class AppComponent implements AfterViewInit {
   constructor(private _userService:UserService, private _router:Router) {
   }
 
-  logout($event):a {
+  logout($event) {
     $event.preventDefault();
 
     console.log('loggedout:');
