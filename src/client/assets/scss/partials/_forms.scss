@@ -1,0 +1,13 @@
+.form-control {
+  &.has-loading {
+    background-image: url(../images/icons/loading.gif);
+    background-repeat: no-repeat;
+    background-position: right center;
+    -webkit-background-size: 24px 24px;
+    background-size: 24px 24px;
+  }
+}
+
+.help-block[hidden] {
+  display: none;
+}

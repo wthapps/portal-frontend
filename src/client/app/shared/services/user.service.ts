@@ -68,3 +68,17 @@ export class UserService extends ApiBaseService {
     this._loggedIn = true;
   }
 }
+
+
+export class User {
+  constructor(
+    public first_name: string,
+    public last_name: string,
+    public email: string,
+    public password: string,
+    public birthday_day: string,
+    public birthday_month: string,
+    public birthday_year: string,
+    public sex: number
+  ) {}
+}

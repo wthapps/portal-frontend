@@ -13,43 +13,29 @@
           <img class="img-responsive" src="https://ssl.gstatic.com/accounts/signup/devices_1x.png" alt="">
         </div>
         <div class="col-sm-5 col-sm-offset-1">
-          <form [ngFormModel]="group" (ngSubmit)="signup()" novalidate>
+          <form #regForm="ngForm" (ngSubmit)="onSubmit(regForm)" novalidate>
             <div class="form-group">
               <div class="row row-16">
                 <div class="col-xs-6">
-                  <input type="text" class="form-control" id="first_name" placeholder="First Name"
-                         [ngFormControl]="group.find('first_name')">
+                  <input ngControl="firstname" type="text" class="form-control" id="firstname" #firstname placeholder="First Name">
                 </div>
                 <div class="col-xs-6">
-                  <input type="text" class="form-control" id="last_name" placeholder="Last Name"
-                         [ngFormControl]="group.find('last_name')">
+                  <input ngControl="lastname" type="text" class="form-control" id="lastname" #lastname placeholder="Last Name">
                 </div>
               </div>
             </div>
-            <div class="form-group" [ngClass]="{ 'has-error' : group.find('email').dirty && !group.find('email').valid}">
+            <div class="form-group">
               <label class="sr-only" for="email">Email address</label>
-              <input type="text" class="form-control" id="email" placeholder="Email"
-                     [ngFormControl]="group.find('email')" [ngClass]="{'has-loading': group.find('email').pending}">
-              <div *ngIf="group.find('email').dirty && !group.find('email').valid">
-                <span class="help-block" *ngIf="group.hasError('required', 'email')">An email is required</span>
-                <span class="help-block" *ngIf="group.hasError('emailFormat', 'email')">The value introduced is not an email</span>
-                <span class="help-block" *ngIf="group.hasError('duplicated', 'email')">This email has been registered already</span>
-              </div>
+              <input ngControl="email" type="email" class="form-control" id="email" #email placeholder="Email">
             </div>
-            <div class="form-group" [ngClass]="{ 'has-error' : group.find('password').dirty && !group.find('password').valid}">
+            <div class="form-group">
               <label class="sr-only" for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="Password"
-                     [ngFormControl]="group.find('password')">
-              <div *ngIf="group.find('password').dirty && !group.find('password').valid">
-                <span class="help-block" *ngIf="group.hasError('required', 'password')">A password is required</span>
-                <span class="help-block" *ngIf="group.hasError('minlength', 'password')">A password needs to have at least 4 characters</span>
-              </div>
+              <input ngControl="password" type="password" class="form-control" id="password" #password placeholder="Password">
             </div>
             <div class="form-group">
               <div class="row row-16">
                 <div class="col-xs-4">
-                  <select name="birthday_month" class="form-control" id="birthday_month"
-                          [ngFormControl]="group.find('birthday_month')">
+                  <select ngControl="birthday_month" name="birthday_month" class="form-control" id="birthday_month" #birthday_month>
                     <option value="0" selected="1">Month</option>
                     <option value="1">Jan</option>
                     <option value="2">Feb</option>
@@ -66,8 +52,7 @@
                   </select>
                 </div>
                 <div class="col-xs-4">
-                  <select name="birthday_day" class="form-control" id="birthday_day"
-                          [ngFormControl]="group.find('birthday_day')">
+                  <select ngControl="birthday_day" name="birthday_day" class="form-control" id="birthday_day" #birthday_day>
                     <option value="0" selected="1">Day</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -103,8 +88,7 @@
                   </select>
                 </div>
                 <div class="col-xs-4">
-                  <select name="birthday_year" class="form-control" id="birthday_year"
-                          [ngFormControl]="group.find('birthday_year')">
+                  <select ngControl="birthday_year" name="birthday_year" class="form-control" id="birthday_year" #birthday_year>
                     <option value="0" selected="1">Year</option>
                     <option value="2016">2016</option>
                     <option value="2015">2015</option>
@@ -224,22 +208,39 @@
             </div>
             <div class="form-group">
               <label class="radio-inline">
-                <input (click)="sex = 1" type="radio" name="sex"> Female
+                <input type="radio" name="sex" value="1" #female (click)="sex = female.value"> Female
               </label>
               <label class="radio-inline">
-                <input (click)="sex = 2"  type="radio" name="sex"> Male
+                <input type="radio" name="sex" value="2" #male (click)="sex = male.value"> Male
               </label>
               <label class="radio-inline">
-                <input (click)="sex = 3" type="radio" name="sex"> Others
+                <input type="radio" name="sex" value="3" #others (click)="sex = others.value"> Others
               </label>
             </div>
             <div class="checkbox">
               <label>
-                <input type="checkbox" id="accepted" [ngFormControl]="group.find('accepted')"> Be the first one to know about services!
+                <input type="checkbox" id="accepted" #accepted> Be the first one to know about services!
               </label>
             </div>
             <div class="form-group">
-              <button [disabled]="!group.valid" type="submit" class="btn btn-block btn-danger">Sign Up</button>
+              <button
+                type="submit"
+                class="btn btn-block btn-danger">Reg</button>
+              <button
+                type="submit"
+                class="btn btn-block btn-danger"
+                (click)="signup(
+                  $event,
+                  firstname.value,
+                  lastname.value,
+                  email.value,
+                  password.value,
+                  birthday_day.value,
+                  birthday_month.value,
+                  birthday_year.value,
+                  sex,
+                  accepted.checked
+              )">Sign Up</button>
             </div>
             <small>By signing up, you agree to the <a href="#" class="legal-link" target="_blank">Terms of
               Service</a> and <a

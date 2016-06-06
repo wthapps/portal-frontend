@@ -1,8 +1,8 @@
 'use strict';
 
 // Configurable paths
-var basePath = '..',
-    distPath = '../dist',
+var basePath = '../client/assets',
+    distPath = basePath + '/dist',
     thirdPartyPath = '../third_party',
     bowerPath = 'bower_components';
 
