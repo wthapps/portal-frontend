@@ -31,7 +31,7 @@ export class LoginComponent {
               private _userService:UserService,
               private _params:RouteSegment,
               builder:FormBuilder) {
-    //this._backUrl = this._params.parameters['back_url'];
+    this._backUrl = this._params.parameters['back_url'];
 
     this.group = builder.group({
       email: ['',
@@ -42,7 +42,7 @@ export class LoginComponent {
       ]
     });
   }
-  
+
   login() {
     var email:string = this.group.value.email;
     var password:string = this.group.value.password;
