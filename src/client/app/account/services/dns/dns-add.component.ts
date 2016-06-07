@@ -1,22 +1,22 @@
-import {Component} from '@angular/core';
+import {Component}                 from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
-import {AccountMenuComponent} from '../../menu/account-menu.component';
+import {AccountMenuComponent}      from '../../menu/account-menu.component';
 
-import {DnsService, Logger} from './dns.service';
+import {DnsService, Logger}        from './dns.service';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'dns-add.component.html',
   directives:
-    [
-      ROUTER_DIRECTIVES,
-      AccountMenuComponent
-    ]
+  [
+    ROUTER_DIRECTIVES,
+    AccountMenuComponent
+  ]
 })
 
 export class AccountServicesDNSAddComponent {
-  protected pageTitle:string = "New DNS";
+  protected pageTitle:string = "New Host";
 
   constructor(private _dnsService:DnsService, private _router: Router) {}
 
@@ -30,15 +30,9 @@ export class AccountServicesDNSAddComponent {
       "priority": 10,
       "domain_id": domain
     };
-
-    let data = {
-      "record": record
-    };
-
-    let body = JSON.stringify(data);
+    let body = JSON.stringify(record);
     this._dnsService.addHost(body).subscribe(
       result => {
-        Logger.Info(JSON.stringify(result));
         this._router.navigateByUrl('/account/dns');
       },
       error => {

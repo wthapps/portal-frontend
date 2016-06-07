@@ -12,5 +12,5 @@ export class IRecord {
 
 export class Type {
   value: string;
-  name: string;
+  name:  string;
 }

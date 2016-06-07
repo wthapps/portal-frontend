@@ -1,23 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit}         from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
-import {AccountMenuComponent} from '../../menu/account-menu.component';
+import {AccountMenuComponent}      from '../../menu/account-menu.component';
 
-import {IRecord} from './record';
-import {DnsService, Logger} from './dns.service';
+import {IRecord}                   from './record';
+import {DnsService, Logger}        from './dns.service';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'dns.component.html',
   directives:
-    [
-      ROUTER_DIRECTIVES,
-      AccountMenuComponent
-    ]
+  [
+    ROUTER_DIRECTIVES,
+    AccountMenuComponent
+  ]
 })
 
 export class AccountServicesDNSComponent implements OnInit {
-  protected pageTitle:string = "DNS Service";
+  protected pageTitle:string = "My Hosts";
 
   public Records:IRecord[] = [];
   public ErrorMessage:string;
@@ -47,18 +47,15 @@ export class AccountServicesDNSComponent implements OnInit {
       }
     );
   }
-
+/*@TODO: to disable this feature
   onDisableHost(event, id) {
     event.preventDefault();
     this._dnsService.getHost(id).subscribe(
       result => {
         let record = result;
         record.content = '127.0.0.1';
-        let data = {
-          "record": record
-        };
-        let body = JSON.stringify(data);
-        this._dnsService.updateHost(body).subscribe(
+        let body = JSON.stringify(record);
+        this._dnsService.updateHost(body, record.id).subscribe(
           result => {
             Logger.Info(JSON.stringify(result));
           },
@@ -72,4 +69,5 @@ export class AccountServicesDNSComponent implements OnInit {
       }
     );
   }
+*/
 }
