@@ -85,8 +85,8 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/reset_email_sent', component: ResetEmailSentComponent},
   {path: '/account/password_reset', component: PasswordResetComponent},
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
-
-  {path: '/account/recovery', component: ChangePasswordComponent},
+  
+  {path: '/account/setting/change_password', component: ChangePasswordComponent},
   {path: '/account/setting', component: MyAccountComponent},
 
   {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
@@ -113,7 +113,7 @@ export class AppComponent implements AfterViewInit {
     // Your jQuery code goes here
     //$('.navbar-brand').hide();
   }
-  
+
   constructor(private _userService:UserService, private _router:Router) {
   }
 
