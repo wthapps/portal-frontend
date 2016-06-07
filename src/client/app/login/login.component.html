@@ -5,8 +5,6 @@
         Have an account?
       </h2>
       <form [ngFormModel]="group" (ngSubmit)="login()" novalidate>
-
-
         <div class="form-group" [ngClass]="{ 'has-error' : group.find('email').dirty && !group.find('email').valid}">
           <label class="sr-only" for="email">Email address</label>
           <input type="text" class="form-control" id="email" placeholder="Email"
@@ -29,7 +27,7 @@
           <!--<input type="checkbox"> Remember me-->
           <!--</label>
           <span class="separator">·</span>-->
-          <a class="forgot" [routerLink]="['/account/forgot_password']">Forgot account?</a>
+          <a class="forgot" [routerLink]="['/account/recovery/forgottenpassword']">Forgot account?</a>
         </div>
         <button type="submit" class="btn btn-block btn-danger" [disabled]="!group.valid">Log In</button>
       </form>
