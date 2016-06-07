@@ -6,13 +6,16 @@ import {
 import {AccountMenuComponent} from '../menu/account-menu.component';
 import {PaymentService}       from "../../account/payment/payment.service";
 import {UserService}          from "../../shared/services/user.service";
+import {CORE_DIRECTIVES}      from '@angular/common';
+import {TAB_DIRECTIVES}       from 'ng2-bootstrap';
 
-
-@Component( {
+@Component({
   moduleId: module.id,
   templateUrl: 'payment.component.html',
   directives: [
     ROUTER_DIRECTIVES,
+    CORE_DIRECTIVES,
+    TAB_DIRECTIVES,
     AccountMenuComponent
   ],
   providers: [
