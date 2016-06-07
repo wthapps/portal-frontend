@@ -1,19 +1,26 @@
-import {Injectable} from '@angular/core';
-import {Response} from '@angular/http';
+import {Injectable}         from '@angular/core';
+import {Response}           from '@angular/http';
 
-import {Observable} from 'rxjs/Observable';
+import {Observable}         from 'rxjs/Observable';
 
-import {IRecord} from './record';
-import {ApiBaseService}    from '../../../shared/services/apibase.service';
+import {IRecord}            from './record';
+import {ApiBaseService}     from '../../../shared/services/apibase.service';
+import {UserService}        from '../../../shared/services/user.service';
 
 export const DNS_RECORD_URL = 'dns/records/';
-export const HTTP_SUCCESS = 200;
+
+export const HTTP_RESPONSE_OK                    = 200;
+export const HTTP_RESPONSE_NOT_FOUND             = 404;
+export const HTTP_RESPONSE_INTERNAL_SERVER_ERROR = 500;
+export const HTTP_RESPONSE_CREATED               = 201;
+export const HTTP_RESPONSE_CONFLICT              = 409;
+export const HTTP_RESPONSE_EXPECTATION_FAILED    = 417;
 
 export class Logger {
-  private static INFO:string = '[INFO]';
+  private static INFO:string  = '[INFO]';
   private static DEBUG:string = '[DEBUG]';
   private static ERROR:string = '[ERROR]';
-  private static WARN:string = '[WARN]';
+  private static WARN:string  = '[WARN]';
 
   public static Info(body:string) {
     console.info(this.INFO + body);
@@ -35,13 +42,15 @@ export class Logger {
 @Injectable()
 export class DnsService {
 
-  constructor(private _service:ApiBaseService) {
+  constructor(private _service: ApiBaseService, private _userService: UserService) {
+    this._userId = this._userService.profile.id;
+    this._url = `users/${this._userId}/dns/records/`;
   }
 
   public getHosts():Observable<IRecord[]> {
-    return this._service.get(DNS_RECORD_URL)
+    return this._service.get(this._url)
       .map((response:Response) => {
-        if (response.status == HTTP_SUCCESS) {
+        if (response.status == HTTP_RESPONSE_OK || response.status == HTTP_RESPONSE_CREATED) {
           let result = response.json();
           console.log(JSON.stringify(result.data));
           return <IRecord[]>result.data;
@@ -53,30 +62,31 @@ export class DnsService {
   }
 
   public addHost(body:string) {
-    return this._service.post(DNS_RECORD_URL, body)
+    console.log(this._url)
+    return this._service.post(this._url, body)
       .map(response => response.json())
       .do(data => Logger.Info('JSON data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
   public deleteHost(id:number) {
-    return this._service.delete(DNS_RECORD_URL + id)
+    return this._service.delete(this._url + id)
       .map(response => response.json())
       .do(data => Logger.Info('JSON data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
-  public updateHost(body:string) {
-    return this._service.patch(DNS_RECORD_URL, body)
+  public updateHost(body:string, id: number) {
+    return this._service.patch(this._url + id, body)
       .map(response => response.json())
       .do(data => Logger.Info('JSON data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
   public getHost(id:number) {
-    return this._service.get(DNS_RECORD_URL + '/' + id)
+    return this._service.get(this._url + id)
       .map(response => {
-        if (response.status == HTTP_SUCCESS) {
+        if (response.status == HTTP_RESPONSE_OK) {
           let result = response.json();
           return <IRecord>result.data;
         }
@@ -87,8 +97,9 @@ export class DnsService {
   }
 
   private handleError(error:Response) {
-    let bad = error.json().error;
-    Logger.Error(bad);
     return Observable.throw(error.json().error || 'Server error');
   }
+
+  private _userId: number = 0;
+  private _url: string = '';
 }

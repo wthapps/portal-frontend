@@ -24,16 +24,12 @@
               <td>
                 {{record.name}}@wthdns.com
               </td>
-              <!--<td>{{record.content == '127.0.0.1' ? 'UNKNOW' : record.content}}</td>-->
-              <td>
-                <input type="text" class="sr-only form-control" placeholder="" value=""
-                       [(ngModel)]="record.content" disabled="true">
-              </td>
+              <td>{{record.content}}</td>
               <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
               <td>{{record.updated_at}}</td>
               <td>
-                <a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
-                  {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>
+                <!--<a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
+                  {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>-->
                 <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update', record.id]"
                    role="button">Edit</a>
                 <a class="btn btn-sm btn-danger" [routerLink]="['/account/dns/']" role="button"

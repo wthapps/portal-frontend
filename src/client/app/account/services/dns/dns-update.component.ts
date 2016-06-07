@@ -1,22 +1,24 @@
-import {Component, OnInit} from '@angular/core';
-import {ROUTER_DIRECTIVES, OnActivate, RouteSegment, Router} from '@angular/router';
+import {Component, OnInit}    from '@angular/core';
+import {ROUTER_DIRECTIVES, OnActivate, RouteSegment, Router} 
+                              from '@angular/router';
 
 import {AccountMenuComponent} from '../../menu/account-menu.component';
 
-import {DnsService, Logger} from './dns.service';
-import {IRecord, Type} from './record';
+import {DnsService, Logger}   from './dns.service';
+import {IRecord, Type}        from './record';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'dns-update.component.html',
-  directives: [
+  directives: 
+  [
     ROUTER_DIRECTIVES,
     AccountMenuComponent
   ]
 })
 
 export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
-  protected pageTitle:string = "Edit DNS";
+  protected pageTitle:string = "Edit Host";
 
   public types:Type[] = [
     {"value": 'A', "name": 'IPv4'},
@@ -27,8 +29,7 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
 
   public Record:IRecord = new IRecord();
 
-  constructor(private _dnsService:DnsService, private _router:Router) {
-  }
+  constructor(private _dnsService:DnsService, private _router:Router) {}
 
   ngOnInit():void {
     this._dnsService.getHost(this._id).subscribe(
@@ -50,14 +51,9 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
     this.Record.type = type;
     this.Record.content = content;
 
-    let data = {
-      "record": this.Record
-    };
-    let body = JSON.stringify(data);
-    Logger.Info(body);
-    this._dnsService.updateHost(body).subscribe(
+    let body = JSON.stringify(this.Record);
+    this._dnsService.updateHost(body, this.Record.id).subscribe(
       result => {
-        Logger.Info(JSON.stringify(result));
         this._router.navigateByUrl('/account/dns');
       },
       error => {
@@ -68,7 +64,6 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
 
   routerOnActivate(curr:RouteSegment):void {
     this._id = Number(curr.getParam('id').toString());
-    Logger.Info(this._id.toString());
   }
 
   onBack():void {
