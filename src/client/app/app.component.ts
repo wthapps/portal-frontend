@@ -114,7 +114,10 @@ export class AppComponent implements AfterViewInit {
     //$('.navbar-brand').hide();
   }
 
+  username:string = '';
+
   constructor(private _userService:UserService, private _router:Router) {
+    this.username = this._userService.profile.name;
   }
 
   logout($event) {
@@ -126,7 +129,7 @@ export class AppComponent implements AfterViewInit {
           this._router.navigateByUrl('/login');
         },
         error => {
-          console.log("logout error:", error);
+          console.log('logout error:', error);
         }
       );
   }
