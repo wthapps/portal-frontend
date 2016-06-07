@@ -8,7 +8,7 @@ export class CustomValidators {
   static emailFormat(control:Control):IValidation {
     let pattern:RegExp = /\S+@\S+\.\S+/;
     //let pattern:RegExp = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-    return pattern.test(control.value) ? null : {"emailFormat": true};
+    return pattern.test(control.value) ? null : {'emailFormat': true};
   }
 
   static duplicated(control: Control) {
