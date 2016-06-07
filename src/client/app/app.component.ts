@@ -8,7 +8,6 @@ import {
   Router
 } from '@angular/router';
 import 'rxjs/Rx';   // Load all features
-
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 
 // Base services
@@ -20,12 +19,11 @@ import {HomeComponent} from './home/home.component';
 import {ProductListComponent} from './products/product-list.component';
 import {ProductDetailComponent} from './products/product-detail.component';
 import {ProductService} from './products/product.service';
-
 import {DnsService} from './account/services/dns/dns.service';
 
 import {
   AccountDashboardComponent,
-  ForgotPasswordComponent,
+  ForgottenPasswordComponent,
   ResetEmailSentComponent,
   PasswordResetComponent,
   PasswordResetCompleteComponent,
@@ -83,12 +81,12 @@ import {RegisterComponent} from './register/register.component';
   {path: '/products', component: ProductListComponent},
   {path: '/login', component: LoginComponent},
   {path: '/signup', component: RegisterComponent},
-  {path: '/account/forgot_password', component: ForgotPasswordComponent},
+  {path: '/account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
   {path: '/account/reset_email_sent', component: ResetEmailSentComponent},
   {path: '/account/password_reset', component: PasswordResetComponent},
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
 
-  {path: '/account/change_password', component: ChangePasswordComponent},
+  {path: '/account/recovery', component: ChangePasswordComponent},
   {path: '/account/setting', component: MyAccountComponent},
 
   {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
@@ -103,7 +101,7 @@ import {RegisterComponent} from './register/register.component';
 
   {path: '/account/plans', component: AccountPlansComponent},
   {path: '/account/billing', component: AccountBillingComponent},
-  {path: '/account/add_card', component: AccountAddCardComponent},
+  {path: '/account/payment', component: AccountAddCardComponent},
 
   {path: '/account', component: AccountDashboardComponent}
 ])
@@ -116,26 +114,23 @@ export class AppComponent implements AfterViewInit {
     //$('.navbar-brand').hide();
   }
 
-  constructor(private _userService:UserService, private _router:Router) {
-  }
+  constructor(private _userService: UserService, private _router: Router){ }
 
-  logout($event) {
+  logout($event){
     $event.preventDefault();
 
-    console.log('loggedout:');
     this._userService.logout('users/sign_out')
       .subscribe(
         response => {
-          localStorage.removeItem('jwt');
           this._router.navigateByUrl('/login');
         },
         error => {
-          console.log('logout error:', error);
+          console.log("logout error:", error);
         }
       );
   }
 
-  currentPath():string {
+  currentPath(): string{
     return this._router._location.path();
     // return this._router._location.path() === '' ? '/' : this._router._location.path();
   }

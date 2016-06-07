@@ -2,7 +2,7 @@
  * This barrel file provides the export for the lazy loaded AccountComponent.
  */
 export * from './dashboard.component';
-export * from './forgot-password.component';
+export * from './recovery/forgotten-password.component.ts';
 export * from './password-reset.component';
 export * from './password-reset-complete.component';
 export * from './reset-email-sent.component';
@@ -23,7 +23,7 @@ export * from './menu/account-menu.component';
  */
 export * from './payment/plans.component';
 export * from './payment/billing.component';
-export * from './payment/add-card.component';
+export * from './payment/payment.component';
 
 /**
  *  Services
