@@ -1,44 +1,61 @@
 <div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">{{pageTitle}}</div>
-        <div class="panel-body">
-            <div class="form-inline">
-                <div class="form-group">
-                    <label>Search</label> <input [(ngModel)]="listFilter" type="text" class="form-control">
-                </div>
-                <hr>
-                <div class="form-group">
-                    <h4>Filtered by: {{listFilter}}</h4>
-                </div>
-            </div>
-            <hr>
-            <table *ngIf='products && products.length' class="table table-striped">
-                <tr>
-                    <th>
-                        <button (click)="toggleImage()" class="btn btn-primary">{{showImage ? 'Hide': 'Show'}} image
-                        </button>
-                    </th>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Date</th>
-                    <th>Price</th>
-                    <th>Rating</th>
-                </tr>
-                <tr *ngFor="let product of products | productFilter:listFilter">
-                    <td><img *ngIf="showImage" [src]="product.imageUrl"
-                             [style.width.px]="imageWidth"
-                             alt=""></td>
-                    <td><a [routerLink]="['/products', product.productId]">{{product.productName}}</a></td>
-                    <td>{{product.productCode}}</td>
-                    <td>{{product.releaseDate}}</td>
-                    <td>{{product.price|currency:'USD':true:'1.2-2'}}</td>
-                    <td>
-                        <ai-star [rating]='product.starRating'
-                                 (ratingClicked)='onRatingClicked($event)'>
-                        </ai-star>
-                    </td>
-                </tr>
-            </table>
+  <div class="panel panel-default">
+    <div class="panel-heading">{{pageTitle}}</div>
+    <div class="panel-body">
+      <div class="form-inline">
+        <div class="form-group">
+          <label>Search</label> <input [(ngModel)]="listFilter" type="text" class="form-control">
         </div>
+        <hr>
+        <div class="form-group">
+          <h4>Filtered by: {{listFilter}}</h4>
+        </div>
+      </div>
+      <hr>
+      <table *ngIf='products && products.length' class="table table-striped">
+        <tr>
+          <th>
+            <button (click)="toggleImage()" class="btn btn-primary">{{showImage ? 'Hide': 'Show'}} image
+            </button>
+          </th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Date</th>
+          <th>Price</th>
+          <th>Rating</th>
+          <th>action</th>
+        </tr>
+        <tr *ngFor="let product of products | productFilter:listFilter">
+          <td><img *ngIf="showImage" [src]="product.imageUrl"
+                   [style.width.px]="imageWidth"
+                   alt=""></td>
+          <td><a [routerLink]="['/products', product.productId]">{{product.productName}}</a></td>
+          <td>{{product.productCode}}</td>
+          <td>{{product.releaseDate}}</td>
+          <td>{{product.price|currency:'USD':true:'1.2-2'}}</td>
+          <td>
+            <ai-star [rating]='product.starRating'
+                     (ratingClicked)='onRatingClicked($event)'>
+            </ai-star>
+          </td>
+          <td>
+            <button type="button" class="btn btn-default" (click)="modal.open()">Open me!</button>
+          </td>
+        </tr>
+      </table>
     </div>
+  </div>
 </div>
+
+<modal #modal>
+  <modal-header>
+    <h4 class="modal-title">I'm a modal!</h4>
+  </modal-header>
+  <modal-body>
+    Hello World!
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close()">Ok</button>
+  </modal-footer>
+</modal>

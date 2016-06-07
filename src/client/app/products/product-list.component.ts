@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
+import {MODAL_DIRECTIVES, ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import {IProduct} from './products';
 import {ProductService} from './product.service';
@@ -14,6 +15,7 @@ import {StarComponent} from '../shared/star.component';
   directives: [
     StarComponent
     , ROUTER_DIRECTIVES
+    , MODAL_DIRECTIVES
   ]
 })
 
@@ -51,4 +53,15 @@ export class ProductListComponent implements OnInit {
   onRatingClicked(message:string):void {
     this.pageTitle = 'Product List: ' + message;
   }
+
+  @ViewChild('myModal') modal:ModalComponent;
+
+  close() {
+    this.modal.close();
+  }
+
+  open() {
+    this.modal.open();
+  }
+
 }

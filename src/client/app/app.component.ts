@@ -114,9 +114,10 @@ export class AppComponent implements AfterViewInit {
     //$('.navbar-brand').hide();
   }
 
-  constructor(private _userService: UserService, private _router: Router){ }
+  constructor(private _userService:UserService, private _router:Router) {
+  }
 
-  logout($event){
+  logout($event) {
     $event.preventDefault();
 
     this._userService.logout('users/sign_out')
@@ -130,7 +131,7 @@ export class AppComponent implements AfterViewInit {
       );
   }
 
-  currentPath(): string{
+  currentPath():string {
     return this._router._location.path();
     // return this._router._location.path() === '' ? '/' : this._router._location.path();
   }
