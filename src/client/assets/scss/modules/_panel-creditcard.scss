@@ -35,7 +35,7 @@
         > a {
           span {
             background-image: url("../images/card/credit_card.png");
-            width: 260px;
+            width: 306px;
             height: 32px;
             display: inline-block;
           }
@@ -56,4 +56,10 @@
       }
     }
   }
+}
+
+.card-box {
+  padding: 20px;
+  border: 1px solid $line;
+  border-radius: 5px;
 }

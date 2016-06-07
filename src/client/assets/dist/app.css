@@ -6558,12 +6558,18 @@ font-family: 'Lato', sans-serif;
 body {
   font-family: 'Lato', sans-serif; }
 
+.bold {
+  font-weight: bold; }
+
 .form-control.has-loading {
   background-image: url(../images/icons/loading.gif);
   background-repeat: no-repeat;
   background-position: right center;
   -webkit-background-size: 24px 24px;
   background-size: 24px 24px; }
+
+.help-block[hidden] {
+  display: none; }
 
 /* ==========================================================================
 Header
@@ -6703,7 +6709,7 @@ html {
         background-position: 0px -22px; }
     .panel-creditcard .nav-tabs > li:first-child > a span {
       background-image: url("../images/card/credit_card.png");
-      width: 260px;
+      width: 306px;
       height: 32px;
       display: inline-block; }
     .panel-creditcard .nav-tabs > li:nth-child(2) > a span {
@@ -6714,6 +6720,11 @@ html {
       background-repeat: no-repeat;
       background-position: center center;
       display: inline-block; }
+
+.card-box {
+  padding: 20px;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px; }
 
 .panel-heading-action {
   position: relative; }

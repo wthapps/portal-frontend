@@ -1,59 +1,110 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <account-menu></account-menu>
-        </div>
-        <div class="col-sm-9">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Credit Card Information</h3>
-                </div>
-                <div class="panel-body">
-                    <p>Please add a credit card to complete your purchase.</p>
-                    <a [routerLink]="['/account/add_card']" class="btn btn-danger pull-right">Add Credit Card</a>
-                </div>
-                <div class="panel-body">
-                    <div class="media">
-                        <div class="media-left">
-                            <i style="font-size:50px;" class="glyphicon glyphicon-credit-card"></i>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Credit card</h4>
-                            <p>**** **** **** 3703 - VISA</p>
-                        </div>
-                    </div>
-                    <button class="btn btn-danger pull-right">Change Credit Card</button>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Billing History</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Invoice</th>
-                            <th>Due Date</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>View Invoice</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>48668391760</td>
-                            <td>May 31st, 2016</td>
-                            <td>$9.9</td>
-                            <td>Submitted for settlement</td>
-                            <td>
-                                <button class="btn btn-sm btn-primary">View</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-sm-3">
+      <account-menu></account-menu>
     </div>
+    <div class="col-sm-9">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Credit Card Information</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card-box">
+                <div class="media">
+                  <div class="media-left">
+                    <i style="font-size:50px;" class="glyphicon glyphicon-credit-card"></i>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">Credit card</h4>
+                    <p>**** **** **** 3703 - VISA</p>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <span class="bold">Expiration:</span> 01/2021 <br>
+                  <span class="bold">Card holder:</span> TRAN TRUNG NGHIA
+                </div>
+                <div class="clearfix">
+                  <div class="pull-left">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="payment-method-default" value="option1" checked>
+                        Default
+                      </label>
+                    </div>
+                  </div>
+                  <div class="pull-right">
+                    <button class="btn btn-primary">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card-box">
+                <div class="media">
+                  <div class="media-left">
+                    <i style="font-size:50px;" class="glyphicon glyphicon-credit-card"></i>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">Credit card</h4>
+                    <p>**** **** **** 3703 - VISA</p>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <span class="bold">Expiration:</span> 01/2021 <br>
+                  <span class="bold">Card holder:</span> TRAN TRUNG NGHIA
+                </div>
+                <div class="clearfix">
+                  <div class="pull-left">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="payment-method-default" value="option2">
+                        Default
+                      </label>
+                    </div>
+                  </div>
+                  <div class="pull-right">
+                    <button class="btn btn-primary">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix mt40">
+            <a [routerLink]="['/account/add_card']" class="btn btn-danger pull-right">Add new card</a>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Billing History</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Invoice</th>
+              <th>Due Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>View Invoice</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>48668391760</td>
+              <td>May 31st, 2016</td>
+              <td>$9.9</td>
+              <td>Submitted for settlement</td>
+              <td>
+                <button class="btn btn-sm btn-primary">View</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
