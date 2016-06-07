@@ -113,11 +113,8 @@ export class AppComponent implements AfterViewInit {
     // Your jQuery code goes here
     //$('.navbar-brand').hide();
   }
-
-  username:string = '';
-
+  
   constructor(private _userService:UserService, private _router:Router) {
-    this.username = this._userService.profile.name;
   }
 
   logout($event) {
