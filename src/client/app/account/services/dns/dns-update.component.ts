@@ -1,11 +1,23 @@
 import {Component, OnInit}    from '@angular/core';
-import {ROUTER_DIRECTIVES, OnActivate, RouteSegment, Router} 
+import 
+{
+  ROUTER_DIRECTIVES, 
+  OnActivate, 
+  RouteSegment, 
+  Router
+} 
                               from '@angular/router';
+import {
+  FORM_DIRECTIVES,
+  FormBuilder,
+  ControlGroup,
+  Validators
+}                             from '@angular/common';
 
 import {AccountMenuComponent} from '../../menu/account-menu.component';
-
 import {DnsService, Logger}   from './dns.service';
 import {IRecord, Type}        from './record';
+import {CustomValidators}     from '../../../shared/validator/custom-validators';
 
 @Component({
   moduleId: module.id,
@@ -13,6 +25,7 @@ import {IRecord, Type}        from './record';
   directives: 
   [
     ROUTER_DIRECTIVES,
+    FORM_DIRECTIVES,
     AccountMenuComponent
   ]
 })
@@ -29,7 +42,18 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
 
   public Record:IRecord = new IRecord();
 
-  constructor(private _dnsService:DnsService, private _router:Router) {}
+  constructor(private _dnsService: DnsService,
+              private _router:     Router, 
+              private _builder:    FormBuilder) {
+    this.group = this._builder.group({
+      ip: ['',
+        Validators.compose([Validators.required, CustomValidators.ipHostFormat])
+      ],
+      host: ['',
+        Validators.compose([Validators.required, CustomValidators.ipHostFormat])
+      ],
+    });
+  }
 
   ngOnInit():void {
     this._dnsService.getHost(this._id).subscribe(
@@ -43,12 +67,11 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
     );
   }
 
-  onUpdateHost(event, domain, name, type, content) {
-    event.preventDefault();
+  onUpdateHost(domain, name, type, content) {
 
     this.Record.domain_id = Number(domain);
     this.Record.name = name;
-    this.Record.type = type;
+    this.Record.type = this.type.value;
     this.Record.content = content;
 
     let body = JSON.stringify(this.Record);
@@ -66,8 +89,13 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
     this._id = Number(curr.getParam('id').toString());
   }
 
+  onTypeChange(item) {
+    this.type = this.types.find(o => o.value == item);
+  }
+
   onBack():void {
   }
 
   private _id:number;
+  public group: ControlGroup;
 }

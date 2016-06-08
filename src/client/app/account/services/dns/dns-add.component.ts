@@ -1,9 +1,18 @@
 import {Component}                 from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {
+  ROUTER_DIRECTIVES, 
+  Router
+}                                  from '@angular/router';
+import {
+  FORM_DIRECTIVES,
+  FormBuilder,
+  ControlGroup,
+  Validators
+}                                  from '@angular/common';
 
 import {AccountMenuComponent}      from '../../menu/account-menu.component';
-
 import {DnsService, Logger}        from './dns.service';
+import {CustomValidators}          from '../../../shared/validator/custom-validators';
 
 @Component({
   moduleId: module.id,
@@ -11,6 +20,7 @@ import {DnsService, Logger}        from './dns.service';
   directives:
   [
     ROUTER_DIRECTIVES,
+    FORM_DIRECTIVES,
     AccountMenuComponent
   ]
 })
@@ -18,7 +28,18 @@ import {DnsService, Logger}        from './dns.service';
 export class AccountServicesDNSAddComponent {
   protected pageTitle:string = "New Host";
 
-  constructor(private _dnsService:DnsService, private _router: Router) {}
+  constructor(private _dnsService: DnsService, 
+              private _router:     Router, 
+              private _builder:    FormBuilder) { 
+    this.group = this._builder.group({
+      ip: ['',
+        Validators.compose([Validators.required, CustomValidators.ipHostFormat])
+      ],
+      host: ['',
+        Validators.compose([Validators.required, CustomValidators.ipHostFormat])
+      ],
+    });
+  }
 
   onAddNew(domain, name, type, content): void {
     let record = {
@@ -40,4 +61,6 @@ export class AccountServicesDNSAddComponent {
       }
     );
   }
+
+  public group: ControlGroup;
 }
