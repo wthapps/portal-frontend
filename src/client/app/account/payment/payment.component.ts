@@ -7,8 +7,9 @@ import {
   ROUTER_DIRECTIVES
 }                             from '@angular/router';
 import {AccountMenuComponent} from '../menu/account-menu.component';
-import {PaymentService}       from "../../account/payment/payment.service";
-import {UserService}          from "../../shared/services/user.service";
+import {PaymentService}       from '../../account/payment/payment.service';
+import {UserService}          from '../../shared/services/user.service';
+import {CountryListComponent} from '../../shared/services/country.component';
 
 declare var braintree:any;
 
@@ -20,14 +21,20 @@ declare var braintree:any;
     AccountMenuComponent
   ],
   providers: [
-    PaymentService
+    PaymentService,
+    CountryListComponent
   ]
 })
 
 export class AccountAddCardComponent implements AfterViewInit {
   PanelTitle:string = 'Find Services and add-ons';
 
-  constructor(private _router:Router, private _userService:UserService, private _paymentService:PaymentService) {
+  countries:any;
+
+  constructor(private _router:Router, private _userService:UserService, private _paymentService:PaymentService,
+    private _countries:CountryListComponent
+  ) {
+    this.countries = this._countries.countries;
   }
 
   ngAfterViewInit() {
