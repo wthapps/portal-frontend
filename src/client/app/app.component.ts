@@ -49,6 +49,7 @@ import {
 } from './account/index';
 
 // Base href
+import {AboutComponent} from './about/about.component';
 import {SupportComponent} from './support/support.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
@@ -76,6 +77,7 @@ import {RegisterComponent} from './register/register.component';
 @Routes([
   {path: '/', component: HomeComponent},
 
+  {path: '/about_us', component: AboutComponent},
   {path: '/support', component: SupportComponent},
 
   {path: '/products/:id', component: ProductDetailComponent},
