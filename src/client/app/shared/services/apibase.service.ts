@@ -6,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 export abstract class ApiBaseService {
   private _http:Http;
   private _options:RequestOptionsArgs;
+  //private _baseUrl:string = 'http://52.221.221.245:4000/';
   private _baseUrl:string = 'http://localhost:4000/';
   private _headers:Headers = new Headers({'Content-Type': 'application/json'});
 
