@@ -54,7 +54,7 @@ General
   background-color: #f5f5f5;
   padding: 15px;
   transition: all 600ms $form-bouncy;
-  animation: cardIntro 500ms $form-bouncy;
+  //animation: cardIntro 500ms $form-bouncy;
   z-index: 1;
 
   &:hover {
@@ -102,7 +102,7 @@ General
 
 #button-pay {
   &:active {
-    animation: cardIntro 200ms $form-bouncy;
+    //animation: cardIntro 200ms $form-bouncy;
   }
   &.show-button {
 

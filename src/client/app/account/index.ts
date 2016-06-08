@@ -24,7 +24,7 @@ export * from './menu/account-menu.component';
 export * from './payment/plans.component';
 export * from './payment/billing.component';
 export * from './payment/payment.component';
-
+export * from './payment/payment-confirm.component';
 /**
  *  Services
  */

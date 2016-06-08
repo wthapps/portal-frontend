@@ -1,4 +1,7 @@
-import {Component, AfterViewInit}            from '@angular/core';
+import {
+  Component,
+  AfterViewInit
+}                             from '@angular/core';
 import {
   Router,
   ROUTER_DIRECTIVES
@@ -6,16 +9,14 @@ import {
 import {AccountMenuComponent} from '../menu/account-menu.component';
 import {PaymentService}       from "../../account/payment/payment.service";
 import {UserService}          from "../../shared/services/user.service";
-import {CORE_DIRECTIVES}      from '@angular/common';
-import {TAB_DIRECTIVES}       from 'ng2-bootstrap';
+
+declare var braintree:any;
 
 @Component({
   moduleId: module.id,
   templateUrl: 'payment.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    CORE_DIRECTIVES,
-    TAB_DIRECTIVES,
     AccountMenuComponent
   ],
   providers: [
@@ -31,7 +32,7 @@ export class AccountAddCardComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     var _this = this;
-    
+
     var form = document.querySelector('#payment-method-card');
     var submit = document.querySelector('input[type="submit"]');
 
@@ -142,15 +143,15 @@ export class AccountAddCardComponent implements AfterViewInit {
 
             // This is where you would submit payload.nonce to your server
             // alert('Submit your nonce to your server here!'+ payload.nonce);
-            _this._router.navigateByUrl('account');
-            _this._paymentService.create(`/users/1/payments`, '')
+            _this._router.navigateByUrl('account/payment/confirm');
+            /*_this._paymentService.create(`/users/1/payments`, '')
               .subscribe((result) => {
                   console.log('in-test');
-                  _this._router.navigateByUrl('account');
+                  _this._router.navigateByUrl('account/payment/confirm');
                 },
                 error => {
                   console.log("error:", error);
-                });
+                });*/
           });
         }, false);
       });

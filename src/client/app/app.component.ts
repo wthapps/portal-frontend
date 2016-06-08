@@ -34,6 +34,7 @@ import {
   AccountPlansComponent,
   AccountBillingComponent,
   AccountAddCardComponent,
+  PaymentConfirmComponent,
 
   // Services
   AccountServicesListComponent,
@@ -85,7 +86,7 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/reset_email_sent', component: ResetEmailSentComponent},
   {path: '/account/password_reset', component: PasswordResetComponent},
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
-  
+
   {path: '/account/setting/change_password', component: ChangePasswordComponent},
   {path: '/account/setting', component: MyAccountComponent},
 
@@ -101,6 +102,7 @@ import {RegisterComponent} from './register/register.component';
 
   {path: '/account/plans', component: AccountPlansComponent},
   {path: '/account/billing', component: AccountBillingComponent},
+  {path: '/account/payment/confirm', component: PaymentConfirmComponent},
   {path: '/account/payment', component: AccountAddCardComponent},
 
   {path: '/account', component: AccountDashboardComponent}
