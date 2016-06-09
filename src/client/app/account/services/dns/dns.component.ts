@@ -5,6 +5,7 @@ import {AccountMenuComponent}      from '../../menu/account-menu.component';
 
 import {IRecord}                   from './record';
 import {DnsService, Logger}        from './dns.service';
+import {DialogService}             from '../../../partials/dialogs/index';
 
 @Component({
   moduleId: module.id,
@@ -22,7 +23,9 @@ export class AccountServicesDNSComponent implements OnInit {
   public Records:IRecord[] = [];
   public ErrorMessage:string;
 
-  constructor(private _dnsService: DnsService, private _router: Router) { }
+  constructor(private _dnsService: DnsService, 
+              private _router: Router,
+              private _dialogService: DialogService) { }
 
   ngOnInit() :void {
     this._dnsService.getHosts().subscribe(
@@ -36,16 +39,20 @@ export class AccountServicesDNSComponent implements OnInit {
 
   onDeleteHost(event, id:number) {
     event.preventDefault();
-    this._dnsService.deleteHost(id).subscribe(
-      record => {
-        let index = this.Records.findIndex(o => o.id == id);
-        this.Records.splice(index, 1);
-        Logger.Info(JSON.stringify(record));
-      },
-      error => {
-        Logger.Error(JSON.stringify(error));
+    this._dialogService.activate('Do you want to delete?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
+      if (responseOK) {
+        this._dnsService.deleteHost(id).subscribe(
+          record => {
+            let index = this.Records.findIndex(o => o.id == id);
+            this.Records.splice(index, 1);
+            Logger.Info(JSON.stringify(record));
+          },
+          error => {
+            Logger.Error(JSON.stringify(error));
+          }
+        );
       }
-    );
+    });
   }
 /*@TODO: to disable this feature
   onDisableHost(event, id) {
