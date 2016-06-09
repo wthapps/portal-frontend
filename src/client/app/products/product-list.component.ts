@@ -8,6 +8,7 @@ import {ProductService} from './product.service';
 import {ProductFilterPipe} from './product-filter.pipe';
 import {StarComponent} from '../shared/star.component';
 
+
 @Component({
   moduleId: module.id,
   templateUrl: 'product-list.component.html',
@@ -34,9 +35,67 @@ export class ProductListComponent implements OnInit {
   constructor(private _productService:ProductService) {
   }
 
+  alert() {
+    bootbox.alert("Hello world!", function () {
+      console.log("Hello world callback");
+    });
+  }
+
+  confirm() {
+    bootbox.confirm("Are you sure?", function (result) {
+      if (result) {
+        console.log("Confirm result: " + result);
+      }
+    });
+  }
+
+  prompt() {
+    bootbox.prompt({
+      title: "What is your real name?",
+      value: "makeusabrew",
+      callback: function (result) {
+        if (result === null) {
+          console.log("Prompt dismissed");
+        } else {
+          console.log("Hi <b>" + result + "</b>");
+        }
+      }
+    });
+  }
+
+  dialog() {
+    bootbox.dialog({
+      message: "I am a custom dialog",
+      title: "Custom title",
+      buttons: {
+        success: {
+          label: "Success!",
+          className: "btn-success",
+          callback: function () {
+            console.log("great success");
+          }
+        },
+        danger: {
+          label: "Danger!",
+          className: "btn-danger",
+          callback: function () {
+            console.log("uh oh, look out!");
+          }
+        },
+        main: {
+          label: "Click ME!",
+          className: "btn-primary",
+          callback: function () {
+            console.log("Primary button");
+          }
+        }
+      }
+    });
+  }
+
   toggleImage():void {
     this.showImage = !this.showImage;
-  };
+  }
 
   /*ngOnInit():void {
    //console.log('OnInit tested')
@@ -44,6 +103,7 @@ export class ProductListComponent implements OnInit {
    }*/
 
   ngOnInit():void {
+
     this._productService.getProducts().subscribe(
       products => this.products = products,
       error => this.errorMessage = <any>error

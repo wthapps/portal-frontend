@@ -15,6 +15,8 @@ import {AuthHttp, tokenNotExpired} from 'angular2-jwt';
 import {ApiBaseService} from './shared/services/apibase.service';
 import {UserService} from './shared/services/user.service';
 
+import {DialogService, DialogComponent} from './partials/dialogs/index';
+
 import {HomeComponent} from './home/home.component';
 import {ProductListComponent} from './products/product-list.component';
 import {ProductDetailComponent} from './products/product-detail.component';
@@ -62,7 +64,8 @@ import {RegisterComponent} from './register/register.component';
   directives: [
     ROUTER_DIRECTIVES,
     DROPDOWN_DIRECTIVES,
-    CORE_DIRECTIVES
+    CORE_DIRECTIVES,
+    DialogComponent
   ],
   providers: [
     ProductService,
@@ -70,7 +73,8 @@ import {RegisterComponent} from './register/register.component';
     UserService,
     DnsService,
     HTTP_PROVIDERS,
-    ROUTER_PROVIDERS
+    ROUTER_PROVIDERS,
+    DialogService
   ]
 })
 

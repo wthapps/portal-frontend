@@ -1,98 +1,109 @@
-import {OnInit, Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import {ConfirmService} from './dialog.service';
+import {DialogService} from './dialog.service';
 
 const KEY_ESC = 27;
 
 @Component({
   moduleId: module.id,
-  selector: 'modal-confirm',
+  selector: 'wth-dialog',
   templateUrl: 'dialog.component.html',
   styleUrls: ['dialog.component.css']
 })
-export class ConfirmComponent implements OnInit {
-
+export class DialogComponent implements OnInit {
   title:string;
   message:string;
   okText:string;
   cancelText:string;
+  negativeOnClick:(e:any) => void;
+  positiveOnClick:(e:any) => void;
 
-  private _defaults = {
+  private defaults = {
     title: 'Confirmation',
-    message: 'Do you want to cancel your changes?',
+    message: 'Are you sure?',
     cancelText: 'Cancel',
     okText: 'OK'
   };
-  
-  private _confirmElement:any;
-  private _cancelButton:any;
-  private _okButton:any;
+  private modalElement:any;
+  private modalElementBackdrop:any;
+  private cancelButton:any;
+  private okButton:any;
 
-  constructor(confirmService:ConfirmService) {
-    confirmService.activate = this.activate.bind(this);
+  constructor(_dialogService:DialogService) {
+    _dialogService.activate = this.activate.bind(this);
   }
 
-  _setLabels(message = this._defaults.message, title = this._defaults.title) {
+  activate(message = this.defaults.message, title = this.defaults.title, okText = this.defaults.okText, cancelText = this.defaults.cancelText) {
     this.title = title;
     this.message = message;
-    this.okText = this._defaults.okText;
-    this.cancelText = this._defaults.cancelText;
-  }
+    this.okText = okText;
+    this.cancelText = cancelText;
 
-  activate(message = this._defaults.message, title = this._defaults.title) {
-    this._setLabels(message, title);
-
-    let promise = new Promise<boolean>(resolve => {
-      this._show(resolve);
+    let promise = new Promise<boolean>((resolve, reject) => {
+      this.negativeOnClick = (e:any) => resolve(false);
+      this.positiveOnClick = (e:any) => resolve(true);
+      this.show();
     });
+
     return promise;
   }
 
-  private _show(resolve:(boolean) => any) {
+  ngOnInit() {
+    this.modalElement = document.getElementById('confirmationModal');
+    this.modalElementBackdrop = document.getElementById('confirmationModal-backdrop');
+    this.cancelButton = document.getElementById('cancelButton');
+    this.okButton = document.getElementById('okButton');
+  }
+
+  private show() {
     document.onkeyup = null;
 
-    let negativeOnClick = (e:any) => resolve(false);
-    let positiveOnClick = (e:any) => resolve(true);
+    if (!this.modalElement || !this.cancelButton || !this.okButton) {
+      return;
+    }
 
-    if (!this._confirmElement || !this._cancelButton || !this._okButton) return;
+    this.modalElementBackdrop.classList.add('in');
+    //this.modalElement.style.opacity = 0;
+    //this.modalElement.style.zIndex = 9999;
 
-    this._confirmElement.style.opacity = 0;
-    this._confirmElement.style.zIndex = 9999;
-
-    this._cancelButton.onclick = ((e:any) => {
+    this.cancelButton.onclick = ((e:any) => {
       e.preventDefault();
-      if (!negativeOnClick(e)) this._hideDialog();
+      if (!this.negativeOnClick(e)) {
+        this.hideDialog();
+      }
     });
 
-    this._okButton.onclick = ((e:any) => {
+    this.okButton.onclick = ((e:any) => {
       e.preventDefault();
-      if (!positiveOnClick(e)) this._hideDialog();
+      if (!this.positiveOnClick(e)) {
+        this.hideDialog();
+      }
     });
 
-    this._confirmElement.onclick = () => {
-      this._hideDialog();
-      return negativeOnClick(null);
+    this.modalElement.onclick = () => {
+      this.hideDialog();
+      return this.negativeOnClick(null);
     };
 
     document.onkeyup = (e:any) => {
       if (e.which === KEY_ESC) {
-        this._hideDialog();
-        return negativeOnClick(null);
+        this.hideDialog();
+        return this.negativeOnClick(null);
       }
     };
 
-    this._confirmElement.style.opacity = 1;
+    //this.modalElement.style.opacity = 1;
+    this.modalElement.classList.add('in');
+    this.modalElement.style.display = 'block';
   }
 
-  private _hideDialog() {
+  private hideDialog() {
     document.onkeyup = null;
-    this._confirmElement.style.opacity = 0;
-    window.setTimeout(() => this._confirmElement.style.zIndex = -1, 400);
-  }
+    //this.modalElement.style.opacity = 0;
+    //window.setTimeout(() => this.modalElement.style.zIndex = 0, 400);
 
-  ngOnInit():any {
-    this._confirmElement = document.getElementById('confirmationModal');
-    this._cancelButton = document.getElementById('cancelButton');
-    this._okButton = document.getElementById('okButton');
+    this.modalElement.style.display = 'none';
+    this.modalElement.classList.remove('in');
+    this.modalElementBackdrop.classList.remove('in');
   }
 }

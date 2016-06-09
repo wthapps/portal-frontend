@@ -2,6 +2,12 @@
   <div class="panel panel-default">
     <div class="panel-heading">{{pageTitle}}</div>
     <div class="panel-body">
+      <div class="form-group">
+        <button class="btn btn-default"(click)="alert()">alert</button>
+        <button class="btn btn-default"(click)="confirm()">confirm</button>
+        <button class="btn btn-default"(click)="prompt()">prompt</button>
+        <button class="btn btn-default"(click)="dialog()">dialog</button>
+      </div>
       <div class="form-inline">
         <div class="form-group">
           <label>Search</label> <input [(ngModel)]="listFilter" type="text" class="form-control">
