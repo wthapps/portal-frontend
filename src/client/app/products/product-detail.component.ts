@@ -5,6 +5,8 @@ import {IProduct} from  './products';
 import {ProductService} from './product.service';
 import {StarComponent} from '../shared/star.component';
 
+import {DialogService} from '../partials/dialogs/index';
+
 @Component({
   moduleId: module.id,
   templateUrl: 'product-detail.component.html',
@@ -20,7 +22,17 @@ export class ProductDetailComponent implements OnActivate {
   errorMessage:string;
 
   constructor(private _productService:ProductService,
-              private _router:Router) {
+              private _router:Router,
+              private _dialogService:DialogService) {
+  }
+
+  showConfirmDialog():void {
+    let msg = `Do you want to delete?`;
+    this._dialogService.activate(msg).then((responseOK) => {
+      if (responseOK) {
+        console.log('deleted');
+      }
+    });
   }
 
   routerOnActivate(curr:RouteSegment):void {
