@@ -52,6 +52,10 @@ export class DnsService {
       .map((response:Response) => {
         if (response.status == HTTP_RESPONSE_OK || response.status == HTTP_RESPONSE_CREATED) {
           let result = response.json();
+          if (result.data == 'empty')
+          {
+            return [];
+          }
           console.log(JSON.stringify(result.data));
           return <IRecord[]>result.data;
         }
