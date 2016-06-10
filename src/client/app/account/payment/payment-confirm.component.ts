@@ -22,10 +22,12 @@ import {UserService}          from '../../shared/services/user.service';
 export class PaymentConfirmComponent {
   PanelTitle:string = 'Confirm Your Purchase';
 
-  constructor(private _router:Router, private _userService:UserService, private _paymentService:PaymentService) {
+  constructor(private _router:Router,
+              private _userService:UserService,
+              private _paymentService:PaymentService) {
   }
 
   confirm():void {
-    this._router.navigateByUrl('account');
+    this._router.navigateByUrl('account/setting/dashboard');
   }
 }
