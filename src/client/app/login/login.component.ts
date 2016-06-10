@@ -52,6 +52,9 @@ export class LoginComponent {
           if (result) {
             this._router.navigateByUrl('');
           }
+        },
+        error => {
+          console.log("login error:", error.message);
         }
       );
   }

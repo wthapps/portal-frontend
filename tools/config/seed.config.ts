@@ -377,6 +377,10 @@ export class SeedConfig {
         main: 'ng2-bs3-modal.js',
         defaultExtension: 'js'
       }
+      // 'braintree': {
+      //   main: 'braintree.js',
+      //   defaultExtension: 'js'
+      // }
     }
   };
 

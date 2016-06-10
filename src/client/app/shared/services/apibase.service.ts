@@ -17,7 +17,7 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `get` http method.
    */
-  public get(path:string):Observable<void> {
+  public get(path:string):Observable<Response> {
     this.buildOptions();
     return this._http.get(this._baseUrl + path, this._options);
   }
@@ -57,9 +57,12 @@ export abstract class ApiBaseService {
   private buildOptions() {
     // Json web token
     let jwt = localStorage.getItem('jwt');
+    let profile = JSON.parse(localStorage.getItem('profile'));
     this._headers.delete('Authorization');
+    this._headers.delete('X-sid');
     if (jwt) {
       this._headers.append('Authorization', 'Bearer ' + jwt);
+      this._headers.append('X-sid', profile === null ? '' : profile.session.uuid);
     }
     this._options = new RequestOptions({headers: this._headers});
   }

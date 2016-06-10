@@ -61,6 +61,20 @@ export class UserService extends ApiBaseService {
     return this._loggedIn;
   }
 
+  /*
+   * change current password
+   */
+  public changePassword(path: string, body: string): Observable<Response>{
+    return super.patch(path, body)
+      .map(res => res.json())
+      .map((res) => {
+        if(res){
+
+        }
+        return res;
+      });
+  }
+
   private storeLoggedUserInfo(response){
     localStorage.setItem('jwt', response.token);
     localStorage.setItem('profile', JSON.stringify(response.data));
@@ -69,6 +83,9 @@ export class UserService extends ApiBaseService {
   }
 }
 
+export function isLoggedIn(){
+  return !!localStorage.getItem('jwt');
+}
 
 export class User {
   constructor(

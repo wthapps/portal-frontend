@@ -82,8 +82,7 @@ import {RegisterComponent} from './register/register.component';
 @Routes([
   //{path: '/', component: HomeComponent},
 
-  {path: '/welcome', component: WelcomeComponent},
-  {path: '/about_us', component: AboutComponent},
+  {path: '/about', component: AboutComponent},
   {path: '/support', component: SupportComponent},
 
   {path: '/products/:id', component: ProductDetailComponent},
@@ -110,7 +109,7 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/payment/confirm', component: PaymentConfirmComponent},
   {path: '/account/payment', component: AccountAddCardComponent},
 
-  {path: '/account/setting/change_password', component: ChangePasswordComponent},
+  {path: '/account/setting/changepassword', component: ChangePasswordComponent},
   {path: '/account/setting/profile', component: MyAccountComponent},
   {path: '/account/setting/dashboard', component: AccountDashboardComponent},
 
