@@ -43,10 +43,12 @@ Header
       }
     }
     > li > a {
+      outline: 0 none;
       &.router-link-active,
       &:hover,
       &:focus,
       &:active {
+        outline: 0 none;
         color: $color-inverse;
       }
     }

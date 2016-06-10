@@ -6604,8 +6604,11 @@ Header
   background-color: transparent;
   color: #ED1C24; }
 
-.navbar-default .navbar-nav > li > a.router-link-active, .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:active {
-  color: #ED1C24; }
+.navbar-default .navbar-nav > li > a {
+  outline: 0 none; }
+  .navbar-default .navbar-nav > li > a.router-link-active, .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:active {
+    outline: 0 none;
+    color: #ED1C24; }
 
 .footer {
   margin-top: 40px;
