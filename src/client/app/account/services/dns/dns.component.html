@@ -9,9 +9,6 @@
           <h3 class="panel-title">{{pageTitle}}</h3>
         </div>
         <div class="panel-body">
-          <div class="form-group">
-            <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
-          </div>
           <table class="table table-bordered">
             <tr>
               <th>Hostname</th>
@@ -19,6 +16,9 @@
               <th>Type</th>
               <th>Last Update</th>
               <th>Action</th>
+            </tr>
+            <tr *ngIf="Records.length == 0">
+              <td class="text-center" colspan="5">No data</td>
             </tr>
             <tr *ngFor="let record of Records">
               <td>
@@ -37,6 +37,9 @@
               </td>
             </tr>
           </table>
+          <div class="form-group text-right">
+            <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
+          </div>
           <div class="text-center">
             DNS Updater
             <a target="_blank"

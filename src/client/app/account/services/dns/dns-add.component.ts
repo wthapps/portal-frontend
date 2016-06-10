@@ -1,6 +1,6 @@
 import {Component}                 from '@angular/core';
 import {
-  ROUTER_DIRECTIVES, 
+  ROUTER_DIRECTIVES,
   Router
 }                                  from '@angular/router';
 import {
@@ -17,8 +17,7 @@ import {CustomValidators}          from '../../../shared/validator/custom-valida
 @Component({
   moduleId: module.id,
   templateUrl: 'dns-add.component.html',
-  directives:
-  [
+  directives: [
     ROUTER_DIRECTIVES,
     FORM_DIRECTIVES,
     AccountMenuComponent
@@ -28,9 +27,12 @@ import {CustomValidators}          from '../../../shared/validator/custom-valida
 export class AccountServicesDNSAddComponent {
   protected pageTitle:string = "New Host";
 
-  constructor(private _dnsService: DnsService, 
-              private _router:     Router, 
-              private _builder:    FormBuilder) { 
+  //TODO recheck regular expressions for ip addresses
+  public IPV4 = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
+  constructor(private _dnsService:DnsService,
+              private _router:Router,
+              private _builder:FormBuilder) {
     this.group = this._builder.group({
       ip: ['',
         Validators.compose([Validators.required, CustomValidators.ipHostFormat])
@@ -41,7 +43,11 @@ export class AccountServicesDNSAddComponent {
     });
   }
 
-  onAddNew(domain, name, type, content): void {
+  onAddNew(domain, name, content, type?:string = 'AAAA'):void {
+    if (this.IPV4.test(content)) {
+      type = 'A';
+    }
+    console.log(type, content);
     let record = {
       "id": 0,
       "name": name,
@@ -62,5 +68,5 @@ export class AccountServicesDNSAddComponent {
     );
   }
 
-  public group: ControlGroup;
+  public group:ControlGroup;
 }
