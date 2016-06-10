@@ -13,6 +13,7 @@
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 @import url(https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic&subset=latin,latin-ext);
+@import url(../third_party/Swiper/dist/css/swiper.min.css);
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -6910,5 +6911,32 @@ Animations
     padding: 3px 10px;
     font-size: 11px;
     margin-top: -3px; }
+
+.welcome-slide {
+  max-width: 740px;
+  margin: auto;
+  position: relative;
+  padding: 0 70px; }
+
+.welcome-slide img {
+  max-width: 100%;
+  height: auto; }
+
+.swiper-pagination {
+  position: relative;
+  display: block; }
+  .swiper-pagination span {
+    margin: 0 5px; }
+
+.welcome-nav .btn.swiper-button-next {
+  position: relative;
+  margin: 0;
+  left: auto;
+  top: auto;
+  right: auto;
+  background-image: none; }
+
+.welcome-nav {
+  text-align: right; }
 
 /*# sourceMappingURL=style.css.map */

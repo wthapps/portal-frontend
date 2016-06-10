@@ -3,12 +3,13 @@
 // Configurable paths
 var basePath = '../client/assets',
     distPath = basePath + '/dist',
-    thirdPartyPath = '../third_party',
+    thirdPartyPath = basePath + '/third_party',
     bowerPath = 'bower_components';
 
 // Configurable vendor scripts
 var thirdPartyFile = [
-    thirdPartyPath + '/jquery.placeholder.js',
+    //thirdPartyPath + '/jquery.placeholder.js',
+    thirdPartyPath + '/Swiper/dist/js/swiper.jquery.js',
     basePath + '/js/common.js'
 ];
 

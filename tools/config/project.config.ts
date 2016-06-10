@@ -15,7 +15,7 @@ export class ProjectConfig extends SeedConfig {
     super();
     // this.APP_TITLE = 'Put name of your app here';
     let additional_deps: InjectableDependency[] = [
-      {src: `bootbox/bootbox.js`, inject: 'libs'},
+      {src: `bootbox/bootbox.js`, inject: 'libs'}
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
     ];
@@ -26,6 +26,13 @@ export class ProjectConfig extends SeedConfig {
 
     /* Add to or override NPM module configurations: */
     //this.mergeObject( this.PLUGIN_CONFIGS['browser-sync'], { ghostMode: false } );
+
+
+    let additional_deps_custom: InjectableDependency[] = [
+      {src: `src/client/assets/dist/app.js`, inject: 'libs'}
+    ];
+    const seedDependencies_custom = this.APP_ASSETS;
+    this.APP_ASSETS = seedDependencies_custom.concat(additional_deps_custom);
 
   }
 }
