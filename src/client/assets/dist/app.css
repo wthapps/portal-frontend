@@ -6600,9 +6600,12 @@ Header
       .navbar .navbar-brand img {
         height: 50px; } }
 
-.navbar-nav > li.open > a:hover, .navbar-nav > li.open > a:focus {
+.navbar-default .navbar-nav > li.open > a:hover, .navbar-default .navbar-nav > li.open > a:focus {
   background-color: transparent;
-  color: #2a363f; }
+  color: #ED1C24; }
+
+.navbar-default .navbar-nav > li > a.router-link-active, .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:active {
+  color: #ED1C24; }
 
 .footer {
   margin-top: 40px;
@@ -6680,6 +6683,35 @@ html {
   text-align: center;
   margin-top: 40px;
   font-size: 18px; }
+
+.nav-menuleft .list-group-item a {
+  display: block;
+  margin: -10px -15px;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #2a363f;
+  position: relative; }
+  .nav-menuleft .list-group-item a:hover {
+    text-decoration: none;
+    background-color: #f9f9f9;
+    color: #000000; }
+  .nav-menuleft .list-group-item a.router-link-active {
+    color: #000000;
+    font-weight: bold; }
+    .nav-menuleft .list-group-item a.router-link-active:hover {
+      color: #000000;
+      cursor: default;
+      background-color: #fff; }
+    .nav-menuleft .list-group-item a.router-link-active:before {
+      content: "";
+      width: 2px;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #ED1C24;
+      font-weight: bold; }
 
 .panel-creditcard .nav-tabs {
   border-width: 0;

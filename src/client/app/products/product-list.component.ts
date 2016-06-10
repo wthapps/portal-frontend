@@ -8,6 +8,7 @@ import {ProductService} from './product.service';
 import {ProductFilterPipe} from './product-filter.pipe';
 import {StarComponent} from '../shared/star.component';
 
+declare var bootbox:any;
 
 @Component({
   moduleId: module.id,

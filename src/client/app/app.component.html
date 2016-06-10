@@ -38,7 +38,7 @@
           <li dropdown>
             <a href="javascript:;" id="single-button" dropdownToggle> {{_userService.profile.name}} <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-              <li role="menuitem"><a [routerLink]="['/account']">Settings</a></li>
+              <li role="menuitem"><a [routerLink]="['/account/setting/dashboard']">Settings</a></li>
               <li class="divider dropdown-divider"></li>
               <li role="menuitem"><a href="javascript:;" (click)="logout($event)">Log out</a></li>
             </ul>

@@ -33,12 +33,22 @@ Header
   }
 }
 
-.navbar-nav {
-  > li.open > a {
-    &:hover,
-    &:focus {
-      background-color: transparent;
-      color: $color;
+.navbar-default {
+  .navbar-nav {
+    > li.open > a {
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        color: $color-inverse;
+      }
+    }
+    > li > a {
+      &.router-link-active,
+      &:hover,
+      &:focus,
+      &:active {
+        color: $color-inverse;
+      }
     }
   }
 }

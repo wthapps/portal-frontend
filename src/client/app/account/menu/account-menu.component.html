@@ -1,50 +1,53 @@
-<div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">
-        <h3 class="panel-title">General</h3>
+<div class="nav-menuleft">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <h3 class="panel-title">General</h3>
+        </div>
+        <!-- List group -->
+        <ul class="list-group">
+            <li class="list-group-item"><a [routerLink]="['/account/setting/dashboard']">Dashboard</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/setting/profile']">Account setting</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/setting/change_password']">Change password</a></li>
+        </ul>
     </div>
-    <!-- List group -->
-    <ul class="list-group">
-        <li class="list-group-item"><a [routerLink]="['/account']">Dashboard</a></li>
-        <li class="list-group-item"><a [routerLink]="['/account/setting']">Account setting</a></li>
-        <li class="list-group-item"><a [routerLink]="['/account/setting/change_password']">Change password</a></li>
-    </ul>
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <h3 class="panel-title">Plans and Billing</h3>
+        </div>
+        <!-- List group -->
+        <ul class="list-group">
+            <li class="list-group-item"><a [routerLink]="['/account/plans']">Plan details</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/billing']">Billing details</a></li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <h3 class="panel-title">My Services</h3>
+        </div>
+        <!-- List group -->
+        <ul class="list-group">
+            <li class="list-group-item"><a [routerLink]="['/account/dns']">DNS</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/vpn']">VPN</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/efax']">eFax</a></li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <h3 class="panel-title">Apps</h3>
+        </div>
+        <!-- List group -->
+        <ul class="list-group">
+            <li class="list-group-item"><a href="javascript:;">MS Office Add-ons</a></li>
+            <li class="list-group-item"><a href="javascript:;">Adobe Add-ons</a></li>
+            <li class="list-group-item"><a href="javascript:;">Others</a></li>
+        </ul>
+    </div>
 </div>
 
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">
-    <h3 class="panel-title">Plans and Billing</h3>
-  </div>
-  <!-- List group -->
-  <ul class="list-group">
-    <li class="list-group-item"><a [routerLink]="['/account/plans']">Plan details</a></li>
-    <li class="list-group-item"><a [routerLink]="['/account/billing']">Billing details</a></li>
-  </ul>
-</div>
-
-<div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">
-        <h3 class="panel-title">My Services</h3>
-    </div>
-    <!-- List group -->
-    <ul class="list-group">
-        <li class="list-group-item"><a [routerLink]="['/account/dns']">DNS</a></li>
-        <li class="list-group-item"><a [routerLink]="['/account/vpn']">VPN</a></li>
-        <li class="list-group-item"><a [routerLink]="['/account/efax']">eFax</a></li>
-    </ul>
-</div>
-
-<div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">
-        <h3 class="panel-title">Apps</h3>
-    </div>
-    <!-- List group -->
-    <ul class="list-group">
-        <li class="list-group-item"><a href="javascript:;">MS Office Add-ons</a></li>
-        <li class="list-group-item"><a href="javascript:;">Adobe Add-ons</a></li>
-        <li class="list-group-item"><a href="javascript:;">Others</a></li>
-    </ul>
-</div>

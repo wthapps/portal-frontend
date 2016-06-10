@@ -1,0 +1,38 @@
+.nav-menuleft {
+  .list-group-item {
+    a {
+      display: block;
+      margin: -10px -15px;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: $color;
+      position: relative;
+      &:hover {
+        text-decoration: none;
+        background-color: #f9f9f9;
+        color: $black;
+      }
+      &.router-link-active {
+        color: $black;
+        font-weight: bold;
+        &:hover {
+          color: $black;
+          cursor: default;
+          background-color: #fff;
+        }
+        &:before {
+          content: "";
+          width: 2px;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          background-color: $color-inverse;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+}

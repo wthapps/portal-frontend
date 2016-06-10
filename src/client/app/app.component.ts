@@ -79,7 +79,7 @@ import {RegisterComponent} from './register/register.component';
 })
 
 @Routes([
-  {path: '/', component: HomeComponent},
+  //{path: '/', component: HomeComponent},
 
   {path: '/about_us', component: AboutComponent},
   {path: '/support', component: SupportComponent},
@@ -92,9 +92,6 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/reset_email_sent', component: ResetEmailSentComponent},
   {path: '/account/password_reset', component: PasswordResetComponent},
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
-
-  {path: '/account/setting/change_password', component: ChangePasswordComponent},
-  {path: '/account/setting', component: MyAccountComponent},
 
   {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
   {path: '/account/dns/update/:id', component: AccountServicesDNSUpdateComponent},
@@ -111,7 +108,11 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/payment/confirm', component: PaymentConfirmComponent},
   {path: '/account/payment', component: AccountAddCardComponent},
 
-  {path: '/account', component: AccountDashboardComponent}
+  {path: '/account/setting/change_password', component: ChangePasswordComponent},
+  {path: '/account/setting/profile', component: MyAccountComponent},
+  {path: '/account/setting/dashboard', component: AccountDashboardComponent},
+
+  {path: '/', component: HomeComponent}
 ])
 
 export class AppComponent implements AfterViewInit {

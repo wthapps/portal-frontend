@@ -33,7 +33,10 @@ export class DialogComponent implements OnInit {
     _dialogService.activate = this.activate.bind(this);
   }
 
-  activate(message = this.defaults.message, title = this.defaults.title, okText = this.defaults.okText, cancelText = this.defaults.cancelText) {
+  activate(message = this.defaults.message,
+           title = this.defaults.title,
+           okText = this.defaults.okText,
+           cancelText = this.defaults.cancelText) {
     this.title = title;
     this.message = message;
     this.okText = okText;
