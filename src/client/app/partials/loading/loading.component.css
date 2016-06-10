@@ -1,0 +1,29 @@
+#preloader-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: none;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+#preloader-wrap.active {
+  display: block;
+}
+
+#preloader_1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin: auto;
+  display: inline-block;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+}

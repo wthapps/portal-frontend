@@ -8,6 +8,8 @@ import {ProductService} from './product.service';
 import {ProductFilterPipe} from './product-filter.pipe';
 import {StarComponent} from '../shared/star.component';
 
+import {LoadingService} from '../partials/loading/index';
+
 declare var bootbox:any;
 
 @Component({
@@ -33,7 +35,9 @@ export class ProductListComponent implements OnInit {
   errorMessage:string;
   products:IProduct[];
 
-  constructor(private _productService:ProductService) {
+  constructor(private _productService:ProductService
+              //, private _loadingService:LoadingService
+  ) {
   }
 
   alert() {
@@ -96,6 +100,11 @@ export class ProductListComponent implements OnInit {
 
   toggleImage():void {
     this.showImage = !this.showImage;
+    if (this.showImage) {
+      //this._loadingService.start();
+    } else {
+      //this._loadingService.stop();
+    }
   }
 
   /*ngOnInit():void {
