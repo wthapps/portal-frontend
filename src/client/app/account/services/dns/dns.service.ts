@@ -3,7 +3,7 @@ import {Response}           from '@angular/http';
 
 import {Observable}         from 'rxjs/Observable';
 
-import {IRecord}            from './record';
+import {IRecord, Product}            from './record';
 import {ApiBaseService}     from '../../../shared/services/apibase.service';
 import {UserService}        from '../../../shared/services/user.service';
 
@@ -114,6 +114,20 @@ export class DnsService {
           return <IRecord>result.data;
         }
         return new IRecord();
+      })
+      .do(data => Logger.Info('JSON data get Host: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  public getProduct(id: number) {
+    let product_url = '/products/' + id;
+    return this._service.get(product_url)
+      .map(response => {
+        if (response.status == HTTP_RESPONSE_OK) {
+          let result = response.json();
+          return <Product>result.data;
+        }
+        return new Product();
       })
       .do(data => Logger.Info('JSON data get Host: ' + JSON.stringify(data)))
       .catch(this.handleError);
