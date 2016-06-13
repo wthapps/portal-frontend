@@ -27,27 +27,37 @@ import {CustomValidators}          from '../../../shared/validator/custom-valida
 export class AccountServicesDNSAddComponent {
   protected pageTitle:string = "New Host";
 
-  //TODO recheck regular expressions for ip addresses
-  public IPV4 = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-
   constructor(private _dnsService:DnsService,
               private _router:Router,
               private _builder:FormBuilder) {
     this.group = this._builder.group({
-      ip: ['',
-        Validators.compose([Validators.required, CustomValidators.ipHostFormat])
-      ],
       host: ['',
         Validators.compose([Validators.required, CustomValidators.ipHostFormat])
       ],
+      ip: ['',
+        Validators.compose([CustomValidators.ipHostFormat])
+      ]
     });
   }
 
-  onAddNew(domain, name, content, type?:string = 'AAAA'):void {
-    if (this.IPV4.test(content)) {
+  onAddNew(domain, name, content?:string = '127.0.0.1', type?:string = 'A'):void {
+
+    let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
+    let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+
+    if (content.length === 0) {
+      content = '127.0.0.1';
+    }
+    if (type.length === 0) {
       type = 'A';
     }
-    console.log(type, content);
+    if (ipV4.test(content)) {
+      type = 'A';
+    }
+    if (ipV6.test(content)) {
+      type = 'AAAA';
+    }
+    
     let record = {
       "id": 0,
       "name": name,
@@ -55,7 +65,7 @@ export class AccountServicesDNSAddComponent {
       "content": content,
       "ttl": 600,
       "priority": 10,
-      "domain_id": domain
+      "domain_id": 0
     };
     let body = JSON.stringify(record);
     this._dnsService.addHost(body).subscribe(
