@@ -4,12 +4,13 @@ import {Http, Response} from '@angular/http';
 import {ApiBaseService} from '../../shared/services/apibase.service';
 
 @Injectable()
-export class PaymentService extends ApiBaseService {
-  constructor(http:Http) {
+export class PaymentService extends ApiBaseService{
+  
+  constructor(http: Http){
     super(http);
   }
 
-  public create(path:string, body:string):Observable<Response> {
+  public create(path: string, body: string): Observable<Response> {
     return super.post(path, body)
       .map(res => res.json())
       .map((res) => {
@@ -19,7 +20,15 @@ export class PaymentService extends ApiBaseService {
       });
   }
 
-  public delete(path:string):Observable<Response> {
+  public get_client_token(path: string): Observable<Response> {
+    return super.get(path)
+      .map(res => res.json())
+      .map((res) => {        
+        return res;
+      });
+  }
+
+  public delete(path: string): Observable<Response>{
     return super.delete(path)
       .map(res => res.json())
       .map((res) => {

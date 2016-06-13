@@ -1,7 +1,7 @@
 export class CountryListComponent {
   countries:Array = [
     /* tslint:disable */
-    {key: "", value: "Click to Select"},
+    {key: "", value: "Please select country"},
     {key: "AF", value: "Afghanistan"},
     {key: "AX", value: "Åland Islands"},
     {key: "AL", value: "Albania"},

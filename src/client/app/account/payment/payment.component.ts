@@ -1,7 +1,4 @@
-import {
-  Component,
-  AfterViewInit
-}                             from '@angular/core';
+import {Component, AfterViewInit}            from '@angular/core';
 import {
   Router,
   ROUTER_DIRECTIVES
@@ -31,17 +28,29 @@ export class AccountAddCardComponent implements AfterViewInit {
 
   countries:any;
 
-  constructor(private _router:Router, private _userService:UserService, private _paymentService:PaymentService,
+  constructor(
+    private _router:Router,
+    private _userService:UserService,
+    private _paymentService:PaymentService,
     private _countries:CountryListComponent
   ) {
     this.countries = this._countries.countries;
   }
 
   ngAfterViewInit() {
-    var _this = this;
 
+    var _this = this;
     var form = document.querySelector('#payment-method-card');
     var submit = document.querySelector('input[type="submit"]');
+
+    // billing address information
+    var cardholder_name = $("#cardholder-name");
+    var address_line_1 = $("#address-line-1");
+    var address_line_2 = $("#address-line-2");
+    var city = $("#city");
+    var region = $("#region");
+    var postcode = $("#postcode");
+    var country = $("#country");
 
     braintree.client.create({
       //authorization: 'sandbox_g42y39zw_348pk9cgf3bgyw2b'
@@ -85,7 +94,7 @@ export class AccountAddCardComponent implements AfterViewInit {
         fields: {
           number: {
             selector: '#card-number',
-            placeholder: '1111 1111 1111 1111'
+            placeholder: '4111 1111 1111 1111'
           },
           cvv: {
             selector: '#cvv',
@@ -149,16 +158,28 @@ export class AccountAddCardComponent implements AfterViewInit {
             }
 
             // This is where you would submit payload.nonce to your server
-            // alert('Submit your nonce to your server here!'+ payload.nonce);
-            _this._router.navigateByUrl('account/payment/confirm');
-            /*_this._paymentService.create(`/users/1/payments`, '')
-              .subscribe((result) => {
-                  console.log('in-test');
-                  _this._router.navigateByUrl('account/payment/confirm');
+            let body = JSON.stringify({
+              cardholder_name: cardholder_name.val(),
+              nonce: payload.nonce,
+              address_line_1: address_line_1.val(),
+              address_line_2: address_line_2.val(),
+              city: city.val(),
+              postcode: postcode.val(),
+              zipcode: "",
+              region: region.val(),
+              country: country.val()
+          });
+            _this._paymentService.create(`users/${_this._userService.profile.id}/payments`, body)
+              .subscribe((response) => {
+                  if(response.data == null){
+
+                  }else {
+                    _this._router.navigateByUrl('account/payment/confirm');
+                  }
                 },
                 error => {
-                  console.log("error:", error);
-                });*/
+                  console.log("Add card error:", error);
+                });
           });
         }, false);
       });
