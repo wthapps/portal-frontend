@@ -36,6 +36,7 @@ Header
 .navbar-default {
   .navbar-nav {
     > li.open > a {
+      &,
       &:hover,
       &:focus {
         background-color: transparent;
@@ -50,6 +51,12 @@ Header
       &:active {
         outline: 0 none;
         color: $color-inverse;
+      }
+    }
+    &.navbar-right {
+      a.dropdown-toggle {
+        padding-left: 0;
+        padding-right: 0;
       }
     }
   }

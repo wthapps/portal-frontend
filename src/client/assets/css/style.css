@@ -6601,7 +6601,7 @@ Header
       .navbar .navbar-brand img {
         height: 50px; } }
 
-.navbar-default .navbar-nav > li.open > a:hover, .navbar-default .navbar-nav > li.open > a:focus {
+.navbar-default .navbar-nav > li.open > a, .navbar-default .navbar-nav > li.open > a:hover, .navbar-default .navbar-nav > li.open > a:focus {
   background-color: transparent;
   color: #ED1C24; }
 
@@ -6610,6 +6610,10 @@ Header
   .navbar-default .navbar-nav > li > a.router-link-active, .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:active {
     outline: 0 none;
     color: #ED1C24; }
+
+.navbar-default .navbar-nav.navbar-right a.dropdown-toggle {
+  padding-left: 0;
+  padding-right: 0; }
 
 .footer {
   margin-top: 40px;

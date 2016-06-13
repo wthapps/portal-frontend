@@ -36,7 +36,7 @@
 
         <ul *ngIf="isLoggedIn()" class="nav navbar-nav navbar-right">
           <li dropdown>
-            <a href="javascript:;" id="single-button" dropdownToggle> {{_userService.profile.name}} <span class="caret"></span></a>
+            <a href="javascript:;" id="single-button" dropdownToggle> {{_userService.profile.name}} <span class="glyphicon glyphicon-cog"></span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
               <li role="menuitem"><a [routerLink]="['/account/setting/dashboard']">Settings</a></li>
               <li class="divider dropdown-divider"></li>
