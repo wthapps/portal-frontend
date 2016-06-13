@@ -9,13 +9,13 @@ import {
 } from '@angular/router';
 import 'rxjs/Rx';   // Load all features
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
-
 // Base services
 import {AuthHttp, tokenNotExpired} from 'angular2-jwt';
 import {ApiBaseService} from './shared/services/apibase.service';
 import {UserService} from './shared/services/user.service';
 
 import {DialogService, DialogComponent} from './partials/dialogs/index';
+import {TopMessageService, TopMessageComponent} from './partials/top-message/index';
 
 import {HomeComponent} from './home/home.component';
 import {ProductListComponent} from './products/product-list.component';
@@ -66,7 +66,8 @@ import {RegisterComponent} from './register/register.component';
     ROUTER_DIRECTIVES,
     DROPDOWN_DIRECTIVES,
     CORE_DIRECTIVES,
-    DialogComponent
+    DialogComponent,
+    TopMessageComponent,
   ],
   providers: [
     ProductService,
@@ -75,7 +76,8 @@ import {RegisterComponent} from './register/register.component';
     DnsService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    DialogService
+    DialogService,
+    TopMessageService
   ]
 })
 

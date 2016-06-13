@@ -6,6 +6,7 @@ import {ProductService} from './product.service';
 import {StarComponent} from '../shared/star.component';
 
 import {DialogService} from '../partials/dialogs/index';
+import {TopMessageService} from '../partials/top-message/index';
 
 @Component({
   moduleId: module.id,
@@ -23,7 +24,8 @@ export class ProductDetailComponent implements OnActivate {
 
   constructor(private _productService:ProductService,
               private _router:Router,
-              private _dialogService:DialogService) {
+              private _dialogService:DialogService,
+              private _topMessageService:TopMessageService) {
   }
 
   showConfirmDialog():void {
@@ -33,6 +35,10 @@ export class ProductDetailComponent implements OnActivate {
         console.log('deleted');
       }
     });
+  }
+
+  showAlert():void {
+    this._topMessageService.activate('warning', this.errorMessage = 'ErrorMsg');
   }
 
   routerOnActivate(curr:RouteSegment):void {
@@ -46,6 +52,7 @@ export class ProductDetailComponent implements OnActivate {
       .subscribe(
         product => this.product = product,
         error => this.errorMessage = <any>error);
+    this.showAlert();
   }
 
   /*getProduct(id: number) {
