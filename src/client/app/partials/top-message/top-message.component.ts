@@ -50,7 +50,6 @@ export class TopMessageComponent implements OnInit {
     //this._router.changes.subscribe((val) => this.hide());
     this.cancelButton = document.getElementById('alert-close');
     this.messageElement = document.getElementById('alert-wrap');
-    console.log(this.cancelButton,this.messageElement);
   }
 
   private show() {
