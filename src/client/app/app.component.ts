@@ -86,6 +86,7 @@ import {RegisterComponent} from './register/register.component';
 
   {path: '/about', component: AboutComponent},
   {path: '/support', component: SupportComponent},
+  {path: '/welcome', component: WelcomeComponent},
 
   {path: '/products/:id', component: ProductDetailComponent},
   {path: '/products', component: ProductListComponent},

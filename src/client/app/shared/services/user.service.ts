@@ -96,6 +96,7 @@ export class User {
     public birthday_day: string,
     public birthday_month: string,
     public birthday_year: string,
-    public sex: number
+    public sex: number,
+    public accepted: boolean
   ) {}
 }

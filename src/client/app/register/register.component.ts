@@ -25,14 +25,14 @@ export class RegisterComponent {
   pageTitle:string = 'Register page';
 
   user:User;
-  group:ControlGroup;
+  singupForm:ControlGroup;
 
   sex:number = 0;
 
-  constructor(private _userService:UserService, private _router:Router, builder:FormBuilder) {
-    this.group = builder.group({
-      first_name: [],
-      last_name: [],
+  constructor(private _userService:UserService, private _router:Router, private _builder:FormBuilder) {
+    this.singupForm = this._builder.group({
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
       birthday_day: [],
       birthday_month: [],
       birthday_year: [],
@@ -43,14 +43,14 @@ export class RegisterComponent {
         CustomValidators.duplicated
       ],
       password: ['',
-        Validators.compose([Validators.required, Validators.minLength(4)])
+        Validators.compose([Validators.required, Validators.minLength(6)])
       ]
     });
   }
 
   signup() {
-    this.group.value.sex = this.sex;
-    this.user = this.group.value;
+    this.singupForm.value.sex = this.sex;
+    this.user = this.singupForm.value;
     //console.log('data sent to server', this.user);
 
     let body = JSON.stringify({
@@ -62,12 +62,12 @@ export class RegisterComponent {
       birthday_month: this.user.birthday_month,
       birthday_year: this.user.birthday_year,
       sex: this.user.sex,
-      accepted_policies: this.group.value.accepted
+      accepted_policies: this.singupForm.value.accepted === true ? true: false
     });
     //console.log(body);
     this._userService.signup('users', body)
       .subscribe((result) => {
-          this._router.navigateByUrl('');
+          this._router.navigateByUrl('/welcome');
         },
         error => {
           console.log('error:', error);
