@@ -57,7 +57,12 @@ export class DnsService {
             return [];
           }
           console.log(JSON.stringify(result.data));
-          return <IRecord[]>result.data;
+          var list = <IRecord[]>result.data;
+          for (var i in list) {
+            let current = list[i];
+            current.updated_at = new Date(current.updated_at.toString());
+          }
+          return list;
         }
         return [];
       })

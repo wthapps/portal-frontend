@@ -39,11 +39,12 @@ export class AccountServicesDNSComponent implements OnInit {
 
   onDeleteHost(event, id:number) {
     event.preventDefault();
-    this._dialogService.activate('Do you want to delete?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
+    let index = this.Records.findIndex(o => o.id == id);
+    let hostname = this.Records[index].name + '.' + 'wthdns.com';
+    this._dialogService.activate('Are you sure to delete ' + hostname + '?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
       if (responseOK) {
         this._dnsService.deleteHost(id).subscribe(
           record => {
-            let index = this.Records.findIndex(o => o.id == id);
             this.Records.splice(index, 1);
             Logger.Info(JSON.stringify(record));
           },
