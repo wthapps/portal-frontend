@@ -8,8 +8,7 @@ declare var Swiper:any;
   templateUrl: 'welcome.component.html',
   directives: [
     ROUTER_DIRECTIVES
-  ],
-  styleUrls: ['welcome.component.css']
+  ]
 })
 
 export class WelcomeComponent implements AfterViewInit {
