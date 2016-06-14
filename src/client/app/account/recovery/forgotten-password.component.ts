@@ -8,6 +8,7 @@ import {
 }                           from '@angular/common';
 import {ApiBaseService}     from "../../shared/services/apibase.service"
 import {CustomValidators}   from '../../shared/validator/custom-validators';
+import {TopMessageService} from '../../partials/top-message/index';
 
 @Component({
   moduleId: module.id,
@@ -21,7 +22,11 @@ export class ForgottenPasswordComponent {
 
   forgottenPasswordForm: ControlGroup;
   email: Control;
-  constructor(private _router:Router, private _apiBaseService: ApiBaseService, _formBuilder: FormBuilder) {
+  constructor(private _router:Router,
+              private _apiBaseService: ApiBaseService,
+              _formBuilder: FormBuilder,
+              private _toadMessageService: TopMessageService
+  ) {
     this.forgottenPasswordForm = _formBuilder.group({
       email: ['', Validators.compose([Validators.required, CustomValidators.emailFormat]), CustomValidators.duplicated]
     });
@@ -33,25 +38,28 @@ export class ForgottenPasswordComponent {
 
   forgottenPassword(email: string):void {
 
-    let body = JSON.stringify({email});
     this._apiBaseService.get(`users/search?email=${email}`)
       .subscribe((response) => {
           var result = response.json();
-          if(result.data == null){
-
+          if(result.data === null){
+            this._toadMessageService.activate(this._toadMessageService.type.danger, result.message);
           }else {
+            let body = JSON.stringify({email});
+            this._apiBaseService.post('users/recovery/initiate', body)
+              .subscribe((result) => {
+                  this._router.navigate(['/account/reset_email_sent']);
+                },
+                error => {
+                  this._toadMessageService.activate(this._toadMessageService.type.danger, error);
+                  console.log("error:", error);
+                });
             // this._router.navigate(['/account/reset_email_sent']);
           }
         },
         error => {
+          this._toadMessageService.activate(this._toadMessageService.type.danger, error);
           console.log("error:", error);
         });
-    // this._apiBaseService.post('users/recovery/initiate', body)
-    //   .subscribe((result) => {
-    //       this._router.navigate(['/account/reset_email_sent']);
-    //     },
-    //     error => {
-    //       console.log("error:", error);
-    //     });
+
   }
 }

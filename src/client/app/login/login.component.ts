@@ -12,7 +12,7 @@ import {
 }                           from '@angular/common';
 import {CustomValidators}   from '../shared/validator/custom-validators';
 import {UserService}        from '../shared/services/user.service';
-
+import {TopMessageService} from '../partials/top-message/index';
 
 @Component({
   moduleId: module.id,
@@ -30,7 +30,9 @@ export class LoginComponent {
   constructor(private _router:Router,
               private _userService:UserService,
               private _params:RouteSegment,
-              builder:FormBuilder) {
+              builder:FormBuilder,
+              private _toadMessageService: TopMessageService
+  ) {
     this._backUrl = this._params.parameters['back_url'];
 
     this.group = builder.group({
@@ -54,7 +56,8 @@ export class LoginComponent {
           }
         },
         error => {
-          console.log("login error:", error.message);
+          this._toadMessageService.activate(this._toadMessageService.type.danger, 'Email or password is not valid');
+          // console.log("login error:", error);
         }
       );
   }

@@ -26,6 +26,7 @@ import {DnsService} from './account/services/dns/dns.service';
 import {
   AccountDashboardComponent,
   ForgottenPasswordComponent,
+  NewPasswordComponent,
   ResetEmailSentComponent,
   PasswordResetComponent,
   PasswordResetCompleteComponent,
@@ -93,6 +94,7 @@ import {RegisterComponent} from './register/register.component';
   {path: '/login', component: LoginComponent},
   {path: '/signup', component: RegisterComponent},
   {path: '/account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
+  {path: '/account/recovery/newpassword', component: NewPasswordComponent},
   {path: '/account/reset_email_sent', component: ResetEmailSentComponent},
   {path: '/account/password_reset', component: PasswordResetComponent},
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},

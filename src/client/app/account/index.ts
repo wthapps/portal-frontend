@@ -2,6 +2,7 @@
  * This barrel file provides the export for the lazy loaded AccountComponent.
  */
 export * from './recovery/forgotten-password.component';
+export * from './recovery/new-password.component';
 export * from './password-reset.component';
 export * from './password-reset-complete.component';
 export * from './reset-email-sent.component';
