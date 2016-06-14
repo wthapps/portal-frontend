@@ -22,11 +22,11 @@
             </tr>
             <tr *ngFor="let record of Records">
               <td>
-                {{record.name}}@wthdns.com
+                {{record.name}}.wthdns.com
               </td>
               <td>{{record.content}}</td>
               <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
-              <td>{{record.updated_at}}</td>
+              <td>{{record.updated_at | date:'dd-M-yyyy H:mm:ss' : 'UTC'}}</td>
               <td>
                 <!--<a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
                   {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>-->
@@ -43,7 +43,7 @@
           <div class="text-center">
             DNS Updater
             <a target="_blank"
-               href="https://drive.google.com/uc?export=download&id=0B5zHJKYP0TglbzRlSWk3SHJfM0E"
+               href="https://drive.google.com/uc?export=download&id=0B5zHJKYP0TglT0xrd2NaNmVTLU0"
             >Download now <i class="glyphicon glyphicon-download"></i></a>
           </div>
         </div>

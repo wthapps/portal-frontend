@@ -67,14 +67,33 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
     );
   }
 
-  onUpdateHost(domain, name, type, content) {
+  onUpdateHost(domain, name, content) {
 
-    this.Record.domain_id = Number(domain);
+    let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
+    let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+
+    let type = 'A';
+
+    if (content.length === 0) {
+      content = '127.0.0.1';
+    }
+    if (type.length === 0) {
+      type = 'A';
+    }
+    if (ipV4.test(content)) {
+      type = 'A';
+    }
+    if (ipV6.test(content)) {
+      type = 'AAAA';
+    }
+
+    this.Record.domain_id = 0;
     this.Record.name = name;
-    this.Record.type = this.type.value;
+    this.Record.type = type;
     this.Record.content = content;
 
     let body = JSON.stringify(this.Record);
+
     this._dnsService.updateHost(body, this.Record.id).subscribe(
       result => {
         this._router.navigateByUrl('/account/dns');
