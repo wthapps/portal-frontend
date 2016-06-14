@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {MODAL_DIRECTIVES, ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -20,6 +20,9 @@ declare var bootbox:any;
     StarComponent
     , ROUTER_DIRECTIVES
     , MODAL_DIRECTIVES
+  ],
+  providers: [
+    LoadingService
   ]
 })
 
@@ -35,9 +38,12 @@ export class ProductListComponent implements OnInit {
   errorMessage:string;
   products:IProduct[];
 
+  element:any;
+
   constructor(private _productService:ProductService
-              //, private _loadingService:LoadingService
-  ) {
+    , private _loadingService:LoadingService
+    , private _el:ElementRef) {
+    this.element = this._el.nativeElement;
   }
 
   alert() {
@@ -101,9 +107,11 @@ export class ProductListComponent implements OnInit {
   toggleImage():void {
     this.showImage = !this.showImage;
     if (this.showImage) {
-      //this._loadingService.start();
+      //this._loadingService.start(this.element);
+      this._loadingService.start($(this.element).find('.table tr > td:first-child'), 1);
     } else {
-      //this._loadingService.stop();
+      //this._loadingService.stop(this.element);
+      this._loadingService.stop($(this.element).find('.table tr > td:first-child'));
     }
   }
 

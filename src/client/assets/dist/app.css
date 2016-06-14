@@ -6908,6 +6908,30 @@ Animations
   60% {
     transform: translate3d(3px, 0, 0); } }
 
+.box-loading {
+  display: block;
+  position: relative; }
+  .box-loading:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: #fff; }
+  .box-loading:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-image: url("../images/icons/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center center; }
+
 .panel-heading-action {
   position: relative; }
   .panel-heading-action .btn {
