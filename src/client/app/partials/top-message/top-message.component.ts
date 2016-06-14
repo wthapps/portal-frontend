@@ -47,7 +47,7 @@ export class TopMessageComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this._router.changes.subscribe((val) => this.hide());
+    this._router.changes.subscribe((val) => this.hideDialog());
     this.cancelButton = document.getElementById('alert-close');
     this.messageElement = document.getElementById('alert-wrap');
   }

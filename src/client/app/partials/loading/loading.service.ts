@@ -8,17 +8,13 @@ export class LoadingService {
    * @param {el} el - The ElementRef.
    * @param {timeout} Duration to wait before returning the element.
    */
-  public start(el:Object, timeOut?:number) {
+  public start(el:Object, timeOut?:number = 10) {
     if (typeof el.context !== 'undefined') {
       el.addClass('box-loading');
-      if (timeOut) {
-        setTimeout(()=> el.removeClass('box-loading'), 1000 * timeOut);
-      }
+      setTimeout(()=> el.removeClass('box-loading'), 1000 * timeOut);
     } else {
       el.classList.add('box-loading');
-      if (timeOut) {
-        setTimeout(()=> el.classList.remove('box-loading'), 1000 * timeOut);
-      }
+      setTimeout(()=> el.classList.remove('box-loading'), 1000 * timeOut);
     }
   }
 

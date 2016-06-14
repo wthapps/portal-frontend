@@ -1,4 +1,7 @@
-import {Component}                 from '@angular/core';
+import {
+  Component,
+  ViewChild
+}                                  from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
   Router
@@ -13,6 +16,8 @@ import {
 import {AccountMenuComponent}      from '../../menu/account-menu.component';
 import {DnsService, Logger}        from './dns.service';
 import {CustomValidators}          from '../../../shared/validator/custom-validators';
+import {LoadingService}            from '../../../partials/loading/index';
+import {TopMessageService}         from '../../../partials/top-message/index';
 
 @Component({
   moduleId: module.id,
@@ -21,15 +26,22 @@ import {CustomValidators}          from '../../../shared/validator/custom-valida
     ROUTER_DIRECTIVES,
     FORM_DIRECTIVES,
     AccountMenuComponent
+  ],
+  providers: [
+    LoadingService
   ]
 })
 
 export class AccountServicesDNSAddComponent {
   protected pageTitle:string = "New Host";
+  errorMessage:string;
+  @ViewChild('dnsAdd') dnsAdd;
 
   constructor(private _dnsService:DnsService,
               private _router:Router,
-              private _builder:FormBuilder) {
+              private _builder:FormBuilder,
+              private _loadingService:LoadingService,
+              private _topMessageService:TopMessageService) {
     this.group = this._builder.group({
       host: ['',
         Validators.compose([Validators.required, CustomValidators.ipHostFormat])
@@ -41,6 +53,8 @@ export class AccountServicesDNSAddComponent {
   }
 
   onAddNew(domain, name, content?:string = '127.0.0.1', type?:string = 'A'):void {
+    // start loading
+    this._loadingService.start(this.dnsAdd.nativeElement);
 
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
     let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
@@ -57,7 +71,7 @@ export class AccountServicesDNSAddComponent {
     if (ipV6.test(content)) {
       type = 'AAAA';
     }
-    
+
     let record = {
       "id": 0,
       "name": name,
@@ -73,7 +87,11 @@ export class AccountServicesDNSAddComponent {
         this._router.navigateByUrl('/account/dns');
       },
       error => {
-        Logger.Error(JSON.stringify(error));
+        //Logger.Error(JSON.stringify(error));
+        this.errorMessage = JSON.stringify(error);
+        this._topMessageService.activate('danger', this.errorMessage);
+        // stop loading
+        this._loadingService.stop(this.dnsAdd.nativeElement);
       }
     );
   }
