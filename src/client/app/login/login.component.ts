@@ -12,7 +12,7 @@ import {
 }                           from '@angular/common';
 import {CustomValidators}   from '../shared/validator/custom-validators';
 import {UserService}        from '../shared/services/user.service';
-import {TopMessageService} from '../partials/top-message/index';
+import {TopMessageService}  from '../partials/topmessage/index';
 
 @Component({
   moduleId: module.id,

@@ -9,7 +9,7 @@ import {
 // import {RouteParams}        from '@angular/router-deprecated';
 import {ApiBaseService}     from "../../shared/services/apibase.service"
 import {CustomValidators}   from '../../shared/validator/custom-validators';
-import {TopMessageService} from "../../partials/top-message/top-message.service";
+import {TopMessageService} from "../../partials/topmessage/top-message.service";
 
 @Component({
   moduleId: module.id,

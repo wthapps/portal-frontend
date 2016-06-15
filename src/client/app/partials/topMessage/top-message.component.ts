@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Router, OnActivate, RouteSegment} from '@angular/router';
+import {Router} from '@angular/router';
 
 import {TopMessageService} from './top-message.service';
 
@@ -8,7 +8,6 @@ import {TopMessageService} from './top-message.service';
   moduleId: module.id,
   selector: 'wth-alert',
   templateUrl: 'top-message.component.html'
-  //styleUrls: ['alert.component.css']
 })
 export class TopMessageComponent implements OnInit {
   type:string;

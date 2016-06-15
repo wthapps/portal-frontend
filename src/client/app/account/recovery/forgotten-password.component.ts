@@ -8,7 +8,7 @@ import {
 }                           from '@angular/common';
 import {ApiBaseService}     from "../../shared/services/apibase.service"
 import {CustomValidators}   from '../../shared/validator/custom-validators';
-import {TopMessageService} from '../../partials/top-message/index';
+import {TopMessageService} from '../../partials/topmessage/index';
 
 @Component({
   moduleId: module.id,

@@ -6,7 +6,7 @@ import {ProductService} from './product.service';
 import {StarComponent} from '../shared/star.component';
 
 import {DialogService} from '../partials/dialogs/index';
-import {TopMessageService} from '../partials/top-message/index';
+import {TopMessageService} from '../partials/topmessage/index';
 
 @Component({
   moduleId: module.id,

@@ -17,7 +17,7 @@ import {AccountMenuComponent}      from '../../menu/account-menu.component';
 import {DnsService, Logger}        from './dns.service';
 import {CustomValidators}          from '../../../shared/validator/custom-validators';
 import {LoadingService}            from '../../../partials/loading/index';
-import {TopMessageService}         from '../../../partials/top-message/index';
+import {TopMessageService}         from '../../../partials/topmessage/index';
 
 @Component({
   moduleId: module.id,

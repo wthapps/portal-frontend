@@ -15,7 +15,7 @@ import {ApiBaseService} from './shared/services/apibase.service';
 import {UserService} from './shared/services/user.service';
 
 import {DialogService, DialogComponent} from './partials/dialogs/index';
-import {TopMessageService, TopMessageComponent} from './partials/top-message/index';
+import {TopMessageService, TopMessageComponent} from './partials/topmessage/index';
 
 import {HomeComponent} from './home/home.component';
 import {ProductListComponent} from './products/product-list.component';
