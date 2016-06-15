@@ -33,9 +33,9 @@ export class RegisterComponent {
     this.singupForm = this._builder.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
-      birthday_day: [],
-      birthday_month: [],
-      birthday_year: [],
+      birthday_day: ['0'],
+      birthday_month: ['0'],
+      birthday_year: ['0'],
       sex: [],
       accepted: [],
       email: ['',

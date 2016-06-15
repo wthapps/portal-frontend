@@ -14,36 +14,52 @@
         </div>
         <div class="col-sm-5 col-sm-offset-1">
           <form [ngFormModel]="singupForm" (ngSubmit)="signup()" novalidate>
-            <div class="form-group" >
-              <div class="row row-16">
-                <div class="col-xs-6" [ngClass]="{ 'has-error' : !first_name.valid }">
+            <div class="row row-16">
+              <div class="col-xs-6">
+                <div class="form-group"
+                     [ngClass]="{ 'has-error' : singupForm.find('first_name').dirty && !singupForm.find('first_name').valid}">
+                  <label class="sr-only" for="first_name">First Name</label>
                   <input type="text" class="form-control" id="first_name" placeholder="First Name"
-                         #first_name="ngForm" ngControl="first_name">
-                  <div class="help-block" [hidden]="first_name.valid">Required</div>
+                         [ngFormControl]="singupForm.find('first_name')">
+                  <div *ngIf="singupForm.find('first_name').dirty && !singupForm.find('first_name').valid">
+                <span class="help-block"
+                      *ngIf="singupForm.hasError('required', 'first_name')">First name is required</span>
+                  </div>
                 </div>
-                <div class="col-xs-6" [ngClass]="{ 'has-error' : !last_name.valid }">
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group"
+                     [ngClass]="{ 'has-error' : singupForm.find('last_name').dirty && !singupForm.find('last_name').valid}">
+                  <label class="sr-only" for="last_name">Last Name</label>
                   <input type="text" class="form-control" id="last_name" placeholder="Last Name"
-                         ngControl="last_name" #last_name="ngForm">
-                  <div class="help-block" [hidden]="last_name.valid">Required</div>
+                         [ngFormControl]="singupForm.find('last_name')">
+                  <div *ngIf="singupForm.find('last_name').dirty && !singupForm.find('last_name').valid">
+                <span class="help-block"
+                      *ngIf="singupForm.hasError('required', 'last_name')">Last name is required</span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="form-group" [ngClass]="{ 'has-error' : singupForm.find('email').dirty && !singupForm.find('email').valid}">
+            <div class="form-group"
+                 [ngClass]="{ 'has-error' : singupForm.find('email').dirty && !singupForm.find('email').valid}">
               <label class="sr-only" for="email">Email address</label>
               <input type="text" class="form-control" id="email" placeholder="Email"
-                     [ngFormControl]="singupForm.find('email')" [ngClass]="{'has-loading': singupForm.find('email').pending}">
+                     [ngFormControl]="singupForm.find('email')"
+                     [ngClass]="{'has-loading': singupForm.find('email').pending}">
               <div *ngIf="singupForm.find('email').dirty && !singupForm.find('email').valid">
                 <span class="help-block" *ngIf="singupForm.hasError('required', 'email')">An email is required</span>
                 <span class="help-block" *ngIf="singupForm.hasError('emailFormat', 'email')">Email is not valid. eg. example@wthapps.com</span>
                 <span class="help-block" *ngIf="singupForm.hasError('duplicated', 'email')">This email has been registered already</span>
               </div>
             </div>
-            <div class="form-group" [ngClass]="{ 'has-error' : singupForm.find('password').dirty && !singupForm.find('password').valid}">
+            <div class="form-group"
+                 [ngClass]="{ 'has-error' : singupForm.find('password').dirty && !singupForm.find('password').valid}">
               <label class="sr-only" for="password">Password</label>
               <input type="password" class="form-control" id="password" placeholder="Password"
                      [ngFormControl]="singupForm.find('password')">
               <div *ngIf="singupForm.find('password').dirty && !singupForm.find('password').valid">
-                <span class="help-block" *ngIf="singupForm.hasError('required', 'password')">A password is required</span>
+                <span class="help-block"
+                      *ngIf="singupForm.hasError('required', 'password')">A password is required</span>
                 <span class="help-block" *ngIf="singupForm.hasError('minlength', 'password')">A password needs to have at least 6 characters</span>
               </div>
             </div>
@@ -229,7 +245,7 @@
                 <input (click)="sex = 1" type="radio" name="sex"> Female
               </label>
               <label class="radio-inline">
-                <input (click)="sex = 2"  type="radio" name="sex"> Male
+                <input (click)="sex = 2" type="radio" name="sex"> Male
               </label>
               <label class="radio-inline">
                 <input (click)="sex = 3" type="radio" name="sex"> Others
