@@ -25,14 +25,16 @@
           <div class="form-group"
                [ngClass]="{ 'has-error' : updateInfo.find('first_name').dirty && !updateInfo.find('first_name').valid}">
             <label>First Name</label>
-            <input type="text" class="form-control" name="first_name" placeholder="First Name" value="">
+            <input type="text" class="form-control" [ngFormControl]="updateInfo.find('first_name')" name="first_name"
+                   placeholder="First Name" value="">
           </div>
         </div>
         <div class="col-xs-6 col-sm-4">
           <div class="form-group"
-               [ngClass]="{ 'has-error' : updateInfo.find('email').dirty && !updateInfo.find('email').valid}">
-            <label>First Name</label>
-            <input type="text" class="form-control" placeholder="Last Name" value="super">
+               [ngClass]="{ 'has-error' : updateInfo.find('last_name').dirty && !updateInfo.find('last_name').valid}">
+            <label>Last Name</label>
+            <input type="text" class="form-control" [ngFormControl]="updateInfo.find('last_name')" name="last_name"
+                   placeholder="Last Name" value="">
           </div>
         </div>
         <div class="col-xs-12 col-sm-8">
@@ -58,7 +60,7 @@
             <label>Birthday</label>
             <div class="row">
               <div class="col-xs-4">
-                <select class="form-control ng-valid ng-dirty ng-touched" id="birthday_month"
+                <select class="form-control" id="birthday_month"
                         name="birthday_month">
                   <option selected="selected" value="0">Month</option>
                   <option value="1">Jan</option>
@@ -76,9 +78,8 @@
                 </select>
               </div>
               <div class="col-xs-4">
-                <select class="form-control ng-untouched ng-pristine ng-valid" id="birthday_day"
-                        name="birthday_day">
-                  <option selected="selected" value="0">Day</option>
+                <select class="form-control" id="birthday_day" name="birthday_day">
+                  <option selected="" value="0">Day</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -113,7 +114,7 @@
                 </select>
               </div>
               <div class="col-xs-4">
-                <select class="form-control ng-untouched ng-pristine ng-valid" id="birthday_year"
+                <select class="form-control" id="birthday_year"
                         name="birthday_year">
                   <option selected="selected" value="0">Year</option>
                   <option value="2016">2016</option>
