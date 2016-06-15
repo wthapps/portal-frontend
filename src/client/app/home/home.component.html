@@ -34,7 +34,7 @@
         Tons of Products - All for one Great Price. <br>
         We keep on adding more!
       </h3>
-      <a class="btn btn-get btn-danger" *ngIf="!_userService.isLoggedIn()" [routerLink]="['/signup']">Join Free for a Month</a>
+      <a class="btn btn-get btn-danger" *ngIf="!_userService.loggedIn" [routerLink]="['/signup']">Join Free for a Month</a>
       <!--<a class="btn btn-get btn-danger" *ngIf="_userService.isLoggedIn()" [routerLink]="['/account/payment']">Upgrade for only $9.99 per-->
         <!--month</a>-->
     </div>

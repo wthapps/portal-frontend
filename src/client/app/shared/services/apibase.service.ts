@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, RequestOptionsArgs, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
+import {Cookie}     from 'ng2-cookies/ng2-cookies'
 
 @Injectable()
 export abstract class ApiBaseService {
@@ -56,8 +57,12 @@ export abstract class ApiBaseService {
 
   private buildOptions() {
     // Json web token
-    let jwt = localStorage.getItem('jwt');
-    let profile = JSON.parse(localStorage.getItem('profile'));
+    // let jwt = localStorage.getItem('jwt');
+    // let profile = JSON.parse(localStorage.getItem('profile'));
+    
+    let jwt = Cookie.get('jwt');
+    let profile = JSON.parse(Cookie.get('profile'));
+    
     this._headers.delete('Authorization');
     if (jwt) {
       this._headers.append('Authorization', 'Bearer ' + jwt);

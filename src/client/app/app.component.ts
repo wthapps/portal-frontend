@@ -117,6 +117,6 @@ export class AppComponent implements AfterViewInit {
 
   public isLoggedIn() {
     // Check if there's an unexpired JWT
-    return this._userService.isLoggedIn();
+    return this._userService.loggedIn;
   }
 }

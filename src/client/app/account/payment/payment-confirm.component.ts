@@ -1,11 +1,8 @@
-import {Component}            from '@angular/core';
-import {
-  Router,
-  ROUTER_DIRECTIVES
-}                             from '@angular/router';
-import {AccountMenuComponent} from '../menu/account-menu.component';
-import {PaymentService}       from '../../account/payment/payment.service';
-import {UserService}          from '../../shared/services/user.service';
+import {Component}                          from '@angular/core';
+import {Router,ROUTER_DIRECTIVES}           from '@angular/router';
+import {AccountMenuComponent}               from '../menu/account-menu.component';
+import {PaymentService}                     from '../payment.service';
+import {UserService}                        from '../../shared/services/user.service';
 
 @Component({
   moduleId: module.id,

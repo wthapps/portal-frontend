@@ -24,7 +24,9 @@ import {TopMessageService}  from '../partials/topmessage/index';
 })
 
 export class LoginComponent {
+  
   group:ControlGroup;
+
 
   // TODO Consider replacing RouteSegment  by RouteParams when Angular 2 version will be released
   constructor(private _router:Router,
@@ -33,8 +35,7 @@ export class LoginComponent {
               builder:FormBuilder,
               private _toadMessageService: TopMessageService
   ) {
-    this._backUrl = this._params.parameters['back_url'];
-
+    
     this.group = builder.group({
       email: ['',
         Validators.compose([Validators.required, CustomValidators.emailFormat])
@@ -52,7 +53,8 @@ export class LoginComponent {
     this._userService.login('users/sign_in', body, false)
       .subscribe((result) => {
           if (result) {
-            this._router.navigateByUrl('');
+            var next = this._params.getParam('next')===false ? '': this._params.getParam('next').replace(/\%20/g,'\/');            
+            this._router.navigateByUrl(next);
           }
         },
         error => {
