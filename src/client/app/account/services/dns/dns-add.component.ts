@@ -54,7 +54,7 @@ export class AccountServicesDNSAddComponent {
 
   onAddNew(domain, name, content?:string = '127.0.0.1', type?:string = 'A'):void {
     // start loading
-    this._loadingService.start(this.dnsAdd.nativeElement);
+    this._loadingService.start();
 
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
     let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
@@ -95,7 +95,7 @@ export class AccountServicesDNSAddComponent {
         }
         this._topMessageService.activate('danger', this.errorMessage);
         // stop loading
-        this._loadingService.stop(this.dnsAdd.nativeElement);
+        this._loadingService.stop();
       }
     );
   }

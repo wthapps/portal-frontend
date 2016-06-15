@@ -1,0 +1,64 @@
+.box-loading {
+  display: block;
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: #fff;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-image: url('../images/icons/loading.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+}
+
+.in-loading {
+  &.modal {
+    .modal-dialog {
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
+      border-radius: $border-radius-base;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -75px;
+      margin-top: -75px;
+      &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background-color: #fff;
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        background-image: url('../images/icons/loading.gif');
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+    }
+  }
+}
