@@ -1,37 +1,28 @@
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <account-menu></account-menu>
-        </div>
-        <div class="col-sm-9">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{PanelTitle}}</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Billing</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Expires on</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>dns@gmail.com</td>
-                            <td>Free Account</td>
-                            <td>$0</td>
-                            <td><span class="label label-success">active</span></td>
-                            <td>06/30/2016</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <a [routerLink]="['/account/payment']" class="btn btn-danger pull-right">Upgrade now</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{PanelTitle}}</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Username</th>
+        <th>Billing</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Expires on</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>dns@gmail.com</td>
+        <td>Free Account</td>
+        <td>$0</td>
+        <td><span class="label label-success">active</span></td>
+        <td>06/30/2016</td>
+      </tr>
+      </tbody>
+    </table>
+    <a [routerLink]="['/account/payment']" class="btn btn-danger pull-right">Upgrade now</a>
+  </div>
 </div>

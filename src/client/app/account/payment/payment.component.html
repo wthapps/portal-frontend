@@ -1,106 +1,96 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-3">
-      <account-menu></account-menu>
-    </div>
-    <div class="col-sm-9">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Payment Method</h3>
-        </div>
-        <div class="panel-body panel-creditcard">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="form-container">
-                <form id="payment-method-card" class="scale-down">
-                  <div class="form-group">
-                    <label class="cardinfo-label" for="cardholder-name">Name on card</label>
-                    <input class="form-control" type="text" id="cardholder-name" name="cardholder-name"
-                           placeholder="MICHEAL DO" value="Thinh Huynh Doan">
-                  </div>
-                  <div class="form-group">
-                    <label class="cardinfo-label" for="card-number">Card Number</label>
-                    <div class="cardinfo-card-number">
-                      <div class="form-control" id="card-number"></div>
-                      <div id="card-image"></div>
-                    </div>
-                  </div>
-                  <div class="row row-16 form-group">
-                    <div class="col-sm-6">
-                      <label class="cardinfo-label" for="expiration-date">Valid Thru</label>
-                      <div class='form-control' id="expiration-date"></div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label class="cardinfo-label" for="cvv">CVV</label>
-                      <div class='form-control' id="cvv"></div>
-                    </div>
-                  </div>
-                </form>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Payment Method</h3>
+  </div>
+  <div class="panel-body panel-creditcard">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-container">
+          <form id="payment-method-card" class="scale-down">
+            <div class="form-group">
+              <label class="cardinfo-label" for="cardholder-name">Name on card</label>
+              <input class="form-control" type="text" id="cardholder-name" name="cardholder-name"
+                     placeholder="MICHEAL DO" value="Thinh Huynh Doan">
+            </div>
+            <div class="form-group">
+              <label class="cardinfo-label" for="card-number">Card Number</label>
+              <div class="cardinfo-card-number">
+                <div class="form-control" id="card-number"></div>
+                <div id="card-image"></div>
               </div>
             </div>
-            <div class="col-sm-6">
-              <h3 class="creditcard-accepted-tt">
-                We accept:
-              </h3>
-              <ul class="list-unstyled">
-                <li><img src="assets/images/card/credit_card.png" alt="credit_card"></li>
-              </ul>
+            <div class="row row-16 form-group">
+              <div class="col-sm-6">
+                <label class="cardinfo-label" for="expiration-date">Valid Thru</label>
+                <div class='form-control' id="expiration-date"></div>
+              </div>
+              <div class="col-sm-6">
+                <label class="cardinfo-label" for="cvv">CVV</label>
+                <div class='form-control' id="cvv"></div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Billing address</h3>
-        </div>
-        <div class="panel-body panel-creditcard">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label class="cardinfo-label" for="address-line-1">Address line 1</label>
-                <input class="form-control" type="text" id="address-line-1" name="address-line-1" placeholder=""
-                       value="123 Nguyen Trung Ngan">
-              </div>
-              <div class="form-group">
-                <label class="cardinfo-label" for="address-line-2">Address line 2 <span class="optional">(optional)</span></label>
-                <input class="form-control" type="text" id="address-line-2" name="address-line-2" placeholder=""
-                value="456 Hai Ba Trung">
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="row row-16 form-group">
-                <div class="mb0 col-xs-6">
-                  <label class="cardinfo-label" for="country">Country</label>
-                  <select class="form-control" id="country" #country name="country">
-                    <option *ngFor="let country of countries; let i = index" [selected]="i === 39"
-                            value="{{country.key}}">{{country.value}}</option>
-                  </select>
-                </div>
-                <div class="mb0 col-xs-6">
-                  <label class="cardinfo-label" for="city">City</label>
-                  <input class="form-control" type="text" id="city" #city name="city" placeholder=""
-                  value="Vancouver">
-                </div>
-              </div>
-              <div class="row row-16 form-group">
-                <div class="mb0 col-xs-6">
-                  <label class="cardinfo-label" for="postcode">Postal Code <span class="optional">(optional)</span></label>
-                  <input class="form-control" type="text" id="postcode" name="postcode" placeholder="" value="123">
-                </div>
-                <div class="mb0 col-xs-6">
-                  <label class="cardinfo-label" for="region">State/Province <span class="optional">(optional)</span></label>
-                  <input class="form-control" type="text" id="region" #region name="region" placeholder="" value="BC">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center mt20">
-        <a [routerLink]="['/account']" class="btn btn-default mr10">Cancel</a>
-        <input id="button-pay" class="btn btn-primary ml10" type="submit" value="Continue">
+      <div class="col-sm-6">
+        <h3 class="creditcard-accepted-tt">
+          We accept:
+        </h3>
+        <ul class="list-unstyled">
+          <li><img src="assets/images/card/credit_card.png" alt="credit_card"></li>
+        </ul>
       </div>
     </div>
   </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Billing address</h3>
+  </div>
+  <div class="panel-body panel-creditcard">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="cardinfo-label" for="address-line-1">Address line 1</label>
+          <input class="form-control" type="text" id="address-line-1" name="address-line-1" placeholder=""
+                 value="123 Nguyen Trung Ngan">
+        </div>
+        <div class="form-group">
+          <label class="cardinfo-label" for="address-line-2">Address line 2 <span class="optional">(optional)</span></label>
+          <input class="form-control" type="text" id="address-line-2" name="address-line-2" placeholder=""
+                 value="456 Hai Ba Trung">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row row-16 form-group">
+          <div class="mb0 col-xs-6">
+            <label class="cardinfo-label" for="country">Country</label>
+            <select class="form-control" id="country" #country name="country">
+              <option *ngFor="let country of countries; let i = index" [selected]="i === 39"
+                      value="{{country.key}}">{{country.value}}</option>
+            </select>
+          </div>
+          <div class="mb0 col-xs-6">
+            <label class="cardinfo-label" for="city">City</label>
+            <input class="form-control" type="text" id="city" #city name="city" placeholder=""
+                   value="Vancouver">
+          </div>
+        </div>
+        <div class="row row-16 form-group">
+          <div class="mb0 col-xs-6">
+            <label class="cardinfo-label" for="postcode">Postal Code <span class="optional">(optional)</span></label>
+            <input class="form-control" type="text" id="postcode" name="postcode" placeholder="" value="123">
+          </div>
+          <div class="mb0 col-xs-6">
+            <label class="cardinfo-label" for="region">State/Province <span class="optional">(optional)</span></label>
+            <input class="form-control" type="text" id="region" #region name="region" placeholder="" value="BC">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center mt20">
+  <a [routerLink]="['/account']" class="btn btn-default mr10">Cancel</a>
+  <input id="button-pay" class="btn btn-primary ml10" type="submit" value="Continue">
 </div>

@@ -1,78 +1,69 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-3">
-      <account-menu></account-menu>
-    </div>
-    <div class="col-sm-9">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Confirm Your Purchase</h3>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Confirm Your Purchase</h3>
+  </div>
+  <div class="panel-body panel-creditcard">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Payment Method</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">Credit Card</p>
         </div>
-        <div class="panel-body panel-creditcard">
-          <div class="form-horizontal">
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Payment Method</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">Credit Card</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Card Number</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">**** **** **** 3703 - VISA</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Address line 1</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">21 Nguyen Trung Ngan</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Address line 2</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">43 Nguyen Trung Ngan</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">State/Province</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">Dist 1</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Postal Code</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">70000</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">City</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">Ho Chi Minh</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Country</label>
-              <div class="col-sm-8">
-                <p class="form-control-static">Vietnam</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Order total:</label>
-              <div class="col-sm-8">
-                <p class="form-control-static"><span class="bold fz18 text-danger" style="line-height: 1;">USD $9.9</span></p>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-4 text-right">
-                <a class="btn btn-default" [routerLink]="['/account/payment']">Edit</a>
-              </div>
-              <div class="col-sm-8">
-                <button (click)="confirm()" class="btn btn-primary">Upgrade</button>
-              </div>
-            </div>
-          </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Card Number</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">**** **** **** 3703 - VISA</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Address line 1</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">21 Nguyen Trung Ngan</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Address line 2</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">43 Nguyen Trung Ngan</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">State/Province</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">Dist 1</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Postal Code</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">70000</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">City</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">Ho Chi Minh</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Country</label>
+        <div class="col-sm-8">
+          <p class="form-control-static">Vietnam</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Order total:</label>
+        <div class="col-sm-8">
+          <p class="form-control-static"><span class="bold fz18 text-danger" style="line-height: 1;">USD $9.9</span></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-4 text-right">
+          <a class="btn btn-default" [routerLink]="['/account/payment']">Edit</a>
+        </div>
+        <div class="col-sm-8">
+          <button (click)="confirm()" class="btn btn-primary">Upgrade</button>
         </div>
       </div>
     </div>
