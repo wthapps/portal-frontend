@@ -113,7 +113,12 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
       },
       error => {
         //Logger.Error(JSON.stringify(error));
-        this.errorMessage = JSON.stringify(error);
+        let err = JSON.stringify(error);
+        //Logger.Error(err);
+        this.errorMessage = err;
+        if (error.status === 409) {
+          this.errorMessage = 'Hostname has already been taken';
+        }
         this._topMessageService.activate('danger', this.errorMessage);
         // stop loading
         this._loadingService.stop(this.dnsUpdate.nativeElement);

@@ -100,7 +100,7 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
 
   {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
-  {path: '/account/dns/update/:id', component: AccountServicesDNSUpdateComponent},
+  {path: '/account/dns/:id', component: AccountServicesDNSUpdateComponent},
   {path: '/account/dns', component: AccountServicesDNSComponent},
 
   {path: '/account/vpn', component: AccountServicesVPNComponent},

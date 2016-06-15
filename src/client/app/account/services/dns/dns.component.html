@@ -13,7 +13,7 @@
             <tr>
               <th>Hostname</th>
               <th>IP Adress</th>
-              <th>Type</th>
+              <th>IP Version</th>
               <th>Last Update</th>
               <th>Action</th>
             </tr>
@@ -26,11 +26,11 @@
               </td>
               <td>{{record.content}}</td>
               <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
-              <td>{{record.updated_at | date:'dd-M-yyyy H:mm:ss' : 'UTC'}}</td>
+              <td>{{record.updated_at | date:'dd-M-yyyy' : 'UTC'}} {{record.updated_at | date:'H:mm:ss' : 'UTC'}}</td>
               <td>
                 <!--<a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
                   {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>-->
-                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns/update', record.id]"
+                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns', record.id]"
                    role="button">Edit</a>
                 <a class="btn btn-sm btn-danger" [routerLink]="['/account/dns/']" role="button"
                    (click)="onDeleteHost($event, record.id)">Delete</a>

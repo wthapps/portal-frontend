@@ -70,13 +70,20 @@ export class DnsService {
       .catch(this.handleError);
   }
 
-  public addHost(body:string) {
+  /*public addHost(body:string) {
     console.log(this._url);
+    console.log(body);
     return this._service.post(this._url, body)
       .map(response => response.json())
       .do(data => Logger.Info('JSON data: ' + JSON.stringify(data)))
       .catch(this.handleError);
+  }*/
+  public addHost(body:string) {
+    console.log(this._url);
+    console.log(body);
+    return this._service.post(this._url, body);
   }
+
 
   public deleteHost(id:number) {
     return this._service.delete(this._url + id)
@@ -85,12 +92,16 @@ export class DnsService {
       .catch(this.handleError);
   }
 
-  public updateHost(body:string, id: number) {
+  /*public updateHost(body:string, id: number) {
     return this._service.patch(this._url + id, body)
       .map(response => response.json())
       .do(data => Logger.Info('JSON data: ' + JSON.stringify(data)))
       .catch(this.handleError);
+  }*/
+  public updateHost(body:string, id: number) {
+    return this._service.patch(this._url + id, body);
   }
+
 
   public getHost(id:number) {
     return this._service.get(this._url + id)
@@ -106,6 +117,10 @@ export class DnsService {
   }
 
   private handleError(error:Response) {
+    /*console.log(error.status);
+    if (error.status === HTTP_RESPONSE_CONFLICT) {
+      return Observable.throw(error.json().error || 'Hostname has already been taken');
+    }*/
     return Observable.throw(error.json().error || 'Server error');
   }
 
