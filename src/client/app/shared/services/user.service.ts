@@ -1,18 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Http, Response} from '@angular/http';
+import {Cookie}         from 'ng2-cookies/ng2-cookies'
 import {ApiBaseService} from './apibase.service';
 
 @Injectable()
 export class UserService extends ApiBaseService {
 
-  private _loggedIn:boolean = false;
-  public profile: Object;
+  public loggedIn: boolean = false;
+  public profile: Object = null;
+
 
   constructor(http: Http) {
     super(http);
-    this._loggedIn = !!localStorage.getItem('jwt');
-    this.profile = JSON.parse(localStorage.getItem('profile'));
+    this.readUserInfo();
+    console.log("loading ueser service");
   }
 
   public login(path: string, body: string, useJwt?: boolean = true): Observable<Response>{
@@ -21,7 +23,7 @@ export class UserService extends ApiBaseService {
       .map(res => res.json())
       .map((res) => {
         if(res){
-          this.storeLoggedUserInfo(res)
+          this.storeUserInfo(res)
         }
         return res;
       });
@@ -32,10 +34,7 @@ export class UserService extends ApiBaseService {
     return super.delete(path)
       .map(res => res.json())
       .map((res) => {
-        localStorage.removeItem('jwt');
-        localStorage.removeItem('profile');
-        this._loggedIn = false;
-        this.profile = null;
+        this.deleteUserInfo();
         return res;
       });
   }
@@ -48,18 +47,19 @@ export class UserService extends ApiBaseService {
       .map(res => res.json())
       .map((res) => {
         if(res){
-          this.storeLoggedUserInfo(res);
+          this.storeUserInfo(res);
         }
         return res;
       });
   }
 
-  /*
-   * `check if` user logged or did not.
-   */
-  public isLoggedIn(){
-    return this._loggedIn;
-  }
+  // /*
+  //  * `check if` user logged or did not.
+  //  */
+  // public loggedIn(){
+  //   // console.log('loading login: ', this._loggedIn);
+  //   return this.loggedIn;
+  // }
 
   /*
    * change current password
@@ -75,17 +75,38 @@ export class UserService extends ApiBaseService {
       });
   }
 
-  private storeLoggedUserInfo(response){
-    localStorage.setItem('jwt', response.token);
-    localStorage.setItem('profile', JSON.stringify(response.data));
-    this.profile = JSON.parse(localStorage.getItem('profile'));
-    this._loggedIn = true;
+  private storeUserInfo(response){
+    console.log("store userinfo");
+    Cookie.set('jwt', response.token);
+    Cookie.set('profile', JSON.stringify(response.data));
+    Cookie.set('logged_in', 'true');
+    this.loggedIn = true;
+    this.profile = response.data;
   }
+
+  private readUserInfo(){
+    console.log("read userinfo");
+    this.profile = JSON.parse(Cookie.get('profile'));
+    this.loggedIn = Boolean(Cookie.get('logged_in'));
+  }
+
+  private deleteUserInfo(){
+    console.log("delete userinfo");
+    Cookie.delete('jwt');
+    Cookie.delete('logged_in');
+    Cookie.delete('profile');
+    this.loggedIn = false;
+    this.profile = null;
+  }
+
 }
 
-export function isLoggedIn(){
-  return !!localStorage.getItem('jwt');
-}
+// export function loggedIn(){
+//   // return !!localStorage.getItem('jwt');
+//   // return !!Cookie.get('jwt');
+//   console.log('loading111 login: ', this._loggedIn);
+//   return this._loggedIn;
+// }
 
 export class User {
   constructor(

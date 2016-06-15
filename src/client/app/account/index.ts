@@ -22,9 +22,10 @@ export * from './menu/account-menu.component';
 /**
  *  Payment
  */
-export * from './payment/plans.component';
-export * from './payment/billing.component';
-export * from './payment/payment.component';
+export * from './plans.component';
+export * from './plan-details.component';
+export * from './billing-details.component';
+export * from './payment.component';
 export * from './payment/payment-confirm.component';
 /**
  *  Services

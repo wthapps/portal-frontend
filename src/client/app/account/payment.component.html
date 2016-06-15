@@ -52,13 +52,15 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label class="cardinfo-label" for="address-line-1">Address line 1</label>
-          <input class="form-control" type="text" id="address-line-1" name="address-line-1" placeholder=""
-                 value="123 Nguyen Trung Ngan">
+          <input class="form-control" type="text" id="address-line-1" name="address-line-1"
+                 placeholder="" value="123 Nguyen Trung Ngan">
         </div>
         <div class="form-group">
-          <label class="cardinfo-label" for="address-line-2">Address line 2 <span class="optional">(optional)</span></label>
-          <input class="form-control" type="text" id="address-line-2" name="address-line-2" placeholder=""
-                 value="456 Hai Ba Trung">
+          <label class="cardinfo-label" for="address-line-2">Address line 2
+            <span class="optional">(optional)</span>
+          </label>
+          <input class="form-control" type="text" id="address-line-2" name="address-line-2"
+                 placeholder="" value="456 Hai Ba Trung">
         </div>
       </div>
       <div class="col-sm-6">
@@ -73,7 +75,7 @@
           <div class="mb0 col-xs-6">
             <label class="cardinfo-label" for="city">City</label>
             <input class="form-control" type="text" id="city" #city name="city" placeholder=""
-                   value="Vancouver">
+            value="Vancouver">
           </div>
         </div>
         <div class="row row-16 form-group">
@@ -90,7 +92,9 @@
     </div>
   </div>
 </div>
+
 <div class="text-center mt20">
   <a [routerLink]="['/account']" class="btn btn-default mr10">Cancel</a>
   <input id="button-pay" class="btn btn-primary ml10" type="submit" value="Continue">
 </div>
+

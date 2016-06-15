@@ -1,12 +1,9 @@
-import {Component, AfterViewInit}            from '@angular/core';
-import {
-  Router,
-  ROUTER_DIRECTIVES
-}                             from '@angular/router';
-import {AccountMenuComponent} from '../menu/account-menu.component';
-import {PaymentService}       from '../../account/payment/payment.service';
-import {UserService}          from '../../shared/services/user.service';
-import {CountryListComponent} from '../../shared/services/country.component';
+import {Component, AfterViewInit}     from '@angular/core';
+import {Router, ROUTER_DIRECTIVES}    from '@angular/router';
+import {AccountMenuComponent}         from './menu/account-menu.component';
+import {PaymentService}               from './payment.service';
+import {UserService}                  from '../shared/services/user.service';
+import {CountryListComponent}         from '../shared/services/country.component';
 
 declare var braintree:any;
 
@@ -23,7 +20,7 @@ declare var braintree:any;
   ]
 })
 
-export class AccountAddCardComponent implements AfterViewInit {
+export class PaymentComponent implements AfterViewInit {
   PanelTitle:string = 'Find Services and add-ons';
 
   countries:any;
@@ -174,7 +171,7 @@ export class AccountAddCardComponent implements AfterViewInit {
                   if(response.data == null){
 
                   }else {
-                    _this._router.navigateByUrl('account/payment/confirm');
+                    _this._router.navigateByUrl('account/plans');
                   }
                 },
                 error => {

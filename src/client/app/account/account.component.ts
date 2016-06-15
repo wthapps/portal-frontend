@@ -13,9 +13,10 @@ import {
   ChangePasswordComponent,
 
   // payment
-  AccountPlansComponent,
-  AccountBillingComponent,
-  AccountAddCardComponent,
+  PlansComponent,
+  PlanDetailsComponent,
+  BillingDetailsComponent,
+  PaymentComponent,
   PaymentConfirmComponent,
 
   // Services
@@ -41,10 +42,11 @@ import {
 
   {path: '/services', component: AccountServicesListComponent},
 
-  {path: '/plans', component: AccountPlansComponent},
-  {path: '/billing', component: AccountBillingComponent},
+  {path: '/plans', component: PlansComponent},
+  {path: '/plan-details', component: PlanDetailsComponent},
+  {path: '/billing-details', component: BillingDetailsComponent},
   {path: '/payment/confirm', component: PaymentConfirmComponent},
-  {path: '/payment', component: AccountAddCardComponent},
+  {path: '/payment', component: PaymentComponent},
 
   {path: '/setting/changepassword', component: ChangePasswordComponent},
   {path: '/setting/profile', component: MyAccountComponent},
