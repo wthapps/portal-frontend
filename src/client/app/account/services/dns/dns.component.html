@@ -1,54 +1,44 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-3">
-      <account-menu></account-menu>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{pageTitle}}</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-bordered">
+      <tr>
+        <th>Hostname</th>
+        <th>IP Adress</th>
+        <th>IP Version</th>
+        <th>Last Update</th>
+        <th>Action</th>
+      </tr>
+      <tr *ngIf="Records.length == 0">
+        <td class="text-center" colspan="5">No data</td>
+      </tr>
+      <tr *ngFor="let record of Records">
+        <td>
+          {{record.name}}.wthdns.com
+        </td>
+        <td>{{record.content}}</td>
+        <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
+        <td>{{record.updated_at | date:'dd-M-yyyy' : 'UTC'}} {{record.updated_at | date:'H:mm:ss' : 'UTC'}}</td>
+        <td>
+          <!--<a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
+            {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>-->
+          <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns', record.id]"
+             role="button">Edit</a>
+          <a class="btn btn-sm btn-danger" [routerLink]="['/account/dns/']" role="button"
+             (click)="onDeleteHost($event, record.id)">Delete</a>
+        </td>
+      </tr>
+    </table>
+    <div class="form-group text-right">
+      <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
     </div>
-    <div class="col-sm-9">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">{{pageTitle}}</h3>
-        </div>
-        <div class="panel-body">
-          <table class="table table-bordered">
-            <tr>
-              <th>Hostname</th>
-              <th>IP Adress</th>
-              <th>IP Version</th>
-              <th>Last Update</th>
-              <th>Action</th>
-            </tr>
-            <tr *ngIf="Records.length == 0">
-              <td class="text-center" colspan="5">No data</td>
-            </tr>
-            <tr *ngFor="let record of Records">
-              <td>
-                {{record.name}}.wthdns.com
-              </td>
-              <td>{{record.content}}</td>
-              <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
-              <td>{{record.updated_at | date:'dd-M-yyyy' : 'UTC'}} {{record.updated_at | date:'H:mm:ss' : 'UTC'}}</td>
-              <td>
-                <!--<a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
-                  {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>-->
-                <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns', record.id]"
-                   role="button">Edit</a>
-                <a class="btn btn-sm btn-danger" [routerLink]="['/account/dns/']" role="button"
-                   (click)="onDeleteHost($event, record.id)">Delete</a>
-              </td>
-            </tr>
-          </table>
-          <div class="form-group text-right">
-            <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
-          </div>
-          <div class="text-center">
-            DNS Updater
-            <a target="_blank"
-               href="https://drive.google.com/uc?export=download&id=0B5zHJKYP0TglT0xrd2NaNmVTLU0"
-            >Download now <i class="glyphicon glyphicon-download"></i></a>
-          </div>
-        </div>
-      </div>
-
+    <div class="text-center">
+      DNS Updater
+      <a target="_blank"
+         href="https://drive.google.com/uc?export=download&id=0B5zHJKYP0TglT0xrd2NaNmVTLU0"
+      >Download now <i class="glyphicon glyphicon-download"></i></a>
     </div>
   </div>
 </div>

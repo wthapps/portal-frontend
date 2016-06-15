@@ -24,31 +24,11 @@ import {ProductService} from './products/product.service';
 import {DnsService} from './account/services/dns/dns.service';
 
 import {
-  AccountDashboardComponent,
   ForgottenPasswordComponent,
   NewPasswordComponent,
   ResetEmailSentComponent,
   PasswordResetComponent,
-  PasswordResetCompleteComponent,
-  MyAccountComponent,
-  ChangePasswordComponent,
-
-  // payment
-  AccountPlansComponent,
-  AccountBillingComponent,
-  AccountAddCardComponent,
-  PaymentConfirmComponent,
-
-  // Services
-  AccountServicesListComponent,
-  // DNS
-  AccountServicesDNSComponent,
-  AccountServicesDNSAddComponent,
-  AccountServicesDNSUpdateComponent,
-  // VPN
-  AccountServicesVPNComponent,
-  // EFax
-  AccountServicesEFaxComponent
+  PasswordResetCompleteComponent
 } from './account/index';
 
 // Base href
@@ -57,6 +37,7 @@ import {AboutComponent} from './about/about.component';
 import {SupportComponent} from './support/support.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
+import {AccountComponent} from './account/account.component';
 
 
 @Component({
@@ -99,24 +80,7 @@ import {RegisterComponent} from './register/register.component';
   {path: '/account/password_reset', component: PasswordResetComponent},
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
 
-  {path: '/account/dns/add', component: AccountServicesDNSAddComponent},
-  {path: '/account/dns/:id', component: AccountServicesDNSUpdateComponent},
-  {path: '/account/dns', component: AccountServicesDNSComponent},
-
-  {path: '/account/vpn', component: AccountServicesVPNComponent},
-
-  {path: '/account/efax', component: AccountServicesEFaxComponent},
-
-  {path: '/account/services', component: AccountServicesListComponent},
-
-  {path: '/account/plans', component: AccountPlansComponent},
-  {path: '/account/billing', component: AccountBillingComponent},
-  {path: '/account/payment/confirm', component: PaymentConfirmComponent},
-  {path: '/account/payment', component: AccountAddCardComponent},
-
-  {path: '/account/setting/changepassword', component: ChangePasswordComponent},
-  {path: '/account/setting/profile', component: MyAccountComponent},
-  {path: '/account/setting/dashboard', component: AccountDashboardComponent},
+  {path: '/account', component: AccountComponent},
 
   {path: '/', component: HomeComponent}
 ])
