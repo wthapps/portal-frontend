@@ -11,14 +11,11 @@ import {
 import {UserService}          from '../../shared/services/user.service';
 import {CustomValidators}     from '../../shared/validator/custom-validators';
 
-import {AccountMenuComponent} from '../menu/account-menu.component';
-
 @Component({
   moduleId: module.id,
   templateUrl: 'my-account.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    AccountMenuComponent,
     FORM_DIRECTIVES
   ],
   providers: [

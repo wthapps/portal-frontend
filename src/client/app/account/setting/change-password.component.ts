@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
-import {FormBuilder, Validators, ControlGroup, NgForm, NgFormModel} from '@angular/common';
-import {AccountMenuComponent} from '../menu/account-menu.component';
+import {FormBuilder, Validators} from '@angular/common';
 import {UserService} from "../../shared/services/user.service";
 import {ControlMessages} from '../../shared/control.message.component'
 import {ValidationService} from '../../shared/services/validation.service'
@@ -11,7 +10,6 @@ import {ValidationService} from '../../shared/services/validation.service'
   templateUrl: 'change-password.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    AccountMenuComponent,
     ControlMessages
   ]
 })

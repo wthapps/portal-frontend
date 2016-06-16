@@ -1,8 +1,6 @@
 import {Component, OnInit}         from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
-import {AccountMenuComponent}      from '../../menu/account-menu.component';
-
 import {IRecord}                   from './record';
 import {DnsService, Logger}        from './dns.service';
 import {DialogService}             from '../../../partials/dialogs/index';
@@ -12,8 +10,7 @@ import {DialogService}             from '../../../partials/dialogs/index';
   templateUrl: 'dns.component.html',
   directives:
   [
-    ROUTER_DIRECTIVES,
-    AccountMenuComponent
+    ROUTER_DIRECTIVES
   ]
 })
 

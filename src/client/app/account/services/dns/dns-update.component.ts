@@ -17,7 +17,6 @@ import {
   Validators
 }                             from '@angular/common';
 
-import {AccountMenuComponent} from '../../menu/account-menu.component';
 import {DnsService, Logger}   from './dns.service';
 import {IRecord, Type}        from './record';
 import {CustomValidators}     from '../../../shared/validator/custom-validators';
@@ -29,8 +28,7 @@ import {TopMessageService}    from '../../../partials/topmessage/index';
   templateUrl: 'dns-update.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    FORM_DIRECTIVES,
-    AccountMenuComponent
+    FORM_DIRECTIVES
   ],
   providers: [
     LoadingService

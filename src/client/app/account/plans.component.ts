@@ -1,6 +1,5 @@
 import {Component}                                  from '@angular/core';
 import {ROUTER_DIRECTIVES}                          from '@angular/router';
-import {AccountMenuComponent}                       from './menu/account-menu.component';
 import {Router, ROUTER_DIRECTIVES, RouteSegment}    from '@angular/router';
 import {UserService}                                from '../shared/services/user.service';
 
@@ -8,8 +7,7 @@ import {UserService}                                from '../shared/services/use
   moduleId: module.id,
   templateUrl: 'plans.component.html',
   directives: [
-    ROUTER_DIRECTIVES,
-    AccountMenuComponent
+    ROUTER_DIRECTIVES
   ]
 })
 

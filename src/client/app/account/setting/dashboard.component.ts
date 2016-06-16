@@ -1,14 +1,12 @@
 import {Component} from '@angular/core';
 import {Router, ROUTER_DIRECTIVES, RouteSegment} from '@angular/router';
-import {AccountMenuComponent} from '../menu/account-menu.component';
-import {UserService} from "../../shared/services/user.service";
+import {UserService, CONFIG} from "../../shared/index";
 
 @Component({
   moduleId: module.id,
   templateUrl: 'dashboard.component.html',
   directives: [
-    ROUTER_DIRECTIVES,
-    AccountMenuComponent
+    ROUTER_DIRECTIVES
   ]
 })
 
@@ -16,7 +14,7 @@ export class AccountDashboardComponent {
 
   constructor(private _router: Router, private _userService: UserService, private _segment: RouteSegment){
     if (!this._userService.loggedIn){
-      _router.navigateByUrl(`/login;next=${this._router._location.path().replace(/\//g, "\%20")}`);
+      _router.navigateByUrl(`/login;${CONFIG.string.next}=${this._router._location.path().replace(/\//g, "\%20")}`);
     }
   }
 

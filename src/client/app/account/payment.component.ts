@@ -1,6 +1,5 @@
 import {Component, AfterViewInit}     from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}    from '@angular/router';
-import {AccountMenuComponent}         from './menu/account-menu.component';
 import {PaymentService}               from './payment.service';
 import {UserService}                  from '../shared/services/user.service';
 import {CountryListComponent}         from '../shared/services/country.component';
@@ -11,8 +10,7 @@ declare var braintree:any;
   moduleId: module.id,
   templateUrl: 'payment.component.html',
   directives: [
-    ROUTER_DIRECTIVES,
-    AccountMenuComponent
+    ROUTER_DIRECTIVES
   ],
   providers: [
     PaymentService,
