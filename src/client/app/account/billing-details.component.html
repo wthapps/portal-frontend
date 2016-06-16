@@ -1,78 +1,41 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Credit Card Information</h3>
+    <h3 class="panel-title">Billing details</h3>
   </div>
   <div class="panel-body">
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="card-box">
-          <div class="media">
-            <div class="media-left">
-              <i style="font-size:50px;" class="glyphicon glyphicon-credit-card"></i>
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">Credit card</h4>
-              <p>**** **** **** 3703 - VISA</p>
-            </div>
-          </div>
-          <div class="clearfix">
-            <span class="bold">Expiration:</span> 01/2021 <br>
-            <span class="bold">Card holder:</span> TRAN TRUNG NGHIA
-          </div>
-          <div class="clearfix">
-            <div class="pull-left">
-              <div class="radio">
-                <label>
-                  <input type="radio" name="payment-method-default" value="option1" checked>
-                  Default
-                </label>
-              </div>
-            </div>
-            <div class="pull-right">
-              <button class="btn btn-primary">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="card-box">
-          <div class="media">
-            <div class="media-left">
-              <i style="font-size:50px;" class="glyphicon glyphicon-credit-card"></i>
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">Credit card</h4>
-              <p>**** **** **** 3703 - VISA</p>
-            </div>
-          </div>
-          <div class="clearfix">
-            <span class="bold">Expiration:</span> 01/2021 <br>
-            <span class="bold">Card holder:</span> TRAN TRUNG NGHIA
-          </div>
-          <div class="clearfix">
-            <div class="pull-left">
-              <div class="radio">
-                <label>
-                  <input type="radio" name="payment-method-default" value="option2">
-                  Default
-                </label>
-              </div>
-            </div>
-            <div class="pull-right">
-              <button class="btn btn-primary">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <dl class="dl-horizontal">
+      <dt>Type</dt>
+      <dd>VISA</dd>
+      <dt>Name</dt>
+      <dd>TRAN TRUNG NGHIA</dd>
+      <dt>Number</dt>
+      <dd>**** **** **** 3703</dd>
+      <dt>Expiry</dt>
+      <dd>01/2021</dd>
+    </dl>
+    <hr>
+    <dl class="dl-horizontal">
+      <dt>Address</dt>
+      <dd>Nguyen Trung Ngan</dd>
+      <dt>City</dt>
+      <dd>Ho chi Minh</dd>
+      <dt>State</dt>
+      <dd>QUAN 1</dd>
+      <dt>Postcode</dt>
+      <dd>70000</dd>
+      <dt>Country</dt>
+      <dd>Vietnam</dd>
+    </dl>
+    <hr>
     <div class="clearfix mt40">
-      <a [routerLink]="['/account/payment']" class="btn btn-danger pull-right">Add new card</a>
+      <a [routerLink]="['/account/payment']" class="btn btn-default">Edit</a>
     </div>
   </div>
 </div>
+
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Billing History</h3>
+    <h3 class="panel-title">Billing history</h3>
   </div>
   <div class="panel-body">
     <table class="table table-striped">
@@ -99,3 +62,4 @@
     </table>
   </div>
 </div>
+
