@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, RequestOptionsArgs, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Cookie}     from 'ng2-cookies/ng2-cookies'
+import {CONFIG}     from '../index'
 
 @Injectable()
 export abstract class ApiBaseService {
   private _http:Http;
   private _options:RequestOptionsArgs;
   //private _baseUrl:string = 'http://52.221.221.245:4000/';
-  private _baseUrl:string = 'http://localhost:4000/';
+  private _baseUrl:string = CONFIG.baseUrls.apiBaseService;
   private _headers:Headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(http:Http) {
@@ -59,10 +60,10 @@ export abstract class ApiBaseService {
     // Json web token
     // let jwt = localStorage.getItem('jwt');
     // let profile = JSON.parse(localStorage.getItem('profile'));
-    
+
     let jwt = Cookie.get('jwt');
     let profile = JSON.parse(Cookie.get('profile'));
-    
+
     this._headers.delete('Authorization');
     if (jwt) {
       this._headers.append('Authorization', 'Bearer ' + jwt);

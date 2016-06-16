@@ -11,11 +11,13 @@ import 'rxjs/Rx';   // Load all features
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 // Base services
 import {AuthHttp, tokenNotExpired} from 'angular2-jwt';
-import {ApiBaseService} from './shared/services/apibase.service';
-import {UserService} from './shared/services/user.service';
 
-import {DialogService, DialogComponent} from './partials/dialogs/index';
-import {TopMessageService, TopMessageComponent} from './partials/topmessage/index';
+import {
+  APP_SHARED_PROVIDERS,
+  DialogComponent,
+  TopMessageComponent,
+  UserService
+} from './shared/index';
 
 import {HomeComponent} from './home/home.component';
 import {ProductListComponent} from './products/product-list.component';
@@ -49,17 +51,15 @@ import {AccountComponent} from './account/account.component';
     DROPDOWN_DIRECTIVES,
     CORE_DIRECTIVES,
     DialogComponent,
-    TopMessageComponent,
+    TopMessageComponent
   ],
   providers: [
     ProductService,
-    ApiBaseService,
-    UserService,
     DnsService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    DialogService,
-    TopMessageService
+    APP_SHARED_PROVIDERS,
+    UserService
   ]
 })
 
