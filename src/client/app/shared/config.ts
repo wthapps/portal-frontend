@@ -8,7 +8,7 @@ export let CONFIG = {
     delete: 'delete',
     create: 'create'
   },
-  string: {
+  params: {
     next: 'next'
   }
 };

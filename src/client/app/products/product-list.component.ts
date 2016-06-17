@@ -30,6 +30,8 @@ export class ProductListComponent implements OnInit {
   pageTitle:string = 'Product list!';
   products0:any[] = ['kaka', 'koko'];
 
+  @ViewChild('myModal') modal:ModalComponent;
+
   listFilter:string = '';
 
   imageWidth:number = 50;
@@ -47,28 +49,28 @@ export class ProductListComponent implements OnInit {
   }
 
   alert() {
-    bootbox.alert("Hello world!", function () {
-      console.log("Hello world callback");
+    bootbox.alert('Hello world!', function () {
+      console.log('Hello world callback');
     });
   }
 
   confirm() {
-    bootbox.confirm("Are you sure?", function (result) {
+    bootbox.confirm('Are you sure?', function (result) {
       if (result) {
-        console.log("Confirm result: " + result);
+        console.log('Confirm result: ' + result);
       }
     });
   }
 
   prompt() {
     bootbox.prompt({
-      title: "What is your real name?",
-      value: "makeusabrew",
+      title: 'What is your real name?',
+      value: 'makeusabrew',
       callback: function (result) {
         if (result === null) {
-          console.log("Prompt dismissed");
+          console.log('Prompt dismissed');
         } else {
-          console.log("Hi <b>" + result + "</b>");
+          console.log('Hi <b>' + result + '</b>');
         }
       }
     });
@@ -76,28 +78,28 @@ export class ProductListComponent implements OnInit {
 
   dialog() {
     bootbox.dialog({
-      message: "I am a custom dialog",
-      title: "Custom title",
+      message: 'I am a custom dialog',
+      title: 'Custom title',
       buttons: {
         success: {
-          label: "Success!",
-          className: "btn-success",
+          label: 'Success!',
+          className: 'btn-success',
           callback: function () {
-            console.log("great success");
+            console.log('great success');
           }
         },
         danger: {
-          label: "Danger!",
-          className: "btn-danger",
+          label: 'Danger!',
+          className: 'btn-danger',
           callback: function () {
-            console.log("uh oh, look out!");
+            console.log('uh oh, look out!');
           }
         },
         main: {
-          label: "Click ME!",
-          className: "btn-primary",
+          label: 'Click ME!',
+          className: 'btn-primary',
           callback: function () {
-            console.log("Primary button");
+            console.log('Primary button');
           }
         }
       }
@@ -132,7 +134,7 @@ export class ProductListComponent implements OnInit {
     this.pageTitle = 'Product List: ' + message;
   }
 
-  @ViewChild('myModal') modal:ModalComponent;
+
 
   close() {
     this.modal.close();

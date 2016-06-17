@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, RequestOptionsArgs, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {Cookie}     from 'ng2-cookies/ng2-cookies'
-import {CONFIG}     from '../index'
+import {Cookie}     from 'ng2-cookies/ng2-cookies';
+import {CONFIG}     from '../index';
 
 @Injectable()
 export abstract class ApiBaseService {

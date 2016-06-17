@@ -15,6 +15,7 @@ export class PaymentService extends ApiBaseService{
       .map(res => res.json())
       .map((res) => {
         if (res) {
+          console.log(res);
         }
         return res;
       });
@@ -33,7 +34,7 @@ export class PaymentService extends ApiBaseService{
       .map(res => res.json())
       .map((res) => {
         if (res) {
-
+          console.log(res);
         }
         return res;
       });

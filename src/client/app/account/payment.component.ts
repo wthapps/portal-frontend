@@ -1,8 +1,8 @@
 import {Component, AfterViewInit}     from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}    from '@angular/router';
 import {PaymentService}               from './payment.service';
-import {UserService}                  from '../shared/services/user.service';
 import {CountryListComponent}         from '../shared/services/country.component';
+import {UserService, CONFIG}          from '../shared/index';
 
 declare var braintree:any;
 
@@ -23,29 +23,31 @@ export class PaymentComponent implements AfterViewInit {
 
   countries:any;
 
-  constructor(
-    private _router:Router,
-    private _userService:UserService,
-    private _paymentService:PaymentService,
-    private _countries:CountryListComponent
-  ) {
+  constructor(private _router:Router,
+              private _userService:UserService,
+              private _paymentService:PaymentService,
+              private _countries:CountryListComponent) {
+    if (!this._userService.loggedIn) {
+      this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
+    }
+
     this.countries = this._countries.countries;
   }
 
   ngAfterViewInit() {
 
     var _this = this;
-    var form = document.querySelector('#payment-method-card');
+    var form:any = document.querySelector('#payment-method-card');
     var submit = document.querySelector('input[type="submit"]');
 
     // billing address information
-    var cardholder_name = $("#cardholder-name");
-    var address_line_1 = $("#address-line-1");
-    var address_line_2 = $("#address-line-2");
-    var city = $("#city");
-    var region = $("#region");
-    var postcode = $("#postcode");
-    var country = $("#country");
+    var cardholder_name = $('#cardholder-name');
+    var address_line_1 = $('#address-line-1');
+    var address_line_2 = $('#address-line-2');
+    var city = $('#city');
+    var region = $('#region');
+    var postcode = $('#postcode');
+    var country = $('#country');
 
     braintree.client.create({
       //authorization: 'sandbox_g42y39zw_348pk9cgf3bgyw2b'
@@ -163,17 +165,17 @@ export class PaymentComponent implements AfterViewInit {
               zipcode: "",
               region: region.val(),
               country: country.val()
-          });
+            });
             _this._paymentService.create(`users/${_this._userService.profile.id}/payments`, body)
               .subscribe((response) => {
-                  if(response.data == null){
-
-                  }else {
+                  if (response.data == null) {
+                    console.log(response.data)
+                  } else {
                     _this._router.navigateByUrl('account/plans');
                   }
                 },
                 error => {
-                  console.log("Add card error:", error);
+                  console.log('Add card error:', error);
                 });
           });
         }, false);

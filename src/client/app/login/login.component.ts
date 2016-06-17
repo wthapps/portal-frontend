@@ -11,8 +11,11 @@ import {
   Validators
 }                           from '@angular/common';
 import {CustomValidators}   from '../shared/validator/custom-validators';
-import {UserService}        from '../shared/services/user.service';
-import {TopMessageService}  from '../partials/topmessage/index';
+import {
+  CONFIG,
+  UserService,
+  TopMessageService
+}                           from '../shared/index';
 
 @Component({
   moduleId: module.id,
@@ -24,18 +27,16 @@ import {TopMessageService}  from '../partials/topmessage/index';
 })
 
 export class LoginComponent {
-  
+
   group:ControlGroup;
-
-
+  
   // TODO Consider replacing RouteSegment  by RouteParams when Angular 2 version will be released
   constructor(private _router:Router,
               private _userService:UserService,
               private _params:RouteSegment,
               builder:FormBuilder,
-              private _toadMessageService: TopMessageService
-  ) {
-    
+              private _topMessageService:TopMessageService) {
+
     this.group = builder.group({
       email: ['',
         Validators.compose([Validators.required, CustomValidators.emailFormat])
@@ -53,12 +54,12 @@ export class LoginComponent {
     this._userService.login('users/sign_in', body, false)
       .subscribe((result) => {
           if (result) {
-            var next = this._params.getParam('next')===false ? '': this._params.getParam('next').replace(/\%20/g,'\/');            
+            var next = this._params.getParam(CONFIG.params.next) === undefined ? '/' : this._params.getParam(CONFIG.params.next).replace(/\%20/g, '\/');
             this._router.navigateByUrl(next);
           }
         },
         error => {
-          this._toadMessageService.activate(this._toadMessageService.type.danger, 'Email or password is not valid');
+          this._topMessageService.activate(this._topMessageService.type.danger, 'Email or password is invalid');
           // console.log("login error:", error);
         }
       );

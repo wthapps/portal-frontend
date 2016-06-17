@@ -5,6 +5,8 @@ import {IRecord}                   from './record';
 import {DnsService, Logger}        from './dns.service';
 import {DialogService}             from '../../../partials/dialogs/index';
 
+import {UserService, CONFIG}       from '../../../shared/index';
+
 @Component({
   moduleId: module.id,
   templateUrl: 'dns.component.html',
@@ -20,11 +22,18 @@ export class AccountServicesDNSComponent implements OnInit {
   public Records:IRecord[] = [];
   public ErrorMessage:string;
 
-  constructor(private _dnsService: DnsService, 
-              private _router: Router,
-              private _dialogService: DialogService) { }
+  constructor(private _dnsService: DnsService,
+              private _dialogService: DialogService,
+              private _userService:UserService,
+              private _router:Router) {
 
-  ngOnInit() :void {
+    if (!this._userService.loggedIn) {
+      this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
+    }
+
+  }
+
+  ngOnInit():void {
     this._dnsService.getHosts().subscribe(
       record => this.Records = record,
       error => {

@@ -17,6 +17,7 @@ import {DnsService, Logger}        from './dns.service';
 import {CustomValidators}          from '../../../shared/validator/custom-validators';
 import {LoadingService}            from '../../../partials/loading/index';
 import {TopMessageService}         from '../../../partials/topmessage/index';
+import {UserService, CONFIG}       from '../../../shared/index';
 
 @Component({
   moduleId: module.id,
@@ -39,7 +40,13 @@ export class AccountServicesDNSAddComponent {
               private _router:Router,
               private _builder:FormBuilder,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService) {
+              private _topMessageService:TopMessageService,
+              private _userService:UserService) {
+
+    if (!this._userService.loggedIn) {
+      this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
+    }
+
     this.group = this._builder.group({
       host: ['',
         Validators.compose([Validators.required, CustomValidators.ipHostFormat])

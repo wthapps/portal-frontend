@@ -1,6 +1,5 @@
 import {Component}            from '@angular/core';
 import {
-  ROUTER_PROVIDERS,
   ROUTER_DIRECTIVES,
   Routes,
   Router
@@ -30,6 +29,8 @@ import {
   // EFax
   AccountServicesEFaxComponent
 } from './index';
+
+import {UserService, CONFIG} from '../shared/index';
 
 @Routes([
   {path: '/dns/add', component: AccountServicesDNSAddComponent},
@@ -63,4 +64,11 @@ import {
 })
 export class AccountComponent {
   pageTitle:string = 'Account setting';
+
+  constructor(private _userService:UserService,
+              private _router:Router) {
+    if (!this._userService.loggedIn) {
+      this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
+    }
+  }
 }

@@ -42,15 +42,18 @@ export class Logger {
 @Injectable()
 export class DnsService {
 
+  private _userId: number = 0;
+  private _url: string = '';
+
   constructor(private _service: ApiBaseService, private _userService: UserService) {
     this._userId = this._userService.profile.id;
     this._url = `users/${this._userId}/dns/records/`;
   }
-
+  
   public getHosts():Observable<IRecord[]> {
     return this._service.get(this._url)
       .map((response:Response) => {
-        if (response.status == HTTP_RESPONSE_OK || response.status == HTTP_RESPONSE_CREATED) {
+        if (response.status === HTTP_RESPONSE_OK || response.status === HTTP_RESPONSE_CREATED) {
           let result = response.json();
           if (result.data == 'empty')
           {
@@ -106,7 +109,7 @@ export class DnsService {
   public getHost(id:number) {
     return this._service.get(this._url + id)
       .map(response => {
-        if (response.status == HTTP_RESPONSE_OK) {
+        if (response.status === HTTP_RESPONSE_OK) {
           let result = response.json();
           return <IRecord>result.data;
         }
@@ -123,7 +126,4 @@ export class DnsService {
     }*/
     return Observable.throw(error.json().error || 'Server error');
   }
-
-  private _userId: number = 0;
-  private _url: string = '';
 }

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
-import {UserService} from "../shared/services/user.service";
+import {UserService} from '../shared/services/user.service';
 
 @Component({
   moduleId: module.id,
@@ -12,6 +12,7 @@ import {UserService} from "../shared/services/user.service";
 
 export class HomeComponent {
   pageTitle:string = 'Home page';
-  
-  constructor(private _userService: UserService){}
+
+  constructor(private _userService:UserService) {
+  }
 }
