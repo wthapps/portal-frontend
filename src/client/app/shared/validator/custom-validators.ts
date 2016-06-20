@@ -12,7 +12,7 @@ export class CustomValidators {
   }
 
   static duplicated(control:Control) {
-    const q = new Promise<IValidation>((resolve, reject) => {
+    let q = new Promise<IValidation>((resolve, reject) => {
       setTimeout(() => {
         //TODO Checking if you have an account
         if (control.value === 'admin@wthapps.com') {
@@ -36,6 +36,6 @@ export class CustomValidators {
   }
 
   static selectOption(control:Control):IValidation {
-    return (control.value!=0 || control.value!='' ? null : {'selectOption': true};
+    return (control.value!=0 || control.value!='') ? null : {'selectOption': true};
   }
 }
