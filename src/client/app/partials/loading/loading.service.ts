@@ -48,7 +48,6 @@ export class LoadingService {
    }*/
 
   public stop() {
-    console.log(1111);
     this.modalElement.style.display = 'none';
     this.modalElement.classList.remove('in');
     this.modalElement.classList.remove('in-loading');

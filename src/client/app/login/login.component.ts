@@ -14,7 +14,8 @@ import {CustomValidators}   from '../shared/validator/custom-validators';
 import {
   CONFIG,
   UserService,
-  TopMessageService
+  TopMessageService,
+  LoadingService
 }                           from '../shared/index';
 
 @Component({
@@ -27,17 +28,21 @@ import {
 })
 
 export class LoginComponent {
-
   group:ControlGroup;
-  
+  errorMessage:string = '';
+
   // TODO Consider replacing RouteSegment  by RouteParams when Angular 2 version will be released
   constructor(private _router:Router,
               private _userService:UserService,
               private _params:RouteSegment,
-              builder:FormBuilder,
-              private _topMessageService:TopMessageService) {
+              private _builder:FormBuilder,
+              private _topMessageService:TopMessageService,
+              private _loadingService:LoadingService) {
+    if (this._userService.loggedIn) {
+      this._router.navigateByUrl('/account/setting/dashboard');
+    }
 
-    this.group = builder.group({
+    this.group = this._builder.group({
       email: ['',
         Validators.compose([Validators.required, CustomValidators.emailFormat])
       ],
@@ -48,6 +53,9 @@ export class LoginComponent {
   }
 
   login() {
+    // start loading
+    this._loadingService.start();
+
     var email:string = this.group.value.email;
     var password:string = this.group.value.password;
     let body = JSON.stringify({user: {email, password}});
@@ -59,8 +67,11 @@ export class LoginComponent {
           }
         },
         error => {
-          this._topMessageService.activate(this._topMessageService.type.danger, 'Email or password is invalid');
+          this._topMessageService.activate(this._topMessageService.type.danger, 'Invalid email or password');
           // console.log("login error:", error);
+
+          // stop loading
+          this._loadingService.stop();
         }
       );
   }

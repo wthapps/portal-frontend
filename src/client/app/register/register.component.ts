@@ -10,7 +10,11 @@ import {
   Validators
 }                           from '@angular/common';
 import {CustomValidators}   from '../shared/validator/custom-validators';
-import {UserService, User}  from '../shared/services/user.service';
+import {
+  LoadingService,
+  TopMessageService,
+  UserService, User
+}                           from '../shared/index';
 
 @Component({
   moduleId: module.id,
@@ -28,8 +32,18 @@ export class RegisterComponent {
   singupForm:ControlGroup;
 
   sex:number = 0;
+  errorMessage:string = '';
 
-  constructor(private _userService:UserService, private _router:Router, private _builder:FormBuilder) {
+  constructor(private _userService:UserService,
+              private _topMessageService:TopMessageService,
+              private _loadingService:LoadingService,
+              private _router:Router,
+              private _builder:FormBuilder) {
+
+    if (this._userService.loggedIn) {
+      this._router.navigateByUrl('/');
+    }
+
     this.singupForm = this._builder.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
@@ -49,6 +63,9 @@ export class RegisterComponent {
   }
 
   signup() {
+    // start loading
+    this._loadingService.start();
+
     this.singupForm.value.sex = this.sex;
     this.user = this.singupForm.value;
     //console.log('data sent to server', this.user);
@@ -62,7 +79,7 @@ export class RegisterComponent {
       birthday_month: this.user.birthday_month,
       birthday_year: this.user.birthday_year,
       sex: this.user.sex,
-      accepted_policies: this.singupForm.value.accepted === true ? true: false
+      accepted_policies: this.singupForm.value.accepted === true ? true : false
     });
     //console.log(body);
     this._userService.signup('users', body)
@@ -71,6 +88,17 @@ export class RegisterComponent {
         },
         error => {
           console.log('error:', error);
+          let err = JSON.stringify(error._body);
+
+          this.errorMessage = err;
+          //TODO refactoring code check signup
+          if (error.status === 422) {
+            this.errorMessage = 'Email has already been taken';
+          }
+          this._topMessageService.activate(this._topMessageService.type.danger, this.errorMessage);
+
+          // stop loading
+          this._loadingService.stop();
         });
   }
 }
