@@ -1,0 +1,77 @@
+<div class="inner page-title text-center">
+  <h1 class="">Welcome to the WTHApps Help Center</h1>
+  <h5 class="">Questions about sales, licensing, etc</h5>
+</div>
+<section class="se-section main-select">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <form [ngFormModel]="contactForm" (ngSubmit)="submit()" novalidate>
+          <div class="form-group"
+               [ngClass]="{ 'has-error' : contactForm.find('name').dirty && !contactForm.find('name').valid}">
+            <label class="sr-only" for="name">Your Name</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Your Name"
+                   [ngFormControl]="contactForm.find('name')">
+            <div *ngIf="contactForm.find('name').dirty && !contactForm.find('name').valid">
+              <span class="help-block" *ngIf="contactForm.hasError('required', 'name')">Name is required</span>
+            </div>
+          </div>
+          <div class="form-group"
+               [ngClass]="{ 'has-error' : contactForm.find('email').dirty && !contactForm.find('email').valid}">
+            <label class="sr-only" for="email">Email address</label>
+            <input type="text" class="form-control" name="email" id="email" placeholder="Email"
+                   [ngFormControl]="contactForm.find('email')">
+            <div *ngIf="contactForm.find('email').dirty && !contactForm.find('email').valid">
+              <span class="help-block" *ngIf="contactForm.hasError('required', 'email')">An email is required</span>
+              <span class="help-block" *ngIf="contactForm.hasError('emailFormat', 'email')">Email is not valid. eg. example@wthapps.com</span>
+              <span class="help-block" *ngIf="contactForm.hasError('duplicated', 'email')">This email has been registered already</span>
+            </div>
+          </div>
+          <div class="form-group"
+               [ngClass]="{ 'has-error' : contactForm.find('department').dirty && !contactForm.find('department').valid}">
+            <label class="sr-only" for="department">Email address</label>
+            <select name="department" id="department" class="form-control"
+                    [ngFormControl]="contactForm.find('department')">
+              <option *ngFor="let department of departments" [value]="department.id">{{department.value}}</option>
+            </select>
+            <div *ngIf="contactForm.find('department').dirty && !contactForm.find('department').valid">
+              <span class="help-block" *ngIf="contactForm.hasError('required', 'department')">Please choose the department your request</span>
+            </div>
+          </div>
+          <div class="form-group"
+               [ngClass]="{ 'has-error' : contactForm.find('message').dirty && !contactForm.find('message').valid}">
+            <textarea name="message" class="form-control" rows="3" placeholder="How can we help you?"
+                      [ngFormControl]="contactForm.find('message')"></textarea>
+            <div *ngIf="contactForm.find('message').dirty && !contactForm.find('message').valid">
+              <span class="help-block" *ngIf="contactForm.hasError('required', 'message')">Message is required</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <button [disabled]="!contactForm.valid" type="submit" class="btn btn-danger">Send</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-sm-6">
+        <h4 class="mt0">Knowledgebase</h4>
+        <p>
+          Before contacing us, please take the time to check out our <a href="#">Knowledge base</a>. Maybe your question is already
+          answered there.
+        </p>
+        <hr>
+        <h4 class="mt0">
+          We Socialize!
+        </h4>
+        <p>
+          Make sure you follow us on these social media platforms:
+        </p>
+        <div class="social">
+          <div class="hi-icon-wrap hi-icon-effect-3 hi-icon-effect-3b">
+            <a href="#" target="_blank" class="hi-icon wthico-facebook-f"></a>
+            <a href="#" target="_blank" class="hi-icon wthico-twitter"></a>
+            <a href="#" target="_blank" class="hi-icon wthico-google-plus"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end container -->
+</section>

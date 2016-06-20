@@ -3,10 +3,10 @@ export class ValidationService {
   static getValidatorErrorMessage(code:string) {
     let config = {
       'required': 'Required',
-      'invalidCreditCard': 'Is invalid credit card number',
+      'invalidCreditCard': 'Invalid credit card number',
       'invalidEmailAddress': 'Invalid email address',
       'invalidPassword': 'Invalid password. Password must be at least 6 characters long',
-      'invalidPasswordConfirmation': 'Password confirmation did not match'
+      'invalidPasswordConfirmation': 'Password confirmation does not match password'
       // 'invalidPassword': 'Invalid password. Password must be at least 6 characters long, and contain a number'
     };
     return config[code];

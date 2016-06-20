@@ -35,6 +35,7 @@ import {
 
 // Base href
 import {WelcomeComponent} from './welcome/welcome.component';
+import {ContactComponent} from './contact/contact.component';
 import {AboutComponent} from './about/about.component';
 import {SupportComponent} from './support/support.component';
 import {LoginComponent} from './login/login.component';
@@ -68,6 +69,7 @@ import {AccountComponent} from './account/account.component';
 
   {path: '/about', component: AboutComponent},
   {path: '/support', component: SupportComponent},
+  {path: '/contact', component: ContactComponent},
   {path: '/welcome', component: WelcomeComponent},
 
   {path: '/products/:id', component: ProductDetailComponent},

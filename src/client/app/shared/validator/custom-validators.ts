@@ -35,4 +35,7 @@ export class CustomValidators {
     return pattern.test(control.value) ? null : {'ipHostFormat': true};
   }
 
+  static selectOption(control:Control):IValidation {
+    return (control.value!=0 || control.value!='' ? null : {'selectOption': true};
+  }
 }
