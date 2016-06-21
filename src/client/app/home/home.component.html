@@ -6,7 +6,7 @@
     <div class="banner-txt">
       <h1>Fastest VPN Service For Freedom</h1>
       <p>Our exclusive features for greater online experience</p>
-      <a class="btn btn-get btn-danger" [routerLink]="['/signup']">Join Free for a Month</a>
+      <wth-join-us></wth-join-us>
       <!--<a class="btn btn-get btn-danger" [routerLink]="['/account/payment']">Upgrade for only $9.99 per-->
         <!--month</a>-->
     </div>
@@ -34,7 +34,7 @@
         Tons of Products - All for one Great Price. <br>
         We keep on adding more!
       </h3>
-      <a class="btn btn-get btn-danger" *ngIf="!_userService.loggedIn" [routerLink]="['/signup']">Join Free for a Month</a>
+      <wth-join-us></wth-join-us>
       <!--<a class="btn btn-get btn-danger" *ngIf="_userService.isLoggedIn()" [routerLink]="['/account/payment']">Upgrade for only $9.99 per-->
         <!--month</a>-->
     </div>
@@ -182,7 +182,7 @@
         <i class="glyphicon glyphicon-ok"></i> You can keep on using WTHpictures<br>
         <i class="glyphicon glyphicon-ok"></i> Cancel online - anytime! <br>
         <i class="glyphicon glyphicon-ok"></i> We miss you already!</p>
-      <a class="btn btn-get btn-danger" [routerLink]="['/signup']">Join Free for a Month</a>
+       <wth-join-us></wth-join-us>
     </div>
   </div>
 </div>

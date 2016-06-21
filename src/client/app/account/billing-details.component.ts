@@ -1,8 +1,5 @@
 import {Component}                    from '@angular/core';
-import {
-  ROUTER_DIRECTIVES,
-  Router
-}                                     from '@angular/router';
+import {ROUTER_DIRECTIVES, Router}    from '@angular/router';
 import {UserService, CONFIG}          from '../shared/index';
 
 @Component({

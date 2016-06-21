@@ -15,7 +15,20 @@ export class PaymentService extends ApiBaseService{
       .map(res => res.json())
       .map((res) => {
         if (res) {
-          console.log(res);
+          //update credit cards for current user
+
+        }
+        return res;
+      });
+  }
+
+  public update(path: string, body: string): Observable<Response> {
+    return super.patch(path, body)
+      .map(res => res.json())
+      .map((res) => {
+        if (res) {
+          //update credit cards for current user
+
         }
         return res;
       });
@@ -34,7 +47,7 @@ export class PaymentService extends ApiBaseService{
       .map(res => res.json())
       .map((res) => {
         if (res) {
-          console.log(res);
+
         }
         return res;
       });

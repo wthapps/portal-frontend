@@ -1,8 +1,14 @@
 import {Component, AfterViewInit}     from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}    from '@angular/router';
+import {Router, ROUTER_DIRECTIVES, RouteSegment}    from '@angular/router';
+import {AccountMenuComponent}         from './menu/account-menu.component';
 import {PaymentService}               from './payment.service';
 import {CountryListComponent}         from '../shared/services/country.component';
 import {UserService, CONFIG}          from '../shared/index';
+import {LoadingService}               from '../partials/loading/loading.service';
+import {TopMessageService}            from '../partials/topmessage/index';
+import {WthConstants}                 from '../shared/wth-constants';
+import {Cookie}                       from 'ng2-cookies/ng2-cookies'
 
 declare var braintree:any;
 
@@ -14,24 +20,58 @@ declare var braintree:any;
   ],
   providers: [
     PaymentService,
-    CountryListComponent
+    UserService,
+    CountryListComponent,
+    LoadingService,
+    WthConstants
   ]
 })
 
 export class PaymentComponent implements AfterViewInit {
   PanelTitle:string = 'Find Services and add-ons';
-
+  button_text: string = 'Continue';
+  edit_mode: boolean = false;
   countries:any;
+
 
   constructor(private _router:Router,
               private _userService:UserService,
               private _paymentService:PaymentService,
-              private _countries:CountryListComponent) {
+              private _countries:CountryListComponent,
+              private _loaddingService: LoadingService,
+              private _params: RouteSegment,
+              private _toadMessageService: TopMessageService) {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
 
     this.countries = this._countries.countries;
+
+
+    // initialize billing details info
+    let action = _params.getParam('operation');
+    switch (action){
+      case undefined:
+       this._userService.profile.billing_address = {
+          address_line_1: '',
+          address_line_2: '',
+          country: '',
+          city: '',
+          postcode: '',
+          region: ''
+       };
+       this._userService.profile.credit_cards = [{
+          last_4: '',
+          card_type: '',
+          cardholder_name: '',
+       }];
+        break;
+      case CONFIG.operations.edit:
+        this.button_text = 'Update';
+        this.edit_mode = true;
+        break;
+
+    }
   }
 
   ngAfterViewInit() {
@@ -150,7 +190,8 @@ export class PaymentComponent implements AfterViewInit {
 
           hostedFieldsInstance.tokenize(function (err, payload) {
             if (err) {
-              console.error(err);
+              _this._toadMessageService.danger(err.message);
+              console.log('payment',err);
               return;
             }
 
@@ -166,17 +207,13 @@ export class PaymentComponent implements AfterViewInit {
               region: region.val(),
               country: country.val()
             });
-            _this._paymentService.create(`users/${_this._userService.profile.id}/payments`, body)
-              .subscribe((response) => {
-                  if (response.data == null) {
-                    console.log(response.data)
-                  } else {
-                    _this._router.navigateByUrl('account/plans');
-                  }
-                },
-                error => {
-                  console.log('Add card error:', error);
-                });
+
+            if(_this.edit_mode){
+              _this.update(_this, body);
+            }else{
+              _this.create(_this, body);
+            }
+
           });
         }, false);
       });
@@ -186,25 +223,51 @@ export class PaymentComponent implements AfterViewInit {
   /**
    *  Add card information and billing address
    */
-  public create(name, number, month, year, cvv, address, city, state, zipcode, country) {
-    let body = JSON.stringify({
-      cardholder_name: name,
-      number,
-      expiration_date: `${month}/${year}`,
-      cvv,
-      address,
-      city,
-      zipcode,
-      state,
-      country
-    });
-    let user_id = this._userService.profile.id;
-    this._paymentService.create(`/users/${user_id}/payments`, body)
-      .subscribe((result) => {
-          this._router.navigateByUrl('account');
+  private create(_this: any, body: string) {
+    _this._paymentService.create(`users/${_this._userService.profile.id}/payments`, body)
+            // _this._userService.signup(`users/${_this._userService.profile.id,}/payments`, body)
+              .subscribe((response) => {
+                _this._loaddingService.stop();
+                  if(response.data == null){
+
+                  }else {
+                    _this._userService.profile.has_payment_info = true;
+                    _this._userService.profile.credit_cards = response.data.credit_cards;
+                    _this._userService.profile.billing_address = response.data.billing_address;
+
+                    Cookie.set('profile', JSON.stringify(_this._userService.profile));
+                    _this._router.navigateByUrl('account/plans');
+                  }
+                },
+                error => {
+                  _this._loaddingService.stop();
+                  _this._toadMessageService.danger(error);
+                  console.log("Add card error:", error);
+                });
+            _this._loaddingService.start();
+  }
+
+
+  private update(_this: any, body: string){
+    _this._paymentService.update(`users/${_this._userService.profile.id}`, body)
+      .subscribe((response) => {
+          _this._loaddingService.stop();
+          if(response.data == null){
+
+          }else {
+            _this._userService.profile.has_payment_info = true;
+            _this._userService.profile.credit_cards = response.data.credit_cards;
+            _this._userService.profile.billing_address = response.data.billing_address;
+
+            Cookie.set('profile', JSON.stringify(_this._userService.profile));
+          }
+          _this._toadMessageService.success(response.message);
         },
         error => {
-          console.log("error:", error);
+          _this._loaddingService.stop();
+          _this._toadMessageService.danger(_this._toadMessageService.type.danger, error);
+          console.log("Add card error:", error);
         });
+    _this._loaddingService.start();
   }
 }

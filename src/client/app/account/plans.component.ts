@@ -1,6 +1,7 @@
 import {Component}                                  from '@angular/core';
-import {Router, ROUTER_DIRECTIVES}    from '@angular/router';
+import {Router, ROUTER_DIRECTIVES}                  from '@angular/router';
 import {UserService, CONFIG}                        from '../shared/index';
+import {TopMessageService}                          from '../partials/topmessage/index';
 
 @Component({
   moduleId: module.id,
@@ -12,11 +13,13 @@ import {UserService, CONFIG}                        from '../shared/index';
 
 export class PlansComponent {
   PanelTitle:string = 'Choose plan';
+  plan
 
   paymentMethod:Object = {};
 
   constructor(private _router:Router,
-              private _userService:UserService) {
+              private _userService:UserService,
+              private _toadMessageService: TopMessageService) {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
@@ -24,5 +27,20 @@ export class PlansComponent {
 
   confirm():void {
     // this._router.navigateByUrl('account/setting/dashboard');
+  }
+
+  public choosePlan(plan_id: string){
+    let body: string = JSON.stringify({plan_id});
+
+    this._userService.choosePlan(`users/${this._userService.profile.id}`, body)
+      .subscribe((response) => {
+        if (response.data != null){
+
+        }
+        this._toadMessageService.success(response.message);
+      },
+      error => {
+        this._toadMessageService.danger(error);
+      });
   }
 }

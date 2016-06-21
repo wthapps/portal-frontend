@@ -5,30 +5,32 @@
   <div class="panel-body">
     <dl class="dl-horizontal">
       <dt>Type</dt>
-      <dd>VISA</dd>
+      <dd>{{_userService.profile.credit_cards[0].card_type}}</dd>
       <dt>Name</dt>
-      <dd>TRAN TRUNG NGHIA</dd>
+      <dd>{{_userService.profile.credit_cards[0].cardholder_name}}</dd>
       <dt>Number</dt>
-      <dd>**** **** **** 3703</dd>
+      <dd>**** **** **** {{_userService.profile.credit_cards[0].last_4}}</dd>
       <dt>Expiry</dt>
-      <dd>01/2021</dd>
+      <dd>{{_userService.profile.credit_cards[0].expiration_date}}</dd>
     </dl>
     <hr>
     <dl class="dl-horizontal">
-      <dt>Address</dt>
-      <dd>Nguyen Trung Ngan</dd>
+      <dt>Address line 1</dt>
+      <dd>{{_userService.profile.billing_address.address_line_1}}</dd>
+      <dt>Address line 2</dt>
+      <dd>{{_userService.profile.billing_address.address_line_2}}</dd>
       <dt>City</dt>
-      <dd>Ho chi Minh</dd>
+      <dd>{{_userService.profile.billing_address.city}}</dd>
       <dt>State</dt>
-      <dd>QUAN 1</dd>
+      <dd>{{_userService.profile.billing_address.region}}</dd>
       <dt>Postcode</dt>
-      <dd>70000</dd>
+      <dd>{{_userService.profile.billing_address.postcode}}</dd>
       <dt>Country</dt>
-      <dd>Vietnam</dd>
+      <dd>{{_userService.profile.billing_address.country}}</dd>
     </dl>
     <hr>
     <div class="clearfix mt40">
-      <a [routerLink]="['/account/payment']" class="btn btn-default">Edit</a>
+      <a [routerLink]="['/account/payment', {operation: 'edit'}]" class="btn btn-default">Edit</a>
     </div>
   </div>
 </div>

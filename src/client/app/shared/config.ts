@@ -6,7 +6,8 @@ export let CONFIG = {
     update: 'update',
     edit: 'edit',
     delete: 'delete',
-    create: 'create'
+    create: 'create',
+    continue: 'continue'
   },
   params: {
     next: 'next'
