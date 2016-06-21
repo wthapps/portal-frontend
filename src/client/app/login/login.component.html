@@ -11,7 +11,7 @@
                  [ngFormControl]="group.find('email')" [ngClass]="{'has-loading': group.find('email').pending}">
           <div *ngIf="group.find('email').touched && !group.find('email').valid">
             <span class="help-block" *ngIf="group.hasError('required', 'email')">An email is required</span>
-            <span class="help-block" *ngIf="group.hasError('emailFormat', 'email')">Email is not valid</span>
+            <span class="help-block" *ngIf="!group.hasError('required', 'email') && group.hasError('emailFormat', 'email')">Email is not valid</span>
           </div>
         </div>
         <div class="form-group" [ngClass]="{ 'has-error' : group.find('password').touched && !group.find('password').valid}">

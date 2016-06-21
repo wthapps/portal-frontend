@@ -23,7 +23,7 @@
                    [ngFormControl]="contactForm.find('email')">
             <div *ngIf="contactForm.find('email').touched && !contactForm.find('email').valid">
               <span class="help-block" *ngIf="contactForm.hasError('required', 'email')">An email is required</span>
-              <span class="help-block" *ngIf="contactForm.hasError('emailFormat', 'email')">Email is not valid. eg. example@wthapps.com</span>
+              <span class="help-block" *ngIf="!contactForm.hasError('required', 'email') && contactForm.hasError('emailFormat', 'email')">Email is not valid. eg. example@wthapps.com</span>
               <span class="help-block" *ngIf="contactForm.hasError('duplicated', 'email')">This email has been registered already</span>
             </div>
           </div>
