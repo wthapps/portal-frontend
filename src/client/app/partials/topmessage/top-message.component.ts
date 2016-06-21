@@ -13,11 +13,14 @@ export class TopMessageComponent implements OnInit {
   type:string;
   message:string;
   close:boolean;
-  negativeOnClick:(e:any) => void;
-  positiveOnClick:(e:any) => void;
 
   private defaults = {
-    type: 'danger', //success, info, warning, danger
+    type: {
+      info: 'info',
+      danger: 'danger',
+      warning: 'warning',
+      success: 'success'
+    },
     message: '',
     close: true
   };
@@ -27,16 +30,44 @@ export class TopMessageComponent implements OnInit {
 
 
   constructor(private _topMessageService:TopMessageService, private _router:Router) {
-    _topMessageService.info = this.activateType.bind(this);
-    _topMessageService.danger = this.activateType.bind(this);
-    _topMessageService.warning = this.activateType.bind(this);
-    _topMessageService.success = this.activateType.bind(this);
+    _topMessageService.info = this.activateInfo.bind(this);
+    _topMessageService.danger = this.activateDanger.bind(this);
+    _topMessageService.warning = this.activateWarning.bind(this);
+    _topMessageService.success = this.activateSuccess.bind(this);
   }
 
-  activateType(message = this.defaults.message,
-               close = this.defaults.close,
-               type = this.defaults.type) {
-    this.type = type;
+  activateInfo(message = this.defaults.message, close = this.defaults.close) {
+    this.type = this.defaults.type.info;
+    this.message = message;
+    this.close = close;
+    let promise = new Promise<boolean>((resolve, reject) => {
+      this.show();
+    });
+    return promise;
+  }
+
+  activateDanger(message = this.defaults.message, close = this.defaults.close) {
+    this.type = this.defaults.type.danger;
+    this.message = message;
+    this.close = close;
+    let promise = new Promise<boolean>((resolve, reject) => {
+      this.show();
+    });
+    return promise;
+  }
+
+  activateWarning(message = this.defaults.message, close = this.defaults.close) {
+    this.type = this.defaults.type.warning;
+    this.message = message;
+    this.close = close;
+    let promise = new Promise<boolean>((resolve, reject) => {
+      this.show();
+    });
+    return promise;
+  }
+
+  activateSuccess(message = this.defaults.message, close = this.defaults.close) {
+    this.type = this.defaults.type.success;
     this.message = message;
     this.close = close;
     let promise = new Promise<boolean>((resolve, reject) => {
