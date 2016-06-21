@@ -21,6 +21,7 @@ export class AccountServicesDNSComponent implements OnInit {
 
   public Records:IRecord[] = [];
   public ErrorMessage:string;
+  public DownloadLink: string;
 
   constructor(private _dnsService: DnsService,
               private _dialogService: DialogService,
@@ -36,6 +37,16 @@ export class AccountServicesDNSComponent implements OnInit {
   ngOnInit():void {
     this._dnsService.getHosts().subscribe(
       record => this.Records = record,
+      error => {
+        this.ErrorMessage = <any>error;
+        Logger.Error(JSON.stringify(error));
+      }
+    );
+
+    this._dnsService.getProduct(1).subscribe(
+      product => {
+        this.DownloadLink = product.download_link;
+      },
       error => {
         this.ErrorMessage = <any>error;
         Logger.Error(JSON.stringify(error));

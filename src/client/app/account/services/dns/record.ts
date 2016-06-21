@@ -14,3 +14,9 @@ export class Type {
   value: string;
   name:  string;
 }
+
+export class Product {
+  id: number;
+  name: string;
+  download_link: string;
+}
