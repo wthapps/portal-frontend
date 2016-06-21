@@ -27,7 +27,22 @@ export class TopMessageComponent implements OnInit {
 
 
   constructor(private _topMessageService:TopMessageService, private _router:Router) {
-    _topMessageService.activate = this.activate.bind(this);
+    _topMessageService.info = this.activateType.bind(this);
+    _topMessageService.danger = this.activateType.bind(this);
+    _topMessageService.warning = this.activateType.bind(this);
+    _topMessageService.success = this.activateType.bind(this);
+  }
+
+  activateType(message = this.defaults.message,
+               close = this.defaults.close,
+               type = this.defaults.type) {
+    this.type = type;
+    this.message = message;
+    this.close = close;
+    let promise = new Promise<boolean>((resolve, reject) => {
+      this.show();
+    });
+    return promise;
   }
 
   activate(type = this.defaults.type,

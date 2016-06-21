@@ -98,7 +98,7 @@ export class AccountServicesDNSAddComponent {
         if (error.status === 409) {
           this.errorMessage = 'Hostname has already been taken';
         }
-        this._topMessageService.activate('danger', this.errorMessage);
+        this._topMessageService.danger(this.errorMessage);
         // stop loading
         this._loadingService.stop();
       }

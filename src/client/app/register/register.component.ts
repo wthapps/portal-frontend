@@ -95,7 +95,7 @@ export class RegisterComponent {
           if (error.status === 422) {
             this.errorMessage = 'Email has already been taken';
           }
-          this._topMessageService.activate(this._topMessageService.type.danger, this.errorMessage);
+          this._topMessageService.danger(this.errorMessage);
 
           // stop loading
           this._loadingService.stop();

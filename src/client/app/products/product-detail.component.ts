@@ -38,7 +38,7 @@ export class ProductDetailComponent implements OnActivate {
   }
 
   showAlert():void {
-    this._topMessageService.activate('warning', this.errorMessage = 'ErrorMsg');
+    this._topMessageService.warning(this.errorMessage = 'ErrorMsg');
   }
 
   routerOnActivate(curr:RouteSegment):void {

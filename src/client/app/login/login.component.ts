@@ -67,7 +67,7 @@ export class LoginComponent {
           }
         },
         error => {
-          this._topMessageService.activate(this._topMessageService.type.danger, 'Invalid email or password');
+          this._topMessageService.danger('Invalid email or password');
           // console.log("login error:", error);
 
           // stop loading
