@@ -16,6 +16,7 @@ import {
   APP_SHARED_PROVIDERS,
   DialogComponent,
   TopMessageComponent,
+  LoadingComponent,
   UserService
 } from './shared/index';
 
@@ -52,7 +53,8 @@ import {AccountComponent} from './account/account.component';
     DROPDOWN_DIRECTIVES,
     CORE_DIRECTIVES,
     DialogComponent,
-    TopMessageComponent
+    TopMessageComponent,
+    LoadingComponent
   ],
   providers: [
     ProductService,

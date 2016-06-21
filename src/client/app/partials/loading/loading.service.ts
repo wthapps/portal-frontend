@@ -22,8 +22,8 @@ export class LoadingService {
   private modalElementBackdrop:any;
 
   constructor(private _router:Router) {
-    this.modalElement = document.getElementById('confirmationModal');
-    this.modalElementBackdrop = document.getElementById('confirmationModal-backdrop');
+    this.modalElement = document.getElementById('loadingModal');
+    this.modalElementBackdrop = document.getElementById('loadingModal-backdrop');
     this._router.changes.subscribe((val) => this.stop());
   }
 
