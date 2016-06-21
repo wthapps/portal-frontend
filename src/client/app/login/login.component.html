@@ -5,20 +5,20 @@
         Have an account?
       </h2>
       <form [ngFormModel]="group" (ngSubmit)="login()" novalidate>
-        <div class="form-group" [ngClass]="{ 'has-error' : group.find('email').dirty && !group.find('email').valid}">
+        <div class="form-group" [ngClass]="{ 'has-error' : group.find('email').touched && !group.find('email').valid}">
           <label class="sr-only" for="email">Email address</label>
           <input type="text" class="form-control" id="email" placeholder="Email"
                  [ngFormControl]="group.find('email')" [ngClass]="{'has-loading': group.find('email').pending}">
-          <div *ngIf="group.find('email').dirty && !group.find('email').valid">
+          <div *ngIf="group.find('email').touched && !group.find('email').valid">
             <span class="help-block" *ngIf="group.hasError('required', 'email')">An email is required</span>
-            <span class="help-block" *ngIf="group.hasError('emailFormat', 'email')">The value introduced is not an email</span>
+            <span class="help-block" *ngIf="group.hasError('emailFormat', 'email')">Email is not valid</span>
           </div>
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error' : group.find('password').dirty && !group.find('password').valid}">
+        <div class="form-group" [ngClass]="{ 'has-error' : group.find('password').touched && !group.find('password').valid}">
           <label class="sr-only" for="password">Password</label>
           <input type="password" class="form-control" id="password" placeholder="Password"
                  [ngFormControl]="group.find('password')">
-          <div *ngIf="group.find('password').dirty && !group.find('password').valid">
+          <div *ngIf="group.find('password').touched && !group.find('password').valid">
             <span class="help-block" *ngIf="group.hasError('required', 'password')">A password is required</span>
           </div>
         </div>

@@ -8,41 +8,41 @@
       <div class="col-sm-6">
         <form [ngFormModel]="contactForm" (ngSubmit)="submit()" novalidate>
           <div class="form-group"
-               [ngClass]="{ 'has-error' : contactForm.find('name').dirty && !contactForm.find('name').valid}">
+               [ngClass]="{ 'has-error' : contactForm.find('name').touched && !contactForm.find('name').valid}">
             <label class="sr-only" for="name">Your Name</label>
             <input type="text" class="form-control" name="name" id="name" placeholder="Your Name"
                    [ngFormControl]="contactForm.find('name')">
-            <div *ngIf="contactForm.find('name').dirty && !contactForm.find('name').valid">
+            <div *ngIf="contactForm.find('name').touched && !contactForm.find('name').valid">
               <span class="help-block" *ngIf="contactForm.hasError('required', 'name')">Name is required</span>
             </div>
           </div>
           <div class="form-group"
-               [ngClass]="{ 'has-error' : contactForm.find('email').dirty && !contactForm.find('email').valid}">
+               [ngClass]="{ 'has-error' : contactForm.find('email').touched && !contactForm.find('email').valid}">
             <label class="sr-only" for="email">Email address</label>
             <input type="text" class="form-control" name="email" id="email" placeholder="Email"
                    [ngFormControl]="contactForm.find('email')">
-            <div *ngIf="contactForm.find('email').dirty && !contactForm.find('email').valid">
+            <div *ngIf="contactForm.find('email').touched && !contactForm.find('email').valid">
               <span class="help-block" *ngIf="contactForm.hasError('required', 'email')">An email is required</span>
               <span class="help-block" *ngIf="contactForm.hasError('emailFormat', 'email')">Email is not valid. eg. example@wthapps.com</span>
               <span class="help-block" *ngIf="contactForm.hasError('duplicated', 'email')">This email has been registered already</span>
             </div>
           </div>
           <div class="form-group"
-               [ngClass]="{ 'has-error' : contactForm.find('department').dirty && !contactForm.find('department').valid}">
+               [ngClass]="{ 'has-error' : contactForm.find('department').touched && !contactForm.find('department').valid}">
             <label class="sr-only" for="department">Email address</label>
             <select name="department" id="department" class="form-control"
                     [ngFormControl]="contactForm.find('department')">
               <option *ngFor="let department of departments" [value]="department.id">{{department.value}}</option>
             </select>
-            <div *ngIf="contactForm.find('department').dirty && !contactForm.find('department').valid">
+            <div *ngIf="contactForm.find('department').touched && !contactForm.find('department').valid">
               <span class="help-block" *ngIf="contactForm.hasError('required', 'department')">Please choose the department your request</span>
             </div>
           </div>
           <div class="form-group"
-               [ngClass]="{ 'has-error' : contactForm.find('message').dirty && !contactForm.find('message').valid}">
+               [ngClass]="{ 'has-error' : contactForm.find('message').touched && !contactForm.find('message').valid}">
             <textarea name="message" class="form-control" rows="3" placeholder="How can we help you?"
                       [ngFormControl]="contactForm.find('message')"></textarea>
-            <div *ngIf="contactForm.find('message').dirty && !contactForm.find('message').valid">
+            <div *ngIf="contactForm.find('message').touched && !contactForm.find('message').valid">
               <span class="help-block" *ngIf="contactForm.hasError('required', 'message')">Message is required</span>
             </div>
           </div>

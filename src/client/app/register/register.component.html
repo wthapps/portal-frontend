@@ -17,11 +17,11 @@
             <div class="row row-16">
               <div class="col-xs-6">
                 <div class="form-group"
-                     [ngClass]="{ 'has-error' : singupForm.find('first_name').dirty && !singupForm.find('first_name').valid}">
+                     [ngClass]="{ 'has-error' : singupForm.find('first_name').touched && !singupForm.find('first_name').valid}">
                   <label class="sr-only" for="first_name">First Name</label>
                   <input type="text" class="form-control" id="first_name" placeholder="First Name"
                          [ngFormControl]="singupForm.find('first_name')">
-                  <div *ngIf="singupForm.find('first_name').dirty && !singupForm.find('first_name').valid">
+                  <div *ngIf="singupForm.find('first_name').touched && !singupForm.find('first_name').valid">
                 <span class="help-block"
                       *ngIf="singupForm.hasError('required', 'first_name')">First name is required</span>
                   </div>
@@ -29,11 +29,11 @@
               </div>
               <div class="col-xs-6">
                 <div class="form-group"
-                     [ngClass]="{ 'has-error' : singupForm.find('last_name').dirty && !singupForm.find('last_name').valid}">
+                     [ngClass]="{ 'has-error' : singupForm.find('last_name').touched && !singupForm.find('last_name').valid}">
                   <label class="sr-only" for="last_name">Last Name</label>
                   <input type="text" class="form-control" id="last_name" placeholder="Last Name"
                          [ngFormControl]="singupForm.find('last_name')">
-                  <div *ngIf="singupForm.find('last_name').dirty && !singupForm.find('last_name').valid">
+                  <div *ngIf="singupForm.find('last_name').touched && !singupForm.find('last_name').valid">
                 <span class="help-block"
                       *ngIf="singupForm.hasError('required', 'last_name')">Last name is required</span>
                   </div>
@@ -41,23 +41,23 @@
               </div>
             </div>
             <div class="form-group"
-                 [ngClass]="{ 'has-error' : singupForm.find('email').dirty && !singupForm.find('email').valid}">
+                 [ngClass]="{ 'has-error' : singupForm.find('email').touched && !singupForm.find('email').valid}">
               <label class="sr-only" for="email">Email address</label>
               <input type="text" class="form-control" id="email" placeholder="Email"
                      [ngFormControl]="singupForm.find('email')"
                      [ngClass]="{'has-loading': singupForm.find('email').pending}">
-              <div *ngIf="singupForm.find('email').dirty && !singupForm.find('email').valid">
+              <div *ngIf="singupForm.find('email').touched && !singupForm.find('email').valid">
                 <span class="help-block" *ngIf="singupForm.hasError('required', 'email')">An email is required</span>
-                <span class="help-block" *ngIf="singupForm.hasError('emailFormat', 'email')">Email is not valid. eg. example@wthapps.com</span>
+                <span class="help-block" *ngIf="!singupForm.hasError('required', 'email') && singupForm.hasError('emailFormat', 'email')">Email is not valid. eg. example@wthapps.com</span>
                 <span class="help-block" *ngIf="singupForm.hasError('duplicated', 'email')">This email has been registered already</span>
               </div>
             </div>
             <div class="form-group"
-                 [ngClass]="{ 'has-error' : singupForm.find('password').dirty && !singupForm.find('password').valid}">
+                 [ngClass]="{ 'has-error' : singupForm.find('password').touched && !singupForm.find('password').valid}">
               <label class="sr-only" for="password">Password</label>
               <input type="password" class="form-control" id="password" placeholder="Password"
                      [ngFormControl]="singupForm.find('password')">
-              <div *ngIf="singupForm.find('password').dirty && !singupForm.find('password').valid">
+              <div *ngIf="singupForm.find('password').touched && !singupForm.find('password').valid">
                 <span class="help-block"
                       *ngIf="singupForm.hasError('required', 'password')">A password is required</span>
                 <span class="help-block" *ngIf="singupForm.hasError('minlength', 'password')">A password needs to have at least 6 characters</span>
