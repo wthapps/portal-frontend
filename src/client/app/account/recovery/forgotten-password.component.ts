@@ -1,48 +1,57 @@
 import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {
-  Control,
+  FORM_DIRECTIVES,
   FormBuilder,
   ControlGroup,
   Validators
 }                           from '@angular/common';
-import {ApiBaseService}     from '../../shared/services/apibase.service';
 import {CustomValidators}   from '../../shared/validator/custom-validators';
-import {TopMessageService}  from '../../partials/topmessage/index';
+import {
+  TopMessageService,
+  LoadingService,
+  ApiBaseService
+}                           from '../../shared/index';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'forgotten-password.component.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    FORM_DIRECTIVES
   ]
 })
 
 export class ForgottenPasswordComponent {
 
   forgottenPasswordForm:ControlGroup;
-  email:Control;
+  errorMessage:string = '';
 
   constructor(private _router:Router,
               private _apiBaseService:ApiBaseService,
-              _formBuilder:FormBuilder,
-              private _toadMessageService:TopMessageService) {
-    this.forgottenPasswordForm = _formBuilder.group({
-      email: ['', Validators.compose([Validators.required, CustomValidators.emailFormat]), CustomValidators.duplicated]
+              private _formBuilder:FormBuilder,
+              private _topMessageService:TopMessageService,
+              private _loadingService:LoadingService) {
+    this.forgottenPasswordForm = this._formBuilder.group({
+      email: ['',
+        Validators.compose([Validators.required, CustomValidators.emailFormat])
+      ]
     });
   }
 
-  onSubmit():void {
-    this._router.navigate(['/account/reset_email_sent']);
-  }
+  forgottenPassword():void {
+    // start loading
+    this._loadingService.start();
 
-  forgottenPassword(email:string):void {
+    let email:string = this.forgottenPasswordForm.value.email;
 
     this._apiBaseService.get(`users/search?email=${email}`)
       .subscribe((response) => {
           var result = response.json();
           if (result.data === null) {
-            this._toadMessageService.activate(this._toadMessageService.type.danger, result.message);
+            // stop loading
+            this._loadingService.stop();
+            this._topMessageService.danger(result.message);
           } else {
             let body = JSON.stringify({email});
             this._apiBaseService.post('users/recovery/initiate', body)
@@ -50,14 +59,18 @@ export class ForgottenPasswordComponent {
                   this._router.navigate(['/account/reset_email_sent']);
                 },
                 error => {
-                  this._toadMessageService.activate(this._toadMessageService.type.danger, error);
+                  // stop loading
+                  this._loadingService.stop();
+                  this._topMessageService.danger(error);
                   console.log("error:", error);
                 });
             // this._router.navigate(['/account/reset_email_sent']);
           }
         },
         error => {
-          this._toadMessageService.activate(this._toadMessageService.type.danger, error);
+          // stop loading
+          this._loadingService.stop();
+          this._topMessageService.danger(error);
           console.log('error:', error);
         });
   }

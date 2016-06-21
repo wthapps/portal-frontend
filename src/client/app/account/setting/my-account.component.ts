@@ -51,7 +51,7 @@ export class MyAccountComponent {
 
     console.log(this._userService.profile);
 
-    this.sex = this._userService.profile.sex;
+    this.sex = this._userService.profile.sex == null ? 0 : this._userService.profile.sex;
 
     if (this._userService.profile.birthday !== null) {
       let birthday = new Date(this._userService.profile.birthday);
