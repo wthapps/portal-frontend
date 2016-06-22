@@ -68,10 +68,10 @@
           <div class="mb0 col-xs-6">
             <label class="cardinfo-label" for="country">Country</label>
             <select class="form-control" id="country" #country name="country"
-              [(ngModel)]="_userService.profile.billing_address.country">
+                    [(ngModel)]="_userService.profile.billing_address.country">
               <option *ngFor="let country of countries; let i = index" [selected]="i === 39"
                       value="{{country.key}}">
-                  {{country.value}}
+                {{country.value}}
               </option>
             </select>
           </div>
@@ -100,6 +100,6 @@
 
 <div class="text-center mt20">
   <a [routerLink]="['/account']" class="btn btn-default mr10">Cancel</a>
-  <input id="button-pay" class="btn btn-primary ml10" type="submit" value="{{button_text}}">
+  <button id="button-pay" class="btn btn-primary ml10" type="submit">{{button_text}}</button>
 </div>
 

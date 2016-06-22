@@ -1,7 +1,12 @@
-import {Component, AfterViewInit}     from '@angular/core';
-import {Router, ROUTER_DIRECTIVES}    from '@angular/router';
-import {Router, ROUTER_DIRECTIVES, RouteSegment}    from '@angular/router';
-import {AccountMenuComponent}         from './menu/account-menu.component';
+import {
+  Component,
+  AfterViewInit
+}                                     from '@angular/core';
+import {
+  Router,
+  ROUTER_DIRECTIVES,
+  RouteSegment
+}                                     from '@angular/router';
 import {PaymentService}               from './payment.service';
 import {CountryListComponent}         from '../shared/services/country.component';
 import {UserService, CONFIG}          from '../shared/index';
@@ -32,7 +37,6 @@ export class PaymentComponent implements AfterViewInit {
   button_text: string = 'Continue';
   edit_mode: boolean = false;
   countries:any;
-
 
   constructor(private _router:Router,
               private _userService:UserService,
@@ -78,7 +82,7 @@ export class PaymentComponent implements AfterViewInit {
 
     var _this = this;
     var form:any = document.querySelector('#payment-method-card');
-    var submit = document.querySelector('input[type="submit"]');
+    var submit = document.querySelector('#button-pay');
 
     // billing address information
     var cardholder_name = $('#cardholder-name');
@@ -164,7 +168,7 @@ export class PaymentComponent implements AfterViewInit {
         });
 
         hostedFieldsInstance.on('empty', function (event) {
-          $('header').removeClass('header-slide');
+          //$('header').removeClass('header-slide');
           $('#card-image').removeClass();
           $(form).removeClass();
         });
@@ -174,7 +178,7 @@ export class PaymentComponent implements AfterViewInit {
           if (event.cards.length === 1) {
             $(form).removeClass().addClass(event.cards[0].type);
             $('#card-image').removeClass().addClass(event.cards[0].type);
-            $('header').addClass('header-slide');
+            //$('header').addClass('header-slide');
 
             // Change the CVV length for AmericanExpress cards
             if (event.cards[0].code.size === 4) {
