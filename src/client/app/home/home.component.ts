@@ -13,6 +13,10 @@ import {WthJoinUs} from '../shared/wth.join.us.component';
 
 export class HomeComponent {
   pageTitle:string = 'Home page';
-  
-  constructor(private _userService: UserService){}
+
+  isLogin:boolean;
+
+  constructor(private _userService: UserService){
+    this.isLogin = this._userService.loggedIn;
+  }
 }
