@@ -146,3 +146,30 @@ a:hover {
   color: #818181;
   margin-bottom: .3125rem;
 }
+
+.text-centered {
+  text-align: center;
+}
+
+@media (min-width: 40em) {
+  .half-page > section:first-child {
+    margin-left: 0;
+    padding-left: 0;
+    border-right: 1px solid #e4e4e4;
+  }
+
+  .half-page > section {
+    float: left;
+    width: 48.5%;
+    padding-left: 3%;
+  }
+}
+
+.narrow {
+  max-width: 75%;
+}
+
+.vert-island {
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
