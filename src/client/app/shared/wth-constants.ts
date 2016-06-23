@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class WthConstants{
+export class WthConstants {
   // public static get MAX_A = '1234';
-  public static Operation: Object {
+  public static Operation:Object = {
     update: 'update',
     edit: 'edit',
     //delete: 'delete',
@@ -12,7 +12,7 @@ export class WthConstants{
     cancel: 'cancel'
   };
 
-  public static String: Object = {
+  public static String:Object = {
     operation: 'operation',
     jwt: 'jwt',
     profile: 'profile',
