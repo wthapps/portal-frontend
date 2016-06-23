@@ -3,15 +3,17 @@ import {
   ROUTER_DIRECTIVES,
   Routes
 }                                 from '@angular/router';
-import {PoliciesMenuComponent}    from './menu/menu.component';
+import {PoliciesMenuComponent}    from './menu.component';
 import {
   PrivacyComponent,
-  TermsComponent
+  TermsComponent,
+  CookiesComponent
 }                                 from './index';
 
 @Routes([
   {path: '/privacy', component: PrivacyComponent},
   {path: '/terms', component: TermsComponent},
+  {path: '/cookies', component: CookiesComponent},
   {path: '/', component: PrivacyComponent},
   {path: '*', component: PrivacyComponent}
 ])

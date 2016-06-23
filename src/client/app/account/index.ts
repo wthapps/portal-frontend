@@ -25,6 +25,7 @@ export * from './menu/account-menu.component';
 export * from './plans.component';
 export * from './plan-details.component';
 export * from './billing-details.component';
+export * from './billing-history.component';
 export * from './payment.component';
 export * from './payment/payment-confirm.component';
 /**
@@ -48,3 +49,8 @@ export * from './services/vpn/vpn.component';
  *  Services eFax
  */
 export * from './services/efax/efax.component';
+
+/*
+*
+*/
+export * from './apps/add-ons.component';

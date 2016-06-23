@@ -1,4 +1,4 @@
-<form id="payment-method-card" class="scale-down" [ngFormModel]="paymentForm">
+<form id="payment-method-card" class="scale-down" [ngFormModel]="paymentForm" novalidate>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Payment Method</h3>
@@ -7,10 +7,15 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="form-container">
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-error': cardholder_name.touched && !cardholder_name.valid}">
               <label for="cardholder-name">Name on card</label>
               <input class="form-control" type="text" id="cardholder-name" name="cardholder-name"
-                     placeholder="MICHEAL DO" value="">
+                     placeholder="Name on card" #cardholder_name="ngForm" ngControl="cardholder_name"
+                     [(ngModel)]="_userService.profile.credit_cards[0].cardholder_name">
+              <div *ngIf="cardholder_name.touched && !cardholder_name.valid">
+                  <span class="help-block"
+                        *ngIf="cardholder_name.errors.required">Name on card is required</span>
+              </div> 
             </div>
             <div class="form-group">
               <label for="card-number">Card Number</label>
@@ -55,7 +60,7 @@
                    placeholder="Address line 1" [(ngModel)]="_userService.profile.billing_address.address_line_1"
                    ngControl="address_line_1" #address_line_1="ngForm">
             <div *ngIf="address_line_1.touched && !address_line_1.valid">
-              <span class="help-block" *ngIf="paymentForm.hasError('required', 'address_line_1')">Address line 1 is required</span>
+              <span class="help-block" *ngIf="address_line_1.errors.required">Address line 1 is required</span>
             </div>
           </div>
           <div class="form-group">
@@ -80,7 +85,7 @@
                 </select>
                 <div *ngIf="country.touched && !country.valid">
                   <span class="help-block"
-                        *ngIf="paymentForm.hasError('required', 'country')">Country is required</span>
+                        *ngIf="country.errors.required">Country is required</span>
                 </div>
               </div>
             </div>
@@ -90,7 +95,7 @@
                 <input class="form-control" type="text" id="city" #city="ngForm" name="city" placeholder="City"
                        [(ngModel)]="_userService.profile.billing_address.city" ngControl="city">
                 <div *ngIf="city.touched && !city.valid">
-                  <span class="help-block" *ngIf="paymentForm.hasError('required', 'city')">City is required</span>
+                  <span class="help-block" *ngIf="city.errors.required">City is required</span>
                 </div>
               </div>
             </div>
@@ -113,7 +118,7 @@
                        [(ngModel)]="_userService.profile.billing_address.region" ngControl="region">
                 <div *ngIf="region.touched && !region.valid">
                   <span class="help-block"
-                        *ngIf="paymentForm.hasError('required', 'region')">State/Province is required</span>
+                        *ngIf="region.errors.required">State/Province is required</span>
                 </div>
               </div>
             </div>
@@ -125,7 +130,7 @@
 
   <div class="text-center mt20">
     <a [routerLink]="['/account']" class="btn btn-default mr10">Cancel</a>
-    <button id="button-pay" class="btn btn-primary ml10" type="submit">{{button_text}}</button>
+    <button id="button-pay" class="btn btn-primary ml10" type="submit" [disabled]="!paymentForm.valid">{{button_text}}</button>
   </div>
 
 </form>

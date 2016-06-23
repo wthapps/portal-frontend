@@ -15,6 +15,7 @@ import {
   PlansComponent,
   PlanDetailsComponent,
   BillingDetailsComponent,
+  BillingHistoryComponent,
   PaymentComponent,
   PaymentConfirmComponent,
 
@@ -27,7 +28,8 @@ import {
   // VPN
   AccountServicesVPNComponent,
   // EFax
-  AccountServicesEFaxComponent
+  AccountServicesEFaxComponent,
+  AddOnsComponent
 } from './index';
 
 import {UserService, CONFIG} from '../shared/index';
@@ -42,10 +44,12 @@ import {UserService, CONFIG} from '../shared/index';
   {path: '/efax', component: AccountServicesEFaxComponent},
 
   {path: '/services', component: AccountServicesListComponent},
+  {path: '/apps/add-ons', component: AddOnsComponent},
 
   {path: '/plans', component: PlansComponent},
   {path: '/plan-details', component: PlanDetailsComponent},
   {path: '/billing-details', component: BillingDetailsComponent},
+  {path: '/billing-history', component: BillingHistoryComponent},
   {path: '/payment/confirm', component: PaymentConfirmComponent},
   {path: '/payment', component: PaymentComponent},
 

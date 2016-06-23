@@ -21,6 +21,7 @@
         <ul class="list-group">
             <li class="list-group-item"><a [routerLink]="['/account/plan-details']">Plan details</a></li>
             <li class="list-group-item"><a [routerLink]="['/account/billing-details']">Billing details</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/billing-history']">Billing history</a></li>
         </ul>
     </div>
 
@@ -44,9 +45,9 @@
         </div>
         <!-- List group -->
         <ul class="list-group">
-            <li class="list-group-item"><a [routerLink]="['/comingsoon']">MS Office Add-ons</a></li>
-            <li class="list-group-item"><a [routerLink]="['/comingsoon']">Adobe Add-ons</a></li>
-            <li class="list-group-item"><a [routerLink]="['/comingsoon']">Others</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/apps/add-ons',{type:'msoffice'}]">MS Office Add-ons</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/apps/add-ons',{type:'adobe'}]">Adobe Add-ons</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/apps/add-ons',{type:'others'}]">Others</a></li>
         </ul>
     </div>
 </div>

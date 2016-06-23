@@ -10,5 +10,5 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 })
 
 export class PrivacyComponent {
-  PanelTitle:string = 'Welcome to the WTH Privacy Policy';
+  PanelTitle:string = 'Privacy Policy';
 }

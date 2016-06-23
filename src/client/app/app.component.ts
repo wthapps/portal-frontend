@@ -18,7 +18,7 @@ import {
   DialogComponent,
   TopMessageComponent,
   LoadingComponent,
-  UserService
+  UserService  
 } from './shared/index';
 
 import {HomeComponent} from './home/home.component';

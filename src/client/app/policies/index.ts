@@ -1,10 +1,15 @@
 /**
  * Terms of Service
  */
-export * from './terms/terms.component';
+export * from './terms.component';
 
 /**
  *  Privacy Policy
  */
-export * from './privacy/privacy.component';
+export * from './privacy.component';
+
+/**
+ *  Cookies
+ */
+export * from './cookies.component';
 

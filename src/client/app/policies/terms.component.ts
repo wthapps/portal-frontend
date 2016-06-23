@@ -10,5 +10,5 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 })
 
 export class TermsComponent {
-  PanelTitle:string = 'WTH Terms of Service';
+  PanelTitle:string = 'Terms of Service';
 }

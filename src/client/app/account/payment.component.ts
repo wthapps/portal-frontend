@@ -74,6 +74,8 @@ export class PaymentComponent implements AfterViewInit {
     }
 
     this.paymentForm = this._builder.group({
+      cardholder_name: ['', Validators.compose([Validators.required])
+      ],
       address_line_1: ['', Validators.compose([Validators.required])
       ],
       city: ['', Validators.compose([Validators.required])
@@ -94,16 +96,7 @@ export class PaymentComponent implements AfterViewInit {
     var _this = this;
     var form:any = document.querySelector('#payment-method-card');
     var submit = document.querySelector('#button-pay');
-    //TODO refactor code to _topMessageService (bug: after reload page)
-    this._topMessageService.danger('');
-    let _topMessage:Object = {
-      danger: function (text) {
-        _this.topMessageShow();
-        $('#alert-wrap .alert-inside').remove();
-        $('#alert-wrap .alert').append('<span class="alert-inside">' + text + '</span>');
-      }
-    };
-
+    
 
     // billing address information
     var cardholder_name = $('#cardholder-name');
@@ -192,7 +185,9 @@ export class PaymentComponent implements AfterViewInit {
             return event.fields[key].isValid;
           });
 
-          if (formValid) {
+          console.log("this", _this.paymentForm.valid);  
+
+          if (formValid && _this.paymentForm.valid) {
             //$('#button-pay').addClass('show-button');
             $('#button-pay').prop("disabled", false);
           } else {
@@ -228,8 +223,7 @@ export class PaymentComponent implements AfterViewInit {
 
           hostedFieldsInstance.tokenize(function (err, payload) {
             if (err) {
-              //_this._topMessageService.danger(err.message);
-              _topMessage.danger(err.message);
+              _this._topMessageService.danger(err.message);              
               console.log('payment', err);
               return;
             }
