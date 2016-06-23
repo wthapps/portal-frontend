@@ -8,12 +8,12 @@ import {ApiBaseService} from './apibase.service';
 export class UserService extends ApiBaseService {
 
   public loggedIn: boolean = false;
-  public profile: Object = null;
+  public profile: User = null;
 
 
   constructor(http: Http) {
     super(http);
-    this.readUserInfo();    
+    this.readUserInfo();
   }
 
   public login(path: string, body: string, useJwt?: boolean = true): Observable<Response>{
@@ -51,7 +51,7 @@ export class UserService extends ApiBaseService {
         return res;
       });
   }
-  
+
   /*
   * update user info
   * is_patch: You decide updating whole resource or a part of. Default value is false
@@ -78,7 +78,7 @@ export class UserService extends ApiBaseService {
     //       }
     //       return res;
     //     });
-    // }    
+    // }
   }
 
 
@@ -108,7 +108,7 @@ export class UserService extends ApiBaseService {
       });
   }
 
-  private storeUserInfo(response){    
+  private storeUserInfo(response){
     // TODO move string constants to config file
     Cookie.set('jwt', response.token);
     Cookie.set('profile', JSON.stringify(response.data));
@@ -146,6 +146,7 @@ export class User {
     public birthday_month: string,
     public birthday_year: string,
     public sex: number,
-    public accepted: boolean
+    public accepted: boolean,
+    public has_payment_info:boolean
   ) {}
 }
