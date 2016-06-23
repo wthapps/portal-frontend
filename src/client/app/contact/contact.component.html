@@ -49,7 +49,7 @@
           <div class="form-group"
                [ngClass]="{ 'has-error' : contactForm.find('body').touched && !contactForm.find('body').valid }">
             <label class="control-label" for="body">Body</label>
-            <textarea name="body" class="form-control" rows="6" placeholder="How can we help you?"
+            <textarea name="body" id="body" class="form-control" rows="6" placeholder="How can we help you?"
                       [ngFormControl]="contactForm.find('body')"></textarea>
             <div *ngIf="contactForm.find('body').touched && !contactForm.find('body').valid ">
               <span class="help-block" *ngIf="contactForm.hasError('required', 'body') == true">A body is required.</span>

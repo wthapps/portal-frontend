@@ -15,7 +15,7 @@ import {LoadingService}            from '../partials/loading/index';
 import {TopMessageService}         from '../partials/topmessage/index';
 
 @Component({
-  moduleId: module.id, //@TODO: what is module?
+  moduleId: module.id,
   templateUrl: 'contact.component.html',
   directives: [
     ROUTER_DIRECTIVES,
