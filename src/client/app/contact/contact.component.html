@@ -18,49 +18,46 @@
         <form [ngFormModel]="contactForm" (ngSubmit)="submit()" novalidate>
 
           <!-- Email -->
-          <div class="form-group"
-               [ngClass]="{ 'has-error' : !contactForm.find('email').valid && contactForm.find('email').touched }">
-            <label class="control-label" for="email">Email Address</label>
-            <input type="text" class="form-control" name="email" id="email" placeholder="Email Address"
-                   value="{{Contact.email}}"
-                   [ngFormControl]="contactForm.find('email')">
-            <div *ngIf="!contactForm.find('email').valid && contactForm.find('email').touched ">
-              <span class="help-block" *ngIf="contactForm.hasError('required', 'email')">An valid email address is required.</span>
-              <span class="help-block" *ngIf="!contactForm.hasError('required', 'email') && contactForm.hasError('emailFormat', 'email')">The email is invalid. eg. example@wthapps.com</span>
-              <span class="help-block" *ngIf="contactForm.hasError('duplicated', 'email')">The email has been registered already</span>
-            </div>
+          <div class="form-group" [ngClass]="{ 'has-error' : !email.valid && email.touched }">
+              <input type="text" class="form-control" name="email" id="email" placeholder="Email Address"
+                     value="{{Contact.email}}"
+                     #email="ngForm" ngControl="email">
+              <div *ngIf="!email.valid && email.touched ">
+                <span class="help-block" *ngIf="email.errors.required">An valid email address is required.</span>
+                <span class="help-block" *ngIf="!email.errors.required && email.errors.emailFormat">The email is invalid. eg. example@wthapps.com</span>
+              </div>
           </div>
           <!-- End Email -->
 
           <!-- Subject -->
-          <div class="form-group"
-            [ngClass]="{ 'has-error' : !contactForm.find('subject').valid && contactForm.find('subject').touched }">
-            <label class="control-label" for="subject">Subject</label>
+          <div class="form-group" [ngClass]="{ 'has-error' : !subject.valid && subject.touched }">
             <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject"
-              [ngFormControl]="contactForm.find('subject')"/>
-            <div *ngIf="!contactForm.find('subject').valid && contactForm.find('subject').touched">
-              <span class="help-block" *ngIf="contactForm.hasError('required','subject')">A subject is required.</span>
-              <span class="help-block" *ngIf="contactForm.hasError('required','subject') == false && contactForm.hasError('inputSize', 'subject') == true">A subject must be greater than 20 characters.</span>
+              #subject="ngForm" ngControl="subject">
+            <div *ngIf="!subject.valid && subject.touched">
+              <span class="help-block" *ngIf="subject.errors.required">A subject is required.</span>
+              <span class="help-block" *ngIf="subject.errors.minlength">A subject must be greater than 20 characters.</span>
             </div>
           </div>
           <!-- End Subject -->
 
           <!-- Body -->
-          <div class="form-group"
-               [ngClass]="{ 'has-error' : contactForm.find('body').touched && !contactForm.find('body').valid }">
-            <label class="control-label" for="body">Body</label>
+          <div class="form-group" [ngClass]="{ 'has-error' : !body.valid && body.touched }">
             <textarea name="body" id="body" class="form-control" rows="6" placeholder="How can we help you?"
-                      [ngFormControl]="contactForm.find('body')"></textarea>
-            <div *ngIf="contactForm.find('body').touched && !contactForm.find('body').valid ">
-              <span class="help-block" *ngIf="contactForm.hasError('required', 'body') == true">A body is required.</span>
-              <span class="help-block" *ngIf="contactForm.hasError('required', 'body') == false && contactForm.hasError('inputSize', 'body') == true">A body must be greater than 20 characters.</span>
+              #body="ngForm" ngControl="body"></textarea>
+            <div *ngIf="!body.valid && body.touched">
+              <span class="help-block" *ngIf="body.errors.required">A body is required.</span>
+              <span class="help-block" *ngIf="body.errors.minlength">A body must be greater than 20 characters.</span>
             </div>
           </div>
           <!-- End Body -->
 
+          <div class="form-group">
+            <re-captcha [site_key]="siteKey" (captchaResponse)="handleCorrectCaptcha($event)"></re-captcha>
+          </div>
+
           <!-- Submit -->
           <div class="form-group">
-            <button [disabled]="!contactForm.valid" type="submit" class="btn btn-danger">Send</button>
+            <button [disabled]="!contactForm.valid || !RecaptchaState" type="submit" class="btn btn-danger">Send</button>
           </div>
           <!-- End Submit -->
         </form>
