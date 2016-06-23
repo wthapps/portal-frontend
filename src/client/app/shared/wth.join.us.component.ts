@@ -12,20 +12,26 @@ import {UserService} from './services/user.service'
   `
 })
 
-export class WthJoinUs {
+export class WthJoinUsComponent {
 
   public textValue:string;
 
-  constructor(private _userService:UserService, private _router:Router) {
+  constructor(private _userService:UserService,
+              private _router:Router) {
     this.textValue = _userService.loggedIn ? 'Upgrade for only $9.99 per month' : 'Join Free for a Month';
   }
 
   public redirectNextPage(event) {
     event.preventDefault();
-
-    if (!this._userService.loggedIn) this._router.navigateByUrl('/signup');
-    if (this._userService.profile.has_payment_info) this._router.navigateByUrl('/account/plans');
-    this._router.navigateByUrl('/account/payment');
+    if (this._userService.loggedIn) {
+      if (this._userService.profile.has_payment_info) {
+        this._router.navigateByUrl('/account/plans');
+        return false;
+      }
+      this._router.navigateByUrl('/account/payment');
+      return false;
+    }
+    this._router.navigateByUrl('/signup');
   }
 }
 
@@ -39,21 +45,23 @@ export class WthJoinUs {
   `
 })
 
-export class WthJoinUs {
+export class getStartedComponent {
 
   public textValue:string = 'Get Started';
 
-  constructor(private _userService:UserService, private _router:Router) {
-  }
+  constructor(private _userService:UserService,
+              private _router:Router) {}
 
   public redirectNextPage(event) {
     event.preventDefault();
-
-    if (!this._userService.loggedIn) this._router.navigateByUrl('/signup');
-    if (this._userService.profile.has_payment_info) this._router.navigateByUrl('/account/plans');
-    this._router.navigateByUrl('/account/payment');
+    if (this._userService.loggedIn) {
+      if (this._userService.profile.has_payment_info) {
+        this._router.navigateByUrl('/account/plans');
+        return false;
+      }
+      this._router.navigateByUrl('/account/payment');
+      return false;
+    }
+    this._router.navigateByUrl('/signup');
   }
 }
-
-
-

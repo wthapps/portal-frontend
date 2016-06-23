@@ -1,22 +1,20 @@
-import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
-import {UserService} from "../shared/services/user.service";
-import {WthJoinUs} from '../shared/wth.join.us.component';
+import {Component}              from '@angular/core';
+import {ROUTER_DIRECTIVES}      from '@angular/router';
+import {
+  WthJoinUsComponent,
+  getStartedComponent
+}                               from '../shared/wth.join.us.component';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'home.component.html',
   directives: [
-    ROUTER_DIRECTIVES, WthJoinUs
+    ROUTER_DIRECTIVES,
+    WthJoinUsComponent,
+    getStartedComponent
   ]
 })
 
 export class HomeComponent {
   pageTitle:string = 'Home page';
-
-  isLogin:boolean;
-
-  constructor(private _userService: UserService){
-    this.isLogin = this._userService.loggedIn;
-  }
 }
