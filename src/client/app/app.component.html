@@ -50,7 +50,11 @@
 </main>
 <footer class="footer">
   <div class="container">
-    <p><a [routerLink]="['/']">WTHApps</a> © 2016 • All rights reserved.</p>
+    <div class="pull-right">
+      <a [routerLink]="['/policies/privacy']" class="mr10">Privacy</a>
+      <a [routerLink]="['/policies/terms']">Terms</a>
+    </div>
+    <div class="pull-left"><a [routerLink]="['/']">WTHApps</a> © 2016 • All rights reserved.</div>
   </div>
 </footer>
 

@@ -37,7 +37,9 @@ import {
 } from './account/index';
 
 // Base href
+import {ComingsoonComponent} from './comingsoon/comingsoon.component';
 import {WelcomeComponent} from './welcome/welcome.component';
+import {PoliciesComponent} from './policies/policies.component';
 import {ContactComponent} from './contact/contact.component';
 import {AboutComponent} from './about/about.component';
 import {SupportComponent} from './support/support.component';
@@ -76,6 +78,8 @@ import {AccountComponent} from './account/account.component';
   {path: '/support', component: SupportComponent},
   {path: '/contact', component: ContactComponent},
   {path: '/welcome', component: WelcomeComponent},
+  {path: '/policies', component: PoliciesComponent},
+  {path: '/comingsoon', component: ComingsoonComponent},
 
   {path: '/products/:id', component: ProductDetailComponent},
   {path: '/products', component: ProductListComponent},
@@ -89,7 +93,8 @@ import {AccountComponent} from './account/account.component';
 
   {path: '/account', component: AccountComponent},
 
-  {path: '/', component: HomeComponent}
+  {path: '/', component: HomeComponent},
+  {path: '*', component: HomeComponent}
 ])
 
 export class AppComponent implements AfterViewInit {
