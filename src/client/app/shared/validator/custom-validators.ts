@@ -38,8 +38,4 @@ export class CustomValidators {
   static selectOption(control:Control):IValidation {
     return (control.value!=0 || control.value!='') ? null : {'selectOption': true};
   }
-
-  static inputSize(control:Control):IValidation {
-    return control.value.length >= 20 ? null : { 'inputSize': true };
-  }
 }

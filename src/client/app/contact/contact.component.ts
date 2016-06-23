@@ -13,13 +13,15 @@ import {Contact}                   from './contact';
 import {ContactService}            from './contact.service';
 import {LoadingService}            from '../partials/loading/index';
 import {TopMessageService}         from '../partials/topmessage/index';
+import {ReCaptchaComponent}        from '../shared/googlerecaptcha.directive';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'contact.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    FORM_DIRECTIVES
+    FORM_DIRECTIVES,
+    ReCaptchaComponent
   ],
   providers: [
     LoadingService
@@ -32,6 +34,16 @@ export class ContactComponent implements OnInit {
 
   public Contact: Contact = new Contact();
   public contactForm:ControlGroup;
+
+  public siteKey: string = "6LezTSMTAAAAAHW69VItdZ9OeUEsdSaSg8BMAGxG";
+  private _recaptchaResponse: any = '';
+
+  public RecaptchaState: boolean = false;
+  
+  public handleCorrectCaptcha(event) {
+    this._recaptchaResponse = event;
+    this.RecaptchaState = true;
+  }
 
   ngOnInit(): any {
     this.updateContactForm(this.Contact);
@@ -48,6 +60,7 @@ export class ContactComponent implements OnInit {
   submit() {
     this._loadingService.start();
     this.Contact = this.contactForm.value;
+    this.Contact.recaptcha_response = this._recaptchaResponse;
     let body = JSON.stringify(this.Contact);
     this._contactService.createFeedback(body).subscribe(
       result => {
@@ -60,15 +73,17 @@ export class ContactComponent implements OnInit {
       }
     );
     this.updateContactForm(this.Contact);
+    grecaptcha.reset();
   }
 
   private updateContactForm(contact: Contact) {
-
+    this.RecaptchaState = false;
     this.createContactForm();
 
     contact.email = '';
     contact.subject = '';
     contact.body = '';
+    contact.recaptcha_response = '';
     if (this._userService.profile != null) {
       contact.email = this._userService.profile.email;
     }
@@ -83,10 +98,10 @@ export class ContactComponent implements OnInit {
         Validators.compose([Validators.required, CustomValidators.emailFormat])
       ],
       subject: ['',
-        Validators.compose([Validators.required, CustomValidators.inputSize])
+        Validators.compose([Validators.required, Validators.minLength(20)])
       ],
       body: ['',
-        Validators.compose([Validators.required, CustomValidators.inputSize])
+        Validators.compose([Validators.required, Validators.minLength(20)])
       ]
     });
   }
