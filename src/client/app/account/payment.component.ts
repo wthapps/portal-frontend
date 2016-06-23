@@ -1,12 +1,6 @@
-import {
-  Component,
-  AfterViewInit
-}                                     from '@angular/core';
-import {
-  Router,
-  ROUTER_DIRECTIVES,
-  RouteSegment
-}                                     from '@angular/router';
+import {Component, AfterViewInit}                                  from '@angular/core';
+import {Router, ROUTER_DIRECTIVES, RouteSegment}                   from '@angular/router';
+import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators}    from '@angular/common';
 import {PaymentService}               from './payment.service';
 import {CountryListComponent}         from '../shared/services/country.component';
 import {UserService, CONFIG}          from '../shared/index';
@@ -37,6 +31,7 @@ export class PaymentComponent implements AfterViewInit {
   button_text:string = 'Continue';
   edit_mode:boolean = false;
   countries:any;
+  paymentForm: FormGroup;
 
   constructor(private _router:Router,
               private _userService:UserService,
@@ -44,7 +39,8 @@ export class PaymentComponent implements AfterViewInit {
               private _countries:CountryListComponent,
               private _loaddingService:LoadingService,
               private _params:RouteSegment,
-              private _topMessageService:TopMessageService) {
+              private _topMessageService:TopMessageService,
+              private _builder: FormBuilder) {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
@@ -76,6 +72,17 @@ export class PaymentComponent implements AfterViewInit {
         break;
 
     }
+
+    this.paymentForm = this._builder.group({
+      address_line_1: ['', Validators.compose([Validators.required])
+      ],
+      city: ['', Validators.compose([Validators.required])
+      ],
+      region: ['', Validators.compose([Validators.required])
+      ],
+      country: ['', Validators.compose([Validators.required])
+      ]
+    });
   }
 
   topMessageShow():void {

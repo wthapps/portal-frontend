@@ -13,8 +13,7 @@ import {TopMessageService}                          from '../partials/topmessage
 
 export class PlansComponent {
   PanelTitle:string = 'Choose plan';
-  plan
-
+  
   paymentMethod:Object = {};
 
   constructor(private _router:Router,

@@ -1,4 +1,4 @@
-<form id="payment-method-card" class="scale-down">
+<form id="payment-method-card" class="scale-down" [ngFormModel]="paymentForm">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Payment Method</h3>
@@ -49,47 +49,62 @@
     <div class="panel-body panel-creditcard">
       <div class="row">
         <div class="col-sm-6">
-          <div class="form-group">
+          <div class="form-group" [ngClass]="{'has-error': address_line_1.touched && !address_line_1.valid}">
             <label for="address-line-1">Address line 1</label>
             <input class="form-control" type="text" id="address-line-1" name="address-line-1"
-                   placeholder="" [(ngModel)]="_userService.profile.billing_address.address_line_1">
+                   placeholder="Address line 1" [(ngModel)]="_userService.profile.billing_address.address_line_1"
+                   ngControl="address_line_1" #address_line_1="ngForm">
+            <div *ngIf="address_line_1.touched && !address_line_1.valid">
+              <span class="help-block" *ngIf="paymentForm.hasError('required', 'address_line_1')">Address line 1 is required</span>
+            </div>
           </div>
           <div class="form-group">
             <label for="address-line-2">Address line 2
               <span class="optional">(optional)</span>
             </label>
             <input class="form-control" type="text" id="address-line-2" name="address-line-2"
-                   placeholder="" [(ngModel)]="_userService.profile.billing_address.address_line_2">
+                   placeholder="Address line 2" [(ngModel)]="_userService.profile.billing_address.address_line_2">
           </div>
         </div>
         <div class="col-sm-6">
-          <div class="row row-16 form-group">
-            <div class="mb0 col-xs-6">
+          <div class="row row-16">
+            <div class="col-xs-6 form-group" [ngClass]="{'has-error': country.touched && !country.valid}">
               <label for="country">Country</label>
-              <select class="form-control" id="country" #country name="country"
+              <select class="form-control" id="country" name="country" #country="ngForm" ngControl="country"
                       [(ngModel)]="_userService.profile.billing_address.country">
                 <option *ngFor="let country of countries; let i = index" [selected]="i === 39"
                         value="{{country.key}}">
                   {{country.value}}
                 </option>
               </select>
+              <div *ngIf="country.touched && !country.valid">
+                <span class="help-block" *ngIf="paymentForm.hasError('required', 'country')">Country is required</span>
+              </div>
             </div>
-            <div class="mb0 col-xs-6">
+            <div class="col-xs-6 form-group" [ngClass]="{'has-error': city.touched && !city.valid}">
               <label for="city">City</label>
-              <input class="form-control" type="text" id="city" #city name="city" placeholder=""
-                     [(ngModel)]="_userService.profile.billing_address.city">
+              <input class="form-control" type="text" id="city" #city="ngForm" name="city" placeholder="City"
+                     [(ngModel)]="_userService.profile.billing_address.city" ngControl="city">
+              <div *ngIf="city.touched && !city.valid">
+                <span class="help-block" *ngIf="paymentForm.hasError('required', 'city')">City is required</span>
+              </div> 
             </div>
           </div>
-          <div class="row row-16 form-group">
-            <div class="mb0 col-xs-6">
+          <div class="row row-16">
+            <div class="col-xs-6 form-group">
               <label for="postcode">Postal Code <span class="optional">(optional)</span></label>
-              <input class="form-control" type="text" id="postcode" name="postcode" placeholder=""
+              <input class="form-control" type="text" id="postcode" name="postcode" placeholder="Postal code"
                      [(ngModel)]="_userService.profile.billing_address.postcode">
             </div>
-            <div class="mb0 col-xs-6">
-              <label for="region">State/Province <span class="optional">(optional)</span></label>
-              <input class="form-control" type="text" id="region" #region name="region" placeholder=""
-                     [(ngModel)]="_userService.profile.billing_address.region">
+            <div class="col-xs-6 form-group" [ngClass]="{'has-error': region.touched && !region.valid}">
+              <label for="region">State/Province
+              <!--  <span class="optional">(optional)</span> -->
+              </label>
+              <input class="form-control" type="text" id="region" #region="ngForm" name="region" placeholder="State/Province"
+                     [(ngModel)]="_userService.profile.billing_address.region" ngControl="region">
+              <div *ngIf="region.touched && !region.valid">
+                <span class="help-block" *ngIf="paymentForm.hasError('required', 'region')">State/Province is required</span>
+              </div> 
             </div>
           </div>
         </div>
