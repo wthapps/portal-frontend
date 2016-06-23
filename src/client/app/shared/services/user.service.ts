@@ -136,17 +136,32 @@ export class UserService extends ApiBaseService {
 
 }
 
+export class Ibilling_address {
+  constructor(
+    public address_line_1: string,
+    public address_line_2: string,
+    public country: string,
+    public city: string,
+    public postcode: string,
+    public region: string
+  ) {}
+}
+
 export class User {
   constructor(
+    public id: number,
     public first_name: string,
     public last_name: string,
     public email: string,
     public password: string,
+    public birthday: string,
     public birthday_day: string,
     public birthday_month: string,
     public birthday_year: string,
     public sex: number,
     public accepted: boolean,
-    public has_payment_info:boolean
+    public has_payment_info: boolean,
+    public billing_address: Object,
+    public credit_cards:Array<any>
   ) {}
 }
