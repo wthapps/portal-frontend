@@ -124,7 +124,6 @@
     "@angular/upgrade": "2.0.0-rc.1",
     "angular2-jwt": "^0.1.16",
     "angular2-rest": "^0.1.0",
-    "bootbox": "^4.4.0",
     "bootstrap-sass": "^3.3.6",
     "braintree-web": "^2.24.1",
     "core-js": "^2.4.0",

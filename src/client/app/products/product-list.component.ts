@@ -10,7 +10,7 @@ import {StarComponent} from '../shared/star.component';
 
 import {LoadingService} from '../partials/loading/index';
 
-declare var bootbox:any;
+//declare var bootbox:any;
 
 @Component({
   moduleId: module.id,
@@ -48,7 +48,7 @@ export class ProductListComponent implements OnInit {
     this.element = this._el.nativeElement;
   }
 
-  alert() {
+  /*alert() {
     bootbox.alert('Hello world!', function () {
       console.log('Hello world callback');
     });
@@ -104,7 +104,7 @@ export class ProductListComponent implements OnInit {
         }
       }
     });
-  }
+  }*/
 
   toggleImage():void {
     this.showImage = !this.showImage;
