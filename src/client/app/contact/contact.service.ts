@@ -14,7 +14,9 @@ export class ContactService {
 
   public createFeedback(body: string) {
     return this._service.post(DNS_RECORD_URL, body)
-      .map(response => response.json())
+      .map(response => {
+        return response;
+      })
       .catch(this.handleError);;
   }
 

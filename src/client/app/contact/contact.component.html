@@ -20,7 +20,7 @@
           <!-- Email -->
           <div class="form-group" [ngClass]="{ 'has-error' : !email.valid && email.touched }">
               <input type="text" class="form-control" name="email" id="email" placeholder="Email Address"
-                     value="{{Contact.email}}"
+                     value="{{contact.email}}"
                      #email="ngForm" ngControl="email">
               <div *ngIf="!email.valid && email.touched ">
                 <span class="help-block" *ngIf="email.errors.required">An valid email address is required.</span>
@@ -32,7 +32,7 @@
           <!-- Subject -->
           <div class="form-group" [ngClass]="{ 'has-error' : !subject.valid && subject.touched }">
             <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject"
-              #subject="ngForm" ngControl="subject">
+              #subject="ngForm" ngControl="subject" value="{{contact.subject}}">
             <div *ngIf="!subject.valid && subject.touched">
               <span class="help-block" *ngIf="subject.errors.required">A subject is required.</span>
               <span class="help-block" *ngIf="subject.errors.minlength">A subject must be greater than 20 characters.</span>
@@ -43,7 +43,7 @@
           <!-- Body -->
           <div class="form-group" [ngClass]="{ 'has-error' : !body.valid && body.touched }">
             <textarea name="body" id="body" class="form-control" rows="6" placeholder="How can we help you?"
-              #body="ngForm" ngControl="body"></textarea>
+              #body="ngForm" ngControl="body" value="{{contact.body}}"></textarea>
             <div *ngIf="!body.valid && body.touched">
               <span class="help-block" *ngIf="body.errors.required">A body is required.</span>
               <span class="help-block" *ngIf="body.errors.minlength">A body must be greater than 20 characters.</span>
@@ -57,7 +57,7 @@
 
           <!-- Submit -->
           <div class="form-group">
-            <button [disabled]="!contactForm.valid || !RecaptchaState" type="submit" class="btn btn-danger">Send</button>
+            <button [disabled]="!contactForm.valid || !recaptchaState" type="submit" class="btn btn-danger">Send</button>
           </div>
           <!-- End Submit -->
         </form>
