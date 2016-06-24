@@ -35,7 +35,7 @@ export class ContactComponent implements OnInit {
   public Contact: Contact = new Contact();
   public contactForm:ControlGroup;
 
-  public siteKey: string = "6LezTSMTAAAAAHW69VItdZ9OeUEsdSaSg8BMAGxG";
+  public siteKey: string = "6LcuZiMTAAAAACtTNvG7j8FS5nS81R-HGN5OIo8B";
   private _recaptchaResponse: any = '';
 
   public RecaptchaState: boolean = false;
