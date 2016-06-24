@@ -1,6 +1,5 @@
 import {Component}          from '@angular/core';
 import {ROUTER_DIRECTIVES, Router}  from '@angular/router';
-import {bootstrap} from '@angular/platform-browser-dynamic';
 import {UserService} from './services/user.service'
 
 @Component({

@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {UserService, CONFIG}  from '../../shared/index';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -12,5 +11,5 @@ import {UserService, CONFIG}  from '../../shared/index';
 
 export class CookiesComponent {
   pageTitle:string = 'Cookies';
-  
+
 }

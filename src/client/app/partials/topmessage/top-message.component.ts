@@ -33,13 +33,13 @@ export class TopMessageComponent implements OnInit {
     _topMessageService.info = this.activateInfo.bind(this);
     _topMessageService.danger = this.activateDanger.bind(this);
     _topMessageService.warning = this.activateWarning.bind(this);
-    _topMessageService.success = this.activateSuccess.bind(this);    
+    _topMessageService.success = this.activateSuccess.bind(this);
   }
 
   activateInfo(message = this.defaults.message, close = this.defaults.close) {
     this.type = this.defaults.type.info;
     this.message = message;
-    this._cdr.detectChanges();  
+    this._cdr.detectChanges();
     this.close = close;
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
@@ -50,7 +50,7 @@ export class TopMessageComponent implements OnInit {
   activateDanger(message: string, close = this.defaults.close) {
     this.type = this.defaults.type.danger;
     this.message = message;
-    this._cdr.detectChanges();    
+    this._cdr.detectChanges();
     this.close = close;
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
@@ -61,7 +61,7 @@ export class TopMessageComponent implements OnInit {
   activateWarning(message = this.defaults.message, close = this.defaults.close) {
     this.type = this.defaults.type.warning;
     this.message = message;
-    this._cdr.detectChanges();  
+    this._cdr.detectChanges();
     this.close = close;
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
@@ -72,7 +72,7 @@ export class TopMessageComponent implements OnInit {
   activateSuccess(message = this.defaults.message, close = this.defaults.close) {
     this.type = this.defaults.type.success;
     this.message = message;
-    this._cdr.detectChanges();  
+    this._cdr.detectChanges();
     this.close = close;
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
@@ -85,15 +85,13 @@ export class TopMessageComponent implements OnInit {
            close = this.defaults.close) {
     this.type = type;
     this.message = message;
-    this._cdr.detectChanges();  
+    this._cdr.detectChanges();
     this.close = close;
 
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
     });
-
     return promise;
-
   }
 
   ngOnInit() {
