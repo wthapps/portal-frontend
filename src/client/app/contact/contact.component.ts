@@ -32,21 +32,23 @@ import {ReCaptchaComponent}        from '../shared/googlerecaptcha.directive';
 export class ContactComponent implements OnInit {
   protected pageTitle:string = 'Contact page';
 
-  public Contact: Contact = new Contact();
-  public contactForm:ControlGroup;
-
+  public contact: Contact;
+  public contactForm: ControlGroup;
   public siteKey: string = "6LcuZiMTAAAAACtTNvG7j8FS5nS81R-HGN5OIo8B";
-  private _recaptchaResponse: any = '';
+  public recaptchaState: boolean = false;
 
-  public RecaptchaState: boolean = false;
+  private _recaptchaResponse: any = '';
   
   public handleCorrectCaptcha(event) {
     this._recaptchaResponse = event;
-    this.RecaptchaState = true;
+    this.recaptchaState = true;
   }
 
   ngOnInit(): any {
-    this.updateContactForm(this.Contact);
+    this._recaptchaResponse = '';
+    this.recaptchaState = false;
+    this.createContactForm();
+    this.updateContactForm();
   }
 
   constructor(private _builder: FormBuilder, 
@@ -59,9 +61,10 @@ export class ContactComponent implements OnInit {
 
   submit() {
     this._loadingService.start();
-    this.Contact = this.contactForm.value;
-    this.Contact.recaptcha_response = this._recaptchaResponse;
-    let body = JSON.stringify(this.Contact);
+    this.contact = this.contactForm.value;
+    this.contact.recaptcha_response = this._recaptchaResponse;
+    this.contact.body = this.contact.body.replace(/(\r\n|\n\r|\r|\n)/g, "<br>");
+    let body = JSON.stringify(this.contact);
     this._contactService.createFeedback(body).subscribe(
       result => {
         this._loadingService.stop();
@@ -72,24 +75,23 @@ export class ContactComponent implements OnInit {
         this._topMessageService.danger('Your message could not be sent');
       }
     );
-    this.updateContactForm(this.Contact);
+    this.updateContactForm();
     grecaptcha.reset();
   }
 
-  private updateContactForm(contact: Contact) {
-    this.RecaptchaState = false;
-    this.createContactForm();
-
-    contact.email = '';
-    contact.subject = '';
-    contact.body = '';
-    contact.recaptcha_response = '';
+  private updateContactForm() {
+    this.contact = new Contact();
+    this.recaptchaState = false;
     if (this._userService.profile != null) {
-      contact.email = this._userService.profile.email;
+      this.contact.email = this._userService.profile.email;
     }
-    this.contactForm.controls['email'].updateValue(contact.email);
-    this.contactForm.controls['subject'].updateValue(contact.subject);
-    this.contactForm.controls['body'].updateValue(contact.body);
+
+    this.contactForm.controls['email'].updateValue(this.contact.email);
+    this.contactForm.controls['subject'].updateValue(this.contact.subject);
+    this.contactForm.controls['body'].updateValue(this.contact.body);
+    this.contactForm.controls['email'].setErrors(null);
+    this.contactForm.controls['subject'].setErrors(null);
+    this.contactForm.controls['body'].setErrors(null);
   }
 
   private createContactForm() {
