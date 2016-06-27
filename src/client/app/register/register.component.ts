@@ -40,9 +40,9 @@ export class RegisterComponent {
               private _router:Router,
               private _builder:FormBuilder) {
 
-    if (this._userService.loggedIn) {
-      this._router.navigateByUrl('/');
-    }
+    // if (this._userService.loggedIn) {
+    //   this._router.navigateByUrl('/');
+    // }
 
     this.singupForm = this._builder.group({
       first_name: ['', Validators.required],

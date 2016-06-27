@@ -2,10 +2,10 @@
   <div class="panel-heading">
     <h3 class="panel-title">Billing details</h3>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" *ngIf="_userService.profile.has_payment_info">
     <dl class="dl-horizontal">
       <dt>Type</dt>
-      <dd>{{_userService.profile.credit_cards[0].card_type}}</dd>
+      <!-- <dd>{{_userService.profile.credit_cards[0].card_type}}</dd> -->
       <dt>Name</dt>
       <dd>{{_userService.profile.credit_cards[0].cardholder_name}}</dd>
       <dt>Number</dt>
@@ -33,7 +33,7 @@
       <a [routerLink]="['/account/payment', {operation: 'edit'}]" class="btn btn-default">Edit</a>
     </div>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" *ngIf="!_userService.profile.has_payment_info">
     Not billing details data in your account
     <div class="clearfix mt40">
       <a [routerLink]="['/account/payment']" class="btn btn-success">Add</a>

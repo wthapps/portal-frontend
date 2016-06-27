@@ -32,12 +32,18 @@ import {
   AddOnsComponent
 } from './index';
 
-import {UserService, CONFIG} from '../shared/index';
+import {UserService, CONFIG, AuthGuard} from '../shared/index';
 
 @Routes([
-  {path: '/dns/add', component: AccountServicesDNSAddComponent},
+  {path: '/dns/add', component: AccountServicesDNSAddComponent,
+    canActivate: [AuthGuard]
+  },
   {path: '/dns/:id', component: AccountServicesDNSUpdateComponent},
-  {path: '/dns', component: AccountServicesDNSComponent},
+  {
+    path: '/dns', 
+    component: AccountServicesDNSComponent,
+    canActivate: [AuthGuard]
+  },
 
   {path: '/vpn', component: AccountServicesVPNComponent},
 

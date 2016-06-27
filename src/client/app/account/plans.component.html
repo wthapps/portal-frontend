@@ -37,11 +37,11 @@
     <tr>
       <td>
         <button class="btn btn-default" *ngIf="_userService.profile.plan_id == 'wth_free'">Current plan</button>
-        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id == 'wth_basic'" (click)="choosePlan('wth_free')">Choose</button>        
+        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id != 'wth_free'" (click)="choosePlan('wth_free')">Choose</button>
       </td>
       <td>
-        <button class="btn btn-default" *ngShow="_userService.profile.plan_id == 'wth_basic'">Current plan</button>
-        <button class="btn btn-primary" *ngShow="_userService.profile.plan_id == 'wth_free'" (click)="choosePlan('wth_basic')">Choose</button>
+        <button class="btn btn-default" *ngIf="_userService.profile.plan_id == 'wth_basic'">Current plan</button>
+        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id != 'wth_basic'" (click)="choosePlan('wth_basic')">Choose</button>
       </td>
     </tr>
   </table>

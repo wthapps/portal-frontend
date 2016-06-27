@@ -1,6 +1,6 @@
 import {Component}                                  from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}                  from '@angular/router';
-import {UserService, CONFIG}                        from '../shared/index';
+import {UserService, CONFIG, WthConstants}                        from '../shared/index';
 import {TopMessageService}                          from '../partials/topmessage/index';
 
 @Component({
@@ -29,6 +29,11 @@ export class PlansComponent {
   }
 
   public choosePlan(plan_id: string){
+    if( plan_id != 'wth_free'){
+      this._router.navigateByUrl(`account/payment;${WthConstants.string.next}=${this._router._location.path().replace(WthConstants.patterns.slash, WthConstants.patterns.space)}`);   
+      return;   
+    }
+
     let body: string = JSON.stringify({plan_id});
 
     this._userService.choosePlan(`users/${this._userService.profile.id}`, body)

@@ -1,12 +1,11 @@
 import {Component, AfterViewInit}                                  from '@angular/core';
 import {Router, ROUTER_DIRECTIVES, RouteSegment}                   from '@angular/router';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators}    from '@angular/common';
+import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, FormGroup}    from '@angular/common';
 import {PaymentService}               from './payment.service';
 import {CountryListComponent}         from '../shared/services/country.component';
-import {UserService, CONFIG}          from '../shared/index';
+import {UserService, WthConstants}    from '../shared/index';
 import {LoadingService}               from '../partials/loading/loading.service';
 import {TopMessageService}            from '../partials/topmessage/index';
-import {WthConstants}                 from '../shared/wth-constants';
 import {Cookie}                       from 'ng2-cookies/ng2-cookies'
 
 declare var braintree:any;
@@ -21,8 +20,7 @@ declare var braintree:any;
     PaymentService,
     UserService,
     CountryListComponent,
-    LoadingService,
-    WthConstants
+    LoadingService
   ]
 })
 
@@ -42,7 +40,7 @@ export class PaymentComponent implements AfterViewInit {
               private _topMessageService:TopMessageService,
               private _builder: FormBuilder) {
     if (!this._userService.loggedIn) {
-      this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
+      this._router.navigateByUrl(`/login;${WthConstants.string.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
 
     this.countries = this._countries.countries;
@@ -66,7 +64,7 @@ export class PaymentComponent implements AfterViewInit {
           cardholder_name: '',
         }];
         break;
-      case CONFIG.operations.edit:
+      case WthConstants.operations.edit:
         this.button_text = 'Update';
         this.edit_mode = true;
         break;
@@ -96,7 +94,7 @@ export class PaymentComponent implements AfterViewInit {
     var _this = this;
     var form:any = document.querySelector('#payment-method-card');
     var submit = document.querySelector('#button-pay');
-    
+
 
     // billing address information
     var cardholder_name = $('#cardholder-name');
@@ -185,7 +183,7 @@ export class PaymentComponent implements AfterViewInit {
             return event.fields[key].isValid;
           });
 
-          console.log("this", _this.paymentForm.valid);  
+          console.log("this", _this.paymentForm.valid);
 
           if (formValid && _this.paymentForm.valid) {
             //$('#button-pay').addClass('show-button');
@@ -223,7 +221,7 @@ export class PaymentComponent implements AfterViewInit {
 
           hostedFieldsInstance.tokenize(function (err, payload) {
             if (err) {
-              _this._topMessageService.danger(err.message);              
+              _this._topMessageService.danger(err.message);
               console.log('payment', err);
               return;
             }
@@ -251,6 +249,12 @@ export class PaymentComponent implements AfterViewInit {
         }, false);
       });
     });
+  }
+
+  onCancel() {    
+    var next = this._params.getParam(WthConstants.string.next) === undefined ? '/account' : 
+               this._params.getParam(WthConstants.string.next).replace(/\%20/g, '\/');    
+    this._router.navigateByUrl(next); 
   }
 
   /**

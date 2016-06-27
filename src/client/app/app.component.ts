@@ -18,7 +18,8 @@ import {
   DialogComponent,
   TopMessageComponent,
   LoadingComponent,
-  UserService  
+  UserService,
+  AuthGuard,  
 } from './shared/index';
 
 import {HomeComponent} from './home/home.component';
@@ -66,8 +67,7 @@ import {AccountComponent} from './account/account.component';
     ContactService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    APP_SHARED_PROVIDERS,
-    UserService
+    APP_SHARED_PROVIDERS        
   ]
 })
 
@@ -114,11 +114,13 @@ export class AppComponent implements AfterViewInit {
     this._userService.logout('users/sign_out')
       .subscribe(
         response => {
-          this._router.navigateByUrl('/login');
+          
         },
         error => {
-          console.log('logout error:', error);
+          
         }
+        this._userService.deleteUserInfo();
+        this._router.navigateByUrl('/login');
       );
   }
 

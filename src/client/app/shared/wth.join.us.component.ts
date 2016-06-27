@@ -25,10 +25,8 @@ export class WthJoinUsComponent {
     if (this._userService.loggedIn) {
       if (this._userService.profile.has_payment_info) {
         this._router.navigateByUrl('/account/plans');
-        return false;
       }
-      this._router.navigateByUrl('/account/payment');
-      return false;
+      this._router.navigateByUrl('/account/payment');      
     }
     this._router.navigateByUrl('/signup');
   }
@@ -55,11 +53,9 @@ export class getStartedComponent {
     event.preventDefault();
     if (this._userService.loggedIn) {
       if (this._userService.profile.has_payment_info) {
-        this._router.navigateByUrl('/account/plans');
-        return false;
+        this._router.navigateByUrl('/account/plans');        
       }
-      this._router.navigateByUrl('/account/payment');
-      return false;
+      this._router.navigateByUrl('/account/payment');      
     }
     this._router.navigateByUrl('/signup');
   }

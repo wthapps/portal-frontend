@@ -122,7 +122,7 @@ export class UserService extends ApiBaseService {
     this.loggedIn = Boolean(Cookie.get('logged_in'));
   }
 
-  private deleteUserInfo(){
+  public deleteUserInfo(){
     Cookie.delete('jwt');
     Cookie.delete('logged_in');
     Cookie.delete('profile');

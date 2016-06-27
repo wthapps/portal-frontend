@@ -1,18 +1,18 @@
-import {Injectable} from '@angular/core';
-
-@Injectable()
-export class WthConstants {
-  // public static get MAX_A = '1234';
-  public static Operation:Object = {
+export class WthConstants { 
+  public static operations: Object = {
     update: 'update',
     edit: 'edit',
-    //delete: 'delete',
+    delete: 'delete',
     create: 'create',
     save: 'save',
     cancel: 'cancel'
   };
 
-  public static String:Object = {
+  public static patterns: Object = {
+    slash: /\//g,
+    space: '\%20',
+  }
+  public static string: Object = {
     operation: 'operation',
     jwt: 'jwt',
     profile: 'profile',
@@ -20,6 +20,9 @@ export class WthConstants {
     next: 'next',
     prev: 'prev',
     c: 'c',
-    u: 'u'
-  };
+    u: 'u',
+    edit: 'edit',
+    update: 'update',
+    add: 'add'
+  } 
 }
