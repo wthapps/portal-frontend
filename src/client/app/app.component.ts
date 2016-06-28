@@ -28,6 +28,7 @@ import {ProductDetailComponent} from './products/product-detail.component';
 import {ProductService} from './products/product.service';
 import {DnsService} from './account/services/dns/dns.service';
 import {ContactService} from './contact/contact.service';
+import {ServicesService}       from './account/services/services.service';
 
 import {
   ForgottenPasswordComponent,
@@ -67,7 +68,8 @@ import {AccountComponent} from './account/account.component';
     ContactService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    APP_SHARED_PROVIDERS        
+    APP_SHARED_PROVIDERS,
+    ServicesService
   ]
 })
 

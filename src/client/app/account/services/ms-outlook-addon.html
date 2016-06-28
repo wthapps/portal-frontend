@@ -1,0 +1,52 @@
+<!-- MS Outlook Addon Information -->
+<div class="media"
+  [ngClass]="{ 'collapse' : !context.show_information_view }">
+  <div class="media-left">
+    <img width="50" class="media-object" src="{{context.context.img}}" alt="...">
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">{{context.context.name}}</h4>
+    <p>By {{context.context.author}}</p>
+    <div class="media-left">
+      <ul class="list-group">
+        <li *ngFor="let category of context.context.categories"
+          class="list-group-item">
+          <button type="button" class="btn btn-default btn-xs" [disabled]=true>{{category.name}}</button>
+        </li>
+      </ul>
+    </div>
+    <p>{{context.context.description}}</p>
+  </div>
+  <div class="media-right">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let action of context.actions">
+        <button class="btn btn-default" (click)="context.onAction(action)" [disabled]=action.disabled>{{action.name}}</button>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- End MS Outlook Addon Information -->
+
+<!-- MS Outlook Addon Configuration -->
+<!-- End MS Outlook Addon Configuration -->
+
+<!-- MS Outlook Addon Congratulation -->
+<div class="media"
+  [ngClass]="{ 'collapse' : !context.show_congratulation_view }">
+  <div class="media-left">
+    <img width="50" class="media-object" src="{{context.context.img}}" alt="...">
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Congratulation!</h4>
+    <p>{{context.context.name}} has been added, to get started click on <a [routerLink]="['/support']">learn more</a>.</p>
+    <p><a target="_blank" href={{context.downloadlink}}> Download <i class="glyphicon glyphicon-download"></i></a></p>
+  </div>
+  <div class="media-right">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let action of context.actions">
+        <button class="btn btn-default" (click)="context.onAction(action)" [disabled]=action.disabled>{{action.name}}</button>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- End MS Outlook Addon Congratulation -->
