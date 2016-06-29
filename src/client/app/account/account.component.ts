@@ -18,6 +18,8 @@ import {
   BillingHistoryComponent,
   PaymentComponent,
   PaymentConfirmComponent,
+  ReceiptComponent,
+  TransactionDetailsComponent,
 
   // Services
   AccountServicesListComponent,
@@ -33,6 +35,7 @@ import {
 } from './index';
 
 import {UserService, CONFIG, AuthGuard} from '../shared/index';
+import {TransactionDetailsComponent} from "./billing/transaction-details.component";
 
 @Routes([
   {path: '/dns/add', component: AccountServicesDNSAddComponent,
@@ -40,7 +43,7 @@ import {UserService, CONFIG, AuthGuard} from '../shared/index';
   },
   {path: '/dns/:id', component: AccountServicesDNSUpdateComponent},
   {
-    path: '/dns', 
+    path: '/dns',
     component: AccountServicesDNSComponent,
     canActivate: [AuthGuard]
   },
@@ -56,6 +59,8 @@ import {UserService, CONFIG, AuthGuard} from '../shared/index';
   {path: '/plan-details', component: PlanDetailsComponent},
   {path: '/billing-details', component: BillingDetailsComponent},
   {path: '/billing-history', component: BillingHistoryComponent},
+  {path: '/transactions/:id/receipt', component: ReceiptComponent},
+  {path: '/transactions/:id', component: TransactionDetailsComponent},
   {path: '/payment/confirm', component: PaymentConfirmComponent},
   {path: '/payment', component: PaymentComponent},
 

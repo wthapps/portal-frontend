@@ -47,4 +47,10 @@ export class BillingHistoryComponent implements OnInit{
           this._loadingService.stop();
         })
   }
+
+  viewReceipt(trans_id: string, event: any): void {
+    event.preventDefault();
+    this._router.navigate([`account/transactions/${trans_id}/receipt`]);
+    return;
+  }
 }

@@ -1,0 +1,71 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{pageTitle}}</h3>
+  </div>
+  <div class="panel-body">
+
+    <div id="content" class="grid_10 prefix_1 suffix_1 center">
+      <h2 class="receipt">Transaction {{trans_id}}</h2>
+
+      <div class="block">
+        <h3>Transaction Information</h3>
+        <dl class="dl-horizontal">
+          <dt>Merchant</dt>
+          <dd>{{transaction.merchant_account_id}}</dd>
+
+          <dt>Amount</dt>
+          <dd class="amount_positive">{{transaction.amount}} {{transaction.currency_iso_code}}</dd>
+
+          <dt>Transaction Date</dt>
+          <dd>{{transaction.created_at | date:'dd-M-yyyy' : 'UTC'}} {{transaction.created_at | date:'H:mm:ss' : 'UTC'}}</dd>
+
+          <dt>Type</dt>
+          <dd>{{transaction.type}}</dd>
+
+          <dt>Status</dt>
+          <dd>{{transaction.status}}</dd>
+        </dl>
+      </div>
+
+      <div class="block">
+        <h3>Payment Information</h3>
+
+        <dl class="dl-horizontal">
+          <dt>Payment Type</dt>
+          <dd class="text-capitalize">{{transaction.payment_instrument_type.replace('_', ' ')}}</dd>
+
+          <dt>Card Type</dt>
+          <dd>{{transaction.credit_card.card_type}}</dd>
+
+          <dt>Cardholder Name</dt>
+          <dd>{{transaction.credit_card.cardholder_name}}</dd>
+
+          <dt>Credit Card Ends With</dt>
+          <dd><span id="masked_number">{{transaction.credit_card.last_4}}</span></dd>
+        </dl>
+      </div>
+
+      <div class="block">
+        <h3>Customer Information</h3>
+        <dl class="dl-horizontal">
+            <dt>Name</dt>
+            <dd>{{transaction.customer.first_name}} {{transaction.customer.last_name}}</dd>
+
+            <dt>Email</dt>
+            <dd><a href="mailto:{{transaction.customer.email}}">{{transaction.customer.email}}</a></dd>
+
+            <dt>Billing Address</dt>
+            <dd><p>{{transaction.billing_address.street_address}}
+                <br>, {{transaction.billing_address.postal_code}} {{transaction.billing_address.region}}
+                <br>{{transaction.billing_address.country_name}}
+                </p>
+            </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <a class="btn btn-primary" href="javascript:window.print();">Print</a>
+  </div>
+</div>

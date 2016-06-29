@@ -19,6 +19,16 @@ export class TransactionService extends ApiBaseService {
         return res;
       });
   }
+
+  public get(path: string): Observable<Response>{
+    return super.get(path)
+      .map(res => res.json())
+      .map((res) => {
+        if(res){
+        }
+        return res;
+      });
+  }
 }
 
 
