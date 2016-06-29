@@ -128,6 +128,13 @@
     </div>
   </div>
 
+  <!-- <div class="text-left mt20 checkbox">
+    <label>
+      <input type="checkbox" id="recurring_billing"
+             ngControl="recurring_billing" #recurring_billing="ngForm"> Use recurring billing
+    </label>
+  </div> -->
+
   <div class="text-center mt20">
     <a href="javascript:;" (click)="onCancel()" class="btn btn-default mr10">Cancel</a>
     <button id="button-pay" class="btn btn-primary ml10" type="submit" [disabled]="!paymentForm.valid">{{button_text}}</button>

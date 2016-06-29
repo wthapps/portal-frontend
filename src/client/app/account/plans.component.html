@@ -4,15 +4,15 @@
   </div>
   <table class="table table-bordered text-center">
     <tr>
+      <th width="35%"><h4 class="text-center">Free</h4></th>
       <th width="35%"><h4 class="text-center">Basic</h4></th>
-      <th width="35%"><h4 class="text-center">WTH! Plan</h4></th>
     </tr>
     <tr>
       <td>
-        FREE!
+        Free for a month
       </td>
       <td>
-        $9.99/Month
+        $9.99 a month for All apps and services
       </td>
     </tr>
     <tr>
@@ -35,13 +35,14 @@
       </td>
     </tr>
     <tr>
-      <td>
-        <button class="btn btn-default" *ngIf="_userService.profile.plan_id == 'wth_free'">Current plan</button>
-        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id != 'wth_free'" (click)="choosePlan('wth_free')">Choose</button>
+      <td>        
+        <button class="btn btn-default" *ngIf="_userService.profile.plan_id === 'wth_free'">Current plan</button>
+        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id !== 'wth_free'" (click)="choosePlan('wth_free')">Choose</button>
       </td>
       <td>
-        <button class="btn btn-default" *ngIf="_userService.profile.plan_id == 'wth_basic'">Current plan</button>
-        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id != 'wth_basic'" (click)="choosePlan('wth_basic')">Choose</button>
+        <button class="btn btn-default" *ngIf="_userService.profile.plan_id === 'wth_basic'">Current plan</button>
+        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id !== 'wth_basic'" (click)="choosePlan('wth_basic')">Choose</button>
+        <wth-cancel-plan></wth-cancel-plan>
       </td>
     </tr>
   </table>

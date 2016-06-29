@@ -6,22 +6,27 @@
     <table class="table table-striped">
       <thead>
       <tr>
-        <th>Invoice</th>
-        <th>Due Date</th>
+        <th>ID</th>
+        <th>Type</th>
         <th>Amount</th>
         <th>Status</th>
-        <th>View Invoice</th>
+        <th>Created date</th>
+        <th>View Receipt</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>48668391760</td>
-        <td>May 31st, 2016</td>
-        <td>$9.9</td>
-        <td>Submitted for settlement</td>
+      <tr *ngFor="let t of transactions">
+        <td>{{t.id}}</td>
+        <td>{{t.type}}</td>
+        <td>{{t.amount}}{{t.currency_iso_code}}</td>
+        <td>{{t.status}}</td>
+        <td>{{t.created_at | date:'dd-M-yyyy' : 'UTC'}} {{t.created_at | date:'H:mm:ss' : 'UTC'}}</td>
         <td>
-          <button class="btn btn-sm btn-primary">View</button>
+          <button class="btn btn-sm btn-primary">Receipt</button>
         </td>
+      </tr>
+      <tr *ngIf="transactions.length == 0">
+        <td class="text-center" colspan="6">No transaction data</td>
       </tr>
       </tbody>
     </table>

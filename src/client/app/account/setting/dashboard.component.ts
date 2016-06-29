@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ROUTER_DIRECTIVES, RouteSegment} from '@angular/router';
 import {UserService, CONFIG} from '../../shared/index';
+import {WthJoinUsComponent, WthCancelPlanComponent} from '../../shared/wth.join.us.component';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'dashboard.component.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    WthCancelPlanComponent,
+    WthJoinUsComponent
   ]
 })
 
