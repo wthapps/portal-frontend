@@ -1,4 +1,6 @@
-import {Component, OnInit, Pipe, PipeTransform}   from '@angular/core';
+import {Component, OnInit, Pipe, PipeTransform,
+  ElementRef
+}   from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, RouteSegment}  from '@angular/router';
 import {UserService, CONFIG}                      from '../../shared/index';
 import {TransactionService}                       from '../transaction.service';
@@ -14,7 +16,8 @@ import {LoadingService}                           from '../../partials/loading/l
   providers: [
     TransactionService,
     LoadingService
-  ]
+  ],
+  styleUrls: ['receipt.component.css']
 })
 
 export class ReceiptComponent implements OnInit{
@@ -54,12 +57,12 @@ export class ReceiptComponent implements OnInit{
     private _router:Router,
     private _routeSegment: RouteSegment,
     private _transactionService: TransactionService,
-    private _loadingService: LoadingService
+    private _loadingService: LoadingService,
+    private _el:ElementRef
   ) {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
-
   }
 
   ngOnInit(): void {
@@ -75,5 +78,24 @@ export class ReceiptComponent implements OnInit{
         console.log("Receipt error", error);
         this._loadingService.stop();
       });
+  }
+
+  printOut():void {
+    //console.log(this.printOut);
+    let html = $(this._el.nativeElement).find('#printOut').html();
+    //var mywindow = window.open('', 'printOut', 'height=400,width=600');
+    var mywindow = window.open('', '_blank');
+    mywindow.document.write('<html><head><title></title>');
+    /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write(html);
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10
+
+    mywindow.print();
+    mywindow.close();
+    //console.log($(this._el.nativeElement).find('.printOut'));
   }
 }
