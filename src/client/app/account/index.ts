@@ -34,7 +34,7 @@ export * from './billing/transaction-details.component'
 /**
  *  Services
  */
-export * from './services/services-list.component';
+export * from './services/services.component';
 
 /**
  *  Services DNS
