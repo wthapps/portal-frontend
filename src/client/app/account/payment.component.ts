@@ -1,4 +1,4 @@
-import {Component, AfterViewInit}                                  from '@angular/core';
+import {Component, AfterViewInit, NgZone, ChangeDetectorRef}                                  from '@angular/core';
 import {Router, ROUTER_DIRECTIVES, RouteSegment}                   from '@angular/router';
 import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, FormGroup}    from '@angular/common';
 import {PaymentService}               from './payment.service';
@@ -31,14 +31,17 @@ export class PaymentComponent implements AfterViewInit {
   countries:any;
   paymentForm: FormGroup;
 
-  constructor(private _router:Router,
-              private _userService:UserService,
-              private _paymentService:PaymentService,
-              private _countries:CountryListComponent,
-              private _loaddingService:LoadingService,
-              private _params:RouteSegment,
-              private _topMessageService:TopMessageService,
-              private _builder: FormBuilder) {
+  constructor(
+    private _router:Router,
+    private _userService:UserService,
+    private _paymentService:PaymentService,
+    private _countries:CountryListComponent,
+    private _loaddingService:LoadingService,
+    private _params:RouteSegment,
+    private _topMessageService:TopMessageService,
+    private _builder: FormBuilder,
+    private _zone: NgZone
+  ) {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${WthConstants.string.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
@@ -251,10 +254,10 @@ export class PaymentComponent implements AfterViewInit {
     });
   }
 
-  onCancel() {    
-    var next = this._params.getParam(WthConstants.string.next) === undefined ? '/account' : 
-               this._params.getParam(WthConstants.string.next).replace(/\%20/g, '\/');    
-    this._router.navigateByUrl(next); 
+  onCancel() {
+    var next = this._params.getParam(WthConstants.string.next) === undefined ? '/account' :
+               this._params.getParam(WthConstants.string.next).replace(/\%20/g, '\/');
+    this._router.navigateByUrl(next);
   }
 
   /**
@@ -265,16 +268,20 @@ export class PaymentComponent implements AfterViewInit {
     // _this._userService.signup(`users/${_this._userService.profile.id,}/payments`, body)
       .subscribe((response) => {
           _this._loaddingService.stop();
-          if (response.data == null) {
-
-          } else {
+          if (response.success) { // TODO refactor this code in server
             _this._userService.profile.has_payment_info = true;
             _this._userService.profile.credit_cards = response.data.credit_cards;
             _this._userService.profile.billing_address = response.data.billing_address;
 
             Cookie.set('profile', JSON.stringify(_this._userService.profile));
-            _this._router.navigateByUrl('account/plans');
+            // make sure onInit method on PlansComponent will work
+            _this._zone.run(() => {
+              _this._router.navigate(['/account/plans']);
+            });
+
+            return;
           }
+          _this._topMessageService.danger(response.message);
         },
         error => {
           _this._loaddingService.stop();
@@ -289,16 +296,16 @@ export class PaymentComponent implements AfterViewInit {
     _this._paymentService.update(`users/${_this._userService.profile.id}`, body)
       .subscribe((response) => {
           _this._loaddingService.stop();
-          if (response.data == null) {
-
-          } else {
+          if (response.success) {
             _this._userService.profile.has_payment_info = true;
             _this._userService.profile.credit_cards = response.data.credit_cards;
             _this._userService.profile.billing_address = response.data.billing_address;
-
             Cookie.set('profile', JSON.stringify(_this._userService.profile));
+            _this._userService.profile = JSON.parse(Cookie.get('profile'));
+            _this._topMessageService.success(response.message);
+            return;
           }
-          _this._topMessageService.success(response.message);
+          _this._topMessageService.danger(response.message);
         },
         error => {
           _this._loaddingService.stop();

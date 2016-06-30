@@ -2,49 +2,46 @@
   <div class="panel-heading">
     <h3 class="panel-title">Choose plan</h3>
   </div>
-  <table class="table table-bordered text-center">
-    <tr>
-      <th width="35%"><h4 class="text-center">Free</h4></th>
-      <th width="35%"><h4 class="text-center">Basic</h4></th>
-    </tr>
-    <tr>
-      <td>
-        Free for a month
-      </td>
-      <td>
-        $9.99 a month for All apps and services
-      </td>
-    </tr>
-    <tr>
-      <td>Pictures</td>
-      <td>
-        Pictures <br>
-        VPN <br>
-        DNS Server <br>
-        eFax <br>
-        Website Ping <br>
-        WTHmindmap <br>
-        WTHgadgets <br>
-        WTHaddons - outlook <br>
-        WTHcharts <br>
-        WTHoffice <br>
-        WTHwifi Tools <br>
-        WTHchat <br>
-        WTHcontacts <br>
-        WTHcalendar
-      </td>
-    </tr>
-    <tr>
-      <td>        
-        <button class="btn btn-default" *ngIf="_userService.profile.plan_id === 'wth_free'">Current plan</button>
-        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id !== 'wth_free'" (click)="choosePlan('wth_free')">Choose</button>
-      </td>
-      <td>
-        <button class="btn btn-default" *ngIf="_userService.profile.plan_id === 'wth_basic'">Current plan</button>
-        <button class="btn btn-primary" *ngIf="_userService.profile.plan_id !== 'wth_basic'" (click)="choosePlan('wth_basic')">Choose</button>
-        <wth-cancel-plan></wth-cancel-plan>
-      </td>
-    </tr>
-  </table>
+
+  <div class="container-fluid">
+    <div class="row product-row" >
+      <div class="col-border col-border-tt col-sm-4 text-center">
+        Services and apps
+      </div>
+      <div class="col-border col-sm-3 text-center" [ngClass]="_userService.profile.plan_id==p.str_id ? 'selected-plan': ''" *ngFor="let p of plans">
+        <div>
+          <div class="btn btn-block" [ngClass]="p.str_id=='wth_free' ? 'btn-default': 'btn-success'">
+            {{p.name}}
+          </div>
+            {{p.description}}
+        </div>
+      </div>
+    </div>
+    <div class="row product-row" *ngFor="let pro of products">
+      <div class="col-border col-sm-4 text-center">
+        {{pro.name}}
+      </div>
+      <div class="col-border col-sm-3 text-center" [ngClass]="_userService.profile.plan_id==pp.str_id ? 'selected-plan': ''" *ngFor="let pp of planProducts">
+        <div class="text-danger" *ngIf="!plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>
+        <div class="text-success" *ngIf="plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>
+      </div>
+    </div>
+    <div class="row product-row">
+      <div class="col-border col-border-tt col-sm-4 text-center"></div>
+
+      <div class="col-border col-sm-3 text-center" *ngFor="let p of plans">
+        <div *ngIf="p.str_id =='wth_free'">
+          <button class="btn btn-primary" *ngIf="_userService.profile.plan_id != 'wth_free'" (click)="choosePlan(p.str_id)">Choose</button>
+        </div>
+        <div *ngIf="p.str_id !='wth_free'">
+          <button class="btn btn-primary" *ngIf="_userService.profile.plan_id != 'wth_basic'" (click)="choosePlan(p.str_id)">Choose</button>
+          <wth-cancel-plan></wth-cancel-plan>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+  </div>
 </div>
 

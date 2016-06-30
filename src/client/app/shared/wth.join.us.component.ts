@@ -9,7 +9,7 @@ import {LoadingService} from '../partials/loading/loading.service'
   selector: 'wth-join-us',
   directives: [ROUTER_DIRECTIVES],
   template: `<a class="btn btn-danger ml20" href="javascript:;" 
-              *ngIf="!_userService.profile.has_payment_info || _userService.profile.plan_id == 'wth_free'"
+              *ngIf="_userService.profile == null || !_userService.profile.has_payment_info || _userService.profile.plan_id == 'wth_free'"
               (click)="redirectNextPage($event)" >
               {{textValue}}
              </a>
@@ -66,7 +66,7 @@ export class WthCancelPlanComponent {
   }
 
   public onCancel(plan_id: string, event: any) {
-    event.preventDefault();    
+    event.preventDefault();
     let body: string = JSON.stringify({plan_id});
     this._dialogService.activate("Confirm canceling Basic plan.", "Cancel plan confirmation")
       .then((responseOK) => {

@@ -49,8 +49,6 @@ export class MyAccountComponent {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
 
-    console.log(this._userService.profile);
-
     this.sex = this._userService.profile.sex == null ? 0 : this._userService.profile.sex;
 
     if (this._userService.profile.birthday !== null) {
@@ -59,8 +57,7 @@ export class MyAccountComponent {
       this.birthdayDate.month = birthday.getMonth();
       this.birthdayDate.year = birthday.getUTCFullYear();
     }
-    console.log(this.birthdayDate.day, this.birthdayDate.month, this.birthdayDate.year);
-
+    
     this.updateInfo = this._builder.group({
       first_name: [this._userService.profile.first_name,
         Validators.required

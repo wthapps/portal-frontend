@@ -62,8 +62,8 @@ export class LoginComponent {
     this._userService.login('users/sign_in', body, false)
       .subscribe((result) => {
           if (result) {
-            this._loadingService.stop();
             var next = this._params.getParam(CONFIG.params.next) === undefined ? '/' : this._params.getParam(CONFIG.params.next).replace(/\%20/g, '\/');
+            this._loadingService.stop();
             this._router.navigateByUrl(next);
           }
         },
