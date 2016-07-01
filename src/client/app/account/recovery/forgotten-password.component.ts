@@ -56,6 +56,8 @@ export class ForgottenPasswordComponent {
             let body = JSON.stringify({email});
             this._apiBaseService.post('users/recovery/initiate', body)
               .subscribe((result) => {
+                  // stop loading
+                  this._loadingService.stop();
                   this._router.navigate(['/account/reset_email_sent']);
                 },
                 error => {

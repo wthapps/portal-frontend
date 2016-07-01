@@ -84,6 +84,8 @@ export class RegisterComponent {
     //console.log(body);
     this._userService.signup('users', body)
       .subscribe((result) => {
+          // stop loading
+          this._loadingService.stop();
           this._router.navigateByUrl('/welcome');
         },
         error => {
