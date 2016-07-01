@@ -2,20 +2,19 @@
 <div class="media"
   [ngClass]="{ 'collapse' : !context.show_information_view }">
   <div class="media-left">
-    <img width="50" class="media-object" src="{{context.context.img}}" alt="...">
+    <img width="50" class="media-object" src="{{context.context.img_src}}" alt="...">
   </div>
   <div class="media-body">
-    <h4 class="media-heading">{{context.context.name}}</h4>
-    <p>By {{context.context.author}}</p>
+    <h4 class="media-heading">{{context.context.display_name}}</h4>
     <div class="media-left">
-      <ul class="list-group">
-        <li *ngFor="let category of context.context.categories"
-          class="list-group-item">
-          <button type="button" class="btn btn-default btn-xs" [disabled]=true>{{category.name}}</button>
-        </li>
-      </ul>
+      <p class="text-info">{{context.category_name}}</p>
     </div>
     <p>{{context.context.description}}</p>
+
+    <p [ngClass]="{ 'collapse' : !context.context.created }">
+      <a target="_blank" href={{context.context.download_link}}> Download <i class="glyphicon glyphicon-download"></i></a>
+    </p>
+
   </div>
   <div class="media-right">
     <ul class="list-group">
@@ -34,12 +33,12 @@
 <div class="media"
   [ngClass]="{ 'collapse' : !context.show_congratulation_view }">
   <div class="media-left">
-    <img width="50" class="media-object" src="{{context.context.img}}" alt="...">
+    <img width="50" class="media-object" src="{{context.context.img_src}}" alt="...">
   </div>
   <div class="media-body">
     <h4 class="media-heading">Congratulation!</h4>
-    <p>{{context.context.name}} has been added, to get started click on <a [routerLink]="['/support']">learn more</a>.</p>
-    <p><a target="_blank" href={{context.downloadlink}}> Download <i class="glyphicon glyphicon-download"></i></a></p>
+    <p>{{context.context.display_name}} has been added, to get started click on <a [routerLink]="['/support']">learn more</a>.</p>
+    <p><a target="_blank" href={{context.context.download_link}}> Download <i class="glyphicon glyphicon-download"></i></a></p>
   </div>
   <div class="media-right">
     <ul class="list-group">

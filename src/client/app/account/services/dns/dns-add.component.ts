@@ -1,6 +1,7 @@
 import {
   Component,
-  ViewChild
+  ViewChild,
+  OnInit
 }                                  from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
@@ -12,14 +13,20 @@ import {
   ControlGroup,
   Validators
 }                                  from '@angular/common';
-
-import {DnsService, Logger}        from './dns.service';
-import {CustomValidators}          from '../../../shared/validator/custom-validators';
+import {
+  DnsService
+}                                  from './dns.service';
+import {
+  CustomValidators,
+  UserService,
+  CONFIG,
+  HttpStatusCode,
+  ToastsService
+}                                  from '../../../shared/index';
 import {
   LoadingService,
-  ToastsService,
-  UserService, CONFIG
-}                                  from '../../../shared/index';
+  TopMessageService
+}                                  from '../../../partials/index';
 
 @Component({
   moduleId: module.id,
@@ -29,22 +36,26 @@ import {
     FORM_DIRECTIVES
   ],
   providers: [
-    LoadingService
+    LoadingService,
+    TopMessageService
   ]
 })
 
-export class AccountServicesDNSAddComponent {
-  protected pageTitle:string = "New Host";
-  errorMessage:string;
-  @ViewChild('dnsAdd') dnsAdd;
+export class AccountServicesDNSAddComponent implements OnInit{
+  public pageTitle:string = "New Host";
+  public errorMessage:string;
+  public group:ControlGroup;
 
   constructor(private _dnsService:DnsService,
               private _router:Router,
               private _builder:FormBuilder,
               private _loadingService:LoadingService,
               private _toastsService:ToastsService,
-              private _userService:UserService) {
+              private _topMessageService:TopMessageService,
+              private _userService:UserService
+  ) {}
 
+  ngOnInit():void {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
@@ -60,7 +71,6 @@ export class AccountServicesDNSAddComponent {
   }
 
   onAddNew(domain, name, content?:string = '127.0.0.1', type?:string = 'A'):void {
-    // start loading
     this._loadingService.start();
 
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
@@ -95,18 +105,19 @@ export class AccountServicesDNSAddComponent {
         this._router.navigateByUrl('/account/dns');
       },
       error => {
-        let err = JSON.stringify(error);
-        //Logger.Error(err);
-        this.errorMessage = err;
-        if (error.status === 409) {
-          this.errorMessage = 'Hostname has already been taken';
-        }
-        this._toastsService.danger(this.errorMessage);
-        // stop loading
         this._loadingService.stop();
+        this._toastsService.danger(this.errorMessage);
+        this._topMessageService.danger(this.errorMessage);
+        if (error['status'] == HttpStatusCode.PaymentRequired) {
+          this.errorMessage = 'Your account have expired!';
+        }
+        else if (error['status'] == HttpStatusCode.Created) {
+          this.errorMessage = 'Hostname has already been taken!';
+        }
+        else {
+          this.errorMessage = 'Unable to add new host!';
+        }
       }
     );
   }
-
-  public group:ControlGroup;
 }
