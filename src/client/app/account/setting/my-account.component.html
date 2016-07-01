@@ -4,20 +4,6 @@
   </div>
   <div class="panel-body">
     <form [ngFormModel]="updateInfo" (ngSubmit)="update()" novalidate>
-      <div class="form-group">
-        <label>Profile picture</label>
-        <div class="media">
-          <div class="media">
-            <div class="media-left">
-              <img width="70" src="https://placeimg.com/70/70/people" alt="">
-            </div>
-            <div class="media-body">
-              <label for="upload-profile-picture">Upload new picture</label>
-              <input type="file" id="upload-profile-picture">
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-xs-6 col-sm-4">
           <div class="form-group"

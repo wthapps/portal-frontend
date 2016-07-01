@@ -12,7 +12,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url(https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic&subset=latin,latin-ext);
 @import url(../third_party/Swiper/dist/css/swiper.min.css);
 html {
   font-family: sans-serif;
@@ -5826,7 +5825,7 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
-/*
+/*@import url(https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic&subset=latin,latin-ext);
 font-family: 'Lato', sans-serif;
 */
 @font-face {
@@ -6556,9 +6555,11 @@ font-family: 'Lato', sans-serif;
     padding-left: 8px;
     padding-right: 8px; }
 
+/*
 body {
-  font-family: 'Lato', sans-serif; }
-
+  font-family: 'Lato', sans-serif;
+}
+*/
 .bold {
   font-weight: bold; }
 
