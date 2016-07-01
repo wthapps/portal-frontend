@@ -89,6 +89,7 @@ export class AccountServicesDNSAddComponent {
     let body = JSON.stringify(record);
     this._dnsService.addHost(body).subscribe(
       result => {
+        this._loadingService.stop();
         this._router.navigateByUrl('/account/dns');
       },
       error => {

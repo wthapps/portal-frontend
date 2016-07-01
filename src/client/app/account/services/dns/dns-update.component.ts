@@ -114,6 +114,7 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
 
     this._dnsService.updateHost(body, this.Record.id).subscribe(
       result => {
+        this._loadingService.stop();
         this._router.navigateByUrl('/account/dns');
       },
       error => {
