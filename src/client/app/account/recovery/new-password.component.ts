@@ -51,9 +51,9 @@ export class NewPasswordComponent {
     });
     this._apiBaseService.put('users/recovery/password', body)
       .subscribe((result) => {
+          // stop loading
+          this._loadingService.stop();
           if (result.data === null) {
-            // stop loading
-            this._loadingService.stop();
             this._topMessageService.danger(result.message);
           } else {
             this._router.navigate(['/login']);
