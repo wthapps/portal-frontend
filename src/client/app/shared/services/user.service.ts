@@ -65,7 +65,10 @@ export class UserService extends ApiBaseService {
             // update credit card into to profile
             // this.profile.credit_cards = res.credit_cards;
             // this.profile.billing_address = res.billing_address;
-            Cookie.set('profile', JSON.stringify(this.profile));
+            /*console.log(res, this.profile);
+            Cookie.set('profile', JSON.stringify(this.profile));*/
+            this.updateProfile(res.data);
+            this.readUserInfo();
           }
           return res;
         });

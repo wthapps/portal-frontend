@@ -11,7 +11,13 @@ import {
   Validators
 }                             from '@angular/common';
 
-import {UserService, CONFIG}  from '../../shared/index';
+import {
+  UserService,
+  User,
+  CONFIG,
+  LoadingService,
+  TopMessageService
+}                             from '../../shared/index';
 import {CustomValidators}     from '../../shared/validator/custom-validators';
 
 @Component({
@@ -28,8 +34,9 @@ import {CustomValidators}     from '../../shared/validator/custom-validators';
 
 export class MyAccountComponent {
   pageTitle:string = 'Account setting';
-
+  errorMessage:string = '';
   updateInfo:ControlGroup;
+  user:User;
 
   birthdayDate:Object = {
     day: 0,
@@ -43,6 +50,8 @@ export class MyAccountComponent {
 
   constructor(private _userService:UserService,
               private _router:Router,
+              private _loadingService:LoadingService,
+              private _topMessageService:TopMessageService,
               private _builder:FormBuilder) {
 
     if (!this._userService.loggedIn) {
@@ -54,10 +63,10 @@ export class MyAccountComponent {
     if (this._userService.profile.birthday !== null) {
       let birthday = new Date(this._userService.profile.birthday);
       this.birthdayDate.day = birthday.getDate();
-      this.birthdayDate.month = birthday.getMonth();
+      this.birthdayDate.month = birthday.getMonth() + 1;
       this.birthdayDate.year = birthday.getUTCFullYear();
     }
-    
+
     this.updateInfo = this._builder.group({
       first_name: [this._userService.profile.first_name,
         Validators.required
@@ -72,8 +81,42 @@ export class MyAccountComponent {
       birthday_day: [this.birthdayDate.day],
       birthday_month: [this.birthdayDate.month],
       birthday_year: [this.birthdayDate.year],
-      sex: [],
+      sex: [this.sex]
     });
+  }
+
+  update() {
+    // start loading
+    this._loadingService.start();
+
+    this.updateInfo.value.sex = this.sex;
+    this.user = this.updateInfo.value;
+    console.log('data sent to server', this.user);
+
+    let body = JSON.stringify({
+      first_name: this.user.first_name,
+      last_name: this.user.last_name,
+      //email: this.user.email,
+      password: this.user.password,
+      birthday_day: this.user.birthday_day,
+      birthday_month: this.user.birthday_month,
+      birthday_year: this.user.birthday_year,
+      sex: this.user.sex
+    });
+    console.log('update:', body);
+    this._userService.update(`users/${this._userService.profile.id}`, body)
+      .subscribe((result) => {
+          // stop loading
+          this._loadingService.stop();
+          this._topMessageService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this._loadingService.stop();
+          this._topMessageService.danger(result.message);
+          console.log('login error:', error.message);
+        }
+      );
 
   }
 
