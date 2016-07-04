@@ -10,6 +10,7 @@ import {StarComponent} from '../shared/star.component';
 
 import {LoadingService} from '../partials/loading/index';
 
+declare var _:any;
 //declare var bootbox:any;
 
 @Component({
@@ -50,12 +51,14 @@ export class ProductListComponent implements OnInit {
     timeOut: 5000,
     lastOnBottom: true
   };
-  
+
   constructor(private _productService:ProductService
     , private _loadingService:LoadingService
     , private _el:ElementRef
   ) {
     this.element = this._el.nativeElement;
+    console.log(_.VERSION)
+    console.log(_.map([1, 2, 3], function(n) { return n * 3; });)
   }
 
   /*alert() {
