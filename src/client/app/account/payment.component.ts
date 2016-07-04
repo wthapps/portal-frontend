@@ -7,6 +7,7 @@ import {
   UserService,
   WthConstants
   LoadingService,
+  TopMessageService,
   ToastsService
 }                                     from '../shared/index';
 import {Cookie}                       from 'ng2-cookies/ng2-cookies'
@@ -41,7 +42,7 @@ export class PaymentComponent implements AfterViewInit {
     private _countries:CountryListComponent,
     private _loaddingService:LoadingService,
     private _params:RouteSegment,
-    private _toastsService:ToastsService,
+    private _toastsService:TopMessageService,
     private _builder: FormBuilder,
     private _zone: NgZone
   ) {
@@ -284,6 +285,7 @@ export class PaymentComponent implements AfterViewInit {
 
             return;
           }
+        console.log(_this._toastsService);
           _this._toastsService.danger(response.message);
         },
         error => {
