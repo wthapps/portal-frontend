@@ -3,7 +3,189 @@
     <h3 class="panel-title">{{pageTitle}}</h3>
   </div>
   <div class="panel-body">
-    Under construction!
+    <div id="printOut" style="width: 600px;margin:0 auto;">
+      <h2 class="receipt">Transaction {{trans_id}}</h2>
+
+      <table class="table" style="font-size: 14px; font-family: sans-serif, Verdana, Arial;color:#363636; vertical-align: top;"
+             cellspacing="0" cellpadding="8" border="0"
+             width="100%">
+        <thead>
+        <tr>
+          <th style="border-bottom: 1px solid #ddd;" colspan="2">
+            <div style="font-size: 16px; text-align: left;">Transaction Information</div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Merchant
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.merchant_account_id}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Amount
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.amount}} {{transaction.currency_iso_code}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Transaction Date
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.created_at | date:'dd-M-yyyy' : 'UTC'}} {{transaction.created_at | date:'H:mm:ss' :
+              'UTC'}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Type
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.type}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Status
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.status}}
+            </div>
+          </td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+          <th style="border-bottom: 1px solid #ddd;" colspan="2">
+            <div style="font-size: 16px;text-align: left;">Payment Information</div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Payment Type
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.payment_instrument_type.replace('_', ' ')}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Card Type
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.credit_card.card_type}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Cardholder Name
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.credit_card.cardholder_name}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Credit Card Ends With
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : **** **** **** {{transaction.credit_card.last_4}}
+            </div>
+          </td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+          <th style="border-bottom: 1px solid #ddd;" colspan="2">
+            <div style="font-size: 16px;text-align: left;">Customer Information</div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Name
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.customer.first_name}} {{transaction.customer.last_name}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;">
+            <div style="min-width:149px;">
+              Email
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : <a href="mailto:{{transaction.customer.email}}">{{transaction.customer.email}}</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="175" height="25" style="border-bottom: 1px solid #ddd;" valign="top">
+            <div style="min-width:149px; vertical-align: top;">
+              Billing Address
+            </div>
+          </td>
+          <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
+            <div style="max-width:445px;word-wrap:break-word;">
+              : {{transaction.billing_address.street_address}}
+              <br>&nbsp;, {{transaction.billing_address.postal_code}} {{transaction.billing_address.region}}
+              <br>&nbsp;{{transaction.billing_address.country_name}}
+            </div>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="panel-body">
     <a class="btn btn-primary" (click)="viewReceipt($event)">Receipt</a>
