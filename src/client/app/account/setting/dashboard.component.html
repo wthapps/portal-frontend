@@ -7,37 +7,20 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Email:</label>
         <div class="col-sm-10">
-          <p class="form-control-static">super@wthapps.com</p>
+          <p class="form-control-static">{{_userService.profile.email}}</p>
         </div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Plan name:</label>
         <div class="col-sm-10">
-          <div class="">{{_userService.profile.plan_id}}
+          <div class="">
+            <span class="mr20">{{_userService.profile.plan_id}}</span>
             <wth-join-us></wth-join-us>
             <wth-cancel-plan></wth-cancel-plan>
           </div>
           <!--<p>Free Plan <a href="javascript:;" (click)="choosePlans($event)" class="ml20 btn btn-danger">Upgrade for only-->
             <!--$9.99 per-->
             <!--month</a></p>-->
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2 control-label">Active devices:</label>
-        <div class="col-sm-10">
-          <p class="form-control-static">0</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2 control-label">Services:</label>
-        <div class="col-sm-10">
-          <p class="form-control-static">1</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2 control-label">Addons:</label>
-        <div class="col-sm-10">
-          <p class="form-control-static">0</p>
         </div>
       </div>
     </div>

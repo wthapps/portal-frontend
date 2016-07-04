@@ -10,7 +10,7 @@ import {
 @Component({
   selector: 'wth-join-us',
   directives: [ROUTER_DIRECTIVES],
-  template: `<a class="btn btn-danger ml20" href="javascript:;" 
+  template: `<a class="btn btn-danger" href="javascript:;" 
               *ngIf="_userService.profile == null || !_userService.profile.has_payment_info || _userService.profile.plan_id == 'wth_free'"
               (click)="redirectNextPage($event)" >
               {{textValue}}

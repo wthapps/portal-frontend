@@ -16,6 +16,7 @@ import {WthJoinUsComponent, WthCancelPlanComponent} from '../../shared/wth.join.
 export class AccountDashboardComponent implements OnInit {
 
   constructor(private _router:Router, private _userService:UserService, private _segment:RouteSegment) {
+    console.log(this._userService);
   }
 
   ngOnInit():any {
