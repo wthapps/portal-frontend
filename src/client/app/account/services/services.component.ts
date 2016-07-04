@@ -11,7 +11,9 @@ import {
 }                       from '@angular/common';
 
 import {
-  UserService
+  UserService,
+  StreamEmitter,
+  DialogService
 }                       from '../../shared/index';
 import {
   ServicesService
@@ -36,15 +38,25 @@ export class AccountServicesListComponent
 
   public context:ServicesViewModel;
 
-  constructor(private _userService:UserService,
-              private _router:Router,
-              private _servicesService:ServicesService,
-              private _builder:FormBuilder) {
-  }
+  constructor(
+    private _userService:UserService,
+    private _router:Router,
+    private _servicesService:ServicesService,
+    private _builder:FormBuilder,
+    private _streamEmitter:StreamEmitter,
+    private _dialogService:DialogService
+  ) {}
 
   ngOnInit() : void {
     if (this.context == null) {
-      this.context = new ServicesViewModel(this._servicesService, this._router, this._userService, this._builder, this);
+      this.context = new ServicesViewModel(
+        this._servicesService, 
+        this._router, 
+        this._userService,
+        this._builder, 
+        this,
+        this._streamEmitter,
+        this._dialogService);
     }
     this.context.load();
   }

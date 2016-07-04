@@ -1,4 +1,4 @@
-export class IRecord {
+export class Record {
   id:         number;
   domain_id:  number;
   name:       string;

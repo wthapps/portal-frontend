@@ -1,6 +1,19 @@
 export class Category {
-  id: number;
-  name:  string;
+  constructor();
+  constructor(
+    uuid:string,
+    id:number,
+    name:string,
+    display_name:string,
+    description:string
+  );
+  constructor(
+    public uuid?:string = '',
+    public id?:number = 0,
+    public name?:string = '',
+    public display_name?:string = '',
+    public description?:string = ''
+  ) {}
 }
 export class Action {
   constructor();
@@ -10,50 +23,42 @@ export class Action {
     router:string,
     disabled:boolean);
   constructor(
-    public id?:any,
-    public name?:any,
-    public router?:any,
-    public disabled?:any) {
-    this.id = id ? id : 0;
-    this.name = name ? name : '';
-    this.router = router ? router : '';
-    this.disabled = disabled ? disabled : false;
-  }
+    public id?:any = 0,
+    public name?:any = '',
+    public router?:any = '',
+    public disabled?:any = false
+  ) {}
 }
 export class AddonService {
   constructor();
   constructor(
-    id:number, 
-    name:string, 
-    author:string, 
-    categories:Category[], 
-    actions:Action[], 
+    id:number,
+    uuid:string,
+    name:string,
+    display_name:string,
+    download_link:string,
     description:string,
-    img:string,
-    templateId:string,
-    templatePath:string,
-    created:boolean
+    img_src:string,
+    template_id:string,
+    template_path:string,
+    created:boolean,
+    active:boolean,
+    product_categories_id:number,
+    router_link:string
   );
   constructor(
-    public id?:any, 
-    public name?:any, 
-    public author?:any, 
-    public categories?:any, 
-    public actions?:any, 
-    public description?:any,
-    public img?:any,
-    public templateId?:any,
-    public templatePath?:any,
-    public created?:any) {
-    this.id = id ? id : 0;
-    this.name = name ? name : '';
-    this.author = author ? author : '';
-    this.categories = categories ? categories : [];
-    this.actions = actions ? actions : [];
-    this.description = description ? description : '';
-    this.img = img ? img : '';
-    this.templateId = templateId ? templateId : '';
-    this.templatePath = templatePath ? templatePath : '';
-    this.created = created ? created : false;
-  }
+    public id?:number = 0,
+    public uuid?:string = '',
+    public name?:string = '',
+    public display_name?:string = '',
+    public download_link?:string = '',
+    public description?:string = '',
+    public img_src?:string = '',
+    public template_id?:string = '',
+    public template_path?:string = '',
+    public created?:boolean = false,
+    public active?:boolean = false,
+    public product_categories_id?:number = 0,
+    public router_link?:string = ''
+  ) {}
 }

@@ -1,10 +1,13 @@
-import {Component}            from '@angular/core';
+import {
+  Component,  
+  OnInit,
+  OnDestroy
+} from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
   Routes,
   Router
 } from '@angular/router';
-import {AccountMenuComponent}    from './menu/account-menu.component';
 
 import {
   AccountDashboardComponent,
@@ -23,19 +26,34 @@ import {
 
   // Services
   AccountServicesListComponent,
+
   // DNS
   AccountServicesDNSComponent,
   AccountServicesDNSAddComponent,
   AccountServicesDNSUpdateComponent,
+
   // VPN
   AccountServicesVPNComponent,
+
   // EFax
   AccountServicesEFaxComponent,
   AddOnsComponent
 } from './index';
 
-import {UserService, CONFIG, AuthGuard} from '../shared/index';
-import {TransactionDetailsComponent} from "./billing/transaction-details.component";
+import {
+  UserService, 
+  CONFIG, 
+  AuthGuard
+} from '../shared/index';
+import {
+  ContentPresenter
+} from './services/content-presenter.component';
+import {
+  AccountMenuViewModel
+} from './menu/account-menu.viewmodel'
+import {
+  StreamEmitter
+} from '../shared/index';
 
 @Routes([
   {path: '/dns/add', component: AccountServicesDNSAddComponent,
@@ -74,16 +92,44 @@ import {TransactionDetailsComponent} from "./billing/transaction-details.compone
   templateUrl: 'account.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    AccountMenuComponent
+    ContentPresenter
+  ],
+  providers: [
+    StreamEmitter
   ]
 })
-export class AccountComponent {
-  pageTitle:string = 'Account setting';
-
-  constructor(private _userService:UserService,
-              private _router:Router) {
+export class AccountComponent implements OnInit, OnDestroy {
+  public pageTitle:string = 'Account setting';
+  public menu:AccountMenuViewModel;
+  constructor(
+    private _userService:UserService,
+    private _router:Router,
+    private _streamEmitter:StreamEmitter
+  ) {}
+  ngOnInit() : void {
+    this.load();
+  }
+  ngOnDestroy() {
+    this.unload();
+  }
+  private validateLogin() : boolean {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
+      return false;
+    }
+    return true;
+  }
+  private load() : void {
+    if (this.validateLogin()) {
+      if (this.menu == null) {
+        this.menu = new AccountMenuViewModel(this._streamEmitter);
+      }
+      this.menu.load();
+    }
+  }
+  private unload() : void {
+    if (this.menu != null) {
+      this.menu.unload();
     }
   }
 }

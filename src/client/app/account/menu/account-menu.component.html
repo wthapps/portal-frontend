@@ -25,30 +25,15 @@
         </ul>
     </div>
 
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
+    <div class="panel panel-default" [ngClass]="{ 'collapse' : !context.hasUserProducts }">
         <div class="panel-heading">
-            <h3 class="panel-title">My Services</h3>
+            <h3 class="panel-title">My Services and Add-ons</h3>
         </div>
-        <!-- List group -->
         <ul class="list-group">
-            <li class="list-group-item"><a [routerLink]="['/account/dns']">DNS</a></li>
-            <!--<li class="list-group-item"><a [routerLink]="['/account/vpn']">VPN</a></li>
-            <li class="list-group-item"><a [routerLink]="['/account/efax']">eFax</a></li>-->
-        </ul>
-    </div>
-
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">
-            <h3 class="panel-title">Apps</h3>
-        </div>
-        <!-- List group -->
-        <ul class="list-group">
-            <li class="list-group-item"><a [routerLink]="['/account/apps/add-ons',{type:'msoffice'}]">MS Office Add-ons</a></li>
-            <li class="list-group-item"><a [routerLink]="['/account/apps/add-ons',{type:'adobe'}]">Adobe Add-ons</a></li>
-            <li class="list-group-item"><a [routerLink]="['/account/apps/add-ons',{type:'others'}]">Others</a></li>
+            <li class="list-group-item"
+                *ngFor="let item of context.user_products">
+                <a [routerLink]="[item.router_link]">{{item.display_name}}</a>
+            </li>
         </ul>
     </div>
 </div>
-

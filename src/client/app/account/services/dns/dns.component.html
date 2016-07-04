@@ -22,23 +22,29 @@
         <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
         <td>{{record.updated_at | date:'dd-M-yyyy' : 'UTC'}} {{record.updated_at | date:'H:mm:ss' : 'UTC'}}</td>
         <td>
-          <!--<a class="btn btn-sm btn-info" href="#" role="button" (click)="onDisableHost($event, record.id)">
-            {{record.content == '127.0.0.1' ? 'Enable' : 'Disable'}}</a>-->
-          <a class="btn btn-sm btn-primary" [routerLink]="['/account/dns', record.id]"
-             role="button">Edit</a>
-          <a class="btn btn-sm btn-danger" [routerLink]="['/account/dns/']" role="button"
+          <a class="btn btn-sm btn-primary"
+             role="button"
+             (click)="onEditHost($event, record.id)">Edit</a>
+          <a class="btn btn-sm btn-danger" 
+             role="button"
              (click)="onDeleteHost($event, record.id)">Delete</a>
         </td>
       </tr>
     </table>
     <div class="form-group text-right">
-      <a [routerLink]="['/account/dns/add']" class="btn btn-success">Add</a>
+      <a class="btn btn-success"
+         role="button"
+         (click)="onAddHost($event)">Add</a>
     </div>
     <div class="text-center">
       DNS Updater
       <a target="_blank"
          href={{DownloadLink}}
       >Download now <i class="glyphicon glyphicon-download"></i></a>
+    </div>
+    <div class="text-center"
+      [ngClass]="{ 'collapse' : !inValidPlan }">
+      <h4 class="text-center">Your account have expired. Click <a [routerLink]="['/account/payment']">Update Payment</a></h4>
     </div>
   </div>
 </div>
