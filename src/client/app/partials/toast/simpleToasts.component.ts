@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, OnDestroy, ViewEncapsulation} from "@angular/core";
+import {Router} from '@angular/router';
 import {Toast} from "./toast";
 import {ToastsService} from "./toasts.service";
 import {ToastComponent} from "./toast.component";
@@ -38,7 +39,10 @@ import {ToastComponent} from "./toast.component";
 })
 
 export class SimpleToastsComponent implements OnInit, OnDestroy {
-  constructor(private _service:ToastsService) {
+  constructor(private _service:ToastsService, private _router:Router) {
+
+    // Auto close toast when change route
+    this._router.changes.subscribe((val) => this.toasts = []);
   }
 
 
