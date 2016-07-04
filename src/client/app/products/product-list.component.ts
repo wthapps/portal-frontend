@@ -10,11 +10,6 @@ import {StarComponent} from '../shared/star.component';
 
 import {LoadingService} from '../partials/loading/index';
 
-import {
-  NotificationsService,
-  SimpleNotificationsComponent
-}                               from 'angular2-notifications';
-
 //declare var bootbox:any;
 
 @Component({
@@ -29,11 +24,9 @@ import {
     StarComponent
     , ROUTER_DIRECTIVES
     , MODAL_DIRECTIVES
-    , SimpleNotificationsComponent
   ],
   providers: [
-    LoadingService,
-    NotificationsService
+    LoadingService
   ]
 })
 
@@ -57,27 +50,12 @@ export class ProductListComponent implements OnInit {
     timeOut: 5000,
     lastOnBottom: true
   };
-
-
-
+  
   constructor(private _productService:ProductService
     , private _loadingService:LoadingService
     , private _el:ElementRef
-    , private _service: NotificationsService
   ) {
     this.element = this._el.nativeElement;
-
-    this._service.success(
-      'example',
-      'example',
-      {
-      timeOut: 5000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false,
-        maxLength: 10
-      }
-    )
   }
 
   /*alert() {
@@ -139,20 +117,6 @@ export class ProductListComponent implements OnInit {
   }*/
 
   toggleImage():void {
-
-    this._service.success(
-      'example',
-      'example',
-      {
-        timeOut: 5000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false,
-        maxLength: 10
-      }
-    );
-
-
     this.showImage = !this.showImage;
     if (this.showImage) {
       //this._loadingService.start(this.element);
