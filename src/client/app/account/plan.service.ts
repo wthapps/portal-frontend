@@ -12,16 +12,14 @@ export class PlanService extends ApiBaseService{
 
   
 
-  public list(path: string): Observable<Response>{
-    return this.plans;
-    // return super.get(path)
-    //   .map(res => res.json())
-    //   .map((res) => {
-    //     if(res){
-    //     }
-    //     return this.plans
-    //     return res;
-    //   });
+  public list(path: string): Observable<Response>{    
+    return super.get(path)
+      .map(res => res.json())
+      .map((res) => {
+        if(res){
+        }        
+        return res;
+      });
   }
 
   // public get(path: string): Observable<Response>{

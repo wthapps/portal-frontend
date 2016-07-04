@@ -52,7 +52,7 @@
 <footer class="footer">
   <div class="container">
     <ul class="list-unstyled list-inline">
-      <li><a [routerLink]="['/login']">Login</a></li>
+      <li><a [routerLink]="['/login']" *ngIf="!isLoggedIn()">Login</a></li>
       <li><a [routerLink]="['/signup']">Signup</a></li>
       <li><a [routerLink]="['/services']">Services</a></li>
       <li><a [routerLink]="['/apps']">Applications</a></li>

@@ -1,3 +1,4 @@
+import {Product} from "./product.model";
 export class Plan {
 
   id: number;
@@ -12,6 +13,8 @@ export class Plan {
   trial_duration_unit: string;
   trial_period: any;
   trial_duration: any;
+  is_trial: boolean;
+  products: Product[];
 
   constructor(
     fields?:{
@@ -26,7 +29,9 @@ export class Plan {
       number_of_billing_cycles?: number,
       trial_duration_unit?: string,
       trial_period?: any,
-      trial_duration?: any
+      trial_duration?: any,
+      is_trial?: boolean,
+      products?: Product[]
     }
   ){
     if (fields) Object.assign(this, fields);

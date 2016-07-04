@@ -34,7 +34,7 @@
         We keep on adding more!
       </h3>
       <wth-join-us></wth-join-us>
-      <!--<a class="btn btn-get btn-danger" *ngIf="_userService.isLoggedIn()" [routerLink]="['/account/payment']">Upgrade for only $9.99 per-->
+      <!--<a class="btn btn-get btn-danger" *ngIf="userService.isLoggedIn()" [routerLink]="['/account/payment']">Upgrade for only $9.99 per-->
         <!--month</a>-->
     </div>
   </div>
@@ -170,6 +170,40 @@
           </td>
         </tr>
       </table>
+
+      <!--<div class="container-fluid">-->
+        <!--<div class="row product-row" >-->
+          <!--<div class="col-border col-border-tt col-sm-4 text-center">-->
+            <!--Services and apps-->
+          <!--</div>-->
+          <!--<div class="col-border col-sm-3 text-center" *ngFor="let p of plans">-->
+            <!--<div>-->
+              <!--<div class="btn btn-block" [ngClass]="p.str_id=='wth_free' ? 'btn-default': 'btn-success'">-->
+                <!--{{p.name}}-->
+              <!--</div>-->
+              <!--{{p.description}}-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row product-row" *ngFor="let pro of products">-->
+          <!--<div class="col-border col-sm-4 text-center">-->
+            <!--{{pro.name}}-->
+          <!--</div>-->
+          <!--<div class="col-border col-sm-3 text-center" *ngFor="let pp of plans">-->
+            <!--<div class="text-danger" *ngIf="!plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>-->
+            <!--<div class="text-success" *ngIf="plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row product-row">-->
+          <!--<div class="col-border col-border-tt col-sm-4 text-center"></div>-->
+          <!--<div class="col-border col-sm-3 text-center" *ngFor="let p of plans">-->
+            <!--<div >-->
+              <!--<wth-get-started></wth-get-started>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
     </div>
   </div>
   <div class="boxes-tabs boxes-tabs-4">
