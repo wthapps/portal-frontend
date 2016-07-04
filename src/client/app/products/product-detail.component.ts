@@ -6,7 +6,11 @@ import {ProductService} from './product.service';
 import {StarComponent} from '../shared/star.component';
 
 import {DialogService} from '../partials/dialogs/index';
-import {TopMessageService} from '../partials/topmessage/index';
+
+
+import {
+  ToastsService
+} from '../partials/toast/index';
 
 @Component({
   moduleId: module.id,
@@ -25,7 +29,19 @@ export class ProductDetailComponent implements OnActivate {
   constructor(private _productService:ProductService,
               private _router:Router,
               private _dialogService:DialogService,
-              private _topMessageService:TopMessageService) {
+              private _toastsService:ToastsService) {
+  }
+
+  showToastsService():void {
+    /*this._toastsService.success('text', 'text2',
+     {
+     timeOut: 5000,
+     showProgressBar: true,
+     pauseOnHover: false,
+     clickToClose: true,
+     maxLength: 10
+     });*/
+    this._toastsService.danger('text2');
   }
 
   showConfirmDialog():void {
@@ -38,7 +54,7 @@ export class ProductDetailComponent implements OnActivate {
   }
 
   showAlert():void {
-    this._topMessageService.warning(this.errorMessage = 'ErrorMsg');
+    this._toastsService.warning(this.errorMessage = 'ErrorMsg');
   }
 
   routerOnActivate(curr:RouteSegment):void {

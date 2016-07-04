@@ -1,9 +1,11 @@
 import {Component}                    from '@angular/core';
 import {ROUTER_DIRECTIVES, Router}    from '@angular/router';
 import {UserService, CONFIG}          from '../shared/index';
-import {LoadingService}               from '../partials/loading/loading.service';
-import {DialogService}                from '../partials/dialogs/dialog.service';
-import {TopMessageService}            from "../partials/topmessage/top-message.service";
+import {
+  LoadingService,
+  DialogService,
+  ToastsService
+}                                     from "../shared/index";
 
 @Component({
   moduleId: module.id,
@@ -21,7 +23,7 @@ export class BillingDetailsComponent {
     private _router:Router,
     private _loadingService: LoadingService,
     private _dialogService: DialogService,
-    private _toadMessage: TopMessageService
+    private _toastsService: ToastsService
   ) {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);

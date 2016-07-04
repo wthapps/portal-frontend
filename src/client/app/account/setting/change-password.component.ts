@@ -6,7 +6,7 @@ import {ValidationService} from '../../shared/services/validation.service';
 import {
   UserService,
   LoadingService,
-  TopMessageService,
+  ToastsService,
   CONFIG
 } from '../../shared/index';
 
@@ -26,7 +26,7 @@ export class ChangePasswordComponent {
   constructor(private _userService:UserService,
               private _router:Router,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService,
+              private _toastsService:ToastsService,
               private _builder:FormBuilder) {
     if (!this._userService.loggedIn) {
       _router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
@@ -62,17 +62,17 @@ export class ChangePasswordComponent {
           // stop loading
           this._loadingService.stop();
           if (result.success) {
-            this._topMessageService.success(result.message);
+            this._toastsService.success(result.message);
             //console.log('change password:', result.message);
           } else {
-            this._topMessageService.danger(result.message);
+            this._toastsService.danger(result.message);
             //console.log('change password error:', result.message);
           }
         },
         error => {
           // stop loading
           this._loadingService.stop();
-          this._topMessageService.danger(result.message);
+          this._toastsService.danger(result.message);
           console.log('login error:', error.message);
         }
       );

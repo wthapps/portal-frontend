@@ -16,10 +16,10 @@ import {AuthHttp, tokenNotExpired} from 'angular2-jwt';
 import {
   APP_SHARED_PROVIDERS,
   DialogComponent,
-  TopMessageComponent,
+  SimpleToastsComponent,
   LoadingComponent,
   UserService,
-  AuthGuard,  
+  AuthGuard,
 } from './shared/index';
 
 import {HomeComponent} from './home/home.component';
@@ -59,7 +59,7 @@ import {AccountComponent} from './account/account.component';
     DROPDOWN_DIRECTIVES,
     CORE_DIRECTIVES,
     DialogComponent,
-    TopMessageComponent,
+    SimpleToastsComponent,
     LoadingComponent
   ],
   providers: [
@@ -116,10 +116,10 @@ export class AppComponent implements AfterViewInit {
     this._userService.logout('users/sign_out')
       .subscribe(
         response => {
-          
+
         },
         error => {
-          
+
         }
         this._userService.deleteUserInfo();
         this._router.navigateByUrl('/login');

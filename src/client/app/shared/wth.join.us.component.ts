@@ -1,9 +1,11 @@
-import {Component}          from '@angular/core';
+import {Component}                  from '@angular/core';
 import {ROUTER_DIRECTIVES, Router}  from '@angular/router';
-import {UserService} from './services/user.service'
-import {DialogService} from '../partials/dialogs/dialog.service'
-import {TopMessageService} from '../partials/topmessage/top-message.service'
-import {LoadingService} from '../partials/loading/loading.service'
+import {
+  UserService,
+  DialogService,
+  ToastsService,
+  LoadingService
+}                                   from './index';
 
 @Component({
   selector: 'wth-join-us',
@@ -59,7 +61,7 @@ export class WthCancelPlanComponent {
     private _userService:UserService,
     private _router:Router,
     private _dialogService: DialogService,
-    private _toadMessageService: TopMessageService,
+    private _toastsService: ToastsService,
     private _loadingService: LoadingService
   ) {
     this.textValue = 'Cancel current plan';
@@ -77,11 +79,11 @@ export class WthCancelPlanComponent {
               if (response.data != null){
 
               }
-              this._toadMessageService.success(response.message);
+              this._toastsService.success(response.message);
               this._loadingService.stop();
             },
             error => {
-              this._toadMessageService.danger(error);
+              this._toastsService.danger(error);
               this._loadingService.stop();
             });
         }

@@ -8,7 +8,7 @@ import {
 }                           from '@angular/common';
 import {CustomValidators}   from '../../shared/validator/custom-validators';
 import {
-  TopMessageService,
+  ToastsService,
   LoadingService,
   ApiBaseService
 }                           from '../../shared/index';
@@ -30,7 +30,7 @@ export class ForgottenPasswordComponent {
   constructor(private _router:Router,
               private _apiBaseService:ApiBaseService,
               private _formBuilder:FormBuilder,
-              private _topMessageService:TopMessageService,
+              private _toastsService:ToastsService,
               private _loadingService:LoadingService) {
     this.forgottenPasswordForm = this._formBuilder.group({
       email: ['',
@@ -51,7 +51,7 @@ export class ForgottenPasswordComponent {
           if (result.data === null) {
             // stop loading
             this._loadingService.stop();
-            this._topMessageService.danger(result.message);
+            this._toastsService.danger(result.message);
           } else {
             let body = JSON.stringify({email});
             this._apiBaseService.post('users/recovery/initiate', body)
@@ -63,7 +63,7 @@ export class ForgottenPasswordComponent {
                 error => {
                   // stop loading
                   this._loadingService.stop();
-                  this._topMessageService.danger(error);
+                  this._toastsService.danger(error);
                   console.log("error:", error);
                 });
             // this._router.navigate(['/account/reset_email_sent']);
@@ -72,7 +72,7 @@ export class ForgottenPasswordComponent {
         error => {
           // stop loading
           this._loadingService.stop();
-          this._topMessageService.danger(error);
+          this._toastsService.danger(error);
           console.log('error:', error);
         });
   }

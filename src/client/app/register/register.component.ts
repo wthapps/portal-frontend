@@ -12,7 +12,7 @@ import {
 import {CustomValidators}   from '../shared/validator/custom-validators';
 import {
   LoadingService,
-  TopMessageService,
+  ToastsService,
   UserService, User
 }                           from '../shared/index';
 
@@ -35,7 +35,7 @@ export class RegisterComponent {
   errorMessage:string = '';
 
   constructor(private _userService:UserService,
-              private _topMessageService:TopMessageService,
+              private _toastsService:ToastsService,
               private _loadingService:LoadingService,
               private _router:Router,
               private _builder:FormBuilder) {
@@ -97,7 +97,7 @@ export class RegisterComponent {
           if (error.status === 422) {
             this.errorMessage = 'Email has already been taken';
           }
-          this._topMessageService.danger(this.errorMessage);
+          this._toastsService.danger(this.errorMessage);
 
           // stop loading
           this._loadingService.stop();
