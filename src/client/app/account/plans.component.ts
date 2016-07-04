@@ -1,9 +1,13 @@
 import {Component, OnInit}                          from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}                  from '@angular/router';
-import {UserService, CONFIG, WthConstants}          from '../shared/index';
-import {TopMessageService}                          from '../partials/topmessage/index';
-import {DialogService}                              from "../partials/dialogs/dialog.service";
-import {LoadingService}                             from "../partials/loading/loading.service";
+import {
+  UserService,
+  CONFIG,
+  WthConstants,
+  ToastsService,
+  DialogService,
+  LoadingService
+}                                                   from "../shared/index";
 import {WthCancelPlanComponent}                     from "../shared/wth.join.us.component";
 import {PlanService}                                from "./plan.service";
 import {Plan}                                       from "../shared/models/plan.model";
@@ -97,7 +101,7 @@ export class PlansComponent implements OnInit{
   constructor(
     private _router: Router,
     private _userService: UserService,
-    private _toadMessageService: TopMessageService,
+    private _toastsService: ToastsService,
     private _loadingService: LoadingService,
     private _dialogService: DialogService,
     private _planService: PlanService
@@ -150,11 +154,11 @@ export class PlansComponent implements OnInit{
 
               }
               this.selected_plan = plan_id;
-              this._toadMessageService.success(response.message);
+              this._toastsService.success(response.message);
               this._loadingService.stop();
             },
             error => {
-              this._toadMessageService.danger(error);
+              this._toastsService.danger(error);
               this._loadingService.stop();
             });
 

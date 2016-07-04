@@ -3,9 +3,12 @@ import {Router, ROUTER_DIRECTIVES, RouteSegment}                   from '@angula
 import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, FormGroup}    from '@angular/common';
 import {PaymentService}               from './payment.service';
 import {CountryListComponent}         from '../shared/services/country.component';
-import {UserService, WthConstants}    from '../shared/index';
-import {LoadingService}               from '../partials/loading/loading.service';
-import {TopMessageService}            from '../partials/topmessage/index';
+import {
+  UserService,
+  WthConstants
+  LoadingService,
+  ToastsService
+}                                     from '../shared/index';
 import {Cookie}                       from 'ng2-cookies/ng2-cookies'
 
 declare var braintree:any;
@@ -38,7 +41,7 @@ export class PaymentComponent implements AfterViewInit {
     private _countries:CountryListComponent,
     private _loaddingService:LoadingService,
     private _params:RouteSegment,
-    private _topMessageService:TopMessageService,
+    private _toastsService:ToastsService,
     private _builder: FormBuilder,
     private _zone: NgZone
   ) {
@@ -89,7 +92,7 @@ export class PaymentComponent implements AfterViewInit {
   }
 
   topMessageShow():void {
-    this._topMessageService.danger('');
+    this._toastsService.danger('');
   }
 
   ngAfterViewInit() {
@@ -224,7 +227,7 @@ export class PaymentComponent implements AfterViewInit {
 
           hostedFieldsInstance.tokenize(function (err, payload) {
             if (err) {
-              _this._topMessageService.danger(err.message);
+              _this._toastsService.danger(err.message);
               console.log('payment', err);
               return;
             }
@@ -281,11 +284,11 @@ export class PaymentComponent implements AfterViewInit {
 
             return;
           }
-          _this._topMessageService.danger(response.message);
+          _this._toastsService.danger(response.message);
         },
         error => {
           _this._loaddingService.stop();
-          _this._topMessageService.danger(error);
+          _this._toastsService.danger(error);
           console.log("Add card error:", error);
         });
     _this._loaddingService.start();
@@ -302,14 +305,14 @@ export class PaymentComponent implements AfterViewInit {
             _this._userService.profile.billing_address = response.data.billing_address;
             Cookie.set('profile', JSON.stringify(_this._userService.profile));
             _this._userService.profile = JSON.parse(Cookie.get('profile'));
-            _this._topMessageService.success(response.message);
+            _this._toastsService.success(response.message);
             return;
           }
-          _this._topMessageService.danger(response.message);
+          _this._toastsService.danger(response.message);
         },
         error => {
           _this._loaddingService.stop();
-          _this._topMessageService.danger(_this._topMessageService.type.danger, error);
+          _this._toastsService.danger(_this._toastsService.type.danger, error);
           console.log("Add card error:", error);
         });
     _this._loaddingService.start();

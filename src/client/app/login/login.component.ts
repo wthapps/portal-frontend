@@ -14,7 +14,7 @@ import {CustomValidators}   from '../shared/validator/custom-validators';
 import {
   CONFIG,
   UserService,
-  TopMessageService,
+  ToastsService,
   LoadingService
 }                           from '../shared/index';
 
@@ -36,7 +36,7 @@ export class LoginComponent {
               private _userService:UserService,
               private _params:RouteSegment,
               private _builder:FormBuilder,
-              private _topMessageService:TopMessageService,
+              private _toastsService:ToastsService,
               private _loadingService:LoadingService) {
     if (this._userService.loggedIn) {
       this._router.navigateByUrl('/account/setting/dashboard');
@@ -68,7 +68,7 @@ export class LoginComponent {
           }
         },
         error => {
-          this._topMessageService.danger('Invalid email or password');
+          this._toastsService.danger('Invalid email or password');
           // console.log("login error:", error);
 
           // stop loading
