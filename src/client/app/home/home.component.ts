@@ -7,7 +7,6 @@ import {
 import {PlanService}            from "../account/plan.service";
 import {Product}                from "../shared/models/product.model";
 import {Plan}                   from "../shared/models/plan.model";
-import {PlanProduct}            from "../shared/models/plan-product.model";
 import {UserService}            from "../shared/services/user.service";
 
 @Component({
@@ -24,39 +23,8 @@ import {UserService}            from "../shared/services/user.service";
 export class HomeComponent implements OnInit{
   pageTitle:string = 'Home page';
   products: Product[] = [];
+  plans: Plan[] = [];
 
-  // plans: PlanProduct[] = [];
-  plans: PlanProduct[] = [
-    new PlanProduct({
-      id: 1,
-      str_id: 'wth_free',
-      name: 'Free',
-      products: [
-        new Product({ id: 1, name: 'Pictures'})
-      ]
-    }),
-    new PlanProduct({
-      id: 2,
-      str_id: 'wth_basic',
-      name: 'Basic',
-      products: [
-        new Product({ id: 1, name: 'Pictures'}),
-        new Product({ id: 2, name: 'VPN'}),
-        new Product({ id: 1, name: 'DNS Server'}),
-        new Product({ id: 2, name: 'eFax'}),
-        new Product({ id: 1, name: 'Website Ping'}),
-        new Product({ id: 2, name: 'WTHmindmap'}),
-        new Product({ id: 1, name: 'WTHgadgets'}),
-        new Product({ id: 2, name: 'WTHaddons'}),
-        new Product({ id: 1, name: 'WTHcharts'}),
-        new Product({ id: 2, name: 'WTHoffice'}),
-        new Product({ id: 1, name: 'WTHwifi'}),
-        new Product({ id: 2, name: 'WTHchat'}),
-        new Product({ id: 1, name: 'WTHcontacts'}),
-        new Product({ id: 2, name: 'WTHcalendar'})
-      ]
-    })
-  ];
 
   constructor(private planService: PlanService, private userService: UserService){
 
@@ -66,22 +34,22 @@ export class HomeComponent implements OnInit{
     this.planService.list('plans')
       .subscribe((response) => {
         if (response.data != null){
-          this.plans = Array.from(response.data);
+          this.plans = response.data;
         }
       },
       error => {
         console.log("error plans: ", error.message);
       });
 
-    this.planService.list('products/all')
+    this.planService.list('products/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response) => {
           if (response.data != null){
-            this.products = Array.from(response.data);
+            this.products = response.data;
           }
         },
         error => {
           console.log("error products: ", error.message);
-        });
+      });
   }
 
   plan_has_product(products: any, product_name: string): boolean {

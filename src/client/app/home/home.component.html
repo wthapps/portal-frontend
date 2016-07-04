@@ -42,123 +42,22 @@
     <div class="container">
       <h2 class="title">Great Price</h2>
       <h3 class="text-center">
-        With Only 2 Plans - Easy to Decide a Plan!
+        With Only {{plans.length}} Plans - Easy to Decide a Plan!
       </h3>
       <table class="table table-bordered table-striped table-plan">
         <tr>
           <th></th>
-          <th width="35%"><h2>Basic</h2></th>
-          <th width="35%"><h2>WTH! Plan</h2></th>
+          <th width="35%" *ngFor="let p of plans">
+            <h2>{{p.name}}</h2>
+            {{p.description}}
+          </th>
         </tr>
-        <tr>
-          <td><h3>Monthly Price <br>
-            (After Free Month)
-          </h3></td>
-          <td><h3>FREE!</h3></td>
-          <td><h3>$9.99/Month</h3></td>
-        </tr>
-        <tr>
-          <td>Pictures</td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>VPN</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>DNS Server</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>eFax</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>Website Ping</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHmindmap</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHgadgets</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHaddons - outlook
-            <ul>
-              <li>
-                Emojies
-              </li>
-              <li>
-                Auto BCC
-              </li>
-              <li>
-                Auto Reply HTML
-              </li>
-              <li>
-                Custom Signature
-              </li>
-              <li>
-                Reply Schedule
-              </li>
-              <li>
-                Send Large File
-              </li>
-            </ul>
+        <tr *ngFor="let pro of products">
+          <td>{{pro.name}}</td>
+          <td *ngFor="let pp of plans">
+            <div class="text-danger" *ngIf="!plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>
+            <div class="text-success" *ngIf="plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>
           </td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHcharts</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHoffice
-            <ul>
-              <li>
-                Document
-              </li>
-              <li>
-                Spreadsheets
-              </li>
-              <li>
-                Slideshow
-              </li>
-            </ul>
-          </td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHwifi Tools</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHchat</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHcontacts</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
-        </tr>
-        <tr>
-          <td>WTHcalendar</td>
-          <td></td>
-          <td><i class="glyphicon glyphicon-ok"></i></td>
         </tr>
         <tr>
           <td></td>
@@ -170,39 +69,6 @@
           </td>
         </tr>
       </table>
-
-      <!--<div class="container-fluid">-->
-        <!--<div class="row product-row" >-->
-          <!--<div class="col-border col-border-tt col-sm-4 text-center">-->
-            <!--Services and apps-->
-          <!--</div>-->
-          <!--<div class="col-border col-sm-3 text-center" *ngFor="let p of plans">-->
-            <!--<div>-->
-              <!--<div class="btn btn-block" [ngClass]="p.str_id=='wth_free' ? 'btn-default': 'btn-success'">-->
-                <!--{{p.name}}-->
-              <!--</div>-->
-              <!--{{p.description}}-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row product-row" *ngFor="let pro of products">-->
-          <!--<div class="col-border col-sm-4 text-center">-->
-            <!--{{pro.name}}-->
-          <!--</div>-->
-          <!--<div class="col-border col-sm-3 text-center" *ngFor="let pp of plans">-->
-            <!--<div class="text-danger" *ngIf="!plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>-->
-            <!--<div class="text-success" *ngIf="plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row product-row">-->
-          <!--<div class="col-border col-border-tt col-sm-4 text-center"></div>-->
-          <!--<div class="col-border col-sm-3 text-center" *ngFor="let p of plans">-->
-            <!--<div >-->
-              <!--<wth-get-started></wth-get-started>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
 
     </div>
   </div>
