@@ -4,6 +4,8 @@ import {Observable} from 'rxjs/Observable';
 
 import {IProduct} from './products';
 
+
+
 @Injectable()
 
 export class ProductService {

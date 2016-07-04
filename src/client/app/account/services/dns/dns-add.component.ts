@@ -15,9 +15,11 @@ import {
 
 import {DnsService, Logger}        from './dns.service';
 import {CustomValidators}          from '../../../shared/validator/custom-validators';
-import {LoadingService}            from '../../../partials/loading/index';
-import {TopMessageService}         from '../../../partials/topmessage/index';
-import {UserService, CONFIG}       from '../../../shared/index';
+import {
+  LoadingService,
+  ToastsService,
+  UserService, CONFIG
+}                                  from '../../../shared/index';
 
 @Component({
   moduleId: module.id,
@@ -40,7 +42,7 @@ export class AccountServicesDNSAddComponent {
               private _router:Router,
               private _builder:FormBuilder,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService,
+              private _toastsService:ToastsService,
               private _userService:UserService) {
 
     if (!this._userService.loggedIn) {
@@ -99,7 +101,7 @@ export class AccountServicesDNSAddComponent {
         if (error.status === 409) {
           this.errorMessage = 'Hostname has already been taken';
         }
-        this._topMessageService.danger(this.errorMessage);
+        this._toastsService.danger(this.errorMessage);
         // stop loading
         this._loadingService.stop();
       }

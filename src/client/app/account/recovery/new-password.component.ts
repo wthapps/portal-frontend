@@ -7,7 +7,7 @@ import {
   Validators
 }                           from '@angular/common';
 import {
-  TopMessageService,
+  ToastsService,
   LoadingService,
   ApiBaseService
 }                           from '../../shared/index';
@@ -31,7 +31,7 @@ export class NewPasswordComponent {
               private _formBuilder:FormBuilder,
               private _params:RouteSegment,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService) {
+              private _toastsService:ToastsService) {
     this.newPasswordForm = this._formBuilder.group({
       password: ['',
         Validators.compose([Validators.required, Validators.minLength(6)])
@@ -54,7 +54,7 @@ export class NewPasswordComponent {
           // stop loading
           this._loadingService.stop();
           if (result.data === null) {
-            this._topMessageService.danger(result.message);
+            this._toastsService.danger(result.message);
           } else {
             this._router.navigate(['/login']);
           }
@@ -62,7 +62,7 @@ export class NewPasswordComponent {
         error => {
           // stop loading
           this._loadingService.stop();
-          this._topMessageService.danger(error);
+          this._toastsService.danger(error);
           console.log("error:", error);
         });
   }

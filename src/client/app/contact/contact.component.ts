@@ -8,11 +8,13 @@ import {
 import {ROUTER_DIRECTIVES}         from '@angular/router';
 
 import {CustomValidators}          from '../shared/validator/custom-validators';
-import {UserService}               from '../shared/services/user.service';
 import {Contact}                   from './contact';
 import {ContactService}            from './contact.service';
-import {LoadingService}            from '../partials/loading/index';
-import {TopMessageService}         from '../partials/topmessage/index';
+import {
+  LoadingService,
+  ToastsService,
+  UserService
+}                                  from '../shared/index';
 import {ReCaptchaComponent}        from '../shared/googlerecaptcha.directive';
 
 @Component({
@@ -38,7 +40,7 @@ export class ContactComponent implements OnInit {
   public recaptchaState: boolean = false;
 
   private _recaptchaResponse: any = '';
-  
+
   public handleCorrectCaptcha(event) {
     this._recaptchaResponse = event;
     this.recaptchaState = true;
@@ -51,12 +53,12 @@ export class ContactComponent implements OnInit {
     this.updateContactForm();
   }
 
-  constructor(private _builder: FormBuilder, 
+  constructor(private _builder: FormBuilder,
               private _userService: UserService,
               private _contactService: ContactService,
               private _loadingService: LoadingService,
-              private _topMessageService: TopMessageService) {
-    
+              private _toastsService: ToastsService) {
+
   }
 
   submit() {
@@ -68,11 +70,11 @@ export class ContactComponent implements OnInit {
     this._contactService.createFeedback(body).subscribe(
       result => {
         this._loadingService.stop();
-        this._topMessageService.success("Message sent! Thanks for your email, we'll answer you within 24 hours.");
+        this._toastsService.success("Message sent! Thanks for your email, we'll answer you within 24 hours.");
       },
       error => {
         this._loadingService.stop();
-        this._topMessageService.danger('Your message could not be sent');
+        this._toastsService.danger('Your message could not be sent');
       }
     );
     this.updateContactForm();

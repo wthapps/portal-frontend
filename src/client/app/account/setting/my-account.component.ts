@@ -16,7 +16,7 @@ import {
   User,
   CONFIG,
   LoadingService,
-  TopMessageService
+  ToastsService
 }                             from '../../shared/index';
 import {CustomValidators}     from '../../shared/validator/custom-validators';
 
@@ -51,7 +51,7 @@ export class MyAccountComponent {
   constructor(private _userService:UserService,
               private _router:Router,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService,
+              private _toastsService:ToastsService,
               private _builder:FormBuilder) {
 
     if (!this._userService.loggedIn) {
@@ -108,12 +108,12 @@ export class MyAccountComponent {
       .subscribe((result) => {
           // stop loading
           this._loadingService.stop();
-          this._topMessageService.success(result.message);
+          this._toastsService.success(result.message);
         },
         error => {
           // stop loading
           this._loadingService.stop();
-          this._topMessageService.danger(result.message);
+          this._toastsService.danger(result.message);
           console.log('login error:', error.message);
         }
       );

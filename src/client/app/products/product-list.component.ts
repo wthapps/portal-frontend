@@ -10,19 +10,30 @@ import {StarComponent} from '../shared/star.component';
 
 import {LoadingService} from '../partials/loading/index';
 
+import {
+  NotificationsService,
+  SimpleNotificationsComponent
+}                               from 'angular2-notifications';
+
 //declare var bootbox:any;
 
 @Component({
   moduleId: module.id,
   templateUrl: 'product-list.component.html',
+  // template: `
+  //       <simple-notifications [options]="options" (onCreate)="created($event)" (onDestroy)="destroyed($event)">
+  //       </simple-notifications>
+  //       `,
   pipes: [ProductFilterPipe],
   directives: [
     StarComponent
     , ROUTER_DIRECTIVES
     , MODAL_DIRECTIVES
+    , SimpleNotificationsComponent
   ],
   providers: [
-    LoadingService
+    LoadingService,
+    NotificationsService
   ]
 })
 
@@ -42,10 +53,31 @@ export class ProductListComponent implements OnInit {
 
   element:any;
 
+  public options = {
+    timeOut: 5000,
+    lastOnBottom: true
+  };
+
+
+
   constructor(private _productService:ProductService
     , private _loadingService:LoadingService
-    , private _el:ElementRef) {
+    , private _el:ElementRef
+    , private _service: NotificationsService
+  ) {
     this.element = this._el.nativeElement;
+
+    this._service.success(
+      'example',
+      'example',
+      {
+      timeOut: 5000,
+        showProgressBar: true,
+        pauseOnHover: false,
+        clickToClose: false,
+        maxLength: 10
+      }
+    )
   }
 
   /*alert() {
@@ -107,13 +139,27 @@ export class ProductListComponent implements OnInit {
   }*/
 
   toggleImage():void {
+
+    this._service.success(
+      'example',
+      'example',
+      {
+        timeOut: 5000,
+        showProgressBar: true,
+        pauseOnHover: false,
+        clickToClose: false,
+        maxLength: 10
+      }
+    );
+
+
     this.showImage = !this.showImage;
     if (this.showImage) {
       //this._loadingService.start(this.element);
-      this._loadingService.start($(this.element).find('.table tr > td:first-child'), 1);
+      //this._loadingService.start($(this.element).find('.table tr > td:first-child'), 1);
     } else {
       //this._loadingService.stop(this.element);
-      this._loadingService.stop($(this.element).find('.table tr > td:first-child'));
+      //this._loadingService.stop($(this.element).find('.table tr > td:first-child'));
     }
   }
 
