@@ -28,7 +28,7 @@ export class Product {
       active?: boolean;
       router_link?: string;
     }
-  ){
+  ) {
     if (fields) Object.assign(this, fields);
   }
 

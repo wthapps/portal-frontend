@@ -1,6 +1,5 @@
 import {
   Component,
-  ViewChild,
   OnInit
 }                                  from '@angular/core';
 import {
@@ -41,8 +40,8 @@ import {
   ]
 })
 
-export class AccountServicesDNSAddComponent implements OnInit{
-  public pageTitle:string = "New Host";
+export class AccountServicesDNSAddComponent implements OnInit {
+  public pageTitle:string = 'New Host';
   public errorMessage:string;
   public group:ControlGroup;
 
@@ -52,8 +51,8 @@ export class AccountServicesDNSAddComponent implements OnInit{
               private _loadingService:LoadingService,
               private _toastsService:ToastsService,
               private _topMessageService:TopMessageService,
-              private _userService:UserService
-  ) {}
+              private _userService:UserService) {
+  }
 
   ngOnInit():void {
     if (!this._userService.loggedIn) {
@@ -73,6 +72,7 @@ export class AccountServicesDNSAddComponent implements OnInit{
   onAddNew(domain, name, content?:string = '127.0.0.1', type?:string = 'A'):void {
     this._loadingService.start();
 
+    //noinspection TypeScriptValidateJSTypes
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
     let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
 
@@ -90,13 +90,13 @@ export class AccountServicesDNSAddComponent implements OnInit{
     }
 
     let record = {
-      "id": 0,
-      "name": name,
-      "type": type,
-      "content": content,
-      "ttl": 600,
-      "priority": 10,
-      "domain_id": 0
+      'id': 0,
+      'name': name,
+      'type': type,
+      'content': content,
+      'ttl': 600,
+      'priority': 10,
+      'domain_id': 0
     };
     let body = JSON.stringify(record);
     this._dnsService.addHost(body).subscribe(
@@ -108,13 +108,11 @@ export class AccountServicesDNSAddComponent implements OnInit{
         this._loadingService.stop();
         this._toastsService.danger(this.errorMessage);
         this._topMessageService.danger(this.errorMessage);
-        if (error['status'] == HttpStatusCode.PaymentRequired) {
+        if (error['status'] === HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
-        }
-        else if (error['status'] == HttpStatusCode.Created) {
+        } else if (error['status'] === HttpStatusCode.Created) {
           this.errorMessage = 'Hostname has already been taken!';
-        }
-        else {
+        } else {
           this.errorMessage = 'Unable to add new host!';
         }
       }

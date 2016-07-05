@@ -35,6 +35,7 @@ export * from './billing/transaction-details.component'
  *  Services
  */
 export * from './services/services.component';
+export * from './services/services.service';
 
 /**
  *  Services DNS
@@ -42,6 +43,7 @@ export * from './services/services.component';
 export * from './services/dns/dns-add.component';
 export * from './services/dns/dns-update.component';
 export * from './services/dns/dns.component';
+export * from './services/dns/dns.service';
 
 /**
  *  Services VPN

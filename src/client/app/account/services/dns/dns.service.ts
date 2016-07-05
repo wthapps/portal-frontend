@@ -10,31 +10,31 @@ import {
 }                           from 'rxjs/Observable';
 
 import {
-  Record, 
+  Record,
   Product
 }                           from './record';
 import {
-  ApiBaseService, 
-  UserService, 
+  ApiBaseService,
+  UserService,
   HttpStatusCode
-}                           from '../../../shared/index'
+}                           from '../../../shared/index';
 
 @Injectable()
 export class DnsService {
 
-  constructor(
-    private _service: ApiBaseService, 
-    private _userService: UserService) {}
-  
+  constructor(private _service:ApiBaseService,
+              private _userService:UserService) {
+  }
+
   public getHosts():Observable<Record[]> {
     return this._service.get(`users/${this._userService.profile.id}/dns/records/`)
       .map((response:Response) => {
-        
+
         let body = JSON.parse(response['_body']);
 
-        if (response['status'] == HttpStatusCode.OK || 
-            response['status'] == HttpStatusCode.Created) {
-          if (body.data == 'empty') {
+        if (response['status'] === HttpStatusCode.OK ||
+          response['status'] === HttpStatusCode.Created) {
+          if (body.data === 'empty') {
             return [];
           }
           var list = <Record[]>body.data;
@@ -60,14 +60,14 @@ export class DnsService {
       .catch(this.handleError);
   }
 
-  public updateHost(body:string, id: number) {
+  public updateHost(body:string, id:number) {
     return this._service.patch(`users/${this._userService.profile.id}/dns/records/${id}`, body);
   }
 
   public getHost(id:number) {
     return this._service.get(`users/${this._userService.profile.id}/dns/records/${id}`)
       .map(response => {
-        if (response['status'] == HttpStatusCode.OK) {
+        if (response['status'] === HttpStatusCode.OK) {
           let result = response.json();
           return <Record>result.data;
         }
@@ -76,11 +76,11 @@ export class DnsService {
       .catch(this.handleError);
   }
 
-  public getProduct(id: number) {
+  public getProduct(id:number) {
     let product_url = '/products/' + id;
     return this._service.get(product_url)
       .map(response => {
-        if (response['status'] == HttpStatusCode.OK) {
+        if (response['status'] === HttpStatusCode.OK) {
           let result = response.json();
           return <Product>result.data;
         }

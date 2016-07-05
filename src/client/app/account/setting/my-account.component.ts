@@ -58,7 +58,7 @@ export class MyAccountComponent {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
     }
 
-    this.sex = this._userService.profile.sex == null ? 0 : this._userService.profile.sex;
+    this.sex = this._userService.profile.sex === null ? 0 : this._userService.profile.sex;
 
     if (this._userService.profile.birthday !== null) {
       let birthday = new Date(this._userService.profile.birthday);

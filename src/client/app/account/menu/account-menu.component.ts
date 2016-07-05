@@ -12,4 +12,13 @@ import {
     ROUTER_DIRECTIVES
   ]
 })
-export class AccountMenuComponent {}
+export class AccountMenuComponent {
+
+  menu = ['menu1','menu2'];
+
+  nhan(xyz){
+    this.menu.push(xyz);
+  }
+}
+
+

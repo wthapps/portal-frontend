@@ -1,6 +1,6 @@
 import {Component, AfterViewInit} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
-import {HTTP_PROVIDERS, Http} from '@angular/http';
+import {HTTP_PROVIDERS} from '@angular/http';
 import {
   ROUTER_PROVIDERS,
   ROUTER_DIRECTIVES,
@@ -24,9 +24,6 @@ import {
 } from './shared/index';
 
 import {HomeComponent} from './home/home.component';
-import {DnsService} from './account/services/dns/dns.service';
-import {ContactService} from './contact/contact.service';
-import {ServicesService}       from './account/services/services.service';
 
 import {
   ForgottenPasswordComponent,
@@ -62,12 +59,9 @@ import {AccountComponent} from './account/account.component';
     LoadingComponent
   ],
   providers: [
-    DnsService,
-    ContactService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    APP_SHARED_PROVIDERS,
-    ServicesService
+    APP_SHARED_PROVIDERS
   ]
 })
 
@@ -80,7 +74,7 @@ import {AccountComponent} from './account/account.component';
   {path: '/welcome', component: WelcomeComponent},
   {path: '/policies', component: PoliciesComponent},
   {path: '/comingsoon', component: ComingsoonComponent},
-  
+
   {path: '/login', component: LoginComponent},
   {path: '/signup', component: RegisterComponent},
   {path: '/account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
@@ -123,6 +117,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   currentPath():string {
+    //noinspection TypeScriptValidateJSTypes
     return this._router._location.path();
     // return this._router._location.path() === '' ? '/' : this._router._location.path();
   }

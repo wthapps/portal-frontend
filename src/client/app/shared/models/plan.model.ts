@@ -1,4 +1,4 @@
-import {Product} from "./product.model";
+import {Product} from './product.model';
 export class Plan {
 
   id: number;
@@ -33,7 +33,7 @@ export class Plan {
       is_trial?: boolean,
       products?: Product[]
     }
-  ){
+  ) {
     if (fields) Object.assign(this, fields);
   }
 

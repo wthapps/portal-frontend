@@ -1,6 +1,8 @@
-import {Component, OnInit, Pipe, PipeTransform,
+import {
+  Component,
+  OnInit,
   ElementRef
-}   from '@angular/core';
+}                                                 from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, RouteSegment}  from '@angular/router';
 import {UserService, CONFIG}                      from '../../shared/index';
 import {TransactionService}                       from '../transaction.service';
@@ -20,7 +22,7 @@ import {LoadingService}                           from '../../partials/loading/l
   styleUrls: ['receipt.component.css']
 })
 
-export class ReceiptComponent implements OnInit{
+export class ReceiptComponent implements OnInit {
   pageTitle:string = 'Receipt';
   transaction: any = {
     amount: 0,
@@ -75,7 +77,7 @@ export class ReceiptComponent implements OnInit{
         this._loadingService.stop();
       },
       error => {
-        console.log("Receipt error", error);
+        console.log('Receipt error', error);
         this._loadingService.stop();
       });
   }

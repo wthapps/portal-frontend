@@ -2,7 +2,6 @@ import {
   Router
 }                            from '@angular/router';
 import {
-  FORM_DIRECTIVES,
   FormBuilder,
   ControlGroup,
   Validators
@@ -40,22 +39,25 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
   public category_name:string;
   public inValidPlan:boolean;
   public error_message:string;
-  constructor(
-    public context:Object,
-    private _service:ServicesService,
-    private _router:Router,
-    private _userService:UserService,
-    private _builder:FormBuilder,
-    private _controller:Object,
-    private _streamEmitter:StreamEmitter,
-    private _dialogService:DialogService
-  ) {}
+
+  constructor(public context:Object,
+              private _service:ServicesService,
+              private _router:Router,
+              private _userService:UserService,
+              private _builder:FormBuilder,
+              private _controller:Object,
+              private _streamEmitter:StreamEmitter,
+              private _dialogService:DialogService) {
+  }
+
   public load():void {
     this.loadData();
   }
+
   public unload():void {
   }
-  onAction(action: Action) : void {
+
+  onAction(action:Action):void {
     if (this.inValidPlan) {
       this.showUpgrading();
       return;
@@ -73,7 +75,8 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
       this.changeView();
     }
   }
-  onAddHost(hostname:string,action:Action) : void {
+
+  onAddHost(hostname:string, action:Action):void {
     this.is_creating = true;
     action.name = "Creating"; //@TODO: missing translation
     let cancelBtn = this.actions.find(o => o.name == 'Cancel');
@@ -132,10 +135,12 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
       }
     );
   }
-  onCancel() : void {
+
+  onCancel():void {
     this.changeView();
   }
-  private changeView(action?:string) : void {
+
+  private changeView(action?:string):void {
     this.show_information_view = (action == '' || action == null);
     this.show_configuration_view = (action == 'Add');
     this.show_congratulation_view = (action == 'Done');
@@ -143,30 +148,32 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
     if (this.show_information_view) {
       this.actions = [];
       if (this.context.created) {
-        this.actions.push(new Action(0,'Manage','/account/dns'));
+        this.actions.push(new Action(0, 'Manage', '/account/dns'));
       }
       else {
-        this.actions.push(new Action(0,'Add',''));
+        this.actions.push(new Action(0, 'Add', ''));
       }
     }
 
     if (this.show_configuration_view) {
       this.actions = [];
-      this.actions.push(new Action(0,'Create',''));
-      this.actions.push(new Action(1,'Cancel',''));
+      this.actions.push(new Action(0, 'Create', ''));
+      this.actions.push(new Action(1, 'Cancel', ''));
     }
 
     if (this.show_congratulation_view) {
       this.actions = [];
-      this.actions.push(new Action(0,'Manage','/account/dns'));
+      this.actions.push(new Action(0, 'Manage', '/account/dns'));
     }
   }
-  private clearForm() : void {
+
+  private clearForm():void {
     this.group.controls['host'].updateValue('');
     this.group.controls['host'].setErrors(null);
     this.is_creating = false;
   }
-  private loadData() : void {
+
+  private loadData():void {
     this.group = this._builder.group({
       host: ['',
         Validators.compose([Validators.required, CustomValidators.ipHostFormat])
@@ -175,17 +182,18 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
     this.clearForm();
     this.changeView();
   }
+
   private showUpgrading():void {
     this._dialogService.activate(
-      'Upgrading your accounts to continute?', 
-      'Find Services or Add-ons', 
-      'Yes', 
+      'Upgrading your accounts to continute?',
+      'Find Services or Add-ons',
+      'Yes',
       'No')
-    .then((responseOK) => {
-      if (responseOK) {
-        this._router.navigateByUrl('/account/payment');
-      }
-    });
+      .then((responseOK) => {
+        if (responseOK) {
+          this._router.navigateByUrl('/account/payment');
+        }
+      });
   }
 }
 
@@ -196,22 +204,25 @@ export class MSOutlookAddonViewModel implements IMSOutlookAddonViewModel {
   public actions:Action[] = [];
   public category_name:string;
   public inValidPlan:boolean;
-  constructor(
-    public context:Object,
-    private _service:ServicesService,
-    private _router:Router,
-    private _userService:UserService,
-    private _builder:FormBuilder,
-    private _controller:Object,
-    private _streamEmitter:StreamEmitter,
-    private _dialogService:DialogService
-  ) {}
+
+  constructor(public context:Object,
+              private _service:ServicesService,
+              private _router:Router,
+              private _userService:UserService,
+              private _builder:FormBuilder,
+              private _controller:Object,
+              private _streamEmitter:StreamEmitter,
+              private _dialogService:DialogService) {
+  }
+
   public load():void {
     this.loadData();
   }
+
   public unload():void {
   }
-  onAction(action: Action) : void {
+
+  onAction(action:Action):void {
     if (this.inValidPlan) {
       this.showUpgrading();
       return;
@@ -237,13 +248,14 @@ export class MSOutlookAddonViewModel implements IMSOutlookAddonViewModel {
       this._router.navigateByUrl(action.router);
     }
     if (action.name == 'Create') {
-      
+
     }
     if (action.name == 'Cancel') {
-      
+
     }
   }
-  private changeView(action?:string) : void {
+
+  private changeView(action?:string):void {
     this.show_information_view = (action == '' || action == null);
     this.show_configuration_view = (action == 'Add');
     this.show_congratulation_view = (action == 'Done');
@@ -251,70 +263,76 @@ export class MSOutlookAddonViewModel implements IMSOutlookAddonViewModel {
     if (this.show_information_view) {
       this.actions = [];
       if (this.context.created) {
-        this.actions.push(new Action(0,'Learn more','/support'));
+        this.actions.push(new Action(0, 'Learn more', '/support'));
       }
       else {
-        this.actions.push(new Action(0,'Add',''));
+        this.actions.push(new Action(0, 'Add', ''));
       }
     }
 
     if (this.show_configuration_view) {
       this.actions = [];
-      this.actions.push(new Action(0,'Create',''));
-      this.actions.push(new Action(1,'Cancel',''));
+      this.actions.push(new Action(0, 'Create', ''));
+      this.actions.push(new Action(1, 'Cancel', ''));
     }
 
     if (this.show_congratulation_view) {
       this.actions = [];
-      this.actions.push(new Action(0,'Learn more','/support'));
+      this.actions.push(new Action(0, 'Learn more', '/support'));
     }
   }
-  private loadData() : void {
+
+  private loadData():void {
     this.changeView();
   }
+
   private showUpgrading():void {
     this._dialogService.activate(
-      'Upgrading your accounts to continute?', 
-      'Find Services or Add-ons', 
-      'Yes', 
+      'Upgrading your accounts to continute?',
+      'Find Services or Add-ons',
+      'Yes',
       'No')
-    .then((responseOK) => {
-      if (responseOK) {
-        this._router.navigateByUrl('/account/payment');
-      }
-    });
+      .then((responseOK) => {
+        if (responseOK) {
+          this._router.navigateByUrl('/account/payment');
+        }
+      });
   }
 }
 
 export class ServicesViewModel implements IServicesViewModel {
-  public panelTitle: string = 'Find Services or Add-ons'; //@TODO: missing translation
-  public categories: Category[] = []; 
-  public categoryId: number;
-  public items : IViewModelBase[] = [];
+  public panelTitle:string = 'Find Services or Add-ons'; //@TODO: missing translation
+  public categories:Category[] = [];
+  public categoryId:number;
+  public items:IViewModelBase[] = [];
   public inValidPlan:boolean = false;
   public user_products:AddonService[] = [];
   public hasUserProducts:boolean = false;
-  constructor(
-    private _servicesService:ServicesService,
-    private _router:Router,
-    private _userService:UserService,
-    private _builder:FormBuilder,
-    private _controller:Object,
-    private _streamEmitter:StreamEmitter,
-    private _dialogService:DialogService
-  ) {}
+
+  constructor(private _servicesService:ServicesService,
+              private _router:Router,
+              private _userService:UserService,
+              private _builder:FormBuilder,
+              private _controller:Object,
+              private _streamEmitter:StreamEmitter,
+              private _dialogService:DialogService) {
+  }
+
   public load():void {
     this.init();
   }
+
   public unload():void {
     for (var i in this.items) {
       this.items[i].unload();
     }
   }
-  onCategoryIdChanged(categoryId : number) : void {
+
+  onCategoryIdChanged(categoryId:number):void {
     this.refresh(categoryId);
   }
-  private init() : void {
+
+  private init():void {
     if (!this.verifyLogin()) {
       return;
     }
@@ -342,7 +360,7 @@ export class ServicesViewModel implements IServicesViewModel {
   private loadData(products:AddonService[]):void {
     this._servicesService.getCategories().subscribe(
       categories => {
-        this.categories.push(new Category('',0,'Allcategories','All categories', ''));
+        this.categories.push(new Category('', 0, 'Allcategories', 'All categories', ''));
         for (var i in categories) {
           this.categories.push(categories[i]);
         }
@@ -357,8 +375,9 @@ export class ServicesViewModel implements IServicesViewModel {
       }
     );
   }
+
   //@TODO: need to send to owner to manage this
-  private verifyLogin() : boolean {
+  private verifyLogin():boolean {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(
         `/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`
@@ -367,6 +386,7 @@ export class ServicesViewModel implements IServicesViewModel {
     }
     return true;
   }
+
   private createItems(addonservices:AddonService[], inValidPlan:boolean = false) {
     for (let i in addonservices) {
       let item = addonservices[i];
@@ -374,13 +394,13 @@ export class ServicesViewModel implements IServicesViewModel {
       let category = this.categories[index];
       index = this.user_products.findIndex(o => o.id == item.id);
       item.created = index != -1;
-      if (item.template_id == "dynamic-dns.html") {
+      if (item.template_id === "dynamic-dns.html") {
         let ddns = new DynamicDnsViewModel(
-          item, 
-          this._servicesService, 
-          this._router, 
+          item,
+          this._servicesService,
+          this._router,
           this._userService,
-          this._builder, 
+          this._builder,
           this._controller,
           this._streamEmitter,
           this._dialogService
@@ -390,12 +410,12 @@ export class ServicesViewModel implements IServicesViewModel {
         ddns.load();
         this.items.push(ddns);
       }
-      if (item.template_id == "ms-outlook-addon.html") {
+      if (item.template_id === "ms-outlook-addon.html") {
         let outlook = new MSOutlookAddonViewModel(
-          item, 
-          this._servicesService, 
-          this._router, 
-          this._userService, 
+          item,
+          this._servicesService,
+          this._router,
+          this._userService,
           this._builder,
           this._controller,
           this._streamEmitter,
@@ -408,17 +428,18 @@ export class ServicesViewModel implements IServicesViewModel {
       }
     }
   }
-  private refresh(categoryId : number) : void {
+
+  private refresh(categoryId:number):void {
     this.items = [];
     this._servicesService.getAddonServices().subscribe(
       addonservices => {
-        this.createItems(this.getAddonServiceByCategoryId(categoryId,addonservices), this.inValidPlan);
+        this.createItems(this.getAddonServiceByCategoryId(categoryId, addonservices), this.inValidPlan);
       },
       error => {
         let body = JSON.parse(error['_body']);
         if (error['status'] == HttpStatusCode.PaymentRequired) {
           if (body.data != 'empty') {
-            this.createItems(this.getAddonServiceByCategoryId(categoryId,<AddonService[]>body.data),true);
+            this.createItems(this.getAddonServiceByCategoryId(categoryId, <AddonService[]>body.data), true);
           }
         }
         else {
@@ -426,10 +447,9 @@ export class ServicesViewModel implements IServicesViewModel {
       }
     );
   }
-  private getAddonServiceByCategoryId(
-    categoryId:number, 
-    addonservices:AddonService[]
-  ) : AddonService[] {
+
+  private getAddonServiceByCategoryId(categoryId:number,
+                                      addonservices:AddonService[]):AddonService[] {
     let service:AddonService[] = [];
     for (var i in addonservices) {
       if (categoryId == 0) {
@@ -440,6 +460,6 @@ export class ServicesViewModel implements IServicesViewModel {
         service.push(addonservices[i]);
       }
     }
-    return  service;
+    return service;
   }
 }

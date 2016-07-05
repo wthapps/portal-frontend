@@ -2,12 +2,12 @@ import {Component, OnInit}      from '@angular/core';
 import {ROUTER_DIRECTIVES}      from '@angular/router';
 import {
   WthJoinUsComponent,
-  getStartedComponent
+  GetStartedComponent
 }                               from '../shared/wth.join.us.component';
-import {PlanService}            from "../account/plan.service";
-import {Product}                from "../shared/models/product.model";
-import {Plan}                   from "../shared/models/plan.model";
-import {UserService}            from "../shared/services/user.service";
+import {PlanService}            from '../account/plan.service';
+import {Product}                from '../shared/models/product.model';
+import {Plan}                   from '../shared/models/plan.model';
+import {UserService}            from '../shared/services/user.service';
 
 @Component({
   moduleId: module.id,
@@ -15,40 +15,40 @@ import {UserService}            from "../shared/services/user.service";
   directives: [
     ROUTER_DIRECTIVES,
     WthJoinUsComponent,
-    getStartedComponent
+    GetStartedComponent
   ],
   providers: [PlanService]
 })
 
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
   pageTitle:string = 'Home page';
   products: Product[] = [];
   plans: Plan[] = [];
 
 
-  constructor(private planService: PlanService, private userService: UserService){
+  constructor(private planService: PlanService, private userService: UserService) {
 
   }
 
   ngOnInit(): void {
     this.planService.list('plans')
       .subscribe((response) => {
-        if (response.data != null){
+        if (response.data !== null) {
           this.plans = response.data;
         }
       },
       error => {
-        console.log("error plans: ", error.message);
+        console.log('error plans: ', error.message);
       });
 
     this.planService.list('products/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response) => {
-          if (response.data != null){
+          if (response.data !== null) {
             this.products = response.data;
           }
         },
         error => {
-          console.log("error products: ", error.message);
+          console.log('error products: ', error.message);
       });
   }
 

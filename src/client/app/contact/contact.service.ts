@@ -17,7 +17,7 @@ export class ContactService {
       .map(response => {
         return response;
       })
-      .catch(this.handleError);;
+      .catch(this.handleError);
   }
 
   private handleError(error: Response) {

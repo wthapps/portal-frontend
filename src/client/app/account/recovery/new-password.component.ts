@@ -63,7 +63,7 @@ export class NewPasswordComponent {
           // stop loading
           this._loadingService.stop();
           this._toastsService.danger(error);
-          console.log("error:", error);
+          console.log('error:', error);
         });
   }
 }

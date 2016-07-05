@@ -22,10 +22,8 @@ export class WthJoinUsComponent {
 
   public textValue:string;
 
-  constructor(
-    private _userService:UserService,
-    private _router:Router
-  ) {
+  constructor(private _userService:UserService,
+              private _router:Router) {
     this.textValue = _userService.loggedIn ? 'Upgrade for only $9.99 per month' : 'Join Free for a Month';
   }
 
@@ -57,38 +55,34 @@ export class WthCancelPlanComponent {
 
   public textValue:string;
 
-  constructor(
-    private _userService:UserService,
-    private _router:Router,
-    private _dialogService: DialogService,
-    private _toastsService: ToastsService,
-    private _loadingService: LoadingService
-  ) {
+  constructor(private _userService:UserService,
+              private _router:Router,
+              private _dialogService:DialogService,
+              private _toastsService:ToastsService,
+              private _loadingService:LoadingService) {
     this.textValue = 'Cancel current plan';
   }
 
-  public onCancel(plan_id: string, event: any) {
+  public onCancel(plan_id:string, event:any) {
     event.preventDefault();
-    let body: string = JSON.stringify({plan_id});
-    this._dialogService.activate("Confirm canceling Basic plan.", "Cancel plan confirmation")
+    let body:string = JSON.stringify({plan_id});
+    this._dialogService.activate('Confirm canceling Basic plan.', 'Cancel plan confirmation')
       .then((responseOK) => {
-        if(responseOK) {
+        if (responseOK) {
           this._loadingService.start();
           this._userService.choosePlan(`users/${this._userService.profile.id}`, body)
             .subscribe((response) => {
-              if (response.data != null){
-
-              }
-              this._toastsService.success(response.message);
-              this._loadingService.stop();
-            },
-            error => {
-              this._toastsService.danger(error);
-              this._loadingService.stop();
-            });
+                if (response.data !== null) {
+                  this._toastsService.success(response.message);
+                  this._loadingService.stop();
+                }
+              },
+              error => {
+                this._toastsService.danger(error);
+                this._loadingService.stop();
+              });
         }
       });
-  }
   }
 }
 
@@ -102,12 +96,13 @@ export class WthCancelPlanComponent {
   `
 })
 
-export class getStartedComponent {
+export class GetStartedComponent {
 
   public textValue:string = 'Get Started';
 
   constructor(private _userService:UserService,
-              private _router:Router) {}
+              private _router:Router) {
+  }
 
   public redirectNextPage(event) {
     event.preventDefault();

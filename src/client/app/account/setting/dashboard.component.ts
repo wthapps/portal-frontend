@@ -1,14 +1,14 @@
 import {
-  Component, 
+  Component,
   OnInit,
   OnDestroy
 }                       from '@angular/core';
 import {
-  Router, 
+  Router,
   ROUTER_DIRECTIVES
 }                       from '@angular/router';
 import {
-  UserService, 
+  UserService,
   CONFIG,
   WthJoinUsComponent,
   WthCancelPlanComponent,
@@ -43,19 +43,22 @@ import {
 
 export class AccountDashboardComponent implements OnInit, OnDestroy {
   public user_products_context:DashboardUserProductsViewModel;
-  constructor(
-    private _router:Router, 
-    private _userService:UserService,
-    private _streamEmitter:StreamEmitter,
-    private _servicesService:ServicesService,
-    private _dialogService: DialogService
-  ) {}
+
+  constructor(private _router:Router,
+              private _userService:UserService,
+              private _streamEmitter:StreamEmitter,
+              private _servicesService:ServicesService,
+              private _dialogService:DialogService) {
+  }
+
   ngOnInit():void {
     this.load();
   }
+
   ngOnDestroy() {
     this.unload();
   }
+
   //@TODO: should have viewmodel
   public choosePlans(event:any):void {
     event.preventDefault();
@@ -65,16 +68,18 @@ export class AccountDashboardComponent implements OnInit, OnDestroy {
       this._router.navigateByUrl('account/payment');
     }
   }
-  private validateLogin() : boolean {
+
+  private validateLogin():boolean {
     if (!this._userService.loggedIn) {
       this._router.navigateByUrl(`/login;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
       return false;
     }
     return true;
   }
-  private load() : void {
+
+  private load():void {
     if (this.validateLogin()) {
-      if (this.user_products_context == null) {
+      if (this.user_products_context === null) {
         this.user_products_context = new DashboardUserProductsViewModel(
           this._streamEmitter,
           this._servicesService,
@@ -85,8 +90,9 @@ export class AccountDashboardComponent implements OnInit, OnDestroy {
       this.user_products_context.load();
     }
   }
-  private unload() : void {
-    if (this.user_products_context != null) {
+
+  private unload():void {
+    if (this.user_products_context !== null) {
       this.user_products_context.unload();
     }
   }

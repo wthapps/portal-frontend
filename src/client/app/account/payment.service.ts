@@ -4,9 +4,9 @@ import {Http, Response} from '@angular/http';
 import {ApiBaseService} from '../shared/services/apibase.service';
 
 @Injectable()
-export class PaymentService extends ApiBaseService{
+export class PaymentService extends ApiBaseService {
 
-  constructor(http: Http){
+  constructor(http: Http) {
     super(http);
   }
 
@@ -42,7 +42,7 @@ export class PaymentService extends ApiBaseService{
       });
   }
 
-  public delete(path: string): Observable<Response>{
+  public delete(path: string): Observable<Response> {
     return super.delete(path)
       .map(res => res.json())
       .map((res) => {

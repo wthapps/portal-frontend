@@ -1,7 +1,6 @@
 import {
   Component,
-  OnInit,
-  ViewChild
+  OnInit
 }                             from '@angular/core';
 import
 {
@@ -52,8 +51,8 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
   public pageTitle:string = "Edit Host";
   public errorMessage:string;
   public types:Type[] = [
-    {"value": 'A', "name": 'IPv4'},
-    {"value": 'AAAA', "name": 'IPv6'}
+    {'value': 'A', 'name': 'IPv4'},
+    {'value': 'AAAA', 'name': 'IPv6'}
   ];
   public type:Type = new Type();
   public Record:Record = new Record();
@@ -93,13 +92,11 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
       },
       error => {
         this._loadingService.stop();
-        if (error['status'] == HttpStatusCode.PaymentRequired) {
+        if (error['status'] === HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
-        }
-        else if (error['status'] == HttpStatusCode.Created) {
+        } else if (error['status'] === HttpStatusCode.Created) {
           this.errorMessage = 'Hostname has already been taken!';
-        }
-        else {
+        } else {
           this.errorMessage = 'Unable to edit the host!';
         }
         this._topMessageService.danger(this.errorMessage);
@@ -110,6 +107,7 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
   onUpdateHost(domain, name, content) {
     this._loadingService.start();
 
+    //noinspection TypeScriptValidateJSTypes
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
     let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
 
@@ -144,13 +142,11 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
         this._loadingService.stop();
         this._toastsService.danger(this.errorMessage);
         this._topMessageService.danger(this.errorMessage);
-        if (error['status'] == HttpStatusCode.PaymentRequired) {
+        if (error['status'] === HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
-        }
-        else if (error['status'] == HttpStatusCode.Created) {
+        } else if (error['status'] === HttpStatusCode.Created) {
           this.errorMessage = 'Hostname has already been taken!';
-        }
-        else {
+        } else {
           this.errorMessage = 'Unable to edit the host!';
         }
       }

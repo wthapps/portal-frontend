@@ -1,9 +1,9 @@
 import {
-  Component, 
+  Component,
   OnInit
 }                       from '@angular/core';
 import {
-  ROUTER_DIRECTIVES, 
+  ROUTER_DIRECTIVES,
   Router
 }                       from '@angular/router';
 
@@ -15,7 +15,7 @@ import {
 }                       from './dns.service';
 
 import {
-  UserService, 
+  UserService,
   CONFIG,
   HttpStatusCode
 }                       from '../../../shared/index';
@@ -38,19 +38,20 @@ import {
 })
 
 export class AccountServicesDNSComponent implements OnInit {
-  public pageTitle:string = "My Hosts";
+  public pageTitle:string = 'My Hosts';
   public Records:Record[] = [];
   public ErrorMessage:string;
-  public DownloadLink: string;
+  public DownloadLink:string;
   public inValidPlan:boolean = false;
   private _dnsProductId:number = 2; //@TODO: temporary using product id that will changed to uuid
 
-  constructor(private _dnsService: DnsService,
-              private _dialogService: DialogService,
+  constructor(private _dnsService:DnsService,
+              private _dialogService:DialogService,
               private _userService:UserService,
               private _router:Router,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService) {}
+              private _topMessageService:TopMessageService) {
+  }
 
   ngOnInit():void {
 
@@ -69,9 +70,9 @@ export class AccountServicesDNSComponent implements OnInit {
       error => {
         this._loadingService.stop();
         let body = JSON.parse(error['_body']);
-        if (error['status'] == HttpStatusCode.PaymentRequired) {
+        if (error['status'] === HttpStatusCode.PaymentRequired) {
           this.inValidPlan = true;
-          if (body.data != 'empty') {
+          if (body.data !== 'empty') {
             var list = <Record[]>body.data;
             for (var i in list) {
               let current = list[i];
@@ -79,8 +80,7 @@ export class AccountServicesDNSComponent implements OnInit {
             }
             this.Records = list;
           }
-        }
-        else {
+        } else {
           this.ErrorMessage = JSON.stringify(error);
           this._topMessageService.danger(this.ErrorMessage);
         }
@@ -100,14 +100,13 @@ export class AccountServicesDNSComponent implements OnInit {
     );
   }
 
-  onDeleteHost(event, id:number) : void {
+  onDeleteHost(event, id:number):void {
     event.preventDefault();
 
     if (this.inValidPlan) {
       this.showUpgrading();
       return;
-    }
-    else {
+    } else {
       let index = this.Records.findIndex(o => o.id == id);
       let hostname = this.Records[index].name + '.' + 'wthdns.com';
       this._dialogService.activate('Are you sure to delete ' + hostname + '?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
@@ -120,10 +119,9 @@ export class AccountServicesDNSComponent implements OnInit {
             },
             error => {
               this._loadingService.stop();
-              if (error['status'] == HttpStatusCode.PaymentRequired) {
+              if (error['status'] === HttpStatusCode.PaymentRequired) {
                 this.showUpgrading();
-              }
-              else {
+              } else {
                 this.ErrorMessage = JSON.stringify(error);
                 this._topMessageService.danger(this.ErrorMessage);
               }
@@ -134,24 +132,22 @@ export class AccountServicesDNSComponent implements OnInit {
     }
   }
 
-  onEditHost(event, id:number) : void {
+  onEditHost(event, id:number):void {
     event.preventDefault();
     if (this.inValidPlan) {
       this.showUpgrading();
       return;
-    } 
-    else {
+    } else {
       this._router.navigateByUrl('/account/dns/' + id);
     }
   }
 
-  onAddHost(event) : void {
+  onAddHost(event):void {
     event.preventDefault();
     if (this.inValidPlan) {
       this.showUpgrading();
       return;
-    }
-    else {
+    } else {
       this._router.navigateByUrl('/account/dns/add');
     }
   }

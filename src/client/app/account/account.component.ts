@@ -1,5 +1,5 @@
 import {
-  Component,  
+  Component,
   OnInit,
   OnDestroy
 } from '@angular/core';
@@ -26,11 +26,13 @@ import {
 
   // Services
   AccountServicesListComponent,
+  ServicesService,
 
   // DNS
   AccountServicesDNSComponent,
   AccountServicesDNSAddComponent,
   AccountServicesDNSUpdateComponent,
+  DnsService,
 
   // VPN
   AccountServicesVPNComponent,
@@ -41,8 +43,8 @@ import {
 } from './index';
 
 import {
-  UserService, 
-  CONFIG, 
+  UserService,
+  CONFIG,
   AuthGuard
 } from '../shared/index';
 import {
@@ -50,7 +52,7 @@ import {
 } from './services/content-presenter.component';
 import {
   AccountMenuViewModel
-} from './menu/account-menu.viewmodel'
+} from './menu/account-menu.viewmodel';
 import {
   StreamEmitter
 } from '../shared/index';
@@ -95,7 +97,9 @@ import {
     ContentPresenter
   ],
   providers: [
-    StreamEmitter
+    StreamEmitter,
+    DnsService,
+    ServicesService
   ]
 })
 export class AccountComponent implements OnInit, OnDestroy {
@@ -121,14 +125,14 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
   private load() : void {
     if (this.validateLogin()) {
-      if (this.menu == null) {
+      if (this.menu === null) {
         this.menu = new AccountMenuViewModel(this._streamEmitter);
       }
       this.menu.load();
     }
   }
   private unload() : void {
-    if (this.menu != null) {
+    if (this.menu !== null) {
       this.menu.unload();
     }
   }
