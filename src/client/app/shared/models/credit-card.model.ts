@@ -4,5 +4,5 @@ export class CreditCard {
     public last_4: string,
     public cardholder_name: string,
     public card_type: string
-  ){}
+  ) {}
 }

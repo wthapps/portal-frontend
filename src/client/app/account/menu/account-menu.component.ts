@@ -12,4 +12,7 @@ import {
     ROUTER_DIRECTIVES
   ]
 })
-export class AccountMenuComponent {}
+export class AccountMenuComponent {
+}
+
+

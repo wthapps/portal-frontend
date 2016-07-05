@@ -5,7 +5,7 @@ import {
   LoadingService,
   DialogService,
   ToastsService
-}                                     from "../shared/index";
+}                                     from '../shared/index';
 
 @Component({
   moduleId: module.id,

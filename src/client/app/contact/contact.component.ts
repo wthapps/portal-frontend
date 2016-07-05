@@ -26,7 +26,7 @@ import {ReCaptchaComponent}        from '../shared/googlerecaptcha.directive';
     ReCaptchaComponent
   ],
   providers: [
-    LoadingService
+    ContactService
   ],
   styleUrls: ['contact.component.css']
 })
@@ -36,7 +36,7 @@ export class ContactComponent implements OnInit {
 
   public contact: Contact;
   public contactForm: ControlGroup;
-  public siteKey: string = "6LcuZiMTAAAAACtTNvG7j8FS5nS81R-HGN5OIo8B";
+  public siteKey: string = '6LcuZiMTAAAAACtTNvG7j8FS5nS81R-HGN5OIo8B';
   public recaptchaState: boolean = false;
 
   private _recaptchaResponse: any = '';
@@ -65,12 +65,12 @@ export class ContactComponent implements OnInit {
     this._loadingService.start();
     this.contact = this.contactForm.value;
     this.contact.recaptcha_response = this._recaptchaResponse;
-    this.contact.body = this.contact.body.replace(/(\r\n|\n\r|\r|\n)/g, "<br>");
+    this.contact.body = this.contact.body.replace(/(\r\n|\n\r|\r|\n)/g, '<br>');
     let body = JSON.stringify(this.contact);
     this._contactService.createFeedback(body).subscribe(
       result => {
         this._loadingService.stop();
-        this._toastsService.success("Message sent! Thanks for your email, we'll answer you within 24 hours.");
+        this._toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
       },
       error => {
         this._loadingService.stop();
@@ -84,7 +84,7 @@ export class ContactComponent implements OnInit {
   private updateContactForm() {
     this.contact = new Contact();
     this.recaptchaState = false;
-    if (this._userService.profile != null) {
+    if (this._userService.profile !== null) {
       this.contact.email = this._userService.profile.email;
     }
 

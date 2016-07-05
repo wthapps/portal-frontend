@@ -64,7 +64,7 @@ export class ForgottenPasswordComponent {
                   // stop loading
                   this._loadingService.stop();
                   this._toastsService.danger(error);
-                  console.log("error:", error);
+                  console.log('error:', error);
                 });
             // this._router.navigate(['/account/reset_email_sent']);
           }

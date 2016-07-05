@@ -1,4 +1,4 @@
-export class WthConstants { 
+export class WthConstants {
   public static operations: Object = {
     update: 'update',
     edit: 'edit',
@@ -10,8 +10,9 @@ export class WthConstants {
 
   public static patterns: Object = {
     slash: /\//g,
-    space: '\%20',
-  }
+    space: '\%20'
+  };
+
   public static string: Object = {
     operation: 'operation',
     jwt: 'jwt',
@@ -24,5 +25,5 @@ export class WthConstants {
     edit: 'edit',
     update: 'update',
     add: 'add'
-  } 
+  };
 }

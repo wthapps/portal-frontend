@@ -33,27 +33,25 @@ import {
   ]
 })
 
-export class AccountServicesListComponent 
-  implements OnInit, OnDestroy {
+export class AccountServicesListComponent implements OnInit, OnDestroy {
 
   public context:ServicesViewModel;
 
-  constructor(
-    private _userService:UserService,
-    private _router:Router,
-    private _servicesService:ServicesService,
-    private _builder:FormBuilder,
-    private _streamEmitter:StreamEmitter,
-    private _dialogService:DialogService
-  ) {}
+  constructor(private _userService:UserService,
+              private _router:Router,
+              private _servicesService:ServicesService,
+              private _builder:FormBuilder,
+              private _streamEmitter:StreamEmitter,
+              private _dialogService:DialogService) {
+  }
 
-  ngOnInit() : void {
-    if (this.context == null) {
+  ngOnInit():void {
+    if (this.context === null) {
       this.context = new ServicesViewModel(
-        this._servicesService, 
-        this._router, 
+        this._servicesService,
+        this._router,
         this._userService,
-        this._builder, 
+        this._builder,
         this,
         this._streamEmitter,
         this._dialogService);
@@ -62,7 +60,7 @@ export class AccountServicesListComponent
   }
 
   ngOnDestroy() {
-    if (this.context != null) {
+    if (this.context !== null) {
       this.context.unload();
     }
   }

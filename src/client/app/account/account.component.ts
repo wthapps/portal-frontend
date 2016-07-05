@@ -1,5 +1,5 @@
 import {
-  Component,  
+  Component,
   OnInit,
   OnDestroy
 } from '@angular/core';
@@ -26,11 +26,13 @@ import {
 
   // Services
   AccountServicesListComponent,
+  ServicesService,
 
   // DNS
   AccountServicesDNSComponent,
   AccountServicesDNSAddComponent,
   AccountServicesDNSUpdateComponent,
+  DnsService,
 
   // VPN
   AccountServicesVPNComponent,
@@ -41,29 +43,29 @@ import {
 } from './index';
 
 import {
-  UserService, 
-  CONFIG, 
-  AuthGuard
+  UserService,
+  CONFIG
+  //, AuthGuard
 } from '../shared/index';
 import {
   ContentPresenter
 } from './services/content-presenter.component';
 import {
   AccountMenuViewModel
-} from './menu/account-menu.viewmodel'
+} from './menu/account-menu.viewmodel';
 import {
   StreamEmitter
 } from '../shared/index';
 
 @Routes([
-  {path: '/dns/add', component: AccountServicesDNSAddComponent,
-    canActivate: [AuthGuard]
+  {path: '/dns/add', component: AccountServicesDNSAddComponent
+    //, canActivate: [AuthGuard]
   },
   {path: '/dns/:id', component: AccountServicesDNSUpdateComponent},
   {
     path: '/dns',
-    component: AccountServicesDNSComponent,
-    canActivate: [AuthGuard]
+    component: AccountServicesDNSComponent
+    //, canActivate: [AuthGuard]
   },
 
   {path: '/vpn', component: AccountServicesVPNComponent},
@@ -95,12 +97,14 @@ import {
     ContentPresenter
   ],
   providers: [
-    StreamEmitter
+    StreamEmitter,
+    DnsService,
+    ServicesService
   ]
 })
 export class AccountComponent implements OnInit, OnDestroy {
   public pageTitle:string = 'Account setting';
-  public menu:AccountMenuViewModel;
+  public menu:AccountMenuViewModel = null;
   constructor(
     private _userService:UserService,
     private _router:Router,
@@ -121,14 +125,14 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
   private load() : void {
     if (this.validateLogin()) {
-      if (this.menu == null) {
+      if (this.menu === null) {
         this.menu = new AccountMenuViewModel(this._streamEmitter);
       }
       this.menu.load();
     }
   }
   private unload() : void {
-    if (this.menu != null) {
+    if (this.menu !== null) {
       this.menu.unload();
     }
   }

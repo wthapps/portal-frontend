@@ -1,4 +1,6 @@
-import {Component, OnInit, Pipe, PipeTransform,
+import {
+  Component,
+  OnInit,
   ElementRef
 }                                                 from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, RouteSegment}  from '@angular/router';
@@ -19,7 +21,7 @@ import {LoadingService}                           from '../../partials/loading/l
   ]
 })
 
-export class TransactionDetailsComponent implements OnInit{
+export class TransactionDetailsComponent implements OnInit {
   pageTitle:string = 'Transaction details';
   transaction: any = {
     amount: 0,
@@ -76,7 +78,7 @@ export class TransactionDetailsComponent implements OnInit{
           this._loadingService.stop();
         },
         error => {
-          console.log("Receipt error", error);
+          console.log('Receipt error', error);
           this._loadingService.stop();
         });
   }

@@ -1,16 +1,15 @@
-import {Component, AfterViewInit, NgZone, ChangeDetectorRef}                                  from '@angular/core';
+import {Component, AfterViewInit, NgZone}                          from '@angular/core';
 import {Router, ROUTER_DIRECTIVES, RouteSegment}                   from '@angular/router';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, FormGroup}    from '@angular/common';
+import {FormBuilder, Validators, FormGroup}    from '@angular/common';
 import {PaymentService}               from './payment.service';
 import {CountryListComponent}         from '../shared/services/country.component';
 import {
   UserService,
   WthConstants,
   LoadingService,
-  TopMessageService,
-  ToastsService
+  TopMessageService
 }                                     from '../shared/index';
-import {Cookie}                       from 'ng2-cookies/ng2-cookies'
+import {Cookie}                       from 'ng2-cookies/ng2-cookies';
 
 declare var braintree:any;
 
@@ -190,14 +189,14 @@ export class PaymentComponent implements AfterViewInit {
             return event.fields[key].isValid;
           });
 
-          console.log("this", _this.paymentForm.valid);
+          console.log('this', _this.paymentForm.valid);
 
           if (formValid && _this.paymentForm.valid) {
             //$('#button-pay').addClass('show-button');
-            $('#button-pay').prop("disabled", false);
+            $('#button-pay').prop('disabled', false);
           } else {
             //$('#button-pay').removeClass('show-button');
-            $('#button-pay').prop("disabled", true);
+            $('#button-pay').prop('disabled', true);
           }
         });
 
@@ -241,7 +240,7 @@ export class PaymentComponent implements AfterViewInit {
               address_line_2: address_line_2.val(),
               city: city.val(),
               postcode: postcode.val(),
-              zipcode: "",
+              zipcode: '',
               region: region.val(),
               country: country.val()
             });
@@ -285,13 +284,12 @@ export class PaymentComponent implements AfterViewInit {
 
             return;
           }
-        console.log(_this._toastsService);
           _this._toastsService.danger(response.message);
         },
         error => {
           _this._loaddingService.stop();
           _this._toastsService.danger(error);
-          console.log("Add card error:", error);
+          console.log('Add card error:', error);
         });
     _this._loaddingService.start();
   }
@@ -315,7 +313,7 @@ export class PaymentComponent implements AfterViewInit {
         error => {
           _this._loaddingService.stop();
           _this._toastsService.danger(_this._toastsService.type.danger, error);
-          console.log("Add card error:", error);
+          console.log('Add card error:', error);
         });
     _this._loaddingService.start();
   }

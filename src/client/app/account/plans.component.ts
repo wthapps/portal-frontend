@@ -3,16 +3,15 @@ import {Router, ROUTER_DIRECTIVES}                  from '@angular/router';
 import {
   UserService,
   CONFIG,
-  WthConstants,
   ToastsService,
   DialogService,
   LoadingService
-}                                                   from "../shared/index";
-import {WthCancelPlanComponent}                     from "../shared/wth.join.us.component";
-import {PlanService}                                from "./plan.service";
-import {Plan}                                       from "../shared/models/plan.model";
-import {Product}                                    from "../shared/models/product.model";
-import {PlanProduct} from "../shared/models/plan-product.model";
+}                                                   from '../shared/index';
+import {WthCancelPlanComponent}                     from '../shared/wth.join.us.component';
+import {PlanService}                                from './plan.service';
+import {Plan}                                       from '../shared/models/plan.model';
+import {Product}                                    from '../shared/models/product.model';
+import {PlanProduct}                                from '../shared/models/plan-product.model';
 
 @Component({
   moduleId: module.id,
@@ -25,7 +24,7 @@ import {PlanProduct} from "../shared/models/plan-product.model";
   styleUrls: ['plans.component.css']
 })
 
-export class PlansComponent implements OnInit{
+export class PlansComponent implements OnInit {
   PanelTitle:string = 'Choose plan';
   // TODO refactor below line
   paymentMethod: Object = {};
@@ -136,7 +135,7 @@ export class PlansComponent implements OnInit{
     // this._router.navigateByUrl('account/setting/dashboard');
   }
 
-  public choosePlan(plan_id: string){
+  public choosePlan(plan_id: string) {
     // if( plan_id != 'wth_free'){
     //   this._router.navigateByUrl(`account/payment;${WthConstants.string.next}=${this._router._location.path().replace(WthConstants.patterns.slash, WthConstants.patterns.space)}`);
     //   return;
@@ -144,13 +143,13 @@ export class PlansComponent implements OnInit{
 
     let body: string = JSON.stringify({plan_id});
 
-    this._dialogService.activate("Confirm upgrading to Basic plan. You will pay $9.99 per month", "Update plan confirmation")
+    this._dialogService.activate('Confirm upgrading to Basic plan. You will pay $9.99 per month', 'Update plan confirmation')
       .then((responseOK) => {
         if(responseOK) {
           this._loadingService.start();
           this._userService.choosePlan(`users/${this._userService.profile.id}`, body)
             .subscribe((response) => {
-              if (response.data != null){
+              if (response.data !== null) {
 
               }
               this.selected_plan = plan_id;

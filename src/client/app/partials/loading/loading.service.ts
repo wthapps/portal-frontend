@@ -2,7 +2,7 @@ import {Injectable, OnChanges}  from '@angular/core';
 import {Router}                 from '@angular/router';
 
 @Injectable()
-export class LoadingService implements OnChanges{
+export class LoadingService implements OnChanges {
   /**
    * Add Class loading to element
    * @param {el} el - The ElementRef.
@@ -26,7 +26,7 @@ export class LoadingService implements OnChanges{
     this.modalElementBackdrop = document.getElementById('loadingModal-backdrop');
   }
 
-  ngOnChanges(): void{
+  ngOnChanges():void {
     this.stop();
   }
 

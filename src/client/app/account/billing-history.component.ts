@@ -1,4 +1,4 @@
-import {Component, OnInit, Pipe, PipeTransform}   from '@angular/core';
+import {Component, OnInit}   from '@angular/core';
 import {ROUTER_DIRECTIVES, Router}                from '@angular/router';
 import {UserService, CONFIG}                      from '../shared/index';
 import {TransactionService}                       from './transaction.service';
@@ -17,7 +17,7 @@ import {LoadingService}                           from '../partials/loading/load
   ]
 })
 
-export class BillingHistoryComponent implements OnInit{
+export class BillingHistoryComponent implements OnInit {
   PanelTitle:string = 'Billing history';
   public transactions: any[] = [];
 
@@ -43,9 +43,9 @@ export class BillingHistoryComponent implements OnInit{
         this._loadingService.stop();
         },
         error => {
-          console.log("Billing history error", error);
+          console.log('Billing history error', error);
           this._loadingService.stop();
-        })
+        });
   }
 
   viewReceipt(trans_id: string, event: any): void {

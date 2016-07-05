@@ -5,5 +5,5 @@ export class BillingAddress {
     public postal_code: string,
     public region: string,
     public country_name: string
-  ){}
+  ) {}
 }

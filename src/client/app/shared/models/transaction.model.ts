@@ -13,5 +13,5 @@ export class Transaction {
     public billing_address: BillingAddress,
     public credit_card: CreditCard,
     public customer: Customer
-  ){}
+  ) {}
 }

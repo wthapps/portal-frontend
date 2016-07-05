@@ -62,7 +62,7 @@ export abstract class ApiBaseService {
     // let profile = JSON.parse(localStorage.getItem('profile'));
 
     let jwt = Cookie.get('jwt');
-    let profile = JSON.parse(Cookie.get('profile'));
+    //let profile = JSON.parse(Cookie.get('profile'));
 
     this._headers.delete('Authorization');
     if (jwt) {

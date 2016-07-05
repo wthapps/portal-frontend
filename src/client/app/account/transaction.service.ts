@@ -10,21 +10,21 @@ export class TransactionService extends ApiBaseService {
     super(http);
   }
 
-  public list(path: string): Observable<Response>{
+  public list(path: string): Observable<Response> {
     return super.get(path)
       .map(res => res.json())
       .map((res) => {
-        if(res){
+        if(res) {
         }
         return res;
       });
   }
 
-  public get(path: string): Observable<Response>{
+  public get(path: string): Observable<Response> {
     return super.get(path)
       .map(res => res.json())
       .map((res) => {
-        if(res){
+        if(res) {
         }
         return res;
       });
