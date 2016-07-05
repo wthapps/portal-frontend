@@ -35,7 +35,7 @@ import {
 
 export class AccountServicesListComponent implements OnInit, OnDestroy {
 
-  public context:ServicesViewModel;
+  public context:ServicesViewModel = null;
 
   constructor(private _userService:UserService,
               private _router:Router,

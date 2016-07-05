@@ -42,10 +42,10 @@ export class BillingDetailsComponent {
       .then((responseOK) => {
         if(responseOK) {
           this._loadingService.start();
-          this._userService.delete(`/users/${this._userService.profile.id}/payments`).subscribe(
+          this._userService.delete(`/users/${this._userService.profile.id}/payments/1`).subscribe(
             response => {
               this._loadingService.stop();
-              this._toastsService.danger("The billing details has been deleted.");
+              this._toastsService.success("The billing details has been deleted.");
               this._userService.profile.has_payment_info = false;
               this._userService.profile.credit_cards = null;
               this._userService.profile.billing_address = null;
