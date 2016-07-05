@@ -19,10 +19,10 @@ import {
 
 @Injectable()
 export class ServicesService {
-  constructor(private _service:ApiBaseService,
-              private _userService:UserService) {
-  }
-
+  constructor(
+    private _service: ApiBaseService,
+    private _userService: UserService
+  ) {}
   public getAddonServices():Observable<AddonService[]> {
     return this._service.get('/products')
       .map((response:Response) => {
@@ -39,7 +39,7 @@ export class ServicesService {
   }
 
   public getUserProducts():Observable<AddonService[]> {
-    return this._service.get(`/users/${this._userService.profile.id}/products/`)
+    return this._service.get(`users/${this._userService.profile.id}/products`)
       .map((response:Response) => {
         if (response['status'] === HttpStatusCode.OK) {
           let body = JSON.parse(response['_body']);
@@ -54,7 +54,7 @@ export class ServicesService {
   }
 
   public deleteUserProduct(id:number) {
-    return this._service.delete(`/users/${this._userService.profile.id}/products/${id}`);
+    return this._service.delete(`users/${this._userService.profile.id}/products/${id}`);
   }
 
   public getCategories():Observable<Category[]> {
@@ -74,11 +74,11 @@ export class ServicesService {
   }
 
   public addHost(body:string) {
-    return this._service.post(`users/${this._userService.profile.id}/dns/records/`, body);
+    return this._service.post(`users/${this._userService.profile.id}/dns/records`, body);
   }
 
   public addService(serviceId:number) {
-    return this._service.post(`users/${this._userService.profile.id}/products/${serviceId}`);
+    return this._service.post(`users/${this._userService.profile.id}/products/${serviceId}`, '');
   }
 
   private handleError(error:Response) {

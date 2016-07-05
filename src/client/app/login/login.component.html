@@ -4,7 +4,7 @@
       <h2>
         Have an account?
       </h2>
-      <form [ngFormModel]="group" (ngSubmit)="login()" novalidate>
+      <form [ngFormModel]="group" (ngSubmit)="login(email.value, password.value)" novalidate>
         <div class="form-group" [ngClass]="{ 'has-error' : email.touched && !email.valid}">
           <label class="sr-only" for="email">Email address</label>
           <input type="text" class="form-control" id="email" placeholder="Email"
