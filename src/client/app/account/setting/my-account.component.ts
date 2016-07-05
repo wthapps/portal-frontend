@@ -113,7 +113,7 @@ export class MyAccountComponent {
         error => {
           // stop loading
           this._loadingService.stop();
-          this._toastsService.danger(result.message);
+          this._toastsService.danger(error.message);
           console.log('login error:', error.message);
         }
       );

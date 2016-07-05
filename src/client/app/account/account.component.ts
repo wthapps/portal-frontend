@@ -44,8 +44,8 @@ import {
 
 import {
   UserService,
-  CONFIG,
-  AuthGuard
+  CONFIG
+  //, AuthGuard
 } from '../shared/index';
 import {
   ContentPresenter
@@ -58,14 +58,14 @@ import {
 } from '../shared/index';
 
 @Routes([
-  {path: '/dns/add', component: AccountServicesDNSAddComponent,
-    canActivate: [AuthGuard]
+  {path: '/dns/add', component: AccountServicesDNSAddComponent
+    //, canActivate: [AuthGuard]
   },
   {path: '/dns/:id', component: AccountServicesDNSUpdateComponent},
   {
     path: '/dns',
-    component: AccountServicesDNSComponent,
-    canActivate: [AuthGuard]
+    component: AccountServicesDNSComponent
+    //, canActivate: [AuthGuard]
   },
 
   {path: '/vpn', component: AccountServicesVPNComponent},
@@ -104,7 +104,7 @@ import {
 })
 export class AccountComponent implements OnInit, OnDestroy {
   public pageTitle:string = 'Account setting';
-  public menu:AccountMenuViewModel;
+  public menu:AccountMenuViewModel = null;
   constructor(
     private _userService:UserService,
     private _router:Router,

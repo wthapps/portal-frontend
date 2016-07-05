@@ -15,7 +15,7 @@ import {
 import {
   Category,
   AddonService
-}                           from './services.model'
+}                           from './services.model';
 
 @Injectable()
 export class ServicesService {
@@ -85,6 +85,7 @@ export class ServicesService {
     return Observable.throw(error);
   }
 
+  /* tslint:disable */
   private getDummyServices():AddonService[] {
     let addonservices = [
       {
@@ -121,4 +122,5 @@ export class ServicesService {
     ];
     return <Category[]>categories;
   }
+  /* tslint:enable */
 }

@@ -28,8 +28,7 @@ export class AccountMenuViewModel implements IViewModelBase {
   private process(args:UserProductEventArgs) {
     if (args.data === null) {
       this.user_products = args.products;
-    }
-    else {
+    } else {
       //@TODO: support adding method only
       let index = this.user_products.findIndex(o => o.id == args.data.id);
       if (index === -1) {

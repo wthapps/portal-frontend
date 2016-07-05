@@ -79,7 +79,7 @@ export class AccountDashboardComponent implements OnInit, OnDestroy {
 
   private load():void {
     if (this.validateLogin()) {
-      if (this.user_products_context === null) {
+      if (this.user_products_context == null) {
         this.user_products_context = new DashboardUserProductsViewModel(
           this._streamEmitter,
           this._servicesService,
@@ -92,7 +92,7 @@ export class AccountDashboardComponent implements OnInit, OnDestroy {
   }
 
   private unload():void {
-    if (this.user_products_context !== null) {
+    if (this.user_products_context != null) {
       this.user_products_context.unload();
     }
   }

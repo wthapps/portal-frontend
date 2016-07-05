@@ -22,7 +22,7 @@ export class UserService extends ApiBaseService {
       .map(res => res.json())
       .map((res) => {
         if(res) {
-          this.storeUserInfo(res)
+          this.storeUserInfo(res);
         }
         return res;
       });

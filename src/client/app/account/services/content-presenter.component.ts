@@ -7,10 +7,10 @@ import {
   OnInit,
   ComponentResolver,
   ViewChild
-}                        from "@angular/core";
+}                        from '@angular/core';
 import {
   FORM_DIRECTIVES
-}                        from "@angular/common";
+}                        from '@angular/common';
 import {
   ROUTER_DIRECTIVES
 }                        from '@angular/router';
@@ -60,7 +60,6 @@ export class ContentPresenter implements OnInit {
         this.context = viewModel;
       }
     }
-    ;
     return ContentComponent;
   }
 }

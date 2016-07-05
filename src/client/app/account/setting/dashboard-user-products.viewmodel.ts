@@ -36,7 +36,6 @@ export class DashboardUserProductsViewModel implements IViewModelBase {
         this.user_products = addonservices;
         this.hasUserProducts = addonservices.length !== 0;
         this._streamEmitter.UserProducts.send(new UserProductEventArgs(addonservices));
-        this._streamEmitter.UserProducts.send(xyz)
       },
       error => {
         let body = JSON.parse(error['_body']);
@@ -48,8 +47,7 @@ export class DashboardUserProductsViewModel implements IViewModelBase {
             this.user_products = result;
             this._streamEmitter.UserProducts.send(new UserProductEventArgs(result));
           }
-        }
-        else {
+        } else {
         }
       }
     );
@@ -83,8 +81,7 @@ export class DashboardUserProductsViewModel implements IViewModelBase {
             error => {
               if (error['status'] === HttpStatusCode.PaymentRequired) {
                 this.showUpgrading();
-              }
-              else {
+              } else {
               }
             }
           );

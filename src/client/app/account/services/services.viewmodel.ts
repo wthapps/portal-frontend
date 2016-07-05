@@ -78,18 +78,18 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
 
   onAddHost(hostname:string, action:Action):void {
     this.is_creating = true;
-    action.name = "Creating"; //@TODO: missing translation
+    action.name = 'Creating'; //@TODO: missing translation
     let cancelBtn = this.actions.find(o => o.name == 'Cancel');
     cancelBtn.disabled = this.is_creating;
     action.disabled = this.is_creating;
     let record = {
-      "id": 0,
-      "name": hostname,
-      "type": 'A',
-      "content": '127.0.0.1',
-      "ttl": 600,
-      "priority": 0,
-      "domain_id": 0
+      'id': 0,
+      'name': hostname,
+      'type': 'A',
+      'content': '127.0.0.1',
+      'ttl': 600,
+      'priority': 0,
+      'domain_id': 0
     };
     let body = JSON.stringify(record);
     this._service.addHost(body).subscribe(
@@ -101,7 +101,7 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
             action.name = 'Create';
             this.is_creating = false;
             cancelBtn.disabled = this.is_creating;
-            action.disabled = this.is_creating
+            action.disabled = this.is_creating;
             let message = new UserProductEventArgs();
             message.data = this.context;
             this._streamEmitter.UserProducts.send(message);
@@ -109,8 +109,7 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
           e => {
             if (e['status'] == HttpStatusCode.PaymentRequired) {
               this.showUpgrading();
-            }
-            else {
+            } else {
             }
             this.clearForm();
             action.name = 'Create';
@@ -123,8 +122,7 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
       error => {
         if (error['status'] == HttpStatusCode.PaymentRequired) {
           this.showUpgrading();
-        }
-        else if (error['status'] == HttpStatusCode.Conflict) {
+        } else if (error['status'] == HttpStatusCode.Conflict) {
           this.error_message = 'The hostname ' + hostname + '.wthdns.com has been taken!';
         }
         this.clearForm();
@@ -149,8 +147,7 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
       this.actions = [];
       if (this.context.created) {
         this.actions.push(new Action(0, 'Manage', '/account/dns'));
-      }
-      else {
+      } else {
         this.actions.push(new Action(0, 'Add', ''));
       }
     }
@@ -238,8 +235,7 @@ export class MSOutlookAddonViewModel implements IMSOutlookAddonViewModel {
         e => {
           if (e['status'] == HttpStatusCode.PaymentRequired) {
             this.showUpgrading();
-          }
-          else {
+          } else {
           }
         }
       );
@@ -264,8 +260,7 @@ export class MSOutlookAddonViewModel implements IMSOutlookAddonViewModel {
       this.actions = [];
       if (this.context.created) {
         this.actions.push(new Action(0, 'Learn more', '/support'));
-      }
-      else {
+      } else {
         this.actions.push(new Action(0, 'Add', ''));
       }
     }
@@ -350,8 +345,7 @@ export class ServicesViewModel implements IServicesViewModel {
             let result = <AddonService[]>body.data;
             this.loadData(result);
           }
-        }
-        else {
+        } else {
         }
       }
     );
@@ -394,7 +388,7 @@ export class ServicesViewModel implements IServicesViewModel {
       let category = this.categories[index];
       index = this.user_products.findIndex(o => o.id == item.id);
       item.created = index != -1;
-      if (item.template_id === "dynamic-dns.html") {
+      if (item.template_id == 'dynamic-dns.html') {
         let ddns = new DynamicDnsViewModel(
           item,
           this._servicesService,
@@ -410,7 +404,7 @@ export class ServicesViewModel implements IServicesViewModel {
         ddns.load();
         this.items.push(ddns);
       }
-      if (item.template_id === "ms-outlook-addon.html") {
+      if (item.template_id == 'ms-outlook-addon.html') {
         let outlook = new MSOutlookAddonViewModel(
           item,
           this._servicesService,
@@ -441,8 +435,7 @@ export class ServicesViewModel implements IServicesViewModel {
           if (body.data != 'empty') {
             this.createItems(this.getAddonServiceByCategoryId(categoryId, <AddonService[]>body.data), true);
           }
-        }
-        else {
+        } else {
         }
       }
     );

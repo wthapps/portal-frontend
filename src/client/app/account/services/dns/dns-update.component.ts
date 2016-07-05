@@ -48,7 +48,7 @@ import {
 })
 
 export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
-  public pageTitle:string = "Edit Host";
+  public pageTitle:string = 'Edit Host';
   public errorMessage:string;
   public types:Type[] = [
     {'value': 'A', 'name': 'IPv4'},

@@ -100,8 +100,7 @@ export class AppComponent implements AfterViewInit {
   constructor(private _userService:UserService, private _router:Router) {
   }
 
-  logout($event) {
-    $event.preventDefault();
+  logout() {
 
     this._userService.logout('users/sign_out')
       .subscribe(
@@ -118,7 +117,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   currentPath():string {
-    //noinspection TypeScriptValidateJSTypes
     return this._router._location.path();
     // return this._router._location.path() === '' ? '/' : this._router._location.path();
   }

@@ -22,10 +22,8 @@ export class WthJoinUsComponent {
 
   public textValue:string;
 
-  constructor(
-    private _userService:UserService,
-    private _router:Router
-  ) {
+  constructor(private _userService:UserService,
+              private _router:Router) {
     this.textValue = _userService.loggedIn ? 'Upgrade for only $9.99 per month' : 'Join Free for a Month';
   }
 
@@ -57,13 +55,11 @@ export class WthCancelPlanComponent {
 
   public textValue:string;
 
-  constructor(
-    private _userService:UserService,
-    private _router:Router,
-    private _dialogService: DialogService,
-    private _toastsService: ToastsService,
-    private _loadingService: LoadingService
-  ) {
+  constructor(private _userService:UserService,
+              private _router:Router,
+              private _dialogService:DialogService,
+              private _toastsService:ToastsService,
+              private _loadingService:LoadingService) {
     this.textValue = 'Cancel current plan';
   }
 
@@ -76,7 +72,7 @@ export class WthCancelPlanComponent {
           this._loadingService.start();
           this._userService.choosePlan(`users/${this._userService.profile.id}`, body)
             .subscribe((response) => {
-                if (response.data !== null) {
+                if (response.data != null) {
                   this._toastsService.success(response.message);
                   this._loadingService.stop();
                 }
@@ -87,7 +83,7 @@ export class WthCancelPlanComponent {
               });
         }
       });
-  }  
+  }
 }
 
 
