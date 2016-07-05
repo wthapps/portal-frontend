@@ -1,2 +1,2 @@
-export * from './top-message.component';
-export * from './top-message.service';
+export * from './toast-message.component';
+export * from './toast-message.service';

@@ -2,12 +2,12 @@ import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 
 import {Router} from '@angular/router';
 
-import {ToastsService} from './top-message.service';
+import {ToastsService} from './toast-message.service';
 
 @Component({
   moduleId: module.id,
   selector: 'wth-toast',
-  templateUrl: 'top-message.component.html'
+  templateUrl: 'toast-message.component.html'
 })
 export class SimpleToastsComponent implements OnInit {
   type:string;
@@ -96,8 +96,8 @@ export class SimpleToastsComponent implements OnInit {
 
   ngOnInit() {
     this._router.changes.subscribe((val) => this.hideDialog());
-    this.cancelButton = document.getElementById('alert-close');
-    this.messageElement = document.getElementById('alert-wrap');
+    this.cancelButton = document.getElementById('toast-close');
+    this.messageElement = document.getElementById('toast-wrap');
   }
 
   private show() {
