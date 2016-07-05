@@ -88,8 +88,7 @@ export class WthCancelPlanComponent {
             });
         }
       });
-  }
-  }
+  }  
 }
 
 

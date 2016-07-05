@@ -13,7 +13,7 @@ import {
   HttpStatusCode
 }                           from '../../shared/index';
 import {
-  Category, 
+  Category,
   AddonService
 }                           from './services.model'
 
@@ -38,7 +38,7 @@ export class ServicesService {
       .catch(this.handleError);
   }
   public getUserProducts():Observable<AddonService[]> {
-    return this._service.get(`/users/${this._userService.profile.id}/products/`)
+    return this._service.get(`users/${this._userService.profile.id}/products`)
       .map((response:Response) => {
         if (response['status'] == HttpStatusCode.OK) {
           let body = JSON.parse(response['_body']);
@@ -52,12 +52,12 @@ export class ServicesService {
       .catch(this.handleError);
   }
   public deleteUserProduct(id:number) {
-    return this._service.delete(`/users/${this._userService.profile.id}/products/${id}`);
+    return this._service.delete(`users/${this._userService.profile.id}/products/${id}`);
   }
   public getCategories():Observable<Category[]> {
     return this._service.get('/products/categories')
       .map((response:Response) => {
-        if (response['status'] == HttpStatusCode.OK || 
+        if (response['status'] == HttpStatusCode.OK ||
           response['status'] == HttpStatusCode.Created) {
           let body = JSON.parse(response['_body']);
           if (body.data == 'empty') {
@@ -70,10 +70,10 @@ export class ServicesService {
       .catch(this.handleError);
   }
   public addHost(body:string) {
-    return this._service.post(`users/${this._userService.profile.id}/dns/records/`, body);
+    return this._service.post(`users/${this._userService.profile.id}/dns/records`, body);
   }
   public addService(serviceId:number) {
-    return this._service.post(`users/${this._userService.profile.id}/products/${serviceId}`);
+    return this._service.post(`users/${this._userService.profile.id}/products/${serviceId}`, '');
   }
   private handleError(error: Response) {
     return Observable.throw(error);

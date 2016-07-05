@@ -52,12 +52,9 @@ export class LoginComponent {
     });
   }
 
-  login() {
+  login(email: string, password: string) {
     // start loading
     this._loadingService.start();
-
-    var email:string = this.group.value.email;
-    var password:string = this.group.value.password;
     let body = JSON.stringify({user: {email, password}});
     this._userService.login('users/sign_in', body, false)
       .subscribe((result) => {

@@ -112,14 +112,15 @@ export class AppComponent implements AfterViewInit {
     this._userService.logout('users/sign_out')
       .subscribe(
         response => {
-
+          this._userService.deleteUserInfo();
+          this._router.navigateByUrl('/login');
         },
         error => {
-
-        });
-    this._userService.deleteUserInfo();
-    this._router.navigateByUrl('/login');
-
+          this._userService.deleteUserInfo();
+          this._router.navigateByUrl('/login');
+          console.log('logout error', error);
+        }
+      );
   }
 
   currentPath():string {

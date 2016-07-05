@@ -5,7 +5,7 @@ import {PaymentService}               from './payment.service';
 import {CountryListComponent}         from '../shared/services/country.component';
 import {
   UserService,
-  WthConstants
+  WthConstants,
   LoadingService,
   TopMessageService,
   ToastsService
