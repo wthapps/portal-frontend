@@ -24,9 +24,6 @@ import {
 } from './shared/index';
 
 import {HomeComponent} from './home/home.component';
-import {ProductListComponent} from './products/product-list.component';
-import {ProductDetailComponent} from './products/product-detail.component';
-import {ProductService} from './products/product.service';
 import {DnsService} from './account/services/dns/dns.service';
 import {ContactService} from './contact/contact.service';
 import {ServicesService}       from './account/services/services.service';
@@ -65,7 +62,6 @@ import {AccountComponent} from './account/account.component';
     LoadingComponent
   ],
   providers: [
-    ProductService,
     DnsService,
     ContactService,
     HTTP_PROVIDERS,
@@ -84,9 +80,7 @@ import {AccountComponent} from './account/account.component';
   {path: '/welcome', component: WelcomeComponent},
   {path: '/policies', component: PoliciesComponent},
   {path: '/comingsoon', component: ComingsoonComponent},
-
-  {path: '/products/:id', component: ProductDetailComponent},
-  {path: '/products', component: ProductListComponent},
+  
   {path: '/login', component: LoginComponent},
   {path: '/signup', component: RegisterComponent},
   {path: '/account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
@@ -122,10 +116,10 @@ export class AppComponent implements AfterViewInit {
         },
         error => {
 
-        }
-        this._userService.deleteUserInfo();
-        this._router.navigateByUrl('/login');
-      );
+        });
+    this._userService.deleteUserInfo();
+    this._router.navigateByUrl('/login');
+
   }
 
   currentPath():string {
