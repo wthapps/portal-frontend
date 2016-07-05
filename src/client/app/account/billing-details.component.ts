@@ -5,7 +5,8 @@ import {
   LoadingService,
   DialogService,
   ToastsService
-}                                     from '../shared/index';
+}                                     from "../shared/index";
+import {Cookie}                       from 'ng2-cookies/ng2-cookies'
 
 @Component({
   moduleId: module.id,
@@ -41,7 +42,20 @@ export class BillingDetailsComponent {
       .then((responseOK) => {
         if(responseOK) {
           this._loadingService.start();
-          this._loadingService.stop();
+          this._userService.delete(`/users/${this._userService.profile.id}/payments`).subscribe(
+            response => {
+              this._loadingService.stop();
+              this._toastsService.danger("The billing details has been deleted.");
+              this._userService.profile.has_payment_info = false;
+              this._userService.profile.credit_cards = null;
+              this._userService.profile.billing_address = null;
+              Cookie.set('profile', JSON.stringify(this._userService.profile));
+            },
+            error => {
+              this._loadingService.stop();
+              this._toastsService.danger("Unable to delete the billing details.");
+            }
+          );
         }
       });
   }
