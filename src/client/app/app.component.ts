@@ -18,7 +18,6 @@ import {
   DialogComponent,
   SimpleToastsComponent,
   LoadingComponent,
-  TopMessageComponent,
   UserService,
   AuthGuard,
 } from './shared/index';
@@ -55,7 +54,6 @@ import {AccountComponent} from './account/account.component';
     CORE_DIRECTIVES,
     DialogComponent,
     SimpleToastsComponent,
-    TopMessageComponent,
     LoadingComponent
   ],
   providers: [
