@@ -6938,6 +6938,21 @@ wth-app:empty + .dots-loader-wrap {
     background-repeat: no-repeat;
     background-position: center center; }
 
+.inside-loading {
+  position: relative; }
+  .inside-loading:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background-color: #ffffff;
+    background-image: url("../images/icons/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center center; }
+
 @font-face {
   font-family: 'ecoicon';
   src: url("../fonts/ecoicons/ecoicon.eot");
