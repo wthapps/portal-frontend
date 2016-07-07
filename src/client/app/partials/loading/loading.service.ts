@@ -1,5 +1,8 @@
-import {Injectable, OnChanges}  from '@angular/core';
-import {Router}                 from '@angular/router';
+import {
+  Injectable,
+  OnChanges,
+  ElementRef
+}                               from '@angular/core';
 
 @Injectable()
 export class LoadingService implements OnChanges {
@@ -21,7 +24,7 @@ export class LoadingService implements OnChanges {
   private modalElement:any;
   private modalElementBackdrop:any;
 
-  constructor(private _router:Router) {
+  constructor(private ElementRef:ElementRef) {
     this.modalElement = document.getElementById('loadingModal');
     this.modalElementBackdrop = document.getElementById('loadingModal-backdrop');
   }
@@ -30,11 +33,15 @@ export class LoadingService implements OnChanges {
     this.stop();
   }
 
-  public start() {
-    this.modalElement.style.display = 'block';
-    this.modalElement.classList.add('in');
-    this.modalElement.classList.add('in-loading');
-    this.modalElementBackdrop.classList.add('in');
+  public start(el?:string) {
+    if (el) {
+      $(this.ElementRef.nativeElement).find(el).wrap('<div class="inside-loading"></div>');
+    } else {
+      this.modalElement.style.display = 'block';
+      this.modalElement.classList.add('in');
+      this.modalElement.classList.add('in-loading');
+      this.modalElementBackdrop.classList.add('in');
+    }
   }
 
 
@@ -50,10 +57,14 @@ export class LoadingService implements OnChanges {
    }
    }*/
 
-  public stop() {
-    this.modalElement.style.display = 'none';
-    this.modalElement.classList.remove('in');
-    this.modalElement.classList.remove('in-loading');
-    this.modalElementBackdrop.classList.remove('in');
+  public stop(el?:string) {
+    if (el) {
+      $(this.ElementRef.nativeElement).find(el).unwrap();
+    } else {
+      this.modalElement.style.display = 'none';
+      this.modalElement.classList.remove('in');
+      this.modalElement.classList.remove('in-loading');
+      this.modalElementBackdrop.classList.remove('in');
+    }
   }
 }

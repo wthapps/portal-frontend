@@ -138,3 +138,21 @@ wth-app:empty + .dots-loader-wrap {
     }
   }
 }
+
+.inside-loading {
+  position: relative;
+  min-height: 100px;
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background-color: #ffffff;
+    background-image: url('../images/icons/loading.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+}
