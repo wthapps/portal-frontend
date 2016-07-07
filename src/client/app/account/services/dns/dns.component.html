@@ -1,6 +1,8 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">{{pageTitle}}</h3>
+    <h3 class="panel-title">{{pageTitle}}
+      <a class="pull-right" (click)="onDelete($event)">Delete</a>
+    </h3>
   </div>
   <div class="panel-body">
     <table class="table table-bordered">
