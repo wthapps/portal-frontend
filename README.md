@@ -16,7 +16,11 @@
 
 In order to start the seed use:
 
+
 ```bash
+git clone https://trungnghia112@bitbucket.org/WTHteam/portal-frontend.git
+cd portal-frontend
+
 # install the project's dependencies
 npm install
 
@@ -36,7 +40,7 @@ _Does not rely on any global dependencies._
 
 Default application server configuration
 
-```javascript
+```js
 var PORT             = 3000;
 var LIVE_RELOAD_PORT = 4002;
 var DOCS_PORT        = 4003;
@@ -48,6 +52,18 @@ Configure at runtime
 ```bash
 npm start -- --port 8080 --reload-port 4000 --base /my-app/
 ```
+
+## Environment configuration
+
+If you have different environments and you need to configure them to use different end points, settings, etc. you can use the `./tools/env/config.json` file. The keys in the file are the different environments.
+
+The can be specified by using:
+
+```bash
+npm start -- --config-env ENV_NAME
+```
+
+Currently the `ENV_NAME`s are `dev`, `prod`, `staging`, but you can simply add different key-value pairs to the `config.json` file in order to alter extra such environments.
 
 # Tools documentation
 
