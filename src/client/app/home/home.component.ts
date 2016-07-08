@@ -26,39 +26,38 @@ export class HomeComponent implements OnInit {
   products: Product[] = [];
   plans: Plan[] = [];
 
-  elementLoading:any;
+  private elementLoading:any;
 
   constructor(private planService: PlanService,
               private userService: UserService,
-              private LoadingService: LoadingService,
-              private ElementRef:ElementRef) {
-    this.elementLoading = this.ElementRef.nativeElement;
+              private loadingService: LoadingService,
+              private elementRef:ElementRef) {
+    this.elementLoading = this.elementRef.nativeElement;
   }
 
   ngOnInit(): void {
-    this.LoadingService.start('#tablePlan');
-
-    this.planService.list('plans')
-      .subscribe((response) => {
-        if (response.data !== null) {
-          this.plans = response.data;
-        }
-      },
-      error => {
-        console.log('error plans: ', error.message);
-      });
-
+    this.loadingService.start('#tablePlan');
     this.planService.list('products/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response) => {
           if (response.data !== null) {
             this.products = response.data;
+            this.planService.list('plans')
+              .subscribe((response) => {
+                if (response.data !== null) {
+                  this.plans = response.data;
+                }
+                this.loadingService.stop('#tablePlan');
+              },
+              error => {
+                this.loadingService.stop('#tablePlan');
+                console.log('error plans: ', error.message);
+              });
           }
         },
         error => {
+          this.loadingService.stop('#tablePlan');
           console.log('error products: ', error.message);
       });
-
-    this.LoadingService.stop('#tablePlan');
   }
 
   plan_has_product(products: any, product_name: string): boolean {
