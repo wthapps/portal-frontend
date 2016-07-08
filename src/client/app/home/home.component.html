@@ -44,7 +44,7 @@
       <h3 class="text-center">
         With Only {{plans.length}} Plans - Easy to Decide a Plan!
       </h3>
-      <table id="tablePlan" class="table table-bordered table-striped table-plan">
+      <table class="table table-bordered table-striped table-plan">
         <tr>
           <th></th>
           <th width="35%" *ngFor="let p of plans">
@@ -53,7 +53,7 @@
           </th>
         </tr>
         <tr *ngFor="let pro of products">
-          <td>{{pro.name}}</td>
+          <td>{{pro.display_name}}</td>
           <td *ngFor="let pp of plans">
             <div class="text-danger" *ngIf="!plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>
             <div class="text-success" *ngIf="plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>
