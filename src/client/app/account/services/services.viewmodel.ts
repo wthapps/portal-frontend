@@ -63,7 +63,20 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
       return;
     }
     if (action.name == 'Add') {
-      this.changeView('Add');
+      this._service.addService(this.context.id).subscribe(
+        r => {
+          let message = new UserProductEventArgs();
+          message.data = this.context;
+          this._streamEmitter.UserProducts.send(message);
+          this.changeView('Add');
+        },
+        e => {
+          if (e['status'] == HttpStatusCode.PaymentRequired) {
+            this.showUpgrading();
+          } else {
+          }
+        }
+      );
     }
     if (action.name == 'Manage') {
       this._router.navigateByUrl(action.router);
@@ -94,30 +107,12 @@ export class DynamicDnsViewModel implements IDynamicDnsViewModel {
     let body = JSON.stringify(record);
     this._service.addHost(body).subscribe(
       result => {
-        this._service.addService(this.context.id).subscribe(
-          r => {
-            this.clearForm();
-            this.changeView('Done');
-            action.name = 'Create';
-            this.is_creating = false;
-            cancelBtn.disabled = this.is_creating;
-            action.disabled = this.is_creating;
-            let message = new UserProductEventArgs();
-            message.data = this.context;
-            this._streamEmitter.UserProducts.send(message);
-          },
-          e => {
-            if (e['status'] == HttpStatusCode.PaymentRequired) {
-              this.showUpgrading();
-            } else {
-            }
-            this.clearForm();
-            action.name = 'Create';
-            this.is_creating = false;
-            cancelBtn.disabled = this.is_creating;
-            action.disabled = this.is_creating;
-          }
-        );
+        this.clearForm();
+        this.changeView('Done');
+        action.name = 'Create';
+        this.is_creating = false;
+        cancelBtn.disabled = this.is_creating;
+        action.disabled = this.is_creating;
       },
       error => {
         if (error['status'] == HttpStatusCode.PaymentRequired) {

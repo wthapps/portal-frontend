@@ -3,90 +3,50 @@ import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {ToastsService} from './toast-message.service';
+export interface IToast {
+  id:string
+  type:string
+  createdOn:Date
+  title?:string
+  content?:string
+  override?:any
+  html?:any
+}
 
 @Component({
   moduleId: module.id,
   selector: 'wth-toast',
-  templateUrl: 'toast-message.component.html'
+  templateUrl: 'toast-message.component.html',
+  styleUrls: ['toast-message.component.css']
 })
 export class SimpleToastsComponent implements OnInit {
-  type:string;
-  message:string;
-  close:boolean;
 
-  private defaults = {
-    type: {
-      info: 'info',
-      danger: 'danger',
-      warning: 'warning',
-      success: 'success'
-    },
-    message: '',
-    close: true
-  };
-
-  private cancelButton:any;
+  private maxStack:number = 5;
   private messageElement:any;
 
+  toasts:any = [];
 
-  constructor(private _topMessageService:ToastsService, private _router:Router, private _cdr: ChangeDetectorRef) {
-    _topMessageService.info = this.activateInfo.bind(this);
-    _topMessageService.danger = this.activateDanger.bind(this);
-    _topMessageService.warning = this.activateWarning.bind(this);
-    _topMessageService.success = this.activateSuccess.bind(this);
+  constructor(private _topMessageService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
+    _topMessageService.set = this.activate.bind(this);
   }
 
-  activateInfo(message = this.defaults.message, close = this.defaults.close) {
-    this.type = this.defaults.type.info;
-    this.message = message;
+  activate(message:string, option?:IToast, type?:string) {
     this._cdr.detectChanges();
-    this.close = close;
-    let promise = new Promise<boolean>((resolve, reject) => {
-      this.show();
-    });
-    return promise;
-  }
+    let toast = {};
+    toast.message = message;
+    toast.type = type;
+    toast.option = option;
+    toast.id = Date.now();
 
-  activateDanger(message: string, close = this.defaults.close) {
-    this.type = this.defaults.type.danger;
-    this.message = message;
-    this._cdr.detectChanges();
-    this.close = close;
-    let promise = new Promise<boolean>((resolve, reject) => {
-      this.show();
-    });
-    return promise;
-  }
-
-  activateWarning(message = this.defaults.message, close = this.defaults.close) {
-    this.type = this.defaults.type.warning;
-    this.message = message;
-    this._cdr.detectChanges();
-    this.close = close;
-    let promise = new Promise<boolean>((resolve, reject) => {
-      this.show();
-    });
-    return promise;
-  }
-
-  activateSuccess(message = this.defaults.message, close = this.defaults.close) {
-    this.type = this.defaults.type.success;
-    this.message = message;
-    this._cdr.detectChanges();
-    this.close = close;
-    let promise = new Promise<boolean>((resolve, reject) => {
-      this.show();
-    });
-    return promise;
-  }
-
-  activate(type = this.defaults.type,
-           message = this.defaults.message,
-           close = this.defaults.close) {
-    this.type = type;
-    this.message = message;
-    this._cdr.detectChanges();
-    this.close = close;
+    if (option.lastOnBottom) {
+      // new item at bottom
+      if (this.toasts.length >= this.maxStack) this.toasts.shift();
+      this.toasts.push(toast);
+    } else {
+      // new item at top
+      if (this.toasts.length >= this.maxStack) this.toasts.pop();
+      this.toasts.unshift(toast);
+    }
 
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
@@ -95,27 +55,37 @@ export class SimpleToastsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.toasts = [];
     this._router.changes.subscribe((val) => this.hideDialog());
-    this.cancelButton = document.getElementById('toast-close');
     this.messageElement = document.getElementById('toast-wrap');
   }
 
+  startTimeOut() {
+    this.timer = setTimeout(this.instance, this.speed);
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.timer)
+  }
+
   private show() {
-    if (!this.messageElement || !this.cancelButton) {
+    if (!this.messageElement) {
       return;
     }
-
-    this.cancelButton.onclick = ((e:any) => {
-      e.preventDefault();
-      this.hideDialog();
-    });
-
-    this.messageElement.classList.add('in');
     this.messageElement.style.display = 'block';
   }
 
   private hideDialog() {
+    this.toasts = [];
     this.messageElement.style.display = 'none';
     this.messageElement.classList.remove('in');
   }
+
+  removeSelf($event) {
+    let target = $event.target || $event.srcElement || $event.currentTarget;
+    let idAttr = target.attributes.id;
+    let value = +idAttr.nodeValue.replace('data-alert-', '');
+    this.toasts.splice(value, 1);
+  }
+
 }

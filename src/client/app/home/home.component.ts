@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit {
   plans: Plan[] = [];
 
   elementLoading:any;
-  @ViewChild('table-plan') tablePlan:ElementRef;
 
   constructor(private planService: PlanService,
               private userService: UserService,

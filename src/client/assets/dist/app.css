@@ -6590,6 +6590,15 @@ body {
     -ms-transform: translateY(-50%);
     transform: translateY(-50%); } }
 
+.toast-wrap {
+  position: fixed;
+  top: 10px;
+  right: 0;
+  z-index: 1000; }
+  .toast-wrap .alert {
+    width: 320px;
+    word-break: break-all; }
+
 /* ==========================================================================
 Header
 ========================================================================== */

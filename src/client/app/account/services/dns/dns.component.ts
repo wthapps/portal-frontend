@@ -13,6 +13,9 @@ import {
 import {
   DnsService
 }                       from './dns.service';
+import {
+  ServicesService
+}                       from '../services.service';
 
 import {
   UserService,
@@ -50,7 +53,8 @@ export class AccountServicesDNSComponent implements OnInit {
               private _userService:UserService,
               private _router:Router,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService) {
+              private _topMessageService:TopMessageService,
+              private _servicesService:ServicesService) {
   }
 
   ngOnInit():void {
@@ -150,6 +154,28 @@ export class AccountServicesDNSComponent implements OnInit {
     } else {
       this._router.navigateByUrl('/account/dns/add');
     }
+  }
+
+  onDelete(event):void {
+    event.preventDefault();
+    this._dialogService.activate('Are you sure to delete Dynamic DNS service ?', 'Dynamic DNS service', 'Yes', 'No').then((responseOK) => {
+      if (responseOK) {
+        this._loadingService.start();
+        this._servicesService.deleteUserProduct(this._dnsProductId).subscribe(
+          result => {
+            this._loadingService.stop();
+            this._router.navigateByUrl('/account/setting/dashboard');
+          },
+          error => {
+            this._loadingService.stop();
+            if (error['status'] === HttpStatusCode.PaymentRequired) {
+              this.showUpgrading();
+            } else {
+            }
+          }
+        );
+      }
+    })
   }
 
   private showUpgrading():void {
