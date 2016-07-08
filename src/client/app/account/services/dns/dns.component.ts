@@ -20,23 +20,17 @@ import {
 import {
   UserService,
   CONFIG,
-  HttpStatusCode
-}                       from '../../../shared/index';
-import {
+  HttpStatusCode,
   LoadingService,
-  TopMessageService,
-  DialogService
-}                       from '../../../partials/index';
+  DialogService,
+  ToastsService
+}                       from '../../../shared/index';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'dns.component.html',
   directives: [
     ROUTER_DIRECTIVES
-  ],
-  providers: [
-    LoadingService,
-    TopMessageService
   ]
 })
 
@@ -53,7 +47,7 @@ export class AccountServicesDNSComponent implements OnInit {
               private _userService:UserService,
               private _router:Router,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService,
+              private _toastsService:ToastsService,
               private _servicesService:ServicesService) {
   }
 
@@ -86,7 +80,7 @@ export class AccountServicesDNSComponent implements OnInit {
           }
         } else {
           this.ErrorMessage = JSON.stringify(error);
-          this._topMessageService.danger(this.ErrorMessage);
+          this._toastsService.danger(this.ErrorMessage);
         }
       }
     );
@@ -99,7 +93,7 @@ export class AccountServicesDNSComponent implements OnInit {
       error => {
         this._loadingService.stop();
         this.ErrorMessage = JSON.stringify(error);
-        this._topMessageService.danger(this.ErrorMessage);
+        this._toastsService.danger(this.ErrorMessage);
       }
     );
   }
@@ -127,7 +121,7 @@ export class AccountServicesDNSComponent implements OnInit {
                 this.showUpgrading();
               } else {
                 this.ErrorMessage = JSON.stringify(error);
-                this._topMessageService.danger(this.ErrorMessage);
+                this._toastsService.danger(this.ErrorMessage);
               }
             }
           );
@@ -175,7 +169,7 @@ export class AccountServicesDNSComponent implements OnInit {
           }
         );
       }
-    })
+    });
   }
 
   private showUpgrading():void {

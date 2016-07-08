@@ -4,13 +4,13 @@ import {Router} from '@angular/router';
 
 import {ToastsService} from './toast-message.service';
 export interface IToast {
-  id:string
-  type:string
-  createdOn:Date
-  title?:string
-  content?:string
-  override?:any
-  html?:any
+  id:string;
+  type:string;
+  createdOn:Date;
+  title?:string;
+  content?:string;
+  override?:any;
+  html?:any;
 }
 
 @Component({
@@ -24,7 +24,7 @@ export class SimpleToastsComponent implements OnInit {
   private maxStack:number = 5;
   private messageElement:any;
 
-  toasts:any = [];
+  private toasts:any = [];
 
   constructor(private _topMessageService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
     _topMessageService.set = this.activate.bind(this);

@@ -20,12 +20,9 @@ import {
   UserService,
   CONFIG,
   HttpStatusCode,
-  ToastsService
+  ToastsService,
+  LoadingService
 }                                  from '../../../shared/index';
-import {
-  LoadingService,
-  TopMessageService
-}                                  from '../../../partials/index';
 
 @Component({
   moduleId: module.id,
@@ -33,10 +30,6 @@ import {
   directives: [
     ROUTER_DIRECTIVES,
     FORM_DIRECTIVES
-  ],
-  providers: [
-    LoadingService,
-    TopMessageService
   ]
 })
 
@@ -50,7 +43,6 @@ export class AccountServicesDNSAddComponent implements OnInit {
               private _builder:FormBuilder,
               private _loadingService:LoadingService,
               private _toastsService:ToastsService,
-              private _topMessageService:TopMessageService,
               private _userService:UserService) {
   }
 
@@ -107,7 +99,6 @@ export class AccountServicesDNSAddComponent implements OnInit {
       error => {
         this._loadingService.stop();
         this._toastsService.danger(this.errorMessage);
-        this._topMessageService.danger(this.errorMessage);
         if (error['status'] === HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
         } else if (error['status'] === HttpStatusCode.Created) {

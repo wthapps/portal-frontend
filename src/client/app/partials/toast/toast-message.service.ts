@@ -23,7 +23,7 @@ export class ToastsService {
     }
   };
 
-  set:(message, option?, type?:string) => Promise<boolean>;
+  private set:(message, option?, type?:string) => Promise<boolean>;
 
   info(message:string, option?:any = this.defaults.options) {
     if (option) this.attachOverrides(option);

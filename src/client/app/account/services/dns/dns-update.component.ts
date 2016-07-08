@@ -27,12 +27,9 @@ import {
   UserService,
   CONFIG,
   HttpStatusCode,
-  ToastsService
+  ToastsService,
+  LoadingService
 }                             from '../../../shared/index';
-import {
-  LoadingService,
-  TopMessageService
-}                             from '../../../partials/index';
 
 @Component({
   moduleId: module.id,
@@ -40,10 +37,6 @@ import {
   directives: [
     ROUTER_DIRECTIVES,
     FORM_DIRECTIVES
-  ],
-  providers: [
-    LoadingService,
-    TopMessageService
   ]
 })
 
@@ -63,7 +56,6 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
               private _router:Router,
               private _builder:FormBuilder,
               private _loadingService:LoadingService,
-              private _topMessageService:TopMessageService,
               private _userService:UserService,
               private _toastsService:ToastsService
   ) {}
@@ -99,7 +91,7 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
         } else {
           this.errorMessage = 'Unable to edit the host!';
         }
-        this._topMessageService.danger(this.errorMessage);
+        this._toastsService.danger(this.errorMessage);
       }
     );
   }
@@ -141,7 +133,6 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
       error => {
         this._loadingService.stop();
         this._toastsService.danger(this.errorMessage);
-        this._topMessageService.danger(this.errorMessage);
         if (error['status'] === HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
         } else if (error['status'] === HttpStatusCode.Created) {
