@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 
 import {Router} from '@angular/router';
 
@@ -11,7 +11,7 @@ import {ToastOptions} from './toast-message';
   templateUrl: 'toast-message.component.html',
   styleUrls: ['toast-message.component.css']
 })
-export class SimpleToastsComponent implements OnInit {
+export class SimpleToastsComponent implements OnInit, OnDestroy {
 
   private maxStack:number = 5;
   private messageElement:any;
