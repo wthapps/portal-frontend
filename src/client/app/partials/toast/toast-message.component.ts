@@ -1,17 +1,9 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 
 import {Router} from '@angular/router';
 
 import {ToastsService} from './toast-message.service';
-export interface IToast {
-  id:string;
-  type:string;
-  createdOn:Date;
-  title?:string;
-  content?:string;
-  override?:any;
-  html?:any;
-}
+import {ToastOptions} from './toast-message';
 
 @Component({
   moduleId: module.id,
@@ -19,24 +11,24 @@ export interface IToast {
   templateUrl: 'toast-message.component.html',
   styleUrls: ['toast-message.component.css']
 })
-export class SimpleToastsComponent implements OnInit {
+export class SimpleToastsComponent implements OnInit, OnDestroy {
 
-  private maxStack:number = 5;
-  private messageElement:any;
+  maxStack:number = 5;
+  messageElement:any;
 
-  private toasts:any = [];
+  toasts:any = [];
 
-  constructor(private _topMessageService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
-    _topMessageService.set = this.activate.bind(this);
+  constructor(private toastsService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
+    toastsService.set = this.activate.bind(this);
   }
 
-  activate(message:string, option?:IToast, type?:string) {
-    this._cdr.detectChanges();
-    let toast = {};
-    toast.message = message;
-    toast.type = type;
-    toast.option = option;
-    toast.id = Date.now();
+  activate(message:string, option:ToastOptions, type:string) {
+    let toast = {
+      message: message,
+      option: option,
+      type: type,
+      id: Date.now()
+    };
 
     if (option.lastOnBottom) {
       // new item at bottom
@@ -48,6 +40,8 @@ export class SimpleToastsComponent implements OnInit {
       this.toasts.unshift(toast);
     }
 
+    this._cdr.detectChanges();
+
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
     });
@@ -56,16 +50,23 @@ export class SimpleToastsComponent implements OnInit {
 
   ngOnInit() {
     this.toasts = [];
-    this._router.changes.subscribe((val) => this.hideDialog());
+    this._router.events.subscribe((val) => this.hideDialog());
     this.messageElement = document.getElementById('toast-wrap');
   }
 
   startTimeOut() {
-    this.timer = setTimeout(this.instance, this.speed);
+    //this.timer = setTimeout(this.instance, this.speed);
+  }
+
+  removeSelf($event:any) {
+    let target = $event.target || $event.srcElement || $event.currentTarget;
+    let idAttr = target.attributes.id;
+    let value = +idAttr.nodeValue.replace('data-alert-', '');
+    this.toasts.splice(value, 1);
   }
 
   ngOnDestroy() {
-    clearTimeout(this.timer)
+    //clearTimeout(this.timer);
   }
 
   private show() {
@@ -80,12 +81,4 @@ export class SimpleToastsComponent implements OnInit {
     this.messageElement.style.display = 'none';
     this.messageElement.classList.remove('in');
   }
-
-  removeSelf($event) {
-    let target = $event.target || $event.srcElement || $event.currentTarget;
-    let idAttr = target.attributes.id;
-    let value = +idAttr.nodeValue.replace('data-alert-', '');
-    this.toasts.splice(value, 1);
-  }
-
 }

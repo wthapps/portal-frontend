@@ -1,8 +1,15 @@
-import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { HTTP_PROVIDERS } from '@angular/http';
+import {Component}          from '@angular/core';
+import {
+  ROUTER_DIRECTIVES,
+  Router
+}                           from '@angular/router';
+import {HTTP_PROVIDERS}     from '@angular/http';
 
-import { Config, NameListService, NavbarComponent, ToolbarComponent } from './shared/index';
+import {
+  Config,
+  APP_SHARED_PROVIDERS,
+  UserService
+}                           from './shared/index';
 
 /**
  * This class represents the main application component. Within the @Routes annotation is the configuration of the
@@ -11,12 +18,36 @@ import { Config, NameListService, NavbarComponent, ToolbarComponent } from './sh
 @Component({
   moduleId: module.id,
   selector: 'wth-app',
-  viewProviders: [NameListService, HTTP_PROVIDERS],
+  viewProviders: [
+    HTTP_PROVIDERS,
+    APP_SHARED_PROVIDERS
+  ],
   templateUrl: 'app.component.html',
-  directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
+  directives: [ROUTER_DIRECTIVES]
 })
 export class AppComponent {
-  constructor() {
+  constructor(private _userService:UserService, private _router:Router) {
     console.log('Environment config', Config);
+  }
+
+  logout() {
+
+    this._userService.logout('users/sign_out')
+      .subscribe(
+        response => {
+          this._userService.deleteUserInfo();
+          this._router.navigateByUrl('/login');
+        },
+        error => {
+          this._userService.deleteUserInfo();
+          this._router.navigateByUrl('/login');
+          console.log('logout error', error);
+        }
+      );
+  }
+
+  public isLoggedIn() {
+    // Check if there's an unexpired JWT
+    return this._userService.loggedIn;
   }
 }

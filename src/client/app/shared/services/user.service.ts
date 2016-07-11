@@ -16,8 +16,7 @@ export class UserService extends ApiBaseService {
     this.readUserInfo();
   }
 
-  public login(path: string, body: string, useJwt?: boolean = true): Observable<Response> {
-    // public login(path: string, body: string, useJwt?: boolean = true) {
+  public login(path: string, body: string): Observable<Response> {
     return super.post(path, body)
       .map(res => res.json())
       .map((res) => {
@@ -93,7 +92,7 @@ export class UserService extends ApiBaseService {
       .map(res => res.json())
       .map((res) => {
         if(res) {
-
+          console.log('changePassword:', res);
         }
         return res;
       });
@@ -111,7 +110,15 @@ export class UserService extends ApiBaseService {
       });
   }
 
-  private storeUserInfo(response) {
+  public deleteUserInfo() {
+    Cookie.delete('jwt');
+    Cookie.delete('logged_in');
+    Cookie.delete('profile');
+    this.loggedIn = false;
+    this.profile = null;
+  }
+
+  private storeUserInfo(response:any) {
     // TODO move string constants to config file
     Cookie.set('jwt', response.token);
     Cookie.set('profile', JSON.stringify(response.data));
@@ -123,14 +130,6 @@ export class UserService extends ApiBaseService {
   private readUserInfo() {
     this.profile = JSON.parse(Cookie.get('profile'));
     this.loggedIn = Boolean(Cookie.get('logged_in'));
-  }
-
-  public deleteUserInfo() {
-    Cookie.delete('jwt');
-    Cookie.delete('logged_in');
-    Cookie.delete('profile');
-    this.loggedIn = false;
-    this.profile = null;
   }
 
   private updateProfile(profile: Object) {

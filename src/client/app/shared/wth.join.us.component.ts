@@ -27,7 +27,7 @@ export class WthJoinUsComponent {
     this.textValue = _userService.loggedIn ? 'Upgrade for only $9.99 per month' : 'Join Free for a Month';
   }
 
-  public redirectNextPage(event) {
+  public redirectNextPage(event:any) {
     event.preventDefault();
     if (this._userService.loggedIn) {
       if (this._userService.profile.has_payment_info) {
@@ -71,7 +71,7 @@ export class WthCancelPlanComponent {
         if (responseOK) {
           this._loadingService.start();
           this._userService.choosePlan(`users/${this._userService.profile.id}`, body)
-            .subscribe((response) => {
+            .subscribe((response:any) => {
                 if (response.data != null) {
                   this._toastsService.success(response.message);
                   this._loadingService.stop();
@@ -104,7 +104,7 @@ export class GetStartedComponent {
               private _router:Router) {
   }
 
-  public redirectNextPage(event) {
+  public redirectNextPage(event:any) {
     event.preventDefault();
     if (this._userService.loggedIn) {
       if (this._userService.profile.has_payment_info) {
