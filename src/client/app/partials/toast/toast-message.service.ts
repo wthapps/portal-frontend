@@ -1,15 +1,11 @@
 import {Injectable} from '@angular/core';
 
-export interface IToast {
-  timeOut:number;
-  lastOnBottom:boolean;
-  clickToClose:boolean;
-}
+declare var $:any;
 
 @Injectable()
 export class ToastsService {
 
-  private defaults:any = {
+  defaults:any = {
     type: {
       info: 'info',
       danger: 'danger',
@@ -23,7 +19,7 @@ export class ToastsService {
     }
   };
 
-  private set:(message, option?, type?:string) => Promise<boolean>;
+  set:(message, option?, type?:string) => Promise<boolean>;
 
   info(message:string, option?:any = this.defaults.options) {
     if (option) this.attachOverrides(option);

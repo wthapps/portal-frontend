@@ -64,8 +64,15 @@ export class SimpleToastsComponent implements OnInit {
     this.timer = setTimeout(this.instance, this.speed);
   }
 
+  removeSelf($event) {
+    let target = $event.target || $event.srcElement || $event.currentTarget;
+    let idAttr = target.attributes.id;
+    let value = +idAttr.nodeValue.replace('data-alert-', '');
+    this.toasts.splice(value, 1);
+  }
+
   ngOnDestroy() {
-    clearTimeout(this.timer)
+    clearTimeout(this.timer);
   }
 
   private show() {
@@ -80,12 +87,4 @@ export class SimpleToastsComponent implements OnInit {
     this.messageElement.style.display = 'none';
     this.messageElement.classList.remove('in');
   }
-
-  removeSelf($event) {
-    let target = $event.target || $event.srcElement || $event.currentTarget;
-    let idAttr = target.attributes.id;
-    let value = +idAttr.nodeValue.replace('data-alert-', '');
-    this.toasts.splice(value, 1);
-  }
-
 }
