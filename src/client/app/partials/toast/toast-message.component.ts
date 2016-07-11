@@ -23,7 +23,6 @@ export class SimpleToastsComponent implements OnInit {
 
   activate(message:string, option:Object, type:string) {
     //console.log(message, option, type);
-    this._cdr.detectChanges();
     let toast = {};
     toast.message = message;
     toast.type = type;
@@ -39,6 +38,8 @@ export class SimpleToastsComponent implements OnInit {
       if (this.toasts.length >= this.maxStack) this.toasts.pop();
       this.toasts.unshift(toast);
     }
+
+    this._cdr.detectChanges();
 
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show();
