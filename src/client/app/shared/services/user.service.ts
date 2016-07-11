@@ -94,7 +94,7 @@ export class UserService extends ApiBaseService {
       .map(res => res.json())
       .map((res) => {
         if(res) {
-
+          console.log('changePassword:', res);
         }
         return res;
       });
@@ -132,6 +132,14 @@ export class UserService extends ApiBaseService {
   private readUserInfo() {
     this.profile = JSON.parse(Cookie.get('profile'));
     this.loggedIn = Boolean(Cookie.get('logged_in'));
+  }
+
+  public deleteUserInfo() {
+    Cookie.delete('jwt');
+    Cookie.delete('logged_in');
+    Cookie.delete('profile');
+    this.loggedIn = false;
+    this.profile = null;
   }
 
   private updateProfile(profile: Object) {
