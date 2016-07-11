@@ -3,15 +3,6 @@ import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {ToastsService} from './toast-message.service';
-export interface IToast {
-  id:string;
-  type:string;
-  createdOn:Date;
-  title?:string;
-  content?:string;
-  override?:any;
-  html?:any;
-}
 
 @Component({
   moduleId: module.id,
@@ -26,11 +17,12 @@ export class SimpleToastsComponent implements OnInit {
 
   private toasts:any = [];
 
-  constructor(private _topMessageService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
-    _topMessageService.set = this.activate.bind(this);
+  constructor(private toastsService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
+    toastsService.set = this.activate.bind(this);
   }
 
-  activate(message:string, option?:IToast, type?:string) {
+  activate(message:string, option:Object, type:string) {
+    //console.log(message, option, type);
     this._cdr.detectChanges();
     let toast = {};
     toast.message = message;

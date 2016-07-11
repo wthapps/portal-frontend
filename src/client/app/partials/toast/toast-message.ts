@@ -12,15 +12,14 @@ export class ToastOptions {
 
 export class Toast {
   message:string;
-  option:ToastOptions[];
+  option:ToastOptions;
   type:string;
   id:number;
 
-  constructor(message:string, option?:ToastOptions[], type?:string, id?:number) {
+  constructor(message:string, option?:ToastOptions, type?:string) {
     this.message = message;
     this.option = option || [];
     this.type = type || 'danger';
-    this.id = id || 0;
   }
 }
 
