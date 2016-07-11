@@ -3,6 +3,7 @@ import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {ToastsService} from './toast-message.service';
+import {ToastOptions} from './toast-message';
 
 @Component({
   moduleId: module.id,
@@ -21,13 +22,13 @@ export class SimpleToastsComponent implements OnInit {
     toastsService.set = this.activate.bind(this);
   }
 
-  activate(message:string, option:Object, type:string) {
-    //console.log(message, option, type);
-    let toast = {};
-    toast.message = message;
-    toast.type = type;
-    toast.option = option;
-    toast.id = Date.now();
+  activate(message:string, option:ToastOptions, type:string) {
+    let toast = {
+      message: message,
+      option: option,
+      type: type,
+      id: Date.now()
+    };
 
     if (option.lastOnBottom) {
       // new item at bottom
@@ -54,10 +55,10 @@ export class SimpleToastsComponent implements OnInit {
   }
 
   startTimeOut() {
-    this.timer = setTimeout(this.instance, this.speed);
+    //this.timer = setTimeout(this.instance, this.speed);
   }
 
-  removeSelf($event) {
+  removeSelf($event:any) {
     let target = $event.target || $event.srcElement || $event.currentTarget;
     let idAttr = target.attributes.id;
     let value = +idAttr.nodeValue.replace('data-alert-', '');
@@ -65,7 +66,7 @@ export class SimpleToastsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    clearTimeout(this.timer);
+    //clearTimeout(this.timer);
   }
 
   private show() {

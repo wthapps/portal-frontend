@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {
-  ToastOptions,
-  Toast
+  ToastOptions
 } from './index';
 
 declare var $:any;
@@ -24,7 +23,7 @@ export class ToastsService {
     }
   };
 
-  set:(message, option, type:string) => Promise<boolean>;
+  set:(message:string, option:ToastOptions, type:string) => Promise<boolean>;
 
   info(message:string, option:ToastOptions = this.defaults.options) {
     if (option) this.attachOverrides(option);
@@ -47,7 +46,7 @@ export class ToastsService {
   }
 
   // Attach all the overrides to options
-  attachOverrides(option:ToastOptions) {
+  attachOverrides(option:any) {
 
     // check key option
     Object.keys(option).forEach(a => {
