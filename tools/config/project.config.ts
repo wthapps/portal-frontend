@@ -22,6 +22,12 @@ export class ProjectConfig extends SeedConfig {
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
     ];
 
+    // Add `local` third-party libraries to be injected/bundled.
+    this.APP_ASSETS = [
+      ...this.APP_ASSETS,
+      { src: `${this.ASSETS_SRC}/dist/app.min.js`, inject: true, vendor: false }
+    ];
+
     /* Add to or override NPM module configurations: */
     //this.mergeObject(this.PLUGIN_CONFIGS['browser-sync'], { ghostMode: false });
   }

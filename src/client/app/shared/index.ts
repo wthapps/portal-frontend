@@ -8,6 +8,7 @@ export * from './navbar/index';
 export * from './toolbar/index';
 export * from './services/apibase.service';
 export * from './services/user.service';
+export * from './services/redirect.service';
 
 export * from '../partials/dialogs/index';
 export * from '../partials/toast/index';
@@ -19,6 +20,7 @@ export * from './wth.join.us.component';
 
 import {ApiBaseService}       from './services/apibase.service';
 import {UserService}          from './services/user.service';
+import {RedirectService}      from './services/redirect.service';
 
 import {DialogService}        from '../partials/dialogs/index';
 import {ToastsService}        from '../partials/toast/index';
@@ -32,4 +34,5 @@ export const APP_SHARED_PROVIDERS = [
   DialogService,
   ToastsService,
   LoadingService,
+  RedirectService
 ];

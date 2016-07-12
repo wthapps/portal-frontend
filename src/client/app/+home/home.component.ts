@@ -6,7 +6,7 @@ import {
   LoadingService
 }                               from '../shared/index';
 
-import {PlanService}            from '../account/plan.service';
+import {PlanService}            from '../+account/plan.service';
 import {Product}                from '../shared/models/product.model';
 import {Plan}                   from '../shared/models/plan.model';
 
