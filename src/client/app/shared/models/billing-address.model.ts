@@ -1,9 +1,24 @@
 export class BillingAddress {
+  street_address: string;
+  extended_address: string;
+  locality: string;
+  postcode: string;
+  zipcode: string;
+  region: string;
+  country_code_alpha2: string;
+  country_name: string;
+
   constructor(
-    public street_address: string,
-    public extended_address: string,
-    public postal_code: string,
-    public region: string,
-    public country_name: string
-  ) {}
+    fields?: {
+      street_address?: string,
+      extended_address?: string,
+      locality?: string,
+      postcode?: string,
+      zipcode?: string,
+      region?: string,
+      country_code_alpha2?: string,
+      country_name?: string
+  }) {
+  if (fields) Object.assign(this, fields);
+  }
 }

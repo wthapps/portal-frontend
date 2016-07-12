@@ -1,6 +1,6 @@
 import {Component}                          from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}           from '@angular/router';
-import {PaymentService}                     from '../payment.service';
+import {PaymentService}                     from './payment.service';
 import {UserService, CONFIG}                from '../../shared/index';
 
 @Component({

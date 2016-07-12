@@ -20,6 +20,7 @@ import {
   BillingDetailsComponent,
   BillingHistoryComponent,
   PaymentComponent,
+  PaymentEditComponent,
   PaymentConfirmComponent,
   ReceiptComponent,
   TransactionDetailsComponent,
@@ -57,6 +58,7 @@ import {
   StreamEmitter
 } from '../shared/index';
 
+
 @Routes([
   {path: '/dns/add', component: AccountServicesDNSAddComponent
     //, canActivate: [AuthGuard]
@@ -82,6 +84,7 @@ import {
   {path: '/transactions/:id/receipt', component: ReceiptComponent},
   {path: '/transactions/:id', component: TransactionDetailsComponent},
   {path: '/payment/confirm', component: PaymentConfirmComponent},
+  {path: '/payment/edit', component: PaymentEditComponent},
   {path: '/payment', component: PaymentComponent},
 
   {path: '/setting/changepassword', component: ChangePasswordComponent},
