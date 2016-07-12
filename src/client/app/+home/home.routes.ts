@@ -6,5 +6,5 @@ export const HomeRoutes: RouterConfig = [
   {
     path: '',
     component: HomeComponent
-  },
+  }
 ];
