@@ -1,15 +1,17 @@
-import {Component, AfterViewInit, NgZone}                          from '@angular/core';
-import {Router, ROUTER_DIRECTIVES, RouteSegment}                   from '@angular/router';
-import {FormBuilder, Validators, FormGroup}    from '@angular/common';
+import {Component, AfterViewInit, NgZone, OnInit}     from '@angular/core';
+import {Router, ROUTER_DIRECTIVES, RouteSegment}      from '@angular/router';
+import {FormBuilder, Validators, FormGroup}           from '@angular/common';
+import {Cookie}                       from 'ng2-cookies/ng2-cookies';
 import {PaymentService}               from './payment.service';
-import {CountryListComponent}         from '../shared/services/country.component';
+import {CountryListComponent}         from '../../shared/services/country.component';
 import {
   UserService,
   WthConstants,
   LoadingService,
   ToastsService
-}                                     from '../shared/index';
-import {Cookie}                       from 'ng2-cookies/ng2-cookies';
+}                                     from '../../shared/index';
+import {CreditCard}                   from "../../shared/models/credit-card.model";
+import {BillingAddress}               from "../../shared/models/billing-address.model";
 
 declare var braintree:any;
 
@@ -27,12 +29,13 @@ declare var braintree:any;
   ]
 })
 
-export class PaymentComponent implements AfterViewInit {
+export class PaymentComponent implements AfterViewInit, OnInit {
   PanelTitle:string = 'Find Services and add-ons';
   button_text:string = 'Continue';
   edit_mode:boolean = false;
   countries:any;
   paymentForm: FormGroup;
+  credit_card: CreditCard = new CreditCard({billing_address: new BillingAddress({country_code_alpha2:''})});
 
   constructor(
     private _router:Router,
@@ -56,19 +59,6 @@ export class PaymentComponent implements AfterViewInit {
     let action = _params.getParam('operation');
     switch (action) {
       case undefined:
-        this._userService.profile.billing_address = {
-          address_line_1: '',
-          address_line_2: '',
-          country: '',
-          city: '',
-          postcode: '',
-          region: ''
-        };
-        this._userService.profile.credit_cards = [{
-          last_4: '',
-          card_type: '',
-          cardholder_name: '',
-        }];
         break;
       case WthConstants.operations.edit:
         this.button_text = 'Update';
@@ -93,6 +83,10 @@ export class PaymentComponent implements AfterViewInit {
 
   topMessageShow():void {
     this._toastsService.danger('');
+  }
+  //
+  ngOnInit(): void {
+    if (this._userService.profile.credit_cards != null) this.credit_card = this._userService.profile.credit_cards[0]
   }
 
   ngAfterViewInit() {
@@ -274,9 +268,9 @@ export class PaymentComponent implements AfterViewInit {
           if (response.success) { // TODO refactor this code in server
             _this._userService.profile.has_payment_info = true;
             _this._userService.profile.credit_cards = response.data.credit_cards;
-            _this._userService.profile.billing_address = response.data.billing_address;
 
             Cookie.set('profile', JSON.stringify(_this._userService.profile));
+            _this._userService.profile = JSON.parse(Cookie.get('profile'));
             // make sure onInit method on PlansComponent will work
             _this._zone.run(() => {
               _this._router.navigate(['/account/plans']);
@@ -296,13 +290,13 @@ export class PaymentComponent implements AfterViewInit {
 
 
   private update(_this:any, body:string) {
-    _this._paymentService.update(`users/${_this._userService.profile.id}`, body)
+    _this._paymentService.update(`users/${_this._userService.profile.id}/payments/1`, body)
       .subscribe((response) => {
           _this._loaddingService.stop();
           if (response.success) {
             _this._userService.profile.has_payment_info = true;
             _this._userService.profile.credit_cards = response.data.credit_cards;
-            _this._userService.profile.billing_address = response.data.billing_address;
+
             Cookie.set('profile', JSON.stringify(_this._userService.profile));
             _this._userService.profile = JSON.parse(Cookie.get('profile'));
             _this._toastsService.success(response.message);
@@ -312,7 +306,7 @@ export class PaymentComponent implements AfterViewInit {
         },
         error => {
           _this._loaddingService.stop();
-          _this._toastsService.danger(_this._toastsService.type.danger, error);
+          _this._toastsService.danger(error);
           console.log('Add card error:', error);
         });
     _this._loaddingService.start();

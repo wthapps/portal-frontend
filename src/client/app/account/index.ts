@@ -26,10 +26,11 @@ export * from './plans.component';
 export * from './plan-details.component';
 export * from './billing-details.component';
 export * from './billing-history.component';
-export * from './payment.component';
+export * from './payment/payment.component';
+export * from './payment/payment-edit.component';
 export * from './payment/payment-confirm.component';
-export * from './billing/receipt.component'
-export * from './billing/transaction-details.component'
+export * from './billing/receipt.component';
+export * from './billing/transaction-details.component';
 
 /**
  *  Services

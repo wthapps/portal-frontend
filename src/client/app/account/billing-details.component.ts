@@ -1,4 +1,4 @@
-import {Component}                    from '@angular/core';
+import {Component, OnInit}            from '@angular/core';
 import {ROUTER_DIRECTIVES, Router}    from '@angular/router';
 import {UserService, CONFIG}          from '../shared/index';
 import {
@@ -7,17 +7,21 @@ import {
   ToastsService
 }                                     from "../shared/index";
 import {Cookie}                       from 'ng2-cookies/ng2-cookies'
+import {CreditCard}                   from "../shared/models/credit-card.model";
+import {BillingAddress}               from "../shared/models/billing-address.model";
 
 @Component({
   moduleId: module.id,
   templateUrl: 'billing-details.component.html',
   directives: [
     ROUTER_DIRECTIVES
-  ]
+  ],
+  providers: [UserService]
 })
 
-export class BillingDetailsComponent {
+export class BillingDetailsComponent implements OnInit{
   PanelTitle:string = 'Billing details';
+  credit_card: CreditCard;
 
   constructor(
     private _userService:UserService,
@@ -31,6 +35,14 @@ export class BillingDetailsComponent {
     }
   }
 
+  ngOnInit(): void {
+    if (this._userService.profile.has_payment_info) {
+      this.credit_card = this._userService.profile.credit_cards[0];
+    }else{
+      this.credit_card = new CreditCard({billing_address: new BillingAddress});
+    }
+
+  }
   onEdit(event: any): void {
     event.preventDefault();
     this._router.navigateByUrl(`/account/payment;operation=edit;${CONFIG.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
@@ -48,7 +60,6 @@ export class BillingDetailsComponent {
               this._toastsService.success("The billing details has been deleted.");
               this._userService.profile.has_payment_info = false;
               this._userService.profile.credit_cards = null;
-              this._userService.profile.billing_address = null;
               Cookie.set('profile', JSON.stringify(this._userService.profile));
             },
             error => {

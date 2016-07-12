@@ -1,0 +1,143 @@
+<form id="payment-method-card" class="scale-down" [ngFormModel]="paymentForm" novalidate>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Payment Method</h3>
+    </div>
+    <div class="panel-body panel-creditcard">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-container">
+            <div class="form-group" [ngClass]="{'has-error': cardholder_name.touched && !cardholder_name.valid}">
+              <label for="cardholder-name">Name on card</label>
+              <input class="form-control" type="text" id="cardholder-name" name="cardholder-name"
+                     placeholder="Name on card" #cardholder_name="ngForm" ngControl="cardholder_name"
+                     [(ngModel)]="credit_card.cardholder_name">
+              <div *ngIf="cardholder_name.touched && !cardholder_name.valid">
+                  <span class="help-block"
+                        *ngIf="cardholder_name.errors.required">Name on card is required</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="card-number">Card Number</label>
+              <div class="cardinfo-card-number">
+                <div class="form-control" id="card-number"></div>
+                <div id="card-image"></div>
+              </div>
+            </div>
+            <div class="row row-16 form-group">
+              <div class="col-sm-6">
+                <label for="expiration-date">Valid Thru</label>
+                <div class='form-control' id="expiration-date"></div>
+              </div>
+              <div class="col-sm-6">
+                <label for="cvv">CVV</label>
+                <div class='form-control' id="cvv"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h3 class="creditcard-accepted-tt mt0">
+            We accept:
+          </h3>
+          <ul class="list-unstyled">
+            <li><img src="assets/images/card/credit_card.png" alt="credit_card"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Billing address</h3>
+    </div>
+    <div class="panel-body panel-creditcard">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group" [ngClass]="{'has-error': address_line_1.touched && !address_line_1.valid}">
+            <label for="address-line-1">Address line 1</label>
+            <input class="form-control" type="text" id="address-line-1" name="address-line-1"
+                   placeholder="Address line 1" [(ngModel)]="credit_card.billing_address.street_address"
+                   ngControl="address_line_1" #address_line_1="ngForm">
+            <div *ngIf="address_line_1.touched && !address_line_1.valid">
+              <span class="help-block" *ngIf="address_line_1.errors.required">Address line 1 is required</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address-line-2">Address line 2
+              <span class="optional">(optional)</span>
+            </label>
+            <input class="form-control" type="text" id="address-line-2" name="address-line-2"
+                   placeholder="Address line 2" [(ngModel)]="credit_card.billing_address.extended_address">
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="row row-16">
+            <div class="col-xs-6">
+              <div class="form-group" [ngClass]="{'has-error': country.touched && !country.valid}">
+                <label for="country">Country</label>
+                <select class="form-control" id="country" name="country" #country="ngForm" ngControl="country"
+                        [(ngModel)]="credit_card.billing_address.country_code_alpha2">
+                  <option *ngFor="let country of countries; let i = index" [selected]="i === 39"
+                          value="{{country.key}}">
+                    {{country.value}}
+                  </option>
+                </select>
+                <div *ngIf="country.touched && !country.valid">
+                  <span class="help-block"
+                        *ngIf="country.errors.required">Country is required</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group" [ngClass]="{'has-error': city.touched && !city.valid}">
+                <label for="city">City</label>
+                <input class="form-control" type="text" id="city" #city="ngForm" name="city" placeholder="City"
+                       [(ngModel)]="credit_card.billing_address.locality" ngControl="city">
+                <div *ngIf="city.touched && !city.valid">
+                  <span class="help-block" *ngIf="city.errors.required">City is required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row row-16">
+            <div class="col-xs-6">
+              <div class="form-group">
+                <label for="postcode">Postal Code <span class="optional">(optional)</span></label>
+                <input class="form-control" type="text" id="postcode" name="postcode" placeholder="Postal code"
+                       [(ngModel)]="credit_card.billing_address.postcode">
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group" [ngClass]="{'has-error': region.touched && !region.valid}">
+                <label for="region">State/Province
+                  <!--  <span class="optional">(optional)</span> -->
+                </label>
+                <input class="form-control" type="text" id="region" #region="ngForm" name="region"
+                       placeholder="State/Province"
+                       [(ngModel)]="credit_card.billing_address.region" ngControl="region">
+                <div *ngIf="region.touched && !region.valid">
+                  <span class="help-block"
+                        *ngIf="region.errors.required">State/Province is required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="text-left mt20 checkbox">
+    <label>
+      <input type="checkbox" id="recurring_billing"
+             ngControl="recurring_billing" #recurring_billing="ngForm"> Use recurring billing
+    </label>
+  </div> -->
+
+  <div class="text-center mt20">
+    <a href="javascript:;" (click)="onCancel()" class="btn btn-default mr10">Cancel</a>
+    <button id="button-pay" class="btn btn-primary ml10" type="submit" [disabled]="!paymentForm.valid">{{button_text}}</button>
+  </div>
+
+</form>
