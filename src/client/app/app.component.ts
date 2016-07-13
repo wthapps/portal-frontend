@@ -42,6 +42,7 @@ import {SupportComponent} from './support/support.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {AccountComponent} from './account/account.component';
+import {ErrorsComponent} from './errors/errors.component';
 
 
 @Component({
@@ -82,6 +83,7 @@ import {AccountComponent} from './account/account.component';
   {path: '/account/password_reset_complete', component: PasswordResetCompleteComponent},
 
   {path: '/account', component: AccountComponent},
+  {path: '/errors', component: ErrorsComponent},
 
   {path: '/', component: HomeComponent},
   {path: '*', component: HomeComponent}
