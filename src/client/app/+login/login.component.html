@@ -4,23 +4,24 @@
       <h2>
         Have an account?
       </h2>
-      <form [ngFormModel]="group" (ngSubmit)="login(email.value, password.value)" novalidate>
-        <div class="form-group" [ngClass]="{ 'has-error' : email.touched && !email.valid}">
+      <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+        <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
           <label class="sr-only" for="email">Email address</label>
-          <input type="text" class="form-control" id="email" placeholder="Email"
-                 #email="ngForm" ngControl="email">
-          <div *ngIf="email.touched && !email.valid">
-            <span class="help-block" *ngIf="email.errors.required">An email is required</span>
-            <span class="help-block" *ngIf="!email.errors.required && email.errors.emailFormat">Email is not valid</span>
+          <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
+          <div *ngIf="!email.valid && email.touched">
+            <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
+            <span *ngIf="!email.errors.required && email.errors.emailFormat"
+                  class="help-block">Email is not valid</span>
           </div>
+
         </div>
-        <div class="form-group" [ngClass]="{ 'has-error' : group.find('password').touched && !group.find('password').valid}">
+        <div class="form-group" [ngClass]="{'has-error': (!password.valid && password.touched)}">
           <label class="sr-only" for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Password"
-                 #password="ngForm" ngControl="password">
-          <div *ngIf="password.touched && !password.valid">
-            <span class="help-block" *ngIf="password.errors.required">A password is required</span>
+          <input [formControl]="password" type="password" class="form-control" id="password" placeholder="Password">
+          <div *ngIf="!password.valid && password.touched">
+            <span *ngIf="!password.valid && password.errors.required" class="help-block">A password is required</span>
           </div>
+
         </div>
         <div class="checkbox">
           <!--<label>-->
@@ -29,7 +30,7 @@
           <span class="separator">·</span>-->
           <a class="forgot" [routerLink]="['/account/recovery/forgottenpassword']">Forgot account?</a>
         </div>
-        <button type="submit" class="btn btn-block btn-danger" [disabled]="!group.valid">Log In</button>
+        <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-danger">Sign in</button>
       </form>
       <hr>
       <h2>New to WTHApps?</h2>
