@@ -44,6 +44,11 @@ export class LoginComponent {
               private _toastsService:ToastsService,
               private _loadingService:LoadingService,
               private _redirectService:RedirectService) {
+
+    if (this._userService.loggedIn) {
+      this._router.navigateByUrl('/account/setting/dashboard');
+    }
+
     this.form = fb.group({
       'email': ['',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
@@ -57,10 +62,9 @@ export class LoginComponent {
     this.password = this.form.controls['password'];
   }
 
-  public onSubmit(values:any):void {
+  onSubmit(values:any):void {
     this.submitted = true;
     if (this.form.valid) {
-      console.log(this._loadingService);
       // start loading
       this._loadingService.start();
 
@@ -77,11 +81,11 @@ export class LoginComponent {
             }
           },
           error => {
-            this._toastsService.danger('Invalid email or password');
-            //console.log('login error:', error);
-
             // stop loading
             this._loadingService.stop();
+
+            this._toastsService.danger('Invalid email or password');
+            //console.log('login error:', error);
           }
         );
     }
