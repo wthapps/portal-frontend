@@ -20,7 +20,7 @@ import {PlanProduct}                                from '../shared/models/plan-
     ROUTER_DIRECTIVES,
     WthCancelPlanComponent
   ],
-  providers: [PlanService],
+  providers: [PlanService, UserService],
   styleUrls: ['plans.component.css']
 })
 

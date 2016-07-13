@@ -5,28 +5,28 @@
   <div class="panel-body" *ngIf="_userService.profile.has_payment_info">
     <dl class="dl-horizontal">
       <dt>Type</dt>
-       <dd>{{_userService.profile.credit_cards[0].card_type}}</dd>
+       <dd>{{credit_card.card_type}}</dd>
       <dt>Name</dt>
-      <dd>{{_userService.profile.credit_cards[0].cardholder_name}}</dd>
+      <dd>{{credit_card.cardholder_name}}</dd>
       <dt>Number</dt>
-      <dd>**** **** **** {{_userService.profile.credit_cards[0].last_4}}</dd>
+      <dd>**** **** **** {{credit_card.last_4}}</dd>
       <dt>Expiry</dt>
-      <dd>{{_userService.profile.credit_cards[0].expiration_date}}</dd>
+      <dd>{{credit_card.expiration_date}}</dd>
     </dl>
     <hr>
     <dl class="dl-horizontal">
       <dt>Address line 1</dt>
-      <dd>{{_userService.profile.billing_address.address_line_1}}</dd>
+      <dd>{{credit_card.billing_address.street_address}}</dd>
       <dt>Address line 2</dt>
-      <dd>{{_userService.profile.billing_address.address_line_2}}</dd>
+      <dd>{{credit_card.billing_address.extended_address}}</dd>
       <dt>City</dt>
-      <dd>{{_userService.profile.billing_address.city}}</dd>
+      <dd>{{credit_card.billing_address.locality}}</dd>
       <dt>State</dt>
-      <dd>{{_userService.profile.billing_address.region}}</dd>
+      <dd>{{credit_card.billing_address.region}}</dd>
       <dt>Postcode</dt>
-      <dd>{{_userService.profile.billing_address.postcode}}</dd>
+      <dd>{{credit_card.billing_address.postcode}}</dd>
       <dt>Country</dt>
-      <dd>{{_userService.profile.billing_address.country}}</dd>
+      <dd>{{credit_card.billing_address.country_name}}</dd>
     </dl>
     <hr>
     <div class="clearfix mt40">

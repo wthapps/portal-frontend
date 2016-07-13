@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Http, Response} from '@angular/http';
-import {ApiBaseService} from '../shared/services/apibase.service';
+import {ApiBaseService} from '../../shared/services/apibase.service';
 
 @Injectable()
 export class PaymentService extends ApiBaseService {
