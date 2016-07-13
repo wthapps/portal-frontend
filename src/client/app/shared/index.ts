@@ -16,6 +16,8 @@ export * from '../partials/loading/index';
 
 export * from './wth.join.us.component';
 
+export * from './validator/index';
+
 
 
 import {ApiBaseService}       from './services/apibase.service';

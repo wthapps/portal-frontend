@@ -8,7 +8,10 @@ import {HTTP_PROVIDERS}     from '@angular/http';
 import {
   Config,
   APP_SHARED_PROVIDERS,
-  UserService
+  UserService,
+  LoadingComponent,
+  DialogComponent,
+  SimpleToastsComponent
 }                           from './shared/index';
 
 /**
@@ -23,7 +26,12 @@ import {
     APP_SHARED_PROVIDERS
   ],
   templateUrl: 'app.component.html',
-  directives: [ROUTER_DIRECTIVES]
+  directives: [
+    ROUTER_DIRECTIVES,
+    LoadingComponent,
+    DialogComponent,
+    SimpleToastsComponent
+  ]
 })
 export class AppComponent {
   constructor(private _userService:UserService, private _router:Router) {
