@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Injectable}     from '@angular/core';
+import {Observable}     from 'rxjs/Observable';
 import {Http, Response} from '@angular/http';
 import {Cookie}         from 'ng2-cookies/ng2-cookies';
 import {ApiBaseService} from './apibase.service';
@@ -9,7 +9,6 @@ export class UserService extends ApiBaseService {
 
   public loggedIn: boolean = false;
   public profile: User = null;
-
 
   constructor(http: Http) {
     super(http);

@@ -7,6 +7,11 @@ import {
   ResetEmailSentComponent
 }                           from './index';
 
+import {
+  CanDeactivateGuard,
+  AuthGuard
+}                           from '../shared/index';
+
 export const AccountRoutes:RouterConfig = [
   /*{
     path: 'account',
@@ -39,7 +44,9 @@ export const AccountRoutes:RouterConfig = [
       {path: 'setting/dashboard',     component: AccountDashboardComponent}
     ]
   },*/
-  {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
+  {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent,
+    canActivate: [AuthGuard]
+  },
   {path: 'account/recovery/newpassword',       component: NewPasswordComponent},
   {path: 'account/recovery/reset_email_sent',  component: ResetEmailSentComponent}
 ];
