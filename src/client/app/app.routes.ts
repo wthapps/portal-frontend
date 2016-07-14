@@ -9,6 +9,7 @@ import {WelcomeRoutes}      from './+welcome/index';
 import {ContactRoutes}      from './+contact/index';
 import {LoginRoutes}        from './+login/index';
 import {RegisterRoutes}     from './+register/index';
+import {AccountRoutes}      from './+account/index';
 
 const routes:RouterConfig = [
   ...HomeRoutes,
@@ -19,7 +20,8 @@ const routes:RouterConfig = [
   ...WelcomeRoutes,
   ...ContactRoutes,
   ...LoginRoutes,
-  ...RegisterRoutes
+  ...RegisterRoutes,
+  ...AccountRoutes
 ];
 
 export const APP_ROUTER_PROVIDERS = [
