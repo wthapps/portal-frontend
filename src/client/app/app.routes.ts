@@ -6,8 +6,9 @@ import {SupportRoutes}      from './+support/index';
 import {ComingsoonRoutes}   from './+comingsoon/index';
 import {PoliciesRoutes}     from './+policies/index';
 import {WelcomeRoutes}      from './+welcome/index';
-import {LoginRoutes}        from './+login/index';
 import {ContactRoutes}      from './+contact/index';
+import {LoginRoutes}        from './+login/index';
+import {RegisterRoutes}     from './+register/index';
 
 const routes:RouterConfig = [
   ...HomeRoutes,
@@ -17,7 +18,8 @@ const routes:RouterConfig = [
   ...PoliciesRoutes,
   ...WelcomeRoutes,
   ...ContactRoutes,
-  ...LoginRoutes
+  ...LoginRoutes,
+  ...RegisterRoutes
 ];
 
 export const APP_ROUTER_PROVIDERS = [
