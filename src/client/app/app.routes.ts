@@ -7,9 +7,14 @@ import {ComingsoonRoutes}   from './+comingsoon/index';
 import {PoliciesRoutes}     from './+policies/index';
 import {WelcomeRoutes}      from './+welcome/index';
 import {ContactRoutes}      from './+contact/index';
-import {LoginRoutes}        from './+login/index';
+import {
+  LoginRoutes,
+  authProviders
+}                           from './+login/index';
 import {RegisterRoutes}     from './+register/index';
 import {AccountRoutes}      from './+account/index';
+
+import {CanDeactivateGuard} from './shared/index';
 
 const routes:RouterConfig = [
   ...HomeRoutes,
@@ -26,4 +31,6 @@ const routes:RouterConfig = [
 
 export const APP_ROUTER_PROVIDERS = [
   provideRouter(routes),
+  authProviders,
+  CanDeactivateGuard
 ];
