@@ -1,0 +1,39 @@
+<div class="nav-menuleft">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <h3 class="panel-title">General</h3>
+        </div>
+        <!-- List group -->
+        <ul class="list-group">
+            <li class="list-group-item"><a [routerLink]="['/account/setting/dashboard']">Dashboard</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/setting/profile']">Account setting</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/setting/changepassword']">Change password</a></li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <h3 class="panel-title">Plans and Billing</h3>
+        </div>
+        <!-- List group -->
+        <ul class="list-group">
+            <li class="list-group-item"><a [routerLink]="['/account/plans']">Plans</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/billing-details']">Billing details</a></li>
+            <li class="list-group-item"><a [routerLink]="['/account/billing-history']">Billing history</a></li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default" [ngClass]="{ 'collapse' : !context.hasUserProducts }">
+        <div class="panel-heading">
+            <h3 class="panel-title">My Services and Add-ons</h3>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item"
+                *ngFor="let item of context.user_products">
+                <a [routerLink]="[item.router_link]">{{item.display_name}}</a>
+            </li>
+        </ul>
+    </div>
+</div>

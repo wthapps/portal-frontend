@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{context.panelTitle}}</h3>
+  </div>
+  <ul class="list-group services-list-wrap">
+    <li class="list-group-item">
+      <select [(ngModel)]="context.categoryId" (ngModelChange)="context.onCategoryIdChanged(context.categoryId)"
+        class="form-control">
+        <option *ngFor="let category of context.categories" [value]="category.id">{{category.display_name}}</option>
+      </select>
+    </li>
+    <li class="list-group-item" *ngFor="let item of context.items">
+        <content-presenter [context]=item src="{{item.context.template_path}}"></content-presenter>
+    </li>
+  </ul>
+</div>

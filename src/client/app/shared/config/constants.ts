@@ -12,5 +12,17 @@ export let Constants = {
   },
   params: {
     next: 'next'
+  },
+  HttpStatusCode: {
+    OK: 200,
+    NotFound: 404,
+    InternalServerError: 200,
+    Created: 201,
+    Conflict: 409,
+    ExpectationFailed: 417,
+    PaymentRequired: 402
+  },
+  errorMessage: {
+    default: 'Internal Server Error'
   }
 };
