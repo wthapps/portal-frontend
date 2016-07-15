@@ -13,6 +13,10 @@ export * from './services/auth.guard';
 export * from './services/auth.service';
 export * from './services/interfaces';
 
+export * from './event/event-emitter-args';
+export * from './event/event-emitter';
+export * from './event/stream-emitter';
+
 export * from '../partials/dialogs/index';
 export * from '../partials/toast/index';
 export * from '../partials/loading/index';

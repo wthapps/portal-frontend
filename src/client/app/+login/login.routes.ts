@@ -1,6 +1,6 @@
-import { RouterConfig }     from '@angular/router';
+import {RouterConfig}     from '@angular/router';
 
-import { LoginComponent }   from './index';
+import {LoginComponent}   from './index';
 
 import {
   AuthGuard,
@@ -9,7 +9,7 @@ import {
   RedirectService
 }                           from '../shared/index';
 
-export const LoginRoutes: RouterConfig = [
+export const LoginRoutes:RouterConfig = [
   {
     path: 'login',
     component: LoginComponent
@@ -17,8 +17,8 @@ export const LoginRoutes: RouterConfig = [
 ];
 
 export const authProviders = [
-  AuthGuard, 
-  AuthService, 
-  UserService, 
+  AuthGuard,
+  AuthService,
+  UserService,
   RedirectService
 ];
