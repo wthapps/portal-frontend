@@ -1,17 +1,17 @@
 import {Component}          from '@angular/core';
 import {
-  ROUTER_DIRECTIVES,
-  Router
+  ROUTER_DIRECTIVES
 }                           from '@angular/router';
 import {HTTP_PROVIDERS}     from '@angular/http';
 
 import {
   Config,
   APP_SHARED_PROVIDERS,
-  UserService,
   LoadingComponent,
   DialogComponent,
-  SimpleToastsComponent
+  SimpleToastsComponent,
+  HeaderComponent,
+  FooterComponent
 }                           from './shared/index';
 
 /**
@@ -30,32 +30,13 @@ import {
     ROUTER_DIRECTIVES,
     LoadingComponent,
     DialogComponent,
-    SimpleToastsComponent
+    SimpleToastsComponent,
+    HeaderComponent,
+    FooterComponent
   ]
 })
 export class AppComponent {
-  constructor(private _userService:UserService, private _router:Router) {
+  constructor() {
     console.log('Environment config', Config);
-  }
-
-  logout() {
-
-    this._userService.logout('users/sign_out')
-      .subscribe(
-        response => {
-          this._userService.deleteUserInfo();
-          this._router.navigateByUrl('/login');
-        },
-        error => {
-          this._userService.deleteUserInfo();
-          this._router.navigateByUrl('/login');
-          console.log('logout error', error);
-        }
-      );
-  }
-
-  public isLoggedIn() {
-    // Check if there's an unexpired JWT
-    return this._userService.loggedIn;
   }
 }
