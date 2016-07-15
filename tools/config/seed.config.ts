@@ -311,8 +311,7 @@ export class SeedConfig {
       'app/*': `/app/*`,
       '*': `node_modules/*`,
       'angular2-jwt': `node_modules/angular2-jwt/angular2-jwt.js`,
-      'ng2-bootstrap': `node_modules/ng2-bootstrap/ng2-bootstrap.js`,
-      'ng2-bs3-modal': `node_modules/ng2-bs3-modal`
+      'ng2-bootstrap': `node_modules/ng2-bootstrap/ng2-bootstrap.js`
     },
     packages: {
       rxjs: { defaultExtension: 'js' },
@@ -383,10 +382,6 @@ export class SeedConfig {
       },
       'ng2-bootstrap': {
         main: 'ng2-bootstrap.js',
-        defaultExtension: 'js'
-      },
-      'ng2-bs3-modal': {
-        main: 'ng2-bs3-modal.js',
         defaultExtension: 'js'
       }
     }

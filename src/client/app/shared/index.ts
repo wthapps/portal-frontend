@@ -4,6 +4,7 @@
 export * from './config/env.config';
 export * from './config/constants';
 export * from './name-list/index';
+export * from './name-list/index';
 export * from './navbar/index';
 export * from './toolbar/index';
 export * from './services/apibase.service';
@@ -17,6 +18,8 @@ export * from './event/event-emitter-args';
 export * from './event/event-emitter';
 export * from './event/stream-emitter';
 
+export * from '../partials/header/index';
+export * from '../partials/footer/index';
 export * from '../partials/dialogs/index';
 export * from '../partials/toast/index';
 export * from '../partials/loading/index';
