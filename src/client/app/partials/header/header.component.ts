@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 
 import {
   UserService,
@@ -15,8 +14,7 @@ import {
   selector: 'wth-header',
   templateUrl: 'header.component.html',
   directives: [
-    ROUTER_DIRECTIVES,
-    DROPDOWN_DIRECTIVES
+    ROUTER_DIRECTIVES
   ]
 })
 export class HeaderComponent {

@@ -27,16 +27,17 @@
         </ul>
 
         <ul *ngIf="isLoggedIn()" class="nav navbar-nav navbar-right">
-          <li dropdown>
-            <a href="javascript:;" id="single-button" dropdownToggle> {{_userService.profile.name}} <span
-              class="glyphicon glyphicon-cog"></span></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-              <li role="menuitem"><a [routerLink]="['/account/setting/dashboard']">Settings</a></li>
-              <li class="divider dropdown-divider"></li>
-              <li role="menuitem"><a href="javascript:;" (click)="logout()">Log out</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">{{_userService.profile.name}} <span class="glyphicon glyphicon-cog"></span></a>
+            <ul class="dropdown-menu">
+              <li><a [routerLink]="['/account/setting/dashboard']">Settings</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="javascript:;" (click)="logout()">Log out</a></li>
             </ul>
           </li>
         </ul>
+
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
