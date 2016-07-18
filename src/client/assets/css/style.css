@@ -6639,9 +6639,10 @@ Header
     outline: 0 none;
     color: #ED1C24; }
 
-.navbar-default .navbar-nav.navbar-right a.dropdown-toggle {
-  padding-left: 0;
-  padding-right: 0; }
+@media (min-width: 768px) {
+  .navbar-default .navbar-nav.navbar-right a.dropdown-toggle {
+    padding-left: 0;
+    padding-right: 0; } }
 
 .footer {
   margin-top: 40px;
@@ -6948,7 +6949,8 @@ wth-app:empty + .dots-loader-wrap {
     background-position: center center; }
 
 .inside-loading {
-  position: relative; }
+  position: relative;
+  min-height: 100px; }
   .inside-loading:after {
     content: "";
     position: absolute;
