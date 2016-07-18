@@ -55,9 +55,11 @@ Header
       }
     }
     &.navbar-right {
-      a.dropdown-toggle {
-        padding-left: 0;
-        padding-right: 0;
+      @media (min-width: $screen-sm) {
+        a.dropdown-toggle {
+          padding-left: 0;
+          padding-right: 0;
+        }
       }
     }
   }
