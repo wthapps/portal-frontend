@@ -14,7 +14,7 @@ import {
 import {
   ContentPresenterComponent,
   AccountMenuViewModel,
-  //DnsService,
+  DnsService,
   ServicesService
 }                                 from './index';
 
@@ -28,7 +28,7 @@ import {
   ],
   viewProviders: [
     StreamEmitter,
-    //DnsService,
+    DnsService,
     ServicesService
   ]
 })

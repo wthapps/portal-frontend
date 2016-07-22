@@ -1,4 +1,4 @@
-import {CreditCard} from "./credit-card.model";
+import {CreditCard} from './credit-card.model';
 
 export class User {
   id: number;
@@ -14,7 +14,7 @@ export class User {
   accepted: boolean;
   has_payment_info: boolean;
   credit_cards: CreditCard[];
-  
+
   constructor(
     fields:{
       id: number,

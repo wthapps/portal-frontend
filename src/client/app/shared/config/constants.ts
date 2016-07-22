@@ -13,6 +13,9 @@ export let Constants = {
   params: {
     next: 'next'
   },
+  string: {
+    next: 'next'
+  },
   HttpStatusCode: {
     OK: 200,
     NotFound: 404,

@@ -1,4 +1,4 @@
-import {BillingAddress} from "./billing-address.model";
+import {BillingAddress} from './billing-address.model';
 export class CreditCard {
   masked_number: string;
   last_4: string;
