@@ -21,19 +21,20 @@ export * from './+menu/account-menu.viewmodel';
 /**
  *  Payment
  */
-// export * from './plans.component';
-// export * from './plan-details.component';
-// export * from './billing-details.component';
-// export * from './billing-history.component';
-// export * from './+payment/payment.component';
-// export * from './+payment/payment-edit.component';
-// export * from './+payment/payment-confirm.component';
-// export * from './+billing/receipt.component';
-// export * from './+billing/transaction-details.component';
+export * from './+payment/payment.component';
+export * from './+payment/payment-edit.component';
+export * from './+payment/payment-confirm.component';
+
+export * from './plans.component';
+export * from './plan-details.component';
+export * from './billing-details.component';
+export * from './billing-history.component';
+export * from './+billing/receipt.component';
+export * from './+billing/transaction-details.component';
 
 /**
  *  Services
- */
+*/
 export * from './+services/services.component';
 export * from './+services/services.service';
 export * from './+services/content-presenter.component';
@@ -41,20 +42,20 @@ export * from './+services/content-presenter.component';
 /**
  *  Services DNS
  */
-// export * from './+services/dns/dns-add.component';
-// export * from './+services/dns/dns-update.component';
-// export * from './+services/dns/dns.component';
-// export * from './+services/dns/dns.service';
+export * from './+services/+dns/dns-add.component';
+export * from './+services/+dns/dns-update.component';
+export * from './+services/+dns/dns.component';
+export * from './+services/+dns/dns.service';
 
 /**
  *  Services VPN
  */
-// export * from './+services/vpn/vpn.component';
+export * from './+services/+vpn/vpn.component';
 
 /**
  *  Services eFax
  */
-// export * from './+services/efax/efax.component';
+export * from './+services/+efax/efax.component';
 
 /*
 * Add-ons

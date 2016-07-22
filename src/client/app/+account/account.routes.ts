@@ -13,7 +13,7 @@ import {
   ChangePasswordComponent,
 
   // payment
-  /*PlansComponent,
+  PlansComponent,
   PlanDetailsComponent,
   BillingDetailsComponent,
   BillingHistoryComponent,
@@ -21,24 +21,22 @@ import {
   PaymentEditComponent,
   PaymentConfirmComponent,
   ReceiptComponent,
-  TransactionDetailsComponent,*/
+  TransactionDetailsComponent,
 
   // Services
   AccountServicesListComponent,
-  //ServicesService,
 
   // DNS
-  /*AccountServicesDNSComponent,
-  AccountServicesDNSAddComponent,
+  DNSComponent,
+  DNSAddComponent,
   AccountServicesDNSUpdateComponent,
-  DnsService,*/
 
   // VPN
-  /*AccountServicesVPNComponent,*/
+  AccountServicesVPNComponent,
 
   // EFax
-  /*AccountServicesEFaxComponent,
-  AddOnsComponent*/
+  AccountServicesEFaxComponent,
+  AddOnsComponent
 } from './index';
 
 
@@ -53,21 +51,17 @@ export const AccountRoutes:RouterConfig = [
     component: AccountComponent,
     canActivate: [AuthGuard],
     children: [
-      /*{
-        path: 'dns/add', component: AccountServicesDNSAddComponent
+      {
+        path: 'dns/add', component: DNSAddComponent
         //, canActivate: [AuthGuard]
       },
       {path: 'dns/:id', component: AccountServicesDNSUpdateComponent},
       {
-        path: 'dns',
-        component: AccountServicesDNSComponent
-        //, canActivate: [AuthGuard]
+        path: 'dns', component: DNSComponent //, canActivate: [AuthGuard]
       },
 
       {path: 'vpn', component: AccountServicesVPNComponent},
-
       {path: 'efax', component: AccountServicesEFaxComponent},
-
       {path: 'apps/add-ons', component: AddOnsComponent},
 
       {path: 'plans', component: PlansComponent},
@@ -78,7 +72,7 @@ export const AccountRoutes:RouterConfig = [
       {path: 'transactions/:id', component: TransactionDetailsComponent},
       {path: 'payment/confirm', component: PaymentConfirmComponent},
       {path: 'payment/edit', component: PaymentEditComponent},
-      {path: 'payment', component: PaymentComponent},*/
+      {path: 'payment', component: PaymentComponent},
 
       {path: 'services', component: AccountServicesListComponent},
       {path: 'setting/changepassword', component: ChangePasswordComponent},
