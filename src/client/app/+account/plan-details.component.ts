@@ -11,7 +11,7 @@ import {UserService, Constants}          from '../shared/index';
 })
 
 export class PlanDetailsComponent {
-  PanelTitle:string = 'Plan details';
+  PanelTitle:string = 'Plan Details';
 
   constructor(private _userService:UserService,
               private _router:Router) {

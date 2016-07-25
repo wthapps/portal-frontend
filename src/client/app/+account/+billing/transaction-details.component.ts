@@ -18,7 +18,7 @@ import {LoadingService}                           from '../../partials/loading/l
 })
 
 export class TransactionDetailsComponent implements OnInit {
-  pageTitle:string = 'Transaction details';
+  pageTitle:string = 'Transaction Details';
   transaction: any = {
     amount: 0,
     merchant: '',

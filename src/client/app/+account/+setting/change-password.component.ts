@@ -28,7 +28,7 @@ import {
 })
 
 export class ChangePasswordComponent {
-  pageTitle:string = 'Change password';
+  pageTitle:string = 'Change Password';
   errorMessage:string = Constants.errorMessage.default;
 
   public form:FormGroup;

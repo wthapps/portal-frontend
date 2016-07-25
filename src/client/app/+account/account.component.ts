@@ -33,7 +33,7 @@ import {
   ]
 })
 export class AccountComponent implements OnInit, OnDestroy {
-  public pageTitle:string = 'Account setting';
+  public pageTitle:string = 'Account Settings';
   public menu:AccountMenuViewModel = null;
 
   constructor(private _streamEmitter:StreamEmitter) {

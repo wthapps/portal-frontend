@@ -27,5 +27,9 @@ export let Constants = {
   },
   errorMessage: {
     default: 'Internal Server Error'
+  },
+  patterns: {
+    slash: '/',
+    space: '%20';
   }
 };

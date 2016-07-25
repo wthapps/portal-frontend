@@ -21,7 +21,7 @@ import {BillingAddress}               from '../shared/models/billing-address.mod
 })
 
 export class BillingDetailsComponent implements OnInit {
-  PanelTitle:string = 'Billing details';
+  pageTitle:string = 'Billing Details';
   credit_card: CreditCard;
 
   constructor(

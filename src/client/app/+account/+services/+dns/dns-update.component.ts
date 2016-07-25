@@ -6,15 +6,16 @@ import
 {
   ROUTER_DIRECTIVES,
   OnActivate,
-  RouteSegment,
+  ActivatedRoute,
   Router
 }                             from '@angular/router';
 import {
-  FORM_DIRECTIVES,
+  REACTIVE_FORM_DIRECTIVES,
   FormBuilder,
-  ControlGroup,
+  FormGroup,
+  AbstractControl,
   Validators
-}                             from '@angular/common';
+}                             from '@angular/forms';
 import {
   DnsService
 }                             from './dns.service';
@@ -23,7 +24,7 @@ import {
   Type
 }                             from './record';
 import {
-  CustomValidators,
+  CustomValidator,
   UserService,
   Constants,
   HttpStatusCode,
@@ -36,68 +37,75 @@ import {
   templateUrl: 'dns-update.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    FORM_DIRECTIVES
+    REACTIVE_FORM_DIRECTIVES
   ]
 })
 
-export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
-  public pageTitle:string = 'Edit Host';
-  public errorMessage:string;
-  public types:Type[] = [
+export class DNSUpdateComponent implements OnInit, OnActivate {
+  pageTitle:string = 'Edit Host';
+  errorMessage:string;
+  types:Type[] = [
     {'value': 'A', 'name': 'IPv4'},
     {'value': 'AAAA', 'name': 'IPv6'}
   ];
-  public type:Type = new Type();
-  public Record:Record = new Record();
-  public group:ControlGroup;
-  private _id:number;
+  type:Type = new Type();
+  record: Record = new Record();  
+  hostEditForm: FormGroup = null;
+  host: AbstractControl = null;
+  ip: AbstractControl = null;
 
-  constructor(private _dnsService:DnsService,
-              private _router:Router,
-              private _builder:FormBuilder,
-              private _loadingService:LoadingService,
-              private _userService:UserService,
-              private _toastsService:ToastsService
-  ) {}
+  private selected_id: number = null;
+
+  constructor(private dnsService:DnsService,
+              private router:Router,
+              private route: ActivatedRoute,
+              private builder:FormBuilder,
+              private loadingService:LoadingService,
+              private userService:UserService,
+              private toastsService:ToastsService
+  ) {
+    this.hostForm = this.builder.group({
+      host: ['', Validators.compose([Validators.required, CustomValidator.ipHostFormat])],
+      ip: ['', Validators.compose([CustomValidator.ipHostFormat])]
+    });
+    this.host = this.hostForm.controls['host'];
+    this.ip = this.hostForm.controls['ip'];   
+  }
 
   ngOnInit():void {
-    if (!this._userService.loggedIn) {
-      this._router.navigateByUrl(`/login;${Constants.params.next}=${this._router._location.path().replace(/\//g, '\%20')}`);
-    }
+    this.route.params.subscribe((params) => {
+      this.selected_id = +params['id'];
+    });    
 
-    this._loadingService.start();
+    this.loadingService.start();
 
-    this.group = this._builder.group({
-      ip: ['',
-        Validators.compose([Validators.required, CustomValidators.ipHostFormat])
-      ],
-      host: ['',
-        Validators.compose([Validators.required, CustomValidators.ipHostFormat])
-      ],
-    });
-
-    this._dnsService.getHost(this._id).subscribe(
+    this.dnsService.getHost(this.selected_id).subscribe(
       result => {
-        this._loadingService.stop();
-        this.Record = result;
-        this.type = this.types.find(o => o.value == this.Record.type);
+        this.loadingService.stop();
+        this.record = result;
+        this.type = this.types.find(o => o.value == this.record.type);
+
+        // init data form
+        (<FormControl>this.host).updateValue(this.record.name);
+        (<FormControl>this.ip).updateValue(this.record.content);
+             
       },
       error => {
-        this._loadingService.stop();
-        if (error['status'] === HttpStatusCode.PaymentRequired) {
+        this.loadingService.stop();
+        if (error['status'] === Constants.HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
-        } else if (error['status'] === HttpStatusCode.Created) {
+        } else if (error['status'] === Constants.HttpStatusCode.Created) {
           this.errorMessage = 'Hostname has already been taken!';
         } else {
           this.errorMessage = 'Unable to edit the host!';
         }
-        this._toastsService.danger(this.errorMessage);
+        this.toastsService.danger(this.errorMessage);
       }
     );
   }
 
   onUpdateHost(domain, name, content) {
-    this._loadingService.start();
+    this.loadingService.start();
 
     //noinspection TypeScriptValidateJSTypes
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
@@ -118,22 +126,22 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
       type = 'AAAA';
     }
 
-    this.Record.domain_id = 0;
-    this.Record.name = name;
-    this.Record.type = type;
-    this.Record.content = content;
+    this.record.domain_id = 0;
+    this.record.name = name;
+    this.record.type = type;
+    this.record.content = content;
 
-    let body = JSON.stringify(this.Record);
+    let body = JSON.stringify(this.record);
 
-    this._dnsService.updateHost(body, this.Record.id).subscribe(
+    this.dnsService.updateHost(body, this.record.id).subscribe(
       result => {
-        this._loadingService.stop();
-        this._router.navigateByUrl('/account/dns');
+        this.loadingService.stop();
+        this.router.navigateByUrl('/account/dns');
       },
       error => {
-        this._loadingService.stop();
-        this._toastsService.danger(this.errorMessage);
-        if (error['status'] === HttpStatusCode.PaymentRequired) {
+        this.loadingService.stop();
+        this.toastsService.danger(this.errorMessage);
+        if (error['status'] === Constants.HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
         } else if (error['status'] === HttpStatusCode.Created) {
           this.errorMessage = 'Hostname has already been taken!';
@@ -142,10 +150,6 @@ export class AccountServicesDNSUpdateComponent implements OnInit, OnActivate {
         }
       }
     );
-  }
-
-  routerOnActivate(curr:RouteSegment):void {
-    this._id = Number(curr.getParam('id').toString());
   }
 
   onTypeChange(item) {

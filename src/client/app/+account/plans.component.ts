@@ -25,7 +25,7 @@ import {PlanProduct}                                from '../shared/models/plan-
 })
 
 export class PlansComponent implements OnInit {
-  PanelTitle:string = 'Choose plan';
+  PanelTitle:string = 'Plans Options';
   // TODO refactor below line
   paymentMethod: Object = {};
   selected_plan: string = 'wth_free';
@@ -98,32 +98,31 @@ export class PlansComponent implements OnInit {
   ];
 
   constructor(
-    private _router: Router,
-    private _userService: UserService,
-    private _toastsService: ToastsService,
-    private _loadingService: LoadingService,
-    private _dialogService: DialogService,
-    private _planService: PlanService
+    private router: Router,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService,
+    private dialogService: DialogService,
+    private planService: PlanService
 
 
   ) {
-    if (!this._userService.loggedIn) {
-      this._router.navigateByUrl(
-        `/login;${Constants.params.next}=${this._router.location.path().replace(/\//g, '\%20')}`
+    if (!this.userService.loggedIn) {
+      this.router.navigateByUrl(
+        `/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
       );
     }
   }
 
   ngOnInit() {
 
-    // this._planService.list('/plans')
-    //   .subscribe((response) => {
-    //     this.plans = response.data
-    //   },
-    //   error => {
+    this.planService.list('/plans')
+    .subscribe((response) => {
+      this.plans = response.data
+    },
+    error => {
 
-    //   });
-
+    });
   }
 
   plan_has_product(products: Product[], product_name: string): boolean {
@@ -134,34 +133,42 @@ export class PlansComponent implements OnInit {
   }
 
   confirm():void {
-    // this._router.navigateByUrl('account/setting/dashboard');
+    this.router.navigateByUrl('account/setting/dashboard');
   }
 
   public choosePlan(plan_id: string) {
-    if( plan_id != 'wth_free'){
-      this._router.navigateByUrl(
-        `account/payment;${Constants.string.next}=${this.router.location.path()
-    .replace(WthConstants.patterns.slash, WthConstants.patterns.space)}`);
+
+
+    if((plan_id != 'wth_free') && (this.userService.profile.has_payment_info == false)){
+      this.dialogService.activate(
+      'Please add payment method before choosing a plan', 'Finish signing up account info'
+      )
+      .then((responseOK) => {
+        if(responseOK) {   
+          this.router.navigate([`/account/payment`]);       
+          // this.router.navigate([`/account/payment;${Constants.string.next}=${this.router.location.path().replace(/\//, '%20')}`]);      
+        }
+      }
       return;
-    }
+    }   
 
     let body: string = JSON.stringify({plan_id});
 
-    this._dialogService.activate(
+    this.dialogService.activate(
       'Confirm upgrading to Basic plan. You will pay $9.99 per month', 'Update plan confirmation'
       )
       .then((responseOK) => {
         if(responseOK) {
-          this._loadingService.start();
-          this._userService.choosePlan(`users/${this._userService.profile.id}`, body)
+          this.loadingService.start();
+          this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
             .subscribe((response) => {
               this.selected_plan = plan_id;
-              this._toastsService.success(response.message);
-              this._loadingService.stop();
+              this.toastsService.success(response.message);
+              this.loadingService.stop();
             },
             error => {
-              this._toastsService.danger(error);
-              this._loadingService.stop();
+              this.toastsService.danger(error);
+              this.loadingService.stop();
             });
 
         }

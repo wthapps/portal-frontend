@@ -145,9 +145,9 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
 
     // billing address information
-    var cardholder_name = $('#cardholder-name');
-    var address_line_1 = $('#address-line-1');
-    var address_line_2 = $('#address-line-2');
+    var cardholder_name = $('#cardholder_name');
+    var address_line_1 = $('#address_line_1');
+    var address_line_2 = $('#address_line_2');
     var city = $('#city');
     var region = $('#region');
     var postcode = $('#postcode');
