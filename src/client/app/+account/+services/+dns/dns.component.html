@@ -22,7 +22,7 @@
         </td>
         <td>{{record.content}}</td>
         <td>{{record.type == 'A' ? 'IPv4' : 'IPv6'}}</td>
-        <td>{{record.updated_at | date:'dd-M-yyyy' : 'UTC'}} {{record.updated_at | date:'H:mm:ss' : 'UTC'}}</td>
+        <td>{{record.updated_at | date:'MMM dd, yyyy' : 'UTC'}} {{record.updated_at | date:'H:mm:ss' : 'UTC'}}</td>
         <td>
           <a class="btn btn-sm btn-primary"
              role="button"

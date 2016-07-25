@@ -34,7 +34,7 @@
         <label class="col-sm-2 control-label">IP Address (optional)</label>
 
         <div class="col-sm-10" [ngClass]="{ 'has-warning' : ip.touched && !ip.valid}">
-          <input type="text" class="form-control" id="ip" placeholder="127.0.0.1" #IP
+          <input type="text" class="form-control" id="ip" placeholder="127.0.0.1"
                  [formControl]="ip"
                  [ngClass]="{'has-loading': ip.pending}">
 

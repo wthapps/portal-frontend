@@ -28,7 +28,7 @@ export class DnsService {
 
   public getHosts():Observable<Record[]> {
     return this._service.get(`users/${this._userService.profile.id}/dns/records/`)
-      .map((response:Response) => {
+      .map(response => {
 
         let body = JSON.parse(response['_body']);
 
@@ -45,8 +45,8 @@ export class DnsService {
           return list;
         }
         return [];
-      })
-      .catch(this.handleError);
+      });
+      //.catch(this.handleError);
   }
 
   public addHost(body:string) {
@@ -57,7 +57,7 @@ export class DnsService {
   public deleteHost(id:number) {
     return this._service.delete(`users/${this._userService.profile.id}/dns/records/${id}`)
       .map(response => response.json())
-      .catch(this.handleError);
+      //.catch(this.handleError);
   }
 
   public updateHost(body:string, id:number) {
@@ -73,7 +73,7 @@ export class DnsService {
         }
         return new Record();
       })
-      .catch(this.handleError);
+      //.catch(this.handleError);
   }
 
   public getProduct(id:number) {
@@ -86,7 +86,7 @@ export class DnsService {
         }
         return new Product();
       })
-      .catch(this.handleError);
+      //.catch(this.handleError);
   }
 
   private handleError(error:Response) {

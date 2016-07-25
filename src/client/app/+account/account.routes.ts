@@ -29,7 +29,7 @@ import {
   // DNS
   DNSComponent,
   DNSAddComponent,
-  AccountServicesDNSUpdateComponent,
+  DNSUpdateComponent,
 
   // VPN
   AccountServicesVPNComponent,
@@ -55,7 +55,7 @@ export const AccountRoutes:RouterConfig = [
         path: 'dns/add', component: DNSAddComponent
         //, canActivate: [AuthGuard]
       },
-      {path: 'dns/:id', component: AccountServicesDNSUpdateComponent},
+      { path: 'dns/:id', component: DNSUpdateComponent},
       {
         path: 'dns', component: DNSComponent //, canActivate: [AuthGuard]
       },

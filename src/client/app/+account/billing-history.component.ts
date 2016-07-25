@@ -22,7 +22,7 @@ import {TransactionService}                       from './transaction.service';
 })
 
 export class BillingHistoryComponent implements OnInit {
-  PanelTitle:string = 'Billing history';
+  PanelTitle:string = 'Billing History';
   public transactions: any[] = [];
 
   constructor(

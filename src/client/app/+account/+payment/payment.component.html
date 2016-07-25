@@ -53,7 +53,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="form-group" [ngClass]="{'has-error': address_line_1.touched && !address_line_1.valid}">
-            <label for="address-line-1">Address line 1</label>
+            <label for="address_line_1">Address line 1</label>
             <input class="form-control" type="text" id="address_line_1" placeholder="Address line 1" 
                    [formControl]="address_line_1">
             <div *ngIf="address_line_1.touched && !address_line_1.valid">
@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="address-line-2">Address line 2
+            <label for="address_line_2">Address line 2
               <span class="optional">(optional)</span>
             </label>
             <input class="form-control" type="text" id="address_line_2" placeholder="Address line 2" 
