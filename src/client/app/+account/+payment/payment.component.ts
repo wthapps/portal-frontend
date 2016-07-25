@@ -100,7 +100,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
     // get data
     this.countries = this.countryService.countries;
-    if (this.userService.profile.credit_cards.length > 0) {
+    if ((this.userService.profile.credit_cards != null) && (this.userService.profile.credit_cards.length > 0)) {
       this.credit_card = this.userService.profile.credit_cards[0];
     } else {
       this.credit_card = new CreditCard({

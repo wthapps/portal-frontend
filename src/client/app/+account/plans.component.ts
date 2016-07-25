@@ -25,7 +25,7 @@ import {PlanProduct}                                from '../shared/models/plan-
 })
 
 export class PlansComponent implements OnInit {
-  PanelTitle:string = 'Plans Options';
+  pageTitle:string = 'Plan Options';
   // TODO refactor below line
   paymentMethod: Object = {};
   selected_plan: string = 'wth_free';
@@ -115,14 +115,13 @@ export class PlansComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.planService.list('/plans')
-    .subscribe((response) => {
-      this.plans = response.data;
-    },
-    error => {
-      console.log('get plans error', error);
-    });
+    // this.planService.list('/plans')
+    // .subscribe((response) => {
+    //   this.plans = response.data;
+    // },
+    // error => {
+    //   console.log('get plans error', error);
+    // });
   }
 
   plan_has_product(products: Product[], product_name: string): boolean {

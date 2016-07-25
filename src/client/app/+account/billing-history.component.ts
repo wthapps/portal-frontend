@@ -22,8 +22,8 @@ import {TransactionService}                       from './transaction.service';
 })
 
 export class BillingHistoryComponent implements OnInit {
-  PanelTitle:string = 'Billing History';
-  public transactions: any[] = [];
+  pageTitle:string = 'Billing History';
+  transactions: any[] = [];
 
   constructor(
     private _userService:UserService,

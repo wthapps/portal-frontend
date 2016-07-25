@@ -28,7 +28,7 @@ import {
 })
 
 export class MyAccountComponent {
-  pageTitle:string = 'Account setting';
+  pageTitle:string = 'Account Settings';
   errorMessage:string = Constants.errorMessage.default;
   sex:number = 0;
   birthdayDate:any = {
