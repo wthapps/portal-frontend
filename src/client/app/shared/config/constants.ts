@@ -30,6 +30,6 @@ export let Constants = {
   },
   patterns: {
     slash: '/',
-    space: '%20';
+    space: '%20'
   }
 };

@@ -118,10 +118,10 @@ export class PlansComponent implements OnInit {
 
     this.planService.list('/plans')
     .subscribe((response) => {
-      this.plans = response.data
+      this.plans = response.data;
     },
     error => {
-
+      console.log('get plans error', error);
     });
   }
 
@@ -139,18 +139,18 @@ export class PlansComponent implements OnInit {
   public choosePlan(plan_id: string) {
 
 
-    if((plan_id != 'wth_free') && (this.userService.profile.has_payment_info == false)){
+    if((plan_id != 'wth_free') && (this.userService.profile.has_payment_info == false)) {
       this.dialogService.activate(
       'Please add payment method before choosing a plan', 'Finish signing up account info'
       )
       .then((responseOK) => {
-        if(responseOK) {   
-          this.router.navigate([`/account/payment`]);       
-          // this.router.navigate([`/account/payment;${Constants.string.next}=${this.router.location.path().replace(/\//, '%20')}`]);      
+        if(responseOK) {
+          this.router.navigate([`/account/payment`]);
+          // this.router.navigate([`/account/payment;${Constants.string.next}=${this.router.location.path().replace(/\//, '%20')}`]);
         }
-      }
+      });
       return;
-    }   
+    }
 
     let body: string = JSON.stringify({plan_id});
 
@@ -170,7 +170,6 @@ export class PlansComponent implements OnInit {
               this.toastsService.danger(error);
               this.loadingService.stop();
             });
-
         }
       });
   }
