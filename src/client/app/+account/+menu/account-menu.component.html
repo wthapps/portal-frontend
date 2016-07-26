@@ -6,9 +6,9 @@
         </div>
         <!-- List group -->
         <ul class="list-group">
-            <li class="list-group-item"><a [routerLink]="['/account/setting/dashboard']">Home</a></li>
-            <li class="list-group-item"><a [routerLink]="['/account/setting/profile']">Account Settings</a></li>
-            <li class="list-group-item"><a [routerLink]="['/account/setting/changepassword']">Change Password</a></li>
+            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/setting/dashboard']">Home</a></li>
+            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/setting/profile']">Account Settings</a></li>
+            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/setting/changepassword']">Change Password</a></li>
         </ul>
     </div>
 
@@ -19,9 +19,9 @@
         </div>
         <!-- List group -->
         <ul class="list-group">
-            <li class="list-group-item"><a [routerLink]="['/account/plans']">Plans</a></li>
-            <li class="list-group-item"><a [routerLink]="['/account/billing-details']">Billing Details</a></li>
-            <li class="list-group-item"><a [routerLink]="['/account/billing-history']">Billing History</a></li>
+            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/plans']">Plans</a></li>
+            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/billing-details']">Billing Details</a></li>
+            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/billing-history']">Billing History</a></li>
         </ul>
     </div>
 
@@ -30,7 +30,7 @@
             <h3 class="panel-title">My Services and Add-ons</h3>
         </div>
         <ul class="list-group">
-            <li class="list-group-item"
+            <li [routerLinkActive]="['active']" class="list-group-item"
                 *ngFor="let item of context.user_products">
                 <a [routerLink]="[item.router_link]">{{item.display_name}}</a>
             </li>
