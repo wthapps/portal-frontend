@@ -25,7 +25,7 @@ import {PlanProduct}                                from '../shared/models/plan-
 })
 
 export class PlansComponent implements OnInit {
-  PanelTitle:string = 'Plans Options';
+  pageTitle:string = 'Plan Options';
   // TODO refactor below line
   paymentMethod: Object = {};
   selected_plan: string = 'wth_free';
@@ -107,22 +107,17 @@ export class PlansComponent implements OnInit {
 
 
   ) {
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(
-        `/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-      );
-    }
+    
   }
 
   ngOnInit() {
-
-    this.planService.list('/plans')
-    .subscribe((response) => {
-      this.plans = response.data
-    },
-    error => {
-
-    });
+    // this.planService.list('/plans')
+    // .subscribe((response) => {
+    //   this.plans = response.data;
+    // },
+    // error => {
+    //   console.log('get plans error', error);
+    // });
   }
 
   plan_has_product(products: Product[], product_name: string): boolean {
@@ -139,18 +134,18 @@ export class PlansComponent implements OnInit {
   public choosePlan(plan_id: string) {
 
 
-    if((plan_id != 'wth_free') && (this.userService.profile.has_payment_info == false)){
+    if((plan_id != 'wth_free') && (this.userService.profile.has_payment_info == false)) {
       this.dialogService.activate(
       'Please add payment method before choosing a plan', 'Finish signing up account info'
       )
       .then((responseOK) => {
-        if(responseOK) {   
-          this.router.navigate([`/account/payment`]);       
-          // this.router.navigate([`/account/payment;${Constants.string.next}=${this.router.location.path().replace(/\//, '%20')}`]);      
+        if(responseOK) {
+          this.router.navigate([`/account/payment`]);
+          // this.router.navigate([`/account/payment;${Constants.string.next}=${this.router.location.path().replace(/\//, '%20')}`]);
         }
-      }
+      });
       return;
-    }   
+    }
 
     let body: string = JSON.stringify({plan_id});
 
@@ -170,7 +165,6 @@ export class PlansComponent implements OnInit {
               this.toastsService.danger(error);
               this.loadingService.stop();
             });
-
         }
       });
   }

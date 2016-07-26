@@ -98,7 +98,7 @@ export class DNSComponent implements OnInit {
     );
   }
 
-  onDeleteHost(event, id:number):void {
+  onDeleteHost(event: any, id:number):void {
     event.preventDefault();
 
     if (this.inValidPlan) {
@@ -130,7 +130,7 @@ export class DNSComponent implements OnInit {
     }
   }
 
-  onEditHost(event, id:number):void {
+  onEditHost(event: any, id:number):void {
     event.preventDefault();
     if (this.inValidPlan) {
       this.showUpgrading();
@@ -140,7 +140,7 @@ export class DNSComponent implements OnInit {
     }
   }
 
-  onAddHost(event):void {
+  onAddHost(event: any):void {
     event.preventDefault();
     if (this.inValidPlan) {
       this.showUpgrading();
@@ -150,7 +150,7 @@ export class DNSComponent implements OnInit {
     }
   }
 
-  onDelete(event):void {
+  onDelete(event: any):void {
     event.preventDefault();
     this.dialogService.activate('Are you sure to delete Dynamic DNS service ?', 'Dynamic DNS service', 'Yes', 'No').then((responseOK) => {
       if (responseOK) {

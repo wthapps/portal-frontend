@@ -1,9 +1,9 @@
 import {
   Injectable
 }                           from '@angular/core';
-import {
-  Response
-}                           from '@angular/http';
+// import {
+//   Response
+// }                           from '@angular/http';
 
 import {
   Observable
@@ -56,7 +56,7 @@ export class DnsService {
 
   public deleteHost(id:number) {
     return this._service.delete(`users/${this._userService.profile.id}/dns/records/${id}`)
-      .map(response => response.json())
+      .map(response => response.json());
       //.catch(this.handleError);
   }
 
@@ -72,7 +72,7 @@ export class DnsService {
           return <Record>result.data;
         }
         return new Record();
-      })
+      });
       //.catch(this.handleError);
   }
 
@@ -85,11 +85,11 @@ export class DnsService {
           return <Product>result.data;
         }
         return new Product();
-      })
+      });
       //.catch(this.handleError);
   }
 
-  private handleError(error:Response) {
-    return Observable.throw(error);
-  }
+  // private handleError(error:Response) {
+  //   return Observable.throw(error);
+  // }
 }

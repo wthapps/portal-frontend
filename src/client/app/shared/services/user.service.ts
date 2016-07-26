@@ -3,19 +3,21 @@ import {Observable}     from 'rxjs/Observable';
 import {Http, Response} from '@angular/http';
 import {Cookie}         from 'ng2-cookies/ng2-cookies';
 import {ApiBaseService} from './apibase.service';
+import {User}           from '../models/user.model';
 
 @Injectable()
 export class UserService extends ApiBaseService {
 
-  public loggedIn: boolean = false;
-  public profile: User = null;
+  loggedIn: boolean = false;
+  profile: User = null;
 
   constructor(http: Http) {
     super(http);
     this.readUserInfo();
   }
 
-  public login(path: string, body: string): Observable<Response> {
+  login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
+    // public login(path: string, body: string, useJwt?: boolean = true) {
     return super.post(path, body)
       .map(res => res.json())
       .map((res) => {
@@ -26,7 +28,7 @@ export class UserService extends ApiBaseService {
       });
   }
 
-  public logout(path: string): Observable<Response> {
+  logout(path: string): Observable<Response> {
     // public logout(path: string) {
     return super.delete(path)
       .map(res => res.json())
@@ -39,7 +41,7 @@ export class UserService extends ApiBaseService {
   /*
    * `sign up` new an account.
    */
-  public signup(path: string, body: string): Observable<Response> {
+  signup(path: string, body: string): Observable<Response> {
     return super.post(path, body)
       .map(res => res.json())
       .map((res) => {
@@ -54,7 +56,7 @@ export class UserService extends ApiBaseService {
   * update user info
   * is_patch: You decide updating whole resource or a part of. Default value is false
   */
-  public update(path: string, body: string): Observable<Response> {
+  update(path: string, body: string): Observable<Response> {
     // if(is_patch){
       return super.patch(path, body)
         .map(res => res.json())
@@ -86,7 +88,7 @@ export class UserService extends ApiBaseService {
   /*
    * change current password
    */
-  public changePassword(path: string, body: string): Observable<Response> {
+  changePassword(path: string, body: string): Observable<Response> {
     return super.patch(path, body)
       .map(res => res.json())
       .map((res) => {
@@ -97,7 +99,7 @@ export class UserService extends ApiBaseService {
       });
   }
 
-  public choosePlan(path: string, body: string): Observable<Response> {
+  choosePlan(path: string, body: string): Observable<Response> {
     return super.put(path, body)
       .map(res => res.json())
       .map((res) => {
@@ -109,7 +111,7 @@ export class UserService extends ApiBaseService {
       });
   }
 
-  public deleteUserInfo() {
+  deleteUserInfo() {
     Cookie.delete('jwt');
     Cookie.delete('logged_in');
     Cookie.delete('profile');
@@ -117,7 +119,7 @@ export class UserService extends ApiBaseService {
     this.profile = null;
   }
 
-  private storeUserInfo(response:any) {
+  private storeUserInfo(response: any) {
     // TODO move string constants to config file
     Cookie.set('jwt', response.token);
     Cookie.set('profile', JSON.stringify(response.data));
@@ -137,32 +139,4 @@ export class UserService extends ApiBaseService {
 
 }
 
-export class IBillingAddress {
-  constructor(
-    public address_line_1: string,
-    public address_line_2: string,
-    public country: string,
-    public city: string,
-    public postcode: string,
-    public region: string
-  ) {}
-}
 
-export class User {
-  constructor(
-    public id: number,
-    public first_name: string,
-    public last_name: string,
-    public email: string,
-    public password: string,
-    public birthday: string,
-    public birthday_day: string,
-    public birthday_month: string,
-    public birthday_year: string,
-    public sex: number,
-    public accepted: boolean,
-    public has_payment_info: boolean,
-    public billing_address: Object,
-    public credit_cards:Array<any>
-  ) {}
-}

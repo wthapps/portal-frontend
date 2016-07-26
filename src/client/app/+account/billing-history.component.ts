@@ -22,8 +22,8 @@ import {TransactionService}                       from './transaction.service';
 })
 
 export class BillingHistoryComponent implements OnInit {
-  PanelTitle:string = 'Billing History';
-  public transactions: any[] = [];
+  pageTitle:string = 'Billing History';
+  transactions: any[] = [];
 
   constructor(
     private _userService:UserService,
@@ -31,9 +31,7 @@ export class BillingHistoryComponent implements OnInit {
     private _transactionService: TransactionService,
     private _loadingService: LoadingService
   ) {
-    if (!this._userService.loggedIn) {
-      this._router.navigateByUrl(`/login;${Constants.params.next}=${this._router.location.path().replace(/\//g, '\%20')}`);
-    }
+    
   }
 
   ngOnInit(): void {

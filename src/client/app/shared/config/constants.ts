@@ -1,7 +1,7 @@
 export let Constants = {
   baseUrls: {
-    apiBaseService: 'http://localhost:4000/',
-    // apiBaseService: 'http://52.221.221.245:4000/',
+    // apiBaseService: 'http://localhost:4000/',
+    apiBaseService: 'http://52.221.221.245:4000/',
   },
   operations: {
     update: 'update',
@@ -30,6 +30,6 @@ export let Constants = {
   },
   patterns: {
     slash: '/',
-    space: '%20';
+    space: '%20'
   }
 };

@@ -9,7 +9,7 @@
           <div class="form-container">
             <div class="form-group" [ngClass]="{'has-error': cardholder_name.touched && !cardholder_name.valid}">
               <label for="cardholder_name">Name on card</label>
-              <input class="form-control" type="text" id="cardholder_name" placeholder="Name on card" 
+              <input class="form-control" type="text" id="cardholder_name" placeholder="Name on card"
                      [formControl]="cardholder_name">
               <div *ngIf="cardholder_name.touched && !cardholder_name.valid">
                 <span class="help-block" *ngIf="cardholder_name.errors.required">Name on card is required</span>
@@ -54,7 +54,7 @@
         <div class="col-sm-6">
           <div class="form-group" [ngClass]="{'has-error': address_line_1.touched && !address_line_1.valid}">
             <label for="address_line_1">Address line 1</label>
-            <input class="form-control" type="text" id="address_line_1" placeholder="Address line 1" 
+            <input class="form-control" type="text" id="address_line_1" placeholder="Address line 1"
                    [formControl]="address_line_1">
             <div *ngIf="address_line_1.touched && !address_line_1.valid">
               <span class="help-block" *ngIf="address_line_1.errors.required">Address line 1 is required</span>
@@ -64,7 +64,7 @@
             <label for="address_line_2">Address line 2
               <span class="optional">(optional)</span>
             </label>
-            <input class="form-control" type="text" id="address_line_2" placeholder="Address line 2" 
+            <input class="form-control" type="text" id="address_line_2" placeholder="Address line 2"
                    [formControl]="address_line_2">
           </div>
         </div>
@@ -123,9 +123,9 @@
     </label>
   </div> -->
 
-  <div class="text-center mt20">
-    <a href="javascript:;" (click)="onCancel()" class="btn btn-default mr10">Cancel</a>
+  <div class="text-left mt20">
     <button id="button-pay" class="btn btn-primary ml10" type="submit" [disabled]="!paymentForm.valid">{{button_text}}</button>
+    <a href="javascript:;" (click)="onCancel()" class="btn btn-default mr10">Cancel</a>
   </div>
 
 </form>

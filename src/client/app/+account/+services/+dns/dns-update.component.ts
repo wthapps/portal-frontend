@@ -5,7 +5,6 @@ import {
 import
 {
   ROUTER_DIRECTIVES,
-  OnActivate,
   ActivatedRoute,
   Router
 }                             from '@angular/router';
@@ -13,6 +12,7 @@ import {
   REACTIVE_FORM_DIRECTIVES,
   FormBuilder,
   FormGroup,
+  FormControl,
   AbstractControl,
   Validators
 }                             from '@angular/forms';
@@ -27,7 +27,6 @@ import {
   CustomValidator,
   UserService,
   Constants,
-  HttpStatusCode,
   ToastsService,
   LoadingService
 }                             from '../../../shared/index';
@@ -41,7 +40,7 @@ import {
   ]
 })
 
-export class DNSUpdateComponent implements OnInit, OnActivate {
+export class DNSUpdateComponent implements OnInit {
   pageTitle:string = 'Edit Host';
   errorMessage:string;
   types:Type[] = [
@@ -49,8 +48,8 @@ export class DNSUpdateComponent implements OnInit, OnActivate {
     {'value': 'AAAA', 'name': 'IPv6'}
   ];
   type:Type = new Type();
-  record: Record = new Record();  
-  hostEditForm: FormGroup = null;
+  record: Record = new Record();
+  hostForm: FormGroup = null;
   host: AbstractControl = null;
   ip: AbstractControl = null;
 
@@ -69,13 +68,13 @@ export class DNSUpdateComponent implements OnInit, OnActivate {
       ip: ['', Validators.compose([CustomValidator.ipHostFormat])]
     });
     this.host = this.hostForm.controls['host'];
-    this.ip = this.hostForm.controls['ip'];   
+    this.ip = this.hostForm.controls['ip'];
   }
 
   ngOnInit():void {
     this.route.params.subscribe((params) => {
       this.selected_id = +params['id'];
-    });    
+    });
 
     this.loadingService.start();
 
@@ -88,7 +87,7 @@ export class DNSUpdateComponent implements OnInit, OnActivate {
         // init data form
         (<FormControl>this.host).updateValue(this.record.name);
         (<FormControl>this.ip).updateValue(this.record.content);
-             
+
       },
       error => {
         this.loadingService.stop();
@@ -143,7 +142,7 @@ export class DNSUpdateComponent implements OnInit, OnActivate {
         this.toastsService.danger(this.errorMessage);
         if (error['status'] === Constants.HttpStatusCode.PaymentRequired) {
           this.errorMessage = 'Your account have expired!';
-        } else if (error['status'] === HttpStatusCode.Created) {
+        } else if (error['status'] === Constants.HttpStatusCode.Created) {
           this.errorMessage = 'Hostname has already been taken!';
         } else {
           this.errorMessage = 'Unable to edit the host!';
