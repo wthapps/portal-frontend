@@ -1,6 +1,5 @@
 import {Component}                    from '@angular/core';
-import {ROUTER_DIRECTIVES, Router}    from '@angular/router';
-import {UserService, Constants}          from '../shared/index';
+import {ROUTER_DIRECTIVES}            from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -12,11 +11,4 @@ import {UserService, Constants}          from '../shared/index';
 
 export class PlanDetailsComponent {
   PanelTitle:string = 'Plan Details';
-
-  constructor(private _userService:UserService,
-              private _router:Router) {
-    if (!this._userService.loggedIn) {
-      this._router.navigateByUrl(`/login;${Constants.params.next}=${this._router.location.path().replace(/\//g, '\%20')}`);
-    }
-  }
 }

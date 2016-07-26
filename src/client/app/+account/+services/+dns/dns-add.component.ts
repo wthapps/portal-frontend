@@ -50,7 +50,7 @@ export class DNSAddComponent implements OnInit {
               private userService:UserService) {
   }
 
-  ngOnInit():void {    
+  ngOnInit():void {
 
     this.hostForm = this.builder.group({
       host: ['', Validators.compose([Validators.required, CustomValidator.ipHostFormat])],
@@ -61,11 +61,12 @@ export class DNSAddComponent implements OnInit {
     this.ip = this.hostForm.controls['ip'];
   }
 
-  onAddNew(hostname, name, content?:string = '127.0.0.1', type?:string = 'A'):void {
+  onAddNew(hostname:string, name:string, content:string = '127.0.0.1', type:string = 'A'):void {
     this.loadingService.start();
 
-    //noinspection TypeScriptValidateJSTypes
+    // tslint:disable-next-line
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
+    // tslint:disable-next-line
     let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
 
     if (content.length === 0) {

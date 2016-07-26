@@ -48,21 +48,20 @@ export class DNSUpdateComponent implements OnInit {
     {'value': 'AAAA', 'name': 'IPv6'}
   ];
   type:Type = new Type();
-  record: Record = new Record();
-  hostForm: FormGroup = null;
-  host: AbstractControl = null;
-  ip: AbstractControl = null;
+  record:Record = new Record();
+  hostForm:FormGroup = null;
+  host:AbstractControl = null;
+  ip:AbstractControl = null;
 
-  private selected_id: number = null;
+  private selected_id:number = null;
 
   constructor(private dnsService:DnsService,
               private router:Router,
-              private route: ActivatedRoute,
+              private route:ActivatedRoute,
               private builder:FormBuilder,
               private loadingService:LoadingService,
               private userService:UserService,
-              private toastsService:ToastsService
-  ) {
+              private toastsService:ToastsService) {
     this.hostForm = this.builder.group({
       host: ['', Validators.compose([Validators.required, CustomValidator.ipHostFormat])],
       ip: ['', Validators.compose([CustomValidator.ipHostFormat])]
@@ -103,11 +102,12 @@ export class DNSUpdateComponent implements OnInit {
     );
   }
 
-  onUpdateHost(domain, name, content) {
+  onUpdateHost(domain:string, name:string, content:string) {
     this.loadingService.start();
 
-    //noinspection TypeScriptValidateJSTypes
+    // tslint:disable-next-line
     let ipV4 = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/;
+    // tslint:disable-next-line
     let ipV6 = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
 
     let type = 'A';
@@ -151,7 +151,7 @@ export class DNSUpdateComponent implements OnInit {
     );
   }
 
-  onTypeChange(item) {
+  onTypeChange(item:string) {
     this.type = this.types.find(o => o.value == item);
   }
 }

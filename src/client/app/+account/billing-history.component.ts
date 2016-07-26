@@ -2,7 +2,6 @@ import {Component, OnInit}   from '@angular/core';
 import {ROUTER_DIRECTIVES, Router}                from '@angular/router';
 import {
   UserService,
-  Constants,
   LoadingService
 }                                                 from '../shared/index';
 import {TransactionService}                       from './transaction.service';
@@ -31,13 +30,12 @@ export class BillingHistoryComponent implements OnInit {
     private _transactionService: TransactionService,
     private _loadingService: LoadingService
   ) {
-    
   }
 
   ngOnInit(): void {
     this._loadingService.start();
     this._transactionService.list(`users/${this._userService.profile.id}/transactions`)
-      .subscribe((response) => {
+      .subscribe((response:any) => {
         this.transactions = response.data;
         this.transactions.map((t) => {
           t.created_at = new Date(t.created_at);

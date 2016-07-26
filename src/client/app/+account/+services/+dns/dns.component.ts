@@ -52,11 +52,6 @@ export class DNSComponent implements OnInit {
   }
 
   ngOnInit():void {
-
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(`/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`);
-    }
-
     this.loadingService.start();
     this.inValidPlan = false;
     this.dnsService.getHosts().subscribe(

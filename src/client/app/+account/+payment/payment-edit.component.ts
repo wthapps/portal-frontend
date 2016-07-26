@@ -50,10 +50,6 @@ export class PaymentEditComponent implements OnInit {
     private _builder: FormBuilder,
     private _zone: NgZone
   ) {
-    if (!this._userService.loggedIn) {
-      this._router.navigateByUrl(`/login;${Constants.string.next}=${this._router.location.path().replace(/\//g, '\%20')}`);
-    }
-
     this.countries = this._countries.countries;
 
   }

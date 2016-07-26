@@ -2,12 +2,12 @@ import {
   Component,
   OnInit,
   ElementRef
-}                                                 from '@angular/core';
+}                                                   from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute}  from '@angular/router';
-import {Constants, UserService, LoadingService}     from '../../shared/index';
-import {TransactionService}                       from '../transaction.service';
+import {UserService, LoadingService}                from '../../shared/index';
+import {TransactionService}                         from '../transaction.service';
 
-
+declare var $:any;
 
 @Component({
   moduleId: module.id,
@@ -62,11 +62,6 @@ export class ReceiptComponent implements OnInit {
     private loadingService: LoadingService,
     private _el:ElementRef
   ) {
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(
-        `/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-      );
-    }
   }
 
   ngOnInit(): void {
@@ -77,7 +72,7 @@ export class ReceiptComponent implements OnInit {
 
     this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions/${this.trans_id}`)
-      .subscribe((response) => {
+      .subscribe((response:any) => {
         this.transaction = response.data;
         this.transaction.created_at = new Date(response.data.created_at);
         this.loadingService.stop();

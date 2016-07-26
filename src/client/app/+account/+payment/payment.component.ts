@@ -20,6 +20,7 @@ import {CreditCard}                   from '../../shared/models/credit-card.mode
 import {BillingAddress}               from '../../shared/models/billing-address.model';
 
 declare var braintree:any;
+declare var $:any;
 
 @Component({
   moduleId: module.id,
@@ -67,9 +68,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     private toastsService:ToastsService,
     private builder: FormBuilder,
     private zone: NgZone
-
   ) {
-
   }
 
   topMessageShow():void {
@@ -82,11 +81,6 @@ export class PaymentComponent implements AfterViewInit, OnInit {
        this.next = params['next'];
        this.operation = params['operation'];
     });
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(
-        `/login;${Constants.string.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-      );
-    }
 
     // initialize billing details info
     switch (this.operation) {
@@ -313,7 +307,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   private create(_this:any, body:string) {
     _this.paymentService.create(`users/${_this.userService.profile.id}/payments`, body)
     // _this._userService.signup(`users/${_this._userService.profile.id,}/payments`, body)
-      .subscribe((response) => {
+      .subscribe((response:any) => {
           _this.loaddingService.stop();
           if (response.success) { // TODO refactor this code in server
             _this.userService.profile.has_payment_info = true;
@@ -330,7 +324,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           }
           _this.toastsService.danger(response.message);
         },
-        error => {
+        (error:any) => {
           _this.loaddingService.stop();
           _this.toastsService.danger(error);
           console.log('Add card error:', error);
@@ -341,7 +335,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
   private update(_this:any, body:string) {
     _this.paymentService.update(`users/${_this.userService.profile.id}/payments/1`, body)
-      .subscribe((response) => {
+      .subscribe((response:any) => {
           _this.loaddingService.stop();
           if (response.success) {
             _this.userService.profile.has_payment_info = true;
@@ -354,7 +348,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           }
           _this.toastsService.danger(response.message);
         },
-        error => {
+        (error:any) => {
           _this.loaddingService.stop();
           _this.toastsService.danger(error);
           console.log('Add card error:', error);

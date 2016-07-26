@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit }                        from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute}  from '@angular/router';
-import {UserService, Constants}                      from '../../shared/index';
-import {TransactionService}                       from '../transaction.service';
-import {LoadingService}                           from '../../partials/loading/loading.service';
+import {UserService}                                from '../../shared/index';
+import {TransactionService}                         from '../transaction.service';
+import {LoadingService}                             from '../../partials/loading/loading.service';
 
 
 @Component({
@@ -56,11 +56,6 @@ export class TransactionDetailsComponent implements OnInit {
     private transactionService: TransactionService,
     private loadingService: LoadingService
   ) {
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(
-        `/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-      );
-    }
   }
 
   ngOnInit(): void {
@@ -71,7 +66,7 @@ export class TransactionDetailsComponent implements OnInit {
 
     this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions/${this.trans_id}`)
-      .subscribe((response) => {
+      .subscribe((response:any) => {
           this.transaction = response.data;
           this.transaction.created_at = new Date(response.data.created_at);
           this.loadingService.stop();

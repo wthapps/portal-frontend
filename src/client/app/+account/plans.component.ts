@@ -2,7 +2,6 @@ import {Component, OnInit}                          from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}                  from '@angular/router';
 import {
   UserService,
-  Constants,
   ToastsService,
   DialogService,
   LoadingService
@@ -104,10 +103,7 @@ export class PlansComponent implements OnInit {
     private loadingService: LoadingService,
     private dialogService: DialogService,
     private planService: PlanService
-
-
   ) {
-    
   }
 
   ngOnInit() {
@@ -156,7 +152,7 @@ export class PlansComponent implements OnInit {
         if(responseOK) {
           this.loadingService.start();
           this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
-            .subscribe((response) => {
+            .subscribe((response:any) => {
               this.selected_plan = plan_id;
               this.toastsService.success(response.message);
               this.loadingService.stop();

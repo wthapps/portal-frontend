@@ -1,7 +1,6 @@
 import {Component, OnInit}            from '@angular/core';
 import {ROUTER_DIRECTIVES, Router}    from '@angular/router';
 import {
-  Constants,
   UserService,
   LoadingService,
   DialogService,
@@ -31,7 +30,6 @@ export class BillingDetailsComponent implements OnInit {
     private dialogService: DialogService,
     private toastsService: ToastsService
   ) {
-    
   }
 
   ngOnInit(): void {
@@ -42,12 +40,12 @@ export class BillingDetailsComponent implements OnInit {
     }
   }
 
-  onEdit(event: any): void {
+  /*onEdit(event: any): void {
     event.preventDefault();
     this.router.navigateByUrl(
       `/account/payment;operation=edit;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
     );
-  }
+  }*/
 
   onDelete(event: any): void {
     event.preventDefault();

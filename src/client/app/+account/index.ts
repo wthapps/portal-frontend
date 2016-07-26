@@ -60,7 +60,7 @@ export * from './+services/+efax/efax.component';
 /*
 * Add-ons
 */
-// export * from './+apps/add-ons.component';
+export * from './+apps/add-ons.component';
 
 /*
  * Always put them at the bottom
