@@ -39,7 +39,7 @@ import {
 
 export class AccountDashboardComponent implements OnInit, OnDestroy {
   public user_products_context:DashboardUserProductsViewModel;
-
+  plan_name: string = '';
   constructor(private _router:Router,
               private _userService:UserService,
               private _streamEmitter:StreamEmitter,
@@ -49,6 +49,7 @@ export class AccountDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit():void {
     this.load();
+    this.plan_name = this._userService.profile.plan_id == 'wth_free' ? 'Free' : 'Deluxe';
   }
 
   ngOnDestroy() {

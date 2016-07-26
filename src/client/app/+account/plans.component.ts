@@ -40,7 +40,7 @@ export class PlansComponent implements OnInit {
      new Plan({
        id: 2,
        str_id: 'wth_basic',
-       name: 'Basic',
+       name: 'Duluxe',
        description: '$9.99 all apps an services',
        price: 9.99,
        currency_iso_code: 'USD'
