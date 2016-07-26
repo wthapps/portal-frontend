@@ -1,7 +1,8 @@
+import {Config}                           from './env.config';
+
 export let Constants = {
   baseUrls: {
-    apiBaseService: 'http://localhost:4000/',
-    // apiBaseService: 'http://52.221.221.245:4000/',
+    apiBaseService: Config.API
   },
   operations: {
     update: 'update',
