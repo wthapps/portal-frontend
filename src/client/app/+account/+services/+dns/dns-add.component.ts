@@ -50,12 +50,7 @@ export class DNSAddComponent implements OnInit {
               private userService:UserService) {
   }
 
-  ngOnInit():void {
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(
-        `/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-      );
-    }
+  ngOnInit():void {    
 
     this.hostForm = this.builder.group({
       host: ['', Validators.compose([Validators.required, CustomValidator.ipHostFormat])],

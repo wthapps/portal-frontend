@@ -3,7 +3,7 @@ import {Observable}     from 'rxjs/Observable';
 import {Http, Response} from '@angular/http';
 import {Cookie}         from 'ng2-cookies/ng2-cookies';
 import {ApiBaseService} from './apibase.service';
-import {User}           from "../models/user.model";
+import {User}           from '../models/user.model';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -16,7 +16,7 @@ export class UserService extends ApiBaseService {
     this.readUserInfo();
   }
 
-  login(path: string, body: string, useJwt?: boolean = true): Observable<Response> {
+  login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
     // public login(path: string, body: string, useJwt?: boolean = true) {
     return super.post(path, body)
       .map(res => res.json())
@@ -119,7 +119,7 @@ export class UserService extends ApiBaseService {
     this.profile = null;
   }
 
-  private storeUserInfo(response) {
+  private storeUserInfo(response: any) {
     // TODO move string constants to config file
     Cookie.set('jwt', response.token);
     Cookie.set('profile', JSON.stringify(response.data));
@@ -131,14 +131,6 @@ export class UserService extends ApiBaseService {
   private readUserInfo() {
     this.profile = JSON.parse(Cookie.get('profile'));
     this.loggedIn = Boolean(Cookie.get('logged_in'));
-  }
-
-  public deleteUserInfo() {
-    Cookie.delete('jwt');
-    Cookie.delete('logged_in');
-    Cookie.delete('profile');
-    this.loggedIn = false;
-    this.profile = null;
   }
 
   private updateProfile(profile: Object) {

@@ -107,11 +107,7 @@ export class PlansComponent implements OnInit {
 
 
   ) {
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(
-        `/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-      );
-    }
+    
   }
 
   ngOnInit() {

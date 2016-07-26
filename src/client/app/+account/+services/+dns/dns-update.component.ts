@@ -5,7 +5,6 @@ import {
 import
 {
   ROUTER_DIRECTIVES,
-  OnActivate,
   ActivatedRoute,
   Router
 }                             from '@angular/router';
@@ -41,7 +40,7 @@ import {
   ]
 })
 
-export class DNSUpdateComponent implements OnInit, OnActivate {
+export class DNSUpdateComponent implements OnInit {
   pageTitle:string = 'Edit Host';
   errorMessage:string;
   types:Type[] = [

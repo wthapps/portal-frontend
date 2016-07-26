@@ -31,11 +31,7 @@ export class BillingDetailsComponent implements OnInit {
     private dialogService: DialogService,
     private toastsService: ToastsService
   ) {
-    if (!this.userService.loggedIn) {
-      this.router.navigateByUrl(
-        `/login;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-      );
-    }
+    
   }
 
   ngOnInit(): void {
