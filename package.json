@@ -6,6 +6,7 @@
     "url": "https://github.com/mgechev/angular2-seed"
   },
   "scripts": {
+    "build.predev": "cd dist/dev\nln -s ../../node_modules/ ./",
     "build.dev": "gulp build.dev --color",
     "build.dev.watch": "gulp build.dev.watch --color",
     "build.e2e": "gulp build.e2e --color",
