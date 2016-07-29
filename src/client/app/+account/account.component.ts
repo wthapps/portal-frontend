@@ -1,56 +1,29 @@
 import {
-  Component,
-  OnInit,
-  OnDestroy
+  Component
 }                                 from '@angular/core';
 import {
   ROUTER_DIRECTIVES
 }                                 from '@angular/router';
 
 import {
-  StreamEmitter
-}                                 from '../shared/index';
-
-import {
-  ContentPresenterComponent,
-  AccountMenuViewModel,
   DnsService,
-  ServicesService
+  ServicesService,
+  AccountMenuComponent
 }                                 from './index';
-
 
 @Component({
   moduleId: module.id,
   templateUrl: 'account.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    ContentPresenterComponent
+    AccountMenuComponent
   ],
   viewProviders: [
-    StreamEmitter,
     DnsService,
     ServicesService
   ]
 })
-export class AccountComponent implements OnInit, OnDestroy {
-  public pageTitle:string = 'Account Settings';
-  public menu:AccountMenuViewModel = null;
+export class AccountComponent {
+  pageTitle: string = 'Account Settings';
 
-  constructor(private _streamEmitter:StreamEmitter) {
-    this.menu = new AccountMenuViewModel(this._streamEmitter);
-  }
-
-  ngOnInit():void {
-    this.menu.load();
-  }
-
-  ngOnDestroy() {
-    this.unload();
-  }
-
-  private unload():void {
-    if (this.menu !== null) {
-      this.menu.unload();
-    }
-  }
 }

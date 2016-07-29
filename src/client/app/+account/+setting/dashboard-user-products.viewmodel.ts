@@ -16,6 +16,7 @@ import {
 import {
   ServicesService
 }                            from '../+services/services.service';
+
 export class DashboardUserProductsViewModel implements IViewModelBase {
   public user_products:AddonService[] = [];
   public hasUserProducts:boolean = false;

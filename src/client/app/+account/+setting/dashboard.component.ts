@@ -10,21 +10,10 @@ import {
 import {
   UserService,
   WthJoinUsComponent,
-  WthCancelPlanComponent,
-  DialogService
+  WthCancelPlanComponent
 }                       from '../../shared/index';
-import {
-  ContentPresenterComponent
-}                       from '../+services/content-presenter.component';
-import {
-  StreamEmitter
-}                       from '../../shared/index';
-import {
-  DashboardUserProductsViewModel
-}                       from './dashboard-user-products.viewmodel';
-import {
-  ServicesService
-}                       from '../+services/services.service';
+import  { ServicesService } from '../+services/services.service';
+
 
 @Component({
   moduleId: module.id,
@@ -32,28 +21,37 @@ import {
   directives: [
     ROUTER_DIRECTIVES,
     WthCancelPlanComponent,
-    WthJoinUsComponent,
-    ContentPresenterComponent
-  ]
+    WthJoinUsComponent
+  ],
+  providers: [ServicesService]
 })
 
 export class AccountDashboardComponent implements OnInit, OnDestroy {
-  public user_products_context:DashboardUserProductsViewModel;
+
+  has_installed_apps: boolean = false;
+  installed_apps: any = [];
+  is_invalid_plan: boolean = false;
   plan_name: string = '';
-  constructor(private _router:Router,
-              private _userService:UserService,
-              private _streamEmitter:StreamEmitter,
-              private _servicesService:ServicesService,
-              private _dialogService:DialogService) {
+
+  constructor(private _router:Router,  private _userService:UserService, private appsService: ServicesService) {
   }
 
   ngOnInit():void {
-    this.load();
+    // this.load();
     this.plan_name = this._userService.profile.plan_id == 'wth_free' ? 'Free' : 'Deluxe';
+    this.appsService.getUserProducts().subscribe(
+      response => {
+        this.has_installed_apps = response.length > 0 ? true : false;
+        this.installed_apps = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   ngOnDestroy() {
-    this.unload();
+    // this.unload();
   }
 
   //@TODO: should have viewmodel
@@ -66,27 +64,31 @@ export class AccountDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private validateLogin():boolean {
-    return true;
+  onRemove(event: any, product: any) {
+    console.log('on remove');
   }
 
-  private load():void {
-    if (this.validateLogin()) {
-      if (this.user_products_context == null) {
-        this.user_products_context = new DashboardUserProductsViewModel(
-          this._streamEmitter,
-          this._servicesService,
-          this._dialogService,
-          this._router
-        );
-      }
-      this.user_products_context.load();
-    }
-  }
-
-  private unload():void {
-    if (this.user_products_context != null) {
-      this.user_products_context.unload();
-    }
-  }
+  // private validateLogin():boolean {
+  //   return true;
+  // }
+  //
+  // private load():void {
+  //   if (this.validateLogin()) {
+  //     if (this.user_products_context == null) {
+  //       this.user_products_context = new DashboardUserProductsViewModel(
+  //         this._streamEmitter,
+  //         this._servicesService,
+  //         this._dialogService,
+  //         this._router
+  //       );
+  //     }
+  //     this.user_products_context.load();
+  //   }
+  // }
+  //
+  // private unload():void {
+  //   if (this.user_products_context != null) {
+  //     this.user_products_context.unload();
+  //   }
+  // }
 }

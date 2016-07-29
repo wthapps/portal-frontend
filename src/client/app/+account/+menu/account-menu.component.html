@@ -25,13 +25,12 @@
         </ul>
     </div>
 
-    <div class="panel panel-default" [ngClass]="{ 'collapse' : !context.hasUserProducts }">
+    <div class="panel panel-default" [ngClass]="{ 'collapse' : has_installed_apps }">
         <div class="panel-heading">
             <h3 class="panel-title">My Services and Add-ons</h3>
         </div>
         <ul class="list-group">
-            <li [routerLinkActive]="['active']" class="list-group-item"
-                *ngFor="let item of context.user_products">
+            <li [routerLinkActive]="['active']" class="list-group-item" *ngFor="let item of installed_apps">
                 <a [routerLink]="[item.router_link]">{{item.display_name}}</a>
             </li>
         </ul>

@@ -1,69 +1,75 @@
 import {
   Component,
-  OnInit,
-  OnDestroy
+  OnInit
 }                       from '@angular/core';
-import {
-  Router
-}                       from '@angular/router';
-
-import {
-  FormBuilder
-}                       from '@angular/forms';
-
-import {
-  UserService,
-  StreamEmitter,
-  DialogService
-}                       from '../../shared/index';
 import {
   ServicesService
 }                       from './services.service';
+
 import {
-  ContentPresenterComponent
-}                       from './content-presenter.component';
+  Action
+}                       from './services.model';
+
 import {
-  ServicesViewModel
-}                       from './services.viewmodel';
+  AddOnItemComponent
+}                       from './addon-item.component';
+import {
+  DnsItemComponent
+}                       from './dns-item.component';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'services.component.html',
   directives: [
-    ContentPresenterComponent
+    AddOnItemComponent,
+    DnsItemComponent
   ]
 })
 
-export class AccountServicesListComponent implements OnInit, OnDestroy {
+export class AccountServicesListComponent implements OnInit {
+  panelTitle: string = 'Find Services or Add-ons';
+  apps: any = [];
+  original_apps: any = [];
+  categories: any = [];
+  selected_category: any = 0;
+  actions: Action[] = [];
 
-  public context:ServicesViewModel = null;
-
-  constructor(private _userService:UserService,
-              private _router:Router,
-              private _servicesService:ServicesService,
-              private _builder:FormBuilder,
-              private _streamEmitter:StreamEmitter,
-              private _dialogService:DialogService) {
+  constructor( private appsService: ServicesService) {
   }
 
   ngOnInit():void {
-    if (this.context === null) {
-      this.context = new ServicesViewModel(
-        this._servicesService,
-        this._router,
-        this._userService,
-        this._builder,
-        this,
-        this._streamEmitter,
-        this._dialogService);
-    }
-    this.context.load();
+    this.actions.push(new Action(0, 'Manage', '/account/dns', true));
+    this.actions.push(new Action(2, 'Add', '', true));
+    this.actions.push(new Action(3, 'Create', '', true));
+    this.actions.push(new Action(4, 'Cancel', '', true));
+    this.actions.push(new Action(5, 'Manage', '/account/dns', true));
+
+    this.appsService.getCategories().subscribe(
+      response => {
+        this.categories = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+    this.appsService.getAddonServices().subscribe(
+      response => {
+        this.apps = response;
+        this.original_apps = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
   }
 
-  ngOnDestroy() {
-    if (this.context !== null) {
-      this.context.unload();
-    }
+  onAction(action: Action) {
+    console.log('action:', action);
   }
 
+  onCategoryChanged(category_id: number) {
+    this.apps = this.original_apps;
+  }
 }

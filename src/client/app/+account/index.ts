@@ -11,6 +11,7 @@ export * from './+recovery/reset-email-sent.component';
 export * from './+setting/dashboard.component';
 export * from './+setting/change-password.component';
 export * from './+setting/my-account.component';
+export * from './+setting/installed-apps.component';
 
 /**
  *  Menu

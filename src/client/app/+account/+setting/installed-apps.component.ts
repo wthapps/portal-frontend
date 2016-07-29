@@ -10,18 +10,19 @@ import { ServicesService } from '../+services/services.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'account-menu',
-  templateUrl: 'account-menu.component.html',
+  selector: 'installed-apps',
+  templateUrl: 'installed-apps.component.html',
   directives: [
     ROUTER_DIRECTIVES
   ],
   providers: [ServicesService]
 })
-export class AccountMenuComponent implements OnInit {
+
+export class InstalledAppsComponent implements OnInit {
   has_installed_apps: boolean = false;
   installed_apps: any = [];
 
-  constructor(private appsService: ServicesService) {
+  constructor ( private appsService: ServicesService) {
 
   }
 

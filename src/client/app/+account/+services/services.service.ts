@@ -23,6 +23,8 @@ export class ServicesService {
     private _service: ApiBaseService,
     private _userService: UserService
   ) {}
+
+  // get all apps
   public getAddonServices():Observable<AddonService[]> {
     return this._service.get('/products')
       .map((response:Response) => {
@@ -38,6 +40,7 @@ export class ServicesService {
       //.catch(this.handleError);
   }
 
+  // Get all installed apps
   public getUserProducts():Observable<AddonService[]> {
     return this._service.get(`users/${this._userService.profile.id}/products`)
       .map((response:Response) => {
@@ -57,16 +60,16 @@ export class ServicesService {
     return this._service.delete(`users/${this._userService.profile.id}/products/${id}`);
   }
 
-  public getCategories():Observable<Category[]> {
+  public getCategories():Observable<any[]> {
     return this._service.get('/products/categories')
-      .map((response:Response) => {
+      .map((response: any) => {
         if (response['status'] === Constants.HttpStatusCode.OK ||
           response['status'] === Constants.HttpStatusCode.Created) {
           let body = JSON.parse(response['_body']);
           if (body.data == 'empty') {
             return [];
           }
-          return <Category[]>body.data;
+          return body.data;
         }
         return [];
       });
