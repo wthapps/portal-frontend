@@ -40,7 +40,7 @@ export class SeedConfig {
 
   /**
    * The current environment.
-   * The default environment is `dev`, which can be overriden by the `--env` flag when running `npm start`.
+   * The default environment is `dev`, which can be overriden by the `--config-env ENV_NAME` flag when running `npm start`.
    */
   ENV = getEnvironment();
 
@@ -67,18 +67,17 @@ export class SeedConfig {
 
   /**
    * The path for the base of the application at runtime.
-   * The default path is `/`, which can be overriden by the `--base` flag when running `npm start`.
+   * The default path is based on the environment ('/' for development and '' for production),
+   * which can be overriden by the `--base` flag when running `npm start`.
    * @type {string}
    */
-  APP_BASE = argv['base'] || '/';
+  APP_BASE = argv['base'] || (this.ENV === ENVIRONMENTS.DEVELOPMENT ? '/' : '');
 
   /**
-   * The flag to include templates into JS app prod file.
-   * Per default the option is `true`, but can it can be set to false using `--inline-template false`
-   * flag when running `npm run build.prod`.
-   * @type {boolean}
+   * The base path of node modules.
+   * @type {string}
    */
-  INLINE_TEMPLATES = argv['inline-template'] !== 'false';
+  NPM_BASE = join(this.APP_BASE, 'node_modules/');
 
   /**
    * The flag for the hot-loader option of the application.
@@ -93,6 +92,17 @@ export class SeedConfig {
    * @type {number}
    */
   HOT_LOADER_PORT = 5578;
+
+  /**
+   * The build interval which will force the TypeScript compiler to perform a typed compile run.
+   * Between the typed runs, a typeless compile is run, which is typically much faster.
+   * For example, if set to 5, the initial compile will be typed, followed by 5 typeless runs,
+   * then another typed run, and so on.
+   * If a compile error is encountered, the build will use typed compilation until the error is resolved.
+   * The default value is `0`, meaning typed compilation will always be performed.
+   * @type {number}
+   */
+  TYPED_COMPILE_INTERVAL = 0;
 
   /**
    * The directory where the bootstrap file is located.
@@ -140,6 +150,7 @@ export class SeedConfig {
    * The folder of the applications css files.
    * @type {string}
    */
+  //CSS_SRC = `${this.APP_SRC}/css`;
   CSS_SRC = `${this.ASSETS_SRC}/css`;
 
   /**
@@ -193,6 +204,7 @@ export class SeedConfig {
    * The folder for the built CSS files.
    * @type {strings}
    */
+  //CSS_DEST = `${this.APP_DEST}/css`;
   CSS_DEST = `${this.APP_DEST}/assets/css`;
 
   /**
@@ -210,7 +222,7 @@ export class SeedConfig {
    * The name of the bundle file to includes all CSS files.
    * @type {string}
    */
-  CSS_PROD_BUNDLE = 'all.css';
+  CSS_PROD_BUNDLE = 'main.css';
 
   /**
    * The name of the bundle file to include all JavaScript shims.
@@ -242,11 +254,17 @@ export class SeedConfig {
   CODELYZER_RULES = customRules();
 
   /**
+   * The flag to enable handling of SCSS files
+   * The default value is false. Override with the '--scss' flag.
+   * @type {boolean}
+   */
+  ENABLE_SCSS = argv['scss'] || false;
+
+  /**
    * The list of NPM dependcies to be injected in the `index.html`.
    * @type {InjectableDependency[]}
    */
   NPM_DEPENDENCIES: InjectableDependency[] = [
-    { src: 'systemjs/dist/system-polyfills.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
     { src: 'zone.js/dist/zone.js', inject: 'libs' },
     { src: 'core-js/client/shim.min.js', inject: 'shims' },
     { src: 'systemjs/dist/system.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
@@ -258,7 +276,8 @@ export class SeedConfig {
    * @type {InjectableDependency[]}
    */
   APP_ASSETS: InjectableDependency[] = [
-    { src: `${this.CSS_SRC}/style.css`, inject: true, vendor: false }
+    //{ src: `${this.CSS_SRC}/main.${ this.getInjectableStyleExtension() }`, inject: true, vendor: false },
+    { src: `${this.CSS_SRC}/style.css`, inject: true, vendor: false },
   ];
 
   /**
@@ -286,28 +305,28 @@ export class SeedConfig {
   protected SYSTEM_CONFIG_DEV: any = {
     defaultJSExtensions: true,
     packageConfigPaths: [
-      `${this.APP_BASE}node_modules/*/package.json`,
-      `${this.APP_BASE}node_modules/**/package.json`,
-      `${this.APP_BASE}node_modules/@angular/*/package.json`
+      `/node_modules/*/package.json`,
+      `/node_modules/**/package.json`,
+      `/node_modules/@angular/*/package.json`
     ],
     paths: {
       [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
-      '@angular/core': `${this.APP_BASE}node_modules/@angular/core/core.umd.js`,
-      '@angular/common': `${this.APP_BASE}node_modules/@angular/common/common.umd.js`,
-      '@angular/compiler': `${this.APP_BASE}node_modules/@angular/compiler/compiler.umd.js`,
-      '@angular/http': `${this.APP_BASE}node_modules/@angular/http/http.umd.js`,
-      '@angular/router': `${this.APP_BASE}node_modules/@angular/router/router.umd.js`,
-      '@angular/platform-browser': `${this.APP_BASE}node_modules/@angular/platform-browser/platform-browser.umd.js`,
-      '@angular/platform-browser-dynamic': `${this.APP_BASE}node_modules/@angular/platform-browser-dynamic/platform-browser-dynamic.umd.js`,
-      'rxjs/*': `${this.APP_BASE}node_modules/rxjs/*`,
+      '@angular/common': `node_modules/@angular/common/bundles/common.umd.js`,
+      '@angular/compiler': `node_modules/@angular/compiler/bundles/compiler.umd.js`,
+      '@angular/core': `node_modules/@angular/core/bundles/core.umd.js`,
+      '@angular/forms': `node_modules/@angular/forms/bundles/forms.umd.js`,
+      '@angular/http': `node_modules/@angular/http/bundles/http.umd.js`,
+      '@angular/platform-browser': `node_modules/@angular/platform-browser/bundles/platform-browser.umd.js`,
+      '@angular/platform-browser-dynamic': `node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js`,
+      '@angular/router': `node_modules/@angular/router/index.js`,
+      'rxjs/*': `node_modules/rxjs/*`,
       'app/*': `/app/*`,
-      '*': `${this.APP_BASE}node_modules/*`,
-      'angular2-jwt': `${this.APP_BASE}node_modules/angular2-jwt/angular2-jwt.js`,
-      'ng2-bootstrap': `${this.APP_BASE}node_modules/ng2-bootstrap/ng2-bootstrap.js`,
-      'ng2-bs3-modal': `${this.APP_BASE}node_modules/ng2-bs3-modal`
+      '*': `node_modules/*`,
+      'angular2-jwt': `node_modules/angular2-jwt/angular2-jwt.js`,
+      'ng2-bootstrap': `node_modules/ng2-bootstrap/ng2-bootstrap.js`
     },
     packages: {
-      rxjs: { defaultExtension: false },
+      rxjs: { defaultExtension: 'js' },
       'angular2-jwt': { defaultExtension: 'js' }
     }
   };
@@ -334,7 +353,7 @@ export class SeedConfig {
       '*': 'node_modules/*'
     },
     packages: {
-      '@angular/core': {
+      '@angular/common': {
         main: 'index.js',
         defaultExtension: 'js'
       },
@@ -342,7 +361,11 @@ export class SeedConfig {
         main: 'index.js',
         defaultExtension: 'js'
       },
-      '@angular/common': {
+      '@angular/core': {
+        main: 'index.js',
+        defaultExtension: 'js'
+      },
+      '@angular/forms': {
         main: 'index.js',
         defaultExtension: 'js'
       },
@@ -372,15 +395,7 @@ export class SeedConfig {
       'ng2-bootstrap': {
         main: 'ng2-bootstrap.js',
         defaultExtension: 'js'
-      },
-      'ng2-bs3-modal': {
-        main: 'ng2-bs3-modal.js',
-        defaultExtension: 'js'
       }
-      // 'braintree': {
-      //   main: 'braintree.js',
-      //   defaultExtension: 'js'
-      // }
     }
   };
 
@@ -398,6 +413,13 @@ export class SeedConfig {
     'ios >= 7',
     'android >= 4.4',
     'bb >= 10'
+  ];
+
+  /**
+   * White list for CSS color guard
+   * @type {[string, string][]}
+   */
+  COLOR_GUARD_WHITE_LIST: [string, string][] = [
   ];
 
   /**
@@ -426,6 +448,30 @@ export class SeedConfig {
           [`${this.APP_BASE.replace(/\/$/, '')}`]: this.APP_DEST
         }
       }
+    },
+
+    // Note: you can customize the location of the file
+    'environment-config': require('../env/config.json'),
+
+    /**
+     * The options to pass to gulp-sass (and then to node-sass).
+     * Reference: https://github.com/sass/node-sass#options
+     * @type {object}
+     */
+    'gulp-sass': {
+      includePaths: ['./node_modules/']
+    },
+
+    /**
+     * The options to pass to gulp-concat-css
+     * Reference: https://github.com/mariocasciaro/gulp-concat-css
+     * @type {object}
+     */
+    'gulp-concat-css': {
+      targetFile: this.CSS_PROD_BUNDLE,
+      options: {
+        rebaseUrls: false
+      }
     }
   };
 
@@ -448,6 +494,10 @@ export class SeedConfig {
       return this.PLUGIN_CONFIGS[pluginKey];
     }
     return null;
+  }
+
+  getInjectableStyleExtension() {
+    return this.ENV === ENVIRONMENTS.PRODUCTION && this.ENABLE_SCSS ? 'scss' : 'css';
   }
 
 }

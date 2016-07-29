@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{pageTitle}}</h3>
+  </div>
+  <div class="panel-body" *ngIf="userService.profile.has_payment_info">
+    <dl class="dl-horizontal">
+      <dt>Type</dt>
+       <dd>{{credit_card.card_type}}</dd>
+      <dt>Name</dt>
+      <dd>{{credit_card.cardholder_name}}</dd>
+      <dt>Number</dt>
+      <dd>**** **** **** {{credit_card.last_4}}</dd>
+      <dt>Expiry</dt>
+      <dd>{{credit_card.expiration_date}}</dd>
+    </dl>
+    <hr>
+    <dl class="dl-horizontal">
+      <dt>Address line 1</dt>
+      <dd>{{credit_card.billing_address.street_address}}</dd>
+      <dt>Address line 2</dt>
+      <dd>{{credit_card.billing_address.extended_address}}</dd>
+      <dt>City</dt>
+      <dd>{{credit_card.billing_address.locality}}</dd>
+      <dt>State</dt>
+      <dd>{{credit_card.billing_address.region}}</dd>
+      <dt>Postcode</dt>
+      <dd>{{credit_card.billing_address.postcode}}</dd>
+      <dt>Country</dt>
+      <dd>{{credit_card.billing_address.country_name}}</dd>
+    </dl>
+    <hr>
+    <div class="clearfix mt40">
+      <!--<a (click)="onEdit($event)" class="btn btn-primary">Edit</a>-->
+      <a (click)="onDelete($event)" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+  <div class="panel-body" *ngIf="!userService.profile.has_payment_info">
+    Not billing details data in your account
+    <div class="clearfix mt40">
+      <a [routerLink]="['/account/payment']" class="btn btn-success">Add</a>
+    </div>
+  </div>
+</div>
+
+

@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Injectable}     from '@angular/core';
+import {Observable}     from 'rxjs/Observable';
 import {Http, Response} from '@angular/http';
 import {Cookie}         from 'ng2-cookies/ng2-cookies';
 import {ApiBaseService} from './apibase.service';
-import {User}           from "../models/user.model";
+import {User}           from '../models/user.model';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -11,13 +11,12 @@ export class UserService extends ApiBaseService {
   loggedIn: boolean = false;
   profile: User = null;
 
-
   constructor(http: Http) {
     super(http);
     this.readUserInfo();
   }
 
-  login(path: string, body: string, useJwt?: boolean = true): Observable<Response> {
+  login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
     // public login(path: string, body: string, useJwt?: boolean = true) {
     return super.post(path, body)
       .map(res => res.json())
@@ -94,7 +93,7 @@ export class UserService extends ApiBaseService {
       .map(res => res.json())
       .map((res) => {
         if(res) {
-
+          console.log('changePassword:', res);
         }
         return res;
       });
@@ -120,7 +119,7 @@ export class UserService extends ApiBaseService {
     this.profile = null;
   }
 
-  private storeUserInfo(response) {
+  private storeUserInfo(response: any) {
     // TODO move string constants to config file
     Cookie.set('jwt', response.token);
     Cookie.set('profile', JSON.stringify(response.data));

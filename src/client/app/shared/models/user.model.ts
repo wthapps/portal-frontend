@@ -1,4 +1,4 @@
-import {CreditCard} from "./credit-card.model";
+import {CreditCard} from './credit-card.model';
 
 export class User {
   id: number;
@@ -14,7 +14,8 @@ export class User {
   accepted: boolean;
   has_payment_info: boolean;
   credit_cards: CreditCard[];
-  
+  plan_id: string;
+
   constructor(
     fields:{
       id: number,
@@ -29,7 +30,8 @@ export class User {
       sex?: number,
       accepted?: boolean,
       has_payment_info?: boolean,
-      credit_cards?: CreditCard[]
+      credit_cards?: CreditCard[],
+      plan_id?: string
     }) {
     if (fields) Object.assign(this, fields);
   }

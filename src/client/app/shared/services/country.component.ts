@@ -1,5 +1,5 @@
 export class CountryListComponent {
-  countries:Array = [
+  countries:Array<any> = [
     /* tslint:disable */
     {key: "", value: "Please select country"},
     {key: "AF", value: "Afghanistan"},

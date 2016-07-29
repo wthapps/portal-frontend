@@ -1,7 +1,6 @@
 import { join } from 'path';
 
 import { SeedConfig } from './seed.config';
-import { InjectableDependency } from './seed.config.interfaces';
 
 /**
  * This class extends the basic seed configuration, allowing for project specific overrides. A few examples can be found
@@ -14,25 +13,26 @@ export class ProjectConfig extends SeedConfig {
   constructor() {
     super();
     // this.APP_TITLE = 'Put name of your app here';
-    let additional_deps: InjectableDependency[] = [
+
+    /* Enable typeless compiler runs (faster) between typed compiler runs. */
+    // this.TYPED_COMPILE_INTERVAL = 5;
+
+    // Add `NPM` third-party libraries to be injected/bundled.
+    this.NPM_DEPENDENCIES = [
+      ...this.NPM_DEPENDENCIES,
       {src: 'lodash/lodash.min.js', inject: 'libs'}
-      // {src: `bootbox/bootbox.js`, inject: 'libs'}
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
+      // {src: 'lodash/lodash.min.js', inject: 'libs'},
     ];
 
-    const seedDependencies = this.NPM_DEPENDENCIES;
-
-    this.NPM_DEPENDENCIES = seedDependencies.concat(additional_deps);
+    // Add `local` third-party libraries to be injected/bundled.
+    this.APP_ASSETS = [
+      ...this.APP_ASSETS,
+      { src: `${this.ASSETS_SRC}/dist/app.min.js`, inject: true, vendor: false }
+    ];
 
     /* Add to or override NPM module configurations: */
-    //this.mergeObject( this.PLUGIN_CONFIGS['browser-sync'], { ghostMode: false } );
-
-
-    let additional_deps_custom: InjectableDependency[] = [
-      {src: `src/client/assets/dist/app.js`, inject: 'libs'}
-    ];
-    const seedDependencies_custom = this.APP_ASSETS;
-    this.APP_ASSETS = seedDependencies_custom.concat(additional_deps_custom);
-
+    // this.mergeObject(this.PLUGIN_CONFIGS['browser-sync'], { ghostMode: false });
   }
+
 }

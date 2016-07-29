@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "API": "http://localhost:4000/"
+  },
+  "prod": {
+    "API": "http://52.221.221.245:4000/"
+  },
+  "staging": {
+    "API": "https://staging.com"
+  }
+}

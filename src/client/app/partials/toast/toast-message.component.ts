@@ -13,10 +13,10 @@ import {ToastOptions} from './toast-message';
 })
 export class SimpleToastsComponent implements OnInit, OnDestroy {
 
-  private maxStack:number = 5;
-  private messageElement:any;
+  maxStack:number = 5;
+  messageElement:any;
 
-  private toasts:any = [];
+  toasts:any = [];
 
   constructor(private toastsService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
     toastsService.set = this.activate.bind(this);
@@ -50,7 +50,7 @@ export class SimpleToastsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.toasts = [];
-    this._router.changes.subscribe((val) => this.hideDialog());
+    this._router.events.subscribe((val) => this.hideDialog());
     this.messageElement = document.getElementById('toast-wrap');
   }
 

@@ -4,6 +4,8 @@ import {
   ElementRef
 }                               from '@angular/core';
 
+declare var $:any;
+
 @Injectable()
 export class LoadingService implements OnChanges {
   /**

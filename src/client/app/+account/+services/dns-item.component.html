@@ -1,0 +1,96 @@
+<!-- DDNS Information -->
+<!--[ngClass]="{ 'collapse' : !context.show_information_view }"-->
+<div class="media" >
+  <div class="media-left">
+    <img width="50" class="media-object" src="{{item.img_src}}" alt="...">
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">{{item.display_name}}</h4>
+    <div class="media-left">
+      <p class="text-info">{{item.category_name}}</p>
+    </div>
+    <p>{{item.description}}</p>
+    <!--[ngClass]="{ 'collapse' : !context.context.created }"-->
+    <p >
+      <a target="_blank" href={{item.download_link}}> Dynamic DNS Update Client <i class="glyphicon glyphicon-download"></i></a>
+    </p>
+  </div>
+  <div class="media-right">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let action of actions">
+        <button class="btn btn-default" (click)="onAction(action)" [disabled]=action.disabled>{{action.name}}</button>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- End DDNS Information -->
+
+<!-- DDNS Configuration -->
+
+<!--<div class="media" -->
+  <!--[ngClass]="{ 'collapse' : !context.show_configuration_view }">-->
+  <!--<form [ngFormModel]="context.group" novalidate>-->
+    <!--<div class="media-left">-->
+      <!--<img width="50" class="media-object" src="{{context.context.img_src}}" alt="...">-->
+    <!--</div>-->
+    <!--<div class="media-body">-->
+      <!--<h4 class="media-heading">Setup Dynamic DNS Service</h4>-->
+      <!--<p>Your hostname is used to config to external IP address.</p>-->
+      <!--<div>-->
+        <!--<div class="col-sm-4" -->
+          <!--[ngClass]="{ 'has-error' : host.touched && !host.valid}">-->
+          <!--<input type="text" class="form-control" id="host" placeholder="Hostname"-->
+            <!--#host="ngForm" ngControl="host"-->
+            <!--[disabled]=context.is_creating>-->
+          <!--<div *ngIf="host.touched && !host.valid">-->
+            <!--<span class="help-block" *ngIf="host.errors.required">A hostname is required.</span>-->
+            <!--<span class="help-block" *ngIf="host.errors.ipHostFormat">The value introduced is not an hostname</span>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-4">-->
+          <!--<select class="form-control" name="" #Domain [disabled]=context.is_creating>-->
+            <!--<option value='0'>wthdns.com</option>-->
+          <!--</select>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--<div class="col-sm-8">-->
+        <!--<span class="text-danger">{{context.error_message}}</span>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="media-right">-->
+      <!--<ul class="list-group">-->
+        <!--<li class="list-group-item" *ngFor="let action of context.actions">-->
+          <!--<button class="btn btn-default" (click)="context.onAction(action)" -->
+            <!--[disabled]="((!context.group.valid && action.name != 'Cancel') || action.disabled)">{{action.name}}</button>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  <!--</form>-->
+<!--</div>-->
+
+<!-- End DDNS Configuration -->
+
+<!-- DDNS Congratulation -->
+
+<!--<div class="media" -->
+  <!--[ngClass]="{ 'collapse' : !context.show_congratulation_view }">-->
+  <!--<div class="media-left">-->
+    <!--<img width="50" class="media-object" src="{{context.context.img_src}}" alt="...">-->
+  <!--</div>-->
+  <!--<div class="media-body">-->
+    <!--<h4 class="media-heading">Congratulation!</h4>-->
+    <!--<p>your host name was created successfully, to get started click on <a [routerLink]="['/support']">learn more</a>.</p>-->
+    <!--<p><a target="_blank" href={{context.download_link}}> Dynamic DNS Update Client <i class="glyphicon glyphicon-download"></i></a></p>-->
+  <!--</div>-->
+  <!--<div class="media-right">-->
+    <!--<ul class="list-group">-->
+      <!--<li class="list-group-item" *ngFor="let action of context.actions">-->
+        <!--<button class="btn btn-default" (click)="context.onAction(action)" [disabled]=action.disabled>{{action.name}}</button>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!-- End DDNS Congratulation -->

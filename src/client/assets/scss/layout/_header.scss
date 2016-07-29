@@ -44,20 +44,36 @@ Header
         color: $color-inverse;
       }
     }
-    > li > a {
-      outline: 0 none;
-      &.router-link-active,
-      &:hover,
-      &:focus,
-      &:active {
+    > li {
+      &.active {
+        > a {
+          &,
+          &:hover,
+          &:focus{
+            background-color: transparent;
+            outline: 0 none;
+            color: $color-inverse;
+          }
+
+        }
+      }
+      > a {
         outline: 0 none;
-        color: $color-inverse;
+        &.router-link-active,
+        &:hover,
+        &:focus,
+        &:active {
+          outline: 0 none;
+          color: $color-inverse;
+        }
       }
     }
     &.navbar-right {
-      a.dropdown-toggle {
-        padding-left: 0;
-        padding-right: 0;
+      @media (min-width: $screen-sm) {
+        a.dropdown-toggle {
+          padding-left: 0;
+          padding-right: 0;
+        }
       }
     }
   }

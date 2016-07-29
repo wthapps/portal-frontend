@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{pageTitle}}</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Billing date</th>
+        <th>Amount</th>
+        <th>Plan name</th>
+        <!-- <th>Status</th>   -->
+        <th class="text-right">View Receipt</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let t of transactions">
+        <td><a [routerLink]="['/account/transactions', t.id]">{{t.id}}</a></td>
+        <td>{{t.created_at | date:'MMM dd, yyyy' : 'UTC'}} {{t.created_at | date:'H:mm:ss' : 'UTC'}}</td>
+        <td>{{t.amount}} {{t.currency_iso_code}}</td>
+        <td>Deluxe</td>
+        <!-- <td>{{t.status}}</td>       -->
+        <td>
+          <a class="btn btn-sm btn-primary pull-right" (click)="viewReceipt(t.id, $event)">Receipt</a>
+        </td>
+      </tr>
+      <tr *ngIf="transactions.length == 0">
+        <td class="text-center" colspan="6">No transaction data</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
