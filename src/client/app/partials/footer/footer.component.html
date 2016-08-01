@@ -1,16 +1,78 @@
 <footer class="footer">
-  <div class="container">
-    <ul class="list-unstyled list-inline">
-      <li *ngIf="!isLoggedIn()"><a [routerLink]="['/login']">Login</a></li>
-      <li><a [routerLink]="['/signup']">Signup</a></li>
-      <li><a [routerLink]="['/services']">Services</a></li>
-      <li><a [routerLink]="['/apps']">Applications</a></li>
-      <li><a [routerLink]="['/plans-pricing']">Plans and Pricing</a></li>
-      <li><a [routerLink]="['/support']">Support</a></li>
-      <li><a [routerLink]="['/policies/privacy']">Privacy Policy</a></li>
-      <li><a [routerLink]="['/policies/terms']">Terms of service</a></li>
-      <li><a [routerLink]="['/policies/cookies']">Cookies</a></li>
-    </ul>
-    <p><a [routerLink]="['/']">WTHApps</a> © 2016 • All rights reserved.</p>
+  <div class="footer-nav">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          <ul class="footer-menu">
+            <li>
+              <a [routerLink]="['/']">Home</a>
+            </li>
+            <li>
+              <a [routerLink]="['/']">Library</a>
+            </li>
+            <li>
+              <a [routerLink]="['/']">Manage Product</a>
+            </li>
+            <li>
+              <a [routerLink]="['/account/setting/dashboard']">My Account</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-3">
+          <ul class="footer-menu">
+            <li>
+              <a [routerLink]="['/support']">Support</a>
+            </li>
+            <li>
+              <a [routerLink]="['/policies/privacy']">Privacy Policy</a>
+            </li>
+            <li>
+              <a [routerLink]="['/policies/terms']">Term of Service</a>
+            </li>
+            <li>
+              <a [routerLink]="['/policies/cookies']">Cookies</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-3">
+          <ul class="footer-menu">
+            <li>
+              <a [routerLink]="['/']">Products</a>
+            </li>
+            <li>
+              <a [routerLink]="['/']">Plan &amp; Pricing</a>
+            </li>
+            <li>
+              <a [routerLink]="['/about']">About Us</a>
+            </li>
+            <li>
+              <a [routerLink]="['/contact']">Contact Details</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-3">
+          <ul>
+            <li>
+              <p>Follow Us On:</p>
+            </li>
+            <li>
+              <div class="social-dv">
+                <a target="_blank" href="https://www.facebook.com/"><i class="fa fa-facebook-square"></i></a>
+                <a target="_blank" href="https://twitter.com/"><i class="fa fa-twitter-square"></i></a>
+                <a target="_blank" href="https://www.pinterest.com/"><i class="fa fa-pinterest-square"></i></a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-end">
+    <div class="container">
+      <a href="#" class="footer-logo">
+        <img src="assets/images/logo.png" alt="WTHApps">
+      </a>
+      <p>&copy; Copyright 2016 All rights reserved</p>
+    </div>
   </div>
 </footer>

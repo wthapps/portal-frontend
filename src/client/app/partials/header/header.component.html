@@ -11,7 +11,7 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" [routerLink]="['/']">
-          <img src="assets/images/logo.png" alt="">
+          <img src="assets/images/logo.png" alt="WTHApps">
         </a>
         <span class="navbar-page">Library</span>
       </div>
@@ -127,7 +127,7 @@
               <li><a href="#">Account</a></li>
               <li><a href="#">Profile</a></li>
               <li><a href="#">Password</a></li>
-              <li><a href="#">Settings</a></li>
+              <li><a [routerLink]="['/account/setting/dashboard']">Settings</a></li>
               <li><a href="#">Plans</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>
