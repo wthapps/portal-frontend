@@ -18,15 +18,17 @@
     margin: 0;
     padding: 0;
     list-style-type: none;
-  }
-  .footer-menu {
-    li {
-      margin-bottom: 5px;
-      &:last-child {
-        margin-bottom: 0;
+    &.footer-menu {
+      margin-bottom: 20px;
+      li {
+        margin-bottom: 5px;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
   }
+
   .social-dv {
     a {
       display: inline-block;
@@ -50,5 +52,8 @@
   }
   p {
     margin-bottom: 0;
+    @media (max-width: $screen-xs-max) {
+      font-size: 12px;
+    }
   }
 }

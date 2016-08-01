@@ -12,6 +12,7 @@ Header
         background-color: $white;
         border-radius: 0;
         border-width: 0;
+        @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.40));
       }
 
       .navbar-brand {
@@ -86,39 +87,6 @@ Header
             border-radius: $border-radius-base;
             margin-top: 20px;
             width: 300px;
-          }
-        }
-      }
-      .navbar-form {
-        margin-top: 0;
-        margin-bottom: 0;
-        .navbar-searchTop {
-          position: relative;
-          margin-left: 150px;
-          .btn {
-            & {
-              position: absolute;
-              left: 2px;
-              padding-left: 8px;
-              padding-right: 8px;
-              background-color: transparent;
-              border-width: 0;
-              @include center(false, true);
-              font-size: 16px;
-            }
-            &:hover,
-            &:focus,
-            &.focus {
-              background-color: transparent;
-              @include box-shadow(none);
-            }
-          }
-          .form-control {
-            height: 38px;
-            padding-top: 8px;
-            padding-bottom: 8px;
-            padding-left: 36px;
-            min-width: 370px;
           }
         }
       }
@@ -269,6 +237,61 @@ Header
         }
       }
     }
+    .navbar-form {
+      @media (min-width: $screen-sm) {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      @media (max-width: $screen-xs-max) {
+        margin-top: -1px;
+      }
+      .navbar-searchTop {
+        position: relative;
+        @media (min-width: $screen-lg) {
+          margin-left: 150px;
+        }
+        .btn {
+          & {
+            position: absolute;
+            left: 2px;
+            padding-left: 8px;
+            padding-right: 8px;
+            background-color: transparent;
+            border-width: 0;
+            @include center(false, true);
+            font-size: 16px;
+          }
+          &:hover,
+          &:focus,
+          &.focus {
+            background-color: transparent;
+            @include box-shadow(none);
+          }
+        }
+        .form-control {
+          height: 38px;
+          padding-top: 8px;
+          padding-bottom: 8px;
+          padding-left: 36px;
+          @media (min-width: $screen-lg) {
+            min-width: 370px;
+          }
+        }
+      }
+    }
+
+    @media (max-width: $screen-xs-max) {
+      .navbar-page {
+        display: none;
+      }
+      .navbar-brand {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        img {
+          height: 34px;
+        }
+      }
+    }
   }
   .navbar-nav-icon {
     position: relative;
@@ -302,82 +325,3 @@ Header
     }
   }
 }
-
-/*.header {
-  position: relative;
-  z-index: 100;
-}
-
-.navbar {
-  .navbar-nav {
-    text-transform: uppercase;
-    > li > a.btn-get {
-      color: #ffffff;
-      border-width: 0;
-      &:hover, &:focus {
-        background-color: $color-inverse-dark;
-      }
-    }
-  }
-  @media (min-width: $screen-sm) {
-    border-radius: 0;
-    padding: 15px 0;
-    background-color: transparent;
-    border-width: 0;
-    @include box-shadow(0 1px 2px rgba(0, 0, 0, .2));
-    .navbar-brand {
-      padding: 0;
-      margin-left: 0 !important;
-      margin-right: 20px;
-      img {
-        height: 30px;
-      }
-    }
-  }
-}
-
-.navbar-default {
-  .navbar-nav {
-    > li.open > a {
-      &,
-      &:hover,
-      &:focus {
-        background-color: transparent;
-        color: $color-inverse;
-      }
-    }
-    > li {
-      &.active {
-        > a {
-          &,
-          &:hover,
-          &:focus{
-            background-color: transparent;
-            outline: 0 none;
-            color: $color-inverse;
-          }
-
-        }
-      }
-      > a {
-        outline: 0 none;
-        &.router-link-active,
-        &:hover,
-        &:focus,
-        &:active {
-          outline: 0 none;
-          color: $color-inverse;
-        }
-      }
-    }
-    &.navbar-right {
-      @media (min-width: $screen-sm) {
-        a.dropdown-toggle {
-          padding-left: 0;
-          padding-right: 0;
-        }
-      }
-    }
-  }
-}*/
-
