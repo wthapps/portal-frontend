@@ -13,7 +13,7 @@
         <a class="navbar-brand" [routerLink]="['/']">
           <img src="assets/images/logo.png" alt="WTHApps">
         </a>
-        <span class="navbar-page">Library</span>
+        <span *ngIf="navTitle" class="navbar-page">{{navTitle}}</span>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
