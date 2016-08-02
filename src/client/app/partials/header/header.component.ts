@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
-  Router
+  Router,
+  NavigationEnd
 } from '@angular/router';
 
 import {
