@@ -4,7 +4,7 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 import {IAppCard} from './app-card';
 
 /**
- * This class represents the footer component.
+ * This class represents the AppCardMdComponent.
  */
 @Component({
   moduleId: module.id,

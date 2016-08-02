@@ -1085,7 +1085,6 @@ a {
     color: #23527c;
     text-decoration: underline; }
   a:focus {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
 
@@ -2301,7 +2300,6 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
 
@@ -2815,7 +2813,6 @@ select[multiple].input-lg,
   -ms-user-select: none;
   user-select: none; }
   .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
   .btn:hover, .btn:focus, .btn.focus {
@@ -9144,6 +9141,29 @@ html {
     top: 50%;
     margin-top: -150px;
     max-width: 380px; }
+  .banner-wrap.banner-bg {
+    height: 400px;
+    margin-bottom: 30px;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center; }
+    .banner-wrap.banner-bg .banner-over {
+      position: absolute;
+      left: 0;
+      right: 0;
+      color: #ffffff;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%); }
+      .banner-wrap.banner-bg .banner-over .banner-dv {
+        max-width: 830px;
+        margin: auto;
+        text-align: center;
+        font-size: 24px; }
+      .banner-wrap.banner-bg .banner-over .banner-tt {
+        font-size: 64px;
+        font-weight: bold;
+        margin: 0 0 20px; }
 
 .main .title {
   text-align: center; }
@@ -10097,6 +10117,120 @@ wth-app:empty + .dots-loader-wrap {
 .hi-icon-effect-9b .hi-icon:hover {
   box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.4);
   color: #fff; }
+
+.app-card-md {
+  border: 1px solid #D8D8D8;
+  font-family: "Lato", sans-serif;
+  margin-bottom: 15px;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
+  .app-card-md .app-card-cover {
+    padding: 25px;
+    text-align: center;
+    background-image: -webkit-linear-gradient(top, #F54A59 0%, #CC3340 100%);
+    background-image: -o-linear-gradient(top, #F54A59 0%, #CC3340 100%);
+    background-image: linear-gradient(to bottom, #F54A59 0%, #CC3340 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF54A59', endColorstr='#FFCC3340', GradientType=0); }
+    .app-card-md .app-card-cover img {
+      display: inline-block;
+      width: 100px;
+      height: 100px; }
+  .app-card-md .app-card-content {
+    padding: 15px;
+    color: #4A4A4A; }
+    .app-card-md .app-card-content .name {
+      white-space: nowrap;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      margin: 0; }
+    .app-card-md .app-card-content .cat {
+      font-size: 12px;
+      margin-bottom: 5px;
+      color: #9B9B9B; }
+    .app-card-md .app-card-content .flatform {
+      margin: 0;
+      padding: 0;
+      list-style-type: none; }
+      .app-card-md .app-card-content .flatform li {
+        display: inline-block;
+        margin-right: 10px; }
+  .app-card-md a, .app-card-md a:hover {
+    text-decoration: none; }
+  .app-card-md:hover {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(73, 73, 73, 0.4);
+    box-shadow: 0px 2px 4px 0px rgba(73, 73, 73, 0.4); }
+
+.lib-feature .row > [class^="col-"]:first-child .app-card-md .app-card-cover {
+  background-image: -webkit-linear-gradient(top, #F54A59 0%, #CC3340 100%);
+  background-image: -o-linear-gradient(top, #F54A59 0%, #CC3340 100%);
+  background-image: linear-gradient(to bottom, #F54A59 0%, #CC3340 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF54A59', endColorstr='#FFCC3340', GradientType=0); }
+
+.lib-feature .row > [class^="col-"]:nth-child(2) .app-card-md .app-card-cover {
+  background-image: -webkit-linear-gradient(top, #F5CD4A 0%, #D1A51F 100%);
+  background-image: -o-linear-gradient(top, #F5CD4A 0%, #D1A51F 100%);
+  background-image: linear-gradient(to bottom, #F5CD4A 0%, #D1A51F 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF5CD4A', endColorstr='#FFD1A51F', GradientType=0); }
+
+.lib-feature .row > [class^="col-"]:nth-child(3) .app-card-md .app-card-cover {
+  background-image: -webkit-linear-gradient(top, #6EC8F5 0%, #2996CC 100%);
+  background-image: -o-linear-gradient(top, #6EC8F5 0%, #2996CC 100%);
+  background-image: linear-gradient(to bottom, #6EC8F5 0%, #2996CC 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF6EC8F5', endColorstr='#FF2996CC', GradientType=0); }
+
+.app-card-sm {
+  border: 1px solid #D8D8D8;
+  font-family: "Lato", sans-serif;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
+  .app-card-sm:before, .app-card-sm:after {
+    content: " ";
+    display: table; }
+  .app-card-sm:after {
+    clear: both; }
+  .app-card-sm .app-card-cover {
+    float: left;
+    padding: 10px; }
+    .app-card-sm .app-card-cover img {
+      width: 80px;
+      height: 80px;
+      float: left; }
+  .app-card-sm .app-card-content {
+    overflow: hidden;
+    padding: 10px;
+    color: #4A4A4A; }
+    .app-card-sm .app-card-content .name {
+      overflow: hidden;
+      line-height: 16px;
+      max-height: 32px;
+      margin: 0 0 5px; }
+    .app-card-sm .app-card-content .cat {
+      font-size: 12px;
+      margin-bottom: 5px;
+      color: #9B9B9B; }
+    .app-card-sm .app-card-content .flatform {
+      margin: 0;
+      padding: 0;
+      list-style-type: none; }
+      .app-card-sm .app-card-content .flatform li {
+        display: inline-block;
+        margin-right: 10px; }
+  .app-card-sm a, .app-card-sm a:hover {
+    text-decoration: none; }
+  .app-card-sm:hover {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(73, 73, 73, 0.4);
+    box-shadow: 0px 2px 4px 0px rgba(73, 73, 73, 0.4); }
 
 .panel-heading-action {
   position: relative; }

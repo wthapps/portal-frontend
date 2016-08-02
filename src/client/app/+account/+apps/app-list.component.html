@@ -1,4 +1,4 @@
-<div class="banner-wrap" style="background-image: url('assets/images/apps/cover.jpg');">
+<div class="banner-wrap banner-bg" style="background-image: url('assets/images/apps/cover.jpg');">
   <div class="banner-over">
     <div class="container">
       <div class="banner-dv">
@@ -92,33 +92,33 @@
             <div class="col-sm-4">
               <app-card-md [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-md>
             </div>
+            <div class="col-sm-4">
+              <app-card-md [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-md>
+            </div>
+            <div class="col-sm-4">
+              <app-card-md [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-md>
+            </div>
           </div>
         </div>
         <div class="lib-top">
           <div class="row">
             <div class="col-sm-4">
-              <div class="app-card-sm">
-                <div class="app-card-cover">
-                  <figure>
-                    <img src="assets/images/apps/icon.png" alt="">
-                  </figure>
-                </div>
-                <div class="app-card-content">
-                  <p class="name">Featured New App & Service No 01</p>
-                  <p class="cat">Product Category</p>
-                  <ul class="flatform">
-                    <li>
-                      <i class="fa fa-windows"></i>
-                    </li>
-                    <li>
-                      <i class="fa fa-apple"></i>
-                    </li>
-                    <li>
-                      <i class="fa fa-desktop"></i>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
+            </div>
+            <div class="col-sm-4">
+              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
+            </div>
+            <div class="col-sm-4">
+              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
+            </div>
+            <div class="col-sm-4">
+              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
+            </div>
+            <div class="col-sm-4">
+              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
+            </div>
+            <div class="col-sm-4">
+              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
             </div>
           </div>
         </div>

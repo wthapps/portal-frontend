@@ -24,8 +24,8 @@ export class AccountAppsListComponent {
   apps: IAppCard = {
     id: 1,
     img: 'assets/images/apps/icon.png',
-    name: 'name name',
-    category: 'category category',
+    name: 'Featured New App & Service No 01',
+    category: 'Product Category',
     flatform: ['windows', 'apple', 'browser']
   };
 

@@ -30,6 +30,34 @@ html {
     margin-top: -150px;
     max-width: 380px;
   }
+
+  // library page
+  &.banner-bg {
+    height: 400px;
+    margin-bottom: $grid-gutter-width;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    .banner-over {
+      position: absolute;
+      left: 0;
+      right: 0;
+      color: #ffffff;
+      @include center(false, true);
+      .banner-dv {
+        max-width: 830px;
+        margin: auto;
+        text-align: center;
+        font-size: 24px;
+      }
+      .banner-tt {
+        font-size: 64px;
+        font-weight: bold;
+        margin: 0 0 20px;
+      }
+    }
+  }
+
 }
 
 .main {
