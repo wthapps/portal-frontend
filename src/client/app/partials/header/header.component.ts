@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
-  Router,
-  ActivatedRoute
+  Router
 } from '@angular/router';
 
 import {
@@ -24,6 +23,7 @@ import {
 export class HeaderComponent {
   first_name: string = '';
   last_name: string = '';
+  _urls: any;
 
   navTitle: string;
 

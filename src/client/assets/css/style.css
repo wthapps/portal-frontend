@@ -9068,6 +9068,14 @@ Header
 
 .footer {
   font-family: "Lato", sans-serif; }
+  @media (min-width: 768px) {
+    .footer {
+      margin-top: 40px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%; } }
 
 .footer-nav {
   background-color: #656d79;
@@ -9113,8 +9121,9 @@ Header
 html {
   position: relative;
   min-height: 100%; }
-  html .main {
-    margin-bottom: 130px; }
+  @media (min-width: 768px) {
+    html .main {
+      margin-bottom: 260px; } }
 
 .banner-wrap {
   margin-top: -20px;

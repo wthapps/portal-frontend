@@ -2,7 +2,9 @@ html {
   position: relative;
   min-height: 100%;
   .main {
-    margin-bottom: 130px;
+    @media (min-width: $screen-sm) {
+      margin-bottom: 260px;
+    }
   }
 }
 
