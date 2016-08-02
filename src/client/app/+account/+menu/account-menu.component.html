@@ -1,38 +1,41 @@
 <div class="nav-menuleft">
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">
-            <h3 class="panel-title">General</h3>
-        </div>
-        <!-- List group -->
-        <ul class="list-group">
-            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/setting/dashboard']">Home</a></li>
-            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/setting/profile']">Account Settings</a></li>
-            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/setting/changepassword']">Change Password</a></li>
-        </ul>
+  <aside class="aside-left">
+    <div class="navgroup">
+      <h4 class="aside-title">General</h4>
+      <ul class="navgroup-menu">
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/setting/dashboard']">Home</a>
+        </li>
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/setting/profile']">Account Settings</a>
+        </li>
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/setting/changepassword']">Change Password</a>
+        </li>
+      </ul>
     </div>
 
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">
-            <h3 class="panel-title">Plans and Billing</h3>
-        </div>
-        <!-- List group -->
-        <ul class="list-group">
-            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/plans']">Plans</a></li>
-            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/billing-details']">Billing Details</a></li>
-            <li [routerLinkActive]="['active']" class="list-group-item"><a [routerLink]="['/account/billing-history']">Billing History</a></li>
-        </ul>
+    <div class="navgroup">
+      <h4 class="aside-title">Plans and Billing</h4>
+      <ul class="navgroup-menu">
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/plans']">Plans</a>
+        </li>
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/billing-details']">Billing Details</a>
+        </li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/account/billing-history']">Billing
+          History</a></li>
+      </ul>
     </div>
 
-    <div class="panel panel-default" [ngClass]="{ 'collapse' : has_installed_apps }">
-        <div class="panel-heading">
-            <h3 class="panel-title">My Services and Add-ons</h3>
-        </div>
-        <ul class="list-group">
-            <li [routerLinkActive]="['active']" class="list-group-item" *ngFor="let item of installed_apps">
-                <a [routerLink]="[item.router_link]">{{item.display_name}}</a>
-            </li>
-        </ul>
+    <div class="navgroup" [ngClass]="{ 'hidden' : has_installed_apps }">
+      <h4 class="aside-title">My Services and Add-ons</h4>
+      <ul class="navgroup-menu">
+        <li [routerLinkActive]="['active']" *ngFor="let item of installed_apps">
+          <a [routerLink]="[item.router_link]">{{item.display_name}}</a>
+        </li>
+      </ul>
     </div>
+  </aside>
 </div>

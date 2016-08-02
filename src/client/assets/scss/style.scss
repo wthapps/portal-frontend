@@ -26,6 +26,7 @@
 @import "general/mixin";
 @import "general/setting";
 @import "partials/colors";
+@import "partials/grid";
 @import "partials/typography";
 @import "partials/forms";
 @import "partials/buttons";
@@ -41,6 +42,7 @@
 @import "layout/header";
 @import "layout/footer";
 @import "layout/content";
+@import "layout/aside-left";
 //
 // =modules
 // --------------------------------------------------

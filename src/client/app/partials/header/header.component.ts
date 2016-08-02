@@ -1,5 +1,9 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {
+  ROUTER_DIRECTIVES,
+  Router,
+  ActivatedRoute
+} from '@angular/router';
 
 import {
   UserService,
@@ -18,14 +22,34 @@ import {
   ]
 })
 export class HeaderComponent {
-  first_name:string = '';
-  last_name:string = '';
+  first_name: string = '';
+  last_name: string = '';
 
-  constructor(private _userService:UserService,
-              private _router:Router) {
+  navTitle: string;
+
+  constructor(private _userService: UserService,
+              private _router: Router) {
     if (this._userService.loggedIn) {
       this.first_name = this._userService.profile.first_name;
       this.last_name = this._userService.profile.last_name;
+    }
+
+    this._urls = new Array();
+    this._router.events.subscribe((navigationEnd: NavigationEnd) => {
+      this._urls.length = 0; //Fastest way to clear out array
+      this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+    });
+  }
+
+  getNavTitle(url: string): void {
+    this._urls.unshift(url); //Add url to beginning of array (since the url is being recursively broken down from full url to its parent)
+    if (url.lastIndexOf('/') > 0) {
+      this.getNavTitle(url.substr(0, url.lastIndexOf('/'))); //Find last '/' and add everything before it as a parent route
+    }
+    if (this._urls[0] == '/account') {
+      this.navTitle = 'Library';
+    } else {
+      this.navTitle = null;
     }
   }
 
