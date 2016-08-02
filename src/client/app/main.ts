@@ -20,8 +20,7 @@ bootstrap(AppComponent, [
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'
   }
-])
-.catch((err: any) => console.error(err));
+]);
 
 // In order to start the Service Worker located at "./worker.js"
 // uncomment this line. More about Service Workers here
