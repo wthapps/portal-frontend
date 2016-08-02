@@ -12,6 +12,11 @@ import {
   MyAccountComponent,
   ChangePasswordComponent,
 
+  // Apps
+  AccountAppsComponent,
+  AccountAppsListComponent,
+  AccountAppsDetailComponent,
+
   // payment
   PlansComponent,
   PlanDetailsComponent,
@@ -35,8 +40,7 @@ import {
   AccountServicesVPNComponent,
 
   // EFax
-  AccountServicesEFaxComponent,
-  AddOnsComponent
+  AccountServicesEFaxComponent
 } from './index';
 
 
@@ -62,7 +66,6 @@ export const AccountRoutes:RouterConfig = [
 
       {path: 'vpn', component: AccountServicesVPNComponent},
       {path: 'efax', component: AccountServicesEFaxComponent},
-      {path: 'apps/add-ons', component: AddOnsComponent},
 
       {path: 'plans', component: PlansComponent},
       {path: 'plan-details', component: PlanDetailsComponent},
@@ -79,6 +82,15 @@ export const AccountRoutes:RouterConfig = [
       {path: 'setting/profile', component: MyAccountComponent},
       {path: 'setting/dashboard', component: AccountDashboardComponent},
       {path: '', component: AccountDashboardComponent}
+    ]
+  },
+  {
+    path: 'account/apps',
+    component: AccountAppsComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {path: ':id', component: AccountAppsDetailComponent},
+      {path: '', component: AccountAppsListComponent}
     ]
   },
   {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
