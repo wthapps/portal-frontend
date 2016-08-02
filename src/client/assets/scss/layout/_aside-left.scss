@@ -14,6 +14,12 @@
     padding: 0;
     list-style: none;
     > li {
+      &.active {
+        a {
+          background-color: $color-inverse;
+          color: #ffffff;
+        }
+      }
       a {
         display: block;
         padding: 7px 15px;

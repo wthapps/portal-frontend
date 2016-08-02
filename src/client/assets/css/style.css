@@ -9189,6 +9189,9 @@ html {
   margin: 0;
   padding: 0;
   list-style: none; }
+  .aside-left .navgroup-menu > li.active a {
+    background-color: #f54a59;
+    color: #ffffff; }
   .aside-left .navgroup-menu > li a {
     display: block;
     padding: 7px 15px;
