@@ -113,3 +113,20 @@ html {
   margin-top: 40px;
   font-size: 18px;
 }
+
+.box-panel-top {
+  @include clearfix;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $light-slate;
+  margin: $grid-gutter-width/2 0;
+  h3 {
+    line-height: 30px;
+    font-weight: bold;
+    margin: 0;
+    display: inline-block;
+  }
+  > .view-more {
+    line-height: 30px;
+    float: right;
+  }
+}

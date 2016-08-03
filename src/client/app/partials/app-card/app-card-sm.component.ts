@@ -22,7 +22,10 @@ import {IAppCard} from './app-card';
           <p class="cat">{{card.category}}</p>
           <ul class="flatform">
             <li *ngFor="let c of card.flatform">
-              <i class="fa fa-windows" [ngClass]="{'fa-windows': (c == 'windows'), 'fa-apple': (c == 'apple'), 'fa-desktop': (c == 'browser')}"></i>
+              <i class="fa fa-windows" [ngClass]="{
+              'fa-windows': (c == 'windows'), 
+              'fa-apple': (c == 'apple'), 
+              'fa-desktop': (c == 'browser')}"></i>
             </li>
           </ul>
         </div>
