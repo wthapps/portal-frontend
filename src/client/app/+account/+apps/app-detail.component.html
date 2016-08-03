@@ -1,1 +1,130 @@
-Details
+<div class="main-content">
+  <div class="container">
+    <wth-breadcrumb [model]="breadcrumbs"></wth-breadcrumb>
+    <div class="page-app-detail">
+      <div class="page-app-top clearfix">
+        <div class="row">
+          <div class="col-sm-9">
+            <div class="page-app-info">
+              <div class="media">
+                <div class="media-left">
+                  <img [src]="item.img" [alt]="item.name">
+                </div>
+                <div class="media-body">
+                  <h2 class="media-heading">{{item.name}}</h2>
+                  <p class="cat">{{item.category}}</p>
+                  <ul class="flatform">
+                    <li *ngFor="let c of item.flatform">
+                      <i class="fa fa-windows" [ngClass]="{
+                      'fa-windows': (c == 'windows'),
+                      'fa-apple': (c == 'apple'),
+                      'fa-desktop': (c == 'browser')}"></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="page-app-action">
+              <button class="btn btn-primary"><i class="fa fa-download"></i> Download</button>
+              <button class="btn btn-default"><i class="fa fa-plus"></i> Add to Manage</button>
+              <button class="btn btn-success"><i class="fa fa-cogs"></i> Manage Product</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row page-app-content">
+        <div class="col-sm-2">
+          <aside class="aside-left">
+            <div class="navgroup">
+              <ul class="navgroup-menu">
+                <li>
+                  <a href="#">Overview</a>
+                </li>
+                <li>
+                  <a href="#">Help & Support</a>
+                </li>
+                <li>
+                  <a href="#">Term of Services</a>
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+        <div class="col-sm-7">
+          <div class="box-panel">
+            <div class="box-panel-top">
+              <h3>New Apps &amp; Services</h3>
+            </div>
+            <div class="box-panel-body">
+              <div class="article-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus deleniti explicabo incidunt
+                  provident quae ratione tenetur veniam. A, aliquam atque consequuntur, cumque delectus ea est ex illum
+                  labore nisi porro?</p>
+              </div>
+              <div class="article-slide-wrap">
+                <div class="article-slide-in">
+                  <div class="article-slide gallery-top">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <img src="assets/images/apps/slide.png"
+                             style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="assets/images/apps/slide.png"
+                             style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="assets/images/apps/slide.png"
+                             style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="assets/images/apps/slide.png"
+                             style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                      </div>
+                    </div>
+
+                    <div class="swiper-button-next swiper-button-white"></div>
+                    <div class="swiper-button-prev swiper-button-white"></div>
+                  </div>
+                  <div class="article-slide gallery-thumbs">
+                    <div class="swiper-thumbnails">
+                      <span><img src="assets/images/apps/slide-thumb.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                      <span><img src="assets/images/apps/slide-thumb.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                      <span><img src="assets/images/apps/slide-thumb.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                      <span><img src="assets/images/apps/slide-thumb.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="box-panel">
+            <div class="box-panel-top">
+              <h3>Information</h3>
+            </div>
+            <div class="box-panel-body">
+              <ul class="list-info-app">
+                <li><span>Version:</span> 2.1.10</li>
+                <li><span>Updated:</span> June 18 2016</li>
+                <li><span>Size:</span> 3.3MiB</li>
+                <li><span>Language:</span> English, French</li>
+                <li><span>Developer:</span> Nintendo</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
