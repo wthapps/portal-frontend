@@ -1,6 +1,6 @@
 /**
  * This barrel file provides the export for the shared FooterComponent.
  */
-export * from './app-card';
-export * from './app-card-md.component';
-export * from './app-card-sm.component';
+export * from './platform/app-card-platform.component';
+export * from './category/app-card-category.component';
+export * from './app-card.component';

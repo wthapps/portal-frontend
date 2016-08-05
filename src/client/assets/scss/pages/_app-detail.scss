@@ -1,36 +1,28 @@
 .page-app-info {
-  float: left;
-  .media {
-    .media-heading {
-      font-size: 34px;
-    }
-    .cat {
+  .page-app-info-tt {
+    font-size: 34px;
+    margin-top: 0;
+  }
+  .cat {
+    display: inline-block;
+    margin-bottom: 0;
+    margin-right: 5px;
+  }
+  .platform {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline;
+    border-left: 1px solid $text-color;
+    li {
       display: inline-block;
-      margin-bottom: 0;
-      margin-right: 5px;
-    }
-    .flatform {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: inline;
-      border-left: 1px solid $text-color;
-      li {
-        display: inline-block;
-        margin-left: 5px;
-      }
+      margin-left: 5px;
     }
   }
 }
 
 .page-app-action {
-  float: right;
-  .btn {
-    margin-bottom: 5px;
-  }
-  .btn + .btn {
-    margin-left: 10px;
-  }
+  margin-top: 30px;
 }
 
 .page-app-top {
@@ -39,9 +31,6 @@
 
 .page-app-content {
   margin-bottom: 30px;
-  .aside-left {
-    margin-top: 15px;
-  }
   .list-info-app {
     margin: 0;
     padding: 0;
@@ -85,7 +74,7 @@
     .swiper-thumbnails {
       > span {
         float: left;
-        width: 25%;
+        width: 20%;
         padding: 10px;
         display: block;
         border: 1px solid transparent;

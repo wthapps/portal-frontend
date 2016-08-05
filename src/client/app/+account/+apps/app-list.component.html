@@ -86,14 +86,8 @@
       <div class="col-sm-9">
         <div class="box-panel lib-feature">
           <div class="row">
-            <div class="col-sm-4">
-              <app-card-md [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-md>
-            </div>
-            <div class="col-sm-4">
-              <app-card-md [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-md>
-            </div>
-            <div class="col-sm-4">
-              <app-card-md [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-md>
+            <div *ngFor="let app of apps" class="col-sm-4">
+              <app-card [data]='app' [type]="'medium'" (appCardClicked)='onAppCardClicked($event)'></app-card>
             </div>
           </div>
         </div>
@@ -103,23 +97,8 @@
             <a class="view-more" href="#">See all</a>
           </div>
           <div class="row">
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
+            <div *ngFor="let app of apps" class="col-sm-4">
+              <app-card [data]='app' (appCardClicked)='onAppCardClicked($event)'></app-card>
             </div>
           </div>
         </div>
@@ -128,52 +107,14 @@
             <h3>New Apps &amp; Services</h3>
             <a class="view-more" href="#">See all</a>
           </div>
-          <div class="row">
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-          </div>
+
         </div>
         <div class="box-panel">
           <div class="box-panel-top">
             <h3>WTH Products</h3>
             <a class="view-more" href="#">See all</a>
           </div>
-          <div class="row">
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-            <div class="col-sm-4">
-              <app-card-sm [data]='apps' (appCardClicked)='onAppCardClicked($event)'></app-card-sm>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
