@@ -22,16 +22,19 @@ export class AppCardCategoryComponent implements OnChanges {
   @Input() data: Product;
 
   category: string = '';
+  categoryId: number = 1;
 
   constructor(private appCardService: AppCardService) {
   }
 
   ngOnChanges(): void {
-    this.appCardService.get(`products/categories/${this.data.product_categories_id}`).subscribe(
-      (res: any) => {
-        this.category = res.data.display_name;
-      },
-      error => console.log(<any>error)
-    );
+    if (this.data.product_categories_id) {
+      this.appCardService.get(`products/categories/${this.data.product_categories_id}`).subscribe(
+        (res: any) => {
+          this.category = res.data.display_name;
+        },
+        error => console.log(<any>error)
+      );
+    }
   }
 }

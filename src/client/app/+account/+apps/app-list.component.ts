@@ -29,7 +29,7 @@ export class AccountAppsListComponent implements OnInit {
   errorMessage: string = 'errorMessage';
   categoriesName: any = [];
 
-  apps: Array<Product> = [{
+  /*apps: Array<Product> = [{
     id: 1,
     uuid: '',
     name: 'Featured New App & Service No 01',
@@ -43,8 +43,8 @@ export class AccountAppsListComponent implements OnInit {
     active: true,
     router_link: '',
     platforms: ['windows', 'apple', 'browser']
-  }];
-  //apps: Array<Product>;
+  }];*/
+  apps: Array<Product>;
 
 
   constructor(private router: Router,
@@ -60,13 +60,10 @@ export class AccountAppsListComponent implements OnInit {
     this.appService.get('products').subscribe(
       (res: any) => {
         this.apps = res.data;
-        console.log(res.data);
       },
       error => this.errorMessage = <any>error
     );
   }
-
-  //products/categories/{id}
 
   onAppCardClicked(id: number): void {
     this.router.navigateByUrl(`/account/apps/${id}`);

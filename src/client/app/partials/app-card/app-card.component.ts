@@ -1,10 +1,9 @@
 import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
-import {Product, Platform} from '../../shared/models/product.model';
+import {Product} from '../../shared/models/product.model';
 import {AppCardPlatformComponent} from './platform/app-card-platform.component';
 import {AppCardCategoryComponent} from './category/app-card-category.component';
-import {AppCardService} from './app-card.service';
 
 /**
  * This class represents the AppCardSmComponent.
@@ -32,9 +31,6 @@ import {AppCardService} from './app-card.service';
     ROUTER_DIRECTIVES,
     AppCardCategoryComponent,
     AppCardPlatformComponent
-  ],
-  viewProviders: [
-    AppCardService
   ]
 })
 export class AppCardComponent implements OnChanges {
@@ -51,13 +47,9 @@ export class AppCardComponent implements OnChanges {
 
   errorMessage: string = '';
 
-  constructor(private appCardService: AppCardService) {
-  }
-
   ngOnChanges(): void {
     this.card = this.data;
     this.cardId = this.data.id;
-    console.log(this.data.product_categories_id);
   }
 
   onClick(): void {
