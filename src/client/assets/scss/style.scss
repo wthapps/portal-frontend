@@ -25,6 +25,7 @@
 // --------------------------------------------------
 @import "general/mixin";
 @import "general/setting";
+@import "partials/constants";
 @import "partials/colors";
 @import "partials/grid";
 @import "partials/typography";
@@ -46,11 +47,13 @@
 //
 // =modules
 // --------------------------------------------------
+@import "modules/breadcrumb";
 @import "modules/nav-menuleft";
 @import "modules/panel-creditcard";
 @import "modules/braintree-form";
 @import "modules/loading";
 @import "modules/IconHoverEffects";
+@import "modules/app-card";
 //@import "modules/pre-loaders";
 //
 // =Content
@@ -60,3 +63,4 @@
 // =Pages
 // --------------------------------------------------
 @import "pages/welcome";
+@import "pages/app-detail";

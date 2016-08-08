@@ -4,12 +4,11 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'add-ons.component.html',
+  template: `<router-outlet></router-outlet>`,
   directives: [
     ROUTER_DIRECTIVES
   ]
 })
 
-export class AddOnsComponent {
-  pageTitle:string = 'Add-ons';
+export class AccountAppsComponent {
 }

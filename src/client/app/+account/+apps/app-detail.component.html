@@ -1,0 +1,110 @@
+<div class="main-content">
+  <div class="container">
+    <wth-breadcrumb [model]="breadcrumbs"></wth-breadcrumb>
+    <div class="page-app-detail">
+      <div class="row">
+        <div class="col-sm-3 col-md-2">
+          <figure class="page-app-icon"><img class="img-full" [src]="item.img_src" [alt]="item.name"></figure>
+          <div class="page-app-action">
+            <p>
+              <a target="_blank" href="{{item.download_link}}" class="btn btn-primary btn-block">
+                <i class="fa fa-download"></i> Download</a>
+            </p>
+            <p>
+              <button class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add to Manage</button>
+            </p>
+            <p>
+              <button class="btn btn-success btn-block"><i class="fa fa-cogs"></i> Manage Product</button>
+            </p>
+          </div>
+        </div>
+        <div class="col-sm-9 col-md-10">
+          <div class="page-app-info">
+            <h2 class="page-app-info-tt">{{item.name}}</h2>
+            <app-card-category [data]="item"></app-card-category>
+            <app-card-platform [data]="item"></app-card-platform>
+          </div>
+          <div class="row page-app-content">
+            <div class="col-sm-8">
+              <div class="box-panel">
+                <div class="box-panel-top">
+                  <h3>Overview</h3>
+                </div>
+                <div class="box-panel-body">
+                  <div class="article-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus deleniti explicabo incidunt
+                      provident quae ratione tenetur veniam. A, aliquam atque consequuntur, cumque delectus ea est ex
+                      illum
+                      labore nisi porro?</p>
+                  </div>
+                  <div class="article-slide-wrap">
+                    <div class="article-slide-in">
+                      <div class="article-slide gallery-top">
+                        <div class="swiper-wrapper">
+                          <div class="swiper-slide">
+                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                          </div>
+                          <div class="swiper-slide">
+                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
+                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
+                          </div>
+                        </div>
+
+                        <div class="swiper-button-next swiper-button-white"></div>
+                        <div class="swiper-button-prev swiper-button-white"></div>
+                      </div>
+                      <div class="article-slide gallery-thumbs">
+                        <div class="swiper-thumbnails">
+                          <span><img src="assets/images/apps/slide-thumb.png"
+                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                          <span><img
+                            src="assets/images/apps/slide-thumb.png"
+                            style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                          <span><img src="assets/images/apps/slide-thumb.png"
+                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                          <span><img src="assets/images/apps/slide-thumb.png"
+                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                          <span><img src="assets/images/apps/slide-thumb.png"
+                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="box-panel">
+                <div class="box-panel-top">
+                  <h3>Information</h3>
+                </div>
+                <div class="box-panel-body">
+                  <ul class="list-info-app">
+                    <li><span>Version:</span> {{item.version}}</li>
+                    <li><span>Updated:</span> {{item.updated_at | date:'MMM-dd-yyyy'}}</li>
+                    <li><span>Size:</span> {{item.size}}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
