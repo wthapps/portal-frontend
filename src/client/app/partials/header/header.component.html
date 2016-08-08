@@ -118,8 +118,16 @@
                   <div class="media-body">
                     <p class="media-heading">{{_userService.profile.name}}</p>
                     <span class="in-email">{{_userService.profile.email}}</span>
-                    <p class="media-heading">{{(_userService.profile.plan_id == 'wth_free' ? 'Basic Plan' :
-                      _userService.profile.plan_id)}} </p>
+                    <div *ngIf="_userService.profile.plan_id == 'wth_free'" class="navbar-nav-plan">
+                      <p class="in-plan"> Basic Plan <span>- 8 days left</span></p>
+                      <button class="btn btn-success">
+                        <i class="fa fa-arrow-circle-up"></i> Upgrade
+                      </button>
+                    </div>
+                    <div *ngIf="_userService.profile.plan_id != 'wth_free'" class="navbar-nav-plan">
+                      <p class="in-plan">Advanced Plan</p>
+                      <span class="in-email">Activated on Aug 18 2016</span>
+                    </div>
                   </div>
                 </div>
               </li>
