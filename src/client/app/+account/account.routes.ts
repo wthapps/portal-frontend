@@ -8,10 +8,12 @@ import {
 }                           from './index';
 
 import {
-  AccountDashboardComponent,
-  MyAccountComponent,
-  ChangePasswordComponent,
+  //AccountDashboardComponent,
+
+  // Settings
   ProfileComponent,
+  MyAccountComponent,
+  PreferencesComponent,
 
   // Apps
   AccountAppsComponent,
@@ -50,20 +52,15 @@ import {
   AuthGuard
 }                           from '../shared/index';
 
-export const AccountRoutes:RouterConfig = [
+export const AccountRoutes: RouterConfig = [
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard],
     children: [
-      {
-        path: 'dns/add', component: DNSAddComponent
-        //, canActivate: [AuthGuard]
-      },
-      { path: 'dns/:id', component: DNSUpdateComponent},
-      {
-        path: 'dns', component: DNSComponent //, canActivate: [AuthGuard]
-      },
+      {path: 'dns/add', component: DNSAddComponent},
+      {path: 'dns/:id', component: DNSUpdateComponent},
+      {path: 'dns', component: DNSComponent},
 
       {path: 'vpn', component: AccountServicesVPNComponent},
       {path: 'efax', component: AccountServicesEFaxComponent},
@@ -79,11 +76,12 @@ export const AccountRoutes:RouterConfig = [
       {path: 'payment', component: PaymentComponent},
 
       {path: 'services', component: AccountServicesListComponent},
-      {path: 'setting/changepassword', component: ChangePasswordComponent},
+
+      // Setting
       {path: 'setting/profile', component: ProfileComponent},
       {path: 'setting/account', component: MyAccountComponent},
-      {path: 'setting/dashboard', component: AccountDashboardComponent},
-      {path: '', component: AccountDashboardComponent}
+      {path: 'setting/preferences', component: PreferencesComponent},
+      {path: '', component: ProfileComponent}
     ]
   },
   {
@@ -96,6 +94,6 @@ export const AccountRoutes:RouterConfig = [
     ]
   },
   {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
-  {path: 'account/recovery/newpassword',       component: NewPasswordComponent},
-  {path: 'account/recovery/reset_email_sent',  component: ResetEmailSentComponent}
+  {path: 'account/recovery/newpassword', component: NewPasswordComponent},
+  {path: 'account/recovery/reset_email_sent', component: ResetEmailSentComponent}
 ];
