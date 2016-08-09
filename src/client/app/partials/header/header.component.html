@@ -13,7 +13,9 @@
         <a class="navbar-brand" [routerLink]="['/']">
           <img src="assets/images/logo.png" alt="WTHApps">
         </a>
-        <span *ngIf="navTitle" class="navbar-page">{{navTitle}}</span>
+        <span *ngIf="navTitle" class="navbar-page">
+          <a class="navbar-brand" href="#" (click)="onNavigateByTitle($event)"> {{navTitle}} </a>        
+        </span>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,7 +46,7 @@
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a [routerLink]="['/account/apps']">
                   <i class="fa fa-list-alt"></i>
                   <span>Library</span>
                 </a>

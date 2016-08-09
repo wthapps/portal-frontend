@@ -90,7 +90,8 @@ export const AccountRoutes:RouterConfig = [
     canActivate: [AuthGuard],
     children: [
       {path: ':id', component: AccountAppsDetailComponent},
-      {path: '', component: AccountAppsListComponent}
+      {path: '', component: AccountAppsListComponent},
+      {path: '**', component: AccountAppsListComponent}
     ]
   },
   {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
