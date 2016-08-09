@@ -14,7 +14,7 @@ import {
   UserService,
   ToastsService,
   LoadingService,
-  //CustomValidator,
+  CustomValidator,
   Constants,
   DialogService
 }                           from '../../shared/index';
@@ -102,7 +102,7 @@ export class MyAccountComponent {
   }
 
   cancelPlan(): void {
-    let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <script>alert("0wned")</script><br>
+    let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
       We will send you a cancellation confirmation email to <span class="bold">${this._userService.profile.email}</span>. <br>
       We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
     this.dialogService.activate(bodyText, 'Cancel Membership', 'Finish Cancellation', 'Cancel');
