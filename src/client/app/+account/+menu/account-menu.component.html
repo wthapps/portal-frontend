@@ -1,13 +1,19 @@
 <div class="nav-menuleft">
   <aside class="aside-left">
     <div class="navgroup">
-      <h4 class="aside-title">General</h4>
+      <h4 class="aside-title">Settings</h4>
       <ul class="navgroup-menu">
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/account/setting/dashboard']">Home</a>
         </li>
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/account/setting/profile']">Account Settings</a>
+          <a [routerLink]="['/account/setting/profile']">Profile</a>
+        </li>
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/setting/account']">Account</a>
+        </li>
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/setting/profile']">Preferences</a>
         </li>
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/account/setting/changepassword']">Change Password</a>
@@ -22,10 +28,12 @@
           <a [routerLink]="['/account/plans']">Plans</a>
         </li>
         <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/account/plans']">Billing</a>
+        </li>
+        <li [routerLinkActive]="['active']">
           <a [routerLink]="['/account/billing-details']">Billing Details</a>
         </li>
-        <li [routerLinkActive]="['active']"><a [routerLink]="['/account/billing-history']">Billing
-          History</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/account/billing-history']">Billing History</a></li>
       </ul>
     </div>
 

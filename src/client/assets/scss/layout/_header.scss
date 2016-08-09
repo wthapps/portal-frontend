@@ -3,7 +3,7 @@ Header
 ========================================================================== */
 .header {
   position: relative;
-  z-index: 2000;
+  z-index: 1000;
   .navbar {
     @media (min-width: $screen-sm) {
       padding-top: 15px;

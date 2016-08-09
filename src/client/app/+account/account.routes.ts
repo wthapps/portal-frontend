@@ -11,6 +11,7 @@ import {
   AccountDashboardComponent,
   MyAccountComponent,
   ChangePasswordComponent,
+  ProfileComponent,
 
   // Apps
   AccountAppsComponent,
@@ -79,7 +80,8 @@ export const AccountRoutes:RouterConfig = [
 
       {path: 'services', component: AccountServicesListComponent},
       {path: 'setting/changepassword', component: ChangePasswordComponent},
-      {path: 'setting/profile', component: MyAccountComponent},
+      {path: 'setting/profile', component: ProfileComponent},
+      {path: 'setting/account', component: MyAccountComponent},
       {path: 'setting/dashboard', component: AccountDashboardComponent},
       {path: '', component: AccountDashboardComponent}
     ]

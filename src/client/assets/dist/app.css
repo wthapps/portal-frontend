@@ -2410,7 +2410,7 @@ input[type="search"] {
     line-height: 46px; } }
 
 .form-group {
-  margin-bottom: 15px; }
+  margin-bottom: 20px; }
 
 .radio,
 .checkbox {
@@ -2911,28 +2911,28 @@ fieldset[disabled] a.btn {
 
 .btn-success {
   color: #fff;
-  background-color: #A2D96D;
-  border-color: #95d459; }
+  background-color: #6DD9AC;
+  border-color: #59d4a0; }
   .btn-success:focus, .btn-success.focus {
     color: #fff;
-    background-color: #88ce45;
-    border-color: #568924; }
+    background-color: #45ce95;
+    border-color: #24895f; }
   .btn-success:hover {
     color: #fff;
-    background-color: #88ce45;
-    border-color: #76be31; }
+    background-color: #45ce95;
+    border-color: #31be83; }
   .btn-success:active, .btn-success.active,
   .open > .btn-success.dropdown-toggle {
     color: #fff;
-    background-color: #88ce45;
-    border-color: #76be31; }
+    background-color: #45ce95;
+    border-color: #31be83; }
     .btn-success:active:hover, .btn-success:active:focus, .btn-success:active.focus, .btn-success.active:hover, .btn-success.active:focus, .btn-success.active.focus,
     .open > .btn-success.dropdown-toggle:hover,
     .open > .btn-success.dropdown-toggle:focus,
     .open > .btn-success.dropdown-toggle.focus {
       color: #fff;
-      background-color: #76be31;
-      border-color: #568924; }
+      background-color: #31be83;
+      border-color: #24895f; }
   .btn-success:active, .btn-success.active,
   .open > .btn-success.dropdown-toggle {
     background-image: none; }
@@ -2940,10 +2940,10 @@ fieldset[disabled] a.btn {
   fieldset[disabled] .btn-success:hover,
   fieldset[disabled] .btn-success:focus,
   fieldset[disabled] .btn-success.focus {
-    background-color: #A2D96D;
-    border-color: #95d459; }
+    background-color: #6DD9AC;
+    border-color: #59d4a0; }
   .btn-success .badge {
-    color: #A2D96D;
+    color: #6DD9AC;
     background-color: #fff; }
 
 .btn-info {
@@ -4232,9 +4232,9 @@ a.label:hover, a.label:focus {
     background-color: #3eb6f2; }
 
 .label-success {
-  background-color: #A2D96D; }
+  background-color: #6DD9AC; }
   .label-success[href]:hover, .label-success[href]:focus {
-    background-color: #88ce45; }
+    background-color: #45ce95; }
 
 .label-info {
   background-color: #5bc0de; }
@@ -4462,7 +4462,7 @@ a.thumbnail.active {
   animation: progress-bar-stripes 2s linear infinite; }
 
 .progress-bar-success {
-  background-color: #A2D96D; }
+  background-color: #6DD9AC; }
   .progress-striped .progress-bar-success {
     background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -8802,8 +8802,63 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-background-size: 24px 24px;
   background-size: 24px 24px; }
 
+.form-control:after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background-color: red; }
+
 .help-block[hidden] {
   display: none; }
+
+.form-group {
+  position: relative;
+  -webkit-box-shadow: 0 0 0 transparent;
+  box-shadow: 0 0 0 transparent; }
+  .form-group:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    top: 33px;
+    right: 10px;
+    z-index: 10;
+    font-size: 18px; }
+  .form-group.has-error:before {
+    content: "\f057";
+    color: #d9534f; }
+  .form-group.has-success:before {
+    content: "\f058";
+    color: #5cb85c; }
+  .form-group .hideShowPassword-toggle {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 28px;
+    right: 7px;
+    z-index: 11;
+    background-color: #FFF;
+    border-width: 0;
+    font-size: 18px; }
+    .form-group .hideShowPassword-toggle:before {
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\f06e"; }
+    .form-group .hideShowPassword-toggle.active:before {
+      content: "\f070"; }
+    .form-group .hideShowPassword-toggle:hover, .form-group .hideShowPassword-toggle:focus {
+      outline: 0 none; }
+
+.btn-min {
+  min-width: 106px;
+  text-align: center; }
 
 .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
   outline: 0 none; }
@@ -8839,6 +8894,12 @@ h1, h2, h3, h4, h5, h6 {
   .toast-wrap .alert {
     width: 320px;
     word-break: break-all; }
+
+.line {
+  height: 1px;
+  clear: both;
+  width: 100%;
+  margin: 15px 0; }
 
 /* ==========================================================================
 Header
@@ -9007,7 +9068,12 @@ Header
           overflow: hidden;
           -ms-text-overflow: ellipsis;
           text-overflow: ellipsis;
-          white-space: nowrap; } }
+          white-space: nowrap; }
+        .header .navbar .navbar-nav-profile .dropdown-menu > li .media-body .navbar-nav-plan {
+          margin-top: 20px; }
+        .header .navbar .navbar-nav-profile .dropdown-menu > li .media-body .in-plan {
+          font-size: 18px;
+          margin-bottom: 0; } }
   @media (min-width: 768px) {
     .header .navbar .navbar-form {
       margin-top: 0;
@@ -9216,6 +9282,20 @@ html {
   margin-top: 40px;
   font-size: 18px; }
 
+.box-panel-title {
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: 1px solid #4A4A4A;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 0; }
+
+.box-panel-subtitle {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 24px; }
+
 .box-panel-top {
   padding-bottom: 10px;
   border-bottom: 1px solid #9B9B9B;
@@ -9233,6 +9313,12 @@ html {
   .box-panel-top > .view-more {
     line-height: 30px;
     float: right; }
+
+.p-plan-info {
+  color: #9B9B9B; }
+  .p-plan-info span {
+    font-size: 18px;
+    color: #4A4A4A; }
 
 .aside-left .navgroup {
   margin-bottom: 20px; }

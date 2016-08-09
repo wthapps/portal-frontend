@@ -6,8 +6,72 @@
     -webkit-background-size: 24px 24px;
     background-size: 24px 24px;
   }
+  &:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: red;
+  }
 }
 
 .help-block[hidden] {
   display: none;
+}
+
+.form-group {
+  position: relative;
+  @include box-shadow(0 0 0 transparent);
+  &:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    top: 33px;
+    right: 10px;
+    z-index: 10;
+    font-size: 18px;
+  }
+  &.has-error {
+    &:before {
+      content: "\f057";
+      color: $alert-danger-text;
+    }
+  }
+  &.has-success {
+    &:before {
+      content: "\f058";
+      color: $alert-success-text;
+    }
+  }
+  .hideShowPassword-toggle {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 28px;
+    right: 7px;
+    z-index: 11;
+    background-color: #FFF;
+    border-width: 0;
+    font-size: 18px;
+    &:before {
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\f06e";
+    }
+    &.active {
+      &:before {
+        content: "\f070";
+      }
+    }
+    &:hover, &:focus {
+      outline: 0 none;
+    }
+  }
 }

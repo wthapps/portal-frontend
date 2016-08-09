@@ -14,9 +14,16 @@ export * from './+apps/index';
 /**
  *  Setting
  */
-export * from './+setting/dashboard.component';
-export * from './+setting/change-password.component';
+export * from './+setting/profile.component';
 export * from './+setting/my-account.component';
+
+
+
+
+export * from './+setting/dashboard.component';
+
+
+export * from './+setting/change-password.component';
 export * from './+setting/installed-apps.component';
 
 /**

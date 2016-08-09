@@ -114,6 +114,22 @@ html {
   font-size: 18px;
 }
 
+.box-panel-title {
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: 1px solid #4A4A4A;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.box-panel-subtitle {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 24px;
+}
+
 .box-panel-top {
   @include clearfix;
   padding-bottom: 10px;
@@ -128,5 +144,14 @@ html {
   > .view-more {
     line-height: 30px;
     float: right;
+  }
+}
+
+// Style for plan
+.p-plan-info {
+  color: $light-slate;
+  span {
+    font-size: 18px;
+    color: $text-color;
   }
 }
