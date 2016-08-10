@@ -153,7 +153,7 @@ export class DNSComponent implements OnInit {
         this.servicesService.deleteUserProduct(this._dnsProductId).subscribe(
           result => {
             this.loadingService.stop();
-            this.router.navigateByUrl('/account/setting/dashboard');
+            this.router.navigateByUrl('/account/setting/profile');
           },
           error => {
             this.loadingService.stop();

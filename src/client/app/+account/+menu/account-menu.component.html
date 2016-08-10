@@ -4,9 +4,6 @@
       <h4 class="aside-title">Settings</h4>
       <ul class="navgroup-menu">
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/account/setting/dashboard']">Home</a>
-        </li>
-        <li [routerLinkActive]="['active']">
           <a [routerLink]="['/account/setting/profile']">Profile</a>
         </li>
         <li [routerLinkActive]="['active']">
@@ -18,8 +15,8 @@
       </ul>
     </div>
 
-    <div class="navgroup">
-      <h4 class="aside-title">Plans and Billing</h4>
+    <div *ngIf="userService.profile.has_payment_info" class="navgroup">
+      <h4 class="aside-title">Plans &amp; Billing</h4>
       <ul class="navgroup-menu">
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/account/plans']">Plans</a>

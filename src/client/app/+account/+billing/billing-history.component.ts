@@ -3,8 +3,8 @@ import {ROUTER_DIRECTIVES, Router}                from '@angular/router';
 import {
   UserService,
   LoadingService
-}                                                 from '../shared/index';
-import {TransactionService}                       from './transaction.service';
+}                                                 from '../../shared/index';
+import {TransactionService}                       from '../transaction.service';
 
 
 

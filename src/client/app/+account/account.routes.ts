@@ -22,7 +22,6 @@ import {
 
   // payment
   PlansComponent,
-  PlanDetailsComponent,
   BillingDetailsComponent,
   BillingHistoryComponent,
   PaymentComponent,
@@ -65,15 +64,10 @@ export const AccountRoutes: RouterConfig = [
       {path: 'vpn', component: AccountServicesVPNComponent},
       {path: 'efax', component: AccountServicesEFaxComponent},
 
-      {path: 'plans', component: PlansComponent},
-      {path: 'plan-details', component: PlanDetailsComponent},
       {path: 'billing-details', component: BillingDetailsComponent},
       {path: 'billing-history', component: BillingHistoryComponent},
       {path: 'transactions/:id/receipt', component: ReceiptComponent},
       {path: 'transactions/:id', component: TransactionDetailsComponent},
-      {path: 'payment/confirm', component: PaymentConfirmComponent},
-      {path: 'payment/edit', component: PaymentEditComponent},
-      {path: 'payment', component: PaymentComponent},
 
       {path: 'services', component: AccountServicesListComponent},
 
@@ -93,6 +87,10 @@ export const AccountRoutes: RouterConfig = [
       {path: '', component: AccountAppsListComponent}
     ]
   },
+  {path: 'account/payment/confirm', component: PaymentConfirmComponent},
+  {path: 'account/payment/edit', component: PaymentEditComponent},
+  {path: 'account/payment', component: PaymentComponent},
+  {path: 'account/plans', component: PlansComponent},
   {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
   {path: 'account/recovery/newpassword', component: NewPasswordComponent},
   {path: 'account/recovery/reset_email_sent', component: ResetEmailSentComponent}

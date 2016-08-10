@@ -132,10 +132,10 @@
                 </div>
               </li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">Account</a></li>
-              <li><a href="#">Profile</a></li>
-              <li><a href="#">Password</a></li>
-              <li><a [routerLink]="['/account/setting/dashboard']">Settings</a></li>
+              <li><a [routerLink]="['/account/setting/profile']" href="#">Profile</a></li>
+              <li><a [routerLink]="['/account/setting/account']" href="#">Account</a></li>
+              <li><a [routerLink]="['/account/setting/preferences']" href="#">Preferences</a></li>
+              <li role="separator" class="divider"></li>
               <li><a href="#">Plans</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>

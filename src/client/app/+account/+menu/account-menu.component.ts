@@ -1,11 +1,15 @@
 import {
   Component,
   OnInit
-}                          from '@angular/core';
+}                           from '@angular/core';
 import {
   ROUTER_DIRECTIVES
-}                          from '@angular/router';
-import { ServicesService } from '../+services/services.service';
+}                           from '@angular/router';
+
+import {
+  UserService
+}                           from '../../shared/index';
+import {ServicesService}    from '../+services/services.service';
 
 
 @Component({
@@ -21,8 +25,7 @@ export class AccountMenuComponent implements OnInit {
   has_installed_apps: boolean = false;
   installed_apps: any = [];
 
-  constructor(private appsService: ServicesService) {
-
+  constructor(private appsService: ServicesService, private userService: UserService) {
   }
 
   ngOnInit(): void {

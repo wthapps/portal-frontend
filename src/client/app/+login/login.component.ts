@@ -46,7 +46,7 @@ export class LoginComponent {
               private _redirectService:RedirectService) {
 
     if (this._userService.loggedIn) {
-      this._router.navigateByUrl('/account/setting/dashboard');
+      this._router.navigateByUrl('/account/setting/profile');
     }
 
     this.form = fb.group({

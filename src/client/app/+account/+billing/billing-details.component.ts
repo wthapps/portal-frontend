@@ -5,31 +5,29 @@ import {
   LoadingService,
   DialogService,
   ToastsService
-}                                     from '../shared/index';
+}                                     from '../../shared/index';
 import {Cookie}                       from 'ng2-cookies/ng2-cookies';
-import {CreditCard}                   from '../shared/models/credit-card.model';
-import {BillingAddress}               from '../shared/models/billing-address.model';
+import {CreditCard}                   from '../../shared/models/credit-card.model';
+import {BillingAddress}               from '../../shared/models/billing-address.model';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'billing-details.component.html',
   directives: [
     ROUTER_DIRECTIVES
-  ],
-  providers: [UserService]
+  ]
 })
 
 export class BillingDetailsComponent implements OnInit {
-  pageTitle:string = 'Billing Details';
+  pageTitle: string = 'Billing Details';
   credit_card: CreditCard;
 
-  constructor(
-    private userService:UserService,
-    private router:Router,
-    private loadingService: LoadingService,
-    private dialogService: DialogService,
-    private toastsService: ToastsService
-  ) {
+  constructor(private userService: UserService,
+              private router: Router,
+              private loadingService: LoadingService,
+              private dialogService: DialogService,
+              private toastsService: ToastsService) {
+    //console.log(this.userService);
   }
 
   ngOnInit(): void {
@@ -41,17 +39,17 @@ export class BillingDetailsComponent implements OnInit {
   }
 
   /*onEdit(event: any): void {
-    event.preventDefault();
-    this.router.navigateByUrl(
-      `/account/payment;operation=edit;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
-    );
-  }*/
+   event.preventDefault();
+   this.router.navigateByUrl(
+   `/account/payment;operation=edit;${Constants.params.next}=${this.router.location.path().replace(/\//g, '\%20')}`
+   );
+   }*/
 
   onDelete(event: any): void {
     event.preventDefault();
     this.dialogService.activate('Are you sure to delete Billing details?', 'Delete billing details')
       .then((responseOK) => {
-        if(responseOK) {
+        if (responseOK) {
           this.loadingService.start();
           this.userService.delete(`/users/${this.userService.profile.id}/payments/1`).subscribe(
             response => {

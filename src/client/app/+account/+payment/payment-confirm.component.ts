@@ -23,6 +23,6 @@ export class PaymentConfirmComponent {
   }
 
   confirm():void {
-    this.router.navigateByUrl('account/setting/dashboard');
+    this.router.navigateByUrl('account/setting/profile');
   }
 }

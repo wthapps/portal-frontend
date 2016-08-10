@@ -1,47 +1,44 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">{{pageTitle}}</h3>
+<div class="container">
+  <div class="title-wrap">
+    <h2 class="title">WTH PLANS</h2>
+    <p class="title-sub">With only 2 Plans - Easy to decide</p>
   </div>
 
-  <div class="container-fluid">
-    <div class="row product-row" >
-      <div class="col-border col-border-tt col-sm-4 text-center">
-        Services and apps
-      </div>
-      <div class="col-border col-sm-3 text-center" [ngClass]="userService.profile.plan_id==p.str_id ? 'selected-plan': ''" *ngFor="let p of plans">
-        <div>
-          <div class="btn btn-block" [ngClass]="p.str_id=='wth_free' ? 'btn-default': 'btn-success'">
-            {{p.name}}
-          </div>
-            {{p.description}}
-        </div>
-      </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-md-offset-2">
+      <table id="tablePlan" class="table table-bordered table-striped table-middle table-plan">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th *ngFor="let pp of plans">
+            <h3 [ngClass]="{'bold':!pp.is_trial}">{{pp.name}}</h3>
+            <p>{{pp.description}}</p>
+            <template [ngIf]="userService.profile.plan_id==pp.str_id"><span>Current Plan</span></template>
+            <template [ngIf]="userService.profile.plan_id!=pp.str_id">
+              <button (click)="getStarted()" class="btn btn-primary">Get Started</button>
+            </template>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let pro of products">
+          <td class="text-left">{{pro.name}}</td>
+          <td *ngFor="let pp of plans">
+            <span *ngIf="!plan_has_product(pp.products, pro.name)">&nbsp;</span>
+            <span *ngIf="plan_has_product(pp.products, pro.name)"><i class="fa fa-check-circle"></i></span>
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td *ngFor="let pp of plans">
+            <template [ngIf]="userService.profile.plan_id!=pp.str_id">
+              <button (click)="getStarted()" class="btn btn-primary">Get Started</button>
+            </template>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <p>*Monthly fee will be charege automatically</p>
     </div>
-    <div class="row product-row" *ngFor="let pro of products">
-      <div class="col-border col-sm-4 text-center">
-        {{pro.name}}
-      </div>
-      <div class="col-border col-sm-3 text-center" [ngClass]="userService.profile.plan_id==pp.str_id ? 'selected-plan': ''" *ngFor="let pp of planProducts">
-        <div class="text-danger" *ngIf="!plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>
-        <div class="text-success" *ngIf="plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>
-      </div>
-    </div>
-    <div class="row product-row">
-      <div class="col-border col-border-tt col-sm-4 text-center"></div>
-
-      <div class="col-border col-sm-3 text-center" *ngFor="let p of plans">
-        <div *ngIf="p.str_id =='wth_free'">
-          <button class="btn btn-primary" *ngIf="userService.profile.plan_id != 'wth_free'" (click)="choosePlan(p.str_id)">Choose</button>
-        </div>
-        <div *ngIf="p.str_id !='wth_free'">
-          <button class="btn btn-primary" *ngIf="userService.profile.plan_id != 'wth_basic'" (click)="choosePlan(p.str_id)">Choose</button>
-          <wth-cancel-plan></wth-cancel-plan>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div>
   </div>
 </div>
-
