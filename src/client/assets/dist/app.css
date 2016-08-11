@@ -10166,7 +10166,6 @@ wth-app:empty + .dots-loader-wrap {
 
 .app-card {
   border: 1px solid #D8D8D8;
-  font-family: "Source Sans Pro", sans-serif;
   margin-bottom: 15px;
   position: relative;
   border-bottom-right-radius: 4px;
@@ -10247,6 +10246,38 @@ wth-app:empty + .dots-loader-wrap {
     overflow: hidden;
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis; }
+
+.media-app-card .name {
+  overflow: hidden;
+  line-height: 16px;
+  max-height: 32px;
+  margin: 0 0 5px; }
+
+.media-app-card .cat {
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #9B9B9B; }
+
+.media-app-card .platform {
+  margin: 0;
+  padding: 0;
+  list-style-type: none; }
+  .media-app-card .platform li {
+    display: inline-block;
+    margin-right: 10px; }
+
+.media-app-card .media-left {
+  padding-right: 15px; }
+  .media-app-card .media-left img {
+    width: 60px;
+    height: auto; }
+
+.media-app-card .media-body, .media-app-card .media-right {
+  vertical-align: middle; }
 
 .lib-feature .row > [class^="col-"]:first-child .app-card-md .app-card-cover {
   background-image: -webkit-linear-gradient(top, #F54A59 0%, #CC3340 100%);
