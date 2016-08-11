@@ -12,6 +12,11 @@ export * from './+recovery/reset-email-sent.component';
 export * from './+apps/index';
 
 /**
+* My Apps
+*/
+export * from './+my-apps/index';
+
+/**
  *  Setting
  */
 export * from './+setting/dashboard.component';

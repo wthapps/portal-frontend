@@ -16,6 +16,7 @@ import {
   AccountAppsComponent,
   AccountAppsListComponent,
   AccountAppsDetailComponent,
+  MyAppsListComponent,
 
   // payment
   PlansComponent,
@@ -92,6 +93,16 @@ export const AccountRoutes:RouterConfig = [
       {path: ':id', component: AccountAppsDetailComponent},
       {path: '', component: AccountAppsListComponent},
       {path: '**', component: AccountAppsListComponent}
+    ]
+  },
+  {
+    path: 'account/my-apps',
+    component: AccountAppsComponent,
+    canActivate: [AuthGuard],
+    children: [
+      // {path: ':id/manage', component: Component},
+      {path: '', component: MyAppsListComponent},
+      {path: '**', component: MyAppsListComponent}
     ]
   },
   {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent},

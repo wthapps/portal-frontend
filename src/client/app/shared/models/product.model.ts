@@ -1,3 +1,6 @@
+import { Category } from './category.model';
+import { Platform } from './platform.model';
+
 export class Product {
 
   id: number;
@@ -13,9 +16,11 @@ export class Product {
   is_featured: boolean;
   is_top: boolean;
   is_new: boolean;
-  active: boolean;
-  platforms: any;
+  active: boolean;  
+  category: Category;
+  platforms: Array<Platform>;
   updated_at: string;
+  
 
   constructor(fields?: {
     id?: number,
@@ -31,30 +36,17 @@ export class Product {
     is_featured?: boolean,
     is_top?: boolean,
     is_new?: boolean,
-    active?: boolean,
-    platforms?: any,
+    active?: boolean,   
+    category?: Category,
+    platforms?: Array<Platform>,
     updated_at?: string
   }) {
     if (fields) Object.assign(this, fields);
-  }
-}
 
-
-export class Platform {
-
-  id: number;
-  uuid: string;
-  name: string;
-  display_name: string;
-  description: string;
-
-  constructor(fields?: {
-    id?: number,
-    uuid?: string,
-    name?: string,
-    display_name?: string,
-    description?: string
-  }) {
-    if (fields) Object.assign(this, fields);
+    if (fields == undefined) {
+      this.uuid = '';
+      this.name = '';
+      this.category = new Category();
+    }     
   }
 }

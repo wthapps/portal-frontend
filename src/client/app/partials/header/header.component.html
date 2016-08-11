@@ -38,13 +38,7 @@
                aria-expanded="false">
               <i class="fa fa-list"></i>
             </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="#">
-                  <i class="fa fa-home"></i>
-                  <span>Home</span>
-                </a>
-              </li>
+            <ul class="dropdown-menu">              
               <li>
                 <a [routerLink]="['/account/apps']">
                   <i class="fa fa-list-alt"></i>
@@ -52,17 +46,11 @@
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a [routerLink]="['/account/my-apps']">
                   <i class="fa fa-plug"></i>
                   <span>Management</span>
                 </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="fa fa-question-circle"></i>
-                  <span>Help Center</span>
-                </a>
-              </li>
+              </li>              
             </ul>
           </li>
           <li class="dropdown navbar-nav-notification">

@@ -53,7 +53,7 @@ export class AccountAppsListComponent implements OnInit {
       });
 
     // get featured apps
-    this.appService.get('products?featured=featured').subscribe(
+    this.appService.get('apps?featured=featured').subscribe(
     (res: any) => {      
       this.featured_apps = res.data;
     },
@@ -61,7 +61,7 @@ export class AccountAppsListComponent implements OnInit {
     );
     
     // get top apps
-    this.appService.get('products?featured=top').subscribe(
+    this.appService.get('apps?featured=top').subscribe(
     (res: any) => {      
       this.top_apps = res.data;
     },
@@ -69,7 +69,7 @@ export class AccountAppsListComponent implements OnInit {
     );
 
     // get new apps
-    this.appService.get('products?featured=new').subscribe(
+    this.appService.get('apps?featured=new').subscribe(
     (res: any) => {      
       this.new_apps = res.data;
     },
@@ -80,7 +80,7 @@ export class AccountAppsListComponent implements OnInit {
   }
 
   getProducts() {
-    this.appService.get('products').subscribe(
+    this.appService.get('apps').subscribe(
       (res: any) => {
         this.apps = res.data;        
       },

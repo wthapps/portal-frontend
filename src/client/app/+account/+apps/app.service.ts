@@ -12,7 +12,7 @@ export class AppService extends ApiBaseService {
 
   /**
    *
-   * @param path Eg: '/products' (get all) or '/products/id'
+   * @param path Eg: '/apps' (get all) or '/apps/id'
    * @returns {Observable<Response>}
    */
 
@@ -29,6 +29,20 @@ export class AppService extends ApiBaseService {
 
   update(path: string, body: string): Observable<Response> {
     return super.patch(path, body)
+      .map(res => res.json())
+      .map((res) => {
+        if(res) {
+          return res;
+        }
+        return [];
+      });
+  }
+
+  /*
+  * User adds app to My Apps
+  */
+  add(path: string, body: string): Observable<Response> {
+    return super.post(path, body)
       .map(res => res.json())
       .map((res) => {
         if(res) {

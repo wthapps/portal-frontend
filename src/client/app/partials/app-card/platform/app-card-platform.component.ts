@@ -36,7 +36,7 @@ export class AppCardPlatformComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.data.id) {
-      this.appCardService.get(`products/${this.data.id}/platforms`).subscribe(
+      this.appCardService.get(`apps/${this.data.id}/platforms`).subscribe(
         (res: any) => {
           this.platforms = res.data;
         },
