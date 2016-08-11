@@ -39,13 +39,16 @@ declare var $:any;
 
 export class PaymentComponent implements AfterViewInit, OnInit {
   PanelTitle:string = 'Find Services and add-ons';
-  button_text:string = 'Continue';
+  button_text:string = 'Review Order';
   edit_mode:boolean = false;
   countries:any;
   credit_card: CreditCard = null;
   submitted: boolean = false;
 
+  methodPaypal: boolean = false;
+
   paymentForm: FormGroup;
+  payment_method: AbstractControl = null;
   cardholder_name: AbstractControl = null;
   address_line_1: AbstractControl = null;
   address_line_2: AbstractControl = null;
@@ -113,6 +116,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
     // Validation
     this.paymentForm = this.builder.group({
+      payment_method: 'credit',
       cardholder_name: [this.credit_card.cardholder_name, Validators.compose([Validators.required])],
       address_line_1: [this.credit_card.billing_address.street_address, Validators.compose([Validators.required])],
       address_line_2: [this.credit_card.billing_address.extended_address, null],
@@ -122,6 +126,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
       country: [this.credit_card.billing_address.country_code_alpha2, Validators.compose([Validators.required])]
     });
 
+    this.payment_method = this.paymentForm.controls['payment_method'];
     this.cardholder_name = this.paymentForm.controls['cardholder_name'];
     this.address_line_1 = this.paymentForm.controls['address_line_1'];
     this.address_line_2 = this.paymentForm.controls['address_line_2'];
@@ -293,10 +298,10 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     });
   }
 
-  onCancel() {
+  /*onCancel() {
     var next = this.next === undefined ? '/account' : this.next.replace(/\%20/g, '\/');
     this.router.navigateByUrl(next);
-  }
+  }*/
 
   onSubmit() {
     this.submitted = true;
@@ -305,6 +310,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
    *  Add card information and billing address
    */
   private create(_this:any, body:string) {
+    _this.loaddingService.start();
+
     _this.paymentService.create(`users/${_this.userService.profile.id}/payments`, body)
     // _this._userService.signup(`users/${_this._userService.profile.id,}/payments`, body)
       .subscribe((response:any) => {
@@ -329,7 +336,6 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });
-    _this.loaddingService.start();
   }
 
 
@@ -356,3 +362,6 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     _this.loaddingService.start();
   }
 }
+
+
+

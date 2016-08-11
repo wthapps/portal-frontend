@@ -1,69 +1,88 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Confirm Your Purchase</h3>
+<div class="container">
+  <div class="title-wrap">
+    <h2 class="title">Upgrade to Pro Plan</h2>
+    <p class="title-sub">You are almost there</p>
   </div>
-  <div class="panel-body panel-creditcard">
-    <div class="form-horizontal">
-      <div class="form-group">
-        <label class="col-sm-4 control-label">Payment Method</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">Credit Card</p>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-md-offset-2">
+      <div class="box-panel">
+        <h3 class="box-panel-title">1.Plan Summary</h3>
+        <div class="panel panel-default">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <p class="bold">Avanced Plan <br>
+                $9.99/month - Charged monthly.</p>
+            </li>
+            <li class="list-group-item">
+              <p>You’ll be charged $9.99 monthly including applicable taxes until you cancel your memebership.
+                Previous charges won’t be refunded when you cancel unless it’s legally required. Your payment data is
+                encrypted and secure. All amounts shown are in USD.</p>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">Card Number</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">**** **** **** 3703 - VISA</p>
+        <h3 class="box-panel-title">2.Add Payment Methos</h3>
+        <div class="panel panel-default">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <h4 class="list-group-item-heading">Payment Method</h4>
+              <dl class="dl-horizontal dl-horizontal-billing">
+                <dt>Payment Type</dt>
+                <dd><p>aaa</p></dd>
+                <dt>Name</dt>
+                <dd><p>asdfasdf</p></dd>
+                <dt>Number</dt>
+                <dd><p>**** **** **** 12313</p></dd>
+                <dt>Expiry</dt>
+                <dd><p>asdasd</p></dd>
+              </dl>
+            </li>
+            <li class="list-group-item">
+              <h4 class="list-group-item-heading">Billing Information</h4>
+              <dl class="dl-horizontal">
+                <dt>Address line 1</dt>
+                <dd><p>12313</p></dd>
+                <dt>Address line 2</dt>
+                <dd><p>123132</p></dd>
+                <dt>City</dt>
+                <dd><p>12312</p></dd>
+                <dt>State</dt>
+                <dd><p>12312</p></dd>
+                <dt>Postcode</dt>
+                <dd><p>12312</p></dd>
+                <dt>Country</dt>
+                <dd><p>12312</p></dd>
+              </dl>
+            </li>
+            <li class="list-group-item">
+              <button class="btn btn-default">
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">Address line 1</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">21 Nguyen Trung Ngan</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">Address line 2</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">43 Nguyen Trung Ngan</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">State/Province</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">Dist 1</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">Postal Code</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">70000</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">City</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">Ho Chi Minh</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">Country</label>
-        <div class="col-sm-8">
-          <p class="form-control-static">Vietnam</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">Order total:</label>
-        <div class="col-sm-8">
-          <p class="form-control-static"><span class="bold fz18 text-danger" style="line-height: 1;">USD $9.9</span></p>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-4 text-right">
-          <a class="btn btn-default" [routerLink]="['/account/payment']">Edit</a>
-        </div>
-        <div class="col-sm-8">
-          <button (click)="confirm()" class="btn btn-primary">Upgrade</button>
+        <h3 class="box-panel-title">3.Checkout</h3>
+        <div class="panel panel-default">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <ul>
+                <li>Avanced Plan will be activated for your account.</li>
+                <li>Starting from <span class="bold">August 3 2016</span>, your card ending in 5669 will be charged
+                  <span class="bold">$9.99 per month</span>.
+                </li>
+                <li>If there is any issue occurs, we will send email to your address
+                  <span>jaimelannister@lannister.com</span>.
+                </li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              By placing this order you agree to our <a href="#">terms of service</a>. To ensure continued service,
+              we'll store and update (e.g., upon expiration) your payment method. Learn about <a href="#">how to cancel</a>.
+            </li>
+            <li class="list-group-item text-center">
+              <a href="#" class="btn btn-primary">Complete Upgrade</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
