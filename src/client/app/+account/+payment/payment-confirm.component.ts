@@ -20,6 +20,8 @@ export class PaymentConfirmComponent {
   constructor(private router:Router,
               private userService:UserService,
               private paymentService:PaymentService) {
+    console.log(userService);
+    console.log(paymentService);
   }
 
   confirm():void {

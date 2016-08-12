@@ -35,7 +35,7 @@ export class PlansComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.start('#tablePlan');
-    this.planService.list('products/all') // TODO refactor with path /product; also refactor in API
+    this.planService.list('apps/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response: any) => {
           if (response.data !== null) {
             this.products = response.data;

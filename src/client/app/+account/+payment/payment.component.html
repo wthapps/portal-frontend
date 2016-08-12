@@ -21,8 +21,9 @@
             </li>
           </ul>
         </div>
-        <h3 class="box-panel-title">2.Add Payment Methods</h3>
+
         <form id="paymentForm" class="scale-down" [formGroup]="paymentForm" novalidate>
+          <h3 class="box-panel-title">2.Add Payment Methods</h3>
           <ul class="list-group">
             <li class="list-group-item">
               <h4 class="list-group-item-heading">Payment Method</h4>
@@ -141,11 +142,14 @@
                 </div>
               </div>
             </li>
+
             <li class="list-group-item text-center">
-              <button [style.display]="methodPaypal ? 'none' : 'inline-block'" id="button-pay" class="btn btn-primary ml10" type="submit" [disabled]="!paymentForm.valid">
+              <button [style.display]="methodPaypal ? 'none' : 'inline-block'" id="button-pay"
+                      class="btn btn-primary ml10" type="submit" [disabled]="!paymentForm.valid">
                 {{button_text}}
               </button>
-              <a [routerLink]="['/account/payment/confirm']" [style.display]="methodPaypal ? 'inline-block' : 'none'" class="btn btn-primary ml10" type="submit">
+              <a [routerLink]="['/account/payment/confirm']" [style.display]="methodPaypal ? 'inline-block' : 'none'"
+                 class="btn btn-primary ml10" type="submit">
                 {{button_text}}
               </a>
             </li>

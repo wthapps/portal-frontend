@@ -230,7 +230,6 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             return event.fields[key].isValid;
           });
 
-          console.log('this', _this.paymentForm.valid);
 
           if (formValid && _this.paymentForm.valid) {
             //$('#button-pay').addClass('show-button');
@@ -324,7 +323,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
             // make sure onInit method on PlansComponent will work
             _this.zone.run(() => {
-              _this.router.navigate(['/account/plans']);
+              _this.router.navigate(['/account/payment/confirm']);
             });
 
             return;
