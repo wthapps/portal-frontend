@@ -1,6 +1,5 @@
 .app-card {
   border: 1px solid $light-grey;
-  font-family: $font-style;
   margin-bottom: $grid-gutter-width/2;
   position: relative;
   @include border-bottom-radius($border-radius-base);
@@ -91,6 +90,43 @@
       -ms-text-overflow: ellipsis;
       text-overflow: ellipsis;
     }
+  }
+}
+
+.media-app-card {
+  .name {
+    overflow: hidden;
+    line-height: 16px;
+    max-height: 32px;
+    margin: 0 0 5px;
+  }
+  .cat {
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: $light-slate;
+  }
+  .platform {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+  .media-left {
+    padding-right: 15px;
+    img {
+      width: 60px;
+      height: auto;
+    }
+  }
+  .media-body, .media-right {
+    vertical-align: middle;
   }
 }
 

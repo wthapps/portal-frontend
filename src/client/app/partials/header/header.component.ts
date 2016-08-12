@@ -27,6 +27,7 @@ export class HeaderComponent {
   _urls: any;
 
   navTitle: string;
+  nav_title_url: string = '';
 
   constructor(private _userService: UserService,
               private _router: Router) {
@@ -49,8 +50,16 @@ export class HeaderComponent {
     }
     if (this._urls[0] == '/account') {
       this.navTitle = 'Library';
+      
     } else {
       this.navTitle = null;
+    }
+  }
+
+  onNavigateByTitle(event: any): void {
+    event.preventDefault();
+    if(this.navTitle == 'Library'){
+      this._router.navigate(['/account/apps']);
     }
   }
 

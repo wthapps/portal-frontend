@@ -21,7 +21,13 @@ export abstract class ApiBaseService {
    */
   public get(path:string):Observable<Response> {
     this.buildOptions();
-    return this._http.get(this._baseUrl + path, this._options);
+    return this._http.get(this._baseUrl + path, this._options)
+      .map(res => res.json())
+      .map((res) => {
+        if (res) {
+          return res;
+        }        
+      });;
   }
 
   /**

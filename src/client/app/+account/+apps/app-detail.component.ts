@@ -1,6 +1,7 @@
 import {Component, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
-import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
+import {ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
 import {Product} from '../../shared/models/product.model';
+
 import {
   MenuItem,
   BreadcrumbComponent,
@@ -8,7 +9,7 @@ import {
   AppCardPlatformComponent
 } from '../../partials/index';
 
-import {AppService} from './app.service';
+import { ApiBaseService, UserService } from '../../shared/index';
 
 declare var Swiper: any;
 declare var swiperThumbs: any;
@@ -23,7 +24,8 @@ declare var swiperThumbs: any;
     AppCardPlatformComponent
   ],
   viewProviders: [
-    AppService
+    ApiBaseService,
+    UserService
   ]
 })
 
@@ -31,13 +33,19 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
   pageTitle: string = '';
   errorMessage: string;
 
-  item: Product = new Product;
-
+  item: Product = new Product();
+  added: boolean = false;
+  
+  private app_id: number = 0;
   private sub: any;
   private breadcrumbs: MenuItem[];
 
-  constructor(private route: ActivatedRoute,
-              private appService: AppService) {
+  constructor(
+    private route: ActivatedRoute,
+    private appService: ApiBaseService,
+    private userService: UserService,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -45,10 +53,24 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
     this.breadcrumbs.push({label: 'Library', url: '/account/apps'});
 
     this.sub = this.route.params.subscribe(
-      params => {
-        let id = +params['id'];
-        this.getProduct(id);
-      });
+      params => {        
+        this.app_id = +params['id'];
+
+        // verify this app_id is added or not    
+        this.appService.get(`users/${this.userService.profile.id}/apps/${this.app_id}/check_added`)
+          .subscribe((response: any) => {
+            this.added = response.added;        
+          },
+          error => {
+            this.errorMessage = <any>error
+          }
+        );
+
+        this.getProduct(this.app_id);
+
+    });
+
+
 
   }
 
@@ -57,7 +79,7 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
   }
 
   getProduct(id: number) {
-    this.appService.get(`products/${id}`).subscribe(
+    this.appService.get(`apps/${id}`).subscribe(
       (res: any) => {
         this.item = res.data;
         this.breadcrumbs.push({label: res.data.display_name});
@@ -96,5 +118,19 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
      galleryTop.params.control = galleryThumbs;
      galleryThumbs.params.control = galleryTop;*/
     /* tslint:enable */
+  }
+
+  add(app_id: number): void{
+    this.appService.add(`users/${this.userService.profile.id}/apps/${this.app_id}`).subscribe(
+      (response: any) => {
+        this.added = response.added;        
+        // this.breadcrumbs.push({label: res.data.display_name});
+      },
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  manage(app: Product):void {
+    this.router.navigate(['/account/dns'])
   }
 }

@@ -13,7 +13,9 @@
         <a class="navbar-brand" [routerLink]="['/']">
           <img src="assets/images/logo.png" alt="WTHApps">
         </a>
-        <span *ngIf="navTitle" class="navbar-page">{{navTitle}}</span>
+        <span *ngIf="navTitle" class="navbar-page">
+          <a class="navbar-brand" href="#" (click)="onNavigateByTitle($event)"> {{navTitle}} </a>        
+        </span>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -36,31 +38,19 @@
                aria-expanded="false">
               <i class="fa fa-list"></i>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu">              
               <li>
-                <a href="#">
-                  <i class="fa fa-home"></i>
-                  <span>Home</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
+                <a [routerLink]="['/account/apps']">
                   <i class="fa fa-list-alt"></i>
                   <span>Library</span>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a [routerLink]="['/account/my-apps']">
                   <i class="fa fa-plug"></i>
                   <span>Management</span>
                 </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="fa fa-question-circle"></i>
-                  <span>Help Center</span>
-                </a>
-              </li>
+              </li>              
             </ul>
           </li>
           <li class="dropdown navbar-nav-notification">

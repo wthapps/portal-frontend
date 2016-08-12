@@ -21,7 +21,7 @@ import {AppCardCategoryComponent} from './category/app-card-category.component';
         </div>
         <div class="app-card-content">
           <p class="name">{{card.display_name}}</p>
-          <app-card-category [data]="card"></app-card-category>
+          <p class="cat">{{card.category.name}}</p>
           <app-card-platform [data]="card"></app-card-platform>
         </div>
       </a>
@@ -34,7 +34,7 @@ import {AppCardCategoryComponent} from './category/app-card-category.component';
   ]
 })
 export class AppCardComponent implements OnChanges {
-  @Input() data: Product;
+  @Input() data: Product = new Product();
   @Input() type: string = 'small';
 
   @Output() appCardClicked: EventEmitter<number> = new EventEmitter<number>();

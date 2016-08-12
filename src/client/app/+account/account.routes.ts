@@ -19,6 +19,7 @@ import {
   AccountAppsComponent,
   AccountAppsListComponent,
   AccountAppsDetailComponent,
+  MyAppsListComponent,
 
   // payment
   PlansComponent,
@@ -84,7 +85,18 @@ export const AccountRoutes: RouterConfig = [
     canActivate: [AuthGuard],
     children: [
       {path: ':id', component: AccountAppsDetailComponent},
-      {path: '', component: AccountAppsListComponent}
+      {path: '', component: AccountAppsListComponent},
+      {path: '**', component: AccountAppsListComponent}
+    ]
+  },
+  {
+    path: 'account/my-apps',
+    component: AccountAppsComponent,
+    canActivate: [AuthGuard],
+    children: [
+      // {path: ':id/manage', component: Component},
+      {path: '', component: MyAppsListComponent},
+      {path: '**', component: MyAppsListComponent}
     ]
   },
   {path: 'account/payment/confirm', component: PaymentConfirmComponent},

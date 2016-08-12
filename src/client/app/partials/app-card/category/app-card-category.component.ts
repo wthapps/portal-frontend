@@ -28,8 +28,8 @@ export class AppCardCategoryComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.data.product_categories_id) {
-      this.appCardService.get(`products/categories/${this.data.product_categories_id}`).subscribe(
+    if (this.data.category_id) {
+      this.appCardService.get(`apps/categories/${this.data.product_categories_id}`).subscribe(
         (res: any) => {
           this.category = res.data.display_name;
         },

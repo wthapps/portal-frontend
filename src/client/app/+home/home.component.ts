@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.start('#tablePlan');
-    this.planService.list('products/all') // TODO refactor with path /product; also refactor in API
+    this.planService.list('apps/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response:any) => {
           if (response.data !== null) {
             this.products = response.data;
@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
         },
         error => {
           this.loadingService.stop('#tablePlan');
-          console.log('error products: ', error.message);
+          console.log('error apps: ', error.message);
         });
   }
 
