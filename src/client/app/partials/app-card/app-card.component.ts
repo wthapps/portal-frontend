@@ -23,7 +23,7 @@ import {Constants} from '../../shared/index';
         <div class="app-card-content">
           <p class="name">{{card.display_name}}</p>
           <p class="cat">{{card.category.name}}</p>
-          <app-card-platform [data]="card"></app-card-platform>
+          <app-card-platform [data]="card.platforms"></app-card-platform>
         </div>
       </a>
     </div>

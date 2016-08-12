@@ -1,8 +1,7 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
-import {Product, Platform} from '../../../shared/models/product.model';
-import {AppCardService} from '../app-card.service';
+import {Platform} from '../../../shared/models/product.model';
 
 /**
  * This class represents the AppCardSmComponent.
@@ -21,27 +20,15 @@ import {AppCardService} from '../app-card.service';
             </li>
           </ul>
   `,
-  directives: [ROUTER_DIRECTIVES],
-  viewProviders: [
-    AppCardService
-  ]
+  directives: [ROUTER_DIRECTIVES]
 })
 export class AppCardPlatformComponent implements OnChanges {
-  @Input() data: Product;
+  @Input() data: Array<Platform>;
 
   platforms: Array<Platform>;
 
-  constructor(private appCardService: AppCardService) {
-  }
-
   ngOnChanges(): void {
-    if (this.data.id) {
-      this.appCardService.get(`apps/${this.data.id}/platforms`).subscribe(
-        (res: any) => {
-          this.platforms = res.data;
-        },
-        error => console.log(<any>error)
-      );
-    }
+    //console.log(this.data);
+    this.platforms = this.data;
   }
 }

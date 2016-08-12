@@ -2,15 +2,14 @@ import {
   Component,
   OnInit
 }                       from '@angular/core';
-import { Router }       from '@angular/router';
-import { ApiBaseService, UserService } from '../../shared/index';
+import {Router}       from '@angular/router';
+import {ApiBaseService, UserService} from '../../shared/index';
 
 
 @Component({
   moduleId: module.id,
   templateUrl: 'my-apps-list.component.html',
-  directives: [
-  ]
+  directives: []
 })
 
 export class MyAppsListComponent implements OnInit {
@@ -21,14 +20,12 @@ export class MyAppsListComponent implements OnInit {
 
   my_apps: Array<any> = [];
 
-  constructor(
-    private apiService: ApiBaseService, private userService: UserService, private router: Router
-  ) {
+  constructor(private apiService: ApiBaseService, private userService: UserService, private router: Router) {
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.apiService.get(`users/${this.userService.profile.id}/my-apps`).subscribe(
-      (response:any) => {
+      (response: any) => {
         this.my_apps = response.data;
       },
       error => {
@@ -39,15 +36,15 @@ export class MyAppsListComponent implements OnInit {
 
   manage(app: any): void {
     this.router.navigate(['/account/dns']);
-    console.log('app: ' app);
+    console.log('app: ', app);
   }
 
   add(): void {
     this.router.navigate(['/account/apps']);
   }
 
-  private getAppPath(app: any): string{
-    path: string = '';
-    retrun '';    
+  private getAppPath(app: any): string {
+    let path: string = '';
+    return path;
   }
 }

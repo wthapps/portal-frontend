@@ -1,18 +1,16 @@
-import {Component, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
-import {ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
 import {Product} from '../../shared/models/product.model';
 
 import {
   MenuItem,
   BreadcrumbComponent,
   AppCardCategoryComponent,
-  AppCardPlatformComponent
+  AppCardPlatformComponent,
+  SliderComponent
 } from '../../partials/index';
 
-import { ApiBaseService, UserService } from '../../shared/index';
-
-declare var Swiper: any;
-declare var swiperThumbs: any;
+import {ApiBaseService, UserService} from '../../shared/index';
 
 @Component({
   moduleId: module.id,
@@ -21,7 +19,8 @@ declare var swiperThumbs: any;
     ROUTER_DIRECTIVES,
     BreadcrumbComponent,
     AppCardCategoryComponent,
-    AppCardPlatformComponent
+    AppCardPlatformComponent,
+    SliderComponent
   ],
   viewProviders: [
     ApiBaseService,
@@ -29,23 +28,21 @@ declare var swiperThumbs: any;
   ]
 })
 
-export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDestroy {
+export class AccountAppsDetailComponent implements OnInit, OnDestroy {
   pageTitle: string = '';
   errorMessage: string;
 
   item: Product = new Product();
   added: boolean = false;
-  
+
   private app_id: number = 0;
   private sub: any;
   private breadcrumbs: MenuItem[];
 
-  constructor(
-    private route: ActivatedRoute,
-    private appService: ApiBaseService,
-    private userService: UserService,
-    private router: Router
-  ) {
+  constructor(private route: ActivatedRoute,
+              private appService: ApiBaseService,
+              private userService: UserService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -53,25 +50,22 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
     this.breadcrumbs.push({label: 'Library', url: '/account/apps'});
 
     this.sub = this.route.params.subscribe(
-      params => {        
+      params => {
         this.app_id = +params['id'];
 
-        // verify this app_id is added or not    
+        // verify this app_id is added or not
         this.appService.get(`users/${this.userService.profile.id}/apps/${this.app_id}/check_added`)
           .subscribe((response: any) => {
-            this.added = response.added;        
-          },
-          error => {
-            this.errorMessage = <any>error
-          }
-        );
+              this.added = response.added;
+            },
+            error => {
+              this.errorMessage = <any>error
+            }
+          );
 
         this.getProduct(this.app_id);
 
-    });
-
-
-
+      });
   }
 
   ngOnDestroy() {
@@ -88,49 +82,18 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
     );
   }
 
-  ngAfterViewInit(): any {
-    /* tslint:disable */
-    var mySwiper = new Swiper('.gallery-top', {
-      // Example options
-      //direction: 'vertical',
-      nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev',
-      spaceBetween: 10,
-      loop: true,
-    });
 
-    swiperThumbs(mySwiper, {
-      // Our default options
-      element: 'swiper-thumbnails',
-      activeClass: 'active'
-    });
-
-    /*var galleryTop = new Swiper('.gallery-top', {
-     nextButton: '.swiper-button-next',
-     prevButton: '.swiper-button-prev',
-     spaceBetween: 10,
-     });
-     var galleryThumbs = new Swiper('.gallery-thumbs', {
-     spaceBetween: 10,
-     slidesPerView: 4,
-     slideToClickedSlide: true
-     });
-     galleryTop.params.control = galleryThumbs;
-     galleryThumbs.params.control = galleryTop;*/
-    /* tslint:enable */
+  add(app_id: number): void {
+    /*this.appService.put(`users/${this.userService.profile.id}/apps/${this.app_id}`).subscribe(
+     (response: any) => {
+     this.added = response.added;
+     // this.breadcrumbs.push({label: res.data.display_name});
+     },
+     error => this.errorMessage = <any>error
+     );*/
   }
 
-  add(app_id: number): void{
-    this.appService.add(`users/${this.userService.profile.id}/apps/${this.app_id}`).subscribe(
-      (response: any) => {
-        this.added = response.added;        
-        // this.breadcrumbs.push({label: res.data.display_name});
-      },
-      error => this.errorMessage = <any>error
-    );
-  }
-
-  manage(app: Product):void {
+  manage(app: Product): void {
     this.router.navigate(['/account/dns'])
   }
 }
