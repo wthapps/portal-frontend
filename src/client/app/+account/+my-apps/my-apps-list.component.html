@@ -3,7 +3,7 @@
     <div class="col-sm-12 col-md-8 col-md-offset-2">
       <div class="box-panel">
         <h3 class="box-panel-title">{{pageTitle}}
-          <button class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i> Add App</button>
+          <button class="btn btn-primary btn-sm pull-right" (click)="add()"><i class="fa fa-plus"></i> Add Apps</button>
         </h3>
         <div class="panel panel-default">
           <ul class="list-group">
@@ -20,7 +20,7 @@
                   <!-- <app-card-platform [data]="app"></app-card-platform> -->
                 </div>
                 <div class="media-right">
-                  <button class="btn btn-default">Manage</button>
+                  <button class="btn btn-default" (click)="manage(app)">Manage</button>
                 </div>
               </div>
             </li>

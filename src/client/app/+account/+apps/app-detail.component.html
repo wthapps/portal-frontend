@@ -14,15 +14,23 @@
               <button class="btn btn-default btn-block" (click)="add(1)"><i class="fa fa-plus"></i> Add To My Apps</button>
             </p>
             <p *ngIf="added">
-              <button class="btn btn-success btn-block"><i class="fa fa-cogs"></i> Manage This App</button>
+              <button class="btn btn-success btn-block" (click)="manage(item)"><i class="fa fa-cogs"></i> Manage This App</button>
             </p>
           </div>
         </div>
         <div class="col-sm-9 col-md-10">
           <div class="page-app-info">
             <h2 class="page-app-info-tt">{{item.name}}</h2>
-            <p class="cat">{{item.category.name}}</p>            
-            <app-card-platform [data]="item"></app-card-platform>
+            <p class="cat">{{item.category.name}}</p>  
+            <ul class="platform">
+            <li *ngFor="let p of item.platforms">
+              <i class="fa fa-windows" [ngClass]="{
+              'fa-windows': (p.name == 'windows' || p.name == 'windowsphone'), 
+              'fa-apple': (p.name == 'macos' || p.name == 'ios'), 
+              'fa-android': (p.name == 'android'), 
+              'fa-desktop': (p.name == 'browser')}"></i>
+            </li>
+          </ul>  
           </div>
           <div class="row page-app-content">
             <div class="col-sm-8">
@@ -41,44 +49,17 @@
                     <div class="article-slide-in">
                       <div class="article-slide gallery-top">
                         <div class="swiper-wrapper">
-                          <div class="swiper-slide">
-                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
-                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
-                          </div>
-                          <div class="swiper-slide">
-                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
-                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
-                          </div>
-                          <div class="swiper-slide">
-                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
-                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
-                          </div>
-                          <div class="swiper-slide">
-                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
-                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
-                          </div>
-                          <div class="swiper-slide">
-                            <img class="img-bg img-full" src="assets/images/apps/slide.png"
-                                 style="background-image: url('assets/images/apps/slide.jpg');" alt="">
-                          </div>
+                          <div class="swiper-slide" *ngFor="let s of item.screenshots">
+                            <img class="img-bg img-full" src="{{s}}" style="background-image: url('{{s}}');" alt="">
+                          </div>                          
                         </div>
 
                         <div class="swiper-button-next swiper-button-white"></div>
                         <div class="swiper-button-prev swiper-button-white"></div>
                       </div>
                       <div class="article-slide gallery-thumbs">
-                        <div class="swiper-thumbnails">
-                          <span><img src="assets/images/apps/slide-thumb.png"
-                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
-                          <span><img
-                            src="assets/images/apps/slide-thumb.png"
-                            style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
-                          <span><img src="assets/images/apps/slide-thumb.png"
-                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
-                          <span><img src="assets/images/apps/slide-thumb.png"
-                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
-                          <span><img src="assets/images/apps/slide-thumb.png"
-                                     style="background-image: url('assets/images/apps/slide.jpg');" alt=""></span>
+                        <div class="swiper-thumbnails" *ngFor="let s of item.screenshots">
+                          <span><img src="{{s}}" style="background-image: url('{{s}}');" alt=""></span>                          
                         </div>
                       </div>
                     </div>

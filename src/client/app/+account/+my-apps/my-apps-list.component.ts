@@ -2,7 +2,7 @@ import {
   Component,
   OnInit
 }                       from '@angular/core';
-
+import { Router }       from '@angular/router';
 import { ApiBaseService, UserService } from '../../shared/index';
 
 
@@ -22,7 +22,7 @@ export class MyAppsListComponent implements OnInit {
   my_apps: Array<any> = [];
 
   constructor(
-    private apiService: ApiBaseService, private userService: UserService
+    private apiService: ApiBaseService, private userService: UserService, private router: Router
   ) {
   }
 
@@ -37,4 +37,17 @@ export class MyAppsListComponent implements OnInit {
     );
   }
 
+  manage(app: any): void {
+    this.router.navigate(['/account/dns']);
+    console.log('app: ' app);
+  }
+
+  add(): void {
+    this.router.navigate(['/account/apps']);
+  }
+
+  private getAppPath(app: any): string{
+    path: string = '';
+    retrun '';    
+  }
 }

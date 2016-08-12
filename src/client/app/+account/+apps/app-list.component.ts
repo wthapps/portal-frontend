@@ -3,7 +3,7 @@ import { ROUTER_DIRECTIVES, Router, ActivatedRoute }  from '@angular/router';
 
 import { AppCardComponent } from '../../partials/index';
 import { Product } from '../../shared/models/product.model';
-import { AppService } from './app.service';
+import { ApiBaseService } from '../../shared/index';
 
 @Component({
   moduleId: module.id,
@@ -13,10 +13,10 @@ import { AppService } from './app.service';
     AppCardComponent
   ],
   viewProviders: [
-    AppService
+    ApiBaseService
   ],
   providers: [
-    AppService
+    ApiBaseService
   ]
 })
 
@@ -39,7 +39,7 @@ export class AccountAppsListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private appService: AppService
+    private appService: ApiBaseService
     ) {
   }
 

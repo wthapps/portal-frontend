@@ -1,5 +1,5 @@
 import {Component, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
-import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
+import {ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
 import {Product} from '../../shared/models/product.model';
 
 import {
@@ -9,8 +9,7 @@ import {
   AppCardPlatformComponent
 } from '../../partials/index';
 
-import {AppService} from './app.service';
-import { UserService } from '../../shared/index';
+import { ApiBaseService, UserService } from '../../shared/index';
 
 declare var Swiper: any;
 declare var swiperThumbs: any;
@@ -25,7 +24,7 @@ declare var swiperThumbs: any;
     AppCardPlatformComponent
   ],
   viewProviders: [
-    AppService,
+    ApiBaseService,
     UserService
   ]
 })
@@ -41,9 +40,12 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
   private sub: any;
   private breadcrumbs: MenuItem[];
 
-  constructor(private route: ActivatedRoute,
-              private appService: AppService,
-              private userService: UserService) {
+  constructor(
+    private route: ActivatedRoute,
+    private appService: ApiBaseService,
+    private userService: UserService,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -126,5 +128,9 @@ export class AccountAppsDetailComponent implements AfterViewInit, OnInit, OnDest
       },
       error => this.errorMessage = <any>error
     );
+  }
+
+  manage(app: Product):void {
+    this.router.navigate(['/account/dns'])
   }
 }
