@@ -26,7 +26,7 @@ export class ServicesService {
 
   // get all apps
   public getAddonServices():Observable<AddonService[]> {
-    return this._service.get('/products')
+    return this._service.get('/apps')
       .map((response:Response) => {
         if (response['status'] === Constants.HttpStatusCode.OK) {
           let body = JSON.parse(response['_body']);
@@ -42,7 +42,7 @@ export class ServicesService {
 
   // Get all installed apps
   public getUserProducts():Observable<AddonService[]> {
-    return this._service.get(`users/${this._userService.profile.id}/products`)
+    return this._service.get(`users/${this._userService.profile.id}/apps`)
       .map((response:Response) => {
         if (response['status'] === Constants.HttpStatusCode.OK) {
           let body = JSON.parse(response['_body']);
@@ -57,11 +57,11 @@ export class ServicesService {
   }
 
   public deleteUserProduct(id:number) {
-    return this._service.delete(`users/${this._userService.profile.id}/products/${id}`);
+    return this._service.delete(`users/${this._userService.profile.id}/apps/${id}`);
   }
 
   public getCategories():Observable<any[]> {
-    return this._service.get('/products/categories')
+    return this._service.get('/apps/categories')
       .map((response: any) => {
         if (response['status'] === Constants.HttpStatusCode.OK ||
           response['status'] === Constants.HttpStatusCode.Created) {
@@ -81,7 +81,7 @@ export class ServicesService {
   }
 
   public addService(serviceId:number) {
-    return this._service.post(`users/${this._userService.profile.id}/products/${serviceId}`, '');
+    return this._service.post(`users/${this._userService.profile.id}/apps/${serviceId}`, '');
   }
 
   /*private handleError(error:Response) {

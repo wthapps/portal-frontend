@@ -5,6 +5,17 @@ export * from './+recovery/forgotten-password.component';
 export * from './+recovery/new-password.component';
 export * from './+recovery/reset-email-sent.component';
 
+
+/**
+ * This barrel file provides the export for the lazy loaded AccountAppsComponent.
+ */
+export * from './+apps/index';
+
+/**
+* My Apps
+*/
+export * from './+my-apps/index';
+
 /**
  *  Setting
  */
@@ -57,11 +68,6 @@ export * from './+services/+vpn/vpn.component';
  *  Services eFax
  */
 export * from './+services/+efax/efax.component';
-
-/*
-* Add-ons
-*/
-export * from './+apps/add-ons.component';
 
 /*
  * Always put them at the bottom
