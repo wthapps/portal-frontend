@@ -9393,7 +9393,8 @@ html {
   border-bottom: 1px solid #4A4A4A;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  margin-top: 0; }
+  margin-top: 0;
+  line-height: 30px; }
 
 .box-panel .box-panel-subtitle, .box-panel .list-group-item-heading {
   margin-bottom: 20px;

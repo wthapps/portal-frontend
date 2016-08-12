@@ -8,7 +8,7 @@
       </div>
       <div class="media-right">
         <p>Upload a photo (GIF, JPG or PNG) with the size of 150 X 150 or wider.</p>
-        <button class="btn btn-default btn-min">
+        <button type="button" class="btn btn-default btn-min">
           <i class="fa fa-pencil"></i> Edit
         </button>
       </div>
@@ -60,15 +60,16 @@
     <div class="form-group">
       <div class="row">
         <div class="col-xs-8">
-          <label>Phone Number</label>
+          <label for="phone_number">Phone Number</label>
           <div class="row">
             <div class="col-xs-4">
-              <select name="birthday_month" class="form-control" id="phone_prefix" [formControl]="birthday_month">
-                <option value="0">Canada (+1)</option>
+              <select name="phone_prefix" class="form-control" id="phone_prefix" [formControl]="phone_prefix">
+                <option value="">Select your country</option>
+                <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}} ({{c.dial_code}})</option>
               </select>
             </div>
             <div class="col-xs-8">
-              <input type="text" class="form-control" name="phone_number">
+              <input type="text" class="form-control" id="phone_number" name="phone_number" [formControl]="phone_number">
             </div>
           </div>
         </div>

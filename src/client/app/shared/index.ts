@@ -24,6 +24,7 @@ export * from '../partials/dialogs/index';
 export * from '../partials/toast/index';
 export * from '../partials/loading/index';
 export * from '../partials/captcha/index';
+export * from '../partials/countries/index';
 
 export * from './wth.join.us.component';
 
