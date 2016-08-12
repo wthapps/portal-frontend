@@ -54,7 +54,7 @@ export class LoginComponent {
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
       'password': ['',
-        Validators.compose([Validators.required, Validators.minLength(4)])
+        Validators.compose([Validators.required, Validators.minLength(8)])
       ]
     });
 

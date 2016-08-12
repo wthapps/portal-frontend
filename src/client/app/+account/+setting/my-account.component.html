@@ -1,13 +1,13 @@
 <div class="box-panel">
   <h3 class="box-panel-title">{{pageTitle}}</h3>
   <h4 class="box-panel-subtitle">Plan</h4>
-  <div>
+  <div *ngIf="_userService.profile.plan_id == 'wth_free'">
     <p class="p-plan-info"><span>Basic Plan</span> - 8 days left</p>
     <p>
       <a [routerLink]="['/account/plans']" class="btn btn-success btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
     </p>
   </div>
-  <div>
+  <div *ngIf="_userService.profile.plan_id != 'wth_free'">
     <p class="p-plan-info"><span>Advanced Plan</span> - Activated on Aug 18 2016</p>
     <p>
       <button (click)="cancelPlan()" class="btn btn-default btn-min">Cancel Plan</button>
@@ -33,19 +33,42 @@
           <input [formControl]="password" type="password" class="form-control" id="password"
                  placeholder="Input New Password">
           <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
-          <div *ngIf="!password.valid && password.touched">
+          <!--<div *ngIf="!password.valid && password.touched">
             <span *ngIf="!password.valid && password.errors.required" class="help-block">A password is required</span>
-            <span *ngIf="!password.valid && password.errors.minlength" class="help-block">A password needs to have at least 6 characters</span>
-          </div>
+            <span *ngIf="!password.valid && password.errors.minlength" class="help-block">A password needs to have at least 8 characters</span>
+            <span *ngIf="!password.valid && password.errors.lowercaseUppercase"
+                  class="help-block">lowercaseUppercase</span>
+            <span *ngIf="!password.valid && password.errors.specialSymbolOrNumber"
+                  class="help-block">specialSymbol</span>
+          </div>-->
         </div>
       </div>
       <div class="col-xs-6 col-sm-4">
         <p>New password must:</p>
-        <ul>
-          <li>Contain at least 8 characters or more</li>
-          <li>Contain both uppercase and lowercase characters</li>
-          <li>Contain at least one number or symbol</li>
+        <ul [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
+
+          <template [ngIf]="!password.valid">
+            <template [ngIf]="password.errors.required">
+              <li>Contain at least 8 characters or more</li>
+            </template>
+            <template [ngIf]="password.errors.minlength">
+              <li class="text-danger">Contain at least 8 characters or more</li>
+            </template>
+            <template [ngIf]="!password.errors.required && !password.errors.minlength">
+              <li class="text-success">Contain at least 8 characters or more</li>
+            </template>
+            <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and lowercase characters</li>
+            <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number or symbol</li>
+
+          </template>
+          <template [ngIf]="password.valid">
+            <li>Contain at least 8 characters or more</li>
+            <li>Contain both uppercase and lowercase characters</li>
+            <li>Contain at least one number or symbol</li>
+          </template>
         </ul>
+
+
       </div>
     </div>
     <div class="form-group">

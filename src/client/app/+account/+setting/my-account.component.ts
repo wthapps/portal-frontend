@@ -14,7 +14,7 @@ import {
   UserService,
   ToastsService,
   LoadingService,
-  //CustomValidator,
+  CustomValidator,
   Constants,
   DialogService
 }                           from '../../shared/index';
@@ -47,8 +47,15 @@ export class MyAccountComponent {
               private _loadingService: LoadingService) {
 
     this.form = fb.group({
-      'oldPassword': ['', Validators.compose([Validators.required])],
-      'password': ['', Validators.compose([Validators.required, Validators.minLength(6)])]
+      'oldPassword': ['', Validators.compose([
+        Validators.required
+      ])],
+      'password': ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        CustomValidator.lowercaseUppercase,
+        CustomValidator.specialSymbolOrNumber
+      ])]
     });
 
     this.oldPassword = this.form.controls['oldPassword'];

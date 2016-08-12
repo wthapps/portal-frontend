@@ -65,7 +65,7 @@ export class RegisterComponent {
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
       'password': ['',
-        Validators.compose([Validators.required, Validators.minLength(6)])
+        Validators.compose([Validators.required, Validators.minLength(8)])
       ],
       'birthday_day': ['0'],
       'birthday_month': ['0'],

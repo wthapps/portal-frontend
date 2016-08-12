@@ -8830,7 +8830,7 @@ h1, h2, h3, h4, h5, h6 {
     right: 10px;
     z-index: 10;
     font-size: 18px; }
-  .form-group.has-error:before {
+  .form-group.has-error:not(.has-select):before {
     content: "\f057";
     color: #d9534f; }
   .form-group.has-success:before {

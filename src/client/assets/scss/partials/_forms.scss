@@ -29,7 +29,7 @@
     font-size: 18px;
   }
 
-  &.has-error {
+  &.has-error:not(.has-select) {
     &:before {
       content: "\f057";
       color: $alert-danger-text;
