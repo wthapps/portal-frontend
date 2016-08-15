@@ -57,6 +57,7 @@ export class BillingDetailsComponent implements OnInit {
               this.toastsService.success('The billing details has been deleted.');
               this.userService.profile.has_payment_info = false;
               this.userService.profile.credit_cards = null;
+              Cookie.delete('profile');
               Cookie.set('profile', JSON.stringify(this.userService.profile));
             },
             error => {

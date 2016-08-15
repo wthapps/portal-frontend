@@ -1,14 +1,14 @@
 <div class="box-panel">
   <h3 class="box-panel-title">{{pageTitle}}</h3>
   <h4 class="box-panel-subtitle">Plan</h4>
-  <div *ngIf="_userService.profile.plan_id == 'wth_free'">
-    <p class="p-plan-info"><span>Basic Plan</span> - 8 days left</p>
+  <div *ngIf="userService.profile.plan.is_trial">
+    <p class="p-plan-info"><span>{{userService.profile.plan.name}}</span> - 8 days left</p>
     <p>
       <a [routerLink]="['/account/plans']" class="btn btn-success btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
     </p>
   </div>
-  <div *ngIf="_userService.profile.plan_id != 'wth_free'">
-    <p class="p-plan-info"><span>Advanced Plan</span> - Activated on Aug 18 2016</p>
+  <div *ngIf="!userService.profile.plan.is_trial">
+    <p class="p-plan-info"><span>{{userService.profile.plan.name}}</span> - Activated on Aug 18 2016</p>
     <p>
       <button (click)="cancelPlan()" class="btn btn-default btn-min">Cancel Plan</button>
     </p>

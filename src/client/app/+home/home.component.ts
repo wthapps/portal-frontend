@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import {
   WthJoinUsComponent,
   GetStartedComponent,
-  LoadingService
+  LoadingService,
+  ApiBaseService
 }                               from '../shared/index';
 
-import {PlanService}            from '../+account/plan.service';
 import {Product}                from '../shared/models/product.model';
 import {Plan}                   from '../shared/models/plan.model';
 
@@ -22,7 +22,7 @@ import {Plan}                   from '../shared/models/plan.model';
     GetStartedComponent
   ],
   viewProviders: [
-    PlanService
+    ApiBaseService
   ]
 })
 
@@ -32,17 +32,17 @@ export class HomeComponent implements OnInit {
   plans: Plan[] = [];
 
 
-  constructor(private planService: PlanService,
+  constructor(private apiService: ApiBaseService,
               private loadingService: LoadingService) {
   }
 
   ngOnInit(): void {
     this.loadingService.start('#tablePlan');
-    this.planService.list('apps/all') // TODO refactor with path /product; also refactor in API
+    this.apiService.get('apps/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response:any) => {
           if (response.data !== null) {
             this.products = response.data;
-            this.planService.list('plans')
+            this.apiService.get('plans')
               .subscribe((response:any) => {
                   if (response.data !== null) {
                     this.plans = response.data;

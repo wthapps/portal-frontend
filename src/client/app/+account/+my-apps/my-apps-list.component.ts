@@ -9,12 +9,12 @@ import {ApiBaseService, UserService} from '../../shared/index';
 @Component({
   moduleId: module.id,
   templateUrl: 'my-apps-list.component.html',
-  directives: []
+  directives: [],
+  providers: [UserService]
 })
 
 export class MyAppsListComponent implements OnInit {
   pageTitle: string = 'App List';
-
   errorMessage: string;
 
   my_apps: Array<any> = [];

@@ -1,11 +1,12 @@
 import {Component, OnInit}                          from '@angular/core';
 import {Router, ROUTER_DIRECTIVES}                  from '@angular/router';
+import {Cookie}         from 'ng2-cookies/ng2-cookies';
 import {
   UserService,
-  LoadingService
+  LoadingService,
+  ApiBaseService
 }                                                   from '../shared/index';
 
-import {PlanService}            from './plan.service';
 import {Product}                from '../shared/models/product.model';
 import {Plan}                   from '../shared/models/plan.model';
 
@@ -16,7 +17,7 @@ import {Plan}                   from '../shared/models/plan.model';
   directives: [
     ROUTER_DIRECTIVES
   ],
-  providers: [PlanService]
+  providers: [ApiBaseService]
 })
 
 export class PlansComponent implements OnInit {
@@ -28,18 +29,18 @@ export class PlansComponent implements OnInit {
 
   constructor(private router: Router,
               private userService: UserService,
-              private planService: PlanService,
+              private apiService: ApiBaseService,
               private loadingService: LoadingService) {
     //console.log(this.userService)
   }
 
   ngOnInit(): void {
     this.loadingService.start('#tablePlan');
-    this.planService.list('apps/all') // TODO refactor with path /product; also refactor in API
+    this.apiService.get('apps/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response: any) => {
           if (response.data !== null) {
             this.products = response.data;
-            this.planService.list('plans')
+            this.apiService.get('plans')
               .subscribe((response: any) => {
                   if (response.data !== null) {
                     this.plans = response.data;
@@ -65,10 +66,18 @@ export class PlansComponent implements OnInit {
     return false;
   }
 
-  getStarted(): void {
-    console.log(this.userService);
+  getStarted(plan: Plan): void {
+
+    var p = JSON.stringify({
+        id: plan.id,
+        name: plan.name,
+        is_trial: plan.is_trial,
+        price: plan.price
+      });
+    Cookie.delete('selected_plan');
+    Cookie.set('selected_plan', p);
     if (this.userService.profile.has_payment_info) {
-      this.router.navigateByUrl('account/setting/profile');
+      this.router.navigateByUrl('account/payment/confirm');
     } else {
       this.router.navigateByUrl('account/payment');
     }

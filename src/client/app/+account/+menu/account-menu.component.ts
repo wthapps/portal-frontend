@@ -7,7 +7,8 @@ import {
 }                           from '@angular/router';
 
 import {
-  UserService
+  UserService,
+  ApiBaseService
 }                           from '../../shared/index';
 import {ServicesService}    from '../+services/services.service';
 
@@ -19,7 +20,7 @@ import {ServicesService}    from '../+services/services.service';
   directives: [
     ROUTER_DIRECTIVES
   ],
-  providers: [ServicesService]
+  providers: [ServicesService, ApiBaseService]
 })
 export class AccountMenuComponent implements OnInit {
   has_installed_apps: boolean = false;
@@ -30,15 +31,15 @@ export class AccountMenuComponent implements OnInit {
 
   ngOnInit(): void {
     // load installed apps list
-    this.appsService.getUserProducts().subscribe(
-      response => {
-        this.has_installed_apps = response.length > 0 ? true : false;
-        this.installed_apps = response;
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    // this.appsService.getUserProducts().subscribe(
+    //   response => {
+    //     this.has_installed_apps = response.length > 0 ? true : false;
+    //     this.installed_apps = response;
+    //   },
+    //   error => {
+    //     console.log(error);
+    //   }
+    // );
   }
 }
 

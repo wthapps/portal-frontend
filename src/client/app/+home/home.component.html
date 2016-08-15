@@ -55,8 +55,8 @@
         <tr *ngFor="let pro of products">
           <td>{{pro.display_name}}</td>
           <td *ngFor="let pp of plans">
-            <div class="text-danger" *ngIf="!plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>
-            <div class="text-success" *ngIf="plan_has_product(pp.products, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>
+            <div class="text-danger" *ngIf="!plan_has_product(pp.apps, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>
+            <div class="text-success" *ngIf="plan_has_product(pp.apps, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>
           </td>
         </tr>
         <tr>

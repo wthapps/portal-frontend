@@ -9,7 +9,7 @@ import {
 
 export class RedirectService {
 
-  private linkDefault:string = '/';
+  private linkDefault:string = '/account/my-apps';
   private linkLogin:string = '/login';
 
   prev(link:ActivatedRoute):string {

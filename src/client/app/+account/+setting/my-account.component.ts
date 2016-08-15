@@ -41,10 +41,10 @@ export class MyAccountComponent {
   public submitted: boolean = false;
 
   constructor(private fb: FormBuilder,
-              private _userService: UserService,
-              private _toastsService: ToastsService,
+              private userService: UserService,
+              private toastsService: ToastsService,
               private dialogService: DialogService,
-              private _loadingService: LoadingService) {
+              private loadingService: LoadingService) {
 
     this.form = fb.group({
       'oldPassword': ['', Validators.compose([
@@ -68,28 +68,28 @@ export class MyAccountComponent {
       let old_password = values.oldPassword;
       let password = values.password;
       // start loading
-      this._loadingService.start();
+      this.loadingService.start();
 
       let body = JSON.stringify({
         old_password: old_password,
         password: password
       });
-      this._userService.changePassword(`users/${this._userService.profile.id}`, body)
+      this.userService.changePassword(`users/${this.userService.profile.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            this._loadingService.stop();
+            this.loadingService.stop();
             if (result.success) {
-              this._toastsService.success(result.message);
+              this.toastsService.success(result.message);
               //console.log('change password:', result.message);
             } else {
-              this._toastsService.danger(result.message);
+              this.toastsService.danger(result.message);
               //console.log('change password error:', result.message);
             }
           },
           error => {
             // stop loading
-            this._loadingService.stop();
-            this._toastsService.danger(error.message);
+            this.loadingService.stop();
+            this.toastsService.danger(error.message);
             console.log('login error:', error.message);
           }
         );
@@ -110,7 +110,7 @@ export class MyAccountComponent {
 
   cancelPlan(): void {
     let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
-      We will send you a cancellation confirmation email to <span class="bold">${this._userService.profile.email}</span>. <br>
+      We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
       We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
     this.dialogService.activate(bodyText, 'Cancel Membership', 'Finish Cancellation', 'Cancel');
   }
