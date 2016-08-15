@@ -105,7 +105,7 @@ export class ProfileComponent implements OnInit {
 
   onSubmit(values: any): void {
     this.submitted = true;
-    
+
     if (this.form.valid) {
       // start loading
       this._loadingService.start();

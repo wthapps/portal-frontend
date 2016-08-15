@@ -14,7 +14,6 @@ import {ApiBaseService, UserService} from '../../shared/index';
 
 export class MyAppsListComponent implements OnInit {
   pageTitle: string = 'App List';
-  my_apps: any;
 
   errorMessage: string;
 
@@ -29,7 +28,7 @@ export class MyAppsListComponent implements OnInit {
         this.my_apps = response.data;
       },
       error => {
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
@@ -41,10 +40,5 @@ export class MyAppsListComponent implements OnInit {
 
   add(): void {
     this.router.navigate(['/account/apps']);
-  }
-
-  private getAppPath(app: any): string {
-    let path: string = '';
-    return path;
   }
 }

@@ -3,7 +3,6 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Product} from '../../shared/models/product.model';
 import {AppCardPlatformComponent} from './platform/app-card-platform.component';
-import {AppCardCategoryComponent} from './category/app-card-category.component';
 import {Constants} from '../../shared/index';
 
 /**
@@ -30,7 +29,6 @@ import {Constants} from '../../shared/index';
   `,
   directives: [
     ROUTER_DIRECTIVES,
-    AppCardCategoryComponent,
     AppCardPlatformComponent
   ]
 })

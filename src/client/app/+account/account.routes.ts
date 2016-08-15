@@ -20,6 +20,8 @@ import {
   AccountAppsListComponent,
   AccountAppsDetailComponent,
   MyAppsListComponent,
+  MyAppsDetailComponent,
+  MyAppsDetailAddComponent,
 
   // payment
   PlansComponent,
@@ -94,7 +96,9 @@ export const AccountRoutes: RouterConfig = [
     component: AccountAppsComponent,
     canActivate: [AuthGuard],
     children: [
-      // {path: ':id/manage', component: Component},
+      {path: ':id/add', component: MyAppsDetailAddComponent},
+      {path: ':id/edit/:id_dns', component: MyAppsDetailAddComponent},
+      {path: ':id', component: MyAppsDetailComponent},
       {path: '', component: MyAppsListComponent},
       {path: '**', component: MyAppsListComponent}
     ]

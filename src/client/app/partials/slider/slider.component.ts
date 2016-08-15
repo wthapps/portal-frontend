@@ -42,19 +42,19 @@ export class SliderComponent implements OnChanges, AfterViewInit {
   @Input() data: Array<any>;
 
   images: Array<any> = [
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png"
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png'
   ];
 
   imagesBg: Array<any> = [
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png",
-    "assets/images/apps/slide.png"
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png',
+    'assets/images/apps/slide.png'
   ];
 
   ngAfterViewInit(): any {

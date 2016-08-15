@@ -1,37 +1,36 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+}                             from '@angular/core';
 import {ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
-import {Product} from '../../shared/models/product.model';
+import {Product}              from '../../shared/models/product.model';
 
 import {
   MenuItem,
-  BreadcrumbComponent,
-  AppCardPlatformComponent,
-  SliderComponent
+  BreadcrumbComponent
 } from '../../partials/index';
-
 import {ApiBaseService, UserService} from '../../shared/index';
+import {DNSEditComponent} from './+dns/index';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'app-detail.component.html',
+  templateUrl: 'my-apps-detail-add.component.html',
   directives: [
     ROUTER_DIRECTIVES,
     BreadcrumbComponent,
-    AppCardPlatformComponent,
-    SliderComponent
-  ],
-  viewProviders: [
-    ApiBaseService,
-    UserService
+    DNSEditComponent
   ]
 })
 
-export class AccountAppsDetailComponent implements OnInit, OnDestroy {
+export class MyAppsDetailAddComponent implements OnInit, OnDestroy {
   pageTitle: string = '';
   errorMessage: string;
 
   item: Product = new Product();
   added: boolean = false;
+
+  type: string = '';
 
   private app_id: number = 0;
   private sub: any;
@@ -41,11 +40,12 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
               private appService: ApiBaseService,
               private userService: UserService,
               private router: Router) {
+    console.log(this.userService);
   }
 
   ngOnInit() {
     this.breadcrumbs = [];
-    this.breadcrumbs.push({label: 'Library', url: '/account/apps'});
+    this.breadcrumbs.push({label: 'App List', url: '/account/my-apps'});
 
     this.sub = this.route.params.subscribe(
       params => {
@@ -74,24 +74,11 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
     this.appService.get(`apps/${id}`).subscribe(
       (res: any) => {
         this.item = res.data;
+        this.type = res.data.name.toLowerCase();
         this.breadcrumbs.push({label: res.data.display_name});
       },
       error => this.errorMessage = <any>error
     );
   }
 
-
-  add(app_id: number): void {
-    /*this.appService.put(`users/${this.userService.profile.id}/apps/${this.app_id}`).subscribe(
-     (response: any) => {
-     this.added = response.added;
-     // this.breadcrumbs.push({label: res.data.display_name});
-     },
-     error => this.errorMessage = <any>error
-     );*/
-  }
-
-  manage(app: Product): void {
-    this.router.navigate(['/account/dns']);
-  }
 }

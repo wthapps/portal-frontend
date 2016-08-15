@@ -1,7 +1,6 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
-import {Platform} from '../../../shared/models/product.model';
 
 /**
  * This class represents the AppCardSmComponent.
@@ -23,9 +22,9 @@ import {Platform} from '../../../shared/models/product.model';
   directives: [ROUTER_DIRECTIVES]
 })
 export class AppCardPlatformComponent implements OnChanges {
-  @Input() data: Array<Platform>;
+  @Input() data: any;
 
-  platforms: Array<Platform>;
+  platforms: any;
 
   ngOnChanges(): void {
     //console.log(this.data);
