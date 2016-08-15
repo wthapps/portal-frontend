@@ -35,7 +35,7 @@
       color: $alert-danger-text;
     }
   }
-  &.has-success {
+  &.has-success:not(.has-select) {
     &:before {
       content: "\f058";
       color: $alert-success-text;
@@ -66,6 +66,29 @@
     }
     &:hover, &:focus {
       outline: 0 none;
+    }
+  }
+}
+
+.form-validation {
+  padding: 5px 15px 0 50px;
+  position: relative;
+  border: 1px solid #cdcdcd;
+  border-radius: $border-radius-base;
+  margin-bottom: $form-group-margin-bottom;
+  .help-block {
+    color: $text-color;
+  }
+  &.has-error {
+    border-color: $brand-danger;
+    &:before {
+      @extend .fa;
+      @extend .fa-exclamation-circle;
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      font-size: 20px;
+      color: $brand-danger;
     }
   }
 }
