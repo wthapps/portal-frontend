@@ -28,10 +28,10 @@
             <button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
           </div>
         </form>
-        <ul *ngIf="!isLoggedIn()" class="nav navbar-nav navbar-right">
+        <ul *ngIf="!userService.loggedIn" class="nav navbar-nav navbar-right">
           <li><a [routerLink]="['/login']">Log in</a></li>
         </ul>
-        <ul *ngIf="isLoggedIn()" class="nav navbar-nav navbar-right">
+        <ul *ngIf="userService.loggedIn" class="nav navbar-nav navbar-right">
           <li class="dropdown navbar-nav-management">
             <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown" role="button"
                aria-haspopup="true"
@@ -97,7 +97,7 @@
           </li>
           <li class="dropdown navbar-nav-profile">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false"><img src="assets/images/avatar/avatar.png" alt=""> <span class="name">{{_userService.profile.first_name}}</span>
+               aria-expanded="false"><img src="assets/images/avatar/avatar.png" alt=""> <span class="name">{{userService.profile.first_name}}</span>
               <i class="fa fa-caret-down"></i></a>
             <ul class="dropdown-menu">
               <li>
@@ -106,18 +106,17 @@
                     <img class="img-rounded" src="assets/images/avatar/avatar-lg.png" alt="">
                   </div>
                   <div class="media-body">
-                    <p class="media-heading">{{_userService.profile.name}}</p>
-                    <span class="in-email">{{_userService.profile.email}}</span>
-                    <div *ngIf="_userService.profile.plan_id == 'wth_free'" class="navbar-nav-plan">
-                      <p class="in-plan"> Basic Plan <span>- 8 days left</span></p>
-                      <button class="btn btn-success">
+                    <p class="media-heading">{{userService.profile.name}}</p>
+                    <span class="in-email">{{userService.profile.email}}</span>
+                    <div class="navbar-nav-plan">
+                      <p class="in-plan"> {{userService.profile.plan.name}} 
+                        <span *ngIf="userService.profile.plan.is_trial">- 8 days left</span>
+                        <span class="in-email" *ngIf="!userService.profile.plan.is_trial">Activated on Aug 18 2016</span>
+                      </p>
+                      <button class="btn btn-success" *ngIf="userService.profile.plan.is_trial" [routerLink]="['/account/plans']">
                         <i class="fa fa-arrow-circle-up"></i> Upgrade
                       </button>
-                    </div>
-                    <div *ngIf="_userService.profile.plan_id != 'wth_free'" class="navbar-nav-plan">
-                      <p class="in-plan">Advanced Plan</p>
-                      <span class="in-email">Activated on Aug 18 2016</span>
-                    </div>
+                    </div>                   
                   </div>
                 </div>
               </li>

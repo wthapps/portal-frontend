@@ -39,7 +39,7 @@ declare var $:any;
 
 export class PaymentComponent implements AfterViewInit, OnInit {
   PanelTitle:string = 'Find Services and add-ons';
-  button_text:string = 'Review Order';
+  button_text:string = 'Add Payment Method';
   edit_mode:boolean = false;
   countries:any;
   credit_card: CreditCard = null;
@@ -56,6 +56,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   country: AbstractControl = null;
   region: AbstractControl = null;
   postcode: AbstractControl = null;
+
+  selected_plan: any = null;
 
   private next: string = '';
   private operation: string = '';
@@ -80,6 +82,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
 
+    this.selected_plan = JSON.parse(Cookie.get('selected_plan'));
+
     this.route.params.subscribe((params) => {
        this.next = params['next'];
        this.operation = params['operation'];
@@ -90,7 +94,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
       case undefined:
         break;
       case Constants.operations.edit:
-        this.button_text = 'Update';
+        this.button_text = 'Update Payment Method';
         this.edit_mode = true;
         break;
     }
@@ -319,6 +323,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
 
+            Cookie.delete('profile');
             Cookie.set('profile', JSON.stringify(_this.userService.profile));
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
             // make sure onInit method on PlansComponent will work
@@ -345,7 +350,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           if (response.success) {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
-
+            Cookie.delete('profile');
             Cookie.set('profile', JSON.stringify(_this.userService.profile));
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
             _this.toastsService.success(response.message);

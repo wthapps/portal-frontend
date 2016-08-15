@@ -25,32 +25,32 @@ export class BillingHistoryComponent implements OnInit {
   transactions: any[] = [];
 
   constructor(
-    private _userService:UserService,
-    private _router:Router,
-    private _transactionService: TransactionService,
-    private _loadingService: LoadingService
+    private userService:UserService,
+    private router:Router,
+    private transactionService: TransactionService,
+    private loadingService: LoadingService
   ) {
   }
 
   ngOnInit(): void {
-    this._loadingService.start();
-    this._transactionService.list(`users/${this._userService.profile.id}/transactions`)
+    this.loadingService.start();
+    this.transactionService.list(`users/${this.userService.profile.id}/transactions`)
       .subscribe((response:any) => {
         this.transactions = response.data;
         this.transactions.map((t) => {
           t.created_at = new Date(t.created_at);
         });
-        this._loadingService.stop();
+        this.loadingService.stop();
         },
         error => {
           console.log('Billing history error', error);
-          this._loadingService.stop();
+          this.loadingService.stop();
         });
   }
 
   viewReceipt(trans_id: string, event: any): void {
     event.preventDefault();
-    this._router.navigate([`account/transactions/${trans_id}/receipt`]);
+    this.router.navigate([`account/transactions/${trans_id}/receipt`]);
     return;
   }
 }

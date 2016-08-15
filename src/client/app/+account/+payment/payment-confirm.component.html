@@ -11,11 +11,11 @@
         <div class="panel panel-default">
           <ul class="list-group">
             <li class="list-group-item">
-              <p class="bold">Avanced Plan <br>
-                $9.99/month - Charged monthly.</p>
+              <p class="bold">{{selected_plan.name}} <br>
+                ${{selected_plan.price}}/month - Charged monthly.</p>
             </li>
             <li class="list-group-item">
-              <p>You’ll be charged $9.99 monthly including applicable taxes until you cancel your memebership.
+              <p>You’ll be charged ${{selected_plan.price}} monthly including applicable taxes until you cancel your memebership.
                 Previous charges won’t be refunded when you cancel unless it’s legally required. Your payment data is
                 encrypted and secure. All amounts shown are in USD.</p>
             </li>
@@ -27,38 +27,39 @@
             <li class="list-group-item">
               <h4 class="list-group-item-heading">Payment Method</h4>
               <dl class="dl-horizontal dl-horizontal-billing">
-                <dt>Payment Type</dt>
-                <dd><p>aaa</p></dd>
                 <dt>Name</dt>
-                <dd><p>asdfasdf</p></dd>
+                <dd>{{card.cardholder_name}}</dd>
+                <dt>Card Type</dt>
+                <dd>{{card.card_type}}</dd>
                 <dt>Number</dt>
-                <dd><p>**** **** **** 12313</p></dd>
+                <dd>**** **** **** {{card.last_4}}</dd>
                 <dt>Expiry</dt>
-                <dd><p>asdasd</p></dd>
+                <dd>{{card.expiration_date}}</dd>
               </dl>
             </li>
             <li class="list-group-item">
               <h4 class="list-group-item-heading">Billing Information</h4>
               <dl class="dl-horizontal">
                 <dt>Address line 1</dt>
-                <dd><p>12313</p></dd>
+                <dd><p>{{card.billing_address.street_address}}</p></dd>
                 <dt>Address line 2</dt>
-                <dd><p>123132</p></dd>
+                <dd><p>{{card.billing_address.extended_address}}</p></dd>
                 <dt>City</dt>
-                <dd><p>12312</p></dd>
+                <dd><p>{{card.billing_address.locality}}</p></dd>
                 <dt>State</dt>
-                <dd><p>12312</p></dd>
+                <dd><p>{{card.billing_address.region}}</p></dd>
                 <dt>Postcode</dt>
-                <dd><p>12312</p></dd>
+                <dd><p>{{card.billing_address.postcode}}</p></dd>
                 <dt>Country</dt>
-                <dd><p>12312</p></dd>
+                <dd><p>{{card.billing_address.country_name}}</p></dd>
               </dl>
+
             </li>
             <li class="list-group-item">
-              <button class="btn btn-default">
-                <i class="fa fa-pencil"></i> Edit
-              </button>
-            </li>
+              <button class="btn btn-default" (click)="updateCard()">
+                <i class="fa fa-pencil"></i> Update
+              </button>              
+            </li>           
           </ul>
         </div>
         <h3 class="box-panel-title">3.Checkout</h3>
@@ -66,9 +67,9 @@
           <ul class="list-group">
             <li class="list-group-item">
               <ul>
-                <li>Avanced Plan will be activated for your account.</li>
+                <li>{{selected_plan.name}} will be activated for your account.</li>
                 <li>Starting from <span class="bold">August 3 2016</span>, your card ending in 5669 will be charged
-                  <span class="bold">$9.99 per month</span>.
+                  <span class="bold">${{selected_plan.price}} per month</span>.
                 </li>
                 <li>If there is any issue occurs, we will send email to your address
                   <span>jaimelannister@lannister.com</span>.
@@ -80,7 +81,7 @@
               we'll store and update (e.g., upon expiration) your payment method. Learn about <a href="#">how to cancel</a>.
             </li>
             <li class="list-group-item text-center">
-              <a href="#" class="btn btn-primary">Complete Upgrade</a>
+              <button class="btn btn-primary" (click)="upgrade()">Complete Upgrade</button>
             </li>
           </ul>
         </div>
