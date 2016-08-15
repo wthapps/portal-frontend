@@ -7,15 +7,15 @@
           <figure class="page-app-icon"><img class="img-full" [src]="item.img_src" [alt]="item.name"></figure>
           <div class="page-app-action">
             <p>
-              <a target="_blank" href="{{item.download_link}}" class="btn btn-primary btn-block">
+              <a target="_blank" href="{{item.download_link}}" class="btn btn-info btn-block">
                 <i class="fa fa-download"></i> Download</a>
             </p>
             <p *ngIf="!added">
-              <button class="btn btn-default btn-block" (click)="add(1)"><i class="fa fa-plus"></i> Add To My Apps
+              <button class="btn btn-default btn-block" (click)="add($event)"><i class="fa fa-plus"></i> Add To My Apps
               </button>
             </p>
             <p *ngIf="added">
-              <button class="btn btn-success btn-block" (click)="manage(item)"><i class="fa fa-cogs"></i> Manage This
+              <button class="btn btn-success btn-block" (click)="manage()"><i class="fa fa-cogs"></i> Manage This
                 App
               </button>
             </p>

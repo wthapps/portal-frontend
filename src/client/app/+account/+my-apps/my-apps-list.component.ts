@@ -33,9 +33,8 @@ export class MyAppsListComponent implements OnInit {
     );
   }
 
-  manage(app: any): void {
-    this.router.navigate(['/account/dns']);
-    console.log('app: ', app);
+  manage(id: any): void {
+    this.router.navigate(['/account/my-apps', id]);
   }
 
   add(): void {

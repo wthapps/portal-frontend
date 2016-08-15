@@ -81,17 +81,19 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
   }
 
 
-  add(app_id: number): void {
-    /*this.appService.put(`users/${this.userService.profile.id}/apps/${this.app_id}`).subscribe(
-     (response: any) => {
-     this.added = response.added;
-     // this.breadcrumbs.push({label: res.data.display_name});
-     },
-     error => this.errorMessage = <any>error
-     );*/
+  add(event: any): void {
+    event.preventDefault();
+    this.appService.post(`users/${this.userService.profile.id}/apps/${this.app_id}`, '').subscribe(
+      (response: any) => {
+        //console.log(this.app_id, response);
+        let data: any = JSON.parse(response._body);
+        this.added = data.added;
+      },
+      error => this.errorMessage = <any>error
+    );
   }
 
-  manage(app: Product): void {
-    this.router.navigate(['/account/dns']);
+  manage(): void {
+    this.router.navigate(['/account/my-apps/', this.app_id]);
   }
 }

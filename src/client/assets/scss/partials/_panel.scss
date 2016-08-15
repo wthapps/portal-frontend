@@ -15,5 +15,18 @@
       }
     }
   }
-
+  &.panel-striped {
+    border-width: 0;
+    > .list-group {
+      > .list-group-item {
+        border-width: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+      }
+      > .list-group-item:nth-of-type(odd) {
+        background-color: $table-bg-accent;
+      }
+    }
+  }
 }
