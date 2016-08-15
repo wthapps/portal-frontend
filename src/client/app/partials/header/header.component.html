@@ -14,7 +14,7 @@
           <img src="assets/images/logo.png" alt="WTHApps">
         </a>
         <span *ngIf="navTitle" class="navbar-page">
-          <a class="navbar-brand" href="#" (click)="onNavigateByTitle($event)"> {{navTitle}} </a>        
+          <a class="navbar-brand" href="#" (click)="onNavigateByTitle($event)"> {{navTitle}} </a>
         </span>
       </div>
 
@@ -38,7 +38,7 @@
                aria-expanded="false">
               <i class="fa fa-list"></i>
             </a>
-            <ul class="dropdown-menu">              
+            <ul class="dropdown-menu">
               <li>
                 <a [routerLink]="['/account/apps']">
                   <i class="fa fa-list-alt"></i>
@@ -50,10 +50,10 @@
                   <i class="fa fa-plug"></i>
                   <span>Management</span>
                 </a>
-              </li>              
+              </li>
             </ul>
           </li>
-          <li class="dropdown navbar-nav-notification">
+          <!--<li class="dropdown navbar-nav-notification">
             <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown" role="button"
                aria-haspopup="true"
                aria-expanded="false">
@@ -94,7 +94,7 @@
                 <a href="#">View All</a>
               </li>
             </ul>
-          </li>
+          </li>-->
           <li class="dropdown navbar-nav-profile">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                aria-expanded="false"><img src="assets/images/avatar/avatar.png" alt=""> <span class="name">{{userService.profile.first_name}}</span>
@@ -109,14 +109,14 @@
                     <p class="media-heading">{{userService.profile.name}}</p>
                     <span class="in-email">{{userService.profile.email}}</span>
                     <div class="navbar-nav-plan">
-                      <p class="in-plan"> {{userService.profile.plan.name}} 
+                      <p class="in-plan"> {{userService.profile.plan.name}}
                         <span *ngIf="userService.profile.plan.is_trial">- 8 days left</span>
                         <span class="in-email" *ngIf="!userService.profile.plan.is_trial">Activated on Aug 18 2016</span>
                       </p>
                       <button class="btn btn-success" *ngIf="userService.profile.plan.is_trial" [routerLink]="['/account/plans']">
                         <i class="fa fa-arrow-circle-up"></i> Upgrade
                       </button>
-                    </div>                   
+                    </div>
                   </div>
                 </div>
               </li>

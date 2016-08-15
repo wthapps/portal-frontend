@@ -50,7 +50,6 @@ export class HeaderComponent {
     }
     if (this.urls[0] == '/account') {
       this.navTitle = 'Library';
-      
     } else {
       this.navTitle = null;
     }
@@ -58,7 +57,7 @@ export class HeaderComponent {
 
   onNavigateByTitle(event: any): void {
     event.preventDefault();
-    if(this.navTitle == 'Library'){
+    if (this.navTitle == 'Library') {
       this.router.navigate(['/account/apps']);
     }
   }

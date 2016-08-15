@@ -31,11 +31,12 @@ Header
         line-height: 30px;
         display: inline-block;
         border-left: 1px solid $light-grey;
-        padding: 4px 25px;
+        padding: 0px 25px;
         font-size: 24px;
         font-weight: bold;
         font-family: $font-style;
         margin-left: 10px;
+        float: left;
       }
 
       .navbar-nav {

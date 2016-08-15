@@ -9069,11 +9069,12 @@ Header
         line-height: 30px;
         display: inline-block;
         border-left: 1px solid #D8D8D8;
-        padding: 4px 25px;
+        padding: 0px 25px;
         font-size: 24px;
         font-weight: bold;
         font-family: "Source Sans Pro", sans-serif;
-        margin-left: 10px; }
+        margin-left: 10px;
+        float: left; }
       .header .navbar .navbar-nav > li.open > a, .header .navbar .navbar-nav > li :hover > a {
         background-color: transparent;
         color: #4A4A4A; }
