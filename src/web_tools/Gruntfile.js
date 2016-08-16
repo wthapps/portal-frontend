@@ -11,6 +11,7 @@ var thirdPartyFile = [
     //thirdPartyPath + '/jquery.placeholder.js',
     thirdPartyPath + '/Swiper/dist/js/swiper.jquery.js',
     thirdPartyPath + '/swiper.thumbnails.js',
+    bowerPath + '/dropzone/dist/min/dropzone.min.js',
     basePath + '/js/common.js'
 ];
 
