@@ -6,6 +6,7 @@ import {
 } from '@angular/router';
 
 import {
+  Constants,
   UserService
 } from '../../shared/index';
 
@@ -29,11 +30,17 @@ export class HeaderComponent {
   navTitle: string;
   nav_title_url: string = '';
 
+  imgAvatar: string = Constants.img.avatar;
+
   constructor(private userService: UserService,
               private router: Router) {
+
+    console.log(userService);
+
     if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;
+      this.imgAvatar = this.userService.profile.profile_image ? this.userService.profile.profile_image : this.imgAvatar;
     }
 
     this.urls = new Array();
