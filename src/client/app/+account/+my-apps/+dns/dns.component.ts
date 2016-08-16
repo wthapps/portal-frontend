@@ -34,7 +34,7 @@ declare var _: any;
 export class DNSComponent implements OnInit {
 
   inValidPlan: boolean = false;
-  records: Record[] = [];
+  records: Array<Record> = [];
   errorMessage: string;
 
   private app_id: number = 0;
@@ -62,7 +62,9 @@ export class DNSComponent implements OnInit {
     this.loadingService.start();
     this.dnsService.get(`users/${id}/dns/records`).subscribe(
       (res: any) => {
-        this.records = res.data;
+        if(res.data != 'empty'){
+          this.records = res.data;
+        }
         this.loadingService.stop();
       },
       (error: any) => {
