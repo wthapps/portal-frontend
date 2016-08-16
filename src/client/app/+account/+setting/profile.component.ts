@@ -128,7 +128,7 @@ export class ProfileComponent implements OnInit {
         sex: values.sex
       });
 
-      console.log(body);
+      //console.log(body);
 
       this._userService.update(`users/${this._userService.profile.id}`, body)
         .subscribe((result: any) => {
