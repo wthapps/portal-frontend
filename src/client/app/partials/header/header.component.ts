@@ -35,8 +35,6 @@ export class HeaderComponent {
   constructor(private userService: UserService,
               private router: Router) {
 
-    console.log(userService);
-
     if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;

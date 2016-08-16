@@ -34,6 +34,9 @@ import {
 export class ProfileComponent implements OnInit {
   pageTitle: string = 'Profile';
   errorMessage: string = Constants.errorMessage.default;
+
+  imgAvatar: string = Constants.img.avatar;
+
   sex: number = 0;
   birthdayDate: any = {
     day: 0,
@@ -61,6 +64,8 @@ export class ProfileComponent implements OnInit {
               private _toastsService: ToastsService,
               private _loadingService: LoadingService) {
 
+    console.log(this._userService);
+    this.imgAvatar = this._userService.profile.profile_image ? this._userService.profile.profile_image : this.imgAvatar;
     this.sex = this._userService.profile.sex === null ? 0 : this._userService.profile.sex;
 
     if (this._userService.profile.birthday !== null) {
@@ -80,8 +85,8 @@ export class ProfileComponent implements OnInit {
       'email': [this._userService.profile.email,
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'phone_prefix': '',
-      'phone_number': '',
+      'phone_prefix': [this._userService.profile.nationality],
+      'phone_number': [this._userService.profile.phone_number],
       'birthday_day': [this.birthdayDate.day],
       'birthday_month': [this.birthdayDate.month],
       'birthday_year': [this.birthdayDate.year]
@@ -115,11 +120,15 @@ export class ProfileComponent implements OnInit {
       let body = JSON.stringify({
         first_name: values.first_name,
         last_name: values.last_name,
-        birthday_day: values.birthday_day,
-        birthday_month: values.birthday_month,
-        birthday_year: values.birthday_year,
+        nationality: values.phone_prefix,
+        phone_number: values.phone_number,
+        birthday_day: values.birthday_day.toString(),
+        birthday_month: values.birthday_month.toString(),
+        birthday_year: values.birthday_year.toString(),
         sex: values.sex
       });
+
+      console.log(body);
 
       this._userService.update(`users/${this._userService.profile.id}`, body)
         .subscribe((result: any) => {

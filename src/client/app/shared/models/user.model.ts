@@ -16,6 +16,8 @@ export class User {
   credit_cards: CreditCard[];
   plan_id: string;
   profile_image: string;
+  nationality: string;
+  phone_number: string;
 
   constructor(fields: {
     id: number,
@@ -32,7 +34,9 @@ export class User {
     has_payment_info?: boolean,
     credit_cards?: CreditCard[],
     plan_id?: string,
-    profile_image: string
+    profile_image?: string,
+    nationality?: string,
+    phone_number?: string
   }) {
     if (fields) Object.assign(this, fields);
   }
