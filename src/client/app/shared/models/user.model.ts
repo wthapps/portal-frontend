@@ -18,6 +18,10 @@ export class User {
   profile_image: string;
   nationality: string;
   phone_number: string;
+  language: string;
+  subscribed: boolean;
+  auto_update: boolean;
+  use_diagnosis: boolean;
 
   constructor(fields: {
     id: number,
@@ -36,7 +40,11 @@ export class User {
     plan_id?: string,
     profile_image?: string,
     nationality?: string,
-    phone_number?: string
+    phone_number?: string,
+    language?: string,
+    subscribed?: boolean,
+    auto_update?: boolean,
+    use_diagnosis?: boolean,
   }) {
     if (fields) Object.assign(this, fields);
   }

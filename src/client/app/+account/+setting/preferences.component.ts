@@ -14,7 +14,6 @@ import {
   UserService,
   ToastsService,
   LoadingService,
-  CustomValidator,
   Constants
 }                           from '../../shared/index';
 
@@ -28,91 +27,58 @@ import {
 })
 
 export class PreferencesComponent {
-  pageTitle:string = 'Preferences';
-  errorMessage:string = Constants.errorMessage.default;
-  sex:number = 0;
-  birthdayDate:any = {
-    day: 0,
-    month: 0,
-    year: 0
-  };
+  pageTitle: string = 'Preferences';
+  errorMessage: string = Constants.errorMessage.default;
 
-  form:FormGroup;
-  first_name:AbstractControl;
-  last_name:AbstractControl;
-  email:AbstractControl;
-  birthday_day:AbstractControl;
-  birthday_month:AbstractControl;
-  birthday_year:AbstractControl;
+  form: FormGroup;
+  language: AbstractControl;
+  subscribed: AbstractControl;
+  auto_update: AbstractControl;
+  use_diagnosis: AbstractControl;
 
-  submitted:boolean = false;
+  submitted: boolean = false;
 
-  constructor(private fb:FormBuilder,
-              private _userService:UserService,
-              private _toastsService:ToastsService,
-              private _loadingService:LoadingService) {
-
-
-    this.sex = this._userService.profile.sex === null ? 0 : this._userService.profile.sex;
-
-    if (this._userService.profile.birthday !== null) {
-      let birthday = new Date(this._userService.profile.birthday);
-      this.birthdayDate.day = birthday.getDate();
-      this.birthdayDate.month = birthday.getMonth() + 1;
-      this.birthdayDate.year = birthday.getUTCFullYear();
-    }
+  constructor(private fb: FormBuilder,
+              private userService: UserService,
+              private toastsService: ToastsService,
+              private loadingService: LoadingService) {
 
     this.form = fb.group({
-      'first_name': [this._userService.profile.first_name,
+      'language': [this.userService.profile.language,
         Validators.compose([Validators.required])
       ],
-      'last_name': [this._userService.profile.last_name,
-        Validators.compose([Validators.required])
-      ],
-      'email': [this._userService.profile.email,
-        Validators.compose([Validators.required, CustomValidator.emailFormat])
-      ],
-      'birthday_day': [this.birthdayDate.day],
-      'birthday_month': [this.birthdayDate.month],
-      'birthday_year': [this.birthdayDate.year]
+      'subscribed': [this.userService.profile.subscribed],
+      'auto_update': [this.userService.profile.auto_update],
+      'use_diagnosis': [this.userService.profile.use_diagnosis],
     });
 
-    this.first_name = this.form.controls['first_name'];
-    this.last_name = this.form.controls['last_name'];
-    this.email = this.form.controls['email'];
-    this.birthday_day = this.form.controls['birthday_day'];
-    this.birthday_month = this.form.controls['birthday_month'];
-    this.birthday_year = this.form.controls['birthday_year'];
+    this.language = this.form.controls['language'];
+    this.subscribed = this.form.controls['subscribed'];
+    this.auto_update = this.form.controls['auto_update'];
+    this.use_diagnosis = this.form.controls['use_diagnosis'];
   }
 
-  onSubmit(values:any):void {
+  onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
-      // start loading
-      this._loadingService.start();
 
-      values.sex = this.sex;
-
+      this.loadingService.start();
       let body = JSON.stringify({
-        first_name: values.first_name,
-        last_name: values.last_name,
-        birthday_day: values.birthday_day,
-        birthday_month: values.birthday_month,
-        birthday_year: values.birthday_year,
-        sex: values.sex
+        language: values.language,
+        subscribed: values.subscribed,
+        auto_update: values.auto_update,
+        use_diagnosis: values.use_diagnosis,
       });
 
-      this._userService.update(`users/${this._userService.profile.id}`, body)
-        .subscribe((result:any) => {
-            // stop loading
-            this._loadingService.stop();
-            this._toastsService.success(result.message);
+      this.userService.update(`users/${this.userService.profile.id}`, body)
+        .subscribe(
+          (result: any) => {
+            this.loadingService.stop();
+            this.toastsService.success(result.message);
           },
           error => {
-            // stop loading
-            this._loadingService.stop();
-            this._toastsService.danger(this.errorMessage);
-            console.log(error);
+            this.loadingService.stop();
+            this.toastsService.danger(this.errorMessage);
           }
         );
     }
