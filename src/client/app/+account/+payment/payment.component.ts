@@ -8,12 +8,12 @@ import {
   Validators }                        from '@angular/forms';
 import {Cookie}                       from 'ng2-cookies/ng2-cookies';
 import {PaymentService}               from './payment.service';
-import {CountryListComponent}         from '../../shared/services/country.component';
 import {
   UserService,
   Constants,
   LoadingService,
-  ToastsService
+  ToastsService,
+  CountryService
 }                                     from '../../shared/index';
 
 import {CreditCard}                   from '../../shared/models/credit-card.model';
@@ -31,9 +31,7 @@ declare var $:any;
   ],
   providers: [
     PaymentService,
-    UserService,
-    CountryListComponent,
-    LoadingService
+    CountryService
   ]
 })
 
@@ -41,7 +39,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   PanelTitle:string = 'Find Services and add-ons';
   button_text:string = 'Add Payment Method';
   edit_mode:boolean = false;
-  countries:any;
+  errorMessage:string = '';
+  countriesCode: any;
   credit_card: CreditCard = null;
   submitted: boolean = false;
 
@@ -64,13 +63,13 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
 
   constructor(
-    private router:Router,
+    private router: Router,
     private route: ActivatedRoute,
-    private userService:UserService,
-    private paymentService:PaymentService,
-    private countryService: CountryListComponent,
+    private userService: UserService,
+    private paymentService: PaymentService,
+    private countryService: CountryService,
     private loaddingService:LoadingService,
-    private toastsService:ToastsService,
+    private toastsService: ToastsService,
     private builder: FormBuilder,
     private zone: NgZone
   ) {
@@ -100,7 +99,10 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     }
 
     // get data
-    this.countries = this.countryService.countries;
+    this.countryService.getCountries().subscribe(
+      data => this.countriesCode = data,
+      error => this.errorMessage = <any>error);
+
     if ((this.userService.profile.credit_cards != null) && (this.userService.profile.credit_cards.length > 0)) {
       this.credit_card = this.userService.profile.credit_cards[0];
     } else {

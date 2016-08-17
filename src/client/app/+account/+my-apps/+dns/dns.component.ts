@@ -62,7 +62,7 @@ export class DNSComponent implements OnInit {
     this.loadingService.start();
     this.dnsService.get(`users/${id}/dns/records`).subscribe(
       (res: any) => {
-        if(res.data != 'empty'){
+        if (res.data != 'empty') {
           this.records = res.data;
         }
         this.loadingService.stop();

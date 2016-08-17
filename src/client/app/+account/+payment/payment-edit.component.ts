@@ -3,12 +3,12 @@ import {Router, ActivatedRoute, ROUTER_DIRECTIVES}    from '@angular/router';
 import {FormBuilder, Validators, FormGroup}    from '@angular/forms';
 // import {Cookie}                       from 'ng2-cookies/ng2-cookies';
 import {PaymentService}               from './payment.service';
-import {CountryListComponent}         from '../../shared/services/country.component';
 import {
   UserService,
   Constants,
   LoadingService,
-  ToastsService
+  ToastsService,
+  CountryService
 }                                     from '../../shared/index';
 import {CreditCard}                   from '../../shared/models/credit-card.model';
 // import {BillingAddress}               from '../../shared/models/billing-address.model';
@@ -22,9 +22,7 @@ import {CreditCard}                   from '../../shared/models/credit-card.mode
   ],
   providers: [
     PaymentService,
-    UserService,
-    CountryListComponent,
-    LoadingService
+    CountryService
   ]
 })
 
@@ -32,7 +30,8 @@ export class PaymentEditComponent implements OnInit {
   PanelTitle:string = 'Find Services and add-ons';
   button_text:string = 'Continue';
   edit_mode:boolean = false;
-  countries:any;
+  errorMessage:string = '';
+  countriesCode:any;
   paymentForm: FormGroup;
   credit_card: CreditCard = null;
 
@@ -43,15 +42,16 @@ export class PaymentEditComponent implements OnInit {
     private _router:Router,
     private _userService:UserService,
     private _paymentService:PaymentService,
-    private _countries:CountryListComponent,
+    private countryService:CountryService,
     private _loaddingService:LoadingService,
     private route: ActivatedRoute,
     private _toastsService:ToastsService,
     private _builder: FormBuilder,
     private _zone: NgZone
   ) {
-    this.countries = this._countries.countries;
-
+    this.countryService.getCountries().subscribe(
+      data => this.countriesCode = data,
+      error => this.errorMessage = <any>error);
   }
 
   topMessageShow():void {

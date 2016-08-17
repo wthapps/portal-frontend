@@ -78,10 +78,8 @@
                 <label for="country">Country</label>
                 <select class="form-control" id="country" name="country" #country="ngForm" ngControl="country"
                         [(ngModel)]="credit_card.billing_address.country_code_alpha2">
-                  <option *ngFor="let country of countries; let i = index" [selected]="i === 39"
-                          value="{{country.key}}">
-                    {{country.value}}
-                  </option>
+                  <option value="">Select your country</option>
+                  <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}}</option>
                 </select>
                 <div *ngIf="country.touched && !country.valid">
                   <span class="help-block"

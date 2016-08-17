@@ -140,10 +140,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         });
       });*/
 
-      $("#my-awesome-dropzone").dropzone(
+      $('#my-awesome-dropzone').dropzone(
         {
-          url: "http://localhost:4000/media_contents",
-          paramName: "file", // The name that will be used to transfer the file
+          url: 'http://localhost:4000/media_contents',
+          paramName: 'file', // The name that will be used to transfer the file
           maxFilesize: 2, // MB
           maxFiles: 1,
           dictDefaultMessage: '<p>Drag and drop a photo</p> ' +

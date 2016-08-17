@@ -12,10 +12,11 @@
           <ul class="list-group">
             <li class="list-group-item">
               <p class="bold">{{selected_plan.name}} <br>
-                ${{selected_plan.price}}/month - Charged monthly.</p>
+                &#36;{{selected_plan.price}}/month - Charged monthly.</p>
             </li>
             <li class="list-group-item">
-              <p>You’ll be charged ${{selected_plan.price}} monthly including applicable taxes until you cancel your memebership.
+              <p>You’ll be charged &#36;{{selected_plan.price}} monthly including applicable taxes until you cancel your
+                memebership.
                 Previous charges won’t be refunded when you cancel unless it’s legally required. Your payment data is
                 encrypted and secure. All amounts shown are in USD.</p>
             </li>
@@ -122,10 +123,9 @@
                   <div class="form-group has-select" [ngClass]="{'has-error': country.touched && !country.valid}">
                     <label for="country">Country</label>
                     <select class="form-control" id="country" [formControl]="country">
-                      <option *ngFor="let country of countries; let i = index" [selected]="i === 39"
-                              value="{{country.key}}">
-                        {{country.value}}
-                      </option>
+                      <option value="">Select your country</option>
+                      <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}}</option>
+
                     </select>
                     <div *ngIf="country.touched && !country.valid">
                   <span class="help-block"
@@ -149,8 +149,8 @@
                 {{button_text}}
               </button>
               <!--<a [routerLink]="['/account/payment/confirm']" [style.display]="methodPaypal ? 'inline-block' : 'none'"-->
-                 <!--class="btn btn-primary ml10" type="submit">-->
-                <!--{{button_text}}-->
+              <!--class="btn btn-primary ml10" type="submit">-->
+              <!--{{button_text}}-->
               <!--</a>-->
             </li>
           </ul>

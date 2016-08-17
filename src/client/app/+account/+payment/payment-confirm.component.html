@@ -12,10 +12,10 @@
           <ul class="list-group">
             <li class="list-group-item">
               <p class="bold">{{selected_plan.name}} <br>
-                ${{selected_plan.price}}/month - Charged monthly.</p>
+                &#36;{{selected_plan.price}}/month - Charged monthly.</p>
             </li>
             <li class="list-group-item">
-              <p>You’ll be charged ${{selected_plan.price}} monthly including applicable taxes until you cancel your memebership.
+              <p>You’ll be charged &#36;{{selected_plan.price}} monthly including applicable taxes until you cancel your memebership.
                 Previous charges won’t be refunded when you cancel unless it’s legally required. Your payment data is
                 encrypted and secure. All amounts shown are in USD.</p>
             </li>
@@ -58,8 +58,8 @@
             <li class="list-group-item">
               <button class="btn btn-default" (click)="updateCard()">
                 <i class="fa fa-pencil"></i> Update
-              </button>              
-            </li>           
+              </button>
+            </li>
           </ul>
         </div>
         <h3 class="box-panel-title">3.Checkout</h3>
@@ -69,7 +69,7 @@
               <ul>
                 <li>{{selected_plan.name}} will be activated for your account.</li>
                 <li>Starting from <span class="bold">August 3 2016</span>, your card ending in 5669 will be charged
-                  <span class="bold">${{selected_plan.price}} per month</span>.
+                  <span class="bold">&#36;{{selected_plan.price}} per month</span>.
                 </li>
                 <li>If there is any issue occurs, we will send email to your address
                   <span>jaimelannister@lannister.com</span>.
