@@ -1,4 +1,4 @@
-import {Component, AfterViewInit} from '@angular/core';
+import {Component, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Constants} from '../../shared/index';
 
@@ -16,8 +16,12 @@ declare var dropzone: any;
 })
 
 export class UploadCropImageComponent implements AfterViewInit {
+  @Output() imageClicked: EventEmitter<string> = new EventEmitter<string>();
+
   ngAfterViewInit(): void {
     // Define variables
+    var _this = this;
+
     var elModal = $('#modalUploadImage');
     var elDropzone = $('#dropzone-wrap');
     var elDropzonePreviews = $('#dropzone-previews');
@@ -36,7 +40,7 @@ export class UploadCropImageComponent implements AfterViewInit {
       paramName: 'file', // The name that will be used to transfer the file
       maxFilesize: 2, // MB
       maxFiles: 1,
-      method: 'patch',
+      //method: 'patch',
       dictDefaultMessage: '<p>Drag and drop a photo</p> ' +
       '<p><span>or</span></p> <button class="btn btn-default">Upload from your computer</button>',
       autoProcessQueue: false,
@@ -148,7 +152,7 @@ export class UploadCropImageComponent implements AfterViewInit {
 
 
       // upload cropped file with dropzone
-      myDropzone.processQueue();
+      //myDropzone.processQueue();
       elModal.modal('hide');
 
 
@@ -157,7 +161,11 @@ export class UploadCropImageComponent implements AfterViewInit {
       elDropzonePreviews.html('');
       elCrop.html('');
       elDropzone.parent().removeClass('dropzonecrop-onThumbnail');
-    });
 
+
+      //send to component
+      _this.imageClicked.emit(blob);
+
+    });
   }
 }

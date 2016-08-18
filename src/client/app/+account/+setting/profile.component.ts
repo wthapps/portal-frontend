@@ -153,4 +153,9 @@ export class ProfileComponent implements OnInit {
     event.preventDefault();
     $('#modalUploadImage').modal('show');
   }
+
+  onImageClicked(img: string): void {
+    console.log(img);
+    this.imgAvatar = img;
+  }
 }
