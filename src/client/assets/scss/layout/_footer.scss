@@ -1,13 +1,13 @@
 .footer {
   font-family: $font-style;
-  @media (min-width: $screen-sm) {
+  /*@media (min-width: $screen-sm) {
     margin-top: 40px;
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     width: 100%;
-  }
+  }*/
 }
 
 .footer-nav {

@@ -9286,15 +9286,15 @@ Header
     top: 2px; }
 
 .footer {
-  font-family: "Source Sans Pro", sans-serif; }
-  @media (min-width: 768px) {
-    .footer {
-      margin-top: 40px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%; } }
+  font-family: "Source Sans Pro", sans-serif;
+  /*@media (min-width: $screen-sm) {
+    margin-top: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+  }*/ }
 
 .footer-nav {
   background-color: #656d79;
@@ -9340,9 +9340,18 @@ Header
 html {
   position: relative;
   min-height: 100%; }
-  @media (min-width: 768px) {
-    html .main {
-      margin-bottom: 280px; } }
+  html .main {
+    margin-bottom: 30px;
+    /*@media (min-width: $screen-sm) {
+      margin-bottom: 280px;
+    }*/ }
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+  .wrapper .main {
+    flex: 1; }
 
 .banner-wrap {
   margin-top: -20px;
@@ -11286,24 +11295,6 @@ wth-app:empty + .dots-loader-wrap {
 .cropper-disabled .cropper-point {
   cursor: not-allowed; }
 
-/*.dropzonecrop-cropper {
-  position: relative;
-  .cropper-hidden {
-    display: block !important;
-    width: 100%;
-    height: auto;
-    visibility: hidden;
-  }
-  .cropper-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-  }
-}*/
 .dropzonecrop-previews {
   display: none; }
 

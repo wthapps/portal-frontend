@@ -2,9 +2,19 @@ html {
   position: relative;
   min-height: 100%;
   .main {
-    @media (min-width: $screen-sm) {
+    margin-bottom: 30px;
+    /*@media (min-width: $screen-sm) {
       margin-bottom: 280px;
-    }
+    }*/
+  }
+}
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  .main {
+    flex: 1;
   }
 }
 
