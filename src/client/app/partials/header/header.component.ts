@@ -54,14 +54,16 @@ export class HeaderComponent {
     if (url.lastIndexOf('/') > 0) {
       this.getNavTitle(url.substr(0, url.lastIndexOf('/'))); //Find last '/' and add everything before it as a parent route
     }
-    //console.log(this.urls); ["/account", "/account/my-apps"]
-    if (this.urls[1] == '/account/setting') {
+    //console.log((this.urls[1]).split("?")); //["/account", "/account/my-apps"]
+
+    let param_url = (this.urls[1]).split("?");
+    if (param_url[0] == '/account/setting') {
       this.showSearchBar = false;
       this.navTitle = 'Account Management';
-    } else if (this.urls[1] == '/account/apps') {
+    } else if (param_url[0] == '/account/apps') {
       this.showSearchBar = true;
       this.navTitle = 'Apps';
-    } else if (this.urls[1] == '/account/my-apps') {
+    } else if (param_url[0] == '/account/my-apps') {
       this.showSearchBar = true;
       this.navTitle = 'My Apps';
     } else {
