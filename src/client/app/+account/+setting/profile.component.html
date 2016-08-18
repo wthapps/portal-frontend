@@ -1,20 +1,20 @@
 <div class="box-panel">
   <h3 class="box-panel-title">{{pageTitle}}</h3>
-  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-    <h4 class="box-panel-subtitle">Profile Picture</h4>
-    <div class="media media-upload-profile">
-      <div class="media-left">
-        <img width="70" [src]="imgAvatar" class="img-responsive" alt="">
-      </div>
-      <div class="media-right">
-        <p>Upload a photo (GIF, JPG or PNG) with the size of 150 X 150 or wider.</p>
-        <button data-toggle="modal" data-target="#modalUpload" type="button" class="btn btn-default btn-min">
+  <h4 class="box-panel-subtitle">Profile Picture</h4>
+  <div class="media media-upload-profile">
+    <div class="media-left">
+      <img width="70" [src]="imgAvatar" class="img-responsive" alt="">
+    </div>
+    <div class="media-right">
+      <p>Upload a photo (GIF, JPG or PNG) with the size of 150 X 150 or wider.</p>
+        <button (click)="uploadImage($event)" type="button" class="btn btn-default btn-min">
           <i class="fa fa-pencil"></i> Edit
         </button>
-      </div>
     </div>
-    <hr class="line">
-    <h4 class="box-panel-subtitle">Personal Information</h4>
+  </div>
+  <hr class="line">
+  <h4 class="box-panel-subtitle">Personal Information</h4>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
     <div class="row">
       <div class="col-xs-6 col-sm-4">
         <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched),
@@ -261,19 +261,4 @@
 </div>
 
 
-<div id="modalUpload" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-long" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Profile Picture</h4>
-      </div>
-      <div class="modal-body">
-        <p>Selecte a photo as your profile picture so people can qucikly recognize you</p>
-        <form action="http:localhost:4000/media_contents" class="dropzone" id="my-awesome-dropzone"></form>
-        <div id="media-contents"></div>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<wth-upload-image></wth-upload-image>

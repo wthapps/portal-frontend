@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit}          from '@angular/core';
+import {Component, OnInit}          from '@angular/core';
 import {
   ROUTER_DIRECTIVES
 }                           from '@angular/router';
@@ -10,32 +10,32 @@ import {
   Validators
 }                           from '@angular/forms';
 
-declare var $: any;
-declare var dropzone: any;
-declare var Dropzone: any;
-
 import {
   UserService,
   ToastsService,
   LoadingService,
   CustomValidator,
   Constants,
-  CountryService
+  CountryService,
+  UploadCropImageComponent
 }                           from '../../shared/index';
+
+declare var $: any;
 
 @Component({
   moduleId: module.id,
   templateUrl: 'profile.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    REACTIVE_FORM_DIRECTIVES
+    REACTIVE_FORM_DIRECTIVES,
+    UploadCropImageComponent
   ],
   providers: [
     CountryService
   ]
 })
 
-export class ProfileComponent implements OnInit, AfterViewInit {
+export class ProfileComponent implements OnInit {
   pageTitle: string = 'Profile';
   errorMessage: string = Constants.errorMessage.default;
 
@@ -111,93 +111,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       error => this.errorMessage = <any>error);
   }
 
-  ngAfterViewInit(): void {
-    /*$("#my-awesome-dropzone").dropzone(
-      {
-        url: "/file/post",
-        paramName: "file", // The name that will be used to transfer the file
-        maxFilesize: 2, // MB
-        maxFiles: 1,
-        dictDefaultMessage: '<p>Drag and drop a photo</p> ' +
-        '<p><span>or</span></p> <button class="btn btn-default">Upload from your computer</button>'
-      }
-    );*/
-
-    $(function() {
-
-
-      /*Dropzone.autoDiscover = false;
-      jQuery(document).ready(function() {
-        var myDropzone = new Dropzone("#myId", {
-          url: 'someurl',
-          autoProcessQueue:false
-        });
-
-        $('#add').on('click',function(e){
-          e.preventDefault();
-          myDropzone.processQueue();
-        });
-      });*/
-
-      $('#my-awesome-dropzone').dropzone(
-        {
-          url: 'http://localhost:4000/media_contents',
-          paramName: 'file', // The name that will be used to transfer the file
-          maxFilesize: 2, // MB
-          maxFiles: 1,
-          dictDefaultMessage: '<p>Drag and drop a photo</p> ' +
-          '<p><span>or</span></p> <button class="btn btn-default">Upload from your computer</button>',
-          autoProcessQueue: false
-        }
-      );
-
-      /*var mediaDropzone = new Dropzone("#my-awesome-dropzone");
-      Dropzone.options.mediaDropzone = false;
-      mediaDropzone.options.acceptedFiles = ".jpeg,.jpg,.png,.gif";
-      mediaDropzone.on("complete", function(files) {
-        var _this = this;
-        if (_this.getUploadingFiles().length === 0 && _this.getQueuedFiles().length === 0) {
-          setTimeout(function(){
-            $('#modalUpload').modal('hide');
-            var acceptedFiles = _this.getAcceptedFiles();
-            var rejectedFiles = _this.getRejectedFiles();
-
-            for(var index = 0; index < acceptedFiles.length; index++) {
-              var file = acceptedFiles[index];
-              var response = JSON.parse(file.xhr.response);
-              appendContent(response.file_name.url, response.id);
-            }
-
-            if(acceptedFiles.length != 0) {
-              //alertify.success('Uploaded ' + acceptedFiles.length + ' files successfully.');
-              console.log('Uploaded ' + acceptedFiles.length + ' files successfully.');
-            }
-            if(rejectedFiles.length != 0) {
-              //alertify.error('Error uploading ' + rejectedFiles.length + ' files. Only image files are accepted.');
-              console.log('Error uploading ' + rejectedFiles.length + ' files. Only image files are accepted.');
-            }
-
-            _this.removeAllFiles();
-
-          }, 2000);
-        }
-      });*/
-    });
-
-    /*var appendContent = function(imageUrl, mediaId) {
-      $("#media-contents").append('<div class="col-lg-4">' +
-        '<div class="thumbnail"><img src="' + imageUrl + '"/>' +
-        '<div class="caption">' +
-        '<input id="media_contents_" name="media_contents[]" value="' + mediaId +'" type="checkbox">' +
-        '</div>' +
-        '</div></div>');
-      $("#delete").removeAttr('disabled');
-      $("#delete-all").removeAttr('disabled');
-      $("#no-media").html("");
-    };*/
-
-  }
-
   onSubmit(values: any): void {
     this.submitted = true;
 
@@ -234,5 +147,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           }
         );
     }
+  }
+
+  uploadImage(event): void {
+    event.preventDefault();
+    $('#modalUploadImage').modal('show');
   }
 }

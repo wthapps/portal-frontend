@@ -11286,6 +11286,61 @@ wth-app:empty + .dots-loader-wrap {
 .cropper-disabled .cropper-point {
   cursor: not-allowed; }
 
+/*.dropzonecrop-cropper {
+  position: relative;
+  .cropper-hidden {
+    display: block !important;
+    width: 100%;
+    height: auto;
+    visibility: hidden;
+  }
+  .cropper-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}*/
+.dropzonecrop-previews {
+  display: none; }
+
+.dropzonecrop-cropper {
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto; }
+  .dropzonecrop-cropper img {
+    max-width: 100%;
+    height: auto; }
+
+.dropzonecrop-cropper {
+  display: none; }
+
+.dropzonecrop-control {
+  display: none;
+  text-align: center;
+  margin-top: 10px; }
+
+.dropzonecrop-onThumbnail .dropzonecrop-wrap {
+  display: none; }
+
+.dropzonecrop-onThumbnail .dropzonecrop-cropper, .dropzonecrop-onThumbnail .dropzonecrop-control {
+  display: block; }
+
+.cropper-view-box {
+  outline-color: rgba(255, 255, 255, 0.75); }
+
+.cropper-line, .cropper-point {
+  background-color: #ffffff; }
+
+.cropper-point {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%; }
+
 .panel-heading-action {
   position: relative; }
   .panel-heading-action .btn {
