@@ -325,8 +325,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
 
-            Cookie.delete('profile');
-            Cookie.set('profile', JSON.stringify(_this.userService.profile));
+            // Cookie.delete('profile');
+            Cookie.set('profile', JSON.stringify(_this.userService.profile), 365, '/');
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
             // make sure onInit method on PlansComponent will work
             _this.zone.run(() => {
@@ -352,8 +352,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           if (response.success) {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
-            Cookie.delete('profile');
-            Cookie.set('profile', JSON.stringify(_this.userService.profile));
+            // Cookie.delete('profile');
+            Cookie.set('profile', JSON.stringify(_this.userService.profile), 365, '/');
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
             _this.toastsService.success(response.message);
             return;

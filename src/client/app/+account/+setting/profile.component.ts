@@ -68,7 +68,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
               private _toastsService: ToastsService,
               private _loadingService: LoadingService) {
 
-    console.log(this._userService);
     this.imgAvatar = this._userService.profile.profile_image ? this._userService.profile.profile_image : this.imgAvatar;
     this.sex = this._userService.profile.sex === null ? 0 : this._userService.profile.sex;
 

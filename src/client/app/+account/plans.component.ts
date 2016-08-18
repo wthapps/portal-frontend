@@ -74,8 +74,8 @@ export class PlansComponent implements OnInit {
         is_trial: plan.is_trial,
         price: plan.price
       });
-    Cookie.delete('selected_plan');
-    Cookie.set('selected_plan', p);
+    // Cookie.delete('selected_plan');
+    Cookie.set('selected_plan', p, 365, '/');
     if (this.userService.profile.has_payment_info) {
       this.router.navigateByUrl('account/payment/confirm');
     } else {
