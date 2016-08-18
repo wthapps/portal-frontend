@@ -5,7 +5,7 @@
         Have an account?
       </h2>
       <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-        <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
+        <div class="form-group no-label" [ngClass]="{'has-error': (!email.valid && email.touched)}">
           <label class="sr-only" for="email">Email address</label>
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
           <div *ngIf="!email.valid && email.touched">
@@ -15,9 +15,10 @@
           </div>
 
         </div>
-        <div class="form-group" [ngClass]="{'has-error': (!password.valid && password.touched)}">
+        <div class="form-group no-label has-password" [ngClass]="{'has-error': (!password.valid && password.touched)}">
           <label class="sr-only" for="password">Password</label>
           <input [formControl]="password" type="password" class="form-control" id="password" placeholder="Password">
+          <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
           <div *ngIf="!password.valid && password.touched">
             <span *ngIf="!password.valid && password.errors.required" class="help-block">A password is required</span>
           </div>

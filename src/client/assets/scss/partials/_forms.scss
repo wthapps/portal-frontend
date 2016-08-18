@@ -18,7 +18,6 @@
   &:before {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -27,6 +26,12 @@
     right: 10px;
     z-index: 10;
     font-size: 18px;
+  }
+  &.no-label:before {
+    top: 9px;
+  }
+  &.has-password:before {
+    display: none;
   }
 
   &.has-error:not(.has-select) {
@@ -48,7 +53,6 @@
     top: 28px;
     right: 7px;
     z-index: 11;
-    background-color: #FFF;
     border-width: 0;
     font-size: 18px;
     &:before {
@@ -67,6 +71,9 @@
     &:hover, &:focus {
       outline: 0 none;
     }
+  }
+  .sr-only ~ .hideShowPassword-toggle {
+    top: 5px;
   }
 }
 

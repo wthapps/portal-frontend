@@ -18,6 +18,8 @@ import {
   CustomValidator
 }                           from '../shared/index';
 
+declare var $:any;
+
 @Component({
   moduleId: module.id,
   templateUrl: 'register.component.html',
@@ -125,6 +127,18 @@ export class RegisterComponent {
             this._toastsService.danger(this.errorMessage);
 
           });
+    }
+  }
+  
+  hideShowPassword(event): void {
+    var target = event.target || event.srcElement || event.currentTarget;
+    let inputPass = $(target).prev();
+    if (inputPass.attr('type') == 'password') {
+      inputPass.attr('type', 'text');
+      $(target).addClass('active');
+    } else {
+      inputPass.attr('type', 'password');
+      $(target).removeClass('active');
     }
   }
 }

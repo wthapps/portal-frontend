@@ -21,6 +21,7 @@ import {
   Validators
 }                           from '@angular/forms';
 
+declare var $:any;
 
 @Component({
   moduleId: module.id,
@@ -88,6 +89,18 @@ export class LoginComponent {
             //console.log('login error:', error);
           }
         );
+    }
+  }
+
+  hideShowPassword(event): void {
+    var target = event.target || event.srcElement || event.currentTarget;
+    let inputPass = $(target).prev();
+    if (inputPass.attr('type') == 'password') {
+      inputPass.attr('type', 'text');
+      $(target).addClass('active');
+    } else {
+      inputPass.attr('type', 'password');
+      $(target).removeClass('active');
     }
   }
 }
