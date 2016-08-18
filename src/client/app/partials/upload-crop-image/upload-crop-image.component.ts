@@ -1,5 +1,6 @@
 import {Component, AfterViewInit} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
+import {Constants} from '../../shared/index';
 
 declare var $: any;
 declare var dropzone: any;
@@ -31,10 +32,11 @@ export class UploadCropImageComponent implements AfterViewInit {
 
     var myDropzoneOptions = {
       // CONFIGURATION,
-      url: 'http://localhost:4000/media_contents',
+      url: Constants.baseUrls.apiBaseService + 'users/1',
       paramName: 'file', // The name that will be used to transfer the file
       maxFilesize: 2, // MB
       maxFiles: 1,
+      method: 'patch',
       dictDefaultMessage: '<p>Drag and drop a photo</p> ' +
       '<p><span>or</span></p> <button class="btn btn-default">Upload from your computer</button>',
       autoProcessQueue: false,
