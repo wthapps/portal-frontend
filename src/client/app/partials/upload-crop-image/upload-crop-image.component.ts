@@ -61,11 +61,21 @@ export class UploadCropImageComponent implements AfterViewInit {
     };
 
     var myCropOptions = {
-      aspectRatio: 1 / 1,
-      autoCropArea: 1
       //, movable: false
       //, cropBoxResizable: true
       //, minContainerWidth: 150
+
+      viewMode: 3
+      , aspectRatio: 1 / 1
+      , dragMode: 'move'
+      , autoCropArea: 0.8
+      , restore: false
+      //, modal: false
+      , guides: false
+      , highlight: false
+      //, cropBoxMovable: false
+      //, cropBoxResizable: false
+
     };
 
     var cachedFilename = 'default';
