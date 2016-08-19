@@ -1,4 +1,4 @@
-import {Component, OnInit}          from '@angular/core';
+import {Component, OnInit, NgZone}          from '@angular/core';
 import {
   ROUTER_DIRECTIVES
 }                           from '@angular/router';
@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
   pageTitle: string = 'Profile';
   errorMessage: string = Constants.errorMessage.default;
 
-  imgAvatar: string = Constants.img.avatar;
+  profile_image: string = '';
 
   sex: number = 0;
   birthdayDate: any = {
@@ -62,34 +62,35 @@ export class ProfileComponent implements OnInit {
 
   submitted: boolean = false;
 
-  constructor(private fb: FormBuilder,
-              private countryService: CountryService,
-              private _userService: UserService,
-              private _toastsService: ToastsService,
-              private _loadingService: LoadingService) {
+  constructor(
+    private fb: FormBuilder,
+    private countryService: CountryService,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService,
+    private zone: NgZone) {
 
-    this.imgAvatar = this._userService.profile.profile_image ? this._userService.profile.profile_image : this.imgAvatar;
-    this.sex = this._userService.profile.sex === null ? 0 : this._userService.profile.sex;
+    this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
 
-    if (this._userService.profile.birthday !== null) {
-      let birthday = new Date(this._userService.profile.birthday);
+    if (this.userService.profile.birthday !== null) {
+      let birthday = new Date(this.userService.profile.birthday);
       this.birthdayDate.day = birthday.getDate();
       this.birthdayDate.month = birthday.getMonth() + 1;
       this.birthdayDate.year = birthday.getUTCFullYear();
     }
 
     this.form = fb.group({
-      'first_name': [this._userService.profile.first_name,
+      'first_name': [this.userService.profile.first_name,
         Validators.compose([Validators.required])
       ],
-      'last_name': [this._userService.profile.last_name,
+      'last_name': [this.userService.profile.last_name,
         Validators.compose([Validators.required])
       ],
-      'email': [this._userService.profile.email,
+      'email': [this.userService.profile.email,
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'phone_prefix': [this._userService.profile.nationality],
-      'phone_number': [this._userService.profile.phone_number],
+      'phone_prefix': [this.userService.profile.nationality],
+      'phone_number': [this.userService.profile.phone_number],
       'birthday_day': [this.birthdayDate.day],
       'birthday_month': [this.birthdayDate.month],
       'birthday_year': [this.birthdayDate.year]
@@ -106,6 +107,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.profile_image = this.userService.profile.profile_image;
     this.countryService.getCountries().subscribe(
       data => this.countriesCode = data,
       error => this.errorMessage = <any>error);
@@ -116,7 +118,7 @@ export class ProfileComponent implements OnInit {
 
     if (this.form.valid) {
       // start loading
-      this._loadingService.start();
+      this.loadingService.start();
 
       values.sex = this.sex;
 
@@ -133,16 +135,16 @@ export class ProfileComponent implements OnInit {
 
       //console.log(body);
 
-      this._userService.update(`users/${this._userService.profile.id}`, body)
+      this.userService.update(`users/${this.userService.profile.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            this._loadingService.stop();
-            this._toastsService.success(result.message);
+            this.loadingService.stop();
+            this.toastsService.success(result.message);
           },
           error => {
             // stop loading
-            this._loadingService.stop();
-            this._toastsService.danger(this.errorMessage);
+            this.loadingService.stop();
+            this.toastsService.danger(this.errorMessage);
             console.log(error);
           }
         );
@@ -155,7 +157,22 @@ export class ProfileComponent implements OnInit {
   }
 
   onImageClicked(img: string): void {
-    console.log(img);
-    this.imgAvatar = img;
+    let body = JSON.stringify({image: img});
+    this.userService.update(`users/${this.userService.profile.id}`, body)
+      .subscribe((result: any) => {
+        // stop loading
+        this.zone.run(() => {
+          this.profile_image = result.data.profile_image;
+        });
+        this.loadingService.stop();
+        this.toastsService.success(result.message);
+      },
+      error => {
+        // stop loading
+        this.loadingService.stop();
+        this.toastsService.danger(this.errorMessage);
+        console.log(error);
+      }
+      );
   }
 }
