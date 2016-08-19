@@ -38,9 +38,6 @@ declare var $: any;
 export class ProfileComponent implements OnInit {
   pageTitle: string = 'Profile';
   errorMessage: string = Constants.errorMessage.default;
-
-  profile_image: string = '';
-
   sex: number = 0;
   birthdayDate: any = {
     day: 0,
@@ -161,9 +158,6 @@ export class ProfileComponent implements OnInit {
     this.userService.update(`users/${this.userService.profile.id}`, body)
       .subscribe((result: any) => {
         // stop loading
-        this.zone.run(() => {
-          this.profile_image = result.data.profile_image;
-        });
         this.loadingService.stop();
         this.toastsService.success(result.message);
       },
