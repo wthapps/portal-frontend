@@ -111,10 +111,8 @@
                     <div class="navbar-nav-plan">
                       <p class="in-plan"> {{userService.profile.plan.name}}
                         <!--<span *ngIf="userService.profile.plan.is_trial">- 8 days left</span>-->
-                        <span class="in-email" *ngIf="!userService.profile.plan.is_trial">
-                          Activated on {{userService.profile.plan_registered_at | date:'MMM dd, yyyy' : 'UTC'}}</span>
                       </p>
-                      <button class="btn btn-success" *ngIf="userService.profile.plan.is_trial"
+                      <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
                               [routerLink]="['/account/plans']">
                         <i class="fa fa-arrow-circle-up"></i> Upgrade
                       </button>

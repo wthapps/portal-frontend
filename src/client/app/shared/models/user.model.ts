@@ -1,4 +1,5 @@
 import {CreditCard} from './credit-card.model';
+import {Plan} from './plan.model';
 
 export class User {
   id: number;
@@ -14,6 +15,8 @@ export class User {
   accepted: boolean;
   has_payment_info: boolean;
   credit_cards: CreditCard[];
+  plan: Plan;
+  plan_registered_at: string;
   plan_id: string;
   profile_image: string;
   nationality: string;
@@ -37,6 +40,8 @@ export class User {
     accepted?: boolean,
     has_payment_info?: boolean,
     credit_cards?: CreditCard[],
+    plan?: Plan,
+    plan_registered_at?: string,
     plan_id?: string,
     profile_image?: string,
     nationality?: string,

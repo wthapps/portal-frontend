@@ -36,6 +36,8 @@ export class HeaderComponent {
   constructor(private userService: UserService,
               private router: Router) {
 
+    //console.log(this.userService);
+
     if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;
@@ -54,7 +56,7 @@ export class HeaderComponent {
     if (url.lastIndexOf('/') > 0) {
       this.getNavTitle(url.substr(0, url.lastIndexOf('/'))); //Find last '/' and add everything before it as a parent route
     }
-    
+
     //console.log((this.urls[1])); //["/account", "/account/my-apps"]
 
     let param_url = [''];
