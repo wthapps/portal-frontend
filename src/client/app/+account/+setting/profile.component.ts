@@ -38,6 +38,8 @@ declare var $: any;
 export class ProfileComponent implements OnInit {
   pageTitle: string = 'Profile';
   errorMessage: string = Constants.errorMessage.default;
+  profile_image: string = '';
+
   sex: number = 0;
   birthdayDate: any = {
     day: 0,
@@ -59,13 +61,12 @@ export class ProfileComponent implements OnInit {
 
   submitted: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private countryService: CountryService,
-    private userService: UserService,
-    private toastsService: ToastsService,
-    private loadingService: LoadingService,
-    private zone: NgZone) {
+  constructor(private fb: FormBuilder,
+              private countryService: CountryService,
+              private userService: UserService,
+              private toastsService: ToastsService,
+              private loadingService: LoadingService,
+              private zone: NgZone) {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
 
@@ -157,16 +158,16 @@ export class ProfileComponent implements OnInit {
     let body = JSON.stringify({image: img});
     this.userService.update(`users/${this.userService.profile.id}`, body)
       .subscribe((result: any) => {
-        // stop loading
-        this.loadingService.stop();
-        this.toastsService.success(result.message);
-      },
-      error => {
-        // stop loading
-        this.loadingService.stop();
-        this.toastsService.danger(this.errorMessage);
-        console.log(error);
-      }
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(this.errorMessage);
+          console.log(error);
+        }
       );
   }
 }

@@ -6,7 +6,6 @@ import {
 } from '@angular/router';
 
 import {
-  Constants,
   UserService
 } from '../../shared/index';
 
@@ -58,7 +57,7 @@ export class HeaderComponent {
 
     let param_url = [''];
     if (this.urls[1]) {
-      param_url = (this.urls[1]).split("?");
+      param_url = (this.urls[1]).split('?');
     }
     if (param_url[0] == '/account/setting') {
       this.showSearchBar = false;
