@@ -50,7 +50,7 @@ import {
 
 
 import {
-  //CanDeactivateGuard,
+  CanDeactivateGuard,
   AuthGuard
 }                           from '../shared/index';
 
@@ -75,7 +75,9 @@ export const AccountRoutes: RouterConfig = [
       {path: 'services', component: AccountServicesListComponent},
 
       // Setting
-      {path: 'setting/profile', component: ProfileComponent},
+      {path: 'setting/profile', component: ProfileComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
       {path: 'setting/account', component: MyAccountComponent},
       {path: 'setting/preferences', component: PreferencesComponent},
       {path: '', component: ProfileComponent}

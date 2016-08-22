@@ -1,3 +1,6 @@
+/**
+ * demo RC4 http://embed.plnkr.co/h0o2IuoZYvXGtC1ejQBl/
+ */
 import {provideRouter, RouterConfig} from '@angular/router';
 
 import {AboutRoutes}        from './+about/index';

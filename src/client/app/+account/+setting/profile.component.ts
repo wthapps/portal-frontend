@@ -1,4 +1,6 @@
-import {Component, OnInit, NgZone}          from '@angular/core';
+import {Component, OnInit, NgZone}    from '@angular/core';
+import {Observable}                   from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 import {
   ROUTER_DIRECTIVES
 }                           from '@angular/router';
@@ -13,6 +15,7 @@ import {
 import {
   UserService,
   ToastsService,
+  DialogService,
   LoadingService,
   CustomValidator,
   Constants,
@@ -21,6 +24,7 @@ import {
 }                           from '../../shared/index';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -47,6 +51,8 @@ export class ProfileComponent implements OnInit {
     year: 0
   };
 
+  formValue: any;
+
   countriesCode: any;
 
   form: FormGroup;
@@ -65,6 +71,7 @@ export class ProfileComponent implements OnInit {
               private countryService: CountryService,
               private userService: UserService,
               private toastsService: ToastsService,
+              private dialogService: DialogService,
               private loadingService: LoadingService,
               private zone: NgZone) {
 
@@ -105,6 +112,9 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Set value before updating form (checking user leave this page)
+    this.formValue = this.form.value;
+
     this.profile_image = this.userService.profile.profile_image;
     this.countryService.getCountries().subscribe(
       data => this.countriesCode = data,
@@ -112,6 +122,9 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit(values: any): void {
+    // Set value after updating form (checking user leave this page)
+    this.formValue = values;
+
     this.submitted = true;
 
     if (this.form.valid) {
@@ -169,5 +182,22 @@ export class ProfileComponent implements OnInit {
           console.log(error);
         }
       );
+  }
+
+
+  /**
+   *
+   * @returns {any}
+     */
+  canDeactivate(): Observable<boolean> | boolean {
+    // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
+      return true;
+    }
+    // Otherwise ask the user with the dialog service and return its
+    // promise which resolves to true or false when the user decides
+    let p = this.dialogService.confirm();
+    let o = Observable.fromPromise(p);
+    return o;
   }
 }
