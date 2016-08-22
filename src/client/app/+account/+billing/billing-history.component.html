@@ -14,8 +14,8 @@
     <tr *ngFor="let t of transactions">
 
       <td>{{t.created_at | date:'MMM dd, yyyy' : 'UTC'}} {{t.created_at | date:'H:mm:ss' : 'UTC'}}</td>
+      <td>Invoice</td>
       <td>{{t.amount}} {{t.currency_iso_code}}</td>
-      <td>$9.99 USD</td>
       <td>{{t.id}}</td>
       <td>
         <a class="btn btn-sm btn-primary pull-right" (click)="viewReceipt(t.id, $event)">Receipt</a>
