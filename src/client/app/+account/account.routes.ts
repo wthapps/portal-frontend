@@ -78,8 +78,12 @@ export const AccountRoutes: RouterConfig = [
       {path: 'setting/profile', component: ProfileComponent,
         canDeactivate: [CanDeactivateGuard]
       },
-      {path: 'setting/account', component: MyAccountComponent},
-      {path: 'setting/preferences', component: PreferencesComponent},
+      {path: 'setting/account', component: MyAccountComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
+      {path: 'setting/preferences', component: PreferencesComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
       {path: '', component: ProfileComponent}
     ]
   },

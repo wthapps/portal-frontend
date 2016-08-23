@@ -1,4 +1,6 @@
-import {Component}          from '@angular/core';
+import {Component, OnInit}          from '@angular/core';
+import {Observable}         from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 import {
   Router,
   ROUTER_DIRECTIVES
@@ -22,6 +24,7 @@ import {
 }                           from '../../shared/index';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -32,15 +35,17 @@ declare var $: any;
   ]
 })
 
-export class MyAccountComponent {
+export class MyAccountComponent implements OnInit{
   pageTitle: string = 'Account';
   errorMessage: string = Constants.errorMessage.default;
 
-  public form: FormGroup;
-  public oldPassword: AbstractControl;
-  public password: AbstractControl;
+  formValue: any;
 
-  public submitted: boolean = false;
+  form: FormGroup;
+  oldPassword: AbstractControl;
+  password: AbstractControl;
+
+  submitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -68,7 +73,15 @@ export class MyAccountComponent {
     this.password = this.form.controls['password'];
   }
 
-  public onSubmit(values: any): void {
+  ngOnInit(): void {
+    // Set value before updating form (checking user leave this page)
+    this.formValue = this.form.value;
+  }
+
+  onSubmit(values: any): void {
+    // Set value after updating form (checking user leave this page)
+    this.formValue = values;
+
     this.submitted = true;
     if (this.form.valid) {
       let old_password = values.oldPassword;
@@ -171,5 +184,22 @@ export class MyAccountComponent {
               });
         }
       });
+  }
+
+
+  /**
+   *
+   * @returns {any}
+   */
+  canDeactivate(): Observable<boolean> | boolean {
+    // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
+      return true;
+    }
+    // Otherwise ask the user with the dialog service and return its
+    // promise which resolves to true or false when the user decides
+    let p = this.dialogService.confirm();
+    let o = Observable.fromPromise(p);
+    return o;
   }
 }
