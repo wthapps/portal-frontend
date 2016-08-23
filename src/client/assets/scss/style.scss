@@ -65,6 +65,7 @@
 @import "modules/dropzone/custom";
 @import "modules/cropper/cropper";
 @import "modules/cropper/custom";
+
 //
 // =Content
 // --------------------------------------------------
@@ -72,6 +73,7 @@
 //
 // =Pages
 // --------------------------------------------------
+@import "pages/landing";
 @import "pages/welcome";
 @import "pages/app-detail";
 @import "pages/payment";

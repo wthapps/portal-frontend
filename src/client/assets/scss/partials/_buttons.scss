@@ -1,5 +1,8 @@
-.btn-get {
+@import "hover/hover";
 
+.btn-detail {
+  font-weight: normal;
+  @include shutter-out-horizontal();
 }
 
 .btn-default2 {
@@ -9,6 +12,11 @@
 
 .btn-min {
   min-width: 106px;
+  text-align: center;
+}
+
+.btn-min-sm {
+  min-width: 160px;
   text-align: center;
 }
 

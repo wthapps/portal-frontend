@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {
   WthJoinUsComponent,
@@ -16,6 +16,9 @@ import {Plan}                   from '../shared/models/plan.model';
 @Component({
   moduleId: module.id,
   selector: 'sd-home',
+  host: {
+    class: 'page-default'
+  },
   templateUrl: 'home.component.html',
   directives: [
     WthJoinUsComponent,
@@ -27,7 +30,7 @@ import {Plan}                   from '../shared/models/plan.model';
 })
 
 export class HomeComponent implements OnInit {
-  pageTitle:string = 'Home page';
+  pageTitle: string = 'Home page';
   products: Product[] = [];
   plans: Plan[] = [];
 
@@ -39,11 +42,11 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadingService.start('#tablePlan');
     this.apiService.get('apps/all') // TODO refactor with path /product; also refactor in API
-      .subscribe((response:any) => {
+      .subscribe((response: any) => {
           if (response.data !== null) {
             this.products = response.data;
             this.apiService.get('plans')
-              .subscribe((response:any) => {
+              .subscribe((response: any) => {
                   if (response.data !== null) {
                     this.plans = response.data;
                   }
@@ -62,7 +65,7 @@ export class HomeComponent implements OnInit {
   }
 
   plan_has_product(products: any, product_name: string): boolean {
-    for(let p of products) {
+    for (let p of products) {
       if (p.name === product_name) return true;
     }
     return false;

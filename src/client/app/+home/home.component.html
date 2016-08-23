@@ -1,99 +1,58 @@
-<div class="banner-wrap">
-  <div class="banner-img">
-    <img src="assets/images/banner.jpg" alt="">
+<section class="homepage-hero">
+  <div class="homepage-hero-item" style="background-image: url('assets/images/landing/hero-image.png');">
   </div>
+  <div class="homepage-hero-txt">
+    <h1>All convenience tools you need in one place</h1>
+    <p>Exclusive features for greater experience.</p>
+    <a href="#" class="btn btn-detail btn-lg btn-min-sm">Learn More</a>
+  </div>
+</section>
+<section class="section-about">
   <div class="container">
-    <div class="banner-txt">
-      <h1>Fastest VPN Service For Freedom</h1>
-      <p>Our exclusive features for greater online experience</p>
-      <wth-join-us></wth-join-us>
-      <!--<a class="btn btn-get btn-danger" [routerLink]="['/account/payment']">Upgrade for only $9.99 per-->
-      <!--month</a>-->
+    <h2 class="h1">What is WTHapp?</h2>
+    <p>WTHapp is a collection of various services, add-on and applications, all are gathered in one place. <br>
+      Looking for the tools you need and manage your resources has never been this simple. </p>
+  </div>
+</section>
+<section class="section-services gray-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card-box">
+          <figure>
+            <img src="assets/images/landing/various.png" alt="">
+          </figure>
+          <h3 class="h1">Various Apps</h3>
+          <p>Enjoy the variant of service and tools as we keep on adding more.</p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card-box">
+          <figure>
+            <img src="assets/images/landing/all.png" alt="">
+          </figure>
+          <h3 class="h1">All in one place</h3>
+          <p>Avoid switching between places to search for the tools you need as all are connected.</p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card-box">
+          <figure>
+            <img src="assets/images/landing/price.png" alt="">
+          </figure>
+          <h3 class="h1">Competivite Price</h3>
+          <p>With only $9.99per month, you can access to all difference tools.</p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<div class="boxes-wrap">
-  <div class="boxes-tabs boxes-tabs-1">
-    <div class="container">
-      <h2 class="title">Easy to Use Apps for All Your Devices</h2>
-      <h3 class="text-center">
-        Download, connect, and enjoy our high speed VPN service instantly.
-      </h3>
-      <p style="margin-bottom: 40px;">
-        <img class="img-responsive" src="assets/images/vpn-devices.png" alt="">
-      </p>
-      <p><wth-join-us></wth-join-us></p>
-    </div>
-  </div>
+</section>
 
-  <div class="boxes-tabs boxes-tabs-2">
-    <div class="container">
-      <h2 class="title">WTHApps is for Everyone</h2>
-      <h3 class="text-center">
-        Tons of Products - All for one Great Price. <br>
-        We keep on adding more!
-      </h3>
-      <wth-join-us></wth-join-us>
-      <!--<a class="btn btn-get btn-danger" *ngIf="userService.isLoggedIn()" [routerLink]="['/account/payment']">Upgrade for only $9.99 per-->
-      <!--month</a>-->
-    </div>
-  </div>
-  <div class="boxes-tabs boxes-tabs-3">
-    <div class="container">
-      <h2 class="title">Great Price</h2>
-      <h3 class="text-center">
-        With Only {{plans.length}} Plans - Easy to Decide a Plan!
-      </h3>
-      <table class="table table-bordered table-striped table-plan">
-        <tr>
-          <th></th>
-          <th width="35%" *ngFor="let p of plans">
-            <h2>{{p.name}}</h2>
-            {{p.description}}
-          </th>
-        </tr>
-        <tr *ngFor="let pro of products">
-          <td>{{pro.display_name}}</td>
-          <td *ngFor="let pp of plans">
-            <div class="text-danger" *ngIf="!plan_has_product(pp.apps, pro.name)"><i class="glyphicon glyphicon-remove"></i></div>
-            <div class="text-success" *ngIf="plan_has_product(pp.apps, pro.name)"><i class="glyphicon glyphicon-ok"></i></div>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <wth-get-started></wth-get-started>
-          </td>
-          <td>
-            <wth-get-started></wth-get-started>
-          </td>
-        </tr>
-      </table>
-
-    </div>
-  </div>
-  <div class="boxes-tabs boxes-tabs-4">
-    <div class="container">
-      <h3 class="text-center">
-
-      </h3>
-      <h2 class="title">No Commitments - Cancel Anytime</h2>
-      <h3 class="text-center">
-        If you decide to leave WTHApps! - It's OK!
-      </h3>
-      <p style="margin-bottom: 40px;">
-        <i class="glyphicon glyphicon-ok"></i> You can keep on using WTHpictures<br>
-        <i class="glyphicon glyphicon-ok"></i> Cancel online - anytime! <br>
-        <i class="glyphicon glyphicon-ok"></i> We miss you already!</p>
-      <wth-join-us></wth-join-us>
-    </div>
-  </div>
-</div>
-<section>
-  <div class="statement">We made WTHApps because we believe that <strong>everybody,</strong> <br>
-    no matter their level of technical experience, should be able to use the Internet
-    <strong>freely</strong>
-    and
-    <strong>securely.</strong>
+<section class="section-promo" style="background-image: url('assets/images/landing/promo-image.jpg');">
+  <div class="container">
+    <h4 class="h1">Ton of Products - All for one Great Price</h4>
+    <p>Join us now - Free for 30 days</p>
+    <a href="#" class="btn btn-detail btn-lg btn-min-sm">Learn More</a>
+    <a href="#" class="btn btn-detail btn-lg btn-min-sm">Get Started</a>
   </div>
 </section>

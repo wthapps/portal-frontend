@@ -1,12 +1,9 @@
 html {
   position: relative;
-  min-height: 100%;
-  .main {
-    margin-bottom: 30px;
-    /*@media (min-width: $screen-sm) {
-      margin-bottom: 280px;
-    }*/
-  }
+}
+
+.gray-light {
+  background-color: #f6f6f6;
 }
 
 .wrapper {

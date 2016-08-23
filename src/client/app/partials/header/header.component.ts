@@ -26,10 +26,13 @@ export class HeaderComponent {
   last_name: string = '';
   urls: any;
 
+  headerOver: boolean = true;
+
   navTitle: string;
   nav_title_url: string = '';
 
   showSearchBar: boolean = false;
+
   constructor(private userService: UserService,
               private router: Router) {
 
@@ -55,6 +58,16 @@ export class HeaderComponent {
 
     //console.log((this.urls[1])); //["/account", "/account/my-apps"]
 
+    // header overlay
+    if (this.urls[0] == '/account') {
+      this.headerOver = false;
+    } else {
+      this.headerOver = true;
+    }
+    // end header overlay
+
+
+    // show navTitle
     let param_url = [''];
     if (this.urls[1]) {
       param_url = (this.urls[1]).split('?');

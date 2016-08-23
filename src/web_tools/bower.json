@@ -24,6 +24,7 @@
     "Swiper": "swiper#^3.3.1",
     "FortAwesome/Font-Awesome": "*",
     "enyo/dropzone": "*",
-    "cropper": "^2.3.3"
+    "cropper": "^2.3.3",
+    "hover": "Hover#^2.0.2"
   }
 }

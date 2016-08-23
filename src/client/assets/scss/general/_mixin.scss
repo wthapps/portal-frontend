@@ -32,6 +32,15 @@ $prefix-for-spec: true !default;
   }
 }
 
+// prefix declarations
+@mixin prefixed($property, $value) {
+  -webkit-#{$property}: #{$value};
+  -moz-#{$property}: #{$value};
+  -ms-#{$property}: #{$value};
+  -o-#{$property}: #{$value};
+  #{$property}: #{$value};
+}
+
 @mixin disable-prefix-for-all() {
   $prefix-for-webkit: false !global;
   $prefix-for-mozilla: false !global;
@@ -159,7 +168,6 @@ $retina-suffix: '@2x';
   @include opacity(0.8);
 }
 */
-
 
 //
 // Centering Mixin
