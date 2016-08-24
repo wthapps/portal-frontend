@@ -29,7 +29,8 @@
 
           <template [ngIf]="!userService.loggedIn">
 
-            <li class="hidden-xs"><span><a class="btn btn-detail btn-min" [routerLink]="['/signup']">Sign up</a></span>
+            <li class="hidden-xs">
+              <a [routerLink]="['/login']">Sign up</a>
             </li>
             <li class="hidden-xs"><span><a class="btn btn-detail btn-min" [routerLink]="['/login']">Log in</a></span>
             </li>
