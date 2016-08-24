@@ -1,5 +1,7 @@
 .footer {
   font-family: $font-style;
+  position: relative;
+  z-index: 100;
   /*@media (min-width: $screen-sm) {
     margin-top: 40px;
     position: absolute;

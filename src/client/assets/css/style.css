@@ -8971,6 +8971,43 @@ h1, h2, h3, h4, h5, h6,
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFBFBFB', endColorstr='#FFDDDDDD', GradientType=0); }
 
+.btn-primary-bg {
+  color: #FFF;
+  background-color: #F54A59;
+  border-color: #f21a2d; }
+  .btn-primary-bg:focus, .btn-primary-bg.focus {
+    color: #FFF;
+    background-color: #f21a2d;
+    border-color: #850712; }
+  .btn-primary-bg:hover {
+    color: #FFF;
+    background-color: #f21a2d;
+    border-color: #c40b1b; }
+  .btn-primary-bg:active, .btn-primary-bg.active,
+  .open > .btn-primary-bg.dropdown-toggle {
+    color: #FFF;
+    background-color: #f21a2d;
+    border-color: #c40b1b; }
+    .btn-primary-bg:active:hover, .btn-primary-bg:active:focus, .btn-primary-bg:active.focus, .btn-primary-bg.active:hover, .btn-primary-bg.active:focus, .btn-primary-bg.active.focus,
+    .open > .btn-primary-bg.dropdown-toggle:hover,
+    .open > .btn-primary-bg.dropdown-toggle:focus,
+    .open > .btn-primary-bg.dropdown-toggle.focus {
+      color: #FFF;
+      background-color: #dc0c1e;
+      border-color: #850712; }
+  .btn-primary-bg:active, .btn-primary-bg.active,
+  .open > .btn-primary-bg.dropdown-toggle {
+    background-image: none; }
+  .btn-primary-bg.disabled:hover, .btn-primary-bg.disabled:focus, .btn-primary-bg.disabled.focus, .btn-primary-bg[disabled]:hover, .btn-primary-bg[disabled]:focus, .btn-primary-bg[disabled].focus,
+  fieldset[disabled] .btn-primary-bg:hover,
+  fieldset[disabled] .btn-primary-bg:focus,
+  fieldset[disabled] .btn-primary-bg.focus {
+    background-color: #F54A59;
+    border-color: #f21a2d; }
+  .btn-primary-bg .badge {
+    color: #F54A59;
+    background-color: #FFF; }
+
 .btn-min {
   min-width: 106px;
   text-align: center; }
@@ -9458,6 +9495,8 @@ Header
 
 .footer {
   font-family: "Source Sans Pro", sans-serif;
+  position: relative;
+  z-index: 100;
   /*@media (min-width: $screen-sm) {
     margin-top: 40px;
     position: absolute;
@@ -9638,6 +9677,37 @@ html {
   .p-plan-info span {
     font-size: 18px;
     color: #4A4A4A; }
+
+.page-hero {
+  position: relative;
+  min-height: 100vh;
+  margin-bottom: -247px;
+  padding-bottom: 247px; }
+  .page-hero .page-hero-item {
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    position: absolute;
+    top: 0;
+    bottom: 247px;
+    left: 0;
+    right: 0;
+    z-index: -1; }
+  .page-hero .page-hero-content {
+    max-width: 570px;
+    margin: 0 auto;
+    padding: 150px 0 100px; }
+  .page-hero .page-hero-txt {
+    padding: 40px 50px;
+    background-color: #ffffff; }
+    .page-hero .page-hero-txt .divider {
+      margin: 20px -50px; }
+  .page-hero .page-hero-tt {
+    text-align: center;
+    margin-bottom: 20px; }
+    .page-hero .page-hero-tt .h1 {
+      text-align: center;
+      margin: 0 0 5px; }
 
 .aside-left .navgroup {
   margin-bottom: 20px; }

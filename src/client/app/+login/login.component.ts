@@ -25,6 +25,7 @@ declare var $:any;
 
 @Component({
   moduleId: module.id,
+  selector: 'page-login',
   templateUrl: 'login.component.html',
   directives: [
     ROUTER_DIRECTIVES,

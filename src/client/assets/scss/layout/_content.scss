@@ -165,3 +165,42 @@ html {
     color: $text-color;
   }
 }
+
+$footer-height: 247px;
+.page-hero {
+  position: relative;
+  min-height: 100vh;
+  margin-bottom: -$footer-height;
+  padding-bottom: $footer-height;
+  .page-hero-item {
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    position: absolute;
+    top: 0;
+    bottom: $footer-height;
+    left: 0;
+    right: 0;
+    z-index: -1;
+  }
+  .page-hero-content {
+    max-width: 570px;
+    margin: 0 auto;
+    padding: 150px 0 100px;
+  }
+  .page-hero-txt {
+    padding: 40px 50px;
+    background-color: #ffffff;
+    .divider {
+      margin: 20px -50px;
+    }
+  }
+  .page-hero-tt {
+    text-align: center;
+    margin-bottom: 20px;
+    .h1 {
+      text-align: center;
+      margin: 0 0 5px;
+    }
+  }
+}

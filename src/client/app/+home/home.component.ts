@@ -15,7 +15,7 @@ import {Plan}                   from '../shared/models/plan.model';
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-home',
+  selector: 'page-home',
   host: {
     class: 'page-default'
   },

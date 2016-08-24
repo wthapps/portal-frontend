@@ -10,6 +10,10 @@
   @include gradient-vertical(#FBFBFB, #DDDDDD, 0%, 100%);
 }
 
+.btn-primary-bg {
+  @include button-variant(#FFF, $btn-primary-color, darken($btn-primary-color, 10%));
+}
+
 .btn-min {
   min-width: 106px;
   text-align: center;
