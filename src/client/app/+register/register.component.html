@@ -10,7 +10,7 @@
       <div class="page-hero-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
           <div class="row">
-            <div class="col-xs-6">
+            <div class="col-sm-6">
               <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched)}">
                 <label for="first_name">First Name</label>
                 <input [formControl]="first_name" type="text" class="form-control" id="first_name"
@@ -20,7 +20,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-6">
+            <div class="col-sm-6">
               <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched)}">
                 <label for="last_name">Last Name</label>
                 <input [formControl]="last_name" type="text" class="form-control" id="last_name"

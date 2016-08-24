@@ -188,12 +188,24 @@ $footer-height: 247px;
     max-width: 570px;
     margin: 0 auto;
     padding: 150px 0 100px;
+    @media (max-width: $screen-xs-max) {
+      padding: 30px 0;
+      margin-left: $grid-gutter-width/2;
+      margin-right: $grid-gutter-width/2;
+      width: auto;
+    }
   }
   .page-hero-txt {
     padding: 40px 50px;
     background-color: #ffffff;
     .divider {
       margin: 20px -50px;
+    }
+    @media (max-width: $screen-xs-max) {
+      padding: $grid-gutter-width/2;
+      .divider {
+        margin: 20px -$grid-gutter-width/2;
+      }
     }
   }
   .page-hero-tt {
