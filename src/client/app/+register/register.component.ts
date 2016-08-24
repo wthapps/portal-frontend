@@ -22,6 +22,7 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
+  selector: 'page-register',
   templateUrl: 'register.component.html',
   directives: [
     ROUTER_DIRECTIVES,
@@ -66,9 +67,12 @@ export class RegisterComponent {
       'email': ['',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'password': ['',
-        Validators.compose([Validators.required, Validators.minLength(8)])
-      ],
+      'password': ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        CustomValidator.lowercaseUppercase,
+        CustomValidator.specialSymbolOrNumber
+      ])],
       'birthday_day': ['0'],
       'birthday_month': ['0'],
       'birthday_year': ['0'],

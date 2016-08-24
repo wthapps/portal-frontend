@@ -177,6 +177,7 @@ $footer-height: 247px;
     background-size: cover;
     background-position: center center;
     position: absolute;
+    background-attachment: fixed;
     top: 0;
     bottom: $footer-height;
     left: 0;
