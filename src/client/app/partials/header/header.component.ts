@@ -60,7 +60,11 @@ export class HeaderComponent {
 
     // header overlay
     if (this.urls[0] == '/account') {
-      this.headerOver = false;
+      if (this.urls[1] && this.urls[1] == '/account/recovery') {
+        this.headerOver = true;
+      } else {
+        this.headerOver = false;
+      }
     } else {
       this.headerOver = true;
     }
