@@ -9755,6 +9755,12 @@ html {
     text-align: center;
     margin: 0 0 20px; }
 
+.page-container {
+  padding: 30px 0; }
+  @media (max-width: 767px) {
+    .page-container {
+      padding: 15px 0; } }
+
 .aside-left .navgroup {
   margin-bottom: 20px; }
 

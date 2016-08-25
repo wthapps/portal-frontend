@@ -253,3 +253,10 @@ $footer-height: 247px;
     margin: 0 0 20px;
   }
 }
+
+.page-container {
+  padding: 30px 0;
+  @media (max-width: $screen-xs-max) {
+    padding: 15px 0;
+  }
+}
