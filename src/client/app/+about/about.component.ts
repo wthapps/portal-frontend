@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
-import {WthJoinUsComponent} from '../shared/index';
+import {
+  WthJoinUsComponent,
+  FooterPromotionComponent
+} from '../shared/index';
 
 /**
  * This class represents the lazy loaded AboutComponent.
@@ -9,7 +12,8 @@ import {WthJoinUsComponent} from '../shared/index';
   selector: 'sd-about',
   templateUrl: 'about.component.html',
   directives: [
-    WthJoinUsComponent
+    WthJoinUsComponent,
+    FooterPromotionComponent
   ],
   styleUrls: ['about.component.css']
 })

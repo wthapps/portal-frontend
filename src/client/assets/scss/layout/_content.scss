@@ -217,3 +217,39 @@ $footer-height: 247px;
     }
   }
 }
+
+.page-hero-header {
+  height: 300px;
+  padding: $grid-gutter-width/2;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+  @media (max-width: $screen-xs-max) {
+    height: 150px;
+  }
+  .h1 {
+    margin: 0;
+    padding: 0;
+    @include center();
+    font-size: 64px;
+    color: #ffffff;
+    @media (max-width: $screen-xs-max) {
+      font-size: 24px;
+    }
+  }
+
+}
+
+.page-content {
+  padding: 90px 0;
+  @media (max-width: $screen-xs-max) {
+    padding: 20px 0;
+  }
+  .h1 {
+    text-align: center;
+    margin: 0 0 20px;
+  }
+}

@@ -9721,6 +9721,40 @@ html {
       text-align: center;
       margin: 0 0 5px; }
 
+.page-hero-header {
+  height: 300px;
+  padding: 15px;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1; }
+  @media (max-width: 767px) {
+    .page-hero-header {
+      height: 150px; } }
+  .page-hero-header .h1 {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 64px;
+    color: #ffffff; }
+    @media (max-width: 767px) {
+      .page-hero-header .h1 {
+        font-size: 24px; } }
+
+.page-content {
+  padding: 90px 0; }
+  @media (max-width: 767px) {
+    .page-content {
+      padding: 20px 0; } }
+  .page-content .h1 {
+    text-align: center;
+    margin: 0 0 20px; }
+
 .aside-left .navgroup {
   margin-bottom: 20px; }
 
@@ -11684,6 +11718,12 @@ wth-app:empty + .dots-loader-wrap {
 
 .welcome-nav {
   text-align: right; }
+
+.about-intro .h1 {
+  font-weight: normal; }
+  @media (max-width: 767px) {
+    .about-intro .h1 {
+      font-size: 18px; } }
 
 .page-app-info .page-app-info-tt {
   font-size: 34px;

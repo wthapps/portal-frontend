@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {
   WthJoinUsComponent,
   GetStartedComponent,
+  FooterPromotionComponent,
   LoadingService,
   ApiBaseService
 }                               from '../shared/index';
@@ -22,7 +23,8 @@ import {Plan}                   from '../shared/models/plan.model';
   templateUrl: 'home.component.html',
   directives: [
     WthJoinUsComponent,
-    GetStartedComponent
+    GetStartedComponent,
+    FooterPromotionComponent
   ],
   viewProviders: [
     ApiBaseService

@@ -25,7 +25,7 @@
         <ul *ngIf="headerOver" class="nav navbar-nav navbar-right">
           <li><a [routerLink]="['/login']">Products</a></li>
           <li><a [routerLink]="['/login']">Plan</a></li>
-          <li><a [routerLink]="['/login']">About us</a></li>
+          <li><a [routerLink]="['/about']">About us</a></li>
 
           <template [ngIf]="!userService.loggedIn">
 
