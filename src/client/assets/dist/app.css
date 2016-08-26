@@ -9363,6 +9363,14 @@ Header
   .header.header-over .navbar-nav > li.navbar-nav-profile > a {
     padding-top: 2px;
     padding-bottom: 2px; }
+  .header .navbar-nav-profile .name {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 120px;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
   .header .navbar-nav-profile.open > a.dropdown-toggle:before, .header .navbar-nav-profile.open > a.dropdown-toggle:after {
     margin-left: 35px; }
   .header .navbar-nav-profile .dropdown-menu > li {
@@ -9681,8 +9689,8 @@ html {
 .page-hero {
   position: relative;
   min-height: 100vh;
-  margin-bottom: -247px;
-  padding-bottom: 247px; }
+  margin-bottom: -222px;
+  padding-bottom: 222px; }
   .page-hero .page-hero-item {
     -webkit-background-size: cover;
     background-size: cover;
@@ -9690,7 +9698,7 @@ html {
     position: absolute;
     background-attachment: fixed;
     top: 0;
-    bottom: 247px;
+    bottom: 222px;
     left: 0;
     right: 0;
     z-index: -1; }

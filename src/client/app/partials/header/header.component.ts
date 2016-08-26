@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, AfterViewInit} from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
   Router,
@@ -9,6 +9,7 @@ import {
   UserService
 } from '../../shared/index';
 
+declare var $: any;
 
 /**
  * This class represents the header component.
@@ -21,7 +22,7 @@ import {
     ROUTER_DIRECTIVES
   ]
 })
-export class HeaderComponent {
+export class HeaderComponent implements AfterViewInit {
   first_name: string = '';
   last_name: string = '';
   urls: any;
@@ -47,6 +48,19 @@ export class HeaderComponent {
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this.urls.length = 0; //Fastest way to clear out array
       this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    let documentElem = $(document);
+    let nav = $('.header');
+    let lastScrollTop = 0;
+
+    documentElem.on('scroll', function () {
+      var currentScrollTop = $(this).scrollTop();
+      if (currentScrollTop < lastScrollTop && currentScrollTop != 0) nav.addClass('active');
+      else nav.removeClass('active');
+      lastScrollTop = currentScrollTop;
     });
   }
 

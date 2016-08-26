@@ -249,6 +249,15 @@ Header
   }
 
   .navbar-nav-profile {
+    .name {
+      display: inline-block;
+      vertical-align: middle;
+      max-width: 120px;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     &.open {
       > a.dropdown-toggle {
         &:before, &:after {

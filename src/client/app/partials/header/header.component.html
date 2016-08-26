@@ -111,8 +111,8 @@
           </li>-->
             <li class="dropdown navbar-nav-profile">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                 aria-expanded="false"><img width="30" [src]="userService.profile.profile_image" alt=""> <span
-                class="name">{{userService.profile.first_name}}</span>
+                 aria-expanded="false"><img width="30" [src]="userService.profile.profile_image" alt="">
+                <span class="name">{{userService.profile.first_name}}</span>
                 <i class="fa fa-caret-down"></i></a>
               <ul class="dropdown-menu">
                 <li>
@@ -121,7 +121,7 @@
                       <img width="80" class="img-rounded" [src]="userService.profile.profile_image" alt="">
                     </div>
                     <div class="media-body">
-                      <p class="media-heading">{{userService.profile.name}}</p>
+                      <p class="media-heading">{{userService.profile.first_name}} {{userService.profile.last_name}}</p>
                       <span class="in-email">{{userService.profile.email}}</span>
                       <div class="navbar-nav-plan">
                         <p class="in-plan"> {{userService.profile.plan.name}}
