@@ -73,8 +73,8 @@ export class UploadCropImageComponent implements AfterViewInit {
       //, modal: false
       , guides: false
       , highlight: false
-      , cropBoxMovable: false
-      , cropBoxResizable: false
+      , cropBoxMovable: true
+      , cropBoxResizable: true
 
     };
 
