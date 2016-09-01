@@ -77,6 +77,10 @@ export class ProfileComponent implements OnInit {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
 
+    if (!this.userService.profile.profile_image) {
+      this.userService.profile.profile_image = Constants.img.avatar;
+    }
+
     if (this.userService.profile.birthday !== null) {
       let birthday = new Date(this.userService.profile.birthday);
       this.birthdayDate.day = birthday.getDate();
