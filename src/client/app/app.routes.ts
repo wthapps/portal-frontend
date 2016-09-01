@@ -5,6 +5,8 @@ import {provideRouter, RouterConfig} from '@angular/router';
 
 import {AboutRoutes}        from './+about/index';
 import {HomeRoutes}         from './+home/index';
+import {ProductsRoutes}     from './+products/index';
+import {PricingRoutes}     from './+pricing/index';
 import {SupportRoutes}      from './+support/index';
 import {ComingsoonRoutes}   from './+comingsoon/index';
 import {PoliciesRoutes}     from './+policies/index';
@@ -21,6 +23,8 @@ import {CanDeactivateGuard} from './shared/index';
 
 const routes:RouterConfig = [
   ...HomeRoutes,
+  ...ProductsRoutes,
+  ...PricingRoutes,
   ...AboutRoutes,
   ...SupportRoutes,
   ...ComingsoonRoutes,

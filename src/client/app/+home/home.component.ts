@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {
   WthJoinUsComponent,
@@ -22,6 +23,7 @@ import {Plan}                   from '../shared/models/plan.model';
   },
   templateUrl: 'home.component.html',
   directives: [
+    ROUTER_DIRECTIVES,
     WthJoinUsComponent,
     GetStartedComponent,
     FooterPromotionComponent
