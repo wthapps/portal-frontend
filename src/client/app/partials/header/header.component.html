@@ -23,8 +23,8 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
         <ul *ngIf="headerOver" class="nav navbar-nav navbar-right">
-          <li><a [routerLink]="['/login']">Products</a></li>
-          <li><a [routerLink]="['/login']">Plan</a></li>
+          <li><a [routerLink]="['/products']">Products</a></li>
+          <li><a [routerLink]="['/pricing']">Pricing</a></li>
           <li><a [routerLink]="['/about']">About us</a></li>
 
           <template [ngIf]="!userService.loggedIn">
