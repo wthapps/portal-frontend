@@ -4,7 +4,8 @@ import {Cookie}         from 'ng2-cookies/ng2-cookies';
 import {
   UserService,
   LoadingService,
-  ApiBaseService
+  ApiBaseService,
+  TablePricingComponent
 }                                                   from '../shared/index';
 
 import {Product}                from '../shared/models/product.model';
@@ -15,7 +16,8 @@ import {Plan}                   from '../shared/models/plan.model';
   moduleId: module.id,
   templateUrl: 'plans.component.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    TablePricingComponent
   ],
   providers: [ApiBaseService]
 })

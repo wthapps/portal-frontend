@@ -15,10 +15,21 @@
           <template [ngIf]="!pp.is_trial">
             <small>per month*</small>
           </template>
-          <template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></template>
-          <template [ngIf]="userService.profile.plan_id!=pp.id">
+
+          <template [ngIf]="userService.profile">
+
+            <template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></template>
+            <template [ngIf]="userService.profile.plan_id!=pp.id">
+              <button (click)="getStarted(pp)" class="btn btn-primary btn-min">Get Started</button>
+            </template>
+
+          </template>
+
+          <template [ngIf]="!userService.profile">
             <button (click)="getStarted(pp)" class="btn btn-default btn-min">Sign up</button>
           </template>
+
+
         </div>
       </th>
     </tr>
@@ -34,8 +45,16 @@
     <tr>
       <td class="text-left">More Coming Soon</td>
       <td *ngFor="let pp of plans">
-        <template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></template>
-        <template [ngIf]="userService.profile.plan_id!=pp.id">
+        <template [ngIf]="userService.profile">
+
+          <template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></template>
+          <template [ngIf]="userService.profile.plan_id!=pp.id">
+            <button (click)="getStarted(pp)" class="btn btn-primary btn-min">Get Started</button>
+          </template>
+
+        </template>
+
+        <template [ngIf]="!userService.profile">
           <button (click)="getStarted(pp)" class="btn btn-default btn-min">Sign up</button>
         </template>
       </td>
