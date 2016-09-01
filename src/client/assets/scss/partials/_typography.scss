@@ -17,9 +17,17 @@ body {
   font-weight: bold;
 }
 
+.text-normal {
+  font-weight: normal;
+}
+
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: $font-style;
+  line-height: 1.3;
+  &.text-normal {
+    font-weight: normal;
+  }
 }
 
 .title-wrap {
@@ -28,6 +36,9 @@ h1, h2, h3, h4, h5, h6,
     text-align: center;
     font-weight: bold;
     font-size: $font-size-h1;
+    &.text-normal {
+      font-weight: normal;
+    }
   }
 
   .title-sub {

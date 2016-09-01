@@ -14,3 +14,15 @@
     margin-bottom: 0;
   }
 }
+
+.dl-vertical {
+  dt {
+    font-size: percentage(1.334);
+  }
+  dd {
+    margin-bottom: 50px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
