@@ -38,7 +38,7 @@ export class HeaderComponent implements AfterViewInit {
   constructor(private userService: UserService,
               private router: Router) {
 
-    console.log(this.userService);
+    //console.log(this.userService);
 
     if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
