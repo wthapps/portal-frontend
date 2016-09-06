@@ -35,7 +35,7 @@
                 </div>
                 <div class="box-panel-body">
                   <div class="article-content mb20">
-                    {{item.description}}
+                    <div [innerHTML]="descriptionContent"></div>
                   </div>
                   <wth-slider [data]="item.screenshots"></wth-slider>
                 </div>

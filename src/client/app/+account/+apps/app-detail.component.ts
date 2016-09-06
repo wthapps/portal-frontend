@@ -1,5 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
+import {DomSanitizationService} from '@angular/platform-browser';
 import {Product} from '../../shared/models/product.model';
 
 import {
@@ -31,6 +32,7 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
   errorMessage: string;
 
   item: Product = new Product();
+  descriptionContent: any = '';
   added: boolean = false;
 
   private app_id: number = 0;
@@ -40,6 +42,7 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private appService: ApiBaseService,
               private userService: UserService,
+              private sanitizer: DomSanitizationService,
               private router: Router) {
   }
 
@@ -74,6 +77,7 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
     this.appService.get(`apps/${id}`).subscribe(
       (res: any) => {
         this.item = res.data;
+        this.descriptionContent = this.sanitizer.bypassSecurityTrustHtml(res.data.description);
         this.breadcrumbs.push({label: res.data.display_name});
       },
       error => this.errorMessage = <any>error
