@@ -172,6 +172,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onImageClicked(img: string): void {
+
     let body = JSON.stringify({image: img});
     this.userService.update(`users/${this.userService.profile.id}`, body)
       .subscribe((result: any) => {
@@ -192,7 +193,7 @@ export class ProfileComponent implements OnInit {
   /**
    *
    * @returns {any}
-     */
+   */
   canDeactivate(): Observable<boolean> | boolean {
     // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
     if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
