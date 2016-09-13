@@ -64,8 +64,11 @@ export class HeaderComponent implements AfterViewInit {
 
     documentElem.on('scroll', function () {
       var currentScrollTop = $(this).scrollTop();
-      if (currentScrollTop < lastScrollTop && currentScrollTop != 0) nav.addClass('active');
-      else nav.removeClass('active');
+      if (currentScrollTop < lastScrollTop && currentScrollTop != 0) {
+        nav.addClass('active');
+      } else {
+        nav.removeClass('active');
+      }
       lastScrollTop = currentScrollTop;
     });
   }

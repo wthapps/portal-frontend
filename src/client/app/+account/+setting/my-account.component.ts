@@ -35,7 +35,7 @@ declare var _: any;
   ]
 })
 
-export class MyAccountComponent implements OnInit{
+export class MyAccountComponent implements OnInit {
   pageTitle: string = 'Account';
   errorMessage: string = Constants.errorMessage.default;
 
@@ -47,15 +47,13 @@ export class MyAccountComponent implements OnInit{
 
   submitted: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-    private toastsService: ToastsService,
-    private dialogService: DialogService,
-    private loadingService: LoadingService,
-    private apiService: ApiBaseService,
-    private router: Router
-  ) {
+  constructor(private fb: FormBuilder,
+              private userService: UserService,
+              private toastsService: ToastsService,
+              private dialogService: DialogService,
+              private loadingService: LoadingService,
+              private apiService: ApiBaseService,
+              private router: Router) {
 
     this.form = fb.group({
       'oldPassword': ['', Validators.compose([
@@ -134,19 +132,19 @@ export class MyAccountComponent implements OnInit{
       We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
     this.dialogService.activate(bodyText, 'Cancel Membership', 'Finish Cancellation', 'Cancel')
       .then((responseOK) => {
-      if (responseOK) {
-        this.loadingService.start();
-        this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
-        .subscribe((response: any) => {
-          this.toastsService.success(response.message);
-          this.loadingService.stop();
-        },
-        error => {
-          this.toastsService.danger(error);
-          this.loadingService.stop();
-        });
-      }
-    });
+        if (responseOK) {
+          this.loadingService.start();
+          this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
+            .subscribe((response: any) => {
+                this.toastsService.success(response.message);
+                this.loadingService.stop();
+              },
+              error => {
+                this.toastsService.danger(error);
+                this.loadingService.stop();
+              });
+        }
+      });
   }
 
   delete(): void {
@@ -163,8 +161,8 @@ export class MyAccountComponent implements OnInit{
           this.loadingService.start();
           this.userService.update(`users/${this.userService.profile.id}`, body)
             .subscribe((response: any) => {
-              this.toastsService.success(response.message);
-              this.loadingService.stop();
+                this.toastsService.success(response.message);
+                this.loadingService.stop();
                 this.userService.logout('users/sign_out')
                   .subscribe(
                     response => {

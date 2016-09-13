@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, HostBinding} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {
@@ -18,9 +18,6 @@ import {Plan}                   from '../shared/models/plan.model';
 @Component({
   moduleId: module.id,
   selector: 'page-home',
-  host: {
-    class: 'page-default'
-  },
   templateUrl: 'home.component.html',
   directives: [
     ROUTER_DIRECTIVES,
@@ -34,6 +31,8 @@ import {Plan}                   from '../shared/models/plan.model';
 })
 
 export class HomeComponent implements OnInit {
+  @HostBinding('attr.class') class = 'page-default';
+
   pageTitle: string = 'Home page';
   products: Product[] = [];
   plans: Plan[] = [];

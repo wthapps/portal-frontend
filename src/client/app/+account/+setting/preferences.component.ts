@@ -31,7 +31,7 @@ declare var _: any;
   ]
 })
 
-export class PreferencesComponent implements OnInit{
+export class PreferencesComponent implements OnInit {
   pageTitle: string = 'Preferences';
   errorMessage: string = Constants.errorMessage.default;
 

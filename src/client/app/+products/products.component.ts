@@ -14,7 +14,6 @@ import {
   ]
 })
 
-export class ProductsComponent{
-  pageTitle:string = 'Products';
-
+export class ProductsComponent {
+  pageTitle: string = 'Products';
 }

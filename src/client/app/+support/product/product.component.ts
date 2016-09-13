@@ -7,7 +7,6 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
   directives: [
     ROUTER_DIRECTIVES
   ]
-  //, styleUrls: ['support.component.css']
 })
 
 export class SupportProductComponent {
