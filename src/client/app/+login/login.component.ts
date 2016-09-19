@@ -79,7 +79,7 @@ export class LoginComponent {
             if (result) {
               let prev = this.redirectService.prev(this.params);
               this.loadingService.stop();
-              this.router.navigate([prev]);
+              this.router.navigate([prev], {queryParams: {}});
             }
           },
           error => {
