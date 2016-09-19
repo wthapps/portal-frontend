@@ -1,5 +1,5 @@
-import { Category } from './category.model';
-import { Platform } from './platform.model';
+import {Category} from './category.model';
+import {Platform} from './platform.model';
 
 export class Product {
 
@@ -16,11 +16,11 @@ export class Product {
   is_featured: boolean;
   is_top: boolean;
   is_new: boolean;
-  active: boolean;  
+  active: boolean;
   category: Category;
   platforms: Array<Platform>;
   updated_at: string;
-  
+
 
   constructor(fields?: {
     id?: number,
@@ -36,7 +36,7 @@ export class Product {
     is_featured?: boolean,
     is_top?: boolean,
     is_new?: boolean,
-    active?: boolean,   
+    active?: boolean,
     category?: Category,
     platforms?: Array<Platform>,
     updated_at?: string
@@ -47,6 +47,6 @@ export class Product {
       this.uuid = '';
       this.name = '';
       this.category = new Category();
-    }     
+    }
   }
 }

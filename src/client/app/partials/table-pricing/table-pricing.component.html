@@ -1,0 +1,68 @@
+<div class="table-responsive">
+  <table id="tablePlan" class="table table-bordered table-middle table-plan">
+    <thead>
+    <tr class="table-plan-top">
+      <th class="table-plan-width-{{percentage+1}}">&nbsp;</th>
+      <th *ngFor="let pp of plans" class="table-plan-width-{{percentage+1}}">
+        <div class="table-plan-title">
+          <h3>{{pp.name}}</h3>
+        </div>
+        <div class="table-plan-title-content">
+          <p>{{pp.description}}</p>
+          <template [ngIf]="pp.is_trial">
+            <small>&nbsp;</small>
+          </template>
+          <template [ngIf]="!pp.is_trial">
+            <small>per month*</small>
+          </template>
+
+          <template [ngIf]="userService.profile">
+
+            <template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></template>
+            <template [ngIf]="userService.profile.plan_id!=pp.id">
+              <button (click)="getStarted(pp)" class="btn btn-primary btn-min">Get Started</button>
+            </template>
+
+          </template>
+
+          <template [ngIf]="!userService.profile">
+            <button (click)="getStarted(pp)" class="btn btn-default btn-min">Sign up</button>
+          </template>
+
+
+        </div>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let pro of products" [ngClass]="{'table-plan-sub': (pro.name)}">
+      <td class="text-left">{{pro.name}}</td>
+      <td *ngFor="let pp of plans">
+        <span *ngIf="!plan_has_product(pp.apps, pro.name)">&nbsp;</span>
+        <span *ngIf="plan_has_product(pp.apps, pro.name)"><i class="fa fa-check-circle"></i></span>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-left">More Coming Soon</td>
+      <td *ngFor="let pp of plans">
+        <template [ngIf]="userService.profile">
+
+          <template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></template>
+          <template [ngIf]="userService.profile.plan_id!=pp.id">
+            <button (click)="getStarted(pp)" class="btn btn-primary btn-min">Get Started</button>
+          </template>
+
+        </template>
+
+        <template [ngIf]="!userService.profile">
+          <button (click)="getStarted(pp)" class="btn btn-default btn-min">Sign up</button>
+        </template>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<p>*Monthly fee will be charged automatically <br>
+  **After one month trial, without any upgrade, your account will be set as basic account.</p>
+<p>If you have any questions that come in mind, please check our <a [routerLink]="['/policies/terms']">Term of
+  Service</a> or <a [routerLink]="['/contact']">drop us a message</a></p>

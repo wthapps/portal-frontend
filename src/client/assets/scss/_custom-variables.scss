@@ -16,8 +16,8 @@ $gray-light:             lighten($gray-base, 46.7%) !default; // #777
 $gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
 
 $brand-primary:         #6EC8F5; //darken(#428bca, 6.5%) !default; // #337ab7
-$brand-success:         #A2D96D !default;
-$brand-info:            #5bc0de !default;
+$brand-success:         #6DD9AC !default;
+$brand-info:            #6EC8F5; //#5bc0de !default;
 $brand-warning:         #f0ad4e !default;
 $brand-danger:          #ED1C24; //#d9534f !default;
 
@@ -67,7 +67,7 @@ $line-height-computed:    floor(($font-size-base * $line-height-base)) !default;
 
 //** By default, this inherits from the `<body>`.
 $headings-font-family:    inherit !default;
-$headings-font-weight:    500 !default;
+$headings-font-weight:    700; //500 !default;
 $headings-line-height:    1.1 !default;
 $headings-color:          inherit !default;
 
@@ -98,7 +98,7 @@ $padding-base-horizontal:   12px !default;
 $padding-large-vertical:    10px !default;
 $padding-large-horizontal:  16px !default;
 
-$padding-small-vertical:    5px !default;
+$padding-small-vertical:    3px !default;
 $padding-small-horizontal:  10px !default;
 
 $padding-xs-vertical:       1px !default;
@@ -108,7 +108,7 @@ $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Ch
 $line-height-small:         1.5 !default;
 
 $border-radius-base:        4px !default;
-$border-radius-large:       6px !default;
+$border-radius-large:       4px !default;
 $border-radius-small:       3px !default;
 
 //** Global color for active items (e.g., navs or dropdowns).
@@ -127,7 +127,7 @@ $caret-width-large:         5px !default;
 //## Customizes the `.table` component with basic values, each used across all table variations.
 
 //** Padding for `<th>`s and `<td>`s.
-$table-cell-padding:            8px !default;
+$table-cell-padding:            12px; //8px !default;
 //** Padding for cells in `.table-condensed`.
 $table-condensed-cell-padding:  5px !default;
 
@@ -153,7 +153,7 @@ $btn-default-color:              #333 !default;
 $btn-default-bg:                 #fff !default;
 $btn-default-border:             #ccc !default;
 
-$btn-primary-color:              #fff !default;
+$btn-primary-color:              #F54A59; //#fff !default;
 $btn-primary-bg:                 $brand-primary !default;
 $btn-primary-border:             darken($btn-primary-bg, 5%) !default;
 
@@ -218,7 +218,7 @@ $input-height-large:             (ceil($font-size-large * $line-height-large) + 
 $input-height-small:             (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2) !default;
 
 //** `.form-group` margin
-$form-group-margin-bottom:       15px !default;
+$form-group-margin-bottom:       20px; //15px !default;
 
 $legend-color:                   $gray-dark !default;
 $legend-border-color:            #e5e5e5 !default;

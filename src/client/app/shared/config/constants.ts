@@ -33,5 +33,9 @@ export let Constants = {
   patterns: {
     slash: '/',
     space: '%20'
+  },
+  img: {
+    app: '/assets/images/apps/default.png',
+    avatar: '/assets/images/avatar/default.png'
   }
 };

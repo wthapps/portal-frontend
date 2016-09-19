@@ -77,7 +77,7 @@ export class DnsService {
   }
 
   public getProduct(id:number) {
-    let product_url = '/apps/' + id;
+    let product_url = 'apps/' + id;
     return this._service.get(product_url)
       .map(response => {
         if (response['status'] === Constants.HttpStatusCode.OK) {

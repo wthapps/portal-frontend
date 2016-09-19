@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, HostBinding} from '@angular/core';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {
   WthJoinUsComponent,
   GetStartedComponent,
-  LoadingService
+  FooterPromotionComponent,
+  LoadingService,
+  ApiBaseService
 }                               from '../shared/index';
 
-import {PlanService}            from '../+account/plan.service';
 import {Product}                from '../shared/models/product.model';
 import {Plan}                   from '../shared/models/plan.model';
 
@@ -15,35 +17,39 @@ import {Plan}                   from '../shared/models/plan.model';
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-home',
+  selector: 'page-home',
   templateUrl: 'home.component.html',
   directives: [
+    ROUTER_DIRECTIVES,
     WthJoinUsComponent,
-    GetStartedComponent
+    GetStartedComponent,
+    FooterPromotionComponent
   ],
   viewProviders: [
-    PlanService
+    ApiBaseService
   ]
 })
 
 export class HomeComponent implements OnInit {
-  pageTitle:string = 'Home page';
+  @HostBinding('attr.class') class = 'page-default';
+
+  pageTitle: string = 'Home page';
   products: Product[] = [];
   plans: Plan[] = [];
 
 
-  constructor(private planService: PlanService,
+  constructor(private apiService: ApiBaseService,
               private loadingService: LoadingService) {
   }
 
   ngOnInit(): void {
     this.loadingService.start('#tablePlan');
-    this.planService.list('apps/all') // TODO refactor with path /product; also refactor in API
-      .subscribe((response:any) => {
+    this.apiService.get('apps/all') // TODO refactor with path /product; also refactor in API
+      .subscribe((response: any) => {
           if (response.data !== null) {
             this.products = response.data;
-            this.planService.list('plans')
-              .subscribe((response:any) => {
+            this.apiService.get('plans')
+              .subscribe((response: any) => {
                   if (response.data !== null) {
                     this.plans = response.data;
                   }
@@ -62,7 +68,7 @@ export class HomeComponent implements OnInit {
   }
 
   plan_has_product(products: any, product_name: string): boolean {
-    for(let p of products) {
+    for (let p of products) {
       if (p.name === product_name) return true;
     }
     return false;

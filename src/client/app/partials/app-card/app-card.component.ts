@@ -3,7 +3,7 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Product} from '../../shared/models/product.model';
 import {AppCardPlatformComponent} from './platform/app-card-platform.component';
-import {AppCardCategoryComponent} from './category/app-card-category.component';
+import {Constants} from '../../shared/index';
 
 /**
  * This class represents the AppCardSmComponent.
@@ -16,20 +16,19 @@ import {AppCardCategoryComponent} from './category/app-card-category.component';
       <a href="javascript:;" (click)='onClick()'>
         <div class="app-card-cover">
           <figure>
-            <img [src]="card.img_src" [alt]="card.display_name">
+            <img [src]="card.img_src" (error)="checkError($event)" [alt]="card.display_name">
           </figure>
         </div>
         <div class="app-card-content">
           <p class="name">{{card.display_name}}</p>
           <p class="cat">{{card.category.name}}</p>
-          <app-card-platform [data]="card"></app-card-platform>
+          <app-card-platform [data]="card.platforms"></app-card-platform>
         </div>
       </a>
     </div>
   `,
   directives: [
     ROUTER_DIRECTIVES,
-    AppCardCategoryComponent,
     AppCardPlatformComponent
   ]
 })
@@ -54,5 +53,11 @@ export class AppCardComponent implements OnChanges {
 
   onClick(): void {
     this.appCardClicked.emit(this.cardId);
+  }
+
+  checkError(event) {
+    if (event.type == 'error') {
+      event.target.src = Constants.img.app;
+    }
   }
 }

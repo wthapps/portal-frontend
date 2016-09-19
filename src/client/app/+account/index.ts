@@ -19,9 +19,14 @@ export * from './+my-apps/index';
 /**
  *  Setting
  */
-export * from './+setting/dashboard.component';
-export * from './+setting/change-password.component';
+export * from './+setting/profile.component';
 export * from './+setting/my-account.component';
+export * from './+setting/preferences.component';
+
+
+
+
+export * from './+setting/dashboard.component';
 export * from './+setting/installed-apps.component';
 
 /**
@@ -38,9 +43,8 @@ export * from './+payment/payment-edit.component';
 export * from './+payment/payment-confirm.component';
 
 export * from './plans.component';
-export * from './plan-details.component';
-export * from './billing-details.component';
-export * from './billing-history.component';
+export * from './+billing/billing-details.component';
+export * from './+billing/billing-history.component';
 export * from './+billing/receipt.component';
 export * from './+billing/transaction-details.component';
 

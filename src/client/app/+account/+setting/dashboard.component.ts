@@ -38,7 +38,7 @@ export class AccountDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit():void {
     // this.load();
-    this.plan_name = this._userService.profile.plan_id == 'wth_free' ? 'Free' : 'Deluxe';
+    this.plan_name = this._userService.profile.plan_id == 'wth_free' ? 'Free' : 'Pro Plan';
     this.appsService.getUserProducts().subscribe(
       response => {
         this.has_installed_apps = response.length > 0 ? true : false;

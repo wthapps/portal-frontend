@@ -1,0 +1,33 @@
+.payment-method-wrap {
+  margin-bottom: 20px;
+  .payment-method-credit {
+    display: inline-block;
+    background-image: url('../images/card/credit_card.png');
+    background-position: left center;
+    background-repeat: no-repeat;
+    width: 306px;
+    height: 32px;
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-top: -4px;
+    margin-right: 20px;
+  }
+  .payment-method-paypal {
+    @extend .payment-method-credit;
+    background-image: url('../images/card/paypal.png');
+    width: 48px;
+  }
+}
+
+.row-billing {
+  @media (min-width: $screen-sm) {
+    > .col-xs-6:last-child {
+      clear: both;
+    }
+  }
+  @media (max-width: $screen-xs-max) {
+    > .col-xs-6:nth-child(3) {
+      clear: both;
+    }
+  }
+}

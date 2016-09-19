@@ -1,40 +1,56 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-      <h2>
-        Have an account?
-      </h2>
-      <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-        <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
-          <label class="sr-only" for="email">Email address</label>
-          <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
-          <div *ngIf="!email.valid && email.touched">
-            <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
+<section class="page-hero">
+  <div class="page-hero-item" style="background-image: url('assets/images/landing/hero-image.jpg');">
+  </div>
+  <div class="page-hero-content">
+    <div class="page-hero-txt">
+      <div class="page-hero-tt">
+        <h2 class="h1">Log in</h2>
+        <p>Welcome back</p>
+      </div>
+      <div class="page-hero-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+          <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
+            <label for="email">Email</label>
+            <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
+            <div *ngIf="!email.valid && email.touched">
+              <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
             <span *ngIf="!email.errors.required && email.errors.emailFormat"
                   class="help-block">Email is not valid</span>
+            </div>
+
+          </div>
+          <div class="form-group has-password"
+               [ngClass]="{'has-error': (!password.valid && password.touched)}">
+            <label for="password">Password</label>
+            <input [formControl]="password" type="password" class="form-control" id="password" placeholder="Password">
+            <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
+            <div *ngIf="!password.valid && password.touched">
+              <span *ngIf="!password.valid && password.errors.required" class="help-block">A password is required</span>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-primary-bg">Sign in</button>
           </div>
 
-        </div>
-        <div class="form-group" [ngClass]="{'has-error': (!password.valid && password.touched)}">
-          <label class="sr-only" for="password">Password</label>
-          <input [formControl]="password" type="password" class="form-control" id="password" placeholder="Password">
-          <div *ngIf="!password.valid && password.touched">
-            <span *ngIf="!password.valid && password.errors.required" class="help-block">A password is required</span>
+          <div class="checkbox">
+            <a class="forgot pull-right" [routerLink]="['/account/recovery/forgottenpassword']">I forgot my
+              password?</a>
+            <label>
+              <input type="checkbox"> Remember me
+            </label>
           </div>
-
-        </div>
-        <div class="checkbox">
-          <!--<label>-->
-          <!--<input type="checkbox"> Remember me-->
-          <!--</label>
-          <span class="separator">·</span>-->
-          <a class="forgot" [routerLink]="['/account/recovery/forgottenpassword']">Forgot account?</a>
-        </div>
-        <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-danger">Sign in</button>
-      </form>
-      <hr>
-      <h2>New to WTHApps?</h2>
-      <a [routerLink]="['/signup']" class="btn btn-block btn-primary">Sign Up</a>
+        </form>
+      </div>
+      <hr role="separator" class="divider">
+      <div class="page-hero-tt">
+        <p>Don’t have an account?</p>
+      </div>
+      <div class="page-hero-body">
+        <a [routerLink]="['/signup']" class="btn btn-block btn-primary">Sign up now</a>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+

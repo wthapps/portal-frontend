@@ -11,13 +11,6 @@ export class PlanService extends ApiBaseService {
   }
 
   public list(path:string):Observable<Response> {
-    return super.get(path)
-      .map(res => res.json())
-      .map((res) => {
-        if (res) {
-          console.log('PlanService: ', res);
-        }
-        return res;
-      });
+    return super.get(path);
   }
 }

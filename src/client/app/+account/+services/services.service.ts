@@ -61,7 +61,7 @@ export class ServicesService {
   }
 
   public getCategories():Observable<any[]> {
-    return this._service.get('/apps/categories')
+    return this._service.get('apps/categories')
       .map((response: any) => {
         if (response['status'] === Constants.HttpStatusCode.OK ||
           response['status'] === Constants.HttpStatusCode.Created) {

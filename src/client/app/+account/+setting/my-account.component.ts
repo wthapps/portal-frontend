@@ -1,5 +1,8 @@
-import {Component}          from '@angular/core';
+import {Component, OnInit}          from '@angular/core';
+import {Observable}         from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 import {
+  Router,
   ROUTER_DIRECTIVES
 }                           from '@angular/router';
 import {
@@ -15,8 +18,13 @@ import {
   ToastsService,
   LoadingService,
   CustomValidator,
-  Constants
+  Constants,
+  DialogService,
+  ApiBaseService
 }                           from '../../shared/index';
+
+declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -27,94 +35,169 @@ import {
   ]
 })
 
-export class MyAccountComponent {
-  pageTitle:string = 'Account Settings';
-  errorMessage:string = Constants.errorMessage.default;
-  sex:number = 0;
-  birthdayDate:any = {
-    day: 0,
-    month: 0,
-    year: 0
-  };
+export class MyAccountComponent implements OnInit {
+  pageTitle: string = 'Account';
+  errorMessage: string = Constants.errorMessage.default;
 
-  form:FormGroup;
-  first_name:AbstractControl;
-  last_name:AbstractControl;
-  email:AbstractControl;
-  birthday_day:AbstractControl;
-  birthday_month:AbstractControl;
-  birthday_year:AbstractControl;
+  formValue: any;
 
-  submitted:boolean = false;
+  form: FormGroup;
+  oldPassword: AbstractControl;
+  password: AbstractControl;
 
-  constructor(private fb:FormBuilder,
-              private _userService:UserService,
-              private _toastsService:ToastsService,
-              private _loadingService:LoadingService) {
+  submitted: boolean = false;
 
-
-    this.sex = this._userService.profile.sex === null ? 0 : this._userService.profile.sex;
-
-    if (this._userService.profile.birthday !== null) {
-      let birthday = new Date(this._userService.profile.birthday);
-      this.birthdayDate.day = birthday.getDate();
-      this.birthdayDate.month = birthday.getMonth() + 1;
-      this.birthdayDate.year = birthday.getUTCFullYear();
-    }
+  constructor(private fb: FormBuilder,
+              private userService: UserService,
+              private toastsService: ToastsService,
+              private dialogService: DialogService,
+              private loadingService: LoadingService,
+              private apiService: ApiBaseService,
+              private router: Router) {
 
     this.form = fb.group({
-      'first_name': [this._userService.profile.first_name,
-        Validators.compose([Validators.required])
-      ],
-      'last_name': [this._userService.profile.last_name,
-        Validators.compose([Validators.required])
-      ],
-      'email': [this._userService.profile.email,
-        Validators.compose([Validators.required, CustomValidator.emailFormat])
-      ],
-      'birthday_day': [this.birthdayDate.day],
-      'birthday_month': [this.birthdayDate.month],
-      'birthday_year': [this.birthdayDate.year]
+      'oldPassword': ['', Validators.compose([
+        Validators.required
+      ])],
+      'password': ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        CustomValidator.lowercaseUppercase,
+        CustomValidator.specialSymbolOrNumber
+      ])]
     });
 
-    this.first_name = this.form.controls['first_name'];
-    this.last_name = this.form.controls['last_name'];
-    this.email = this.form.controls['email'];
-    this.birthday_day = this.form.controls['birthday_day'];
-    this.birthday_month = this.form.controls['birthday_month'];
-    this.birthday_year = this.form.controls['birthday_year'];
+    this.oldPassword = this.form.controls['oldPassword'];
+    this.password = this.form.controls['password'];
   }
 
-  onSubmit(values:any):void {
+  ngOnInit(): void {
+    // Set value before updating form (checking user leave this page)
+    this.formValue = this.form.value;
+  }
+
+  onSubmit(values: any): void {
+    // Set value after updating form (checking user leave this page)
+    this.formValue = values;
+
     this.submitted = true;
     if (this.form.valid) {
+      let old_password = values.oldPassword;
+      let password = values.password;
       // start loading
-      this._loadingService.start();
-
-      values.sex = this.sex;
+      this.loadingService.start();
 
       let body = JSON.stringify({
-        first_name: values.first_name,
-        last_name: values.last_name,
-        birthday_day: values.birthday_day,
-        birthday_month: values.birthday_month,
-        birthday_year: values.birthday_year,
-        sex: values.sex
+        old_password: old_password,
+        password: password
       });
-
-      this._userService.update(`users/${this._userService.profile.id}`, body)
-        .subscribe((result:any) => {
+      this.userService.changePassword(`users/${this.userService.profile.id}`, body)
+        .subscribe((result: any) => {
             // stop loading
-            this._loadingService.stop();
-            this._toastsService.success(result.message);
+            this.loadingService.stop();
+            if (result.success) {
+              this.toastsService.success(result.message);
+              //console.log('change password:', result.message);
+            } else {
+              this.toastsService.danger(result.message);
+              //console.log('change password error:', result.message);
+            }
           },
           error => {
             // stop loading
-            this._loadingService.stop();
-            this._toastsService.danger(this.errorMessage);
-            console.log(error);
+            this.loadingService.stop();
+            this.toastsService.danger(error.message);
+            console.log('login error:', error.message);
           }
         );
     }
+  }
+
+  hideShowPassword(event): void {
+    var target = event.target || event.srcElement || event.currentTarget;
+    let inputPass = $(target).prev();
+    if (inputPass.attr('type') == 'password') {
+      inputPass.attr('type', 'text');
+      $(target).addClass('active');
+    } else {
+      inputPass.attr('type', 'password');
+      $(target).removeClass('active');
+    }
+  }
+
+  cancelPlan(): void {
+    let body: string = JSON.stringify({plan_id: 1});
+    let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
+      We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
+      We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
+    this.dialogService.activate(bodyText, 'Cancel Membership', 'Finish Cancellation', 'Cancel')
+      .then((responseOK) => {
+        if (responseOK) {
+          this.loadingService.start();
+          this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
+            .subscribe((response: any) => {
+                this.toastsService.success(response.message);
+                this.loadingService.stop();
+              },
+              error => {
+                this.toastsService.danger(error);
+                this.loadingService.stop();
+              });
+        }
+      });
+  }
+
+  delete(): void {
+
+    let bodyText = `If you don't think you will not use WTHapps again and would like to delete you account,<br>
+      we will take care of that for you.<br>
+      Your account adn all details will be deleted after 14 days. If you change your mind <br>
+      within 14 days - log back in to restore your account
+      If you still want to delete your account, click "Delete My Account". <br>`;
+    let body = JSON.stringify({permanent_deleted: true});
+    this.dialogService.activate(bodyText, 'Delete Account', 'Delete My Account', 'Cancel')
+      .then((responseOK) => {
+        if (responseOK) {
+          this.loadingService.start();
+          this.userService.update(`users/${this.userService.profile.id}`, body)
+            .subscribe((response: any) => {
+                this.toastsService.success(response.message);
+                this.loadingService.stop();
+                this.userService.logout('users/sign_out')
+                  .subscribe(
+                    response => {
+                      this.userService.deleteUserInfo();
+                      this.router.navigate(['/login']);
+                    },
+                    error => {
+                      this.userService.deleteUserInfo();
+                      this.router.navigate(['/login']);
+                      console.log('logout error', error);
+                    }
+                  );
+              },
+              error => {
+                this.toastsService.danger(error);
+                this.loadingService.stop();
+              });
+        }
+      });
+  }
+
+
+  /**
+   *
+   * @returns {any}
+   */
+  canDeactivate(): Observable<boolean> | boolean {
+    // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
+      return true;
+    }
+    // Otherwise ask the user with the dialog service and return its
+    // promise which resolves to true or false when the user decides
+    let p = this.dialogService.confirm();
+    let o = Observable.fromPromise(p);
+    return o;
   }
 }

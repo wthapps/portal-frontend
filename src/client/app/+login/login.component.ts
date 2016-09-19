@@ -21,9 +21,11 @@ import {
   Validators
 }                           from '@angular/forms';
 
+declare var $:any;
 
 @Component({
   moduleId: module.id,
+  selector: 'page-login',
   templateUrl: 'login.component.html',
   directives: [
     ROUTER_DIRECTIVES,
@@ -38,23 +40,23 @@ export class LoginComponent {
   submitted:boolean = false;
 
   constructor(private fb:FormBuilder,
-              private _router:Router,
-              private _userService:UserService,
-              private _params:ActivatedRoute,
-              private _toastsService:ToastsService,
-              private _loadingService:LoadingService,
-              private _redirectService:RedirectService) {
+              private router:Router,
+              private userService:UserService,
+              private params:ActivatedRoute,
+              private toastsService:ToastsService,
+              private loadingService:LoadingService,
+              private redirectService:RedirectService) {
 
-    if (this._userService.loggedIn) {
-      this._router.navigateByUrl('/account/setting/dashboard');
-    }
+    // if (this.userService.loggedIn) {
+    //   this.router.navigate(['/account/setting/profile']);
+    // }
 
     this.form = fb.group({
       'email': ['',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
       'password': ['',
-        Validators.compose([Validators.required, Validators.minLength(4)])
+        Validators.compose([Validators.required])
       ]
     });
 
@@ -66,28 +68,40 @@ export class LoginComponent {
     this.submitted = true;
     if (this.form.valid) {
       // start loading
-      this._loadingService.start();
+      this.loadingService.start();
 
       let email = values.email;
       let password = values.password;
 
       let body = JSON.stringify({user: {email, password}});
-      this._userService.login('users/sign_in', body)
+      this.userService.login('users/sign_in', body)
         .subscribe((result) => {
             if (result) {
-              let prev = this._redirectService.prev(this._params);
-              this._loadingService.stop();
-              this._router.navigateByUrl(prev);
+              let prev = this.redirectService.prev(this.params);
+              this.loadingService.stop();
+              this.router.navigate([prev], {queryParams: {}});
             }
           },
           error => {
             // stop loading
-            this._loadingService.stop();
+            this.loadingService.stop();
 
-            this._toastsService.danger('Invalid email or password');
+            this.toastsService.danger('Invalid email or password');
             //console.log('login error:', error);
           }
         );
+    }
+  }
+
+  hideShowPassword(event): void {
+    var target = event.target || event.srcElement || event.currentTarget;
+    let inputPass = $(target).prev();
+    if (inputPass.attr('type') == 'password') {
+      inputPass.attr('type', 'text');
+      $(target).addClass('active');
+    } else {
+      inputPass.attr('type', 'password');
+      $(target).removeClass('active');
     }
   }
 }

@@ -18,8 +18,11 @@ import {
   CustomValidator
 }                           from '../shared/index';
 
+declare var $: any;
+
 @Component({
   moduleId: module.id,
+  selector: 'page-register',
   templateUrl: 'register.component.html',
   directives: [
     ROUTER_DIRECTIVES,
@@ -28,27 +31,27 @@ import {
 })
 
 export class RegisterComponent {
-  errorMessage:string = '';
-  sex:number = 0;
+  errorMessage: string = '';
+  sex: number = 0;
 
-  form:FormGroup;
-  first_name:AbstractControl;
-  last_name:AbstractControl;
-  email:AbstractControl;
-  password:AbstractControl;
-  birthday_day:AbstractControl;
-  birthday_month:AbstractControl;
-  birthday_year:AbstractControl;
+  form: FormGroup;
+  first_name: AbstractControl;
+  last_name: AbstractControl;
+  email: AbstractControl;
+  password: AbstractControl;
+  birthday_day: AbstractControl;
+  birthday_month: AbstractControl;
+  birthday_year: AbstractControl;
   //sexInput:AbstractControl;
-  accepted:AbstractControl;
+  accepted: AbstractControl;
 
-  submitted:boolean = false;
+  submitted: boolean = false;
 
-  constructor(private fb:FormBuilder,
-              private _router:Router,
-              private _userService:UserService,
-              private _toastsService:ToastsService,
-              private _loadingService:LoadingService) {
+  constructor(private fb: FormBuilder,
+              private _router: Router,
+              private _userService: UserService,
+              private _toastsService: ToastsService,
+              private _loadingService: LoadingService) {
 
     /*if (this._userService.loggedIn) {
      this._router.navigateByUrl('/account/setting/dashboard');
@@ -64,9 +67,12 @@ export class RegisterComponent {
       'email': ['',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'password': ['',
-        Validators.compose([Validators.required, Validators.minLength(6)])
-      ],
+      'password': ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        CustomValidator.lowercaseUppercase,
+        CustomValidator.specialSymbolOrNumber
+      ])],
       'birthday_day': ['0'],
       'birthday_month': ['0'],
       'birthday_year': ['0'],
@@ -85,7 +91,7 @@ export class RegisterComponent {
     this.accepted = this.form.controls['accepted'];
   }
 
-  onSubmit(values:any):void {
+  onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
       // start loading
@@ -125,6 +131,18 @@ export class RegisterComponent {
             this._toastsService.danger(this.errorMessage);
 
           });
+    }
+  }
+
+  hideShowPassword(event): void {
+    var target = event.target || event.srcElement || event.currentTarget;
+    let inputPass = $(target).prev();
+    if (inputPass.attr('type') == 'password') {
+      inputPass.attr('type', 'text');
+      $(target).addClass('active');
+    } else {
+      inputPass.attr('type', 'password');
+      $(target).removeClass('active');
     }
   }
 }

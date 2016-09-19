@@ -26,8 +26,8 @@ export abstract class ApiBaseService {
       .map((res) => {
         if (res) {
           return res;
-        }        
-      });;
+        }
+      });
   }
 
   /**

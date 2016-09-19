@@ -9,7 +9,7 @@ import {
 
 export class RedirectService {
 
-  private linkDefault:string = '/';
+  private linkDefault:string = '/account/my-apps';
   private linkLogin:string = '/login';
 
   prev(link:ActivatedRoute):string {
@@ -26,7 +26,7 @@ export class RedirectService {
     if (link) {
       // get current query string
       // convert '/account/setting/dashboard' to '%20account%20setting%20dashboard'
-      this.linkLogin = this.linkLogin + ';' +Constants.params.next + '=' + link.url.replace(/\//g, '\%20');
+      this.linkLogin = this.linkLogin + '?' +Constants.params.next + '=' + link.url.replace(/\//g, '\%20');
     }
     return this.linkLogin;
   }

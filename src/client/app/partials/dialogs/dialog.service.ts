@@ -13,5 +13,10 @@ export class DialogService {
    * - `longModal` is a type of dialog, if message is too many line.
    *
    */
-  activate:(message?:string, title?:string, okText?:string, cancelText?:string, longModal?:boolean) => Promise<boolean>;
+  activate: (message?: string, title?: string, okText?: string, cancelText?: string, longModal?: boolean) => Promise<boolean>;
+
+  confirm() {
+    return this.activate('<p>Leaving this page will lose your changes. Are you sure?</p>', 'Confirm',
+      'Leave this Page', 'Stay on this Page');
+  }
 }

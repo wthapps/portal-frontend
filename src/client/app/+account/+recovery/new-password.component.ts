@@ -11,7 +11,8 @@ import {
 import {
   ApiBaseService,
   ToastsService,
-  LoadingService
+  LoadingService,
+  CustomValidator
 }                           from '../../shared/index';
 
 import {
@@ -48,9 +49,12 @@ export class NewPasswordComponent implements OnInit, OnDestroy {
               private _loadingService:LoadingService) {
 
     this.form = fb.group({
-      'password': ['',
-        Validators.compose([Validators.required, Validators.minLength(6)])
-      ]
+      'password': ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        CustomValidator.lowercaseUppercase,
+        CustomValidator.specialSymbolOrNumber
+      ])],
     });
 
     this.password = this.form.controls['password'];

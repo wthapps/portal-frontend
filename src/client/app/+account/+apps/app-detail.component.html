@@ -7,30 +7,25 @@
           <figure class="page-app-icon"><img class="img-full" [src]="item.img_src" [alt]="item.name"></figure>
           <div class="page-app-action">
             <p>
-              <a target="_blank" href="{{item.download_link}}" class="btn btn-primary btn-block">
+              <a target="_blank" href="{{item.download_link}}" class="btn btn-info btn-block">
                 <i class="fa fa-download"></i> Download</a>
             </p>
             <p *ngIf="!added">
-              <button class="btn btn-default btn-block" (click)="add(1)"><i class="fa fa-plus"></i> Add To My Apps</button>
+              <button class="btn btn-default btn-block" (click)="add($event)"><i class="fa fa-plus"></i> Add To My Apps
+              </button>
             </p>
             <p *ngIf="added">
-              <button class="btn btn-success btn-block" (click)="manage(item)"><i class="fa fa-cogs"></i> Manage This App</button>
+              <button class="btn btn-success btn-block" (click)="manage()"><i class="fa fa-cogs"></i> Manage This
+                App
+              </button>
             </p>
           </div>
         </div>
         <div class="col-sm-9 col-md-10">
           <div class="page-app-info">
             <h2 class="page-app-info-tt">{{item.name}}</h2>
-            <p class="cat">{{item.category.name}}</p>  
-            <ul class="platform">
-            <li *ngFor="let p of item.platforms">
-              <i class="fa fa-windows" [ngClass]="{
-              'fa-windows': (p.name == 'windows' || p.name == 'windowsphone'), 
-              'fa-apple': (p.name == 'macos' || p.name == 'ios'), 
-              'fa-android': (p.name == 'android'), 
-              'fa-desktop': (p.name == 'browser')}"></i>
-            </li>
-          </ul>  
+            <p class="cat">{{item.category.name}}</p>
+            <app-card-platform [data]="item.platforms"></app-card-platform>
           </div>
           <div class="row page-app-content">
             <div class="col-sm-8">
@@ -39,34 +34,14 @@
                   <h3>Overview</h3>
                 </div>
                 <div class="box-panel-body">
-                  <div class="article-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus deleniti explicabo incidunt
-                      provident quae ratione tenetur veniam. A, aliquam atque consequuntur, cumque delectus ea est ex
-                      illum
-                      labore nisi porro?</p>
+                  <div class="article-content mb20">
+                    <div [innerHTML]="descriptionContent"></div>
                   </div>
-                  <div class="article-slide-wrap">
-                    <div class="article-slide-in">
-                      <div class="article-slide gallery-top">
-                        <div class="swiper-wrapper">
-                          <div class="swiper-slide" *ngFor="let s of item.screenshots">
-                            <img class="img-bg img-full" src="{{s}}" style="background-image: url('{{s}}');" alt="">
-                          </div>                          
-                        </div>
-
-                        <div class="swiper-button-next swiper-button-white"></div>
-                        <div class="swiper-button-prev swiper-button-white"></div>
-                      </div>
-                      <div class="article-slide gallery-thumbs">
-                        <div class="swiper-thumbnails" *ngFor="let s of item.screenshots">
-                          <span><img src="{{s}}" style="background-image: url('{{s}}');" alt=""></span>                          
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <wth-slider [data]="item.screenshots"></wth-slider>
                 </div>
               </div>
             </div>
+
             <div class="col-sm-4">
               <div class="box-panel">
                 <div class="box-panel-top">

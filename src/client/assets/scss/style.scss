@@ -31,8 +31,13 @@
 @import "partials/typography";
 @import "partials/forms";
 @import "partials/buttons";
+@import "partials/dl-horizontal";
+@import "partials/table";
 @import "partials/modals";
+@import "partials/panel";
 @import "partials/toast";
+@import "partials/lines";
+@import "partials/list-group";
 //
 // =Third party
 // --------------------------------------------------
@@ -55,6 +60,12 @@
 @import "modules/IconHoverEffects";
 @import "modules/app-card";
 //@import "modules/pre-loaders";
+@import "modules/dropzone/basic";
+@import "modules/dropzone/dropzone";
+@import "modules/dropzone/custom";
+@import "modules/cropper/cropper";
+@import "modules/cropper/custom";
+@import "modules/article-content";
 //
 // =Content
 // --------------------------------------------------
@@ -62,5 +73,10 @@
 //
 // =Pages
 // --------------------------------------------------
+@import "pages/landing";
 @import "pages/welcome";
+@import "pages/about";
 @import "pages/app-detail";
+@import "pages/payment";
+@import "pages/products";
+@import "pages/pricing";

@@ -8,12 +8,12 @@ import {
   Validators }                        from '@angular/forms';
 import {Cookie}                       from 'ng2-cookies/ng2-cookies';
 import {PaymentService}               from './payment.service';
-import {CountryListComponent}         from '../../shared/services/country.component';
 import {
   UserService,
   Constants,
   LoadingService,
-  ToastsService
+  ToastsService,
+  CountryService
 }                                     from '../../shared/index';
 
 import {CreditCard}                   from '../../shared/models/credit-card.model';
@@ -31,21 +31,23 @@ declare var $:any;
   ],
   providers: [
     PaymentService,
-    UserService,
-    CountryListComponent,
-    LoadingService
+    CountryService
   ]
 })
 
 export class PaymentComponent implements AfterViewInit, OnInit {
   PanelTitle:string = 'Find Services and add-ons';
-  button_text:string = 'Continue';
+  button_text:string = 'Add Payment Method';
   edit_mode:boolean = false;
-  countries:any;
+  errorMessage:string = '';
+  countriesCode: any;
   credit_card: CreditCard = null;
   submitted: boolean = false;
 
+  methodPaypal: boolean = false;
+
   paymentForm: FormGroup;
+  payment_method: AbstractControl = null;
   cardholder_name: AbstractControl = null;
   address_line_1: AbstractControl = null;
   address_line_2: AbstractControl = null;
@@ -54,18 +56,20 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   region: AbstractControl = null;
   postcode: AbstractControl = null;
 
+  selected_plan: any = null;
+
   private next: string = '';
   private operation: string = '';
 
 
   constructor(
-    private router:Router,
+    private router: Router,
     private route: ActivatedRoute,
-    private userService:UserService,
-    private paymentService:PaymentService,
-    private countryService: CountryListComponent,
+    private userService: UserService,
+    private paymentService: PaymentService,
+    private countryService: CountryService,
     private loaddingService:LoadingService,
-    private toastsService:ToastsService,
+    private toastsService: ToastsService,
     private builder: FormBuilder,
     private zone: NgZone
   ) {
@@ -77,6 +81,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
 
+    this.selected_plan = JSON.parse(Cookie.get('selected_plan'));
+
     this.route.params.subscribe((params) => {
        this.next = params['next'];
        this.operation = params['operation'];
@@ -87,13 +93,16 @@ export class PaymentComponent implements AfterViewInit, OnInit {
       case undefined:
         break;
       case Constants.operations.edit:
-        this.button_text = 'Update';
+        this.button_text = 'Update Payment Method';
         this.edit_mode = true;
         break;
     }
 
     // get data
-    this.countries = this.countryService.countries;
+    this.countryService.getCountries().subscribe(
+      data => this.countriesCode = data,
+      error => this.errorMessage = <any>error);
+
     if ((this.userService.profile.credit_cards != null) && (this.userService.profile.credit_cards.length > 0)) {
       this.credit_card = this.userService.profile.credit_cards[0];
     } else {
@@ -113,6 +122,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
     // Validation
     this.paymentForm = this.builder.group({
+      payment_method: 'credit',
       cardholder_name: [this.credit_card.cardholder_name, Validators.compose([Validators.required])],
       address_line_1: [this.credit_card.billing_address.street_address, Validators.compose([Validators.required])],
       address_line_2: [this.credit_card.billing_address.extended_address, null],
@@ -122,6 +132,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
       country: [this.credit_card.billing_address.country_code_alpha2, Validators.compose([Validators.required])]
     });
 
+    this.payment_method = this.paymentForm.controls['payment_method'];
     this.cardholder_name = this.paymentForm.controls['cardholder_name'];
     this.address_line_1 = this.paymentForm.controls['address_line_1'];
     this.address_line_2 = this.paymentForm.controls['address_line_2'];
@@ -225,7 +236,6 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             return event.fields[key].isValid;
           });
 
-          console.log('this', _this.paymentForm.valid);
 
           if (formValid && _this.paymentForm.valid) {
             //$('#button-pay').addClass('show-button');
@@ -293,10 +303,10 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     });
   }
 
-  onCancel() {
+  /*onCancel() {
     var next = this.next === undefined ? '/account' : this.next.replace(/\%20/g, '\/');
     this.router.navigateByUrl(next);
-  }
+  }*/
 
   onSubmit() {
     this.submitted = true;
@@ -305,6 +315,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
    *  Add card information and billing address
    */
   private create(_this:any, body:string) {
+    _this.loaddingService.start();
+
     _this.paymentService.create(`users/${_this.userService.profile.id}/payments`, body)
     // _this._userService.signup(`users/${_this._userService.profile.id,}/payments`, body)
       .subscribe((response:any) => {
@@ -313,11 +325,12 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
 
-            Cookie.set('profile', JSON.stringify(_this.userService.profile));
+            // Cookie.delete('profile');
+            Cookie.set('profile', JSON.stringify(_this.userService.profile), 365, '/');
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
             // make sure onInit method on PlansComponent will work
             _this.zone.run(() => {
-              _this.router.navigate(['/account/plans']);
+              _this.router.navigate(['/account/payment/confirm']);
             });
 
             return;
@@ -329,7 +342,6 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });
-    _this.loaddingService.start();
   }
 
 
@@ -340,8 +352,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           if (response.success) {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
-
-            Cookie.set('profile', JSON.stringify(_this.userService.profile));
+            // Cookie.delete('profile');
+            Cookie.set('profile', JSON.stringify(_this.userService.profile), 365, '/');
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
             _this.toastsService.success(response.message);
             return;
@@ -356,3 +368,6 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     _this.loaddingService.start();
   }
 }
+
+
+

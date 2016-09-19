@@ -112,18 +112,18 @@ export class UserService extends ApiBaseService {
   }
 
   deleteUserInfo() {
-    Cookie.delete('jwt');
-    Cookie.delete('logged_in');
-    Cookie.delete('profile');
+    Cookie.delete('jwt','/');
+    Cookie.delete('logged_in','/');
+    Cookie.delete('profile','/');
     this.loggedIn = false;
     this.profile = null;
   }
 
   private storeUserInfo(response: any) {
     // TODO move string constants to config file
-    Cookie.set('jwt', response.token);
-    Cookie.set('profile', JSON.stringify(response.data));
-    Cookie.set('logged_in', 'true');
+    Cookie.set('jwt', response.token, 365, '/');
+    Cookie.set('profile', JSON.stringify(response.data), 365, '/');
+    Cookie.set('logged_in', 'true', 365, '/');
     this.loggedIn = true;
     this.profile = response.data;
   }
@@ -134,7 +134,7 @@ export class UserService extends ApiBaseService {
   }
 
   private updateProfile(profile: Object) {
-    Cookie.set('profile', JSON.stringify(profile));
+    Cookie.set('profile', JSON.stringify(profile), 365, '/');
   }
 
 }

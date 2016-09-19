@@ -8,19 +8,23 @@ import {
 }                           from './index';
 
 import {
-  AccountDashboardComponent,
+  //AccountDashboardComponent,
+
+  // Settings
+  ProfileComponent,
   MyAccountComponent,
-  ChangePasswordComponent,
+  PreferencesComponent,
 
   // Apps
   AccountAppsComponent,
   AccountAppsListComponent,
   AccountAppsDetailComponent,
   MyAppsListComponent,
+  MyAppsDetailComponent,
+  MyAppsDetailAddComponent,
 
   // payment
   PlansComponent,
-  PlanDetailsComponent,
   BillingDetailsComponent,
   BillingHistoryComponent,
   PaymentComponent,
@@ -46,43 +50,41 @@ import {
 
 
 import {
-  //CanDeactivateGuard,
+  CanDeactivateGuard,
   AuthGuard
 }                           from '../shared/index';
 
-export const AccountRoutes:RouterConfig = [
+export const AccountRoutes: RouterConfig = [
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard],
     children: [
-      {
-        path: 'dns/add', component: DNSAddComponent
-        //, canActivate: [AuthGuard]
-      },
-      { path: 'dns/:id', component: DNSUpdateComponent},
-      {
-        path: 'dns', component: DNSComponent //, canActivate: [AuthGuard]
-      },
+      {path: 'dns/add', component: DNSAddComponent},
+      {path: 'dns/:id', component: DNSUpdateComponent},
+      {path: 'dns', component: DNSComponent},
 
       {path: 'vpn', component: AccountServicesVPNComponent},
       {path: 'efax', component: AccountServicesEFaxComponent},
 
-      {path: 'plans', component: PlansComponent},
-      {path: 'plan-details', component: PlanDetailsComponent},
       {path: 'billing-details', component: BillingDetailsComponent},
       {path: 'billing-history', component: BillingHistoryComponent},
       {path: 'transactions/:id/receipt', component: ReceiptComponent},
       {path: 'transactions/:id', component: TransactionDetailsComponent},
-      {path: 'payment/confirm', component: PaymentConfirmComponent},
-      {path: 'payment/edit', component: PaymentEditComponent},
-      {path: 'payment', component: PaymentComponent},
 
       {path: 'services', component: AccountServicesListComponent},
-      {path: 'setting/changepassword', component: ChangePasswordComponent},
-      {path: 'setting/profile', component: MyAccountComponent},
-      {path: 'setting/dashboard', component: AccountDashboardComponent},
-      {path: '', component: AccountDashboardComponent}
+
+      // Setting
+      {path: 'setting/profile', component: ProfileComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
+      {path: 'setting/account', component: MyAccountComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
+      {path: 'setting/preferences', component: PreferencesComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
+      {path: '', component: ProfileComponent}
     ]
   },
   {
@@ -100,12 +102,18 @@ export const AccountRoutes:RouterConfig = [
     component: AccountAppsComponent,
     canActivate: [AuthGuard],
     children: [
-      // {path: ':id/manage', component: Component},
+      {path: ':id/add', component: MyAppsDetailAddComponent},
+      {path: ':id/edit/:id_dns', component: MyAppsDetailAddComponent},
+      {path: ':id', component: MyAppsDetailComponent},
       {path: '', component: MyAppsListComponent},
       {path: '**', component: MyAppsListComponent}
     ]
   },
+  {path: 'account/payment/confirm', component: PaymentConfirmComponent},
+  {path: 'account/payment/edit', component: PaymentEditComponent},
+  {path: 'account/payment', component: PaymentComponent},
+  {path: 'account/plans', component: PlansComponent},
   {path: 'account/recovery/forgottenpassword', component: ForgottenPasswordComponent},
-  {path: 'account/recovery/newpassword',       component: NewPasswordComponent},
-  {path: 'account/recovery/reset_email_sent',  component: ResetEmailSentComponent}
+  {path: 'account/recovery/newpassword', component: NewPasswordComponent},
+  {path: 'account/recovery/reset_email_sent', component: ResetEmailSentComponent}
 ];

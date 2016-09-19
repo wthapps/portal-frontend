@@ -24,6 +24,11 @@ export * from '../partials/dialogs/index';
 export * from '../partials/toast/index';
 export * from '../partials/loading/index';
 export * from '../partials/captcha/index';
+export * from '../partials/countries/index';
+export * from '../partials/breadcrumb/index';
+export * from '../partials/slider/index';
+export * from '../partials/upload-crop-image/index';
+export * from '../partials/table-pricing/index';
 
 export * from './wth.join.us.component';
 

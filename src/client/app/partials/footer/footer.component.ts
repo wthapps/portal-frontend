@@ -23,3 +23,16 @@ export class FooterComponent {
     return this._userService.loggedIn;
   }
 }
+
+/**
+ * This class represents the footer promotion.
+ */
+@Component({
+  moduleId: module.id,
+  selector: 'wth-footer-promotion',
+  templateUrl: 'footer-promotion.component.html',
+  directives: [ROUTER_DIRECTIVES]
+})
+export class FooterPromotionComponent {
+}
+

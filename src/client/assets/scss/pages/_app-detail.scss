@@ -64,6 +64,9 @@
   margin-right: auto;
   position: relative;
   .swiper-slide {
+    img {
+      width: 100%;
+    }
   }
 
   &.gallery-top {
