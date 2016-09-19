@@ -9,42 +9,5 @@
       <wth-table-pricing></wth-table-pricing>
     </div>
 
-    <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
-        <table id="tablePlan" class="table table-bordered table-striped table-middle table-plan">
-          <thead>
-          <tr>
-            <th>&nbsp;</th>
-            <th *ngFor="let pp of plans">
-              <h3 [ngClass]="{'bold':!pp.is_trial}">{{pp.name}}</h3>
-              <p>{{pp.description}}</p>
-              <template [ngIf]="userService.profile.plan_id==pp.id"><span>Current Plan</span></template>
-              <template [ngIf]="userService.profile.plan_id!=pp.id">
-                <button (click)="getStarted(pp)" class="btn btn-primary">Get Started</button>
-              </template>
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let pro of products">
-            <td class="text-left">{{pro.name}}</td>
-            <td *ngFor="let pp of plans">
-              <span *ngIf="!plan_has_product(pp.apps, pro.name)">&nbsp;</span>
-              <span *ngIf="plan_has_product(pp.apps, pro.name)"><i class="fa fa-check-circle"></i></span>
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td *ngFor="let pp of plans">
-              <template [ngIf]="userService.profile.plan_id!=pp.id">
-                <button (click)="getStarted(pp)" class="btn btn-primary">Get Started</button>
-              </template>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <p>*Monthly fee will be charged automatically</p>
-      </div>
-    </div>
   </div>
 </div>
