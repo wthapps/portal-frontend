@@ -2,6 +2,12 @@ html {
   position: relative;
 }
 
+body {
+  &.fixed-hidden {
+    overflow: hidden;
+  }
+}
+
 .gray-light {
   background-color: #f6f6f6;
 }
@@ -387,5 +393,14 @@ $footer-height: 222px;
   }
   .page-body-in {
     padding: 30px;
+  }
+}
+
+.img-center-dv {
+  position: relative;
+  overflow: hidden;
+  .img-center {
+    @include center();
+    max-width: 100%;
   }
 }

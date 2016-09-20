@@ -18,4 +18,10 @@ export class ZPictureComponent {
   toggleShowSearch(event): void {
     this.advSearch = (this.advSearch == true ? false : true);
   }
+
+  agreed = 0;
+  disagreed = 0;
+  onVoted(agreed: boolean) {
+    agreed ? this.agreed++ : this.disagreed++;
+  }
 }
