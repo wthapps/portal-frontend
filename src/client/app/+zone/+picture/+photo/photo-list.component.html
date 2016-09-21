@@ -1,0 +1,23 @@
+<div class="row-img list">
+  <div class="photo-box-img" *ngFor="let img of dataImages">
+    <figure (click)="onClick(img.img_large)" class="img-center-dv">
+      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+      <img class="img-center" [src]="img.img_thumb" alt="">
+    </figure>
+    <div class="photo-box-img-name">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+    </div>
+    <div class="photo-box-img-owner">
+      me
+    </div>
+    <div class="photo-box-img-date">
+      12/21/1919
+    </div>
+    <div class="photo-box-img-szie">
+      10kb
+    </div>
+  </div>
+</div>
+
+<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgSrc]="imgSrcDetail" [imgAll]="dataImages"
+                   [showImg]="showImg"></zone-photo-detail>
