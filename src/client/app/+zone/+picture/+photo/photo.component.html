@@ -1,0 +1,10 @@
+<div class="row-img">
+  <div class="photo-box-img" *ngFor="let img of dataImages">
+    <figure (click)="onClick(img.img_large)" class="img-center-dv">
+      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+      <img class="img-center" [src]="img.img_thumb" alt="">
+    </figure>
+  </div>
+</div>
+
+<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgSrc]="imgSrcDetail" [imgAll]="dataImages" [showImg]="showImg"></zone-photo-detail>

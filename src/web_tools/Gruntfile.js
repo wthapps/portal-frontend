@@ -13,6 +13,9 @@ var thirdPartyFile = [
     thirdPartyPath + '/swiper.thumbnails.js',
     bowerPath + '/dropzone/dist/min/dropzone.min.js',
     bowerPath + '/cropper/dist/cropper.min.js',
+
+    //zone
+    bowerPath + '/wheelzoom/wheelzoom.js',
     basePath + '/js/common.js'
 ];
 

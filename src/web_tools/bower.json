@@ -25,6 +25,7 @@
     "FortAwesome/Font-Awesome": "*",
     "enyo/dropzone": "*",
     "cropper": "^2.3.3",
-    "hover": "Hover#^2.0.2"
+    "hover": "Hover#^2.0.2",
+    "wheelzoom": "jackmoore/wheelzoom#^3.0.4"
   }
 }

@@ -2,6 +2,12 @@ html {
   position: relative;
 }
 
+body {
+  &.fixed-hidden {
+    overflow: hidden;
+  }
+}
+
 .gray-light {
   background-color: #f6f6f6;
 }
@@ -258,5 +264,143 @@ $footer-height: 222px;
   padding: 30px 0;
   @media (max-width: $screen-xs-max) {
     padding: 15px 0;
+  }
+}
+
+.page-full {
+  display: flex;
+  align-items: flex-start;
+  .page-left {
+    width: 270px;
+    min-height: 100vh;
+    @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
+  }
+  .page-body {
+    flex: 1;
+    min-height: 100vh;
+  }
+  .page-body-control {
+    padding: 15px 30px;
+    @include clearfix;
+    @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.40));
+    > ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+    .control-body-select {
+      float: left;
+      margin-right: 10%;
+      > li {
+        float: left;
+        margin-right: 10px;
+        &.dropdown > .btn {
+          border-color: transparent;
+        }
+        .dropdown-menu > li {
+          &.divider {
+            margin-top: 0;
+            margin-bottom: 0;
+          }
+          > a {
+            padding: 10px 15px;
+            min-width: 240px;
+          }
+        }
+        .dropdown-menu > .active > a,
+        .dropdown-menu > .active > a:hover,
+        .dropdown-menu > .active > a:focus {
+          background-color: $light-grey;
+          color: $text-color;
+        }
+      }
+    }
+    .control-body-search {
+      float: left;
+      max-width: 470px;
+      position: relative;
+      .input-group {
+        .input-group-btn:first-child {
+          .btn {
+            border-right-width: 0;
+          }
+        }
+        .input-group-btn:last-child {
+          .btn {
+            border-left-width: 0;
+          }
+        }
+        .form-control {
+          border-left-width: 0;
+          border-right-width: 0;
+          &:focus {
+            outline: 0 none;
+            @include box-shadow(0 0 0);
+            border-color: $input-border;
+          }
+        }
+        .btn {
+          &:hover, &:focus {
+            background-color: transparent;
+            border-color: $input-border;
+          }
+        }
+      }
+      .advSearch {
+        position: absolute;
+        top: auto;
+        left: 0;
+        right: 0;
+        margin-top: 15px;
+        z-index: 100;
+        padding: 15px 0;
+        background: #FFFFFF;
+        border: 1px solid #D8D8D8;
+        @include box-shadow(0px 2px 4px 0px rgba(163, 163, 163, 0.40));
+        border-radius: 4px;
+        .form-horizontal {
+          .control-label {
+            font-weight: normal;
+            text-align: left;
+          }
+          .form-group {
+            margin-bottom: 15px;
+          }
+        }
+      }
+    }
+    .control-body-btnview {
+      float: right;
+      > li {
+        float: left;
+        margin-left: 15px;
+        a {
+          line-height: 34px;
+          font-size: 20px;
+        }
+        &:last-child {
+          padding-left: 15px;
+          border-left: 1px solid $light-grey;
+          a {
+            color: $text-color;
+            &:hover {
+              color: #000000;
+            }
+          }
+        }
+      }
+    }
+  }
+  .page-body-in {
+    padding: 30px;
+  }
+}
+
+.img-center-dv {
+  position: relative;
+  overflow: hidden;
+  .img-center {
+    @include center();
+    max-width: 100%;
   }
 }

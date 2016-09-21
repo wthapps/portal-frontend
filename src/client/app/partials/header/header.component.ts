@@ -88,6 +88,12 @@ export class HeaderComponent implements AfterViewInit {
       } else {
         this.headerOver = false;
       }
+
+      // zone layout
+    } else if (this.urls[0] == '/zone') {
+      this.headerOver = false;
+      // zone layout
+
     } else {
       this.headerOver = true;
     }
@@ -95,10 +101,13 @@ export class HeaderComponent implements AfterViewInit {
 
 
     // show navTitle
-    let param_url = [''];
+    let param_url = this.urls;
     if (this.urls[1]) {
       param_url = (this.urls[1]).split('?');
     }
+
+    //console.log(param_url);
+
     if (param_url[0] == '/account/setting') {
       this.showSearchBar = false;
       this.navTitle = 'Account Management';
@@ -108,6 +117,13 @@ export class HeaderComponent implements AfterViewInit {
     } else if (param_url[0] == '/account/my-apps') {
       this.showSearchBar = true;
       this.navTitle = 'My Apps';
+
+      // zone layout
+    } else if (param_url[0] == '/zone') {
+      this.showSearchBar = false;
+      this.navTitle = 'Zone';
+      // zone layout
+
     } else {
       this.showSearchBar = false;
       this.navTitle = null;

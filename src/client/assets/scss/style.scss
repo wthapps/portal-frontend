@@ -49,6 +49,7 @@
 @import "layout/footer";
 @import "layout/content";
 @import "layout/aside-left";
+@import "layout/aside-menu";
 //
 // =modules
 // --------------------------------------------------
@@ -66,6 +67,7 @@
 @import "modules/cropper/cropper";
 @import "modules/cropper/custom";
 @import "modules/article-content";
+@import "modules/scrollbar-measure";
 //
 // =Content
 // --------------------------------------------------
@@ -80,3 +82,4 @@
 @import "pages/payment";
 @import "pages/products";
 @import "pages/pricing";
+@import "pages/zone";
