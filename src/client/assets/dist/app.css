@@ -12146,14 +12146,29 @@ wth-app:empty + .dots-loader-wrap {
 .pricing-content #tablePlan {
   margin-top: 90px; }
 
-.row-img > .photo-box-img {
+.row-img:not(.list) > .photo-box-img {
   float: left;
   margin-right: 5px;
   margin-bottom: 5px; }
-  .row-img > .photo-box-img figure {
+  .row-img:not(.list) > .photo-box-img figure {
     cursor: pointer; }
-  .row-img > .photo-box-img .img-center-dv {
+  .row-img:not(.list) > .photo-box-img .img-center-dv {
     border: 1px solid #D8D8D8; }
+
+.row-img.list .photo-box-img {
+  display: table;
+  width: 100%; }
+  .row-img.list .photo-box-img > figure, .row-img.list .photo-box-img > div {
+    display: table-cell;
+    vertical-align: middle; }
+  .row-img.list .photo-box-img .img-center-dv {
+    width: 100px; }
+  .row-img.list .photo-box-img .photo-box-img-owner {
+    width: 200px; }
+  .row-img.list .photo-box-img .photo-box-img-date {
+    width: 200px; }
+  .row-img.list .photo-box-img .photo-box-img-size {
+    width: 200px; }
 
 .photo-box-detail {
   position: fixed;

@@ -7,6 +7,10 @@ import {
   ZVideoComponent,
 }                           from './index';
 
+import {
+  ZPhotoListComponent,
+}                           from './+picture/+photo/photo-list.component';
+
 
 export const ZoneRoutes: RouterConfig = [
   {
@@ -16,7 +20,7 @@ export const ZoneRoutes: RouterConfig = [
       {
         path: 'picture', component: ZPictureComponent,
         children: [
-          {path: 'photo/:id', component: ZPhotoComponent},
+          {path: 'photo/list', component: ZPhotoListComponent},
           {path: 'photo', component: ZPhotoComponent},
           {path: 'video/:id', component: ZVideoComponent},
           {path: 'video', component: ZVideoComponent},

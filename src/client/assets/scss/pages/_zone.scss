@@ -1,4 +1,4 @@
-.row-img {
+.row-img:not(.list) {
   > .photo-box-img {
     float: left;
     margin-right: 5px;
@@ -8,6 +8,34 @@
     }
     .img-center-dv {
       border: 1px solid $light-grey;
+    }
+  }
+}
+
+.row-img {
+  &.list {
+    .photo-box-img {
+      display: table;
+      width: 100%;
+      > figure, > div {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .img-center-dv {
+        width: 100px;
+      }
+      .photo-box-img-name {
+
+      }
+      .photo-box-img-owner {
+        width: 200px;
+      }
+      .photo-box-img-date {
+        width: 200px;
+      }
+      .photo-box-img-size {
+        width: 200px;
+      }
     }
   }
 }
