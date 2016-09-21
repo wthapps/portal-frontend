@@ -47,13 +47,13 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
 
     if (this.showModal) {
       //$('body').addClass('fixed-hidden');
+      $('body').addClass('fixed-hidden').css('padding-right', this.getBarwidth());
       $('#photo-box-detail').addClass('active');
     }
 
   }
 
   ngAfterViewInit() {
-    $('body').addClass('fixed-hidden').css('padding-right', this.getBarwidth());
     wheelzoom(document.querySelectorAll('.photo-detail-img img'));
   }
 

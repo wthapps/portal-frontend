@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, AfterViewInit} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
+
+declare var $: any;
 
 
 @Component({
@@ -11,17 +13,23 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
   ]
 })
 
-export class ZPictureComponent {
+export class ZPictureComponent implements AfterViewInit {
 
   advSearch: boolean = false;
 
-  toggleShowSearch(event): void {
-    this.advSearch = (this.advSearch == true ? false : true);
+  ngAfterViewInit() {
+    let _this = this;
+    $('body').on('click', function () {
+      _this.advSearch = false;
+    });
+
+    $('body').on('click', '.advSearch', function (e) {
+      e.stopPropagation();
+    });
   }
 
-  agreed = 0;
-  disagreed = 0;
-  onVoted(agreed: boolean) {
-    agreed ? this.agreed++ : this.disagreed++;
+  toggleShowSearch(e): void {
+    e.stopPropagation();
+    this.advSearch = (this.advSearch == true ? false : true);
   }
 }
