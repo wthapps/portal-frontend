@@ -3,6 +3,9 @@
     float: left;
     margin-right: 5px;
     margin-bottom: 5px;
+    figure {
+      cursor: pointer;
+    }
     .img-center-dv {
       border: 1px solid $light-grey;
     }
@@ -12,11 +15,16 @@
 .photo-box-detail {
   position: fixed;
   top: 0;
-  right: 0;
   bottom: 0;
+  right: 0;
   left: 0;
   background-color: rgba(#000, 0.85);
-  z-index: 9999;
+  z-index: -1;
+  visibility: hidden;
+  &.active {
+    z-index: 9999;
+    visibility: visible;
+  }
   .photo-detail-top {
     padding: 15px;
     color: #ffffff;
@@ -70,12 +78,17 @@
     align-items: flex-start;
     .photo-detail-img {
       flex: 1;
-      min-height: 100vh;
+      height: calc(100vh - 65px);
       position: relative;
-      img {
+      padding: 10%;
+      figure {
         @include center();
-        width: 80%;
-        margin-top: -5%;
+        max-width: 100%;
+        max-height: 100%;
+      }
+      img {
+        width: 100%;
+        height: auto;
       }
       .photo-detail-img-control {
         @include center(false, true);
@@ -85,7 +98,6 @@
         text-align: center;
         background-color: rgba(#A4A4A4, 0.4);
         cursor: pointer;
-        margin-top: -5%;
         @include transition($transition-base);
         &:hover {
           background-color: rgba(#A4A4A4, 1);
