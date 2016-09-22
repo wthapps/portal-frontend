@@ -297,21 +297,24 @@ $footer-height: 222px;
         &.dropdown > .btn {
           border-color: transparent;
         }
-        .dropdown-menu > li {
-          &.divider {
-            margin-top: 0;
-            margin-bottom: 0;
+        .dropdown-menu {
+          margin-top: 15px;
+          > li {
+            &.divider {
+              margin-top: 0;
+              margin-bottom: 0;
+            }
+            > a {
+              padding: 10px 15px;
+              min-width: 240px;
+            }
           }
-          > a {
-            padding: 10px 15px;
-            min-width: 240px;
+          > .active > a,
+          > .active > a:hover,
+          > .active > a:focus {
+            background-color: $light-grey;
+            color: $text-color;
           }
-        }
-        .dropdown-menu > .active > a,
-        .dropdown-menu > .active > a:hover,
-        .dropdown-menu > .active > a:focus {
-          background-color: $light-grey;
-          color: $text-color;
         }
       }
     }
