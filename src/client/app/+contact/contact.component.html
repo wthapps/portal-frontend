@@ -79,7 +79,7 @@
             <re-captcha [site_key]="siteKey" (captchaResponse)="handleCorrectCaptcha($event)"></re-captcha>
           </div>
 
-          <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-primary btn-min mr20">Send</button>
+          <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-wth-default btn-min mr20">Send</button>
           <a [routerLink]="['/']" class="btn btn-default btn-min">Cancel</a>
         </form>
       </div>

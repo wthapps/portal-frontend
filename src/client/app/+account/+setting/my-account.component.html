@@ -6,14 +6,14 @@
       <!-- - 8 days left-->
     </p>
     <p>
-      <a [routerLink]="['/account/plans']" class="btn btn-primary btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
+      <a [routerLink]="['/account/plans']" class="btn btn-wth-default btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
     </p>
   </div>
   <div *ngIf="!userService.profile.plan.is_trial">
     <p class="p-plan-info"><span>{{userService.profile.plan.name}}</span>
       - Activated on {{userService.profile.plan_registered_at | date:'MMM dd, yyyy' : 'UTC'}}</p>
     <p>
-      <button (click)="cancelPlan()" class="btn btn-default2 btn-min">Cancel Plan</button>
+      <button (click)="cancelPlan()" class="btn btn-default2 btn-min">Downgrade</button>
     </p>
   </div>
   <hr class="line">
@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="form-group">
-      <button [disabled]="!form.valid || form.pristine" type="submit" class="btn btn-primary btn-min mr20">Update</button>
+      <button [disabled]="!form.valid || form.pristine" type="submit" class="btn btn-wth-default btn-min mr20">Update</button>
       <a [routerLink]="['/account/recovery/forgottenpassword']">I forgot my password</a>
     </div>
   </form>
@@ -81,6 +81,6 @@
   <h4 class="box-panel-subtitle text-danger">Delete Account</h4>
   <p>Once you delete your account, all of your data will be gone. Please be certain.</p>
   <div class="form-group">
-    <button type="submit" class=" btn btn-default2" (click)="delete()" >Delete Your Account</button>
+    <button type="submit" class=" btn btn-default2" (click)="delete()" >Delete Account</button>
   </div>
 </div>

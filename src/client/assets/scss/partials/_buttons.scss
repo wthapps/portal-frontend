@@ -18,6 +18,10 @@
   @include button-variant(#FFF, #F54A59, darken(#F54A59, 10%));
 }
 
+.btn-wth-default {
+  @include button-variant(#F54A59, #FFF, $btn-default-border);
+}
+
 .btn-min {
   min-width: 106px;
   text-align: center;
