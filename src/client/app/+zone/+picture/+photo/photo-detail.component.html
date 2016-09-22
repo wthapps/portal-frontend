@@ -1,0 +1,94 @@
+<div id="photo-box-detail" class="photo-box-detail">
+  <div class="photo-detail-top">
+    <div class="name">This is the name of this photo</div>
+    <ul class="action">
+      <li>
+        <a href="#"><i class="fa fa-share-alt"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-star"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-pencil"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-exclamation-circle"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-ellipsis-v"></i></a>
+      </li>
+      <li>
+        <a href="javascript:;" (click)="hideModal()"><i class="fa fa-times"></i></a>
+      </li>
+    </ul>
+  </div>
+  <div class="photo-detail-content">
+    <div class="photo-detail-img">
+      <figure>
+        <img [src]="imgSrcData" alt="">
+      </figure>
+      <span (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
+        <i class="fa fa-angle-left"></i>
+      </span>
+      <span (click)="imgNext()" class="photo-detail-img-control img-control-next">
+        <i class="fa fa-angle-right"></i>
+      </span>
+    </div>
+    <div class="photo-detail-info">
+      <h4><i class="fa fa-info-circle"></i> General Infomation</h4>
+      <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>filename</dd>
+        <dt>Type</dt>
+        <dd>jpg</dd>
+        <dt>Size</dt>
+        <dd>5kb</dd>
+        <dt>Demension</dt>
+        <dd>100 x 100</dd>
+        <dt>Uploaded</dt>
+        <dd>Sep 14 2016</dd>
+      </dl>
+      <hr>
+      <h4><i class="fa fa-tag"></i> Tag <a href="#">Edit</a></h4>
+      <div class="tags-text">
+        <span>Flowers</span>
+        <span>Danger</span>
+        <span>Sunflower</span>
+        <span>Fire</span>
+      </div>
+      <hr>
+      <h4><i class="fa fa-share-alt"></i> Sharing <a href="#">Edit</a></h4>
+      <dl>
+        <dt>Owner</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          </ul>
+        </dd>
+        <dt>Group</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          </ul>
+        </dd>
+        <dt>Contact</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>

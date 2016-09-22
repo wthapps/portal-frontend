@@ -1,4 +1,5 @@
 .form-control {
+  @include box-shadow(0 0 0 transparent);
   &.has-loading {
     background-image: url(../images/icons/loading.gif);
     background-repeat: no-repeat;
