@@ -1,5 +1,6 @@
 import {Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChanges, SimpleChange} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
+import {Photo} from '../../../shared/models/photo.model';
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -15,38 +16,40 @@ declare var _: any;
 })
 
 export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @Input() imgSrc: string;
+  @Input() imgId: number;
   @Input() showImg: boolean;
-  @Input() imgAll: Array<any>;
+  @Input() imgAll: Array<Photo>;
   @Output() hideModalClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   changeLog: string[] = [];
-  imgSrcData: string;
+  imgOne: Photo;
   imgAllData: Array<any>;
 
   imgIndex: number = 0;
 
   showModal: boolean = false;
 
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
-    let log: string[] = [];
-    for (let propName in changes) {
-      let changedProp = changes[propName];
-      let from = JSON.stringify(changedProp.previousValue);
-      let to = JSON.stringify(changedProp.currentValue);
-      log.push(`${propName} changed from ${from} to ${to}`);
-    }
-    this.changeLog.push(log.join(', '));
-    console.log(this.changeLog);
+  errorMessage: string = '';
 
-    this.imgSrcData = this.imgSrc;
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
+    /*let log: string[] = [];
+     for (let propName in changes) {
+     let changedProp = changes[propName];
+     let from = JSON.stringify(changedProp.previousValue);
+     let to = JSON.stringify(changedProp.currentValue);
+     log.push(`${propName} changed from ${from} to ${to}`);
+     }
+     this.changeLog.push(log.join(', '));*/
+    //console.log(this.changeLog);
+
     this.imgAllData = this.imgAll;
     this.showModal = this.showImg;
 
-    this.imgIndex = _.findIndex(this.imgAll, {'img_large': this.imgSrc});
-    console.log(this.imgIndex, this.imgAll.length);
+    if (this.imgId) {
+      this.imgIndex = _.findIndex(this.imgAll, {'id': this.imgId});
+      this.getImage(this.imgIndex);
+    }
 
     if (this.showModal) {
-      //$('body').addClass('fixed-hidden');
       $('body').addClass('fixed-hidden').css('padding-right', this.getBarwidth());
       $('#photo-box-detail').addClass('active');
     }
@@ -73,7 +76,7 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     if (this.imgIndex < 0) {
       this.imgIndex = this.imgAllData.length - 1;
     }
-    this.imgSrcData = this.imgAllData[this.imgIndex].img_large;
+    this.getImage(this.imgIndex);
   }
 
   imgNext(): void {
@@ -81,10 +84,14 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     if (this.imgIndex == this.imgAllData.length) {
       this.imgIndex = 0;
     }
-    this.imgSrcData = this.imgAllData[this.imgIndex].img_large;
+    this.getImage(this.imgIndex);
   }
 
-  getBarwidth(): number {
+  private getImage(id: any): void {
+    this.imgOne = this.imgAll[id];
+  }
+
+  private getBarwidth(): number {
     // Create the measurement node
     let scrollDiv = document.createElement("div");
     scrollDiv.className = "scrollbar-measure";

@@ -1,12 +1,14 @@
-<div class="row-img">
+<div *ngIf="dataImages.length" class="row-img">
   <div class="photo-box-img" *ngFor="let img of dataImages">
-    <figure (click)="onClick(img.img_large)" class="img-center-dv">
+    <figure (click)="onClick(img.id)" class="img-center-dv">
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="img.img_thumb" alt="">
+      <img class="img-center" [src]="img.thumbnail_url" alt="">
     </figure>
   </div>
 </div>
-
+<div *ngIf="!dataImages.length" class="text-center">
+  No data
+</div>
 <zone-photo-detail (hideModalClicked)='onHideModalClicked($event)'
                    [imgSrc]="imgSrcDetail" [imgAll]="dataImages"
                    [showImg]="showImg"></zone-photo-detail>
