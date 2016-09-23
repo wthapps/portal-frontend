@@ -25,7 +25,7 @@
       <span class="input-group-btn">
         <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
       </span>
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" [(ngModel)]='listFilter' placeholder="Search for...">
       <span class="input-group-btn">
         <button (click)="toggleShowSearch($event)" class="btn btn-default" type="button">
           <i *ngIf="!advSearch" class="fa fa-caret-down"></i>

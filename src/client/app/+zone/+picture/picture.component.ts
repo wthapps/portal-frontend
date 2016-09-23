@@ -16,6 +16,7 @@ declare var $: any;
 export class ZPictureComponent implements AfterViewInit {
 
   advSearch: boolean = false;
+  listFilter: string = '';
 
   ngAfterViewInit() {
     let _this = this;
