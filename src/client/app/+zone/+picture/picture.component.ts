@@ -1,7 +1,5 @@
-import {Component, AfterViewInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
-
-declare var $: any;
 
 
 @Component({
@@ -13,24 +11,5 @@ declare var $: any;
   ]
 })
 
-export class ZPictureComponent implements AfterViewInit {
-
-  advSearch: boolean = false;
-  listFilter: string = '';
-
-  ngAfterViewInit() {
-    let _this = this;
-    $('body').on('click', function () {
-      _this.advSearch = false;
-    });
-
-    $('body').on('click', '.advSearch', function (e) {
-      e.stopPropagation();
-    });
-  }
-
-  toggleShowSearch(e): void {
-    e.stopPropagation();
-    this.advSearch = (this.advSearch == true ? false : true);
-  }
+export class ZPictureComponent {
 }
