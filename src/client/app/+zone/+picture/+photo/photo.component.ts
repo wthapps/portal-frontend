@@ -1,7 +1,10 @@
 import {Component, Input, OnInit, OnChanges} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
-import {ZPhotoDetailComponent} from './photo-detail.component'
+import {ZPictureBarComponent} from '../shared/bar-control.component';
+import {ZPictureGridComponent} from '../shared/grid.component';
+import {ZPictureListComponent} from '../shared/list.component';
+import {ZPhotoDetailComponent} from './photo-detail.component';
 import {ToastsUploadComponent, ToastUploadingComponent} from '../toast-upload/index'
 import {Photo} from '../../../shared/models/photo.model';
 import {ApiBaseService, UserService} from '../../../shared/index';
@@ -13,15 +16,16 @@ import {ApiBaseService, UserService} from '../../../shared/index';
   templateUrl: 'photo.component.html',
   directives: [
     ROUTER_DIRECTIVES,
+    ZPictureBarComponent,
+    ZPictureGridComponent,
+    ZPictureListComponent,
     ZPhotoDetailComponent,
     ToastsUploadComponent,
     ToastUploadingComponent
   ]
 })
 
-export class ZPhotoComponent implements OnInit, OnChanges {
-  @Input() listFilter: any;
-
+export class ZPhotoComponent implements OnInit {
   errorMessage: string = '';
 
   showImg: boolean = false;
@@ -29,6 +33,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   imgId: number;
 
   dataImages: Array<Photo> = [];
+  pageView: string = 'grid';
 
   constructor(private apiService: ApiBaseService, private userService: UserService) {
   }
@@ -44,11 +49,8 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnChanges() {
-    console.log(this.listFilter);
-  }
-
   onClick(id): void {
+    console.log(id);
     this.imgId = id;
     this.showImg = true;
   }
@@ -57,6 +59,10 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     if (img) {
       this.showImg = false;
     }
+  }
+
+  onPageView(view: string) {
+    this.pageView = view;
   }
 
 }
