@@ -317,6 +317,32 @@ $footer-height: 222px;
           }
         }
       }
+      &.control-body-btnview {
+        float: right;
+        margin-right: 0;
+        > li {
+          float: left;
+          margin-left: 15px;
+          > a {
+            line-height: 34px;
+            font-size: 20px;
+          }
+          &.dropdown {
+            padding-left: 15px;
+            border-left: 1px solid $light-grey;
+            > a {
+              color: $text-color;
+              &:hover {
+                color: #000000;
+              }
+            }
+          }
+          .dropdown-menu {
+            left: auto;
+            right: 0;
+          }
+        }
+      }
     }
     .control-body-search {
       float: left;
@@ -372,27 +398,7 @@ $footer-height: 222px;
         }
       }
     }
-    .control-body-btnview {
-      float: right;
-      > li {
-        float: left;
-        margin-left: 15px;
-        a {
-          line-height: 34px;
-          font-size: 20px;
-        }
-        &:last-child {
-          padding-left: 15px;
-          border-left: 1px solid $light-grey;
-          a {
-            color: $text-color;
-            &:hover {
-              color: #000000;
-            }
-          }
-        }
-      }
-    }
+
   }
   .page-body-in {
     padding: 30px;

@@ -10002,6 +10002,25 @@ body.fixed-hidden {
           .page-full .page-body-control .control-body-select > li .dropdown-menu > .active > a:focus {
             background-color: #D8D8D8;
             color: #4A4A4A; }
+      .page-full .page-body-control .control-body-select.control-body-btnview {
+        float: right;
+        margin-right: 0; }
+        .page-full .page-body-control .control-body-select.control-body-btnview > li {
+          float: left;
+          margin-left: 15px; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li > a {
+            line-height: 34px;
+            font-size: 20px; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown {
+            padding-left: 15px;
+            border-left: 1px solid #D8D8D8; }
+            .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown > a {
+              color: #4A4A4A; }
+              .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown > a:hover {
+                color: #000000; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li .dropdown-menu {
+            left: auto;
+            right: 0; }
     .page-full .page-body-control .control-body-search {
       float: left;
       max-width: 470px;
@@ -10039,21 +10058,6 @@ body.fixed-hidden {
           text-align: left; }
         .page-full .page-body-control .control-body-search .advSearch .form-horizontal .form-group {
           margin-bottom: 15px; }
-    .page-full .page-body-control .control-body-btnview {
-      float: right; }
-      .page-full .page-body-control .control-body-btnview > li {
-        float: left;
-        margin-left: 15px; }
-        .page-full .page-body-control .control-body-btnview > li a {
-          line-height: 34px;
-          font-size: 20px; }
-        .page-full .page-body-control .control-body-btnview > li:last-child {
-          padding-left: 15px;
-          border-left: 1px solid #D8D8D8; }
-          .page-full .page-body-control .control-body-btnview > li:last-child a {
-            color: #4A4A4A; }
-            .page-full .page-body-control .control-body-btnview > li:last-child a:hover {
-              color: #000000; }
   .page-full .page-body-in {
     padding: 30px; }
 
