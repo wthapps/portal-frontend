@@ -1,15 +1,21 @@
-<div *ngIf="dataImages.length" class="row-img">
-  <div class="photo-box-img" *ngFor="let img of dataImages">
-    <figure (click)="onClick(img.id)" class="img-center-dv">
-      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="img.thumbnail_url" alt="">
-    </figure>
+<page-zone-bar (pageView)="onPageView($event)"></page-zone-bar>
+<div class="page-body-in">
+  <div *ngIf="dataImages.length" class="row-img">
+    <template [ngIf]="pageView == 'grid'">
+      <page-zone-gridview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-gridview>
+    </template>
+    <template [ngIf]="pageView == 'list'">
+      <page-zone-listview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-listview>
+    </template>
   </div>
+
+  <div *ngIf="!dataImages.length" class="text-center">
+    No data
+  </div>
+
+  <zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgId]="imgId" [imgAll]="dataImages"
+                     [showImg]="showImg"></zone-photo-detail>
 </div>
 
-<div *ngIf="!dataImages.length" class="text-center">
-  No data
-</div>
 
-<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgId]="imgId" [imgAll]="dataImages"
-                   [showImg]="showImg"></zone-photo-detail>
+
