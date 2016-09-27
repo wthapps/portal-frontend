@@ -5,6 +5,7 @@ import {
   ZPictureComponent,
   ZPhotoComponent,
   ZVideoComponent,
+  ZAlbumComponent,
 }                           from './index';
 
 import {
@@ -22,6 +23,7 @@ export const ZoneRoutes: RouterConfig = [
         children: [
           {path: 'photo/list', component: ZPhotoListComponent},
           {path: 'photo', component: ZPhotoComponent},
+          {path: 'album', component: ZAlbumComponent},
           {path: 'video/:id', component: ZVideoComponent},
           {path: 'video', component: ZVideoComponent},
           {path: '', component: ZPhotoComponent}

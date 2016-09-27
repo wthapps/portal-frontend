@@ -6,17 +6,27 @@
     <li class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-picture-o"></i> Photo
+        <i class="fa fa-picture-o"></i>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <li class="active"><a href="#"><i class="fa fa-picture-o"></i> Photo</a></li>
-        <li><a href="#"><i class="fa fa-files-o"></i> Album</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#"><i class="fa fa-video-camera"></i> Video</a></li>
-        <li><a href="#"><i class="fa fa-list-alt"></i> Playlist</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#"><i class="fa fa-star"></i> Favourite</a></li>
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/photo']"><i class="fa fa-picture-o"></i> Photos</a>-->
+        <!--</li>-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/album']"><i class="fa fa-files-o"></i> Albums</a>-->
+        <!--</li>-->
+        <!--<li role="separator" class="divider"></li>-->
+        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Video</a></li>-->
+        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Playlist</a></li>-->
+        <!--<li role="separator" class="divider"></li>-->
+        <!--<li><a href="#"><i class="fa fa-star"></i> Favourite</a></li>-->
+
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
+          <a [routerLink]="[item.link]" (click)="menuSelected()">
+            <i [ngClass]="item.css"></i> {{item.name}}
+          </a>
+        </li>
       </ul>
     </li>
   </ul>

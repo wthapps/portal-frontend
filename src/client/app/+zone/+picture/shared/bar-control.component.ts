@@ -18,6 +18,11 @@ export class ZPictureBarComponent implements AfterViewInit {
   advSearch: boolean = false;
   listFilter: string = '';
   currentView: string = 'grid';
+  items = [
+    {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'},
+    {name: "Albums", css: 'fa fa-files-o', link: '/zone/picture/album'},
+    ];
+
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
   ngAfterViewInit() {
@@ -26,12 +31,12 @@ export class ZPictureBarComponent implements AfterViewInit {
       _this.advSearch = false;
     });
 
-    $('body').on('click', '.advSearch', function (e) {
+    $('body').on('click', '.advSearch', function (e:any) {
       e.stopPropagation();
     });
   }
 
-  toggleShowSearch(e): void {
+  toggleShowSearch(e:any): void {
     e.stopPropagation();
     this.advSearch = (this.advSearch == true ? false : true);
   }
@@ -39,5 +44,9 @@ export class ZPictureBarComponent implements AfterViewInit {
   view(view: string) {
     this.currentView = view;
     this.pageView.emit(view);
+  }
+
+  menuSelected() {
+    // alert('aaaaaaaa')
   }
 }
