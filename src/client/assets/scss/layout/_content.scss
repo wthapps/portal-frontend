@@ -396,6 +396,46 @@ $footer-height: 222px;
   }
 }
 
+.dropzone-overlap {
+  display: none;
+  position: relative;
+  .dropzone-overlap-txt {
+    text-align: center;
+    color: #ffffff;
+    font-size: 48px;
+    @include center();
+    z-index: 1;
+    .fa {
+      font-size: 260px;
+    }
+  }
+}
+
+body.drag-active {
+  .page-body-in {
+    .dropzone-overlap {
+      position: fixed;
+      display: block;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(#000, 0.60);
+      color: #ffffff;
+      z-index: 9999;
+      &:after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+        content: "";
+      }
+    }
+  }
+}
+
 .img-center-dv {
   position: relative;
   overflow: hidden;

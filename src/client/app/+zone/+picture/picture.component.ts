@@ -22,29 +22,25 @@ declare var $: any;
 export class ZPictureComponent implements AfterViewInit, OnInit {
 
   advSearch: boolean = false;
-  photo_input_element: any = null;  
+  photo_input_element: any = null;
   files: any;
   dragging_over: boolean;
   dragging_leave: boolean;
   dragging_enter: boolean;
   // test_img: any;
 
+  image_src: string = '';
+  step: number = 0;
 
-  constructor(
-    private element: ElementRef,
-    private apiService: ApiBaseService,
-    private userService: UserService
-  ){
-
-
+  constructor(private element: ElementRef,
+              private apiService: ApiBaseService,
+              private userService: UserService) {
   }
+
   ngOnInit() {
-    this.image_src = '';
-    this.step = 0;
     // this.photo_input_element = document.getElementById('photo_input_element');
     this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
     // this.test_img = this.element.nativeElement.querySelector('.img-center');
-
   }
 
   ngAfterViewInit() {
@@ -55,7 +51,10 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
 
     $('body').on('click', '.advSearch', function (e) {
       e.stopPropagation();
-    });    
+    });
+
+    //$('body').bind('dragover', _this.dragover).bind('dragleave', _this.dragleave);
+    $('body').bind('dragover', _this.dragover);
   }
 
   toggleShowSearch(e): void {
@@ -69,31 +68,34 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
     this.photo_input_element.click();
   }
 
-  handleFileUpload(event){
-        
+  handleFileUpload(event) {
     this.files = event.target.files;
-    if (this.files.length == 0){
+    if (this.files.length == 0) {
       return;
     }
   }
 
-  onDrop(event: any){
+  onDrop(event: any) {
+    $('body').removeClass('drag-active');
     event.stopPropagation();
     event.preventDefault();
     this.files = event.dataTransfer.files;
     if (this.files.length == 0) return;
   }
 
-  dragleave(){
+  dragleave() {
+    $('body').removeClass('drag-active');
     this.dragging_leave = true;
   }
 
-  dragover(event){
+  dragover(event) {
+    $('body').addClass('drag-active');
     event.preventDefault();
     this.dragging_over = true;
   }
 
-  dragenter(){
+  dragenter() {
+    $('body').addClass('drag-active');
     this.dragging_enter = true;
   }
 

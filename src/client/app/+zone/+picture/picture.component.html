@@ -5,7 +5,7 @@
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li class="active">
           <input type="file" id="photo_input_element" multiple="multiple" accept="image/*" style="display: none;"
-          autofocus="true" (change)="handleFileUpload($event)"/>
+                 autofocus="true" (change)="handleFileUpload($event)"/>
 
           <a href="#" (click)="openFileWindow('photo_files', $event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
         </li>
@@ -113,15 +113,23 @@
   </ul>
 
 </div>
-<div class="page-body-in dropzone" 
-  (drop)="onDrop($event)" 
-  (dragenter)="dragenter()" 
-  (dragleave)="dragleave()"
-  (dragover)="dragover($event)" [ngClass]="{'drag-over': dragOver | async}" >
+<div class="page-body-in">
+  <div class="dropzone dropzone-overlap"
+       (drop)="onDrop($event)"
+       (dragenter)="dragenter()"
+       (dragleave)="dragleave()"
+       (dragover)="dragover($event)">
+
+    <div class="dropzone-overlap-txt">
+      <i class="fa fa-cloud-upload"></i>
+      <p>Drag file anywhere to upload</p>
+    </div>
+
+
+  </div>
   <router-outlet></router-outlet>
 </div>
-<toast-uploading [files]="files">
-</toast-uploading>
+<toast-uploading [files]="files"></toast-uploading>
 
 <wth-toast-upload></wth-toast-upload>
 
