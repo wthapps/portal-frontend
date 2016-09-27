@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, AfterViewInit} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureBarComponent} from '../shared/bar-control.component';
@@ -8,6 +8,7 @@ import {ZPhotoDetailComponent} from './photo-detail.component';
 import {Photo} from '../../../shared/models/photo.model';
 import {ApiBaseService, UserService} from '../../../shared/index';
 
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -44,6 +45,16 @@ export class ZPhotoComponent implements OnInit {
         this.errorMessage = <any>error;
       }
     );
+  }
+
+  ngAfterViewInit() {
+    /*var element = $("#element").offset().top;
+    $(window).scroll(function () {
+      var y = $(window).scrollTop();
+      if (y >= element) {
+        // Do stuff, like append a class to an element
+      }
+    });*/
   }
 
   onClick(id): void {
