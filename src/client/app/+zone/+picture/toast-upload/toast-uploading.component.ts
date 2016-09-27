@@ -17,6 +17,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   files_num: number;
   uploaded_num: number;
   stopped_num: number;
+  pending_request: any;
   @Input() files: any;
 
   
@@ -29,8 +30,8 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if (changes.files.currentValue && changes.files.currentValue.length > 0){
-      this.uploadImages(changes.files.currentValue);
+    if (changes['files'].currentValue && changes['files'].currentValue.length > 0){
+      this.uploadImages(changes['files'].currentValue);
       this.files_num = this.files.length;
     }
   }
@@ -62,7 +63,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
     do {
       reader = new FileReader();
       reader.onload = (data) => {
-      this.current_photo = data.target.result;
+      this.current_photo = data.target['result'];
       body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
        
       this.pending_request =  this.apiService.post(`${this.userService.profile.id}/zone/photos`, body)
