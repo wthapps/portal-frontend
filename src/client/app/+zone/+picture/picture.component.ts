@@ -24,6 +24,9 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
   advSearch: boolean = false;
   photo_input_element: any = null;  
   files: any;
+  dragging_over: boolean;
+  dragging_leave: boolean;
+  dragging_enter: boolean;
   // test_img: any;
 
 
@@ -52,7 +55,7 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
 
     $('body').on('click', '.advSearch', function (e) {
       e.stopPropagation();
-    });
+    });    
   }
 
   toggleShowSearch(e): void {
@@ -62,8 +65,6 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
 
   openFileWindow(element_id: string, event: any) {
     event.preventDefault();
-    // var input = $(`#${element_id}`);
-    // input.click();
     this.photo_input_element.value = null;
     this.photo_input_element.click();
   }
@@ -84,44 +85,16 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
   }
 
   dragleave(){
-
+    this.dragging_leave = true;
   }
 
   dragover(event){
     event.preventDefault();
-    console.log('drag over');
+    this.dragging_over = true;
   }
 
   dragenter(){
-    
-  }
-  
-  private uploadImages(files){    
-    // var i: number;
-    // var reader: FileReader;
-    // var body: string;
-    // this.step = 1;
-    
-    // i = 0;
-    // do {
-    //   reader = new FileReader();
-    //   reader.onload = (data) => {
-    //     this.image_src = data.target.result;
-    //     body = JSON.stringify({photo: {image: this.image_src}});
-    //     this.apiService.post(`${this.userService.profile.id}/zone/photos`, body)
-    //     .subscribe((result: any) => {
-    //         console.log("result: ",i, result);
-    //         this.step = 2;
-    //       },
-    //       error => {
-    //         this.step = 3;
-    //       }
-    //     );
-    //   };
-    //   reader.readAsDataURL(files[i]);      
-      
-    //   i++;
-    // } while (i < files.length)
+    this.dragging_enter = true;
   }
 
 }

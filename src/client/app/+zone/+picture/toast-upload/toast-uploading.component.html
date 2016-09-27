@@ -14,7 +14,7 @@
           <div class="photo-box-img">
             <figure class="img-center-dv">
               <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-              <img class="img-center img-uploading" [src]="img_src"  alt="">              
+              <img class="img-center img-uploading" [src]="current_photo"  alt="">              
             </figure>
           </div>
         </div>
@@ -43,7 +43,7 @@
             <figure class="img-center-dv">
               <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
               <img class="img-center"
-                   src="http://static.boredpanda.com/blog/wp-content/uploads/2015/06/pallas-cat-manul-14__880.jpg"
+                   [src]="current_photo"
                    alt="">
             </figure>
           </div>
