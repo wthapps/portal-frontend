@@ -41,7 +41,9 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
   stop(event) {
     event.preventDefault();
-    this.pending_request.unsubscribe(); 
+    if (this.pending_request){
+      this.pending_request.unsubscribe();
+    } 
     this.stopped_num = this.files_num - this.uploaded_num;
     this.step = 4;
   }
@@ -62,13 +64,14 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       reader.onload = (data) => {
       this.current_photo = data.target.result;
       body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
-      if (this.pending_request){
-        this.pending_request.unsubscribe();
-      }  
+       
       this.pending_request =  this.apiService.post(`${this.userService.profile.id}/zone/photos`, body)
         .subscribe((result: any) => {
             this.uploaded_num++;
-            this.step = 2;
+            console.log('progress', i, this.files_num, this.uploaded_num);
+            if (this.uploaded_num == this.files_num){
+              this.step = 2;  
+            }            
           },
           error => {
             this.step = 3;
@@ -76,9 +79,9 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
         );
       };
       file_name = files[i].name;
-      reader.readAsDataURL(files[i]);      
-      
+      reader.readAsDataURL(files[i]);   
       i++;
+      console.log('index: ',i);
     } while (i < files.length)
   }
 }
