@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPhotoDetailComponent} from './photo-detail.component'
+import {ToastsUploadComponent, ToastUploadingComponent} from '../toast-upload/index'
 
 
 @Component({
@@ -10,7 +11,9 @@ import {ZPhotoDetailComponent} from './photo-detail.component'
   templateUrl: 'photo.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    ZPhotoDetailComponent
+    ZPhotoDetailComponent,
+    ToastsUploadComponent,
+    ToastUploadingComponent
   ]
 })
 

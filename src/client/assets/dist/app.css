@@ -10055,6 +10055,40 @@ body.fixed-hidden {
   .page-full .page-body-in {
     padding: 30px; }
 
+.dropzone-overlap {
+  display: none;
+  position: relative; }
+  .dropzone-overlap .dropzone-overlap-txt {
+    text-align: center;
+    color: #ffffff;
+    font-size: 48px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; }
+    .dropzone-overlap .dropzone-overlap-txt .fa, .dropzone-overlap .dropzone-overlap-txt .form-validation.has-error:before {
+      font-size: 260px; }
+
+body.drag-active .page-body-in .dropzone-overlap {
+  position: fixed;
+  display: block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  z-index: 9999; }
+  body.drag-active .page-body-in .dropzone-overlap:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    content: ""; }
+
 .img-center-dv {
   position: relative;
   overflow: hidden; }
