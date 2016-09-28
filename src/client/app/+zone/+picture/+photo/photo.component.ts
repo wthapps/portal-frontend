@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges, AfterViewInit} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, ElementRef, AfterViewInit} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureBarComponent} from '../shared/bar-control.component';
@@ -33,7 +33,7 @@ export class ZPhotoComponent implements OnInit {
   dataImages: Array<Photo> = [];
   pageView: string = 'grid';
 
-  constructor(private apiService: ApiBaseService, private userService: UserService) {
+  constructor(private apiService: ApiBaseService, private userService: UserService, private el: ElementRef) {
   }
 
   ngOnInit() {
@@ -49,16 +49,15 @@ export class ZPhotoComponent implements OnInit {
 
   ngAfterViewInit() {
     /*var element = $("#element").offset().top;
-    $(window).scroll(function () {
-      var y = $(window).scrollTop();
-      if (y >= element) {
-        // Do stuff, like append a class to an element
-      }
-    });*/
+     $(window).scroll(function () {
+     var y = $(window).scrollTop();
+     if (y >= element) {
+     // Do stuff, like append a class to an element
+     }
+     });*/
   }
 
   onClick(id): void {
-    console.log(id);
     this.imgId = id;
     this.showImg = true;
   }
