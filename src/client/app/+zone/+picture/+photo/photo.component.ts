@@ -82,8 +82,9 @@ export class ZPhotoComponent implements OnInit {
       );
     }
   }
-
-  onClick(id): void {
+  
+  onClick(id:any): void {
+    console.log(id);
     this.imgId = id;
     this.showImg = true;
   }
