@@ -24,7 +24,6 @@ export class ZPictureListComponent implements OnChanges {
 
   ngOnChanges() {
     this.dataImages = this.data;
-    console.log(this.data.length);
   }
 
   onClick(id) {
