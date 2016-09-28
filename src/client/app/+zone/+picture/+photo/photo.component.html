@@ -1,19 +1,18 @@
 <page-zone-bar (pageView)="onPageView($event)"></page-zone-bar>
 <div class="page-body-in">
-  <div *ngIf="dataImages.length" class="row-img">
+  <template [ngIf]="dataImages.length">
     <template [ngIf]="pageView == 'grid'">
       <page-zone-gridview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-gridview>
     </template>
     <template [ngIf]="pageView == 'list'">
       <page-zone-listview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-listview>
     </template>
+  </template>
+
+  <div *ngIf="!dataImages.length" class="text-center">
+    No data
   </div>
 </div>
-
-<div *ngIf="!dataImages.length" class="text-center">
-  No data
-</div>
-
 <zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgId]="imgId" [imgAll]="dataImages"
                    [showImg]="showImg"></zone-photo-detail>
 

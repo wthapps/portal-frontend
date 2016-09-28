@@ -12265,6 +12265,13 @@ wth-app:empty + .dots-loader-wrap {
   margin-right: 5px;
   margin-bottom: 5px; }
 
+.row-img:before, .row-img:after {
+  content: " ";
+  display: table; }
+
+.row-img:after {
+  clear: both; }
+
 .row-img .can-click {
   cursor: pointer; }
 

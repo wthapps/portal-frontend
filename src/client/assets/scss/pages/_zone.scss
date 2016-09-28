@@ -7,7 +7,7 @@
 }
 
 .row-img {
-
+  @include clearfix;
   .can-click {
     cursor: pointer;
   }
