@@ -32,6 +32,7 @@ export class ZPhotoComponent implements OnInit {
   showImg: boolean = false;
 
   imgId: number;
+  page: number = 1;
 
   dataImages: Array<Photo> = [];
   pageView: string = 'grid';
@@ -40,7 +41,24 @@ export class ZPhotoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.apiService.get(`${this.userService.profile.id}/zone/photos`).subscribe(
+    this.getPhotos(this.page);
+  }
+
+  ngAfterViewInit() {
+    let win = $(window);
+
+    // Each time the user scrolls
+    win.scroll(function () {
+      // End of the document reached?
+      if ($(document).height() - win.height() == win.scrollTop()) {
+        console.log('loading');
+      }
+    });
+    console.log(this.el);
+  }
+
+  getPhotos(page) {
+    this.apiService.get(`${this.userService.profile.id}/zone/photos?page=${page}`).subscribe(
       (response: any) => {
         this.dataImages = response.data;
       },
@@ -48,16 +66,6 @@ export class ZPhotoComponent implements OnInit {
         this.errorMessage = <any>error;
       }
     );
-  }
-
-  ngAfterViewInit() {
-    /*var element = $("#element").offset().top;
-     $(window).scroll(function () {
-     var y = $(window).scrollTop();
-     if (y >= element) {
-     // Do stuff, like append a class to an element
-     }
-     });*/
   }
 
   onClick(id): void {
