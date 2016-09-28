@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges, ElementRef, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ElementRef} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureBarComponent} from '../shared/bar-control.component';
@@ -7,9 +7,14 @@ import {ZPictureListComponent} from '../shared/list.component';
 import {ZPhotoDetailComponent} from './photo-detail.component';
 import {ToastsUploadComponent, ToastUploadingComponent} from '../toast-upload/index'
 import {Photo} from '../../../shared/models/photo.model';
-import {ApiBaseService, UserService} from '../../../shared/index';
+import {
+  ApiBaseService,
+  UserService,
+  LoadingService
+} from '../../../shared/index';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -32,40 +37,52 @@ export class ZPhotoComponent implements OnInit {
   showImg: boolean = false;
 
   imgId: number;
-  page: number = 1;
+  currentPage: number = 1;
+  perPage: number = 1;
+  total: number = 1;
 
   dataImages: Array<Photo> = [];
   pageView: string = 'grid';
 
-  constructor(private apiService: ApiBaseService, private userService: UserService, private el: ElementRef) {
+  constructor(private apiService: ApiBaseService,
+              private userService: UserService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
-    this.getPhotos(this.page);
+    this.getPhotos(this.currentPage);
   }
 
   ngAfterViewInit() {
     let win = $(window);
+    let _this = this;
 
     // Each time the user scrolls
     win.scroll(function () {
       // End of the document reached?
       if ($(document).height() - win.height() == win.scrollTop()) {
-        console.log('loading');
+        _this.currentPage = _this.currentPage + 1;
+        _this.getPhotos(_this.currentPage);
       }
     });
-    console.log(this.el);
   }
 
   getPhotos(page) {
-    this.apiService.get(`${this.userService.profile.id}/zone/photos?page=${page}`).subscribe(
-      (response: any) => {
-        this.dataImages = response.data;
-      },
-      error => {
-        this.errorMessage = <any>error;
-      }
-    );
+    if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
+      this.loadingService.start('#photodata-loading');
+      this.apiService.get(`${this.userService.profile.id}/zone/photos?page=${page}&per_page=10`).subscribe(
+        (response: any) => {
+          this.perPage = response.per_page;
+          this.total = response.total;
+          this.dataImages = _.concat(this.dataImages, response.data);
+          this.loadingService.stop('#photodata-loading');
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.loadingService.stop('#photodata-loading');
+        }
+      );
+    }
   }
 
   onClick(id): void {

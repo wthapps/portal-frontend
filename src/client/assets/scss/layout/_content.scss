@@ -274,6 +274,8 @@ $footer-height: 222px;
     width: 270px;
     min-height: 100vh;
     @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
+    position: relative;
+    background-color: #ffffff;
   }
   .page-body {
     flex: 1;
@@ -294,7 +296,7 @@ $footer-height: 222px;
       > li {
         float: left;
         margin-right: 10px;
-        &.dropdown > .btn {
+        &.dropdown > .btn:not(.btn-circle) {
           border-color: transparent;
         }
         .dropdown-menu {
@@ -421,26 +423,24 @@ $footer-height: 222px;
 }
 
 body.drag-active {
-  .page-body-in {
-    .dropzone-overlap {
-      position: fixed;
-      display: block;
+  .dropzone-overlap {
+    position: fixed;
+    display: block;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(#000, 0.60);
+    color: #ffffff;
+    z-index: 9999;
+    &:after {
+      position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: rgba(#000, 0.60);
-      color: #ffffff;
-      z-index: 9999;
-      &:after {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 100;
-        content: "";
-      }
+      z-index: 100;
+      content: "";
     }
   }
 }

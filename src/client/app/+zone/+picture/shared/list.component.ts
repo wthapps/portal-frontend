@@ -24,6 +24,7 @@ export class ZPictureListComponent implements OnChanges {
 
   ngOnChanges() {
     this.dataImages = this.data;
+    console.log(this.data.length);
   }
 
   onClick(id) {
@@ -36,7 +37,7 @@ export class ZPictureListComponent implements OnChanges {
    * @param column
    */
   sort(event, column) {
-    if (column == 'name_photo') {
+    if (column == 'name') {
       this.sortName = (this.sortName == false || this.sortName == 'asc'  ? 'desc' : 'asc');
       console.log(this.sortName, this.dataImages);
       this.dataImages = _.orderBy(this.dataImages, [column], [this.sortName]);

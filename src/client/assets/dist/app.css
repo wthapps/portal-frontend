@@ -9964,7 +9964,9 @@ body.fixed-hidden {
     width: 270px;
     min-height: 100vh;
     -webkit-box-shadow: 2px 2px 4px 0px rgba(73, 73, 73, 0.4);
-    box-shadow: 2px 2px 4px 0px rgba(73, 73, 73, 0.4); }
+    box-shadow: 2px 2px 4px 0px rgba(73, 73, 73, 0.4);
+    position: relative;
+    background-color: #ffffff; }
   .page-full .page-body {
     flex: 1;
     min-height: 100vh; }
@@ -9987,7 +9989,7 @@ body.fixed-hidden {
       .page-full .page-body-control .control-body-select > li {
         float: left;
         margin-right: 10px; }
-        .page-full .page-body-control .control-body-select > li.dropdown > .btn {
+        .page-full .page-body-control .control-body-select > li.dropdown > .btn:not(.btn-circle) {
           border-color: transparent; }
         .page-full .page-body-control .control-body-select > li .dropdown-menu {
           margin-top: 15px; }
@@ -10076,7 +10078,7 @@ body.fixed-hidden {
     .dropzone-overlap .dropzone-overlap-txt .fa, .dropzone-overlap .dropzone-overlap-txt .form-validation.has-error:before {
       font-size: 260px; }
 
-body.drag-active .page-body-in .dropzone-overlap {
+body.drag-active .dropzone-overlap {
   position: fixed;
   display: block;
   top: 0;
@@ -10086,7 +10088,7 @@ body.drag-active .page-body-in .dropzone-overlap {
   background-color: rgba(0, 0, 0, 0.6);
   color: #ffffff;
   z-index: 9999; }
-  body.drag-active .page-body-in .dropzone-overlap:after {
+  body.drag-active .dropzone-overlap:after {
     position: absolute;
     top: 0;
     right: 0;

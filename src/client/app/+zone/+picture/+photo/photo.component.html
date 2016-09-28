@@ -12,6 +12,8 @@
   <div *ngIf="!dataImages.length" class="text-center">
     No data
   </div>
+  <div id="photodata-loading" style="position: relative;height: 50px;">
+  </div>
 </div>
 <zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgId]="imgId" [imgAll]="dataImages"
                    [showImg]="showImg"></zone-photo-detail>
