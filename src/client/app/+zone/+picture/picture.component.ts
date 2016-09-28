@@ -20,8 +20,6 @@ declare var $: any;
 })
 
 export class ZPictureComponent implements AfterViewInit, OnInit {
-
-  advSearch: boolean = false;
   photo_input_element: any = null;
   files: any;
   dragging_over: boolean;
@@ -41,25 +39,6 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
     // this.photo_input_element = document.getElementById('photo_input_element');
     this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
     // this.test_img = this.element.nativeElement.querySelector('.img-center');
-  }
-
-  ngAfterViewInit() {
-    let _this = this;
-    $('body').on('click', function () {
-      _this.advSearch = false;
-    });
-
-    $('body').on('click', '.advSearch', function (e) {
-      e.stopPropagation();
-    });
-
-    //$('body').bind('dragover', _this.dragover).bind('dragleave', _this.dragleave);
-    $('body').bind('dragover', _this.dragover);
-  }
-
-  toggleShowSearch(e): void {
-    e.stopPropagation();
-    this.advSearch = (this.advSearch == true ? false : true);
   }
 
   openFileWindow(element_id: string, event: any) {
