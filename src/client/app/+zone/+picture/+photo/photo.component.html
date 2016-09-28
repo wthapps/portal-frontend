@@ -1,14 +1,21 @@
-<div class="row-img">
-  <div class="photo-box-img" *ngFor="let img of dataImages">
-    <figure (click)="onClick(img.img_large)" class="img-center-dv">
-      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="img.img_thumb" alt="">
-    </figure>
+
+<div class="page-body-in">
+  <template [ngIf]="dataImages.length">
+    <template [ngIf]="pageView == 'grid'">
+      <page-zone-gridview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-gridview>
+    </template>
+    <template [ngIf]="pageView == 'list'">
+      <page-zone-listview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-listview>
+    </template>
+  </template>
+
+  <div *ngIf="!dataImages.length" class="text-center">
+    No data
+  </div>
+  <div id="photodata-loading" style="position: relative;height: 50px;">
   </div>
 </div>
-
-<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)'
-                   [imgSrc]="imgSrcDetail" [imgAll]="dataImages"
+<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgId]="imgId" [imgAll]="dataImages"
                    [showImg]="showImg"></zone-photo-detail>
 
 <!-- <wth-toast-upload></wth-toast-upload> -->

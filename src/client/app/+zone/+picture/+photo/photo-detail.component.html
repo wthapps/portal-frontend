@@ -1,6 +1,6 @@
 <div id="photo-box-detail" class="photo-box-detail">
-  <div class="photo-detail-top">
-    <div class="name">This is the name of this photo</div>
+  <div *ngIf="imgOne" class="photo-detail-top">
+    <div class="name">{{imgOne.name_photo}}</div>
     <ul class="action">
       <li>
         <a href="#"><i class="fa fa-share-alt"></i></a>
@@ -22,10 +22,10 @@
       </li>
     </ul>
   </div>
-  <div class="photo-detail-content">
+  <div *ngIf="imgOne" class="photo-detail-content">
     <div class="photo-detail-img">
       <figure>
-        <img [src]="imgSrcData" alt="">
+        <img [src]="imgOne.url" alt="">
       </figure>
       <span (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
         <i class="fa fa-angle-left"></i>
@@ -38,15 +38,15 @@
       <h4><i class="fa fa-info-circle"></i> General Infomation</h4>
       <dl class="dl-horizontal">
         <dt>Name</dt>
-        <dd>filename</dd>
+        <dd>{{imgOne.name_photo}}</dd>
         <dt>Type</dt>
-        <dd>jpg</dd>
+        <dd>{{imgOne.extension}}</dd>
         <dt>Size</dt>
-        <dd>5kb</dd>
+        <dd>{{imgOne.size}}</dd>
         <dt>Demension</dt>
-        <dd>100 x 100</dd>
+        <dd>{{imgOne.dimensions}}</dd>
         <dt>Uploaded</dt>
-        <dd>Sep 14 2016</dd>
+        <dd>{{imgOne.created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
       </dl>
       <hr>
       <h4><i class="fa fa-tag"></i> Tag <a href="#">Edit</a></h4>
