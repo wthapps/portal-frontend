@@ -3,6 +3,7 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 import {ToastUploadingComponent} from './toast-upload/index';
 import {ApiBaseService} from "../../shared/services/apibase.service";
 import {UserService} from "../../shared/services/user.service";
+import {ZPictureBarComponent} from './shared/bar-control.component';
 // import {LoadingService} from "../../../../../dist/tmp/app/partials/loading/loading.service";
 // import {ToastsService} from "../../../../../dist/tmp/app/partials/toast/toast-message.service";
 
@@ -15,7 +16,8 @@ declare var $: any;
   templateUrl: 'picture.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    ToastUploadingComponent
+    ToastUploadingComponent,
+    ZPictureBarComponent
   ]
 })
 

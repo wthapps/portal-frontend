@@ -11,11 +11,9 @@
 
 
 </div>
+<page-zone-bar (pageView)="onPageView($event)"></page-zone-bar>
 <router-outlet></router-outlet>
 
 <toast-uploading [files]="files"></toast-uploading>
 
 <wth-toast-upload></wth-toast-upload>
-
-
-

@@ -1,7 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
-import {ZPictureBarComponent} from '../shared/bar-control.component';
 import {ZPictureGridComponent} from '../shared/grid.component';
 import {ZPictureListComponent} from '../shared/list.component';
 import {ZPhotoDetailComponent} from './photo-detail.component';
@@ -22,7 +21,6 @@ declare var _: any;
   templateUrl: 'photo.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    ZPictureBarComponent,
     ZPictureGridComponent,
     ZPictureListComponent,
     ZPhotoDetailComponent,
