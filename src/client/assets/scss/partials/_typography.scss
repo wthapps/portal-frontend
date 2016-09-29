@@ -17,6 +17,10 @@ body {
   font-weight: bold;
 }
 
+.text-fade {
+  @include opacity(0.8);
+}
+
 .text-normal {
   font-weight: normal;
 }

@@ -3,7 +3,7 @@
     <div class="name">{{imgOne.name_photo}}</div>
     <ul class="action">
       <li>
-        <a href="#"><i class="fa fa-share-alt"></i></a>
+        <a (click)="onShare($event)" href="javascript:;"><i class="fa fa-share-alt"></i></a>
       </li>
       <li>
         <a href="#"><i class="fa fa-star"></i></a>
@@ -92,3 +92,6 @@
     </div>
   </div>
 </div>
+
+
+<page-zone-formSharing (modalHide)="onModalHide($event)" [modalShow]="modalShare"></page-zone-formSharing>

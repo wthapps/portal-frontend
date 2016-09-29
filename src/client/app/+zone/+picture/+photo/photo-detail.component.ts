@@ -2,6 +2,8 @@ import {Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChan
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Photo} from '../../../shared/models/photo.model';
 
+import {ZPictureSharingComponent} from '../shared/form-sharing.component';
+
 declare var wheelzoom: any;
 declare var $: any;
 declare var _: any;
@@ -11,7 +13,8 @@ declare var _: any;
   selector: 'zone-photo-detail',
   templateUrl: 'photo-detail.component.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    ZPictureSharingComponent
   ]
 })
 
@@ -29,6 +32,9 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   showModal: boolean = false;
 
   errorMessage: string = '';
+
+
+  modalShare: boolean = false;
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
     /*let log: string[] = [];
@@ -69,6 +75,15 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     $('body').removeClass('fixed-hidden').css('padding-right', 0);
     $('#photo-box-detail').removeClass('active');
     this.hideModalClicked.emit(true);
+  }
+
+
+  onShare(): void {
+    this.modalShare = true;
+  }
+
+  onModalHide(m: boolean): void {
+    this.modalShare = m;
   }
 
   imgPrev(): void {

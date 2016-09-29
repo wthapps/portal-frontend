@@ -21,7 +21,7 @@ declare var $: any;
   ]
 })
 
-export class ZPictureComponent implements AfterViewInit, OnInit {
+export class ZPictureComponent implements OnInit {
   photo_input_element: any = null;
   files: any;
   dragging_over: boolean;

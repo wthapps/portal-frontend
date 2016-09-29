@@ -22,3 +22,30 @@
     }
   }
 }
+
+.modal-custom {
+  .modal-content {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    .modal-header {
+      background-color: #ececec;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    hr {
+      margin-left: -$modal-inner-padding;
+      margin-right: -$modal-inner-padding;
+    }
+  }
+  .modal-body-collapse {
+
+  }
+  .modal-body-collapse-in {
+    .media-list-item {
+      max-height: 355px;
+      overflow: auto;
+    }
+  }
+}
