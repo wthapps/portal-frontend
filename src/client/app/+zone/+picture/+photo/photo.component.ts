@@ -1,4 +1,4 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Component, OnInit, ElementRef, OnChanges, SimpleChange} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureGridComponent} from '../shared/grid.component';
@@ -29,7 +29,7 @@ declare var _: any;
   ]
 })
 
-export class ZPhotoComponent implements OnInit {
+export class ZPhotoComponent implements OnInit, OnChanges {
   errorMessage: string = '';
 
   showImg: boolean = false;
@@ -51,6 +51,9 @@ export class ZPhotoComponent implements OnInit {
     this.getPhotos(this.currentPage);
   }
 
+  ngOnChanges(changes: SimpleChange){
+      console.log("changing..........");
+  }
   ngAfterViewInit() {
     let win = $(window);
     let _this = this;
@@ -98,4 +101,5 @@ export class ZPhotoComponent implements OnInit {
   onPageView(view: string) {
     this.pageView = view;
   }
+
 }

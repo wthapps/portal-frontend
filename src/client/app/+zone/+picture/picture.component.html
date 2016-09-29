@@ -11,7 +11,9 @@
 
 
 </div>
-<page-zone-bar (pageView)="onPageView($event)"></page-zone-bar>
+<page-zone-bar (openWindow)="openFileWindow($event)" 
+               (selectedFiles)="handleFileUpload($event)"
+               (pageView)="viewChanged($event)"></page-zone-bar>
 <router-outlet></router-outlet>
 
 <toast-uploading [files]="files"></toast-uploading>

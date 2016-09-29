@@ -7,7 +7,7 @@
           <input type="file" id="photo_input_element" multiple="multiple" accept="image/*" style="display: none;"
                  autofocus="true" (change)="handleFileUpload($event)"/>
 
-          <a href="#" (click)="openFileWindow('photo_files', $event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
+          <a href="#" (click)="openFileWindow($event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
         </li>
         <li><a href="#"><i class="fa fa-files-o"></i> Upload Video</a></li>
         <li role="separator" class="divider"></li>

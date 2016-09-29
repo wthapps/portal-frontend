@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 import {Component, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+=======
+import {Component, AfterViewInit, OnInit, Output, EventEmitter, ElementRef} from '@angular/core';
+import {ROUTER_DIRECTIVES} from '@angular/router';
+>>>>>>> Stashed changes
 
 declare var $: any;
 
@@ -13,7 +18,7 @@ declare var $: any;
   ]
 })
 
-export class ZPictureBarComponent implements AfterViewInit {
+export class ZPictureBarComponent implements AfterViewInit, OnInit {
 
   advSearch: boolean = false;
   listFilter: string = '';
@@ -36,6 +41,17 @@ export class ZPictureBarComponent implements AfterViewInit {
 
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();
+  @Output() openWindow: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor (){
+
+  }
+
+  ngOnInit(private element: ElementRef) {
+    
+  }
+
   ngAfterViewInit() {
     let _this = this;
     $('body').on('click', function () {
@@ -55,6 +71,14 @@ export class ZPictureBarComponent implements AfterViewInit {
   view(view: string) {
     this.currentView = view;
     this.pageView.emit(view);
+  }
+
+  openFileWindow(event: any) {    
+    this.openWindow.emit(event);    
+  }
+
+  handleFileUpload(event: any) {         
+    this.selectedFiles.emit(event);
   }
 
 }

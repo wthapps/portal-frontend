@@ -32,6 +32,8 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
   image_src: string = '';
   step: number = 0;
 
+  pageView: string = 'grid';
+
   constructor(private element: ElementRef,
               private apiService: ApiBaseService,
               private userService: UserService) {
@@ -39,21 +41,32 @@ export class ZPictureComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     // this.photo_input_element = document.getElementById('photo_input_element');
-    this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
+    
     // this.test_img = this.element.nativeElement.querySelector('.img-center');
   }
 
-  openFileWindow(element_id: string, event: any) {
+  ngAfterViewInit() {
+    
+  }
+
+  openFileWindow(event: any) {    
     event.preventDefault();
+    this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
     this.photo_input_element.value = null;
     this.photo_input_element.click();
   }
 
-  handleFileUpload(event) {
+  handleFileUpload(event: any) {
     this.files = event.target.files;
     if (this.files.length == 0) {
       return;
     }
+  }
+
+  viewChanged(event: any) {
+    console.log("changed view", event);
+    this.pageView = event;
+
   }
 
   onDrop(event: any) {
