@@ -1,5 +1,5 @@
 import {Component, AfterViewInit, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 declare var $: any;
 
@@ -22,6 +22,17 @@ export class ZPictureBarComponent implements AfterViewInit {
     {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'},
     {name: "Albums", css: 'fa fa-files-o', link: '/zone/picture/album'},
     ];
+  title:any;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe((navigation:any) => {
+      for(var item of this.items) {
+        if (item.link == navigation.url) {
+          this.title = item.name;
+        }
+      }
+    });
+  }
 
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
@@ -46,7 +57,4 @@ export class ZPictureBarComponent implements AfterViewInit {
     this.pageView.emit(view);
   }
 
-  menuSelected() {
-    // alert('aaaaaaaa')
-  }
 }

@@ -65,7 +65,7 @@ export class ZPhotoComponent implements OnInit {
     });
   }
 
-  getPhotos(page) {
+  getPhotos(page:any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
       this.apiService.get(`${this.userService.profile.id}/zone/photos?page=${page}`).subscribe(
@@ -82,7 +82,7 @@ export class ZPhotoComponent implements OnInit {
       );
     }
   }
-  
+
   onClick(id:any): void {
     console.log(id);
     this.imgId = id;
@@ -98,5 +98,4 @@ export class ZPhotoComponent implements OnInit {
   onPageView(view: string) {
     this.pageView = view;
   }
-
 }
