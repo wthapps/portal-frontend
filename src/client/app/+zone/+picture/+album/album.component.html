@@ -1,1 +1,23 @@
 
+<div class="page-body-in">
+  <template [ngIf]="dataAlbums.length">
+    <template [ngIf]="pageView == 'grid'">
+      <page-zone-gridview (albumDetail)="onClick($event)" [data]="dataAlbums"></page-zone-gridview>
+    </template>
+    <template [ngIf]="pageView == 'list'">
+      <page-zone-listview (albumDetail)="onClick($event)" [data]="dataAlbums"></page-zone-listview>
+    </template>
+  </template>
+
+  <div *ngIf="!dataAlbums.length" class="text-center">
+    No data
+  </div>
+  <div id="album-data-loading" style="position: relative;height: 50px;">
+  </div>
+</div>
+<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' [imgId]="imgId" [imgAll]="dataAlbums"
+                   [showImg]="showImg"></zone-photo-detail>
+
+<!-- <wth-toast-upload></wth-toast-upload> -->
+<toast-uploading></toast-uploading>
+

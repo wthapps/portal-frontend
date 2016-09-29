@@ -19,7 +19,7 @@
     <li class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-picture-o"></i> {{title}}
+        <i [ngClass]="selectedEl.css"></i> {{selectedEl.name}}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -36,7 +36,7 @@
         <!--<li><a href="#"><i class="fa fa-star"></i> Favourite</a></li>-->
 
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
-          <a [routerLink]="[item.link]" (click)="menuSelected()">
+          <a [routerLink]="[item.link]">
             <i [ngClass]="item.css"></i> {{item.name}}
           </a>
         </li>

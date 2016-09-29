@@ -10106,6 +10106,12 @@ body.drag-active .dropzone-overlap {
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 100%; }
+  .img-center-dv .img-bottom-left {
+    position: absolute;
+    top: 85%;
+    left: 60px;
+    transform: translate(-50%, -50%);
+    width: 100px; }
 
 .aside-left .navgroup {
   margin-bottom: 20px; }

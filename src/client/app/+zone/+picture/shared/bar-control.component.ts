@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream
-import {Component, AfterViewInit, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-=======
 import {Component, AfterViewInit, OnInit, Output, EventEmitter, ElementRef} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
->>>>>>> Stashed changes
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+
 
 declare var $: any;
 
@@ -27,29 +23,25 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
     {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'},
     {name: "Albums", css: 'fa fa-files-o', link: '/zone/picture/album'},
     ];
-  title:any;
-
-  constructor(private router: Router) {
-    this.router.events.subscribe((navigation:any) => {
-      for(var item of this.items) {
-        if (item.link == navigation.url) {
-          this.title = item.name;
-        }
-      }
-    });
-  }
+  selectedEl:any;
 
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
   @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();
   @Output() openWindow: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor (){
-
+  constructor(private router: Router) {
+    this.router.events.subscribe((navigation:any) => {
+      for(var item of this.items) {
+        if (item.link == navigation.url) {
+          this.selectedEl = item;
+        }
+      }
+    });
   }
 
-  ngOnInit(private element: ElementRef) {
-    
+  ngOnInit() {
+
   }
 
   ngAfterViewInit() {
@@ -73,11 +65,11 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
     this.pageView.emit(view);
   }
 
-  openFileWindow(event: any) {    
-    this.openWindow.emit(event);    
+  openFileWindow(event: any) {
+    this.openWindow.emit(event);
   }
 
-  handleFileUpload(event: any) {         
+  handleFileUpload(event: any) {
     this.selectedFiles.emit(event);
   }
 

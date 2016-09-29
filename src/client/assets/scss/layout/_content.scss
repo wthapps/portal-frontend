@@ -452,4 +452,8 @@ body.drag-active {
     @include center();
     max-width: 100%;
   }
+  .img-bottom-left {
+    @include bottom-left();
+    width: 100px;
+  }
 }
