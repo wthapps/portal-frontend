@@ -69,7 +69,6 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       this.pending_request =  this.apiService.post(`${this.userService.profile.id}/zone/photos`, body)
         .subscribe((result: any) => {
             this.uploaded_num++;
-            console.log('progress', i, this.files_num, this.uploaded_num);
             if (this.uploaded_num == this.files_num){
               this.step = 2;  
             }            
@@ -82,7 +81,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       file_name = files[i].name;
       reader.readAsDataURL(files[i]);   
       i++;
-      console.log('index: ',i);
+      
     } while (i < files.length)
   }
 }

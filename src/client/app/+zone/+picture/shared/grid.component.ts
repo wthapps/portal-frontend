@@ -21,7 +21,7 @@ export class ZPictureGridComponent implements OnChanges {
     this.dataImages = this.data;
   }
 
-  onClick(id) {
+  onClick(id:any) {
     this.imgDetail.emit(id);
   }
 }
