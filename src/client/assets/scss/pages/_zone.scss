@@ -68,7 +68,7 @@
   z-index: -1;
   visibility: hidden;
   &.active {
-    z-index: 9999;
+    z-index: 1020;
     visibility: visible;
   }
   .photo-detail-top {
