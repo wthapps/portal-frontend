@@ -12,7 +12,7 @@ import {UserService} from "../../../shared/services/user.service";
 })
 export class ToastUploadingComponent implements OnInit, OnChanges {
   current_photo: any;
-  step: number; 
+  step: number;
   upload_request: any;
   files_num: number;
   uploaded_num: number;
@@ -20,13 +20,13 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   pending_request: any;
   @Input() files: any;
 
-  
+
   constructor(private apiService: ApiBaseService, private userService: UserService){
 
   }
 
   ngOnInit(){
-    this.step = 0;          
+    this.step = 0;
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -44,12 +44,12 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
     event.preventDefault();
     if (this.pending_request){
       this.pending_request.unsubscribe();
-    } 
+    }
     this.stopped_num = this.files_num - this.uploaded_num;
     this.step = 4;
   }
 
-  private uploadImages(files){    
+  private uploadImages(files){
     var i: number;
     var file_name: string;
     var reader: FileReader;
@@ -57,7 +57,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
     this.step = 1;
     this.uploaded_num = 0;
-    this.stopped_num = 0;    
+    this.stopped_num = 0;
     i = 0;
 
     do {
@@ -65,13 +65,13 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       reader.onload = (data) => {
       this.current_photo = data.target['result'];
       body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
-       
-      this.pending_request =  this.apiService.post(`${this.userService.profile.id}/zone/photos`, body)
+
+      this.pending_request =  this.apiService.post(`zone/photos`, body)
         .subscribe((result: any) => {
             this.uploaded_num++;
             if (this.uploaded_num == this.files_num){
-              this.step = 2;  
-            }            
+              this.step = 2;
+            }
           },
           error => {
             this.step = 3;
@@ -79,9 +79,9 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
         );
       };
       file_name = files[i].name;
-      reader.readAsDataURL(files[i]);   
+      reader.readAsDataURL(files[i]);
       i++;
-      
+
     } while (i < files.length)
   }
 }

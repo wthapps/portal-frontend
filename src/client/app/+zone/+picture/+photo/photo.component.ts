@@ -71,7 +71,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   getPhotos(page:any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
-      this.apiService.get(`${this.userService.profile.id}/zone/photos?page=${page}`).subscribe(
+      this.apiService.get(`zone/photos?page=${page}`).subscribe(
         (response: any) => {
           this.perPage = response.per_page;
           this.total = response.total;
