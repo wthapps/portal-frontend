@@ -16,6 +16,29 @@
     border: 1px solid $light-grey;
     background-color: #ffffff;
     cursor: pointer;
+    @include transition($transition-base);
+    &:after {
+      @extend .fa;
+      content: "\f058";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      color: #2996cc;
+      @include transition($transition-base);
+      @include opacity(0);
+    }
+  }
+
+  .photo-box-img {
+    &.selected {
+      .img-center-dv {
+        border-color: #2996CC;
+        &:after {
+          @include opacity(1);
+        }
+      }
+    }
   }
 
   &.list {
