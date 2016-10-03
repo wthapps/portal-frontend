@@ -3,6 +3,8 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Photo} from '../../../shared/models/photo.model';
 
 import {ZPictureSharingComponent} from '../shared/form-sharing.component';
+import {ZPictureTaggingComponent} from '../shared/form-tagging.component';
+import {ZPictureEditPhotoComponent} from '../shared/form-edit.component';
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -14,7 +16,9 @@ declare var _: any;
   templateUrl: 'photo-detail.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    ZPictureSharingComponent
+    ZPictureSharingComponent,
+    ZPictureTaggingComponent,
+    ZPictureEditPhotoComponent
   ]
 })
 
@@ -30,11 +34,14 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   imgIndex: number = 0;
 
   showModal: boolean = false;
+  showInfo: boolean = false;
 
   errorMessage: string = '';
 
 
   modalShare: boolean = false;
+  modalTag: boolean = false;
+  modalEdit: boolean = false;
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
     /*let log: string[] = [];
@@ -64,6 +71,15 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
 
   ngAfterViewInit() {
     wheelzoom(document.querySelectorAll('.photo-detail-img img'));
+
+    // let _thisPhotoDetail = this;
+    // $('body').on('click', function () {
+    //   _thisPhotoDetail.hideModal();
+    // });
+    //
+    // $('body').on('click', '.photo-detail-img figure, .photo-detail-img-control, .photo-detail-top', function (e: any) {
+    //   e.stopPropagation();
+    // });
   }
 
   ngOnDestroy() {
@@ -78,13 +94,47 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
 
+  /**
+   * Show modal
+   */
   onShare(): void {
     this.modalShare = true;
   }
 
+  onTag(): void {
+    this.modalTag = true;
+  }
+
+  onShowEditInfo() {
+    this.modalEdit = true;
+  }
+
+  onShowInfo() {
+    if (this.showInfo) {
+      $('#photo-box-detail').removeClass('active-info');
+    } else {
+      $('#photo-box-detail').addClass('active-info');
+    }
+    this.showInfo = (this.showInfo == true ? false : true);
+  }
+
+  /**
+   * End Show modal
+   */
+
+
+  /**
+   * Hide modal
+   */
   onModalHide(m: boolean): void {
     this.modalShare = m;
+    this.modalTag = m;
+    this.modalEdit = m;
   }
+
+  /**
+   * End Hide modal
+   */
 
   imgPrev(): void {
     this.imgIndex = this.imgIndex - 1;

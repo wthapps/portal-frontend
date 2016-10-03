@@ -1,10 +1,5 @@
-<<<<<<< Updated upstream
-import {Component, AfterViewInit, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-=======
 import {Component, AfterViewInit, OnInit, Output, EventEmitter, ElementRef} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
->>>>>>> Stashed changes
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 declare var $: any;
 
@@ -18,7 +13,7 @@ declare var $: any;
   ]
 })
 
-export class ZPictureBarComponent implements AfterViewInit, OnInit {
+export class ZPictureBarComponent implements AfterViewInit {
 
   advSearch: boolean = false;
   listFilter: string = '';
@@ -26,12 +21,18 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
   items = [
     {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'},
     {name: "Albums", css: 'fa fa-files-o', link: '/zone/picture/album'},
-    ];
-  title:any;
+  ];
+  title: any;
+
+
+  @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();
+  @Output() openWindow: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private router: Router) {
-    this.router.events.subscribe((navigation:any) => {
-      for(var item of this.items) {
+    this.router.events.subscribe((navigation: any) => {
+      for (var item of this.items) {
         if (item.link == navigation.url) {
           this.title = item.name;
         }
@@ -39,31 +40,18 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
     });
   }
 
-  @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
-
-  @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();
-  @Output() openWindow: EventEmitter<any> = new EventEmitter<any>();
-
-  constructor (){
-
-  }
-
-  ngOnInit(private element: ElementRef) {
-    
-  }
-
   ngAfterViewInit() {
-    let _this = this;
+    let _thisBar = this;
     $('body').on('click', function () {
-      _this.advSearch = false;
+      _thisBar.advSearch = false;
     });
 
-    $('body').on('click', '.advSearch', function (e:any) {
+    $('body').on('click', '.advSearch', function (e: any) {
       e.stopPropagation();
     });
   }
 
-  toggleShowSearch(e:any): void {
+  toggleShowSearch(e: any): void {
     e.stopPropagation();
     this.advSearch = (this.advSearch == true ? false : true);
   }
@@ -73,11 +61,11 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
     this.pageView.emit(view);
   }
 
-  openFileWindow(event: any) {    
-    this.openWindow.emit(event);    
+  openFileWindow(event: any) {
+    this.openWindow.emit(event);
   }
 
-  handleFileUpload(event: any) {         
+  handleFileUpload(event: any) {
     this.selectedFiles.emit(event);
   }
 
