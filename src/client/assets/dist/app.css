@@ -12429,6 +12429,9 @@ wth-app:empty + .dots-loader-wrap {
       .row-img.list .photo-box-img.photo-box-img-nav .img-center-dv {
         border-width: 0;
         background-color: transparent; }
+    .row-img.list .photo-box-img .album-box-info {
+      padding: 5px 20px;
+      text-align: left; }
     .row-img.list .photo-box-img:not(.photo-box-img-nav):hover {
       background-color: rgba(204, 230, 250, 0.5); }
 

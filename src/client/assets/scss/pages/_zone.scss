@@ -51,6 +51,10 @@
           background-color: transparent;
         }
       }
+      .album-box-info {
+        padding: 5px 20px;
+        text-align: left;
+      }
       &:not(.photo-box-img-nav):hover {
         background-color: rgba(204, 230, 250, 0.5);
       }

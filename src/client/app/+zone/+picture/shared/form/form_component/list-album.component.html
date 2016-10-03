@@ -1,0 +1,17 @@
+<div class="row-img list">
+  <div class="photo-box-img" *ngFor="let album of dataAlbums" (click)="addToAlbum(album.id)">
+    <figure class="img-center-dv">
+      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+      <img class="img-center" src="/assets/images/zone/img-default.png" alt="">
+    </figure>
+    <div class="album-box-info">
+      <div>
+        {{album.id}}
+      </div>
+      <div style="font-size: 11px">
+        <span>{{album.created_at | date:'MMM yyyy' : 'UTC'}}</span>
+        <span> - {{album.photo_number}} photos</span>
+      </div>
+    </div>
+  </div>
+</div>

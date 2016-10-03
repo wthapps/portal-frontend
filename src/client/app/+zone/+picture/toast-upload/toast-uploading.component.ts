@@ -3,12 +3,16 @@ import {Router} from '@angular/router';
 
 import {ApiBaseService} from "../../../shared/services/apibase.service";
 import {UserService} from "../../../shared/services/user.service";
+import {ZPictureFormAddToAlbumComponent} from '../shared/form/form-add-to-album.component';
 
 @Component({
   moduleId: module.id,
   selector: 'toast-uploading',
   templateUrl: 'toast-uploading.component.html',
-  styleUrls: ['toast-upload.component.css']
+  styleUrls: ['toast-upload.component.css'],
+  directives: [
+    ZPictureFormAddToAlbumComponent,
+  ]
 })
 export class ToastUploadingComponent implements OnInit, OnChanges {
   current_photo: any;
@@ -18,8 +22,9 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   uploaded_num: number;
   stopped_num: number;
   pending_request: any;
+  showModalAddToAlbum: boolean;
   @Input() files: any;
-
+  @Output() addedToAlbumEvent: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private apiService: ApiBaseService, private userService: UserService){
 
@@ -27,6 +32,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
   ngOnInit(){
     this.step = 0;
+    this.showModalAddToAlbum = false;
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -62,7 +68,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
     do {
       reader = new FileReader();
-      reader.onload = (data) => {
+      reader.onload = (data:any) => {
       this.current_photo = data.target['result'];
       body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
 
@@ -83,5 +89,13 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       i++;
 
     } while (i < files.length)
+  }
+
+  onAddToAlbum(): void {
+    this.showModalAddToAlbum = true;
+  }
+
+  addedToAlbum($event:any) {
+    this.addedToAlbumEvent.emit($event);
   }
 }

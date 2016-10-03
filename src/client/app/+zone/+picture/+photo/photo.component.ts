@@ -5,12 +5,14 @@ import {ZPictureGridComponent} from '../shared/grid.component';
 import {ZPictureListComponent} from '../shared/list.component';
 import {ZPhotoDetailComponent} from './photo-detail.component';
 import {ToastsUploadComponent, ToastUploadingComponent} from '../toast-upload/index'
+import {AddedToAlbumToast} from './toast/added-to-album-toast.component'
 import {Photo} from '../../../shared/models/photo.model';
 import {
   ApiBaseService,
   UserService,
   LoadingService
 } from '../../../shared/index';
+import {PhotoService} from "../../../shared/services/photo/photo.service";
 
 declare var $: any;
 declare var _: any;
@@ -19,13 +21,15 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-photo',
   templateUrl: 'photo.component.html',
+  providers: [PhotoService],
   directives: [
     ROUTER_DIRECTIVES,
     ZPictureGridComponent,
     ZPictureListComponent,
     ZPhotoDetailComponent,
     ToastsUploadComponent,
-    ToastUploadingComponent
+    ToastUploadingComponent,
+    // AddedToAlbumToast,
   ]
 })
 
@@ -44,7 +48,8 @@ export class ZPhotoComponent implements OnInit, OnChanges {
 
   constructor(private apiService: ApiBaseService,
               private userService: UserService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private photoService: PhotoService) {
   }
 
   ngOnInit() {
@@ -102,4 +107,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     this.pageView = view;
   }
 
+  addedToAlbum($event:any) {
+    console.log('parent' + $event)
+  }
 }

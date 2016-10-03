@@ -19,5 +19,5 @@
                    [showImg]="showImg"></zone-photo-detail>
 
 <!-- <wth-toast-upload></wth-toast-upload> -->
-<toast-uploading></toast-uploading>
-
+<toast-uploading (addedToAlbumEvent)="addedToAlbum($event)"></toast-uploading>
+<added-to-album-toast></added-to-album-toast>

@@ -37,6 +37,20 @@ export class ZAlbumComponent implements OnInit {
     this.getAlbum(this.currentPage);
   }
 
+  ngAfterViewInit() {
+    let win = $(window);
+    let _this = this;
+
+    // Each time the user scrolls
+    win.scroll(function () {
+      // End of the document reached?
+      if ($(document).height() - win.height() == win.scrollTop()) {
+        _this.currentPage = _this.currentPage + 1;
+        _this.getAlbum(_this.currentPage);
+      }
+    });
+  }
+
   getAlbum(page:any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#album-data-loading');

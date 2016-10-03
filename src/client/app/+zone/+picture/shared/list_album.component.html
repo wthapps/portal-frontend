@@ -20,7 +20,7 @@
   <div class="photo-box-img" *ngFor="let img of dataAlbums">
     <figure (click)="onClick(img.id)" class="img-center-dv">
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="img.thumbnail_url" alt="">
+      <img class="img-center" src="/assets/images/zone/img-default.png" alt="">
     </figure>
     <div class="photo-box-img-name">
       {{img.name}}
