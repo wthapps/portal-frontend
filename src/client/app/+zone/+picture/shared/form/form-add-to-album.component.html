@@ -13,7 +13,23 @@
         </div>
       </div><!-- /.modal-content -->
       <div class="modal-footer">
-        <page-zone-listview [data]="dataAlbums" (addedToAlbumEvent)="addedToAlbum($event)"></page-zone-listview>
+        <div class="row-img list">
+          <div class="photo-box-img" *ngFor="let album of dataAlbums" (click)="addToAlbum($event,photo_id,album.id)">
+            <figure class="img-center-dv">
+              <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+              <img class="img-center" src="/assets/images/zone/img-default.png" alt="">
+            </figure>
+            <div class="album-box-info">
+              <div>
+                {{album.id}}
+              </div>
+              <div style="font-size: 11px">
+                <span>{{album.created_at | date:'MMM yyyy' : 'UTC'}}</span>
+                <span> - {{album.photo_number}} photos</span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="album-data-loading" style="position: relative;height: 50px;"></div>
       </div><!-- /.modal-footer -->
     </div><!-- /.modal-dialog -->

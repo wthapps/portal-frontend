@@ -1,24 +1,32 @@
 <div id="photo-box-detail" class="photo-box-detail">
   <div *ngIf="imgOne" class="photo-detail-top">
-    <div class="name">{{imgOne.name_photo}}</div>
-    <ul class="action">
+    <ul class="action navbar-left">
       <li>
-        <a (click)="onShare($event)" href="javascript:;"><i class="fa fa-share-alt"></i></a>
+        <a href="javascript:;" (click)="hideModal()"><i class="fa fa-arrow-left"></i></a>
+      </li>
+    </ul>
+    <div class="name"><i class="fa fa-picture-o"></i> {{imgOne.name}}</div>
+    <ul class="action navbar-right">
+      <li>
+        <a href="javascript:;" (click)="onShare($event)"><i class="fa fa-share-alt"></i></a>
       </li>
       <li>
         <a href="#"><i class="fa fa-star"></i></a>
       </li>
       <li>
-        <a href="#"><i class="fa fa-pencil"></i></a>
+        <a href="javascript:;" (click)="onTag($event)"><i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a href="#"><i class="fa fa-exclamation-circle"></i></a>
+        <a href="#"><i class="fa fa-trash-o"></i></a>
       </li>
-      <li>
-        <a href="#"><i class="fa fa-ellipsis-v"></i></a>
-      </li>
-      <li>
-        <a href="javascript:;" (click)="hideModal()"><i class="fa fa-times"></i></a>
+      <li class="dropdown">
+        <a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Add to Album</a></li>
+          <li><a href="#">Download</a></li>
+          <li><a href="javascript:;">Edit Photo</a></li>
+          <li><a href="javascript:;" (click)="onShowInfo()">Information</a></li>
+        </ul>
       </li>
     </ul>
   </div>
@@ -34,64 +42,68 @@
         <i class="fa fa-angle-right"></i>
       </span>
     </div>
-    <div class="photo-detail-info">
-      <h4><i class="fa fa-info-circle"></i> General Infomation</h4>
-      <dl class="dl-horizontal">
-        <dt>Name</dt>
-        <dd>{{imgOne.name_photo}}</dd>
-        <dt>Type</dt>
-        <dd>{{imgOne.extension}}</dd>
-        <dt>Size</dt>
-        <dd>{{imgOne.size}}</dd>
-        <dt>Demension</dt>
-        <dd>{{imgOne.dimensions}}</dd>
-        <dt>Uploaded</dt>
-        <dd>{{imgOne.created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
-      </dl>
-      <hr>
-      <h4><i class="fa fa-tag"></i> Tag <a href="#">Edit</a></h4>
-      <div class="tags-text">
-        <span>Flowers</span>
-        <span>Danger</span>
-        <span>Sunflower</span>
-        <span>Fire</span>
-      </div>
-      <hr>
-      <h4><i class="fa fa-share-alt"></i> Sharing <a href="#">Edit</a></h4>
-      <dl>
-        <dt>Owner</dt>
-        <dd>
-          <ul class="list-unstyled">
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          </ul>
-        </dd>
-        <dt>Group</dt>
-        <dd>
-          <ul class="list-unstyled">
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          </ul>
-        </dd>
-        <dt>Contact</dt>
-        <dd>
-          <ul class="list-unstyled">
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-            <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          </ul>
-        </dd>
-      </dl>
+  </div>
+  <div *ngIf="imgOne" class="photo-detail-info">
+    <h3>Detail <a href="javascript:;" (click)="onShowInfo()"><i class="fa fa-times"></i></a></h3>
+    <h4><i class="fa fa-info-circle"></i> General Infomation <a href="javascript:;" (click)="onShowEditInfo()">Edit</a>
+    </h4>
+    <dl class="dl-horizontal">
+      <dt>Name</dt>
+      <dd>{{imgOne.name}}</dd>
+      <dt>Type</dt>
+      <dd>{{imgOne.extension}}</dd>
+      <dt>Size</dt>
+      <dd>{{imgOne.size}}</dd>
+      <dt>Demension</dt>
+      <dd>{{imgOne.dimensions}}</dd>
+      <dt>Uploaded</dt>
+      <dd>{{imgOne.created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
+    </dl>
+    <hr>
+    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="onTag($event)">Edit</a></h4>
+    <div class="tags-text">
+      <span>Flowers</span>
+      <span>Danger</span>
+      <span>Sunflower</span>
+      <span>Fire</span>
     </div>
+    <hr>
+    <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="onShare($event)">Edit</a></h4>
+    <dl>
+      <dt>Owner</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+        </ul>
+      </dd>
+      <dt>Group</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+        </ul>
+      </dd>
+      <dt>Contact</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li></li>
+        </ul>
+      </dd>
+    </dl>
   </div>
 </div>
 
 
 <page-zone-formSharing (modalHide)="onModalHide($event)" [modalShow]="modalShare"></page-zone-formSharing>
+<page-zone-formTagging (modalHide)="onModalHide($event)" [modalShow]="modalTag"></page-zone-formTagging>
+<page-zone-formEditPhoto (modalHide)="onModalHide($event)" [modalShow]="modalEdit"></page-zone-formEditPhoto>

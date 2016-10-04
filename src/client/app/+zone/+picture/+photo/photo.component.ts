@@ -1,4 +1,4 @@
-import {Component, OnInit, ElementRef, OnChanges, SimpleChange} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureGridComponent} from '../shared/grid.component';
@@ -33,7 +33,7 @@ declare var _: any;
   ]
 })
 
-export class ZPhotoComponent implements OnInit, OnChanges {
+export class ZPhotoComponent implements OnInit {
   errorMessage: string = '';
 
   showImg: boolean = false;
@@ -56,9 +56,6 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     this.getPhotos(this.currentPage);
   }
 
-  ngOnChanges(changes: SimpleChange){
-      console.log("changing..........");
-  }
   ngAfterViewInit() {
     let win = $(window);
     let _this = this;
@@ -73,11 +70,12 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     });
   }
 
-  getPhotos(page:any) {
+  getPhotos(page: any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
       this.apiService.get(`zone/photos?page=${page}`).subscribe(
         (response: any) => {
+          console.log(response);
           this.perPage = response.per_page;
           this.total = response.total;
           this.dataImages = _.concat(this.dataImages, response.data);
@@ -91,8 +89,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     }
   }
 
-  onClick(id:any): void {
-    console.log(id);
+  onClick(id: any): void {
     this.imgId = id;
     this.showImg = true;
   }

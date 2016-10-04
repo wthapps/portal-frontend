@@ -1,7 +1,6 @@
 export class Photo {
   id: number;
   name: string;
-  name_photo: string;
   extension: string;
   dimensions: string;
   created_at: string;
@@ -12,7 +11,6 @@ export class Photo {
   constructor(fields: {
     id?: number,
     name?: string,
-    name_photo?: string,
     extension?: string,
     dimensions?: string,
     created_at?: string,
