@@ -10140,6 +10140,9 @@ body.fixed-hidden {
               color: #4A4A4A; }
               .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown > a:hover {
                 color: #000000; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li.action {
+            border-left: 0px;
+            padding-left: 0px; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li .dropdown-menu {
             left: auto;
             right: 0; }
@@ -10226,6 +10229,12 @@ body.drag-active .dropzone-overlap {
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 100%; }
+  .img-center-dv .img-bottom-left {
+    position: absolute;
+    top: 85%;
+    left: 60px;
+    transform: translate(-50%, -50%);
+    width: 100px; }
 
 .aside-left .navgroup {
   margin-bottom: 20px; }
@@ -12448,6 +12457,9 @@ wth-app:empty + .dots-loader-wrap {
       .row-img.list .photo-box-img.photo-box-img-nav .img-center-dv {
         border-width: 0;
         background-color: transparent; }
+    .row-img.list .photo-box-img .album-box-info {
+      padding: 5px 20px;
+      text-align: left; }
     .row-img.list .photo-box-img:not(.photo-box-img-nav):hover {
       background-color: rgba(204, 230, 250, 0.5); }
 

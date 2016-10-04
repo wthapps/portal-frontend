@@ -4,13 +4,13 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 import {ZPictureGridComponent} from '../shared/grid.component';
 import {ZPictureListComponent} from '../shared/list.component';
 import {ZPhotoDetailComponent} from './photo-detail.component';
-import {ToastsUploadComponent, ToastUploadingComponent} from '../toast-upload/index'
 import {Photo} from '../../../shared/models/photo.model';
 import {
   ApiBaseService,
   UserService,
   LoadingService
 } from '../../../shared/index';
+import {PhotoService} from "../../../shared/services/photo/photo.service";
 
 declare var $: any;
 declare var _: any;
@@ -19,13 +19,12 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-photo',
   templateUrl: 'photo.component.html',
+  providers: [PhotoService],
   directives: [
     ROUTER_DIRECTIVES,
     ZPictureGridComponent,
     ZPictureListComponent,
     ZPhotoDetailComponent,
-    ToastsUploadComponent,
-    ToastUploadingComponent
   ]
 })
 
@@ -44,7 +43,8 @@ export class ZPhotoComponent implements OnInit {
 
   constructor(private apiService: ApiBaseService,
               private userService: UserService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private photoService: PhotoService) {
   }
 
   ngOnInit() {
@@ -68,7 +68,7 @@ export class ZPhotoComponent implements OnInit {
   getPhotos(page: any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
-      this.apiService.get(`${this.userService.profile.id}/zone/photos?page=${page}`).subscribe(
+      this.apiService.get(`zone/photos?page=${page}`).subscribe(
         (response: any) => {
           console.log(response);
           this.perPage = response.per_page;
@@ -99,4 +99,7 @@ export class ZPhotoComponent implements OnInit {
     this.pageView = view;
   }
 
+  addedToAlbum($event:any) {
+    console.log('parent' + $event)
+  }
 }

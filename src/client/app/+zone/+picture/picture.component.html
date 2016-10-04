@@ -11,11 +11,11 @@
 
 
 </div>
-<page-zone-bar (openWindow)="openFileWindow($event)" 
+<page-zone-bar (openWindow)="openFileWindow($event)"
                (selectedFiles)="handleFileUpload($event)"
                (pageView)="viewChanged($event)"></page-zone-bar>
 <router-outlet></router-outlet>
 
-<toast-uploading [files]="files"></toast-uploading>
+<toast-uploading [files]="files" (albumAndPhotos)="onAlbumAndPhotos($event)"></toast-uploading>
 
 <wth-toast-upload></wth-toast-upload>

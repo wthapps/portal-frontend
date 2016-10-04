@@ -1,7 +1,7 @@
 
 
 <div class="toast-upload-wrap">
-  
+
   <!-- uploading status -->
   <div class="toast-upload-item" *ngIf="step==1">
     <div class="toast-upload-header">
@@ -14,7 +14,7 @@
           <div class="photo-box-img">
             <figure class="img-center-dv">
               <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-              <img class="img-center img-uploading" [src]="current_photo"  alt="">              
+              <img class="img-center img-uploading" [src]="current_photo"  alt="">
             </figure>
           </div>
         </div>
@@ -52,7 +52,7 @@
           <p>Uploaded to Photo</p>
           <p class="media-heading">{{uploaded_num}} of {{files_num}}</p>
           <div class="text-right">
-            <a href="#">Create Album</a> <a class="ml10" href="#">Add to Album</a>
+            <a href="#">Create Album</a> <a class="ml10" (click)="onAddToAlbum($event)">Add to Album</a>
           </div>
         </div>
       </div>
@@ -84,4 +84,7 @@
   </div>
 
 </div>
+
+<page-zone-form-add-to-album (addedToAlbumEvent)="addedToAlbum($event)" [photoIds]="photoIds" [modalShow]="showModalAddToAlbum"
+                             (modalHide)="onModalHide($event)" (modalHide2)="onModalHide2($event)"></page-zone-form-add-to-album>
 

@@ -339,6 +339,10 @@ $footer-height: 222px;
               }
             }
           }
+          &.action {
+            border-left: 0px;
+            padding-left: 0px;
+          }
           .dropdown-menu {
             left: auto;
             right: 0;
@@ -451,5 +455,9 @@ body.drag-active {
   .img-center {
     @include center();
     max-width: 100%;
+  }
+  .img-bottom-left {
+    @include bottom-left();
+    width: 100px;
   }
 }
