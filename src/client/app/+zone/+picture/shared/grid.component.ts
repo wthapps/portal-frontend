@@ -63,24 +63,27 @@ export class ZPictureGridComponent implements OnChanges {
    *
    * @param e
    * @param id of Image
-     */
+   */
   onSelected(e: any, id: number) {
     let parent = $(e.target).parents('.row-img');
     let el = $(e.target).parents('.photo-box-img');
 
-    // checking multi selection
     if (!this.keyCtrl) {
       this.dataAddImages = [];
-      parent.find('.photo-box-img').removeClass('selected');
-    }
-
-    el.toggleClass('selected');
-
-    // checking item exists in array
-    if (_.indexOf(this.dataAddImages, id) > 0) {
-      _.pull(this.dataAddImages, id); // remove
+      if (el.hasClass('selected')) {
+        el.removeClass('selected');
+      } else {
+        parent.find('.photo-box-img').removeClass('selected');
+        el.addClass('selected');
+        this.dataAddImages.push(id); // add
+      }
     } else {
-      this.dataAddImages.push(id); // add
+      el.toggleClass('selected');
+      if (_.indexOf(this.dataAddImages, id) >= 0) {
+        _.pull(this.dataAddImages, id); // remove
+      } else {
+        this.dataAddImages.push(id); // add
+      }
     }
     console.log(this.dataAddImages);
   }
