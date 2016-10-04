@@ -10140,6 +10140,9 @@ body.fixed-hidden {
               color: #4A4A4A; }
               .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown > a:hover {
                 color: #000000; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li.action {
+            border-left: 0px;
+            padding-left: 0px; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li .dropdown-menu {
             left: auto;
             right: 0; }

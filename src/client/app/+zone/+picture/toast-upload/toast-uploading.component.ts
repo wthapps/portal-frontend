@@ -23,8 +23,9 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   stopped_num: number;
   pending_request: any;
   showModalAddToAlbum: boolean;
-  photoIds: Array<number>;
+  photoIds: Array<number> = new Array<number>();
   @Input() files: any;
+  @Output() albumAndPhotos: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private apiService: ApiBaseService, private userService: UserService){
 
@@ -32,8 +33,6 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
   ngOnInit(){
     this.step = 0;
-    this.showModalAddToAlbum = false;
-    this.photoIds = new Array<number>();
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -56,7 +55,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
     this.step = 4;
   }
 
-  private uploadImages(files){
+  uploadImages(files){
     var i: number;
     var file_name: string;
     var reader: FileReader;
@@ -97,15 +96,10 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
   onAddToAlbum(): void {
     this.showModalAddToAlbum = true;
-    console.log('click Add', this.photoIds, this.showModalAddToAlbum);
   }
 
-  onModalHide(arr:any) {
-    console.log('end', this.photoIds, arr);
-  }
-
-  onModalHide2(x:boolean) {
-    this.showModalAddToAlbum =x;
-    console.log('onModalHide2', x);
+  onModalHide(album:any) {
+    this.showModalAddToAlbum = false;
+    this.albumAndPhotos.emit({photoIds: this.photoIds, albumId: album})
   }
 }

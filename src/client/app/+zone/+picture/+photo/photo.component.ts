@@ -4,8 +4,6 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 import {ZPictureGridComponent} from '../shared/grid.component';
 import {ZPictureListComponent} from '../shared/list.component';
 import {ZPhotoDetailComponent} from './photo-detail.component';
-import {ToastsUploadComponent, ToastUploadingComponent} from '../toast-upload/index'
-import {AddedToAlbumToast} from './toast/added-to-album-toast.component'
 import {Photo} from '../../../shared/models/photo.model';
 import {
   ApiBaseService,
@@ -27,9 +25,6 @@ declare var _: any;
     ZPictureGridComponent,
     ZPictureListComponent,
     ZPhotoDetailComponent,
-    ToastsUploadComponent,
-    ToastUploadingComponent,
-    // AddedToAlbumToast,
   ]
 })
 

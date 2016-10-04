@@ -10,8 +10,12 @@ export class PhotoService extends ApiBaseService{
     super(http);
   }
 
-  addPhotosToAlbum(photos:Array<Photo>, album:any) {
-    this.post('zone/albums/2/photos', '[{"id": 1}, {"id": 2}, {"id": 3}]').subscribe((result: any) => {
+  addPhotosToAlbum(photos:any, album:any) {
+    console.log(photos, album);
+    let body = JSON.stringify({
+      photos: photos,
+    });
+    this.post('zone/albums/'+album+'/photos', body).subscribe((result: any) => {
         console.log(result);
       },
       error => {

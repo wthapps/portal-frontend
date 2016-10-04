@@ -339,6 +339,10 @@ $footer-height: 222px;
               }
             }
           }
+          &.action {
+            border-left: 0px;
+            padding-left: 0px;
+          }
           .dropdown-menu {
             left: auto;
             right: 0;

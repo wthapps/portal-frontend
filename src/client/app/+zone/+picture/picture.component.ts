@@ -4,6 +4,7 @@ import {ToastUploadingComponent} from './toast-upload/index';
 import {ApiBaseService} from "../../shared/services/apibase.service";
 import {UserService} from "../../shared/services/user.service";
 import {ZPictureBarComponent} from './shared/bar-control.component';
+import {PhotoService} from "../../shared/services/photo/photo.service";
 // import {LoadingService} from "../../../../../dist/tmp/app/partials/loading/loading.service";
 // import {ToastsService} from "../../../../../dist/tmp/app/partials/toast/toast-message.service";
 
@@ -14,6 +15,7 @@ declare var $: any;
   moduleId: module.id,
   selector: 'page-zone-picture',
   templateUrl: 'picture.component.html',
+  providers: [PhotoService],
   directives: [
     ROUTER_DIRECTIVES,
     ToastUploadingComponent,
@@ -36,20 +38,21 @@ export class ZPictureComponent implements OnInit {
 
   constructor(private element: ElementRef,
               private apiService: ApiBaseService,
-              private userService: UserService) {
+              private userService: UserService,
+              private photoService: PhotoService) {
   }
 
   ngOnInit() {
     // this.photo_input_element = document.getElementById('photo_input_element');
-    
+
     // this.test_img = this.element.nativeElement.querySelector('.img-center');
   }
 
   ngAfterViewInit() {
-    
+
   }
 
-  openFileWindow(event: any) {    
+  openFileWindow(event: any) {
     event.preventDefault();
     this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
     this.photo_input_element.value = null;
@@ -93,4 +96,8 @@ export class ZPictureComponent implements OnInit {
     this.dragging_enter = true;
   }
 
+  onAlbumAndPhotos(event:any) {
+    console.log(event);
+    this.photoService.addPhotosToAlbum(event.photoIds, event.albumId);
+  }
 }
