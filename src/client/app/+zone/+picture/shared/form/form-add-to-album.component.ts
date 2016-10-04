@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
 
-import {ZFormAlbumListComponent} from './form_component/list-album.component'
-import {Album} from '../../../../shared/models/album.model'
+import {Album} from '../../../../shared/models/album.model';
 import {
   ApiBaseService,
   LoadingService
@@ -13,21 +12,18 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'page-zone-form-add-to-album',
-  templateUrl: 'form-add-to-album.component.html',
-  directives: [
-    ZFormAlbumListComponent,
-  ]
+  templateUrl: 'form-add-to-album.component.html'
 })
 export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() modalShow:boolean;
-  @Input() photoIds:Array<number>;
+  @Input() modalShow: boolean;
+  @Input() photoIds: Array<number>;
   dataAlbums: Array<Album> = [];
   currentPage: number = 1;
   perPage: number = 1;
   total: number = 1;
   errorMessage = '';
-  album_id:number;
-  photo_id:Array<number> = [];
+  album_id: number;
+  photo_id: Array<number> = [];
 
   @Output() modalHide: EventEmitter<any> = new EventEmitter<any>();
   @Output() modalHide2: EventEmitter<any> = new EventEmitter<any>();
@@ -35,6 +31,7 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
   constructor(private apiService: ApiBaseService,
               private loadingService: LoadingService) {
   }
+
   // @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnInit() {
@@ -61,7 +58,7 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
     // });
 
     let _this = this;
-    $('#form-add-to-album-modal').on('hidden.bs.modal', function (e:any) {
+    $('#form-add-to-album-modal').on('hidden.bs.modal', function (e: any) {
       _this.modalShow = false;
       _this.modalHide2.emit(false);
       console.log('hidden.bs.modal, _this.modalShow:', _this.modalShow);
@@ -70,7 +67,7 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
 
   }
 
-  getAlbum(page:any) {
+  getAlbum(page: any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#album-data-loading');
       this.apiService.get(`zone/albums?page=${page}`).subscribe(
@@ -89,17 +86,17 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
   }
 
   ngOnChanges() {
-    console.log('this.photo_id', this.photo_id );
+    console.log('this.photo_id', this.photo_id);
     this.photo_id = this.photoIds;
-    console.log('this.photo_id', this.photo_id );
+    console.log('this.photo_id', this.photo_id);
     if (this.modalShow) {
       $('#form-add-to-album-modal').modal('show');
     }
   }
 
-  addToAlbum(e:any,id:any,album:any) {
-    console.log('addToAlbum:this.photo_id:', this.photo_id );
-    console.log(e,id,album);
+  addToAlbum(e: any, id: any, album: any) {
+    console.log('addToAlbum:this.photo_id:', this.photo_id);
+    console.log(e, id, album);
     this.modalHide.emit(album);
     $('#form-add-to-album-modal').modal('hide');
 
@@ -109,7 +106,6 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
     // $('#form-add-to-album-modal').modal('hide');
     // console.log('choose ', this.album_id)
     // this.modalHide.emit(this.album_id);
-
 
 
   }

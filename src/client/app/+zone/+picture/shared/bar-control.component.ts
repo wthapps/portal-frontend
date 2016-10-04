@@ -22,7 +22,7 @@ export class ZPictureBarComponent implements AfterViewInit {
     {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'},
     {name: "Albums", css: 'fa fa-files-o', link: '/zone/picture/album'},
   ];
-  title: any;
+  selectedEl: any;
 
 
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
@@ -34,7 +34,7 @@ export class ZPictureBarComponent implements AfterViewInit {
     this.router.events.subscribe((navigation: any) => {
       for (var item of this.items) {
         if (item.link == navigation.url) {
-          this.title = item.name;
+          this.selectedEl = item;
         }
       }
     });
