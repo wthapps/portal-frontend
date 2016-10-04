@@ -80,6 +80,14 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     // $('body').on('click', '.photo-detail-img figure, .photo-detail-img-control, .photo-detail-top', function (e: any) {
     //   e.stopPropagation();
     // });
+
+    let _thisPhotoDetail = this;
+    $('body').on('click', '.photo-detail-img', function () {
+      _thisPhotoDetail.hideModal();
+    });
+    $('body').on('click', '.photo-detail-img figure, .photo-detail-img-control', function (e: any) {
+      e.stopPropagation();
+    });
   }
 
   ngOnDestroy() {
