@@ -1,12 +1,8 @@
 import {Component, AfterViewInit, OnInit, ElementRef} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {ToastUploadingComponent} from './toast-upload/index';
-import {ApiBaseService} from "../../shared/services/apibase.service";
-import {UserService} from "../../shared/services/user.service";
 import {ZPictureBarComponent} from './shared/bar-control.component';
 import {PhotoService} from "../../shared/services/photo/photo.service";
-// import {LoadingService} from "../../../../../dist/tmp/app/partials/loading/loading.service";
-// import {ToastsService} from "../../../../../dist/tmp/app/partials/toast/toast-message.service";
 
 declare var $: any;
 
@@ -23,7 +19,7 @@ declare var $: any;
   ]
 })
 
-export class ZPictureComponent implements OnInit {
+export class ZPictureComponent implements OnInit, AfterViewInit {
   photo_input_element: any = null;
   files: any;
   dragging_over: boolean;
@@ -37,8 +33,6 @@ export class ZPictureComponent implements OnInit {
   pageView: string = 'grid';
 
   constructor(private element: ElementRef,
-              private apiService: ApiBaseService,
-              private userService: UserService,
               private photoService: PhotoService) {
   }
 
@@ -49,7 +43,8 @@ export class ZPictureComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-
+    let _thisPicture = this;
+    $('body').bind('dragover', _thisPicture.dragover);
   }
 
   openFileWindow(event: any) {
