@@ -109,16 +109,16 @@
       <a href="#" (click)="preview($event)" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-eye"></i></a>
     </li>
     <li>
-      <a href="#" (click)="share($event)"><i class="fa fa-share-alt"></i></a>
+      <a href="#" (click)="share($event)" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-share-alt"></i></a>
     </li>
     <li>
-      <a href="#" (click)="addFavourite($event)"><i class="fa fa-star"></i></a>
+      <a href="#" (click)="addFavourite($event)" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-star"></i></a>
     </li>
     <li>
-      <a href="#" (click)="tag($event)"><i class="fa fa-tag"></i></a>
+      <a href="#" (click)="tag($event)" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-tag"></i></a>
     </li>
     <li>
-      <a href="#" (click)="delete($event)"><i class="fa fa-trash-o"></i></a>
+      <a href="#" (click)="delete($event)" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-trash-o"></i></a>
     </li>
     <li class="dropdown action">
       <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

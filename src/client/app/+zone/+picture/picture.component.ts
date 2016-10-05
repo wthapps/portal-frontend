@@ -9,10 +9,14 @@ import {AddedToAlbumToast} from "./+photo/toast/added-to-album-toast.component";
 import {ZPictureFormAddToAlbumComponent} from "./shared/form/form-add-to-album.component";
 import {ZPictureFormCreateAlbumComponent} from "./shared/form/form-create-album.component";
 import {FictureSharedData} from "../../shared/services/photo/ficturesharedata.service";
-import {ApiBaseService} from "../../shared/services/apibase.service";
-import {UserService} from "../../shared/services/user.service";
-// import {LoadingService} from "../../../../../dist/tmp/app/partials/loading/loading.service";
-// import {ToastsService} from "../../../../../dist/tmp/app/partials/toast/toast-message.service";
+
+import {
+  ApiBaseService,
+  UserService,
+  DialogService,
+  LoadingService,
+  ToastsService
+} from "../../shared/index";
 
 declare var $: any;
 
@@ -52,12 +56,12 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   isVideo: boolean;
 
 
-  showAddedtoAlbumToast:boolean = false;
-  photoCount:number;
-  showAddtoAlbumForm:boolean = false;
-  album:number;
-  photos:Array<number>;
-  showCreateAlbum:boolean = false;
+  showAddedtoAlbumToast: boolean = false;
+  photoCount: number;
+  showAddtoAlbumForm: boolean = false;
+  album: number;
+  photos: Array<number>;
+  showCreateAlbum: boolean = false;
 
   /**
    * Items is array of Photos, Album, Video, etc.
@@ -69,8 +73,10 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   constructor(private element: ElementRef,
               private photoService: PhotoService,
               private route: ActivatedRoute,
-              private apiService: ApiBaseService,
-              private userService: UserService,
+              private apiBaseService: ApiBaseService,
+              private dialogService: DialogService,
+              private loadingService: LoadingService,
+              private toastsService: ToastsService,
               private fictureSharedData: FictureSharedData) {
   }
 
@@ -82,15 +88,15 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
 
     this.sub = this.route.params.subscribe(params => {
       this.category = params['category'];
-      if (this.category == 'photo' || this.category == undefined){
+      if (this.category == 'photo' || this.category == undefined) {
         this.isPhoto = true;
         this.isAlbum = false;
         this.isVideo = false;
-      }else if (this.category == 'album'){
+      } else if (this.category == 'album') {
         this.isAlbum = true;
         this.isPhoto = false;
         this.isVideo = false;
-      }else if (this.category == 'video'){
+      } else if (this.category == 'video') {
         this.isVideo = true;
         this.isPhoto = false;
         this.isAlbum = false;
@@ -103,7 +109,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     $('body').bind('dragover', _thisPicture.dragover);
   }
 
-  openFileWindow(event:any) {
+  openFileWindow(event: any) {
     event.preventDefault();
     this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
     this.photo_input_element.value = null;
@@ -141,78 +147,99 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.dragging_enter = true;
   }
 
-  hideAddedtoAlbumToast(event:boolean) {
+  hideAddedtoAlbumToast(event: boolean) {
     this.showAddedtoAlbumToast = event;
   }
 
-  showModalAddToAlbumEvent(event:boolean) {
+  showModalAddToAlbumEvent(event: boolean) {
     this.showAddtoAlbumForm = true;
   }
 
-  onModalHide(e:boolean) {
+  onModalHide(e: boolean) {
     this.showAddtoAlbumForm = e;
     this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId).subscribe((result: any) => {
         this.showAddedtoAlbumToast = true;
-        this.photoCount = this.photos.length
+        this.photoCount = this.photos.length;
       },
       error => {
       }
     );
   }
 
-  photoEvent(photos:Array<number>) {
+  photoEvent(photos: Array<number>) {
     this.photos = photos;
 
   }
 
-  onCreateNewAlbum($event:boolean) {
+  onCreateNewAlbum($event: boolean) {
     this.showCreateAlbum = true
   }
 
   /**
    *
    * @param event
-     */
+   */
 
-  preview(event: any){
-
-  }
-
-  share(event: any){
+  preview(event: any) {
 
   }
 
-  addFavourite(event: any){
+  share(event: any) {
 
   }
 
-  tag(event: any){
+  addFavourite(event: any) {
 
   }
 
-  delete(event: any){
+  tag(event: any) {
 
   }
 
-  add(event: any){
+  delete(event: any) {
+    if (event) {
+      this.dialogService.activate('Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
+        if (responseOK) {
+          this.loadingService.start();
+          this.apiBaseService.delete(`zone/photos/${this.selectedItems}`)
+            .subscribe((result: any) => {
+                // stop loading
+                this.loadingService.stop();
+                //this.toastsService.success(result.message);
+              },
+              error => {
+                // stop loading
+                this.loadingService.stop();
+                //this.toastsService.danger(error);
+                console.log(error);
+              }
+            );
+        }
+      });
+    }
+  }
+
+  add(event: any) {
 
   }
 
-  download(event: any){
+  download(event: any) {
 
   }
 
-  edit(event: any){
+  edit(event: any) {
 
   }
 
-  viewInfo(event: any){
+  viewInfo(event: any) {
 
   }
 
-  changedSelectedItems(items: Array<any>){
+  changedSelectedItems(items: Array<any>) {
 
+    this.selectedItems = items;
     this.hasSelectedItem = (items.length > 0) ? true : false;
+    console.log(items);
   }
 
   viewChanged(view: string) {
