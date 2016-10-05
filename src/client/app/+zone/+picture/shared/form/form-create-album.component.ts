@@ -32,7 +32,7 @@ export class ZPictureFormCreateAlbumComponent implements OnInit, OnChanges, Afte
   }
 
   ngOnChanges() {
-    if (1) {
+    if (0) {
     // if (this.showCreateAlbum) {
       $('#form-create-album-modal').modal('show');
     }
