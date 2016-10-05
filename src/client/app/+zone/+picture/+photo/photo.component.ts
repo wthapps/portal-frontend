@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, Input, EventEmitter, OnChanges} from '@angular/core';
+import {Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
 
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
@@ -44,7 +44,9 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   isGridView: boolean;
   isListView: boolean;
   @Input() pageView: string = 'grid';
+  @Input() resetSelected: boolean;
   @Input() preview: boolean;
+  
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
@@ -143,7 +145,6 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   }
 
   onImgsSelected(event: any) {
-    console.log(event);
     let _this_photos = this;
     this.dataSelectedPhotos = [];
     _.map(event, function (v) {

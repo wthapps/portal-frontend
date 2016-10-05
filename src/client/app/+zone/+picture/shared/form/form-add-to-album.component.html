@@ -8,20 +8,20 @@
       </div>
       <div class="modal-body">
         <div>
-          <span><a class="btn btn-default btn-circle" data-toggle="dropdown" href="#"><i class="fa fa-plus"></i></a></span>
+          <span><a class="btn btn-default btn-circle" data-toggle="dropdown" href="#" (click)="onCreateNewAlbum()"><i class="fa fa-plus"></i></a></span>
           <span> Create New Album</span>
         </div>
       </div><!-- /.modal-content -->
       <div class="modal-footer">
         <div class="row-img list">
-          <div class="photo-box-img" *ngFor="let album of dataAlbums" (click)="addToAlbum(album.id)">
+          <div class="photo-box-img" *ngFor="let album of dataAlbums" (click)="addToAlbum(album)">
             <figure class="img-center-dv">
               <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
               <img class="img-center" src="/assets/images/zone/img-default.png" alt="">
             </figure>
             <div class="album-box-info">
               <div>
-                {{album.id}}
+                {{album.name}}
               </div>
               <div style="font-size: 11px">
                 <span>{{album.created_at | date:'MMM yyyy' : 'UTC'}}</span>

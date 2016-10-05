@@ -27,10 +27,13 @@ export class ZPictureGridComponent implements OnChanges {
   @Input() data: Array<Photo>;
   @Output() imgDetail: EventEmitter<number> = new EventEmitter<number>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Input() resetSelected: boolean;
+
   dataPhotos: Array<Photo> = [];
   selectedPhotos: Array<any> = [];
 
   keyCtrl: boolean = false;
+  reset:boolean;
 
 
   /*@HostListener('document:keyup', ['$event']);
@@ -54,10 +57,21 @@ export class ZPictureGridComponent implements OnChanges {
 
   ngOnChanges() {
     this.dataPhotos = this.data;
+    if (this.reset != this.resetSelected) {
+      this.removeSelectedItems();
+    }
+    this.reset = this.resetSelected;
   }
 
   onDbClick(id: any) {
     this.imgDetail.emit(id);
+  }
+
+  removeSelectedItems() {
+    let el = $('.photo-box-img');
+    if (el.hasClass('selected')) {
+      el.removeClass('selected');
+    }
   }
 
   /**

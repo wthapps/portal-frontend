@@ -59,7 +59,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   isPhoto: boolean;
   isAlbum: boolean;
   isVideo: boolean;
-
+  isAlbumDetail:boolean;
 
   showAddedtoAlbumToast: boolean = false;
   photoCount: number;
@@ -67,6 +67,8 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   album: number;
   photos: Array<number>;
   showCreateAlbum: boolean = false;
+  albumName:string;
+  resetSelected:boolean = false;
 
   /**
    * Modal
@@ -83,6 +85,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   hasSelectedItem: boolean;
   hasMultiSelectedItem: boolean;
 
+
   constructor(private element: ElementRef,
               private photoService: PhotoService,
               private route: ActivatedRoute,
@@ -98,21 +101,30 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.isAlbum = false;
     this.isVideo = false;
     this.selectedItems = new Array<any>();
+    this.photos = new Array<number>();
 
     this.sub = this.route.params.subscribe(params => {
+      console.log(params);
       this.category = params['category'];
       if (this.category == 'photo' || this.category == undefined) {
         this.isPhoto = true;
         this.isAlbum = false;
         this.isVideo = false;
-      } else if (this.category == 'album') {
+        this.isAlbumDetail = false;
+      } else if (this.category == 'album' && params['id'] == null) {
         this.isAlbum = true;
         this.isPhoto = false;
         this.isVideo = false;
+      } else if (this.category == 'album' && params['id'] != null) {
+        this.isAlbumDetail = true;
+        this.isPhoto = false;
+        this.isVideo = false;
+        this.isAlbum = false;
       } else if (this.category == 'video') {
         this.isVideo = true;
         this.isPhoto = false;
         this.isAlbum = false;
+        this.isAlbumDetail = false;
       }
     });
   }
@@ -167,25 +179,49 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   showModalAddToAlbumEvent(event: boolean) {
     this.showAddtoAlbumForm = true;
   }
-
+  // Add Photo to Album modal
   onModalHideAlbum(e: boolean) {
     this.showAddtoAlbumForm = e;
-    this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId).subscribe((result: any) => {
-        this.showAddedtoAlbumToast = true;
-        this.photoCount = this.photos.length;
-      },
-      error => {
+    this.addPhotosToAlbumAction();
+  }
+
+  addPhotosToAlbumAction () {
+    console.log(this.photos.length, this.fictureSharedData.albumId);
+    if (this.photos.length != 0 && this.fictureSharedData.albumId) {
+      let res = this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId);
+      if (res) {
+        res.subscribe((result: any) => {
+            console.log(result);
+            this.showAddedtoAlbumToast = true;
+            this.photoCount = this.photos.length;
+            this.albumName = this.fictureSharedData.albumName;
+            // Reset Data
+            this.photos = new Array<number>();
+            this.fictureSharedData.albumId = null;
+            this.resetSelectedAction();
+          },
+          error => {
+          }
+        );
       }
-    );
+    }
+  }
+
+  resetSelectedAction() {
+    if (this.resetSelected) {
+      this.resetSelected = false;
+    } else {
+      this.resetSelected = true;
+    }
   }
 
   photoEvent(photos: Array<number>) {
     this.photos = photos;
-
   }
 
-  onCreateNewAlbum($event: boolean) {
-    this.showCreateAlbum = true
+  onCreateNewAlbum($event:boolean) {
+    this.showAddtoAlbumForm = false;
+    this.showCreateAlbum = true;
   }
 
   /**
@@ -240,8 +276,9 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     if (event) {
       this.dialogService.activate('Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
         if (responseOK) {
+          let body = JSON.stringify({ids: this.selectedItems});
           this.loadingService.start();
-          this.apiBaseService.delete(`zone/photos/${this.selectedItems}`)
+          this.apiBaseService.post(`zone/photos/delete`, body)
             .subscribe((result: any) => {
                 // stop loading
                 this.loadingService.stop();
@@ -262,9 +299,29 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   add(event: any) {
 
   }
-
   download(event: any) {
 
+  }
+
+  add(event: any){
+    this.showAddtoAlbumForm = true;
+    if (event) {
+    let body = JSON.stringify({ids: this.selectedItems});
+    this.loadingService.start();
+    this.apiBaseService.post(`zone/photos/download`, body)
+      .subscribe((result: any) => {
+          // stop loading
+          this.loadingService.stop();
+          //this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          //this.toastsService.danger(error);
+          console.log(error);
+        }
+      );
+    }
   }
 
   edit(event: any) {
@@ -276,14 +333,20 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   changedSelectedItems(items: Array<any>) {
-
     this.selectedItems = items;
     this.hasSelectedItem = (items.length > 0) ? true : false;
+    if (this.category == "photo") {
+      this.photos = this.selectedItems;
+    }
     this.hasMultiSelectedItem = (items.length > 1) ? true : false;
-    console.log(this.hasMultiSelectedItem);
   }
 
   viewChanged(view: string) {
     this.pageView = view;
+  }
+
+  onHideCreateAlbum(e:boolean) {
+    this.showCreateAlbum = e;
+    this.addPhotosToAlbumAction();
   }
 }
