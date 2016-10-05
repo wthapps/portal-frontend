@@ -22,7 +22,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   @Input() files: any;
   @Output() photoEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private apiService: ApiBaseService, private userService: UserService){
 
@@ -94,5 +94,10 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   onAddToAlbum(): void {
     this.showModalAddToAlbumEvent.emit(true);
     this.photoEvent.emit(this.photoIds)
+  }
+
+  onCreateNewAlbum() {
+    this.photoEvent.emit(this.photoIds)
+    this.createNewAlbum.emit(true);
   }
 }

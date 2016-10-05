@@ -26,6 +26,7 @@ export const ZoneRoutes: RouterConfig = [
         // ]
       },
       {path: 'picture/:category', component: ZPictureComponent},
+      {path: 'picture/:category/:id', component: ZPictureComponent},
       {path: '', component: ZPictureComponent}
     ]
   }

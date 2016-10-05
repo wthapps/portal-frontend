@@ -69,7 +69,6 @@ export class ZPictureGridComponent implements OnChanges {
 
   removeSelectedItems() {
     let el = $('.photo-box-img');
-    console.log(el);
     if (el.hasClass('selected')) {
       el.removeClass('selected');
     }

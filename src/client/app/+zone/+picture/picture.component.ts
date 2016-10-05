@@ -54,6 +54,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   isPhoto: boolean;
   isAlbum: boolean;
   isVideo: boolean;
+  isAlbumDetail:boolean;
 
   showAddedtoAlbumToast: boolean = false;
   photoCount: number;
@@ -90,19 +91,27 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.photos = new Array<number>();
 
     this.sub = this.route.params.subscribe(params => {
+      console.log(params);
       this.category = params['category'];
       if (this.category == 'photo' || this.category == undefined) {
         this.isPhoto = true;
         this.isAlbum = false;
         this.isVideo = false;
-      } else if (this.category == 'album') {
+        this.isAlbumDetail = false;
+      } else if (this.category == 'album' && params['id'] == null) {
         this.isAlbum = true;
         this.isPhoto = false;
         this.isVideo = false;
+      } else if (this.category == 'album' && params['id'] != null) {
+        this.isAlbumDetail = true;
+        this.isPhoto = false;
+        this.isVideo = false;
+        this.isAlbum = false;
       } else if (this.category == 'video') {
         this.isVideo = true;
         this.isPhoto = false;
         this.isAlbum = false;
+        this.isAlbumDetail = false;
       }
     });
   }
