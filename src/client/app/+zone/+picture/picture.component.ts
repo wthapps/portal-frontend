@@ -59,6 +59,13 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   photos:Array<number>;
   showCreateAlbum:boolean = false;
 
+  /**
+   * Items is array of Photos, Album, Video, etc.
+   */
+  items: Array<any>;
+  selectedItems: Array<any>;
+  hasSelectedItem: boolean;
+
   constructor(private element: ElementRef,
               private photoService: PhotoService,
               private route: ActivatedRoute,
@@ -71,6 +78,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.isPhoto = false;
     this.isAlbum = false;
     this.isVideo = false;
+    this.selectedItems = new Array<any>();
 
     this.sub = this.route.params.subscribe(params => {
       this.category = params['category'];
@@ -202,8 +210,12 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
 
   }
 
+  changedSelectedItems(items: Array<any>){
+
+    this.hasSelectedItem = (items.length > 0) ? true : false;
+  }
+
   viewChanged(view: string) {
-    console.log('changed view: ', view);
     this.pageView = view;
   }
 }
