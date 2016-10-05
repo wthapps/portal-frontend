@@ -10,9 +10,12 @@ import {ZPictureFormAddToAlbumComponent} from "./shared/form/form-add-to-album.c
 import {ZPictureFormCreateAlbumComponent} from "./shared/form/form-create-album.component";
 import {FictureSharedData} from "../../shared/services/photo/ficturesharedata.service";
 
+
+import {ZPictureSharingComponent} from './shared/form-sharing.component';
+import {ZPictureTaggingComponent} from './shared/form-tagging.component';
+
 import {
   ApiBaseService,
-  UserService,
   DialogService,
   LoadingService,
   ToastsService
@@ -35,6 +38,8 @@ declare var $: any;
     AddedToAlbumToast,
     ZPictureFormAddToAlbumComponent,
     ZPictureFormCreateAlbumComponent,
+    ZPictureSharingComponent,
+    ZPictureTaggingComponent
   ]
 })
 
@@ -64,11 +69,19 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   showCreateAlbum: boolean = false;
 
   /**
+   * Modal
+   */
+  modalShare: boolean = false;
+  modalTag: boolean = false;
+  modalPreview: boolean = false;
+
+  /**
    * Items is array of Photos, Album, Video, etc.
    */
   items: Array<any>;
   selectedItems: Array<any>;
   hasSelectedItem: boolean;
+  hasMultiSelectedItem: boolean;
 
   constructor(private element: ElementRef,
               private photoService: PhotoService,
@@ -155,7 +168,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.showAddtoAlbumForm = true;
   }
 
-  onModalHide(e: boolean) {
+  onModalHideAlbum(e: boolean) {
     this.showAddtoAlbumForm = e;
     this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId).subscribe((result: any) => {
         this.showAddedtoAlbumToast = true;
@@ -181,11 +194,15 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
    */
 
   preview(event: any) {
-
+    if (event) {
+      this.modalPreview = true;
+    }
   }
 
   share(event: any) {
-
+    if (event) {
+      this.modalShare = true;
+    }
   }
 
   addFavourite(event: any) {
@@ -193,7 +210,30 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   tag(event: any) {
+    if (event) {
+      this.modalTag = true;
+    }
+  }
 
+  /**
+   * Hide modal
+   */
+  onModalHide(event: boolean): void {
+    this.modalShare = event;
+    this.modalTag = event;
+    this.modalPreview = event;
+  }
+
+
+  /**
+   * This is action from Photo component
+   */
+  onModalAction(event: string): void {
+    if (event == 'tag') {
+      this.modalTag = true;
+    } else if (event == 'share') {
+      this.modalShare = true;
+    }
   }
 
   delete(event: any) {
@@ -239,7 +279,8 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
 
     this.selectedItems = items;
     this.hasSelectedItem = (items.length > 0) ? true : false;
-    console.log(items);
+    this.hasMultiSelectedItem = (items.length > 1) ? true : false;
+    console.log(this.hasMultiSelectedItem);
   }
 
   viewChanged(view: string) {

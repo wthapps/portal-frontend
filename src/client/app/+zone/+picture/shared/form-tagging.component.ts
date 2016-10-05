@@ -2,7 +2,6 @@ import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit
 import {ApiBaseService} from '../../../shared/services/apibase.service';
 
 
-
 declare var $: any;
 
 @Component({
@@ -12,10 +11,11 @@ declare var $: any;
 })
 export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() modalShow;
+  @Input() data: Array<any>;
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private apiService: ApiBaseService){
+  constructor(private apiBaseService: ApiBaseService) {
 
   }
 
@@ -31,6 +31,7 @@ export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnChanges() {
+    console.log(this.data);
     if (this.modalShow) {
       $('#taggingModal').modal('show');
     }

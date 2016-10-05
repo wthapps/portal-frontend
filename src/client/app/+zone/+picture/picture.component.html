@@ -11,11 +11,11 @@
 
 
 </div>
-<page-zone-bar [hasSelectedItem]="hasSelectedItem"
+<page-zone-bar [hasSelectedItem]="hasSelectedItem" [hasMultiSelectedItem]="hasMultiSelectedItem"
   (openWindow)="openFileWindow($event)"
   (selectedFiles)="handleFileUpload($event)"
   (onViewChanged)="viewChanged($event)"
-  (onPreivew)="preview($event)"
+  (onPreview)="preview($event)"
   (onShare)="share($event)"
   (onTag)="tag($event)"
   (onDelete)="delete($event)"
@@ -25,12 +25,16 @@
 (onViewInfo)="viewInfo($event)"
 ></page-zone-bar>
 <!--<router-outlet></router-outlet>-->
-<page-zone-photo *ngIf="isPhoto" [pageView]="pageView" (selectedPhotos)="changedSelectedItems($event)"></page-zone-photo>
+<page-zone-photo *ngIf="isPhoto" [pageView]="pageView" [preview]="modalPreview" (modalHide)="onModalHide($event)" (modalAction)="onModalAction($event)" (selectedPhotos)="changedSelectedItems($event)"></page-zone-photo>
 <page-zone-album *ngIf="isAlbum" [pageView]="pageView"></page-zone-album>
 
 <toast-uploading [files]="files" (photoEvent)="photoEvent($event)" (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"></toast-uploading>
 <added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>
 
-<page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHide($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>
+<page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHideAlbum($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>
 <page-zone-form-create-album [showCreateAlbum]="showCreateAlbum"></page-zone-form-create-album>
 <wth-toast-upload></wth-toast-upload>
+
+
+<page-zone-formSharing (modalHide)="onModalHide($event)" [modalShow]="modalShare" [data]="selectedItems"></page-zone-formSharing>
+<page-zone-formTagging (modalHide)="onModalHide($event)" [modalShow]="modalTag" [data]="selectedItems"></page-zone-formTagging>

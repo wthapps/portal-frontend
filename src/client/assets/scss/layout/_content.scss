@@ -325,6 +325,13 @@ $footer-height: 222px;
         > li {
           float: left;
           margin-left: 15px;
+          &.action-disabled {
+            cursor: not-allowed;
+            a {
+              pointer-events: none;
+              @include opacity(0.3);
+            }
+          }
           > a {
             line-height: 34px;
             font-size: 20px;
@@ -348,6 +355,7 @@ $footer-height: 222px;
             right: 0;
           }
         }
+
       }
     }
     .control-body-search {

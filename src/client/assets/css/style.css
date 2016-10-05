@@ -10134,6 +10134,12 @@ body.fixed-hidden {
         .page-full .page-body-control .control-body-select.control-body-btnview > li {
           float: left;
           margin-left: 15px; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li.action-disabled {
+            cursor: not-allowed; }
+            .page-full .page-body-control .control-body-select.control-body-btnview > li.action-disabled a {
+              pointer-events: none;
+              opacity: 0.3;
+              filter: alpha(opacity=30); }
           .page-full .page-body-control .control-body-select.control-body-btnview > li > a {
             line-height: 34px;
             font-size: 20px; }

@@ -11,6 +11,7 @@ declare var $: any;
 })
 export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() modalShow: any;
+  @Input() data: Array<any>;
   @Input() photoIds: Array<any>;
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -58,6 +59,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnChanges() {
+    console.log(this.data);
     if (this.modalShow) {
       $('#sharingModal').modal('show');
     }

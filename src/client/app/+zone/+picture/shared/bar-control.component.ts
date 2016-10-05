@@ -27,6 +27,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
   selectedEl: any;
 
   @Input() hasSelectedItem: boolean;
+  @Input() hasMultiSelectedItem: boolean;
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
   @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();
@@ -72,11 +73,11 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(" has selected item change", changes['hasSelectedItem'].currentValue);
-    if (changes['hasSelectedItem'].currentValue) {
-      var view = changes['hasSelectedItem'].currentValue;
-      // console.log(" has selected item change", view);
-    }
+    // console.log(" has selected item change", changes['hasSelectedItem'].currentValue);
+    // if (changes['hasSelectedItem'].currentValue) {
+    //   var view = changes['hasSelectedItem'].currentValue;
+    //   // console.log(" has selected item change", view);
+    // }
   }
 
   toggleShowSearch(e: any): void {

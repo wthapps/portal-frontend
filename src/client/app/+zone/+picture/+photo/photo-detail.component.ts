@@ -2,9 +2,14 @@ import {Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChan
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Photo} from '../../../shared/models/photo.model';
 
-import {ZPictureSharingComponent} from '../shared/form-sharing.component';
-import {ZPictureTaggingComponent} from '../shared/form-tagging.component';
 import {ZPictureEditPhotoComponent} from '../shared/form-edit.component';
+
+import {
+  ApiBaseService,
+  DialogService,
+  LoadingService,
+  ToastsService
+} from "../../../shared/index";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -16,8 +21,6 @@ declare var _: any;
   templateUrl: 'photo-detail.component.html',
   directives: [
     ROUTER_DIRECTIVES,
-    ZPictureSharingComponent,
-    ZPictureTaggingComponent,
     ZPictureEditPhotoComponent
   ]
 })
@@ -27,6 +30,7 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   @Input() showImg: boolean;
   @Input() imgAll: Array<Photo>;
   @Output() hideModalClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() actionModalClicked: EventEmitter<string> = new EventEmitter<string>();
   changeLog: string[] = [];
   imgOne: Photo;
   imgAllData: Array<any>;
@@ -39,9 +43,13 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   errorMessage: string = '';
 
 
-  modalShare: boolean = false;
-  modalTag: boolean = false;
   modalEdit: boolean = false;
+
+  constructor(private apiBaseService: ApiBaseService,
+              private dialogService: DialogService,
+              private loadingService: LoadingService,
+              private toastsService: ToastsService) {
+  }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
     /*let log: string[] = [];
@@ -72,15 +80,6 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   ngAfterViewInit() {
     wheelzoom(document.querySelectorAll('.photo-detail-img img'));
 
-    // let _thisPhotoDetail = this;
-    // $('body').on('click', function () {
-    //   _thisPhotoDetail.hideModal();
-    // });
-    //
-    // $('body').on('click', '.photo-detail-img figure, .photo-detail-img-control, .photo-detail-top', function (e: any) {
-    //   e.stopPropagation();
-    // });
-
     let _thisPhotoDetail = this;
     $('body').on('click', '.photo-detail-img', function () {
       _thisPhotoDetail.hideModal();
@@ -106,15 +105,36 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
    * Show modal
    */
   onShare(): void {
-    this.modalShare = true;
+    this.actionModalClicked.emit('share');
   }
 
   onTag(): void {
-    this.modalTag = true;
+    this.actionModalClicked.emit('tag');
   }
 
   onShowEditInfo() {
     this.modalEdit = true;
+  }
+
+  onDelete(id: any) {
+    this.dialogService.activate('Are you sure to delete ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
+      if (responseOK) {
+        this.loadingService.start();
+        this.apiBaseService.delete(`zone/photos/${id}`)
+          .subscribe((result: any) => {
+              // stop loading
+              this.loadingService.stop();
+              //this.toastsService.success(result.message);
+            },
+            error => {
+              // stop loading
+              this.loadingService.stop();
+              //this.toastsService.danger(error);
+              console.log(error);
+            }
+          );
+      }
+    });
   }
 
   onShowInfo() {
@@ -135,8 +155,6 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
    * Hide modal
    */
   onModalHide(m: boolean): void {
-    this.modalShare = m;
-    this.modalTag = m;
     this.modalEdit = m;
   }
 
