@@ -1,4 +1,5 @@
-import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit, Output, Input,EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureGridComponent} from '../shared/grid.component';
@@ -39,11 +40,13 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   total: number = 1;
 
   dataImages: Array<Photo> = [];
+
   isGridView: boolean;
   isListView: boolean;
   @Input() pageView: string;
 
-
+  pageView: string = 'grid';
+  @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
 
   constructor(private apiService: ApiBaseService,
               private userService: UserService,
@@ -124,5 +127,9 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   }
 
   addedToAlbum($event:any) {
+  }
+
+  onImgsSelected($event:Array<number>) {
+    console.log($event);
   }
 }

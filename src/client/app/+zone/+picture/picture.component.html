@@ -27,6 +27,9 @@
 <page-zone-photo *ngIf="isPhoto" [pageView]="pageView"></page-zone-photo>
 <page-zone-album *ngIf="isAlbum" [pageView]="pageView"></page-zone-album>
 
-<toast-uploading [files]="files" (albumAndPhotos)="onAlbumAndPhotos($event)"></toast-uploading>
+<toast-uploading [files]="files" (photoEvent)="photoEvent($event)" (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"></toast-uploading>
+<added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>
 
+<page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHide($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>
+<page-zone-form-create-album [showCreateAlbum]="showCreateAlbum"></page-zone-form-create-album>
 <wth-toast-upload></wth-toast-upload>

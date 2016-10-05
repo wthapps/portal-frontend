@@ -5,6 +5,14 @@ import {ZPictureBarComponent} from './shared/bar-control.component';
 import {PhotoService} from '../../shared/services/photo/photo.service';
 import {ZPhotoComponent} from './+photo/photo.component';
 import {ZAlbumComponent} from './+album/album.component';
+import {AddedToAlbumToast} from "./+photo/toast/added-to-album-toast.component";
+import {ZPictureFormAddToAlbumComponent} from "./shared/form/form-add-to-album.component";
+import {ZPictureFormCreateAlbumComponent} from "./shared/form/form-create-album.component";
+import {FictureSharedData} from "../../shared/services/photo/ficturesharedata.service";
+import {ApiBaseService} from "../../shared/services/apibase.service";
+import {UserService} from "../../shared/services/user.service";
+// import {LoadingService} from "../../../../../dist/tmp/app/partials/loading/loading.service";
+// import {ToastsService} from "../../../../../dist/tmp/app/partials/toast/toast-message.service";
 
 declare var $: any;
 
@@ -13,13 +21,16 @@ declare var $: any;
   moduleId: module.id,
   selector: 'page-zone-picture',
   templateUrl: 'picture.component.html',
-  providers: [PhotoService],
+  providers: [PhotoService, FictureSharedData],
   directives: [
     ROUTER_DIRECTIVES,
     ToastUploadingComponent,
     ZPictureBarComponent,
     ZPhotoComponent,
-    ZAlbumComponent
+    ZAlbumComponent,
+    AddedToAlbumToast,
+    ZPictureFormAddToAlbumComponent,
+    ZPictureFormCreateAlbumComponent,
   ]
 })
 
@@ -41,9 +52,19 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   isVideo: boolean;
 
 
+  showAddedtoAlbumToast:boolean = false;
+  photoCount:number;
+  showAddtoAlbumForm:boolean = false;
+  album:number;
+  photos:Array<number>;
+  showCreateAlbum:boolean = false;
+
   constructor(private element: ElementRef,
               private photoService: PhotoService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private apiService: ApiBaseService,
+              private userService: UserService,
+              private fictureSharedData: FictureSharedData) {
   }
 
   ngOnInit() {
@@ -74,7 +95,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     $('body').bind('dragover', _thisPicture.dragover);
   }
 
-  openFileWindow(event: any) {
+  openFileWindow(event:any) {
     event.preventDefault();
     this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
     this.photo_input_element.value = null;
@@ -112,9 +133,32 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.dragging_enter = true;
   }
 
-  onAlbumAndPhotos(event:any) {
-    console.log(event);
-    this.photoService.addPhotosToAlbum(event.photoIds, event.albumId);
+  hideAddedtoAlbumToast(event:boolean) {
+    this.showAddedtoAlbumToast = event;
+  }
+
+  showModalAddToAlbumEvent(event:boolean) {
+    this.showAddtoAlbumForm = true;
+  }
+
+  onModalHide(e:boolean) {
+    this.showAddtoAlbumForm = e;
+    this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId).subscribe((result: any) => {
+        this.showAddedtoAlbumToast = true;
+        this.photoCount = this.photos.length
+      },
+      error => {
+      }
+    );
+  }
+
+  photoEvent(photos:Array<number>) {
+    this.photos = photos;
+
+  }
+
+  onCreateNewAlbum($event:boolean) {
+    this.showCreateAlbum = true
   }
 
   /**

@@ -41,6 +41,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
   @Output() onEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() onViewInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() onViewChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private router: Router) {
 
@@ -133,4 +134,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
     this.onViewChanged.emit(view);
   }
 
+  showModalAddToAlbum() {
+    this.showModalAddToAlbumEvent.emit(true);
+  }
 }

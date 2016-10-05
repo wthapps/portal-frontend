@@ -5,6 +5,7 @@ import {
   ApiBaseService,
   LoadingService
 } from '../../../../shared/index';
+import {FictureSharedData} from "../../../../shared/services/photo/ficturesharedata.service";
 
 declare var $: any;
 declare var _: any;
@@ -15,20 +16,20 @@ declare var _: any;
   templateUrl: 'form-add-to-album.component.html',
 })
 export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() modalShow:boolean;
-  @Input() photoIds:Array<number>;
+  @Input() showAddtoAlbumForm:boolean;
   dataAlbums: Array<Album> = [];
   currentPage: number = 1;
   perPage: number = 1;
   total: number = 1;
   errorMessage = '';
   photo_id:Array<number> = [];
-  albumId:any;
 
-  @Output() modalHide: EventEmitter<any> = new EventEmitter<any>();
+  @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private apiService: ApiBaseService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private fictureSharedData: FictureSharedData) {
   }
   // @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -57,7 +58,7 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
 
     let _this = this;
     $('#form-add-to-album-modal').on('hidden.bs.modal', function (e:any) {
-      _this.modalHide.emit(_this.albumId);
+      _this.modalHide.emit(false);
     });
   }
 
@@ -80,13 +81,17 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
   }
 
   ngOnChanges() {
-    if (this.modalShow) {
+    if (this.showAddtoAlbumForm) {
       $('#form-add-to-album-modal').modal('show');
     }
   }
 
-  addToAlbum(e:any,id:any,album:any) {
-    this.albumId = album;
+  addToAlbum(album:any) {
+    this.fictureSharedData.albumId = album;
     $('#form-add-to-album-modal').modal('hide');
+  }
+
+  onCreateNewAlbum() {
+    this.createNewAlbum.emit(true);
   }
 }
