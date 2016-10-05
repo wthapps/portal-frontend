@@ -11,6 +11,7 @@ import {Component, OnChanges, AfterViewInit, Input, Output, EventEmitter} from '
 export class AddedToAlbumToast implements OnChanges, AfterViewInit{
   @Input() showAddedtoAlbumToast:boolean;
   @Input() photoCount:number;
+  @Input() albumName:string;
   @Output() hideAddedtoAlbumToast: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnChanges() {

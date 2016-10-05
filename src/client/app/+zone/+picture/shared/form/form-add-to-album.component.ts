@@ -83,11 +83,14 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
   ngOnChanges() {
     if (this.showAddtoAlbumForm) {
       $('#form-add-to-album-modal').modal('show');
+    } else {
+      $('#form-add-to-album-modal').modal('hide');
     }
   }
 
   addToAlbum(album:any) {
-    this.fictureSharedData.albumId = album;
+    this.fictureSharedData.albumId = album.id;
+    this.fictureSharedData.albumName = album.name;
     $('#form-add-to-album-modal').modal('hide');
   }
 

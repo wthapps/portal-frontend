@@ -42,6 +42,8 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   isGridView: boolean;
   isListView: boolean;
   @Input() pageView: string = 'grid';
+  @Input() resetSelected: boolean;
+
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
 
   constructor(private apiService: ApiBaseService,
@@ -75,7 +77,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pageView'].currentValue) {
+    if (changes['pageView'] != null && changes['pageView'].currentValue) {
       var view = changes['pageView'].currentValue;
       if (view == 'grid') {
         this.isGridView = true;

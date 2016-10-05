@@ -55,13 +55,14 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   isAlbum: boolean;
   isVideo: boolean;
 
-
   showAddedtoAlbumToast: boolean = false;
   photoCount: number;
   showAddtoAlbumForm: boolean = false;
   album: number;
   photos: Array<number>;
   showCreateAlbum: boolean = false;
+  albumName:string;
+  resetSelected:boolean = false;
 
   /**
    * Items is array of Photos, Album, Video, etc.
@@ -69,6 +70,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   items: Array<any>;
   selectedItems: Array<any>;
   hasSelectedItem: boolean;
+
 
   constructor(private element: ElementRef,
               private photoService: PhotoService,
@@ -85,6 +87,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.isAlbum = false;
     this.isVideo = false;
     this.selectedItems = new Array<any>();
+    this.photos = new Array<number>();
 
     this.sub = this.route.params.subscribe(params => {
       this.category = params['category'];
@@ -155,24 +158,49 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.showAddtoAlbumForm = true;
   }
 
+  // Add Photo to Album modal
   onModalHide(e: boolean) {
     this.showAddtoAlbumForm = e;
-    this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId).subscribe((result: any) => {
-        this.showAddedtoAlbumToast = true;
-        this.photoCount = this.photos.length;
-      },
-      error => {
+    this.addPhotosToAlbumAction();
+  }
+
+  addPhotosToAlbumAction () {
+    console.log(this.photos.length, this.fictureSharedData.albumId);
+    if (this.photos.length != 0 && this.fictureSharedData.albumId) {
+      let res = this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId);
+      if (res) {
+        res.subscribe((result: any) => {
+            console.log(result);
+            this.showAddedtoAlbumToast = true;
+            this.photoCount = this.photos.length;
+            this.albumName = this.fictureSharedData.albumName;
+            // Reset Data
+            this.photos = new Array<number>();
+            this.fictureSharedData.albumId = null;
+            this.resetSelectedAction();
+          },
+          error => {
+          }
+        );
       }
-    );
+    }
+  }
+
+  resetSelectedAction() {
+    if (this.resetSelected) {
+      this.resetSelected = false;
+    } else {
+      this.resetSelected = true;
+    }
   }
 
   photoEvent(photos: Array<number>) {
     this.photos = photos;
-
   }
 
-  onCreateNewAlbum($event: boolean) {
-    this.showCreateAlbum = true
+  onCreateNewAlbum($event:boolean) {
+    this.showAddtoAlbumForm = false;
+    this.showCreateAlbum = true;
   }
 
   /**
@@ -222,9 +250,11 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   add(event: any) {
 
   }
-
   download(event: any) {
+  }
 
+  add(event: any){
+    this.showAddtoAlbumForm = true;
   }
 
   edit(event: any) {
@@ -236,13 +266,19 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   changedSelectedItems(items: Array<any>) {
-
     this.selectedItems = items;
     this.hasSelectedItem = (items.length > 0) ? true : false;
-    console.log(items);
+    if (this.category == "photo") {
+      this.photos = this.selectedItems;
+    }
   }
 
   viewChanged(view: string) {
     this.pageView = view;
+  }
+
+  onHideCreateAlbum(e:boolean) {
+    this.showCreateAlbum = e;
+    this.addPhotosToAlbumAction();
   }
 }
