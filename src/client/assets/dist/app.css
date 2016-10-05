@@ -10105,7 +10105,7 @@ body.fixed-hidden {
       list-style-type: none; }
     .page-full .page-body-control .control-body-select {
       float: left;
-      margin-right: 10%; }
+      margin-right: 0; }
       .page-full .page-body-control .control-body-select > li {
         float: left;
         margin-right: 10px; }

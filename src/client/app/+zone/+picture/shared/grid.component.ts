@@ -1,8 +1,7 @@
 import {
   Component, Input, Output,
-  EventEmitter, OnChanges,
+  EventEmitter, OnChanges
   //HostListener,
-  KeyboardEvent
 }                          from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
@@ -40,13 +39,14 @@ export class ZPictureGridComponent implements OnChanges {
    }*/
 
   onDocumentKeyDown(ev: KeyboardEvent) {
-    if (ev.key == 'Control' || ev.key == 'Meta' || ev.keyCode == 17) {
+    console.log(ev);
+    if (ev.keyCode == 17 || ev.keyCode == 91) {
       this.keyCtrl = true;
     }
   }
 
   onDocumentKeyUp(ev: KeyboardEvent) {
-    if (ev.key == 'Control' || ev.key == 'Meta' || ev.keyCode == 17) {
+    if (ev.keyCode == 17 || ev.keyCode == 91) {
       this.keyCtrl = false;
     }
   }
