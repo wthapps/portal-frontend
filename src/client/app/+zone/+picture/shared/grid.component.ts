@@ -19,7 +19,7 @@ declare var _: any;
   ],
   host: {
     '(document:keydown)': 'onDocumentKeyDown($event)',
-    '(document:keyup)': 'onDocumentKeyUp($event)',
+    '(document:keyup)': 'onDocumentKeyUp($event)'
   }
 })
 
@@ -27,8 +27,8 @@ export class ZPictureGridComponent implements OnChanges {
   @Input() data: Array<Photo>;
   @Output() imgDetail: EventEmitter<number> = new EventEmitter<number>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
-  dataImages: Array<Photo> = [];
-  dataAddImages: Array<any> = [];
+  dataPhotos: Array<Photo> = [];
+  selectedPhotos: Array<any> = [];
 
   keyCtrl: boolean = false;
 
@@ -40,23 +40,23 @@ export class ZPictureGridComponent implements OnChanges {
    }*/
 
   onDocumentKeyDown(ev: KeyboardEvent) {
-    console.log(ev);
-    if (ev.keyCode == 17 || ev.keyCode == 91) {
+    // console.log(ev);
+    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
       this.keyCtrl = true;
     }
   }
 
   onDocumentKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 17 || ev.keyCode == 91) {
+    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
       this.keyCtrl = false;
     }
   }
 
   ngOnChanges() {
-    this.dataImages = this.data;
+    this.dataPhotos = this.data;
   }
 
-  ondbClick(id: any) {
+  onDbClick(id: any) {
     this.imgDetail.emit(id);
   }
 
@@ -70,22 +70,22 @@ export class ZPictureGridComponent implements OnChanges {
     let el = $(e.target).parents('.photo-box-img');
 
     if (!this.keyCtrl) {
-      this.dataAddImages = [];
+      this.selectedPhotos = [];
       if (el.hasClass('selected')) {
         el.removeClass('selected');
       } else {
         parent.find('.photo-box-img').removeClass('selected');
         el.addClass('selected');
-        this.dataAddImages.push(id); // add
+        this.selectedPhotos.push(id); // add
       }
     } else {
       el.toggleClass('selected');
-      if (_.indexOf(this.dataAddImages, id) >= 0) {
-        _.pull(this.dataAddImages, id); // remove
+      if (_.indexOf(this.selectedPhotos, id) >= 0) {
+        _.pull(this.selectedPhotos, id); // remove
       } else {
-        this.dataAddImages.push(id); // add
+        this.selectedPhotos.push(id); // add
       }
     }
-    this.imgsSelected.emit(this.dataAddImages);
+    this.imgsSelected.emit(this.selectedPhotos);
   }
 }

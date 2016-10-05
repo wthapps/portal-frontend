@@ -1,6 +1,6 @@
 <div class="row-img">
-  <div class="photo-box-img" *ngFor="let img of dataImages">
-    <figure (click)="onSelected($event,img.id)" (dblclick)="ondbClick(img.id)" class="img-center-dv">
+  <div class="photo-box-img" *ngFor="let img of dataPhotos">
+    <figure (click)="onSelected($event,img.id)" (dblclick)="onDbClick(img.id)" class="img-center-dv">
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
       <img class="img-center" [src]="img.thumbnail_url" alt="">
     </figure>

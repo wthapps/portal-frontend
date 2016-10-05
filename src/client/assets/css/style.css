@@ -9598,7 +9598,7 @@ Header
   .header .dropdown-menu a {
     color: #9B9B9B; }
   .header .navbar-nav-management .dropdown-menu {
-    left: -85px;
+    left: auto;
     padding: 5px; }
     .header .navbar-nav-management .dropdown-menu > li {
       width: 50%;
@@ -12424,7 +12424,8 @@ wth-app:empty + .dots-loader-wrap {
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
     opacity: 0;
-    filter: alpha(opacity=0); }
+    filter: alpha(opacity=0);
+    z-index: 2; }
 
 .row-img .photo-box-img.selected .img-center-dv {
   border-color: #2996CC; }
@@ -12438,7 +12439,25 @@ wth-app:empty + .dots-loader-wrap {
   .row-img.list .photo-box-img {
     display: table;
     width: 100%;
-    padding: 5px; }
+    padding: 5px;
+    position: relative;
+    cursor: pointer; }
+    .row-img.list .photo-box-img:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1; }
+    .row-img.list .photo-box-img.selected {
+      background-color: #2996CC;
+      color: #ffffff;
+      -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1); }
+      .row-img.list .photo-box-img.selected:hover {
+        background-color: #2996CC !important;
+        color: #ffffff; }
     .row-img.list .photo-box-img > figure, .row-img.list .photo-box-img > div {
       display: table-cell;
       vertical-align: middle; }

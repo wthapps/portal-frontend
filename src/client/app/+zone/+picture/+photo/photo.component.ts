@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, Input,EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import {Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
 
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
@@ -11,7 +11,6 @@ import {
   UserService,
   LoadingService
 } from '../../../shared/index';
-import {PhotoService} from '../../../shared/services/photo/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -20,7 +19,6 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-photo',
   templateUrl: 'photo.component.html',
-  providers: [PhotoService],
   directives: [
     ROUTER_DIRECTIVES,
     ZPictureGridComponent,
@@ -39,27 +37,23 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   perPage: number = 1;
   total: number = 1;
 
-  dataImages: Array<Photo> = [];
+  photos: Array<Photo> = [];
 
   isGridView: boolean;
   isListView: boolean;
-  @Input() pageView: string;
-
-  pageView: string = 'grid';
-  @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Input() pageView: string = 'grid';
+  @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
 
   constructor(private apiService: ApiBaseService,
-              private userService: UserService,
-              private loadingService: LoadingService,
-              private photoService: PhotoService) {
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
 
-    if (this.pageView == 'grid'){
+    if (this.pageView == 'grid') {
       this.isGridView = true;
       this.isListView = false;
-    }else if  (this.pageView == 'list'){
+    } else if (this.pageView == 'list') {
       this.isGridView = false;
       this.isListView = true;
     }
@@ -80,13 +74,13 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    if (changes['pageView'].currentValue){
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['pageView'].currentValue) {
       var view = changes['pageView'].currentValue;
-      if (view == 'grid'){
+      if (view == 'grid') {
         this.isGridView = true;
         this.isListView = false;
-      }else if  (view == 'list'){
+      } else if (view == 'list') {
         this.isGridView = false;
         this.isListView = true;
       }
@@ -100,7 +94,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
         (response: any) => {
           this.perPage = response.per_page;
           this.total = response.total;
-          this.dataImages = _.concat(this.dataImages, response.data);
+          this.photos = _.concat(this.photos, response.data);
           this.loadingService.stop('#photodata-loading');
         },
         error => {
@@ -126,10 +120,11 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     this.pageView = view;
   }
 
-  addedToAlbum($event:any) {
+  addedToAlbum($event: any) {
   }
 
-  onImgsSelected($event:Array<number>) {
-    console.log($event);
+  onImgsSelected($event: any) {
+    this.selectedPhotos = $event;
+    console.log('photo:', $event);
   }
 }
