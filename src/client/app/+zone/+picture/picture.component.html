@@ -13,8 +13,19 @@
 </div>
 <page-zone-bar (openWindow)="openFileWindow($event)"
                (selectedFiles)="handleFileUpload($event)"
-               (pageView)="viewChanged($event)"></page-zone-bar>
-<router-outlet></router-outlet>
+               (onViewChanged)="viewChanged($event)"
+               (onPreivew)="preview($event)"
+               (onShare)="share($event)"
+               (onTag)="tag($event)"
+               (onDelete)="delete($event)"
+               (onAdd)="add($event)"
+               (onEdit)="edit($event)"
+               (onDownload)="download($event)"
+               (onViewInfo)="viewInfo($event)"
+></page-zone-bar>
+<!--<router-outlet></router-outlet>-->
+<page-zone-photo *ngIf="isPhoto" [pageView]="pageView"></page-zone-photo>
+<page-zone-album *ngIf="isAlbum" [pageView]="pageView"></page-zone-album>
 
 <toast-uploading [files]="files" (albumAndPhotos)="onAlbumAndPhotos($event)"></toast-uploading>
 

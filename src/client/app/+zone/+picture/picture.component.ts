@@ -1,8 +1,10 @@
 import {Component, AfterViewInit, OnInit, ElementRef} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {ToastUploadingComponent} from './toast-upload/index';
 import {ZPictureBarComponent} from './shared/bar-control.component';
-import {PhotoService} from "../../shared/services/photo/photo.service";
+import {PhotoService} from '../../shared/services/photo/photo.service';
+import {ZPhotoComponent} from './+photo/photo.component';
+import {ZAlbumComponent} from './+album/album.component';
 
 declare var $: any;
 
@@ -15,7 +17,9 @@ declare var $: any;
   directives: [
     ROUTER_DIRECTIVES,
     ToastUploadingComponent,
-    ZPictureBarComponent
+    ZPictureBarComponent,
+    ZPhotoComponent,
+    ZAlbumComponent
   ]
 })
 
@@ -29,17 +33,40 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
 
   image_src: string = '';
   step: number = 0;
-
   pageView: string = 'grid';
+  sub: any;
+  category: string;
+  isPhoto: boolean;
+  isAlbum: boolean;
+  isVideo: boolean;
+
 
   constructor(private element: ElementRef,
-              private photoService: PhotoService) {
+              private photoService: PhotoService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    // this.photo_input_element = document.getElementById('photo_input_element');
+    this.isPhoto = false;
+    this.isAlbum = false;
+    this.isVideo = false;
 
-    // this.test_img = this.element.nativeElement.querySelector('.img-center');
+    this.sub = this.route.params.subscribe(params => {
+      this.category = params['category'];
+      if (this.category == 'photo' || this.category == undefined){
+        this.isPhoto = true;
+        this.isAlbum = false;
+        this.isVideo = false;
+      }else if (this.category == 'album'){
+        this.isAlbum = true;
+        this.isPhoto = false;
+        this.isVideo = false;
+      }else if (this.category == 'video'){
+        this.isVideo = true;
+        this.isPhoto = false;
+        this.isAlbum = false;
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -59,12 +86,6 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     if (this.files.length == 0) {
       return;
     }
-  }
-
-  viewChanged(event: any) {
-    console.log("changed view", event);
-    this.pageView = event;
-
   }
 
   onDrop(event: any) {
@@ -94,5 +115,51 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   onAlbumAndPhotos(event:any) {
     console.log(event);
     this.photoService.addPhotosToAlbum(event.photoIds, event.albumId);
+  }
+
+  /**
+   *
+   * @param event
+     */
+
+  preview(event: any){
+
+  }
+
+  share(event: any){
+
+  }
+
+  addFavourite(event: any){
+
+  }
+
+  tag(event: any){
+
+  }
+
+  delete(event: any){
+
+  }
+
+  add(event: any){
+
+  }
+
+  download(event: any){
+
+  }
+
+  edit(event: any){
+
+  }
+
+  viewInfo(event: any){
+
+  }
+
+  viewChanged(view: string) {
+    console.log('changed view: ', view);
+    this.pageView = view;
   }
 }

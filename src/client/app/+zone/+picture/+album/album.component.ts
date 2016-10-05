@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureBarComponent} from '../shared/bar-control.component';
@@ -20,20 +20,30 @@ declare var _: any;
   ]
 })
 
-export class ZAlbumComponent implements OnInit {
+export class ZAlbumComponent implements OnInit, OnChanges {
 
   dataAlbums: Array<Album> = [];
   currentPage: number = 1;
   perPage: number = 1;
   total: number = 1;
   errorMessage: string = '';
-  pageView: string = 'grid';
+
+  isGridView: boolean;
+  isListView: boolean;
+  @Input() pageView: string;
 
   constructor(private apiService: ApiBaseService,
               private loadingService: LoadingService) {
   }
 
   ngOnInit() {
+    if (this.pageView == 'grid'){
+      this.isGridView = true;
+      this.isListView = false;
+    }else if  (this.pageView == 'list'){
+      this.isGridView = false;
+      this.isListView = true;
+    }
     this.getAlbum(this.currentPage);
   }
 
@@ -49,6 +59,19 @@ export class ZAlbumComponent implements OnInit {
         _this.getAlbum(_this.currentPage);
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if (changes['pageView'].currentValue){
+      var view = changes['pageView'].currentValue;
+      if (view == 'grid'){
+        this.isGridView = true;
+        this.isListView = false;
+      }else if  (view == 'list'){
+        this.isGridView = false;
+        this.isListView = true;
+      }
+    }
   }
 
   getAlbum(page:any) {
