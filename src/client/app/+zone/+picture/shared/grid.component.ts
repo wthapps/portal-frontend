@@ -40,13 +40,13 @@ export class ZPictureGridComponent implements OnChanges {
    }*/
 
   onDocumentKeyDown(ev: KeyboardEvent) {
-    if (ev.key == 'Control' || ev.key == 'Meta') {
+    if (ev.key == 'Control' || ev.key == 'Meta' || ev.keyCode == 17) {
       this.keyCtrl = true;
     }
   }
 
   onDocumentKeyUp(ev: KeyboardEvent) {
-    if (ev.key == 'Control' || ev.key == 'Meta') {
+    if (ev.key == 'Control' || ev.key == 'Meta' || ev.keyCode == 17) {
       this.keyCtrl = false;
     }
   }
