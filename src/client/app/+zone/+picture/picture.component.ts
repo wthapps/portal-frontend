@@ -228,8 +228,9 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     if (event) {
       this.dialogService.activate('Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
         if (responseOK) {
+          let body = JSON.stringify({ids: this.selectedItems});
           this.loadingService.start();
-          this.apiBaseService.delete(`zone/photos/${this.selectedItems}`)
+          this.apiBaseService.post(`zone/photos/delete`, body)
             .subscribe((result: any) => {
                 // stop loading
                 this.loadingService.stop();
@@ -251,10 +252,28 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
 
   }
   download(event: any) {
+
   }
 
   add(event: any){
     this.showAddtoAlbumForm = true;
+    if (event) {
+    let body = JSON.stringify({ids: this.selectedItems});
+    this.loadingService.start();
+    this.apiBaseService.post(`zone/photos/download`, body)
+      .subscribe((result: any) => {
+          // stop loading
+          this.loadingService.stop();
+          //this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          //this.toastsService.danger(error);
+          console.log(error);
+        }
+      );
+    }
   }
 
   edit(event: any) {
