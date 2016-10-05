@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, Input,EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {ZPictureGridComponent} from '../shared/grid.component';
@@ -10,7 +11,7 @@ import {
   UserService,
   LoadingService
 } from '../../../shared/index';
-import {PhotoService} from "../../../shared/services/photo/photo.service";
+import {PhotoService} from '../../../shared/services/photo/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -24,11 +25,11 @@ declare var _: any;
     ROUTER_DIRECTIVES,
     ZPictureGridComponent,
     ZPictureListComponent,
-    ZPhotoDetailComponent,
+    ZPhotoDetailComponent
   ]
 })
 
-export class ZPhotoComponent implements OnInit {
+export class ZPhotoComponent implements OnInit, OnChanges {
   errorMessage: string = '';
 
   showImg: boolean = false;
@@ -39,7 +40,13 @@ export class ZPhotoComponent implements OnInit {
   total: number = 1;
 
   dataImages: Array<Photo> = [];
+
+  isGridView: boolean;
+  isListView: boolean;
+  @Input() pageView: string;
+
   pageView: string = 'grid';
+  @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
 
   constructor(private apiService: ApiBaseService,
               private userService: UserService,
@@ -48,6 +55,14 @@ export class ZPhotoComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (this.pageView == 'grid'){
+      this.isGridView = true;
+      this.isListView = false;
+    }else if  (this.pageView == 'list'){
+      this.isGridView = false;
+      this.isListView = true;
+    }
     this.getPhotos(this.currentPage);
   }
 
@@ -65,12 +80,24 @@ export class ZPhotoComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges){
+    if (changes['pageView'].currentValue){
+      var view = changes['pageView'].currentValue;
+      if (view == 'grid'){
+        this.isGridView = true;
+        this.isListView = false;
+      }else if  (view == 'list'){
+        this.isGridView = false;
+        this.isListView = true;
+      }
+    }
+  }
+
   getPhotos(page: any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
       this.apiService.get(`zone/photos?page=${page}`).subscribe(
         (response: any) => {
-          console.log(response);
           this.perPage = response.per_page;
           this.total = response.total;
           this.dataImages = _.concat(this.dataImages, response.data);
@@ -100,6 +127,9 @@ export class ZPhotoComponent implements OnInit {
   }
 
   addedToAlbum($event:any) {
-    console.log('parent' + $event)
+  }
+
+  onImgsSelected($event:Array<number>) {
+    console.log($event);
   }
 }

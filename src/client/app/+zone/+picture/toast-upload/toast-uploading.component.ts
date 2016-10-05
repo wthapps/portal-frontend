@@ -3,16 +3,12 @@ import {Router} from '@angular/router';
 
 import {ApiBaseService} from "../../../shared/services/apibase.service";
 import {UserService} from "../../../shared/services/user.service";
-import {ZPictureFormAddToAlbumComponent} from '../shared/form/form-add-to-album.component';
 
 @Component({
   moduleId: module.id,
   selector: 'toast-uploading',
   templateUrl: 'toast-uploading.component.html',
   styleUrls: ['toast-upload.component.css'],
-  directives: [
-    ZPictureFormAddToAlbumComponent,
-  ]
 })
 export class ToastUploadingComponent implements OnInit, OnChanges {
   current_photo: any;
@@ -22,10 +18,11 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   uploaded_num: number;
   stopped_num: number;
   pending_request: any;
-  showModalAddToAlbum: boolean;
-  photoIds: Array<number> = new Array<number>();
+  photoIds: Array<number>;
   @Input() files: any;
-  @Output() albumAndPhotos: EventEmitter<any> = new EventEmitter<any>();
+  @Output() photoEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 
   constructor(private apiService: ApiBaseService, private userService: UserService){
 
@@ -39,6 +36,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
     if (changes['files'].currentValue && changes['files'].currentValue.length > 0){
       this.uploadImages(changes['files'].currentValue);
       this.files_num = this.files.length;
+      this.photoIds = new Array<number>();
     }
   }
 
@@ -80,7 +78,6 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
             }
             let res = JSON.parse(result._body);
             this.photoIds.push(res.data.id);
-            console.log('start', this.photoIds);
           },
           error => {
             this.step = 3;
@@ -95,11 +92,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   }
 
   onAddToAlbum(): void {
-    this.showModalAddToAlbum = true;
-  }
-
-  onModalHide(album:any) {
-    this.showModalAddToAlbum = false;
-    this.albumAndPhotos.emit({photoIds: this.photoIds, albumId: album})
+    this.showModalAddToAlbumEvent.emit(true);
+    this.photoEvent.emit(this.photoIds)
   }
 }

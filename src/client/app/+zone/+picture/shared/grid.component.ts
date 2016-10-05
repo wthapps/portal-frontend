@@ -26,6 +26,7 @@ declare var _: any;
 export class ZPictureGridComponent implements OnChanges {
   @Input() data: Array<Photo>;
   @Output() imgDetail: EventEmitter<number> = new EventEmitter<number>();
+  @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   dataImages: Array<Photo> = [];
   dataAddImages: Array<any> = [];
 
@@ -85,6 +86,6 @@ export class ZPictureGridComponent implements OnChanges {
         this.dataAddImages.push(id); // add
       }
     }
-    console.log(this.dataAddImages);
+    this.imgsSelected.emit(this.dataAddImages);
   }
 }

@@ -106,25 +106,29 @@
   </div>
   <ul class="control-body-select control-body-btnview">
     <li>
-      <a href="#"><i class="fa fa-share-alt"></i></a>
+      <a href="#" (click)="preview($event)"><i class="fa fa-eye"></i></a>
     </li>
     <li>
-      <a href="#"><i class="fa fa-download"></i></a>
+      <a href="#" (click)="share($event)"><i class="fa fa-share-alt"></i></a>
     </li>
     <li>
-      <a href="#"><i class="fa fa-plus-square-o"></i></a>
+      <a href="#" (click)="addFavourite($event)"><i class="fa fa-star"></i></a>
     </li>
     <li>
-      <a href="#"><i class="fa fa-trash-o"></i></a>
+      <a href="#" (click)="tag($event)"><i class="fa fa-tag"></i></a>
+    </li>
+    <li>
+      <a href="#" (click)="delete($event)"><i class="fa fa-trash-o"></i></a>
     </li>
     <li class="dropdown action">
       <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <li><a (click)="view('grid')" href="javascript:;">Add to Album</a></li>
-        <li><a (click)="view('list')" href="javascript:;">Download</a></li>
-        <li><a (click)="view('list')" href="javascript:;">Information</a></li>
+        <li><a (click)="add($event)" href="javascript:;"><i class="fa fa-plus-square"></i> Add to Album</a></li>
+        <li><a (click)="download($event)" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>
+        <li><a (click)="edit($event)" href="javascript:;"><i class="fa fa-edit"></i> Edit</a></li>
+        <li><a (click)="viewInfo($event)" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
       </ul>
     </li>
     <li class="dropdown">
@@ -132,8 +136,8 @@
         <i class="fa" [ngClass]="{'fa-th-large': (currentView == 'grid'), 'fa-th-list': (currentView == 'list')}"></i>
       </a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <li><a (click)="view('grid')" href="javascript:;"><i class="fa fa-th-large"></i> Grid</a></li>
-        <li><a (click)="view('list')" href="javascript:;"><i class="fa fa-th-list"></i> List</a></li>
+        <li><a (click)="changeView('grid', $event)" href="javascript:;"><i class="fa fa-th-large"></i> Grid</a></li>
+        <li><a (click)="changeView('list', $event)" href="javascript:;"><i class="fa fa-th-list"></i> List</a></li>
         <!--<li><a href="#"><i class="fa fa-align-center"></i> Timeline</a></li>-->
       </ul>
     </li>
