@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, OnInit, Output, EventEmitter, ElementRef} from '@angular/core';
+import {Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 declare var $: any;
@@ -13,7 +13,7 @@ declare var $: any;
   ]
 })
 
-export class ZPictureBarComponent implements AfterViewInit, OnInit {
+export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
 
   advSearch: boolean = false;
   listFilter: string = '';
@@ -26,7 +26,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
   ];
   selectedEl: any;
 
-
+  @Input() hasSelectedItem: boolean;
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
   @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();
@@ -48,6 +48,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(){
+    if (this.hasSelectedItem == undefined) this.hasSelectedItem = false;
     this.selectedEl = {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'};
 
     this.router.events.subscribe((navigation: any) => {
@@ -68,6 +69,14 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit {
     $('body').on('click', '.advSearch', function (e: any) {
       e.stopPropagation();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(" has selected item change", changes['hasSelectedItem'].currentValue);
+    if (changes['hasSelectedItem'].currentValue) {
+      var view = changes['hasSelectedItem'].currentValue;
+      // console.log(" has selected item change", view);
+    }
   }
 
   toggleShowSearch(e: any): void {

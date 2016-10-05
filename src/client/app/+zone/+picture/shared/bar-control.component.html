@@ -106,7 +106,7 @@
   </div>
   <ul class="control-body-select control-body-btnview">
     <li>
-      <a href="#" (click)="preview($event)"><i class="fa fa-eye"></i></a>
+      <a href="#" (click)="preview($event)" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-eye"></i></a>
     </li>
     <li>
       <a href="#" (click)="share($event)"><i class="fa fa-share-alt"></i></a>

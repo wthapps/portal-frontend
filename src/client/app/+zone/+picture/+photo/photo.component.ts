@@ -124,7 +124,6 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   }
 
   onImgsSelected($event: any) {
-    this.selectedPhotos = $event;
-    console.log('photo:', $event);
+    this.selectedPhotos.emit($event);
   }
 }
