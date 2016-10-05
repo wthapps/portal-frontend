@@ -119,7 +119,7 @@ export class HeaderComponent implements AfterViewInit {
       this.navTitle = 'My Apps';
 
       // zone layout
-    } else if (param_url[0] == '/zone') {
+    } else if (param_url[0] == '/zone' || param_url[0] == '/zone/picture') {
       this.showSearchBar = false;
       this.navTitle = 'Zone';
       // zone layout

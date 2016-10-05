@@ -19,8 +19,10 @@
       <a href="#">Gadget</a>
     </li>
     <li class="has-sub" [routerLinkActive]="['active']">
-      <a [routerLink]="['/zone/picture']">Picture</a>
-      <ul class="list-unstyled">
+      <a role="button" data-toggle="collapse" href="#zonePictureMenu" aria-expanded="false" aria-controls="zonePictureMenu">
+        Picture
+      </a>
+      <ul class="list-unstyled collapse" id="zonePictureMenu">
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a [routerLink]="['/zone/picture/photo']">Photos</a>
         </li>
