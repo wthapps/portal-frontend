@@ -11,16 +11,14 @@ export class PhotoService extends ApiBaseService{
   }
 
   addPhotosToAlbum(photos:any, album:any) {
-    console.log(photos, album);
-    let body = JSON.stringify({
-      photos: photos,
-    });
-    this.post('zone/albums/'+album+'/photos', body).subscribe((result: any) => {
-        console.log(result);
-      },
-      error => {
-        console.log('error');
-      }
-    );
+    if(photos && album) {
+      let body = JSON.stringify({
+        photos: photos,
+      });
+      return this.post('zone/albums/'+album+'/photos', body);
+    } else {
+      console.log("Missing Data", "photos album: ", photos, album);
+      return;
+    }
   }
 }

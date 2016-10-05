@@ -1,7 +1,7 @@
 <div class="page-body-in">
   <template [ngIf]="dataImages.length">
     <template [ngIf]="pageView == 'grid'">
-      <page-zone-gridview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-gridview>
+      <page-zone-gridview (imgDetail)="onClick($event)" [data]="dataImages" (imgsSelected)="onImgsSelected($event)"></page-zone-gridview>
     </template>
     <template [ngIf]="pageView == 'list'">
       <page-zone-listview (imgDetail)="onClick($event)" [data]="dataImages"></page-zone-listview>

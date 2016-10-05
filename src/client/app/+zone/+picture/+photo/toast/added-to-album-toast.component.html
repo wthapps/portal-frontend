@@ -1,75 +1,15 @@
-<div class="toast-upload-wrap">
+<div class="toast-upload-wrap" *ngIf="showAddedtoAlbumToast">
   <div class="toast-upload-item">
     <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button"><i class="fa fa-times"></i></button>
-      <i class="fa fa-exclamation-triangle"></i> Can not be uploaded
-    </div>
-    <div class="toast-upload-content">
-      Files can not be uploaded
-    </div>
-  </div>
-  <div class="toast-upload-item">
-    <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button"><i class="fa fa-times"></i></button>
-      <i class="fa fa-exclamation-triangle"></i> Upload stopped
-    </div>
-    <div class="toast-upload-content">
-      3 upload stopped
-    </div>
-  </div>
-  <div class="toast-upload-item">
-    <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button"><i class="fa fa-times"></i></button>
-      Uploading
+      <button class="toast-upload-close" type="button" (click)="close()"><i class="fa fa-times"></i></button>
+      Added to Album
     </div>
     <div class="toast-upload-content">
       <div class="media">
-        <div class="media-left">
-          <div class="photo-box-img">
-            <figure class="img-center-dv">
-              <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-              <img class="img-center"
-                   src="http://static.boredpanda.com/blog/wp-content/uploads/2015/06/pallas-cat-manul-14__880.jpg"
-                   alt="">
-              <div class="toast-upload-loader-container">
-                <div class="toast-upload-loader"></div>
-              </div>
-
-            </figure>
-          </div>
-        </div>
         <div class="media-body">
-          <p>Uploaded to Photo</p>
-          <p class="media-heading">2 of 5</p>
+          <p>{{photoCount}} items are added to Albums</p>
           <div class="text-right">
-            <a href="#">Stop</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="toast-upload-item">
-    <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button"><i class="fa fa-times"></i></button>
-      Uploaded
-    </div>
-    <div class="toast-upload-content">
-      <div class="media">
-        <div class="media-left">
-          <div class="photo-box-img">
-            <figure class="img-center-dv">
-              <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-              <img class="img-center"
-                   src="http://static.boredpanda.com/blog/wp-content/uploads/2015/06/pallas-cat-manul-14__880.jpg"
-                   alt="">
-            </figure>
-          </div>
-        </div>
-        <div class="media-body">
-          <p>Uploaded to Photo</p>
-          <p class="media-heading">5 of 5</p>
-          <div class="text-right">
-            <a href="#">Create Album</a> <a class="ml10" (click)="onAddToAlbum($event)">Add to Album</a>
+            <!--<a href="#">View</a>-->
           </div>
         </div>
       </div>

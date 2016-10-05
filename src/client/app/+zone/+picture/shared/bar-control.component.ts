@@ -29,6 +29,7 @@ export class ZPictureBarComponent implements AfterViewInit {
 
   @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();
   @Output() openWindow: EventEmitter<any> = new EventEmitter<any>();
+  @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private router: Router) {
     this.router.events.subscribe((navigation: any) => {
@@ -69,4 +70,7 @@ export class ZPictureBarComponent implements AfterViewInit {
     this.selectedFiles.emit(event);
   }
 
+  showModalAddToAlbum() {
+    this.showModalAddToAlbumEvent.emit(true);
+  }
 }

@@ -14,7 +14,7 @@
       </div><!-- /.modal-content -->
       <div class="modal-footer">
         <div class="row-img list">
-          <div class="photo-box-img" *ngFor="let album of dataAlbums" (click)="addToAlbum($event,photo_id,album.id)">
+          <div class="photo-box-img" *ngFor="let album of dataAlbums" (click)="addToAlbum(album.id)">
             <figure class="img-center-dv">
               <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
               <img class="img-center" src="/assets/images/zone/img-default.png" alt="">
