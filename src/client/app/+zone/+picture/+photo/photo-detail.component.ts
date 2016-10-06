@@ -31,6 +31,7 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   @Input() imgAll: Array<Photo>;
   @Output() hideModalClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() actionModalClicked: EventEmitter<string> = new EventEmitter<string>();
+  @Output() actionDelete: EventEmitter<number> = new EventEmitter<number>();
   changeLog: string[] = [];
   imgOne: Photo;
   imgAllData: Array<any>;
@@ -120,10 +121,14 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     this.dialogService.activate('Are you sure to delete ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
       if (responseOK) {
         this.loadingService.start();
-        this.apiBaseService.delete(`zone/photos/${id}`)
+        let body = JSON.stringify({ids: [id]});
+        this.apiBaseService.post(`zone/photos/delete`, body)
           .subscribe((result: any) => {
               // stop loading
+              //console.log(result);
               this.loadingService.stop();
+              this.hideModal();
+              this.actionDelete.emit(id);
               //this.toastsService.success(result.message);
             },
             error => {

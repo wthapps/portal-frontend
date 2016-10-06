@@ -59,7 +59,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   isPhoto: boolean;
   isAlbum: boolean;
   isVideo: boolean;
-  isAlbumDetail:boolean;
+  isAlbumDetail: boolean;
 
   showAddedtoAlbumToast: boolean = false;
   photoCount: number;
@@ -67,8 +67,8 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   album: number;
   photos: Array<number>;
   showCreateAlbum: boolean = false;
-  albumName:string;
-  resetSelected:boolean = false;
+  albumName: string;
+  resetSelected: boolean = false;
 
   /**
    * Modal
@@ -82,6 +82,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
    */
   items: Array<any>;
   selectedItems: Array<any>;
+  deletedItems: Array<any>;
   hasSelectedItem: boolean;
   hasMultiSelectedItem: boolean;
 
@@ -179,13 +180,14 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   showModalAddToAlbumEvent(event: boolean) {
     this.showAddtoAlbumForm = true;
   }
+
   // Add Photo to Album modal
   onModalHideAlbum(e: boolean) {
     this.showAddtoAlbumForm = e;
     this.addPhotosToAlbumAction();
   }
 
-  addPhotosToAlbumAction () {
+  addPhotosToAlbumAction() {
     console.log(this.photos.length, this.fictureSharedData.albumId);
     if (this.photos.length != 0 && this.fictureSharedData.albumId) {
       let res = this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId);
@@ -219,7 +221,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.photos = photos;
   }
 
-  onCreateNewAlbum($event:boolean) {
+  onCreateNewAlbum($event: boolean) {
     this.showAddtoAlbumForm = false;
     this.showCreateAlbum = true;
   }
@@ -282,6 +284,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
             .subscribe((result: any) => {
                 // stop loading
                 this.loadingService.stop();
+                this.deletedItems = this.selectedItems;
                 //this.toastsService.success(result.message);
               },
               error => {
@@ -299,28 +302,29 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   add(event: any) {
 
   }
+
   download(event: any) {
 
   }
 
-  add(event: any){
+  add(event: any) {
     this.showAddtoAlbumForm = true;
     if (event) {
-    let body = JSON.stringify({ids: this.selectedItems});
-    this.loadingService.start();
-    this.apiBaseService.post(`zone/photos/download`, body)
-      .subscribe((result: any) => {
-          // stop loading
-          this.loadingService.stop();
-          //this.toastsService.success(result.message);
-        },
-        error => {
-          // stop loading
-          this.loadingService.stop();
-          //this.toastsService.danger(error);
-          console.log(error);
-        }
-      );
+      let body = JSON.stringify({ids: this.selectedItems});
+      this.loadingService.start();
+      this.apiBaseService.post(`zone/photos/download`, body)
+        .subscribe((result: any) => {
+            // stop loading
+            this.loadingService.stop();
+            //this.toastsService.success(result.message);
+          },
+          error => {
+            // stop loading
+            this.loadingService.stop();
+            //this.toastsService.danger(error);
+            console.log(error);
+          }
+        );
     }
   }
 
@@ -345,7 +349,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.pageView = view;
   }
 
-  onHideCreateAlbum(e:boolean) {
+  onHideCreateAlbum(e: boolean) {
     this.showCreateAlbum = e;
     this.addPhotosToAlbumAction();
   }

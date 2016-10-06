@@ -8,7 +8,6 @@ import {ZPhotoDetailComponent} from './photo-detail.component';
 import {Photo} from '../../../shared/models/photo.model';
 import {
   ApiBaseService,
-  UserService,
   LoadingService
 } from '../../../shared/index';
 
@@ -46,7 +45,8 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   @Input() pageView: string = 'grid';
   @Input() resetSelected: boolean;
   @Input() preview: boolean;
-  
+  @Input() deletedItems: Array<number> = [];
+
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
@@ -93,6 +93,17 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     }
     if (this.preview) {
       this.onClick(this.photos[0].id, this.preview);
+    }
+
+    // Delete multi items
+    if (this.deletedItems) {
+      var _this = this;
+      _.map(this.deletedItems, function (v) {
+        _this.photos = _.dropWhile(_this.photos, ['id', v]);
+      })
+    }
+    if (this.photos.length == 0) {
+      this.total = 0;
     }
   }
 
@@ -148,10 +159,14 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     let _this_photos = this;
     this.dataSelectedPhotos = [];
     _.map(event, function (v) {
-      // console.log(_this_photos.photos);
-      console.log(_.find(_this_photos.photos, ['id', v]));
       _this_photos.dataSelectedPhotos.push(_.find(_this_photos.photos, ['id', v]));
     });
     this.selectedPhotos.emit(event);
+  }
+
+  onActionDeleteOne(id): void {
+    this.showImg = false;
+    this.modalHide.emit(false);
+    this.photos = _.dropWhile(this.photos, ['id', id]);
   }
 }

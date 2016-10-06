@@ -16,7 +16,10 @@
   </div>
 
 </div>
-<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' (actionModalClicked)="onActionModalClicked($event)" [imgId]="imgId" [imgAll]="photosOfDetail"
+<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)'
+                   (actionModalClicked)="onActionModalClicked($event)"
+                   (actionDelete)="onActionDeleteOne($event)"
+                   [imgId]="imgId" [imgAll]="photosOfDetail"
                    [showImg]="showImg"></zone-photo-detail>
 
 <!-- <wth-toast-upload></wth-toast-upload> -->
