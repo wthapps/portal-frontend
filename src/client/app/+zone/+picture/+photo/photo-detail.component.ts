@@ -9,7 +9,7 @@ import {
   DialogService,
   LoadingService,
   ToastsService
-} from "../../../shared/index";
+} from '../../../shared/index';
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -213,8 +213,8 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
 
   private getBarwidth(): number {
     // Create the measurement node
-    let scrollDiv = document.createElement("div");
-    scrollDiv.className = "scrollbar-measure";
+    let scrollDiv = document.createElement('div');
+    scrollDiv.className = 'scrollbar-measure';
     document.body.appendChild(scrollDiv);
 
     // Get the scrollbar width

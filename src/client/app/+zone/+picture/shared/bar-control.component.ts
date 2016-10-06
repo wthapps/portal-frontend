@@ -49,7 +49,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
 
   constructor(private router: Router) {
     // Don't move it to onInit, it's not correct
-    this.selectedEl = {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'};
+    this.selectedEl = {name: 'Photos', css: 'fa fa-picture-o', link: '/zone/picture/photo'};
     this.router.events.subscribe((navigation: any) => {
       for (var item of this.items) {
         if (item.link == navigation.url) {
@@ -59,7 +59,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     if (this.hasSelectedItem == undefined) this.hasSelectedItem = false;
   }
 
@@ -95,7 +95,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
     this.selectedFiles.emit(event);
   }
 
-  preview(event: any) { 
+  preview(event: any) {
     event.preventDefault();
     this.onPreview.emit(event);
   }
@@ -130,7 +130,7 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
     this.onAdd.emit(event);
   }
 
-  viewInfo(event: any){
+  viewInfo(event: any) {
     event.preventDefault();
     this.onViewInfo.emit(event);
   }

@@ -81,7 +81,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       this.pending_request =  this.apiService.post(`zone/photos`, body)
         .subscribe((result: any) => {
             this.uploaded_num++;
-            if (this.uploaded_num == this.files_num){
+            if (this.uploaded_num == this.files_num) {
               this.step = 2;
             }
             let res = JSON.parse(result._body);
@@ -96,7 +96,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       reader.readAsDataURL(files[i]);
       i++;
 
-    } while (i < files.length)
+    } while (i < files.length);
   }
 
   onAddToAlbum(): void {

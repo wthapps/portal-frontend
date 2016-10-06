@@ -12,8 +12,6 @@ import {
 import {
   ToastsService,
   LoadingService,
-  CustomValidator,
-  Constants,
   ApiBaseService
 }                           from '../../../shared/index';
 
@@ -25,7 +23,7 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-formEditPhoto',
+  selector: 'page-zone-form-edit-photo',
   templateUrl: 'form-edit.component.html',
   directives: [
     REACTIVE_FORM_DIRECTIVES

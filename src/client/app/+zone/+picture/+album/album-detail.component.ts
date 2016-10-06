@@ -53,15 +53,15 @@ export class ZAlbumDetailComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
-    
+    // comment
   }
 
   ngAfterViewInit() {
-
+    // comment
   }
 
   ngOnDestroy() {
-
+    // comment
   }
 
 

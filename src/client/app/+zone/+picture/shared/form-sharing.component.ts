@@ -5,7 +5,7 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-formSharing',
+  selector: 'page-zone-form-sharing',
   templateUrl: 'form-sharing.component.html',
   styleUrls: ['form-sharing.component.css']
 })
@@ -76,9 +76,9 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
       }
     } else {
       index = this.removedContactGroups.indexOf(id);
-      if (index != -1){
+      if (index != -1) {
         this.removedContactGroups.splice(index, 1);
-      }else{
+      } else {
         this.removedContactGroups.push(id);
       }
     }
@@ -91,7 +91,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     // console.log ('length', this.removedContactGroups.length, this.removedContacts.length, this.hasDeletedItems);
   }
 
-  isDeletedItem(id: number, isContact: boolean = true){
+  isDeletedItem(id: number, isContact: boolean = true) {
     var index: any;
     if(isContact) {
       index = this.removedContacts.indexOf(id);
@@ -101,7 +101,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     return ((index != -1) ? true: false);
   }
 
-  save(){
+  save() {
     //save removing items
     // if (this.hasDeletedItems){
     //
@@ -111,7 +111,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     console.log('save');
   }
 
-  cancel(){
+  cancel() {
     //cancel removing items
     // if (this.hasDeletedItems){
     //

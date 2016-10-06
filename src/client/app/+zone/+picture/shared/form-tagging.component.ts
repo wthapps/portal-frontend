@@ -5,7 +5,7 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-formTagging',
+  selector: 'page-zone-form-tagging',
   templateUrl: 'form-tagging.component.html'
 })
 export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewInit {
@@ -29,7 +29,7 @@ export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewIni
     });
   }
 
-  ngOnChanges() {    
+  ngOnChanges() {
     if (this.modalShow) {
       $('#taggingModal').modal('show');
     }
