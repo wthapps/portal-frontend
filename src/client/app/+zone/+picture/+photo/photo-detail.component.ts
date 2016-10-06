@@ -82,10 +82,10 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     wheelzoom(document.querySelectorAll('.photo-detail-img img'));
 
     let _thisPhotoDetail = this;
-    $('body').on('click', '.photo-detail-img', function () {
+    $('body').on('click', '#photo-box-detail', function () {
       _thisPhotoDetail.hideModal();
     });
-    $('body').on('click', '.photo-detail-img figure, .photo-detail-img-control', function (e: any) {
+    $('body').on('click', '#photo-box-detail figure, .photo-detail-img-control', function (e: any) {
       e.stopPropagation();
     });
   }

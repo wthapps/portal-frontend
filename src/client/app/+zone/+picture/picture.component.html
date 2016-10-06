@@ -62,3 +62,5 @@
 
 <page-zone-formSharing (modalHide)="onModalHide($event)" [modalShow]="modalShare" [data]="selectedItems"></page-zone-formSharing>
 <page-zone-formTagging (modalHide)="onModalHide($event)" [modalShow]="modalTag" [data]="selectedItems"></page-zone-formTagging>
+
+<zone-photo-edit [showModal]="modalEdit" (modalHide)='onModalHide($event)'></zone-photo-edit>
