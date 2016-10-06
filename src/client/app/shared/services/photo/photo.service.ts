@@ -1,12 +1,12 @@
-import {Http} from "@angular/http";
-import {ApiBaseService} from "../apibase.service";
-import {Photo} from "../../models/photo.model";
-import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
-import {Album} from "../../models/album.model";
+import {Http} from '@angular/http';
+import {ApiBaseService} from '../apibase.service';
+// import {Photo} from '../../models/photo.model';
+import {Injectable} from '@angular/core';
+// import {Observable} from "rxjs";
+import {Album} from '../../models/album.model';
 
 @Injectable()
-export class PhotoService extends ApiBaseService{
+export class PhotoService extends ApiBaseService {
 
   constructor(http: Http) {
     super(http);
@@ -19,7 +19,7 @@ export class PhotoService extends ApiBaseService{
       });
       return this.post('zone/albums/'+album+'/photos', body);
     } else {
-      console.log("Missing Data", "photos album: ", photos, album);
+      console.log('Missing Data', 'photos album: ', photos, album);
       return;
     }
   }
@@ -29,7 +29,7 @@ export class PhotoService extends ApiBaseService{
       let body = JSON.stringify(album);
       return this.post('zone/albums/', body);
     } else {
-      console.log("Missing Data album: ", album);
+      console.log('Missing Data album: ', album);
       return;
     }
   }

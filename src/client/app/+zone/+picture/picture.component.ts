@@ -5,10 +5,10 @@ import {ZPictureBarComponent} from './shared/bar-control.component';
 import {PhotoService} from '../../shared/services/photo/photo.service';
 import {ZPhotoComponent} from './+photo/photo.component';
 import {ZAlbumComponent} from './+album/album.component';
-import {AddedToAlbumToast} from "./+photo/toast/added-to-album-toast.component";
-import {ZPictureFormAddToAlbumComponent} from "./shared/form/form-add-to-album.component";
-import {ZPictureFormCreateAlbumComponent} from "./shared/form/form-create-album.component";
-import {FictureSharedData} from "../../shared/services/photo/ficturesharedata.service";
+import {AddedToAlbumToastComponent} from './+photo/toast/added-to-album-toast.component';
+import {ZPictureFormAddToAlbumComponent} from './shared/form/form-add-to-album.component';
+import {ZPictureFormCreateAlbumComponent} from './shared/form/form-create-album.component';
+import {FictureSharedData} from '../../shared/services/photo/ficturesharedata.service';
 
 
 import {ZPictureSharingComponent} from './shared/form-sharing.component';
@@ -19,8 +19,8 @@ import {
   DialogService,
   LoadingService,
   ToastsService
-} from "../../shared/index";
-import {ZAlbumDetailComponent} from "./+album/album-detail.component";
+} from '../../shared/index';
+import {ZAlbumDetailComponent} from './+album/album-detail.component';
 
 declare var $: any;
 declare var _: any;
@@ -37,7 +37,7 @@ declare var _: any;
     ZPictureBarComponent,
     ZPhotoComponent,
     ZAlbumComponent,
-    AddedToAlbumToast,
+    AddedToAlbumToastComponent,
     ZPictureFormAddToAlbumComponent,
     ZPictureFormCreateAlbumComponent,
     ZPictureSharingComponent,
@@ -371,17 +371,17 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   edit(event: any) {
-
+    console.log('edit event');
   }
 
   viewInfo(event: any) {
-
+    console.log('edit event');
   }
 
   changedSelectedItems(items: Array<any>) {
     this.selectedItems = items;
     this.hasSelectedItem = (items.length > 0) ? true : false;
-    if (this.category == "photo") {
+    if (this.category == 'photo') {
       this.photos = this.selectedItems;
     }
     this.hasMultiSelectedItem = (items.length > 1) ? true : false;
