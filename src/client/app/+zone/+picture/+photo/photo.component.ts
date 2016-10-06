@@ -98,7 +98,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
 
     console.log('has item changed', changes['hasUploadedItem']);
 
-    if (changes['hasUploadedItem'].currentValue == true){
+    if (changes['hasUploadedItem'] != null && changes['hasUploadedItem'].currentValue == true){
       this.photos = [];
       this.getPhotos(this.currentPage);
     }

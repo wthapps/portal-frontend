@@ -22,7 +22,8 @@
   (onAdd)="add($event)"
   (onEdit)="edit($event)"
   (onDownload)="download($event)"
-(onViewInfo)="viewInfo($event)"
+  (onViewInfo)="viewInfo($event)"
+  (createNewAlbum)="onCreateNewAlbum($event)"
 ></page-zone-bar>
 <!--<router-outlet></router-outlet>-->
 <page-zone-photo *ngIf="isPhoto"
@@ -35,11 +36,12 @@
                  [hasUploadedItem]="hasUploadedItem"
 ></page-zone-photo>
 <page-zone-album *ngIf="isAlbum" [pageView]="pageView"></page-zone-album>
-<page-zone-photo *ngIf="isAlbumDetail"
-                 [pageView]="pageView"
-                 (selectedPhotos)="changedSelectedItems($event)"
-                 [resetSelected]="resetSelected"></page-zone-photo>
 
+<page-zone-album-detail *ngIf="isAlbumDetail"
+                        [pageView]="pageView"
+                        (selectedPhotos)="changedSelectedItems($event)"
+                        [resetSelected]="resetSelected">
+</page-zone-album-detail>
 
 <toast-uploading [files]="files"
                  (photoEvent)="photoEvent($event)"
@@ -47,6 +49,7 @@
                  (createNewAlbum)="onCreateNewAlbum($event)"
                  (hasUploadedItem)="uploadedItem($event)"
 ></toast-uploading>
+
 <added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [albumName]="albumName" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>
 
 <page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHideAlbum($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>

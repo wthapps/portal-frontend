@@ -21,7 +21,8 @@ export class ZAlbumGridComponent implements OnChanges {
     this.dataAlbums = this.data;
   }
 
-  onClick(id:any) {
-    this.albumDetail.emit(id);
+  onClick(album:any) {
+    // this.albumDetail.emit(id)?
+    console.log(album);
   }
 }

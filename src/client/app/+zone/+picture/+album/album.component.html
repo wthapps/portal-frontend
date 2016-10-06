@@ -1,10 +1,10 @@
 
 <div class="page-body-in">
   <template [ngIf]="dataAlbums.length">
-    <template [ngIf]="pageView == 'grid'">
+    <template [ngIf]="isGridView">
       <page-zone-gridview (albumDetail)="onClick($event)" [data]="dataAlbums"></page-zone-gridview>
     </template>
-    <template [ngIf]="pageView == 'list'">
+    <template [ngIf]="isListView">
       <page-zone-listview (albumDetail)="onClick($event)" [data]="dataAlbums"></page-zone-listview>
     </template>
   </template>
