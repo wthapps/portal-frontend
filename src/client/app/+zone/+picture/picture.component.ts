@@ -83,7 +83,6 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   modalShare: boolean = false;
   modalTag: boolean = false;
   modalPreview: boolean = false;
-  modalEdit: boolean = false;
 
   /**
    * Items is array of Photos, Album, Video, etc.
