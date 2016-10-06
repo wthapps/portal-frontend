@@ -4,9 +4,9 @@ import {
   ApiBaseService,
   LoadingService
 } from '../../../../shared/index';
-import {PhotoService} from "../../../../shared/services/photo/photo.service";
-import {Album} from "../../../../shared/models/album.model";
-import {FictureSharedData} from "../../../../shared/services/photo/ficturesharedata.service";
+import {PhotoService} from '../../../../shared/services/photo/photo.service';
+import {Album} from '../../../../shared/models/album.model';
+import {FictureSharedData} from '../../../../shared/services/photo/ficturesharedata.service';
 
 declare var $: any;
 declare var _: any;
@@ -27,7 +27,7 @@ export class ZPictureFormCreateAlbumComponent implements OnInit, OnChanges, Afte
   }
 
   ngOnInit() {
-
+    console.log('inint');
   }
 
   ngAfterViewInit() {
@@ -47,7 +47,7 @@ export class ZPictureFormCreateAlbumComponent implements OnInit, OnChanges, Afte
     let albumName = $('#album-name').val();
     let albumDes = $('#album-description').val();
     if (albumName.length == 0) {
-      albumName = "Untitled Album";
+      albumName = 'Untitled Album';
     }
     let album = new Album({name: albumName, description: albumDes});
     let res = this.photoService.createAlbum(album);

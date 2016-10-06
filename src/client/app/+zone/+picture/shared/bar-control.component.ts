@@ -20,9 +20,9 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
   currentView: string = 'grid';
 
   items = [
-    {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'},
-    {name: "Albums", css: 'fa fa-files-o', link: '/zone/picture/album'},
-    {name: "Video", css: 'fa fa-files-o', link: '/zone/picture/video'},
+    { name: 'Photos', css: 'fa fa-picture-o', link: '/zone/picture/photo' },
+    { name: 'Albums', css: 'fa fa-files-o', link: '/zone/picture/album' },
+    { name: 'Video', css: 'fa fa-files-o', link: '/zone/picture/video' },
   ];
   selectedEl: any;
 
@@ -95,37 +95,37 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
     this.selectedFiles.emit(event);
   }
 
-  preview(event: any){
+  preview(event: any) { 
     event.preventDefault();
     this.onPreview.emit(event);
   }
 
-  download(event: any){
+  download(event: any) {
     event.preventDefault();
     this.onDownload.emit(event);
   }
 
-  delete(event: any){
+  delete(event: any) {
     event.preventDefault();
     this.onDelete.emit(event);
   }
 
-  share(event: any){
+  share(event: any) {
     event.preventDefault();
     this.onShare.emit(event);
   }
 
-  addFavourite(event: any){
+  addFavourite(event: any) {
     event.preventDefault();
     this.onFavourite.emit(event);
   }
 
-  tag(event: any){
+  tag(event: any) {
     event.preventDefault();
     this.onTag.emit(event);
   }
 
-  add(event: any){
+  add(event: any) {
     event.preventDefault();
     this.onAdd.emit(event);
   }
@@ -135,12 +135,12 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
     this.onViewInfo.emit(event);
   }
 
-  edit(event: any){
+  edit(event: any) {
     event.preventDefault();
     this.onEdit.emit(event);
   }
 
-  changeView(view: string, event: any){
+  changeView(view: string, event: any) {
     event.preventDefault();
     this.currentView = view;
     this.onViewChanged.emit(view);

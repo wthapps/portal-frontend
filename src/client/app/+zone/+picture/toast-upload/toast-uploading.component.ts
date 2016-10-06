@@ -1,8 +1,6 @@
 import {Component, Input, Output, OnInit, OnChanges, EventEmitter, SimpleChanges} from '@angular/core';
-import {Router} from '@angular/router';
+import {ApiBaseService} from '../../../shared/services/apibase.service';
 
-import {ApiBaseService} from "../../../shared/services/apibase.service";
-import {UserService} from "../../../shared/services/user.service";
 
 @Component({
   moduleId: module.id,
@@ -13,7 +11,6 @@ import {UserService} from "../../../shared/services/user.service";
 export class ToastUploadingComponent implements OnInit, OnChanges {
   current_photo: any;
   step: number;
-  upload_request: any;
   files_num: number;
   uploaded_num: number;
   stopped_num: number;
@@ -25,16 +22,16 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hasUploadedItem: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private apiService: ApiBaseService, private userService: UserService){
+  constructor(private apiService: ApiBaseService) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.step = 0;
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    if (changes['files'].currentValue && changes['files'].currentValue.length > 0){
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['files'].currentValue && changes['files'].currentValue.length > 0) {
       this.uploadImages(changes['files'].currentValue);
       this.files_num = this.files.length;
       this.photoIds = new Array<number>();
@@ -45,8 +42,8 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
   }
 
-  close(){
-    if (this.step == 2 || this.step == 4){
+  close() {
+    if (this.step == 2 || this.step == 4) {
       this.hasUploadedItem.emit(true);
     }
     this.step = -1;
@@ -54,17 +51,17 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
   stop(event) {
     event.preventDefault();
-    if (this.pending_request){
+    if (this.pending_request) {
       this.pending_request.unsubscribe();
     }
     this.stopped_num = this.files_num - this.uploaded_num;
     this.step = 4;
-    if(this.uploaded_num > 0){
+    if(this.uploaded_num > 0) {
       this.hasUploadedItem.emit(true);
     }
   }
 
-  uploadImages(files){
+  uploadImages(files) {
     var i: number;
     var file_name: string;
     var reader: FileReader;
@@ -79,7 +76,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       reader = new FileReader();
       reader.onload = (data:any) => {
       this.current_photo = data.target['result'];
-      body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
+      body = JSON.stringify({ photo: {name: file_name, image: this.current_photo }});
 
       this.pending_request =  this.apiService.post(`zone/photos`, body)
         .subscribe((result: any) => {
@@ -104,11 +101,11 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
 
   onAddToAlbum(): void {
     this.showModalAddToAlbumEvent.emit(true);
-    this.photoEvent.emit(this.photoIds)
+    this.photoEvent.emit(this.photoIds);
   }
 
   onCreateNewAlbum() {
-    this.photoEvent.emit(this.photoIds)
+    this.photoEvent.emit(this.photoIds);
     this.createNewAlbum.emit(true);
   }
 }
