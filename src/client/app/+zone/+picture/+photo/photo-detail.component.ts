@@ -113,6 +113,30 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     this.actionModalClicked.emit('tag');
   }
 
+  addFavourite(event: any) {
+    if (event) {
+      let body = JSON.stringify({
+        ids: [this.imgOne.id],
+        isToggle: this.imgOne.favorite
+      });
+      this.loadingService.start();
+      this.apiBaseService.post(`zone/photos/favourite`, body)
+        .subscribe((result: any) => {
+            // stop loading
+            this.loadingService.stop();
+            this.imgOne.favorite = (this.imgOne.favorite ? false : true);
+            //this.toastsService.success(result.message);
+          },
+          error => {
+            // stop loading
+            this.loadingService.stop();
+            //this.toastsService.danger(error);
+            console.log(error);
+          }
+        );
+    }
+  }
+
   onShowEditInfo() {
     this.modalEdit = true;
   }

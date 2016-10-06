@@ -8,6 +8,7 @@ export class Photo {
   thumbnail_url: string;
   url: string;
   description: string;
+  favorite: boolean;
 
   constructor(fields: {
     id?: number,
@@ -19,6 +20,7 @@ export class Photo {
     thumbnail_url?: string,
     url?: string,
     description?: string,
+    favorite?: boolean,
   }) {
     if (fields) Object.assign(this, fields);
   }

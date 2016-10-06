@@ -236,7 +236,6 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
    *
    * @param event
    */
-
   preview(event: any) {
     if (event) {
       this.modalPreview = true;
