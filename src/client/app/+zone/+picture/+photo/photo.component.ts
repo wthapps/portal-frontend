@@ -49,6 +49,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   // @Input() deletedItems: Array<number> = [];
 
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Output() selectedPhotoFull: EventEmitter<Array<Photo>> = new EventEmitter<Array<Photo>>();
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
@@ -95,24 +96,10 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     if (this.preview) {
       this.onClick(this.photos[0].id, this.preview);
     }
-
-    console.log('has item changed', changes['hasUploadedItem']);
-
-    if (changes['hasUploadedItem'].currentValue == true){
+    if (this.hasUploadedItem) {
       this.photos = [];
       this.getPhotos(this.currentPage);
     }
-
-    // Delete multi items
-    // if (this.deletedItems) {
-    //   var _this = this;
-    //   _.map(this.deletedItems, function (v) {
-    //     _this.photos = _.dropWhile(_this.photos, ['id', v]);
-    //   })
-    // }
-    // if (this.photos.length == 0) {
-    //   this.total = 0;
-    // }
   }
 
   getPhotos(page: any) {
@@ -170,6 +157,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
       _this_photos.dataSelectedPhotos.push(_.find(_this_photos.photos, ['id', v]));
     });
     this.selectedPhotos.emit(event);
+    this.selectedPhotoFull.emit(this.dataSelectedPhotos);
   }
 
   onActionDeleteOne(id): void {

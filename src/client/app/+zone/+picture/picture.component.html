@@ -12,12 +12,14 @@
 
 </div>
 <page-zone-bar [hasSelectedItem]="hasSelectedItem" [hasMultiSelectedItem]="hasMultiSelectedItem"
+  [hasFavourite]="hasFavourite"
   (openWindow)="openFileWindow($event)"
   (selectedFiles)="handleFileUpload($event)"
   (onViewChanged)="viewChanged($event)"
   (onPreview)="preview($event)"
   (onShare)="share($event)"
   (onTag)="tag($event)"
+  (onFavourite)="addFavourite($event)"
   (onDelete)="delete($event)"
   (onAdd)="add($event)"
   (onEdit)="edit($event)"
@@ -31,6 +33,7 @@
                  (modalHide)="onModalHide($event)"
                  (modalAction)="onModalAction($event)"
                  (selectedPhotos)="changedSelectedItems($event)"
+                 (selectedPhotoFull)="changedSelectedItemsFull($event)"
                  [resetSelected]="resetSelected"
                  [hasUploadedItem]="hasUploadedItem"
 ></page-zone-photo>

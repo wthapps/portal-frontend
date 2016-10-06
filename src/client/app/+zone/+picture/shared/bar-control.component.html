@@ -112,7 +112,7 @@
       <a href="#" (click)="share($event)"><i class="fa fa-share-alt"></i></a>
     </li>
     <li [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">
-      <a href="#" (click)="addFavourite($event)"><i class="fa fa-star"></i></a>
+      <a href="#" (click)="addFavourite($event)"><i class="fa" [ngClass]="hasFavourite ? 'fa-star': 'fa-star-o'"></i></a>
     </li>
     <li [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">
       <a href="#" (click)="tag($event)"><i class="fa fa-tag"></i></a>

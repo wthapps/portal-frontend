@@ -28,6 +28,8 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
 
   @Input() hasSelectedItem: boolean;
   @Input() hasMultiSelectedItem: boolean;
+  @Input() hasFavourite: boolean = false;
+
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
   @Output() selectedFiles: EventEmitter<any> = new EventEmitter<any>();

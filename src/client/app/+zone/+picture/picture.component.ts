@@ -22,6 +22,7 @@ import {
 } from "../../shared/index";
 
 declare var $: any;
+declare var _: any;
 
 
 @Component({
@@ -69,6 +70,8 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   showCreateAlbum: boolean = false;
   albumName: string;
   resetSelected: boolean = false;
+
+  hasFavourite: boolean = false;
 
   /**
    * Modal
@@ -247,12 +250,17 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   addFavourite(event: any) {
+    this.hasUploadedItem = false;
     if (event) {
-      let body = JSON.stringify({ids: this.selectedItems});
+      let body = JSON.stringify({
+        ids: this.selectedItems,
+        isToggle: this.hasFavourite
+      });
       this.loadingService.start();
       this.apiBaseService.post(`zone/photos/favourite`, body)
         .subscribe((result: any) => {
             // stop loading
+            this.hasUploadedItem = true;
             this.loadingService.stop();
             //this.toastsService.success(result.message);
           },
@@ -340,7 +348,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     }
   }
 
-  add(event: any){
+  add(event: any) {
     this.showAddtoAlbumForm = true;
     // if (event) {
     // let body = JSON.stringify({ids: this.selectedItems});
@@ -378,6 +386,15 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.hasMultiSelectedItem = (items.length > 1) ? true : false;
   }
 
+
+  changedSelectedItemsFull(items: Array<any>): void {
+    if (_.find(items, {'favorite': false})) {
+      this.hasFavourite = false;
+    } else {
+      this.hasFavourite = true;
+    }
+  }
+
   viewChanged(view: string) {
     this.pageView = view;
   }
@@ -387,7 +404,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.addPhotosToAlbumAction();
   }
 
-  uploadedItem(hasItem: boolean){
+  uploadedItem(hasItem: boolean) {
     this.hasUploadedItem = hasItem;
   }
 
