@@ -13,6 +13,7 @@ import {FictureSharedData} from '../../shared/services/photo/ficturesharedata.se
 
 import {ZPictureSharingComponent} from './shared/form-sharing.component';
 import {ZPictureTaggingComponent} from './shared/form-tagging.component';
+import {ZPhotoEditComponent} from './shared/photo-edit.component';
 
 import {
   ApiBaseService,
@@ -42,7 +43,8 @@ declare var _: any;
     ZPictureFormCreateAlbumComponent,
     ZPictureSharingComponent,
     ZPictureTaggingComponent,
-    ZAlbumDetailComponent
+    ZAlbumDetailComponent,
+    ZPhotoEditComponent
   ]
 })
 
@@ -81,6 +83,8 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   modalShare: boolean = false;
   modalTag: boolean = false;
   modalPreview: boolean = false;
+  modalEdit: boolean = false;
+
 
   /**
    * Items is array of Photos, Album, Video, etc.
@@ -288,6 +292,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.modalShare = event;
     this.modalTag = event;
     this.modalPreview = event;
+    this.modalEdit = event;
   }
 
 
@@ -371,7 +376,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   edit(event: any) {
-    console.log('edit event');
+    this.modalEdit = true;
   }
 
   viewInfo(event: any) {
