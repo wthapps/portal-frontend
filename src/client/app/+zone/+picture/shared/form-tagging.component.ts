@@ -30,8 +30,7 @@ export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewIni
     });
   }
 
-  ngOnChanges() {
-    console.log(this.data);
+  ngOnChanges() {    
     if (this.modalShow) {
       $('#taggingModal').modal('show');
     }

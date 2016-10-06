@@ -45,7 +45,8 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   @Input() pageView: string = 'grid';
   @Input() resetSelected: boolean;
   @Input() preview: boolean;
-  @Input() deletedItems: Array<number> = [];
+  @Input() hasUploadedItem: boolean;
+  // @Input() deletedItems: Array<number> = [];
 
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -81,7 +82,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.pageView) {
       if (this.pageView == 'grid') {
         this.isGridView = true;
@@ -95,16 +96,23 @@ export class ZPhotoComponent implements OnInit, OnChanges {
       this.onClick(this.photos[0].id, this.preview);
     }
 
+    console.log('has item changed', changes['hasUploadedItem']);
+
+    if (changes['hasUploadedItem'].currentValue == true){
+      this.photos = [];
+      this.getPhotos(this.currentPage);
+    }
+
     // Delete multi items
-    if (this.deletedItems) {
-      var _this = this;
-      _.map(this.deletedItems, function (v) {
-        _this.photos = _.dropWhile(_this.photos, ['id', v]);
-      })
-    }
-    if (this.photos.length == 0) {
-      this.total = 0;
-    }
+    // if (this.deletedItems) {
+    //   var _this = this;
+    //   _.map(this.deletedItems, function (v) {
+    //     _this.photos = _.dropWhile(_this.photos, ['id', v]);
+    //   })
+    // }
+    // if (this.photos.length == 0) {
+    //   this.total = 0;
+    // }
   }
 
   getPhotos(page: any) {

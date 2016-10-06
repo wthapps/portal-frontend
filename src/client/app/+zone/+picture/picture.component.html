@@ -32,14 +32,21 @@
                  (modalAction)="onModalAction($event)"
                  (selectedPhotos)="changedSelectedItems($event)"
                  [resetSelected]="resetSelected"
-                 [deletedItems]="deletedItems"
->
-</page-zone-photo>
+                 [hasUploadedItem]="hasUploadedItem"
+></page-zone-photo>
 <page-zone-album *ngIf="isAlbum" [pageView]="pageView"></page-zone-album>
-<page-zone-photo *ngIf="isAlbumDetail" [pageView]="pageView" (selectedPhotos)="changedSelectedItems($event)" [resetSelected]="resetSelected"></page-zone-photo>
+<page-zone-photo *ngIf="isAlbumDetail"
+                 [pageView]="pageView"
+                 (selectedPhotos)="changedSelectedItems($event)"
+                 [resetSelected]="resetSelected"></page-zone-photo>
 
 
-<toast-uploading [files]="files" (photoEvent)="photoEvent($event)" (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)" (createNewAlbum)="onCreateNewAlbum($event)"></toast-uploading>
+<toast-uploading [files]="files"
+                 (photoEvent)="photoEvent($event)"
+                 (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
+                 (createNewAlbum)="onCreateNewAlbum($event)"
+                 (hasUploadedItem)="uploadedItem($event)"
+></toast-uploading>
 <added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [albumName]="albumName" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>
 
 <page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHideAlbum($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>

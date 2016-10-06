@@ -40,14 +40,14 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
           this.contacts = result['data'];
         },
         error => {
-
+          console.log('error', error);
         });
     this.apiService.get(`zone/contactgroups`)
       .subscribe((result: any) => {
           this.contactGroups = result['data'];
         },
         error => {
-
+          console.log('error', error);
         });
   }
 
@@ -59,7 +59,6 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnChanges() {
-    console.log(this.data);
     if (this.modalShow) {
       $('#sharingModal').modal('show');
     }
@@ -82,7 +81,6 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
       }else{
         this.removedContactGroups.push(id);
       }
-
     }
 
     if (this.removedContactGroups.length > 0 || this.removedContacts.length > 0){
@@ -90,7 +88,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     }else {
       this.hasDeletedItems = false;
     }
-    console.log ('length', this.removedContactGroups.length, this.removedContacts.length, this.hasDeletedItems);
+    // console.log ('length', this.removedContactGroups.length, this.removedContacts.length, this.hasDeletedItems);
   }
 
   isDeletedItem(id: number, isContact: boolean = true){
@@ -105,20 +103,21 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
 
   save(){
     //save removing items
-    if (this.hasDeletedItems){
-
-    }else{ // save adding sharing
-
-    }
-
+    // if (this.hasDeletedItems){
+    //
+    // }else{ // save adding sharing
+    //
+    // }
+    console.log('save');
   }
 
   cancel(){
     //cancel removing items
-    if (this.hasDeletedItems){
-
-    }else{ // cancel adding sharing
-
-    }
+    // if (this.hasDeletedItems){
+    //
+    // }else{ // cancel adding sharing
+    //
+    // }
+    console.log('cancel');
   }
 }

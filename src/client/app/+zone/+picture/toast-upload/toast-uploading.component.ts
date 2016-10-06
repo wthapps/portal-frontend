@@ -23,6 +23,7 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
   @Output() photoEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() hasUploadedItem: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private apiService: ApiBaseService, private userService: UserService){
 
@@ -38,9 +39,16 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       this.files_num = this.files.length;
       this.photoIds = new Array<number>();
     }
+
+
+    // console.log('step changed', this.step, changes);
+
   }
 
   close(){
+    if (this.step == 2 || this.step == 4){
+      this.hasUploadedItem.emit(true);
+    }
     this.step = -1;
   }
 
@@ -51,6 +59,9 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
     }
     this.stopped_num = this.files_num - this.uploaded_num;
     this.step = 4;
+    if(this.uploaded_num > 0){
+      this.hasUploadedItem.emit(true);
+    }
   }
 
   uploadImages(files){

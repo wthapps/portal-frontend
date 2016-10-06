@@ -82,9 +82,10 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
    */
   items: Array<any>;
   selectedItems: Array<any>;
-  deletedItems: Array<any>;
   hasSelectedItem: boolean;
   hasMultiSelectedItem: boolean;
+  hasUploadedItem: boolean;
+  // deletedItems: Array<any>;
 
 
   constructor(private element: ElementRef,
@@ -101,11 +102,11 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.isPhoto = false;
     this.isAlbum = false;
     this.isVideo = false;
+    this.hasUploadedItem = false;
     this.selectedItems = new Array<any>();
     this.photos = new Array<number>();
 
     this.sub = this.route.params.subscribe(params => {
-      console.log(params);
       this.category = params['category'];
       if (this.category == 'photo' || this.category == undefined) {
         this.isPhoto = true;
@@ -147,6 +148,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     if (this.files.length == 0) {
       return;
     }
+    this.hasUploadedItem = false;
   }
 
   onDrop(event: any) {
@@ -155,6 +157,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     event.preventDefault();
     this.files = event.dataTransfer.files;
     if (this.files.length == 0) return;
+    this.hasUploadedItem = false;
   }
 
   dragleave() {
@@ -162,7 +165,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.dragging_leave = true;
   }
 
-  dragover(event) {
+  dragover(event: any) {
     $('body').addClass('drag-active');
     event.preventDefault();
     this.dragging_over = true;
@@ -193,7 +196,6 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
       let res = this.photoService.addPhotosToAlbum(this.photos, this.fictureSharedData.albumId);
       if (res) {
         res.subscribe((result: any) => {
-            console.log(result);
             this.showAddedtoAlbumToast = true;
             this.photoCount = this.photos.length;
             this.albumName = this.fictureSharedData.albumName;
@@ -203,6 +205,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
             this.resetSelectedAction();
           },
           error => {
+            console.log('error', error);
           }
         );
       }
@@ -244,7 +247,23 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   addFavourite(event: any) {
-
+    if (event) {
+      let body = JSON.stringify({ids: this.selectedItems});
+      this.loadingService.start();
+      this.apiBaseService.post(`zone/photos/favourite`, body)
+        .subscribe((result: any) => {
+            // stop loading
+            this.loadingService.stop();
+            //this.toastsService.success(result.message);
+          },
+          error => {
+            // stop loading
+            this.loadingService.stop();
+            //this.toastsService.danger(error);
+            console.log(error);
+          }
+        );
+    }
   }
 
   tag(event: any) {
@@ -275,6 +294,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   delete(event: any) {
+    this.hasUploadedItem = false;
     if (event) {
       this.dialogService.activate('Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
         if (responseOK) {
@@ -283,8 +303,9 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
           this.apiBaseService.post(`zone/photos/delete`, body)
             .subscribe((result: any) => {
                 // stop loading
+                this.hasUploadedItem = true;
                 this.loadingService.stop();
-                this.deletedItems = this.selectedItems;
+
                 //this.toastsService.success(result.message);
               },
               error => {
@@ -299,16 +320,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     }
   }
 
-  add(event: any) {
-
-  }
-
   download(event: any) {
-
-  }
-
-  add(event: any) {
-    this.showAddtoAlbumForm = true;
     if (event) {
       let body = JSON.stringify({ids: this.selectedItems});
       this.loadingService.start();
@@ -326,6 +338,27 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
           }
         );
     }
+  }
+
+  add(event: any){
+    this.showAddtoAlbumForm = true;
+    // if (event) {
+    // let body = JSON.stringify({ids: this.selectedItems});
+    // this.loadingService.start();
+    // this.apiBaseService.post(`zone/photos/download`, body)
+    //   .subscribe((result: any) => {
+    //       // stop loading
+    //       this.loadingService.stop();
+    //       //this.toastsService.success(result.message);
+    //     },
+    //     error => {
+    //       // stop loading
+    //       this.loadingService.stop();
+    //       //this.toastsService.danger(error);
+    //       console.log(error);
+    //     }
+    //   );
+    // }
   }
 
   edit(event: any) {
@@ -353,4 +386,9 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.showCreateAlbum = e;
     this.addPhotosToAlbumAction();
   }
+
+  uploadedItem(hasItem: boolean){
+    this.hasUploadedItem = hasItem;
+  }
+
 }
