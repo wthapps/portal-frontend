@@ -45,22 +45,22 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
   @Output() onViewInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() onViewChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private router: Router) {
-
+    // Don't move it to onInit, it's not correct
+    this.selectedEl = {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'};
+    this.router.events.subscribe((navigation: any) => {
+      for (var item of this.items) {
+        if (item.link == navigation.url) {
+          this.selectedEl = item;
+        }
+      }
+    });
   }
 
   ngOnInit(){
     if (this.hasSelectedItem == undefined) this.hasSelectedItem = false;
-    this.selectedEl = {name: "Photos", css: 'fa fa-picture-o', link: '/zone/picture/photo'};
-
-    this.router.events.subscribe((navigation: any) => {
-      for (var item of this.items) {
-      if (item.link == navigation.url) {
-      this.selectedEl = item;
-      }
-      }
-    });
   }
 
   ngAfterViewInit() {
@@ -148,5 +148,9 @@ export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {
 
   showModalAddToAlbum() {
     this.showModalAddToAlbumEvent.emit(true);
+  }
+
+  onClickCreateAlbum() {
+    this.createNewAlbum.emit(true);
   }
 }

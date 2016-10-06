@@ -20,6 +20,7 @@ import {
   LoadingService,
   ToastsService
 } from "../../shared/index";
+import {ZAlbumDetailComponent} from "./+album/album-detail.component";
 
 declare var $: any;
 declare var _: any;
@@ -40,7 +41,8 @@ declare var _: any;
     ZPictureFormAddToAlbumComponent,
     ZPictureFormCreateAlbumComponent,
     ZPictureSharingComponent,
-    ZPictureTaggingComponent
+    ZPictureTaggingComponent,
+    ZAlbumDetailComponent
   ]
 })
 

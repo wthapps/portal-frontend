@@ -5,6 +5,7 @@ import {ZPictureBarComponent} from '../shared/bar-control.component';
 import {ZAlbumGridComponent} from '../shared/grid_album.component';
 import {Album} from '../../../shared/models/album.model';
 import {ApiBaseService, UserService, LoadingService} from '../../../shared/index';
+import {ZAlbumListComponent} from "../shared/list_album.component";
 
 declare var $: any;
 declare var _: any;
@@ -16,7 +17,8 @@ declare var _: any;
   directives: [
     ROUTER_DIRECTIVES,
     ZPictureBarComponent,
-    ZAlbumGridComponent
+    ZAlbumGridComponent,
+    ZAlbumListComponent
   ]
 })
 
