@@ -8,13 +8,14 @@ import {Component, OnChanges, AfterViewInit, Input, Output, EventEmitter} from '
   directives: [
   ]
 })
-export class AddedToAlbumToast implements OnChanges, AfterViewInit{
+export class AddedToAlbumToastComponent implements OnChanges, AfterViewInit {
   @Input() showAddedtoAlbumToast:boolean;
   @Input() photoCount:number;
   @Input() albumName:string;
   @Output() hideAddedtoAlbumToast: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnChanges() {
+    console.log('changes');
   }
 
   close() {
@@ -22,6 +23,6 @@ export class AddedToAlbumToast implements OnChanges, AfterViewInit{
   }
 
   ngAfterViewInit() {
-
+    console.log('after innit');
   }
 }

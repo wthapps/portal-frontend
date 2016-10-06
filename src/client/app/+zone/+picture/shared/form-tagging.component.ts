@@ -1,5 +1,4 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
-import {ApiBaseService} from '../../../shared/services/apibase.service';
 
 
 declare var $: any;
@@ -15,7 +14,7 @@ export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewIni
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private apiBaseService: ApiBaseService) {
+  constructor() {
 
   }
 

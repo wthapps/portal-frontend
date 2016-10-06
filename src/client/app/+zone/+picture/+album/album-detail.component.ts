@@ -1,10 +1,10 @@
-import {Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChanges, SimpleChange} from '@angular/core';
-import {ROUTER_DIRECTIVES, Route, ActivatedRoute} from '@angular/router';
+import {Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange} from '@angular/core';
+import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Photo} from '../../../shared/models/photo.model';
-import {ApiBaseService} from "../../../shared/services/apibase.service";
-import {LoadingService} from "../../../partials/loading/loading.service";
-import {ZPictureGridComponent} from "../shared/grid.component";
-import {ZPictureListComponent} from "../shared/list.component";
+import {ApiBaseService} from '../../../shared/services/apibase.service';
+import {LoadingService} from '../../../partials/loading/loading.service';
+import {ZPictureGridComponent} from '../shared/grid.component';
+import {ZPictureListComponent} from '../shared/list.component';
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -53,6 +53,7 @@ export class ZAlbumDetailComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
+    
   }
 
   ngAfterViewInit() {

@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Album} from '../../../shared/models/album.model';

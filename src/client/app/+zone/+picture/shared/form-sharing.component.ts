@@ -24,7 +24,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
   removedContacts: Array<any>;
   removedContactGroups: Array<any>;
 
-  constructor(private apiService: ApiBaseService){
+  constructor(private apiService: ApiBaseService) {
 
   }
 
@@ -64,17 +64,17 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     }
   }
 
-  toggleRemoving(event: any, id: number, isContact: boolean = true){
+  toggleRemoving(event: any, id: number, isContact: boolean = true) {
     event.preventDefault();
     var index = -1;
-    if(isContact){
+    if(isContact) {
       index = this.removedContacts.indexOf(id);
-      if (index != -1){
+      if (index != -1) {
         this.removedContacts.splice(index, 1);
-      }else{
+      } else {
         this.removedContacts.push(id);
       }
-    }else{
+    } else {
       index = this.removedContactGroups.indexOf(id);
       if (index != -1){
         this.removedContactGroups.splice(index, 1);
@@ -83,9 +83,9 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
       }
     }
 
-    if (this.removedContactGroups.length > 0 || this.removedContacts.length > 0){
+    if (this.removedContactGroups.length > 0 || this.removedContacts.length > 0) {
       this.hasDeletedItems = true;
-    }else {
+    } else {
       this.hasDeletedItems = false;
     }
     // console.log ('length', this.removedContactGroups.length, this.removedContacts.length, this.hasDeletedItems);
@@ -93,9 +93,9 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
 
   isDeletedItem(id: number, isContact: boolean = true){
     var index: any;
-    if(isContact){
+    if(isContact) {
       index = this.removedContacts.indexOf(id);
-    }else{
+    } else {
       index = this.removedContactGroups.indexOf(id);
     }
     return ((index != -1) ? true: false);

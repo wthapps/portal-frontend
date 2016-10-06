@@ -1,11 +1,11 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
 
-import {Album} from '../../../../shared/models/album.model'
+import {Album} from '../../../../shared/models/album.model';
 import {
   ApiBaseService,
   LoadingService
 } from '../../../../shared/index';
-import {FictureSharedData} from "../../../../shared/services/photo/ficturesharedata.service";
+import {FictureSharedData} from '../../../../shared/services/photo/ficturesharedata.service';
 
 declare var $: any;
 declare var _: any;

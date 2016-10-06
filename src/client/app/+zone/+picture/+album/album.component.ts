@@ -4,8 +4,8 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 import {ZPictureBarComponent} from '../shared/bar-control.component';
 import {ZAlbumGridComponent} from '../shared/grid_album.component';
 import {Album} from '../../../shared/models/album.model';
-import {ApiBaseService, UserService, LoadingService} from '../../../shared/index';
-import {ZAlbumListComponent} from "../shared/list_album.component";
+import {ApiBaseService, LoadingService} from '../../../shared/index';
+import {ZAlbumListComponent} from '../shared/list_album.component';
 
 declare var $: any;
 declare var _: any;
@@ -39,10 +39,10 @@ export class ZAlbumComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (this.pageView == 'grid'){
+    if (this.pageView == 'grid') {
       this.isGridView = true;
       this.isListView = false;
-    }else if  (this.pageView == 'list'){
+    } else if  (this.pageView == 'list') {
       this.isGridView = false;
       this.isListView = true;
     }
@@ -63,13 +63,13 @@ export class ZAlbumComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    if (changes['pageView'].currentValue){
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['pageView'].currentValue) {
       var view = changes['pageView'].currentValue;
-      if (view == 'grid'){
+      if (view == 'grid') {
         this.isGridView = true;
         this.isListView = false;
-      }else if  (view == 'list'){
+      } else if  (view == 'list') {
         this.isGridView = false;
         this.isListView = true;
       }
