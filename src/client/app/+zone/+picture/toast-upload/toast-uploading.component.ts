@@ -79,13 +79,18 @@ export class ToastUploadingComponent implements OnInit, OnChanges {
       body = JSON.stringify({ photo: {name: file_name, image: this.current_photo }});
 
       this.pending_request =  this.apiService.post(`zone/photos`, body)
+        .map(res => res.json())
+        .map((res) => {
+          if (res) {
+            return res;
+          }
+        })
         .subscribe((result: any) => {
             this.uploaded_num++;
             if (this.uploaded_num == this.files_num) {
               this.step = 2;
             }
-            let res = JSON.parse(result._body);
-            this.photoIds.push(res.data.id);
+            this.photoIds.push(result.data.id);
           },
           error => {
             this.step = 3;

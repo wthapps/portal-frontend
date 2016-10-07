@@ -24,13 +24,29 @@ export class PhotoService extends ApiBaseService {
     }
   }
 
-  createAlbum(album:Album) {
-    if(album) {
-      let body = JSON.stringify(album);
-      return this.post('zone/albums/', body);
+  createAlbum(album:Album, callback) {
+    this.customPost('zone/albums/', album, callback);
+  }
+
+  customPost (url, params, callback) {
+    if(params) {
+      let body = JSON.stringify(params);
+      this.post('zone/albums/', body)
+        .map(res => res.json())
+        .map((res) => {
+          if (res) {
+            return res;
+          }
+        })
+        .subscribe(res => {
+          callback(res);
+        }),
+        error => {
+          console.log(error);
+        }
     } else {
-      console.log('Missing Data album: ', album);
-      return;
+      console.log('Missing Data album: ', params);
+      callback([]);
     }
   }
 }

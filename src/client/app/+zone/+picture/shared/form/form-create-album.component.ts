@@ -50,19 +50,10 @@ export class ZPictureFormCreateAlbumComponent implements OnInit, OnChanges, Afte
       albumName = 'Untitled Album';
     }
     let album = new Album({name: albumName, description: albumDes});
-    let res = this.photoService.createAlbum(album);
-    if (res) {
-      res.subscribe(
-        (response: any) => {
-          let res = JSON.parse(response._body);
-          this.fictureSharedData.albumId = res.data.id;
-          this.fictureSharedData.albumName = res.data.name;
-          $('#form-create-album-modal').modal('hide');
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    }
+    this.photoService.createAlbum(album, (response:any) => {
+      this.fictureSharedData.albumId = response.data.id;
+      this.fictureSharedData.albumName = response.data.name;
+      $('#form-create-album-modal').modal('hide');
+    });
   }
 }
