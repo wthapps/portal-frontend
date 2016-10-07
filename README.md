@@ -38,13 +38,13 @@ You need to modify the package.json (lines 23)
 
 
 ```
-"postinstall": "typings install && gulp check.versions && npm prune && gulp webdriver",
+postinstall": "typings install && gulp check.versions && npm prune && gulp webdriver
 ```
 
 to 
 
 ```
-"postinstall": "sudo typings install && gulp check.versions && npm prune && gulp webdriver",
+postinstall": "sudo typings install && gulp check.versions && npm prune && sudo gulp webdriver
 
 ```
 
