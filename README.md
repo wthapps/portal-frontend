@@ -33,6 +33,20 @@ npm run build.dev
 # prod build
 npm run build.prod
 ```
+### For some Linux distributions (Debian/Ubuntu and RedHat/CentOS)
+You need to modify the package.json (lines 23)
+
+
+```
+"postinstall": "typings install && gulp check.versions && npm prune && gulp webdriver",
+```
+
+to 
+
+```
+"postinstall": "sudo typings install && gulp check.versions && npm prune && gulp webdriver",
+
+```
 
 _Does not rely on any global dependencies._
 
@@ -64,6 +78,22 @@ npm start -- --config-env ENV_NAME
 ```
 
 Currently the `ENV_NAME`s are `dev`, `prod`, `staging`, but you can simply add different key-value pairs to the `config.json` file in order to alter extra such environments.
+
+
+# List task
+```bash
+npm run tasks.list
+```
+
+# Task build develop to AWS
+```bash
+npm run build.dev.aws
+```
+
+# Task build production to AWS
+```bash
+npm run build.aws
+```
 
 # Tools documentation
 
