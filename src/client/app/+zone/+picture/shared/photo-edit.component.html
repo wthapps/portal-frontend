@@ -2,32 +2,31 @@
   <div class="photo-detail-top">
     <div class="name"><i class="fa fa-pencil"></i> Editting Photo</div>
     <div class="pull-right ml20">
-      <a href="javascript:;" class="mr20">Reset</a>
+      <a id="photo-detail-reset" href="javascript:;" class="mr20">Reset</a>
       <a href="javascript:;" (click)="hideModal()">Done</a>
     </div>
     <ul class="action navbar-right">
       <li>
-        <a href="javascript:;"><i class="fa fa-crop"></i></a>
+        <a id="photo-detail-crop" href="javascript:;"><i class="fa fa-crop"></i></a>
       </li>
       <li>
-        <a href="javascript:;"><i class="fa fa-search-plus"></i></a>
+        <a id="photo-detail-zoom-in" href="javascript:;"><i class="fa fa-search-plus"></i></a>
       </li>
       <li>
-        <a href="javascript:;"><i class="fa fa-search-minus"></i></a>
+        <a id="photo-detail-zoom-out" href="javascript:;"><i class="fa fa-search-minus"></i></a>
       </li>
       <li>
-        <a href="javascript:;"><i class="fa fa-rotate-left"></i></a>
+        <a id="photo-detail-rotate-left" href="javascript:;"><i class="fa fa-rotate-left"></i></a>
       </li>
       <li>
-        <a href="javascript:;"><i class="fa fa-rotate-right"></i></a>
+        <a id="photo-detail-rotate-right" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
       </li>
     </ul>
   </div>
   <div class="photo-detail-content">
     <div class="photo-detail-img">
       <figure>
-        <img
-          src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/zone/pictures/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/scenery-wallpaper-13.jpg">
+        <img id="photo-detail-img" [src]="imgOne">
       </figure>
     </div>
   </div>
