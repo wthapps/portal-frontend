@@ -9608,7 +9608,8 @@ Header
     color: #9B9B9B; }
   .header .navbar-nav-management .dropdown-menu {
     left: auto;
-    padding: 5px; }
+    padding: 5px;
+    margin-right: -10px; }
     .header .navbar-nav-management .dropdown-menu > li {
       width: 50%;
       float: left;
