@@ -45,6 +45,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
   @Input() pageView: string = 'grid';
   @Input() resetSelected: boolean;
   @Input() preview: boolean;
+  @Input() viewInfo: boolean;
   @Input() hasUploadedItem: boolean;
   // @Input() deletedItems: Array<number> = [];
 
@@ -99,6 +100,9 @@ export class ZPhotoComponent implements OnInit, OnChanges {
     if (this.hasUploadedItem) {
       this.photos = [];
       this.getPhotos(this.currentPage);
+    }
+    if (this.viewInfo) {
+      this.onClick(this.photos[0].id, this.preview);
     }
   }
 

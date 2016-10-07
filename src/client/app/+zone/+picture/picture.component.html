@@ -31,6 +31,7 @@
 <page-zone-photo *ngIf="isPhoto"
                  [pageView]="pageView"
                  [preview]="modalPreview"
+                 [viewInfo]="modalViewInfo"
                  (modalHide)="onModalHide($event)"
                  (modalAction)="onModalAction($event)"
                  (selectedPhotos)="changedSelectedItems($event)"

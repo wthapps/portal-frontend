@@ -85,6 +85,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   modalTag: boolean = false;
   modalPreview: boolean = false;
   modalEdit: boolean = false;
+  modalViewInfo: boolean = false;
 
 
   /**
@@ -294,6 +295,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     this.modalTag = event;
     this.modalPreview = event;
     this.modalEdit = event;
+    this.modalViewInfo = event;
   }
 
 
@@ -381,7 +383,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   }
 
   viewInfo(event: any) {
-    console.log('edit event');
+    this.modalViewInfo = true;
   }
 
   changedSelectedItems(items: Array<any>) {

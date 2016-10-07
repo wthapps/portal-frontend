@@ -8804,6 +8804,11 @@ body {
   opacity: 0.8;
   filter: alpha(opacity=80); }
 
+.text-disable {
+  cursor: not-allowed;
+  opacity: 0.3;
+  filter: alpha(opacity=30); }
+
 .text-normal {
   font-weight: normal; }
 

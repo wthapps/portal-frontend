@@ -29,6 +29,7 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   @Input() imgId: number;
   @Input() showImg: boolean;
   @Input() imgAll: Array<Photo>;
+  @Input() inShowInfo: boolean;
   @Output() hideModalClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() actionModalClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() actionDelete: EventEmitter<number> = new EventEmitter<number>();
@@ -74,6 +75,11 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
     if (this.showModal) {
       $('body').addClass('fixed-hidden').css('padding-right', this.getBarwidth());
       $('#photo-box-detail').addClass('active');
+    }
+
+    if (this.inShowInfo) {
+      this.showInfo = false;
+      this.onShowInfo();
     }
 
   }
