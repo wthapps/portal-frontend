@@ -85,7 +85,7 @@ export class ZPhotoDetailComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   ngAfterViewInit() {
-    wheelzoom(document.querySelectorAll('.photo-detail-img img'));
+    //wheelzoom(document.querySelectorAll('.photo-detail-img img'));
 
     let _thisPhotoDetail = this;
     $('body').on('click', '#photo-box-detail .photo-detail-img', function () {

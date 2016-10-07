@@ -72,6 +72,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   showAddtoAlbumForm: boolean = false;
   album: number;
   photos: Array<number>;
+  onePhotoEdit: any;
   showCreateAlbum: boolean = false;
   albumName: string;
   resetSelected: boolean = false;
@@ -402,6 +403,9 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
     } else {
       this.hasFavourite = true;
     }
+
+    this.onePhotoEdit = items[0];
+
   }
 
   viewChanged(view: string) {
