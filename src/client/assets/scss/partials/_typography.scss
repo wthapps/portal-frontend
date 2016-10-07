@@ -21,6 +21,11 @@ body {
   @include opacity(0.8);
 }
 
+.text-disable {
+  cursor: not-allowed;
+  @include opacity(0.3);
+}
+
 .text-normal {
   font-weight: normal;
 }

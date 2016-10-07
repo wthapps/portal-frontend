@@ -32,6 +32,7 @@ declare var _: any;
   selector: 'page-zone-picture',
   templateUrl: 'picture.component.html',
   providers: [PhotoService, FictureSharedData],
+  styleUrls: ['picture.component.css'],
   directives: [
     ROUTER_DIRECTIVES,
     ToastUploadingComponent,
