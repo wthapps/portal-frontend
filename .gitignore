@@ -42,6 +42,7 @@ docs
 lib
 test
 tmp
+/ts-node
 
 gulpfile.js
 gulpfile.js.map
