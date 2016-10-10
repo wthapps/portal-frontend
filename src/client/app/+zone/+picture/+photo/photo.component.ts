@@ -95,7 +95,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
       }
     }
     if (this.preview) {
-      this.onClick(this.photos[0].id, this.preview);
+      this.onClick(this.dataSelectedPhotos[0].id, this.preview);
     }
     if (this.hasUploadedItem) {
       this.photos = [];
