@@ -108,6 +108,7 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private fictureSharedData: FictureSharedData) {
+    this.dragleave();
   }
 
   ngOnInit() {
@@ -146,6 +147,11 @@ export class ZPictureComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     let _thisPicture = this;
     $('body').bind('dragover', _thisPicture.dragover);
+
+    // only allow drag from outside the browser
+    $('body').on('dragstart', function (event) {
+      event.preventDefault();
+    });
   }
 
   openFileWindow(event: any) {
