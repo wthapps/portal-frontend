@@ -72,6 +72,7 @@ export class ZPhotoEditComponent implements OnChanges, AfterViewInit {
       //, cropBoxMovable: true
       //, cropBoxResizable: true
       , autoCrop: false
+      , checkCrossOrigin: false
       , built: function () {
         $(this).cropper('clear');
       }
