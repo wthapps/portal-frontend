@@ -102,7 +102,7 @@ export class ZPhotoComponent implements OnInit, OnChanges {
       this.getPhotos(this.currentPage);
     }
     if (this.viewInfo) {
-      this.onClick(this.photos[0].id, this.preview);
+      this.onClick(this.dataSelectedPhotos[0].id, this.preview);
     }
   }
 
