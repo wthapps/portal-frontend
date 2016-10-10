@@ -1,0 +1,6 @@
+<div id="toast-wrap" class="toast-wrap" style="display: none;">
+  <div *ngFor="let t of toasts; let i = index" class="alert alert-{{t.type}} alert-dismissible" role="alert">
+    <button type="button" id="data-alert-{{i}}" class="close" (click)="removeSelf($event)">&times;</button>
+    {{t.message}}
+  </div>
+</div>
