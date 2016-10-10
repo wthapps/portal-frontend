@@ -1,4 +1,4 @@
-import {Component, AfterViewInit} from '@angular/core';
+import {Component, AfterViewInit, OnInit} from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
   Router,
@@ -23,7 +23,7 @@ declare var $: any;
     ROUTER_DIRECTIVES
   ]
 })
-export class HeaderComponent implements AfterViewInit {
+export class HeaderComponent implements AfterViewInit, OnInit {
   first_name: string = '';
   last_name: string = '';
   urls: any;
@@ -39,7 +39,14 @@ export class HeaderComponent implements AfterViewInit {
               private router: Router) {
 
     //console.log(this.userService);
+    this.urls = new Array();
+    this.router.events.subscribe((navigationEnd: NavigationEnd) => {
+      this.urls.length = 0; //Fastest way to clear out array
+      this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+    });
+  }
 
+  ngOnInit() {
     if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;
@@ -47,14 +54,7 @@ export class HeaderComponent implements AfterViewInit {
       if (!this.userService.profile.profile_image) {
         this.userService.profile.profile_image = Constants.img.avatar;
       }
-
     }
-
-    this.urls = new Array();
-    this.router.events.subscribe((navigationEnd: NavigationEnd) => {
-      this.urls.length = 0; //Fastest way to clear out array
-      this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
-    });
   }
 
   ngAfterViewInit(): void {
