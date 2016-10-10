@@ -35,7 +35,7 @@
 </head>
 <body>
 
-  <wth-app></wth-app>
+  <sd-app></sd-app>
   <!--<div class="dots-loader-wrap">-->
     <!--<div class="dots-loader"></div>-->
   <!--</div>-->
@@ -78,11 +78,7 @@
   <!-- endinject -->
 
   <% if (ENV === 'dev') { %>
-  <script>
-    System.config(<%=
-      JSON.stringify(SYSTEM_CONFIG, null, 2)
-    %>)
-  </script>
+  <script src="<%= APP_BASE %>app/system-config.js"></script>
   <% } %>
 
   <!-- libs:js -->
