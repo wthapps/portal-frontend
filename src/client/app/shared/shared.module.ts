@@ -10,9 +10,10 @@ import {NameListService} from './name-list/index';
 import { UserService } from './services/user.service';
 
 import {
+  HeaderComponent
   FooterComponent,
   FooterPromotionComponent
-} from '../partials/footer/index';
+} from '../partials/index';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -23,12 +24,14 @@ import {
   declarations: [
     ToolbarComponent,
     NavbarComponent,
+    HeaderComponent,
     FooterComponent,
     FooterPromotionComponent
   ],
   exports: [
     ToolbarComponent,
     NavbarComponent,
+    HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
     CommonModule,

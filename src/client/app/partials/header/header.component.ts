@@ -1,6 +1,5 @@
-import {Component, AfterViewInit} from '@angular/core';
+import {Component, AfterViewInit, OnInit} from '@angular/core';
 import {
-  ROUTER_DIRECTIVES,
   Router,
   NavigationEnd
 } from '@angular/router';
@@ -18,12 +17,9 @@ declare var $: any;
 @Component({
   moduleId: module.id,
   selector: 'wth-header',
-  templateUrl: 'header.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'header.component.html'
 })
-export class HeaderComponent implements AfterViewInit {
+export class HeaderComponent implements AfterViewInit, OnInit {
   first_name: string = '';
   last_name: string = '';
   urls: any;
@@ -39,7 +35,14 @@ export class HeaderComponent implements AfterViewInit {
               private router: Router) {
 
     //console.log(this.userService);
+    this.urls = new Array();
+    this.router.events.subscribe((navigationEnd: NavigationEnd) => {
+      this.urls.length = 0; //Fastest way to clear out array
+      this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+    });
+  }
 
+  ngOnInit() {
     if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;
@@ -47,14 +50,7 @@ export class HeaderComponent implements AfterViewInit {
       if (!this.userService.profile.profile_image) {
         this.userService.profile.profile_image = Constants.img.avatar;
       }
-
     }
-
-    this.urls = new Array();
-    this.router.events.subscribe((navigationEnd: NavigationEnd) => {
-      this.urls.length = 0; //Fastest way to clear out array
-      this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
-    });
   }
 
   ngAfterViewInit(): void {
@@ -119,7 +115,7 @@ export class HeaderComponent implements AfterViewInit {
       this.navTitle = 'My Apps';
 
       // zone layout
-    } else if (param_url[0] == '/zone') {
+    } else if (param_url[0] == '/zone' || param_url[0] == '/zone/picture') {
       this.showSearchBar = false;
       this.navTitle = 'Zone';
       // zone layout

@@ -6,20 +6,20 @@ import {Constants}     from '../index';
 
 @Injectable()
 export abstract class ApiBaseService {
-  private _http: Http;
-  private _options: RequestOptionsArgs;
+  private _http:Http;
+  private _options:RequestOptionsArgs;
   //private _baseUrl:string = 'http://52.221.221.245:4000/';
-  private _baseUrl: string = Constants.baseUrls.apiBaseService;
-  private _headers: Headers = new Headers({'Content-Type': 'application/json'});
+  private _baseUrl:string = Constants.baseUrls.apiBaseService;
+  private _headers:Headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(http: Http) {
+  constructor(http:Http) {
     this._http = http;
   }
 
   /**
    * Performs a request with `get` http method.
    */
-  public get(path: string): Observable<Response> {
+  public get(path:string):Observable<Response> {
     this.buildOptions();
     return this._http.get(this._baseUrl + path, this._options)
       .map(res => res.json())
@@ -33,7 +33,7 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `post` http method.
    */
-  public post(path: string, body: string): Observable<Response> {
+  public post(path:string, body:string):Observable<Response> {
     this.buildOptions();
     return this._http.post(this._baseUrl + path, body, this._options);
   }
@@ -41,7 +41,7 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `put` http method.
    */
-  public put(path: string, body: string): Observable<Response> {
+  public put(path:string, body:string):Observable<Response> {
     this.buildOptions();
     return this._http.put(this._baseUrl + path, body, this._options);
   }
@@ -49,7 +49,7 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `delete` http method.
    */
-  public delete(path: string): Observable<Response> {
+  public delete(path:string):Observable<Response> {
     this.buildOptions();
     return this._http.delete(this._baseUrl + path, this._options);
   }
@@ -57,7 +57,7 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `patch` http method.
    */
-  public patch(path: string, body: string): Observable<Response> {
+  public patch(path:string, body:string):Observable<Response> {
     this.buildOptions();
     return this._http.patch(this._baseUrl + path, body, this._options);
   }
