@@ -56,9 +56,9 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         NameListService,
-        ApiBaseService,
-        UserService,
         RedirectService,
+        ApiBaseService,
+        UserService
         //2 DialogService,
         //2 ToastsService,
         //2 LoadingService

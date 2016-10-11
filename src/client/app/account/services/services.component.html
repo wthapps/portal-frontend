@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{panelTitle}}</h3>
+  </div>
+  <ul class="list-group services-list-wrap">
+    <li class="list-group-item">
+      <select [(ngModel)]="selected_category" (ngModelChange)="onCategoryChanged(selected_category)"
+        class="form-control">
+        <option *ngFor="let category of categories" [value]="category.id">{{category.display_name}}</option>
+      </select>
+    </li>
+    <li class="list-group-item" *ngFor="let item of apps">
+        <add-on-item [item]="item" *ngIf="item.product_categories_id == 2"></add-on-item>
+        <dns-item [item]="item" *ngIf="item.product_categories_id == 1"></dns-item>
+    </li>
+  </ul>
+</div>

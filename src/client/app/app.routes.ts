@@ -15,6 +15,8 @@ import { PoliciesRoutes } from './policies/index';
 import { WelcomeRoutes } from './welcome/index';
 import { ComingsoonRoutes } from './comingsoon/index';
 
+import { AccountRoutes } from './account/index';
+
 export const routes: Routes = [
   ...HomeRoutes,
   ...AboutRoutes,
@@ -27,4 +29,5 @@ export const routes: Routes = [
   ...PoliciesRoutes,
   ...WelcomeRoutes,
   ...ComingsoonRoutes,
+  ...AccountRoutes,
 ];

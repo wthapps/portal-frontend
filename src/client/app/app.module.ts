@@ -18,6 +18,8 @@ import { PoliciesModule } from './policies/policies.module';
 import { WelcomeModule } from './welcome/welcome.module';
 import { ComingsoonModule } from './comingsoon/comingsoon.module';
 
+import { AccountModule } from './account/account.module';
+
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -36,6 +38,9 @@ import { SharedModule } from './shared/shared.module';
     PoliciesModule,
     WelcomeModule,
     ComingsoonModule,
+
+    AccountModule,
+
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],
