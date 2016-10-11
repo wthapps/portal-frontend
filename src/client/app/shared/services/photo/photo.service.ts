@@ -1,9 +1,9 @@
-import {Http} from '@angular/http';
-import {ApiBaseService} from '../apibase.service';
+import { Http } from '@angular/http';
+import { ApiBaseService } from '../apibase.service';
 // import {Photo} from '../../models/photo.model';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 // import {Observable} from "rxjs";
-import {Album} from '../../models/album.model';
+import { Album } from '../../models/album.model';
 
 @Injectable()
 export class PhotoService extends ApiBaseService {
@@ -12,24 +12,24 @@ export class PhotoService extends ApiBaseService {
     super(http);
   }
 
-  addPhotosToAlbum(photos:any, album:any) {
-    if(photos && album) {
+  addPhotosToAlbum(photos: any, album: any) {
+    if (photos && album) {
       let body = JSON.stringify({
         photos: photos,
       });
-      return this.post('zone/albums/'+album+'/photos', body);
+      return this.post('zone/albums/' + album + '/photos', body);
     } else {
       console.log('Missing Data', 'photos album: ', photos, album);
       return;
     }
   }
 
-  createAlbum(album:Album, callback) {
+  createAlbum(album: Album, callback) {
     this.customPost('zone/albums/', album, callback);
   }
 
-  customPost (url, params, callback) {
-    if(params) {
+  customPost(url, params, callback) {
+    if (params) {
       let body = JSON.stringify(params);
       this.post('zone/albums/', body)
         .map(res => res.json())

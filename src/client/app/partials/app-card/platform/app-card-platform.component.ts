@@ -1,7 +1,4 @@
-import {Component, Input, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
-
-
+import { Component, Input, OnChanges } from '@angular/core';
 /**
  * This class represents the AppCardSmComponent.
  */
@@ -18,8 +15,7 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
               'fa-desktop': (c.name == 'browser')}"></i>
             </li>
           </ul>
-  `,
-  directives: [ROUTER_DIRECTIVES]
+  `
 })
 export class AppCardPlatformComponent implements OnChanges {
   @Input() data: any;

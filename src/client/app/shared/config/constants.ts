@@ -1,4 +1,4 @@
-import {Config} from './env.config';
+import { Config } from './env.config';
 
 export let Constants = {
   baseUrls: {

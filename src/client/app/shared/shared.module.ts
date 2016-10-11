@@ -1,21 +1,21 @@
 //@TODO remove ElementRef
-import {NgModule, ModuleWithProviders} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
-import {ToolbarComponent} from './toolbar/index';
-import {NavbarComponent} from './navbar/index';
-import {NameListService} from './name-list/index';
+import { ToolbarComponent } from './toolbar/index';
+import { NavbarComponent } from './navbar/index';
+import { NameListService } from './name-list/index';
 
 import {
-  DialogService,
-  ToastsService,
-  LoadingService,
+  //2 DialogService,
+  //2 ToastsService,
+  //2 LoadingService,
   RedirectService
 }                     from '../shared/index';
 
-import {UserService}  from './services/user.service';
+import { UserService }  from './services/user.service';
 
 import {
   HeaderComponent,
@@ -55,9 +55,9 @@ export class SharedModule {
         NameListService,
         UserService,
         RedirectService,
-        //DialogService,
-        //ToastsService,
-        //LoadingService
+        //2 DialogService,
+        //2 ToastsService,
+        //2 LoadingService
       ]
     };
   }

@@ -1,7 +1,6 @@
-import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-import {ICountry, CountryService} from './countries.service';
+import { ICountry, CountryService } from './countries.service';
 
 /**
  * This class represents the AppCardSmComponent.
@@ -12,9 +11,6 @@ import {ICountry, CountryService} from './countries.service';
   template: `
     
   `,
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   viewProviders: [
     CountryService
   ]

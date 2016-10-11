@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import {
   ToastOptions
 } from './index';
 
-declare var $:any;
+declare var $: any;
 
 @Injectable()
 export class ToastsService {
 
-  defaults:any = {
+  defaults: any = {
     type: {
       info: 'info',
       danger: 'danger',
@@ -23,30 +23,30 @@ export class ToastsService {
     }
   };
 
-  set:(message:string, option:ToastOptions, type:string) => Promise<boolean>;
+  set: (message: string, option: ToastOptions, type: string) => Promise<boolean>;
 
-  info(message:string, option:ToastOptions = this.defaults.options) {
+  info(message: string, option: ToastOptions = this.defaults.options) {
     if (option) this.attachOverrides(option);
     this.set(message, this.defaults.options, this.defaults.type.info);
   }
 
-  danger(message:string, option:ToastOptions = this.defaults.options) {
+  danger(message: string, option: ToastOptions = this.defaults.options) {
     if (option) this.attachOverrides(option);
     this.set(message, this.defaults.options, this.defaults.type.danger);
   }
 
-  warning(message:string, option:ToastOptions = this.defaults.options) {
+  warning(message: string, option: ToastOptions = this.defaults.options) {
     if (option) this.attachOverrides(option);
     this.set(message, this.defaults.options, this.defaults.type.warning);
   }
 
-  success(message:string, option:ToastOptions = this.defaults.options) {
+  success(message: string, option: ToastOptions = this.defaults.options) {
     if (option) this.attachOverrides(option);
     this.set(message, this.defaults.options, this.defaults.type.success);
   }
 
   // Attach all the overrides to options
-  attachOverrides(option:any) {
+  attachOverrides(option: any) {
 
     // check key option
     Object.keys(option).forEach(a => {

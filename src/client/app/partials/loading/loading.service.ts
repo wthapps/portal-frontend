@@ -4,7 +4,7 @@ import {
   ElementRef
 }                               from '@angular/core';
 
-declare var $:any;
+declare var $: any;
 
 @Injectable()
 export class LoadingService implements OnChanges {
@@ -23,19 +23,19 @@ export class LoadingService implements OnChanges {
    }
    }*/
 
-  private modalElement:any;
-  private modalElementBackdrop:any;
+  private modalElement: any;
+  private modalElementBackdrop: any;
 
-  constructor(private ElementRef:ElementRef) {
+  constructor(private ElementRef: ElementRef) {
     this.modalElement = document.getElementById('loadingModal');
     this.modalElementBackdrop = document.getElementById('loadingModal-backdrop');
   }
 
-  ngOnChanges():void {
+  ngOnChanges(): void {
     this.stop();
   }
 
-  public start(el?:string) {
+  public start(el?: string) {
     if (el) {
       $(this.ElementRef.nativeElement).find(el).wrap('<div class="inside-loading"></div>');
     } else {
@@ -59,7 +59,7 @@ export class LoadingService implements OnChanges {
    }
    }*/
 
-  public stop(el?:string) {
+  public stop(el?: string) {
     if (el) {
       $(this.ElementRef.nativeElement).find(el).unwrap();
     } else {

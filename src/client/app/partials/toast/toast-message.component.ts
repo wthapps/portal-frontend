@@ -1,9 +1,9 @@
-import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
-import {ToastsService} from './toast-message.service';
-import {ToastOptions} from './toast-message';
+import { ToastsService } from './toast-message.service';
+import { ToastOptions } from './toast-message';
 
 @Component({
   moduleId: module.id,
@@ -13,16 +13,16 @@ import {ToastOptions} from './toast-message';
 })
 export class SimpleToastsComponent implements OnInit, OnDestroy {
 
-  maxStack:number = 5;
-  messageElement:any;
+  maxStack: number = 5;
+  messageElement: any;
 
-  toasts:any = [];
+  toasts: any = [];
 
-  constructor(private toastsService:ToastsService, private _router:Router, private _cdr:ChangeDetectorRef) {
+  constructor(private toastsService: ToastsService, private _router: Router, private _cdr: ChangeDetectorRef) {
     toastsService.set = this.activate.bind(this);
   }
 
-  activate(message:string, option:ToastOptions, type:string) {
+  activate(message: string, option: ToastOptions, type: string) {
     let toast = {
       message: message,
       option: option,
@@ -58,7 +58,7 @@ export class SimpleToastsComponent implements OnInit, OnDestroy {
     //this.timer = setTimeout(this.instance, this.speed);
   }
 
-  removeSelf($event:any) {
+  removeSelf($event: any) {
     let target = $event.target || $event.srcElement || $event.currentTarget;
     let idAttr = target.attributes.id;
     let value = +idAttr.nodeValue.replace('data-alert-', '');

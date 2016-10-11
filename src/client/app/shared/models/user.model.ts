@@ -1,5 +1,5 @@
-import {CreditCard} from './credit-card.model';
-import {Plan} from './plan.model';
+import { CreditCard } from './credit-card.model';
+import { Plan } from './plan.model';
 
 export class User {
   id: number;

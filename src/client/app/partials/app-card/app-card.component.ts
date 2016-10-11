@@ -1,9 +1,7 @@
-import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-import {Product} from '../../shared/models/product.model';
-import {AppCardPlatformComponent} from './platform/app-card-platform.component';
-import {Constants} from '../../shared/index';
+import { Product } from '../../shared/models/product.model';
+import { Constants } from '../../shared/index';
 
 /**
  * This class represents the AppCardSmComponent.
@@ -26,11 +24,7 @@ import {Constants} from '../../shared/index';
         </div>
       </a>
     </div>
-  `,
-  directives: [
-    ROUTER_DIRECTIVES,
-    AppCardPlatformComponent
-  ]
+  `
 })
 export class AppCardComponent implements OnChanges {
   @Input() data: Product = new Product();
@@ -55,7 +49,7 @@ export class AppCardComponent implements OnChanges {
     this.appCardClicked.emit(this.cardId);
   }
 
-  checkError(event) {
+  checkError(event: any) {
     if (event.type == 'error') {
       event.target.src = Constants.img.app;
     }

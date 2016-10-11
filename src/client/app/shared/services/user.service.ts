@@ -1,10 +1,10 @@
-import {Injectable}     from '@angular/core';
-import {Observable}     from 'rxjs/Observable';
-import {Http, Response} from '@angular/http';
-import {Cookie}         from 'ng2-cookies/ng2-cookies';
-import {ApiBaseService} from './apibase.service';
-import {Constants}      from '../config/constants';
-import {User}           from '../models/user.model';
+import { Injectable }     from '@angular/core';
+import { Observable }     from 'rxjs/Observable';
+import { Http, Response } from '@angular/http';
+import { Cookie }         from 'ng2-cookies/ng2-cookies';
+import { ApiBaseService } from './apibase.service';
+import { Constants }      from '../config/constants';
+import { User }           from '../models/user.model';
 
 @Injectable()
 export class UserService extends ApiBaseService {

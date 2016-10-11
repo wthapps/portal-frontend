@@ -15,13 +15,14 @@ export interface ICountry {
 export class CountryService {
   private _productUrl = '/api/countries/index.json';
 
-  constructor(private _http: Http) { }
+  constructor(private _http: Http) {
+  }
 
   getCountries(): Observable<ICountry[]> {
     return this._http.get(this._productUrl)
       .map((response: Response) => <ICountry[]> response.json());
-      //.do(data => console.log('All: ' +  JSON.stringify(data)));
-      //.catch(this.handleError);
+    //.do(data => console.log('All: ' +  JSON.stringify(data)));
+    //.catch(this.handleError);
   }
 
   getCountry(code: string): Observable<ICountry> {

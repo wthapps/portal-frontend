@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Http, Response} from '@angular/http';
-import {ApiBaseService} from '../../shared/services/apibase.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Http, Response } from '@angular/http';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 
 @Injectable()
 export class AppCardService extends ApiBaseService {
 
-  constructor(http:Http) {
+  constructor(http: Http) {
     super(http);
   }
 
@@ -16,7 +16,7 @@ export class AppCardService extends ApiBaseService {
    * @returns {Observable<Response>}
    */
 
-  get(path:string):Observable<Response> {
+  get(path: string): Observable<Response> {
     return super.get(path)
       .map(res => res.json())
       .map((res) => {
@@ -31,7 +31,7 @@ export class AppCardService extends ApiBaseService {
     return super.patch(path, body)
       .map(res => res.json())
       .map((res) => {
-        if(res) {
+        if (res) {
           return res;
         }
         return [];

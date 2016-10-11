@@ -1,7 +1,7 @@
 export class ValidationService {
 
-  static getValidatorErrorMessage(code:string) {
-    let config:any = {
+  static getValidatorErrorMessage(code: string) {
+    let config: any = {
       'required': 'Required',
       'invalidCreditCard': 'Invalid credit card number',
       'invalidEmailAddress': 'Invalid email address',
@@ -12,7 +12,7 @@ export class ValidationService {
     return config[code];
   }
 
-  static creditCardValidator(control:any) {
+  static creditCardValidator(control: any) {
     // Visa, MasterCard, American Express, Diners Club, Discover, JCB
     /* tslint:disable */
     if (control.value.match(/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/)) {
@@ -23,7 +23,7 @@ export class ValidationService {
     /* tslint:enable */
   }
 
-  static emailValidator(control:any) {
+  static emailValidator(control: any) {
     // RFC 2822 compliant regex
     /* tslint:disable */
     if (control.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
@@ -34,7 +34,7 @@ export class ValidationService {
     /* tslint:enable */
   }
 
-  static passwordValidator(control:any) {
+  static passwordValidator(control: any) {
     // {6,100}           - Assert password is between 6 and 100 characters
     // (?=.*[0-9])       - Assert a string has at least one number
     // if (control.value.match(/^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{6,100}$/)) {
@@ -45,7 +45,7 @@ export class ValidationService {
     }
   }
 
-  static passwordConfirmationValidator(control:any) {
+  static passwordConfirmationValidator(control: any) {
 
     if ((control.value.length) > 0 && (control.value === control._parent.controls['password'].value)) {
       return null;

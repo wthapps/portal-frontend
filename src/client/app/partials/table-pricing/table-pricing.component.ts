@@ -1,23 +1,20 @@
-import {Component, OnInit}                          from '@angular/core';
-import {Router, ROUTER_DIRECTIVES}                  from '@angular/router';
-import {Cookie}         from 'ng2-cookies/ng2-cookies';
+import { Component, OnInit }                          from '@angular/core';
+import { Router }                  from '@angular/router';
+import { Cookie }         from 'ng2-cookies/ng2-cookies';
 import {
   UserService,
   LoadingService,
   ApiBaseService
 }                                                   from '../../shared/index';
 
-import {Product}                from '../../shared/models/product.model';
-import {Plan}                   from '../../shared/models/plan.model';
+import { Product }                from '../../shared/models/product.model';
+import { Plan }                   from '../../shared/models/plan.model';
 
 
 @Component({
   moduleId: module.id,
   selector: 'wth-table-pricing',
-  templateUrl: 'table-pricing.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'table-pricing.component.html'
 })
 
 export class TablePricingComponent implements OnInit {

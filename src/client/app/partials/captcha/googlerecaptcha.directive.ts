@@ -1,7 +1,7 @@
 //Ref: https://www.npmjs.com/package/angular2-recaptcha
-import {Component, OnInit, Input, Output, EventEmitter, NgZone} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone } from '@angular/core';
 
-declare var window:any;
+declare var window: any;
 
 @Component({
   selector: 're-captcha',
@@ -12,17 +12,17 @@ declare var window:any;
 export class ReCaptchaComponent implements OnInit {
 
   @Input()
-  site_key:string = null;
+  site_key: string = null;
 
   @Output()
-  captchaResponse:EventEmitter<string>;
+  captchaResponse: EventEmitter<string>;
 
-  constructor(private _zone:NgZone) {
-    window['verifyCallback'] = (response:any) => this._zone.run(this.recaptchaCallback.bind(this, response));
+  constructor(private _zone: NgZone) {
+    window['verifyCallback'] = (response: any) => this._zone.run(this.recaptchaCallback.bind(this, response));
     this.captchaResponse = new EventEmitter<string>();
   }
 
-  recaptchaCallback(response:any) {
+  recaptchaCallback(response: any) {
     this.captchaResponse.emit(response);
   }
 

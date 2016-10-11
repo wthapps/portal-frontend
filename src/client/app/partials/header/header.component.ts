@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, OnInit} from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import {
   Router,
   NavigationEnd

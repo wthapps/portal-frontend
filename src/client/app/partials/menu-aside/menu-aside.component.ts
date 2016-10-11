@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import { Component } from '@angular/core';
 
 /**
  * This class represents the footer component.
@@ -7,8 +6,7 @@ import {ROUTER_DIRECTIVES} from '@angular/router';
 @Component({
   moduleId: module.id,
   selector: 'wth-menu-aside',
-  templateUrl: 'menu-aside.component.html',
-  directives: [ROUTER_DIRECTIVES]
+  templateUrl: 'menu-aside.component.html'
 })
 export class MenuAsideComponent {
 
