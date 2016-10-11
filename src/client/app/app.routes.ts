@@ -7,11 +7,16 @@ import {
   //, authProviders
 } from './login/index';
 import { RegisterRoutes } from './register/index';
-
+import { ProductsRoutes } from './products/index';
+import { PricingRoutes } from './pricing/index';
+import { ContactRoutes } from './contact/index';
 
 export const routes: Routes = [
   ...HomeRoutes,
   ...AboutRoutes,
   ...LoginRoutes,
-  ...RegisterRoutes
+  ...RegisterRoutes,
+  ...ProductsRoutes,
+  ...PricingRoutes,
+  ...ContactRoutes,
 ];

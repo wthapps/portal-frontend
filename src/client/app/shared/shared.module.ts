@@ -12,15 +12,16 @@ import {
   //2 DialogService,
   //2 ToastsService,
   //2 LoadingService,
-  RedirectService
-}                     from '../shared/index';
-
-import { UserService }  from './services/user.service';
+  RedirectService,
+  ApiBaseService,
+  UserService
+}                     from './index';
 
 import {
   HeaderComponent,
   FooterComponent,
-  FooterPromotionComponent
+  FooterPromotionComponent,
+  TablePricingComponent
 } from '../partials/index';
 
 /**
@@ -34,7 +35,8 @@ import {
     NavbarComponent,
     HeaderComponent,
     FooterComponent,
-    FooterPromotionComponent
+    FooterPromotionComponent,
+    TablePricingComponent
   ],
   exports: [
     ToolbarComponent,
@@ -42,6 +44,7 @@ import {
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
+    TablePricingComponent,
     CommonModule,
     FormsModule,
     RouterModule
@@ -53,6 +56,7 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         NameListService,
+        ApiBaseService,
         UserService,
         RedirectService,
         //2 DialogService,

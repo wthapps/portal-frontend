@@ -10,6 +10,9 @@ import { AboutModule } from './about/about.module';
 import { HomeModule } from './home/home.module';
 import { LoginModule } from './login/login.module';
 import { RegisterModule } from './register/register.module';
+import { ProductsModule } from './products/products.module';
+import { PricingModule } from './pricing/pricing.module';
+import { ContactModule } from './contact/contact.module';
 
 import { SharedModule } from './shared/shared.module';
 
@@ -22,6 +25,9 @@ import { SharedModule } from './shared/shared.module';
     HomeModule,
     LoginModule,
     RegisterModule,
+    ProductsModule,
+    PricingModule,
+    ContactModule,
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],
