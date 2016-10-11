@@ -8,7 +8,13 @@ import {
   ForgottenPasswordComponent,
   NewPasswordComponent,
   ResetEmailSentComponent
-}                           from './index';
+} from './index';
+
+import {
+  AccountAppsComponent,
+  AccountAppsListComponent,
+  AccountAppsDetailComponent
+} from './index';
 
 import {
   AccountComponent
@@ -22,9 +28,14 @@ import {
   ],
   declarations: [
     AccountComponent,
+
     ForgottenPasswordComponent,
     NewPasswordComponent,
-    ResetEmailSentComponent
+    ResetEmailSentComponent,
+
+    AccountAppsComponent,
+    AccountAppsListComponent,
+    AccountAppsDetailComponent
   ],
   exports: [
     AccountComponent

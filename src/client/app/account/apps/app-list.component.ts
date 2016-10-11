@@ -1,23 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute}  from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import {AppCardComponent} from '../../partials/index';
-import {Product} from '../../shared/models/product.model';
-import {ApiBaseService} from '../../shared/index';
+import { Product } from '../../shared/models/product.model';
+import { ApiBaseService } from '../../shared/index';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'app-list.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    AppCardComponent
-  ],
-  viewProviders: [
-    ApiBaseService
-  ],
-  providers: [
-    ApiBaseService
-  ]
+  templateUrl: 'app-list.component.html'
 })
 
 export class AccountAppsListComponent implements OnInit {
@@ -36,22 +25,18 @@ export class AccountAppsListComponent implements OnInit {
   private has_filter: boolean = false;
 
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private appService: ApiBaseService) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private apiBaseService: ApiBaseService) {
   }
 
   ngOnInit(): void {
-    this.sub = this.router
-      .routerState
-      .queryParams
-      .subscribe(params => {
-        this.featured = params['featured'];
-
-      });
+    this.route.params.forEach((params: Params) => {
+      this.featured = params['featured'];
+    });
 
     // get featured apps
-    this.appService.get('apps?featured=featured').subscribe(
+    this.apiBaseService.get('apps?featured=featured').subscribe(
       (res: any) => {
         this.featured_apps = res.data;
       },
@@ -59,7 +44,7 @@ export class AccountAppsListComponent implements OnInit {
     );
 
     // get top apps
-    this.appService.get('apps?featured=top').subscribe(
+    this.apiBaseService.get('apps?featured=top').subscribe(
       (res: any) => {
         this.top_apps = res.data;
       },
@@ -67,7 +52,7 @@ export class AccountAppsListComponent implements OnInit {
     );
 
     // get new apps
-    this.appService.get('apps?featured=new').subscribe(
+    this.apiBaseService.get('apps?featured=new').subscribe(
       (res: any) => {
         this.new_apps = res.data;
       },
@@ -78,7 +63,7 @@ export class AccountAppsListComponent implements OnInit {
   }
 
   getProducts() {
-    this.appService.get('apps').subscribe(
+    this.apiBaseService.get('apps').subscribe(
       (res: any) => {
         this.apps = res.data;
       },

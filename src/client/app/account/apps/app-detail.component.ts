@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
-import {DomSanitizationService} from '@angular/platform-browser';
-import {Product} from '../../shared/models/product.model';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+//2 import { DomSanitizationService } from '@angular/platform-browser';
+import { Product } from '../../shared/models/product.model';
 
 import {
   MenuItem,
@@ -10,24 +10,19 @@ import {
   SliderComponent
 } from '../../partials/index';
 
-import {ApiBaseService, UserService} from '../../shared/index';
+import { ApiBaseService, UserService } from '../../shared/index';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'app-detail.component.html',
   directives: [
-    ROUTER_DIRECTIVES,
     BreadcrumbComponent,
     AppCardPlatformComponent,
     SliderComponent
-  ],
-  viewProviders: [
-    ApiBaseService,
-    UserService
   ]
 })
 
-export class AccountAppsDetailComponent implements OnInit, OnDestroy {
+export class AccountAppsDetailComponent implements OnInit {
   pageTitle: string = '';
   errorMessage: string;
 
@@ -36,48 +31,40 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
   added: boolean = false;
 
   private app_id: number = 0;
-  private sub: any;
   private breadcrumbs: MenuItem[];
 
   constructor(private route: ActivatedRoute,
-              private appService: ApiBaseService,
-              private userService: UserService,
-              private sanitizer: DomSanitizationService,
-              private router: Router) {
+              private router: Router,
+              private apiBaseService: ApiBaseService,
+              private userService: UserService) {
   }
 
   ngOnInit() {
     this.breadcrumbs = [];
     this.breadcrumbs.push({label: 'Library', url: '/account/apps'});
 
-    this.sub = this.route.params.subscribe(
-      params => {
-        this.app_id = +params['id'];
+    this.route.params.forEach((params: Params) => {
+      this.app_id = +params['id']; // (+) converts string 'id' to a number
 
-        // verify this app_id is added or not
-        this.appService.get(`users/${this.userService.profile.id}/apps/${this.app_id}/check_added`)
-          .subscribe((response: any) => {
-              this.added = response.added;
-            },
-            error => {
-              this.errorMessage = <any>error;
-            }
-          );
+      // verify this app_id is added or not
+      this.apiBaseService.get(`users/${this.userService.profile.id}/apps/${this.app_id}/check_added`)
+        .subscribe((response: any) => {
+            this.added = response.added;
+          },
+          error => {
+            this.errorMessage = <any>error;
+          }
+        );
 
-        this.getProduct(this.app_id);
-
-      });
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+      this.getProduct(this.app_id);
+    });
   }
 
   getProduct(id: number) {
-    this.appService.get(`apps/${id}`).subscribe(
+    this.apiBaseService.get(`apps/${id}`).subscribe(
       (res: any) => {
         this.item = res.data;
-        this.descriptionContent = this.sanitizer.bypassSecurityTrustHtml(res.data.description);
+        this.descriptionContent = res.data.description;
         this.breadcrumbs.push({label: res.data.display_name});
       },
       error => this.errorMessage = <any>error
@@ -87,7 +74,7 @@ export class AccountAppsDetailComponent implements OnInit, OnDestroy {
 
   add(event: any): void {
     event.preventDefault();
-    this.appService.post(`users/${this.userService.profile.id}/apps/${this.app_id}`, '').subscribe(
+    this.apiBaseService.post(`users/${this.userService.profile.id}/apps/${this.app_id}`, '').subscribe(
       (response: any) => {
         //console.log(this.app_id, response);
         let data: any = JSON.parse(response._body);

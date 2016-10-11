@@ -21,7 +21,11 @@ import {
   HeaderComponent,
   FooterComponent,
   FooterPromotionComponent,
-  TablePricingComponent
+  TablePricingComponent,
+  AppCardComponent,
+  AppCardPlatformComponent,
+  BreadcrumbComponent,
+  SliderComponent
 } from '../partials/index';
 
 /**
@@ -36,7 +40,11 @@ import {
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
-    TablePricingComponent
+    TablePricingComponent,
+    AppCardComponent,
+    AppCardPlatformComponent,
+    BreadcrumbComponent,
+    SliderComponent
   ],
   exports: [
     ToolbarComponent,
@@ -45,6 +53,10 @@ import {
     FooterComponent,
     FooterPromotionComponent,
     TablePricingComponent,
+    AppCardComponent,
+    AppCardPlatformComponent,
+    BreadcrumbComponent,
+    SliderComponent,
     CommonModule,
     FormsModule,
     RouterModule
