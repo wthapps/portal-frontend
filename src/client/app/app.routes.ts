@@ -5,10 +5,13 @@ import { HomeRoutes } from './home/index';
 import {
   LoginRoutes
   //, authProviders
-}                           from './login/index';
+} from './login/index';
+import { RegisterRoutes } from './register/index';
+
 
 export const routes: Routes = [
   ...HomeRoutes,
   ...AboutRoutes,
-  ...LoginRoutes
+  ...LoginRoutes,
+  ...RegisterRoutes
 ];

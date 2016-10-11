@@ -6,7 +6,7 @@ import { NameListService } from '../shared/index';
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-home',
+  selector: 'page-home',
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.css'],
 })

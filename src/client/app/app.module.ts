@@ -9,6 +9,8 @@ import { routes } from './app.routes';
 import { AboutModule } from './about/about.module';
 import { HomeModule } from './home/home.module';
 import { LoginModule } from './login/login.module';
+import { RegisterModule } from './register/register.module';
+
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -19,6 +21,7 @@ import { SharedModule } from './shared/shared.module';
     AboutModule,
     HomeModule,
     LoginModule,
+    RegisterModule,
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],

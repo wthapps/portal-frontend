@@ -24,7 +24,7 @@ declare var $: any;
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-login',
+  selector: 'page-login',
   templateUrl: 'login.component.html'
 })
 export class LoginComponent {
