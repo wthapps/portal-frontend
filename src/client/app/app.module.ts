@@ -13,6 +13,10 @@ import { RegisterModule } from './register/register.module';
 import { ProductsModule } from './products/products.module';
 import { PricingModule } from './pricing/pricing.module';
 import { ContactModule } from './contact/contact.module';
+import { SupportModule } from './support/support.module';
+import { PoliciesModule } from './policies/policies.module';
+import { WelcomeModule } from './welcome/welcome.module';
+import { ComingsoonModule } from './comingsoon/comingsoon.module';
 
 import { SharedModule } from './shared/shared.module';
 
@@ -28,6 +32,10 @@ import { SharedModule } from './shared/shared.module';
     ProductsModule,
     PricingModule,
     ContactModule,
+    SupportModule,
+    PoliciesModule,
+    WelcomeModule,
+    ComingsoonModule,
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],

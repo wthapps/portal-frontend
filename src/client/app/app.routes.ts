@@ -10,6 +10,10 @@ import { RegisterRoutes } from './register/index';
 import { ProductsRoutes } from './products/index';
 import { PricingRoutes } from './pricing/index';
 import { ContactRoutes } from './contact/index';
+import { SupportRoutes } from './support/index';
+import { PoliciesRoutes } from './policies/index';
+import { WelcomeRoutes } from './welcome/index';
+import { ComingsoonRoutes } from './comingsoon/index';
 
 export const routes: Routes = [
   ...HomeRoutes,
@@ -19,4 +23,8 @@ export const routes: Routes = [
   ...ProductsRoutes,
   ...PricingRoutes,
   ...ContactRoutes,
+  ...SupportRoutes,
+  ...PoliciesRoutes,
+  ...WelcomeRoutes,
+  ...ComingsoonRoutes,
 ];
