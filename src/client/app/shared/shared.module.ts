@@ -7,6 +7,8 @@ import {ToolbarComponent} from './toolbar/index';
 import {NavbarComponent} from './navbar/index';
 import {NameListService} from './name-list/index';
 
+import { UserService } from './services/user.service';
+
 import {
   FooterComponent,
   FooterPromotionComponent
@@ -21,13 +23,13 @@ import {
   declarations: [
     ToolbarComponent,
     NavbarComponent,
-    // FooterComponent,
+    FooterComponent,
     FooterPromotionComponent
   ],
   exports: [
     ToolbarComponent,
     NavbarComponent,
-    // FooterComponent,
+    FooterComponent,
     FooterPromotionComponent,
     CommonModule,
     FormsModule,
@@ -38,7 +40,10 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [NameListService]
+      providers: [
+        NameListService,
+        UserService
+      ]
     };
   }
 }

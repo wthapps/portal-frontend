@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {
-  UserService,
+  UserService
 } from '../../shared/index';
 
 /**
@@ -11,8 +10,7 @@ import {
 @Component({
   moduleId: module.id,
   selector: 'wth-footer',
-  templateUrl: 'footer.component.html',
-  directives: [ROUTER_DIRECTIVES]
+  templateUrl: 'footer.component.html'
 })
 export class FooterComponent {
   constructor(private _userService:UserService) {
@@ -30,8 +28,7 @@ export class FooterComponent {
 @Component({
   moduleId: module.id,
   selector: 'wth-footer-promotion',
-  templateUrl: 'footer-promotion.component.html',
-  directives: [ROUTER_DIRECTIVES]
+  templateUrl: 'footer-promotion.component.html'
 })
 export class FooterPromotionComponent {
 }
