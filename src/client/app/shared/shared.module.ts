@@ -1,3 +1,4 @@
+//@TODO remove ElementRef
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -7,10 +8,17 @@ import {ToolbarComponent} from './toolbar/index';
 import {NavbarComponent} from './navbar/index';
 import {NameListService} from './name-list/index';
 
-import { UserService } from './services/user.service';
+import {
+  DialogService,
+  ToastsService,
+  LoadingService,
+  RedirectService
+}                     from '../shared/index';
+
+import {UserService}  from './services/user.service';
 
 import {
-  HeaderComponent
+  HeaderComponent,
   FooterComponent,
   FooterPromotionComponent
 } from '../partials/index';
@@ -45,7 +53,11 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         NameListService,
-        UserService
+        UserService,
+        RedirectService,
+        //DialogService,
+        //ToastsService,
+        //LoadingService
       ]
     };
   }
