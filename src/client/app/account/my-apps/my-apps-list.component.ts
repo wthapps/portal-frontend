@@ -1,16 +1,11 @@
-import {
-  Component,
-  OnInit
-}                       from '@angular/core';
-import {Router}       from '@angular/router';
-import {ApiBaseService, UserService} from '../../shared/index';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiBaseService, UserService } from '../../shared/index';
 
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'my-apps-list.component.html',
-  directives: [],
-  providers: [UserService]
+  templateUrl: 'my-apps-list.component.html'
 })
 
 export class MyAppsListComponent implements OnInit {
@@ -19,7 +14,9 @@ export class MyAppsListComponent implements OnInit {
 
   my_apps: Array<any> = [];
 
-  constructor(private apiService: ApiBaseService, private userService: UserService, private router: Router) {
+  constructor(private apiService: ApiBaseService,
+              private userService: UserService,
+              private router: Router) {
   }
 
   ngOnInit(): void {

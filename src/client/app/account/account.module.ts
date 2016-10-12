@@ -17,6 +17,14 @@ import {
 } from './index';
 
 import {
+  MyAppsDetailAddComponent,
+  MyAppsDetailComponent,
+  MyAppsListComponent,
+  DNSComponent,
+  DNSEditComponent
+} from './index';
+
+import {
   AccountComponent
 } from './index';
 
@@ -35,7 +43,13 @@ import {
 
     AccountAppsComponent,
     AccountAppsListComponent,
-    AccountAppsDetailComponent
+    AccountAppsDetailComponent,
+
+    MyAppsDetailAddComponent,
+    MyAppsDetailComponent,
+    MyAppsListComponent,
+    DNSComponent,
+    DNSEditComponent
   ],
   exports: [
     AccountComponent

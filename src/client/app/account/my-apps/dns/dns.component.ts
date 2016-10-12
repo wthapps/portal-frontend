@@ -3,7 +3,6 @@ import {
   OnInit
 }                       from '@angular/core';
 import {
-  ROUTER_DIRECTIVES,
   Router,
   ActivatedRoute
 }                       from '@angular/router';
@@ -14,10 +13,10 @@ import {
 import {
   ApiBaseService,
   UserService,
-  Constants,
-  LoadingService,
-  ToastsService,
-  DialogService
+  //2 LoadingService,
+  //2 ToastsService,
+  //2 DialogService,
+  Constants
 }                       from '../../../shared/index';
 
 declare var _: any;
@@ -25,10 +24,7 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'app-dns',
-  templateUrl: 'dns.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'dns.component.html'
 })
 
 export class DNSComponent implements OnInit {
@@ -42,11 +38,11 @@ export class DNSComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private dnsService: ApiBaseService,
-              private dialogService: DialogService,
               private userService: UserService,
-              private router: Router,
-              private loadingService: LoadingService,
-              private toastsService: ToastsService) {
+              //2 private dialogService: DialogService,
+              //2 private loadingService: LoadingService,
+              //2 private toastsService: ToastsService,
+              private router: Router) {
   }
 
 
@@ -59,20 +55,20 @@ export class DNSComponent implements OnInit {
   }
 
   getHost(id: number) {
-    this.loadingService.start();
+    //2 this.loadingService.start();
     this.dnsService.get(`users/${id}/dns/records`).subscribe(
       (res: any) => {
         if (res.data != 'empty') {
           this.records = res.data;
         }
-        this.loadingService.stop();
+        //2 this.loadingService.stop();
       },
       (error: any) => {
         this.errorMessage = <any>error;
         if (error.status === Constants.HttpStatusCode.PaymentRequired) {
           this.inValidPlan = true;
         }
-        this.loadingService.stop();
+        //2 this.loadingService.stop();
       }
     );
   }
@@ -106,7 +102,8 @@ export class DNSComponent implements OnInit {
       let record_item = _.find(this.records, {'id': id});
       let hostname = record_item.name + '.' + 'wthdns.com';
       // tslint:disable-next-line
-      this.dialogService.activate('Are you sure to delete <strong class="text-danger">' + hostname + '</strong> ?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
+      //2
+      /*this.dialogService.activate('Are you sure to delete <strong class="text-danger">' + hostname + '</strong> ?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
         if (responseOK) {
           this.loadingService.start();
           this.dnsService.delete(`users/${this.userService.profile.id}/dns/records/${id}`).subscribe(
@@ -121,15 +118,16 @@ export class DNSComponent implements OnInit {
             }
           );
         }
-      });
+      });*/
     }
   }
 
   showUpgrading(): void {
-    this.dialogService.activate('Upgrading your accounts to continue?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
+    //2
+    /*this.dialogService.activate('Upgrading your accounts to continue?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
       if (responseOK) {
         this.router.navigateByUrl('/account/plans');
       }
-    });
+    });*/
   }
 }

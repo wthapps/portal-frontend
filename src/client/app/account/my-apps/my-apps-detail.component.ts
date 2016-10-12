@@ -1,24 +1,19 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy
-}                             from '@angular/core';
-import {ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
-import {Product}              from '../../shared/models/product.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Product } from '../../shared/models/product.model';
 
 import {
   MenuItem,
   BreadcrumbComponent,
   AppCardPlatformComponent
 } from '../../partials/index';
-import {ApiBaseService, UserService} from '../../shared/index';
-import {DNSComponent} from './+dns/index';
+import { ApiBaseService, UserService } from '../../shared/index';
+import { DNSComponent } from './dns/index';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'my-apps-detail.component.html',
   directives: [
-    ROUTER_DIRECTIVES,
     BreadcrumbComponent,
     AppCardPlatformComponent,
     DNSComponent
@@ -42,7 +37,6 @@ export class MyAppsDetailComponent implements OnInit, OnDestroy {
               private appService: ApiBaseService,
               private userService: UserService,
               private router: Router) {
-    console.log(this.userService);
   }
 
   ngOnInit() {
