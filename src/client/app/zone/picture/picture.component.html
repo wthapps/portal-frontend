@@ -1,0 +1,78 @@
+<!--<div class="dropzone dropzone-overlap"-->
+     <!--(drop)="onDrop($event)"-->
+     <!--(dragenter)="dragenter()"-->
+     <!--(dragleave)="dragleave()"-->
+     <!--(dragover)="dragover($event)">-->
+
+  <!--<div class="dropzone-overlap-txt">-->
+    <!--<i class="fa fa-cloud-upload"></i>-->
+    <!--<p>Drag file anywhere to upload</p>-->
+  <!--</div>-->
+
+
+<!--</div>-->
+<!--<div *ngIf="viewPicture != viewPictureType.AlbumDetail">-->
+  <!--<page-zone-bar [hasSelectedItem]="hasSelectedItem" [hasMultiSelectedItem]="hasMultiSelectedItem"-->
+                 <!--[hasFavourite]="hasFavourite"-->
+                 <!--(openWindow)="openFileWindow($event)"-->
+                 <!--(selectedFiles)="handleFileUpload($event)"-->
+                 <!--(onViewChanged)="viewChanged($event)"-->
+                 <!--(onPreview)="preview($event)"-->
+                 <!--(onShare)="share($event)"-->
+                 <!--(onTag)="tag($event)"-->
+                 <!--(onFavourite)="addFavourite($event)"-->
+                 <!--(onDelete)="delete($event)"-->
+                 <!--(onAdd)="add($event)"-->
+                 <!--(onEdit)="edit($event)"-->
+                 <!--(onDownload)="download($event)"-->
+                 <!--(onViewInfo)="viewInfo($event)"-->
+                 <!--(createNewAlbum)="onCreateNewAlbum($event)"-->
+  <!--&gt;</page-zone-bar>-->
+<!--</div>-->
+
+<!--<div [ngSwitch]="viewPicture">-->
+  <!--<div *ngSwitchCase="viewPictureType.Photo">-->
+    <!--<page-zone-photo [pageView]="pageView"-->
+                     <!--[preview]="modalPreview"-->
+                     <!--[viewInfo]="modalViewInfo"-->
+                     <!--(modalHide)="onModalHide($event)"-->
+                     <!--(modalAction)="onModalAction($event)"-->
+                     <!--(selectedPhotos)="changedSelectedItems($event)"-->
+                     <!--(selectedPhotoFull)="changedSelectedItemsFull($event)"-->
+                     <!--[resetSelected]="resetSelected"-->
+                     <!--[hasUploadedItem]="hasUploadedItem"-->
+    <!--&gt;</page-zone-photo>-->
+  <!--</div>-->
+  <!--<div *ngSwitchCase="viewPictureType.Album">-->
+    <!--<page-zone-album [pageView]="pageView"></page-zone-album>-->
+  <!--</div>-->
+  <!--<div *ngSwitchCase="viewPictureType.AlbumDetail">-->
+    <!--<page-zone-album-detail (selectedPhotos)="changedSelectedItems($event)"-->
+                            <!--[resetSelected]="resetSelected">-->
+    <!--</page-zone-album-detail>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--<toast-uploading [files]="files"-->
+                 <!--(photoEvent)="photoEvent($event)"-->
+                 <!--(showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"-->
+                 <!--(createNewAlbum)="onCreateNewAlbum($event)"-->
+                 <!--(hasUploadedItem)="uploadedItem($event)"-->
+<!--&gt;</toast-uploading>-->
+
+<!--<added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [album]="album" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>-->
+
+<!--<page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHideAlbum($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>-->
+<!--<page-zone-form-create-album [showCreateAlbumForm]="showCreateAlbumForm" (hideCreateAlbum)="onHideCreateAlbum($event)"></page-zone-form-create-album>-->
+<!--<wth-toast-upload></wth-toast-upload>-->
+
+
+<!--<page-zone-form-sharing (modalHide)="onModalHide($event)" [modalShow]="modalShare" [data]="selectedItems"></page-zone-form-sharing>-->
+<!--<page-zone-form-tagging (modalHide)="onModalHide($event)" [modalShow]="modalTag" [data]="selectedItems"></page-zone-form-tagging>-->
+<!--<zone-photo-edit [showModal]="modalEdit" (modalHide)='onModalHide($event)' [data]="onePhotoEdit"></zone-photo-edit>-->
+
+<!--<created-album-toast [(showCreatedAlbumToast)]="showCreatedAlbumToast" [album]="album"></created-album-toast>-->
+
+<div>
+  this is picture
+</div>
