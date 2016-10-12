@@ -1,8 +1,8 @@
-import {Component, NgZone, OnInit}                  from '@angular/core';
-import {Router, ActivatedRoute}    from '@angular/router';
-import {FormBuilder, Validators, FormGroup}    from '@angular/forms';
+import { Component, NgZone, OnInit }                  from '@angular/core';
+import { Router, ActivatedRoute }    from '@angular/router';
+import { FormBuilder, Validators, FormGroup }    from '@angular/forms';
 // import {Cookie}                       from 'ng2-cookies/ng2-cookies';
-import {PaymentService}               from './payment.service';
+import { PaymentService }               from './payment.service';
 import {
   UserService,
   Constants,
@@ -10,7 +10,7 @@ import {
   //2 ToastsService,
   CountryService
 }                                     from '../../shared/index';
-import {CreditCard}                   from '../../shared/models/credit-card.model';
+import { CreditCard }                   from '../../shared/models/credit-card.model';
 // import {BillingAddress}               from '../../shared/models/billing-address.model';
 
 
@@ -24,28 +24,26 @@ import {CreditCard}                   from '../../shared/models/credit-card.mode
 })
 
 export class PaymentEditComponent implements OnInit {
-  PanelTitle:string = 'Find Services and add-ons';
-  button_text:string = 'Continue';
-  edit_mode:boolean = false;
-  errorMessage:string = '';
-  countriesCode:any;
+  PanelTitle: string = 'Find Services and add-ons';
+  button_text: string = 'Continue';
+  edit_mode: boolean = false;
+  errorMessage: string = '';
+  countriesCode: any;
   paymentForm: FormGroup;
   credit_card: CreditCard = null;
 
   private action: string = '';
   private next: string = '';
 
-  constructor(
-    private _router:Router,
-    private _userService:UserService,
-    private _paymentService:PaymentService,
-    private countryService:CountryService,
-    //2 private _loaddingService:LoadingService,
-    private route: ActivatedRoute,
-    //2 private _toastsService:ToastsService,
-    private _builder: FormBuilder,
-    private _zone: NgZone
-  ) {
+  constructor(private _router: Router,
+              private _userService: UserService,
+              private _paymentService: PaymentService,
+              private countryService: CountryService,
+              //2 private _loaddingService:LoadingService,
+              private route: ActivatedRoute,
+              //2 private _toastsService:ToastsService,
+              private _builder: FormBuilder,
+              private _zone: NgZone) {
     this.countryService.getCountries().subscribe(
       data => this.countriesCode = data,
       error => this.errorMessage = <any>error);
@@ -56,7 +54,7 @@ export class PaymentEditComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.action = params['operation'];
       this.next = params[Constants.params.next];
-      });
+    });
     switch (this.action) {
       case undefined:
         break;

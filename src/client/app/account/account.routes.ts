@@ -26,11 +26,48 @@ import {
 } from './index';
 
 import {
+  AccountComponent,
+  ProfileComponent,
+  MyAccountComponent,
+  PreferencesComponent
+} from './index';
+
+import {
   CanDeactivateGuard,
   AuthGuard
 } from '../shared/index';
 
 export const AccountRoutes: Route[] = [
+  {
+    path: 'account',
+    component: AccountComponent,
+    //2 canActivate: [AuthGuard],
+    children: [
+      //2
+      /*{path: 'billing-details', component: BillingDetailsComponent},
+       {path: 'billing-history', component: BillingHistoryComponent},
+       {path: 'transactions/:id/receipt', component: ReceiptComponent},
+       {path: 'transactions/:id', component: TransactionDetailsComponent},
+
+       {path: 'services', component: AccountServicesListComponent},
+       */
+      // Setting
+      {
+        path: 'setting/profile', component: ProfileComponent
+        //2 , canDeactivate: [CanDeactivateGuard]
+      },
+      {
+        path: 'setting/account', component: MyAccountComponent
+        //2 , canDeactivate: [CanDeactivateGuard]
+      },
+
+      {
+        path: 'setting/preferences', component: PreferencesComponent
+        //2 , canDeactivate: [CanDeactivateGuard]
+      },
+      {path: '', component: ProfileComponent}
+    ]
+  },
 
   {
     path: 'account/apps',

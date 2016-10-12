@@ -6,6 +6,18 @@ export * from './recovery/new-password.component';
 export * from './recovery/reset-email-sent.component';
 
 /**
+ *  Menu
+ */
+export * from './menu/account-menu.component';
+
+/**
+ *  Setting
+ */
+export * from './setting/profile.component';
+export * from './setting/my-account.component';
+export * from './setting/preferences.component';
+
+/**
  * This barrel file provides the export for the lazy loaded AccountAppsComponent.
  */
 export * from './apps/index';

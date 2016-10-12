@@ -1,12 +1,8 @@
-import {Component, OnInit}          from '@angular/core';
-import {Observable}         from 'rxjs/Observable';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
+import { Router } from '@angular/router';
 import {
-  Router,
-  ROUTER_DIRECTIVES
-}                           from '@angular/router';
-import {
-  REACTIVE_FORM_DIRECTIVES,
   FormGroup,
   AbstractControl,
   FormBuilder,
@@ -15,11 +11,11 @@ import {
 
 import {
   UserService,
-  ToastsService,
-  LoadingService,
+  //2 ToastsService,
+  //2 LoadingService,
   CustomValidator,
   Constants,
-  DialogService,
+  //2 DialogService,
   ApiBaseService
 }                           from '../../shared/index';
 
@@ -28,11 +24,7 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'my-account.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    REACTIVE_FORM_DIRECTIVES
-  ]
+  templateUrl: 'my-account.component.html'
 })
 
 export class MyAccountComponent implements OnInit {
@@ -49,9 +41,9 @@ export class MyAccountComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              private toastsService: ToastsService,
-              private dialogService: DialogService,
-              private loadingService: LoadingService,
+              //2 private toastsService: ToastsService,
+              //2 private dialogService: DialogService,
+              //2 private loadingService: LoadingService,
               private apiService: ApiBaseService,
               private router: Router) {
 
@@ -85,7 +77,7 @@ export class MyAccountComponent implements OnInit {
       let old_password = values.oldPassword;
       let password = values.password;
       // start loading
-      this.loadingService.start();
+      //2 this.loadingService.start();
 
       let body = JSON.stringify({
         old_password: old_password,
@@ -94,19 +86,19 @@ export class MyAccountComponent implements OnInit {
       this.userService.changePassword(`users/${this.userService.profile.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            this.loadingService.stop();
+            //2 this.loadingService.stop();
             if (result.success) {
-              this.toastsService.success(result.message);
+              //2 this.toastsService.success(result.message);
               //console.log('change password:', result.message);
             } else {
-              this.toastsService.danger(result.message);
+              //2 this.toastsService.danger(result.message);
               //console.log('change password error:', result.message);
             }
           },
           error => {
             // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger(error.message);
+            //2 this.loadingService.stop();
+            //2 this.toastsService.danger(error.message);
             console.log('login error:', error.message);
           }
         );
@@ -126,7 +118,9 @@ export class MyAccountComponent implements OnInit {
   }
 
   cancelPlan(): void {
-    let body: string = JSON.stringify({plan_id: 1});
+
+    //2
+    /*let body: string = JSON.stringify({plan_id: 1});
     let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
       We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
       We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
@@ -144,12 +138,12 @@ export class MyAccountComponent implements OnInit {
                 this.loadingService.stop();
               });
         }
-      });
+      });*/
   }
 
   delete(): void {
-
-    let bodyText = `If you don't think you will not use WTHapps again and would like to delete you account,<br>
+    //2
+    /*let bodyText = `If you don't think you will not use WTHapps again and would like to delete you account,<br>
       we will take care of that for you.<br>
       Your account adn all details will be deleted after 14 days. If you change your mind <br>
       within 14 days - log back in to restore your account
@@ -181,7 +175,7 @@ export class MyAccountComponent implements OnInit {
                 this.loadingService.stop();
               });
         }
-      });
+      });*/
   }
 
 
@@ -189,7 +183,8 @@ export class MyAccountComponent implements OnInit {
    *
    * @returns {any}
    */
-  canDeactivate(): Observable<boolean> | boolean {
+  //2
+  /*canDeactivate(): Observable<boolean> | boolean {
     // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
     if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
       return true;
@@ -199,5 +194,5 @@ export class MyAccountComponent implements OnInit {
     let p = this.dialogService.confirm();
     let o = Observable.fromPromise(p);
     return o;
-  }
+  }*/
 }

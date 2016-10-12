@@ -1,11 +1,8 @@
-import {Component, OnInit, NgZone}    from '@angular/core';
-import {Observable}                   from 'rxjs/Observable';
+import { Component, OnInit, NgZone }    from '@angular/core';
+import { Observable }                   from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
+
 import {
-  ROUTER_DIRECTIVES
-}                           from '@angular/router';
-import {
-  REACTIVE_FORM_DIRECTIVES,
   FormGroup,
   AbstractControl,
   FormBuilder,
@@ -14,9 +11,9 @@ import {
 
 import {
   UserService,
-  ToastsService,
-  DialogService,
-  LoadingService,
+  //2 ToastsService,
+  //2 DialogService,
+  //2 LoadingService,
   CustomValidator,
   Constants,
   CountryService,
@@ -28,15 +25,7 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'profile.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    REACTIVE_FORM_DIRECTIVES,
-    UploadCropImageComponent
-  ],
-  providers: [
-    CountryService
-  ]
+  templateUrl: 'profile.component.html'
 })
 
 export class ProfileComponent implements OnInit {
@@ -70,9 +59,9 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private countryService: CountryService,
               private userService: UserService,
-              private toastsService: ToastsService,
-              private dialogService: DialogService,
-              private loadingService: LoadingService,
+              //2 private toastsService: ToastsService,
+              //2 private dialogService: DialogService,
+              //2 private loadingService: LoadingService,
               private zone: NgZone) {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
@@ -95,7 +84,8 @@ export class ProfileComponent implements OnInit {
       'last_name': [this.userService.profile.last_name,
         Validators.compose([Validators.required])
       ],
-      'email': [this.userService.profile.email,
+      'email': [
+        {value: this.userService.profile.email, disabled: true},
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
       'phone_prefix': [this.userService.profile.nationality],
@@ -133,7 +123,7 @@ export class ProfileComponent implements OnInit {
 
     if (this.form.valid) {
       // start loading
-      this.loadingService.start();
+      //2 this.loadingService.start();
 
       values.sex = this.sex;
 
@@ -153,13 +143,13 @@ export class ProfileComponent implements OnInit {
       this.userService.update(`users/${this.userService.profile.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            this.loadingService.stop();
-            this.toastsService.success(result.message);
+            //2 this.loadingService.stop();
+            //2 this.toastsService.success(result.message);
           },
           error => {
             // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger(this.errorMessage);
+            //2 this.loadingService.stop();
+            //2 this.toastsService.danger(this.errorMessage);
             console.log(error);
           }
         );
@@ -177,13 +167,13 @@ export class ProfileComponent implements OnInit {
     this.userService.update(`users/${this.userService.profile.id}`, body)
       .subscribe((result: any) => {
           // stop loading
-          this.loadingService.stop();
-          this.toastsService.success(result.message);
+          //2 this.loadingService.stop();
+          //2 this.toastsService.success(result.message);
         },
         error => {
           // stop loading
-          this.loadingService.stop();
-          this.toastsService.danger(this.errorMessage);
+          //2 this.loadingService.stop();
+          //2 this.toastsService.danger(this.errorMessage);
           console.log(error);
         }
       );
@@ -194,15 +184,16 @@ export class ProfileComponent implements OnInit {
    *
    * @returns {any}
    */
-  canDeactivate(): Observable<boolean> | boolean {
-    // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
-    if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
-      return true;
-    }
-    // Otherwise ask the user with the dialog service and return its
-    // promise which resolves to true or false when the user decides
-    let p = this.dialogService.confirm();
-    let o = Observable.fromPromise(p);
-    return o;
-  }
+  //2
+  /*canDeactivate(): Observable<boolean> | boolean {
+   // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+   if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
+   return true;
+   }
+   // Otherwise ask the user with the dialog service and return its
+   // promise which resolves to true or false when the user decides
+   let p = this.dialogService.confirm();
+   let o = Observable.fromPromise(p);
+   return o;
+   }*/
 }
