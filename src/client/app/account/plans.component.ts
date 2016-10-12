@@ -1,23 +1,20 @@
-import { Component, OnInit }                          from '@angular/core';
-import { Cookie }         from 'ng2-cookies/ng2-cookies';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 import {
   UserService,
-  LoadingService,
-  ApiBaseService,
-  TablePricingComponent
-}                                                   from '../shared/index';
+  //2 LoadingService,
+  ApiBaseService
+} from '../shared/index';
 
-import { Product }                from '../shared/models/product.model';
-import { Plan }                   from '../shared/models/plan.model';
+import { Product } from '../shared/models/product.model';
+import { Plan } from '../shared/models/plan.model';
 
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'plans.component.html',
-  directives: [
-    TablePricingComponent
-  ],
-  providers: [ApiBaseService]
+  templateUrl: 'plans.component.html'
 })
 
 export class PlansComponent implements OnInit {
@@ -28,14 +25,14 @@ export class PlansComponent implements OnInit {
 
 
   constructor(private router: Router,
+              //2 private loadingService: LoadingService,
               private userService: UserService,
-              private apiService: ApiBaseService,
-              private loadingService: LoadingService) {
+              private apiService: ApiBaseService) {
     //console.log(this.userService)
   }
 
   ngOnInit(): void {
-    this.loadingService.start('#tablePlan');
+    //2 this.loadingService.start('#tablePlan');
     this.apiService.get('apps/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response: any) => {
           if (response.data !== null) {
@@ -45,16 +42,16 @@ export class PlansComponent implements OnInit {
                   if (response.data !== null) {
                     this.plans = response.data;
                   }
-                  this.loadingService.stop('#tablePlan');
+                  //2 this.loadingService.stop('#tablePlan');
                 },
                 error => {
-                  this.loadingService.stop('#tablePlan');
+                  //2 this.loadingService.stop('#tablePlan');
                   console.log('error plans: ', error.message);
                 });
           }
         },
         error => {
-          this.loadingService.stop('#tablePlan');
+          //2 this.loadingService.stop('#tablePlan');
           console.log('error products: ', error.message);
         });
   }

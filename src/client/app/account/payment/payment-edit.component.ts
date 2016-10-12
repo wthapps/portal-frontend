@@ -1,13 +1,13 @@
 import {Component, NgZone, OnInit}                  from '@angular/core';
-import {Router, ActivatedRoute, ROUTER_DIRECTIVES}    from '@angular/router';
+import {Router, ActivatedRoute}    from '@angular/router';
 import {FormBuilder, Validators, FormGroup}    from '@angular/forms';
 // import {Cookie}                       from 'ng2-cookies/ng2-cookies';
 import {PaymentService}               from './payment.service';
 import {
   UserService,
   Constants,
-  LoadingService,
-  ToastsService,
+  //2 LoadingService,
+  //2 ToastsService,
   CountryService
 }                                     from '../../shared/index';
 import {CreditCard}                   from '../../shared/models/credit-card.model';
@@ -16,10 +16,7 @@ import {CreditCard}                   from '../../shared/models/credit-card.mode
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'payment-edit.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
+  templateUrl: 'payment-edit.component.html'
   providers: [
     PaymentService,
     CountryService
@@ -43,19 +40,15 @@ export class PaymentEditComponent implements OnInit {
     private _userService:UserService,
     private _paymentService:PaymentService,
     private countryService:CountryService,
-    private _loaddingService:LoadingService,
+    //2 private _loaddingService:LoadingService,
     private route: ActivatedRoute,
-    private _toastsService:ToastsService,
+    //2 private _toastsService:ToastsService,
     private _builder: FormBuilder,
     private _zone: NgZone
   ) {
     this.countryService.getCountries().subscribe(
       data => this.countriesCode = data,
       error => this.errorMessage = <any>error);
-  }
-
-  topMessageShow():void {
-    this._toastsService.danger('');
   }
 
   ngOnInit(): void {

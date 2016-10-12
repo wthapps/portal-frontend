@@ -31,12 +31,12 @@
 
               <div class="payment-method-wrap">
                 <label class="radio-inline">
-                  <input [ngModel]="{checked: methodPaypal == false}" (ngModelChange)="methodPaypal=false" checked
+                  <input [ngModel]="{checked: methodPaypal == false}" (ngModelChange)="methodPaypal=false" [ngModelOptions]="{standalone: true}" checked
                          type="radio" name="payment_method" id="payment_method1" value="credit"> <span
                   class="payment-method-credit"></span>
                 </label>
                 <label class="radio-inline">
-                  <input [ngModel]="{checked: methodPaypal == true}" (ngModelChange)="methodPaypal=true" type="radio"
+                  <input [ngModel]="{checked: methodPaypal == true}" (ngModelChange)="methodPaypal=true" [ngModelOptions]="{standalone: true}" type="radio"
                          name="payment_method" id="payment_method2" value="paypal"> <span
                   class="payment-method-paypal"></span>
                 </label>

@@ -25,6 +25,13 @@ import {
 } from './index';
 
 import {
+  PaymentConfirmComponent,
+  PaymentEditComponent,
+  PaymentComponent,
+  PlansComponent
+} from './index';
+
+import {
   AccountComponent
 } from './index';
 
@@ -49,7 +56,12 @@ import {
     MyAppsDetailComponent,
     MyAppsListComponent,
     DNSComponent,
-    DNSEditComponent
+    DNSEditComponent,
+
+    //PaymentConfirmComponent,
+    //PaymentEditComponent,
+    PaymentComponent,
+    PlansComponent
   ],
   exports: [
     AccountComponent
