@@ -24,7 +24,7 @@ coverage
 build/Release
 
 # Dependency directory
-#node_modules
+node_modules
 
 # Optional npm cache directory
 .npm
@@ -33,5 +33,5 @@ build/Release
 .node_repl_history
 
 # bower
-#bower_components
+bower_components
 
