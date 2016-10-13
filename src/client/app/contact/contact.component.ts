@@ -11,7 +11,7 @@ import { Contact }                   from './contact';
 import { ContactService }            from './contact.service';
 import {
   //2 LoadingService,
-  //2 ToastsService,
+  ToastsService,
   UserService,
   CustomValidator
 }                                  from '../shared/index';
@@ -42,8 +42,8 @@ export class ContactComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              private contactService: ContactService
-              //2 private toastsService: ToastsService,
+              private contactService: ContactService,
+              private toastsService: ToastsService,
               //2 private loadingService: LoadingService
   ) {
 
@@ -99,13 +99,13 @@ export class ContactComponent implements OnInit {
         .subscribe((result: any) => {
             if (result) {
               //2 this.loadingService.stop();
-              //2 this.toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
+              this.toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
             }
           },
           (error: any) => {
             // stop loading
             //2 this.loadingService.stop();
-            //2 this.toastsService.danger('Invalid email or password');
+            this.toastsService.danger('Invalid email or password');
             //console.log('login error:', error);
           }
         );

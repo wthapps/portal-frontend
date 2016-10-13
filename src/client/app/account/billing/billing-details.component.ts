@@ -1,10 +1,10 @@
 import { Component, OnInit }            from '@angular/core';
 import { Router }    from '@angular/router';
 import {
-  UserService
+  UserService,
   //2 LoadingService,
   //2 DialogService,
-  //2 ToastsService
+  ToastsService
 }                                     from '../../shared/index';
 import { Cookie }                       from 'ng2-cookies/ng2-cookies';
 import { CreditCard }                   from '../../shared/models/credit-card.model';
@@ -23,8 +23,7 @@ export class BillingDetailsComponent implements OnInit {
               private router: Router,
               //2 private loadingService: LoadingService,
               //2 private dialogService: DialogService,
-              //2 private toastsService: ToastsService
-  ) {
+              private toastsService: ToastsService) {
     //console.log(this.userService);
   }
 
@@ -47,24 +46,24 @@ export class BillingDetailsComponent implements OnInit {
     event.preventDefault();
     //2
     /*this.dialogService.activate('Are you sure to delete Billing details?', 'Delete billing details')
-      .then((responseOK) => {
-        if (responseOK) {
-          this.loadingService.start();
-          this.userService.delete(`/users/${this.userService.profile.id}/payments/1`).subscribe(
-            response => {
-              this.loadingService.stop();
-              this.toastsService.success('The billing details has been deleted.');
-              this.userService.profile.has_payment_info = false;
-              this.userService.profile.credit_cards = null;
-              // Cookie.delete('profile');
-              Cookie.set('profile', JSON.stringify(this.userService.profile), 365, '/');
-            },
-            error => {
-              this.loadingService.stop();
-              this.toastsService.danger('Unable to delete the billing details.');
-            }
-          );
-        }
-      });*/
+     .then((responseOK) => {
+     if (responseOK) {
+     this.loadingService.start();
+     this.userService.delete(`/users/${this.userService.profile.id}/payments/1`).subscribe(
+     response => {
+     this.loadingService.stop();
+     this.toastsService.success('The billing details has been deleted.');
+     this.userService.profile.has_payment_info = false;
+     this.userService.profile.credit_cards = null;
+     // Cookie.delete('profile');
+     Cookie.set('profile', JSON.stringify(this.userService.profile), 365, '/');
+     },
+     error => {
+     this.loadingService.stop();
+     this.toastsService.danger('Unable to delete the billing details.');
+     }
+     );
+     }
+     });*/
   }
 }

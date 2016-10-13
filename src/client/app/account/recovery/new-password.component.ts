@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import {
   ApiBaseService,
-  //2 ToastsService,
+  ToastsService,
   //2 LoadingService,
   CustomValidator
 }                           from '../../shared/index';
@@ -32,7 +32,7 @@ export class NewPasswordComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               //2 private loadingService: LoadingService,
               private apiBaseService: ApiBaseService) {
 
@@ -75,7 +75,7 @@ export class NewPasswordComponent implements OnInit {
             // stop loading
             //2 this.loadingService.stop();
             if (result.data === null) {
-              //2 this.toastsService.danger(result.message);
+              this.toastsService.danger(result.message);
             } else {
               this.router.navigate(['/login']);
             }
@@ -83,7 +83,7 @@ export class NewPasswordComponent implements OnInit {
           error => {
             // stop loading
             //2 this.loadingService.stop();
-            //2 this.toastsService.danger(error);
+            this.toastsService.danger(error);
             console.log('error:', error);
           });
     }

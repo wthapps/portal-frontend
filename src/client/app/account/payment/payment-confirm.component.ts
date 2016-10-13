@@ -5,7 +5,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import {
   //2 LoadingService,
   //2 DialogService,
-  //2 ToastsService,
+  ToastsService,
   UserService
 } from '../../shared/index';
 import { CreditCard } from '../../shared/models/credit-card.model';
@@ -24,7 +24,7 @@ export class PaymentConfirmComponent implements OnInit {
 
   constructor(private router: Router,
               //2 private dialogService: DialogService,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               //2 private loadingService: LoadingService,
               private userService: UserService) {
   }
@@ -55,11 +55,11 @@ export class PaymentConfirmComponent implements OnInit {
         this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
           .subscribe((response: any) => {
               this.upgraded = true;
-              //2 this.toastsService.success(response.message);
+              this.toastsService.success(response.message);
               //2 this.loadingService.stop();
             },
             error => {
-              //2 this.toastsService.danger(error);
+              this.toastsService.danger(error);
               //2 this.loadingService.stop();
             });
       }

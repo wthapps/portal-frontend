@@ -11,8 +11,10 @@ import { ToastsService } from './toast-message.service';
   styleUrls: ['toast-message.component.css']
 })
 export class ToastsComponent implements OnInit {
+
+  maxStack: number = 5;
   msgs: Message[] = [];
-  life: number = 3000000;
+  life: number = 3000;
 
   constructor(private toastsService: ToastsService) {
     toastsService.set = this.activate.bind(this);
@@ -30,6 +32,12 @@ export class ToastsComponent implements OnInit {
   }
 
   private show(icon: string, summary: string, detail: string) {
+
+    if (this.msgs.length >= this.maxStack) this.msgs.shift();
     this.msgs.push({severity: icon, summary: summary, detail: detail});
+
+    // new item at top
+    /*if (this.toasts.length >= this.maxStack) this.toasts.pop();
+    this.toasts.unshift(toast);*/
   }
 }

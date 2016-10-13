@@ -10,7 +10,7 @@ import {
 
 import {
   UserService,
-  //2 ToastsService,
+  ToastsService,
   //2 LoadingService,
   //2 DialogService,
   Constants
@@ -38,7 +38,7 @@ export class PreferencesComponent implements OnInit {
   submitted: boolean = false;
 
   constructor(private fb: FormBuilder,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               //2 private dialogService: DialogService,
               //2 private loadingService: LoadingService,
               private userService: UserService) {
@@ -82,11 +82,11 @@ export class PreferencesComponent implements OnInit {
         .subscribe(
           (result: any) => {
             //2 this.loadingService.stop();
-            //2 this.toastsService.success(result.message);
+            this.toastsService.success(result.message);
           },
           error => {
             //2 this.loadingService.stop();
-            //2 this.toastsService.danger(this.errorMessage);
+            this.toastsService.danger(this.errorMessage);
           }
         );
     }

@@ -20,7 +20,7 @@ import {
   CustomValidator,
   ApiBaseService,
   UserService,
-  //2 ToastsService,
+  ToastsService,
   //2 LoadingService,
   Constants
 }                                  from '../../../shared/index';
@@ -52,7 +52,7 @@ export class DNSEditComponent implements OnInit {
               private fb: FormBuilder,
               private route: ActivatedRoute,
               //2 private loadingService: LoadingService,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               private userService: UserService) {
 
     this.form = fb.group({
@@ -141,7 +141,7 @@ export class DNSEditComponent implements OnInit {
             } else {
               this.errorMessage = 'Unable to add new host!';
             }
-            //2 this.toastsService.danger(this.errorMessage);
+            this.toastsService.danger(this.errorMessage);
           }
         );
       } else {
@@ -159,7 +159,7 @@ export class DNSEditComponent implements OnInit {
             } else {
               this.errorMessage = 'Unable to add new host!';
             }
-            //2 this.toastsService.danger(this.errorMessage);
+            this.toastsService.danger(this.errorMessage);
           }
         );
       }

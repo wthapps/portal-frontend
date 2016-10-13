@@ -10,7 +10,7 @@ import {
 
 import {
   ApiBaseService,
-  //2 ToastsService,
+  ToastsService,
   //2 LoadingService,
   CustomValidator
 } from '../../shared/index';
@@ -28,7 +28,7 @@ export class ForgottenPasswordComponent {
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               //2 private loadingService: LoadingService,
               private apiBaseService: ApiBaseService) {
 
@@ -54,7 +54,7 @@ export class ForgottenPasswordComponent {
             if (result.data === null) {
               // stop loading
               //2 this.loadingService.stop();
-              //2 this.toastsService.danger(result.message);
+              this.toastsService.danger(result.message);
             } else {
               let body = JSON.stringify({email});
               this.apiBaseService.post('users/recovery/initiate', body)
@@ -66,7 +66,7 @@ export class ForgottenPasswordComponent {
                   error => {
                     // stop loading
                     //2 this.loadingService.stop();
-                    //2 this.toastsService.danger(error);
+                    this.toastsService.danger(error);
                     console.log('error:', error);
                   });
             }
@@ -74,7 +74,7 @@ export class ForgottenPasswordComponent {
           error => {
             // stop loading
             //2 this.loadingService.stop();
-            //2 this.toastsService.danger(error);
+            this.toastsService.danger(error);
           });
     }
   }

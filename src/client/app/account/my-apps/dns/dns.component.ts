@@ -14,7 +14,7 @@ import {
   ApiBaseService,
   UserService,
   //2 LoadingService,
-  //2 ToastsService,
+  ToastsService,
   //2 DialogService,
   Constants
 }                       from '../../../shared/index';
@@ -41,7 +41,7 @@ export class DNSComponent implements OnInit {
               private userService: UserService,
               //2 private dialogService: DialogService,
               //2 private loadingService: LoadingService,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               private router: Router) {
   }
 
