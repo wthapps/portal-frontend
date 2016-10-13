@@ -368,6 +368,9 @@ export class SeedConfig {
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
       'app/*': '/app/*',
+
+      // custom add
+      'primeng': `node_modules/primeng`,
       // For test config
       'dist/dev/*': '/base/dist/dev/*',
       '*': 'node_modules/*'
