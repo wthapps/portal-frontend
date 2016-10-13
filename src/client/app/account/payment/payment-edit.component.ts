@@ -16,7 +16,7 @@ import { CreditCard }                   from '../../shared/models/credit-card.mo
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'payment-edit.component.html'
+  templateUrl: 'payment-edit.component.html',
   providers: [
     PaymentService,
     CountryService

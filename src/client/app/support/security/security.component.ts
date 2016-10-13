@@ -1,12 +1,8 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'security.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'security.component.html'
 })
 
 export class SupportSecurityComponent {

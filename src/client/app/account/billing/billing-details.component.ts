@@ -1,21 +1,18 @@
-import {Component, OnInit}            from '@angular/core';
-import {ROUTER_DIRECTIVES, Router}    from '@angular/router';
+import { Component, OnInit }            from '@angular/core';
+import { Router }    from '@angular/router';
 import {
-  UserService,
-  LoadingService,
-  DialogService,
-  ToastsService
+  UserService
+  //2 LoadingService,
+  //2 DialogService,
+  //2 ToastsService
 }                                     from '../../shared/index';
-import {Cookie}                       from 'ng2-cookies/ng2-cookies';
-import {CreditCard}                   from '../../shared/models/credit-card.model';
-import {BillingAddress}               from '../../shared/models/billing-address.model';
+import { Cookie }                       from 'ng2-cookies/ng2-cookies';
+import { CreditCard }                   from '../../shared/models/credit-card.model';
+import { BillingAddress }               from '../../shared/models/billing-address.model';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'billing-details.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'billing-details.component.html'
 })
 
 export class BillingDetailsComponent implements OnInit {
@@ -24,9 +21,10 @@ export class BillingDetailsComponent implements OnInit {
 
   constructor(private userService: UserService,
               private router: Router,
-              private loadingService: LoadingService,
-              private dialogService: DialogService,
-              private toastsService: ToastsService) {
+              //2 private loadingService: LoadingService,
+              //2 private dialogService: DialogService,
+              //2 private toastsService: ToastsService
+  ) {
     //console.log(this.userService);
   }
 
@@ -47,7 +45,8 @@ export class BillingDetailsComponent implements OnInit {
 
   onDelete(event: any): void {
     event.preventDefault();
-    this.dialogService.activate('Are you sure to delete Billing details?', 'Delete billing details')
+    //2
+    /*this.dialogService.activate('Are you sure to delete Billing details?', 'Delete billing details')
       .then((responseOK) => {
         if (responseOK) {
           this.loadingService.start();
@@ -66,6 +65,6 @@ export class BillingDetailsComponent implements OnInit {
             }
           );
         }
-      });
+      });*/
   }
 }

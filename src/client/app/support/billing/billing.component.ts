@@ -1,12 +1,8 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'billing.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'billing.component.html'
 })
 
 export class SupportBillingComponent {

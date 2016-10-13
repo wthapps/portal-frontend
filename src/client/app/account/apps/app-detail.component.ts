@@ -3,23 +3,13 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 //2 import { DomSanitizationService } from '@angular/platform-browser';
 import { Product } from '../../shared/models/product.model';
 
-import {
-  MenuItem,
-  BreadcrumbComponent,
-  AppCardPlatformComponent,
-  SliderComponent
-} from '../../partials/index';
+import { MenuItem } from '../../partials/index';
 
 import { ApiBaseService, UserService } from '../../shared/index';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'app-detail.component.html',
-  directives: [
-    BreadcrumbComponent,
-    AppCardPlatformComponent,
-    SliderComponent
-  ]
+  templateUrl: 'app-detail.component.html'
 })
 
 export class AccountAppsDetailComponent implements OnInit {

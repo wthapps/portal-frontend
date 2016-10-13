@@ -3,27 +3,26 @@ import {
   OnInit,
   ElementRef
 }                                                   from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute}  from '@angular/router';
-import {UserService, LoadingService}                from '../../shared/index';
-import {TransactionService}                         from '../transaction.service';
+import { Router, ActivatedRoute }  from '@angular/router';
+import { UserService,
+  //2 LoadingService
+}                from '../../shared/index';
+import { TransactionService }                         from '../transaction.service';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
   templateUrl: 'receipt.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   providers: [
-    TransactionService,
-    LoadingService
+    TransactionService
+    //2 , LoadingService
   ],
   styleUrls: ['receipt.component.css']
 })
 
 export class ReceiptComponent implements OnInit {
-  pageTitle:string = 'Receipt';
+  pageTitle: string = 'Receipt';
   transaction: any = {
     amount: 0,
     merchant: '',
@@ -54,36 +53,34 @@ export class ReceiptComponent implements OnInit {
   };
   trans_id: string;
 
-  constructor(
-    private userService:UserService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private transactionService: TransactionService,
-    private loadingService: LoadingService,
-    private _el:ElementRef
-  ) {
+  constructor(private userService: UserService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private transactionService: TransactionService,
+              //2 private loadingService: LoadingService,
+              private _el: ElementRef) {
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-       this.trans_id = params['id'];
+        this.trans_id = params['id'];
       }
     );
 
-    this.loadingService.start();
+    //2 this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions/${this.trans_id}`)
-      .subscribe((response:any) => {
-        this.transaction = response.data;
-        this.transaction.created_at = new Date(response.data.created_at);
-        this.loadingService.stop();
-      },
-      error => {
-        console.log('Receipt error', error);
-        this.loadingService.stop();
-      });
+      .subscribe((response: any) => {
+          this.transaction = response.data;
+          this.transaction.created_at = new Date(response.data.created_at);
+          //2 this.loadingService.stop();
+        },
+        error => {
+          console.log('Receipt error', error);
+          //2 this.loadingService.stop();
+        });
   }
 
-  printOut():void {
+  printOut(): void {
     //console.log(this.printOut);
     let html = $(this._el.nativeElement).find('#printOut').html();
     //var mywindow = window.open('', 'printOut', 'height=400,width=600');

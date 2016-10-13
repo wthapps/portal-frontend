@@ -105,7 +105,7 @@ export class MyAccountComponent implements OnInit {
     }
   }
 
-  hideShowPassword(event): void {
+  hideShowPassword(event: any): void {
     var target = event.target || event.srcElement || event.currentTarget;
     let inputPass = $(target).prev();
     if (inputPass.attr('type') == 'password') {
@@ -121,61 +121,61 @@ export class MyAccountComponent implements OnInit {
 
     //2
     /*let body: string = JSON.stringify({plan_id: 1});
-    let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
-      We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
-      We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
-    this.dialogService.activate(bodyText, 'Cancel Membership', 'Finish Cancellation', 'Cancel')
-      .then((responseOK) => {
-        if (responseOK) {
-          this.loadingService.start();
-          this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
-            .subscribe((response: any) => {
-                this.toastsService.success(response.message);
-                this.loadingService.stop();
-              },
-              error => {
-                this.toastsService.danger(error);
-                this.loadingService.stop();
-              });
-        }
-      });*/
+     let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
+     We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
+     We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
+     this.dialogService.activate(bodyText, 'Cancel Membership', 'Finish Cancellation', 'Cancel')
+     .then((responseOK) => {
+     if (responseOK) {
+     this.loadingService.start();
+     this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
+     .subscribe((response: any) => {
+     this.toastsService.success(response.message);
+     this.loadingService.stop();
+     },
+     error => {
+     this.toastsService.danger(error);
+     this.loadingService.stop();
+     });
+     }
+     });*/
   }
 
   delete(): void {
     //2
     /*let bodyText = `If you don't think you will not use WTHapps again and would like to delete you account,<br>
-      we will take care of that for you.<br>
-      Your account adn all details will be deleted after 14 days. If you change your mind <br>
-      within 14 days - log back in to restore your account
-      If you still want to delete your account, click "Delete My Account". <br>`;
-    let body = JSON.stringify({permanent_deleted: true});
-    this.dialogService.activate(bodyText, 'Delete Account', 'Delete My Account', 'Cancel')
-      .then((responseOK) => {
-        if (responseOK) {
-          this.loadingService.start();
-          this.userService.update(`users/${this.userService.profile.id}`, body)
-            .subscribe((response: any) => {
-                this.toastsService.success(response.message);
-                this.loadingService.stop();
-                this.userService.logout('users/sign_out')
-                  .subscribe(
-                    response => {
-                      this.userService.deleteUserInfo();
-                      this.router.navigate(['/login']);
-                    },
-                    error => {
-                      this.userService.deleteUserInfo();
-                      this.router.navigate(['/login']);
-                      console.log('logout error', error);
-                    }
-                  );
-              },
-              error => {
-                this.toastsService.danger(error);
-                this.loadingService.stop();
-              });
-        }
-      });*/
+     we will take care of that for you.<br>
+     Your account adn all details will be deleted after 14 days. If you change your mind <br>
+     within 14 days - log back in to restore your account
+     If you still want to delete your account, click "Delete My Account". <br>`;
+     let body = JSON.stringify({permanent_deleted: true});
+     this.dialogService.activate(bodyText, 'Delete Account', 'Delete My Account', 'Cancel')
+     .then((responseOK) => {
+     if (responseOK) {
+     this.loadingService.start();
+     this.userService.update(`users/${this.userService.profile.id}`, body)
+     .subscribe((response: any) => {
+     this.toastsService.success(response.message);
+     this.loadingService.stop();
+     this.userService.logout('users/sign_out')
+     .subscribe(
+     response => {
+     this.userService.deleteUserInfo();
+     this.router.navigate(['/login']);
+     },
+     error => {
+     this.userService.deleteUserInfo();
+     this.router.navigate(['/login']);
+     console.log('logout error', error);
+     }
+     );
+     },
+     error => {
+     this.toastsService.danger(error);
+     this.loadingService.stop();
+     });
+     }
+     });*/
   }
 
 
@@ -185,14 +185,14 @@ export class MyAccountComponent implements OnInit {
    */
   //2
   /*canDeactivate(): Observable<boolean> | boolean {
-    // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
-    if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
-      return true;
-    }
-    // Otherwise ask the user with the dialog service and return its
-    // promise which resolves to true or false when the user decides
-    let p = this.dialogService.confirm();
-    let o = Observable.fromPromise(p);
-    return o;
-  }*/
+   // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+   if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
+   return true;
+   }
+   // Otherwise ask the user with the dialog service and return its
+   // promise which resolves to true or false when the user decides
+   let p = this.dialogService.confirm();
+   let o = Observable.fromPromise(p);
+   return o;
+   }*/
 }

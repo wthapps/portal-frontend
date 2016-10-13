@@ -188,7 +188,7 @@ export class DNSEditComponent implements OnInit {
     );
   }
 
-  onBack(event): void {
+  onBack(event: any): void {
     event.preventDefault();
     this.router.navigateByUrl(`/account/my-apps/${this.app_id}`);
   }

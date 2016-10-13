@@ -2,22 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../shared/models/product.model';
 
-import {
-  MenuItem,
-  BreadcrumbComponent,
-  AppCardPlatformComponent
-} from '../../partials/index';
+import { MenuItem } from '../../partials/index';
 import { ApiBaseService, UserService } from '../../shared/index';
 import { DNSComponent } from './dns/index';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'my-apps-detail.component.html',
-  directives: [
-    BreadcrumbComponent,
-    AppCardPlatformComponent,
-    DNSComponent
-  ]
+  templateUrl: 'my-apps-detail.component.html'
 })
 
 export class MyAppsDetailComponent implements OnInit, OnDestroy {
