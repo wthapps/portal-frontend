@@ -9449,6 +9449,58 @@ h1, h2, h3, h4, h5, h6,
     .panel.panel-striped > .list-group > .list-group-item:nth-of-type(odd) {
       background-color: #f9f9f9; }
 
+.toast-message .ui-growl {
+  top: 50px;
+  left: 0;
+  right: 0;
+  width: auto; }
+  .toast-message .ui-growl .ui-growl-item-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 570px;
+    max-width: 100%;
+    word-break: break-all;
+    background-color: #ffffff;
+    background-image: none;
+    color: #4A4A4A;
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(163, 163, 163, 0.4);
+    box-shadow: 0px 2px 4px 0px rgba(163, 163, 163, 0.4); }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-info {
+      border-color: #31708f; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-info .ui-growl-image {
+        color: #31708f; }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-error {
+      border-color: #d9534f; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image {
+        color: #d9534f; }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-warn {
+      border-color: #f0ad4e; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image {
+        color: #f0ad4e; }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-success {
+      border-color: #5cb85c; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image {
+        color: #5cb85c; }
+  .toast-message .ui-growl .ui-growl-item {
+    padding: 15px; }
+  .toast-message .ui-growl .ui-growl-title {
+    padding: 0; }
+  .toast-message .ui-growl .ui-growl-image {
+    margin-right: 10px;
+    font-size: 20px; }
+    .toast-message .ui-growl .ui-growl-image.fa-close:before {
+      content: "\f057"; }
+    .toast-message .ui-growl .ui-growl-image.fa-check:before {
+      content: "\f058"; }
+  .toast-message .ui-growl .ui-growl-message {
+    float: none;
+    overflow: hidden;
+    padding: 0;
+    width: auto; }
+    .toast-message .ui-growl .ui-growl-message p {
+      margin: 0; }
+
 .toast-wrap {
   top: 50px;
   z-index: 1000;

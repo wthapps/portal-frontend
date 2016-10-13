@@ -11,7 +11,7 @@ import {
 
 import {
   UserService,
-  //2 ToastsService,
+  ToastsService,
   //2 LoadingService,
   CustomValidator,
   Constants,
@@ -41,7 +41,7 @@ export class MyAccountComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               //2 private dialogService: DialogService,
               //2 private loadingService: LoadingService,
               private apiService: ApiBaseService,
@@ -88,17 +88,17 @@ export class MyAccountComponent implements OnInit {
             // stop loading
             //2 this.loadingService.stop();
             if (result.success) {
-              //2 this.toastsService.success(result.message);
+              this.toastsService.success(result.message);
               //console.log('change password:', result.message);
             } else {
-              //2 this.toastsService.danger(result.message);
+              this.toastsService.danger(result.message);
               //console.log('change password error:', result.message);
             }
           },
           error => {
             // stop loading
             //2 this.loadingService.stop();
-            //2 this.toastsService.danger(error.message);
+            this.toastsService.danger(error.message);
             console.log('login error:', error.message);
           }
         );

@@ -11,7 +11,7 @@ import {
 
 import {
   UserService,
-  //2 ToastsService,
+  ToastsService,
   //2 LoadingService,
   CustomValidator
 }                           from '../shared/index';
@@ -45,8 +45,8 @@ export class RegisterComponent {
 
   constructor(private fb: FormBuilder,
               private _router: Router,
-              private _userService: UserService
-              //2 private _toastsService: ToastsService,
+              private _userService: UserService,
+              private toastsService: ToastsService,
               //2 private _loadingService: LoadingService
   ) {
 
@@ -125,7 +125,7 @@ export class RegisterComponent {
             if (error.status === 422) {
               this.errorMessage = 'Email has already been taken';
             }
-            //2 this._toastsService.danger(this.errorMessage);
+            this.toastsService.danger(this.errorMessage);
 
           });
     }

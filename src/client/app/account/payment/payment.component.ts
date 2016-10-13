@@ -12,7 +12,7 @@ import {
   UserService,
   Constants,
   //2 LoadingService,
-  //2 ToastsService,
+  ToastsService,
   CountryService
 } from '../../shared/index';
 
@@ -64,7 +64,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
               private paymentService: PaymentService,
               private countryService: CountryService,
               //2 private loaddingService: LoadingService,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               private builder: FormBuilder,
               private zone: NgZone) {
   }
@@ -263,7 +263,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
           hostedFieldsInstance.tokenize(function (err: any, payload: any) {
             if (err) {
-              //2 _this.toastsService.danger(err.message);
+              _this.toastsService.danger(err.message);
               console.log('payment', err);
               return;
             }
@@ -326,11 +326,11 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
             return;
           }
-          //2 _this.toastsService.danger(response.message);
+          _this.toastsService.danger(response.message);
         },
         (error: any) => {
           //2 _this.loaddingService.stop();
-          //2 _this.toastsService.danger(error);
+          _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });
   }
@@ -346,14 +346,14 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             // Cookie.delete('profile');
             Cookie.set('profile', JSON.stringify(_this.userService.profile), 365, '/');
             _this.userService.profile = JSON.parse(Cookie.get('profile'));
-            //2 _this.toastsService.success(response.message);
+            _this.toastsService.success(response.message);
             return;
           }
-          //2 _this.toastsService.danger(response.message);
+          _this.toastsService.danger(response.message);
         },
         (error: any) => {
           //2 _this.loaddingService.stop();
-          //2 _this.toastsService.danger(error);
+          _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });
     _this.loaddingService.start();

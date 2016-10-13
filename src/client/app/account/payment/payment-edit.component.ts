@@ -7,7 +7,7 @@ import {
   UserService,
   Constants,
   //2 LoadingService,
-  //2 ToastsService,
+  ToastsService,
   CountryService
 }                                     from '../../shared/index';
 import { CreditCard }                   from '../../shared/models/credit-card.model';
@@ -41,7 +41,7 @@ export class PaymentEditComponent implements OnInit {
               private countryService: CountryService,
               //2 private _loaddingService:LoadingService,
               private route: ActivatedRoute,
-              //2 private _toastsService:ToastsService,
+              private toastsService: ToastsService,
               private _builder: FormBuilder,
               private _zone: NgZone) {
     this.countryService.getCountries().subscribe(
@@ -96,14 +96,14 @@ export class PaymentEditComponent implements OnInit {
 
   //           Cookie.set('profile', JSON.stringify(_this._userService.profile));
   //           _this._userService.profile = JSON.parse(Cookie.get('profile'));
-  //           _this._toastsService.success(response.message);
+  //           _this.toastsService.success(response.message);
   //           return;
   //         }
-  //         _this._toastsService.danger(response.message);
+  //         _this.toastsService.danger(response.message);
   //       },
   //       error => {
   //         _this._loaddingService.stop();
-  //         _this._toastsService.danger(error);
+  //         _this.toastsService.danger(error);
   //         console.log('Add card error:', error);
   //       });
   //   _this._loaddingService.start();

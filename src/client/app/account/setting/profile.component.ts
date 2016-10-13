@@ -11,7 +11,7 @@ import {
 
 import {
   UserService,
-  //2 ToastsService,
+  ToastsService,
   //2 DialogService,
   //2 LoadingService,
   CustomValidator,
@@ -59,7 +59,7 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private countryService: CountryService,
               private userService: UserService,
-              //2 private toastsService: ToastsService,
+              private toastsService: ToastsService,
               //2 private dialogService: DialogService,
               //2 private loadingService: LoadingService,
               private zone: NgZone) {
@@ -144,12 +144,12 @@ export class ProfileComponent implements OnInit {
         .subscribe((result: any) => {
             // stop loading
             //2 this.loadingService.stop();
-            //2 this.toastsService.success(result.message);
+            this.toastsService.success(result.message);
           },
           error => {
             // stop loading
             //2 this.loadingService.stop();
-            //2 this.toastsService.danger(this.errorMessage);
+            this.toastsService.danger(this.errorMessage);
             console.log(error);
           }
         );
@@ -168,12 +168,12 @@ export class ProfileComponent implements OnInit {
       .subscribe((result: any) => {
           // stop loading
           //2 this.loadingService.stop();
-          //2 this.toastsService.success(result.message);
+          this.toastsService.success(result.message);
         },
         error => {
           // stop loading
           //2 this.loadingService.stop();
-          //2 this.toastsService.danger(this.errorMessage);
+          this.toastsService.danger(this.errorMessage);
           console.log(error);
         }
       );
