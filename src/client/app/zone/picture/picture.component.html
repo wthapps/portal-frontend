@@ -8,9 +8,8 @@
     <!--<i class="fa fa-cloud-upload"></i>-->
     <!--<p>Drag file anywhere to upload</p>-->
   <!--</div>-->
-
-
 <!--</div>-->
+
 <!--<div *ngIf="viewPicture != viewPictureType.AlbumDetail">-->
   <!--<page-zone-bar [hasSelectedItem]="hasSelectedItem" [hasMultiSelectedItem]="hasMultiSelectedItem"-->
                  <!--[hasFavourite]="hasFavourite"-->
@@ -30,8 +29,8 @@
   <!--&gt;</page-zone-bar>-->
 <!--</div>-->
 
-<!--<div [ngSwitch]="viewPicture">-->
-  <!--<div *ngSwitchCase="viewPictureType.Photo">-->
+<div [ngSwitch]="viewPicture">
+  <div *ngSwitchCase="viewPictureType.Photo">
     <!--<page-zone-photo [pageView]="pageView"-->
                      <!--[preview]="modalPreview"-->
                      <!--[viewInfo]="modalViewInfo"-->
@@ -42,16 +41,17 @@
                      <!--[resetSelected]="resetSelected"-->
                      <!--[hasUploadedItem]="hasUploadedItem"-->
     <!--&gt;</page-zone-photo>-->
-  <!--</div>-->
-  <!--<div *ngSwitchCase="viewPictureType.Album">-->
-    <!--<page-zone-album [pageView]="pageView"></page-zone-album>-->
-  <!--</div>-->
-  <!--<div *ngSwitchCase="viewPictureType.AlbumDetail">-->
+  </div>
+  <div *ngSwitchCase="viewPictureType.Album">
+    <page-zone-album [pageView]="pageView"></page-zone-album>
+  </div>
+  <div *ngSwitchCase="viewPictureType.AlbumDetail">
     <!--<page-zone-album-detail (selectedPhotos)="changedSelectedItems($event)"-->
                             <!--[resetSelected]="resetSelected">-->
     <!--</page-zone-album-detail>-->
-  <!--</div>-->
-<!--</div>-->
+    <page-zone-album-detail></page-zone-album-detail>
+  </div>
+</div>
 
 <!--<toast-uploading [files]="files"-->
                  <!--(photoEvent)="photoEvent($event)"-->

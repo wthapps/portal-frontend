@@ -1,0 +1,52 @@
+<div class="page-body-control">
+  <ul class="control-body-select control-body-btnview-left">
+    <li style="border-right: 1px #4A4A4A solid; padding-right: 10px">
+      <a [routerLink]="['/zone/picture/album']"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    </li>
+    <li>
+      <h4 style="color: #4A4A4A">{{album.name}}</h4>
+    </li>
+  </ul>
+
+
+  <ul class="control-body-select control-body-btnview">
+    <!--<li [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">-->
+      <!--<a href="#" (click)="preview($event)"><i class="fa fa-eye"></i></a>-->
+    <!--</li>-->
+    <!--<li [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">-->
+      <!--<a href="#" (click)="share($event)"><i class="fa fa-share-alt"></i></a>-->
+    <!--</li>-->
+    <!--<li [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">-->
+      <!--<a href="#" (click)="addFavourite($event)"><i class="fa" [ngClass]="hasFavourite ? 'fa-star': 'fa-star-o'"></i></a>-->
+    <!--</li>-->
+    <!--<li [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">-->
+      <!--<a href="#" (click)="tag($event)"><i class="fa fa-tag"></i></a>-->
+    <!--</li>-->
+    <!--<li [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">-->
+      <!--<a href="#" (click)="delete($event)"><i class="fa fa-trash-o"></i></a>-->
+    <!--</li>-->
+    <li class="dropdown action">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 10px">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <!--<li><a (click)="add($event)" href="javascript:;" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-plus-square"></i> Add to Album</a></li>-->
+        <!--&lt;!&ndash;<li><a (click)="download($event)" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>&ndash;&gt;-->
+        <!--<li><a class="text-disable" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>-->
+        <!--<li><a *ngIf="!hasMultiSelectedItem" (click)="edit($event)" href="javascript:;"><i class="fa fa-edit"></i> Edit</a>-->
+        <!--</li>-->
+        <li><a href="javascript:;" (click)="viewInfoAction()"><i class="fa fa-info-circle"></i> Information</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa" [ngClass]="{'fa-th-large': (currentView == 'grid'), 'fa-th-list': (currentView == 'list'), 'fa-align-center': (currentView == 'timeline')}"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a (click)="changeView('grid', $event)" href="javascript:;"><i class="fa fa-th-large"></i> Grid</a></li>
+        <li><a (click)="changeView('list', $event)" href="javascript:;"><i class="fa fa-th-list"></i> List</a></li>
+        <li><a (click)="changeView('timeline', $event)" href="javascript:;"><i class="fa fa-align-center"></i> Timeline</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
