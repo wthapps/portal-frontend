@@ -1,14 +1,10 @@
-import {Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange} from '@angular/core';
-import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
+import {Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange, ElementRef} from '@angular/core';
+import { ActivatedRoute} from '@angular/router';
 import {Photo} from '../../../shared/models/photo.model';
 import {ApiBaseService} from '../../../shared/services/apibase.service';
 import {LoadingService} from '../../../partials/loading/loading.service';
-import {ZPictureGridComponent} from '../shared/grid.component';
-import {ZPictureListComponent} from '../shared/list.component';
 import {AlbumService} from "../../../shared/services/picture/album.service";
 import {Album} from "../../../shared/models/album.model";
-import {ZPictureBarAlbumComponent} from "../shared/bar-album-control.component";
-import {ZPicturePhotoTimelineComponent} from "../shared/timeline-photo.component";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -18,13 +14,6 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-album-detail',
   templateUrl: 'album-detail.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    ZPictureGridComponent,
-    ZPictureListComponent,
-    ZPicturePhotoTimelineComponent,
-    ZPictureBarAlbumComponent,
-  ]
 })
 
 export class ZAlbumDetailComponent implements AfterViewInit, OnDestroy, OnChanges {
@@ -40,6 +29,7 @@ export class ZAlbumDetailComponent implements AfterViewInit, OnDestroy, OnChange
   constructor(private apiService: ApiBaseService,
               private route: ActivatedRoute,
               private loadingService: LoadingService,
+              private elementRef: ElementRef,
               private albumService: AlbumService) {
   }
 
@@ -68,18 +58,18 @@ export class ZAlbumDetailComponent implements AfterViewInit, OnDestroy, OnChange
 
   getPhotos(page: any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
-      this.loadingService.start('#photodata-loading');
+      this.loadingService.start(this.elementRef, '#photodata-loading');
       this.album = this.albumService.getAlbum();
       this.apiService.get(`zone/photos?page=${page}&album=${this.album.id}`).subscribe(
         (response: any) => {
           this.perPage = response.per_page;
           this.total = response.total;
           this.photos = _.concat(this.photos, response.data);
-          this.loadingService.stop('#photodata-loading');
+          this.loadingService.stop(this.elementRef, '#photodata-loading');
         },
         error => {
           this.errorMessage = <any>error;
-          this.loadingService.stop('#photodata-loading');
+          this.loadingService.stop(this.elementRef, '#photodata-loading');
         }
       );
     }

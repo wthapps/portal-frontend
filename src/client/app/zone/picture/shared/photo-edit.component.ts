@@ -1,5 +1,4 @@
 import {Component, OnChanges, Input, Output, EventEmitter, AfterViewInit} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Photo} from '../../../shared/models/photo.model';
 
 declare var $: any;
@@ -10,9 +9,6 @@ declare var cropper: any;
   moduleId: module.id,
   selector: 'zone-photo-edit',
   templateUrl: 'photo-edit.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
 })
 
 export class ZPhotoEditComponent implements OnChanges, AfterViewInit {

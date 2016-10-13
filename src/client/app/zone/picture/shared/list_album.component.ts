@@ -1,5 +1,4 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Album} from '../../../shared/models/album.model';
 
@@ -9,9 +8,6 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-listview',
   templateUrl: 'list_album.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
 })
 
 export class ZAlbumListComponent implements OnChanges {

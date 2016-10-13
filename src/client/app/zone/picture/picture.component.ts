@@ -1,4 +1,13 @@
 import {Component, AfterViewInit, OnInit, ElementRef} from '@angular/core';
+import {ViewPicture} from "./shared/entities/view-picture";
+import {PhotoService} from "../../shared/services/picture/photo.service";
+import {ActivatedRoute} from "@angular/router";
+import {AlbumService} from "../../shared/services/picture/album.service";
+import {ApiBaseService} from "../../shared/services/apibase.service";
+import {LoadingService} from "../../partials/loading/loading.service";
+import {DialogService} from "../../partials/dialogs/dialog.service";
+import {ToastsService} from "../../partials/toast/toast-message.service";
+import {Album} from "../../shared/models/album.model";
 
 @Component({
   moduleId: module.id,
@@ -8,89 +17,89 @@ import {Component, AfterViewInit, OnInit, ElementRef} from '@angular/core';
 })
 
 export class ZPictureComponent{
-  // photo_input_element: any = null;
-  // files: any;
-  // dragging_over: boolean;
-  // dragging_leave: boolean;
-  // dragging_enter: boolean;
-  // // test_img: any;
-  //
-  // image_src: string = '';
-  // step: number = 0;
-  // pageView: string = 'grid';
-  // sub: any;
-  // category: string;
-  // viewPicture: any;
-  // viewPictureType: any;
-  //
-  // showAddedtoAlbumToast: boolean = false;
-  // photoCount: number;
-  // showAddtoAlbumForm: boolean = false;
-  // photos: Array<number>;
-  // onePhotoEdit: any;
-  // showCreateAlbumForm: boolean = false;
-  // album: Album;
-  // resetSelected: boolean = false;
-  // showCreatedAlbumToast: boolean = false;
-  //
-  // hasFavourite: boolean = false;
-  //
-  // /**
-  //  * Modal
-  //  */
-  // modalShare: boolean = false;
-  // modalTag: boolean = false;
-  // modalPreview: boolean = false;
-  // modalEdit: boolean = false;
-  // modalViewInfo: boolean = false;
-  //
-  //
-  // /**
-  //  * Items is array of Photos, Album, Video, etc.
-  //  */
-  // items: Array<any>;
-  // selectedItems: Array<any>;
-  // hasSelectedItem: boolean;
-  // hasMultiSelectedItem: boolean;
-  // hasUploadedItem: boolean;
-  // // deletedItems: Array<any>;
-  //
-  //
-  // constructor(private element: ElementRef,
-  //             private photoService: PhotoService,
-  //             private albumService: AlbumService,
-  //             private route: ActivatedRoute,
-  //             private apiBaseService: ApiBaseService,
-  //             private dialogService: DialogService,
-  //             private loadingService: LoadingService,
-  //             private toastsService: ToastsService) {
-  //   this.dragleave();
-  // }
-  //
-  // ngOnInit() {
-  //   this.hasUploadedItem = false;
-  //   this.selectedItems = new Array<any>();
-  //   this.photos = new Array<number>();
-  //   this.viewPictureType = ViewPicture;
-  //
-  //   this.sub = this.route.params.subscribe(params => {
-  //     this.category = params['category'];
-  //     this.collectView(params);
-  //
-  //   });
-  // }
-  //
-  // collectView(params:any) {
-  //   if (this.category == 'photo' || this.category == undefined) {
-  //     this.viewPicture = ViewPicture.Photo;
-  //   } else if (this.category == 'album' && params['id'] == null) {
-  //     this.viewPicture = ViewPicture.Album;
-  //   } else if (this.category == 'album' && params['id'] != null) {
-  //     this.viewPicture = ViewPicture.AlbumDetail;
-  //   } else if (this.category == 'video') {
-  //     this.viewPicture = ViewPicture.Video;
-  //   }
-  // }
+  photo_input_element: any = null;
+  files: any;
+  dragging_over: boolean;
+  dragging_leave: boolean;
+  dragging_enter: boolean;
+  // test_img: any;
+
+  image_src: string = '';
+  step: number = 0;
+  pageView: string = 'grid';
+  sub: any;
+  category: string;
+  viewPicture: any;
+  viewPictureType: any;
+
+  showAddedtoAlbumToast: boolean = false;
+  photoCount: number;
+  showAddtoAlbumForm: boolean = false;
+  photos: Array<number>;
+  onePhotoEdit: any;
+  showCreateAlbumForm: boolean = false;
+  album: Album;
+  resetSelected: boolean = false;
+  showCreatedAlbumToast: boolean = false;
+
+  hasFavourite: boolean = false;
+
+  /**
+   * Modal
+   */
+  modalShare: boolean = false;
+  modalTag: boolean = false;
+  modalPreview: boolean = false;
+  modalEdit: boolean = false;
+  modalViewInfo: boolean = false;
+
+
+  /**
+   * Items is array of Photos, Album, Video, etc.
+   */
+  items: Array<any>;
+  selectedItems: Array<any>;
+  hasSelectedItem: boolean;
+  hasMultiSelectedItem: boolean;
+  hasUploadedItem: boolean;
+  // deletedItems: Array<any>;
+
+
+  constructor(private element: ElementRef,
+              private photoService: PhotoService,
+              private albumService: AlbumService,
+              private route: ActivatedRoute,
+              private apiBaseService: ApiBaseService,
+              private dialogService: DialogService,
+              private loadingService: LoadingService,
+              private toastsService: ToastsService) {
+    // this.dragleave();
+  }
+
+  ngOnInit() {
+    this.hasUploadedItem = false;
+    this.selectedItems = new Array<any>();
+    this.photos = new Array<number>();
+    this.viewPictureType = ViewPicture;
+
+    this.sub = this.route.params.subscribe(params => {
+      this.category = params['category'];
+      this.collectView(params);
+
+    });
+  }
+
+  collectView(params:any) {
+    if (this.category == 'photo' || this.category == undefined) {
+      this.viewPicture = ViewPicture.Photo;
+    } else if (this.category == 'album' && params['id'] == null) {
+      this.viewPicture = ViewPicture.Album;
+    } else if (this.category == 'album' && params['id'] != null) {
+      this.viewPicture = ViewPicture.AlbumDetail;
+    } else if (this.category == 'video') {
+      this.viewPicture = ViewPicture.Video;
+    }
+  }
   //
   // ngAfterViewInit() {
   //   let _thisPicture = this;

@@ -26,18 +26,18 @@ export class LoadingService implements OnChanges {
   private modalElement: any;
   private modalElementBackdrop: any;
 
-  constructor(private ElementRef: ElementRef) {
+  constructor() {
     this.modalElement = document.getElementById('loadingModal');
     this.modalElementBackdrop = document.getElementById('loadingModal-backdrop');
   }
 
   ngOnChanges(): void {
-    this.stop();
+    // this.stop();
   }
 
-  public start(el?: string) {
+  public start(elementRef: ElementRef, el?: string) {
     if (el) {
-      $(this.ElementRef.nativeElement).find(el).wrap('<div class="inside-loading"></div>');
+      $(elementRef.nativeElement).find(el).wrap('<div class="inside-loading"></div>');
     } else {
       this.modalElement.style.display = 'block';
       this.modalElement.classList.add('in');
@@ -59,9 +59,9 @@ export class LoadingService implements OnChanges {
    }
    }*/
 
-  public stop(el?: string) {
+  public stop(elementRef: ElementRef, el?: string) {
     if (el) {
-      $(this.ElementRef.nativeElement).find(el).unwrap();
+      $(elementRef.nativeElement).find(el).unwrap();
     } else {
       this.modalElement.style.display = 'none';
       this.modalElement.classList.remove('in');

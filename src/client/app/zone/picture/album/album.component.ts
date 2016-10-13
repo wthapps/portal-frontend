@@ -1,5 +1,4 @@
-import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import {Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef} from '@angular/core';
 
 import {ZPictureBarComponent} from '../shared/bar-control.component';
 import {ZAlbumGridComponent} from '../shared/grid_album.component';
@@ -14,9 +13,6 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-album',
   templateUrl: 'album.component.html',
-  directives: [
-    // ROUTER_DIRECTIVES,
-  ]
 })
 
 export class ZAlbumComponent implements OnInit, OnChanges {
@@ -29,10 +25,11 @@ export class ZAlbumComponent implements OnInit, OnChanges {
 
   isGridView: boolean;
   isListView: boolean;
-  @Input() pageView: string;
+  @Input() pageView: string = 'grid';
 
   constructor(private apiService: ApiBaseService,
-              // private loadingService: LoadingService
+              private loadingService: LoadingService,
+              private elementRef: ElementRef
   ) {
   }
 
@@ -76,17 +73,17 @@ export class ZAlbumComponent implements OnInit, OnChanges {
 
   getAlbum(page:any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
-      // this.loadingService.start('#album-data-loading');
+      this.loadingService.start(this.elementRef, '#album-data-loading');
       this.apiService.get(`zone/albums?page=${page}`).subscribe(
         (response: any) => {
           this.perPage = response.per_page;
           this.total = response.total;
           this.dataAlbums = _.concat(this.dataAlbums, response.data);
-          // this.loadingService.stop('#album-data-loading');
+          this.loadingService.stop(this.elementRef, '#album-data-loading');
         },
         error => {
           this.errorMessage = <any>error;
-          // this.loadingService.stop('#album-data-loading');
+          this.loadingService.stop(this.elementRef, '#album-data-loading');
         }
       );
     }

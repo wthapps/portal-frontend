@@ -1,7 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, ElementRef} from '@angular/core';
 
 import {
-  REACTIVE_FORM_DIRECTIVES,
   FormGroup,
   AbstractControl,
   FormBuilder,
@@ -25,12 +24,9 @@ declare var $: any;
   moduleId: module.id,
   selector: 'page-zone-form-edit-photo',
   templateUrl: 'form-edit.component.html',
-  directives: [
-    REACTIVE_FORM_DIRECTIVES
-  ]
 })
 export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() modalShow;
+  @Input() modalShow:boolean;
   @Input() data: Photo;
   dataInput: Photo;
 
@@ -51,6 +47,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
   constructor(private fb: FormBuilder,
               private apiBaseService: ApiBaseService,
               private toastsService: ToastsService,
+              private elementRef: ElementRef,
               private loadingService: LoadingService) {
     this.form = fb.group({
       'name': ['',
@@ -75,26 +72,26 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
 
   ngAfterViewInit() {
     let _this = this;
-    $('#editPhotoModal').on('hidden.bs.modal', function (e) {
+    $('#editPhotoModal').on('hidden.bs.modal', function (e:any) {
       _this.modalHide.emit(false);
     });
   }
 
   ngOnChanges() {
     this.dataInput = this.data;
-    if (this.dataInput) {
-      // update form
-      (<FormControl>this.name).updateValue(this.dataInput.name);
-      (<FormControl>this.description).updateValue(this.dataInput.description);
-
-      if (this.dataInput.created_at !== null) {
-        let created_at = new Date(this.dataInput.created_at);
-        (<FormControl>this.createdDateDay).updateValue(created_at.getDate());
-        (<FormControl>this.createdDateMonth).updateValue(created_at.getMonth() + 1);
-        (<FormControl>this.createdDateYear).updateValue(created_at.getUTCFullYear());
-      }
-
-    }
+    // if (this.dataInput) {
+    //   // update form
+    //   (<FormControl>this.name).updateValue(this.dataInput.name);
+    //   (<FormControl>this.description).updateValue(this.dataInput.description);
+    //
+    //   if (this.dataInput.created_at !== null) {
+    //     let created_at = new Date(this.dataInput.created_at);
+    //     (<FormControl>this.createdDateDay).updateValue(created_at.getDate());
+    //     (<FormControl>this.createdDateMonth).updateValue(created_at.getMonth() + 1);
+    //     (<FormControl>this.createdDateYear).updateValue(created_at.getUTCFullYear());
+    //   }
+    //
+    // }
 
     if (this.modalShow) {
       $('#editPhotoModal').modal('show');
@@ -110,7 +107,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
 
       $('#editPhotoModal').modal('hide');
       // start loading
-      this.loadingService.start();
+      this.loadingService.start(this.elementRef);
       let body = JSON.stringify({
         name: values.name,
         created_day: values.createdDateDay.toString(),
@@ -122,7 +119,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
       this.apiBaseService.put(`zone/photos/${this.dataInput.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            this.loadingService.stop();
+            this.loadingService.stop(this.elementRef);
             this.dataInput.name = values.name;
             this.dataInput.description = values.description;
             let date_created_at = (values.createdDateYear + '-' + values.createdDateMonth + '-' + values.createdDateDay).toString();
@@ -131,7 +128,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
           },
           error => {
             // stop loading
-            this.loadingService.stop();
+            this.loadingService.stop(this.elementRef);
             //this.toastsService.danger(error);
             console.log(error);
           }

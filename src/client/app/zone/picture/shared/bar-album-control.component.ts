@@ -1,5 +1,4 @@
 import {Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AlbumService} from "../../../shared/services/picture/album.service";
 import {Album} from "../../../shared/models/album.model";
 
@@ -10,9 +9,6 @@ declare var $: any;
   moduleId: module.id,
   selector: 'page-zone-bar-album',
   templateUrl: 'bar-album-control.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
 })
 
 export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChanges {

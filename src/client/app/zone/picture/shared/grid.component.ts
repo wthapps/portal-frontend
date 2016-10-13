@@ -3,7 +3,6 @@ import {
   EventEmitter, OnChanges
   //HostListener,
 }                          from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Photo} from '../../../shared/models/photo.model';
 
@@ -14,9 +13,6 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-gridview',
   templateUrl: 'grid.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   host: {
     '(document:keydown)': 'onDocumentKeyDown($event)',
     '(document:keyup)': 'onDocumentKeyUp($event)'

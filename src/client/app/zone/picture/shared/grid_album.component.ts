@@ -1,5 +1,4 @@
 import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Album} from '../../../shared/models/album.model';
 
@@ -7,9 +6,6 @@ import {Album} from '../../../shared/models/album.model';
   moduleId: module.id,
   selector: 'page-zone-gridview',
   templateUrl: 'grid_album.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
 })
 
 export class ZAlbumGridComponent implements OnChanges {

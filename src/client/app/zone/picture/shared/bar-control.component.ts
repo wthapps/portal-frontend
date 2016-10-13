@@ -1,5 +1,5 @@
 import {Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Router} from "@angular/router";
 
 declare var $: any;
 
@@ -8,9 +8,6 @@ declare var $: any;
   moduleId: module.id,
   selector: 'page-zone-bar',
   templateUrl: 'bar-control.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
 })
 
 export class ZPictureBarComponent implements AfterViewInit, OnInit, OnChanges {

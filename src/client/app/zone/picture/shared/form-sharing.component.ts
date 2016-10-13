@@ -53,7 +53,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
 
   ngAfterViewInit() {
     let _this = this;
-    $('#sharingModal').on('hidden.bs.modal', function (e) {
+    $('#sharingModal').on('hidden.bs.modal', function (e:any) {
       _this.modalHide.emit(false);
     });
   }

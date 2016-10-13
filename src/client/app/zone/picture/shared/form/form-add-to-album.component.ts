@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, ElementRef} from '@angular/core';
 
 import {Album} from '../../../../shared/models/album.model';
 import {
@@ -29,6 +29,7 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
 
   constructor(private apiService: ApiBaseService,
               private loadingService: LoadingService,
+              private elementRef: ElementRef,
               private albumService: AlbumService) {
   }
   // @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -64,17 +65,17 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
 
   getAlbum(page:any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
-      this.loadingService.start('#album-data-loading');
+      this.loadingService.start(this.elementRef, '#album-data-loading');
       this.apiService.get(`zone/albums?page=${page}`).subscribe(
         (response: any) => {
           this.perPage = response.per_page;
           this.total = response.total;
           this.dataAlbums = _.concat(this.dataAlbums, response.data);
-          this.loadingService.stop('#album-data-loading');
+          this.loadingService.stop(this.elementRef, '#album-data-loading');
         },
         error => {
           this.errorMessage = <any>error;
-          this.loadingService.stop('#album-data-loading');
+          this.loadingService.stop(this.elementRef, '#album-data-loading');
         }
       );
     }

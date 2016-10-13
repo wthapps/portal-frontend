@@ -1,5 +1,4 @@
 import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Photo} from '../../../shared/models/photo.model';
 
@@ -10,9 +9,6 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-listview',
   templateUrl: 'list.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   host: {
     '(document:keydown)': 'onDocumentKeyDown($event)',
     '(document:keyup)': 'onDocumentKeyUp($event)'
@@ -56,7 +52,7 @@ export class ZPictureListComponent implements OnChanges {
    * @param event
    * @param column
    */
-  sort(event, column) {
+  sort(event:any, column:any) {
     if (column == 'name') {
       this.sortName = (this.sortName == false || this.sortName == 'asc' ? 'desc' : 'asc');
       console.log(this.sortName, this.dataPhotos);

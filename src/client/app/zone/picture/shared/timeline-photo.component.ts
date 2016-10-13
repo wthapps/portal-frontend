@@ -1,8 +1,6 @@
 import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Photo} from '../../../shared/models/photo.model';
-import {GroupByMonthYearPipe} from "../../../shared/pipe/groupby-month-year.component";
 
 declare var $: any;
 declare var _: any;
@@ -11,14 +9,10 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-timeline',
   templateUrl: 'timeline-photo.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-  ],
   host: {
     '(document:keydown)': 'onDocumentKeyDown($event)',
     '(document:keyup)': 'onDocumentKeyUp($event)'
   },
-  pipes:[GroupByMonthYearPipe]
 })
 
 export class ZPicturePhotoTimelineComponent implements OnChanges {
