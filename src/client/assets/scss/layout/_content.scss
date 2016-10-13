@@ -355,7 +355,16 @@ $footer-height: 222px;
             right: 0;
           }
         }
-
+      }
+      &.control-body-btnview-left {
+        a {
+          color: $text-color;
+          line-height: 34px;
+          font-size: 20px;
+          &:hover {
+            color: #000000;
+          }
+        }
       }
     }
     .control-body-search {
@@ -469,3 +478,27 @@ body.drag-active {
     width: 100px;
   }
 }
+
+.two-layout-slip {
+  .main-layout {
+    width: 100%;
+  }
+  .right-layout {
+    display: none;
+  }
+
+  &.active-info {
+    .main-layout {
+      width: 70%;
+      float: left;
+    }
+    .right-layout {
+      width: 30%;
+      float: right;
+    }
+    .main-layout, .right-layout {
+      display:inline;
+    }
+  }
+}
+

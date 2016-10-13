@@ -1,33 +1,33 @@
-<div id="photo-box-detail" class="name">
-  <page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>
-  <div class="page-body-in">
-    <template [ngIf]="photos.length">
-      <div [ngSwitch]="pageView">
-        <template [ngSwitchCase]="'grid'">
-          <!--<page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)" [resetSelected]="resetSelected"></page-zone-gridview>-->
-          <page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-gridview>
-        </template>
-        <template [ngSwitchCase]="'list'">
-          <page-zone-listview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>
-        </template>
-        <template [ngSwitchCase]="'timeline'">
-          <page-zone-timeline (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-timeline>
-        </template>
+<div id="photo-box-detail" class="two-layout-slip">
+  <div class="main-layout">
+    <page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>
+    <div class="page-body-in">
+      <template [ngIf]="photos.length">
+        <div [ngSwitch]="pageView">
+          <template [ngSwitchCase]="'grid'">
+            <!--<page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)" [resetSelected]="resetSelected"></page-zone-gridview>-->
+            <page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-gridview>
+          </template>
+          <template [ngSwitchCase]="'list'">
+            <page-zone-listview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>
+          </template>
+          <template [ngSwitchCase]="'timeline'">
+            <page-zone-timeline (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-timeline>
+          </template>
+        </div>
+      </template>
+
+      <div *ngIf="total==0" class="text-center">
+        No data
       </div>
-    </template>
 
-    <div *ngIf="total==0" class="text-center">
-      No data
+      <div id="photodata-loading" style="position: relative;height: 50px;">
+      </div>
     </div>
-
-    <div id="photodata-loading" style="position: relative;height: 50px;">
-    </div>
-
   </div>
-  <!--<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)' (actionModalClicked)="onActionModalClicked($event)" [imgId]="imgId" [imgAll]="photosOfDetail"-->
-                     <!--[showImg]="showImg"></zone-photo-detail>-->
-  <div class="name2">
-    <p style="text-align: right">aaaaaaaaaaaaaaaaaaaaaaa</p>
+  <div class="right-layout">
+    <zone-album-detail-info></zone-album-detail-info>
   </div>
+
 </div>
 

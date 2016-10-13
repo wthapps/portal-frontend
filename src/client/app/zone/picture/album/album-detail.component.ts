@@ -90,12 +90,7 @@ export class ZAlbumDetailComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   onViewInfo(event:any) {
-    // if (this.showInfo) {
-    //   $('#photo-box-detail').removeClass('active-info');
-    // } else {
-    //   $('#photo-box-detail').addClass('active-info');
-    // }
     // this.showInfo = (this.showInfo == true ? false : true);
-    $('#photo-box-detail').addClass('active-info');
+    $('.two-layout-slip').toggleClass('active-info');
   }
 }

@@ -10162,6 +10162,12 @@ body.fixed-hidden {
           .page-full .page-body-control .control-body-select.control-body-btnview > li .dropdown-menu {
             left: auto;
             right: 0; }
+      .page-full .page-body-control .control-body-select.control-body-btnview-left a {
+        color: #4A4A4A;
+        line-height: 34px;
+        font-size: 20px; }
+        .page-full .page-body-control .control-body-select.control-body-btnview-left a:hover {
+          color: #000000; }
     .page-full .page-body-control .control-body-search {
       float: left;
       max-width: 470px;
@@ -10251,6 +10257,23 @@ body.drag-active .dropzone-overlap {
     left: 60px;
     transform: translate(-50%, -50%);
     width: 100px; }
+
+.two-layout-slip .main-layout {
+  width: 100%; }
+
+.two-layout-slip .right-layout {
+  display: none; }
+
+.two-layout-slip.active-info .main-layout {
+  width: 70%;
+  float: left; }
+
+.two-layout-slip.active-info .right-layout {
+  width: 30%;
+  float: right; }
+
+.two-layout-slip.active-info .main-layout, .two-layout-slip.active-info .right-layout {
+  display: inline; }
 
 .aside-left .navgroup {
   margin-bottom: 20px; }
