@@ -6,7 +6,7 @@ import { ApiBaseService } from '../../../shared/index';
   moduleId: module.id,
   selector: 'zone-uploading',
   templateUrl: 'uploading.component.html',
-  styleUrls: ['upload.component.css'],
+  styleUrls: ['uploading.component.css'],
 })
 export class ZoneUploadingComponent implements OnInit, OnChanges {
   current_photo: any;
