@@ -25,7 +25,9 @@ export class ProjectConfig extends SeedConfig {
     // Add `NPM` third-party libraries to be injected/bundled.
     this.NPM_DEPENDENCIES = [
       ...this.NPM_DEPENDENCIES,
-      {src: 'lodash/lodash.min.js', inject: 'libs'}
+      {src: 'lodash/lodash.min.js', inject: 'libs'},
+      {src: 'primeng/resources/primeng.min.css', inject: true},
+      {src: 'primeng/resources/themes/bootstrap/theme.css', inject: true}
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
     ];
@@ -33,8 +35,8 @@ export class ProjectConfig extends SeedConfig {
     // Add `local` third-party libraries to be injected/bundled.
     this.APP_ASSETS = [
       ...this.APP_ASSETS,
-      { src: `${this.ASSETS_SRC}/dist/app.min.js`, inject: true, vendor: false },
-      { src: `${this.CSS_SRC}/style.css`, inject: true, vendor: false}
+      {src: `${this.ASSETS_SRC}/dist/app.min.js`, inject: true, vendor: false},
+      {src: `${this.CSS_SRC}/style.css`, inject: true, vendor: false}
       // {src: `${this.APP_SRC}/your-path-to-lib/libs/jquery-ui.js`, inject: true, vendor: false}
       // {src: `${this.CSS_SRC}/path-to-lib/test-lib.css`, inject: true, vendor: false},
     ];

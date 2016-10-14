@@ -156,7 +156,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  uploadImage(event): void {
+  uploadImage(event: any): void {
     event.preventDefault();
     $('#modalUploadImage').modal('show');
   }

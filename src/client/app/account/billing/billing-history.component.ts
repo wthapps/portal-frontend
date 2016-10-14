@@ -1,50 +1,44 @@
-import {Component, OnInit}   from '@angular/core';
-import {ROUTER_DIRECTIVES, Router}                from '@angular/router';
+import { Component, OnInit }   from '@angular/core';
+import { Router }                from '@angular/router';
 import {
-  UserService,
-  LoadingService
+  UserService
+  //2 LoadingService
 }                                                 from '../../shared/index';
-import {TransactionService}                       from '../transaction.service';
-
+import { TransactionService }                       from '../transaction.service';
 
 
 @Component({
   moduleId: module.id,
   templateUrl: 'billing-history.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   providers: [
-    TransactionService,
-    LoadingService
+    TransactionService
   ]
 })
 
 export class BillingHistoryComponent implements OnInit {
-  pageTitle:string = 'Billing History';
+  pageTitle: string = 'Billing History';
   transactions: any[] = [];
 
-  constructor(
-    private userService:UserService,
-    private router:Router,
-    private transactionService: TransactionService,
-    private loadingService: LoadingService
+  constructor(private userService: UserService,
+              private router: Router,
+              private transactionService: TransactionService
+              //2 private loadingService: LoadingService
   ) {
   }
 
   ngOnInit(): void {
-    this.loadingService.start();
+    //2 this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions`)
-      .subscribe((response:any) => {
-        this.transactions = response.data;
-        this.transactions.map((t) => {
-          t.created_at = new Date(t.created_at);
-        });
-        this.loadingService.stop();
+      .subscribe((response: any) => {
+          this.transactions = response.data;
+          this.transactions.map((t) => {
+            t.created_at = new Date(t.created_at);
+          });
+          //2 this.loadingService.stop();
         },
         error => {
           console.log('Billing history error', error);
-          this.loadingService.stop();
+          //2 this.loadingService.stop();
         });
   }
 

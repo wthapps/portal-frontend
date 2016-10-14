@@ -1,56 +1,49 @@
 import { Injectable } from '@angular/core';
 
-import {
-  ToastOptions
-} from './index';
-
-declare var $: any;
-
 @Injectable()
 export class ToastsService {
 
   defaults: any = {
-    type: {
+    icon: {
       info: 'info',
-      danger: 'danger',
-      warning: 'warning',
+      danger: 'error',
+      warning: 'warn',
       success: 'success'
-    },
-    options: {
-      timeOut: 0,
-      lastOnBottom: false,
-      clickToClose: true
     }
+    /*, options: {
+     life: 3000
+     }*/
   };
 
-  set: (message: string, option: ToastOptions, type: string) => Promise<boolean>;
+  set: (icon: string, summary: string, detail: string) => Promise<boolean>;
 
-  info(message: string, option: ToastOptions = this.defaults.options) {
-    if (option) this.attachOverrides(option);
-    this.set(message, this.defaults.options, this.defaults.type.info);
+  info(summary: string, detail: string = '') {
+    this.set(this.defaults.icon.info, summary, detail);
   }
 
-  danger(message: string, option: ToastOptions = this.defaults.options) {
-    if (option) this.attachOverrides(option);
-    this.set(message, this.defaults.options, this.defaults.type.danger);
+  danger(summary: string, detail: string = '') {
+    this.set(this.defaults.icon.danger, summary, detail);
   }
 
-  warning(message: string, option: ToastOptions = this.defaults.options) {
-    if (option) this.attachOverrides(option);
-    this.set(message, this.defaults.options, this.defaults.type.warning);
+  warning(summary: string, detail: string = '') {
+    this.set(this.defaults.icon.warning, summary, detail);
   }
 
-  success(message: string, option: ToastOptions = this.defaults.options) {
-    if (option) this.attachOverrides(option);
-    this.set(message, this.defaults.options, this.defaults.type.success);
+  success(summary: string, detail: string = '') {
+    this.set(this.defaults.icon.success, summary, detail);
   }
 
-  // Attach all the overrides to options
-  attachOverrides(option: any) {
 
-    // check key option
-    Object.keys(option).forEach(a => {
-      this.defaults.options[a] = option[a];
-    });
-  }
+  /*info(message: string, option: any = this.defaults.options) {
+   if (option) this.attachOverrides(option);
+   this.set(message, this.defaults.options, this.defaults.type.info);
+   }
+   // Attach all the overrides to options
+   attachOverrides(option: any) {
+
+   // check key option
+   Object.keys(option).forEach(a => {
+   this.defaults.options[a] = option[a];
+   });
+   }*/
 }
