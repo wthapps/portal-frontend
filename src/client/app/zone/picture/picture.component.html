@@ -1,64 +1,64 @@
-<!--<div class="dropzone dropzone-overlap"-->
-     <!--(drop)="onDrop($event)"-->
-     <!--(dragenter)="dragenter()"-->
-     <!--(dragleave)="dragleave()"-->
-     <!--(dragover)="dragover($event)">-->
+<div class="dropzone dropzone-overlap"
+     (drop)="onDrop($event)"
+     (dragenter)="dragenter()"
+     (dragleave)="dragleave()"
+     (dragover)="dragover($event)">
 
-  <!--<div class="dropzone-overlap-txt">-->
-    <!--<i class="fa fa-cloud-upload"></i>-->
-    <!--<p>Drag file anywhere to upload</p>-->
-  <!--</div>-->
+  <div class="dropzone-overlap-txt">
+    <i class="fa fa-cloud-upload"></i>
+    <p>Drag file anywhere to upload</p>
+  </div>
+</div>
+<div>
+  <zone-toolbar
+    [selectedItems]="baseMedia.selectedItems"
+    (openWindow)="openFileWindow($event)"
+    (selectedFiles)="handleFileUpload($event)"
+    (onViewChanged)="baseMedia.changeView($event)"
+    (onPreview)="preview($event)"
+    (onShare)="share($event)"
+    (onTag)="tag($event)"
+    (onFavourite)="baseMedia.addFavourite($event)"
+    (onDelete)="delete($event)"
+    (onAdd)="add($event)"
+    (onEdit)="edit($event)"
+    (onDownload)="download($event)"
+    (onViewInfo)="viewInfo($event)"
+    (createNewAlbum)="onCreateNewAlbum($event)"
+  ></zone-toolbar>
+</div>
+<!--[pageView]="pageView"-->
+<!--[preview]="modalPreview"-->
+<!--[viewInfo]="modalViewInfo"-->
+<div [ngSwitch]="category">
+  <div *ngSwitchCase="mediaType.photo">
+    <zone-photo #media
+
+    ></zone-photo>
+  </div>
+  <div *ngSwitchCase="mediaType.video">
+    <zone-video
+
+    ></zone-video>
+  </div>
 
 
-<!--</div>-->
-<!--<div *ngIf="viewPicture != viewPictureType.AlbumDetail">-->
-  <!--<page-zone-bar [hasSelectedItem]="hasSelectedItem" [hasMultiSelectedItem]="hasMultiSelectedItem"-->
-                 <!--[hasFavourite]="hasFavourite"-->
-                 <!--(openWindow)="openFileWindow($event)"-->
-                 <!--(selectedFiles)="handleFileUpload($event)"-->
-                 <!--(onViewChanged)="viewChanged($event)"-->
-                 <!--(onPreview)="preview($event)"-->
-                 <!--(onShare)="share($event)"-->
-                 <!--(onTag)="tag($event)"-->
-                 <!--(onFavourite)="addFavourite($event)"-->
-                 <!--(onDelete)="delete($event)"-->
-                 <!--(onAdd)="add($event)"-->
-                 <!--(onEdit)="edit($event)"-->
-                 <!--(onDownload)="download($event)"-->
-                 <!--(onViewInfo)="viewInfo($event)"-->
-                 <!--(createNewAlbum)="onCreateNewAlbum($event)"-->
-  <!--&gt;</page-zone-bar>-->
-<!--</div>-->
+  <!--&lt;!&ndash;<div *ngSwitchCase="viewPictureType.Album">&ndash;&gt;-->
+    <!--&lt;!&ndash;<page-zone-album [pageView]="pageView"></page-zone-album>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;<div *ngSwitchCase="viewPictureType.AlbumDetail">&ndash;&gt;-->
+    <!--&lt;!&ndash;<page-zone-album-detail (selectedPhotos)="changedSelectedItems($event)"&ndash;&gt;-->
+                            <!--&lt;!&ndash;[resetSelected]="resetSelected">&ndash;&gt;-->
+    <!--&lt;!&ndash;</page-zone-album-detail>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+</div>
 
-<!--<div [ngSwitch]="viewPicture">-->
-  <!--<div *ngSwitchCase="viewPictureType.Photo">-->
-    <!--<page-zone-photo [pageView]="pageView"-->
-                     <!--[preview]="modalPreview"-->
-                     <!--[viewInfo]="modalViewInfo"-->
-                     <!--(modalHide)="onModalHide($event)"-->
-                     <!--(modalAction)="onModalAction($event)"-->
-                     <!--(selectedPhotos)="changedSelectedItems($event)"-->
-                     <!--(selectedPhotoFull)="changedSelectedItemsFull($event)"-->
-                     <!--[resetSelected]="resetSelected"-->
-                     <!--[hasUploadedItem]="hasUploadedItem"-->
-    <!--&gt;</page-zone-photo>-->
-  <!--</div>-->
-  <!--<div *ngSwitchCase="viewPictureType.Album">-->
-    <!--<page-zone-album [pageView]="pageView"></page-zone-album>-->
-  <!--</div>-->
-  <!--<div *ngSwitchCase="viewPictureType.AlbumDetail">-->
-    <!--<page-zone-album-detail (selectedPhotos)="changedSelectedItems($event)"-->
-                            <!--[resetSelected]="resetSelected">-->
-    <!--</page-zone-album-detail>-->
-  <!--</div>-->
-<!--</div>-->
-
-<!--<toast-uploading [files]="files"-->
-                 <!--(photoEvent)="photoEvent($event)"-->
-                 <!--(showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"-->
-                 <!--(createNewAlbum)="onCreateNewAlbum($event)"-->
-                 <!--(hasUploadedItem)="uploadedItem($event)"-->
-<!--&gt;</toast-uploading>-->
+<zone-uploading [files]="files"
+                 (photoEvent)="photoEvent($event)"
+                 (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
+                 (createNewAlbum)="onCreateNewAlbum($event)"
+                 (hasUploadedItem)="uploadedItem($event)"
+></zone-uploading>
 
 <!--<added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [album]="album" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>-->
 
@@ -73,6 +73,3 @@
 
 <!--<created-album-toast [(showCreatedAlbumToast)]="showCreatedAlbumToast" [album]="album"></created-album-toast>-->
 
-<div>
-  this is picture
-</div>
