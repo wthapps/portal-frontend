@@ -19,7 +19,7 @@
     (onShare)="share($event)"
     (onTag)="tag($event)"
     (onFavourite)="baseMedia.addFavourite($event)"
-    (onDelete)="delete($event)"
+    (onDelete)="baseMedia.delete($event)"
     (onAdd)="add($event)"
     (onEdit)="edit($event)"
     (onDownload)="download($event)"
@@ -58,7 +58,7 @@
                  (photoEvent)="photoEvent($event)"
                  (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
                  (createNewAlbum)="onCreateNewAlbum($event)"
-                 (hasUploadedItem)="uploadedItem($event)"
+                 (needToReload)="uploadedItem($event)"
 ></zone-uploading>
 
 <!--<added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [album]="album" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>-->

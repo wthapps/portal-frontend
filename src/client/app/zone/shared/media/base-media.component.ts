@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MediaType, ApiBaseService } from '../../../shared/index';
 
 
@@ -15,7 +15,7 @@ declare var _: any;
 `
 })
 
-export abstract class BaseMediaComponent implements OnInit {
+export abstract class BaseMediaComponent implements OnInit, OnChanges {
   // @Input()
   category: string;
   selectedItems: Array<any> = new Array<any>();
@@ -48,7 +48,8 @@ export abstract class BaseMediaComponent implements OnInit {
     this.loadItems(this.currentPage)
   }
 
-  delete(items: Array<any>) {
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('changed', changes);
   }
 
   changeView(view: any) {
@@ -67,13 +68,14 @@ export abstract class BaseMediaComponent implements OnInit {
     if (event) {
       let body = JSON.stringify({
         ids: _.map(this.selectedItems, 'id'),
-        isToggle: true
+        isToggle: false
       });
       // this.loadingService.start();
       this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
         .subscribe((result: any) => {
             // stop loading
             this.needToReload = true;
+            this.loadItems(this.currentPage);
             // this.loadingService.stop();
             //this.toastsService.success(result.message);
           },
@@ -88,16 +90,17 @@ export abstract class BaseMediaComponent implements OnInit {
   }
 
   delete(event: any) {
-    // this.hasUploadedItem = false;
+    this.needToReload = false;
     if (event) {
       // this.dialogService.activate('Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
       //   if (responseOK) {
-          let body = JSON.stringify({ids: this.selectedItems});
+          let body = JSON.stringify({ids: _.map(this.selectedItems, 'id')});
           // this.loadingService.start();
           this.apiService.post(`${this.buildPathByCat()}/delete`, body)
             .subscribe((result: any) => {
                 // stop loading
-                // this.hasUploadedItem = true;
+                this.needToReload = true;
+                this.loadItems(this.currentPage);
                 // this.loadingService.stop();
 
                 //this.toastsService.success(result.message);
@@ -114,7 +117,7 @@ export abstract class BaseMediaComponent implements OnInit {
     }
   }
 
-  protected loadItems(page: number) {
+  public loadItems(page: number) {
 
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       // this.loadingService.start('#photodata-loading');
@@ -122,7 +125,8 @@ export abstract class BaseMediaComponent implements OnInit {
         (response: any) => {
           this.perPage = response['per_page'];
           this.total = response['total'];
-          this.items = _.concat(this.items, response['data']);
+          this.items = response['data'];
+          // this.items = _.concat(this.items, response['data']);
           // this.loadingService.stop('#photodata-loading');
         },
         error => {

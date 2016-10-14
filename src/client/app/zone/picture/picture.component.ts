@@ -396,7 +396,9 @@ export class ZPictureComponent implements OnChanges {
   }
 
   uploadedItem(hasItem: boolean) {
-    this.hasUploadedItem = hasItem;
+    console.log('finished upload')
+    this.baseMedia.needToReload = hasItem;
+    this.baseMedia.loadItems(this.baseMedia.currentPage);
   }
 
 }
