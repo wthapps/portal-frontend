@@ -10,11 +10,11 @@ import { NameListService } from './name-list/index';
 
 import {
   //2 DialogService,
-  //2 ToastsService,
   //2 LoadingService,
   RedirectService,
   ApiBaseService,
-  UserService
+  UserService,
+  CountryService
 }                     from './index';
 
 import {
@@ -25,7 +25,8 @@ import {
   AppCardComponent,
   AppCardPlatformComponent,
   BreadcrumbComponent,
-  SliderComponent
+  SliderComponent,
+  UploadCropImageComponent
 } from '../partials/index';
 
 /**
@@ -44,7 +45,8 @@ import {
     AppCardComponent,
     AppCardPlatformComponent,
     BreadcrumbComponent,
-    SliderComponent
+    SliderComponent,
+    UploadCropImageComponent
   ],
   exports: [
     ToolbarComponent,
@@ -57,6 +59,7 @@ import {
     AppCardPlatformComponent,
     BreadcrumbComponent,
     SliderComponent,
+    UploadCropImageComponent,
     CommonModule,
     FormsModule,
     RouterModule
@@ -70,9 +73,9 @@ export class SharedModule {
         NameListService,
         RedirectService,
         ApiBaseService,
-        UserService
+        UserService,
+        CountryService
         //2 DialogService,
-        //2 ToastsService,
         //2 LoadingService
       ]
     };

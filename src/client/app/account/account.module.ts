@@ -5,6 +5,10 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import {
+  AccountMenuComponent
+} from './index';
+
+import {
   ForgottenPasswordComponent,
   NewPasswordComponent,
   ResetEmailSentComponent
@@ -17,7 +21,25 @@ import {
 } from './index';
 
 import {
-  AccountComponent
+  MyAppsDetailAddComponent,
+  MyAppsDetailComponent,
+  MyAppsListComponent,
+  DNSComponent,
+  DNSEditComponent
+} from './index';
+
+import {
+  PaymentConfirmComponent,
+  PaymentEditComponent,
+  PaymentComponent,
+  PlansComponent
+} from './index';
+
+import {
+  AccountComponent,
+  ProfileComponent,
+  MyAccountComponent,
+  PreferencesComponent
 } from './index';
 
 @NgModule({
@@ -27,7 +49,12 @@ import {
     ReactiveFormsModule
   ],
   declarations: [
+    AccountMenuComponent,
+
     AccountComponent,
+    ProfileComponent,
+    MyAccountComponent,
+    PreferencesComponent,
 
     ForgottenPasswordComponent,
     NewPasswordComponent,
@@ -35,7 +62,18 @@ import {
 
     AccountAppsComponent,
     AccountAppsListComponent,
-    AccountAppsDetailComponent
+    AccountAppsDetailComponent,
+
+    MyAppsDetailAddComponent,
+    MyAppsDetailComponent,
+    MyAppsListComponent,
+    DNSComponent,
+    DNSEditComponent,
+
+    //2 PaymentConfirmComponent,
+    //2 PaymentEditComponent,
+    PaymentComponent,
+    PlansComponent
   ],
   exports: [
     AccountComponent

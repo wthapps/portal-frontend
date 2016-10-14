@@ -3,12 +3,10 @@ import {
   OnInit
 }                                  from '@angular/core';
 import {
-  ROUTER_DIRECTIVES,
   Router,
   ActivatedRoute
 }                                  from '@angular/router';
 import {
-  REACTIVE_FORM_DIRECTIVES,
   FormGroup,
   AbstractControl,
   FormBuilder,
@@ -16,30 +14,21 @@ import {
   FormControl
 }                     from '@angular/forms';
 
-import {
-  MenuItem,
-  BreadcrumbComponent
-} from '../../../partials/index';
+import { MenuItem } from '../../../partials/index';
 
 import {
   CustomValidator,
   ApiBaseService,
   UserService,
-  Constants,
-  ToastsService,
-  LoadingService
+  //2 ToastsService,
+  //2 LoadingService,
+  Constants
 }                                  from '../../../shared/index';
 
 @Component({
   moduleId: module.id,
   selector: 'app-dns-edit',
-  templateUrl: 'dns-edit.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    REACTIVE_FORM_DIRECTIVES,
-    BreadcrumbComponent
-  ],
-  providers: [CustomValidator]
+  templateUrl: 'dns-edit.component.html'
 })
 
 export class DNSEditComponent implements OnInit {
@@ -62,8 +51,8 @@ export class DNSEditComponent implements OnInit {
               private router: Router,
               private fb: FormBuilder,
               private route: ActivatedRoute,
-              private loadingService: LoadingService,
-              private toastsService: ToastsService,
+              //2 private loadingService: LoadingService,
+              //2 private toastsService: ToastsService,
               private userService: UserService) {
 
     this.form = fb.group({
@@ -134,16 +123,17 @@ export class DNSEditComponent implements OnInit {
         domain_id: 0
       });
 
-      console.log(body);
-      this.loadingService.start();
+      //console.log(body);
+
+      //2 this.loadingService.start();
       if (this.submittedAdd) { // add new host
         this.dnsService.post(`users/${this.userService.profile.id}/dns/records/`, body).subscribe(
           result => {
-            this.loadingService.stop();
+            //2 this.loadingService.stop();
             this.router.navigateByUrl(`/account/my-apps/${this.app_id}`);
           },
           (error: any) => {
-            this.loadingService.stop();
+            //2 this.loadingService.stop();
             if (error.status === Constants.HttpStatusCode.PaymentRequired) {
               this.errorMessage = 'Your account have expired!';
             } else if (error.status === Constants.HttpStatusCode.Conflict) {
@@ -151,17 +141,17 @@ export class DNSEditComponent implements OnInit {
             } else {
               this.errorMessage = 'Unable to add new host!';
             }
-            this.toastsService.danger(this.errorMessage);
+            //2 this.toastsService.danger(this.errorMessage);
           }
         );
       } else {
         this.dnsService.patch(`users/${this.userService.profile.id}/dns/records/${this.dns_id}`, body).subscribe(
           result => {
-            this.loadingService.stop();
+            //2 this.loadingService.stop();
             this.router.navigateByUrl(`/account/my-apps/${this.app_id}`);
           },
           (error: any) => {
-            this.loadingService.stop();
+            //2 this.loadingService.stop();
             if (error.status === Constants.HttpStatusCode.PaymentRequired) {
               this.errorMessage = 'Your account have expired!';
             } else if (error.status === Constants.HttpStatusCode.Conflict) {
@@ -169,7 +159,7 @@ export class DNSEditComponent implements OnInit {
             } else {
               this.errorMessage = 'Unable to add new host!';
             }
-            this.toastsService.danger(this.errorMessage);
+            //2 this.toastsService.danger(this.errorMessage);
           }
         );
       }
@@ -180,8 +170,8 @@ export class DNSEditComponent implements OnInit {
     this.dnsService.get(`users/${this.userService.profile.id}/dns/records/${id}`).subscribe(
       (result: any) => {
         //console.log(result);
-        (<FormControl>this.host).updateValue(result.data.name);
-        (<FormControl>this.ip).updateValue(result.data.content);
+        (<FormControl>this.host).setValue(result.data.name);
+        (<FormControl>this.ip).setValue(result.data.content);
       },
       error => this.errorMessage = <any>error
     );
@@ -198,7 +188,7 @@ export class DNSEditComponent implements OnInit {
     );
   }
 
-  onBack(event): void {
+  onBack(event: any): void {
     event.preventDefault();
     this.router.navigateByUrl(`/account/my-apps/${this.app_id}`);
   }

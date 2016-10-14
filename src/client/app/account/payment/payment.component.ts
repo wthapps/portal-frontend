@@ -1,34 +1,30 @@
-import {Component, AfterViewInit, NgZone, OnInit}     from '@angular/core';
-import {Router, ROUTER_DIRECTIVES, ActivatedRoute}    from '@angular/router';
+import { Component, AfterViewInit, NgZone, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
-  REACTIVE_FORM_DIRECTIVES,
   FormBuilder,
   FormGroup,
   AbstractControl,
-  Validators }                        from '@angular/forms';
-import {Cookie}                       from 'ng2-cookies/ng2-cookies';
-import {PaymentService}               from './payment.service';
+  Validators
+} from '@angular/forms';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { PaymentService } from './payment.service';
 import {
   UserService,
   Constants,
-  LoadingService,
+  //2 LoadingService,
   ToastsService,
   CountryService
-}                                     from '../../shared/index';
+} from '../../shared/index';
 
-import {CreditCard}                   from '../../shared/models/credit-card.model';
-import {BillingAddress}               from '../../shared/models/billing-address.model';
+import { CreditCard } from '../../shared/models/credit-card.model';
+import { BillingAddress } from '../../shared/models/billing-address.model';
 
-declare var braintree:any;
-declare var $:any;
+declare var braintree: any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
   templateUrl: 'payment.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    REACTIVE_FORM_DIRECTIVES
-  ],
   providers: [
     PaymentService,
     CountryService
@@ -36,10 +32,10 @@ declare var $:any;
 })
 
 export class PaymentComponent implements AfterViewInit, OnInit {
-  PanelTitle:string = 'Find Services and add-ons';
-  button_text:string = 'Add Payment Method';
-  edit_mode:boolean = false;
-  errorMessage:string = '';
+  PanelTitle: string = 'Find Services and add-ons';
+  button_text: string = 'Add Payment Method';
+  edit_mode: boolean = false;
+  errorMessage: string = '';
   countriesCode: any;
   credit_card: CreditCard = null;
   submitted: boolean = false;
@@ -62,21 +58,15 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   private operation: string = '';
 
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private paymentService: PaymentService,
-    private countryService: CountryService,
-    private loaddingService:LoadingService,
-    private toastsService: ToastsService,
-    private builder: FormBuilder,
-    private zone: NgZone
-  ) {
-  }
-
-  topMessageShow():void {
-    this.toastsService.danger('');
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private userService: UserService,
+              private paymentService: PaymentService,
+              private countryService: CountryService,
+              //2 private loaddingService: LoadingService,
+              private toastsService: ToastsService,
+              private builder: FormBuilder,
+              private zone: NgZone) {
   }
 
   ngOnInit(): void {
@@ -84,8 +74,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     this.selected_plan = JSON.parse(Cookie.get('selected_plan'));
 
     this.route.params.subscribe((params) => {
-       this.next = params['next'];
-       this.operation = params['operation'];
+      this.next = params['next'];
+      this.operation = params['operation'];
     });
 
     // initialize billing details info
@@ -145,7 +135,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
 
     var _this = this;
-    var form:any = document.querySelector('#payment-method-card');
+    var form: any = document.querySelector('#payment-method-card');
     var submit = document.querySelector('#button-pay');
 
 
@@ -164,7 +154,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     }, function (err: any, clientInstance: any) {
       if (err) {
         console.error(err);
-        return ;
+        return;
       }
 
       // Create input fields and add text styles
@@ -304,23 +294,24 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   }
 
   /*onCancel() {
-    var next = this.next === undefined ? '/account' : this.next.replace(/\%20/g, '\/');
-    this.router.navigateByUrl(next);
-  }*/
+   var next = this.next === undefined ? '/account' : this.next.replace(/\%20/g, '\/');
+   this.router.navigateByUrl(next);
+   }*/
 
   onSubmit() {
     this.submitted = true;
   }
+
   /**
    *  Add card information and billing address
    */
-  private create(_this:any, body:string) {
-    _this.loaddingService.start();
+  private create(_this: any, body: string) {
+    //2 _this.loaddingService.start();
 
     _this.paymentService.create(`users/${_this.userService.profile.id}/payments`, body)
     // _this._userService.signup(`users/${_this._userService.profile.id,}/payments`, body)
-      .subscribe((response:any) => {
-          _this.loaddingService.stop();
+      .subscribe((response: any) => {
+          //2 _this.loaddingService.stop();
           if (response.success) { // TODO refactor this code in server
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
@@ -337,18 +328,18 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           }
           _this.toastsService.danger(response.message);
         },
-        (error:any) => {
-          _this.loaddingService.stop();
+        (error: any) => {
+          //2 _this.loaddingService.stop();
           _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });
   }
 
 
-  private update(_this:any, body:string) {
+  private update(_this: any, body: string) {
     _this.paymentService.update(`users/${_this.userService.profile.id}/payments/1`, body)
-      .subscribe((response:any) => {
-          _this.loaddingService.stop();
+      .subscribe((response: any) => {
+          //2 _this.loaddingService.stop();
           if (response.success) {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
@@ -360,8 +351,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           }
           _this.toastsService.danger(response.message);
         },
-        (error:any) => {
-          _this.loaddingService.stop();
+        (error: any) => {
+          //2 _this.loaddingService.stop();
           _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });

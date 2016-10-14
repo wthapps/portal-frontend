@@ -43,14 +43,15 @@
   </div>
 
 
-  <!--&lt;!&ndash;<div *ngSwitchCase="viewPictureType.Album">&ndash;&gt;-->
-    <!--&lt;!&ndash;<page-zone-album [pageView]="pageView"></page-zone-album>&ndash;&gt;-->
-  <!--&lt;!&ndash;</div>&ndash;&gt;-->
-  <!--&lt;!&ndash;<div *ngSwitchCase="viewPictureType.AlbumDetail">&ndash;&gt;-->
-    <!--&lt;!&ndash;<page-zone-album-detail (selectedPhotos)="changedSelectedItems($event)"&ndash;&gt;-->
-                            <!--&lt;!&ndash;[resetSelected]="resetSelected">&ndash;&gt;-->
-    <!--&lt;!&ndash;</page-zone-album-detail>&ndash;&gt;-->
-  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <div *ngSwitchCase="mediaType.album">
+    <page-zone-album [pageView]="pageView"></page-zone-album>
+  </div>
+  <div *ngSwitchCase="mediaType.albumdetail">
+    <!--<page-zone-album-detail (selectedPhotos)="changedSelectedItems($event)"-->
+    <!--[resetSelected]="resetSelected">-->
+    <!--</page-zone-album-detail>-->
+    <page-zone-album-detail></page-zone-album-detail>
+  </div>
 </div>
 
 <zone-uploading [files]="files"

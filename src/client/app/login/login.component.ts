@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import {
   UserService,
-  //2 ToastsService,
+  ToastsService,
   //2 LoadingService,
   RedirectService,
   CustomValidator
@@ -37,7 +37,7 @@ export class LoginComponent {
               private router: Router,
               private userService: UserService,
               private params: ActivatedRoute,
-              //2 private toastsService:ToastsService,
+              private toastsService:ToastsService,
               //2 private loadingService:LoadingService,
               private redirectService: RedirectService) {
 
@@ -59,6 +59,7 @@ export class LoginComponent {
   }
 
   onSubmit(values: any): void {
+
     this.submitted = true;
     if (this.form.valid) {
       // start loading
@@ -80,7 +81,7 @@ export class LoginComponent {
             // stop loading
             //2 this.loadingService.stop();
 
-            //2 this.toastsService.danger('Invalid email or password');
+            this.toastsService.danger('Invalid email or password');
             //console.log('login error:', error);
           }
         );

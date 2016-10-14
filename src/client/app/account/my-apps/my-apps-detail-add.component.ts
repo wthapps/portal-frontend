@@ -1,26 +1,16 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy
-}                             from '@angular/core';
-import {ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
-import {Product}              from '../../shared/models/product.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Product } from '../../shared/models/product.model';
 
 import {
   MenuItem,
   BreadcrumbComponent
 } from '../../partials/index';
-import {ApiBaseService, UserService} from '../../shared/index';
-import {DNSEditComponent} from './+dns/index';
+import { ApiBaseService, UserService } from '../../shared/index';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'my-apps-detail-add.component.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    BreadcrumbComponent,
-    DNSEditComponent
-  ]
+  templateUrl: 'my-apps-detail-add.component.html'
 })
 
 export class MyAppsDetailAddComponent implements OnInit, OnDestroy {

@@ -1,24 +1,21 @@
-import { Component, OnInit }                        from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute}  from '@angular/router';
-import {UserService}                                from '../../shared/index';
-import {TransactionService}                         from '../transaction.service';
-import {LoadingService}                             from '../../partials/loading/loading.service';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserService } from '../../shared/index';
+import { TransactionService }   from '../transaction.service';
+//2 import { LoadingService } from '../../partials/loading/loading.service';
 
 
 @Component({
   moduleId: module.id,
   templateUrl: 'transaction-details.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   providers: [
     TransactionService,
-    LoadingService
+    //2 LoadingService
   ]
 })
 
 export class TransactionDetailsComponent implements OnInit {
-  pageTitle:string = 'Transaction Details';
+  pageTitle: string = 'Transaction Details';
   transaction: any = {
     amount: 0,
     merchant: '',
@@ -49,12 +46,11 @@ export class TransactionDetailsComponent implements OnInit {
   };
   trans_id: string = '';
 
-  constructor(
-    private userService:UserService,
-    private router:Router,
-    private route: ActivatedRoute,
-    private transactionService: TransactionService,
-    private loadingService: LoadingService
+  constructor(private userService: UserService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private transactionService: TransactionService
+              //2 private loadingService: LoadingService
   ) {
   }
 
@@ -64,16 +60,16 @@ export class TransactionDetailsComponent implements OnInit {
       this.trans_id = params['id'];
     });
 
-    this.loadingService.start();
+    //2 this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions/${this.trans_id}`)
-      .subscribe((response:any) => {
+      .subscribe((response: any) => {
           this.transaction = response.data;
           this.transaction.created_at = new Date(response.data.created_at);
-          this.loadingService.stop();
+          //2 this.loadingService.stop();
         },
         error => {
           console.log('Receipt error', error);
-          this.loadingService.stop();
+          //2 this.loadingService.stop();
         });
   }
 

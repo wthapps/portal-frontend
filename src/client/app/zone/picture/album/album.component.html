@@ -1,0 +1,19 @@
+<div class="page-body-in">
+  <template [ngIf]="dataAlbums.length">
+    <div [ngSwitch]="pageView">
+      <template [ngSwitchCase]="'grid'">
+        <!--<page-zone-gridview (albumDetail)="onClick($event)" [data]="dataAlbums"></page-zone-gridview>-->
+      </template>
+      <template [ngSwitchCase]="'list'">
+        <!--<page-zone-listview (albumDetail)="onClick($event)" [data]="dataAlbums"></page-zone-listview>-->
+      </template>
+    </div>
+  </template>
+  <div *ngIf="!dataAlbums.length" class="text-center">
+    No data
+  </div>
+  <div id="album-data-loading" style="position: relative;height: 50px;">
+  </div>
+</div>
+
+
