@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import {
-  Router,
-  ActivatedRoute
-}                           from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   AbstractControl
 } from '@angular/forms';
+
 import {
   UserService,
   ToastsService,
@@ -37,8 +35,8 @@ export class LoginComponent {
               private router: Router,
               private userService: UserService,
               private params: ActivatedRoute,
-              private toastsService:ToastsService,
-              private loadingService:LoadingService,
+              private toastsService: ToastsService,
+              private loadingService: LoadingService,
               private redirectService: RedirectService) {
     // if (this.userService.loggedIn) {
     //   this.router.navigate(['/account/setting/profile']);

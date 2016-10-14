@@ -14,7 +14,7 @@ import {
   FormControl
 }                     from '@angular/forms';
 
-import { MenuItem } from '../../../partials/index';
+import { MenuItemBreadcrumb } from '../../../partials/index';
 
 import {
   CustomValidator,
@@ -45,7 +45,7 @@ export class DNSEditComponent implements OnInit {
   private app_id: number = 0;
   private dns_id: number = 0;
   private sub: any;
-  private breadcrumbs: MenuItem[];
+  private breadcrumbs: MenuItemBreadcrumb[];
 
   constructor(private dnsService: ApiBaseService,
               private router: Router,

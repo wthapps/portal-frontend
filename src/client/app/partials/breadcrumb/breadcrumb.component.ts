@@ -3,7 +3,7 @@
  */
 
 import { Component, Input, OnDestroy, EventEmitter } from '@angular/core';
-import { MenuItem } from './breadcrumb';
+import { MenuItemBreadcrumb } from './breadcrumb';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class BreadcrumbComponent implements OnDestroy {
 
-  @Input() model: MenuItem[];
+  @Input() model: MenuItemBreadcrumb[];
 
   @Input() style: any;
 
@@ -31,7 +31,7 @@ export class BreadcrumbComponent implements OnDestroy {
   constructor(protected router: Router) {
   }
 
-  itemClick(event: any, item: MenuItem) {
+  itemClick(event: any, item: MenuItemBreadcrumb) {
     if (!item.url || item.routerLink) {
       event.preventDefault();
     }

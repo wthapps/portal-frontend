@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 //2 import { DomSanitizationService } from '@angular/platform-browser';
 import { Product } from '../../shared/models/product.model';
 
-import { MenuItem } from '../../partials/index';
+import { MenuItemBreadcrumb } from '../../partials/index';
 
 import { ApiBaseService, UserService } from '../../shared/index';
 
@@ -21,7 +21,7 @@ export class AccountAppsDetailComponent implements OnInit {
   added: boolean = false;
 
   private app_id: number = 0;
-  private breadcrumbs: MenuItem[];
+  private breadcrumbs: MenuItemBreadcrumb[];
 
   constructor(private route: ActivatedRoute,
               private router: Router,

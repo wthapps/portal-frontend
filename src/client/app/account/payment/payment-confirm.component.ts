@@ -4,7 +4,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 import {
   LoadingService,
-  //2 DialogService,
+  ConfirmationService,
   ToastsService,
   UserService
 } from '../../shared/index';
@@ -23,8 +23,8 @@ export class PaymentConfirmComponent implements OnInit {
   card: CreditCard;
 
   constructor(private router: Router,
-              //2 private dialogService: DialogService,
               private toastsService: ToastsService,
+              private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
               private userService: UserService) {
   }
@@ -46,24 +46,23 @@ export class PaymentConfirmComponent implements OnInit {
 
     let body: string = JSON.stringify({plan_id: this.selected_plan.id});
 
-    //2
-    /*this.dialogService.activate(
-      'Confirm upgrading to ' + this.selected_plan.name + '. WTHApps will charged $' + this.selected_plan.price + ' per month', 'Update Plan'
-    ).then((responseOK) => {
-      if (responseOK) {
-        //2 this.loadingService.start();
+    this.confirmationService.confirm({
+      message: 'Confirm upgrading to ' + this.selected_plan.name + '. WTHApps will charged $' + this.selected_plan.price + ' per month',
+      header: 'Update Plan',
+      accept: () => {
+        this.loadingService.start();
         this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
           .subscribe((response: any) => {
               this.upgraded = true;
               this.toastsService.success(response.message);
-              //2 this.loadingService.stop();
+              this.loadingService.stop();
             },
             error => {
               this.toastsService.danger(error);
-              //2 this.loadingService.stop();
+              this.loadingService.stop();
             });
       }
-    });*/
+    });
   }
 
   updateCard(): void {

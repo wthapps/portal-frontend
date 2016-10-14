@@ -7,7 +7,7 @@ import {
   AbstractControl,
   FormBuilder,
   Validators
-}                           from '@angular/forms';
+} from '@angular/forms';
 
 import {
   UserService,
@@ -15,9 +15,9 @@ import {
   LoadingService,
   CustomValidator,
   Constants,
-  //2 DialogService,
+  ConfirmationService,
   ApiBaseService
-}                           from '../../shared/index';
+} from '../../shared/index';
 
 declare var $: any;
 declare var _: any;
@@ -42,7 +42,7 @@ export class MyAccountComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private userService: UserService,
               private toastsService: ToastsService,
-              //2 private dialogService: DialogService,
+              private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
               private apiService: ApiBaseService,
               private router: Router) {
@@ -120,62 +120,65 @@ export class MyAccountComponent implements OnInit {
   cancelPlan(): void {
 
     //2
-    /*let body: string = JSON.stringify({plan_id: 1});
-     let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
+    let body: string = JSON.stringify({plan_id: 1});
+    let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
      We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
      We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
-     this.dialogService.activate(bodyText, 'Cancel Membership', 'Finish Cancellation', 'Cancel')
-     .then((responseOK) => {
-     if (responseOK) {
-     this.loadingService.start();
-     this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
-     .subscribe((response: any) => {
-     this.toastsService.success(response.message);
-     this.loadingService.stop();
-     },
-     error => {
-     this.toastsService.danger(error);
-     this.loadingService.stop();
-     });
-     }
-     });*/
+
+    this.confirmationService.confirm({
+      message: bodyText,
+      header: 'Cancel Membership',
+      accept: () => {
+        this.loadingService.start();
+        this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
+          .subscribe((response: any) => {
+              this.toastsService.success(response.message);
+              this.loadingService.stop();
+            },
+            error => {
+              this.toastsService.danger(error);
+              this.loadingService.stop();
+            });
+      }
+    });
   }
 
   delete(): void {
-    //2
-    /*let bodyText = `If you don't think you will not use WTHapps again and would like to delete you account,<br>
+    let bodyText = `If you don't think you will not use WTHapps again and would like to delete you account,<br>
      we will take care of that for you.<br>
      Your account adn all details will be deleted after 14 days. If you change your mind <br>
      within 14 days - log back in to restore your account
      If you still want to delete your account, click "Delete My Account". <br>`;
-     let body = JSON.stringify({permanent_deleted: true});
-     this.dialogService.activate(bodyText, 'Delete Account', 'Delete My Account', 'Cancel')
-     .then((responseOK) => {
-     if (responseOK) {
-     this.loadingService.start();
-     this.userService.update(`users/${this.userService.profile.id}`, body)
-     .subscribe((response: any) => {
-     this.toastsService.success(response.message);
-     this.loadingService.stop();
-     this.userService.logout('users/sign_out')
-     .subscribe(
-     response => {
-     this.userService.deleteUserInfo();
-     this.router.navigate(['/login']);
-     },
-     error => {
-     this.userService.deleteUserInfo();
-     this.router.navigate(['/login']);
-     console.log('logout error', error);
-     }
-     );
-     },
-     error => {
-     this.toastsService.danger(error);
-     this.loadingService.stop();
-     });
-     }
-     });*/
+    let body = JSON.stringify({permanent_deleted: true});
+
+    this.confirmationService.confirm({
+      message: bodyText,
+      header: 'Delete Account',
+      accept: () => {
+        this.loadingService.start();
+        this.userService.update(`users/${this.userService.profile.id}`, body)
+          .subscribe((response: any) => {
+              this.toastsService.success(response.message);
+              this.loadingService.stop();
+              this.userService.logout('users/sign_out')
+                .subscribe(
+                  response => {
+                    this.userService.deleteUserInfo();
+                    this.router.navigate(['/login']);
+                  },
+                  error => {
+                    this.userService.deleteUserInfo();
+                    this.router.navigate(['/login']);
+                    console.log('logout error', error);
+                  }
+                );
+            },
+            error => {
+              this.toastsService.danger(error);
+              this.loadingService.stop();
+            });
+      }
+    });
   }
 
 

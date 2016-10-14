@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../shared/models/product.model';
 
-import { MenuItem } from '../../partials/index';
+import { MenuItemBreadcrumb } from '../../partials/index';
 import { ApiBaseService, UserService } from '../../shared/index';
 import { DNSComponent } from './dns/index';
 
@@ -22,7 +22,7 @@ export class MyAppsDetailComponent implements OnInit, OnDestroy {
 
   private app_id: number = 0;
   private sub: any;
-  private breadcrumbs: MenuItem[];
+  private breadcrumbs: MenuItemBreadcrumb[];
 
   constructor(private route: ActivatedRoute,
               private appService: ApiBaseService,

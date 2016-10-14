@@ -8,8 +8,9 @@ import { ToolbarComponent } from './toolbar/index';
 import { NavbarComponent } from './navbar/index';
 import { NameListService } from './name-list/index';
 
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+
 import {
-  //2 DialogService,
   RedirectService,
   ApiBaseService,
   UserService,
@@ -33,7 +34,12 @@ import {
  */
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+
+    ConfirmDialogModule
+  ],
   declarations: [
     ToolbarComponent,
     NavbarComponent,
@@ -59,6 +65,9 @@ import {
     BreadcrumbComponent,
     SliderComponent,
     UploadCropImageComponent,
+
+    ConfirmDialogModule,
+
     CommonModule,
     FormsModule,
     RouterModule
@@ -73,8 +82,8 @@ export class SharedModule {
         RedirectService,
         ApiBaseService,
         UserService,
-        CountryService
-        //2 DialogService
+        CountryService,
+        ConfirmationService
       ]
     };
   }

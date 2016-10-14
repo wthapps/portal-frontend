@@ -15,7 +15,7 @@ import {
   UserService,
   LoadingService,
   ToastsService,
-  //2 DialogService,
+  ConfirmationService,
   Constants
 }                       from '../../../shared/index';
 
@@ -39,7 +39,7 @@ export class DNSComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private dnsService: ApiBaseService,
               private userService: UserService,
-              //2 private dialogService: DialogService,
+              private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private router: Router) {
@@ -101,10 +101,10 @@ export class DNSComponent implements OnInit {
     } else {
       let record_item = _.find(this.records, {'id': id});
       let hostname = record_item.name + '.' + 'wthdns.com';
-      // tslint:disable-next-line
-      //2
-      /*this.dialogService.activate('Are you sure to delete <strong class="text-danger">' + hostname + '</strong> ?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
-        if (responseOK) {
+      this.confirmationService.confirm({
+        message: 'Are you sure to delete ' + hostname + ' ?',
+        header: 'My Hosts',
+        accept: () => {
           this.loadingService.start();
           this.dnsService.delete(`users/${this.userService.profile.id}/dns/records/${id}`).subscribe(
             record => {
@@ -118,16 +118,17 @@ export class DNSComponent implements OnInit {
             }
           );
         }
-      });*/
+      });
     }
   }
 
   showUpgrading(): void {
-    //2
-    /*this.dialogService.activate('Upgrading your accounts to continue?', 'My Hosts', 'Yes', 'No').then((responseOK) => {
-      if (responseOK) {
+    this.confirmationService.confirm({
+      message: 'Upgrading your accounts to continue?',
+      header: 'My Hosts',
+      accept: () => {
         this.router.navigateByUrl('/account/plans');
       }
-    });*/
+    });
   }
 }
