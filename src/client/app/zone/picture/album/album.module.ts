@@ -13,8 +13,8 @@ import {RouterModule} from "@angular/router";
     ZAlbumListComponent,
   ],
   exports: [
-    ZAlbumGridComponent,
-    ZAlbumListComponent
+    // ZAlbumGridComponent,
+    // ZAlbumListComponent
   ]
 })
 

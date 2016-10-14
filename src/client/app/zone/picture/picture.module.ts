@@ -1,7 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ZPictureComponent } from "./picture.component";
+import { ZPictureComponent } from './picture.component';
+import { SharedModule } from '../../shared/shared.module';
+import { ZoneToolbarComponent,
+  BaseMediaComponent,
+  ZPictureGridComponent,
+  ZPictureListComponent,
+  ZoneUploadingComponent,
+  ToastsUploadComponent
+} from '../shared/index';
+import { ZonePhotoComponent, ZoneVideoComponent } from './index';
 import {ZAlbumComponent} from "./album/album.component";
 import {ZPictureAlbumModule} from "./album/album.module";
 import {LoadingService} from "../../partials/loading/loading.service";
@@ -20,13 +29,24 @@ import {GroupByMonthYearPipe} from "../../shared/pipe/groupby-month-year.compone
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
+
     // Album Module
     ZPictureAlbumModule,
-    ZPictureAlbumDetailModule,
+    ZPictureAlbumDetailModule
   ],
   declarations: [
     ZPictureComponent,
+    ZoneToolbarComponent,
+    ZonePhotoComponent,
+    ZoneVideoComponent,
+    BaseMediaComponent,
+    ZPictureGridComponent,
+    ZPictureListComponent,
+    ZoneUploadingComponent,
+    ToastsUploadComponent,
+
     // Album Conponent
     ZAlbumComponent,
     ZAlbumDetailComponent,

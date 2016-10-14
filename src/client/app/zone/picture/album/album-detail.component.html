@@ -6,7 +6,7 @@
         <div [ngSwitch]="pageView">
           <template [ngSwitchCase]="'grid'">
             <!--<page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)" [resetSelected]="resetSelected"></page-zone-gridview>-->
-            <page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-gridview>
+            <!--<page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-gridview>-->
           </template>
           <template [ngSwitchCase]="'list'">
             <page-zone-listview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>

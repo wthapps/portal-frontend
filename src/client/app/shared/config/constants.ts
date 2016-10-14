@@ -37,5 +37,15 @@ export let Constants = {
   img: {
     app: '/assets/images/apps/default.png',
     avatar: '/assets/images/avatar/default.png'
-  }
+  },
+
 };
+
+export let MediaType = {
+  photo: 'photo',
+  album: 'ablum',
+  video: 'video',
+  playlist: 'playlist',
+  favourite: 'favourite'
+};
+
