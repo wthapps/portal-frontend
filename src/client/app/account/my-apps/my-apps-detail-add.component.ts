@@ -2,10 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../shared/models/product.model';
 
-import {
-  MenuItem,
-  BreadcrumbComponent
-} from '../../partials/index';
+import { MenuItem } from '../../partials/index';
 import { ApiBaseService, UserService } from '../../shared/index';
 
 @Component({
@@ -30,7 +27,6 @@ export class MyAppsDetailAddComponent implements OnInit, OnDestroy {
               private appService: ApiBaseService,
               private userService: UserService,
               private router: Router) {
-    console.log(this.userService);
   }
 
   ngOnInit() {

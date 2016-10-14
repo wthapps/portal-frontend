@@ -1,14 +1,7 @@
-import {
-  Component,
-  OnInit,
-  ElementRef
-}                                                   from '@angular/core';
-import { Router, ActivatedRoute }  from '@angular/router';
-import {
-  UserService,
-  //2 LoadingService
-}                from '../../shared/index';
-import { TransactionService }                         from '../transaction.service';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserService, LoadingService } from '../../shared/index';
+import { TransactionService } from '../transaction.service';
 
 declare var $: any;
 
@@ -17,7 +10,6 @@ declare var $: any;
   templateUrl: 'receipt.component.html',
   providers: [
     TransactionService
-    //2 , LoadingService
   ],
   styleUrls: ['receipt.component.css']
 })
@@ -58,7 +50,7 @@ export class ReceiptComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,
               private transactionService: TransactionService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private _el: ElementRef) {
   }
 
@@ -68,16 +60,16 @@ export class ReceiptComponent implements OnInit {
       }
     );
 
-    //2 this.loadingService.start();
+    this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions/${this.trans_id}`)
       .subscribe((response: any) => {
           this.transaction = response.data;
           this.transaction.created_at = new Date(response.data.created_at);
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
         },
         error => {
           console.log('Receipt error', error);
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
         });
   }
 

@@ -12,7 +12,7 @@ import {
 import {
   UserService,
   ToastsService,
-  //2 LoadingService,
+  LoadingService,
   CustomValidator,
   Constants,
   //2 DialogService,
@@ -43,7 +43,7 @@ export class MyAccountComponent implements OnInit {
               private userService: UserService,
               private toastsService: ToastsService,
               //2 private dialogService: DialogService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private apiService: ApiBaseService,
               private router: Router) {
 
@@ -77,7 +77,7 @@ export class MyAccountComponent implements OnInit {
       let old_password = values.oldPassword;
       let password = values.password;
       // start loading
-      //2 this.loadingService.start();
+      this.loadingService.start();
 
       let body = JSON.stringify({
         old_password: old_password,
@@ -86,7 +86,7 @@ export class MyAccountComponent implements OnInit {
       this.userService.changePassword(`users/${this.userService.profile.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             if (result.success) {
               this.toastsService.success(result.message);
               //console.log('change password:', result.message);

@@ -21,6 +21,8 @@ import { ComingsoonModule } from './comingsoon/comingsoon.module';
 import { AccountModule } from './account/account.module';
 
 import { ToastsModule } from './partials/toast/toast-message.module';
+import { LoadingModule } from './partials/loading/loading.module';
+import { DialogModule } from 'primeng/primeng';
 import { ZoneModule } from './zone/zone.module';
 
 import { SharedModule } from './shared/shared.module';
@@ -45,6 +47,8 @@ import { SharedModule } from './shared/shared.module';
     AccountModule,
 
     ToastsModule,
+    LoadingModule,
+    DialogModule,
     ZoneModule,
 
     SharedModule.forRoot()

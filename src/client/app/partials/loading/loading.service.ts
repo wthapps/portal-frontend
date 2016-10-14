@@ -1,72 +1,14 @@
-import {
-  Injectable,
-  OnChanges,
-  ElementRef
-}                               from '@angular/core';
-
-declare var $: any;
+import { Injectable } from '@angular/core';
 
 @Injectable()
-export class LoadingService implements OnChanges {
-  /**
-   * Add Class loading to element
-   * @param {el} el - The ElementRef.
-   * @param {timeout} Duration to wait before returning the element.
-   */
-  /*public start(el:Object, timeOut?:number = 10) {
-   if (typeof el.context !== 'undefined') {
-   el.addClass('box-loading');
-   setTimeout(()=> el.removeClass('box-loading'), 1000 * timeOut);
-   } else {
-   el.classList.add('box-loading');
-   setTimeout(()=> el.classList.remove('box-loading'), 1000 * timeOut);
-   }
-   }*/
+export class LoadingService {
+  set: (action: boolean, el: string) => Promise<boolean>;
 
-  private modalElement: any;
-  private modalElementBackdrop: any;
-
-  constructor() {
-    this.modalElement = document.getElementById('loadingModal');
-    this.modalElementBackdrop = document.getElementById('loadingModal-backdrop');
+  start(el: string = null) {
+    this.set(true, el);
   }
 
-  ngOnChanges(): void {
-    // this.stop();
-  }
-
-  public start(elementRef: ElementRef, el?: string) {
-    if (el) {
-      $(elementRef.nativeElement).find(el).wrap('<div class="inside-loading"></div>');
-    } else {
-      this.modalElement.style.display = 'block';
-      this.modalElement.classList.add('in');
-      this.modalElement.classList.add('in-loading');
-      this.modalElementBackdrop.classList.add('in');
-    }
-  }
-
-
-  /**
-   * Remove Class loading to element
-   * @param {el} el - The ElementRef.
-   */
-  /*public stop(el:Object) {
-   if (typeof el.context !== 'undefined') {
-   el.removeClass('box-loading');
-   } else {
-   el.classList.remove('box-loading');
-   }
-   }*/
-
-  public stop(elementRef: ElementRef, el?: string) {
-    if (el) {
-      $(elementRef.nativeElement).find(el).unwrap();
-    } else {
-      this.modalElement.style.display = 'none';
-      this.modalElement.classList.remove('in');
-      this.modalElement.classList.remove('in-loading');
-      this.modalElementBackdrop.classList.remove('in');
-    }
+  stop(el: string = null) {
+    this.set(false, el);
   }
 }

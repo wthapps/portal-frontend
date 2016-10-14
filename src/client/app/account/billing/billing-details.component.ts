@@ -2,7 +2,7 @@ import { Component, OnInit }            from '@angular/core';
 import { Router }    from '@angular/router';
 import {
   UserService,
-  //2 LoadingService,
+  LoadingService,
   //2 DialogService,
   ToastsService
 }                                     from '../../shared/index';
@@ -21,7 +21,7 @@ export class BillingDetailsComponent implements OnInit {
 
   constructor(private userService: UserService,
               private router: Router,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               //2 private dialogService: DialogService,
               private toastsService: ToastsService) {
     //console.log(this.userService);

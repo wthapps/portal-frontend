@@ -13,7 +13,7 @@ import {
   UserService,
   ToastsService,
   //2 DialogService,
-  //2 LoadingService,
+  LoadingService,
   CustomValidator,
   Constants,
   CountryService,
@@ -61,7 +61,7 @@ export class ProfileComponent implements OnInit {
               private userService: UserService,
               private toastsService: ToastsService,
               //2 private dialogService: DialogService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private zone: NgZone) {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
@@ -123,7 +123,7 @@ export class ProfileComponent implements OnInit {
 
     if (this.form.valid) {
       // start loading
-      //2 this.loadingService.start();
+      this.loadingService.start();
 
       values.sex = this.sex;
 
@@ -143,12 +143,12 @@ export class ProfileComponent implements OnInit {
       this.userService.update(`users/${this.userService.profile.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.success(result.message);
           },
           error => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.danger(this.errorMessage);
             console.log(error);
           }
@@ -167,12 +167,12 @@ export class ProfileComponent implements OnInit {
     this.userService.update(`users/${this.userService.profile.id}`, body)
       .subscribe((result: any) => {
           // stop loading
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
           this.toastsService.success(result.message);
         },
         error => {
           // stop loading
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
           this.toastsService.danger(this.errorMessage);
           console.log(error);
         }

@@ -10,7 +10,7 @@ import {
 import { Contact }                   from './contact';
 import { ContactService }            from './contact.service';
 import {
-  //2 LoadingService,
+  LoadingService,
   ToastsService,
   UserService,
   CustomValidator
@@ -44,8 +44,7 @@ export class ContactComponent implements OnInit {
               private userService: UserService,
               private contactService: ContactService,
               private toastsService: ToastsService,
-              //2 private loadingService: LoadingService
-  ) {
+              private loadingService: LoadingService) {
 
     if (this.userService.loggedIn) {
       this.emailInput = this.userService.profile.email;
@@ -89,7 +88,7 @@ export class ContactComponent implements OnInit {
     if (this.form.valid) {
 
       // start loading
-      //2 this.loadingService.start();
+      this.loadingService.start();
 
       values.body = values.body.replace(/(\r\n|\n\r|\r|\n)/g, '<br>');
       values.recaptcha_response = this._recaptchaResponse;
@@ -98,13 +97,13 @@ export class ContactComponent implements OnInit {
       this.contactService.createFeedback(body)
         .subscribe((result: any) => {
             if (result) {
-              //2 this.loadingService.stop();
+              this.loadingService.stop();
               this.toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
             }
           },
           (error: any) => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.danger('Invalid email or password');
             //console.log('login error:', error);
           }

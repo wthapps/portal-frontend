@@ -12,7 +12,7 @@ import {
 import {
   UserService,
   ToastsService,
-  //2 LoadingService,
+  LoadingService,
   RedirectService,
   CustomValidator
 }                           from '../shared/index';
@@ -38,9 +38,8 @@ export class LoginComponent {
               private userService: UserService,
               private params: ActivatedRoute,
               private toastsService:ToastsService,
-              //2 private loadingService:LoadingService,
+              private loadingService:LoadingService,
               private redirectService: RedirectService) {
-
     // if (this.userService.loggedIn) {
     //   this.router.navigate(['/account/setting/profile']);
     // }
@@ -63,7 +62,7 @@ export class LoginComponent {
     this.submitted = true;
     if (this.form.valid) {
       // start loading
-      //2 this.loadingService.start();
+      this.loadingService.start();
 
       let email = values.email;
       let password = values.password;
@@ -73,13 +72,13 @@ export class LoginComponent {
         .subscribe((result) => {
             if (result) {
               let prev = this.redirectService.prev(this.params);
-              //2 this.loadingService.stop();
+              this.loadingService.stop();
               this.router.navigate([prev], {queryParams: {}});
             }
           },
           error => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
 
             this.toastsService.danger('Invalid email or password');
             //console.log('login error:', error);

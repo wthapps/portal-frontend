@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import {
   ApiBaseService,
   ToastsService,
-  //2 LoadingService,
+  LoadingService,
   CustomValidator
 }                           from '../../shared/index';
 
@@ -33,7 +33,7 @@ export class NewPasswordComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private toastsService: ToastsService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private apiBaseService: ApiBaseService) {
 
     this.form = fb.group({
@@ -62,7 +62,7 @@ export class NewPasswordComponent implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
       // start loading
-      //2 this.loadingService.start();
+      this.loadingService.start();
 
       let password = values.password;
       let body = JSON.stringify({
@@ -73,7 +73,7 @@ export class NewPasswordComponent implements OnInit {
       this.apiBaseService.put('users/recovery/password', body)
         .subscribe((result: any) => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             if (result.data === null) {
               this.toastsService.danger(result.message);
             } else {
@@ -82,7 +82,7 @@ export class NewPasswordComponent implements OnInit {
           },
           error => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.danger(error);
             console.log('error:', error);
           });

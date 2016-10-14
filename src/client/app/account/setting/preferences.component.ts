@@ -11,7 +11,7 @@ import {
 import {
   UserService,
   ToastsService,
-  //2 LoadingService,
+  LoadingService,
   //2 DialogService,
   Constants
 }                           from '../../shared/index';
@@ -40,7 +40,7 @@ export class PreferencesComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private toastsService: ToastsService,
               //2 private dialogService: DialogService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private userService: UserService) {
 
     this.form = fb.group({
@@ -70,7 +70,7 @@ export class PreferencesComponent implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
 
-      //2 this.loadingService.start();
+      this.loadingService.start();
       let body = JSON.stringify({
         language: values.language,
         subscribed: values.subscribed,
@@ -81,11 +81,11 @@ export class PreferencesComponent implements OnInit {
       this.userService.update(`users/${this.userService.profile.id}`, body)
         .subscribe(
           (result: any) => {
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.success(result.message);
           },
           error => {
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.danger(this.errorMessage);
           }
         );

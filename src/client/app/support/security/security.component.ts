@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -6,5 +6,5 @@ import {Component} from '@angular/core';
 })
 
 export class SupportSecurityComponent {
-  pageTitle:string = 'Support Page';
+  pageTitle: string = 'Support Page';
 }

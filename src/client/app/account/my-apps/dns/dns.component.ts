@@ -13,7 +13,7 @@ import {
 import {
   ApiBaseService,
   UserService,
-  //2 LoadingService,
+  LoadingService,
   ToastsService,
   //2 DialogService,
   Constants
@@ -40,7 +40,7 @@ export class DNSComponent implements OnInit {
               private dnsService: ApiBaseService,
               private userService: UserService,
               //2 private dialogService: DialogService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private toastsService: ToastsService,
               private router: Router) {
   }
@@ -55,20 +55,20 @@ export class DNSComponent implements OnInit {
   }
 
   getHost(id: number) {
-    //2 this.loadingService.start();
+    this.loadingService.start();
     this.dnsService.get(`users/${id}/dns/records`).subscribe(
       (res: any) => {
         if (res.data != 'empty') {
           this.records = res.data;
         }
-        //2 this.loadingService.stop();
+        this.loadingService.stop();
       },
       (error: any) => {
         this.errorMessage = <any>error;
         if (error.status === Constants.HttpStatusCode.PaymentRequired) {
           this.inValidPlan = true;
         }
-        //2 this.loadingService.stop();
+        this.loadingService.stop();
       }
     );
   }

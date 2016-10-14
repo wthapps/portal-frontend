@@ -11,7 +11,7 @@ import {
 import {
   ApiBaseService,
   ToastsService,
-  //2 LoadingService,
+  LoadingService,
   CustomValidator
 } from '../../shared/index';
 
@@ -29,7 +29,7 @@ export class ForgottenPasswordComponent {
   constructor(private fb: FormBuilder,
               private router: Router,
               private toastsService: ToastsService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private apiBaseService: ApiBaseService) {
 
     this.form = fb.group({
@@ -45,7 +45,7 @@ export class ForgottenPasswordComponent {
     this.submitted = true;
     if (this.form.valid) {
       // start loading
-      //2 this.loadingService.start();
+      this.loadingService.start();
 
       let email = values.email;
 
@@ -53,19 +53,19 @@ export class ForgottenPasswordComponent {
         .subscribe((result: any) => {
             if (result.data === null) {
               // stop loading
-              //2 this.loadingService.stop();
+              this.loadingService.stop();
               this.toastsService.danger(result.message);
             } else {
               let body = JSON.stringify({email});
               this.apiBaseService.post('users/recovery/initiate', body)
                 .subscribe((res) => {
                     // stop loading
-                    //2 this.loadingService.stop();
+                    this.loadingService.stop();
                     this.router.navigate(['/account/recovery/reset_email_sent']);
                   },
                   error => {
                     // stop loading
-                    //2 this.loadingService.stop();
+                    this.loadingService.stop();
                     this.toastsService.danger(error);
                     console.log('error:', error);
                   });
@@ -73,7 +73,7 @@ export class ForgottenPasswordComponent {
           },
           error => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.danger(error);
           });
     }

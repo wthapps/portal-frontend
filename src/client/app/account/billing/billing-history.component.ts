@@ -1,8 +1,8 @@
 import { Component, OnInit }   from '@angular/core';
 import { Router }                from '@angular/router';
 import {
-  UserService
-  //2 LoadingService
+  UserService,
+  LoadingService
 }                                                 from '../../shared/index';
 import { TransactionService }                       from '../transaction.service';
 
@@ -21,24 +21,23 @@ export class BillingHistoryComponent implements OnInit {
 
   constructor(private userService: UserService,
               private router: Router,
-              private transactionService: TransactionService
-              //2 private loadingService: LoadingService
-  ) {
+              private transactionService: TransactionService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit(): void {
-    //2 this.loadingService.start();
+    this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions`)
       .subscribe((response: any) => {
           this.transactions = response.data;
           this.transactions.map((t) => {
             t.created_at = new Date(t.created_at);
           });
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
         },
         error => {
           console.log('Billing history error', error);
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
         });
   }
 

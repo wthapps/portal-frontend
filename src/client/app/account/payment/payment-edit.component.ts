@@ -6,7 +6,7 @@ import { PaymentService }               from './payment.service';
 import {
   UserService,
   Constants,
-  //2 LoadingService,
+  LoadingService,
   ToastsService,
   CountryService
 }                                     from '../../shared/index';
@@ -39,7 +39,7 @@ export class PaymentEditComponent implements OnInit {
               private _userService: UserService,
               private _paymentService: PaymentService,
               private countryService: CountryService,
-              //2 private _loaddingService:LoadingService,
+              private _loaddingService:LoadingService,
               private route: ActivatedRoute,
               private _toastsService:ToastsService,
               private _builder: FormBuilder,

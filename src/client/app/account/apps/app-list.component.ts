@@ -21,7 +21,6 @@ export class AccountAppsListComponent implements OnInit {
   apps: Array<Product>;
 
   featured: string = '';              // detect selected featured
-  private sub: any = null;
   private has_filter: boolean = false;
 
 

@@ -1,6 +1,6 @@
-import {Component, AfterViewInit} from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 
-declare var Swiper:any;
+declare var Swiper: any;
 
 @Component({
   moduleId: module.id,
@@ -8,9 +8,9 @@ declare var Swiper:any;
 })
 
 export class WelcomeComponent implements AfterViewInit {
-  pageTitle:string = 'Welcome Page';
+  pageTitle: string = 'Welcome Page';
 
-  ngAfterViewInit():any {
+  ngAfterViewInit(): any {
     /* tslint:disable */
     var swiper = new Swiper('.swiper-container', {
       pagination: '.swiper-pagination',

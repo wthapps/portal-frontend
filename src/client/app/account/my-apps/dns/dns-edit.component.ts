@@ -20,8 +20,8 @@ import {
   CustomValidator,
   ApiBaseService,
   UserService,
-  //2 ToastsService,
-  //2 LoadingService,
+  ToastsService,
+  LoadingService,
   Constants
 }                                  from '../../../shared/index';
 
@@ -51,8 +51,8 @@ export class DNSEditComponent implements OnInit {
               private router: Router,
               private fb: FormBuilder,
               private route: ActivatedRoute,
-              //2 private loadingService: LoadingService,
-              //2 private toastsService: ToastsService,
+              private loadingService: LoadingService,
+              private toastsService: ToastsService,
               private userService: UserService) {
 
     this.form = fb.group({
@@ -125,15 +125,15 @@ export class DNSEditComponent implements OnInit {
 
       //console.log(body);
 
-      //2 this.loadingService.start();
+      this.loadingService.start();
       if (this.submittedAdd) { // add new host
         this.dnsService.post(`users/${this.userService.profile.id}/dns/records/`, body).subscribe(
           result => {
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.router.navigateByUrl(`/account/my-apps/${this.app_id}`);
           },
           (error: any) => {
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             if (error.status === Constants.HttpStatusCode.PaymentRequired) {
               this.errorMessage = 'Your account have expired!';
             } else if (error.status === Constants.HttpStatusCode.Conflict) {
@@ -141,17 +141,17 @@ export class DNSEditComponent implements OnInit {
             } else {
               this.errorMessage = 'Unable to add new host!';
             }
-            //2 this.toastsService.danger(this.errorMessage);
+            this.toastsService.danger(this.errorMessage);
           }
         );
       } else {
         this.dnsService.patch(`users/${this.userService.profile.id}/dns/records/${this.dns_id}`, body).subscribe(
           result => {
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.router.navigateByUrl(`/account/my-apps/${this.app_id}`);
           },
           (error: any) => {
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             if (error.status === Constants.HttpStatusCode.PaymentRequired) {
               this.errorMessage = 'Your account have expired!';
             } else if (error.status === Constants.HttpStatusCode.Conflict) {
@@ -159,7 +159,7 @@ export class DNSEditComponent implements OnInit {
             } else {
               this.errorMessage = 'Unable to add new host!';
             }
-            //2 this.toastsService.danger(this.errorMessage);
+            this.toastsService.danger(this.errorMessage);
           }
         );
       }

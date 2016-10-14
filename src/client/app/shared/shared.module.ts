@@ -10,7 +10,6 @@ import { NameListService } from './name-list/index';
 
 import {
   //2 DialogService,
-  //2 LoadingService,
   RedirectService,
   ApiBaseService,
   UserService,
@@ -75,8 +74,7 @@ export class SharedModule {
         ApiBaseService,
         UserService,
         CountryService
-        //2 DialogService,
-        //2 LoadingService
+        //2 DialogService
       ]
     };
   }

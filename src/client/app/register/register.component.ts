@@ -12,7 +12,7 @@ import {
 import {
   UserService,
   ToastsService,
-  //2 LoadingService,
+  LoadingService,
   CustomValidator
 }                           from '../shared/index';
 
@@ -47,7 +47,7 @@ export class RegisterComponent {
               private _router: Router,
               private _userService: UserService,
               private toastsService: ToastsService,
-              //2 private _loadingService: LoadingService
+              private _loadingService: LoadingService
   ) {
 
     /*if (this._userService.loggedIn) {
@@ -92,7 +92,7 @@ export class RegisterComponent {
     this.submitted = true;
     if (this.form.valid) {
       // start loading
-      //2 this._loadingService.start();
+      this._loadingService.start();
 
       values.sex = this.sex;
 
@@ -110,12 +110,12 @@ export class RegisterComponent {
 
       this._userService.signup('users', body)
         .subscribe((result) => {
-            //2 this._loadingService.stop();
+            this._loadingService.stop();
             this._router.navigateByUrl('/welcome');
           },
           error => {
             // stop loading
-            //2 this._loadingService.stop();
+            this._loadingService.stop();
 
             console.log('error:', error);
             let err = JSON.stringify(error._body);

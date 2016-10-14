@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 import {
-  //2 LoadingService,
+  LoadingService,
   //2 DialogService,
   ToastsService,
   UserService
@@ -25,7 +25,7 @@ export class PaymentConfirmComponent implements OnInit {
   constructor(private router: Router,
               //2 private dialogService: DialogService,
               private toastsService: ToastsService,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private userService: UserService) {
   }
 

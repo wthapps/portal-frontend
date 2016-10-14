@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import {
   UserService,
-  //2 LoadingService,
+  LoadingService,
   ApiBaseService
 } from '../shared/index';
 
@@ -25,14 +25,14 @@ export class PlansComponent implements OnInit {
 
 
   constructor(private router: Router,
-              //2 private loadingService: LoadingService,
+              private loadingService: LoadingService,
               private userService: UserService,
               private apiService: ApiBaseService) {
     //console.log(this.userService)
   }
 
   ngOnInit(): void {
-    //2 this.loadingService.start('#tablePlan');
+    this.loadingService.start('#tablePlan');
     this.apiService.get('apps/all') // TODO refactor with path /product; also refactor in API
       .subscribe((response: any) => {
           if (response.data !== null) {
@@ -42,16 +42,16 @@ export class PlansComponent implements OnInit {
                   if (response.data !== null) {
                     this.plans = response.data;
                   }
-                  //2 this.loadingService.stop('#tablePlan');
+                  this.loadingService.stop('#tablePlan');
                 },
                 error => {
-                  //2 this.loadingService.stop('#tablePlan');
+                  this.loadingService.stop('#tablePlan');
                   console.log('error plans: ', error.message);
                 });
           }
         },
         error => {
-          //2 this.loadingService.stop('#tablePlan');
+          this.loadingService.stop('#tablePlan');
           console.log('error products: ', error.message);
         });
   }

@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../shared/index';
 import { TransactionService }   from '../transaction.service';
-//2 import { LoadingService } from '../../partials/loading/loading.service';
+import { LoadingService } from '../../partials/loading/loading.service';
 
 
 @Component({
   moduleId: module.id,
   templateUrl: 'transaction-details.component.html',
   providers: [
-    TransactionService,
-    //2 LoadingService
+    TransactionService
   ]
 })
 
@@ -49,9 +48,8 @@ export class TransactionDetailsComponent implements OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private route: ActivatedRoute,
-              private transactionService: TransactionService
-              //2 private loadingService: LoadingService
-  ) {
+              private transactionService: TransactionService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit(): void {
@@ -60,16 +58,16 @@ export class TransactionDetailsComponent implements OnInit {
       this.trans_id = params['id'];
     });
 
-    //2 this.loadingService.start();
+    this.loadingService.start();
     this.transactionService.list(`users/${this.userService.profile.id}/transactions/${this.trans_id}`)
       .subscribe((response: any) => {
           this.transaction = response.data;
           this.transaction.created_at = new Date(response.data.created_at);
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
         },
         error => {
           console.log('Receipt error', error);
-          //2 this.loadingService.stop();
+          this.loadingService.stop();
         });
   }
 

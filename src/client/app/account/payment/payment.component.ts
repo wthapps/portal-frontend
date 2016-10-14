@@ -11,7 +11,7 @@ import { PaymentService } from './payment.service';
 import {
   UserService,
   Constants,
-  //2 LoadingService,
+  LoadingService,
   ToastsService,
   CountryService
 } from '../../shared/index';
@@ -63,7 +63,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
               private userService: UserService,
               private paymentService: PaymentService,
               private countryService: CountryService,
-              //2 private loaddingService: LoadingService,
+              private loaddingService: LoadingService,
               private toastsService: ToastsService,
               private builder: FormBuilder,
               private zone: NgZone) {
