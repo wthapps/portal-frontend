@@ -28,6 +28,8 @@ import {
   SliderComponent,
   UploadCropImageComponent
 } from '../partials/index';
+import {LoadingDirective} from "./directive/loading.directive";
+import {LoadingModalDirective} from "./directive/loading-modal.directive";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -51,7 +53,10 @@ import {
     AppCardPlatformComponent,
     BreadcrumbComponent,
     SliderComponent,
-    UploadCropImageComponent
+    UploadCropImageComponent,
+    // Directive
+    LoadingDirective,
+    LoadingModalDirective,
   ],
   exports: [
     ToolbarComponent,
@@ -70,7 +75,10 @@ import {
 
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    // Directive
+    LoadingDirective,
+    LoadingModalDirective,
   ]
 })
 export class SharedModule {
@@ -83,7 +91,7 @@ export class SharedModule {
         ApiBaseService,
         UserService,
         CountryService,
-        ConfirmationService
+        ConfirmationService,
       ]
     };
   }

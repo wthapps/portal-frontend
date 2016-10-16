@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MediaType, ApiBaseService } from '../../../shared/index';
+import {LoadingService} from "../../../partials/loading/loading.service";
 
 
 declare var $: any;''

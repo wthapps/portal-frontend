@@ -28,7 +28,7 @@ export class ZoneUploadingComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.step = 0;
-    console.log('step', this.step);
+    // console.log('step', this.step);
   }
 
   ngOnChanges(changes: SimpleChanges) {

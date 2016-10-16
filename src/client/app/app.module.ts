@@ -26,6 +26,8 @@ import { LoadingModule } from './partials/loading/loading.module';
 import { ZoneModule } from './zone/zone.module';
 
 import { SharedModule } from './shared/shared.module';
+import {LoadingDirective} from "./shared/directive/loading.directive";
+import {LoadingModalDirective} from "./shared/directive/loading-modal.directive";
 
 @NgModule({
   imports: [
@@ -50,10 +52,11 @@ import { SharedModule } from './shared/shared.module';
     LoadingModule,
 
     ZoneModule,
-
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'

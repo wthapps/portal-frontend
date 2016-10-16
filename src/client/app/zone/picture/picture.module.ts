@@ -22,7 +22,7 @@ import {PhotoService} from "../../shared/services/picture/photo.service";
 import {AlbumService} from "../../shared/services/picture/album.service";
 import {DialogService} from "../../partials/dialogs/dialog.service";
 import {ToastsService} from "../../partials/toast/toast-message.service";
-import {GroupByMonthYearPipe} from "../../shared/pipe/groupby-month-year.component";
+import {GroupByMonthYearPipe} from "../../shared/pipe/groupby-month-year.pipe";
 
 
 
@@ -50,7 +50,7 @@ import {GroupByMonthYearPipe} from "../../shared/pipe/groupby-month-year.compone
     // Album Conponent
     ZAlbumComponent,
     ZAlbumDetailComponent,
-    GroupByMonthYearPipe
+    GroupByMonthYearPipe,
   ],
   exports: [
     ZPictureComponent

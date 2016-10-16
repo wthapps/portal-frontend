@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+// Please use LoadingDirective and LoadingModalDirective
 @Injectable()
 export class LoadingService {
   set: (action: boolean, el: string) => Promise<boolean>;
@@ -12,3 +13,4 @@ export class LoadingService {
     this.set(false, el);
   }
 }
+

@@ -46,6 +46,7 @@ export class ZPictureComponent implements OnChanges {
   showCreatedAlbumToast: boolean = false;
 
   hasFavourite: boolean = false;
+  isLoading: boolean = false;
 
   /**
    * Modal
@@ -110,11 +111,22 @@ export class ZPictureComponent implements OnChanges {
     //   this.viewPicture = ViewPicture.Video;
     // }
 
-    if (this.category == MediaType.photo) {
-      this.baseMedia = new ZonePhotoComponent(this.apiService);
-    }
-    if (this.category == MediaType.video) {
-      this.baseMedia = new ZoneVideoComponent(this.apiService);
+    // if (this.category == MediaType.photo) {
+    //   this.baseMedia = new ZonePhotoComponent(this.apiService);
+    // }
+    // if (this.category == MediaType.video) {
+    //   this.baseMedia = new ZoneVideoComponent(this.apiService);
+    // }
+    switch (this.category) {
+      case MediaType.photo:
+        this.baseMedia = new ZonePhotoComponent(this.apiService);
+        break;
+      case MediaType.video:
+        this.baseMedia = new ZoneVideoComponent(this.apiService);
+        break;
+      case MediaType.album:
+        this.baseMedia = new ZoneVideoComponent(this.apiService);
+        break;
     }
   }
 

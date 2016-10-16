@@ -10,26 +10,35 @@
   </div>
 </div>
 <div>
-  <zone-toolbar
-    [selectedItems]="baseMedia.selectedItems"
-    (openWindow)="openFileWindow($event)"
-    (selectedFiles)="handleFileUpload($event)"
-    (onViewChanged)="baseMedia.changeView($event)"
-    (onPreview)="preview($event)"
-    (onShare)="share($event)"
-    (onTag)="tag($event)"
-    (onFavourite)="baseMedia.addFavourite($event)"
-    (onDelete)="baseMedia.delete($event)"
-    (onAdd)="add($event)"
-    (onEdit)="edit($event)"
-    (onDownload)="download($event)"
-    (onViewInfo)="viewInfo($event)"
-    (createNewAlbum)="onCreateNewAlbum($event)"
-  ></zone-toolbar>
+  <!--<zone-toolbar-->
+    <!--[selectedItems]="baseMedia.selectedItems"-->
+    <!--(openWindow)="openFileWindow($event)"-->
+    <!--(selectedFiles)="handleFileUpload($event)"-->
+    <!--(onViewChanged)="baseMedia.changeView($event)"-->
+    <!--(onPreview)="preview($event)"-->
+    <!--(onShare)="share($event)"-->
+    <!--(onTag)="tag($event)"-->
+    <!--(onFavourite)="baseMedia.addFavourite($event)"-->
+    <!--(onDelete)="baseMedia.delete($event)"-->
+    <!--(onAdd)="add($event)"-->
+    <!--(onEdit)="edit($event)"-->
+    <!--(onDownload)="download($event)"-->
+    <!--(onViewInfo)="viewInfo($event)"-->
+    <!--(createNewAlbum)="onCreateNewAlbum($event)"-->
+  <!--&gt;</zone-toolbar>-->
 </div>
 <!--[pageView]="pageView"-->
 <!--[preview]="modalPreview"-->
 <!--[viewInfo]="modalViewInfo"-->
+<!--<div [loadingModal]="isLoading"></div>-->
+<!--<div id="loadingModal" class="modal fade in in-loading" tabindex="-1" role="dialog" [loadingModal]="isLoading" style="display: block">-->
+  <!--<div class="modal-dialog">-->
+    <!--<div class="modal-content">-->
+
+    <!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+  <!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
+
 <div [ngSwitch]="category">
   <div *ngSwitchCase="mediaType.photo">
     <zone-photo #media
@@ -44,6 +53,9 @@
 
 
   <div *ngSwitchCase="mediaType.album">
+    <div class="inside-loading">
+      <div>aaaaaaaaaaa</div>
+    </div>
     <page-zone-album [pageView]="pageView"></page-zone-album>
   </div>
   <div *ngSwitchCase="mediaType.albumdetail">
