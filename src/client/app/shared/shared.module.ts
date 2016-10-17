@@ -11,10 +11,10 @@ import { NameListService } from './name-list/index';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 import {
-  RedirectService,
   ApiBaseService,
   UserService,
-  CountryService
+  CountryService,
+  DeactivateConfirmService
 }                     from './index';
 
 import {
@@ -28,8 +28,8 @@ import {
   SliderComponent,
   UploadCropImageComponent
 } from '../partials/index';
-import {LoadingDirective} from "./directive/loading.directive";
-import {LoadingModalDirective} from "./directive/loading-modal.directive";
+import { LoadingDirective } from "./directive/loading.directive";
+import { LoadingModalDirective } from "./directive/loading-modal.directive";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -87,11 +87,11 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         NameListService,
-        RedirectService,
         ApiBaseService,
         UserService,
         CountryService,
         ConfirmationService,
+        DeactivateConfirmService
       ]
     };
   }
