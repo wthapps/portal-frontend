@@ -1,28 +1,34 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
 import {ApiBaseService} from '../../../shared/services/apibase.service';
 
+
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-form-sharing',
+  selector: 'zone-sharing',
   templateUrl: 'sharing.component.html',
-  styleUrls: ['form-sharing.component.css']
+  styleUrls: ['sharing.component.css']
 })
-export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewInit {
+export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() modalShow: any;
-  @Input() data: Array<any>;
-  @Input() photoIds: Array<any>;
-
+  @Input() selectedItems: Array<any>;
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  textContacts: string;
+  textContactGroups: string;
   hasDeletedItems: boolean;
   contacts: Array<any>;
   contactGroups: Array<any>;
+  selectedContacts: Array<any>;
+  selectedContactGroups: Array<any>;
   sharedContacts: Array<any>;
   sharedContactGroups: Array<any>;
   removedContacts: Array<any>;
   removedContactGroups: Array<any>;
+  filteredContacts: Array<any>;
+  filteredContactGroups: Array<any>;
 
   constructor(private apiService: ApiBaseService) {
 
@@ -34,10 +40,13 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     this.contactGroups = new Array<any>();
     this.removedContacts = new Array<any>();
     this.removedContactGroups = new Array<any>();
+    this.selectedContacts = new Array<any>();
+    this.selectedContactGroups = new Array<any>();
 
     this.apiService.get(`zone/contacts`)
       .subscribe((result: any) => {
           this.contacts = result['data'];
+          this.filteredContacts = result['data'];
         },
         error => {
           console.log('error', error);
@@ -45,6 +54,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     this.apiService.get(`zone/contactgroups`)
       .subscribe((result: any) => {
           this.contactGroups = result['data'];
+          this.filteredContactGroups = result['data'];
         },
         error => {
           console.log('error', error);
@@ -53,7 +63,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
 
   ngAfterViewInit() {
     let _this = this;
-    $('#sharingModal').on('hidden.bs.modal', function (e:any) {
+    $('#sharingModal').on('hidden.bs.modal', function (e) {
       _this.modalHide.emit(false);
     });
   }
@@ -103,12 +113,20 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
 
   save() {
     //save removing items
-    // if (this.hasDeletedItems){
-    //
-    // }else{ // save adding sharing
-    //
-    // }
-    console.log('save');
+
+    if (this.hasDeletedItems){
+
+    }else{ // save adding sharing
+      let body = JSON.stringify({ photos: _.map(this.selectedItems, 'id'), contacts: _.map(this.contacts, 'id'), groups: _.map(this.contactGroups, 'id')});
+      this.apiService.post(`zone/sharings`, body)
+        .subscribe((result: any) => {
+            console.log('shared', result);
+          },
+          error => {
+            console.log('error', error);
+          });
+    }
+    // console.log('save');
   }
 
   cancel() {
@@ -120,4 +138,29 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
     // }
     console.log('cancel');
   }
+
+  selectContact(contact: any){
+    this.selectedContacts.push(contact);
+  }
+
+  unSelectContact(contact: any){
+    _.remove(this.selectedContacts,(c) => { return c['id'] == contact['id'] });
+  }
+
+  searchContact(event: any) {
+    this.filteredContacts = _.filter(this.contacts, (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1 });
+  }
+
+  selectContactGroup(group: any){
+    this.selectedContactGroups.push(group);
+  }
+
+  unSelectContactGroup(group: any){
+    _.remove(this.selectedContactGroups,(c) => { return c['id'] == group['id'] });
+  }
+
+  searchContactGroup(event: any) {
+    this.filteredContactGroups = _.filter(this.contactGroups, (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1 });
+  }
+
 }

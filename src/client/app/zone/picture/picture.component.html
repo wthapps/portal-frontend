@@ -60,8 +60,8 @@
 <!--<wth-toast-upload></wth-toast-upload>-->
 
 
-<!--<page-zone-form-sharing (modalHide)="onModalHide($event)" [modalShow]="modalShare" [data]="selectedItems"></page-zone-form-sharing>-->
-<!--<page-zone-form-tagging (modalHide)="onModalHide($event)" [modalShow]="modalTag" [data]="selectedItems"></page-zone-form-tagging>-->
+<zone-sharing (modalHide)="onModalHide($event)" [modalShow]="modalShare" [selectedItems]="baseMedia.selectedItems"></zone-sharing>
+<zone-tagging (modalHide)="onModalHide($event)" [modalShow]="modalTag" [selectedItems]="selectedItems"></zone-tagging>
 <!--<zone-photo-edit [showModal]="modalEdit" (modalHide)='onModalHide($event)' [data]="onePhotoEdit"></zone-photo-edit>-->
 
 <!--<created-album-toast [(showCreatedAlbumToast)]="showCreatedAlbumToast" [album]="album"></created-album-toast>-->

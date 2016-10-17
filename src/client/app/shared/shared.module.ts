@@ -8,7 +8,11 @@ import { ToolbarComponent } from './toolbar/index';
 import { NavbarComponent } from './navbar/index';
 import { NameListService } from './name-list/index';
 
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import {
+  ConfirmDialogModule,
+  ConfirmationService,
+  AutoCompleteModule
+} from 'primeng/primeng';
 
 import {
   ApiBaseService,
@@ -42,7 +46,8 @@ import {GroupByPipe} from "./pipe/groupby.pipe";
     CommonModule,
     RouterModule,
 
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    AutoCompleteModule
   ],
   declarations: [
     ToolbarComponent,
@@ -77,6 +82,7 @@ import {GroupByPipe} from "./pipe/groupby.pipe";
     UploadCropImageComponent,
 
     ConfirmDialogModule,
+    AutoCompleteModule,
 
     CommonModule,
     FormsModule,

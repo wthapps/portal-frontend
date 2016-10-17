@@ -8,7 +8,9 @@ import { ZoneToolbarComponent,
   ZPictureGridComponent,
   ZPictureListComponent,
   ZoneUploadingComponent,
-  ToastsUploadComponent
+  ToastsUploadComponent,
+  ZoneSharingComponent,
+  ZoneTaggingComponent
 } from '../shared/index';
 import { ZonePhotoComponent, ZoneVideoComponent } from './index';
 import {ZAlbumComponent} from "./album/album.component";
@@ -22,8 +24,6 @@ import {AlbumService} from "../../shared/services/picture/album.service";
 import {DialogService} from "../../partials/dialogs/dialog.service";
 import {ToastsService} from "../../partials/toast/toast-message.service";
 import {GroupByMonthYearPipe} from "../../shared/pipe/groupby-month-year.pipe";
-
-
 
 @NgModule({
   imports: [
@@ -44,6 +44,13 @@ import {GroupByMonthYearPipe} from "../../shared/pipe/groupby-month-year.pipe";
     ZPictureListComponent,
     ZoneUploadingComponent,
     ToastsUploadComponent,
+    ZoneSharingComponent,
+    ZoneTaggingComponent,
+
+    // Album Conponent
+    ZAlbumComponent,
+    ZAlbumDetailComponent,
+    GroupByMonthYearPipe,
   ],
   exports: [
     ZPictureComponent
