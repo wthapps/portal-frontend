@@ -8,14 +8,14 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'page-zone-timeline',
-  templateUrl: 'timeline-photo.component.html',
+  templateUrl: 'timeline.component.html',
   host: {
     '(document:keydown)': 'onDocumentKeyDown($event)',
     '(document:keyup)': 'onDocumentKeyUp($event)'
   },
 })
 
-export class ZPicturePhotoTimelineComponent implements OnChanges {
+export class ZPictureTimelineComponent implements OnChanges {
   @Input() data: Array<Photo>;
   @Output() imgDetail: EventEmitter<number> = new EventEmitter<number>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();

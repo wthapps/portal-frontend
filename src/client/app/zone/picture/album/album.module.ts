@@ -8,11 +8,15 @@ import {ZAlbumDetailComponent} from "./album-detail.component";
 import {ZPictureGridComponent} from "../shared/grid.component";
 import {ZPictureListComponent} from "../shared/list.component";
 import {ZPictureBarAlbumComponent} from "../shared/bar-album-control.component";
+import {ZPictureTimelineComponent} from "../shared/timeline.component";
+import {GroupByMonthYearPipe} from "../../../shared/pipe/groupby-month-year.pipe";
+import {SharedModule} from "../../../shared/shared.module";
+import {ZAlbumDetailInfoComponent} from "./album-detail-info.component";
 
 
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, SharedModule],
   declarations: [
     ZAlbumComponent,
     ZAlbumGridComponent,
@@ -20,6 +24,8 @@ import {ZPictureBarAlbumComponent} from "../shared/bar-album-control.component";
     ZPictureGridComponent,
     ZPictureListComponent,
     ZPictureBarAlbumComponent,
+    ZPictureTimelineComponent,
+    ZAlbumDetailInfoComponent
   ],
   exports: [
     ZAlbumComponent,

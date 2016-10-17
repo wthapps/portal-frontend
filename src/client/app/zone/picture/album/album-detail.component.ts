@@ -66,7 +66,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   }
 
   onViewChanged(event:any) {
-    // this.pageView = event;
+    this.pageView = event;
   }
 
   onImgsSelected(event: any) {
@@ -80,7 +80,6 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   }
 
   onViewInfo(event:any) {
-    // this.showInfo = (this.showInfo == true ? false : true);
-    // $('.two-layout-slip').toggleClass('active-info');
+    $('.two-layout-slip').toggleClass('active-info');
   }
 }

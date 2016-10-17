@@ -9,6 +9,7 @@ declare var _: any;
   moduleId: module.id,
   selector: 'zone-album-detail-info',
   templateUrl: 'album-detail-info.component.html',
+  styleUrls: ['album-detail-info.component.css'],
 })
 
 export class ZAlbumDetailInfoComponent {

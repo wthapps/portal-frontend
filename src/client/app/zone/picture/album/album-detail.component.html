@@ -8,10 +8,10 @@
             <page-zone-gridview [data]="items"></page-zone-gridview>
           </template>
           <template [ngSwitchCase]="'list'">
-            <!--<page-zone-listview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>-->
+            <page-zone-listview [data]="items"></page-zone-listview>
           </template>
           <template [ngSwitchCase]="'timeline'">
-            <!--<page-zone-timeline (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-timeline>-->
+            <page-zone-timeline [data]="items"></page-zone-timeline>
           </template>
         </div>
       </template>
@@ -25,8 +25,7 @@
     </div>
   </div>
   <div class="right-layout">
-    <!--<zone-album-detail-info></zone-album-detail-info>-->
+    <zone-album-detail-info></zone-album-detail-info>
   </div>
-
 </div>
 
