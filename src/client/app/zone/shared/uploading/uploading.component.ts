@@ -37,15 +37,11 @@ export class ZoneUploadingComponent implements OnInit, OnChanges {
       this.files_num = this.files.length;
       this.photoIds = new Array<number>();
     }
-
-
     // console.log('step changed', this.step, changes);
-
   }
 
   close() {
     if (this.step == 2 || this.step == 4) {
-      console.log('testing ...............');
       this.needToReload.emit(true);
     }
     this.step = -1;

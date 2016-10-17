@@ -5,12 +5,12 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-form-tagging',
+  selector: 'zone-tagging',
   templateUrl: 'tagging.component.html'
 })
-export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() modalShow:boolean;
-  @Input() data: Array<any>;
+export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
+  @Input() modalShow;
+  @Input() selectedItems: Array<any>;
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -24,7 +24,7 @@ export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewIni
 
   ngAfterViewInit() {
     let _this = this;
-    $('#taggingModal').on('hidden.bs.modal', function (e:any) {
+    $('#taggingModal').on('hidden.bs.modal', function (e) {
       _this.modalHide.emit(false);
     });
   }
