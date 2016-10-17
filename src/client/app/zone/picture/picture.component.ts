@@ -21,6 +21,7 @@ declare var _: any;
 export class ZPictureComponent implements OnChanges {
 
   @ViewChild('media') baseMedia: BaseMediaComponent;
+  // @ViewChild(ZAlbumDetailComponent)	albumDetail:	ZAlbumDetailComponent;
 
   photo_input_element: any = null;
   files: any;
@@ -118,7 +119,7 @@ export class ZPictureComponent implements OnChanges {
         this.baseMedia = new ZAlbumComponent(this.apiService);
         break;
       case MediaType.albumDetail:
-        this.baseMedia = new ZAlbumDetailComponent(this.apiService);
+        this.baseMedia = new ZAlbumDetailComponent();
         break;
     }
   }

@@ -1,21 +1,15 @@
 import {Http} from '@angular/http';
 
 import {Injectable} from '@angular/core';
-import {Album} from '../../models/album.model';
-import {ApiBaseServiceV2} from "./base.service";
+import {BaseService} from "../base.service";
 
 @Injectable()
-export class PhotoService extends ApiBaseServiceV2 {
+export class PhotoService extends BaseService {
+
+  url:string = 'zone/photos/';
 
   constructor(http: Http) {
     super(http);
   }
 
-  addPhotosToAlbum(photos:any, album:any, callback:any) {
-    if(photos && album) {
-      this.postV2('zone/albums/'+album+'/photos', {photos: photos}, callback);
-    } else {
-      console.log('Missing Data', 'photos album: ', photos, album);
-    }
-  }
 }

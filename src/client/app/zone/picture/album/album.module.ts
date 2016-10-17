@@ -7,6 +7,7 @@ import {ZAlbumComponent} from "./album.component";
 import {ZAlbumDetailComponent} from "./album-detail.component";
 import {ZPictureGridComponent} from "../shared/grid.component";
 import {ZPictureListComponent} from "../shared/list.component";
+import {ZPictureBarAlbumComponent} from "../shared/bar-album-control.component";
 
 
 
@@ -18,6 +19,7 @@ import {ZPictureListComponent} from "../shared/list.component";
     ZAlbumDetailComponent,
     ZPictureGridComponent,
     ZPictureListComponent,
+    ZPictureBarAlbumComponent,
   ],
   exports: [
     ZAlbumComponent,

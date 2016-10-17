@@ -1,6 +1,6 @@
 <div id="photo-box-detail" class="two-layout-slip">
   <div class="main-layout">
-    <!--<page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>-->
+    <page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>
     <div class="page-body-in">
       <template [ngIf]="items.length">
         <div [ngSwitch]="pageView">

@@ -1,12 +1,11 @@
 import {Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange, ElementRef} from '@angular/core';
-import { ActivatedRoute} from '@angular/router';
-import {Photo} from '../../../shared/models/photo.model';
 import {ApiBaseService} from '../../../shared/services/apibase.service';
-import {LoadingService} from '../../../partials/loading/loading.service';
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
 import {BaseMediaComponent} from "../../shared/media/base-media.component";
 import {MediaType} from "../../../shared/config/constants";
+import {AlbumService} from "../../../shared/services/picture/album.service";
+import {Album} from "../../../shared/models/album.model";
+import {PhotoService} from "../../../shared/services/picture/photo.service";
+import {ActivatedRoute} from "@angular/router";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -20,13 +19,23 @@ declare var _: any;
 
 export class ZAlbumDetailComponent extends BaseMediaComponent{
 
-  constructor(private apiService: ApiBaseService) {
+  album: Album;
+  albumId: number;
+
+  constructor(
+    private apiService?: ApiBaseService,
+    private albumService?: AlbumService,
+    private photoService?: PhotoService,
+    private route?: ActivatedRoute,
+  ) {
     super(MediaType.albumDetail, apiService);
   }
 
   ngOnInit() {
-    console.log('bbbbbbbbbbbb');
-    super.ngOnInit()
+    this.route.params.subscribe(params => {
+      this.albumId = params['id'];
+      this.init();
+    });
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
@@ -41,23 +50,19 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     // comment
   }
 
-  getPhotos(page: any) {
-    // if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
-    //   // this.loadingService.start(this.elementRef, '#photodata-loading');
-    //   this.album = this.albumService.getAlbum();
-    //   this.apiService.get(`zone/photos?page=${page}&album=${this.album.id}`).subscribe(
-    //     (response: any) => {
-    //       this.perPage = response.per_page;
-    //       this.total = response.total;
-    //       this.photos = _.concat(this.photos, response.data);
-    //       // this.loadingService.stop(this.elementRef, '#photodata-loading');
-    //     },
-    //     error => {
-    //       this.errorMessage = <any>error;
-    //       // this.loadingService.stop(this.elementRef, '#photodata-loading');
-    //     }
-    //   );
-    // }
+
+  init() {
+    this.albumService.get(this.albumService.url + this.albumId).subscribe(
+      (res: any) => {
+        this.album = new Album(res.album);
+        this.getPhotosByAlbum();
+      },
+    );
+  }
+
+  getPhotosByAlbum() {
+    let params = this.photoService.paramsToString({page: this.currentPage, album: this.album.id});
+    this.loadItemsByUrl(this.photoService.url + '?' + params);
   }
 
   onViewChanged(event:any) {

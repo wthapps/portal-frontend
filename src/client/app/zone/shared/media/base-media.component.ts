@@ -34,7 +34,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
   errorMessage: string;
 
 
-  constructor(private type: string, private apiService: ApiBaseService){
+  constructor(private type: string, private apiService?: ApiBaseService){
     this.category = type;
   }
 
@@ -119,18 +119,34 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
   }
 
   public loadItems(page: number) {
-    console.log('load');
 
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       // this.loadingService.start('#photodata-loading');
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
-          console.log(response);
+          // console.log(response);
           this.perPage = response['per_page'];
           this.total = response['total'];
           this.items = response['data'];
           // this.items = _.concat(this.items, response['data']);
           // this.loadingService.stop('#photodata-loading');
+        },
+        error => {
+          // this.errorMessage = <any>error;
+          // this.loadingService.stop('#photodata-loading');
+        }
+      );
+    }
+  }
+
+  public loadItemsByUrl(url:string) {
+    if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
+      this.apiService.get(url).subscribe(
+        (response: any) => {
+          // console.log(response);
+          this.perPage = response['per_page'];
+          this.total = response['total'];
+          this.items = response['data'];
         },
         error => {
           // this.errorMessage = <any>error;
