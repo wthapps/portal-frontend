@@ -23,11 +23,14 @@ import { AccountModule } from './account/account.module';
 import { ToastsModule } from './partials/toast/toast-message.module';
 import { LoadingModule } from './partials/loading/loading.module';
 
+import { AuthGuard }      from './shared/services/auth-guard.service';
+import { AuthService }    from './shared/services/auth.service';
+
 import { ZoneModule } from './zone/zone.module';
 
 import { SharedModule } from './shared/shared.module';
-import {LoadingDirective} from "./shared/directive/loading.directive";
-import {LoadingModalDirective} from "./shared/directive/loading-modal.directive";
+import { LoadingDirective } from "./shared/directive/loading.directive";
+import { LoadingModalDirective } from "./shared/directive/loading-modal.directive";
 
 @NgModule({
   imports: [
@@ -60,7 +63,10 @@ import {LoadingModalDirective} from "./shared/directive/loading-modal.directive"
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'
-  }],
+  },
+    AuthGuard,
+    AuthService
+  ],
   bootstrap: [AppComponent]
 
 })

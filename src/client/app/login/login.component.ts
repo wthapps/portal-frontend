@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -11,8 +11,8 @@ import {
   UserService,
   ToastsService,
   LoadingService,
-  RedirectService,
-  CustomValidator
+  CustomValidator,
+  AuthService
 }                           from '../shared/index';
 
 declare var $: any;
@@ -34,10 +34,9 @@ export class LoginComponent {
   constructor(private fb: FormBuilder,
               private router: Router,
               private userService: UserService,
-              private params: ActivatedRoute,
               private toastsService: ToastsService,
               private loadingService: LoadingService,
-              private redirectService: RedirectService) {
+              private authService: AuthService) {
     // if (this.userService.loggedIn) {
     //   this.router.navigate(['/account/setting/profile']);
     // }
@@ -69,9 +68,22 @@ export class LoginComponent {
       this.userService.login('users/sign_in', body)
         .subscribe((result) => {
             if (result) {
-              let prev = this.redirectService.prev(this.params);
               this.loadingService.stop();
-              this.router.navigate([prev], {queryParams: {}});
+
+              // Get the redirect URL from our auth service
+              // If no redirect has been set, use the default
+              let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/account/my-apps';
+
+              // Set our navigation extras object
+              // that passes on our global query params and fragment
+              let navigationExtras: NavigationExtras = {
+                preserveQueryParams: true,
+                preserveFragment: true
+              };
+
+              // Redirect the user
+              this.router.navigate([redirect], navigationExtras);
+
             }
           },
           error => {

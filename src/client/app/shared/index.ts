@@ -13,8 +13,8 @@ export * from './config/constants';
 export * from './services/apibase.service';
 export * from './services/user.service';
 export * from './services/redirect.service';
-export * from './services/auth.guard';
 export * from './services/auth.service';
+export * from './services/auth-guard.service';
 export * from './services/interfaces';
 
 export * from '../partials/footer/index';
