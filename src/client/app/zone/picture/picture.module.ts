@@ -46,11 +46,6 @@ import {GroupByMonthYearPipe} from "../../shared/pipe/groupby-month-year.pipe";
     ToastsUploadComponent,
     ZoneSharingComponent,
     ZoneTaggingComponent,
-
-    // Album Conponent
-    ZAlbumComponent,
-    ZAlbumDetailComponent,
-    GroupByMonthYearPipe,
   ],
   exports: [
     ZPictureComponent
