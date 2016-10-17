@@ -4,8 +4,8 @@ import {Album} from '../../../shared/models/album.model';
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-gridview',
-  templateUrl: 'grid_album.component.html',
+  selector: 'page-zone-album-gridview',
+  templateUrl: 'grid-album.component.html',
 })
 
 export class ZAlbumGridComponent implements OnChanges {
@@ -18,7 +18,7 @@ export class ZAlbumGridComponent implements OnChanges {
   }
 
   onClick(album:any) {
-    // this.albumDetail.emit(id)?
+    this.albumDetail.emit(album.id);
     console.log(album);
   }
 }

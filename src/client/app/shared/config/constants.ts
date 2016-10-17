@@ -43,7 +43,8 @@ export let Constants = {
 
 export let MediaType = {
   photo: 'photo',
-  album: 'ablum',
+  album: 'album',
+  albumDetail: 'albumDetail',
   video: 'video',
   playlist: 'playlist',
   favourite: 'favourite'

@@ -1,18 +1,17 @@
 <div id="photo-box-detail" class="two-layout-slip">
   <div class="main-layout">
-    <page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>
+    <!--<page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>-->
     <div class="page-body-in">
-      <template [ngIf]="photos.length">
+      <template [ngIf]="items.length">
         <div [ngSwitch]="pageView">
           <template [ngSwitchCase]="'grid'">
-            <!--<page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)" [resetSelected]="resetSelected"></page-zone-gridview>-->
-            <!--<page-zone-gridview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-gridview>-->
+            <page-zone-gridview [data]="items"></page-zone-gridview>
           </template>
           <template [ngSwitchCase]="'list'">
-            <page-zone-listview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>
+            <!--<page-zone-listview (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>-->
           </template>
           <template [ngSwitchCase]="'timeline'">
-            <page-zone-timeline (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-timeline>
+            <!--<page-zone-timeline (imgDetail)="onClick($event)" [data]="photos" (imgsSelected)="onImgsSelected($event)"></page-zone-timeline>-->
           </template>
         </div>
       </template>
@@ -26,7 +25,7 @@
     </div>
   </div>
   <div class="right-layout">
-    <zone-album-detail-info></zone-album-detail-info>
+    <!--<zone-album-detail-info></zone-album-detail-info>-->
   </div>
 
 </div>

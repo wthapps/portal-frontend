@@ -30,6 +30,8 @@ import {
 } from '../partials/index';
 import {LoadingDirective} from "./directive/loading.directive";
 import {LoadingModalDirective} from "./directive/loading-modal.directive";
+import {GroupByMonthYearPipe} from "./pipe/groupby-month-year.pipe";
+import {GroupByPipe} from "./pipe/groupby.pipe";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -57,6 +59,9 @@ import {LoadingModalDirective} from "./directive/loading-modal.directive";
     // Directive
     LoadingDirective,
     LoadingModalDirective,
+    // Pipe
+    GroupByMonthYearPipe,
+    GroupByPipe,
   ],
   exports: [
     ToolbarComponent,
@@ -79,6 +84,9 @@ import {LoadingModalDirective} from "./directive/loading-modal.directive";
     // Directive
     LoadingDirective,
     LoadingModalDirective,
+    // Pipe
+    GroupByMonthYearPipe,
+    GroupByPipe,
   ]
 })
 export class SharedModule {

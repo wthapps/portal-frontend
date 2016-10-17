@@ -119,11 +119,13 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
   }
 
   public loadItems(page: number) {
+    console.log('load');
 
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       // this.loadingService.start('#photodata-loading');
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
+          console.log(response);
           this.perPage = response['per_page'];
           this.total = response['total'];
           this.items = response['data'];
@@ -142,5 +144,12 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
     if (this.category == MediaType.photo) {
       return 'zone/photos'
     }
+    if (this.category == MediaType.album) {
+      return 'zone/albums'
+    }
+    if (this.category == MediaType.albumDetail) {
+      return 'zone/photos'
+    }
+
   }
 }

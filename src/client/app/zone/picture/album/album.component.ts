@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef} from '@angular/core';
 
 import {ZPictureBarComponent} from '../shared/bar-control.component';
-import {ZAlbumGridComponent} from '../shared/grid_album.component';
+import {ZAlbumGridComponent} from '../shared/grid-album.component';
 import {Album} from '../../../shared/models/album.model';
 import {ApiBaseService, LoadingService} from '../../../shared/index';
-import {ZAlbumListComponent} from '../shared/list_album.component';
+import {ZAlbumListComponent} from '../shared/list-album.component';
 import {BaseMediaComponent} from "../../shared/media/base-media.component";
 import {MediaType} from "../../../shared/config/constants";
 
@@ -17,31 +17,16 @@ declare var _: any;
   templateUrl: 'album.component.html',
 })
 
-export class ZAlbumComponent extends BaseMediaComponent implements OnInit, OnChanges {
+export class ZAlbumComponent extends BaseMediaComponent {
 
-  dataAlbums: Array<Album> = [];
-  currentPage: number = 1;
-  perPage: number = 1;
-  total: number = 1;
-  errorMessage: string = '';
-
-  isGridView: boolean;
-  isListView: boolean;
   @Input() pageView: string = 'grid';
 
   constructor(private apiService: ApiBaseService) {
-    super(MediaType.photo, apiService);
+    super(MediaType.album, apiService);
   }
 
   ngOnInit() {
-    // if (this.pageView == 'grid') {
-    //   this.isGridView = true;
-    //   this.isListView = false;
-    // } else if  (this.pageView == 'list') {
-    //   this.isGridView = false;
-    //   this.isListView = true;
-    // }
-    // this.getAlbum(this.currentPage);
+    super.ngOnInit();
   }
 
   ngAfterViewInit() {
@@ -71,26 +56,11 @@ export class ZAlbumComponent extends BaseMediaComponent implements OnInit, OnCha
     // }
   }
 
-  // getAlbum(page:any) {
-  //   if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
-  //     // this.loadingService.start(this.elementRef, '#album-data-loading');
-  //     this.apiService.get(`zone/albums?page=${page}`).subscribe(
-  //       (response: any) => {
-  //         this.perPage = response.per_page;
-  //         this.total = response.total;
-  //         this.dataAlbums = _.concat(this.dataAlbums, response.data);
-  //         // this.loadingService.stop(this.elementRef, '#album-data-loading');
-  //       },
-  //       error => {
-  //         this.errorMessage = <any>error;
-  //         // this.loadingService.stop(this.elementRef, '#album-data-loading');
-  //       }
-  //     );
-  //   }
-  // }
-
   onPageView(view: string) {
     // this.pageView = view;
   }
 
+  onAlbumDetail() {
+
+  }
 }

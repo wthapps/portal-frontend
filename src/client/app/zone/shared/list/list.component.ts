@@ -1,5 +1,4 @@
 import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 
 import {Photo} from '../../../shared/models/photo.model';
 
@@ -10,9 +9,6 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-listview',
   templateUrl: 'list.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   host: {
     '(document:keydown)': 'onDocumentKeyDown($event)',
     '(document:keyup)': 'onDocumentKeyUp($event)'

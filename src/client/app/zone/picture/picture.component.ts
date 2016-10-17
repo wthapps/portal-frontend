@@ -5,6 +5,8 @@ import { ZonePhotoComponent } from './photo/photo.component';
 import { ZoneVideoComponent } from './video/video.component';
 import { MediaType} from '../../shared/config/constants';
 import { ApiBaseService } from '../../shared/index';
+import {ZAlbumComponent} from "./album/album.component";
+import {ZAlbumDetailComponent} from "./album/album-detail.component";
 
 declare var $: any;
 declare var _: any;
@@ -47,6 +49,7 @@ export class ZPictureComponent implements OnChanges {
 
   hasFavourite: boolean = false;
   isLoading: boolean = false;
+  paramId: number;
 
   /**
    * Modal
@@ -91,6 +94,9 @@ export class ZPictureComponent implements OnChanges {
 
     this.sub = this.route.params.subscribe(params => {
       this.category = params['category'];
+      if(params['id']) {
+        this.category += 'Detail';
+      }
       this.collectView(params);
     });
   }
@@ -101,22 +107,6 @@ export class ZPictureComponent implements OnChanges {
 
 
   collectView(params:any) {
-    // if (this.category == 'photo' || this.category == undefined) {
-    //   this.viewPicture = ViewPicture.Photo;
-    // } else if (this.category == 'album' && params['id'] == null) {
-    //   this.viewPicture = ViewPicture.Album;
-    // } else if (this.category == 'album' && params['id'] != null) {
-    //   this.viewPicture = ViewPicture.AlbumDetail;
-    // } else if (this.category == 'video') {
-    //   this.viewPicture = ViewPicture.Video;
-    // }
-
-    // if (this.category == MediaType.photo) {
-    //   this.baseMedia = new ZonePhotoComponent(this.apiService);
-    // }
-    // if (this.category == MediaType.video) {
-    //   this.baseMedia = new ZoneVideoComponent(this.apiService);
-    // }
     switch (this.category) {
       case MediaType.photo:
         this.baseMedia = new ZonePhotoComponent(this.apiService);
@@ -125,7 +115,10 @@ export class ZPictureComponent implements OnChanges {
         this.baseMedia = new ZoneVideoComponent(this.apiService);
         break;
       case MediaType.album:
-        this.baseMedia = new ZoneVideoComponent(this.apiService);
+        this.baseMedia = new ZAlbumComponent(this.apiService);
+        break;
+      case MediaType.albumDetail:
+        this.baseMedia = new ZAlbumDetailComponent(this.apiService);
         break;
     }
   }

@@ -7,7 +7,7 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'page-zone-listview',
-  templateUrl: 'list_album.component.html',
+  templateUrl: 'list-album.component.html',
 })
 
 export class ZAlbumListComponent implements OnChanges {
