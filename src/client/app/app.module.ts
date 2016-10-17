@@ -23,8 +23,11 @@ import { AccountModule } from './account/account.module';
 import { ToastsModule } from './partials/toast/toast-message.module';
 import { LoadingModule } from './partials/loading/loading.module';
 
-import { AuthGuard }      from './shared/services/auth-guard.service';
-import { AuthService }    from './shared/services/auth.service';
+import {
+  AuthGuard,
+  AuthService,
+  CanDeactivateGuard
+} from './shared/index';
 
 import { ZoneModule } from './zone/zone.module';
 
@@ -65,7 +68,8 @@ import { LoadingModalDirective } from "./shared/directive/loading-modal.directiv
     useValue: '<%= APP_BASE %>'
   },
     AuthGuard,
-    AuthService
+    AuthService,
+    CanDeactivateGuard
   ],
   bootstrap: [AppComponent]
 

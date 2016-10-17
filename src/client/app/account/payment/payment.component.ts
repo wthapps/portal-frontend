@@ -306,12 +306,12 @@ export class PaymentComponent implements AfterViewInit, OnInit {
    *  Add card information and billing address
    */
   private create(_this: any, body: string) {
-    //2 _this.loaddingService.start();
+    _this.loaddingService.start();
 
     _this.paymentService.create(`users/${_this.userService.profile.id}/payments`, body)
     // _this._userService.signup(`users/${_this._userService.profile.id,}/payments`, body)
       .subscribe((response: any) => {
-          //2 _this.loaddingService.stop();
+          _this.loaddingService.stop();
           if (response.success) { // TODO refactor this code in server
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
@@ -329,7 +329,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           _this.toastsService.danger(response.message);
         },
         (error: any) => {
-          //2 _this.loaddingService.stop();
+          _this.loaddingService.stop();
           _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });
@@ -339,7 +339,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   private update(_this: any, body: string) {
     _this.paymentService.update(`users/${_this.userService.profile.id}/payments/1`, body)
       .subscribe((response: any) => {
-          //2 _this.loaddingService.stop();
+          _this.loaddingService.stop();
           if (response.success) {
             _this.userService.profile.has_payment_info = true;
             _this.userService.profile.credit_cards = response.data.credit_cards;
@@ -352,7 +352,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           _this.toastsService.danger(response.message);
         },
         (error: any) => {
-          //2 _this.loaddingService.stop();
+          _this.loaddingService.stop();
           _this.toastsService.danger(error);
           console.log('Add card error:', error);
         });

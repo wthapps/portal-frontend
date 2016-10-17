@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//2 import { DomSanitizationService } from '@angular/platform-browser';
 import { Product } from '../../shared/models/product.model';
 
 import { MenuItemBreadcrumb } from '../../partials/index';

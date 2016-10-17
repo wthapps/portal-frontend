@@ -12,12 +12,11 @@ import {
 import {
   UserService,
   ToastsService,
-  //2 DialogService,
   LoadingService,
   CustomValidator,
   Constants,
   CountryService,
-  UploadCropImageComponent
+  DeactivateConfirmService
 }                           from '../../shared/index';
 
 declare var $: any;
@@ -60,8 +59,8 @@ export class ProfileComponent implements OnInit {
               private countryService: CountryService,
               private userService: UserService,
               private toastsService: ToastsService,
-              //2 private dialogService: DialogService,
               private loadingService: LoadingService,
+              private deactivateConfirmService: DeactivateConfirmService,
               private zone: NgZone) {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
@@ -182,18 +181,9 @@ export class ProfileComponent implements OnInit {
 
   /**
    *
-   * @returns {any}
+   * @returns {boolean|Promise<boolean>}
    */
-  //2
-  /*canDeactivate(): Observable<boolean> | boolean {
-   // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
-   if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
-   return true;
-   }
-   // Otherwise ask the user with the dialog service and return its
-   // promise which resolves to true or false when the user decides
-   let p = this.dialogService.confirm();
-   let o = Observable.fromPromise(p);
-   return o;
-   }*/
+  canDeactivate(): Promise<boolean> | boolean {
+    return this.deactivateConfirmService.activate(this.formValue, this.form.value);
+  }
 }

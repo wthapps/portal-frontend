@@ -53,17 +53,17 @@ export const AccountRoutes: Route[] = [
        */
       // Setting
       {
-        path: 'setting/profile', component: ProfileComponent
-        //2 , canDeactivate: [CanDeactivateGuard]
+        path: 'setting/profile', component: ProfileComponent,
+        canDeactivate: [CanDeactivateGuard]
       },
       {
-        path: 'setting/account', component: MyAccountComponent
-        //2 , canDeactivate: [CanDeactivateGuard]
+        path: 'setting/account', component: MyAccountComponent,
+        canDeactivate: [CanDeactivateGuard]
       },
 
       {
-        path: 'setting/preferences', component: PreferencesComponent
-        //2 , canDeactivate: [CanDeactivateGuard]
+        path: 'setting/preferences', component: PreferencesComponent,
+        canDeactivate: [CanDeactivateGuard]
       },
       {path: '', component: ProfileComponent}
     ]

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import { Router } from '@angular/router';
 import {
@@ -16,7 +15,8 @@ import {
   CustomValidator,
   Constants,
   ConfirmationService,
-  ApiBaseService
+  ApiBaseService,
+  DeactivateConfirmService
 } from '../../shared/index';
 
 declare var $: any;
@@ -45,6 +45,7 @@ export class MyAccountComponent implements OnInit {
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
               private apiService: ApiBaseService,
+              private deactivateConfirmService: DeactivateConfirmService,
               private router: Router) {
 
     this.form = fb.group({
@@ -97,7 +98,7 @@ export class MyAccountComponent implements OnInit {
           },
           error => {
             // stop loading
-            //2 this.loadingService.stop();
+            this.loadingService.stop();
             this.toastsService.danger(error.message);
             console.log('login error:', error.message);
           }
@@ -181,21 +182,11 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
-
   /**
    *
-   * @returns {any}
+   * @returns {boolean|Promise<boolean>}
    */
-  //2
-  /*canDeactivate(): Observable<boolean> | boolean {
-   // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
-   if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
-   return true;
-   }
-   // Otherwise ask the user with the dialog service and return its
-   // promise which resolves to true or false when the user decides
-   let p = this.dialogService.confirm();
-   let o = Observable.fromPromise(p);
-   return o;
-   }*/
+  canDeactivate(): Promise<boolean> | boolean {
+    return this.deactivateConfirmService.activate(this.formValue, this.form.value);
+  }
 }

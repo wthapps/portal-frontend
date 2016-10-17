@@ -11,10 +11,10 @@ import { NameListService } from './name-list/index';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 import {
-  RedirectService,
   ApiBaseService,
   UserService,
-  CountryService
+  CountryService,
+  DeactivateConfirmService
 }                     from './index';
 
 import {
@@ -95,11 +95,11 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         NameListService,
-        RedirectService,
         ApiBaseService,
         UserService,
         CountryService,
         ConfirmationService,
+        DeactivateConfirmService
       ]
     };
   }

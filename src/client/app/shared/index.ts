@@ -12,10 +12,10 @@ export * from './config/constants';
 
 export * from './services/apibase.service';
 export * from './services/user.service';
-export * from './services/redirect.service';
 export * from './services/auth.service';
 export * from './services/auth-guard.service';
-export * from './services/interfaces';
+export * from './services/can-deactivate-guard.service';
+export * from './services/deactivate-confirm.service';
 
 export * from '../partials/footer/index';
 export * from '../partials/dialogs/index';

@@ -12,7 +12,7 @@ import {
   UserService,
   ToastsService,
   LoadingService,
-  //2 DialogService,
+  DeactivateConfirmService,
   Constants
 }                           from '../../shared/index';
 
@@ -39,7 +39,7 @@ export class PreferencesComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private toastsService: ToastsService,
-              //2 private dialogService: DialogService,
+              private deactivateConfirmService: DeactivateConfirmService,
               private loadingService: LoadingService,
               private userService: UserService) {
 
@@ -94,18 +94,9 @@ export class PreferencesComponent implements OnInit {
 
   /**
    *
-   * @returns {any}
+   * @returns {boolean|Promise<boolean>}
    */
-  //2
-  /*canDeactivate(): Observable<boolean> | boolean {
-   // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
-   if (!this.formValue || _.isEqual(this.formValue, this.form.value)) {
-   return true;
-   }
-   // Otherwise ask the user with the dialog service and return its
-   // promise which resolves to true or false when the user decides
-   let p = this.dialogService.confirm();
-   let o = Observable.fromPromise(p);
-   return o;
-   }*/
+  canDeactivate(): Promise<boolean> | boolean {
+    return this.deactivateConfirmService.activate(this.formValue, this.form.value);
+  }
 }
