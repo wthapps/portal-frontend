@@ -41,7 +41,7 @@ export const AccountRoutes: Route[] = [
   {
     path: 'account',
     component: AccountComponent,
-    //2 canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       //2
       /*{path: 'billing-details', component: BillingDetailsComponent},
@@ -72,7 +72,7 @@ export const AccountRoutes: Route[] = [
   {
     path: 'account/apps',
     component: AccountAppsComponent,
-    //2 canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {path: ':id', component: AccountAppsDetailComponent},
       {path: '', component: AccountAppsListComponent},
@@ -82,7 +82,7 @@ export const AccountRoutes: Route[] = [
   {
     path: 'account/my-apps',
     component: AccountAppsComponent,
-    //2 canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {path: ':id/add', component: MyAppsDetailAddComponent},
       {path: ':id/edit/:id_dns', component: MyAppsDetailAddComponent},
