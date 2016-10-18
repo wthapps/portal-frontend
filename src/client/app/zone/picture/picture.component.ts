@@ -4,7 +4,13 @@ import { BaseMediaComponent } from '../shared/media/base-media.component';
 import { ZonePhotoComponent } from './photo/photo.component';
 import { ZoneVideoComponent } from './video/video.component';
 import { MediaType } from '../../shared/config/constants';
-import { ApiBaseService, ToastsService } from '../../shared/index';
+import {
+  ApiBaseService,
+  ToastsService,
+  LoadingService,
+  ConfirmationService
+
+} from '../../shared/index';
 import { ZAlbumComponent } from "./album/album.component";
 import { ZAlbumDetailComponent } from "./album/album-detail.component";
 
@@ -78,7 +84,9 @@ export class ZPictureComponent implements OnChanges {
     //           private albumService: AlbumService,
     private route: ActivatedRoute,
     private apiService: ApiBaseService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private loadingService: LoadingService,
+    private confirmationService: ConfirmationService
     //           private dialogService: DialogService,
     //           private loadingService: LoadingService,
     //           private toastsService: ToastsService
@@ -110,7 +118,7 @@ export class ZPictureComponent implements OnChanges {
   collectView(params: any) {
     switch (this.category) {
       case MediaType.photo:
-        this.baseMedia = new ZonePhotoComponent(this.apiService, this.toastsService);
+        this.baseMedia = new ZonePhotoComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
       case MediaType.video:
         this.baseMedia = new ZoneVideoComponent(this.apiService);
@@ -403,7 +411,7 @@ export class ZPictureComponent implements OnChanges {
   }
 
   uploadedItem(hasItem: boolean) {
-    console.log('finished upload')
+    console.log('finished upload');
     this.baseMedia.needToReload = hasItem;
     this.baseMedia.loadItems(this.baseMedia.currentPage);
   }
