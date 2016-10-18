@@ -15,11 +15,12 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-album-detail',
   templateUrl: 'album-detail.component.html',
+  styleUrls: ['album.component.css'],
 })
 
 export class ZAlbumDetailComponent extends BaseMediaComponent{
 
-  album: Album;
+  album: Album = new Album(null);
   albumId: number;
 
   constructor(
@@ -55,6 +56,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.albumService.get(this.albumService.url + this.albumId).subscribe(
       (res: any) => {
         this.album = new Album(res.album);
+        console.log(this.album)
         this.getPhotosByAlbum();
       },
     );
@@ -79,7 +81,14 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     // this.selectedPhotoFull.emit(this.dataSelectedPhotos);
   }
 
+  onCloseInfo() {
+    this.onOffInfo();
+  }
   onViewInfo(event:any) {
+    this.onOffInfo();
+  }
+
+  onOffInfo() {
     $('.two-layout-slip').toggleClass('active-info');
   }
 }

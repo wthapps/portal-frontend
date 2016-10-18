@@ -21,7 +21,7 @@ export class ZAlbumComponent extends BaseMediaComponent {
 
   @Input() pageView: string = 'grid';
 
-  constructor(private apiService: ApiBaseService) {
+  constructor(private apiService?: ApiBaseService) {
     super(MediaType.album, apiService);
   }
 

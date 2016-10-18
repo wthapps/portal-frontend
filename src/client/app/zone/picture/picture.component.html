@@ -11,6 +11,7 @@
 </div>
 <div *ngIf="category != mediaType.albumDetail">
   <zone-toolbar
+    [selectedItems]="baseMedia.selectedItems"
     (openWindow)="openFileWindow($event)"
     (selectedFiles)="handleFileUpload($event)"
     (onViewChanged)="baseMedia.changeView($event)"
@@ -39,10 +40,10 @@
 
 
   <div *ngSwitchCase="mediaType.album">
-    <page-zone-album [pageView]="pageView"></page-zone-album>
+    <page-zone-album #media [pageView]="pageView"></page-zone-album>
   </div>
   <div *ngSwitchCase="mediaType.albumDetail">
-    <page-zone-album-detail></page-zone-album-detail>
+    <page-zone-album-detail #media></page-zone-album-detail>
   </div>
 </div>
 

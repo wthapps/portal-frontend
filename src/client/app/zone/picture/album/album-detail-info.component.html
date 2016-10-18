@@ -1,23 +1,18 @@
-<div class="album-detail-info">
-  <h2>Information <a href="javascript:;" class="gray"><i class="fa fa-times"></i></a></h2>
 
-
-  <h3>Detail <a href="javascript:;"><i class="fa fa-times"></i></a></h3>
-  <a href="javascript:;" (click)="onShowEditInfo()">Edit</a>
+<h3 class="album-info-header shadow-arround">Information <a href="javascript:;" class="gray" (click)="onClose()"><i class="fa fa-times"></i></a></h3>
+<div class="album-info-el">
+  <h4><i class="fa fa-file-text-o"></i> Detail <a href="javascript:;" (click)="onShowEditInfo()">Edit</a></h4>
+  <hr>
   <dl class="dl-horizontal">
     <dt>Name</dt>
-    <dd>Name NameName</dd>
-    <dt>Type</dt>
-    <dd>TypeTypeTypeType</dd>
-    <dt>Size</dt>
-    <dd>SizeSizeSizeSizeSize</dd>
-    <dt>Demension</dt>
-    <dd>DemensionDemensionDemensionDemension</dd>
-    <dt>Uploaded</dt>
-    <dd>UploadedUploadedUploadedUploadedUploadedUploaded</dd>
+    <dd>{{album.name}}</dd>
+    <dt>Description</dt>
+    <dd>{{album.description}}</dd>
+    <dt>Created</dt>
+    <dd>{{album.created_at}}</dd>
   </dl>
-  <hr>
 </div>
+
 
 <!--<page-zone-form-edit-photo (modalHide)="onModalHide($event)" [modalShow]="modalEdit" [data]="imgOne">-->
 <!--</page-zone-form-edit-photo>-->

@@ -1,4 +1,4 @@
-<div id="photo-box-detail" class="two-layout-slip">
+<div id="album-box-detail" class="two-layout-slip active-info">
   <div class="main-layout">
     <page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>
     <div class="page-body-in">
@@ -24,8 +24,8 @@
       </div>
     </div>
   </div>
-  <div class="right-layout">
-    <zone-album-detail-info></zone-album-detail-info>
+  <div class="right-layout shadow-arround fit-parrent">
+    <zone-album-detail-info (closeInfo)="onCloseInfo()" [album]="album"></zone-album-detail-info>
   </div>
 </div>
 
