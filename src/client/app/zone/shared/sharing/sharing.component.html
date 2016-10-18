@@ -29,7 +29,7 @@
           </a>
           <div class="collapse" id="collapseGroup">
             <div class="modal-body-collapse-in">
-              <div class="media-list-item" *ngFor="let group of contactGroups">
+              <div class="media-list-item" *ngFor="let group of sharedContactGroups">
                 <div class="media" [ngClass]="isDeletedItem(group.id, false) ? 'remove': ''">
                   <div class="media-left">
                     <figure>
@@ -77,7 +77,7 @@
           </a>
           <div class="collapse" id="collapseContact">
             <div class="modal-body-collapse-in">
-              <div class="media-list-item" *ngFor="let contact of contacts" >
+              <div class="media-list-item" *ngFor="let contact of sharedContacts" >
                 <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
                   <div class="media-left">
                     <figure>

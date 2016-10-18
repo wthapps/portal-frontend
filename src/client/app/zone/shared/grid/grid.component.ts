@@ -4,7 +4,7 @@ import {
   //HostListener,
 }                          from '@angular/core';
 
-import {Photo} from '../../../shared/models/photo.model';
+import { Photo } from '../../../shared/models/photo.model';
 
 declare var $: any;
 declare var _: any;
@@ -28,7 +28,7 @@ export class ZPictureGridComponent implements OnChanges {
   selectedPhotos: Array<any> = [];
 
   keyCtrl: boolean = false;
-  reset:boolean;
+  reset: boolean;
 
   constructor() {
 
@@ -82,13 +82,20 @@ export class ZPictureGridComponent implements OnChanges {
     let el = $(e.target).parents('.photo-box-img');
 
     if (!this.keyCtrl) {
-      this.selectedPhotos = [];
-      if (el.hasClass('selected')) {
-        el.removeClass('selected');
-      } else {
+      if (this.selectedPhotos.length > 1) {
+        this.selectedPhotos = [];
         parent.find('.photo-box-img').removeClass('selected');
         el.addClass('selected');
-        this.selectedPhotos.push(id); // add
+        this.selectedPhotos.push(id);
+      } else {
+        this.selectedPhotos = [];
+        if (el.hasClass('selected')) {
+          el.removeClass('selected');
+        } else {
+          parent.find('.photo-box-img').removeClass('selected');
+          el.addClass('selected');
+          this.selectedPhotos.push(id); // add
+        }
       }
     } else {
       el.toggleClass('selected');
@@ -98,6 +105,9 @@ export class ZPictureGridComponent implements OnChanges {
         this.selectedPhotos.push(id); // add
       }
     }
+
+    console.log(this.selectedPhotos,this.selectedPhotos.length);
+
     this.imgsSelected.emit(this.selectedPhotos);
   }
 }

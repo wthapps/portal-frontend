@@ -1,9 +1,14 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { MediaType, ApiBaseService } from '../../../shared/index';
-import {LoadingService} from "../../../partials/loading/loading.service";
+import {
+  MediaType,
+  ApiBaseService,
+  LoadingService,
+  ToastsService,
+  ConfirmationService
+} from "../../../shared/index";
 
 
-declare var $: any;''
+declare var $: any;
 declare var _: any;
 
 @Component({
@@ -17,6 +22,7 @@ declare var _: any;
 })
 
 export abstract class BaseMediaComponent implements OnInit, OnChanges {
+
   // @Input()
   category: string;
   selectedItems: Array<any> = new Array<any>();
@@ -33,12 +39,19 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
 
   errorMessage: string;
 
+  private apiService: ApiBaseService;
+  private loadingService: LoadingService;
+  private toastsService: ToastsService;
+  private confirmationService: ConfirmationService;
 
-  constructor(private type: string, private apiService?: ApiBaseService){
+
+  constructor(private type: string,
+              private apiService?: ApiBaseService) {
     this.category = type;
+    // console.log('BaseMediaComponent', this);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     if (this.pageView == 'grid') {
       this.isGridView = true;
       this.isListView = false;
@@ -71,19 +84,19 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
         ids: _.map(this.selectedItems, 'id'),
         isToggle: false
       });
-      // this.loadingService.start();
+      this.loadingService.start();
       this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
         .subscribe((result: any) => {
             // stop loading
             this.needToReload = true;
             this.loadItems(this.currentPage);
-            // this.loadingService.stop();
-            //this.toastsService.success(result.message);
+            this.loadingService.stop();
+            this.toastsService.success(result.message);
           },
           error => {
             // stop loading
-            // this.loadingService.stop();
-            //this.toastsService.danger(error);
+            this.loadingService.stop();
+            this.toastsService.danger(error);
             console.log(error);
           }
         );
@@ -93,35 +106,37 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
   delete(event: any) {
     this.needToReload = false;
     if (event) {
-      // this.dialogService.activate('Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
-      //   if (responseOK) {
+      this.confirmationService.confirm({
+        message: 'Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?',
+        accept: () => {
           let body = JSON.stringify({ids: _.map(this.selectedItems, 'id')});
-          // this.loadingService.start();
+          this.loadingService.start();
           this.apiService.post(`${this.buildPathByCat()}/delete`, body)
+            .map(res => res.json())
             .subscribe((result: any) => {
                 // stop loading
                 this.needToReload = true;
                 this.loadItems(this.currentPage);
-                // this.loadingService.stop();
+                this.loadingService.stop();
 
-                //this.toastsService.success(result.message);
+                this.toastsService.success(result.message);
               },
               error => {
                 // stop loading
-                // this.loadingService.stop();
-                //this.toastsService.danger(error);
+                this.loadingService.stop();
+                this.toastsService.danger(error);
                 console.log(error);
               }
             );
-        // }
-      // });
+        }
+      });
     }
   }
 
   public loadItems(page: number) {
 
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
-      // this.loadingService.start('#photodata-loading');
+      this.loadingService.start('#photodata-loading');
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
           // console.log(response);
@@ -129,17 +144,17 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
           this.total = response['total'];
           this.items = response['data'];
           // this.items = _.concat(this.items, response['data']);
-          // this.loadingService.stop('#photodata-loading');
+          this.loadingService.stop('#photodata-loading');
         },
         error => {
           // this.errorMessage = <any>error;
-          // this.loadingService.stop('#photodata-loading');
+          this.loadingService.stop('#photodata-loading');
         }
       );
     }
   }
 
-  public loadItemsByUrl(url:string) {
+  public loadItemsByUrl(url: string) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
       this.apiService.get(url).subscribe(
         (response: any) => {
@@ -150,7 +165,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
         },
         error => {
           // this.errorMessage = <any>error;
-          // this.loadingService.stop('#photodata-loading');
+          this.loadingService.stop('#photodata-loading');
         }
       );
     }

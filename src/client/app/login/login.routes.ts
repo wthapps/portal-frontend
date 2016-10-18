@@ -4,8 +4,7 @@ import { LoginComponent } from './index';
 import {
   AuthGuard,
   UserService,
-  AuthService,
-  RedirectService
+  AuthService
 }                           from '../shared/index';
 
 export const LoginRoutes: Route[] = [
@@ -18,6 +17,5 @@ export const LoginRoutes: Route[] = [
 export const authProviders = [
   AuthGuard,
   AuthService,
-  UserService,
-  RedirectService
+  UserService
 ];

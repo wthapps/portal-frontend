@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, SimpleChanges} from '@angular/core';
 import {ApiBaseService} from '../../../shared/services/apibase.service';
 
 
@@ -68,9 +68,22 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.modalShow) {
       $('#sharingModal').modal('show');
+    }
+    if (changes['selectedItems'].currentValue['length'] > 0) {
+      console.log('change', changes);
+      let body = JSON.stringify({ photos: _.map(this.selectedItems, 'id'), albums: [] });
+      this.apiService.post(`zone/sharings/get_sharing_info`, body)
+        .map(res => res.json())
+        .subscribe((result: any) => {
+            this.sharedContacts = result['data']['contacts'];
+            this.sharedContactGroups = result['data']['contactgroups'];
+          },
+          error => {
+            console.log('error', error);
+          });
     }
   }
 
@@ -117,7 +130,8 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.hasDeletedItems){
 
     }else{ // save adding sharing
-      let body = JSON.stringify({ photos: _.map(this.selectedItems, 'id'), contacts: _.map(this.contacts, 'id'), groups: _.map(this.contactGroups, 'id')});
+      let body = JSON.stringify({ photos: _.map(this.selectedItems, 'id'), albums: [],
+        contacts: _.map(this.contacts, 'id'), groups: _.map(this.contactGroups, 'id')});
       this.apiService.post(`zone/sharings`, body)
         .subscribe((result: any) => {
             console.log('shared', result);

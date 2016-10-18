@@ -3,10 +3,16 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { BaseMediaComponent } from '../shared/media/base-media.component';
 import { ZonePhotoComponent } from './photo/photo.component';
 import { ZoneVideoComponent } from './video/video.component';
-import { MediaType} from '../../shared/config/constants';
-import { ApiBaseService } from '../../shared/index';
-import {ZAlbumComponent} from "./album/album.component";
-import {ZAlbumDetailComponent} from "./album/album-detail.component";
+import { MediaType } from '../../shared/config/constants';
+import {
+  ApiBaseService,
+  ToastsService,
+  LoadingService,
+  ConfirmationService
+
+} from '../../shared/index';
+import { ZAlbumComponent } from "./album/album.component";
+import { ZAlbumDetailComponent } from "./album/album-detail.component";
 
 declare var $: any;
 declare var _: any;
@@ -73,12 +79,14 @@ export class ZPictureComponent implements OnChanges {
   // deletedItems: Array<any>;
   mediaType: any;
 
-  constructor(
-    // private element: ElementRef,
+  constructor(// private element: ElementRef,
     //           private photoService: PhotoService,
     //           private albumService: AlbumService,
-              private route: ActivatedRoute,
-              private apiService: ApiBaseService
+    private route: ActivatedRoute,
+    private apiService: ApiBaseService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService,
+    private confirmationService: ConfirmationService
     //           private dialogService: DialogService,
     //           private loadingService: LoadingService,
     //           private toastsService: ToastsService
@@ -95,7 +103,7 @@ export class ZPictureComponent implements OnChanges {
 
     this.sub = this.route.params.subscribe(params => {
       this.category = params['category'];
-      if(params['id']) {
+      if (params['id']) {
         this.category += 'Detail';
       }
       this.collectView(params);
@@ -107,10 +115,10 @@ export class ZPictureComponent implements OnChanges {
   }
 
 
-  collectView(params:any) {
+  collectView(params: any) {
     switch (this.category) {
       case MediaType.photo:
-        this.baseMedia = new ZonePhotoComponent(this.apiService);
+        this.baseMedia = new ZonePhotoComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
       case MediaType.video:
         this.baseMedia = new ZoneVideoComponent(this.apiService);
@@ -130,7 +138,7 @@ export class ZPictureComponent implements OnChanges {
     $('body').bind('dragover', _thisPicture.dragover);
 
     // only allow drag from outside the browser
-    $('body').on('dragstart', function (event:any) {
+    $('body').on('dragstart', function (event: any) {
       event.preventDefault();
     });
   }
@@ -403,7 +411,7 @@ export class ZPictureComponent implements OnChanges {
   }
 
   uploadedItem(hasItem: boolean) {
-    console.log('finished upload')
+    console.log('finished upload');
     this.baseMedia.needToReload = hasItem;
     this.baseMedia.loadItems(this.baseMedia.currentPage);
   }
