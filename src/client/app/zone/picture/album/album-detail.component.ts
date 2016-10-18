@@ -20,7 +20,7 @@ declare var _: any;
 
 export class ZAlbumDetailComponent extends BaseMediaComponent{
 
-  album: Album;
+  album: Album = new Album(null);
   albumId: number;
 
   constructor(
@@ -56,6 +56,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.albumService.get(this.albumService.url + this.albumId).subscribe(
       (res: any) => {
         this.album = new Album(res.album);
+        console.log(this.album)
         this.getPhotosByAlbum();
       },
     );

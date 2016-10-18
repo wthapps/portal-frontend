@@ -11,6 +11,7 @@
 </div>
 <div *ngIf="category != mediaType.albumDetail">
   <zone-toolbar
+    [selectedItems]="baseMedia.selectedItems"
     (openWindow)="openFileWindow($event)"
     (selectedFiles)="handleFileUpload($event)"
     (onViewChanged)="baseMedia.changeView($event)"

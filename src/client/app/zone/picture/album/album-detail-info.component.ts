@@ -1,4 +1,8 @@
-import {Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChanges, SimpleChange} from '@angular/core';
+import {
+  Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChanges, SimpleChange,
+  OnInit, SimpleChanges
+} from '@angular/core';
+import {Album} from "../../../shared/models/album.model";
 
 
 declare var wheelzoom: any;
@@ -13,6 +17,8 @@ declare var _: any;
 })
 
 export class ZAlbumDetailInfoComponent {
+
+  @Input() album:Album;
   @Output() closeInfo: EventEmitter = new EventEmitter();
 
   onClose() {
