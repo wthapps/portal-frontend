@@ -1,10 +1,16 @@
-import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { ZPictureGridComponent, ZPictureListComponent } from '../../shared/index';
 
 // import {ZPhotoDetailComponent} from './photo-detail.component';
 import { Photo } from '../../../shared/models/photo.model';
 import { BaseMediaComponent } from '../../shared/index';
-import { ApiBaseService, MediaType } from '../../../shared/index';
+import {
+  ApiBaseService,
+  MediaType,
+  LoadingService,
+  ToastsService,
+  ConfirmationService
+} from '../../../shared/index';
 
 declare var $: any;
 declare var _: any;
@@ -31,8 +37,13 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private apiService: ApiBaseService) {
-    super(MediaType.photo, apiService);
+  constructor(private apiService: ApiBaseService,
+              // this is using for BaseMediaComponent
+              // tslint:disable-next-line
+              private toastsService: ToastsService,
+              private loadingService: LoadingService,
+              private confirmationService: ConfirmationService) {
+    super(MediaType.photo, this.apiService);
   }
 
   ngOnInit() {
