@@ -8,7 +8,7 @@ export class DeactivateConfirmService {
   constructor(private confirmationService: ConfirmationService) {
   }
 
-  activate(x: any, y: any) {
+  activate(x: any, y: any): any {
     // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
     if (!x || _.isEqual(x, y)) {
       return true;
