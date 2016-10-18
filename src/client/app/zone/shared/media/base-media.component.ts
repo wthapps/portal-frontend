@@ -48,7 +48,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
   constructor(private type: string,
               private apiService?: ApiBaseService) {
     this.category = type;
-    console.log('BaseMediaComponent', this);
+    // console.log('BaseMediaComponent', this);
   }
 
   ngOnInit() {
@@ -119,7 +119,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
                 this.loadItems(this.currentPage);
                 this.loadingService.stop();
 
-                console.log(result);
                 this.toastsService.success(result.message);
               },
               error => {
