@@ -1,5 +1,5 @@
 <div id="album-box-detail" class="two-layout-slip active-info">
-  <div class="main-layout">
+  <div class="main-layout min-height-max">
     <page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)"></page-zone-bar-album>
     <div class="page-body-in">
       <template [ngIf]="items.length">
@@ -28,4 +28,6 @@
     <zone-album-detail-info (closeInfo)="onCloseInfo()" [album]="album"></zone-album-detail-info>
   </div>
 </div>
+
+
 

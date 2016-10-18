@@ -6,13 +6,16 @@
   <dl class="dl-horizontal">
     <dt>Name</dt>
     <dd>{{album.name}}</dd>
+    <dt>Files</dt>
+    <dd>{{album.photo_number}} files</dd>
     <dt>Description</dt>
     <dd>{{album.description}}</dd>
     <dt>Created</dt>
-    <dd>{{album.created_at}}</dd>
+    <dd>{{album.created_at | date}}</dd>
   </dl>
 </div>
 
 
 <!--<page-zone-form-edit-photo (modalHide)="onModalHide($event)" [modalShow]="modalEdit" [data]="imgOne">-->
 <!--</page-zone-form-edit-photo>-->
+<form-modal [showForm]="showCreateAlbumForm" [formData]="formData"></form-modal>

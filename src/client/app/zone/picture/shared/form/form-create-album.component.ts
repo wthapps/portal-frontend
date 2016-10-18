@@ -45,15 +45,15 @@ export class ZPictureFormCreateAlbumComponent implements OnInit, OnChanges, Afte
   }
 
   createdAlbum() {
-    let albumName = $('#album-name').val();
-    let albumDes = $('#album-description').val();
-    if (albumName.length == 0) {
-      albumName = 'Untitled Album';
-    }
-    let album = new Album({name: albumName, description: albumDes});
-    this.albumService.createAlbum(album, (response:any) => {
-      this.albumService.setAlbum(new Album(response.data));
-      $('#form-create-album-modal').modal('hide');
-    });
+    // let albumName = $('#album-name').val();
+    // let albumDes = $('#album-description').val();
+    // if (albumName.length == 0) {
+    //   albumName = 'Untitled Album';
+    // }
+    // let album = new Album({name: albumName, description: albumDes});
+    // this.albumService.createAlbum(album, (response:any) => {
+    //   this.albumService.setAlbum(new Album(response.data));
+    //   $('#form-create-album-modal').modal('hide');
+    // });
   }
 }

@@ -55,8 +55,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   init() {
     this.albumService.get(this.albumService.url + this.albumId).subscribe(
       (res: any) => {
-        this.album = new Album(res.album);
-        console.log(this.album)
+        this.album = new Album(res.data);
         this.getPhotosByAlbum();
       },
     );

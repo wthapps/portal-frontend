@@ -33,6 +33,11 @@ a {
   position: relative;;
   overflow: hidden;
 }
+
 dt, dd {
   line-height: 2;
+}
+
+.min-height-max {
+  min-height: 100vh;
 }
