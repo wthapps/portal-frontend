@@ -15,6 +15,7 @@ declare var _: any;
   moduleId: module.id,
   selector: 'page-zone-album-detail',
   templateUrl: 'album-detail.component.html',
+  styleUrls: ['album.component.css'],
 })
 
 export class ZAlbumDetailComponent extends BaseMediaComponent{
@@ -79,7 +80,14 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     // this.selectedPhotoFull.emit(this.dataSelectedPhotos);
   }
 
+  onCloseInfo() {
+    this.onOffInfo();
+  }
   onViewInfo(event:any) {
+    this.onOffInfo();
+  }
+
+  onOffInfo() {
     $('.two-layout-slip').toggleClass('active-info');
   }
 }

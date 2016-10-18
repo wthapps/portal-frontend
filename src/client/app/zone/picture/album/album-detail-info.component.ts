@@ -9,9 +9,13 @@ declare var _: any;
   moduleId: module.id,
   selector: 'zone-album-detail-info',
   templateUrl: 'album-detail-info.component.html',
-  styleUrls: ['album-detail-info.component.css'],
+  styleUrls: ['album.component.css'],
 })
 
 export class ZAlbumDetailInfoComponent {
+  @Output() closeInfo: EventEmitter = new EventEmitter();
 
+  onClose() {
+    this.closeInfo.emit();
+  }
 }
