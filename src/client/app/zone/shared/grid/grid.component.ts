@@ -21,7 +21,7 @@ declare var _: any;
 
 export class ZPictureGridComponent implements OnChanges {
   @Input() items: Array<any>;
-  @Output() imgDetail: EventEmitter<number> = new EventEmitter<number>();
+  @Output() preview: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() loadMore: EventEmitter<number> = new EventEmitter<number>();
   @Input() resetSelected: boolean;
@@ -61,8 +61,17 @@ export class ZPictureGridComponent implements OnChanges {
     this.reset = this.resetSelected;
   }
 
-  onDbClick(id: any) {
-    this.imgDetail.emit(id);
+  onDbClick(e: any, id: number) {
+    let parent = $(e.target).parents('.row-img');
+    let el = $(e.target).parents('.photo-box-img');
+    parent.find('.photo-box-img').removeClass('selected');
+    el.addClass('selected');
+
+    this.selectedPhotos = [];
+    this.selectedPhotos.push(id);
+
+    this.imgsSelected.emit(this.selectedPhotos);
+    this.preview.emit(this.selectedPhotos);
   }
 
   removeSelectedItems() {

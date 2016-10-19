@@ -30,9 +30,7 @@
 
 <div [ngSwitch]="category">
   <div *ngSwitchCase="mediaType.photo">
-    <zone-photo #media
-
-    ></zone-photo>
+    <zone-photo #media></zone-photo>
   </div>
   <div *ngSwitchCase="mediaType.video">
     <zone-video></zone-video>
@@ -48,10 +46,10 @@
 </div>
 
 <zone-uploading [files]="files"
-                 (photoEvent)="photoEvent($event)"
-                 (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
-                 (createNewAlbum)="onCreateNewAlbum($event)"
-                 (needToReload)="uploadedItem($event)"
+                (photoEvent)="photoEvent($event)"
+                (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
+                (createNewAlbum)="onCreateNewAlbum($event)"
+                (needToReload)="uploadedItem($event)"
 ></zone-uploading>
 
 <!--<added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [album]="album" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>-->
@@ -61,7 +59,8 @@
 <!--<wth-toast-upload></wth-toast-upload>-->
 
 
-<zone-sharing (modalHide)="onModalHide($event)" [modalShow]="modalShare" [selectedItems]="baseMedia.selectedItems"></zone-sharing>
+<zone-sharing (modalHide)="onModalHide($event)" [modalShow]="modalShare"
+              [selectedItems]="baseMedia.selectedItems"></zone-sharing>
 <zone-tagging (modalHide)="onModalHide($event)" [modalShow]="modalTag" [selectedItems]="selectedItems"></zone-tagging>
 <!--<zone-photo-edit [showModal]="modalEdit" (modalHide)='onModalHide($event)' [data]="onePhotoEdit"></zone-photo-edit>-->
 

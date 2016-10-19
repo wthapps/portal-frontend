@@ -2,7 +2,7 @@
   <p-dataScroller [value]="items" [rows]="1" (onLazyLoad)="onLoadMore($event)" [lazy]="true">
     <template let-item>
       <div class="photo-box-img">
-        <figure (click)="onSelected($event, item.id)" (dblclick)="onDbClick(item.id)" class="img-center-dv">
+        <figure (click)="onSelected($event, item.id)" (dblclick)="onDbClick($event, item.id)" class="img-center-dv">
           <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
           <img class="img-center" [src]="item.thumbnail_url" alt="">
         </figure>

@@ -13,7 +13,12 @@ import {
   ZoneSharingComponent,
   ZoneTaggingComponent
 } from '../shared/index';
-import { ZonePhotoComponent, ZoneVideoComponent } from './index';
+
+import {
+  ZonePhotoComponent,
+  ZonePhotoDetailComponent,
+  ZoneVideoComponent
+} from './index';
 import { ZAlbumComponent } from "./album/album.component";
 import { ZPictureAlbumModule } from "./album/album.module";
 import { LoadingService } from "../../partials/loading/loading.service";
@@ -41,7 +46,6 @@ import { DataScrollerModule } from 'primeng/primeng';
   declarations: [
     ZPictureComponent,
     ZoneToolbarComponent,
-    ZonePhotoComponent,
     ZoneVideoComponent,
     BaseMediaComponent,
     ZPictureGridComponent,
@@ -50,6 +54,9 @@ import { DataScrollerModule } from 'primeng/primeng';
     ToastsUploadComponent,
     ZoneSharingComponent,
     ZoneTaggingComponent,
+
+    ZonePhotoComponent,
+    ZonePhotoDetailComponent
   ],
   exports: [
     ZPictureComponent

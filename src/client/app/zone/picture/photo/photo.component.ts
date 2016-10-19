@@ -50,21 +50,20 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     super.ngOnInit();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.preview) {
-      this.onClick(this.selectedItems[0].id, this.preview);
+      this.onPreview(this.selectedItems[0], this.preview);
     }
     if (this.needToReload) {
       this.items = [];
       this.loadItems(this.currentPage);
     }
     if (this.viewInfo) {
-      this.onClick(this.selectedItems[0].id, this.preview);
+      this.onPreview(this.selectedItems[0], this.preview);
     }
   }
 
-  onClick(id: any, preview: boolean): void {
-    this.imgId = id;
+  onPreview(id: any, preview: boolean): void {
     this.showImg = true;
     if (preview) {
       this.previewItems = this.selectedItems;
