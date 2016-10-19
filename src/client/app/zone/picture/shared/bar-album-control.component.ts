@@ -18,6 +18,7 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
   @Output() viewChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() viewInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteAction: EventEmitter = new EventEmitter();
+  @Output() editAction: EventEmitter = new EventEmitter();
 
   constructor(private albumService: AlbumService) {
 
@@ -57,5 +58,9 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
 
   deleteAlbumAction() {
     this.deleteAction.emit();
+  }
+
+  onEditAction() {
+    this.editAction.emit()
   }
 }

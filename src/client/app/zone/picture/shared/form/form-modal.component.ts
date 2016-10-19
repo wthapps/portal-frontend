@@ -47,8 +47,7 @@ export class FormModal implements OnInit, OnChanges {
   onClick() {
     let res = {};
     for(let field of this.formData.fields)  {
-      let el = document.getElementById(field.id);
-      res[field.id] = el.value;
+      res[field.id] = $("#" + field.id).val();
     }
     $('#form-modal').modal('hide');
     this.formResult.emit(res);

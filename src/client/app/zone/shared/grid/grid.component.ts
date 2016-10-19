@@ -119,9 +119,6 @@ export class ZPictureGridComponent implements OnChanges {
         this.selectedPhotos.push(id); // add
       }
     }
-
-    console.log(this.selectedPhotos, this.selectedPhotos.length);
-
     this.imgsSelected.emit(this.selectedPhotos);
   }
 }
