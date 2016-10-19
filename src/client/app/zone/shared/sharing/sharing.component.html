@@ -22,10 +22,10 @@
             ></p-autoComplete>
 
         </div>
-        <div class="modal-body-collapse">
+        <div class="modal-body-collapse" *ngIf="sharedContactGroups.length > 0">
           <a role="button" data-toggle="collapse" href="#collapseGroup" aria-expanded="false"
              aria-controls="collapseExample">
-            Shared in 3 groups
+            Shared in {{sharedContactGroups.length}} groups
           </a>
           <div class="collapse" id="collapseGroup">
             <div class="modal-body-collapse-in">
@@ -70,10 +70,10 @@
 
           </p-autoComplete>
         </div>
-        <div class="modal-body-collapse">
+        <div class="modal-body-collapse" *ngIf="sharedContacts.length">
           <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
              aria-controls="collapseExample">
-            Shared with {{contacts.length}} Contacts
+            Shared with {{sharedContacts.length}} Contacts
           </a>
           <div class="collapse" id="collapseContact">
             <div class="modal-body-collapse-in">
