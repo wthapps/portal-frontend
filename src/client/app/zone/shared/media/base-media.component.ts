@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
@@ -21,7 +21,7 @@ declare var _: any;
 `
 })
 
-export abstract class BaseMediaComponent implements OnInit, OnChanges {
+export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
 
   // @Input()
   category: string;
@@ -64,6 +64,10 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     console.log('changed', changes);
+  }
+
+  ngOnDestroy() {
+    this.items = [];
   }
 
   changeView(view: any) {
@@ -134,16 +138,20 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
   }
 
   public loadItems(page: number) {
-
-    if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
+    if (page <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
+      this.currentPage = page;
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
-          // console.log(response);
+          console.log('page-', page, ':', response);
           this.perPage = response['per_page'];
           this.total = response['total'];
-          this.items = response['data'];
-          // this.items = _.concat(this.items, response['data']);
+          if (page==1) {
+            this.items = response['data'];
+          }
+          if (!_.isEqual(this.items, response['data'])) {
+            this.items = _.concat(this.items, response['data']);
+          }
           this.loadingService.stop('#photodata-loading');
         },
         error => {
@@ -151,6 +159,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
           this.loadingService.stop('#photodata-loading');
         }
       );
+
     }
   }
 
