@@ -12600,6 +12600,17 @@ wth-app:empty + .dots-loader-wrap {
 .row-img:after {
   clear: both; }
 
+.row-img .ui-datascroller {
+  clear: both; }
+  .row-img .ui-datascroller .ui-datascroller-content {
+    margin: 0;
+    padding: 0;
+    border-width: 0; }
+  .row-img .ui-datascroller .ui-datascroller-list li {
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px; }
+
 .row-img .can-click {
   cursor: pointer; }
 

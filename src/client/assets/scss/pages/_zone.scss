@@ -8,6 +8,23 @@
 
 .row-img {
   @include clearfix;
+
+  .ui-datascroller {
+    clear: both;
+    .ui-datascroller-content {
+      margin: 0;
+      padding: 0;
+      border-width: 0;
+    }
+    .ui-datascroller-list {
+      li {
+        float: left;
+        margin-right: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
   .can-click {
     cursor: pointer;
   }
