@@ -23,6 +23,7 @@ export class ZPictureGridComponent implements OnChanges {
   @Input() items: Array<any>;
   @Output() imgDetail: EventEmitter<number> = new EventEmitter<number>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Output() loadMore: EventEmitter<number> = new EventEmitter<number>();
   @Input() resetSelected: boolean;
 
   selectedPhotos: Array<any> = [];
@@ -72,6 +73,10 @@ export class ZPictureGridComponent implements OnChanges {
     this.selectedPhotos = [];
   }
 
+  onLoadMore(even: any) {
+    this.loadMore.emit(even.first);
+  }
+
   /**
    *
    * @param e
@@ -106,7 +111,7 @@ export class ZPictureGridComponent implements OnChanges {
       }
     }
 
-    console.log(this.selectedPhotos,this.selectedPhotos.length);
+    console.log(this.selectedPhotos, this.selectedPhotos.length);
 
     this.imgsSelected.emit(this.selectedPhotos);
   }

@@ -38,7 +38,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private apiService: ApiBaseService,
-              // this is using for BaseMediaComponent
+              // these are using for BaseMediaComponent
               // tslint:disable-next-line
               private toastsService: ToastsService,
               private loadingService: LoadingService,
@@ -48,20 +48,6 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-  }
-
-  ngAfterViewInit() {
-    let win = $(window);
-    let _this = this;
-
-    // Each time the user scrolls
-    win.scroll(function () {
-      // End of the document reached?
-      if ($(document).height() - win.height() == win.scrollTop()) {
-        _this.currentPage = _this.currentPage + 1;
-        _this.loadItems(_this.currentPage);
-      }
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -121,5 +107,10 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     this.showImg = false;
     this.modalHide.emit(false);
     this.items = _.dropWhile(this.items, ['id', id]);
+  }
+
+  onLoadMore(p: number) {
+    this.currentPage = p;
+    this.loadItems(p + 1);
   }
 }

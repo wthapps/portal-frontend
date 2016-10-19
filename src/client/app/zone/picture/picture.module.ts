@@ -26,6 +26,8 @@ import { DialogService } from "../../partials/dialogs/dialog.service";
 import { ToastsService } from "../../partials/toast/toast-message.service";
 import { GroupByMonthYearPipe } from "../../shared/pipe/groupby-month-year.pipe";
 
+import { DataScrollerModule } from 'primeng/primeng';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -34,6 +36,7 @@ import { GroupByMonthYearPipe } from "../../shared/pipe/groupby-month-year.pipe"
 
     // Album Module
     ZPictureAlbumModule,
+    DataScrollerModule
   ],
   declarations: [
     ZPictureComponent,
