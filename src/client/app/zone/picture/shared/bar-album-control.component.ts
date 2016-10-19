@@ -17,6 +17,7 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
   currentView: string = 'grid';
   @Output() viewChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() viewInfo: EventEmitter<any> = new EventEmitter<any>();
+  @Output() deleteAction: EventEmitter = new EventEmitter();
 
   constructor(private albumService: AlbumService) {
 
@@ -52,5 +53,9 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
 
   viewInfoAction() {
     this.viewInfo.emit(true);
+  }
+
+  deleteAlbumAction() {
+    this.deleteAction.emit();
   }
 }
