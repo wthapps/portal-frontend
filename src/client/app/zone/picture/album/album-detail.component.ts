@@ -8,6 +8,9 @@ import {PhotoService} from "../../../shared/services/picture/photo.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoadingService} from "../../../partials/loading/loading.service";
 import {ConfirmationService} from "primeng/components/common/api";
+import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
+import {FormBase} from "../../../shared/models/form/form-base.model";
+import {ToastsService} from "../../../partials/toast/toast-message.service";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -24,6 +27,8 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
   album: Album = new Album(null);
   albumId: number;
+  showForm: boolean = false;
+  formData: FormBase;
 
   constructor(
     private apiService?: ApiBaseService,
@@ -31,13 +36,15 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     private photoService?: PhotoService,
     private route?: ActivatedRoute,
     private loadingService?: LoadingService,
-    private router: Router,
+    private router?: Router,
+    private toastsService?: ToastsService,
     private confirmationService?: ConfirmationService
   ) {
     super(MediaType.albumDetail, apiService);
   }
 
   ngOnInit() {
+
     this.route.params.subscribe(params => {
       this.albumId = params['id'];
       this.init();
@@ -62,6 +69,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
       (res: any) => {
         this.album = new Album(res.data);
         this.getPhotosByAlbum();
+        this.renderForm();
       },
     );
   }
@@ -103,7 +111,6 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
       accept: () => {
         this.loadingService.start();
         this.albumService.delete(this.albumService.url + this.album.id)
-          .map(res => res.json())
           .subscribe(res => {
               this.loadingService.stop();
               this.router.navigate(['/zone/picture/album']);
@@ -111,5 +118,33 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
         }
       }
     )
+  }
+
+  onEditAction() {
+    this.showForm = true;
+  }
+
+  renderForm() {
+    let fields = [
+      new FormTextElement({id:"album-name",name: "Name", value: this.album.name}),
+      new FormTextElement({id:"album-description",name: "Description", value: this.album.description}),
+    ];
+    this.formData = new FormBase({title: "Information", fields: fields});
+  }
+
+  onFormResult(res:any) {
+    if (res) {
+      this.albumService.put(this.albumService.url + this.album.id, {name: res['album-name'], description: res['album-description']})
+        .subscribe(res => {
+          this.album = new Album(res.data);
+          this.toastsService.success('Edited');
+          this.renderForm();
+        })
+      ;
+    }
+  }
+
+  onHideModal() {
+    this.showForm = false;
   }
 }

@@ -63,7 +63,6 @@ import {GroupByPipe} from "./pipe/groupby.pipe";
     UploadCropImageComponent,
     // Directive
     LoadingDirective,
-    LoadingModalDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
@@ -89,7 +88,6 @@ import {GroupByPipe} from "./pipe/groupby.pipe";
     RouterModule,
     // Directive
     LoadingDirective,
-    LoadingModalDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,

@@ -165,7 +165,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges {
         },
         error => {
           // this.errorMessage = <any>error;
-          // this.loadingService.stop('#photodata-loading');
+          this.loadingService.stop('#photodata-loading');
         }
       );
     }
