@@ -14,7 +14,8 @@ declare var _: any;
 export class FormModal implements OnInit, OnChanges {
   @Input() showForm:boolean;
   @Input() formData:FormBase;
-  @Output() hideForm: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() formResult: EventEmitter<any> = new EventEmitter<any>();
+  @Output() hideModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
   ngOnInit() {
@@ -29,16 +30,27 @@ export class FormModal implements OnInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    // this.render();
+    $('#form-modal').on('hidden.bs.modal', (e:any) => {
+      this.hideModal.emit(false);
+    });
   }
 
   render() {
-    // console.log(this.formData);
     if (this.formData) {
-      console.log(this.formData);
+      $('#form-elements').empty();
       for(let field of this.formData.fields)  {
         field.render();
       }
     }
+  }
+
+  onClick() {
+    let res = {};
+    for(let field of this.formData.fields)  {
+      let el = document.getElementById(field.id);
+      res[field.id] = el.value;
+    }
+    $('#form-modal').modal('hide');
+    this.formResult.emit(res);
   }
 }

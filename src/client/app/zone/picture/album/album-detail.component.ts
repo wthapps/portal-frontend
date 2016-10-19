@@ -5,7 +5,9 @@ import {MediaType} from "../../../shared/config/constants";
 import {AlbumService} from "../../../shared/services/picture/album.service";
 import {Album} from "../../../shared/models/album.model";
 import {PhotoService} from "../../../shared/services/picture/photo.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {LoadingService} from "../../../partials/loading/loading.service";
+import {ConfirmationService} from "primeng/components/common/api";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -28,6 +30,9 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     private albumService?: AlbumService,
     private photoService?: PhotoService,
     private route?: ActivatedRoute,
+    private loadingService?: LoadingService,
+    private router: Router,
+    private confirmationService?: ConfirmationService
   ) {
     super(MediaType.albumDetail, apiService);
   }
@@ -89,5 +94,22 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
   onOffInfo() {
     $('.two-layout-slip').toggleClass('active-info');
+  }
+
+  onDeleteAction() {
+    this.confirmationService.confirm({
+      header: 'Delete Album',
+      message: this.album.name + ' will be deleted permanently. Photos that were in a deleted album remain part of your Photos library',
+      accept: () => {
+        this.loadingService.start();
+        this.albumService.delete(this.albumService.url + this.album.id)
+          .map(res => res.json())
+          .subscribe(res => {
+              this.loadingService.stop();
+              this.router.navigate(['/zone/picture/album']);
+          })
+        }
+      }
+    )
   }
 }

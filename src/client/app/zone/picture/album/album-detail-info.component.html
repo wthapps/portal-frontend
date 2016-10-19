@@ -18,4 +18,4 @@
 
 <!--<page-zone-form-edit-photo (modalHide)="onModalHide($event)" [modalShow]="modalEdit" [data]="imgOne">-->
 <!--</page-zone-form-edit-photo>-->
-<form-modal [showForm]="showCreateAlbumForm" [formData]="formData"></form-modal>
+<form-modal [(showForm)]="showCreateAlbumForm" [formData]="formData" (formResult)="onFormResult($event)" (hideModal)="onHideModal()"></form-modal>
