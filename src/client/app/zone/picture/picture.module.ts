@@ -33,7 +33,7 @@ import { GroupByMonthYearPipe } from "../../shared/pipe/groupby-month-year.pipe"
 
 import { DataScrollerModule } from 'primeng/primeng';
 import {ZPictureFormAddToAlbumComponent} from "./shared/form/form-add-to-album.component";
-import {FormModalComponent} from "./shared/form/form-modal.component";
+import {ZPictureFormModule} from "./shared/form/form-picture.module";
 
 @NgModule({
   imports: [
@@ -43,6 +43,7 @@ import {FormModalComponent} from "./shared/form/form-modal.component";
 
     // Album Module
     ZPictureAlbumModule,
+    ZPictureFormModule,
     DataScrollerModule
   ],
   declarations: [
@@ -56,7 +57,6 @@ import {FormModalComponent} from "./shared/form/form-modal.component";
     ToastsUploadComponent,
     ZoneSharingComponent,
     ZoneTaggingComponent,
-    ZPictureFormAddToAlbumComponent,
     ZonePhotoComponent,
     ZonePhotoDetailComponent
   ],

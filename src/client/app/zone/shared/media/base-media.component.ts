@@ -43,6 +43,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   errorMessage: string;
   showCreateAlbumForm: boolean;
   formData: FormBase;
+  showAddToAlbumForm:true;
 
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
@@ -200,13 +201,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onCreateNewAlbum($event: boolean) {
-    // this.showAddtoAlbumForm = false;
+    this.showAddToAlbumForm = false;
     this.showCreateAlbumForm = true;
-    let fields = [
-      new FormTextElement({id:'album-name',name: 'Name', placeholder: 'Untitle Album'}),
-      new FormTextElement({id:'album-description',name: 'Description', placeholder: 'Description'}),
-    ];
-    this.formData = new FormBase({title: "Create New Album", fields: fields});
   }
 
   onFormResult(res:any) {
@@ -220,7 +216,14 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  onHideModal() {
+  onHideCreateAlbumModal() {
     this.showCreateAlbumForm = false;
+  }
+
+  onAddToAlbum() {
+    this.showAddToAlbumForm = true;
+  }
+  onHideAddToAlbumModal() {
+    this.showAddToAlbumForm = false;
   }
 }

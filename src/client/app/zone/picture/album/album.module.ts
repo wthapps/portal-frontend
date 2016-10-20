@@ -12,7 +12,6 @@ import {ZPictureTimelineComponent} from "../shared/timeline.component";
 import {GroupByMonthYearPipe} from "../../../shared/pipe/groupby-month-year.pipe";
 import {SharedModule} from "../../../shared/shared.module";
 import {ZAlbumDetailInfoComponent} from "./album-detail-info.component";
-import {FormModalComponent} from "../shared/form/form-modal.component";
 
 
 
