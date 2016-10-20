@@ -13,7 +13,12 @@ import {
   ZoneSharingComponent,
   ZoneTaggingComponent
 } from '../shared/index';
-import { ZonePhotoComponent, ZoneVideoComponent } from './index';
+
+import {
+  ZonePhotoComponent,
+  ZonePhotoDetailComponent,
+  ZoneVideoComponent
+} from './index';
 import { ZAlbumComponent } from "./album/album.component";
 import { ZPictureAlbumModule } from "./album/album.module";
 import { LoadingService } from "../../partials/loading/loading.service";
@@ -43,7 +48,6 @@ import {FormModalComponent} from "./shared/form/form-modal.component";
   declarations: [
     ZPictureComponent,
     ZoneToolbarComponent,
-    ZonePhotoComponent,
     ZoneVideoComponent,
     BaseMediaComponent,
     ZPictureGridComponent,
@@ -53,6 +57,8 @@ import {FormModalComponent} from "./shared/form/form-modal.component";
     ZoneSharingComponent,
     ZoneTaggingComponent,
     ZPictureFormAddToAlbumComponent,
+    ZonePhotoComponent,
+    ZonePhotoDetailComponent
   ],
   exports: [
     ZPictureComponent

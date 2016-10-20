@@ -3,16 +3,17 @@
   <template [ngIf]="items.length">
     <template [ngIf]="isGridView">
       <page-zone-gridview
-        (imgDetail)="onClick($event)"
         [items]="items"
         (imgsSelected)="onImgsSelected($event)"
+        (preview)="onPreview($event)"
         (loadMore)="onLoadMore($event)"
         [resetSelected]="resetSelected"
       ></page-zone-gridview>
 
     </template>
     <template [ngIf]="isListView">
-      <page-zone-listview (imgDetail)="onClick($event)" [data]="items" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>
+      <page-zone-listview (imgDetail)="onClick($event)" [data]="items"
+                          (imgsSelected)="onImgsSelected($event)"></page-zone-listview>
     </template>
   </template>
 
@@ -23,12 +24,23 @@
   <div id="photodata-loading" style="position: relative;height: 50px;">
   </div>
 </div>
+
+<zone-photo-detail
+  [items]="items"
+  [selectedItems]="selectedItems"
+  [preview]="showImg"
+  (hideModalClicked)='onHideModalClicked($event)'
+>
+</zone-photo-detail>
+
+
 <!--<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)'-->
-                   <!--(actionModalClicked)="onActionModalClicked($event)"-->
-                   <!--(actionDelete)="onActionDeleteOne($event)"-->
-                   <!--[imgId]="imgId" [imgAll]="photosOfDetail"-->
-                   <!--[inShowInfo]="viewInfo"-->
-                   <!--[showImg]="showImg"></zone-photo-detail>-->
+<!--(actionModalClicked)="onActionModalClicked($event)"-->
+<!--(actionDelete)="onActionDeleteOne($event)"-->
+<!--[imgId]="imgId" [imgAll]="photosOfDetail"-->
+<!--[inShowInfo]="viewInfo"-->
+<!--[showImg]="showImg"></zone-photo-detail>-->
+
 
 <!--&lt;!&ndash; <wth-toast-upload></wth-toast-upload> &ndash;&gt;-->
 <!--<toast-uploading (addedToAlbumEvent)="addedToAlbum($event)"></toast-uploading>-->

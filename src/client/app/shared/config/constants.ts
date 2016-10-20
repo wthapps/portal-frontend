@@ -1,5 +1,20 @@
 import { Config } from './env.config';
 
+let getBarwidth = function () {
+  // Create the measurement node
+  let scrollDiv = document.createElement('div');
+  scrollDiv.className = 'scrollbar-measure';
+  document.body.appendChild(scrollDiv);
+
+  // Get the scrollbar width
+  let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+  //console.warn(scrollbarWidth); // Mac:  15
+
+  // Delete the DIV
+  document.body.removeChild(scrollDiv);
+  return scrollbarWidth;
+};
+
 export let Constants = {
   baseUrls: {
     //apiBaseService: 'http://52.221.221.245:4000/',
@@ -38,6 +53,9 @@ export let Constants = {
     app: '/assets/images/apps/default.png',
     avatar: '/assets/images/avatar/default.png'
   },
+  windows: {
+    scrollBarWidth: getBarwidth()
+  }
 
 };
 
