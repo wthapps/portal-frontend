@@ -3,12 +3,13 @@ import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit
 
 @Component({
   moduleId: module.id,
+  template: ``,
 })
 export abstract class FormModalComponent implements OnInit, OnChanges, AfterViewInit {
-  showForm:boolean;
+  showFormModal:boolean;
   // @Input() showForm:boolean;
   // @Output() formResult: EventEmitter<any> = new EventEmitter<any>();
-  hideModal: EventEmitter= new EventEmitter();
+  hideFormModal: EventEmitter= new EventEmitter();
   modalId: string;
   constructor(modalId:string
   ) {
@@ -20,8 +21,7 @@ export abstract class FormModalComponent implements OnInit, OnChanges, AfterView
   }
   //
   ngOnChanges() {
-    console.log(this.showForm);
-    if (this.showForm) {
+    if (this.showFormModal) {
       $('#' + this.modalId).modal('show');
     } else {
       $('#' + this.modalId).modal('hide');
@@ -31,7 +31,7 @@ export abstract class FormModalComponent implements OnInit, OnChanges, AfterView
   ngAfterViewInit() {
     $('#' + this.modalId).on('hidden.bs.modal', (e:any) => {
       // this.hideModal.emit(false);
-      this.hideModal.emit();
+      this.hideFormModal.emit();
     });
   }
 }

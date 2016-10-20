@@ -1,12 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, ElementRef} from '@angular/core';
-
-import {Album} from '../../../../shared/models/album.model';
-import {
-  ApiBaseService,
-  LoadingService
-} from '../../../../shared/index';
-import {AlbumService} from "../../../../shared/services/picture/album.service";
-import {FormModalComponent} from "../../../../shared/form/form-modal.component";
+import {FormModalComponent} from "../../../shared/form/form-modal.component";
 
 declare var $: any;
 declare var _: any;
@@ -17,8 +10,8 @@ declare var _: any;
   templateUrl: 'form-add-to-album.component.html',
 })
 export class ZPictureFormAddToAlbumComponent extends FormModalComponent{
-  @Input() showForm:boolean;
-  @Output() hideModal: EventEmitter= new EventEmitter();
+  @Input() showFormModal:boolean;
+  @Output() hideFormModal: EventEmitter= new EventEmitter();
   @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {

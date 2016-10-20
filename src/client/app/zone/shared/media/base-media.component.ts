@@ -9,6 +9,7 @@ import {
 import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
 import {FormBase} from "../../../shared/models/form/form-base.model";
 import {AlbumService} from "../../../shared/services/picture/album.service";
+import {Album} from "../../../shared/models/album.model";
 
 
 declare var $: any;
@@ -43,7 +44,9 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   errorMessage: string;
   showCreateAlbumForm: boolean;
   formData: FormBase;
-  showAddToAlbumForm:true;
+  showAddToAlbumForm:boolean;
+  showCreatedAlbumToast:boolean;
+  album: Album;
 
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
@@ -150,7 +153,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       this.currentPage = page;
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
-          console.log('page-', page, ':', response);
           this.perPage = response['per_page'];
           this.total = response['total'];
           if (page==1) {
@@ -225,5 +227,17 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
   onHideAddToAlbumModal() {
     this.showAddToAlbumForm = false;
+  }
+
+  onDoneCreateFormModal(e:any) {
+    this.showCreateAlbumForm = false;
+    this.showCreatedAlbumToast = true;
+    this.album = new Album(e.data);
+  }
+
+  onHideCreateAlbumToast() {
+
+    this.showCreatedAlbumToast = false;
+    console.log(this.showCreatedAlbumToast);
   }
 }

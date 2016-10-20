@@ -36,7 +36,9 @@ import {LoadingDirective} from "./directive/loading.directive";
 import {LoadingModalDirective} from "./directive/loading-modal.directive";
 import {GroupByMonthYearPipe} from "./pipe/groupby-month-year.pipe";
 import {GroupByPipe} from "./pipe/groupby.pipe";
-import {FormModalComponent} from "../zone/picture/shared/form/form-modal.component";
+import {AlbumService} from "./services/picture/album.service";
+import {PhotoService} from "./services/picture/photo.service";
+import {FormModalComponent} from "./form/form-modal.component";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -106,7 +108,7 @@ export class SharedModule {
         UserService,
         CountryService,
         ConfirmationService,
-        DeactivateConfirmService
+        DeactivateConfirmService,
       ]
     };
   }
