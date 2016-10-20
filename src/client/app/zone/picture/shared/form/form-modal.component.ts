@@ -11,7 +11,7 @@ declare var _: any;
   selector: 'form-modal',
   templateUrl: 'form-modal.component.html',
 })
-export class FormModal implements OnInit, OnChanges {
+export class FormModalComponent implements OnInit, OnChanges {
   @Input() showForm:boolean;
   @Input() formData:FormBase;
   @Output() formResult: EventEmitter<any> = new EventEmitter<any>();

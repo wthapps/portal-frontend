@@ -33,3 +33,4 @@
 <!--&lt;!&ndash; <wth-toast-upload></wth-toast-upload> &ndash;&gt;-->
 <!--<toast-uploading (addedToAlbumEvent)="addedToAlbum($event)"></toast-uploading>-->
 <!--<added-to-album-toast></added-to-album-toast>-->
+<form-modal [showForm]="showCreateAlbumForm" [formData]="formData" (formResult)="onFormResult($event)" (hideModal)="onHideModal()"></form-modal>

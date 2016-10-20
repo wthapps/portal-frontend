@@ -7,6 +7,9 @@ import {ApiBaseService, LoadingService} from '../../../shared/index';
 import {ZAlbumListComponent} from '../shared/list-album.component';
 import {BaseMediaComponent} from "../../shared/media/base-media.component";
 import {MediaType} from "../../../shared/config/constants";
+import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
+import {ToastsService} from "../../../partials/toast/toast-message.service";
+import {ConfirmationService} from "primeng/components/common/api";
 
 declare var $: any;
 declare var _: any;
@@ -21,11 +24,11 @@ export class ZAlbumComponent extends BaseMediaComponent {
 
   @Input() pageView: string = 'grid';
 
-  constructor(
-    private apiService?: ApiBaseService,
-    private loadingService?: LoadingService,
-  ) {
-    super(MediaType.album, apiService);
+  constructor(private apiService: ApiBaseService,
+              private toastsService: ToastsService,
+              private loadingService: LoadingService,
+              private confirmationService: ConfirmationService) {
+    super(MediaType.album, this.apiService);
   }
 
   ngOnInit() {

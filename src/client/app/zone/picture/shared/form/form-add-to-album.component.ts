@@ -65,17 +65,17 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
 
   getAlbum(page:any) {
     if (this.currentPage <= Math.ceil(this.total / this.perPage)) {
-      this.loadingService.start(this.elementRef, '#album-data-loading');
+      this.loadingService.start('#album-data-loading');
       this.apiService.get(`zone/albums?page=${page}`).subscribe(
         (response: any) => {
           this.perPage = response.per_page;
           this.total = response.total;
           this.dataAlbums = _.concat(this.dataAlbums, response.data);
-          this.loadingService.stop(this.elementRef, '#album-data-loading');
+          this.loadingService.stop('#album-data-loading');
         },
         error => {
           this.errorMessage = <any>error;
-          this.loadingService.stop(this.elementRef, '#album-data-loading');
+          this.loadingService.stop('#album-data-loading');
         }
       );
     }
@@ -90,7 +90,6 @@ export class ZPictureFormAddToAlbumComponent implements OnInit, OnChanges, After
   }
 
   addToAlbum(album:any) {
-    this.albumService.setAlbum(album);
     $('#form-add-to-album-modal').modal('hide');
   }
 

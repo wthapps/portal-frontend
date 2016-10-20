@@ -27,6 +27,8 @@ import { ToastsService } from "../../partials/toast/toast-message.service";
 import { GroupByMonthYearPipe } from "../../shared/pipe/groupby-month-year.pipe";
 
 import { DataScrollerModule } from 'primeng/primeng';
+import {ZPictureFormAddToAlbumComponent} from "./shared/form/form-add-to-album.component";
+import {FormModalComponent} from "./shared/form/form-modal.component";
 
 @NgModule({
   imports: [
@@ -50,6 +52,7 @@ import { DataScrollerModule } from 'primeng/primeng';
     ToastsUploadComponent,
     ZoneSharingComponent,
     ZoneTaggingComponent,
+    ZPictureFormAddToAlbumComponent,
   ],
   exports: [
     ZPictureComponent

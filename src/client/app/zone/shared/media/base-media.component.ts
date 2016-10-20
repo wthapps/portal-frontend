@@ -6,6 +6,9 @@ import {
   ToastsService,
   ConfirmationService
 } from "../../../shared/index";
+import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
+import {FormBase} from "../../../shared/models/form/form-base.model";
+import {AlbumService} from "../../../shared/services/picture/album.service";
 
 
 declare var $: any;
@@ -38,6 +41,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   needToReload: boolean = false;
 
   errorMessage: string;
+  showCreateAlbumForm: boolean;
+  formData: FormBase;
 
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
@@ -46,7 +51,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
 
   constructor(private type: string,
-              private apiService?: ApiBaseService) {
+              private apiService?: ApiBaseService,
+  ) {
     this.category = type;
     // console.log('BaseMediaComponent', this);
   }
@@ -191,5 +197,30 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       return 'zone/photos'
     }
 
+  }
+
+  onCreateNewAlbum($event: boolean) {
+    // this.showAddtoAlbumForm = false;
+    this.showCreateAlbumForm = true;
+    let fields = [
+      new FormTextElement({id:'album-name',name: 'Name', placeholder: 'Untitle Album'}),
+      new FormTextElement({id:'album-description',name: 'Description', placeholder: 'Description'}),
+    ];
+    this.formData = new FormBase({title: "Create New Album", fields: fields});
+  }
+
+  onFormResult(res:any) {
+    if (res) {
+      let body = JSON.stringify({name: res['album-name'], description: res['album-description']})
+      this.apiService.post("/zone/albums", body)
+        .subscribe(res => {
+          this.toastsService.success('Created Album');
+        })
+      ;
+    }
+  }
+
+  onHideModal() {
+    this.showCreateAlbumForm = false;
   }
 }

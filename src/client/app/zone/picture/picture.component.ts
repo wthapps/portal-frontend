@@ -13,6 +13,8 @@ import {
 } from '../../shared/index';
 import { ZAlbumComponent } from "./album/album.component";
 import { ZAlbumDetailComponent } from "./album/album-detail.component";
+import {FormTextElement} from "../../shared/models/form/form-text-element.model";
+import {FormBase} from "../../shared/models/form/form-base.model";
 
 declare var $: any;
 declare var _: any;
@@ -27,7 +29,6 @@ declare var _: any;
 export class ZPictureComponent implements OnChanges {
 
   @ViewChild('media') baseMedia: BaseMediaComponent;
-  // @ViewChild(ZAlbumDetailComponent)	albumDetail:	ZAlbumDetailComponent;
 
   photo_input_element: any = null;
   files: any;
@@ -79,6 +80,9 @@ export class ZPictureComponent implements OnChanges {
   // deletedItems: Array<any>;
   mediaType: any;
 
+  // Album
+  formData: FormBase;
+
   constructor(// private element: ElementRef,
     //           private photoService: PhotoService,
     //           private albumService: AlbumService,
@@ -124,7 +128,7 @@ export class ZPictureComponent implements OnChanges {
         this.baseMedia = new ZoneVideoComponent(this.apiService);
         break;
       case MediaType.album:
-        this.baseMedia = new ZAlbumComponent();
+        this.baseMedia = new ZAlbumComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
       case MediaType.albumDetail:
         this.baseMedia = new ZAlbumDetailComponent();
@@ -224,11 +228,6 @@ export class ZPictureComponent implements OnChanges {
 
   photoEvent(photos: Array<number>) {
     this.photos = photos;
-  }
-
-  onCreateNewAlbum($event: boolean) {
-    this.showAddtoAlbumForm = false;
-    this.showCreateAlbumForm = true;
   }
 
   /**
