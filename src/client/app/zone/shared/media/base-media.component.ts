@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
@@ -6,6 +6,10 @@ import {
   ToastsService,
   ConfirmationService
 } from "../../../shared/index";
+import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
+import {FormBase} from "../../../shared/models/form/form-base.model";
+import {AlbumService} from "../../../shared/services/picture/album.service";
+import {Album} from "../../../shared/models/album.model";
 
 
 declare var $: any;
@@ -40,6 +44,11 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   needToReload: boolean = false;
 
   errorMessage: string;
+  showCreateAlbumForm: boolean;
+  formData: FormBase;
+  showAddToAlbumForm:boolean;
+  showCreatedAlbumToast:boolean;
+  album: Album;
 
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
@@ -197,5 +206,44 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       return 'zone/photos'
     }
 
+  }
+
+  onCreateNewAlbum($event: boolean) {
+    this.showAddToAlbumForm = false;
+    this.showCreateAlbumForm = true;
+  }
+
+  onFormResult(res:any) {
+    if (res) {
+      let body = JSON.stringify({name: res['album-name'], description: res['album-description']})
+      this.apiService.post("/zone/albums", body)
+        .subscribe(res => {
+          this.toastsService.success('Created Album');
+        })
+      ;
+    }
+  }
+
+  onHideCreateAlbumModal() {
+    this.showCreateAlbumForm = false;
+  }
+
+  onAddToAlbum() {
+    this.showAddToAlbumForm = true;
+  }
+  onHideAddToAlbumModal() {
+    this.showAddToAlbumForm = false;
+  }
+
+  onDoneCreateFormModal(e:any) {
+    this.showCreateAlbumForm = false;
+    this.showCreatedAlbumToast = true;
+    this.album = new Album(e.data);
+  }
+
+  onHideCreateAlbumToast() {
+
+    this.showCreatedAlbumToast = false;
+    console.log(this.showCreatedAlbumToast);
   }
 }

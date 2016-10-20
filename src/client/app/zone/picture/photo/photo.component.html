@@ -46,3 +46,9 @@
 <!--&lt;!&ndash; <wth-toast-upload></wth-toast-upload> &ndash;&gt;-->
 <!--<toast-uploading (addedToAlbumEvent)="addedToAlbum($event)"></toast-uploading>-->
 <!--<added-to-album-toast></added-to-album-toast>-->
+<!--<page-zone-form-create-album [showForm]="showCreateAlbumForm" [formData]="formData" (formResult)="onFormResult($event)" (hideModal)="onHideModal()"></page-zone-form-create-album>-->
+<page-zone-form-create-album [(showFormModal)]="showCreateAlbumForm" (hideFormModal)="onHideCreateAlbumModal()" (doneFormModal)="onDoneCreateFormModal($event)"></page-zone-form-create-album>
+<page-zone-form-add-to-album [(showFormModal)]="showAddToAlbumForm" (hideFormModal)="onHideAddToAlbumModal()" (createNewAlbum)="onCreateNewAlbum()"></page-zone-form-add-to-album>
+<!--[formData]="formData" (formResult)="onFormResult($event)" (hideModal)="onHideModal()"-->
+<created-album-toast [showToast]="showCreatedAlbumToast" (hideToast)="onHideCreateAlbumToast()" [album]="album"></created-album-toast>
+<!--[album]="album"-->

@@ -20,11 +20,11 @@
     (onTag)="tag($event)"
     (onFavourite)="baseMedia.addFavourite($event)"
     (onDelete)="baseMedia.delete($event)"
-    (onAdd)="add($event)"
+    (onAdd)="baseMedia.onAddToAlbum()"
     (onEdit)="edit($event)"
     (onDownload)="download($event)"
     (onViewInfo)="viewInfo($event)"
-    (createNewAlbum)="onCreateNewAlbum($event)"
+    (createNewAlbum)="baseMedia.onCreateNewAlbum($event)"
   ></zone-toolbar>
 </div>
 
@@ -55,7 +55,7 @@
 <!--<added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [album]="album" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>-->
 
 <!--<page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHideAlbum($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>-->
-<!--<page-zone-form-create-album [showCreateAlbumForm]="showCreateAlbumForm" (hideCreateAlbum)="onHideCreateAlbum($event)"></page-zone-form-create-album>-->
+<!--<page-zone-form-create-album></page-zone-form-create-album>-->
 <!--<wth-toast-upload></wth-toast-upload>-->
 
 

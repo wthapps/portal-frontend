@@ -13,6 +13,8 @@ import {
 } from '../../shared/index';
 import { ZAlbumComponent } from "./album/album.component";
 import { ZAlbumDetailComponent } from "./album/album-detail.component";
+import {FormTextElement} from "../../shared/models/form/form-text-element.model";
+import {FormBase} from "../../shared/models/form/form-base.model";
 
 declare var $: any;
 declare var _: any;
@@ -27,7 +29,6 @@ declare var _: any;
 export class ZPictureComponent implements OnChanges {
 
   @ViewChild('media') baseMedia: BaseMediaComponent;
-  // @ViewChild(ZAlbumDetailComponent)	albumDetail:	ZAlbumDetailComponent;
 
   photo_input_element: any = null;
   files: any;
@@ -52,7 +53,6 @@ export class ZPictureComponent implements OnChanges {
   showCreateAlbumForm: boolean = false;
   album: any;
   resetSelected: boolean = false;
-  showCreatedAlbumToast: boolean = false;
 
   hasFavourite: boolean = false;
   isLoading: boolean = false;
@@ -78,6 +78,9 @@ export class ZPictureComponent implements OnChanges {
   hasUploadedItem: boolean;
   // deletedItems: Array<any>;
   mediaType: any;
+
+  // Album
+  formData: FormBase;
 
   constructor(// private element: ElementRef,
     //           private photoService: PhotoService,
@@ -124,7 +127,7 @@ export class ZPictureComponent implements OnChanges {
         this.baseMedia = new ZoneVideoComponent(this.apiService);
         break;
       case MediaType.album:
-        this.baseMedia = new ZAlbumComponent();
+        this.baseMedia = new ZAlbumComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
       case MediaType.albumDetail:
         this.baseMedia = new ZAlbumDetailComponent();
@@ -191,29 +194,6 @@ export class ZPictureComponent implements OnChanges {
     this.showAddtoAlbumForm = true;
   }
 
-  // Add Photo to Album modal
-  onModalHideAlbum(e: boolean) {
-    this.showAddtoAlbumForm = e;
-    this.addPhotosToAlbumAction();
-  }
-
-  addPhotosToAlbumAction() {
-    // this.album = this.albumService.getAlbum();
-    // if (this.photos.length != 0 && this.albumService.getAlbum()) {
-    //   this.photoService.addPhotosToAlbum(this.photos, this.album.id, (result: any) => {
-    //     this.showAddedtoAlbumToast = true;
-    //     this.photoCount = this.photos.length;
-    //     // Reset Data
-    //     this.photos = new Array<number>();
-    //     this.albumService.clearAlbum();
-    //     this.resetSelectedAction();
-    //   });
-    // } else if (this.albumService.getAlbum()) {
-    //   this.showCreatedAlbumToast = true;
-    //   this.albumService.clearAlbum();
-    // }
-  }
-
   resetSelectedAction() {
     if (this.resetSelected) {
       this.resetSelected = false;
@@ -224,11 +204,6 @@ export class ZPictureComponent implements OnChanges {
 
   photoEvent(photos: Array<number>) {
     this.photos = photos;
-  }
-
-  onCreateNewAlbum($event: boolean) {
-    this.showAddtoAlbumForm = false;
-    this.showCreateAlbumForm = true;
   }
 
   /**
