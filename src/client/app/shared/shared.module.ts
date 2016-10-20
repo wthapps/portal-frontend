@@ -13,6 +13,7 @@ import {
   ConfirmationService,
   AutoCompleteModule
 } from 'primeng/primeng';
+import { TagInputModule } from 'ng2-tag-input';
 
 import {
   ApiBaseService,
@@ -50,7 +51,8 @@ import {FormModalComponent} from "./form/form-modal.component";
     RouterModule,
 
     ConfirmDialogModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    TagInputModule
   ],
   declarations: [
     ToolbarComponent,
@@ -84,8 +86,10 @@ import {FormModalComponent} from "./form/form-modal.component";
     SliderComponent,
     UploadCropImageComponent,
 
+    // third party modules
     ConfirmDialogModule,
     AutoCompleteModule,
+    TagInputModule,
 
     CommonModule,
     FormsModule,

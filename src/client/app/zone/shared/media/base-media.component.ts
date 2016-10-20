@@ -179,7 +179,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       this.currentPage = page;
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
-          //console.log('page-', page, ':', response);
           this.perPage = response['per_page'];
           this.total = response['total'];
           if (page == 1) {
