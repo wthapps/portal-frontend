@@ -25,9 +25,11 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
 
   showImg: boolean = false;
   imgId: number;
+  sendAction: any;
 
   @Input() resetSelected: boolean;
   @Input() preview: boolean;
+  @Input() inputAction: any;
   @Input() viewInfo: boolean;
   @Input() hasUploadedItem: boolean;
   // @Input() deletedItems: Array<number> = [];
@@ -58,6 +60,19 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
       this.items = [];
       this.loadItems(this.currentPage);
     }
+
+    if (this.inputAction) {
+      console.log('this.inputAction:', this.inputAction);
+      switch (this.inputAction.action) {
+        case "info":
+          this.sendActionToPhotoDetail(this.inputAction);
+          break;
+        default:
+          break;
+      }
+
+    }
+
     if (this.viewInfo) {
       this.onPreview(this.selectedItems[0], this.preview);
     }
@@ -70,6 +85,8 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
       this.showImg = false;
       this.preview = false;
       this.previewAction = false;
+      this.inputAction = null;
+      this.sendAction = null;
       // end hide modal show image
 
       this.modalHide.emit(false);
@@ -119,8 +136,11 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     }
   }
 
+  sendActionToPhotoDetail(event: any) {
+    this.sendAction = event.action;
+  }
+
   onAction(event: any) {
-    console.log(event);
     switch (event.action) {
       case "share":
         this.delete(event.id);
@@ -134,8 +154,11 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
       case "delete":
         this.delete(event.id);
         break;
+      case "info":
+        this.sendActionToPhotoDetail(event);
+        break;
       default:
-        this.delete(event.id);
+        break;
     }
   }
 

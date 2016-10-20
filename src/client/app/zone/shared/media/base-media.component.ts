@@ -6,10 +6,10 @@ import {
   ToastsService,
   ConfirmationService
 } from "../../../shared/index";
-import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
-import {FormBase} from "../../../shared/models/form/form-base.model";
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
+import { FormTextElement } from "../../../shared/models/form/form-text-element.model";
+import { FormBase } from "../../../shared/models/form/form-base.model";
+import { AlbumService } from "../../../shared/services/picture/album.service";
+import { Album } from "../../../shared/models/album.model";
 
 
 declare var $: any;
@@ -29,6 +29,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   // @Input()
   previewAction: boolean = false;
+  getAction: any;
 
   category: string;
   selectedItems: Array<any> = new Array<any>();
@@ -46,8 +47,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   errorMessage: string;
   showCreateAlbumForm: boolean;
   formData: FormBase;
-  showAddToAlbumForm:boolean;
-  showCreatedAlbumToast:boolean;
+  showAddToAlbumForm: boolean;
+  showCreatedAlbumToast: boolean;
   album: Album;
 
   private apiService: ApiBaseService;
@@ -152,6 +153,13 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.previewAction = true;
   }
 
+  showInfo(event: any) {
+    this.getAction = {
+      action: 'info',
+      status: true
+    };
+  }
+
   public loadItems(page: number) {
     if (page <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
@@ -213,7 +221,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.showCreateAlbumForm = true;
   }
 
-  onFormResult(res:any) {
+  onFormResult(res: any) {
     if (res) {
       let body = JSON.stringify({name: res['album-name'], description: res['album-description']})
       this.apiService.post("/zone/albums", body)
@@ -231,11 +239,12 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onAddToAlbum() {
     this.showAddToAlbumForm = true;
   }
+
   onHideAddToAlbumModal() {
     this.showAddToAlbumForm = false;
   }
 
-  onDoneCreateFormModal(e:any) {
+  onDoneCreateFormModal(e: any) {
     this.showCreateAlbumForm = false;
     this.showCreatedAlbumToast = true;
     this.album = new Album(e.data);

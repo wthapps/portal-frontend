@@ -23,14 +23,14 @@
     (onAdd)="baseMedia.onAddToAlbum()"
     (onEdit)="edit($event)"
     (onDownload)="download($event)"
-    (onViewInfo)="viewInfo($event)"
+    (onViewInfo)="baseMedia.showInfo($event)"
     (createNewAlbum)="baseMedia.onCreateNewAlbum($event)"
   ></zone-toolbar>
 </div>
 
 <div [ngSwitch]="category">
   <div *ngSwitchCase="mediaType.photo">
-    <zone-photo #media [preview]="baseMedia.previewAction"></zone-photo>
+    <zone-photo #media [preview]="baseMedia.previewAction" [inputAction]="baseMedia.getAction"></zone-photo>
   </div>
   <div *ngSwitchCase="mediaType.video">
     <zone-video></zone-video>
