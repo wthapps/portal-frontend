@@ -376,13 +376,7 @@ export class ZPictureComponent implements OnChanges {
   viewChanged(view: string) {
 
     // this.baseMedia.changeView(view);
-    console.log('media. ', this.baseMedia);
     this.pageView = view;
-  }
-
-  onHideCreateAlbum(e: boolean) {
-    this.showCreateAlbumForm = e;
-    this.addPhotosToAlbumAction();
   }
 
   uploadedItem(hasItem: boolean) {

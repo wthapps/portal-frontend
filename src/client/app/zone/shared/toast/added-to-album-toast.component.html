@@ -1,4 +1,4 @@
-<div class="toast-upload-wrap" *ngIf="showAddedtoAlbumToast">
+<div class="toast-upload-wrap" *ngIf="showToast">
   <div class="toast-upload-item">
     <div class="toast-upload-header">
       <button class="toast-upload-close" type="button" (click)="close()"><i class="fa fa-times"></i></button>
@@ -7,9 +7,9 @@
     <div class="toast-upload-content">
       <div class="media">
         <div class="media-body">
-          <p>{{photoCount}} items are added to {{album.name}}</p>
+          <p>{{data.photos.length}} items are added to {{data.album.name}}</p>
           <div class="text-right">
-            <a [routerLink]="['/zone/picture/album', album.id]">View</a>
+            <a [routerLink]="['/zone/picture/album', data.album.id]">View</a>
           </div>
         </div>
       </div>

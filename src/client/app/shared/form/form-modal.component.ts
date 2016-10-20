@@ -7,8 +7,6 @@ import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit
 })
 export abstract class FormModalComponent implements OnInit, OnChanges, AfterViewInit {
   showFormModal:boolean;
-  // @Input() showForm:boolean;
-  // @Output() formResult: EventEmitter<any> = new EventEmitter<any>();
   hideFormModal: EventEmitter= new EventEmitter();
   modalId: string;
   constructor(modalId:string
