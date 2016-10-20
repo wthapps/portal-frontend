@@ -1,5 +1,7 @@
 import {Component, OnChanges, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 import {Album} from "../../../shared/models/album.model";
+import {FormModalComponent} from "../../../shared/form/form-modal.component";
+import {ToastBottomBase} from "../../../shared/toast/toast-bottom/toast-bottom-base.component";
 
 @Component({
   moduleId: module.id,
@@ -7,21 +9,9 @@ import {Album} from "../../../shared/models/album.model";
   templateUrl: 'added-to-album-toast.component.html',
   styleUrls: ['added-to-album-toast.component.css'],
 })
-export class ZAddedToAlbumToastComponent implements OnChanges, AfterViewInit {
-  @Input() showAddedtoAlbumToast:boolean;
-  @Input() photoCount:number;
-  @Input() album: Album;
-  @Output() hideAddedtoAlbumToast: EventEmitter<boolean> = new EventEmitter<boolean>();
+export class ZAddedToAlbumToastComponent extends ToastBottomBase{
+  @Input() showToast:boolean;
+  @Input() data:any;
+  @Output() hideToast: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  ngOnChanges() {
-    // console.log('changes');
-  }
-
-  close() {
-    this.hideAddedtoAlbumToast.emit(false);
-  }
-
-  ngAfterViewInit() {
-    // console.log('after innit');
-  }
 }

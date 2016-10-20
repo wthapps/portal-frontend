@@ -54,6 +54,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   showAddToAlbumForm: boolean;
   showCreatedAlbumToast: boolean;
   album: Album;
+  showAddedToAlbumToast:boolean;
+  dataAddedToAlbum:any;
 
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
@@ -262,8 +264,16 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onHideCreateAlbumToast() {
-
     this.showCreatedAlbumToast = false;
-    console.log(this.showCreatedAlbumToast);
+  }
+
+  onDoneAddToAlbum(e:any) {
+    this.showAddToAlbumForm = false;
+    this.showAddedToAlbumToast = true;
+    this.dataAddedToAlbum = e;
+  }
+
+  onHideAddedToAlbumToast() {
+    this.showAddedToAlbumToast = false;
   }
 }
