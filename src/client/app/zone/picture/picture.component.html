@@ -15,7 +15,7 @@
     (openWindow)="openFileWindow($event)"
     (selectedFiles)="handleFileUpload($event)"
     (onViewChanged)="baseMedia.changeView($event)"
-    (onPreview)="preview($event)"
+    (onPreview)="baseMedia.previewBase($event)"
     (onShare)="share($event)"
     (onTag)="tag($event)"
     (onFavourite)="baseMedia.addFavourite($event)"
@@ -30,7 +30,7 @@
 
 <div [ngSwitch]="category">
   <div *ngSwitchCase="mediaType.photo">
-    <zone-photo #media></zone-photo>
+    <zone-photo #media [preview]="baseMedia.previewAction"></zone-photo>
   </div>
   <div *ngSwitchCase="mediaType.video">
     <zone-video></zone-video>

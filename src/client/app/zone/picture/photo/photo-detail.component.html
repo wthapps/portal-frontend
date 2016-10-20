@@ -8,16 +8,16 @@
     <div class="name"><i class="fa fa-picture-o"></i> {{myItem.name}}</div>
     <ul class="action navbar-right">
       <li>
-        <a href="javascript:;" (click)="onShare($event)"><i class="fa fa-share-alt"></i></a>
+        <a href="javascript:;" (click)="onAction($event,'share', myItem.id)"><i class="fa fa-share-alt"></i></a>
       </li>
       <li>
-        <a href="javascript:;" (click)="addFavourite($event)"><i class="fa" [ngClass]="myItem.favorite ? 'fa-star': 'fa-star-o'"></i></a>
+        <a href="javascript:;" (click)="onAction($event,'favourite', myItem.id)"><i class="fa" [ngClass]="myItem.favorite ? 'fa-star': 'fa-star-o'"></i></a>
       </li>
       <li>
-        <a href="javascript:;" (click)="onTag($event)"><i class="fa fa-tag"></i></a>
+        <a href="javascript:;" (click)="onAction($event,'tag', myItem.id)"><i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a href="javascript:;" (click)="onDelete(myItem.id)"><i class="fa fa-trash-o"></i></a>
+        <a href="javascript:;" (click)="onAction($event,'delete', myItem.id)"><i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown">
         <a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
@@ -35,12 +35,12 @@
       <figure>
         <img [src]="myItem.url" alt="">
       </figure>
-      <!--<span *ngIf="imgAllData.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
+      <span *ngIf="items.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
         <i class="fa fa-angle-left"></i>
       </span>
-      <span *ngIf="imgAllData.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
+      <span *ngIf="items.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
         <i class="fa fa-angle-right"></i>
-      </span>-->
+      </span>
     </div>
   </div>
   <div *ngIf="myItem" class="photo-detail-info">
