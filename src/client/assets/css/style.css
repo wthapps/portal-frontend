@@ -12346,6 +12346,9 @@ wth-app:empty + .dots-loader-wrap {
   position: absolute;
   top: -9999px; }
 
+.ng2-dropdown-menu-container {
+  z-index: 1060 !important; }
+
 .panel-heading-action {
   position: relative; }
   .panel-heading-action .btn, .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-close"], .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-check"] {
