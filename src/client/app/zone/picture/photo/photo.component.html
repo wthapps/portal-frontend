@@ -29,7 +29,8 @@
   [items]="items"
   [selectedItems]="selectedItems"
   [preview]="showImg"
-  (hideModalClicked)='onHideModalClicked($event)'
+  (hideModalClicked)="onHideModalClicked($event)"
+  (action)="onAction($event)"
 >
 </zone-photo-detail>
 

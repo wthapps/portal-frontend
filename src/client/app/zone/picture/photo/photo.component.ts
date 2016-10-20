@@ -63,18 +63,15 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     }
   }
 
-  onPreview(id: any, preview: boolean): void {
-    this.showImg = true;
-    if (preview) {
-      this.previewItems = this.selectedItems;
-    } else {
-      this.previewItems = this.items;
-    }
-  }
+  onHideModalClicked(event: boolean): void {
+    if (event) {
 
-  onHideModalClicked(img: string): void {
-    if (img) {
+      // hide modal show image
       this.showImg = false;
+      this.preview = false;
+      this.previewAction = false;
+      // end hide modal show image
+
       this.modalHide.emit(false);
     }
   }
@@ -112,4 +109,34 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     this.currentPage = p;
     this.loadItems(p + 1);
   }
+
+  onPreview(id: any, preview: boolean): void {
+    this.showImg = true;
+    if (preview) {
+      this.previewItems = this.selectedItems;
+    } else {
+      this.previewItems = this.items;
+    }
+  }
+
+  onAction(event: any) {
+    console.log(event);
+    switch (event.action) {
+      case "share":
+        this.delete(event.id);
+        break;
+      case "favourite":
+        this.delete(event.id);
+        break;
+      case "tag":
+        this.delete(event.id);
+        break;
+      case "delete":
+        this.delete(event.id);
+        break;
+      default:
+        this.delete(event.id);
+    }
+  }
+
 }

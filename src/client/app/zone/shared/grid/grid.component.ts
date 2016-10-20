@@ -32,14 +32,7 @@ export class ZPictureGridComponent implements OnChanges {
   reset: boolean;
 
   constructor() {
-
   }
-
-  /*@HostListener('document:keyup', ['$event']);
-   onKeyUp(ev:KeyboardEvent) {
-   // do something meaningful with it
-   console.log(`The user just pressed ${ev.key}!`);
-   }*/
 
   onDocumentKeyDown(ev: KeyboardEvent) {
     // console.log(ev);

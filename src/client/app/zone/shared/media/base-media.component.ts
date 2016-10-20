@@ -28,6 +28,8 @@ declare var _: any;
 export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
 
   // @Input()
+  previewAction: boolean = false;
+
   category: string;
   selectedItems: Array<any> = new Array<any>();
   previewItems: Array<any> = new Array<any>();
@@ -57,8 +59,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
 
   constructor(private type: string,
-              private apiService?: ApiBaseService,
-  ) {
+              private apiService?: ApiBaseService) {
     this.category = type;
     // console.log('BaseMediaComponent', this);
   }
@@ -74,8 +75,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.loadItems(this.currentPage)
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('changed', changes);
+  ngOnChanges() {
+    console.log('changed', this);
   }
 
   ngOnDestroy() {
@@ -149,15 +150,20 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
+  previewBase(event: any) {
+    this.previewAction = true;
+  }
+
   public loadItems(page: number) {
     if (page <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
       this.currentPage = page;
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
+          //console.log('page-', page, ':', response);
           this.perPage = response['per_page'];
           this.total = response['total'];
-          if (page==1) {
+          if (page == 1) {
             this.items = response['data'];
           }
           if (!_.isEqual(this.items, response['data'])) {
