@@ -28,8 +28,12 @@ declare var _: any;
 export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
 
   // @Input()
-  previewAction: boolean = false;
   getAction: any;
+
+
+  // code new
+  sendBaseMediaAction: any;
+  // end code new
 
   category: string;
   selectedItems: Array<any> = new Array<any>();
@@ -149,9 +153,16 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  previewBase(event: any) {
-    this.previewAction = true;
+  // code new
+  getBaseMediaAction(action: string) {
+    this.sendBaseMediaAction = action;
   }
+
+  clearBaseMediaAction() {
+    this.getBaseMediaAction('clearAll');
+  }
+
+  // end code new
 
   showInfo(event: any) {
     this.getAction = {

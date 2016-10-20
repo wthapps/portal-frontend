@@ -68,6 +68,7 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnChanges() {
+    // code new
     if (this.selectedItems) {
       this.myItem = this.selectedItems[0];
 
@@ -80,9 +81,10 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
     }
 
     if (this.getAction) {
-      console.log('getAction:', this.getAction);
-
       switch (this.getAction) {
+        case "preview":
+          this.showPreview();
+          break;
         case "info":
           this.showPreview();
           this.showInfo();
@@ -93,12 +95,11 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
       this.getAction = null;
       this.onAction(null, '', 0);
     }
+    // end code new
 
-    if (this.preview) {
-      this.showPreview();
-    }
   }
 
+  // code new
   showPreview(): void {
     this.imgIndex = _.findIndex(this.myItemsPreview, {'id': this.myItem.id});
     $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
@@ -110,7 +111,6 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
     $('body').removeClass('fixed-hidden').css('padding-right', 0);
     $('#photo-box-detail').removeClass('active').removeClass('active-info');
     this.hideModalClicked.emit(true);
-
   }
 
   imgPrev(): void {
@@ -132,6 +132,7 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   showInfo() {
     $('#photo-box-detail').toggleClass('active-info');
   }
+  // end code new
 
   onAction(even: any, type: string, id: number) {
     //this.hideModal();
@@ -142,4 +143,6 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
       }
     );
   }
+
+
 }

@@ -12703,7 +12703,7 @@ wth-app:empty + .dots-loader-wrap {
   z-index: -1;
   visibility: hidden; }
   .photo-box-detail.active {
-    z-index: 1020;
+    z-index: 1002;
     visibility: visible; }
   .photo-box-detail .photo-detail-top {
     padding: 15px;
