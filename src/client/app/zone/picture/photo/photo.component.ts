@@ -138,14 +138,14 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   onAction(event: any) {
     switch (event.action) {
       case "share":
-        this.delete(event.id);
+        // this.delete(event.id);
         break;
       case "favourite":
-        let favouriteItem = _.find(this.selectedItems, ['id', event.id]);
-        this.addFavourite(true, favouriteItem);
+        // this.delete(event.id);
         break;
       case "tag":
-        this.delete(event.id);
+        this.toggleModal(event, event.action);
+        // this.delete(event.id);
         break;
       case "delete":
         this.delete(event.id);

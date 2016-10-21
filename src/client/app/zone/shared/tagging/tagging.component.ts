@@ -20,6 +20,7 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
   selectedTags: Array<any>;
   currentTags: Array<any>;
   newTags: Array<any>;
+  addedTags: Array<any>;
   removedTags: Array<any>;
   hasChanged: boolean;
 
@@ -33,20 +34,27 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
     this.currentTags = new Array<any>();
     this.selectedTags = new Array<any>();
     this.newTags = new Array<any>();
+    this.addedTags = new Array<any>();
     this.removedTags = new Array<any>();
     this.selectedTags  = new Array<any>();
   }
 
   ngAfterViewInit() {
     let _this = this;
-    $('#taggingModal').on('hidden.bs.modal', function (e) {
+
+
+    $('#taggingModal').on('hidden.bs.modal', () => {
       _this.modalHide.emit(false);
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('tag model', this.modalShow);
     if (this.modalShow) {
-      $('#taggingModal').modal('show');
+      $('#taggingModal').modal({
+        backdrop: 'static'
+      });
+      // $('#taggingModal').modal('show');
     }
     if (changes['modalShow'] && changes['modalShow'].currentValue) {
       this.apiService.get(`zone/tags`)
@@ -64,6 +72,7 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
         .map(res => res.json())
         .subscribe((result: any) => {
           this.selectedTags = result['data'];
+          this.currentTags = result['data'];
         },
         error => {
           console.log('error', error);
@@ -71,60 +80,40 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  onItemAdded(event: any) {
-    if (this.tags.indexOf(event) == -1) {
-      // let body = JSON.stringify({name: event});
-      // this.apiService.post(`zone/tags`, body)
-      //   .map(result => result.json())
-      //   .subscribe((result: any) => {
-      //     this.newTags.push(event);
-      //   },
-      //   error => {
-      //     console.log('error', error);
-      //   })
-      this.newTags.push(event);
-      this.removedTags = _.omit(this.removedTags, event);
+  onItemAdded(tag: string) {
+    if (this.currentTags.indexOf(tag) == -1 && this.addedTags.indexOf(tag) == -1) {
+      this.addedTags.push(tag);
+    } else if (this.currentTags.indexOf(tag) != -1 && this.removedTags.indexOf(tag) != -1) {
+      this.removedTags = _.pull(this.removedTags, tag);
+    }
+    if (this.tags.indexOf(tag) == -1 && this.newTags.indexOf(tag) == -1) {
+      this.newTags.push(tag)
     }
     this.checkIfHasChanged();
   }
 
   onItemRemoved (tag: string) {
-    // this.removedTags.push(tag);
-    // this.newTags = _.omit(this.newTags, tag);
-    // this.selectedTags = _.omit(this.selectedTags, tag);
-    // this.checkIfHasChanged();
-  }
+    if(this.currentTags.indexOf(tag) != -1 && this.removedTags.indexOf(tag) == -1) {
+      this.removedTags.push(tag);
+    }
 
-  onSelected(event: any) {
-    console.log('selected', event);
-  }
+    if (this.addedTags.indexOf(tag) != -1) {
+      this.addedTags = _.pull(this.addedTags, tag);
+    }
 
-  onInputBlurred(event: any) {
-    console.log('blurred', event);
-  }
-
-  onInputFocused(event: any) {
-    console.log('focused', event);
+    if (this.newTags.indexOf(tag) != -1) {
+      this.newTags = _.pull(this.newTags, tag);
+    }
+    this.checkIfHasChanged();
   }
 
   save(event: any) {
-    // add tags
-    // if (this.currentTags.length == 0) {
-    //   let body = JSON.stringify({});
-    //   this.apiService.post(`zone/tags`, body)
-    //     .subscribe((result: any) => {
-    //       this.hasChanged = false;
-    //     },
-    //     error => {
-    //       console.log('error', error);
-    //     });
-    //   return;
-    // }
     let body = JSON.stringify({
       objects: _.map(this.selectedItems, 'id'),
       type: 1,
-      tags: this.selectedTags,
-      newTags: this.newTags
+      newTags: this.newTags,
+      addedTags: this.addedTags,
+      removedTags: this.removedTags
     });
 
     this.apiService.put(`zone/tags/update`, body)
@@ -137,6 +126,6 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private checkIfHasChanged() {
-    this.hasChanged = (this.removedTags.length > 0 || this.newTags.length > 0) ? true : false;
+    this.hasChanged = (this.removedTags.length > 0 || this.addedTags.length > 0) ? true : false;
   }
 }

@@ -55,6 +55,11 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   showAddedToAlbumToast: boolean;
   albumPhotos: AlbumPhoto;
 
+  /**
+   * Modal variables
+   */
+  showTag: boolean;
+
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
   private toastsService: ToastsService;
@@ -68,6 +73,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnInit() {
+    // this.showTag = false;
+
     if (this.pageView == 'grid') {
       this.isGridView = true;
       this.isListView = false;
@@ -262,18 +269,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  private buildPathByCat(): string {
-    if (this.category == MediaType.photo) {
-      return 'zone/photos'
-    }
-    if (this.category == MediaType.album) {
-      return 'zone/albums'
-    }
-    if (this.category == MediaType.albumDetail) {
-      return 'zone/photos'
-    }
 
-  }
 
   onCreateNewAlbum($event: boolean) {
     this.showAddToAlbumForm = false;
@@ -288,6 +284,15 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
           this.toastsService.success('Created Album');
         })
       ;
+    }
+  }
+
+  toggleModal(event: any, type: string) {
+    console.log('open model');
+    switch (type) {
+      case 'tag':
+        this.showTag = !this.showTag;
+        break;
     }
   }
 
@@ -327,5 +332,30 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   onHideAddedToAlbumToast() {
     this.showAddedToAlbumToast = false;
+  }
+
+  hasOpeningModal() : boolean{
+    return (this.showTag)
+  }
+
+  /**
+   * Put all private methods below
+   */
+
+  /**
+   *
+   * @returns {any}
+   */
+  private buildPathByCat(): string {
+    if (this.category == MediaType.photo) {
+      return 'zone/photos'
+    }
+    if (this.category == MediaType.album) {
+      return 'zone/albums'
+    }
+    if (this.category == MediaType.albumDetail) {
+      return 'zone/photos'
+    }
+
   }
 }
