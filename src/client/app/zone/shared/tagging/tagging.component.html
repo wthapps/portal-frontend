@@ -8,11 +8,29 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="">
+          <!--<input type="text" class="form-control" placeholder="">-->
+          <!--<p-autoComplete [(ngModel)]="textTags"-->
+                          <!--[suggestions]="filteredTags"-->
+                          <!--[multiple]="true"-->
+                          <!--[minLength]="1"-->
+                          <!--field="name"-->
+                          <!--(onSelect)="select($event)"-->
+                          <!--(onUnselect)="unSelect($event)"-->
+                          <!--(completeMethod)="search($event)"-->
+          <!--&gt;</p-autoComplete>-->
+
+          <tag-input [(ngModel)]='selectedTags'
+                     [maxItems]='100'
+                     [autocompleteItems]="tags"
+                     [autocomplete]="true"
+                     (onAdd)="onItemAdded($event)">
+
+          </tag-input>
+
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary-inline">Save</button>
+        <button type="button" class="btn btn-primary-inline" (click)="save($event)">Save</button>
         <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
       </div>
     </div><!-- /.modal-content -->

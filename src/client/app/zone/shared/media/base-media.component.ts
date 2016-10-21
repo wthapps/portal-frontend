@@ -27,7 +27,12 @@ declare var _: any;
 export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
 
   // @Input()
-  previewAction: boolean = false;
+  getAction: any;
+
+
+  // code new
+  sendBaseMediaAction: any;
+  // end code new
 
   category: string;
   selectedItems: Array<any> = new Array<any>();
@@ -148,8 +153,22 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  previewBase(event: any) {
-    this.previewAction = true;
+  // code new
+  getBaseMediaAction(action: string) {
+    this.sendBaseMediaAction = action;
+  }
+
+  clearBaseMediaAction() {
+    this.getBaseMediaAction('clearAll');
+  }
+
+  // end code new
+
+  showInfo(event: any) {
+    this.getAction = {
+      action: 'info',
+      status: true
+    };
   }
 
   public loadItems(page: number) {
@@ -158,7 +177,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       this.currentPage = page;
       this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
         (response: any) => {
-          //console.log('page-', page, ':', response);
           this.perPage = response['per_page'];
           this.total = response['total'];
           if (page == 1) {
@@ -213,7 +231,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.showCreateAlbumForm = true;
   }
 
-  onFormResult(res:any) {
+  onFormResult(res: any) {
     if (res) {
       let body = JSON.stringify({name: res['album-name'], description: res['album-description']})
       this.apiService.post("/zone/albums", body)
@@ -231,11 +249,12 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onAddToAlbum() {
     this.showAddToAlbumForm = true;
   }
+
   onHideAddToAlbumModal() {
     this.showAddToAlbumForm = false;
   }
 
-  onDoneCreateFormModal(e:any) {
+  onDoneCreateFormModal(e: any) {
     this.showCreateAlbumForm = false;
     if (e instanceof Album) {
       this.showCreatedAlbumToast = true;

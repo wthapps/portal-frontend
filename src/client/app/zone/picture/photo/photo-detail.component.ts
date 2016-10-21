@@ -39,6 +39,7 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   @Input() items: Array<Photo>;
   @Input() selectedItems: Array<Photo>;
   @Input() preview: boolean;
+  @Input() getAction: any;
 
   @Output() hideModalClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() action: EventEmitter<any> = new EventEmitter<any>();
@@ -67,6 +68,7 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnChanges() {
+    // code new
     if (this.selectedItems) {
       this.myItem = this.selectedItems[0];
 
@@ -77,17 +79,37 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
       }
 
     }
-    if (this.preview) {
-      this.imgIndex = _.findIndex(this.items, {'id': this.myItem.id});
-      $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
-      $('#photo-box-detail').addClass('active');
+
+    if (this.getAction) {
+      switch (this.getAction) {
+        case "preview":
+          this.showPreview();
+          break;
+        case "info":
+          this.showPreview();
+          this.showInfo();
+          break;
+        default:
+          break;
+      }
+      this.getAction = null;
+      this.onAction(null, '', 0);
     }
+    // end code new
+
+  }
+
+  // code new
+  showPreview(): void {
+    this.imgIndex = _.findIndex(this.myItemsPreview, {'id': this.myItem.id});
+    $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
+    $('#photo-box-detail').addClass('active');
   }
 
   hideModal(): void {
     this.preview = false;
     $('body').removeClass('fixed-hidden').css('padding-right', 0);
-    $('#photo-box-detail').removeClass('active');
+    $('#photo-box-detail').removeClass('active').removeClass('active-info');
     this.hideModalClicked.emit(true);
   }
 
@@ -107,8 +129,13 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
     this.myItem = this.myItemsPreview[this.imgIndex];
   }
 
+  showInfo() {
+    $('#photo-box-detail').toggleClass('active-info');
+  }
+  // end code new
+
   onAction(even: any, type: string, id: number) {
-    this.hideModal();
+    //this.hideModal();
     this.action.emit(
       {
         action: type,
@@ -116,4 +143,6 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
       }
     );
   }
+
+
 }

@@ -21,10 +21,12 @@ declare var _: any;
 
 export abstract class ZPictureGridComponent implements OnChanges {
   @Input() items: Array<any>;
-  @Output() preview: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Input() resetSelected: boolean;
+
+  @Output() preview: EventEmitter<string> = new EventEmitter<string>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() loadMore: EventEmitter<number> = new EventEmitter<number>();
-  @Input() resetSelected: boolean;
+
 
   selectedPhotos: Array<any> = [];
 
@@ -64,7 +66,8 @@ export abstract class ZPictureGridComponent implements OnChanges {
     this.selectedPhotos.push(id);
 
     this.imgsSelected.emit(this.selectedPhotos);
-    this.preview.emit(this.selectedPhotos);
+    this.preview.emit('preview');
+
   }
 
   removeSelectedItems() {

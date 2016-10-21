@@ -25,9 +25,11 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
 
   showImg: boolean = false;
   imgId: number;
+  sendActionDetail: any;
 
   @Input() resetSelected: boolean;
   @Input() preview: boolean;
+  @Input() inputAction: any;
   @Input() viewInfo: boolean;
   @Input() hasUploadedItem: boolean;
   // @Input() deletedItems: Array<number> = [];
@@ -51,44 +53,46 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.preview) {
-      this.onPreview(this.selectedItems[0], this.preview);
-    }
     if (this.needToReload) {
       this.items = [];
       this.loadItems(this.currentPage);
     }
-    if (this.viewInfo) {
-      this.onPreview(this.selectedItems[0], this.preview);
+
+    // code new
+    if (this.inputAction) {
+      console.log('this.inputAction:', this.inputAction);
+      switch (this.inputAction) {
+        case "preview":
+          this.sendActionToPhotoDetail(this.inputAction);
+          break;
+        case "info":
+          this.sendActionToPhotoDetail(this.inputAction);
+          break;
+        default:
+          break;
+      }
     }
+    // end code new
   }
 
-  onHideModalClicked(event: boolean): void {
-    if (event) {
-
-      // hide modal show image
-      this.showImg = false;
-      this.preview = false;
-      this.previewAction = false;
-      // end hide modal show image
-
-      this.modalHide.emit(false);
-    }
+  /**
+   * ========================
+   * Action from Picture
+   * (preview, info)
+   */
+  sendActionToPhotoDetail(event: string) {
+    this.sendActionDetail = event;
   }
 
-  onActionModalClicked(act: string): void {
-    if (act) {
-      this.modalAction.emit(act);
-    }
-  }
+  /**
+   *
+   * End Action from Picture
+   */
 
-  onPageView(view: string) {
-    this.pageView = view;
-  }
-
-  addedToAlbum($event: any) {
-  }
-
+  /**
+   * ========================
+   * Action from grid view
+   */
   onImgsSelected(event: any) {
     let _this_photos = this;
     this.selectedItems = [];
@@ -99,28 +103,26 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     this.selectedPhotoFull.emit(this.selectedItems);
   }
 
-  onActionDeleteOne(id): void {
-    this.showImg = false;
-    this.modalHide.emit(false);
-    this.items = _.dropWhile(this.items, ['id', id]);
-  }
-
   onLoadMore(p: number) {
     this.currentPage = p;
     this.loadItems(p + 1);
   }
 
-  onPreview(id: any, preview: boolean): void {
-    this.showImg = true;
-    if (preview) {
-      this.previewItems = this.selectedItems;
-    } else {
-      this.previewItems = this.items;
-    }
+  onPreview(preview: string): void {
+    this.sendActionToPhotoDetail(preview);
   }
 
+  /**
+   *
+   * End Action from grid view
+   */
+
+
+  /**
+   * ========================
+   * Action from photo detail
+   */
   onAction(event: any) {
-    console.log(event);
     switch (event.action) {
       case "share":
         this.delete(event.id);
@@ -134,9 +136,32 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
       case "delete":
         this.delete(event.id);
         break;
+      case "info":
+        this.sendActionToPhotoDetail(event);
+        break;
       default:
-        this.delete(event.id);
+        break;
     }
   }
+
+  onHideModalClicked(event: boolean): void {
+    if (event) {
+
+      // hide modal show image
+      this.clearBaseMediaAction();
+      this.showImg = false;
+      this.preview = false;
+      this.inputAction = null;
+      this.sendActionDetail = null;
+      // end hide modal show image
+
+      this.modalHide.emit(false);
+    }
+  }
+
+  /**
+   *
+   * End Action from photo detail
+   */
 
 }

@@ -25,16 +25,6 @@
   </div>
 </div>
 
-<zone-photo-detail
-  [items]="items"
-  [selectedItems]="selectedItems"
-  [getAction]="sendActionDetail"
-  (hideModalClicked)="onHideModalClicked($event)"
-  (action)="onAction($event)"
->
-</zone-photo-detail>
-
-
 <!--<zone-photo-detail (hideModalClicked)='onHideModalClicked($event)'-->
 <!--(actionModalClicked)="onActionModalClicked($event)"-->
 <!--(actionDelete)="onActionDeleteOne($event)"-->
@@ -45,19 +35,4 @@
 
 <!--&lt;!&ndash; <wth-toast-upload></wth-toast-upload> &ndash;&gt;-->
 <!--<toast-uploading (addedToAlbumEvent)="addedToAlbum($event)"></toast-uploading>-->
-<page-zone-form-create-album
-  [items]="selectedItems"
-  [showFormModal]="showCreateAlbumForm"
-  (hideFormModal)="onHideCreateAlbumModal()"
-  (doneFormModal)="onDoneCreateFormModal($event)"
-></page-zone-form-create-album>
-<page-zone-form-add-to-album
-  [showFormModal]="showAddToAlbumForm"
-  (hideFormModal)="onHideAddToAlbumModal()"
-  (createNewAlbum)="onCreateNewAlbum()"
-  [selectedItems]="selectedItems"
-  (doneFormModal)="onDoneAddToAlbum($event)"
-></page-zone-form-add-to-album>
-<!--[formData]="formData" (formResult)="onFormResult($event)" (hideModal)="onHideModal()"-->
-<created-album-toast [showToast]="showCreatedAlbumToast" (hideToast)="onHideCreateAlbumToast()" [album]="album"></created-album-toast>
-<added-to-album-toast [showToast]="showAddedToAlbumToast" (hideToast)="onHideAddedToAlbumToast()" [data]="albumPhotos"></added-to-album-toast>
+<!--<added-to-album-toast></added-to-album-toast>-->

@@ -15,7 +15,7 @@
     (openWindow)="openFileWindow($event)"
     (selectedFiles)="handleFileUpload($event)"
     (onViewChanged)="baseMedia.changeView($event)"
-    (onPreview)="baseMedia.previewBase($event)"
+    (onPreview)="baseMedia.getBaseMediaAction('preview')"
     (onShare)="share($event)"
     (onTag)="tag($event)"
     (onFavourite)="baseMedia.addFavourite($event)"
@@ -23,14 +23,14 @@
     (onAdd)="baseMedia.onAddToAlbum()"
     (onEdit)="edit($event)"
     (onDownload)="download($event)"
-    (onViewInfo)="viewInfo($event)"
+    (onViewInfo)="baseMedia.getBaseMediaAction('info')"
     (createNewAlbum)="baseMedia.onCreateNewAlbum($event)"
   ></zone-toolbar>
 </div>
 
 <div [ngSwitch]="category">
   <div *ngSwitchCase="mediaType.photo">
-    <zone-photo #media [preview]="baseMedia.previewAction"></zone-photo>
+    <zone-photo #media [inputAction]="baseMedia.sendBaseMediaAction"></zone-photo>
   </div>
   <div *ngSwitchCase="mediaType.video">
     <zone-video></zone-video>
@@ -59,9 +59,13 @@
 <!--<wth-toast-upload></wth-toast-upload>-->
 
 
-<zone-sharing (modalHide)="onModalHide($event)" [modalShow]="modalShare"
+<zone-sharing (modalHide)="onModalHide($event)"
+              [modalShow]="modalShare"
               [selectedItems]="baseMedia.selectedItems"></zone-sharing>
-<zone-tagging (modalHide)="onModalHide($event)" [modalShow]="modalTag" [selectedItems]="selectedItems"></zone-tagging>
+
+<zone-tagging (modalHide)="onModalHide($event)"
+              [modalShow]="modalTag"
+              [selectedItems]="baseMedia.selectedItems"></zone-tagging>
 <!--<zone-photo-edit [showModal]="modalEdit" (modalHide)='onModalHide($event)' [data]="onePhotoEdit"></zone-photo-edit>-->
 
 <!--<created-album-toast [(showCreatedAlbumToast)]="showCreatedAlbumToast" [album]="album"></created-album-toast>-->
