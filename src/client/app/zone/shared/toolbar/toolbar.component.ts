@@ -2,6 +2,7 @@ import { Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Outp
 import { Router } from '@angular/router';
 
 declare var $: any;
+declare var _: any;
 
 
 @Component({
@@ -17,15 +18,16 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
   currentView: string = 'grid';
 
   items = [
-    { name: 'Photos', css: 'fa fa-picture-o', link: '/zone/picture/photo' },
-    { name: 'Albums', css: 'fa fa-files-o', link: '/zone/picture/album' },
-    { name: 'Video', css: 'fa fa-files-o', link: '/zone/picture/video' },
+    {name: 'Photos', css: 'fa fa-picture-o', link: '/zone/picture/photo'},
+    {name: 'Albums', css: 'fa fa-files-o', link: '/zone/picture/album'},
+    {name: 'Video', css: 'fa fa-files-o', link: '/zone/picture/video'},
   ];
   selectedEl: any;
   @Input() selectedItems: Array<any>;
   hasSelectedItem: boolean;
   hasMultiSelectedItem: boolean;
-  @Input() hasFavourite: boolean = false;
+  // @Input() hasFavourite: boolean = false;
+  hasFavourite: boolean = false;
 
   @Output() pageView: EventEmitter<string> = new EventEmitter<string>();
 
@@ -81,6 +83,11 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
       // var view = changes['hasSelectedItem'].currentValue;
       this.hasSelectedItem = (this.selectedItems.length > 0) ? true : false;
       this.hasMultiSelectedItem = (this.selectedItems.length > 1) ? true : false;
+      if (_.find(this.selectedItems, {'favorite': false})) {
+        this.hasFavourite = false;
+      } else {
+        this.hasFavourite = true;
+      }
     }
   }
 

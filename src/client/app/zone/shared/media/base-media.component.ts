@@ -6,9 +6,9 @@ import {
   ToastsService,
   ConfirmationService
 } from "../../../shared/index";
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
-import {AlbumPhoto} from "../../../shared/models/album-photos.model";
+import { AlbumService } from "../../../shared/services/picture/album.service";
+import { Album } from "../../../shared/models/album.model";
+import { AlbumPhoto } from "../../../shared/models/album-photos.model";
 
 
 declare var $: any;
@@ -49,10 +49,10 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   errorMessage: string;
   showCreateAlbumForm: boolean;
-  showAddToAlbumForm:boolean;
-  showCreatedAlbumToast:boolean;
+  showAddToAlbumForm: boolean;
+  showCreatedAlbumToast: boolean;
   album: Album;
-  showAddedToAlbumToast:boolean;
+  showAddedToAlbumToast: boolean;
   albumPhotos: AlbumPhoto;
 
   private apiService: ApiBaseService;
@@ -97,30 +97,79 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  addFavourite(event: any) {
-    this.needToReload = false;
-    if (event) {
-      let body = JSON.stringify({
-        ids: _.map(this.selectedItems, 'id'),
-        isToggle: false
-      });
-      this.loadingService.start();
-      this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
-        .subscribe((result: any) => {
-            // stop loading
-            this.needToReload = true;
-            this.loadItems(this.currentPage);
-            this.loadingService.stop();
-            this.toastsService.success(result.message);
-          },
-          error => {
-            // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger(error);
-            console.log(error);
-          }
-        );
+  addFavourite(event: any, item: any = null) {
+
+    this.loadingService.start();
+
+    let newFavourite = this.selectedItems;
+    if (item) {
+      newFavourite = [item];
     }
+    console.log(newFavourite);
+
+    let hasFavourite = _.find(newFavourite, {'favorite': false});
+
+    let setFavourite = false; // if current item's favorite is true
+
+    if (hasFavourite) { // if there is one item's favorite is false
+      setFavourite = true;
+    }
+    let body = JSON.stringify({
+      ids: _.map(newFavourite, 'id'),
+      setFavourite: setFavourite
+    });
+
+
+    this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
+      .map(res => res.json())
+      .subscribe((result: any) => {
+          // stop loading
+          console.log(result);
+          this.loadingService.stop();
+          this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error);
+          console.log(error);
+        }
+      );
+
+    /*
+     // this.needToReload = false;
+     if (event) {
+     let newFavourite = this.selectedItems;
+     if (item) {
+     newFavourite = [item];
+     }
+     let hasFavourite = _.find(newFavourite, {'favorite': false});
+
+     let body = JSON.stringify({
+     ids: _.map(newFavourite, 'id'),
+     isToggle: hasFavourite
+     });
+     console.log('newFavourite:', newFavourite, 'hasFavourite:', hasFavourite, 'body:', body);
+
+     return false;
+
+     this.loadingService.start();
+     this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
+     .subscribe((result: any) => {
+     // stop loading
+     this.needToReload = true;
+     this.loadItems(this.currentPage);
+     this.loadingService.stop();
+     this.toastsService.success(result.message);
+     },
+     error => {
+     // stop loading
+     this.loadingService.stop();
+     this.toastsService.danger(error);
+     console.log(error);
+     }
+     );
+     }*/
   }
 
   delete(event: any) {
@@ -270,7 +319,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.showCreatedAlbumToast = false;
   }
 
-  onDoneAddToAlbum(e:any) {
+  onDoneAddToAlbum(e: any) {
     this.showAddToAlbumForm = false;
     this.showAddedToAlbumToast = true;
     this.albumPhotos = e

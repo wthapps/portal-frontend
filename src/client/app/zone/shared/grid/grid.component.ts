@@ -25,6 +25,7 @@ export abstract class ZPictureGridComponent implements OnChanges {
 
   @Output() preview: EventEmitter<string> = new EventEmitter<string>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMore: EventEmitter<number> = new EventEmitter<number>();
 
 
@@ -116,5 +117,12 @@ export abstract class ZPictureGridComponent implements OnChanges {
       }
     }
     this.imgsSelected.emit(this.selectedPhotos);
+  }
+
+  addFavourite(e: any, item: any) {
+    this.outEvent.emit({
+      action: 'favourite',
+      item: item
+    });
   }
 }
