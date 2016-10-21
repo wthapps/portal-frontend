@@ -1,23 +1,12 @@
-<div class="dropzone dropzone-overlap"
-     (drop)="onDrop($event)"
-     (dragenter)="dragenter()"
-     (dragleave)="dragleave()"
-     (dragover)="dragover($event)">
-
-  <div class="dropzone-overlap-txt">
-    <i class="fa fa-cloud-upload"></i>
-    <p>Drag file anywhere to upload</p>
-  </div>
-</div>
 <div *ngIf="category != mediaType.albumDetail">
   <zone-toolbar
     [selectedItems]="baseMedia.selectedItems"
-    (openWindow)="openFileWindow($event)"
+    (openWindow)="zoneUpload.browseFiles($event)"
     (selectedFiles)="handleFileUpload($event)"
     (onViewChanged)="baseMedia.changeView($event)"
     (onPreview)="baseMedia.getBaseMediaAction('preview')"
     (onShare)="share($event)"
-    (onTag)="tag($event)"
+    (onTag)="baseMedia.toggleModal($event, 'tag')"
     (onFavourite)="baseMedia.addFavourite($event)"
     (onDelete)="baseMedia.delete($event)"
     (onAdd)="baseMedia.onAddToAlbum()"
@@ -50,7 +39,7 @@
 
 </div>
 
-<zone-uploading [files]="files"
+<zone-uploading #zoneUpload
                 (photoEvent)="photoEvent($event)"
                 (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
                 (createNewAlbum)="onCreateNewAlbum($event)"
@@ -68,8 +57,8 @@
               [modalShow]="modalShare"
               [selectedItems]="baseMedia.selectedItems"></zone-sharing>
 
-<zone-tagging (modalHide)="onModalHide($event)"
-              [modalShow]="modalTag"
+<zone-tagging (modalHide)="baseMedia.toggleModal(event,'tag')"
+              [modalShow]="baseMedia.showTag"
               [selectedItems]="baseMedia.selectedItems"></zone-tagging>
 <!--<zone-photo-edit [showModal]="modalEdit" (modalHide)='onModalHide($event)' [data]="onePhotoEdit"></zone-photo-edit>-->
 

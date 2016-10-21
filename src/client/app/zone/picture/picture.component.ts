@@ -14,6 +14,8 @@ import {
 } from '../../shared/index';
 import { ZAlbumComponent } from "./album/album.component";
 import { ZAlbumDetailComponent } from "./album/album-detail.component";
+import { ZoneUploadingComponent } from '../shared/index';
+
 
 declare var $: any;
 declare var _: any;
@@ -28,13 +30,7 @@ declare var _: any;
 export class ZPictureComponent implements OnChanges {
 
   @ViewChild('media') baseMedia: BaseMediaComponent;
-
-  photo_input_element: any = null;
-  files: any;
-  dragging_over: boolean;
-  dragging_leave: boolean;
-  dragging_enter: boolean;
-  // test_img: any;
+  @ViewChild('zoneUpload') zoneUpload: ZoneUploadingComponent;// = new ZoneUploadingComponent(this.apiService);
 
   image_src: string = '';
   step: number = 0;
@@ -91,7 +87,7 @@ export class ZPictureComponent implements OnChanges {
     //           private toastsService: ToastsService
 
   ) {
-    this.dragleave();
+
   }
 
   ngOnInit() {
@@ -136,53 +132,10 @@ export class ZPictureComponent implements OnChanges {
   }
 
   ngAfterViewInit() {
-    let _thisPicture = this;
-    $('body').bind('dragover', _thisPicture.dragover);
-
     // only allow drag from outside the browser
     $('body').on('dragstart', function (event: any) {
       event.preventDefault();
     });
-  }
-
-  openFileWindow(event: any) {
-    // event.preventDefault();
-    // this.photo_input_element = this.element.nativeElement.querySelector('#photo_input_element');
-    // this.photo_input_element.value = null;
-    // this.photo_input_element.click();
-  }
-
-  handleFileUpload(event: any) {
-    this.files = event.target.files;
-    if (this.files.length == 0) {
-      return;
-    }
-    this.hasUploadedItem = false;
-  }
-
-  onDrop(event: any) {
-    $('body').removeClass('drag-active');
-    event.stopPropagation();
-    event.preventDefault();
-    this.files = event.dataTransfer.files;
-    if (this.files.length == 0) return;
-    this.hasUploadedItem = false;
-  }
-
-  dragleave() {
-    $('body').removeClass('drag-active');
-    this.dragging_leave = true;
-  }
-
-  dragover(event: any) {
-    $('body').addClass('drag-active');
-    event.preventDefault();
-    this.dragging_over = true;
-  }
-
-  dragenter() {
-    $('body').addClass('drag-active');
-    this.dragging_enter = true;
   }
 
   hideAddedtoAlbumToast(event: boolean) {
@@ -221,37 +174,6 @@ export class ZPictureComponent implements OnChanges {
     }
   }
 
-  addFavourite(event: any) {
-    // this.hasUploadedItem = false;
-    // if (event) {
-    //   let body = JSON.stringify({
-    //     ids: this.selectedItems,
-    //     isToggle: this.hasFavourite
-    //   });
-    //   this.loadingService.start();
-    //   this.apiBaseService.post(`zone/photos/favourite`, body)
-    //     .subscribe((result: any) => {
-    //         // stop loading
-    //         this.hasUploadedItem = true;
-    //         this.loadingService.stop();
-    //         //this.toastsService.success(result.message);
-    //       },
-    //       error => {
-    //         // stop loading
-    //         this.loadingService.stop();
-    //         //this.toastsService.danger(error);
-    //         console.log(error);
-    //       }
-    //     );
-    // }
-  }
-
-  tag(event: any) {
-    if (event) {
-      this.modalTag = true;
-    }
-  }
-
   /**
    * Hide modal
    */
@@ -263,7 +185,6 @@ export class ZPictureComponent implements OnChanges {
     this.modalViewInfo = event;
   }
 
-
   /**
    * This is action from Photo component
    */
@@ -273,33 +194,6 @@ export class ZPictureComponent implements OnChanges {
     } else if (event == 'share') {
       this.modalShare = true;
     }
-  }
-
-  delete(event: any) {
-    // this.hasUploadedItem = false;
-    // if (event) {
-    //   this.dialogService.activate('Are you sure to delete ' + this.selectedItems.length + ' item' + (this.selectedItems.length > 1 ? 's' : '') + ' ?', 'Confirmation', 'Yes', 'No').then((responseOK) => {
-    //     if (responseOK) {
-    //       let body = JSON.stringify({ids: this.selectedItems});
-    //       this.loadingService.start();
-    //       this.apiBaseService.post(`zone/photos/delete`, body)
-    //         .subscribe((result: any) => {
-    //             // stop loading
-    //             this.hasUploadedItem = true;
-    //             this.loadingService.stop();
-    //
-    //             //this.toastsService.success(result.message);
-    //           },
-    //           error => {
-    //             // stop loading
-    //             this.loadingService.stop();
-    //             //this.toastsService.danger(error);
-    //             console.log(error);
-    //           }
-    //         );
-    //     }
-    //   });
-    // }
   }
 
   download(event: any) {
@@ -360,26 +254,21 @@ export class ZPictureComponent implements OnChanges {
     this.hasMultiSelectedItem = (items.length > 1) ? true : false;
   }
 
-
   changedSelectedItemsFull(items: Array<any>): void {
     if (_.find(items, {'favorite': false})) {
       this.hasFavourite = false;
     } else {
       this.hasFavourite = true;
     }
-
     this.onePhotoEdit = items[0];
-
   }
 
   viewChanged(view: string) {
-
     // this.baseMedia.changeView(view);
     this.pageView = view;
   }
 
   uploadedItem(hasItem: boolean) {
-    console.log('finished upload');
     this.baseMedia.needToReload = hasItem;
     this.baseMedia.loadItems(this.baseMedia.currentPage);
   }

@@ -6,7 +6,7 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-listview',
+  selector: 'page-zone-album-listview',
   templateUrl: 'list-album.component.html',
 })
 

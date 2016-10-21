@@ -31,7 +31,6 @@ export abstract class FormModalComponent implements OnInit, OnChanges, AfterView
   //
   ngAfterViewInit() {
     $('#' + this.modalId).on('hidden.bs.modal', (e:any) => {
-      // this.hideModal.emit(false);
       this.hideFormModal.emit();
     });
   }

@@ -1,6 +1,7 @@
-import { Component, Input, Output, OnInit, OnChanges, EventEmitter, SimpleChanges} from '@angular/core';
+import { Component, Input, Output, OnInit, AfterViewInit, OnChanges, EventEmitter, SimpleChanges, ViewChild, ElementRef, Renderer} from '@angular/core';
 import { ApiBaseService } from '../../../shared/index';
 
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -8,7 +9,7 @@ import { ApiBaseService } from '../../../shared/index';
   templateUrl: 'uploading.component.html',
   styleUrls: ['uploading.component.css'],
 })
-export class ZoneUploadingComponent implements OnInit, OnChanges {
+export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit {
   current_photo: any;
   step: number;
   files_num: number;
@@ -16,19 +17,28 @@ export class ZoneUploadingComponent implements OnInit, OnChanges {
   stopped_num: number;
   pending_request: any;
   photoIds: Array<number>;
-  @Input() files: any;
+  files: Array<any>;
   @Output() photoEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() needToReload: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ViewChild('inputfiles') inputFiles: ElementRef;
 
-  constructor(private apiService: ApiBaseService) {
 
+  constructor(private apiService: ApiBaseService, private renderer: Renderer) {
+    this.dragleave();
   }
 
   ngOnInit() {
     this.step = 0;
-    // console.log('step', this.step);
+    this.photoIds = new Array<number>();
+    this.files = new Array<any>();
+  }
+
+  ngAfterViewInit() {
+    let _thisPicture = this;
+    $('body').bind('dragover', _thisPicture.dragover);
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -59,7 +69,7 @@ export class ZoneUploadingComponent implements OnInit, OnChanges {
     }
   }
 
-  uploadImages(files) {
+  uploadImages(files: any) {
     var i: number;
     var file_name: string;
     var reader: FileReader;
@@ -68,6 +78,7 @@ export class ZoneUploadingComponent implements OnInit, OnChanges {
     this.step = 1;
     this.uploaded_num = 0;
     this.stopped_num = 0;
+    this.files_num = this.files.length;
     i = 0;
 
     do {
@@ -111,4 +122,39 @@ export class ZoneUploadingComponent implements OnInit, OnChanges {
     this.photoEvent.emit(this.photoIds);
     this.createNewAlbum.emit(true);
   }
+
+  browseFiles(event: any) {
+    this.renderer.invokeElementMethod(this.inputFiles.nativeElement, 'click');
+  }
+
+  chooseFiles(event: any) {
+    this.files = event.target.files;
+    if (this.files.length == 0) {
+      return;
+    }
+    this.uploadImages(this.files);
+  }
+
+  onDrop(event: any) {
+    $('body').removeClass('drag-active');
+    event.stopPropagation();
+    event.preventDefault();
+    this.files = event.dataTransfer.files;
+    if (this.files.length == 0) return;
+    this.uploadImages(this.files);
+  }
+
+  dragleave() {
+    $('body').removeClass('drag-active');
+  }
+
+  dragover(event: any) {
+    $('body').addClass('drag-active');
+    event.preventDefault();
+  }
+
+  dragenter() {
+    $('body').addClass('drag-active');
+  }
+
 }

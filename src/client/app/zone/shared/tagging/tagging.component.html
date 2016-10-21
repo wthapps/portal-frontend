@@ -23,6 +23,7 @@
                      [maxItems]='100'
                      [autocompleteItems]="tags"
                      [autocomplete]="true"
+                     (onRemove)="onItemRemoved($event)"
                      (onAdd)="onItemAdded($event)">
 
           </tag-input>
@@ -30,7 +31,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary-inline" (click)="save($event)">Save</button>
+        <button type="button" class="btn btn-primary-inline" (click)="save($event)" [disabled]="!hasChanged">Save</button>
         <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
       </div>
     </div><!-- /.modal-content -->

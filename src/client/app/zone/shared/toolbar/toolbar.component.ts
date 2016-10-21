@@ -97,12 +97,13 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   openFileWindow(event: any) {
+    event.preventDefault();
     this.openWindow.emit(event);
   }
 
-  handleFileUpload(event: any) {
-    this.selectedFiles.emit(event);
-  }
+  // handleFileUpload(event: any) {
+  //   this.selectedFiles.emit(event);
+  // }
 
   preview(event: any) {
     event.preventDefault();
