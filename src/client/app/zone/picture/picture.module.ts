@@ -20,7 +20,6 @@ import {
   ZoneVideoComponent
 } from './index';
 import { ZAlbumComponent } from "./album/album.component";
-import { ZPictureAlbumModule } from "./album/album.module";
 import { LoadingService } from "../../partials/loading/loading.service";
 import { ApiBaseService } from "../../shared/services/apibase.service";
 import { ZAlbumGridComponent } from "./shared/grid-album.component";
@@ -32,8 +31,13 @@ import { ToastsService } from "../../partials/toast/toast-message.service";
 import { GroupByMonthYearPipe } from "../../shared/pipe/groupby-month-year.pipe";
 
 import { DataScrollerModule } from 'primeng/primeng';
-import {ZPictureFormModule} from "../shared/form/form-picture.module";
 import {ZPictureToastModule} from "../shared/toast/toast-picture.module";
+import {ZPictureBarAlbumComponent} from "./shared/bar-album-control.component";
+import {ZPictureTimelineComponent} from "./shared/timeline.component";
+import {ZAlbumDetailInfoComponent} from "./album/album-detail-info.component";
+import {ZPictureFormCreateAlbumComponent} from "../shared/form/form-create-album.component";
+import {ZPictureFormAddToAlbumComponent} from "../shared/form/form-add-to-album.component";
+import {ZPictureGridRemoveComponent} from "../shared/grid/grid-remove.component";
 
 @NgModule({
   imports: [
@@ -42,8 +46,8 @@ import {ZPictureToastModule} from "../shared/toast/toast-picture.module";
     ReactiveFormsModule,
 
     // Album Module
-    ZPictureAlbumModule,
-    ZPictureFormModule,
+    // ZPictureAlbumModule,
+    // ZPictureFormModule,
     ZPictureToastModule,
     DataScrollerModule
   ],
@@ -59,7 +63,19 @@ import {ZPictureToastModule} from "../shared/toast/toast-picture.module";
     ZoneSharingComponent,
     ZoneTaggingComponent,
     ZonePhotoComponent,
-    ZonePhotoDetailComponent
+    ZonePhotoDetailComponent,
+    ZPictureGridRemoveComponent,
+    // Album
+    ZAlbumComponent,
+    ZAlbumGridComponent,
+    ZAlbumDetailComponent,
+    ZPictureBarAlbumComponent,
+    ZPictureTimelineComponent,
+    ZAlbumDetailInfoComponent,
+    // Form
+    ZPictureFormCreateAlbumComponent,
+    ZPictureFormAddToAlbumComponent,
+
   ],
   exports: [
     ZPictureComponent

@@ -1,10 +1,10 @@
 <div id="form-create-album-modal" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-custom modal-long" role="document">
+  <div class="modal-dialog modal-custom modal-long" role="document" style="width: 60%">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-        <a (click)="onCreatedAlbum()" style="float: right; padding-right: 5px" href="javascript:;">Done</a>
+        <h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true" style="font-size: 26px">&times;</span></button>
+        <a (click)="onCreatedAlbum()" style="float: right; padding-right: 20px" href="javascript:;">Done</a></h4>
         <h4 class="modal-title"> Create New Album</h4>
       </div>
       <div class="modal-body">
@@ -17,9 +17,17 @@
           <input id="album-description" type="text" class="form-control" placeholder="Description">
         </div>
       </div><!-- /.modal-content -->
-      <!--<div class="modal-footer">-->
-        <!--<div id="album-data-loading" style="position: relative;height: 50px;"></div>-->
-      <!--</div>&lt;!&ndash; /.modal-footer &ndash;&gt;-->
+      <div class="modal-footer">
+        <page-zone-remove-gridview [items]="items" (addItems)="onAddItems($event)"></page-zone-remove-gridview>
+      </div><!-- /.modal-footer -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 </div>
+
+<!--<page-zone-gridview-->
+  <!--[items]="items"-->
+  <!--(imgsSelected)="onImgsSelected($event)"-->
+  <!--(preview)="onPreview($event)"-->
+  <!--(loadMore)="onLoadMore($event)"-->
+  <!--[resetSelected]="resetSelected"-->
+<!--&gt;</page-zone-gridview>-->

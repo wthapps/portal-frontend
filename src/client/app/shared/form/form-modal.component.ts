@@ -1,10 +1,13 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
 
 
+declare var $: any;
+
 @Component({
   moduleId: module.id,
   template: ``,
 })
+
 export abstract class FormModalComponent implements OnInit, OnChanges, AfterViewInit {
   showFormModal:boolean;
   hideFormModal: EventEmitter= new EventEmitter();

@@ -4,6 +4,7 @@ import {LoadingService} from "../../../partials/loading/loading.service";
 import {AlbumService} from "../../../shared/services/picture/album.service";
 import {Album} from "../../../shared/models/album.model";
 import {Photo} from "../../../shared/models/photo.model";
+import {AlbumPhoto} from "../../../shared/models/album-photos.model";
 
 declare var $: any;
 declare var _: any;
@@ -57,12 +58,12 @@ export class ZPictureFormAddToAlbumComponent extends FormModalComponent{
     this.albumService.post(this.albumService.url + album.id + '/photos', {photos: arrPhotos})
       .subscribe(
         res => {
-          this.doneFormModal.emit({album: album, photos: arrPhotos});
+          let albumPhotos = new AlbumPhoto({album: album, photos: arrPhotos});
+          this.doneFormModal.emit(albumPhotos);
           this.dataAlbums = [];
           this.getAlbum();
         }
       )
-    // $('#form-add-to-album-modal').modal('hide');
   }
 
   //
