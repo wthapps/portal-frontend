@@ -12638,11 +12638,29 @@ wth-app:empty + .dots-loader-wrap {
     filter: alpha(opacity=0);
     z-index: 2; }
 
-.row-img .photo-box-img.selected .img-center-dv {
-  border-color: #2996CC; }
-  .row-img .photo-box-img.selected .img-center-dv:after {
+.row-img .photo-box-img {
+  position: relative; }
+  .row-img .photo-box-img.selected .img-center-dv {
+    border-color: #2996CC;
+    background-color: #e6e6e6; }
+    .row-img .photo-box-img.selected .img-center-dv:after {
+      opacity: 1;
+      filter: alpha(opacity=100); }
+  .row-img .photo-box-img.selected .img-center {
+    padding: 15px; }
+  .row-img .photo-box-img:hover .photo-box-img-action {
     opacity: 1;
     filter: alpha(opacity=100); }
+  .row-img .photo-box-img .photo-box-img-action {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
 
 .row-img.list {
   margin-left: -10px;
