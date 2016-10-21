@@ -76,6 +76,8 @@
       @include transition($transition-base);
       i {
         font-size: 24px;
+        cursor: pointer;
+        color: #2996CC;
       }
     }
     &.removed {
