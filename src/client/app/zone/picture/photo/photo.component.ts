@@ -68,6 +68,9 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
         case "info":
           this.sendActionToPhotoDetail(this.inputAction);
           break;
+        case "favourite":
+          console.log('favourite', this.inputAction);
+          break;
         default:
           break;
       }
@@ -112,6 +115,16 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     this.sendActionToPhotoDetail(preview);
   }
 
+  onGridEvent(event: any) {
+    switch (event.action) {
+      case "favourite":
+        this.addFavourite(true, event.item);
+        break;
+      default:
+        break;
+    }
+  }
+
   /**
    *
    * End Action from grid view
@@ -125,13 +138,14 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   onAction(event: any) {
     switch (event.action) {
       case "share":
-        this.delete(event.id);
+        // this.delete(event.id);
         break;
       case "favourite":
-        this.delete(event.id);
+        // this.delete(event.id);
         break;
       case "tag":
-        this.delete(event.id);
+        this.toggleModal(event, event.action);
+        // this.delete(event.id);
         break;
       case "delete":
         this.delete(event.id);

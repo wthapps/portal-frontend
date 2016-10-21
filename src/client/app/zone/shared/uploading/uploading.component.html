@@ -1,6 +1,19 @@
+<div class="dropzone dropzone-overlap"
+     (drop)="onDrop($event)"
+     (dragenter)="dragenter()"
+     (dragleave)="dragleave()"
+     (dragover)="dragover($event)">
 
+  <div class="dropzone-overlap-txt">
+    <i class="fa fa-cloud-upload"></i>
+    <p>Drag file anywhere to upload</p>
+  </div>
+</div>
 
 <div class="toast-upload-wrap">
+
+  <input #inputfiles type="file" id="inputfiles" multiple="multiple" accept="image/*" style="display: none;"
+         autofocus="true" (change)="chooseFiles($event)"/>
 
   <!-- uploading status -->
   <div class="toast-upload-item" *ngIf="step==1">
