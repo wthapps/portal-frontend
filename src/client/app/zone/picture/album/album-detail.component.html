@@ -5,13 +5,13 @@
       <template [ngIf]="items.length">
         <div [ngSwitch]="pageView">
           <template [ngSwitchCase]="'grid'">
-            <page-zone-gridview></page-zone-gridview>
+            <page-zone-gridview [items]="items"></page-zone-gridview>
           </template>
           <template [ngSwitchCase]="'list'">
-            <page-zone-listview ></page-zone-listview>
+            <page-zone-listview [data]="items"></page-zone-listview>
           </template>
           <template [ngSwitchCase]="'timeline'">
-            <page-zone-timeline></page-zone-timeline>
+            <page-zone-timeline [data]="items"></page-zone-timeline>
           </template>
         </div>
       </template>

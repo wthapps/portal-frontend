@@ -7,7 +7,6 @@ import {ApiBaseService, LoadingService} from '../../../shared/index';
 import {ZAlbumListComponent} from '../shared/list-album.component';
 import {BaseMediaComponent} from "../../shared/media/base-media.component";
 import {MediaType} from "../../../shared/config/constants";
-import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
 import {ConfirmationService} from "primeng/components/common/api";
 

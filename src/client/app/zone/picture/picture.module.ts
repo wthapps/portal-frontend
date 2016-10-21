@@ -33,11 +33,11 @@ import { GroupByMonthYearPipe } from "../../shared/pipe/groupby-month-year.pipe"
 import { DataScrollerModule } from 'primeng/primeng';
 import {ZPictureToastModule} from "../shared/toast/toast-picture.module";
 import {ZPictureBarAlbumComponent} from "./shared/bar-album-control.component";
-import {ZPictureTimelineComponent} from "./shared/timeline.component";
 import {ZAlbumDetailInfoComponent} from "./album/album-detail-info.component";
 import {ZPictureFormCreateAlbumComponent} from "../shared/form/form-create-album.component";
 import {ZPictureFormAddToAlbumComponent} from "../shared/form/form-add-to-album.component";
 import {ZPictureGridRemoveComponent} from "../shared/grid/grid-remove.component";
+import {ZPictureTimelineComponent} from "../shared/timeline/timeline.component";
 
 @NgModule({
   imports: [

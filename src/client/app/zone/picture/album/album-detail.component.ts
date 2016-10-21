@@ -8,8 +8,6 @@ import {PhotoService} from "../../../shared/services/picture/photo.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoadingService} from "../../../partials/loading/loading.service";
 import {ConfirmationService} from "primeng/components/common/api";
-import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
-import {FormBase} from "../../../shared/models/form/form-base.model";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
 
 declare var wheelzoom: any;
@@ -28,7 +26,6 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   album: Album = new Album(null);
   albumId: number;
   showForm: boolean = false;
-  formData: FormBase;
 
   constructor(
     private apiService?: ApiBaseService,
@@ -51,7 +48,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     });
   }
 
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}): void {
+  ngOnChanges() {
     // comment
   }
 
@@ -125,11 +122,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   }
 
   renderForm() {
-    let fields = [
-      new FormTextElement({id:"album-name",name: "Name", value: this.album.name}),
-      new FormTextElement({id:"album-description",name: "Description", value: this.album.description}),
-    ];
-    this.formData = new FormBase({title: "Information", fields: fields});
+
   }
 
   onFormResult(res:any) {
