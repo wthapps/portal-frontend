@@ -38,6 +38,8 @@ import {ZPictureFormCreateAlbumComponent} from "../shared/form/form-create-album
 import {ZPictureFormAddToAlbumComponent} from "../shared/form/form-add-to-album.component";
 import {ZPictureGridRemoveComponent} from "../shared/grid/grid-remove.component";
 import {ZPictureTimelineComponent} from "../shared/timeline/timeline.component";
+import {ZPictureFormEditAlbumComponent} from "../shared/form/form-edit-album.component";
+import {ZAlbumListComponent} from "./shared/list-album.component";
 
 @NgModule({
   imports: [
@@ -72,9 +74,11 @@ import {ZPictureTimelineComponent} from "../shared/timeline/timeline.component";
     ZPictureBarAlbumComponent,
     ZPictureTimelineComponent,
     ZAlbumDetailInfoComponent,
+    ZAlbumListComponent,
     // Form
     ZPictureFormCreateAlbumComponent,
     ZPictureFormAddToAlbumComponent,
+    ZPictureFormEditAlbumComponent
 
   ],
   exports: [

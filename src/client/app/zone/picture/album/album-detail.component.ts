@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LoadingService} from "../../../partials/loading/loading.service";
 import {ConfirmationService} from "primeng/components/common/api";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
+import {FormManger} from "../../../shared/form/form-manager.model";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -25,7 +26,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
   album: Album = new Album(null);
   albumId: number;
-  showForm: boolean = false;
+  formManger: FormManger = new FormManger();
 
   constructor(
     private apiService?: ApiBaseService,
@@ -62,13 +63,12 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
 
   init() {
-    this.albumService.get(this.albumService.url + this.albumId).subscribe(
-      (res: any) => {
-        this.album = new Album(res.data);
-        this.getPhotosByAlbum();
-        this.renderForm();
-      },
-    );
+      this.albumService.get(this.albumService.url + this.albumId).subscribe(
+        (res: any) => {
+          this.album = new Album(res.data);
+          this.getPhotosByAlbum();
+        },
+      );
   }
 
   getPhotosByAlbum() {
@@ -118,26 +118,27 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   }
 
   onEditAction() {
-    this.showForm = true;
-  }
-
-  renderForm() {
-
+    this.formManger.show('form-edit-album-modal');
   }
 
   onFormResult(res:any) {
-    if (res) {
-      this.albumService.put(this.albumService.url + this.album.id, {name: res['album-name'], description: res['album-description']})
-        .subscribe(res => {
-          this.album = new Album(res.data);
-          this.toastsService.success('Edited');
-          this.renderForm();
-        })
-      ;
-    }
+    // if (res) {
+    //   this.albumService.put(this.albumService.url + this.album.id, {name: res['album-name'], description: res['album-description']})
+    //     .subscribe(res => {
+    //       this.album = new Album(res.data);
+    //       this.toastsService.success('Edited');
+    //       this.renderForm();
+    //     })
+    //   ;
+    // }
   }
 
   onHideModal() {
-    this.showForm = false;
+    this.formManger.hideAll();
+  }
+
+  onDoneEditAlbumFormModal(album:Album) {
+    this.formManger.hideAll();
+    this.album = album;
   }
 }
