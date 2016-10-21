@@ -36,7 +36,6 @@
     @include transition($transition-base);
     &:after {
       @extend .fa;
-      content: "\f058";
       position: absolute;
       top: 10px;
       left: 10px;
@@ -55,6 +54,7 @@
         border-color: #2996CC;
         background-color: #e6e6e6;
         &:after {
+          content: "\f058";
           @include opacity(1);
         }
       }
@@ -74,6 +74,23 @@
       z-index: 20;
       @include opacity(0);
       @include transition($transition-base);
+    }
+    &.removed {
+      .img-center-dv {
+        border-color: #2996CC;
+        &:after {
+          @include opacity(1);
+          @extend .fa;
+          content: "\f057";
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          font-size: 24px;
+          color: #2996CC;
+          @include transition($transition-base);
+          z-index: 2;
+        }
+      }
     }
   }
 

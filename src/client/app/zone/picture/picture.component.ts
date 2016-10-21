@@ -13,8 +13,6 @@ import {
 } from '../../shared/index';
 import { ZAlbumComponent } from "./album/album.component";
 import { ZAlbumDetailComponent } from "./album/album-detail.component";
-import {FormTextElement} from "../../shared/models/form/form-text-element.model";
-import {FormBase} from "../../shared/models/form/form-base.model";
 
 declare var $: any;
 declare var _: any;
@@ -78,9 +76,6 @@ export class ZPictureComponent implements OnChanges {
   hasUploadedItem: boolean;
   // deletedItems: Array<any>;
   mediaType: any;
-
-  // Album
-  formData: FormBase;
 
   constructor(// private element: ElementRef,
     //           private photoService: PhotoService,

@@ -19,7 +19,7 @@ declare var _: any;
   }
 })
 
-export class ZPictureGridComponent implements OnChanges {
+export abstract class ZPictureGridComponent implements OnChanges {
   @Input() items: Array<any>;
   @Input() resetSelected: boolean;
 
@@ -87,7 +87,7 @@ export class ZPictureGridComponent implements OnChanges {
    * @param e
    * @param id of Image
    */
-  onSelected(e: any, id: number) {
+  public onSelected(e: any, id: number) {
     let parent = $(e.target).parents('.row-img');
     let el = $(e.target).parents('.photo-box-img');
 

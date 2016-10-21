@@ -5,7 +5,7 @@
       <template [ngIf]="items.length">
         <div [ngSwitch]="pageView">
           <template [ngSwitchCase]="'grid'">
-            <page-zone-gridview [data]="items"></page-zone-gridview>
+            <page-zone-gridview [items]="items"></page-zone-gridview>
           </template>
           <template [ngSwitchCase]="'list'">
             <page-zone-listview [data]="items"></page-zone-listview>

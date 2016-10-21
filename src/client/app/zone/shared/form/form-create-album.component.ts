@@ -2,6 +2,10 @@ import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit
 import {FormModalComponent} from "../../../shared/form/form-modal.component";
 import {AlbumService} from "../../../shared/services/picture/album.service";
 import {Album} from "../../../shared/models/album.model";
+import {AlbumPhoto} from "../../../shared/models/album-photos.model";
+
+declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -12,23 +16,27 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent{
   @Input() showFormModal:boolean;
   @Output() hideFormModal: EventEmitter= new EventEmitter();
   @Output() doneFormModal: EventEmitter<any>= new EventEmitter<any>();
+  @Input() items: Array<any>;
+  isChanged:boolean = false;
+  arrayItems: Array<number> = [];
+  album: Album;
+
 
   constructor(private albumService: AlbumService) {
     super('form-create-album-modal');
   }
 
-
-  // @Input() showCreateAlbumForm:boolean;
-  // @Output() hideCreateAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  // constructor(private apiService: ApiBaseService,
-  //             private photoService: PhotoService,
-  //             private albumService: AlbumService,
-  //             private loadingService: LoadingService) {
-  // }
-  //
-
   onCreatedAlbum() {
+    if (!this.isChanged) {
+      this.arrayItems = [];
+      _.map(this.items, v => {
+        this.arrayItems.push(v.id);
+      });
+    }
+    this.createAlbum();
+  }
+
+  createAlbum() {
     let albumName = $('#album-name').val();
     let albumDes = $('#album-description').val();
     if (albumName.length == 0) {
@@ -38,8 +46,23 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent{
     this.albumService.post(this.albumService.url, album)
       .subscribe(
         res => {
-          this.doneFormModal.emit(res);
+          this.album = new Album(res.data);
+          this.doneFormModal.emit(this.album);
+          if (this.arrayItems.length > 0) {
+            this.albumService.post(this.albumService.url + res.data.id + '/photos', {photos: this.arrayItems})
+              .subscribe(
+                res => {
+                  let albumPhotos = new AlbumPhoto({album: this.album, photos:this.arrayItems})
+                  this.doneFormModal.emit(albumPhotos);
+                }
+              )
+          }
         }
       );
+  }
+
+  onAddItems(arrayItems: Array<number>) {
+    this.isChanged = true;
+    this.arrayItems = arrayItems;
   }
 }

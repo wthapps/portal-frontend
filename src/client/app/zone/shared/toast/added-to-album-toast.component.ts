@@ -2,6 +2,7 @@ import {Component, OnChanges, AfterViewInit, Input, Output, EventEmitter} from '
 import {Album} from "../../../shared/models/album.model";
 import {FormModalComponent} from "../../../shared/form/form-modal.component";
 import {ToastBottomBase} from "../../../shared/toast/toast-bottom/toast-bottom-base.component";
+import {AlbumPhoto} from "../../../shared/models/album-photos.model";
 
 @Component({
   moduleId: module.id,
@@ -11,7 +12,7 @@ import {ToastBottomBase} from "../../../shared/toast/toast-bottom/toast-bottom-b
 })
 export class ZAddedToAlbumToastComponent extends ToastBottomBase{
   @Input() showToast:boolean;
-  @Input() data:any;
+  @Input() data:AlbumPhoto;
   @Output() hideToast: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 }

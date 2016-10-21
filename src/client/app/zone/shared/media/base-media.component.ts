@@ -6,10 +6,9 @@ import {
   ToastsService,
   ConfirmationService
 } from "../../../shared/index";
-import { FormTextElement } from "../../../shared/models/form/form-text-element.model";
-import { FormBase } from "../../../shared/models/form/form-base.model";
-import { AlbumService } from "../../../shared/services/picture/album.service";
-import { Album } from "../../../shared/models/album.model";
+import {AlbumService} from "../../../shared/services/picture/album.service";
+import {Album} from "../../../shared/models/album.model";
+import {AlbumPhoto} from "../../../shared/models/album-photos.model";
 
 
 declare var $: any;
@@ -50,12 +49,11 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   errorMessage: string;
   showCreateAlbumForm: boolean;
-  formData: FormBase;
-  showAddToAlbumForm: boolean;
-  showCreatedAlbumToast: boolean;
+  showAddToAlbumForm:boolean;
+  showCreatedAlbumToast:boolean;
   album: Album;
   showAddedToAlbumToast:boolean;
-  dataAddedToAlbum:any;
+  albumPhotos: AlbumPhoto;
 
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
@@ -258,8 +256,14 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   onDoneCreateFormModal(e: any) {
     this.showCreateAlbumForm = false;
-    this.showCreatedAlbumToast = true;
-    this.album = new Album(e.data);
+    if (e instanceof Album) {
+      this.showCreatedAlbumToast = true;
+      this.album = e;
+    } else {
+      this.showCreatedAlbumToast = false;
+      this.showAddedToAlbumToast = true;
+      this.albumPhotos = e;
+    }
   }
 
   onHideCreateAlbumToast() {
@@ -269,7 +273,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onDoneAddToAlbum(e:any) {
     this.showAddToAlbumForm = false;
     this.showAddedToAlbumToast = true;
-    this.dataAddedToAlbum = e;
+    this.albumPhotos = e
   }
 
   onHideAddedToAlbumToast() {

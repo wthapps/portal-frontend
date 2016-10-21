@@ -3,8 +3,6 @@ import {
   OnInit, SimpleChanges
 } from '@angular/core';
 import {Album} from "../../../shared/models/album.model";
-import {FormTextElement} from "../../../shared/models/form/form-text-element.model";
-import {FormBase} from "../../../shared/models/form/form-base.model";
 import {AlbumService} from "../../../shared/services/picture/album.service";
 
 
@@ -24,7 +22,6 @@ export class ZAlbumDetailInfoComponent implements OnInit, OnChanges{
   @Input() album:Album;
   @Output() closeInfo: EventEmitter = new EventEmitter();
   @Output() showFormEdit: EventEmitter = new EventEmitter();
-  formData: FormBase;
   albumData:Album = null;
 
   constructor(
