@@ -12664,7 +12664,9 @@ wth-app:empty + .dots-loader-wrap {
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease; }
     .row-img .photo-box-img .photo-box-img-action i {
-      font-size: 24px; }
+      font-size: 24px;
+      cursor: pointer;
+      color: #2996CC; }
   .row-img .photo-box-img.removed .img-center-dv {
     border-color: #2996CC; }
     .row-img .photo-box-img.removed .img-center-dv:after {

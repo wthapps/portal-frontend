@@ -3,6 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { BaseMediaComponent } from '../shared/media/base-media.component';
 import { ZonePhotoComponent } from './photo/photo.component';
 import { ZoneVideoComponent } from './video/video.component';
+import { ZoneFavouritesComponent } from './favourites/index';
 import { MediaType } from '../../shared/config/constants';
 import {
   ApiBaseService,
@@ -122,6 +123,9 @@ export class ZPictureComponent implements OnChanges {
         break;
       case MediaType.albumDetail:
         this.baseMedia = new ZAlbumDetailComponent();
+        break;
+      case MediaType.favourites:
+        this.baseMedia = new ZoneFavouritesComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
     }
     // debugger;

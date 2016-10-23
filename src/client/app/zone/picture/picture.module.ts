@@ -17,7 +17,8 @@ import {
 import {
   ZonePhotoComponent,
   ZonePhotoDetailComponent,
-  ZoneVideoComponent
+  ZoneVideoComponent,
+  ZoneFavouritesComponent
 } from './index';
 import { ZAlbumComponent } from "./album/album.component";
 import { LoadingService } from "../../partials/loading/loading.service";
@@ -64,9 +65,15 @@ import {ZAlbumListComponent} from "./shared/list-album.component";
     ToastsUploadComponent,
     ZoneSharingComponent,
     ZoneTaggingComponent,
+    ZPictureGridRemoveComponent,
+
+    // Photo
     ZonePhotoComponent,
     ZonePhotoDetailComponent,
-    ZPictureGridRemoveComponent,
+
+    // Favourites
+    ZoneFavouritesComponent,
+
     // Album
     ZAlbumComponent,
     ZAlbumGridComponent,

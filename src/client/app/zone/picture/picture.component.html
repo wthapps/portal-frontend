@@ -32,6 +32,11 @@
   <div *ngSwitchCase="mediaType.albumDetail">
     <page-zone-album-detail #media></page-zone-album-detail>
   </div>
+
+  <div *ngSwitchCase="mediaType.favourites">
+    <zone-favourites #media></zone-favourites>
+  </div>
+
 </div>
 
 <zone-uploading #zoneUpload
