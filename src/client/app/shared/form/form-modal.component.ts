@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
+import {FormManagerService} from "./form-manager.service";
 
 
 declare var $: any;
@@ -9,29 +10,36 @@ declare var $: any;
 })
 
 export abstract class FormModalComponent implements OnInit, OnChanges, AfterViewInit {
-  showFormModal:boolean;
+  formMangerService: FormManagerService;
   hideFormModal: EventEmitter= new EventEmitter();
   modalId: string;
+
   constructor(modalId:string
   ) {
     this.modalId = modalId;
   }
   //
   ngOnInit() {
-
+    this.formMangerService.register(this.modalId);
   }
   //
   ngOnChanges() {
-    if (this.showFormModal) {
-      $('#' + this.modalId).modal('show');
-    } else {
-      $('#' + this.modalId).modal('hide');
+    // console.log('change3', this.formMangerService);
+  }
+
+  ngDoCheck() {
+    if (this.formMangerService) {
+      if (this.formMangerService.isShow(this.modalId)) {
+        $('#' + this.modalId).modal('show');
+      } else {
+        $('#' + this.modalId).modal('hide');
+      }
     }
   }
   //
   ngAfterViewInit() {
     $('#' + this.modalId).on('hidden.bs.modal', (e:any) => {
-      this.hideFormModal.emit();
+      this.formMangerService.hideAll();
     });
   }
 }

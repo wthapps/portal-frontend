@@ -29,5 +29,7 @@
   </div>
 </div>
 
-<page-zone-form-edit-album [showFormModal]="formManger.isShow('form-edit-album-modal')" (hideFormModal)="onHideModal()" [(album)]="album" (doneFormModal)="onDoneEditAlbumFormModal($event)"></page-zone-form-edit-album>
+<page-zone-form-edit-album [(album)]="album" (doneFormModal)="onDoneEditAlbumFormModal($event)"></page-zone-form-edit-album>
 
+<!--[showFormModal]="formMangerService.isShow('form-edit-album-modal')"-->
+<!--[(formManagerService)]="formManagerService"-->

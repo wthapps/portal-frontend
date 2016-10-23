@@ -47,7 +47,6 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
       this.files_num = this.files.length;
       this.photoIds = new Array<number>();
     }
-    // console.log('step changed', this.step, changes);
   }
 
   close() {

@@ -40,6 +40,7 @@ import {GroupByPipe} from "./pipe/groupby.pipe";
 import {AlbumService} from "./services/picture/album.service";
 import {PhotoService} from "./services/picture/photo.service";
 import {FormModalComponent} from "./form/form-modal.component";
+import {FormManagerService} from "./form/form-manager.service";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -72,6 +73,7 @@ import {FormModalComponent} from "./form/form-modal.component";
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
+
   ],
   exports: [
     ToolbarComponent,
@@ -113,6 +115,8 @@ export class SharedModule {
         CountryService,
         ConfirmationService,
         DeactivateConfirmService,
+        // Form
+        FormManagerService,
       ]
     };
   }

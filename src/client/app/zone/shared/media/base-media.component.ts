@@ -9,6 +9,7 @@ import {
 import { AlbumService } from "../../../shared/services/picture/album.service";
 import { Album } from "../../../shared/models/album.model";
 import { AlbumPhoto } from "../../../shared/models/album-photos.model";
+import {FormManagerService} from "../../../shared/form/form-manager.service";
 
 
 declare var $: any;
@@ -48,12 +49,12 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   needToReload: boolean = false;
 
   errorMessage: string;
-  showCreateAlbumForm: boolean;
   showAddToAlbumForm: boolean;
   showCreatedAlbumToast: boolean;
   album: Album;
   showAddedToAlbumToast: boolean;
   albumPhotos: AlbumPhoto;
+
 
   /**
    * Modal variables
@@ -64,6 +65,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   private loadingService: LoadingService;
   private toastsService: ToastsService;
   private confirmationService: ConfirmationService;
+  private formManagerService: FormManagerService;
 
 
   constructor(private type: string,
@@ -74,7 +76,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnInit() {
     // this.showTag = false;
-
     if (this.pageView == 'grid') {
       this.isGridView = true;
       this.isListView = false;
@@ -273,7 +274,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   onCreateNewAlbum($event: boolean) {
     this.showAddToAlbumForm = false;
-    this.showCreateAlbumForm = true;
+    this.formManagerService.show('form-create-album-modal');
   }
 
   onFormResult(res: any) {
@@ -297,7 +298,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onHideCreateAlbumModal() {
-    this.showCreateAlbumForm = false;
+    this.formManagerService.hide('form-create-album-modal');
   }
 
   onAddToAlbum() {
@@ -309,7 +310,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onDoneCreateFormModal(e: any) {
-    this.showCreateAlbumForm = false;
+    this.formManagerService.hide('form-create-album-modal');
     if (e instanceof Album) {
       this.showCreatedAlbumToast = true;
       this.album = e;
