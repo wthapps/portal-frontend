@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, AfterViewInit, OnChanges, EventEmitter, SimpleChanges, ViewChild, ElementRef, Renderer} from '@angular/core';
 import { ApiBaseService } from '../../../shared/index';
+import {Photo} from "../../../shared/models/photo.model";
 
 declare var $: any;
 
@@ -16,10 +17,10 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
   uploaded_num: number;
   stopped_num: number;
   pending_request: any;
-  photoIds: Array<number>;
+  photos: Array<Photo> = [];
   files: Array<any>;
-  @Output() photosUploaded: EventEmitter<any> = new EventEmitter<any>();
-  @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() createNewAlbum: EventEmitter<any> = new EventEmitter<any>();
+  @Output() addToAlbum: EventEmitter<any> = new EventEmitter<any>();
   @Output() needToReload: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('inputfiles') inputFiles: ElementRef;
 
@@ -30,7 +31,6 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
 
   ngOnInit() {
     this.step = 0;
-    this.photoIds = new Array<number>();
     this.files = new Array<any>();
   }
 
@@ -44,7 +44,7 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
     if (changes['files'].currentValue && changes['files'].currentValue.length > 0) {
       this.uploadImages(changes['files'].currentValue);
       this.files_num = this.files.length;
-      this.photoIds = new Array<number>();
+      this.photos = [];
     }
   }
 
@@ -97,7 +97,7 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
             if (this.uploaded_num == this.files_num) {
               this.step = 2;
             }
-            this.photoIds.push(result.data.id);
+            this.photos.push(new Photo(result.data));
           },
           error => {
             this.step = 3;
@@ -112,12 +112,11 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   onAddToAlbum(): void {
-    this.photosUploaded.emit(this.photoIds);
+    this.addToAlbum.emit(this.photos);
   }
 
   onCreateNewAlbum() {
-    this.photosUploaded.emit(this.photoIds);
-    this.createNewAlbum.emit(true);
+    this.createNewAlbum.emit(this.photos);
   }
 
   browseFiles(event: any) {

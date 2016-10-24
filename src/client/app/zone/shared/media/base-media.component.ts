@@ -37,6 +37,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   category: string;
   selectedItems: Array<any> = new Array<any>();
+  addItems: Array<any> = new Array<any>();
   previewItems: Array<any> = new Array<any>();
   items: Array<any> = new Array<any>();
   currentPage: number = 1;
@@ -271,7 +272,11 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
 
 
-  onCreateNewAlbum($event: boolean) {
+  onCreateNewAlbum(photos?:any) {
+    this.addItems = this.selectedItems;
+    if (photos) {
+      this.addItems = photos;
+    }
     this.formManagerService.hide('form-add-to-album-modal');
     this.formManagerService.show('form-create-album-modal');
   }
@@ -300,7 +305,11 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.formManagerService.hide('form-create-album-modal');
   }
 
-  onAddToAlbum() {
+  onAddToAlbum(photos?:any) {
+    this.addItems = this.selectedItems;
+    if (photos) {
+      this.addItems = photos;
+    }
     this.formManagerService.show('form-add-to-album-modal');
   }
 
@@ -336,10 +345,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   hasOpeningModal() : boolean{
     return (this.showTag)
-  }
-
-  onPhotosUploaded(photos:any) {
-    this.formManagerService.show('form-add-to-album-modal');
   }
 
   /**
