@@ -195,7 +195,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
                 this.loadItems(this.currentPage);
                 this.loadingService.stop();
 
-                this.toastsService.success(result.message);
+                this.toastsService.success('Delete success');
               },
               error => {
                 // stop loading
@@ -360,6 +360,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     if (this.category == MediaType.albumDetail) {
       return 'zone/photos'
     }
-
+    if (this.category == MediaType.favourites) {
+      return 'zone/favorites'
+    }
   }
 }

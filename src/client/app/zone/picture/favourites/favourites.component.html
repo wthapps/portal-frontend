@@ -17,49 +17,28 @@
 
   <section>
     <div class="page-body-in-title">
-      Album
+      Photo
     </div>
+    <template [ngIf]="isGridView">
+      <page-zone-gridview
+        [items]="items.photos"
+        (imgsSelected)="onImgsSelected($event)"
+        (preview)="onPreview($event)"
+        (loadMore)="onLoadMore($event)"
+        (outEvent)="onGridEvent($event)"
+        [resetSelected]="resetSelected">
+      </page-zone-gridview>
 
-    <div class="row-img">
-      <div class="photo-box-img">
-        <figure class="img-center-dv">
-          <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-          <img class="img-center" src="/assets/images/zone/img-photo.png" alt="">
-        </figure>
-      </div>
-    </div>
+    </template>
+    <template [ngIf]="isListView">
+      <page-zone-listview
+        (imgDetail)="onClick($event)"
+        [data]="items.photos"
+        (imgsSelected)="onImgsSelected($event)">
+      </page-zone-listview>
+    </template>
+
   </section>
-
-  <section>
-    <div class="page-body-in-title">
-      Album
-    </div>
-
-    <div class="row-img">
-      <div class="photo-box-img">
-        <figure class="img-center-dv">
-          <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-          <img class="img-center" src="/assets/images/zone/img-photo.png" alt="">
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="page-body-in-title">
-      Album
-    </div>
-
-    <div class="row-img">
-      <div class="photo-box-img">
-        <figure class="img-center-dv">
-          <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-          <img class="img-center" src="/assets/images/zone/img-photo.png" alt="">
-        </figure>
-      </div>
-    </div>
-  </section>
-
 
   <div id="photodata-loading" style="position: relative;height: 50px;">
   </div>
