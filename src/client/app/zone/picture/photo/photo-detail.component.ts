@@ -49,6 +49,8 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   myItemsPreview: Array<Photo>;
   imgIndex: number = 0;
 
+  modalEdit: boolean = false;
+
   ngOnInit() {
 
   }
@@ -133,6 +135,7 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   showInfo() {
     $('#photo-box-detail').toggleClass('active-info');
   }
+
   // end code new
 
   onAction(even: any, type: string) {
@@ -146,4 +149,15 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   }
 
 
+  onShowEditInfo() {
+    this.modalEdit = true;
+  }
+
+  onHideEditInfo() {
+    this.modalEdit = false;
+  }
+
+  onPhotoUpdateInfo(item: Photo) {
+    this.myItem = item;
+  }
 }
