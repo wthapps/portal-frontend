@@ -4,6 +4,7 @@ import {AlbumService} from "../../../shared/services/picture/album.service";
 import {Album} from "../../../shared/models/album.model";
 import {AlbumPhoto} from "../../../shared/models/album-photos.model";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
+import {FormManagerService} from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -13,19 +14,21 @@ declare var _: any;
   selector: 'page-zone-form-edit-album',
   templateUrl: 'form-edit-album.component.html',
 })
-export class ZPictureFormEditAlbumComponent extends FormModalComponent{
-  @Input() showFormModal:boolean;
+export class ZPictureFormEditAlbumComponent extends FormModalComponent {
+  // @Input() formManagerService:FormManagerService;
+  @Input() album: Album;
   @Output() hideFormModal: EventEmitter= new EventEmitter();
   @Output() doneFormModal: EventEmitter<any>= new EventEmitter<any>();
-  @Input() album: Album;
-
 
   constructor(
     private albumService: AlbumService,
     private toastService: ToastsService,
+    private formMangerService: FormManagerService
   ) {
     super('form-edit-album-modal');
   }
+
+
 
   save() {
     let albumName = $('#album-name').val();

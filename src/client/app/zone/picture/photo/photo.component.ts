@@ -11,6 +11,7 @@ import {
   ToastsService,
   ConfirmationService
 } from '../../../shared/index';
+import {FormManagerService} from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -32,7 +33,6 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   @Input() inputAction: any;
   @Input() viewInfo: boolean;
   @Input() hasUploadedItem: boolean;
-  // @Input() deletedItems: Array<number> = [];
 
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() selectedPhotoFull: EventEmitter<Array<Photo>> = new EventEmitter<Array<Photo>>();
@@ -40,11 +40,11 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private apiService: ApiBaseService,
-              // these are using for BaseMediaComponent
-              // tslint:disable-next-line
               private toastsService: ToastsService,
               private loadingService: LoadingService,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private formManagerService?: FormManagerService,
+  ) {
     super(MediaType.photo, this.apiService);
   }
 
@@ -60,7 +60,6 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
 
     // code new
     if (this.inputAction) {
-      console.log('this.inputAction:', this.inputAction);
       switch (this.inputAction) {
         case "preview":
           this.sendActionToPhotoDetail(this.inputAction);

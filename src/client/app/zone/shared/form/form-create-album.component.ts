@@ -3,6 +3,7 @@ import {FormModalComponent} from "../../../shared/form/form-modal.component";
 import {AlbumService} from "../../../shared/services/picture/album.service";
 import {Album} from "../../../shared/models/album.model";
 import {AlbumPhoto} from "../../../shared/models/album-photos.model";
+import {FormManagerService} from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -22,7 +23,10 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent{
   album: Album;
 
 
-  constructor(private albumService: AlbumService) {
+  constructor(
+    private albumService: AlbumService,
+    private formMangerService: FormManagerService,
+  ) {
     super('form-create-album-modal');
   }
 

@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LoadingService} from "../../../partials/loading/loading.service";
 import {ConfirmationService} from "primeng/components/common/api";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
-import {FormManger} from "../../../shared/form/form-manager.model";
+import {FormManagerService} from "../../../shared/form/form-manager.service";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -26,7 +26,6 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
   album: Album = new Album(null);
   albumId: number;
-  formManger: FormManger = new FormManger();
 
   constructor(
     private apiService?: ApiBaseService,
@@ -36,7 +35,8 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     private loadingService?: LoadingService,
     private router?: Router,
     private toastsService?: ToastsService,
-    private confirmationService?: ConfirmationService
+    private confirmationService?: ConfirmationService,
+    private formManagerService?: FormManagerService,
   ) {
     super(MediaType.albumDetail, apiService);
   }
@@ -118,7 +118,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   }
 
   onEditAction() {
-    this.formManger.show('form-edit-album-modal');
+    this.formManagerService.show('form-edit-album-modal');
   }
 
   onFormResult(res:any) {
@@ -134,11 +134,11 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   }
 
   onHideModal() {
-    this.formManger.hideAll();
+    this.formManagerService.hide('form-edit-album-modal');
   }
 
   onDoneEditAlbumFormModal(album:Album) {
-    this.formManger.hideAll();
+    this.formManagerService.hide('form-edit-album-modal');
     this.album = album;
   }
 }
