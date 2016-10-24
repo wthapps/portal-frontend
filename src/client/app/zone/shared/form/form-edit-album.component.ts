@@ -23,7 +23,7 @@ export class ZPictureFormEditAlbumComponent extends FormModalComponent {
   constructor(
     private albumService: AlbumService,
     private toastService: ToastsService,
-    private formMangerService: FormManagerService
+    private formManagerService: FormManagerService
   ) {
     super('form-edit-album-modal');
   }

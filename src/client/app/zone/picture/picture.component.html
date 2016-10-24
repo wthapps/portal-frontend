@@ -40,9 +40,9 @@
 </div>
 
 <zone-uploading #zoneUpload
-                (photoEvent)="photoEvent($event)"
+                (photosUploaded)="baseMedia.onPhotosUploaded($event)"
                 (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
-                (createNewAlbum)="onCreateNewAlbum($event)"
+                (createNewAlbum)="baseMedia.onCreateNewAlbum($event)"
                 (needToReload)="uploadedItem($event)"
 ></zone-uploading>
 

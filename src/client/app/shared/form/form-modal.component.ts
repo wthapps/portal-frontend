@@ -10,7 +10,7 @@ declare var $: any;
 })
 
 export abstract class FormModalComponent implements OnInit, OnChanges, AfterViewInit {
-  formMangerService: FormManagerService;
+  formManagerService: FormManagerService;
   hideFormModal: EventEmitter= new EventEmitter();
   modalId: string;
 
@@ -20,7 +20,7 @@ export abstract class FormModalComponent implements OnInit, OnChanges, AfterView
   }
   //
   ngOnInit() {
-    this.formMangerService.register(this.modalId);
+    this.formManagerService.register(this.modalId);
   }
   //
   ngOnChanges() {
@@ -28,8 +28,9 @@ export abstract class FormModalComponent implements OnInit, OnChanges, AfterView
   }
 
   ngDoCheck() {
-    if (this.formMangerService) {
-      if (this.formMangerService.isShow(this.modalId)) {
+    if (this.formManagerService) {
+      // console.log(this.modalId, this.formManagerService.isShow(this.modalId), this.formManagerService);
+      if (this.formManagerService.isShow(this.modalId)) {
         $('#' + this.modalId).modal('show');
       } else {
         $('#' + this.modalId).modal('hide');
@@ -39,7 +40,7 @@ export abstract class FormModalComponent implements OnInit, OnChanges, AfterView
   //
   ngAfterViewInit() {
     $('#' + this.modalId).on('hidden.bs.modal', (e:any) => {
-      this.formMangerService.hideAll();
+      this.formManagerService.hide(this.modalId);
     });
   }
 }

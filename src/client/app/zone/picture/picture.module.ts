@@ -9,7 +9,6 @@ import {
   ZPictureGridComponent,
   ZPictureListComponent,
   ZoneUploadingComponent,
-  ToastsUploadComponent,
   ZoneSharingComponent,
   ZoneTaggingComponent
 } from '../shared/index';
@@ -62,7 +61,6 @@ import {ZAlbumListComponent} from "./shared/list-album.component";
     ZPictureGridComponent,
     ZPictureListComponent,
     ZoneUploadingComponent,
-    ToastsUploadComponent,
     ZoneSharingComponent,
     ZoneTaggingComponent,
     ZPictureGridRemoveComponent,

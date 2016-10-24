@@ -14,8 +14,6 @@ declare var _: any;
   templateUrl: 'form-create-album.component.html',
 })
 export class ZPictureFormCreateAlbumComponent extends FormModalComponent{
-  @Input() showFormModal:boolean;
-  @Output() hideFormModal: EventEmitter= new EventEmitter();
   @Output() doneFormModal: EventEmitter<any>= new EventEmitter<any>();
   @Input() items: Array<any>;
   isChanged:boolean = false;
@@ -25,7 +23,7 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent{
 
   constructor(
     private albumService: AlbumService,
-    private formMangerService: FormManagerService,
+    private formManagerService: FormManagerService,
   ) {
     super('form-create-album-modal');
   }

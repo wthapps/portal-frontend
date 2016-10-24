@@ -15,3 +15,10 @@
   <div id="album-data-loading" style="position: relative;height: 50px;">
   </div>
 </div>
+
+<!--<page-zone-form-create-album></page-zone-form-create-album>-->
+
+<page-zone-form-create-album
+  [items]="selectedItems"
+  (doneFormModal)="onDoneCreateFormModal($event)"
+></page-zone-form-create-album>

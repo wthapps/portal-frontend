@@ -49,7 +49,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   needToReload: boolean = false;
 
   errorMessage: string;
-  showAddToAlbumForm: boolean;
   showCreatedAlbumToast: boolean;
   album: Album;
   showAddedToAlbumToast: boolean;
@@ -273,7 +272,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
 
   onCreateNewAlbum($event: boolean) {
-    this.showAddToAlbumForm = false;
+    this.formManagerService.hide('form-add-to-album-modal');
     this.formManagerService.show('form-create-album-modal');
   }
 
@@ -302,11 +301,11 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onAddToAlbum() {
-    this.showAddToAlbumForm = true;
+    this.formManagerService.show('form-add-to-album-modal');
   }
 
   onHideAddToAlbumModal() {
-    this.showAddToAlbumForm = false;
+    this.formManagerService.hide('form-add-to-album-modal');
   }
 
   onDoneCreateFormModal(e: any) {
@@ -326,7 +325,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onDoneAddToAlbum(e: any) {
-    this.showAddToAlbumForm = false;
+    this.formManagerService.hide('form-add-to-album-modal');
     this.showAddedToAlbumToast = true;
     this.albumPhotos = e
   }
@@ -337,6 +336,10 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   hasOpeningModal() : boolean{
     return (this.showTag)
+  }
+
+  onPhotosUploaded(photos:any) {
+    this.formManagerService.show('form-add-to-album-modal');
   }
 
   /**
