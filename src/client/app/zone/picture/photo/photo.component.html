@@ -58,5 +58,5 @@
   (doneFormModal)="onDoneAddToAlbum($event)"
 ></page-zone-form-add-to-album>
 <!--[formData]="formData" (formResult)="onFormResult($event)" (hideModal)="onHideModal()"-->
-<created-album-toast [showToast]="showCreatedAlbumToast" (hideToast)="onHideCreateAlbumToast()" [album]="album"></created-album-toast>
-<added-to-album-toast [showToast]="showAddedToAlbumToast" (hideToast)="onHideAddedToAlbumToast()" [data]="albumPhotos"></added-to-album-toast>
+<created-album-toast [album]="album"></created-album-toast>
+<added-to-album-toast [data]="albumPhotos"></added-to-album-toast>

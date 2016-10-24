@@ -20,7 +20,9 @@ export abstract class FormModalComponent implements OnInit, OnChanges, AfterView
   }
   //
   ngOnInit() {
-    this.formManagerService.register(this.modalId);
+    if (this.formManagerService) {
+      this.formManagerService.register(this.modalId);
+    }
   }
   //
   ngOnChanges() {

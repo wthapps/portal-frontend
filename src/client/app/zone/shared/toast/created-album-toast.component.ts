@@ -1,6 +1,7 @@
 import {Component, OnChanges, AfterViewInit, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {Album} from "../../../shared/models/album.model";
-import {ToastBottomBase} from "../../../shared/toast/toast-bottom/toast-bottom-base.component";
+import {ToastBase} from "../../../shared/toast/toast-base.component";
+import {FormManagerService} from "../../../shared/form/form-manager.service";
 
 @Component({
   moduleId: module.id,
@@ -8,8 +9,11 @@ import {ToastBottomBase} from "../../../shared/toast/toast-bottom/toast-bottom-b
   templateUrl: 'created-album-toast.component.html',
   styleUrls: ['added-to-album-toast.component.css'],
 })
-export class ZCreatedAlbumToastComponent extends ToastBottomBase{
-  @Input() showToast:boolean;
-  @Output() hideToast: EventEmitter = new EventEmitter();
+export class ZCreatedAlbumToastComponent extends ToastBase{
   @Input() album: Album;
+  constructor(
+    private formManagerService: FormManagerService,
+  ) {
+    super('created-album-toast');
+  }
 }

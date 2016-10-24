@@ -52,7 +52,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   errorMessage: string;
   showCreatedAlbumToast: boolean;
   album: Album;
-  showAddedToAlbumToast: boolean;
   albumPhotos: AlbumPhoto;
 
 
@@ -320,27 +319,27 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onDoneCreateFormModal(e: any) {
     this.formManagerService.hide('form-create-album-modal');
     if (e instanceof Album) {
-      this.showCreatedAlbumToast = true;
+      this.formManagerService.show('created-album-toast');
       this.album = e;
     } else {
-      this.showCreatedAlbumToast = false;
-      this.showAddedToAlbumToast = true;
+      this.formManagerService.hide('created-album-toast');
+      this.formManagerService.show('added-to-album-toast');
       this.albumPhotos = e;
     }
   }
 
   onHideCreateAlbumToast() {
-    this.showCreatedAlbumToast = false;
+    this.formManagerService.hide('created-album-toast');
   }
 
   onDoneAddToAlbum(e: any) {
     this.formManagerService.hide('form-add-to-album-modal');
-    this.showAddedToAlbumToast = true;
+    this.formManagerService.show('added-to-album-toast');
     this.albumPhotos = e
   }
 
   onHideAddedToAlbumToast() {
-    this.showAddedToAlbumToast = false;
+    this.formManagerService.hide('added-to-album-toast');
   }
 
   hasOpeningModal() : boolean{
