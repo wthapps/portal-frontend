@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {Component, OnInit, OnChanges, OnDestroy, SimpleChanges, EventEmitter} from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
@@ -53,6 +53,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   showCreatedAlbumToast: boolean;
   album: Album;
   albumPhotos: AlbumPhoto;
+  selectedPhotos: EventEmitter;
+  selectedPhotoFull: EventEmitter;
 
 
   /**
@@ -207,6 +209,16 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
         }
       });
     }
+  }
+
+  onImgsSelected(event: any) {
+    let _this = this;
+    this.selectedItems = [];
+    _.map(event, function (v) {
+      _this.selectedItems.push(_.find(_this.items, ['id', v]));
+    });
+    this.selectedPhotos.emit(event);
+    this.selectedPhotoFull.emit(this.selectedItems);
   }
 
   // code new

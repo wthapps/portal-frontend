@@ -1,7 +1,6 @@
-import {Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, EventEmitter, Output} from '@angular/core';
 
 import {ZPictureBarComponent} from '../shared/bar-control.component';
-import {ZAlbumGridComponent} from '../shared/grid-album.component';
 import {Album} from '../../../shared/models/album.model';
 import {ApiBaseService, LoadingService} from '../../../shared/index';
 import {ZAlbumListComponent} from '../shared/list-album.component';
@@ -21,6 +20,9 @@ declare var _: any;
 })
 
 export class ZAlbumComponent extends BaseMediaComponent {
+
+  @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Output() selectedPhotoFull: EventEmitter<Array<Photo>> = new EventEmitter<Array<Photo>>();
 
   @Input() pageView: string = 'grid';
 

@@ -2,7 +2,7 @@
   <template [ngIf]="items.length">
     <div [ngSwitch]="pageView">
       <template [ngSwitchCase]="'grid'">
-        <page-zone-album-gridview [data]="items"></page-zone-album-gridview>
+        <page-zone-album-gridview [data]="items" (imgsSelected)="onImgsSelected($event)"></page-zone-album-gridview>
       </template>
       <template [ngSwitchCase]="'list'">
         <page-zone-album-listview [data]="items"></page-zone-album-listview>

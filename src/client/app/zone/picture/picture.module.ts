@@ -22,7 +22,6 @@ import {
 import { ZAlbumComponent } from "./album/album.component";
 import { LoadingService } from "../../partials/loading/loading.service";
 import { ApiBaseService } from "../../shared/services/apibase.service";
-import { ZAlbumGridComponent } from "./shared/grid-album.component";
 import { ZAlbumDetailComponent } from "./album/album-detail.component";
 import { PhotoService } from "../../shared/services/picture/photo.service";
 import { AlbumService } from "../../shared/services/picture/album.service";
@@ -43,6 +42,7 @@ import { ZPictureGridRemoveComponent } from "../shared/grid/grid-remove.componen
 import { ZPictureTimelineComponent } from "../shared/timeline/timeline.component";
 import { ZPictureFormEditAlbumComponent } from "../shared/form/form-edit-album.component";
 import { ZAlbumListComponent } from "./shared/list-album.component";
+import {ZAlbumGridComponent} from "../shared/grid/grid-album.component";
 
 @NgModule({
   imports: [
