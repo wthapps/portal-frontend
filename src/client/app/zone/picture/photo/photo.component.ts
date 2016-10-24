@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges ViewChild} from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges ViewChild } from '@angular/core';
 import { ZPictureGridComponent, ZPictureListComponent } from '../../shared/index';
 
 // import {ZPhotoDetailComponent} from './photo-detail.component';
@@ -11,7 +11,7 @@ import {
   ToastsService,
   ConfirmationService
 } from '../../../shared/index';
-import {FormManagerService} from '../../../shared/form/form-manager.service';
+import { FormManagerService } from '../../../shared/form/form-manager.service';
 import { ZonePhotoDetailComponent } from './photo-detail.component';
 
 declare var $: any;
@@ -45,8 +45,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
               private toastsService: ToastsService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
-              private formManagerService?: FormManagerService,
-  ) {
+              private formManagerService?: FormManagerService,) {
     super(MediaType.photo, this.apiService);
   }
 
@@ -142,6 +141,8 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
         // this.delete(event.id);
         break;
       case "favourite":
+        //console.log('favourite', event);
+        this.addFavourite(true, event.currentItem);
         // this.delete(event.id);
         break;
       case "tag":

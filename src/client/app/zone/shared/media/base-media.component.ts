@@ -9,7 +9,7 @@ import {
 import { AlbumService } from "../../../shared/services/picture/album.service";
 import { Album } from "../../../shared/models/album.model";
 import { AlbumPhoto } from "../../../shared/models/album-photos.model";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
+import { FormManagerService } from "../../../shared/form/form-manager.service";
 
 
 declare var $: any;
@@ -133,7 +133,12 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
-          console.log(result);
+          _.map(newFavourite, (v)=> {
+            let vitem = _.find(this.items, ['id', v.id]);
+            vitem.favorite = setFavourite;
+          });
+          // this.items =
+
           this.loadingService.stop();
           this.toastsService.success(result.message);
         },
@@ -272,8 +277,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
 
-
-  onCreateNewAlbum(photos?:any) {
+  onCreateNewAlbum(photos?: any) {
     this.addItems = this.selectedItems;
     if (photos) {
       this.addItems = photos;
@@ -308,7 +312,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.formManagerService.hide('form-create-album-modal');
   }
 
-  onAddToAlbum(photos?:any) {
+  onAddToAlbum(photos?: any) {
     this.addItems = this.selectedItems;
     if (photos) {
       this.addItems = photos;
@@ -346,7 +350,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     this.showAddedToAlbumToast = false;
   }
 
-  hasOpeningModal() : boolean{
+  hasOpeningModal(): boolean {
     return (this.showTag)
   }
 
