@@ -5,11 +5,10 @@ import {
   LoadingService,
   ToastsService,
   ConfirmationService
-} from "../../../shared/index";
-import { AlbumService } from "../../../shared/services/picture/album.service";
-import { Album } from "../../../shared/models/album.model";
-import { AlbumPhoto } from "../../../shared/models/album-photos.model";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
+} from '../../../shared/index';
+import { Album } from '../../../shared/models/album.model';
+import { AlbumPhoto } from '../../../shared/models/album-photos.model';
+import {FormManagerService} from '../../../shared/form/form-manager.service';
 
 
 declare var $: any;

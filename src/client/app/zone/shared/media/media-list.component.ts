@@ -1,9 +1,4 @@
 import {Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
-
-//
-// import {ZPictureGridComponent} from '../shared/grid.component';
-// import {ZPictureListComponent} from '../shared/list.component';
-// import {ZPhotoDetailComponent} from './photo-detail.component';
 import { Photo } from '../../../shared/models/photo.model';
 import { BaseMediaComponent } from '../../shared/index';
 import { MediaType } from "../../../shared/index";
@@ -21,9 +16,7 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit {
 
 
   errorMessage: string = '1212121212121212';
-
   showImg: boolean = false;
-
   imgId: number;
   currentPage: number = 1;
   perPage: number = 1;
@@ -49,10 +42,6 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit {
 
   constructor(
 
-
-    //
-    // private apiService: ApiBaseService,
-    //           private loadingService: LoadingService
   ) {
     super(null);
     super.category = MediaType.photo;
