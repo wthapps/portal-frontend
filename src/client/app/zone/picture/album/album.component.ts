@@ -9,6 +9,7 @@ import {BaseMediaComponent} from "../../shared/media/base-media.component";
 import {MediaType} from "../../../shared/config/constants";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
 import {ConfirmationService} from "primeng/components/common/api";
+import {FormManagerService} from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -23,42 +24,17 @@ export class ZAlbumComponent extends BaseMediaComponent {
 
   @Input() pageView: string = 'grid';
 
-  constructor(private apiService: ApiBaseService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService,
-              private confirmationService: ConfirmationService) {
+  constructor(private apiService?: ApiBaseService,
+              private toastsService?: ToastsService,
+              private loadingService?: LoadingService,
+              private confirmationService?: ConfirmationService,
+              private formManagerService?: FormManagerService,
+  ) {
     super(MediaType.album, this.apiService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-  }
-
-  ngAfterViewInit() {
-    // let win = $(window);
-    // let _this = this;
-    //
-    // // Each time the user scrolls
-    // win.scroll(function () {
-    //   // End of the document reached?
-    //   if ($(document).height() - win.height() == win.scrollTop()) {
-    //     _this.currentPage = _this.currentPage + 1;
-    //     _this.getAlbum(_this.currentPage);
-    //   }
-    // });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    // if (changes['pageView'].currentValue) {
-    //   var view = changes['pageView'].currentValue;
-    //   if (view == 'grid') {
-    //     this.isGridView = true;
-    //     this.isListView = false;
-    //   } else if  (view == 'list') {
-    //     this.isGridView = false;
-    //     this.isListView = true;
-    //   }
-    // }
   }
 
   onPageView(view: string) {

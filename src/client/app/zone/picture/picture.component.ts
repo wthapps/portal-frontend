@@ -119,7 +119,7 @@ export class ZPictureComponent implements OnChanges {
         this.baseMedia = new ZoneVideoComponent(this.apiService);
         break;
       case MediaType.album:
-        this.baseMedia = new ZAlbumComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
+        this.baseMedia = new ZAlbumComponent();
         break;
       case MediaType.albumDetail:
         this.baseMedia = new ZAlbumDetailComponent();

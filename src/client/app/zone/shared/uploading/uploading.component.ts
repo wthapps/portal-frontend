@@ -18,8 +18,7 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
   pending_request: any;
   photoIds: Array<number>;
   files: Array<any>;
-  @Output() photoEvent: EventEmitter<any> = new EventEmitter<any>();
-  @Output() showModalAddToAlbumEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() photosUploaded: EventEmitter<any> = new EventEmitter<any>();
   @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() needToReload: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('inputfiles') inputFiles: ElementRef;
@@ -113,12 +112,11 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   onAddToAlbum(): void {
-    this.showModalAddToAlbumEvent.emit(true);
-    this.photoEvent.emit(this.photoIds);
+    this.photosUploaded.emit(this.photoIds);
   }
 
   onCreateNewAlbum() {
-    this.photoEvent.emit(this.photoIds);
+    this.photosUploaded.emit(this.photoIds);
     this.createNewAlbum.emit(true);
   }
 

@@ -8,6 +8,15 @@ export class FormManagerService {
   // forms: Array<Form> = [new Form({id: 'phat', show: true}), new Form({id: 'abc', show: true})];
   forms: Array<Form> = [];
 
+  // Register new Form into this.forms if not exist
+  register(formId:string) {
+    let newform = _.find(this.forms, function(form) {return form.id == formId; });
+    if (!newform) {
+      newform = new Form({id: formId, show:false});
+      this.forms.push(newform);
+    }
+  }
+
   show(formId:string) {
     this.register(formId);
 
@@ -20,23 +29,6 @@ export class FormManagerService {
     this.hideOnly(formId);
   }
 
-  // Add new Form into this.forms if not exist
-  register(formId:string) {
-    let newform = _.find(this.forms, function(form) {return form.id == formId; });
-    if (!newform) {
-      newform = new Form({id: formId, show:false});
-      this.forms.push(newform);
-    }
-  }
-
-  isShow(formId:string){
-    let form = _.find(this.forms, function(form) {return form.id == formId; });
-    if (form) {
-      return form.show;
-    }
-    return false;
-  }
-
   showAll(formIds:Array<string>) {
     this.forms = _.map(
       this.forms, this.showForm
@@ -47,6 +39,14 @@ export class FormManagerService {
     this.forms = _.map(
       this.forms, this.hideForm
     );
+  }
+
+  isShow(formId:string){
+    let form = _.find(this.forms, function(form) {return form.id == formId; });
+    if (form) {
+      return form.show;
+    }
+    return false;
   }
 
   private showOnly(formId:string) {
