@@ -60,6 +60,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
    * Modal variables
    */
   showTag: boolean;
+  showShare: boolean;
 
   private apiService: ApiBaseService;
   private loadingService: LoadingService;
@@ -293,10 +294,12 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   toggleModal(event: any, type: string) {
-    console.log('open model');
     switch (type) {
       case 'tag':
         this.showTag = !this.showTag;
+        break;
+      case 'share':
+        this.showShare = !this.showShare;
         break;
     }
   }

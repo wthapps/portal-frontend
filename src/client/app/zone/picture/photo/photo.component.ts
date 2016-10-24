@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges ViewChild} from '@angular/core';
 import { ZPictureGridComponent, ZPictureListComponent } from '../../shared/index';
 
 // import {ZPhotoDetailComponent} from './photo-detail.component';
@@ -11,7 +11,8 @@ import {
   ToastsService,
   ConfirmationService
 } from '../../../shared/index';
-import {FormManagerService} from "../../../shared/form/form-manager.service";
+import {FormManagerService} from '../../../shared/form/form-manager.service';
+import { ZonePhotoDetailComponent } from './photo-detail.component';
 
 declare var $: any;
 declare var _: any;
@@ -24,6 +25,7 @@ declare var _: any;
 
 export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
 
+  @ViewChild('zonephotodetail') zonephotodetail: ZonePhotoDetailComponent;
   showImg: boolean = false;
   imgId: number;
   sendActionDetail: any;
@@ -143,11 +145,11 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
         // this.delete(event.id);
         break;
       case "tag":
+        this.selectedItems = [event.currentItem];
         this.toggleModal(event, event.action);
-        // this.delete(event.id);
         break;
       case "delete":
-        this.delete(event.id);
+        this.delete(event.currentItem.id);
         break;
       case "info":
         this.sendActionToPhotoDetail(event);
@@ -169,6 +171,12 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
       // end hide modal show image
 
       this.modalHide.emit(false);
+    }
+  }
+
+  updateDetails(item: any) {
+    if (this.sendActionDetail != null) {
+      this.zonephotodetail.myItem = item;
     }
   }
 
