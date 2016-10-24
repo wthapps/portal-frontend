@@ -87,25 +87,6 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     this.sendActionDetail = event;
   }
 
-  /**
-   *
-   * End Action from Picture
-   */
-
-  /**
-   * ========================
-   * Action from grid view
-   */
-  onImgsSelected(event: any) {
-    let _this_photos = this;
-    this.selectedItems = [];
-    _.map(event, function (v) {
-      _this_photos.selectedItems.push(_.find(_this_photos.items, ['id', v]));
-    });
-    this.selectedPhotos.emit(event);
-    this.selectedPhotoFull.emit(this.selectedItems);
-  }
-
   onLoadMore(p: number) {
     this.currentPage = p;
     this.loadItems(p + 1);

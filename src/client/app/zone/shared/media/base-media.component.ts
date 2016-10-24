@@ -1,15 +1,14 @@
-import { Component, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {Component, OnInit, OnChanges, OnDestroy, SimpleChanges, EventEmitter} from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
   LoadingService,
   ToastsService,
   ConfirmationService
-} from "../../../shared/index";
-import { AlbumService } from "../../../shared/services/picture/album.service";
-import { Album } from "../../../shared/models/album.model";
-import { AlbumPhoto } from "../../../shared/models/album-photos.model";
-import { FormManagerService } from "../../../shared/form/form-manager.service";
+} from '../../../shared/index';
+import { Album } from '../../../shared/models/album.model';
+import { AlbumPhoto } from '../../../shared/models/album-photos.model';
+import {FormManagerService} from '../../../shared/form/form-manager.service';
 
 
 declare var $: any;
@@ -52,8 +51,9 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   errorMessage: string;
   showCreatedAlbumToast: boolean;
   album: Album;
-  showAddedToAlbumToast: boolean;
   albumPhotos: AlbumPhoto;
+  selectedPhotos: EventEmitter;
+  selectedPhotoFull: EventEmitter;
 
 
   /**
@@ -216,6 +216,16 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
+  onImgsSelected(event: any) {
+    let _this = this;
+    this.selectedItems = [];
+    _.map(event, function (v) {
+      _this.selectedItems.push(_.find(_this.items, ['id', v]));
+    });
+    this.selectedPhotos.emit(event);
+    this.selectedPhotoFull.emit(this.selectedItems);
+  }
+
   // code new
   getBaseMediaAction(action: string) {
     this.sendBaseMediaAction = action;
@@ -327,27 +337,27 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onDoneCreateFormModal(e: any) {
     this.formManagerService.hide('form-create-album-modal');
     if (e instanceof Album) {
-      this.showCreatedAlbumToast = true;
+      this.formManagerService.show('created-album-toast');
       this.album = e;
     } else {
-      this.showCreatedAlbumToast = false;
-      this.showAddedToAlbumToast = true;
+      this.formManagerService.hide('created-album-toast');
+      this.formManagerService.show('added-to-album-toast');
       this.albumPhotos = e;
     }
   }
 
   onHideCreateAlbumToast() {
-    this.showCreatedAlbumToast = false;
+    this.formManagerService.hide('created-album-toast');
   }
 
   onDoneAddToAlbum(e: any) {
     this.formManagerService.hide('form-add-to-album-modal');
-    this.showAddedToAlbumToast = true;
+    this.formManagerService.show('added-to-album-toast');
     this.albumPhotos = e
   }
 
   onHideAddedToAlbumToast() {
-    this.showAddedToAlbumToast = false;
+    this.formManagerService.hide('added-to-album-toast');
   }
 
   hasOpeningModal(): boolean {
