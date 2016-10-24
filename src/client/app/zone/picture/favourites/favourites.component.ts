@@ -23,5 +23,17 @@ declare var _: any;
 })
 
 export class ZoneFavouritesComponent extends BaseMediaComponent implements OnInit {
+  constructor(private apiService: ApiBaseService,
+              // these are using for BaseMediaComponent
+              // tslint:disable-next-line
+              private toastsService: ToastsService,
+              private loadingService: LoadingService,
+              private confirmationService: ConfirmationService) {
+    super(MediaType.photo, this.apiService);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+  }
 
 }

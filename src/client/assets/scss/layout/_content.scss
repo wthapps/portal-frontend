@@ -425,6 +425,17 @@ $footer-height: 222px;
   }
   .page-body-in {
     padding: 30px;
+    > section {
+      &:first-child {
+        .page-body-in-title {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  .page-body-in-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 
@@ -497,7 +508,7 @@ body.drag-active {
       float: right;
     }
     .main-layout, .right-layout {
-      display:inline;
+      display: inline;
     }
   }
 }
