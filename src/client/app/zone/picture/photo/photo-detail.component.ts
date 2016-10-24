@@ -52,12 +52,12 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   modalEdit: boolean = false;
 
   ngOnInit() {
-
+    this.myItem = null;
   }
 
   ngAfterViewInit() {
     document.onkeyup = (e: any) => {
-      if (e.which === KEY_ESC && this.hasOpeningModal) {
+      if (e.which === KEY_ESC) {
         this.hideModal();
       }
     };
@@ -72,9 +72,11 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
 
   ngOnChanges() {
     // code new
-    if (this.selectedItems) {
-      this.myItem = this.selectedItems[0];
 
+    if (this.selectedItems) {
+      if (this.myItem == null) {
+        this.myItem = this.selectedItems[0];
+      }
       if (this.selectedItems.length > 1) {
         this.myItemsPreview = this.selectedItems;
       } else {
@@ -140,10 +142,9 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
 
   onAction(even: any, type: string) {
     //this.hideModal();
-    this.action.emit(
-      {
+    this.action.emit({
         action: type,
-        id: this.myItem.id
+        currentItem: this.myItem
       }
     );
   }

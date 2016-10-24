@@ -12,10 +12,12 @@ declare var _: any;
   styleUrls: ['tagging.component.css']
 })
 export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() modalShow;
+  @Input() modalShow: any;
+  @Input() mediaType: any;
   @Input() selectedItems: Array<any>;
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onItemUpdated: EventEmitter<any> = new EventEmitter<any>();
   tags: Array<any>;
   selectedTags: Array<any>;
   currentTags: Array<any>;
@@ -42,14 +44,12 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit() {
     let _this = this;
 
-
     $('#taggingModal').on('hidden.bs.modal', () => {
       _this.modalHide.emit(false);
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('tag model', this.modalShow);
     if (this.modalShow) {
       $('#taggingModal').modal({
         backdrop: 'static'
@@ -64,19 +64,22 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
         error => {
           console.log('error', error);
         });
-    }
 
-    if (changes['selectedItems'] && changes['selectedItems'].currentValue['length'] > 0) {
-      let body = JSON.stringify({ objects: _.map(this.selectedItems, 'id'), type: 1 });
+      let body = JSON.stringify({ objects: _.map(this.selectedItems, 'id'), type: this.getType() });
       this.apiService.post(`zone/tags/get_tags`, body)
         .map(res => res.json())
         .subscribe((result: any) => {
-          this.selectedTags = result['data'];
-          this.currentTags = result['data'];
-        },
-        error => {
-          console.log('error', error);
-        });
+            this.selectedTags = result['data'];
+            this.currentTags = result['data'];
+          },
+          error => {
+            console.log('error', error);
+          });
+    }
+    if (changes['selectedItems'] && changes['selectedItems'].currentValue['length'] > 0) {
+      this.newTags = new Array<any>();
+      this.addedTags = new Array<any>();
+      this.removedTags = new Array<any>();
     }
   }
 
@@ -110,22 +113,34 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
   save(event: any) {
     let body = JSON.stringify({
       objects: _.map(this.selectedItems, 'id'),
-      type: 1,
+      type: this.getType(),
       newTags: this.newTags,
       addedTags: this.addedTags,
       removedTags: this.removedTags
     });
 
     this.apiService.put(`zone/tags/update`, body)
+      .map(result => result.json())
       .subscribe((result: any) => {
         this.hasChanged = false;
+        this.selectedItems = result['data'];
+        this.onItemUpdated.emit(result['data'][0]);
       },
       error => {
         console.log('error', error);
       });
   }
 
-  private checkIfHasChanged() {
+  private checkIfHasChanged(): void {
     this.hasChanged = (this.removedTags.length > 0 || this.addedTags.length > 0) ? true : false;
+  }
+
+  private getType(): number {
+    if (this.mediaType == 'photo') {
+      return 1;
+    }
+    if (this.mediaType == 'album') {
+      return 2;
+    }
   }
 }

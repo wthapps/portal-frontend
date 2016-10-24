@@ -62,11 +62,8 @@
     </dl>
     <hr>
     <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="onAction($event,'tag')">Edit</a></h4>
-    <div class="tags-text">
-      <span>Flowers</span>
-      <span>Danger</span>
-      <span>Sunflower</span>
-      <span>Fire</span>
+    <div class="tags-text" *ngFor="let tag of myItem.json_tags">
+      <span>{{tag}}</span>
     </div>
     <hr>
     <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="onAction($event,'share')">Edit</a></h4>

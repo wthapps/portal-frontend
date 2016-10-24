@@ -13,6 +13,7 @@ declare var _: any;
 })
 export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() modalShow: any;
+  @Input() mediaType: any;
   @Input() selectedItems: Array<any>;
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -76,9 +77,13 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.modalShow) {
-      $('#sharingModal').modal('show');
+      $('#sharingModal').modal({
+        backdrop: 'static'
+        //'show'
+      });
     }
-    if (changes['selectedItems'] && changes['selectedItems'].currentValue['length'] > 0) {
+
+    if (changes['modalShow'] && changes['modalShow'].currentValue) {
       let body = JSON.stringify({ photos: _.map(this.selectedItems, 'id'), albums: [] });
       this.apiService.post(`zone/sharings/get_sharing_info`, body)
         .map(res => res.json())
