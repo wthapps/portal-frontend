@@ -48,13 +48,13 @@
 <!--&lt;!&ndash; <wth-toast-upload></wth-toast-upload> &ndash;&gt;-->
 <!--<toast-uploading (addedToAlbumEvent)="addedToAlbum($event)"></toast-uploading>-->
 <page-zone-form-create-album
-  [items]="selectedItems"
+  [items]="addItems"
   (doneFormModal)="onDoneCreateFormModal($event)"
 ></page-zone-form-create-album>
 
 <page-zone-form-add-to-album
   (createNewAlbum)="onCreateNewAlbum()"
-  [selectedItems]="selectedItems"
+  [selectedItems]="addItems"
   (doneFormModal)="onDoneAddToAlbum($event)"
 ></page-zone-form-add-to-album>
 <!--[formData]="formData" (formResult)="onFormResult($event)" (hideModal)="onHideModal()"-->

@@ -16,10 +16,7 @@ declare var _: any;
   templateUrl: 'form-add-to-album.component.html',
 })
 export class ZPictureFormAddToAlbumComponent extends FormModalComponent{
-  @Input() showFormModal:boolean;
   @Input() selectedItems:Array<Photo>;
-
-  @Output() hideFormModal: EventEmitter= new EventEmitter();
   @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() doneFormModal: EventEmitter<any>= new EventEmitter<any>();
 

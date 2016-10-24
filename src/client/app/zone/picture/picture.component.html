@@ -13,7 +13,7 @@
     (onEdit)="edit($event)"
     (onDownload)="download($event)"
     (onViewInfo)="baseMedia.getBaseMediaAction('info')"
-    (createNewAlbum)="baseMedia.onCreateNewAlbum($event)"
+    (createNewAlbum)="baseMedia.onCreateNewAlbum()"
   ></zone-toolbar>
 </div>
 
@@ -40,7 +40,7 @@
 </div>
 
 <zone-uploading #zoneUpload
-                (photosUploaded)="baseMedia.onPhotosUploaded($event)"
+                (addToAlbum)="baseMedia.onAddToAlbum($event)"
                 (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
                 (createNewAlbum)="baseMedia.onCreateNewAlbum($event)"
                 (needToReload)="uploadedItem($event)"
