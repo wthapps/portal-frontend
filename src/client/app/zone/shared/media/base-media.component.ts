@@ -1,4 +1,4 @@
-import {Component, OnInit, OnChanges, OnDestroy, SimpleChanges, EventEmitter} from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, SimpleChanges, EventEmitter } from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
@@ -8,7 +8,7 @@ import {
 } from '../../../shared/index';
 import { Album } from '../../../shared/models/album.model';
 import { AlbumPhoto } from '../../../shared/models/album-photos.model';
-import {FormManagerService} from '../../../shared/form/form-manager.service';
+import { FormManagerService } from '../../../shared/form/form-manager.service';
 
 
 declare var $: any;
@@ -114,7 +114,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     if (item) {
       newFavourite = [item];
     }
-    console.log(newFavourite);
 
     let hasFavourite = _.find(newFavourite, {'favorite': false});
 
@@ -149,41 +148,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
           console.log(error);
         }
       );
-
-    /*
-     // this.needToReload = false;
-     if (event) {
-     let newFavourite = this.selectedItems;
-     if (item) {
-     newFavourite = [item];
-     }
-     let hasFavourite = _.find(newFavourite, {'favorite': false});
-
-     let body = JSON.stringify({
-     ids: _.map(newFavourite, 'id'),
-     isToggle: hasFavourite
-     });
-     console.log('newFavourite:', newFavourite, 'hasFavourite:', hasFavourite, 'body:', body);
-
-     return false;
-
-     this.loadingService.start();
-     this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
-     .subscribe((result: any) => {
-     // stop loading
-     this.needToReload = true;
-     this.loadItems(this.currentPage);
-     this.loadingService.stop();
-     this.toastsService.success(result.message);
-     },
-     error => {
-     // stop loading
-     this.loadingService.stop();
-     this.toastsService.danger(error);
-     console.log(error);
-     }
-     );
-     }*/
   }
 
   delete(event: any) {
