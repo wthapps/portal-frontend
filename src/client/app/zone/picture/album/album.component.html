@@ -5,7 +5,7 @@
         <page-zone-album-gridview [data]="items" (imgsSelected)="onImgsSelected($event)"></page-zone-album-gridview>
       </template>
       <template [ngSwitchCase]="'list'">
-        <page-zone-album-listview [data]="items"></page-zone-album-listview>
+        <page-zone-album-listview [data]="items" (imgsSelected)="onImgsSelected($event)"></page-zone-album-listview>
       </template>
     </div>
   </template>

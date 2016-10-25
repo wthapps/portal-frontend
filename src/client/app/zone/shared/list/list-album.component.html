@@ -17,7 +17,7 @@
       Size
     </div>
   </div>
-  <a [routerLink]="['/zone/picture/album', album.id]" class="photo-box-img" *ngFor="let album of dataAlbums" style="color: #A4A4A4">
+  <div (click)="onSelected($event, album.id)" (dblclick)="onDbClick($event, album.id)" class="photo-box-img" *ngFor="let album of data" style="color: #A4A4A4">
       <figure class="img-center-dv">
         <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
         <img class="img-center" src="/assets/images/zone/img-default.png" alt="">
@@ -34,5 +34,5 @@
       <div class="photo-box-img-size">
         {{album.photo_number}}
       </div>
-  </a>
+  </div>
 </div>

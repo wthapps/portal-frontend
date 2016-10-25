@@ -1,9 +1,6 @@
 import {Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, EventEmitter, Output} from '@angular/core';
 
-import {ZPictureBarComponent} from '../shared/bar-control.component';
-import {Album} from '../../../shared/models/album.model';
 import {ApiBaseService, LoadingService} from '../../../shared/index';
-import {ZAlbumListComponent} from '../shared/list-album.component';
 import {BaseMediaComponent} from "../../shared/media/base-media.component";
 import {MediaType} from "../../../shared/config/constants";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
