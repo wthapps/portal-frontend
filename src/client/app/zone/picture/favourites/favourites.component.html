@@ -5,14 +5,7 @@
       Album
     </div>
 
-    <div class="row-img">
-      <div class="photo-box-img">
-        <figure class="img-center-dv">
-          <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-          <img class="img-center" src="/assets/images/zone/img-photo.png" alt="">
-        </figure>
-      </div>
-    </div>
+    <page-zone-album-gridview [data]="items.albums" (imgsSelected)="onImgsSelected($event)"></page-zone-album-gridview>
   </section>
 
   <section>
