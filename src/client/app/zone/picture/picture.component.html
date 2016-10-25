@@ -34,7 +34,7 @@
   </div>
 
   <div *ngSwitchCase="mediaType.favourites">
-    <zone-favourites #media></zone-favourites>
+    <zone-favourites #media [inputAction]="baseMedia.sendBaseMediaAction"></zone-favourites>
   </div>
 
 </div>

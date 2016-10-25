@@ -114,7 +114,7 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
   onGridEvent(event: any) {
     switch (event.action) {
       case "favourite":
-        this.addFavourite(true, event.item);
+        this.addFavourite_favourite(true, event.item);
         break;
       default:
         break;
@@ -173,4 +173,49 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
    *
    * End Action from photo detail
    */
+
+
+  private addFavourite_favourite(event: any, item: any = null) {
+
+    this.loadingService.start();
+
+    let newFavourite = this.selectedItems;
+    if (item) {
+      newFavourite = [item];
+    }
+
+    let hasFavourite = _.find(newFavourite, {'favorite': false});
+
+    let setFavourite = false; // if current item's favorite is true
+
+    if (hasFavourite) { // if there is one item's favorite is false
+      setFavourite = true;
+    }
+    let body = JSON.stringify({
+      ids: _.map(newFavourite, 'id'),
+      setFavourite: setFavourite
+    });
+
+
+    this.apiService.post(`zone/photos/favourite`, body)
+      .map(res => res.json())
+      .subscribe((result: any) => {
+          // stop loading
+          _.map(newFavourite, (v)=> {
+            let vitem = _.find(this.items, ['id', v.id]);
+            vitem.favorite = setFavourite;
+          });
+          // this.items =
+
+          this.loadingService.stop();
+          this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error);
+          console.log(error);
+        }
+      );
+  }
 }

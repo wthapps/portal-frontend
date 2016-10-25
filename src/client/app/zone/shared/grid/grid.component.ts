@@ -5,6 +5,11 @@ import {
 }                          from '@angular/core';
 
 import { Photo } from '../../../shared/models/photo.model';
+import {
+  LoadingService,
+  ApiBaseService,
+  ToastsService
+} from '../../../shared/index';
 
 declare var $: any;
 declare var _: any;
@@ -35,7 +40,9 @@ export abstract class ZPictureGridComponent implements OnChanges {
   keyCtrl: boolean = false;
   reset: boolean;
 
-  constructor() {
+  constructor(private apiService: ApiBaseService,
+              private loadingService: LoadingService,
+              private toastsService: ToastsService) {
   }
 
   onDocumentKeyDown(ev: KeyboardEvent) {
@@ -121,9 +128,53 @@ export abstract class ZPictureGridComponent implements OnChanges {
   }
 
   addFavourite(e: any, item: any) {
-    // this.outEvent.emit({
-    //   action: 'favourite',
-    //   item: item
-    // });
+    /*this.outEvent.emit({
+     action: 'favourite',
+     item: item
+     });*/
+
+    this.onAddFavourite_type(e, item);
+
+  }
+
+  private onAddFavourite_type(event: any, item: any = null) {
+
+    this.loadingService.start();
+
+    let newFavourite = [item];
+
+    let hasFavourite = _.find(newFavourite, {'favorite': false});
+
+    let setFavourite = false; // if current item's favorite is true
+
+    if (hasFavourite) { // if there is one item's favorite is false
+      setFavourite = true;
+    }
+    let body = JSON.stringify({
+      ids: _.map(newFavourite, 'id'),
+      setFavourite: setFavourite
+    });
+
+
+    this.apiService.post(`zone/${this.category}/favourite`, body)
+      .map(res => res.json())
+      .subscribe((result: any) => {
+          // stop loading
+          _.map(newFavourite, (v)=> {
+            let vitem = _.find(this.items, ['id', v.id]);
+            vitem.favorite = setFavourite;
+          });
+          // this.items =
+
+          this.loadingService.stop();
+          this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error);
+          console.log(error);
+        }
+      );
   }
 }
