@@ -26,6 +26,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
   album: Album = new Album(null);
   albumId: number;
+  selectedItems: Array<any> = new Array<any>();
 
   constructor(
     private apiService?: ApiBaseService,
@@ -140,5 +141,15 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   onDoneEditAlbumFormModal(album:Album) {
     this.formManagerService.hide('form-edit-album-modal');
     this.album = album;
+  }
+
+  toggleModal(event: any, type: string) {
+    this.selectedItems = [];
+    this.selectedItems.push(event);
+    super.toggleModal(event, type);
+  }
+
+  updateDetails(item: any) {
+    this.album = item;
   }
 }
