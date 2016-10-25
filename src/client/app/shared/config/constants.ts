@@ -51,7 +51,11 @@ export let Constants = {
   },
   img: {
     app: '/assets/images/apps/default.png',
-    avatar: '/assets/images/avatar/default.png'
+    avatar: '/assets/images/avatar/default.png',
+    logo: '/assets/images/logo.png',
+    logoWhite: '/assets/images/logo-white.png',
+    logoZone: '/assets/images/logo-zone.png',
+    logoZoneWhite: '/assets/images/logo-zone-white.png',
   },
   windows: {
     scrollBarWidth: getBarwidth()

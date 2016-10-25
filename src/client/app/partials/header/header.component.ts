@@ -24,10 +24,10 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   last_name: string = '';
   urls: any;
 
-  headerOver: boolean = true;
+  navigationUrl: string = '/';
 
-  navTitle: string;
-  nav_title_url: string = '';
+  headerOver: boolean = true;
+  imgLogo: string = Constants.img.logoWhite;
 
   showSearchBar: boolean = false;
 
@@ -81,17 +81,20 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     if (this.urls[0] == '/account') {
       if (this.urls[1] && this.urls[1] == '/account/recovery') {
         this.headerOver = true;
+        this.imgLogo = Constants.img.logoWhite;
       } else {
         this.headerOver = false;
+        this.imgLogo = Constants.img.logo;
       }
 
       // zone layout
     } else if (this.urls[0] == '/zone') {
       this.headerOver = false;
+      this.imgLogo = Constants.img.logoZone;
       // zone layout
-
     } else {
       this.headerOver = true;
+      this.imgLogo = Constants.img.logoWhite;
     }
     // end header overlay
 
@@ -106,31 +109,24 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
     if (param_url[0] == '/account/setting') {
       this.showSearchBar = false;
-      this.navTitle = 'Account Management';
     } else if (param_url[0] == '/account/apps') {
       this.showSearchBar = true;
-      this.navTitle = 'Apps';
     } else if (param_url[0] == '/account/my-apps') {
       this.showSearchBar = true;
-      this.navTitle = 'My Apps';
-
       // zone layout
     } else if (param_url[0] == '/zone' || param_url[0] == '/zone/picture') {
       this.showSearchBar = false;
-      this.navTitle = 'Zone';
+      this.navigationUrl = '/zone/picture/photo';
       // zone layout
 
     } else {
       this.showSearchBar = false;
-      this.navTitle = null;
     }
   }
 
-  onNavigateByTitle(event: any): void {
+  onNavigation(event: any): void {
     event.preventDefault();
-    if (this.navTitle == 'Library') {
-      this.router.navigate(['/account/apps']);
-    }
+    this.router.navigate([this.navigationUrl]);
   }
 
   logout() {
