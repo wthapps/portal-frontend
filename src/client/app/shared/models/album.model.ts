@@ -5,6 +5,7 @@ export class Album {
   owner: any;
   photos: any;
   created_at:any;
+  photo_default:any;
 
   constructor(fields: {
     id?: number,
@@ -13,6 +14,7 @@ export class Album {
     owner?: any,
     photos?: any,
     created_at?:any;
+    photo_default?:any;
   }) {
     if (fields) Object.assign(this, fields);
   }
