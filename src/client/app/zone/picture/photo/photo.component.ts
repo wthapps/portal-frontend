@@ -118,14 +118,12 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
    */
   onAction(event: any) {
     switch (event.action) {
-      case "share":
-        // this.delete(event.id);
-        break;
       case "favourite":
         //console.log('favourite', event);
         this.addFavourite(true, event.currentItem);
         // this.delete(event.id);
         break;
+      case "share":
       case "tag":
         this.selectedItems = [event.currentItem];
         this.toggleModal(event, event.action);
@@ -160,6 +158,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     if (this.sendActionDetail != null) {
       this.zonephotodetail.myItem = item;
     }
+    console.log('update item', item);
   }
 
   /**

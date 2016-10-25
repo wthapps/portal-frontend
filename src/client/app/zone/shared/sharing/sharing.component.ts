@@ -16,6 +16,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() mediaType: any;
   @Input() selectedItems: Array<any>;
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onItemUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   textContacts: string;
   textContactGroups: string;
@@ -159,6 +160,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
             this.selectedContactGroups = [];
             this.hasUpdatedItems = false;
           }
+          this.onItemUpdated.emit(result['data'].photos[0]);
         },
         error => {
           console.log('error', error);
@@ -173,6 +175,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
           this.sharedContactGroups = result['data'].contactgroups;
           this.selectedContacts = [];
           this.selectedContactGroups = [];
+          this.onItemUpdated.emit(result['data'].photos[0]);
         },
         error => {
           console.log('error', error);

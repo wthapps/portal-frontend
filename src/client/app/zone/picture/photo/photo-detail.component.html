@@ -62,8 +62,8 @@
     </dl>
     <hr>
     <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="onAction($event,'tag')">Edit</a></h4>
-    <div class="tags-text" *ngFor="let tag of myItem.json_tags">
-      <span>{{tag}}</span>
+    <div class="tags-text">
+      <span *ngFor="let tag of myItem.json_tags">{{tag}}</span>
     </div>
     <hr>
     <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="onAction($event,'share')">Edit</a></h4>
@@ -71,30 +71,23 @@
       <dt>Owner</dt>
       <dd>
         <ul class="list-unstyled">
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          <li><img src="assets/images/zone/img-group.png" alt="{{myItem.owner.name}}" title="{{myItem.owner.name}}"></li>
         </ul>
       </dd>
       <dt>Group</dt>
       <dd>
-        <ul class="list-unstyled">
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
+        <ul class="list-unstyled" >
+          <li *ngFor="let group of myItem.json_shares[0].contactgroups">
+            <img src="assets/images/zone/img-group.png" title="{{group.name}}">
+          </li>
         </ul>
       </dd>
       <dt>Contact</dt>
       <dd>
-        <ul class="list-unstyled">
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li><img src="assets/images/zone/img-group.png" alt=""></li>
-          <li></li>
+        <ul class="list-unstyled" >
+          <li *ngFor="let contact of myItem.json_shares[0].contacts">
+            <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
+          </li>
         </ul>
       </dd>
     </dl>

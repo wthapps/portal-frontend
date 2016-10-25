@@ -178,8 +178,6 @@ export class ZPictureComponent implements OnChanges {
    * Hide modal
    */
   onModalHide(event: boolean): void {
-
-    console.log('data', event);
     this.modalShare = event;
     this.modalTag = event;
     this.modalPreview = event;
