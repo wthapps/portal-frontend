@@ -13,5 +13,12 @@
     <dt>Created</dt>
     <dd>{{album.created_at | date}}</dd>
   </dl>
+
+  <hr>
+  <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="tag(album)">Edit</a></h4>
+  <div class="tags-text" *ngFor="let tag of album.json_tags">
+    <span>{{tag}}</span>
+  </div>
+  <hr>
 </div>
 

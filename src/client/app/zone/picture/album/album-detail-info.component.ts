@@ -21,6 +21,7 @@ export class ZAlbumDetailInfoComponent implements OnInit, OnChanges{
 
   @Input() album:Album;
   @Output() closeInfo: EventEmitter = new EventEmitter();
+  @Output() tagEvent: EventEmitter<Album> = new EventEmitter<Album>();
   @Output() showFormEdit: EventEmitter = new EventEmitter();
   albumData:Album = null;
 
@@ -46,5 +47,9 @@ export class ZAlbumDetailInfoComponent implements OnInit, OnChanges{
 
   onShowEditInfo() {
     this.showFormEdit.emit();
+  }
+
+  tag(album:Album) {
+    this.tagEvent.emit(album);
   }
 }

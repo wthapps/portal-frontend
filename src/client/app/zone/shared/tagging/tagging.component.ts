@@ -142,5 +142,8 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.mediaType == 'album') {
       return 2;
     }
+    if (this.mediaType == 'albumDetail') {
+      return 2;
+    }
   }
 }

@@ -5,7 +5,7 @@
     (selectedFiles)="handleFileUpload($event)"
     (onViewChanged)="baseMedia.changeView($event)"
     (onPreview)="baseMedia.getBaseMediaAction('preview')"
-    (onShare)="share($event)"
+    (onShare)="baseMedia.toggleModal($event, 'share')"
     (onTag)="baseMedia.toggleModal($event, 'tag')"
     (onFavourite)="baseMedia.addFavourite($event)"
     (onDelete)="baseMedia.delete($event)"
@@ -54,9 +54,10 @@
 
 
 <zone-sharing [mediaType]="category"
-              (modalHide)="onModalHide($event)"
-              [modalShow]="modalShare"
-              [selectedItems]="baseMedia.selectedItems"></zone-sharing>
+              [modalShow]="baseMedia.showShare"
+              [selectedItems]="baseMedia.selectedItems"
+              (modalHide)="baseMedia.toggleModal(event,'share')"
+              (onItemUpdated)="baseMedia.updateDetails($event)"></zone-sharing>
 
 <zone-tagging [mediaType]="category"
               [modalShow]="baseMedia.showTag"

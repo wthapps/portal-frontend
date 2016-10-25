@@ -41,8 +41,8 @@ import { ZPictureEditPhotoComponent } from "../shared/form/form-edit-photo.compo
 import { ZPictureGridRemoveComponent } from "../shared/grid/grid-remove.component";
 import { ZPictureTimelineComponent } from "../shared/timeline/timeline.component";
 import { ZPictureFormEditAlbumComponent } from "../shared/form/form-edit-album.component";
-import { ZAlbumListComponent } from "./shared/list-album.component";
 import {ZAlbumGridComponent} from "../shared/grid/grid-album.component";
+import {ZAlbumListComponent} from "../shared/list/list-album.component";
 
 @NgModule({
   imports: [

@@ -82,7 +82,6 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
       } else {
         this.myItemsPreview = this.items;
       }
-
     }
 
     if (this.getAction) {

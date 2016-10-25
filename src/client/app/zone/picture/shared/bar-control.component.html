@@ -23,18 +23,6 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/photo']"><i class="fa fa-picture-o"></i> Photos</a>-->
-        <!--</li>-->
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/album']"><i class="fa fa-files-o"></i> Albums</a>-->
-        <!--</li>-->
-        <!--<li role="separator" class="divider"></li>-->
-        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Video</a></li>-->
-        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Playlist</a></li>-->
-        <!--<li role="separator" class="divider"></li>-->
-        <!--<li><a href="#"><i class="fa fa-star"></i> Favourite</a></li>-->
-
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
           <a [routerLink]="[item.link]">
             <i [ngClass]="item.css"></i> {{item.name}}
@@ -126,7 +114,6 @@
       </a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li><a (click)="add($event)" href="javascript:;" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-plus-square"></i> Add to Album</a></li>
-        <!--<li><a (click)="download($event)" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>-->
         <li><a class="text-disable" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>
         <li><a *ngIf="!hasMultiSelectedItem" (click)="edit($event)" href="javascript:;"><i class="fa fa-edit"></i> Edit</a>
         </li>
