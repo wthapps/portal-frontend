@@ -200,15 +200,14 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
     this.apiService.post(`zone/photos/favourite`, body)
       .map(res => res.json())
       .subscribe((result: any) => {
-          // stop loading
           _.map(newFavourite, (v)=> {
-            let vitem = _.find(this.items, ['id', v.id]);
-            vitem.favorite = setFavourite;
+            this.items.photos = _.reject(this.items.photos, ['id', v.id]);
           });
-          // this.items =
+
 
           this.loadingService.stop();
           this.toastsService.success(result.message);
+
         },
         error => {
           // stop loading

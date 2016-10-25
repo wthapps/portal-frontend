@@ -128,12 +128,12 @@ export abstract class ZPictureGridComponent implements OnChanges {
   }
 
   addFavourite(e: any, item: any) {
-    /*this.outEvent.emit({
-     action: 'favourite',
-     item: item
-     });*/
+    this.outEvent.emit({
+      action: 'favourite',
+      item: item
+    });
 
-    this.onAddFavourite_type(e, item);
+    //this.onAddFavourite_type(e, item);
 
   }
 
