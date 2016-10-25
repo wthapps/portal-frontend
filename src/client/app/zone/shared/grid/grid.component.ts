@@ -22,6 +22,7 @@ declare var _: any;
 export abstract class ZPictureGridComponent implements OnChanges {
   @Input() items: Array<any>;
   @Input() resetSelected: boolean;
+  @Input() category: string;
 
   @Output() preview: EventEmitter<string> = new EventEmitter<string>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
@@ -120,9 +121,9 @@ export abstract class ZPictureGridComponent implements OnChanges {
   }
 
   addFavourite(e: any, item: any) {
-    this.outEvent.emit({
-      action: 'favourite',
-      item: item
-    });
+    // this.outEvent.emit({
+    //   action: 'favourite',
+    //   item: item
+    // });
   }
 }

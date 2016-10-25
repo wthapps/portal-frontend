@@ -3,6 +3,7 @@
   <template [ngIf]="items.length">
     <template [ngIf]="isGridView">
       <page-zone-gridview
+        [category]="category"
         [items]="items"
         (imgsSelected)="onImgsSelected($event)"
         (preview)="onPreview($event)"

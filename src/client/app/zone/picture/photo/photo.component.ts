@@ -99,7 +99,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   onGridEvent(event: any) {
     switch (event.action) {
       case "favourite":
-        this.addFavourite(true, event.item);
+        this.addFavourite1(true, event.item);
         break;
       default:
         break;
@@ -166,4 +166,48 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
    * End Action from photo detail
    */
 
+  addFavourite1(event: any, item: any = null) {
+
+    this.loadingService.start();
+
+    let newFavourite = this.selectedItems;
+    if (item) {
+      newFavourite = [item];
+    }
+    console.log(newFavourite);
+
+    let hasFavourite = _.find(newFavourite, {'favorite': false});
+
+    let setFavourite = false; // if current item's favorite is true
+
+    if (hasFavourite) { // if there is one item's favorite is false
+      setFavourite = true;
+    }
+    let body = JSON.stringify({
+      ids: _.map(newFavourite, 'id'),
+      setFavourite: setFavourite
+    });
+
+
+    this.apiService.post('photos/favourite', body)
+      .map(res => res.json())
+      .subscribe((result: any) => {
+          // stop loading
+          _.map(newFavourite, (v)=> {
+            let vitem = _.find(this.items, ['id', v.id]);
+            vitem.favorite = setFavourite;
+          });
+          // this.items =
+
+          this.loadingService.stop();
+          this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error);
+          console.log(error);
+        }
+      );
+  }
 }
