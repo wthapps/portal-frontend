@@ -46,6 +46,8 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
   @Output() action: EventEmitter<any> = new EventEmitter<any>();
 
   myItem: Photo;
+  contactGroups: Array<any> = new Array<any>();
+  contacts: Array<any> = new Array<any>();
   myItemsPreview: Array<Photo>;
   imgIndex: number = 0;
 
@@ -159,5 +161,7 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
 
   onPhotoUpdateInfo(item: Photo) {
     this.myItem = item;
+    this.contactGroups = item.json_shares[0].contactgroups;
+    this.contacts = item.json_shares[0].contacts;
   }
 }

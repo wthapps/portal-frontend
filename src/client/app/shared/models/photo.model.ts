@@ -9,6 +9,7 @@ export class Photo {
   url: string;
   description: string;
   favorite: boolean;
+  json_shares: any;
 
   constructor(fields: {
     id?: number,
@@ -21,6 +22,7 @@ export class Photo {
     url?: string,
     description?: string,
     favorite?: boolean,
+    json_shares?: any;
   }) {
     if (fields) Object.assign(this, fields);
   }

@@ -77,7 +77,7 @@
       <dt>Group</dt>
       <dd>
         <ul class="list-unstyled" >
-          <li *ngFor="let group of myItem.json_shares[0].contactgroups">
+          <li *ngFor="let group of contactGroups">
             <img src="assets/images/zone/img-group.png" title="{{group.name}}">
           </li>
         </ul>
@@ -85,7 +85,7 @@
       <dt>Contact</dt>
       <dd>
         <ul class="list-unstyled" >
-          <li *ngFor="let contact of myItem.json_shares[0].contacts">
+          <li *ngFor="let contact of contacts">
             <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
           </li>
         </ul>
