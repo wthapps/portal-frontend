@@ -4,8 +4,12 @@
     <div class="page-body-in-title">
       Album
     </div>
-
-    <page-zone-album-gridview [data]="items.albums" (imgsSelected)="onImgsSelected($event)"></page-zone-album-gridview>
+    <template [ngIf]="isGridView">
+      <page-zone-album-gridview [data]="items.albums" (imgsSelected)="onImgsSelected($event)"></page-zone-album-gridview>
+    </template>
+    <template [ngIf]="isListView">
+      <page-zone-album-listview [data]="items.albums" (imgsSelected)="onImgsSelected($event)"></page-zone-album-listview>
+    </template>
   </section>
 
   <section>

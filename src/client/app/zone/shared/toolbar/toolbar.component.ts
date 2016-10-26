@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import {Constants} from "../../../shared/config/constants";
 
 declare var $: any;
 declare var _: any;
@@ -17,13 +18,13 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
   listFilter: string = '';
   currentView: string = 'grid';
 
-  items = [
-    {name: 'Photos', css: 'fa fa-picture-o', link: '/zone/picture/photo'},
-    {name: 'Albums', css: 'fa fa-files-o', link: '/zone/picture/album'},
-    {name: 'Video', css: 'fa fa-files-o', link: '/zone/picture/video'},
-  ];
+  items = Constants.pictureMenuItems;
+  actions = Constants.pictureMenuActions;
+
   selectedEl: any;
   @Input() selectedItems: Array<any>;
+  @Input() category: string;
+
   hasSelectedItem: boolean;
   hasMultiSelectedItem: boolean;
   // @Input() hasFavourite: boolean = false;
@@ -62,6 +63,9 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
     if (this.hasSelectedItem == undefined) this.hasSelectedItem = false;
   }
 
+  ngDoCheck() {
+    this.onOffAction();
+  }
   ngAfterViewInit() {
     let _thisBar = this;
     $('body').on('click', function () {
@@ -162,5 +166,34 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
 
   onClickCreateAlbum() {
     this.createNewAlbum.emit(true);
+  }
+
+  onOffAction() {
+    switch (this.category) {
+      case 'album':
+        this.actions.preview = false;
+        this.actions.share = true;
+        this.actions.delete = true;
+        this.actions.tag = true;
+        this.actions.addFavourite = true;
+        this.actions.other = false;
+        break;
+      case 'photo':
+        this.actions.preview = true;
+        this.actions.share = true;
+        this.actions.delete = true;
+        this.actions.tag = true;
+        this.actions.addFavourite = true;
+        this.actions.other = true;
+        break;
+      case 'favourites':
+        this.actions.preview = false;
+        this.actions.share = false;
+        this.actions.delete = false;
+        this.actions.tag = false;
+        this.actions.addFavourite = false;
+        this.actions.other = false;
+        break;
+    }
   }
 }
