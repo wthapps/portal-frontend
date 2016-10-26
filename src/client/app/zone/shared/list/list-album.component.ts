@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, EventEmitter, Output} from '@angular/core';
+import { Component, Input, OnChanges, EventEmitter, Output } from '@angular/core';
 
 import {Album} from "../../../shared/models/album.model";
 import {ZPictureListComponent} from "./list.component";
@@ -16,7 +16,7 @@ declare var _: any;
   }
 })
 
-export class ZAlbumListComponent extends ZPictureListComponent{
+export class ZAlbumListComponent extends ZPictureListComponent {
   @Input() data: Array<Album>;
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
 

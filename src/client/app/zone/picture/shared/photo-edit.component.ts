@@ -1,5 +1,5 @@
-import {Component, OnChanges, Input, Output, EventEmitter, AfterViewInit} from '@angular/core';
-import {Photo} from '../../../shared/models/photo.model';
+import { Component, OnChanges, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Photo } from '../../../shared/models/photo.model';
 
 declare var $: any;
 declare var _: any;

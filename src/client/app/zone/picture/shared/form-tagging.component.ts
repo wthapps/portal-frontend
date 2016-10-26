@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
 
 
 declare var $: any;
@@ -9,7 +9,7 @@ declare var $: any;
   templateUrl: 'tagging.component.html'
 })
 export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() modalShow:boolean;
+  @Input() modalShow: boolean;
   @Input() data: Array<any>;
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -24,7 +24,7 @@ export class ZPictureTaggingComponent implements OnInit, OnChanges, AfterViewIni
 
   ngAfterViewInit() {
     let _this = this;
-    $('#taggingModal').on('hidden.bs.modal', function (e:any) {
+    $('#taggingModal').on('hidden.bs.modal', function (e: any) {
       _this.modalHide.emit(false);
     });
   }

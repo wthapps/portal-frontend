@@ -66,6 +66,7 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
   ngDoCheck() {
     this.onOffAction();
   }
+
   ngAfterViewInit() {
     let _thisBar = this;
     $('body').on('click', function () {

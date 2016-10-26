@@ -1,12 +1,12 @@
-import {Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, EventEmitter, Output} from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, EventEmitter, Output } from '@angular/core';
 
-import {ApiBaseService, LoadingService} from '../../../shared/index';
-import {BaseMediaComponent} from "../../shared/media/base-media.component";
-import {MediaType} from "../../../shared/config/constants";
-import {ToastsService} from "../../../partials/toast/toast-message.service";
-import {ConfirmationService} from "primeng/components/common/api";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
-import {Photo} from "../../../shared/models/photo.model";
+import { ApiBaseService, LoadingService } from '../../../shared/index';
+import { BaseMediaComponent } from "../../shared/media/base-media.component";
+import { MediaType } from "../../../shared/config/constants";
+import { ToastsService } from "../../../partials/toast/toast-message.service";
+import { ConfirmationService } from "primeng/components/common/api";
+import { FormManagerService } from "../../../shared/form/form-manager.service";
+import { Photo } from "../../../shared/models/photo.model";
 
 declare var $: any;
 declare var _: any;
@@ -28,8 +28,7 @@ export class ZAlbumComponent extends BaseMediaComponent {
               private toastsService?: ToastsService,
               private loadingService?: LoadingService,
               private confirmationService?: ConfirmationService,
-              private formManagerService?: FormManagerService,
-  ) {
+              private formManagerService?: FormManagerService,) {
     super(MediaType.album, this.apiService);
   }
 

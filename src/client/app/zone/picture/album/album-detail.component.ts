@@ -26,7 +26,7 @@ declare var _: any;
   styleUrls: ['album.component.css'],
 })
 
-export class ZAlbumDetailComponent extends BaseMediaComponent{
+export class ZAlbumDetailComponent extends BaseMediaComponent {
 
   album: Album = new Album(null);
   albumId: number;
@@ -71,12 +71,12 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
 
   init() {
-      this.albumService.get(this.albumService.url + this.albumId).subscribe(
-        (res: any) => {
-          this.album = new Album(res.data);
-          this.getPhotosByAlbum();
-        },
-      );
+    this.albumService.get(this.albumService.url + this.albumId).subscribe(
+      (res: any) => {
+        this.album = new Album(res.data);
+        this.getPhotosByAlbum();
+      },
+    );
   }
 
   getPhotosByAlbum() {
@@ -84,14 +84,15 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.loadItemsByUrl(this.photoService.url + '?' + params);
   }
 
-  onViewChanged(event:any) {
+  onViewChanged(event: any) {
     this.pageView = event;
   }
 
   onCloseInfo() {
     this.onOffInfo();
   }
-  onViewInfo(event:any) {
+
+  onViewInfo(event: any) {
     this.onOffInfo();
   }
 
@@ -101,15 +102,15 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
   onDeleteAction() {
     this.confirmationService.confirm({
-      header: 'Delete Album',
-      message: this.album.name + ' will be deleted permanently. Photos that were in a deleted album remain part of your Photos library',
-      accept: () => {
-        this.loadingService.start();
-        this.albumService.delete(this.albumService.url + this.album.id)
-          .subscribe(res => {
+        header: 'Delete Album',
+        message: this.album.name + ' will be deleted permanently. Photos that were in a deleted album remain part of your Photos library',
+        accept: () => {
+          this.loadingService.start();
+          this.albumService.delete(this.albumService.url + this.album.id)
+            .subscribe(res => {
               this.loadingService.stop();
               this.router.navigate(['/zone/picture/album']);
-          })
+            })
         }
       }
     )
@@ -119,7 +120,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.formManagerService.show('form-edit-album-modal');
   }
 
-  onFormResult(res:any) {
+  onFormResult(res: any) {
     // if (res) {
     //   this.albumService.put(this.albumService.url + this.album.id, {name: res['album-name'], description: res['album-description']})
     //     .subscribe(res => {
@@ -135,7 +136,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.formManagerService.hide('form-edit-album-modal');
   }
 
-  onDoneEditAlbumFormModal(album:Album) {
+  onDoneEditAlbumFormModal(album: Album) {
     this.formManagerService.hide('form-edit-album-modal');
     this.album = album;
   }

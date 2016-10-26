@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
-import {ApiBaseService} from '../../../shared/services/apibase.service';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var $: any;
 
@@ -53,7 +53,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
 
   ngAfterViewInit() {
     let _this = this;
-    $('#sharingModal').on('hidden.bs.modal', function (e:any) {
+    $('#sharingModal').on('hidden.bs.modal', function (e: any) {
       _this.modalHide.emit(false);
     });
   }
@@ -67,7 +67,7 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
   toggleRemoving(event: any, id: number, isContact: boolean = true) {
     event.preventDefault();
     var index = -1;
-    if(isContact) {
+    if (isContact) {
       index = this.removedContacts.indexOf(id);
       if (index != -1) {
         this.removedContacts.splice(index, 1);
@@ -93,12 +93,12 @@ export class ZPictureSharingComponent implements OnInit, OnChanges, AfterViewIni
 
   isDeletedItem(id: number, isContact: boolean = true) {
     var index: any;
-    if(isContact) {
+    if (isContact) {
       index = this.removedContacts.indexOf(id);
     } else {
       index = this.removedContactGroups.indexOf(id);
     }
-    return ((index != -1) ? true: false);
+    return ((index != -1) ? true : false);
   }
 
   save() {

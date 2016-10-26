@@ -1,7 +1,7 @@
-import {Component, OnChanges, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
-import {AlbumPhoto} from "../../../shared/models/album-photos.model";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
-import {ToastBase} from "../../../shared/toast/toast-base.component";
+import { Component, OnChanges, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { AlbumPhoto } from "../../../shared/models/album-photos.model";
+import { FormManagerService } from "../../../shared/form/form-manager.service";
+import { ToastBase } from "../../../shared/toast/toast-base.component";
 
 @Component({
   moduleId: module.id,
@@ -9,11 +9,10 @@ import {ToastBase} from "../../../shared/toast/toast-base.component";
   templateUrl: 'added-to-album-toast.component.html',
   styleUrls: ['added-to-album-toast.component.css'],
 })
-export class ZAddedToAlbumToastComponent extends ToastBase{
-  @Input() data:AlbumPhoto;
-  constructor(
-    private formManagerService: FormManagerService,
-  ) {
+export class ZAddedToAlbumToastComponent extends ToastBase {
+  @Input() data: AlbumPhoto;
+
+  constructor(private formManagerService: FormManagerService,) {
     super('added-to-album-toast');
   }
 

@@ -20,7 +20,9 @@
   </template>
 
   <div *ngIf="total==0" class="text-center">
-    No data
+    <div class="zone-no-photo">
+      <p>Drag photos anywhere to upload</p>
+    </div>
   </div>
 
   <div id="photodata-loading" style="position: relative;height: 50px;">
@@ -28,12 +30,12 @@
 </div>
 
 <zone-photo-detail #zonephotodetail id="zonephotodetail"
-  [hasOpeningModal]="hasOpeningModal()"
-  [items]="items"
-  [selectedItems]="selectedItems"
-  [getAction]="sendActionDetail"
-  (hideModalClicked)="onHideModalClicked($event)"
-  (action)="onAction($event)"
+                   [hasOpeningModal]="hasOpeningModal()"
+                   [items]="items"
+                   [selectedItems]="selectedItems"
+                   [getAction]="sendActionDetail"
+                   (hideModalClicked)="onHideModalClicked($event)"
+                   (action)="onAction($event)"
 >
 </zone-photo-detail>
 

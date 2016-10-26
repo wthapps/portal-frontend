@@ -26,6 +26,7 @@
     "enyo/dropzone": "*",
     "cropper": "^2.3.3",
     "hover": "Hover#^2.0.2",
-    "wheelzoom": "jackmoore/wheelzoom#^3.0.4"
+    "wheelzoom": "jackmoore/wheelzoom#^3.0.4",
+    "file-saver": "^1.3.3"
   }
 }

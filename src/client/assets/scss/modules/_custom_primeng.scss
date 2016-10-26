@@ -1,0 +1,12 @@
+.ui-autocomplete {
+  display: block;
+  .ui-autocomplete-input-token {
+    float: none;
+    .ui-inputtext {
+      display: inline-block;
+      -webkit-box-shadow: none !important;
+      -moz-box-shadow: none !important;
+      box-shadow: none !important;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import {
   Component, Input, EventEmitter, Output
 }                          from '@angular/core';
 
-import {ZPictureGridComponent} from "./grid.component";
+import { ZPictureGridComponent } from "./grid.component";
 
 declare var $: any;
 declare var _: any;

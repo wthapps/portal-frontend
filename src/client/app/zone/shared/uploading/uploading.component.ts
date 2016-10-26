@@ -1,6 +1,17 @@
-import { Component, Input, Output, OnInit, AfterViewInit, OnChanges, EventEmitter, SimpleChanges, ViewChild, ElementRef, Renderer} from '@angular/core';
+import {
+  Component,
+  Output,
+  OnInit,
+  AfterViewInit,
+  OnChanges,
+  EventEmitter,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+  Renderer
+} from '@angular/core';
 import { ApiBaseService } from '../../../shared/index';
-import {Photo} from "../../../shared/models/photo.model";
+import { Photo } from '../../../shared/models/photo.model';
 
 declare var $: any;
 
@@ -55,14 +66,14 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
     this.step = -1;
   }
 
-  stop(event) {
+  stop(event: any) {
     event.preventDefault();
     if (this.pending_request) {
       this.pending_request.unsubscribe();
     }
     this.stopped_num = this.files_num - this.uploaded_num;
     this.step = 4;
-    if(this.uploaded_num > 0) {
+    if (this.uploaded_num > 0) {
       this.needToReload.emit(true);
     }
   }
@@ -81,28 +92,28 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
 
     do {
       reader = new FileReader();
-      reader.onload = (data:any) => {
-      this.current_photo = data.target['result'];
-      body = JSON.stringify({ photo: {name: file_name, image: this.current_photo }});
+      reader.onload = (data: any) => {
+        this.current_photo = data.target['result'];
+        body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
 
-      this.pending_request =  this.apiService.post(`zone/photos`, body)
-        .map(res => res.json())
-        .map((res) => {
-          if (res) {
-            return res;
-          }
-        })
-        .subscribe((result: any) => {
-            this.uploaded_num++;
-            if (this.uploaded_num == this.files_num) {
-              this.step = 2;
+        this.pending_request = this.apiService.post(`zone/photos`, body)
+          .map(res => res.json())
+          .map((res) => {
+            if (res) {
+              return res;
             }
-            this.photos.push(new Photo(result.data));
-          },
-          error => {
-            this.step = 3;
-          }
-        );
+          })
+          .subscribe((result: any) => {
+              this.uploaded_num++;
+              if (this.uploaded_num == this.files_num) {
+                this.step = 2;
+              }
+              this.photos.push(new Photo(result.data));
+            },
+            error => {
+              this.step = 3;
+            }
+          );
       };
       file_name = files[i].name;
       reader.readAsDataURL(files[i]);

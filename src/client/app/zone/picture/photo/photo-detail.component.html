@@ -51,6 +51,8 @@
     <dl class="dl-horizontal">
       <dt>Name</dt>
       <dd>{{myItem.name}}</dd>
+      <dt>Description</dt>
+      <dd>{{myItem.description}}</dd>
       <dt>Type</dt>
       <dd>{{myItem.extension}}</dd>
       <dt>Size</dt>
@@ -71,12 +73,13 @@
       <dt>Owner</dt>
       <dd>
         <ul class="list-unstyled">
-          <li><img src="assets/images/zone/img-group.png" alt="{{myItem.owner.name}}" title="{{myItem.owner.name}}"></li>
+          <li><img src="assets/images/zone/img-group.png" alt="{{myItem.owner.name}}" title="{{myItem.owner.name}}">
+          </li>
         </ul>
       </dd>
       <dt>Group</dt>
       <dd>
-        <ul class="list-unstyled" >
+        <ul class="list-unstyled">
           <li *ngFor="let group of contactGroups">
             <img src="assets/images/zone/img-group.png" title="{{group.name}}">
           </li>
@@ -84,7 +87,7 @@
       </dd>
       <dt>Contact</dt>
       <dd>
-        <ul class="list-unstyled" >
+        <ul class="list-unstyled">
           <li *ngFor="let contact of contacts">
             <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
           </li>

@@ -161,7 +161,9 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
 
   onPhotoUpdateInfo(item: Photo) {
     this.myItem = item;
-    this.contactGroups = item.json_shares[0].contactgroups;
-    this.contacts = item.json_shares[0].contacts;
+    if (item.json_shares.length > 0) {
+      this.contactGroups = item.json_shares[0].contactgroups;
+      this.contacts = item.json_shares[0].contacts;
+    }
   }
 }

@@ -10364,16 +10364,21 @@ body.fixed-hidden {
         margin-right: 0; }
         .page-full .page-body-control .control-body-select.control-body-btnview > li {
           float: left;
-          margin-left: 15px; }
+          margin-left: 5px;
+          margin-right: 0; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li.action-disabled {
             cursor: not-allowed; }
             .page-full .page-body-control .control-body-select.control-body-btnview > li.action-disabled a {
               pointer-events: none;
               opacity: 0.3;
               filter: alpha(opacity=30); }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li:last-child {
+            margin-left: 15px; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li > a {
             line-height: 34px;
-            font-size: 20px; }
+            font-size: 20px;
+            padding-left: 10px;
+            padding-right: 10px; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown {
             padding-left: 15px;
             border-left: 1px solid #D8D8D8; }
@@ -12361,6 +12366,16 @@ wth-app:empty + .dots-loader-wrap {
 .ng2-dropdown-menu-container {
   z-index: 1060 !important; }
 
+.ui-autocomplete {
+  display: block; }
+  .ui-autocomplete .ui-autocomplete-input-token {
+    float: none; }
+    .ui-autocomplete .ui-autocomplete-input-token .ui-inputtext {
+      display: inline-block;
+      -webkit-box-shadow: none !important;
+      -moz-box-shadow: none !important;
+      box-shadow: none !important; }
+
 .panel-heading-action {
   position: relative; }
   .panel-heading-action .btn, .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-close"], .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-check"] {
@@ -12851,7 +12866,8 @@ wth-app:empty + .dots-loader-wrap {
     background-color: #ffffff;
     padding: 15px;
     position: absolute;
-    top: 0; }
+    top: 0;
+    word-break: break-all; }
     .photo-box-detail .photo-detail-info h3 {
       margin: -15px -15px 15px;
       padding: 15px;
@@ -12895,5 +12911,12 @@ wth-app:empty + .dots-loader-wrap {
     .photo-box-detail .photo-detail-info dl dd ul li {
       float: left;
       margin: 0 5px 5px 0; }
+
+.zone-no-photo {
+  padding-top: 220px;
+  background-image: url("../images/zone/no-photo.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit} from '@angular/core';
-import {ApiBaseService} from '../../../shared/index';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { ApiBaseService } from '../../../shared/index';
 
 
 declare var $: any;
@@ -38,7 +38,7 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
     this.newTags = new Array<any>();
     this.addedTags = new Array<any>();
     this.removedTags = new Array<any>();
-    this.selectedTags  = new Array<any>();
+    this.selectedTags = new Array<any>();
   }
 
   ngAfterViewInit() {
@@ -59,13 +59,13 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
     if (changes['modalShow'] && changes['modalShow'].currentValue) {
       this.apiService.get(`zone/tags`)
         .subscribe((result: any) => {
-          this.tags = _.map(result['data'], 'name');
-        },
-        error => {
-          console.log('error', error);
-        });
+            this.tags = _.map(result['data'], 'name');
+          },
+          error => {
+            console.log('error', error);
+          });
 
-      let body = JSON.stringify({ objects: _.map(this.selectedItems, 'id'), type: this.getType() });
+      let body = JSON.stringify({objects: _.map(this.selectedItems, 'id'), type: this.getType()});
       this.apiService.post(`zone/tags/get_tags`, body)
         .map(res => res.json())
         .subscribe((result: any) => {
@@ -90,13 +90,13 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
       this.removedTags = _.pull(this.removedTags, tag);
     }
     if (this.tags.indexOf(tag) == -1 && this.newTags.indexOf(tag) == -1) {
-      this.newTags.push(tag)
+      this.newTags.push(tag);
     }
     this.checkIfHasChanged();
   }
 
-  onItemRemoved (tag: string) {
-    if(this.currentTags.indexOf(tag) != -1 && this.removedTags.indexOf(tag) == -1) {
+  onItemRemoved(tag: string) {
+    if (this.currentTags.indexOf(tag) != -1 && this.removedTags.indexOf(tag) == -1) {
       this.removedTags.push(tag);
     }
 
@@ -122,13 +122,13 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
     this.apiService.put(`zone/tags/update`, body)
       .map(result => result.json())
       .subscribe((result: any) => {
-        this.hasChanged = false;
-        this.selectedItems = result['data'];
-        this.onItemUpdated.emit(result['data'][0]);
-      },
-      error => {
-        console.log('error', error);
-      });
+          this.hasChanged = false;
+          this.selectedItems = result['data'];
+          this.onItemUpdated.emit(result['data'][0]);
+        },
+        error => {
+          console.log('error', error);
+        });
   }
 
   private checkIfHasChanged(): void {

@@ -2,8 +2,8 @@ import {
   Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChanges, SimpleChange,
   OnInit, SimpleChanges
 } from '@angular/core';
-import {Album} from "../../../shared/models/album.model";
-import {AlbumService} from "../../../shared/services/picture/album.service";
+import { Album } from "../../../shared/models/album.model";
+import { AlbumService } from "../../../shared/services/picture/album.service";
 
 
 declare var wheelzoom: any;
@@ -17,17 +17,15 @@ declare var _: any;
   styleUrls: ['album.component.css'],
 })
 
-export class ZAlbumDetailInfoComponent implements OnInit, OnChanges{
+export class ZAlbumDetailInfoComponent implements OnInit, OnChanges {
 
-  @Input() album:Album;
+  @Input() album: Album;
   @Output() closeInfo: EventEmitter = new EventEmitter();
   @Output() tagEvent: EventEmitter<Album> = new EventEmitter<Album>();
   @Output() showFormEdit: EventEmitter = new EventEmitter();
-  albumData:Album = null;
+  albumData: Album = null;
 
-  constructor(
-    private albumService?: AlbumService,
-  ) {
+  constructor(private albumService?: AlbumService,) {
 
   }
 
@@ -49,7 +47,7 @@ export class ZAlbumDetailInfoComponent implements OnInit, OnChanges{
     this.showFormEdit.emit();
   }
 
-  tag(album:Album) {
+  tag(album: Album) {
     this.tagEvent.emit(album);
   }
 }

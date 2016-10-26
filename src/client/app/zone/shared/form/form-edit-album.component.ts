@@ -1,10 +1,10 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
-import {FormModalComponent} from "../../../shared/form/form-modal.component";
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
-import {AlbumPhoto} from "../../../shared/models/album-photos.model";
-import {ToastsService} from "../../../partials/toast/toast-message.service";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
+import { FormModalComponent } from "../../../shared/form/form-modal.component";
+import { AlbumService } from "../../../shared/services/picture/album.service";
+import { Album } from "../../../shared/models/album.model";
+import { AlbumPhoto } from "../../../shared/models/album-photos.model";
+import { ToastsService } from "../../../partials/toast/toast-message.service";
+import { FormManagerService } from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -17,17 +17,14 @@ declare var _: any;
 export class ZPictureFormEditAlbumComponent extends FormModalComponent {
   // @Input() formManagerService:FormManagerService;
   @Input() album: Album;
-  @Output() hideFormModal: EventEmitter= new EventEmitter();
-  @Output() doneFormModal: EventEmitter<any>= new EventEmitter<any>();
+  @Output() hideFormModal: EventEmitter = new EventEmitter();
+  @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(
-    private albumService: AlbumService,
-    private toastService: ToastsService,
-    private formManagerService: FormManagerService
-  ) {
+  constructor(private albumService: AlbumService,
+              private toastService: ToastsService,
+              private formManagerService: FormManagerService) {
     super('form-edit-album-modal');
   }
-
 
 
   save() {

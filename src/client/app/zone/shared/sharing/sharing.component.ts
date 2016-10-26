@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, SimpleChanges} from '@angular/core';
-import {ApiBaseService} from '../../../shared/services/apibase.service';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, SimpleChanges } from '@angular/core';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 
 declare var $: any;
@@ -85,7 +85,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     if (changes['modalShow'] && changes['modalShow'].currentValue) {
-      let body = JSON.stringify({ photos: _.map(this.selectedItems, 'id'), albums: [] });
+      let body = JSON.stringify({photos: _.map(this.selectedItems, 'id'), albums: []});
       this.apiService.post(`zone/sharings/get_sharing_info`, body)
         .map(res => res.json())
         .subscribe((result: any) => {
@@ -101,7 +101,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   toggleRemoving(event: any, id: number, isContact: boolean = true) {
     event.preventDefault();
     var index = -1;
-    if(isContact) {
+    if (isContact) {
       index = this.removedContacts.indexOf(id);
       if (index != -1) {
         this.removedContacts.splice(index, 1);
@@ -126,60 +126,66 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   isDeletedItem(id: number, isContact: boolean = true) {
     var index: any;
-    if(isContact) {
+    if (isContact) {
       index = this.removedContacts.indexOf(id);
     } else {
       index = this.removedContactGroups.indexOf(id);
     }
-    return ((index != -1) ? true: false);
+    return ((index != -1) ? true : false);
   }
 
   save() {
     //save removing items
 
     if (this.hasDeletedItems || this.hasUpdatedItems) {
-      let body = this.hasDeletedItems ? JSON.stringify({ photos: _.map(this.selectedItems, 'id'), albums: [],
+      let body = this.hasDeletedItems ? JSON.stringify({
+        photos: _.map(this.selectedItems, 'id'), albums: [],
         contacts: _.xor(_.map(this.sharedContacts, 'id'), this.removedContacts),
-          groups: _.xor(_.map(this.sharedContactGroups, 'id'), this.removedContactGroups)})
-        : JSON.stringify({ photos: _.map(this.selectedItems, 'id'), albums: [],
-          contacts: _.map(_.concat(this.sharedContacts, this.selectedContacts), 'id'),
-          groups: _.map(_.concat(this.sharedContactGroups, this.selectedContactGroups), 'id')});
+        groups: _.xor(_.map(this.sharedContactGroups, 'id'), this.removedContactGroups)
+      })
+        : JSON.stringify({
+        photos: _.map(this.selectedItems, 'id'), albums: [],
+        contacts: _.map(_.concat(this.sharedContacts, this.selectedContacts), 'id'),
+        groups: _.map(_.concat(this.sharedContactGroups, this.selectedContactGroups), 'id')
+      });
 
       this.apiService.put(`zone/sharings/update`, body)
         .map(res => res.json())
         .subscribe((result: any) => {
-          this.sharedContacts = result['data'].contacts;
-          this.sharedContactGroups = result['data'].contactgroups;
+            this.sharedContacts = result['data'].contacts;
+            this.sharedContactGroups = result['data'].contactgroups;
 
-          if (this.hasDeletedItems) {
-            this.removedContacts = [];
-            this.removedContactGroups = [];
-            this.hasDeletedItems = false;
-          } else {
-            this.selectedContacts = [];
-            this.selectedContactGroups = [];
-            this.hasUpdatedItems = false;
-          }
-          this.onItemUpdated.emit(result['data'].photos[0]);
-        },
-        error => {
-          console.log('error', error);
-        });
+            if (this.hasDeletedItems) {
+              this.removedContacts = [];
+              this.removedContactGroups = [];
+              this.hasDeletedItems = false;
+            } else {
+              this.selectedContacts = [];
+              this.selectedContactGroups = [];
+              this.hasUpdatedItems = false;
+            }
+            this.onItemUpdated.emit(result['data'].photos[0]);
+          },
+          error => {
+            console.log('error', error);
+          });
     } else { // save adding sharing
-      let body = JSON.stringify({ photos: _.map(this.selectedItems, 'id'), albums: [],
-        contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')});
+      let body = JSON.stringify({
+        photos: _.map(this.selectedItems, 'id'), albums: [],
+        contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
+      });
       this.apiService.post(`zone/sharings`, body)
         .map(res => res.json())
         .subscribe((result: any) => {
-          this.sharedContacts = result['data'].contacts;
-          this.sharedContactGroups = result['data'].contactgroups;
-          this.selectedContacts = [];
-          this.selectedContactGroups = [];
-          this.onItemUpdated.emit(result['data'].photos[0]);
-        },
-        error => {
-          console.log('error', error);
-        });
+            this.sharedContacts = result['data'].contacts;
+            this.sharedContactGroups = result['data'].contactgroups;
+            this.selectedContacts = [];
+            this.selectedContactGroups = [];
+            this.onItemUpdated.emit(result['data'].photos[0]);
+          },
+          error => {
+            console.log('error', error);
+          });
     }
     // console.log('save');
   }
@@ -194,41 +200,49 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
     console.log('cancel');
   }
 
-  selectContact(contact: any){
+  selectContact(contact: any) {
     console.log('contacts', this.selectedContacts, contact);
     this.selectedContacts.push(contact);
     console.log('contacts after', this.selectedContacts, contact);
     this.setUpdatedItemsStatus();
   }
 
-  unSelectContact(contact: any){
-    _.remove(this.selectedContacts,(c) => { return c['id'] == contact['id'] });
+  unSelectContact(contact: any) {
+    _.remove(this.selectedContacts, (c) => {
+      return c['id'] == contact['id'];
+    });
     this.setUpdatedItemsStatus();
   }
 
   searchContact(event: any) {
     this.filteredContacts = _.filter(this.contacts,
-      (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1 });
+      (c) => {
+        return c['name'].toLowerCase().indexOf(event.query) != -1;
+      });
   }
 
-  selectContactGroup(group: any){
+  selectContactGroup(group: any) {
     this.selectedContactGroups.push(group);
     this.setUpdatedItemsStatus();
   }
 
-  unSelectContactGroup(group: any){
-    _.remove(this.selectedContactGroups,(c) => { return c['id'] == group['id'] });
+  unSelectContactGroup(group: any) {
+    _.remove(this.selectedContactGroups, (c) => {
+      return c['id'] == group['id'];
+    });
     this.setUpdatedItemsStatus();
   }
 
   searchContactGroup(event: any) {
     this.filteredContactGroups = _.filter(this.contactGroups,
-      (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1 });
+      (c) => {
+        return c['name'].toLowerCase().indexOf(event.query) != -1;
+      });
   }
 
   private setUpdatedItemsStatus() {
     this.hasUpdatedItems = ((this.selectedContacts.length > 0 || this.selectedContactGroups > 0)
-                         && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
+    && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
   }
 
 }

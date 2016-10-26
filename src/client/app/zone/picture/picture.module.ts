@@ -17,7 +17,8 @@ import {
   ZonePhotoComponent,
   ZonePhotoDetailComponent,
   ZoneVideoComponent,
-  ZoneFavouritesComponent
+  ZoneFavouritesComponent,
+  ZoneSharedWithMeComponent
 } from './index';
 import { ZAlbumComponent } from "./album/album.component";
 import { LoadingService } from "../../partials/loading/loading.service";
@@ -41,8 +42,8 @@ import { ZPictureEditPhotoComponent } from "../shared/form/form-edit-photo.compo
 import { ZPictureGridRemoveComponent } from "../shared/grid/grid-remove.component";
 import { ZPictureTimelineComponent } from "../shared/timeline/timeline.component";
 import { ZPictureFormEditAlbumComponent } from "../shared/form/form-edit-album.component";
-import {ZAlbumGridComponent} from "../shared/grid/grid-album.component";
-import {ZAlbumListComponent} from "../shared/list/list-album.component";
+import { ZAlbumGridComponent } from "../shared/grid/grid-album.component";
+import { ZAlbumListComponent } from "../shared/list/list-album.component";
 
 @NgModule({
   imports: [
@@ -75,6 +76,7 @@ import {ZAlbumListComponent} from "../shared/list/list-album.component";
 
     // Favourites
     ZoneFavouritesComponent,
+    ZoneSharedWithMeComponent,
 
     // Album
     ZAlbumComponent,

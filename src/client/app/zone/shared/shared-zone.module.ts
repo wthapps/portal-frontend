@@ -1,7 +1,9 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZoneMenuComponent } from './index';
+
 import {SharedModule} from "../../shared/shared.module";
+
 
 
 
@@ -23,8 +25,7 @@ export class SharedZoneModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedZoneModule,
-      providers: [
-      ]
+      providers: []
     };
   }
 }

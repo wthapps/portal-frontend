@@ -38,6 +38,10 @@
     <zone-favourites #media [inputAction]="baseMedia.sendBaseMediaAction"></zone-favourites>
   </div>
 
+  <div *ngSwitchCase="mediaType.sharedWithMe">
+    <zone-share-with-me #media></zone-share-with-me>
+  </div>
+
 </div>
 
 <zone-uploading #zoneUpload
