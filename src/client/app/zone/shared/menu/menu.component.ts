@@ -3,6 +3,7 @@ import {
   Router,
   NavigationEnd
 } from '@angular/router';
+import {Constants} from "../../../shared/config/constants";
 
 declare var $: any;
 
@@ -18,6 +19,7 @@ declare var $: any;
 export class ZoneMenuComponent implements AfterViewInit {
 
   urls: any;
+  items = Constants.pictureMenuItems;
 
   constructor(private router: Router) {
 

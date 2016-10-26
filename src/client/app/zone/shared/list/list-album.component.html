@@ -20,7 +20,7 @@
   <div (click)="onSelected($event, album.id)" (dblclick)="onDbClick($event, album.id)" class="photo-box-img" *ngFor="let album of data" style="color: #A4A4A4">
       <figure class="img-center-dv">
         <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-        <img class="img-center" src="/assets/images/zone/img-default.png" alt="">
+        <img class="img-center" src="{{album.photo_default}}" alt="">
       </figure>
       <div class="photo-box-img-name">
         {{album.name}}

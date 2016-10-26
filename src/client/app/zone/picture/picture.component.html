@@ -1,5 +1,6 @@
 <div *ngIf="category != mediaType.albumDetail">
   <zone-toolbar
+    [category]="category"
     [selectedItems]="baseMedia.selectedItems"
     (openWindow)="zoneUpload.browseFiles($event)"
     (selectedFiles)="handleFileUpload($event)"

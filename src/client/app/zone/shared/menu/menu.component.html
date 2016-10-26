@@ -23,17 +23,22 @@
         Picture
       </a>
       <ul class="list-unstyled hidden" id="zone_menu_picture">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a [routerLink]="['/zone/picture/photo']">Photos</a>
-        </li>
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a [routerLink]="['/zone/picture/album']">Albums</a>
-        </li>
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a [routerLink]="['/zone/picture/video']">Videos</a>
-        </li>
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a [routerLink]="['/zone/picture/favourites']">Favourites</a>
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/photo']">Photos</a>-->
+        <!--</li>-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/album']">Albums</a>-->
+        <!--</li>-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/video']">Videos</a>-->
+        <!--</li>-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/favourites']">Favourites</a>-->
+        <!--</li>-->
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
+          <a [routerLink]="[item.link]">
+            {{item.name}}
+          </a>
         </li>
       </ul>
     </li>

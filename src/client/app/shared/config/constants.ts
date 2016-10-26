@@ -59,8 +59,22 @@ export let Constants = {
   },
   windows: {
     scrollBarWidth: getBarwidth()
-  }
+  },
 
+  pictureMenuItems : [
+    { name: 'Photos', link: '/zone/picture/photo' },
+    { name: 'Albums', link: '/zone/picture/album' },
+    // { name: 'Videos', link: '/zone/picture/video' },
+    { name: 'Favorites', link: '/zone/picture/favourites' },
+  ],
+  pictureMenuActions : {
+    preview: true,
+    share: true,
+    addFavourite: true,
+    tag: true,
+    delete: true,
+    other: true,
+  }
 };
 
 export let MediaType = {
@@ -71,4 +85,5 @@ export let MediaType = {
   playlist: 'playlist',
   favourites: 'favourites'
 };
+
 
