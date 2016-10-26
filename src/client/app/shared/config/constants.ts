@@ -69,6 +69,7 @@ export let MediaType = {
   albumDetail: 'albumDetail',
   video: 'video',
   playlist: 'playlist',
-  favourites: 'favourites'
+  favourites: 'favourites',
+  sharedWithMe: 'sharedWithMe'
 };
 

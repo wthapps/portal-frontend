@@ -29,11 +29,14 @@
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a [routerLink]="['/zone/picture/album']">Albums</a>
         </li>
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a [routerLink]="['/zone/picture/video']">Videos</a>
-        </li>
+        </li>-->
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a [routerLink]="['/zone/picture/favourites']">Favourites</a>
+        </li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a [routerLink]="['/zone/picture/sharedWithMe']">Shares with me</a>
         </li>
       </ul>
     </li>

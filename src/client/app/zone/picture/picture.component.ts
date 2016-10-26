@@ -4,6 +4,7 @@ import { BaseMediaComponent } from '../shared/media/base-media.component';
 import { ZonePhotoComponent } from './photo/photo.component';
 import { ZoneVideoComponent } from './video/video.component';
 import { ZoneFavouritesComponent } from './favourites/index';
+import { ZoneSharedWithMeComponent } from './shared-with-me/index';
 import { MediaType } from '../../shared/config/constants';
 import {
   ApiBaseService,
@@ -126,6 +127,9 @@ export class ZPictureComponent implements OnChanges {
         break;
       case MediaType.favourites:
         this.baseMedia = new ZoneFavouritesComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
+        break;
+      case MediaType.sharedWithMe:
+        this.baseMedia = new ZoneSharedWithMeComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
     }
     // debugger;
