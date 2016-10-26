@@ -134,6 +134,10 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
       case "info":
         this.sendActionToPhotoDetail(event);
         break;
+      case 'addToAlbum':
+        this.selectedItems = [event.currentItem];
+        this.onAddToAlbum();
+        break;
       default:
         break;
     }

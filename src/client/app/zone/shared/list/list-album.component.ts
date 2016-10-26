@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, EventEmitter, Output} from '@angular/core';
 
 import {Album} from "../../../shared/models/album.model";
 import {ZPictureListComponent} from "./list.component";
+import {Router} from "@angular/router";
 
 declare var _: any;
 
@@ -19,4 +20,11 @@ export class ZAlbumListComponent extends ZPictureListComponent{
   @Input() data: Array<Album>;
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
 
+  constructor(private router: Router) {
+    super();
+  }
+
+  onDbClick(e: any, id: number) {
+    this.router.navigate(['/zone/picture/album/' + id]);
+  }
 }

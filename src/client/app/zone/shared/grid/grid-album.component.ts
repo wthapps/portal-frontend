@@ -20,6 +20,7 @@ export class ZAlbumGridComponent extends ZPictureGridComponent{
   selectedPhotos: Array<any> = [];
 
   constructor(private router: Router) {
+    super();
   }
 
   onDbClick(e: any, id: number) {

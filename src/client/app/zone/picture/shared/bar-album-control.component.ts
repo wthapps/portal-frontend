@@ -14,11 +14,14 @@ declare var $: any;
 export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChanges {
 
   @Input() album: Album;
+  @Input() selectedItems: any;
+
   currentView: string = 'grid';
   @Output() viewChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() viewInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteAction: EventEmitter = new EventEmitter();
   @Output() editAction: EventEmitter = new EventEmitter();
+  @Output() removeAction: EventEmitter = new EventEmitter();
 
   constructor(private albumService: AlbumService) {
 
@@ -43,7 +46,7 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.album = changes['album'].currentValue;
+    // this.album = changes['album'].currentValue;
   }
 
   changeView(view: string, event: any) {
@@ -62,5 +65,9 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
 
   onEditAction() {
     this.editAction.emit()
+  }
+
+  onRemoveAction() {
+    this.removeAction.emit()
   }
 }

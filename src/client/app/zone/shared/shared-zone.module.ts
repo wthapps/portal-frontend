@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZoneMenuComponent } from './index';
+import {SharedModule} from "../../shared/shared.module";
 
 
 
@@ -9,7 +10,7 @@ import { ZoneMenuComponent } from './index';
  */
 
 @NgModule({
-  imports: [RouterModule],
+  imports: [RouterModule, SharedModule],
   declarations: [
     ZoneMenuComponent
   ],
