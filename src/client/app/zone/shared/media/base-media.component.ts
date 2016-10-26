@@ -350,7 +350,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       return 'zone/favorites'
     }
     if (this.category == MediaType.sharedWithMe) {
-      return 'zone/shared_with_me'
+      return 'zone/shared_with_me' // get API
     }
   }
 }

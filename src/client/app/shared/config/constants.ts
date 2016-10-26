@@ -66,6 +66,7 @@ export let Constants = {
     { name: 'Albums', link: '/zone/picture/album' },
     // { name: 'Videos', link: '/zone/picture/video' },
     { name: 'Favorites', link: '/zone/picture/favourites' },
+    { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },
   ],
   pictureMenuActions : {
     preview: true,
