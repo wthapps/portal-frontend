@@ -208,7 +208,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     };
   }
 
-  public loadItems(page: number) {
+  /*public loadItems(page: number) {
     if (page <= Math.ceil(this.total / this.perPage)) {
       this.loadingService.start('#photodata-loading');
       this.currentPage = page;
@@ -231,6 +231,20 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       );
 
     }
+  }*/
+
+  public loadItems(page: number) {
+    this.loadingService.start('#photodata-loading');
+    this.apiService.get(`${this.buildPathByCat()}`).subscribe(
+      (response: any) => {
+        this.items = response['data'];
+        this.loadingService.stop('#photodata-loading');
+      },
+      error => {
+        // this.errorMessage = <any>error;
+        this.loadingService.stop('#photodata-loading');
+      }
+    );
   }
 
   public loadItemsByUrl(url: string) {
@@ -350,7 +364,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       return 'zone/favorites';
     }
     if (this.category == MediaType.sharedWithMe) {
-      return 'zone/shared_with_me' // get API
+      return 'zone/share_with_me'; // get API
     }
   }
 }
