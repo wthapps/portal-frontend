@@ -136,8 +136,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
             let vitem = _.find(this.items, ['id', v.id]);
             vitem.favorite = setFavourite;
           });
-          // this.items =
-
+          // // this.items =
+          //
           this.loadingService.stop();
           this.toastsService.success(result.message);
         },

@@ -121,15 +121,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
   }
 
   onFormResult(res: any) {
-    // if (res) {
-    //   this.albumService.put(this.albumService.url + this.album.id, {name: res['album-name'], description: res['album-description']})
-    //     .subscribe(res => {
-    //       this.album = new Album(res.data);
-    //       this.toastsService.success('Edited');
-    //       this.renderForm();
-    //     })
-    //   ;
-    // }
+
   }
 
   onHideModal() {

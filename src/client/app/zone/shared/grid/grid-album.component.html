@@ -1,7 +1,7 @@
 <div class="row-img" xmlns="http://www.w3.org/1999/html">
   <div *ngFor="let album of data" class="photo-box-img">
     <div class="photo-box-img-action">
-      <i (click)="addFavourite($event, item)" class="fa" [ngClass]="album.favorite ? 'fa-star': 'fa-star-o'"></i>
+      <i (click)="addFavourite($event, album)" class="fa" [ngClass]="album.favorite ? 'fa-star': 'fa-star-o'"></i>
     </div>
     <figure class="img-center-dv" (click)="onSelected($event, album.id)" (dblclick)="onDbClick($event, album.id)">
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
