@@ -25,4 +25,8 @@ export class ZAlbumGridComponent extends ZPictureGridComponent {
   onDbClick(e: any, id: number) {
     this.router.navigate(['/zone/picture/album/' + id]);
   }
+
+  addFavourite(e: any, item: any) {
+    console.log('e:', e, 'item:', item);
+  }
 }
