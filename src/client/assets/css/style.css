@@ -12866,7 +12866,8 @@ wth-app:empty + .dots-loader-wrap {
     background-color: #ffffff;
     padding: 15px;
     position: absolute;
-    top: 0; }
+    top: 0;
+    word-break: break-all; }
     .photo-box-detail .photo-detail-info h3 {
       margin: -15px -15px 15px;
       padding: 15px;
