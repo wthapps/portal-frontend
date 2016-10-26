@@ -1,7 +1,7 @@
-import {Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { Photo } from '../../../shared/models/photo.model';
 import { BaseMediaComponent } from '../../shared/index';
-import { MediaType } from "../../../shared/index";
+import { MediaType } from '../../../shared/index';
 
 declare var $: any;
 declare var _: any;
@@ -12,7 +12,7 @@ declare var _: any;
   templateUrl: 'media-list.component.html'
 })
 
-export class MediaListComponent extends BaseMediaComponent implements OnInit {
+export class MediaListComponent extends BaseMediaComponent implements OnInit, OnChanges {
 
 
   errorMessage: string = '1212121212121212';

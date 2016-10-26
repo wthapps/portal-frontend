@@ -120,15 +120,14 @@
       <a href="#" (click)="delete($event)"><i class="fa fa-trash-o"></i></a>
     </li>
     <li *ngIf="actions.other" class="dropdown action" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'">
-      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 10px">
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li><a (click)="add($event)" href="javascript:;" [ngClass]="hasSelectedItem ? 'action-enabled': 'action-disabled'"><i class="fa fa-plus-square"></i> Add to Album</a></li>
         <!--<li><a (click)="download($event)" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>-->
-        <li><a class="text-disable" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>
-        <!--<li><a *ngIf="!hasMultiSelectedItem" (click)="edit($event)" href="javascript:;"><i class="fa fa-edit"></i> Edit</a>-->
-        <li><a class="text-disable" href="javascript:;"><i class="fa fa-edit"></i> Edit</a>
+        <li><a *ngIf="!hasMultiSelectedItem" class="text-disable" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>
+        <li><a *ngIf="!hasMultiSelectedItem" (click)="edit($event)" href="javascript:;"><i class="fa fa-edit"></i> Edit</a>
         </li>
         <li><a *ngIf="!hasMultiSelectedItem" (click)="viewInfo($event)" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
       </ul>
