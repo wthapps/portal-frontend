@@ -40,9 +40,7 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit, On
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(
-
-  ) {
+  constructor() {
     super(null);
     super.category = MediaType.photo;
   }

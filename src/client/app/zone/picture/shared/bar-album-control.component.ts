@@ -1,6 +1,6 @@
-import {Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter} from '@angular/core';
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
+import { Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { AlbumService } from "../../../shared/services/picture/album.service";
+import { Album } from "../../../shared/models/album.model";
 
 declare var $: any;
 

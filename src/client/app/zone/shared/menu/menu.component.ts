@@ -3,7 +3,7 @@ import {
   Router,
   NavigationEnd
 } from '@angular/router';
-import {Constants} from "../../../shared/config/constants";
+import { Constants } from "../../../shared/config/constants";
 
 declare var $: any;
 

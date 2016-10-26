@@ -95,7 +95,7 @@ export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnI
   onImgsSelected(event: any) {
     let _this_photos = this;
     this.selectedItems = [];
-    _.map(event, function (v) {
+    _.map(event, (v: any)=> {
       _this_photos.selectedItems.push(_.find(_this_photos.items, ['id', v]));
     });
     this.selectedPhotos.emit(event);
@@ -200,7 +200,7 @@ export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnI
     this.apiService.post(`zone/photos/favourite`, body)
       .map(res => res.json())
       .subscribe((result: any) => {
-          _.map(newFavourite, (v)=> {
+          _.map(newFavourite, (v: any)=> {
             this.items.photos = _.reject(this.items.photos, ['id', v.id]);
           });
 

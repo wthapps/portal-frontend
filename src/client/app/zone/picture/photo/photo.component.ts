@@ -1,7 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges ViewChild } from '@angular/core';
-import { ZPictureGridComponent, ZPictureListComponent } from '../../shared/index';
-
-// import {ZPhotoDetailComponent} from './photo-detail.component';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
 import { Photo } from '../../../shared/models/photo.model';
 import { BaseMediaComponent } from '../../shared/index';
 import {
@@ -45,7 +42,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
               private toastsService: ToastsService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
-              private formManagerService?: FormManagerService,) {
+              private formManagerService?: FormManagerService) {
     super(MediaType.photo, this.apiService);
   }
 

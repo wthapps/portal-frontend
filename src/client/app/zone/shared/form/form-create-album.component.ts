@@ -1,9 +1,9 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
-import {FormModalComponent} from "../../../shared/form/form-modal.component";
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
-import {AlbumPhoto} from "../../../shared/models/album-photos.model";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
+import { FormModalComponent } from "../../../shared/form/form-modal.component";
+import { AlbumService } from "../../../shared/services/picture/album.service";
+import { Album } from "../../../shared/models/album.model";
+import { AlbumPhoto } from "../../../shared/models/album-photos.model";
+import { FormManagerService } from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -13,18 +13,16 @@ declare var _: any;
   selector: 'page-zone-form-create-album',
   templateUrl: 'form-create-album.component.html',
 })
-export class ZPictureFormCreateAlbumComponent extends FormModalComponent{
-  @Output() doneFormModal: EventEmitter<any>= new EventEmitter<any>();
+export class ZPictureFormCreateAlbumComponent extends FormModalComponent {
+  @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Input() items: Array<any>;
-  isChanged:boolean = false;
+  isChanged: boolean = false;
   arrayItems: Array<number> = [];
   album: Album;
 
 
-  constructor(
-    private albumService: AlbumService,
-    private formManagerService: FormManagerService,
-  ) {
+  constructor(private albumService: AlbumService,
+              private formManagerService: FormManagerService,) {
     super('form-create-album-modal');
   }
 
@@ -54,7 +52,7 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent{
             this.albumService.post(this.albumService.url + res.data.id + '/photos', {photos: this.arrayItems})
               .subscribe(
                 res => {
-                  let albumPhotos = new AlbumPhoto({album: this.album, photos:this.arrayItems})
+                  let albumPhotos = new AlbumPhoto({album: this.album, photos: this.arrayItems})
                   this.doneFormModal.emit(albumPhotos);
                 }
               )

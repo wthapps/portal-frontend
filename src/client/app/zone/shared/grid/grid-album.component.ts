@@ -1,8 +1,8 @@
-import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-import {Album} from '../../../shared/models/album.model';
-import {ZPictureGridComponent} from "./grid.component";
-import {Router} from "@angular/router";
+import { Album } from '../../../shared/models/album.model';
+import { ZPictureGridComponent } from "./grid.component";
+import { Router } from "@angular/router";
 
 @Component({
   moduleId: module.id,
@@ -14,7 +14,7 @@ import {Router} from "@angular/router";
   }
 })
 
-export class ZAlbumGridComponent extends ZPictureGridComponent{
+export class ZAlbumGridComponent extends ZPictureGridComponent {
   @Input() data: Array<Album>;
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   selectedPhotos: Array<any> = [];

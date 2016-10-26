@@ -1,4 +1,4 @@
-import {Component, Injectable} from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 // import { ZonePhotoComponent } from '../../picture/photo/photo.component';
 
 @Component({

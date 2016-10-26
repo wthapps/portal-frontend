@@ -208,7 +208,7 @@ export class ZPictureComponent implements OnChanges {
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();
-            let blob: Blob = new Blob([result._body], { type: 'image/jpeg'});
+            let blob: Blob = new Blob([result._body], {type: 'image/jpeg'});
             // window['saveAs'](blob, 'image-download.jpeg');
             //this.toastsService.success(result.message);
           },

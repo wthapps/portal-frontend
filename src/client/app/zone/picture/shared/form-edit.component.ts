@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, ElementRef} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, ElementRef } from '@angular/core';
 
 import {
   FormGroup,
@@ -26,7 +26,7 @@ declare var $: any;
   templateUrl: 'form-edit.component.html',
 })
 export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() modalShow:boolean;
+  @Input() modalShow: boolean;
   @Input() data: Photo;
   dataInput: Photo;
 
@@ -72,7 +72,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
 
   ngAfterViewInit() {
     let _this = this;
-    $('#editPhotoModal').on('hidden.bs.modal', function (e:any) {
+    $('#editPhotoModal').on('hidden.bs.modal', function (e: any) {
       _this.modalHide.emit(false);
     });
   }

@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 
 //
 // import {ZPictureGridComponent} from '../shared/grid.component';
@@ -48,12 +48,10 @@ export class ZoneVideoComponent extends BaseMediaComponent implements OnInit {
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(
-
-  //   super();
-    //
-    private apiService: ApiBaseService,
-    //           private loadingService: LoadingService
+  constructor(//   super();
+              //
+              private apiService: ApiBaseService,
+              //           private loadingService: LoadingService
   ) {
     super(this.apiService);
     super.category = MediaType.photo;

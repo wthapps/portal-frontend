@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import {Constants} from "../../../shared/config/constants";
+import { Constants } from "../../../shared/config/constants";
 
 declare var $: any;
 declare var _: any;
@@ -66,6 +66,7 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
   ngDoCheck() {
     this.onOffAction();
   }
+
   ngAfterViewInit() {
     let _thisBar = this;
     $('body').on('click', function () {

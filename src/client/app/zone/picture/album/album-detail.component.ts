@@ -1,15 +1,15 @@
-import {Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange, ElementRef} from '@angular/core';
-import {ApiBaseService} from '../../../shared/services/apibase.service';
-import {BaseMediaComponent} from "../../shared/media/base-media.component";
-import {MediaType} from "../../../shared/config/constants";
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
-import {PhotoService} from "../../../shared/services/picture/photo.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {LoadingService} from "../../../partials/loading/loading.service";
-import {ConfirmationService} from "primeng/components/common/api";
-import {ToastsService} from "../../../partials/toast/toast-message.service";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
+import { Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange, ElementRef } from '@angular/core';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { BaseMediaComponent } from "../../shared/media/base-media.component";
+import { MediaType } from "../../../shared/config/constants";
+import { AlbumService } from "../../../shared/services/picture/album.service";
+import { Album } from "../../../shared/models/album.model";
+import { PhotoService } from "../../../shared/services/picture/photo.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { LoadingService } from "../../../partials/loading/loading.service";
+import { ConfirmationService } from "primeng/components/common/api";
+import { ToastsService } from "../../../partials/toast/toast-message.service";
+import { FormManagerService } from "../../../shared/form/form-manager.service";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -22,23 +22,21 @@ declare var _: any;
   styleUrls: ['album.component.css'],
 })
 
-export class ZAlbumDetailComponent extends BaseMediaComponent{
+export class ZAlbumDetailComponent extends BaseMediaComponent {
 
   album: Album = new Album(null);
   albumId: number;
   selectedItems: Array<any> = new Array<any>();
 
-  constructor(
-    private apiService?: ApiBaseService,
-    private albumService?: AlbumService,
-    private photoService?: PhotoService,
-    private route?: ActivatedRoute,
-    private loadingService?: LoadingService,
-    private router?: Router,
-    private toastsService?: ToastsService,
-    private confirmationService?: ConfirmationService,
-    private formManagerService?: FormManagerService,
-  ) {
+  constructor(private apiService?: ApiBaseService,
+              private albumService?: AlbumService,
+              private photoService?: PhotoService,
+              private route?: ActivatedRoute,
+              private loadingService?: LoadingService,
+              private router?: Router,
+              private toastsService?: ToastsService,
+              private confirmationService?: ConfirmationService,
+              private formManagerService?: FormManagerService,) {
     super(MediaType.albumDetail, apiService);
   }
 
@@ -64,12 +62,12 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
 
   init() {
-      this.albumService.get(this.albumService.url + this.albumId).subscribe(
-        (res: any) => {
-          this.album = new Album(res.data);
-          this.getPhotosByAlbum();
-        },
-      );
+    this.albumService.get(this.albumService.url + this.albumId).subscribe(
+      (res: any) => {
+        this.album = new Album(res.data);
+        this.getPhotosByAlbum();
+      },
+    );
   }
 
   getPhotosByAlbum() {
@@ -77,7 +75,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.loadItemsByUrl(this.photoService.url + '?' + params);
   }
 
-  onViewChanged(event:any) {
+  onViewChanged(event: any) {
     this.pageView = event;
   }
 
@@ -94,7 +92,8 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
   onCloseInfo() {
     this.onOffInfo();
   }
-  onViewInfo(event:any) {
+
+  onViewInfo(event: any) {
     this.onOffInfo();
   }
 
@@ -104,15 +103,15 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
 
   onDeleteAction() {
     this.confirmationService.confirm({
-      header: 'Delete Album',
-      message: this.album.name + ' will be deleted permanently. Photos that were in a deleted album remain part of your Photos library',
-      accept: () => {
-        this.loadingService.start();
-        this.albumService.delete(this.albumService.url + this.album.id)
-          .subscribe(res => {
+        header: 'Delete Album',
+        message: this.album.name + ' will be deleted permanently. Photos that were in a deleted album remain part of your Photos library',
+        accept: () => {
+          this.loadingService.start();
+          this.albumService.delete(this.albumService.url + this.album.id)
+            .subscribe(res => {
               this.loadingService.stop();
               this.router.navigate(['/zone/picture/album']);
-          })
+            })
         }
       }
     )
@@ -122,7 +121,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.formManagerService.show('form-edit-album-modal');
   }
 
-  onFormResult(res:any) {
+  onFormResult(res: any) {
     // if (res) {
     //   this.albumService.put(this.albumService.url + this.album.id, {name: res['album-name'], description: res['album-description']})
     //     .subscribe(res => {
@@ -138,7 +137,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent{
     this.formManagerService.hide('form-edit-album-modal');
   }
 
-  onDoneEditAlbumFormModal(album:Album) {
+  onDoneEditAlbumFormModal(album: Album) {
     this.formManagerService.hide('form-edit-album-modal');
     this.album = album;
   }
