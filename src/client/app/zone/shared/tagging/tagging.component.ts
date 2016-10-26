@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit} from '@angular/core';
-import {ApiBaseService} from '../../../shared/index';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { ApiBaseService } from '../../../shared/index';
 
 
 declare var $: any;
@@ -90,7 +90,7 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
       this.removedTags = _.pull(this.removedTags, tag);
     }
     if (this.tags.indexOf(tag) == -1 && this.newTags.indexOf(tag) == -1) {
-      this.newTags.push(tag)
+      this.newTags.push(tag);
     }
     this.checkIfHasChanged();
   }

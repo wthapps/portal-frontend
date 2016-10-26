@@ -201,23 +201,25 @@ export class ZPictureComponent implements OnChanges {
   }
 
   download(event: any) {
-    // if (event) {
-    //   let body = JSON.stringify({ids: this.selectedItems});
-    //   this.loadingService.start();
-    //   this.apiBaseService.post(`zone/photos/download`, body)
-    //     .subscribe((result: any) => {
-    //         // stop loading
-    //         this.loadingService.stop();
-    //         //this.toastsService.success(result.message);
-    //       },
-    //       error => {
-    //         // stop loading
-    //         this.loadingService.stop();
-    //         //this.toastsService.danger(error);
-    //         console.log(error);
-    //       }
-    //     );
-    // }
+    if (event) {
+      let body = JSON.stringify({ids: _.map(this.baseMedia.selectedItems, 'id')});
+      this.loadingService.start();
+      this.apiService.post(`zone/photos/download`, body)
+        .subscribe((result: any) => {
+            // stop loading
+            this.loadingService.stop();
+            let blob: Blob = new Blob([result._body], { type: 'image/jpeg'});
+            // window['saveAs'](blob, 'image-download.jpeg');
+            //this.toastsService.success(result.message);
+          },
+          error => {
+            // stop loading
+            this.loadingService.stop();
+            //this.toastsService.danger(error);
+            console.log(error);
+          }
+        );
+    }
   }
 
   add(event: any) {

@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, SimpleChanges} from '@angular/core';
-import {ApiBaseService} from '../../../shared/services/apibase.service';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, SimpleChanges } from '@angular/core';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 
 declare var $: any;
@@ -194,36 +194,36 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
     console.log('cancel');
   }
 
-  selectContact(contact: any){
+  selectContact(contact: any) {
     console.log('contacts', this.selectedContacts, contact);
     this.selectedContacts.push(contact);
     console.log('contacts after', this.selectedContacts, contact);
     this.setUpdatedItemsStatus();
   }
 
-  unSelectContact(contact: any){
-    _.remove(this.selectedContacts,(c) => { return c['id'] == contact['id'] });
+  unSelectContact(contact: any) {
+    _.remove(this.selectedContacts,(c) => { return c['id'] == contact['id']; });
     this.setUpdatedItemsStatus();
   }
 
   searchContact(event: any) {
     this.filteredContacts = _.filter(this.contacts,
-      (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1 });
+      (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1; });
   }
 
-  selectContactGroup(group: any){
+  selectContactGroup(group: any) {
     this.selectedContactGroups.push(group);
     this.setUpdatedItemsStatus();
   }
 
-  unSelectContactGroup(group: any){
-    _.remove(this.selectedContactGroups,(c) => { return c['id'] == group['id'] });
+  unSelectContactGroup(group: any) {
+    _.remove(this.selectedContactGroups,(c) => { return c['id'] == group['id']; });
     this.setUpdatedItemsStatus();
   }
 
   searchContactGroup(event: any) {
     this.filteredContactGroups = _.filter(this.contactGroups,
-      (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1 });
+      (c) => { return c['name'].toLowerCase().indexOf(event.query) != -1; });
   }
 
   private setUpdatedItemsStatus() {

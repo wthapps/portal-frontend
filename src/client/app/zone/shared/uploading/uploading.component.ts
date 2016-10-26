@@ -1,6 +1,6 @@
-import { Component, Input, Output, OnInit, AfterViewInit, OnChanges, EventEmitter, SimpleChanges, ViewChild, ElementRef, Renderer} from '@angular/core';
+import { Component, Output, OnInit, AfterViewInit, OnChanges, EventEmitter, SimpleChanges, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { ApiBaseService } from '../../../shared/index';
-import {Photo} from "../../../shared/models/photo.model";
+import { Photo } from '../../../shared/models/photo.model';
 
 declare var $: any;
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, EventEmitter } from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
@@ -16,7 +16,7 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'media',
+  selector: 'base-media',
   template: `<zone-photo *ngIf="category=='photo'"></zone-photo>
   <div *ngIf="category=='album'"> album </div>
   <div *ngIf="category=='playlist'"> playlist</div>
@@ -84,7 +84,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       this.isGridView = false;
       this.isListView = true;
     }
-    this.loadItems(this.currentPage)
+    this.loadItems(this.currentPage);
   }
 
   ngOnChanges() {
@@ -262,8 +262,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   onFormResult(res: any) {
     if (res) {
-      let body = JSON.stringify({name: res['album-name'], description: res['album-description']})
-      this.apiService.post("/zone/albums", body)
+      let body = JSON.stringify({name: res['album-name'], description: res['album-description']});
+      this.apiService.post('/zone/albums', body)
         .subscribe(res => {
           this.toastsService.success('Created Album');
         })
@@ -317,7 +317,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onDoneAddToAlbum(e: any) {
     this.formManagerService.hide('form-add-to-album-modal');
     this.formManagerService.show('added-to-album-toast');
-    this.albumPhotos = e
+    this.albumPhotos = e;
   }
 
   onHideAddedToAlbumToast() {
@@ -325,7 +325,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   hasOpeningModal(): boolean {
-    return (this.showTag)
+    return (this.showTag);
   }
 
   /**
@@ -338,16 +338,16 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
    */
   private buildPathByCat(): string {
     if (this.category == MediaType.photo) {
-      return 'zone/photos'
+      return 'zone/photos';
     }
     if (this.category == MediaType.album) {
-      return 'zone/albums'
+      return 'zone/albums';
     }
     if (this.category == MediaType.albumDetail) {
-      return 'zone/photos'
+      return 'zone/photos';
     }
     if (this.category == MediaType.favourites) {
-      return 'zone/favorites'
+      return 'zone/favorites';
     }
     if (this.category == MediaType.sharedWithMe) {
       return 'zone/shared_with_me'
