@@ -1,6 +1,6 @@
 import {
   Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange, ElementRef, Output,
-  EventEmitter
+  EventEmitter, ViewChild
 } from '@angular/core';
 import {ApiBaseService} from '../../../shared/services/apibase.service';
 import {BaseMediaComponent} from "../../shared/media/base-media.component";
@@ -12,8 +12,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LoadingService} from "../../../partials/loading/loading.service";
 import {ConfirmationService} from "primeng/components/common/api";
 import {ToastsService} from "../../../partials/toast/toast-message.service";
-import {FormManagerService} from "../../../shared/form/form-manager.service";
 import {Photo} from "../../../shared/models/photo.model";
+import {ZPictureFormEditAlbumComponent} from "../../shared/form/form-edit-album.component";
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -34,6 +34,8 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
 
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() selectedPhotoFull: EventEmitter<Array<Photo>> = new EventEmitter<Array<Photo>>();
+  @ViewChild(ZPictureFormEditAlbumComponent) formEditAlbum: ZPictureFormEditAlbumComponent;
+
 
   constructor(
     private apiService?: ApiBaseService,
@@ -44,7 +46,6 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
     private router?: Router,
     private toastsService?: ToastsService,
     private confirmationService?: ConfirmationService,
-    private formManagerService?: FormManagerService,
   ) {
     super(MediaType.albumDetail, apiService);
   }
@@ -117,7 +118,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
   }
 
   onEditAction() {
-    this.formManagerService.show('form-edit-album-modal');
+    this.formEditAlbum.show();
   }
 
   onFormResult(res: any) {
@@ -125,11 +126,11 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
   }
 
   onHideModal() {
-    this.formManagerService.hide('form-edit-album-modal');
+    this.formEditAlbum.hide();
   }
 
   onDoneEditAlbumFormModal(album: Album) {
-    this.formManagerService.hide('form-edit-album-modal');
+    this.formEditAlbum.hide();
     this.album = album;
   }
 

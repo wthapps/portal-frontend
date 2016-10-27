@@ -1,7 +1,6 @@
 import { Component, OnChanges, AfterViewInit, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Album } from "../../../shared/models/album.model";
 import { ToastBase } from "../../../shared/toast/toast-base.component";
-import { FormManagerService } from "../../../shared/form/form-manager.service";
 
 @Component({
   moduleId: module.id,
@@ -12,7 +11,7 @@ import { FormManagerService } from "../../../shared/form/form-manager.service";
 export class ZCreatedAlbumToastComponent extends ToastBase {
   @Input() album: Album;
 
-  constructor(public formManagerService: FormManagerService,) {
+  constructor() {
     super('created-album-toast');
   }
 }

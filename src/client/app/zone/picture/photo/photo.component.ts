@@ -8,8 +8,11 @@ import {
   ToastsService,
   ConfirmationService
 } from '../../../shared/index';
-import { FormManagerService } from '../../../shared/form/form-manager.service';
 import { ZonePhotoDetailComponent } from './photo-detail.component';
+import {ZPictureFormAddToAlbumComponent} from "../../shared/form/form-add-to-album.component";
+import {ZPictureFormCreateAlbumComponent} from "../../shared/form/form-create-album.component";
+import {ZAddedToAlbumToastComponent} from "../../shared/toast/added-to-album-toast.component";
+import {ZCreatedAlbumToastComponent} from "../../shared/toast/created-album-toast.component";
 
 declare var $: any;
 declare var _: any;
@@ -23,6 +26,14 @@ declare var _: any;
 export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
 
   @ViewChild('zonephotodetail') zonephotodetail: ZonePhotoDetailComponent;
+
+  @ViewChild(ZPictureFormAddToAlbumComponent) formAddToAlbum: ZPictureFormAddToAlbumComponent;
+  @ViewChild(ZPictureFormCreateAlbumComponent) formCreateAlbum: ZPictureFormCreateAlbumComponent;
+  @ViewChild(ZAddedToAlbumToastComponent) addedToAlbumToast: ZAddedToAlbumToastComponent;
+  @ViewChild(ZCreatedAlbumToastComponent) createdAlbumToast: ZCreatedAlbumToastComponent;
+
+
+
   showImg: boolean = false;
   imgId: number;
   sendActionDetail: any;
@@ -41,8 +52,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   constructor(private apiService: ApiBaseService,
               private toastsService: ToastsService,
               private loadingService: LoadingService,
-              private confirmationService: ConfirmationService,
-              private formManagerService?: FormManagerService) {
+              private confirmationService: ConfirmationService,) {
     super(MediaType.photo, this.apiService);
   }
 

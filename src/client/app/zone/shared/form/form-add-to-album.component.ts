@@ -5,7 +5,6 @@ import { AlbumService } from "../../../shared/services/picture/album.service";
 import { Album } from "../../../shared/models/album.model";
 import { Photo } from "../../../shared/models/photo.model";
 import { AlbumPhoto } from "../../../shared/models/album-photos.model";
-import { FormManagerService } from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -23,13 +22,11 @@ export class ZPictureFormAddToAlbumComponent extends FormModalComponent {
   dataAlbums: Array<Album> = [];
 
   constructor(private loadingService: LoadingService,
-              private albumService: AlbumService,
-              public formManagerService: FormManagerService,) {
+              private albumService: AlbumService,) {
     super('form-add-to-album-modal');
   }
 
   ngOnInit() {
-    super.ngOnInit();
     this.getAlbum();
   }
 

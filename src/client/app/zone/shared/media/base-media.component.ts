@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, EventEmitter } from '@angular/core';
+import {Component, OnInit, OnChanges, OnDestroy, EventEmitter, ViewChild} from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
@@ -8,7 +8,10 @@ import {
 } from '../../../shared/index';
 import { Album } from '../../../shared/models/album.model';
 import { AlbumPhoto } from '../../../shared/models/album-photos.model';
-import { FormManagerService } from '../../../shared/form/form-manager.service';
+import {ZPictureFormAddToAlbumComponent} from "../form/form-add-to-album.component";
+import {ZPictureFormCreateAlbumComponent} from "../form/form-create-album.component";
+import {ZAddedToAlbumToastComponent} from "../toast/added-to-album-toast.component";
+import {ZCreatedAlbumToastComponent} from "../toast/created-album-toast.component";
 
 
 declare var $: any;
@@ -54,6 +57,10 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   albumPhotos: AlbumPhoto;
   selectedPhotos: EventEmitter<any>;
   selectedPhotoFull: EventEmitter<any>;
+  formAddToAlbum: ZPictureFormAddToAlbumComponent;
+  formCreateAlbum: ZPictureFormCreateAlbumComponent;
+  addedToAlbumToast: ZAddedToAlbumToastComponent;
+  createdAlbumToast: ZCreatedAlbumToastComponent;
 
 
   /**
@@ -65,8 +72,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   private loadingService: LoadingService;
   private toastsService: ToastsService;
   private confirmationService: ConfirmationService;
-  private formManagerService: FormManagerService;
-
 
   constructor(private type: string,
               private apiService?: ApiBaseService) {
@@ -268,8 +273,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     if (photos) {
       this.addItems = photos;
     }
-    this.formManagerService.hide('form-add-to-album-modal');
-    this.formManagerService.show('form-create-album-modal');
+    this.formAddToAlbum.hide();
+    this.formCreateAlbum.show();
   }
 
   onFormResult(res: any) {
@@ -295,7 +300,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onHideCreateAlbumModal() {
-    this.formManagerService.hide('form-create-album-modal');
+    this.formCreateAlbum.hide();
   }
 
   onAddToAlbum(photos?: any) {
@@ -303,37 +308,37 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     if (photos) {
       this.addItems = photos;
     }
-    this.formManagerService.show('form-add-to-album-modal');
+    this.formAddToAlbum.show();
   }
 
   onHideAddToAlbumModal() {
-    this.formManagerService.hide('form-add-to-album-modal');
+    this.formAddToAlbum.hide();
   }
 
   onDoneCreateFormModal(e: any) {
-    this.formManagerService.hide('form-create-album-modal');
+    this.formCreateAlbum.hide();
     if (e instanceof Album) {
-      this.formManagerService.show('created-album-toast');
+      this.createdAlbumToast.show()
       this.album = e;
     } else {
-      this.formManagerService.hide('created-album-toast');
-      this.formManagerService.show('added-to-album-toast');
+      this.createdAlbumToast.hide();
+      this.addedToAlbumToast.show();
       this.albumPhotos = e;
     }
   }
 
   onHideCreateAlbumToast() {
-    this.formManagerService.hide('created-album-toast');
+    this.createdAlbumToast.hide();
   }
 
   onDoneAddToAlbum(e: any) {
-    this.formManagerService.hide('form-add-to-album-modal');
-    this.formManagerService.show('added-to-album-toast');
+    this.formAddToAlbum.hide();
+    this.addedToAlbumToast.show();
     this.albumPhotos = e;
   }
 
   onHideAddedToAlbumToast() {
-    this.formManagerService.hide('added-to-album-toast');
+    this.addedToAlbumToast.hide()
   }
 
   hasOpeningModal(): boolean {

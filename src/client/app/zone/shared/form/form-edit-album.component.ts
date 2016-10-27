@@ -4,7 +4,6 @@ import { AlbumService } from "../../../shared/services/picture/album.service";
 import { Album } from "../../../shared/models/album.model";
 import { AlbumPhoto } from "../../../shared/models/album-photos.model";
 import { ToastsService } from "../../../partials/toast/toast-message.service";
-import { FormManagerService } from "../../../shared/form/form-manager.service";
 
 declare var $: any;
 declare var _: any;
@@ -20,8 +19,7 @@ export class ZPictureFormEditAlbumComponent extends FormModalComponent {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private albumService: AlbumService,
-              private toastService: ToastsService,
-              public formManagerService: FormManagerService) {
+              private toastService: ToastsService) {
     super('form-edit-album-modal');
   }
 
