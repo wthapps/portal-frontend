@@ -59,9 +59,9 @@ export class ZPictureGridRemoveComponent extends ZPictureGridComponent {
     this.filterItemRemove(this.selectedPhotos);
   }
 
-  filterItemRemove(selectedPhotos) {
+  filterItemRemove(selectedPhotos:any) {
     this.allItems = [];
-    _.map(this.items, v => {
+    _.map(this.items, (v:any) => {
       this.allItems.push(v.id);
     });
     let remainItems = _.pullAll(this.allItems, selectedPhotos)

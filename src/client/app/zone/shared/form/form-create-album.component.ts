@@ -22,14 +22,14 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent {
 
 
   constructor(private albumService: AlbumService,
-              private formManagerService: FormManagerService,) {
+              public formManagerService: FormManagerService,) {
     super('form-create-album-modal');
   }
 
   onCreatedAlbum() {
     if (!this.isChanged) {
       this.arrayItems = [];
-      _.map(this.items, v => {
+      _.map(this.items, (v:any) => {
         this.arrayItems.push(v.id);
       });
     }
@@ -51,7 +51,7 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent {
           if (this.arrayItems.length > 0) {
             this.albumService.post(this.albumService.url + res.data.id + '/photos', {photos: this.arrayItems})
               .subscribe(
-                res => {
+                (res:any) => {
                   let albumPhotos = new AlbumPhoto({album: this.album, photos: this.arrayItems})
                   this.doneFormModal.emit(albumPhotos);
                 }

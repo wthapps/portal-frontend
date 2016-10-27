@@ -42,7 +42,7 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit, On
 
   constructor() {
     super(null);
-    super.category = MediaType.photo;
+    this.category = MediaType.photo;
   }
 
   ngOnInit() {
@@ -71,7 +71,7 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit, On
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.pageView) {
       if (this.pageView == 'grid') {
         this.isGridView = true;
@@ -144,14 +144,14 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit, On
   onImgsSelected(event: any) {
     let _this_photos = this;
     this.dataSelectedPhotos = [];
-    _.map(event, function (v) {
+    _.map(event, function (v:any) {
       _this_photos.dataSelectedPhotos.push(_.find(_this_photos.photos, ['id', v]));
     });
     this.selectedPhotos.emit(event);
     this.selectedPhotoFull.emit(this.dataSelectedPhotos);
   }
 
-  onActionDeleteOne(id): void {
+  onActionDeleteOne(id:any): void {
     this.showImg = false;
     this.modalHide.emit(false);
     this.photos = _.dropWhile(this.photos, ['id', id]);

@@ -52,8 +52,8 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   showCreatedAlbumToast: boolean;
   album: Album;
   albumPhotos: AlbumPhoto;
-  selectedPhotos: EventEmitter;
-  selectedPhotoFull: EventEmitter;
+  selectedPhotos: EventEmitter<any>;
+  selectedPhotoFull: EventEmitter<any>;
 
 
   /**
@@ -62,7 +62,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   showTag: boolean;
   showShare: boolean;
 
-  private apiService: ApiBaseService;
   private loadingService: LoadingService;
   private toastsService: ToastsService;
   private confirmationService: ConfirmationService;
@@ -131,7 +130,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
-          _.map(newFavourite, (v)=> {
+          _.map(newFavourite, (v:any)=> {
             let vitem = _.find(this.items, ['id', v.id]);
             vitem.favorite = setFavourite;
           });
@@ -182,7 +181,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onImgsSelected(event: any) {
     let _this = this;
     this.selectedItems = [];
-    _.map(event, function (v) {
+    _.map(event, function (v:any) {
       _this.selectedItems.push(_.find(_this.items, ['id', v]));
     });
     this.selectedPhotos.emit(event);
@@ -365,5 +364,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     if (this.category == MediaType.sharedWithMe) {
       return 'zone/share_with_me'; // get API
     }
+    return 'zone/photos';
   }
 }

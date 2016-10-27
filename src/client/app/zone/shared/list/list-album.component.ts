@@ -24,7 +24,7 @@ export class ZAlbumListComponent extends ZPictureListComponent {
     super();
   }
 
-  onDbClick(e: any, id: number) {
+  onDbClick(id: number) {
     this.router.navigate(['/zone/picture/album/' + id]);
   }
 }

@@ -15,14 +15,13 @@ declare var _: any;
   templateUrl: 'form-edit-album.component.html',
 })
 export class ZPictureFormEditAlbumComponent extends FormModalComponent {
-  // @Input() formManagerService:FormManagerService;
   @Input() album: Album;
-  @Output() hideFormModal: EventEmitter = new EventEmitter();
+  @Output() hideFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private albumService: AlbumService,
               private toastService: ToastsService,
-              private formManagerService: FormManagerService) {
+              public formManagerService: FormManagerService) {
     super('form-edit-album-modal');
   }
 

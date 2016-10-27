@@ -24,7 +24,7 @@ export class ZPictureFormAddToAlbumComponent extends FormModalComponent {
 
   constructor(private loadingService: LoadingService,
               private albumService: AlbumService,
-              private formManagerService: FormManagerService,) {
+              public formManagerService: FormManagerService,) {
     super('form-add-to-album-modal');
   }
 

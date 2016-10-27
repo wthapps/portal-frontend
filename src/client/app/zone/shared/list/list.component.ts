@@ -16,7 +16,7 @@ declare var _: any;
 })
 
 export class ZPictureListComponent implements OnChanges {
-  @Input() data: Array<Photo>;
+  @Input() data: Array<any>;
   @Output() imgDetail: EventEmitter<number> = new EventEmitter<number>();
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   dataPhotos: Array<Photo> = [];
@@ -52,7 +52,7 @@ export class ZPictureListComponent implements OnChanges {
    * @param event
    * @param column
    */
-  sort(event, column) {
+  sort(event:any, column:any) {
     if (column == 'name') {
       this.sortName = (this.sortName == false || this.sortName == 'asc' ? 'desc' : 'asc');
       console.log(this.sortName, this.dataPhotos);
