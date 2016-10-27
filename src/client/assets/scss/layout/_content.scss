@@ -292,7 +292,7 @@ $footer-height: 222px;
     }
     .control-body-select {
       float: left;
-      margin-right: 10%;
+      margin-right: 0;
       > li {
         float: left;
         margin-right: 10px;
@@ -324,10 +324,23 @@ $footer-height: 222px;
         margin-right: 0;
         > li {
           float: left;
-          margin-left: 15px;
+          margin-left: 5px;
+          margin-right: 0;
+          &.action-disabled {
+            cursor: not-allowed;
+            a {
+              pointer-events: none;
+              @include opacity(0.3);
+            }
+          }
+          &:last-child {
+            margin-left: 15px;
+          }
           > a {
             line-height: 34px;
             font-size: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
           }
           &.dropdown {
             padding-left: 15px;
@@ -339,9 +352,23 @@ $footer-height: 222px;
               }
             }
           }
+          &.action {
+            border-left: 0px;
+            padding-left: 0px;
+          }
           .dropdown-menu {
             left: auto;
             right: 0;
+          }
+        }
+      }
+      &.control-body-btnview-left {
+        a {
+          color: $text-color;
+          line-height: 34px;
+          font-size: 20px;
+          &:hover {
+            color: #000000;
           }
         }
       }
@@ -404,6 +431,17 @@ $footer-height: 222px;
   }
   .page-body-in {
     padding: 30px;
+    > section {
+      &:first-child {
+        .page-body-in-title {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  .page-body-in-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 
@@ -452,4 +490,32 @@ body.drag-active {
     @include center();
     max-width: 100%;
   }
+  .img-bottom-left {
+    @include bottom-left();
+    width: 100px;
+  }
 }
+
+.two-layout-slip {
+  .main-layout {
+    width: 100%;
+  }
+  .right-layout {
+    display: none;
+  }
+
+  &.active-info {
+    .main-layout {
+      width: 70%;
+      float: left;
+    }
+    .right-layout {
+      width: 30%;
+      float: right;
+    }
+    .main-layout, .right-layout {
+      display: inline;
+    }
+  }
+}
+

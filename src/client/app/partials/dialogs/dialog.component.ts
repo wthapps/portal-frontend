@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {DialogService} from './dialog.service';
+import { DialogService } from './dialog.service';
 
 const KEY_ESC = 27;
 
@@ -11,13 +11,13 @@ const KEY_ESC = 27;
   styleUrls: ['dialog.component.css']
 })
 export class DialogComponent implements OnInit {
-  longModal:boolean;
-  title:string;
-  message:string;
-  okText:string;
-  cancelText:string;
-  negativeOnClick:(e:any) => void;
-  positiveOnClick:(e:any) => void;
+  longModal: boolean;
+  title: string;
+  message: string;
+  okText: string;
+  cancelText: string;
+  negativeOnClick: (e: any) => void;
+  positiveOnClick: (e: any) => void;
 
   private defaults = {
     longModal: false,
@@ -26,13 +26,13 @@ export class DialogComponent implements OnInit {
     cancelText: 'Cancel',
     okText: 'OK'
   };
-  private bodyElement:any;
-  private modalElement:any;
-  private modalElementBackdrop:any;
-  private cancelButton:any;
-  private okButton:any;
+  private bodyElement: any;
+  private modalElement: any;
+  private modalElementBackdrop: any;
+  private cancelButton: any;
+  private okButton: any;
 
-  constructor(_dialogService:DialogService) {
+  constructor(_dialogService: DialogService) {
     _dialogService.activate = this.activate.bind(this);
   }
 
@@ -48,8 +48,8 @@ export class DialogComponent implements OnInit {
     this.longModal = longModal;
 
     let promise = new Promise<boolean>((resolve, reject) => {
-      this.negativeOnClick = (e:any) => resolve(false);
-      this.positiveOnClick = (e:any) => resolve(true);
+      this.negativeOnClick = (e: any) => resolve(false);
+      this.positiveOnClick = (e: any) => resolve(true);
       this.show();
     });
 
@@ -75,14 +75,14 @@ export class DialogComponent implements OnInit {
     //this.modalElement.style.opacity = 0;
     //this.modalElement.style.zIndex = 9999;
 
-    this.cancelButton.onclick = ((e:any) => {
+    this.cancelButton.onclick = ((e: any) => {
       e.preventDefault();
       if (!this.negativeOnClick(e)) {
         this.hideDialog();
       }
     });
 
-    this.okButton.onclick = ((e:any) => {
+    this.okButton.onclick = ((e: any) => {
       e.preventDefault();
       if (!this.positiveOnClick(e)) {
         this.hideDialog();
@@ -94,7 +94,7 @@ export class DialogComponent implements OnInit {
       return this.negativeOnClick(null);
     };
 
-    document.onkeyup = (e:any) => {
+    document.onkeyup = (e: any) => {
       if (e.which === KEY_ESC) {
         this.hideDialog();
         return this.negativeOnClick(null);
@@ -105,7 +105,7 @@ export class DialogComponent implements OnInit {
     this.bodyElement.classList.add('modal-open');
     this.modalElement.classList.add('in');
     this.modalElement.style.display = 'block';
-    this.bodyElement.style.paddingRight = this.getScrollbarWidth()+'px';
+    this.bodyElement.style.paddingRight = this.getScrollbarWidth() + 'px';
   }
 
   private hideDialog() {

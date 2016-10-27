@@ -2,8 +2,7 @@
  * <wth-slider [data]="images"></wth-slider>
  */
 
-import {Component, AfterViewInit, Input, OnChanges} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import { Component, AfterViewInit, Input, OnChanges } from '@angular/core';
 
 declare var Swiper: any;
 declare var swiperThumbs: any;
@@ -35,8 +34,7 @@ declare var swiperThumbs: any;
                   </div>
                 </div>
               </div>
-  `,
-  directives: [ROUTER_DIRECTIVES]
+  `
 })
 export class SliderComponent implements OnChanges, AfterViewInit {
   @Input() data: Array<any>;

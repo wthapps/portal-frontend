@@ -1,0 +1,64 @@
+<nav class="page-menuleft">
+  <ul class="list-unstyled">
+    <li>
+      <a href="#">Profile</a>
+    </li>
+    <li>
+      <a href="#">Contact</a>
+    </li>
+    <li>
+      <a href="#">Calendar</a>
+    </li>
+    <li>
+      <a href="#">Social Network</a>
+    </li>
+    <li>
+      <a href="#">Chat</a>
+    </li>
+    <li>
+      <a href="#">Gadget</a>
+    </li>
+    <li class="has-sub">
+      <a href="javascript:;" (click)="onMenu($event)">
+        Picture
+      </a>
+      <ul class="list-unstyled hidden" id="zone_menu_picture">
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/photo']">Photos</a>-->
+        <!--</li>-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/album']">Albums</a>-->
+        <!--</li>-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/video']">Videos</a>-->
+        <!--</li>-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
+          <!--<a [routerLink]="['/zone/picture/favourites']">Favourites</a>-->
+        <!--</li>-->
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
+          <a [routerLink]="[item.link]">
+            {{item.name}}
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">Bookmarks</a>
+    </li>
+    <li>
+      <a href="#">Documents</a>
+    </li>
+    <li>
+      <a href="#">Networking</a>
+    </li>
+    <li>
+      <a href="#">Games</a>
+    </li>
+    <li>
+      <a href="#">Dating</a>
+    </li>
+    <li>
+      <a href="#">Project</a>
+    </li>
+  </ul>
+</nav>

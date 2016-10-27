@@ -1,14 +1,10 @@
-import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'page500.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'page500.component.html'
 })
 
 export class Page500Component {
-  PanelTitle:string = '500';
+  PanelTitle: string = '500';
 }

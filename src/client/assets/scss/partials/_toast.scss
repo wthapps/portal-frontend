@@ -1,3 +1,79 @@
+.toast-message {
+  .ui-growl {
+    top: 50px;
+    left: 0;
+    right: 0;
+    width: auto;
+    .ui-growl-item-container {
+      margin-left: auto;
+      margin-right: auto;
+      width: 570px;
+      max-width: 100%;
+      word-break: break-all;
+      background-color: #ffffff;
+      background-image: none;
+      color: $text-color;
+      border: 1px solid transparent;
+      @include box-shadow(0px 2px 4px 0px rgba(163, 163, 163, 0.40));
+
+      &.ui-growl-message-info {
+        border-color: $alert-info-text;
+        .ui-growl-image {
+          color: $alert-info-text;
+        }
+      }
+      &.ui-growl-message-error {
+        border-color: $alert-danger-text;
+        .ui-growl-image {
+          color: $alert-danger-text;
+        }
+      }
+      &.ui-growl-message-warn {
+        border-color: $alert-warning-text;
+        .ui-growl-image {
+          color: $alert-warning-text;
+        }
+      }
+      &.ui-growl-message-success {
+        border-color: $alert-success-text;
+        .ui-growl-image {
+          color: $alert-success-text;
+        }
+      }
+
+    }
+    .ui-growl-item {
+      padding: 15px;
+    }
+    .ui-growl-title {
+      padding: 0;
+    }
+    .ui-growl-image {
+      margin-right: 10px;
+      font-size: 20px;
+      &.fa-close {
+        &:before {
+          content: "\f057";
+        }
+      }
+      &.fa-check {
+        &:before {
+          content: "\f058";
+        }
+      }
+    }
+    .ui-growl-message {
+      float: none;
+      overflow: hidden;
+      padding: 0;
+      width: auto;
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+
 .toast-wrap {
   top: 50px;
   z-index: 1000;

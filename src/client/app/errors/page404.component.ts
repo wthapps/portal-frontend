@@ -1,14 +1,10 @@
-import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'page404.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+  templateUrl: 'page404.component.html'
 })
 
 export class Page404Component {
-  PanelTitle:string = '404';
+  PanelTitle: string = '404';
 }

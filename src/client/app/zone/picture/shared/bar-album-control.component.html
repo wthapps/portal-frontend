@@ -1,0 +1,35 @@
+<div class="page-body-control">
+  <ul class="control-body-select control-body-btnview-left">
+    <li style="border-right: 1px #4A4A4A solid; padding-right: 10px">
+      <a [routerLink]="['/zone/picture/album']"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    </li>
+    <li>
+      <h4 style="color: #4A4A4A">{{album.name}}</h4>
+    </li>
+  </ul>
+
+
+  <ul class="control-body-select control-body-btnview">
+    <li class="dropdown action">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 10px">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a [ngClass]="{'text-disable': (selectedItems.length == 0)}" href="javascript:;" (click)="onRemoveAction()"> Remove From Album</a></li>
+        <li><a href="javascript:;" (click)="onEditAction()"> Edit Album</a></li>
+        <li><a href="javascript:;" (click)="deleteAlbumAction()"> Delete Album</a></li>
+        <li><a href="javascript:;" (click)="viewInfoAction()"> Information</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa" [ngClass]="{'fa-th-large': (currentView == 'grid'), 'fa-th-list': (currentView == 'list'), 'fa-align-center': (currentView == 'timeline')}"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a (click)="changeView('grid', $event)" href="javascript:;"><i class="fa fa-th-large"></i> Grid</a></li>
+        <li><a (click)="changeView('list', $event)" href="javascript:;"><i class="fa fa-th-list"></i> List</a></li>
+        <li><a (click)="changeView('timeline', $event)" href="javascript:;"><i class="fa fa-align-center"></i> Timeline</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>

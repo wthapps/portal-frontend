@@ -1,9 +1,6 @@
-<div id="loadingModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div id="loadingModal-backdrop" class="modal-backdrop fade"></div>
+<div class="wth-loading">
+  <p-dialog header="Title" [(visible)]="display">
+    Content
+  </p-dialog>
+</div>
+<div id="loadingModal-backdrop" [ngClass]="{'in':display}" class="modal-backdrop fade"></div>

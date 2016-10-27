@@ -19,8 +19,22 @@
         }
         &.active {
           background-color: #F6F6F6;
+          > a {
+            background-color: $color-inverse;
+          }
         }
         &.has-sub {
+          > a {
+            position: relative;
+            &:after {
+              @extend .fa;
+              @extend .fa-caret-down;
+              position: absolute;
+              @include center(false, true);
+              left: auto;
+              right: 10px;
+            }
+          }
           ul {
             li {
               a {

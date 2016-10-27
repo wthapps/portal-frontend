@@ -1,5 +1,5 @@
-import {Category} from './category.model';
-import {Platform} from './platform.model';
+import { Category } from './category.model';
+import { Platform } from './platform.model';
 
 export class Product {
 

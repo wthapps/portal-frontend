@@ -1,0 +1,33 @@
+<div id="photo-box-edit" class="photo-box-detail">
+  <div class="photo-detail-top">
+    <div class="name"><i class="fa fa-pencil"></i> Editting Photo</div>
+    <div class="pull-right ml20">
+      <a id="photo-detail-reset" href="javascript:;" class="mr20">Reset</a>
+      <a href="javascript:;" (click)="hideModal()">Done</a>
+    </div>
+    <ul class="action navbar-right">
+      <li>
+        <a id="photo-detail-crop" href="javascript:;"><i class="fa fa-crop"></i></a>
+      </li>
+      <li>
+        <a id="photo-detail-zoom-in" href="javascript:;"><i class="fa fa-search-plus"></i></a>
+      </li>
+      <li>
+        <a id="photo-detail-zoom-out" href="javascript:;"><i class="fa fa-search-minus"></i></a>
+      </li>
+      <li>
+        <a id="photo-detail-rotate-left" href="javascript:;"><i class="fa fa-rotate-left"></i></a>
+      </li>
+      <li>
+        <a id="photo-detail-rotate-right" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
+      </li>
+    </ul>
+  </div>
+  <div class="photo-detail-content">
+    <div class="photo-detail-img">
+      <figure>
+        <img id="photo-detail-img" [src]="imgOne">
+      </figure>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="row-img list">
+  <div class="photo-box-img photo-box-img-nav">
+    <figure (click)="sort($event, 'name')" class="img-center-dv can-click">Name
+      <i *ngIf="sortName" class="fa" [ngClass]="{'fa-arrow-down': (sortName == 'desc'), 'fa-arrow-up': (sortName == 'asc')}"></i>
+    </figure>
+    <div class="photo-box-img-name">
+
+    </div>
+    <div class="photo-box-img-owner">
+      Owner
+    </div>
+    <div (click)="sort($event, 'date')" class="photo-box-img-date can-click">
+      Create Date
+      <i *ngIf="sortDate" class="fa" [ngClass]="{'fa-arrow-down': (sortDate == 'desc'), 'fa-arrow-up': (sortDate == 'asc')}"></i>
+    </div>
+    <div class="photo-box-img-size">
+      Size
+    </div>
+  </div>
+  <div (click)="onSelected($event, album.id)" (dblclick)="onDbClick(album.id)" class="photo-box-img" *ngFor="let album of data" style="color: #A4A4A4">
+      <figure class="img-center-dv">
+        <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+        <img class="img-center" src="{{album.photo_default}}" alt="">
+      </figure>
+      <div class="photo-box-img-name">
+        {{album.name}}
+      </div>
+      <div class="photo-box-img-owner">
+        {{album.owner.name}}
+      </div>
+      <div class="photo-box-img-date">
+        {{album.created_at | date:'MMM dd yyyy' : 'UTC'}}
+      </div>
+      <div class="photo-box-img-size">
+        {{album.photo_number}}
+      </div>
+  </div>
+</div>

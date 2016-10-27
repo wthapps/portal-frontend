@@ -1,4 +1,19 @@
-import {Config}                           from './env.config';
+import { Config } from './env.config';
+
+let getBarwidth = function () {
+  // Create the measurement node
+  let scrollDiv = document.createElement('div');
+  scrollDiv.className = 'scrollbar-measure';
+  document.body.appendChild(scrollDiv);
+
+  // Get the scrollbar width
+  let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+  //console.warn(scrollbarWidth); // Mac:  15
+
+  // Delete the DIV
+  document.body.removeChild(scrollDiv);
+  return scrollbarWidth;
+};
 
 export let Constants = {
   baseUrls: {
@@ -36,6 +51,41 @@ export let Constants = {
   },
   img: {
     app: '/assets/images/apps/default.png',
-    avatar: '/assets/images/avatar/default.png'
+    avatar: '/assets/images/avatar/default.png',
+    logo: '/assets/images/logo.png',
+    logoWhite: '/assets/images/logo-white.png',
+    logoZone: '/assets/images/logo-zone.png',
+    logoZoneWhite: '/assets/images/logo-zone-white.png',
+  },
+  windows: {
+    scrollBarWidth: getBarwidth()
+  },
+
+  pictureMenuItems : [
+    { name: 'Photos', link: '/zone/picture/photo' },
+    { name: 'Albums', link: '/zone/picture/album' },
+    // { name: 'Videos', link: '/zone/picture/video' },
+    { name: 'Favorites', link: '/zone/picture/favourites' },
+    { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },
+  ],
+  pictureMenuActions : {
+    preview: true,
+    share: true,
+    addFavourite: true,
+    tag: true,
+    delete: true,
+    other: true,
   }
 };
+
+export let MediaType = {
+  photo: 'photo',
+  album: 'album',
+  albumDetail: 'albumDetail',
+  video: 'video',
+  playlist: 'playlist',
+  favourites: 'favourites',
+  sharedWithMe: 'sharedWithMe'
+};
+
+

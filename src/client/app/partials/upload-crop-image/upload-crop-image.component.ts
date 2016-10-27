@@ -1,6 +1,5 @@
-import {Component, AfterViewInit, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router';
-import {Constants} from '../../shared/index';
+import { Component, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Constants } from '../../shared/index';
 
 declare var $: any;
 declare var dropzone: any;
@@ -9,9 +8,6 @@ declare var dropzone: any;
   moduleId: module.id,
   selector: 'wth-upload-image',
   templateUrl: 'upload-crop-image.component.html',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   styleUrls: ['upload-crop-image.component.css']
 })
 
@@ -25,7 +21,7 @@ export class UploadCropImageComponent implements AfterViewInit {
     var elModal = $('#modalUploadImage');
     var elDropzone = $('#dropzone-wrap');
     var elDropzonePreviews = $('#dropzone-previews');
-    var myDropzone = null;
+    var myDropzone: any = null;
     var elCrop = $('#cropper-wrap');
     var $image = $('<img />');
     //var $download = $('#dropzone-download');
@@ -52,7 +48,7 @@ export class UploadCropImageComponent implements AfterViewInit {
          // Post to server
          myDropzone.processQueue();
          });*/
-        $remove.click(function (e) {
+        $remove.click(function () {
           elDropzonePreviews.html('');
           elCrop.html('');
           elDropzone.parent().removeClass('dropzonecrop-onThumbnail');
@@ -84,7 +80,7 @@ export class UploadCropImageComponent implements AfterViewInit {
     //http://codepen.io/anon/pen/PZxWez
     //https://gist.github.com/maria-p/8633b51f629ea8dbd27e
     // transform cropper dataURI output to a Blob which Dropzone accepts
-    function dataURItoBlob(dataURI) {
+    function dataURItoBlob(dataURI: any) {
       var byteString = atob(dataURI.split(',')[1]);
       var ab = new ArrayBuffer(byteString.length);
       var ia = new Uint8Array(ab);
@@ -97,7 +93,7 @@ export class UploadCropImageComponent implements AfterViewInit {
     // initialize dropzone
     elDropzone.dropzone(myDropzoneOptions);
     // listen to thumbnail event
-    myDropzone.on('thumbnail', function (file) {
+    myDropzone.on('thumbnail', function (file: any) {
       // ignore files which were already cropped and re-rendered
       // to prevent infinite loop
       if (file.cropped) {

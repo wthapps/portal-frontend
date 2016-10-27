@@ -1,9 +1,10 @@
-import {Injectable}     from '@angular/core';
-import {Observable}     from 'rxjs/Observable';
-import {Http, Response} from '@angular/http';
-import {Cookie}         from 'ng2-cookies/ng2-cookies';
-import {ApiBaseService} from './apibase.service';
-import {User}           from '../models/user.model';
+import { Injectable }     from '@angular/core';
+import { Observable }     from 'rxjs/Observable';
+import { Http, Response } from '@angular/http';
+import { Cookie }         from 'ng2-cookies/ng2-cookies';
+import { ApiBaseService } from './apibase.service';
+import { Constants }      from '../config/constants';
+import { User }           from '../models/user.model';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -21,7 +22,7 @@ export class UserService extends ApiBaseService {
     return super.post(path, body)
       .map(res => res.json())
       .map((res) => {
-        if(res) {
+        if (res) {
           this.storeUserInfo(res);
         }
         return res;
@@ -45,7 +46,7 @@ export class UserService extends ApiBaseService {
     return super.post(path, body)
       .map(res => res.json())
       .map((res) => {
-        if(res) {
+        if (res) {
           this.storeUserInfo(res);
         }
         return res;
@@ -53,25 +54,25 @@ export class UserService extends ApiBaseService {
   }
 
   /*
-  * update user info
-  * is_patch: You decide updating whole resource or a part of. Default value is false
-  */
+   * update user info
+   * is_patch: You decide updating whole resource or a part of. Default value is false
+   */
   update(path: string, body: string): Observable<Response> {
     // if(is_patch){
-      return super.patch(path, body)
-        .map(res => res.json())
-        .map((res) => {
-          if(res) {
-            // update credit card into to profile
-            // this.profile.credit_cards = res.credit_cards;
-            // this.profile.billing_address = res.billing_address;
-            /*console.log(res, this.profile);
-            Cookie.set('profile', JSON.stringify(this.profile));*/
-            this.updateProfile(res.data);
-            this.readUserInfo();
-          }
-          return res;
-        });
+    return super.patch(path, body)
+      .map(res => res.json())
+      .map((res) => {
+        if (res) {
+          // update credit card into to profile
+          // this.profile.credit_cards = res.credit_cards;
+          // this.profile.billing_address = res.billing_address;
+          /*console.log(res, this.profile);
+           Cookie.set('profile', JSON.stringify(this.profile));*/
+          this.updateProfile(res.data);
+          this.readUserInfo();
+        }
+        return res;
+      });
     // }else{
     //   return super.put(path, body)
     //     .map(res => res.json())
@@ -92,7 +93,7 @@ export class UserService extends ApiBaseService {
     return super.patch(path, body)
       .map(res => res.json())
       .map((res) => {
-        if(res) {
+        if (res) {
           console.log('changePassword:', res);
         }
         return res;
@@ -103,7 +104,7 @@ export class UserService extends ApiBaseService {
     return super.put(path, body)
       .map(res => res.json())
       .map((res) => {
-        if(res) {
+        if (res) {
           this.updateProfile(res.data);
           this.readUserInfo();
         }
@@ -112,14 +113,19 @@ export class UserService extends ApiBaseService {
   }
 
   deleteUserInfo() {
-    Cookie.delete('jwt','/');
-    Cookie.delete('logged_in','/');
-    Cookie.delete('profile','/');
+    Cookie.delete('jwt', '/');
+    Cookie.delete('logged_in', '/');
+    Cookie.delete('profile', '/');
     this.loggedIn = false;
     this.profile = null;
   }
 
   private storeUserInfo(response: any) {
+    // Check if profile_image is null
+    if (!response.data.profile_image) {
+      response.data.profile_image = Constants.img.avatar;
+    }
+
     // TODO move string constants to config file
     Cookie.set('jwt', response.token, 365, '/');
     Cookie.set('profile', JSON.stringify(response.data), 365, '/');

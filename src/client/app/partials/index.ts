@@ -7,3 +7,8 @@ export * from './breadcrumb/index';
 export * from './slider/index';
 export * from './countries/index';
 export * from './table-pricing/index';
+export * from './upload-crop-image/index';
+
+export * from './header/index';
+export * from './footer/index';
+

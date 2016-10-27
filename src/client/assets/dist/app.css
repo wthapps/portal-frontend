@@ -231,8 +231,10 @@ th {
     page-break-after: avoid; }
   .navbar {
     display: none; }
-  .btn > .caret,
-  .dropup > .btn > .caret {
+  .btn > .caret, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] > .caret, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] > .caret,
+  .dropup > .btn > .caret, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .dropup > button[ng-reflect-icon="fa-close"] > .caret, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .dropup > button[ng-reflect-icon="fa-check"] > .caret {
     border-top-color: #000 !important; }
   .label {
     border: 1px solid #000; }
@@ -2482,15 +2484,21 @@ fieldset[disabled]
   min-height: 34px; }
   .form-control-static.input-lg, .input-group-lg > .form-control-static.form-control,
   .input-group-lg > .form-control-static.input-group-addon,
-  .input-group-lg > .input-group-btn > .form-control-static.btn, .form-control-static.input-sm, .input-group-sm > .form-control-static.form-control,
+  .input-group-lg > .input-group-btn > .form-control-static.btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-lg > .input-group-btn > button.form-control-static[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-lg > .input-group-btn > button.form-control-static[ng-reflect-icon="fa-check"], .form-control-static.input-sm, .input-group-sm > .form-control-static.form-control,
   .input-group-sm > .form-control-static.input-group-addon,
-  .input-group-sm > .input-group-btn > .form-control-static.btn {
+  .input-group-sm > .input-group-btn > .form-control-static.btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-sm > .input-group-btn > button.form-control-static[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-sm > .input-group-btn > button.form-control-static[ng-reflect-icon="fa-check"] {
     padding-left: 0;
     padding-right: 0; }
 
 .input-sm, .input-group-sm > .form-control,
 .input-group-sm > .input-group-addon,
-.input-group-sm > .input-group-btn > .btn {
+.input-group-sm > .input-group-btn > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-sm > .input-group-btn > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-sm > .input-group-btn > button[ng-reflect-icon="fa-check"] {
   height: 26px;
   padding: 3px 10px;
   font-size: 12px;
@@ -2536,7 +2544,9 @@ select[multiple].input-sm,
 
 .input-lg, .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,
-.input-group-lg > .input-group-btn > .btn {
+.input-group-lg > .input-group-btn > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-lg > .input-group-btn > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-lg > .input-group-btn > button[ng-reflect-icon="fa-check"] {
   height: 46px;
   padding: 10px 16px;
   font-size: 18px;
@@ -2599,7 +2609,9 @@ select[multiple].input-lg,
 
 .input-lg + .form-control-feedback, .input-group-lg > .form-control + .form-control-feedback,
 .input-group-lg > .input-group-addon + .form-control-feedback,
-.input-group-lg > .input-group-btn > .btn + .form-control-feedback,
+.input-group-lg > .input-group-btn > .btn + .form-control-feedback, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-lg > .input-group-btn > button[ng-reflect-icon="fa-close"] + .form-control-feedback, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-lg > .input-group-btn > button[ng-reflect-icon="fa-check"] + .form-control-feedback,
 .input-group-lg + .form-control-feedback,
 .form-group-lg .form-control + .form-control-feedback {
   width: 46px;
@@ -2608,7 +2620,9 @@ select[multiple].input-lg,
 
 .input-sm + .form-control-feedback, .input-group-sm > .form-control + .form-control-feedback,
 .input-group-sm > .input-group-addon + .form-control-feedback,
-.input-group-sm > .input-group-btn > .btn + .form-control-feedback,
+.input-group-sm > .input-group-btn > .btn + .form-control-feedback, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-sm > .input-group-btn > button[ng-reflect-icon="fa-close"] + .form-control-feedback, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-sm > .input-group-btn > button[ng-reflect-icon="fa-check"] + .form-control-feedback,
 .input-group-sm + .form-control-feedback,
 .form-group-sm .form-control + .form-control-feedback {
   width: 26px;
@@ -2793,7 +2807,7 @@ select[multiple].input-lg,
     padding-top: 4px;
     font-size: 12px; } }
 
-.btn {
+.btn, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -2812,19 +2826,23 @@ select[multiple].input-lg,
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none; }
-  .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
+  .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .btn.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"], .btn:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active:focus, .btn:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active.focus, .btn.active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-check"]:focus, .btn.active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.active.focus[ng-reflect-icon="fa-check"] {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
-  .btn:hover, .btn:focus, .btn.focus {
+  .btn:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover, .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .btn.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"] {
     color: #333;
     text-decoration: none; }
-  .btn:active, .btn.active {
+  .btn:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active, .btn.active, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-check"] {
     outline: 0;
     background-image: none;
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .btn.disabled, .btn[disabled],
-  fieldset[disabled] .btn {
+  .btn.disabled, .wrapper .ui-dialog .ui-dialog-buttonpane button.disabled[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.disabled[ng-reflect-icon="fa-check"], .btn[disabled], .wrapper .ui-dialog .ui-dialog-buttonpane button[disabled][ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button[disabled][ng-reflect-icon="fa-check"],
+  fieldset[disabled] .btn,
+  fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  fieldset[disabled] button[ng-reflect-icon="fa-close"],
+  fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  fieldset[disabled] button[ng-reflect-icon="fa-check"] {
     cursor: not-allowed;
     opacity: 0.65;
     filter: alpha(opacity=65);
@@ -2835,48 +2853,59 @@ a.btn.disabled,
 fieldset[disabled] a.btn {
   pointer-events: none; }
 
-.btn-default, .btn-default2 {
+.btn-default, .btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] {
   color: #333;
   background-color: #fff;
   border-color: #ccc; }
-  .btn-default:focus, .btn-default2:focus, .btn-default.focus, .focus.btn-default2 {
+  .btn-default:focus, .btn-default2:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .btn-default.focus, .focus.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"] {
     color: #333;
     background-color: #e6e6e6;
     border-color: #8c8c8c; }
-  .btn-default:hover, .btn-default2:hover {
+  .btn-default:hover, .btn-default2:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover {
     color: #333;
     background-color: #e6e6e6;
     border-color: #adadad; }
-  .btn-default:active, .btn-default2:active, .btn-default.active, .active.btn-default2,
+  .btn-default:active, .btn-default2:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active, .btn-default.active, .active.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"],
   .open > .btn-default.dropdown-toggle,
-  .open > .dropdown-toggle.btn-default2 {
+  .open > .dropdown-toggle.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .open > button.dropdown-toggle[ng-reflect-icon="fa-close"] {
     color: #333;
     background-color: #e6e6e6;
     border-color: #adadad; }
-    .btn-default:active:hover, .btn-default2:active:hover, .btn-default:active:focus, .btn-default2:active:focus, .btn-default:active.focus, .btn-default2:active.focus, .btn-default.active:hover, .active.btn-default2:hover, .btn-default.active:focus, .active.btn-default2:focus, .btn-default.active.focus, .active.focus.btn-default2,
+    .btn-default:active:hover, .btn-default2:active:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active:hover, .btn-default:active:focus, .btn-default2:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active:focus, .btn-default:active.focus, .btn-default2:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active.focus, .btn-default.active:hover, .active.btn-default2:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"]:hover, .btn-default.active:focus, .active.btn-default2:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"]:focus, .btn-default.active.focus, .active.focus.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane button.active.focus[ng-reflect-icon="fa-close"],
     .open > .btn-default.dropdown-toggle:hover,
-    .open > .dropdown-toggle.btn-default2:hover,
+    .open > .dropdown-toggle.btn-default2:hover, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .open > button.dropdown-toggle[ng-reflect-icon="fa-close"]:hover,
     .open > .btn-default.dropdown-toggle:focus,
-    .open > .dropdown-toggle.btn-default2:focus,
+    .open > .dropdown-toggle.btn-default2:focus, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .open > button.dropdown-toggle[ng-reflect-icon="fa-close"]:focus,
     .open > .btn-default.dropdown-toggle.focus,
-    .open > .dropdown-toggle.focus.btn-default2 {
+    .open > .dropdown-toggle.focus.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .open > button.dropdown-toggle.focus[ng-reflect-icon="fa-close"] {
       color: #333;
       background-color: #d4d4d4;
       border-color: #8c8c8c; }
-  .btn-default:active, .btn-default2:active, .btn-default.active, .active.btn-default2,
+  .btn-default:active, .btn-default2:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active, .btn-default.active, .active.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"],
   .open > .btn-default.dropdown-toggle,
-  .open > .dropdown-toggle.btn-default2 {
+  .open > .dropdown-toggle.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .open > button.dropdown-toggle[ng-reflect-icon="fa-close"] {
     background-image: none; }
-  .btn-default.disabled:hover, .disabled.btn-default2:hover, .btn-default.disabled:focus, .disabled.btn-default2:focus, .btn-default.disabled.focus, .disabled.focus.btn-default2, .btn-default[disabled]:hover, [disabled].btn-default2:hover, .btn-default[disabled]:focus, [disabled].btn-default2:focus, .btn-default[disabled].focus, [disabled].focus.btn-default2,
+  .btn-default.disabled:hover, .disabled.btn-default2:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button.disabled[ng-reflect-icon="fa-close"]:hover, .btn-default.disabled:focus, .disabled.btn-default2:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.disabled[ng-reflect-icon="fa-close"]:focus, .btn-default.disabled.focus, .disabled.focus.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane button.disabled.focus[ng-reflect-icon="fa-close"], .btn-default[disabled]:hover, [disabled].btn-default2:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[disabled][ng-reflect-icon="fa-close"]:hover, .btn-default[disabled]:focus, [disabled].btn-default2:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[disabled][ng-reflect-icon="fa-close"]:focus, .btn-default[disabled].focus, [disabled].focus.btn-default2, .wrapper .ui-dialog .ui-dialog-buttonpane button[disabled].focus[ng-reflect-icon="fa-close"],
   fieldset[disabled] .btn-default:hover,
   fieldset[disabled] .btn-default2:hover,
+  fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane
+  fieldset[disabled] button[ng-reflect-icon="fa-close"]:hover,
   fieldset[disabled] .btn-default:focus,
   fieldset[disabled] .btn-default2:focus,
+  fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane
+  fieldset[disabled] button[ng-reflect-icon="fa-close"]:focus,
   fieldset[disabled] .btn-default.focus,
-  fieldset[disabled] .focus.btn-default2 {
+  fieldset[disabled] .focus.btn-default2,
+  fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  fieldset[disabled] button.focus[ng-reflect-icon="fa-close"] {
     background-color: #fff;
     border-color: #ccc; }
-  .btn-default .badge, .btn-default2 .badge {
+  .btn-default .badge, .btn-default2 .badge, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] .badge {
     color: #fff;
     background-color: #333; }
 
@@ -3086,19 +3115,19 @@ fieldset[disabled] a.btn {
     color: #777777;
     text-decoration: none; }
 
-.btn-lg, .btn-group-lg > .btn {
+.btn-lg, .btn-group-lg > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg > button[ng-reflect-icon="fa-check"] {
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.3333333;
   border-radius: 4px; }
 
-.btn-sm, .btn-group-sm > .btn {
+.btn-sm, .btn-group-sm > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-sm > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-sm > button[ng-reflect-icon="fa-check"] {
   padding: 3px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px; }
 
-.btn-xs, .btn-group-xs > .btn {
+.btn-xs, .btn-group-xs > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-xs > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-xs > button[ng-reflect-icon="fa-check"] {
   padding: 1px 5px;
   font-size: 12px;
   line-height: 1.5;
@@ -3282,20 +3311,38 @@ tbody.collapse.in {
   position: relative;
   display: inline-block;
   vertical-align: middle; }
-  .btn-group > .btn,
-  .btn-group-vertical > .btn {
+  .btn-group > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"],
+  .btn-group-vertical > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .btn-group-vertical > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  .btn-group-vertical > button[ng-reflect-icon="fa-check"] {
     position: relative;
     float: left; }
-    .btn-group > .btn:hover, .btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active,
-    .btn-group-vertical > .btn:hover,
-    .btn-group-vertical > .btn:focus,
-    .btn-group-vertical > .btn:active,
-    .btn-group-vertical > .btn.active {
+    .btn-group > .btn:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"]:hover, .btn-group > .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"]:focus, .btn-group > .btn:active, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"]:active, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"]:active, .btn-group > .btn.active, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button.active[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button.active[ng-reflect-icon="fa-check"],
+    .btn-group-vertical > .btn:hover, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button[ng-reflect-icon="fa-check"]:hover,
+    .btn-group-vertical > .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button[ng-reflect-icon="fa-check"]:focus,
+    .btn-group-vertical > .btn:active, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button[ng-reflect-icon="fa-close"]:active, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button[ng-reflect-icon="fa-check"]:active,
+    .btn-group-vertical > .btn.active, .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button.active[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+    .btn-group-vertical > button.active[ng-reflect-icon="fa-check"] {
       z-index: 2; }
 
-.btn-group .btn + .btn,
+.btn-group .btn + .btn, .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group button[ng-reflect-icon="fa-close"] + .btn, .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group button[ng-reflect-icon="fa-check"] + .btn, .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group .btn + button[ng-reflect-icon="fa-close"], .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group .btn + button[ng-reflect-icon="fa-check"], .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"],
 .btn-group .btn + .btn-group,
+.btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + .btn-group, .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group button[ng-reflect-icon="fa-close"] + .btn-group,
+.btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + .btn-group, .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group button[ng-reflect-icon="fa-check"] + .btn-group,
 .btn-group .btn-group + .btn,
+.btn-group .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group .btn-group + button[ng-reflect-icon="fa-close"],
+.btn-group .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group .btn-group + button[ng-reflect-icon="fa-check"],
 .btn-group .btn-group + .btn-group {
   margin-left: -1px; }
 
@@ -3306,25 +3353,25 @@ tbody.collapse.in {
     display: table; }
   .btn-toolbar:after {
     clear: both; }
-  .btn-toolbar .btn,
+  .btn-toolbar .btn, .btn-toolbar .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-toolbar button[ng-reflect-icon="fa-close"], .btn-toolbar .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-toolbar button[ng-reflect-icon="fa-check"],
   .btn-toolbar .btn-group,
   .btn-toolbar .input-group {
     float: left; }
-  .btn-toolbar > .btn,
+  .btn-toolbar > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-toolbar > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-toolbar > button[ng-reflect-icon="fa-check"],
   .btn-toolbar > .btn-group,
   .btn-toolbar > .input-group {
     margin-left: 5px; }
 
-.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"]:not(:first-child):not(:last-child):not(.dropdown-toggle), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"]:not(:first-child):not(:last-child):not(.dropdown-toggle) {
   border-radius: 0; }
 
-.btn-group > .btn:first-child {
+.btn-group > .btn:first-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"]:first-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"]:first-child {
   margin-left: 0; }
-  .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+  .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"]:first-child:not(:last-child):not(.dropdown-toggle), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"]:first-child:not(:last-child):not(.dropdown-toggle) {
     border-bottom-right-radius: 0;
     border-top-right-radius: 0; }
 
-.btn-group > .btn:last-child:not(:first-child),
+.btn-group > .btn:last-child:not(:first-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"]:last-child:not(:first-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"]:last-child:not(:first-child),
 .btn-group > .dropdown-toggle:not(:first-child) {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0; }
@@ -3332,15 +3379,15 @@ tbody.collapse.in {
 .btn-group > .btn-group {
   float: left; }
 
-.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {
+.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > .btn-group:not(:first-child):not(:last-child) > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > .btn-group:not(:first-child):not(:last-child) > button[ng-reflect-icon="fa-check"] {
   border-radius: 0; }
 
-.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > .btn-group:first-child:not(:last-child) > button[ng-reflect-icon="fa-close"]:last-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > .btn-group:first-child:not(:last-child) > button[ng-reflect-icon="fa-check"]:last-child,
 .btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0; }
 
-.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {
+.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > .btn-group:last-child:not(:first-child) > button[ng-reflect-icon="fa-close"]:first-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > .btn-group:last-child:not(:first-child) > button[ng-reflect-icon="fa-check"]:first-child {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0; }
 
@@ -3348,11 +3395,11 @@ tbody.collapse.in {
 .btn-group.open .dropdown-toggle {
   outline: 0; }
 
-.btn-group > .btn + .dropdown-toggle {
+.btn-group > .btn + .dropdown-toggle, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-close"] + .dropdown-toggle, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group > button[ng-reflect-icon="fa-check"] + .dropdown-toggle {
   padding-left: 8px;
   padding-right: 8px; }
 
-.btn-group > .btn-lg + .dropdown-toggle, .btn-group-lg.btn-group > .btn + .dropdown-toggle {
+.btn-group > .btn-lg + .dropdown-toggle, .btn-group-lg.btn-group > .btn + .dropdown-toggle, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg.btn-group > button[ng-reflect-icon="fa-close"] + .dropdown-toggle, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg.btn-group > button[ng-reflect-icon="fa-check"] + .dropdown-toggle {
   padding-left: 12px;
   padding-right: 12px; }
 
@@ -3363,19 +3410,21 @@ tbody.collapse.in {
     -webkit-box-shadow: none;
     box-shadow: none; }
 
-.btn .caret {
+.btn .caret, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] .caret, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] .caret {
   margin-left: 0; }
 
-.btn-lg .caret, .btn-group-lg > .btn .caret {
+.btn-lg .caret, .btn-group-lg > .btn .caret, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg > button[ng-reflect-icon="fa-close"] .caret, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg > button[ng-reflect-icon="fa-check"] .caret {
   border-width: 5px 5px 0;
   border-bottom-width: 0; }
 
-.dropup .btn-lg .caret, .dropup .btn-group-lg > .btn .caret {
+.dropup .btn-lg .caret, .dropup .btn-group-lg > .btn .caret, .dropup .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg > button[ng-reflect-icon="fa-close"] .caret, .wrapper .ui-dialog .ui-dialog-buttonpane .dropup .btn-group-lg > button[ng-reflect-icon="fa-close"] .caret, .dropup .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-lg > button[ng-reflect-icon="fa-check"] .caret, .wrapper .ui-dialog .ui-dialog-buttonpane .dropup .btn-group-lg > button[ng-reflect-icon="fa-check"] .caret {
   border-width: 0 5px 5px; }
 
-.btn-group-vertical > .btn,
+.btn-group-vertical > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-check"],
 .btn-group-vertical > .btn-group,
-.btn-group-vertical > .btn-group > .btn {
+.btn-group-vertical > .btn-group > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group-vertical > .btn-group > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group-vertical > .btn-group > button[ng-reflect-icon="fa-check"] {
   display: block;
   float: none;
   width: 100%;
@@ -3388,40 +3437,44 @@ tbody.collapse.in {
 .btn-group-vertical > .btn-group:after {
   clear: both; }
 
-.btn-group-vertical > .btn-group > .btn {
+.btn-group-vertical > .btn-group > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group > button[ng-reflect-icon="fa-check"] {
   float: none; }
 
-.btn-group-vertical > .btn + .btn,
-.btn-group-vertical > .btn + .btn-group,
-.btn-group-vertical > .btn-group + .btn,
+.btn-group-vertical > .btn + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-close"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-check"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"],
+.btn-group-vertical > .btn + .btn-group, .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group-vertical > button[ng-reflect-icon="fa-close"] + .btn-group, .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group-vertical > button[ng-reflect-icon="fa-check"] + .btn-group,
+.btn-group-vertical > .btn-group + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group-vertical > .btn-group + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.btn-group-vertical > .btn-group + button[ng-reflect-icon="fa-check"],
 .btn-group-vertical > .btn-group + .btn-group {
   margin-top: -1px;
   margin-left: 0; }
 
-.btn-group-vertical > .btn:not(:first-child):not(:last-child) {
+.btn-group-vertical > .btn:not(:first-child):not(:last-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-close"]:not(:first-child):not(:last-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-check"]:not(:first-child):not(:last-child) {
   border-radius: 0; }
 
-.btn-group-vertical > .btn:first-child:not(:last-child) {
+.btn-group-vertical > .btn:first-child:not(:last-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-close"]:first-child:not(:last-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-check"]:first-child:not(:last-child) {
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0; }
 
-.btn-group-vertical > .btn:last-child:not(:first-child) {
+.btn-group-vertical > .btn:last-child:not(:first-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-close"]:last-child:not(:first-child), .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > button[ng-reflect-icon="fa-check"]:last-child:not(:first-child) {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px; }
 
-.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {
+.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > button[ng-reflect-icon="fa-check"] {
   border-radius: 0; }
 
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group:first-child:not(:last-child) > button[ng-reflect-icon="fa-close"]:last-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group:first-child:not(:last-child) > button[ng-reflect-icon="fa-check"]:last-child,
 .btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0; }
 
-.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {
+.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group:last-child:not(:first-child) > button[ng-reflect-icon="fa-close"]:first-child, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-vertical > .btn-group:last-child:not(:first-child) > button[ng-reflect-icon="fa-check"]:first-child {
   border-top-right-radius: 0;
   border-top-left-radius: 0; }
 
@@ -3430,20 +3483,26 @@ tbody.collapse.in {
   width: 100%;
   table-layout: fixed;
   border-collapse: separate; }
-  .btn-group-justified > .btn,
+  .btn-group-justified > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-justified > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-justified > button[ng-reflect-icon="fa-check"],
   .btn-group-justified > .btn-group {
     float: none;
     display: table-cell;
     width: 1%; }
-  .btn-group-justified > .btn-group .btn {
+  .btn-group-justified > .btn-group .btn, .btn-group-justified > .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-justified > .btn-group button[ng-reflect-icon="fa-close"], .btn-group-justified > .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-justified > .btn-group button[ng-reflect-icon="fa-check"] {
     width: 100%; }
   .btn-group-justified > .btn-group .dropdown-menu {
     left: auto; }
 
-[data-toggle="buttons"] > .btn input[type="radio"],
-[data-toggle="buttons"] > .btn input[type="checkbox"],
-[data-toggle="buttons"] > .btn-group > .btn input[type="radio"],
-[data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"] {
+[data-toggle="buttons"] > .btn input[type="radio"], .wrapper .ui-dialog .ui-dialog-buttonpane [data-toggle="buttons"] > button[ng-reflect-icon="fa-close"] input[type="radio"], .wrapper .ui-dialog .ui-dialog-buttonpane [data-toggle="buttons"] > button[ng-reflect-icon="fa-check"] input[type="radio"],
+[data-toggle="buttons"] > .btn input[type="checkbox"], .wrapper .ui-dialog .ui-dialog-buttonpane
+[data-toggle="buttons"] > button[ng-reflect-icon="fa-close"] input[type="checkbox"], .wrapper .ui-dialog .ui-dialog-buttonpane
+[data-toggle="buttons"] > button[ng-reflect-icon="fa-check"] input[type="checkbox"],
+[data-toggle="buttons"] > .btn-group > .btn input[type="radio"], .wrapper .ui-dialog .ui-dialog-buttonpane
+[data-toggle="buttons"] > .btn-group > button[ng-reflect-icon="fa-close"] input[type="radio"], .wrapper .ui-dialog .ui-dialog-buttonpane
+[data-toggle="buttons"] > .btn-group > button[ng-reflect-icon="fa-check"] input[type="radio"],
+[data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"], .wrapper .ui-dialog .ui-dialog-buttonpane
+[data-toggle="buttons"] > .btn-group > button[ng-reflect-icon="fa-close"] input[type="checkbox"], .wrapper .ui-dialog .ui-dialog-buttonpane
+[data-toggle="buttons"] > .btn-group > button[ng-reflect-icon="fa-check"] input[type="checkbox"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none; }
@@ -3492,13 +3551,17 @@ tbody.collapse.in {
   border-radius: 4px; }
   .input-group-addon.input-sm,
   .input-group-sm > .input-group-addon,
-  .input-group-sm > .input-group-btn > .input-group-addon.btn {
+  .input-group-sm > .input-group-btn > .input-group-addon.btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-sm > .input-group-btn > button.input-group-addon[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-sm > .input-group-btn > button.input-group-addon[ng-reflect-icon="fa-check"] {
     padding: 3px 10px;
     font-size: 12px;
     border-radius: 3px; }
   .input-group-addon.input-lg,
   .input-group-lg > .input-group-addon,
-  .input-group-lg > .input-group-btn > .input-group-addon.btn {
+  .input-group-lg > .input-group-btn > .input-group-addon.btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-lg > .input-group-btn > button.input-group-addon[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+  .input-group-lg > .input-group-btn > button.input-group-addon[ng-reflect-icon="fa-check"] {
     padding: 10px 16px;
     font-size: 18px;
     border-radius: 4px; }
@@ -3508,11 +3571,19 @@ tbody.collapse.in {
 
 .input-group .form-control:first-child,
 .input-group-addon:first-child,
-.input-group-btn:first-child > .btn,
-.input-group-btn:first-child > .btn-group > .btn,
+.input-group-btn:first-child > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > button[ng-reflect-icon="fa-check"],
+.input-group-btn:first-child > .btn-group > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > .btn-group > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > .btn-group > button[ng-reflect-icon="fa-check"],
 .input-group-btn:first-child > .dropdown-toggle,
-.input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle),
-.input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+.input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > button[ng-reflect-icon="fa-close"]:not(:last-child):not(.dropdown-toggle), .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > button[ng-reflect-icon="fa-check"]:not(:last-child):not(.dropdown-toggle),
+.input-group-btn:last-child > .btn-group:not(:last-child) > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > .btn-group:not(:last-child) > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > .btn-group:not(:last-child) > button[ng-reflect-icon="fa-check"] {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0; }
 
@@ -3521,11 +3592,19 @@ tbody.collapse.in {
 
 .input-group .form-control:last-child,
 .input-group-addon:last-child,
-.input-group-btn:last-child > .btn,
-.input-group-btn:last-child > .btn-group > .btn,
+.input-group-btn:last-child > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > button[ng-reflect-icon="fa-check"],
+.input-group-btn:last-child > .btn-group > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > .btn-group > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:last-child > .btn-group > button[ng-reflect-icon="fa-check"],
 .input-group-btn:last-child > .dropdown-toggle,
-.input-group-btn:first-child > .btn:not(:first-child),
-.input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+.input-group-btn:first-child > .btn:not(:first-child), .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > button[ng-reflect-icon="fa-close"]:not(:first-child), .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > button[ng-reflect-icon="fa-check"]:not(:first-child),
+.input-group-btn:first-child > .btn-group:not(:first-child) > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > .btn-group:not(:first-child) > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane
+.input-group-btn:first-child > .btn-group:not(:first-child) > button[ng-reflect-icon="fa-check"] {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0; }
 
@@ -3536,16 +3615,16 @@ tbody.collapse.in {
   position: relative;
   font-size: 0;
   white-space: nowrap; }
-  .input-group-btn > .btn {
+  .input-group-btn > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-check"] {
     position: relative; }
-    .input-group-btn > .btn + .btn {
+    .input-group-btn > .btn + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-close"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-check"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > .btn + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > .btn + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"] {
       margin-left: -1px; }
-    .input-group-btn > .btn:hover, .input-group-btn > .btn:focus, .input-group-btn > .btn:active {
+    .input-group-btn > .btn:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-check"]:hover, .input-group-btn > .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-check"]:focus, .input-group-btn > .btn:active, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-close"]:active, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn > button[ng-reflect-icon="fa-check"]:active {
       z-index: 2; }
-  .input-group-btn:first-child > .btn,
+  .input-group-btn:first-child > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn:first-child > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn:first-child > button[ng-reflect-icon="fa-check"],
   .input-group-btn:first-child > .btn-group {
     margin-right: -1px; }
-  .input-group-btn:last-child > .btn,
+  .input-group-btn:last-child > .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn:last-child > button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .input-group-btn:last-child > button[ng-reflect-icon="fa-check"],
   .input-group-btn:last-child > .btn-group {
     z-index: 2;
     margin-left: -1px; }
@@ -3924,10 +4003,10 @@ tbody.collapse.in {
 .navbar-btn {
   margin-top: 8px;
   margin-bottom: 8px; }
-  .navbar-btn.btn-sm, .btn-group-sm > .navbar-btn.btn {
+  .navbar-btn.btn-sm, .btn-group-sm > .navbar-btn.btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-sm > button.navbar-btn[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-sm > button.navbar-btn[ng-reflect-icon="fa-check"] {
     margin-top: 12px;
     margin-bottom: 12px; }
-  .navbar-btn.btn-xs, .btn-group-xs > .navbar-btn.btn {
+  .navbar-btn.btn-xs, .btn-group-xs > .navbar-btn.btn, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-xs > button.navbar-btn[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-xs > button.navbar-btn[ng-reflect-icon="fa-check"] {
     margin-top: 14px;
     margin-bottom: 14px; }
 
@@ -4220,7 +4299,7 @@ tbody.collapse.in {
   border-radius: .25em; }
   .label:empty {
     display: none; }
-  .btn .label {
+  .btn .label, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] .label, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] .label {
     position: relative;
     top: -1px; }
 
@@ -4274,11 +4353,13 @@ a.label:hover, a.label:focus {
   border-radius: 10px; }
   .badge:empty {
     display: none; }
-  .btn .badge {
+  .btn .badge, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] .badge, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] .badge {
     position: relative;
     top: -1px; }
-  .btn-xs .badge, .btn-group-xs > .btn .badge,
-  .btn-group-xs > .btn .badge {
+  .btn-xs .badge, .btn-group-xs > .btn .badge, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-xs > button[ng-reflect-icon="fa-close"] .badge, .wrapper .ui-dialog .ui-dialog-buttonpane .btn-group-xs > button[ng-reflect-icon="fa-check"] .badge,
+  .btn-group-xs > .btn .badge, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .btn-group-xs > button[ng-reflect-icon="fa-close"] .badge, .wrapper .ui-dialog .ui-dialog-buttonpane
+  .btn-group-xs > button[ng-reflect-icon="fa-check"] .badge {
     top: 0;
     padding: 1px 5px; }
   .list-group-item.active > .badge,
@@ -5168,10 +5249,10 @@ button.close {
     display: table; }
   .modal-footer:after {
     clear: both; }
-  .modal-footer .btn + .btn {
+  .modal-footer .btn + .btn, .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer button[ng-reflect-icon="fa-close"] + .btn, .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer button[ng-reflect-icon="fa-check"] + .btn, .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn + button[ng-reflect-icon="fa-close"], .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn + button[ng-reflect-icon="fa-check"], .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .modal-footer .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"] {
     margin-left: 5px;
     margin-bottom: 0; }
-  .modal-footer .btn-group .btn + .btn {
+  .modal-footer .btn-group .btn + .btn, .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group button[ng-reflect-icon="fa-close"] + .btn, .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group button[ng-reflect-icon="fa-check"] + .btn, .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group .btn + button[ng-reflect-icon="fa-close"], .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group .btn + button[ng-reflect-icon="fa-check"], .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .modal-footer .btn-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .modal-footer .btn-group button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"] {
     margin-left: -1px; }
   .modal-footer .btn-block + .btn-block {
     margin-left: 0; }
@@ -5593,7 +5674,7 @@ button.close {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
-  .carousel-caption .btn {
+  .carousel-caption .btn, .carousel-caption .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .carousel-caption button[ng-reflect-icon="fa-close"], .carousel-caption .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .carousel-caption button[ng-reflect-icon="fa-check"] {
     text-shadow: none; }
 
 @media screen and (min-width: 768px) {
@@ -5847,7 +5928,7 @@ font-family: 'Lato', sans-serif;
   font-weight: normal;
   font-style: normal; }
 
-.fa, .form-validation.has-error:before {
+.fa, .form-validation.has-error:before, .aside-menu .page-menuleft > ul > li.has-sub > a:after, .row-img .img-center-dv:after, .row-img .photo-box-img.removed .img-center-dv:after {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
@@ -5906,10 +5987,10 @@ font-family: 'Lato', sans-serif;
 .fa-pull-right {
   float: right; }
 
-.fa.fa-pull-left, .fa-pull-left.form-validation.has-error:before {
+.fa.fa-pull-left, .fa-pull-left.form-validation.has-error:before, .aside-menu .page-menuleft > ul > li.has-sub > a.fa-pull-left:after, .row-img .fa-pull-left.img-center-dv:after, .row-img .photo-box-img.removed .fa-pull-left.img-center-dv:after {
   margin-right: .3em; }
 
-.fa.fa-pull-right, .fa-pull-right.form-validation.has-error:before {
+.fa.fa-pull-right, .fa-pull-right.form-validation.has-error:before, .aside-menu .page-menuleft > ul > li.has-sub > a.fa-pull-right:after, .row-img .fa-pull-right.img-center-dv:after, .row-img .photo-box-img.removed .fa-pull-right.img-center-dv:after {
   margin-left: .3em; }
 
 /* Deprecated as of 4.4.0 */
@@ -5919,10 +6000,10 @@ font-family: 'Lato', sans-serif;
 .pull-left {
   float: left; }
 
-.fa.pull-left, .pull-left.form-validation.has-error:before {
+.fa.pull-left, .pull-left.form-validation.has-error:before, .aside-menu .page-menuleft > ul > li.has-sub > a.pull-left:after, .row-img .pull-left.img-center-dv:after, .row-img .photo-box-img.removed .pull-left.img-center-dv:after {
   margin-right: .3em; }
 
-.fa.pull-right, .pull-right.form-validation.has-error:before {
+.fa.pull-right, .pull-right.form-validation.has-error:before, .aside-menu .page-menuleft > ul > li.has-sub > a.pull-right:after, .row-img .pull-right.img-center-dv:after, .row-img .photo-box-img.removed .pull-right.img-center-dv:after {
   margin-left: .3em; }
 
 .fa-spin {
@@ -8800,6 +8881,15 @@ body {
 .bold {
   font-weight: bold; }
 
+.text-fade {
+  opacity: 0.8;
+  filter: alpha(opacity=80); }
+
+.text-disable {
+  cursor: not-allowed;
+  opacity: 0.3;
+  filter: alpha(opacity=30); }
+
 .text-normal {
   font-weight: normal; }
 
@@ -9091,6 +9181,80 @@ h1, h2, h3, h4, h5, h6,
     color: #FFF;
     background-color: #F54A59; }
 
+.btn-primary-inline {
+  color: #F54A59;
+  background-color: #FFF;
+  border-color: transparent; }
+  .btn-primary-inline:focus, .btn-primary-inline.focus {
+    color: #FFF;
+    background-color: #f21a2d;
+    border-color: #b50a19; }
+  .btn-primary-inline:hover {
+    color: #FFF;
+    background-color: #f21a2d;
+    border-color: #f21024; }
+  .btn-primary-inline:active, .btn-primary-inline.active,
+  .open > .btn-primary-inline.dropdown-toggle {
+    color: #FFF;
+    background-color: #f21a2d;
+    border-color: #f21024; }
+    .btn-primary-inline:active:hover, .btn-primary-inline:active:focus, .btn-primary-inline:active.focus, .btn-primary-inline.active:hover, .btn-primary-inline.active:focus, .btn-primary-inline.active.focus,
+    .open > .btn-primary-inline.dropdown-toggle:hover,
+    .open > .btn-primary-inline.dropdown-toggle:focus,
+    .open > .btn-primary-inline.dropdown-toggle.focus {
+      color: #FFF;
+      background-color: #dc0c1e;
+      border-color: #b50a19; }
+  .btn-primary-inline:active, .btn-primary-inline.active,
+  .open > .btn-primary-inline.dropdown-toggle {
+    background-image: none; }
+  .btn-primary-inline.disabled:hover, .btn-primary-inline.disabled:focus, .btn-primary-inline.disabled.focus, .btn-primary-inline[disabled]:hover, .btn-primary-inline[disabled]:focus, .btn-primary-inline[disabled].focus,
+  fieldset[disabled] .btn-primary-inline:hover,
+  fieldset[disabled] .btn-primary-inline:focus,
+  fieldset[disabled] .btn-primary-inline.focus {
+    background-color: #F54A59;
+    border-color: #F54A59; }
+  .btn-primary-inline .badge {
+    color: #F54A59;
+    background-color: #FFF; }
+
+.btn-default-inline {
+  color: #333;
+  background-color: #FFF;
+  border-color: transparent; }
+  .btn-default-inline:focus, .btn-default-inline.focus {
+    color: #FFF;
+    background-color: #1a1a1a;
+    border-color: black; }
+  .btn-default-inline:hover {
+    color: #FFF;
+    background-color: #1a1a1a;
+    border-color: #141414; }
+  .btn-default-inline:active, .btn-default-inline.active,
+  .open > .btn-default-inline.dropdown-toggle {
+    color: #FFF;
+    background-color: #1a1a1a;
+    border-color: #141414; }
+    .btn-default-inline:active:hover, .btn-default-inline:active:focus, .btn-default-inline:active.focus, .btn-default-inline.active:hover, .btn-default-inline.active:focus, .btn-default-inline.active.focus,
+    .open > .btn-default-inline.dropdown-toggle:hover,
+    .open > .btn-default-inline.dropdown-toggle:focus,
+    .open > .btn-default-inline.dropdown-toggle.focus {
+      color: #FFF;
+      background-color: #080808;
+      border-color: black; }
+  .btn-default-inline:active, .btn-default-inline.active,
+  .open > .btn-default-inline.dropdown-toggle {
+    background-image: none; }
+  .btn-default-inline.disabled:hover, .btn-default-inline.disabled:focus, .btn-default-inline.disabled.focus, .btn-default-inline[disabled]:hover, .btn-default-inline[disabled]:focus, .btn-default-inline[disabled].focus,
+  fieldset[disabled] .btn-default-inline:hover,
+  fieldset[disabled] .btn-default-inline:focus,
+  fieldset[disabled] .btn-default-inline.focus {
+    background-color: #333;
+    border-color: #333; }
+  .btn-default-inline .badge {
+    color: #333;
+    background-color: #FFF; }
+
 .btn-min {
   min-width: 106px;
   text-align: center; }
@@ -9099,13 +9263,13 @@ h1, h2, h3, h4, h5, h6,
   min-width: 160px;
   text-align: center; }
 
-.btn {
+.btn, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] {
   font-weight: bold; }
-  .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
+  .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .btn.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"], .btn:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active:focus, .btn:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active.focus, .btn.active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-check"]:focus, .btn.active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.active.focus[ng-reflect-icon="fa-check"] {
     outline: 0 none; }
-  .btn:hover, .btn:focus, .btn.focus {
+  .btn:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover, .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .btn.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"] {
     outline: 0 none; }
-  .btn:active, .btn.active {
+  .btn:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active, .btn.active, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-check"] {
     outline: 0 none; }
 
 .btn-circle {
@@ -9296,11 +9460,21 @@ h1, h2, h3, h4, h5, h6,
     color: #9B9B9B;
     font-size: 14px; }
 
-.table.table-plan > thead > tr > td .fa, .table.table-plan > thead > tr > td .form-validation.has-error:before,
+.table.table-plan > thead > tr > td .fa, .table.table-plan > thead > tr > td .form-validation.has-error:before, .table.table-plan > thead > tr > td .aside-menu .page-menuleft > ul > li.has-sub > a:after, .aside-menu .table.table-plan > thead > tr > td .page-menuleft > ul > li.has-sub > a:after, .table.table-plan > thead > tr > td .row-img .img-center-dv:after, .row-img .table.table-plan > thead > tr > td .img-center-dv:after, .row-img .photo-box-img.removed .table.table-plan > thead > tr > td .img-center-dv:after,
 .table.table-plan > tbody > tr > td .fa,
 .table.table-plan > tbody > tr > td .form-validation.has-error:before,
+.table.table-plan > tbody > tr > td .aside-menu .page-menuleft > ul > li.has-sub > a:after, .aside-menu
+.table.table-plan > tbody > tr > td .page-menuleft > ul > li.has-sub > a:after,
+.table.table-plan > tbody > tr > td .row-img .img-center-dv:after, .row-img
+.table.table-plan > tbody > tr > td .img-center-dv:after, .row-img .photo-box-img.removed
+.table.table-plan > tbody > tr > td .img-center-dv:after,
 .table.table-plan > tfoot > tr > td .fa,
-.table.table-plan > tfoot > tr > td .form-validation.has-error:before {
+.table.table-plan > tfoot > tr > td .form-validation.has-error:before,
+.table.table-plan > tfoot > tr > td .aside-menu .page-menuleft > ul > li.has-sub > a:after, .aside-menu
+.table.table-plan > tfoot > tr > td .page-menuleft > ul > li.has-sub > a:after,
+.table.table-plan > tfoot > tr > td .row-img .img-center-dv:after, .row-img
+.table.table-plan > tfoot > tr > td .img-center-dv:after, .row-img .photo-box-img.removed
+.table.table-plan > tfoot > tr > td .img-center-dv:after {
   font-size: 24px;
   color: #A2D96D; }
 
@@ -9320,6 +9494,22 @@ h1, h2, h3, h4, h5, h6,
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%); } }
+
+.modal-custom .modal-content {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0; }
+  .modal-custom .modal-content .modal-header {
+    background-color: #ececec; }
+  .modal-custom .modal-content .form-group {
+    margin-bottom: 10px; }
+  .modal-custom .modal-content hr {
+    margin-left: -15px;
+    margin-right: -15px; }
+
+.modal-custom .modal-body-collapse-in .media-list-item {
+  max-height: 355px;
+  overflow: auto; }
 
 .panel {
   margin-bottom: 30px;
@@ -9341,6 +9531,58 @@ h1, h2, h3, h4, h5, h6,
       border-radius: 0; }
     .panel.panel-striped > .list-group > .list-group-item:nth-of-type(odd) {
       background-color: #f9f9f9; }
+
+.toast-message .ui-growl {
+  top: 50px;
+  left: 0;
+  right: 0;
+  width: auto; }
+  .toast-message .ui-growl .ui-growl-item-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 570px;
+    max-width: 100%;
+    word-break: break-all;
+    background-color: #ffffff;
+    background-image: none;
+    color: #4A4A4A;
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(163, 163, 163, 0.4);
+    box-shadow: 0px 2px 4px 0px rgba(163, 163, 163, 0.4); }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-info {
+      border-color: #31708f; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-info .ui-growl-image {
+        color: #31708f; }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-error {
+      border-color: #d9534f; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image {
+        color: #d9534f; }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-warn {
+      border-color: #f0ad4e; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image {
+        color: #f0ad4e; }
+    .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-success {
+      border-color: #5cb85c; }
+      .toast-message .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image {
+        color: #5cb85c; }
+  .toast-message .ui-growl .ui-growl-item {
+    padding: 15px; }
+  .toast-message .ui-growl .ui-growl-title {
+    padding: 0; }
+  .toast-message .ui-growl .ui-growl-image {
+    margin-right: 10px;
+    font-size: 20px; }
+    .toast-message .ui-growl .ui-growl-image.fa-close:before {
+      content: "\f057"; }
+    .toast-message .ui-growl .ui-growl-image.fa-check:before {
+      content: "\f058"; }
+  .toast-message .ui-growl .ui-growl-message {
+    float: none;
+    overflow: hidden;
+    padding: 0;
+    width: auto; }
+    .toast-message .ui-growl .ui-growl-message p {
+      margin: 0; }
 
 .toast-wrap {
   top: 50px;
@@ -9382,11 +9624,123 @@ h1, h2, h3, h4, h5, h6,
         content: "\f058";
         color: #5cb85c; }
 
+.wth-loading .ui-dialog {
+  width: 150px;
+  height: 150px; }
+  .wth-loading .ui-dialog .ui-resizable-handle {
+    display: none; }
+  .wth-loading .ui-dialog:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #ffffff;
+    background-image: url("../images/icons/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center center; }
+
+.inside-loading {
+  position: relative;
+  min-height: 100px; }
+  .inside-loading:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background-color: #ffffff;
+    background-image: url("../images/icons/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center center; }
+
+.wrapper .ui-dialog .ui-dialog-buttonpane {
+  padding: 15px; }
+  .wrapper .ui-dialog .ui-dialog-buttonpane button {
+    -webkit-box-shadow: 0 0 0 0 transparent;
+    box-shadow: 0 0 0 0 transparent;
+    margin-top: 0;
+    margin-left: 15px; }
+    .wrapper .ui-dialog .ui-dialog-buttonpane button span {
+      padding: 0; }
+      .wrapper .ui-dialog .ui-dialog-buttonpane button span[class^="ui-button-icon"] {
+        display: none; }
+    .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] {
+      color: #F54A59;
+      background-color: #FFF;
+      border-color: #ccc; }
+      .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].focus {
+        color: #F54A59;
+        background-color: #e6e6e6;
+        border-color: #8c8c8c; }
+      .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover {
+        color: #F54A59;
+        background-color: #e6e6e6;
+        border-color: #adadad; }
+      .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].active,
+      .open > .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].dropdown-toggle {
+        color: #F54A59;
+        background-color: #e6e6e6;
+        border-color: #adadad; }
+        .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].active:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].active.focus,
+        .open > .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].dropdown-toggle:hover,
+        .open > .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].dropdown-toggle:focus,
+        .open > .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].dropdown-toggle.focus {
+          color: #F54A59;
+          background-color: #d4d4d4;
+          border-color: #8c8c8c; }
+      .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].active,
+      .open > .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].dropdown-toggle {
+        background-image: none; }
+      .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].disabled:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].disabled:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].disabled.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"][disabled]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"][disabled]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"][disabled].focus,
+      fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover,
+      fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus,
+      fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"].focus {
+        background-color: #FFF;
+        border-color: #ccc; }
+      .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] .badge {
+        color: #FFF;
+        background-color: #F54A59; }
+
 .line {
   height: 1px;
   clear: both;
   width: 100%;
   margin: 15px 0; }
+
+.media-list-item {
+  margin-top: 10px; }
+  .media-list-item .media-body, .media-list-item .media-right, .media-list-item .media-left {
+    vertical-align: middle;
+    padding-left: 10px;
+    padding-right: 10px; }
+  .media-list-item .media {
+    padding-bottom: 15px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #D8D8D8;
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    .media-list-item .media.remove {
+      opacity: 0.4;
+      filter: alpha(opacity=40); }
+      .media-list-item .media.remove .remove-item {
+        display: none; }
+
+.caret {
+  background-image: none !important;
+  width: auto !important;
+  height: auto !important; }
 
 /* ==========================================================================
 Header
@@ -9433,7 +9787,7 @@ Header
         .header.header-over .navbar-nav > li > a {
           padding-top: 6px;
           padding-bottom: 6px; }
-          .header.header-over .navbar-nav > li > a:not(.btn) {
+          .header.header-over .navbar-nav > li > a:not(.btn):not(.wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]):not(.wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]) {
             font-size: 18px;
             padding-left: 5px;
             padding-right: 5px;
@@ -9478,8 +9832,9 @@ Header
   .header .dropdown-menu a {
     color: #9B9B9B; }
   .header .navbar-nav-management .dropdown-menu {
-    left: -85px;
-    padding: 5px; }
+    left: auto;
+    padding: 5px;
+    margin-right: -10px; }
     .header .navbar-nav-management .dropdown-menu > li {
       width: 50%;
       float: left;
@@ -9631,7 +9986,7 @@ Header
     @media (min-width: 1200px) {
       .header.header-top .navbar .navbar-form .navbar-searchTop {
         margin-left: 150px; } }
-    .header.header-top .navbar .navbar-form .navbar-searchTop .btn {
+    .header.header-top .navbar .navbar-form .navbar-searchTop .btn, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"], .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"] {
       position: absolute;
       left: 2px;
       padding-left: 8px;
@@ -9642,7 +9997,7 @@ Header
       top: 50%;
       transform: translate(0, -50%);
       font-size: 16px; }
-    .header.header-top .navbar .navbar-form .navbar-searchTop .btn:hover, .header.header-top .navbar .navbar-form .navbar-searchTop .btn:focus, .header.header-top .navbar .navbar-form .navbar-searchTop .btn.focus {
+    .header.header-top .navbar .navbar-form .navbar-searchTop .btn:hover, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"]:hover, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"]:hover, .header.header-top .navbar .navbar-form .navbar-searchTop .btn:focus, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"]:focus, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"]:focus, .header.header-top .navbar .navbar-form .navbar-searchTop .btn.focus, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button.focus[ng-reflect-icon="fa-close"], .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button.focus[ng-reflect-icon="fa-check"] {
       background-color: transparent;
       -webkit-box-shadow: none;
       box-shadow: none; }
@@ -9681,7 +10036,7 @@ Header
     display: inline-block;
     margin-left: 5px;
     margin-right: 5px; }
-  .header.header-top .dropdown .fa-caret-down {
+  .header.header-top .dropdown .fa-caret-down, .header.header-top .dropdown .aside-menu .page-menuleft > ul > li.has-sub > a:after, .aside-menu .header.header-top .dropdown .page-menuleft > ul > li.has-sub > a:after {
     font-size: 20px;
     position: relative;
     top: 2px; }
@@ -9985,11 +10340,11 @@ body.fixed-hidden {
       list-style-type: none; }
     .page-full .page-body-control .control-body-select {
       float: left;
-      margin-right: 10%; }
+      margin-right: 0; }
       .page-full .page-body-control .control-body-select > li {
         float: left;
         margin-right: 10px; }
-        .page-full .page-body-control .control-body-select > li.dropdown > .btn:not(.btn-circle) {
+        .page-full .page-body-control .control-body-select > li.dropdown > .btn:not(.btn-circle), .page-full .page-body-control .wrapper .ui-dialog .ui-dialog-buttonpane .control-body-select > li.dropdown > button[ng-reflect-icon="fa-close"]:not(.btn-circle), .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-select > li.dropdown > button[ng-reflect-icon="fa-close"]:not(.btn-circle), .page-full .page-body-control .wrapper .ui-dialog .ui-dialog-buttonpane .control-body-select > li.dropdown > button[ng-reflect-icon="fa-check"]:not(.btn-circle), .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-select > li.dropdown > button[ng-reflect-icon="fa-check"]:not(.btn-circle) {
           border-color: transparent; }
         .page-full .page-body-control .control-body-select > li .dropdown-menu {
           margin-top: 15px; }
@@ -10009,10 +10364,21 @@ body.fixed-hidden {
         margin-right: 0; }
         .page-full .page-body-control .control-body-select.control-body-btnview > li {
           float: left;
-          margin-left: 15px; }
+          margin-left: 5px;
+          margin-right: 0; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li.action-disabled {
+            cursor: not-allowed; }
+            .page-full .page-body-control .control-body-select.control-body-btnview > li.action-disabled a {
+              pointer-events: none;
+              opacity: 0.3;
+              filter: alpha(opacity=30); }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li:last-child {
+            margin-left: 15px; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li > a {
             line-height: 34px;
-            font-size: 20px; }
+            font-size: 20px;
+            padding-left: 10px;
+            padding-right: 10px; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown {
             padding-left: 15px;
             border-left: 1px solid #D8D8D8; }
@@ -10020,16 +10386,25 @@ body.fixed-hidden {
               color: #4A4A4A; }
               .page-full .page-body-control .control-body-select.control-body-btnview > li.dropdown > a:hover {
                 color: #000000; }
+          .page-full .page-body-control .control-body-select.control-body-btnview > li.action {
+            border-left: 0px;
+            padding-left: 0px; }
           .page-full .page-body-control .control-body-select.control-body-btnview > li .dropdown-menu {
             left: auto;
             right: 0; }
+      .page-full .page-body-control .control-body-select.control-body-btnview-left a {
+        color: #4A4A4A;
+        line-height: 34px;
+        font-size: 20px; }
+        .page-full .page-body-control .control-body-select.control-body-btnview-left a:hover {
+          color: #000000; }
     .page-full .page-body-control .control-body-search {
       float: left;
       max-width: 470px;
       position: relative; }
-      .page-full .page-body-control .control-body-search .input-group .input-group-btn:first-child .btn {
+      .page-full .page-body-control .control-body-search .input-group .input-group-btn:first-child .btn, .page-full .page-body-control .control-body-search .input-group .input-group-btn:first-child .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group .input-group-btn:first-child button[ng-reflect-icon="fa-close"], .page-full .page-body-control .control-body-search .input-group .input-group-btn:first-child .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group .input-group-btn:first-child button[ng-reflect-icon="fa-check"] {
         border-right-width: 0; }
-      .page-full .page-body-control .control-body-search .input-group .input-group-btn:last-child .btn {
+      .page-full .page-body-control .control-body-search .input-group .input-group-btn:last-child .btn, .page-full .page-body-control .control-body-search .input-group .input-group-btn:last-child .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group .input-group-btn:last-child button[ng-reflect-icon="fa-close"], .page-full .page-body-control .control-body-search .input-group .input-group-btn:last-child .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group .input-group-btn:last-child button[ng-reflect-icon="fa-check"] {
         border-left-width: 0; }
       .page-full .page-body-control .control-body-search .input-group .form-control {
         border-left-width: 0;
@@ -10039,7 +10414,7 @@ body.fixed-hidden {
           -webkit-box-shadow: 0 0 0;
           box-shadow: 0 0 0;
           border-color: #ccc; }
-      .page-full .page-body-control .control-body-search .input-group .btn:hover, .page-full .page-body-control .control-body-search .input-group .btn:focus {
+      .page-full .page-body-control .control-body-search .input-group .btn:hover, .page-full .page-body-control .control-body-search .input-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group button[ng-reflect-icon="fa-close"]:hover, .page-full .page-body-control .control-body-search .input-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group button[ng-reflect-icon="fa-check"]:hover, .page-full .page-body-control .control-body-search .input-group .btn:focus, .page-full .page-body-control .control-body-search .input-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group button[ng-reflect-icon="fa-close"]:focus, .page-full .page-body-control .control-body-search .input-group .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .page-full .page-body-control .control-body-search .input-group button[ng-reflect-icon="fa-check"]:focus {
         background-color: transparent;
         border-color: #ccc; }
       .page-full .page-body-control .control-body-search .advSearch {
@@ -10062,6 +10437,11 @@ body.fixed-hidden {
           margin-bottom: 15px; }
   .page-full .page-body-in {
     padding: 30px; }
+    .page-full .page-body-in > section:first-child .page-body-in-title {
+      margin-top: 0; }
+  .page-full .page-body-in-title {
+    margin-top: 20px;
+    margin-bottom: 20px; }
 
 .dropzone-overlap {
   display: none;
@@ -10075,7 +10455,7 @@ body.fixed-hidden {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1; }
-    .dropzone-overlap .dropzone-overlap-txt .fa, .dropzone-overlap .dropzone-overlap-txt .form-validation.has-error:before {
+    .dropzone-overlap .dropzone-overlap-txt .fa, .dropzone-overlap .dropzone-overlap-txt .form-validation.has-error:before, .dropzone-overlap .dropzone-overlap-txt .aside-menu .page-menuleft > ul > li.has-sub > a:after, .aside-menu .dropzone-overlap .dropzone-overlap-txt .page-menuleft > ul > li.has-sub > a:after, .dropzone-overlap .dropzone-overlap-txt .row-img .img-center-dv:after, .row-img .dropzone-overlap .dropzone-overlap-txt .img-center-dv:after {
       font-size: 260px; }
 
 body.drag-active .dropzone-overlap {
@@ -10106,6 +10486,29 @@ body.drag-active .dropzone-overlap {
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 100%; }
+  .img-center-dv .img-bottom-left {
+    position: absolute;
+    top: 85%;
+    left: 60px;
+    transform: translate(-50%, -50%);
+    width: 100px; }
+
+.two-layout-slip .main-layout {
+  width: 100%; }
+
+.two-layout-slip .right-layout {
+  display: none; }
+
+.two-layout-slip.active-info .main-layout {
+  width: 70%;
+  float: left; }
+
+.two-layout-slip.active-info .right-layout {
+  width: 30%;
+  float: right; }
+
+.two-layout-slip.active-info .main-layout, .two-layout-slip.active-info .right-layout {
+  display: inline; }
 
 .aside-left .navgroup {
   margin-bottom: 20px; }
@@ -10152,6 +10555,17 @@ body.drag-active .dropzone-overlap {
     font-weight: bold; }
   .aside-menu .page-menuleft > ul > li.active {
     background-color: #F6F6F6; }
+    .aside-menu .page-menuleft > ul > li.active > a {
+      background-color: #f54a59; }
+  .aside-menu .page-menuleft > ul > li.has-sub > a {
+    position: relative; }
+    .aside-menu .page-menuleft > ul > li.has-sub > a:after {
+      position: absolute;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      left: auto;
+      right: 10px; }
   .aside-menu .page-menuleft > ul > li.has-sub ul li a {
     padding-left: 60px; }
     .aside-menu .page-menuleft > ul > li.has-sub ul li a:hover {
@@ -10403,77 +10817,6 @@ wth-app:empty + .dots-loader-wrap {
     box-shadow: #f86 -14px 14px 0 7px, #fc6 14px -14px 0 7px, #6d7 14px 14px 0 7px, #4ae -14px 14px 0 7px; }
   100% {
     box-shadow: #f86 -14px -14px 0 7px, #fc6 14px -14px 0 7px, #6d7 14px 14px 0 7px, #4ae -14px 14px 0 7px; } }
-
-.box-loading {
-  display: block;
-  position: relative; }
-  .box-loading:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    background-color: #fff; }
-  .box-loading:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    background-image: url("../images/icons/loading.gif");
-    background-repeat: no-repeat;
-    background-position: center center; }
-
-.in-loading.modal .modal-dialog {
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-  border-radius: 4px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -75px;
-  margin-top: -75px; }
-  .in-loading.modal .modal-dialog:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    background-color: #fff; }
-  .in-loading.modal .modal-dialog:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    background-image: url("../images/icons/loading.gif");
-    background-repeat: no-repeat;
-    background-position: center center; }
-
-.inside-loading {
-  position: relative;
-  min-height: 100px; }
-  .inside-loading:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 99;
-    background-color: #ffffff;
-    background-image: url("../images/icons/loading.gif");
-    background-repeat: no-repeat;
-    background-position: center center; }
 
 @font-face {
   font-family: 'ecoicon';
@@ -12020,9 +12363,22 @@ wth-app:empty + .dots-loader-wrap {
   position: absolute;
   top: -9999px; }
 
+.ng2-dropdown-menu-container {
+  z-index: 1060 !important; }
+
+.ui-autocomplete {
+  display: block; }
+  .ui-autocomplete .ui-autocomplete-input-token {
+    float: none; }
+    .ui-autocomplete .ui-autocomplete-input-token .ui-inputtext {
+      display: inline-block;
+      -webkit-box-shadow: none !important;
+      -moz-box-shadow: none !important;
+      box-shadow: none !important; }
+
 .panel-heading-action {
   position: relative; }
-  .panel-heading-action .btn {
+  .panel-heading-action .btn, .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-close"], .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-check"] {
     float: right;
     padding: 3px 10px;
     font-size: 11px;
@@ -12086,11 +12442,11 @@ wth-app:empty + .dots-loader-wrap {
   text-align: center;
   font-size: 34px;
   color: #ffffff; }
-  .section-promo .btn {
+  .section-promo .btn, .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-close"], .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-check"] {
     background: rgba(245, 73, 88, 0);
     margin-bottom: 20px; }
     @media (min-width: 380px) {
-      .section-promo .btn + .btn {
+      .section-promo .btn + .btn, .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-close"] + .btn, .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + .btn, .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-check"] + .btn, .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo .btn + button[ng-reflect-icon="fa-close"], .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-close"], .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-close"], .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane .btn + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo .btn + button[ng-reflect-icon="fa-check"], .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-close"] + button[ng-reflect-icon="fa-check"], .section-promo .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .section-promo button[ng-reflect-icon="fa-check"] + button[ng-reflect-icon="fa-check"] {
         margin-left: 20px; } }
 
 .welcome-slide {
@@ -12109,7 +12465,7 @@ wth-app:empty + .dots-loader-wrap {
   .swiper-pagination span {
     margin: 0 5px; }
 
-.welcome-nav .btn.swiper-button-next {
+.welcome-nav .btn.swiper-button-next, .welcome-nav .wrapper .ui-dialog .ui-dialog-buttonpane button.swiper-button-next[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .welcome-nav button.swiper-button-next[ng-reflect-icon="fa-close"], .welcome-nav .wrapper .ui-dialog .ui-dialog-buttonpane button.swiper-button-next[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .welcome-nav button.swiper-button-next[ng-reflect-icon="fa-check"] {
   position: relative;
   margin: 0;
   left: auto;
@@ -12274,13 +12630,83 @@ wth-app:empty + .dots-loader-wrap {
 .row-img:after {
   clear: both; }
 
+.row-img .ui-datascroller {
+  clear: both; }
+  .row-img .ui-datascroller .ui-datascroller-content {
+    margin: 0;
+    padding: 0;
+    border-width: 0; }
+  .row-img .ui-datascroller .ui-datascroller-list li {
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px; }
+
 .row-img .can-click {
   cursor: pointer; }
 
 .row-img .img-center-dv {
   border: 1px solid #D8D8D8;
   background-color: #ffffff;
-  cursor: pointer; }
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
+  .row-img .img-center-dv:after {
+    content: "\f058";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: #2996cc;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    z-index: 2; }
+
+.row-img .photo-box-img {
+  position: relative; }
+  .row-img .photo-box-img.selected .img-center-dv {
+    border-color: #2996CC;
+    background-color: #e6e6e6; }
+    .row-img .photo-box-img.selected .img-center-dv:after {
+      opacity: 1;
+      filter: alpha(opacity=100); }
+  .row-img .photo-box-img.selected .img-center {
+    padding: 15px; }
+  .row-img .photo-box-img:hover .photo-box-img-action {
+    opacity: 1;
+    filter: alpha(opacity=100); }
+  .row-img .photo-box-img .photo-box-img-action {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    .row-img .photo-box-img .photo-box-img-action i {
+      font-size: 24px;
+      cursor: pointer;
+      color: #2996CC; }
+  .row-img .photo-box-img.removed .img-center-dv {
+    border-color: #2996CC; }
+    .row-img .photo-box-img.removed .img-center-dv:after {
+      opacity: 1;
+      filter: alpha(opacity=100);
+      content: "\f057";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      color: #2996CC;
+      -webkit-transition: all 0.3s ease;
+      -o-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      z-index: 2; }
 
 .row-img.list {
   margin-left: -10px;
@@ -12288,7 +12714,25 @@ wth-app:empty + .dots-loader-wrap {
   .row-img.list .photo-box-img {
     display: table;
     width: 100%;
-    padding: 5px; }
+    padding: 5px;
+    position: relative;
+    cursor: pointer; }
+    .row-img.list .photo-box-img:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1; }
+    .row-img.list .photo-box-img.selected {
+      background-color: #2996CC;
+      color: #ffffff;
+      -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1); }
+      .row-img.list .photo-box-img.selected:hover {
+        background-color: #2996CC !important;
+        color: #ffffff; }
     .row-img.list .photo-box-img > figure, .row-img.list .photo-box-img > div {
       display: table-cell;
       vertical-align: middle; }
@@ -12307,6 +12751,9 @@ wth-app:empty + .dots-loader-wrap {
       .row-img.list .photo-box-img.photo-box-img-nav .img-center-dv {
         border-width: 0;
         background-color: transparent; }
+    .row-img.list .photo-box-img .album-box-info {
+      padding: 5px 20px;
+      text-align: left; }
     .row-img.list .photo-box-img:not(.photo-box-img-nav):hover {
       background-color: rgba(204, 230, 250, 0.5); }
 
@@ -12320,7 +12767,7 @@ wth-app:empty + .dots-loader-wrap {
   z-index: -1;
   visibility: hidden; }
   .photo-box-detail.active {
-    z-index: 9999;
+    z-index: 1002;
     visibility: visible; }
   .photo-box-detail .photo-detail-top {
     padding: 15px;
@@ -12335,23 +12782,19 @@ wth-app:empty + .dots-loader-wrap {
       float: left;
       margin-right: 300px; }
     .photo-box-detail .photo-detail-top .action {
-      float: right;
       margin: 0;
       padding: 0;
       list-style-type: none; }
-      .photo-box-detail .photo-detail-top .action li {
-        float: left;
-        font-size: 21px;
+      .photo-box-detail .photo-detail-top .action.navbar-left li {
+        margin-right: 15px;
+        padding-right: 15px;
+        border-right: 1px solid #9B9B9B; }
+      .photo-box-detail .photo-detail-top .action.navbar-right li {
         margin-left: 15px; }
-        .photo-box-detail .photo-detail-top .action li:last-child {
-          padding-left: 25px;
-          border-left: 1px solid #D8D8D8;
-          padding-right: 10px; }
-          .photo-box-detail .photo-detail-top .action li:last-child a {
-            color: #D8D8D8; }
-            .photo-box-detail .photo-detail-top .action li:last-child a:hover {
-              color: #ffffff; }
-        .photo-box-detail .photo-detail-top .action li a {
+      .photo-box-detail .photo-detail-top .action > li {
+        float: left;
+        font-size: 21px; }
+        .photo-box-detail .photo-detail-top .action > li > a {
           color: #ffffff;
           display: inline-block;
           width: 34px;
@@ -12364,7 +12807,7 @@ wth-app:empty + .dots-loader-wrap {
           -webkit-transition: all 0.3s ease;
           -o-transition: all 0.3s ease;
           transition: all 0.3s ease; }
-          .photo-box-detail .photo-detail-top .action li a:hover {
+          .photo-box-detail .photo-detail-top .action > li > a:hover {
             background-color: #9B9B9B;
             color: #ffffff; }
   .photo-box-detail .photo-detail-content {
@@ -12408,43 +12851,72 @@ wth-app:empty + .dots-loader-wrap {
           left: 15px; }
         .photo-box-detail .photo-detail-content .photo-detail-img .photo-detail-img-control.img-control-next {
           right: 15px; }
-    .photo-box-detail .photo-detail-content .photo-detail-info {
-      width: 470px;
-      height: calc(100vh - 65px);
-      overflow: auto;
-      background-color: #ffffff;
-      padding: 15px; }
-      .photo-box-detail .photo-detail-content .photo-detail-info h4 {
-        font-size: 14px;
-        font-weight: normal;
-        margin: 0 0 20px; }
-        .photo-box-detail .photo-detail-content .photo-detail-info h4:before, .photo-box-detail .photo-detail-content .photo-detail-info h4:after {
-          content: " ";
-          display: table; }
-        .photo-box-detail .photo-detail-content .photo-detail-info h4:after {
-          clear: both; }
-        .photo-box-detail .photo-detail-content .photo-detail-info h4 a {
-          float: right; }
-      .photo-box-detail .photo-detail-content .photo-detail-info hr {
-        margin-left: -15px;
-        margin-right: -15px; }
-      .photo-box-detail .photo-detail-content .photo-detail-info .tags-text span {
-        color: #9b9b9b;
-        display: inline-block;
-        margin-right: 10px; }
-      .photo-box-detail .photo-detail-content .photo-detail-info dl.dl-horizontal dt {
-        width: 80px; }
-      .photo-box-detail .photo-detail-content .photo-detail-info dl.dl-horizontal dd {
-        margin-left: 100px; }
-      .photo-box-detail .photo-detail-content .photo-detail-info dl dt {
-        margin-bottom: 10px; }
-      .photo-box-detail .photo-detail-content .photo-detail-info dl dd ul:before, .photo-box-detail .photo-detail-content .photo-detail-info dl dd ul:after {
+  .photo-box-detail.active-info {
+    padding-right: 470px; }
+    .photo-box-detail.active-info .photo-detail-info {
+      right: 0; }
+  .photo-box-detail .photo-detail-info {
+    width: 470px;
+    right: -470px;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    height: 100vh;
+    overflow: auto;
+    background-color: #ffffff;
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    word-break: break-all; }
+    .photo-box-detail .photo-detail-info h3 {
+      margin: -15px -15px 15px;
+      padding: 15px;
+      border-bottom: 1px solid #9B9B9B; }
+      .photo-box-detail .photo-detail-info h3:before, .photo-box-detail .photo-detail-info h3:after {
         content: " ";
         display: table; }
-      .photo-box-detail .photo-detail-content .photo-detail-info dl dd ul:after {
+      .photo-box-detail .photo-detail-info h3:after {
         clear: both; }
-      .photo-box-detail .photo-detail-content .photo-detail-info dl dd ul li {
-        float: left;
-        margin: 0 5px 5px 0; }
+      .photo-box-detail .photo-detail-info h3 a {
+        float: right; }
+    .photo-box-detail .photo-detail-info h4 {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0 0 20px; }
+      .photo-box-detail .photo-detail-info h4:before, .photo-box-detail .photo-detail-info h4:after {
+        content: " ";
+        display: table; }
+      .photo-box-detail .photo-detail-info h4:after {
+        clear: both; }
+      .photo-box-detail .photo-detail-info h4 a {
+        float: right; }
+    .photo-box-detail .photo-detail-info hr {
+      margin-left: -15px;
+      margin-right: -15px; }
+    .photo-box-detail .photo-detail-info .tags-text span {
+      color: #9b9b9b;
+      display: inline-block;
+      margin-right: 10px; }
+    .photo-box-detail .photo-detail-info dl.dl-horizontal dt {
+      width: 80px; }
+    .photo-box-detail .photo-detail-info dl.dl-horizontal dd {
+      margin-left: 100px; }
+    .photo-box-detail .photo-detail-info dl dt {
+      margin-bottom: 10px; }
+    .photo-box-detail .photo-detail-info dl dd ul:before, .photo-box-detail .photo-detail-info dl dd ul:after {
+      content: " ";
+      display: table; }
+    .photo-box-detail .photo-detail-info dl dd ul:after {
+      clear: both; }
+    .photo-box-detail .photo-detail-info dl dd ul li {
+      float: left;
+      margin: 0 5px 5px 0; }
+
+.zone-no-photo {
+  padding-top: 220px;
+  background-image: url("../images/zone/no-photo.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

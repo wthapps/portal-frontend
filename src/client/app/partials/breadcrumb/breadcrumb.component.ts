@@ -2,9 +2,9 @@
  * <wth-breadcrumb [model]="breadcrumbs"></wth-breadcrumb>
  */
 
-import {Component, Input, OnDestroy, EventEmitter} from '@angular/core';
-import {MenuItem} from './breadcrumb';
-import {Router, ROUTER_DIRECTIVES} from '@angular/router';
+import { Component, Input, OnDestroy, EventEmitter } from '@angular/core';
+import { MenuItemBreadcrumb } from './breadcrumb';
+import { Router } from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -18,14 +18,11 @@ import {Router, ROUTER_DIRECTIVES} from '@angular/router';
         </li>
       </ol>
     </div>
-    `,
-  directives: [
-    ROUTER_DIRECTIVES
-  ]
+    `
 })
 export class BreadcrumbComponent implements OnDestroy {
 
-  @Input() model: MenuItem[];
+  @Input() model: MenuItemBreadcrumb[];
 
   @Input() style: any;
 
@@ -34,7 +31,7 @@ export class BreadcrumbComponent implements OnDestroy {
   constructor(protected router: Router) {
   }
 
-  itemClick(event, item: MenuItem) {
+  itemClick(event: any, item: MenuItemBreadcrumb) {
     if (!item.url || item.routerLink) {
       event.preventDefault();
     }

@@ -1,0 +1,75 @@
+<div *ngIf="category != mediaType.albumDetail">
+  <zone-toolbar
+    [category]="category"
+    [selectedItems]="baseMedia.selectedItems"
+    (openWindow)="zoneUpload.browseFiles($event)"
+    (selectedFiles)="handleFileUpload($event)"
+    (onViewChanged)="baseMedia.changeView($event)"
+    (onPreview)="baseMedia.getBaseMediaAction('preview')"
+    (onShare)="baseMedia.toggleModal($event, 'share')"
+    (onTag)="baseMedia.toggleModal($event, 'tag')"
+    (onFavourite)="baseMedia.addFavourite($event)"
+    (onDelete)="baseMedia.delete($event)"
+    (onAdd)="baseMedia.onAddToAlbum()"
+    (onEdit)="edit($event)"
+    (onDownload)="download($event)"
+    (onViewInfo)="baseMedia.getBaseMediaAction('info')"
+    (createNewAlbum)="baseMedia.onCreateNewAlbum()"
+  ></zone-toolbar>
+</div>
+
+<div [ngSwitch]="category">
+  <div *ngSwitchCase="mediaType.photo">
+    <zone-photo #media [inputAction]="baseMedia.sendBaseMediaAction"></zone-photo>
+  </div>
+  <div *ngSwitchCase="mediaType.video">
+    <zone-video></zone-video>
+  </div>
+
+
+  <div *ngSwitchCase="mediaType.album">
+    <page-zone-album #media [pageView]="pageView"></page-zone-album>
+  </div>
+  <div *ngSwitchCase="mediaType.albumDetail">
+    <page-zone-album-detail #media></page-zone-album-detail>
+  </div>
+
+  <div *ngSwitchCase="mediaType.favourites">
+    <zone-favourites #media [inputAction]="baseMedia.sendBaseMediaAction"></zone-favourites>
+  </div>
+
+  <div *ngSwitchCase="mediaType.sharedWithMe">
+    <zone-share-with-me #media></zone-share-with-me>
+  </div>
+
+</div>
+
+<zone-uploading #zoneUpload
+                (addToAlbum)="baseMedia.onAddToAlbum($event)"
+                (showModalAddToAlbumEvent)="showModalAddToAlbumEvent($event)"
+                (createNewAlbum)="baseMedia.onCreateNewAlbum($event)"
+                (needToReload)="uploadedItem($event)"
+></zone-uploading>
+
+<!--<added-to-album-toast [showAddedtoAlbumToast]="showAddedtoAlbumToast" [photoCount]="photoCount" [album]="album" (hideAddedtoAlbumToast)="hideAddedtoAlbumToast($event)"></added-to-album-toast>-->
+
+<!--<page-zone-form-add-to-album [showAddtoAlbumForm]="showAddtoAlbumForm" (modalHide)="onModalHideAlbum($event)" (createNewAlbum)="onCreateNewAlbum($event)"></page-zone-form-add-to-album>-->
+<!--<page-zone-form-create-album></page-zone-form-create-album>-->
+<!--<wth-toast-upload></wth-toast-upload>-->
+
+
+<zone-sharing [mediaType]="category"
+              [modalShow]="baseMedia.showShare"
+              [selectedItems]="baseMedia.selectedItems"
+              (modalHide)="baseMedia.toggleModal(event,'share')"
+              (onItemUpdated)="baseMedia.updateDetails($event)"></zone-sharing>
+
+<zone-tagging [mediaType]="category"
+              [modalShow]="baseMedia.showTag"
+              [selectedItems]="baseMedia.selectedItems"
+              (modalHide)="baseMedia.toggleModal(event,'tag')"
+              (onItemUpdated)="baseMedia.updateDetails($event)"></zone-tagging>
+<!--<zone-photo-edit [showModal]="modalEdit" (modalHide)='onModalHide($event)' [data]="onePhotoEdit"></zone-photo-edit>-->
+
+<!--<created-album-toast [(showCreatedAlbumToast)]="showCreatedAlbumToast" [album]="album"></created-album-toast>-->
+
