@@ -241,7 +241,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private setUpdatedItemsStatus() {
-    this.hasUpdatedItems = ((this.selectedContacts.length > 0 || this.selectedContactGroups > 0)
+    this.hasUpdatedItems = ((this.selectedContacts.length > 0 || this.selectedContactGroups.length > 0)
     && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
   }
 

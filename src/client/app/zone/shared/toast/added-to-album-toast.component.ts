@@ -12,7 +12,7 @@ import { ToastBase } from "../../../shared/toast/toast-base.component";
 export class ZAddedToAlbumToastComponent extends ToastBase {
   @Input() data: AlbumPhoto;
 
-  constructor(private formManagerService: FormManagerService,) {
+  constructor(public formManagerService: FormManagerService,) {
     super('added-to-album-toast');
   }
 
