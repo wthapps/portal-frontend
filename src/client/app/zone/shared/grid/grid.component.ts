@@ -40,9 +40,9 @@ export abstract class ZPictureGridComponent implements OnChanges {
   keyCtrl: boolean = false;
   reset: boolean;
 
-  constructor(private apiService: ApiBaseService,
-              private loadingService: LoadingService,
-              private toastsService: ToastsService) {
+  constructor(private apiService?: ApiBaseService,
+              private loadingService?: LoadingService,
+              private toastsService?: ToastsService) {
   }
 
   onDocumentKeyDown(ev: KeyboardEvent) {

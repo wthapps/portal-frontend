@@ -47,4 +47,8 @@ export class ZAlbumComponent extends BaseMediaComponent {
   updateDetails(item: any) {
 
   }
+
+  onAddFavourite(item?: any) {
+    super.addFavourite(null, item);
+  }
 }

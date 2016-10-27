@@ -1,17 +1,17 @@
 <div id="album-box-detail" class="two-layout-slip">
   <div class="main-layout min-height-max">
-    <page-zone-bar-album [(album)]="album" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)" (deleteAction)="onDeleteAction()" (editAction)="onEditAction()"></page-zone-bar-album>
+    <page-zone-bar-album [(album)]="album"  [selectedItems]="selectedItems" (viewChanged)="onViewChanged($event)" (viewInfo)="onViewInfo($event)" (deleteAction)="onDeleteAction()" (editAction)="onEditAction()" (removeAction)="onRemoveAction()"></page-zone-bar-album>
     <div class="page-body-in">
       <template [ngIf]="items.length">
         <div [ngSwitch]="pageView">
           <template [ngSwitchCase]="'grid'">
-            <page-zone-gridview [items]="items"></page-zone-gridview>
+            <page-zone-gridview [items]="items" (imgsSelected)="onImgsSelected($event)"></page-zone-gridview>
           </template>
           <template [ngSwitchCase]="'list'">
-            <page-zone-listview [data]="items"></page-zone-listview>
+            <page-zone-listview [data]="items" (imgsSelected)="onImgsSelected($event)"></page-zone-listview>
           </template>
           <template [ngSwitchCase]="'timeline'">
-            <page-zone-timeline [data]="items"></page-zone-timeline>
+            <page-zone-timeline [data]="items" (imgsSelected)="onImgsSelected($event)"></page-zone-timeline>
           </template>
         </div>
       </template>

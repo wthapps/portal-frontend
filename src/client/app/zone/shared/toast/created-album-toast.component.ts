@@ -12,7 +12,7 @@ import { FormManagerService } from "../../../shared/form/form-manager.service";
 export class ZCreatedAlbumToastComponent extends ToastBase {
   @Input() album: Album;
 
-  constructor(private formManagerService: FormManagerService,) {
+  constructor(public formManagerService: FormManagerService,) {
     super('created-album-toast');
   }
 }

@@ -9,10 +9,10 @@
 
           <a href="#" (click)="openFileWindow($event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
         </li>
-        <li><a href="#"><i class="fa fa-files-o"></i> Upload Video</a></li>
+        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
         <li role="separator" class="divider"></li>
-        <li><a href="javascript:;" (click)="onClickCreateAlbum()"><i class="fa fa-video-camera"></i> Create Album</a></li>
-        <li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>
+        <li><a href="javascript:;" (click)="onClickCreateAlbum()"><i class="fa fa-files-o"></i> Create Album</a></li>
+        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>-->
 
       </ul>
     </li>
@@ -23,17 +23,6 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/photo']"><i class="fa fa-picture-o"></i> Photos</a>-->
-        <!--</li>-->
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/album']"><i class="fa fa-files-o"></i> Albums</a>-->
-        <!--</li>-->
-        <!--<li role="separator" class="divider"></li>-->
-        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Video</a></li>-->
-        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Playlist</a></li>-->
-        <!--<li role="separator" class="divider"></li>-->
-        <!--<li><a href="#"><i class="fa fa-star"></i> Favourite</a></li>-->
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
           <a [routerLink]="[item.link]">
             {{item.name}}

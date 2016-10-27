@@ -17,9 +17,11 @@ import { Router } from "@angular/router";
 export class ZAlbumGridComponent extends ZPictureGridComponent {
   @Input() data: Array<Album>;
   @Output() imgsSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
+  @Output() addFavouriteEvent: EventEmitter<any> = new EventEmitter<any>();
   selectedPhotos: Array<any> = [];
 
   constructor(private router: Router) {
+    super();
   }
 
   onDbClick(e: any, id: number) {
@@ -27,6 +29,6 @@ export class ZAlbumGridComponent extends ZPictureGridComponent {
   }
 
   addFavourite(e: any, item: any) {
-    console.log('e:', e, 'item:', item);
+    this.addFavouriteEvent.emit(item);
   }
 }
