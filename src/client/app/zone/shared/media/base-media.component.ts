@@ -108,7 +108,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
 
   addFavourite(event: any, item: any = null) {
 
-    this.loadingService.start();
+    // this.loadingService.start();
 
     let newFavourite = this.selectedItems;
     if (item) {
@@ -126,7 +126,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
       ids: _.map(newFavourite, 'id'),
       setFavourite: setFavourite
     });
-
 
     this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
       .map(res => res.json())

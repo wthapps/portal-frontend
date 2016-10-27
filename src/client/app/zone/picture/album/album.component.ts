@@ -48,8 +48,7 @@ export class ZAlbumComponent extends BaseMediaComponent {
 
   }
 
-  // addFavourite(item: any) {
-  //   // this.selectedItems = item;
-  //   // super.addFavourite(null, null);
-  // }
+  onAddFavourite(item?: any) {
+    super.addFavourite(null, item);
+  }
 }
