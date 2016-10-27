@@ -4,7 +4,6 @@ import { Product } from '../../shared/models/product.model';
 
 import { MenuItemBreadcrumb } from '../../partials/index';
 import { ApiBaseService, UserService } from '../../shared/index';
-import { DNSComponent } from './dns/index';
 
 @Component({
   moduleId: module.id,

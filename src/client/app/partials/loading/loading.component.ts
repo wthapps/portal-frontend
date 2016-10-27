@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { LoadingService } from './loading.service';
 
@@ -10,7 +10,7 @@ declare var $: any;
   templateUrl: 'loading.component.html',
   styleUrls: ['loading.component.css']
 })
-export class LoadingComponent {
+export class LoadingComponent implements OnInit{
   display: boolean = false;
 
   constructor(private loadingService: LoadingService) {

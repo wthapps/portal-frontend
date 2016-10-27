@@ -1,4 +1,4 @@
-import {Album} from "./album.model";
+import { Album } from './album.model';
 
 export class AlbumPhoto {
   album: Album;

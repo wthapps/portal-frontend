@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
-import { ZoneComponent } from './index'
-import { ZPictureComponent } from "./index";
+import { ZoneComponent } from './index';
+import { ZPictureComponent } from './index';
 
 export const ZoneRoutes: Route[] = [
   {

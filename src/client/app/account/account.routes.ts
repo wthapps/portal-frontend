@@ -19,8 +19,8 @@ import {
 } from './index';
 
 import {
-  PaymentConfirmComponent,
-  PaymentEditComponent,
+  //2 PaymentConfirmComponent,
+  //2 PaymentEditComponent,
   PaymentComponent,
   PlansComponent
 } from './index';

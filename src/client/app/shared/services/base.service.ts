@@ -1,8 +1,8 @@
-import {Http} from '@angular/http';
+import { Http } from '@angular/http';
 
-import {Injectable} from '@angular/core';
-import {ApiBaseService} from "./apibase.service";
+import { Injectable } from '@angular/core';
 
+import { ApiBaseService } from './apibase.service';
 
 @Injectable()
 export class BaseService extends ApiBaseService {
@@ -11,35 +11,35 @@ export class BaseService extends ApiBaseService {
     super(http);
   }
 
-  get(url:string, params?:any = "") {
-    if (typeof params == "object") {
+  get(url: string, params: any = '') {
+    if (typeof params == 'object') {
       params = this.paramsToString(params);
     }
     return super.get(url + params);
   }
 
-  post(url:string, params?:any = "") {
-    if (typeof params == "object") {
+  post(url: string, params: any = '') {
+    if (typeof params == 'object') {
       params = JSON.stringify(params);
     }
     return super.post(url, params).map(res => res.json());
   }
 
-  put(url:string, params?:any = "") {
-    if (typeof params == "object") {
+  put(url: string, params: any = '') {
+    if (typeof params == 'object') {
       params = JSON.stringify(params);
     }
     return super.put(url, params).map(res => res.json());
   }
 
-  delete(url:string) {
+  delete(url: string) {
     return super.delete(url).map(res => res.json());
   }
 
-  paramsToString(params:any):string {
-    let str:string = '';
+  paramsToString(params: any): string {
+    let str: string = '';
     for (let param in params) {
-      str += param + "=" + params[param] + '&';
+      str += param + '=' + params[param] + '&';
     }
     str = str.slice(0, -1);
     return str;

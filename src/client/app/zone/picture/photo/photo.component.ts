@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 import { Photo } from '../../../shared/models/photo.model';
 import { BaseMediaComponent } from '../../shared/index';
 import {
@@ -9,10 +9,10 @@ import {
   ConfirmationService
 } from '../../../shared/index';
 import { ZonePhotoDetailComponent } from './photo-detail.component';
-import {ZPictureFormAddToAlbumComponent} from "../../shared/form/form-add-to-album.component";
-import {ZPictureFormCreateAlbumComponent} from "../../shared/form/form-create-album.component";
-import {ZAddedToAlbumToastComponent} from "../../shared/toast/added-to-album-toast.component";
-import {ZCreatedAlbumToastComponent} from "../../shared/toast/created-album-toast.component";
+import { ZPictureFormAddToAlbumComponent } from '../../shared/form/form-add-to-album.component';
+import { ZPictureFormCreateAlbumComponent } from '../../shared/form/form-create-album.component';
+import { ZAddedToAlbumToastComponent } from '../../shared/toast/added-to-album-toast.component';
+import { ZCreatedAlbumToastComponent } from '../../shared/toast/created-album-toast.component';
 
 declare var $: any;
 declare var _: any;
@@ -23,7 +23,7 @@ declare var _: any;
   templateUrl: 'photo.component.html'
 })
 
-export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
+export class ZonePhotoComponent extends BaseMediaComponent implements OnInit,OnChanges {
 
   @ViewChild('zonephotodetail') zonephotodetail: ZonePhotoDetailComponent;
 
@@ -31,7 +31,6 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
   @ViewChild(ZPictureFormCreateAlbumComponent) formCreateAlbum: ZPictureFormCreateAlbumComponent;
   @ViewChild(ZAddedToAlbumToastComponent) addedToAlbumToast: ZAddedToAlbumToastComponent;
   @ViewChild(ZCreatedAlbumToastComponent) createdAlbumToast: ZCreatedAlbumToastComponent;
-
 
 
   showImg: boolean = false;
@@ -69,13 +68,13 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
     // code new
     if (this.inputAction) {
       switch (this.inputAction) {
-        case "preview":
+        case 'preview':
           this.sendActionToPhotoDetail(this.inputAction);
           break;
-        case "info":
+        case 'info':
           this.sendActionToPhotoDetail(this.inputAction);
           break;
-        case "favourite":
+        case 'favourite':
           console.log('favourite', this.inputAction);
           break;
         default:
@@ -105,7 +104,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
 
   onGridEvent(event: any) {
     switch (event.action) {
-      case "favourite":
+      case 'favourite':
         this.addFavourite_photo(true, event.item);
         break;
       default:
@@ -125,20 +124,20 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit {
    */
   onAction(event: any) {
     switch (event.action) {
-      case "favourite":
+      case 'favourite':
         //console.log('favourite', event);
         this.addFavourite(true, event.currentItem);
         // this.delete(event.id);
         break;
-      case "share":
-      case "tag":
+      case 'share':
+      case 'tag':
         this.selectedItems = [event.currentItem];
         this.toggleModal(event, event.action);
         break;
-      case "delete":
+      case 'delete':
         this.delete(event.currentItem.id);
         break;
-      case "info":
+      case 'info':
         this.sendActionToPhotoDetail(event);
         break;
       case 'addToAlbum':

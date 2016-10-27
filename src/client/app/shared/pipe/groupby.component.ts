@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({name: 'groupBy'})
 export class GroupByPipe implements PipeTransform {
@@ -6,7 +6,7 @@ export class GroupByPipe implements PipeTransform {
   //   console.log(value, field);
   //   return [];
   // }
-  transform( collection: Object[] , term: string ) {
+  transform(collection: Object[], term: string) {
 
     let newValue = Array<any>();
 
@@ -23,13 +23,13 @@ export class GroupByPipe implements PipeTransform {
 
   }
 
-  static deepFind(obj:any, path:any) {
+  static deepFind(obj: any, path: any) {
 
     var paths = path.toString().split(/[\.\[\]]/);
     var current = obj;
 
     for (let i = 0; i < paths.length; ++i) {
-      if (paths[i] !== "") {
+      if (paths[i] !== '') {
         if (current[paths[i]] == undefined) {
           return undefined;
         } else {

@@ -1,5 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { ZPictureGridComponent, ZPictureListComponent } from '../../shared/index';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 
 // import {ZPhotoDetailComponent} from './photo-detail.component';
 import { Photo } from '../../../shared/models/photo.model';
@@ -58,13 +57,13 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
     // code new
     if (this.inputAction) {
       switch (this.inputAction) {
-        case "preview":
+        case 'preview':
           this.sendActionToPhotoDetail(this.inputAction);
           break;
-        case "info":
+        case 'info':
           this.sendActionToPhotoDetail(this.inputAction);
           break;
-        case "favourite":
+        case 'favourite':
           console.log('favourite', this.inputAction);
           break;
         default:
@@ -113,7 +112,7 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
 
   onGridEvent(event: any) {
     switch (event.action) {
-      case "favourite":
+      case 'favourite':
         this.addFavourite_favourite(true, event.item);
         break;
       default:
@@ -133,20 +132,20 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
    */
   onAction(event: any) {
     switch (event.action) {
-      case "share":
+      case 'share':
         // this.delete(event.id);
         break;
-      case "favourite":
+      case 'favourite':
         // this.delete(event.id);
         break;
-      case "tag":
+      case 'tag':
         this.toggleModal(event, event.action);
         // this.delete(event.id);
         break;
-      case "delete":
+      case 'delete':
         this.delete(event.id);
         break;
-      case "info":
+      case 'info':
         this.sendActionToPhotoDetail(event);
         break;
       default:

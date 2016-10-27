@@ -1,26 +1,18 @@
 import {
   Component,
   AfterViewInit,
-  OnDestroy,
   OnInit,
   Output,
   Input,
   EventEmitter,
-  OnChanges,
-  SimpleChange
+  OnChanges
 } from '@angular/core';
 import { Photo } from '../../../shared/models/photo.model';
 
 // import { ZPictureEditPhotoComponent } from '../shared/form-edit.component';
 
 
-import {
-  ApiBaseService,
-  ConfirmationService,
-  LoadingService,
-  ToastsService,
-  Constants
-} from '../../../shared/index';
+import { Constants } from '../../../shared/index';
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -88,10 +80,10 @@ export class ZonePhotoDetailComponent implements OnInit, OnChanges, AfterViewIni
 
     if (this.getAction) {
       switch (this.getAction) {
-        case "preview":
+        case 'preview':
           this.showPreview();
           break;
-        case "info":
+        case 'info':
           this.showPreview();
           this.showInfo();
           break;

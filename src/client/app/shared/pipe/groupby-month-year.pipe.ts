@@ -1,8 +1,8 @@
-import {Pipe, PipeTransform} from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({name: 'groupByMonthYear'})
 export class GroupByMonthYearPipe implements PipeTransform {
-  transform( collection: Array<any>, term: string ) {
+  transform(collection: Array<any>, term: string) {
 
     let newValue = Array<any>();
     for (let i = 0; i < collection.length; i++) {
@@ -18,20 +18,20 @@ export class GroupByMonthYearPipe implements PipeTransform {
 
   }
 
-  static deepFind(obj:any, path:any) {
+  static deepFind(obj: any, path: any) {
 
     var paths = path.toString().split(/[\.\[\]]/);
     var current = obj;
 
     for (let i = 0; i < paths.length; ++i) {
-      if (paths[i] !== "") {
+      if (paths[i] !== '') {
         if (current[paths[i]] == undefined) {
           return undefined;
         } else {
           // current = current[paths[i]];
           let date = new Date(current[paths[i]]);
-          let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+          let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
           ];
           current = monthNames[date.getMonth()] + '-' + date.getFullYear();
         }

@@ -4,9 +4,9 @@ export class Album {
   description: string;
   owner: any;
   photos: any;
-  created_at:any;
-  photo_default:any;
-  favorite:boolean;
+  created_at: any;
+  photo_default: any;
+  favorite: boolean;
 
   constructor(fields: {
     id?: number,
@@ -14,9 +14,9 @@ export class Album {
     description?: string,
     owner?: any,
     photos?: any,
-    created_at?:any;
-    photo_default?:any;
-    favorite?:boolean;
+    created_at?: any;
+    photo_default?: any;
+    favorite?: boolean;
   }) {
     if (fields) Object.assign(this, fields);
   }
