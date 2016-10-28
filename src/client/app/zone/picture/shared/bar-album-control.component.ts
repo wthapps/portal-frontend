@@ -19,9 +19,9 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
   currentView: string = 'grid';
   @Output() viewChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() viewInfo: EventEmitter<any> = new EventEmitter<any>();
-  @Output() deleteAction: EventEmitter = new EventEmitter();
-  @Output() editAction: EventEmitter = new EventEmitter();
-  @Output() removeAction: EventEmitter = new EventEmitter();
+  @Output() deleteAction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() editAction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() removeAction: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private albumService: AlbumService) {
 

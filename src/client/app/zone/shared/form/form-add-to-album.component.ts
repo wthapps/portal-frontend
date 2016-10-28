@@ -47,7 +47,7 @@ export class ZPictureFormAddToAlbumComponent extends FormModalComponent {
   }
 
   addToAlbum(album: any) {
-    let arrPhotos = [];
+    let arrPhotos: Array<any> = [];
     for (let items of this.selectedItems) {
       arrPhotos.push(items.id);
     }
