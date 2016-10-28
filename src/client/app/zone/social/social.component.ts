@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+declare var $: any;
+
 @Component({
   moduleId: module.id,
   selector: 'z-social',
@@ -7,5 +9,12 @@ import { Component } from '@angular/core';
 })
 
 export class ZSocialComponent {
-  pageTitle: string = 'Zone';
+  constructor() {
+  }
+
+  onUpload(event: any) {
+    $('#modal-social-upload').modal({
+      backdrop: 'static'
+    });
+  }
 }
