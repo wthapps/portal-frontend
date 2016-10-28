@@ -2,6 +2,7 @@
  * Picture
  */
 export * from './picture/index';
+export * from './social/index';
 
 /**
  *  Routes

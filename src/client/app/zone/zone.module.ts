@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ZoneComponent } from './index';
 import { SharedZoneModule } from './shared/index';
 import { ZPictureModule } from './picture/picture.module';
+import { ZSocialModule } from './social/social.module';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ZPictureModule } from './picture/picture.module';
     SharedModule,
     ReactiveFormsModule,
     ZPictureModule,
+    ZSocialModule,
     SharedZoneModule.forRoot()
   ],
   declarations: [

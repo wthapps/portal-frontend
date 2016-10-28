@@ -9,8 +9,8 @@
     <li>
       <a href="#">Calendar</a>
     </li>
-    <li>
-      <a href="#">Social Network</a>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/zone/social']" href="#">Social Network</a>
     </li>
     <li>
       <a href="#">Chat</a>
