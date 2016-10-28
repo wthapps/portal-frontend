@@ -50,10 +50,10 @@ export class ZoneVideoComponent extends BaseMediaComponent implements OnInit {
 
   constructor(//   super();
               //
-              private apiService: ApiBaseService,
+              public apiService: ApiBaseService,
               //           private loadingService: LoadingService
   ) {
-    super('video', this.apiService);
+    super('video');
     this.category = MediaType.photo;
   }
 
@@ -81,28 +81,6 @@ export class ZoneVideoComponent extends BaseMediaComponent implements OnInit {
         _this.getPhotos(_this.currentPage);
       }
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.pageView) {
-      if (this.pageView == 'grid') {
-        this.isGridView = true;
-        this.isListView = false;
-      } else if (this.pageView == 'list') {
-        this.isGridView = false;
-        this.isListView = true;
-      }
-    }
-    if (this.preview) {
-      this.onClick(this.dataSelectedPhotos[0].id, this.preview);
-    }
-    if (this.hasUploadedItem) {
-      this.photos = [];
-      this.getPhotos(this.currentPage);
-    }
-    if (this.viewInfo) {
-      this.onClick(this.dataSelectedPhotos[0].id, this.preview);
-    }
   }
 
   getPhotos(page: any) {

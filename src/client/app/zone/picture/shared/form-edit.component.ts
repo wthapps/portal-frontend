@@ -107,7 +107,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
 
       $('#editPhotoModal').modal('hide');
       // start loading
-      this.loadingService.start(this.elementRef);
+      this.loadingService.start();
       let body = JSON.stringify({
         name: values.name,
         created_day: values.createdDateDay.toString(),
@@ -119,7 +119,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
       this.apiBaseService.put(`zone/photos/${this.dataInput.id}`, body)
         .subscribe((result: any) => {
             // stop loading
-            this.loadingService.stop(this.elementRef);
+            this.loadingService.stop();
             this.dataInput.name = values.name;
             this.dataInput.description = values.description;
             let date_created_at = (values.createdDateYear + '-' + values.createdDateMonth + '-' + values.createdDateDay).toString();
@@ -128,7 +128,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
           },
           error => {
             // stop loading
-            this.loadingService.stop(this.elementRef);
+            this.loadingService.stop();
             //this.toastsService.danger(error);
             console.log(error);
           }
