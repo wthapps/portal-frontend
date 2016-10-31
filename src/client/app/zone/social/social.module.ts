@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
 import { ZSocialComponent } from './social.component';
+import { SoPhotoSelectionComponent, FileSelectionComponent } from './post/index';
 
 
 @NgModule({
@@ -13,7 +14,9 @@ import { ZSocialComponent } from './social.component';
     ReactiveFormsModule
   ],
   declarations: [
-    ZSocialComponent
+    ZSocialComponent,
+    SoPhotoSelectionComponent,
+    FileSelectionComponent,
   ],
   exports: [
     ZSocialComponent
