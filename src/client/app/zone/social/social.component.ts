@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { SoPhotoSelectionComponent } from './post/index';
 
 declare var $: any;
 
@@ -9,12 +10,7 @@ declare var $: any;
 })
 
 export class ZSocialComponent {
+  @ViewChild('photoselection') photoSelection: SoPhotoSelectionComponent;
   constructor() {
-  }
-
-  onUpload(event: any) {
-    $('#modal-social-upload').modal({
-      backdrop: 'static'
-    });
   }
 }

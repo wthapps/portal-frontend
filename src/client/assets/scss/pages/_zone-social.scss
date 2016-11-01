@@ -1,5 +1,11 @@
 .zone-social {
   padding: 30px 45px;
+  @include clearfix;
+  .zone-social-in {
+    max-width: 670px;
+    float: left;
+    margin-right: 45px;
+  }
 }
 
 .z-social-box {
@@ -64,13 +70,142 @@
   }
 }
 
-.z-social-post-action {
+.z-social-post {
+  padding: 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid $line;
+}
 
+.z-social-post-action {
+  margin: 15px 0 0;
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    @include clearfix;
+    li {
+      float: left;
+      margin-right: 15px;
+      i {
+        margin-right: 5px;
+        width: 34px;
+        height: 34px;
+        text-align: center;
+        display: inline-block;
+        border: 1px solid #cdcdcd;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        line-height: 32px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.z-social-post-txt {
+  margin-bottom: 15px;
+}
+
+.z-social-post-tag {
+  a {
+    display: inline-block;
+    margin-right: 10px;
+    color: $light-slate;
+  }
+}
+
+.z-social-comment {
+  padding: 0 15px 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid $line;
+  .z-social-comment-num {
+    color: $light-slate;
+    margin-bottom: 15px;
+  }
+  .z-social-comment-list {
+    .media-left {
+      padding-right: 15px;
+    }
+    .media-heading {
+      font-size: 14px;
+      span {
+        font-weight: normal;
+        display: inline-block;
+        color: $light-slate;
+        &:before {
+          content: "\2022";
+          margin-left: 10px;
+          margin-right: 10px;
+          display: inline-block;
+          font-size: 20px;
+          height: 20px;
+          line-height: 14px;
+          position: relative;
+          top: 2px;
+        }
+      }
+    }
+    .media-body {
+      position: relative;
+      p {
+        margin-bottom: 2px;
+      }
+    }
+  }
+
+  .media:hover {
+    > .media-body {
+      .media-body-action {
+        @include opacity(1);
+      }
+    }
+  }
+  .media-body-action {
+    @include opacity(0);
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    color: $light-slate;
+    a {
+      color: inherit;
+    }
+  }
+  .media-body-reply {
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      @include clearfix;
+      li {
+        float: left;
+        &:before {
+          content: "\2022";
+          margin-left: 10px;
+          margin-right: 10px;
+          display: inline-block;
+          color: $light-slate;
+          font-size: 13px;
+        }
+        &:first-child:before {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.z-social-comment-more {
+  margin-top: 10px;
 }
 
 .z-social-carousel {
   clear: both;
-  margin-top: 15px;
   > ul {
     margin: 0 -2px 15px;
     padding: 0;
@@ -85,7 +220,7 @@
     > li {
       float: left;
       width: percentage(1/5);
-      padding-bottom: percentage(1/5);
+      padding-bottom: percentage(1/5) - 6%;
       position: relative;
       &:not(:first-child) {
         figure {
@@ -141,33 +276,84 @@
     > li {
       float: left;
       width: percentage(1/4);
+      padding-bottom: percentage(1/4) - 7%;
+      position: relative;
+      &:not(:first-child) {
+        figure {
+          position: absolute;
+          top: 2px;
+          left: 2px;
+          right: 2px;
+          bottom: 2px;
+          overflow: hidden;
+          img {
+            @include center();
+            width: 100%;
+          }
+        }
+      }
 
       &:first-child {
         float: none;
         width: auto;
         margin-bottom: 4px;
+        padding-bottom: 0;
       }
     }
   }
   .carousel-thumb-style-4 {
     > li {
       float: left;
-      width: 30%;
+      width: 28%;
+      padding-bottom: 17.3%;
+      position: relative;
+      &:not(:first-child) {
+        figure {
+          position: absolute;
+          top: 0px;
+          left: 4px;
+          right: 2px;
+          bottom: 4px;
+          overflow: hidden;
+          img {
+            @include center();
+            width: 100%;
+          }
+        }
+      }
 
       &:first-child {
         float: left;
-        width: 70%;
+        padding-bottom: 0;
+        width: 72%;
       }
     }
   }
   .carousel-thumb-style-3 {
     > li {
       float: left;
-      width: 40%;
+      width: 34%;
+      padding-bottom: 23.6%;
+      position: relative;
+      &:not(:first-child) {
+        figure {
+          position: absolute;
+          top: 0px;
+          left: 2px;
+          right: 2px;
+          bottom: 4px;
+          overflow: hidden;
+          img {
+            @include center();
+            width: 100%;
+          }
+        }
+      }
 
       &:first-child {
         float: left;
-        width: 60%;
+        padding-bottom: 0;
+        width: 66%;
       }
     }
   }
@@ -179,6 +365,28 @@
   }
   .carousel-thumb-style-1 {
     > li {
+    }
+  }
+}
+
+.zone-social-sidebar {
+  float: left;
+  dl {
+    dt {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    dd {
+      ul {
+        li {
+          margin-bottom: 10px;
+          img {
+            width: 30px;
+            margin-right: 10px;
+          }
+        }
+      }
     }
   }
 }
