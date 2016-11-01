@@ -31,7 +31,8 @@ import {
   AppCardPlatformComponent,
   BreadcrumbComponent,
   SliderComponent,
-  UploadCropImageComponent
+  UploadCropImageComponent,
+  ToTopComponent
 } from '../partials/index';
 
 import { LoadingDirective } from './directive/loading.directive';
@@ -67,6 +68,7 @@ import { FormModalComponent } from './form/form-modal.component';
     BreadcrumbComponent,
     SliderComponent,
     UploadCropImageComponent,
+    ToTopComponent,
     FormModalComponent,
     // Directive
     LoadingDirective,
@@ -87,6 +89,7 @@ import { FormModalComponent } from './form/form-modal.component';
     BreadcrumbComponent,
     SliderComponent,
     UploadCropImageComponent,
+    ToTopComponent,
 
     // third party modules
     ConfirmDialogModule,
