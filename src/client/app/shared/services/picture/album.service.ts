@@ -2,10 +2,10 @@ import {Http} from '@angular/http';
 
 import {Injectable} from '@angular/core';
 
-import {BaseService} from "../base.service";
+import {ApiBaseServiceV2} from "../apibase.service.v2";
 
 @Injectable()
-export class AlbumService extends BaseService {
+export class AlbumService extends ApiBaseServiceV2 {
 
   url:string = 'zone/albums/';
 

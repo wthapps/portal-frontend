@@ -42,6 +42,7 @@ import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
 import { GroupByPipe } from './pipe/groupby.pipe';
 
 import { FormModalComponent } from './form/form-modal.component';
+import {ApiBaseServiceV2} from "./services/apibase.service.v2";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -118,6 +119,7 @@ export class SharedModule {
         CountryService,
         ConfirmationService,
         DeactivateConfirmService,
+        ApiBaseServiceV2,
       ]
     };
   }
