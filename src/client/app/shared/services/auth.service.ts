@@ -11,6 +11,6 @@ export class AuthService {
   }
 
   loggedIn() {
-    return this.userService.loggedIn;
+    return this.userService.get();
   }
 }
