@@ -1,0 +1,42 @@
+<!--<div>-->
+  <!--<ul class="modal-social-photo-grid">-->
+    <!--<li class="z-upload-item">-->
+      <!--<a href="#" (click)="fileSelection.open($event)">-->
+        <!--<div>-->
+          <!--<i class="fa fa-cloud-upload"></i>-->
+          <!--<span>Upload Photo</span>-->
+        <!--</div>-->
+      <!--</a>-->
+      <!--<file-selection #filesSelection></file-selection>-->
+    <!--</li>-->
+    <!--<li *ngFor="let p of photos" [class]="toggleSelectedClass($event)">-->
+      <!--<div class="social-photo-grid-item">-->
+        <!--<figure class="img-center-dv">-->
+          <!--<img class="img-full" [src]="p['thumbnail_url']" alt="">-->
+          <!--<img class="img-center"-->
+               <!--[src]="p['thumbnail_url']" alt="">-->
+        <!--</figure>-->
+      <!--</div>-->
+    <!--</li>-->
+  <!--</ul>-->
+<!--</div>-->
+<div class="row-img photo-grid-list" (click)="clickParent($event)">
+  <div class="photo-box-img" *ngIf="showUpload">
+    <a href="#" (click)="fileSelection.open($event)">
+      <div>
+        <i class="fa fa-cloud-upload"></i>
+        <span>Upload Photo</span>
+      </div>
+    </a>
+    <file-selection #filesSelection></file-selection>
+  </div>
+  <div *ngFor="let p of photos" class="photo-box-img item-selectable">
+    <div class="photo-box-img-action" *ngIf="showFavourite">
+      <i (click)="addFavourite($event, item)" class="fa" [ngClass]="item.favorite ? 'fa-star': 'fa-star-o'"></i>
+    </div>
+    <figure (click)="toggleSelectedItem($event, p)" class="img-center-dv">
+      <img class="img-full" [src]="p['thumbnail_url']" alt="">
+      <!--<img class="img-center" [src]="p['thumbnail_url']" alt="">-->
+    </figure>
+  </div>
+</div>

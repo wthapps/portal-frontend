@@ -1,0 +1,166 @@
+<hd-modal #photoModal cssClass="modal-social modal-long"
+          [keyboard]="false"
+          [backdrop]="'static'"
+          (onDismiss)="closePhotoSelectionModel($event)"
+>
+  <modal-header cssClass="modal-social-head" [show-close]="true">
+    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+    <!--aria-hidden="true">&times;</span></button>-->
+    <button type="button" class="btn btn-wth-default btn-min" (click)="next($event)">NEXT</button>
+    <span>
+        1 photo selected
+      </span>
+  </modal-header>
+  <modal-body>
+    <!--<file-selection #fileselection></file-selection>-->
+    <!--<ul class="modal-social-photo-grid">-->
+      <!--<li class="z-upload-item">-->
+        <!--<a href="#" (click)="fileSelection.open($event)">-->
+          <!--<div>-->
+            <!--<i class="fa fa-cloud-upload"></i>-->
+            <!--<span>Upload Photo</span>-->
+          <!--</div>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--<li *ngFor="let p of photos">-->
+        <!--<div class="social-photo-grid-item">-->
+          <!--<figure class="img-center-dv">-->
+            <!--<img class="img-full" [src]="p['thumbnail_url']" alt="">-->
+            <!--<img class="img-center"-->
+                 <!--[src]="p['thumbnail_url']" alt="">-->
+          <!--</figure>-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ul>-->
+    <so-photo-list #photoList [show-upload]="true"></so-photo-list>
+  </modal-body>
+</hd-modal>
+
+<hd-modal #postModal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+  <modal-body>
+    <div class="z-social-media mb15">
+      <div class="z-social-media-left">
+        <img src="assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="z-social-media-body">
+        <div class="z-heading">
+          <div class="z-name">
+            name
+          </div>
+          <div class="z-shared-with">
+            <i class="fa fa-caret-right"></i>
+            <span class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="true">Public</a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
+                <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
+                <li><a href="#"><i class="fa fa-lock"></i> Private</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Custom</a></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="z-social-media-right">
+        <div class="dropdown pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="fa fa-check"></i> Adult content</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Disable comments</a></li>
+            <li><a href="#">Disable reshare</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <textarea placeholder="Add description" class="form-control" name="" rows="1"></textarea>
+    </div>
+    <div class="form-group">
+      <input placeholder="Add tag" class="form-control" type="text">
+    </div>
+    <ul class="modal-social-photo-grid">
+      <li>
+        <div class="social-photo-grid-item">
+          <figure class="img-center-dv">
+            <i class="fa fa-remove"></i>
+            <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+            <img class="img-center"
+                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250" alt="">
+          </figure>
+        </div>
+      </li>
+      <li>
+        <div class="social-photo-grid-item">
+          <figure class="img-center-dv">
+            <i class="fa fa-remove"></i>
+            <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+            <img class="img-center"
+                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250" alt="">
+          </figure>
+        </div>
+      </li>
+      <li>
+        <div class="social-photo-grid-item">
+          <figure class="img-center-dv">
+            <i class="fa fa-remove"></i>
+            <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+            <img class="img-center"
+                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250" alt="">
+          </figure>
+        </div>
+      </li>
+      <li>
+        <div class="social-photo-grid-item">
+          <figure class="img-center-dv">
+            <i class="fa fa-remove"></i>
+            <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+            <img class="img-center"
+                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250" alt="">
+          </figure>
+        </div>
+      </li>
+      <li>
+        <div class="social-photo-grid-item">
+          <figure class="img-center-dv">
+            <i class="fa fa-remove"></i>
+            <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+            <img class="img-center"
+                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250" alt="">
+          </figure>
+        </div>
+      </li>
+      <li>
+        <div class="social-photo-grid-item">
+          <figure class="img-center-dv">
+            <i class="fa fa-remove"></i>
+            <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+            <img class="img-center"
+                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250" alt="">
+          </figure>
+        </div>
+      </li>
+      <li>
+        <div class="social-photo-grid-item">
+          <figure class="img-center-dv">
+            <i class="fa fa-remove"></i>
+            <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+            <img class="img-center"
+                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250" alt="">
+          </figure>
+        </div>
+      </li>
+    </ul>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-default pull-left btn-min"><i class="fa fa-plus"></i> Add more</button>
+    <button type="button" class="btn btn-wth-default btn-min">Done</button>
+    <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+  </modal-footer>
+</hd-modal>
+
