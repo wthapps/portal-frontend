@@ -4,19 +4,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
 import { ZSocialComponent } from './social.component';
-import { SoPhotoSelectionComponent, FileSelectionComponent } from './post/index';
+import { PostModule } from "./post/post.module";
 
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PostModule
   ],
   declarations: [
-    ZSocialComponent,
-    SoPhotoSelectionComponent,
-    FileSelectionComponent,
+    ZSocialComponent
   ],
   exports: [
     ZSocialComponent

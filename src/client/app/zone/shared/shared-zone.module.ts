@@ -2,17 +2,19 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZoneMenuComponent } from './index';
 
-import {SharedModule} from "../../shared/shared.module";
-
-
-
+import { SharedModule } from '../../shared/shared.module';
+import { Ng2HdModule } from './ng2-hd/ng2-hd';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [RouterModule, SharedModule],
+  imports: [
+    RouterModule,
+    SharedModule,
+    Ng2HdModule
+  ],
   declarations: [
     ZoneMenuComponent
   ],
