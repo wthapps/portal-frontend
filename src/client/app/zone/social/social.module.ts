@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
 import { ZSocialComponent } from './social.component';
+import { ZSocialTempComponent } from './social-temp.component';
 import { PostModule } from "./post/post.module";
 
 
@@ -15,10 +16,12 @@ import { PostModule } from "./post/post.module";
     PostModule
   ],
   declarations: [
-    ZSocialComponent
+    ZSocialComponent,
+    ZSocialTempComponent
   ],
   exports: [
-    ZSocialComponent
+    ZSocialComponent,
+    ZSocialTempComponent
   ],
   providers: [],
 })

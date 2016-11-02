@@ -1,7 +1,8 @@
 import { Route } from '@angular/router';
 import { ZoneComponent } from './index';
 import { ZPictureComponent } from './index';
-import { ZSocialComponent } from './social/social.component';
+import { ZSocialComponent } from './social/index';
+import { ZSocialTempComponent } from './social/social-temp.component';
 import {AuthGuard} from "../shared/services/auth-guard.service";
 
 export const ZoneRoutes: Route[] = [
@@ -25,6 +26,7 @@ export const ZoneRoutes: Route[] = [
       {path: 'picture/:category/:id', component: ZPictureComponent},
 
       {path: 'social', component: ZSocialComponent},
+      {path: 'social-temp', component: ZSocialTempComponent},
 
       {path: '', component: ZPictureComponent}
     ]
