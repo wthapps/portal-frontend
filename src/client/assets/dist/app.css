@@ -9264,6 +9264,7 @@ h1, h2, h3, h4, h5, h6,
   text-align: center; }
 
 .btn, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"] {
+  text-transform: uppercase;
   font-weight: bold; }
   .btn:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .btn.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"], .btn:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active:focus, .btn:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:active.focus, .btn.active:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active[ng-reflect-icon="fa-check"]:focus, .btn.active.focus, .wrapper .ui-dialog .ui-dialog-buttonpane button.active.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane button.active.focus[ng-reflect-icon="fa-check"] {
     outline: 0 none; }
@@ -13445,6 +13446,22 @@ wth-app:empty + .dots-loader-wrap {
   .zone-social-sidebar dl dd ul li {
     margin-bottom: 10px; }
     .zone-social-sidebar dl dd ul li img {
+      width: 30px;
+      margin-right: 10px; }
+
+.social-list-user {
+  margin: 0;
+  padding: 0;
+  list-style-type: none; }
+  .social-list-user > li {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #dbdbdb; }
+    .social-list-user > li a {
+      color: inherit;
+      display: block;
+      text-decoration: none; }
+    .social-list-user > li img {
       width: 30px;
       margin-right: 10px; }
 
