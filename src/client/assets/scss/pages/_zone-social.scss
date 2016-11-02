@@ -24,7 +24,7 @@
   .z-social-media-left {
     width: 34px;
     height: 34px;
-    margin-right: 15px;
+    margin-right: 10px;
     img {
       width: 100%;
       height: auto;
@@ -41,6 +41,14 @@
       min-width: 34px;
       text-align: center;
       border-width: 0;
+    }
+    .dropdown {
+      .fa {
+        &.pull-right {
+          margin-top: 3px;
+          margin-right: -2px;
+        }
+      }
     }
   }
   .z-heading {
@@ -231,7 +239,8 @@
     right: 0;
     z-index: 2;
     color: $light-slate;
-    a {
+    > a {
+      cursor: pointer;
       color: inherit;
     }
   }
@@ -458,14 +467,32 @@
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid $line;
-    a {
+    position: relative;
+    > a {
       color: inherit;
       display: block;
       text-decoration: none;
+      > img {
+        width: 34px;
+        margin-right: 10px;
+      }
     }
-    img {
-      width: 30px;
+    > img {
+      width: 34px;
       margin-right: 10px;
+    }
+    .social-list-user-action {
+      @include center(false, true);
+      right: 10px;
+      margin-top: -5px;
+      .fa {
+        margin-right: 5px;
+        position: relative;
+        top: 1px;
+      }
+      input {
+        margin-top: 0;
+      }
     }
   }
 }
