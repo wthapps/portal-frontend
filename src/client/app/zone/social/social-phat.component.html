@@ -91,13 +91,13 @@
         <div class="z-social-post-action">
           <ul>
             <li class="active">
-              <i class="fa fa-thumbs-o-up"></i> 2
+              <i class="fa fa-thumbs-o-up"></i> {{post.reactions.length}}
             </li>
             <li>
-              <i class="fa fa-thumbs-o-down"></i> 2
+              <i class="fa fa-thumbs-o-down"></i> {{post.reactions.length}}
             </li>
             <li>
-              <i class="fa fa-share-alt"></i> 2
+              <i class="fa fa-share-alt"></i> {{post.reactions.length}}
             </li>
           </ul>
         </div>
@@ -126,32 +126,30 @@
                   <li class="active"><a href="#"><i class="fa fa-thumbs-o-up"></i></a></li>
                   <li><a href="#"><i class="fa fa-thumbs-o-down"></i></a></li>
                   <li><a href="#">Reply</a></li>
-                  <li><a href="#">2 Replies</a></li>
+                  <li><a href="#">{{comment.replies.length}} Replies</a></li>
                 </ul>
               </div>
-              <!--<div class="media">-->
-                <!--<div class="media-left">-->
-                  <!--<a href="#">-->
-                    <!--<img alt="64x64" class="media-object" src="assets/images/avatar/avatar.png">-->
-                  <!--</a>-->
-                <!--</div>-->
-                <!--<div class="media-body">-->
-                  <!--<h4 class="media-heading">Media heading-->
-                    <!--<span class="media-heading-time">1 day ago</span>-->
-                  <!--</h4>-->
-                  <!--<p>Cras sit amet nibh libero, in-->
-                    <!--gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in-->
-                    <!--vulputate at, tempus viverra turpis.</p>-->
-                  <!--<div class="media-body-reply">-->
-                    <!--<ul>-->
-                      <!--<li class="active"><a href="#"><i class="fa fa-thumbs-o-up"></i></a></li>-->
-                      <!--<li><a href="#"><i class="fa fa-thumbs-o-down"></i></a></li>-->
-                      <!--<li><a href="#">Reply</a></li>-->
-                      <!--<li><a href="#">2 Replies</a></li>-->
-                    <!--</ul>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
+              <div class="media" *ngFor="let replies of comment.replies">
+                <div class="media-left">
+                  <a href="#">
+                    <img alt="64x64" class="media-object" src="assets/images/avatar/avatar.png">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">Media heading
+                    <span class="media-heading-time">1 day ago</span>
+                  </h4>
+                  <p>{{replies.content}}</p>
+                  <div class="media-body-reply">
+                    <ul>
+                      <li class="active"><a href="#"><i class="fa fa-thumbs-o-up"></i></a></li>
+                      <li><a href="#"><i class="fa fa-thumbs-o-down"></i></a></li>
+                      <li><a href="#">Reply</a></li>
+                      <li><a href="#">{{replies.replies.length}} Replies</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </li>
         </ul>
