@@ -32,7 +32,7 @@ import {
   BreadcrumbComponent,
   SliderComponent,
   UploadCropImageComponent,
-  // ToTopComponent
+  ToTopComponent
 } from '../partials/index';
 
 import { LoadingDirective } from './directive/loading.directive';
@@ -69,7 +69,7 @@ import {ApiBaseServiceV2} from "./services/apibase.service.v2";
     BreadcrumbComponent,
     SliderComponent,
     UploadCropImageComponent,
-    // ToTopComponent,
+    ToTopComponent,
     FormModalComponent,
     // Directive
     LoadingDirective,
@@ -90,7 +90,7 @@ import {ApiBaseServiceV2} from "./services/apibase.service.v2";
     BreadcrumbComponent,
     SliderComponent,
     UploadCropImageComponent,
-    // ToTopComponent,
+    ToTopComponent,
 
     // third party modules
     ConfirmDialogModule,

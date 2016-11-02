@@ -1,5 +1,5 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-import { SoPhotoSelectionComponent } from './post/index';
+import { Component, ViewChild } from '@angular/core';
+import { PostNewComponent } from './post/index';
 import {ApiBaseServiceV2} from "../../shared/services/apibase.service.v2";
 import {SoPost} from "../../shared/models/social_network/so-post.model";
 
@@ -12,8 +12,9 @@ declare var _: any;
   templateUrl: 'social.component.html'
 })
 
-export class ZSocialComponent implements OnInit{
-  @ViewChild('photoselection') photoSelection: SoPhotoSelectionComponent;
+export class ZSocialComponent {
+  @ViewChild('postNew') photoSelection: PostNewComponent;
+
   soPosts: Array<SoPost>;
   soPostsDisplay: Array<SoPost>;
 

@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
-import { ApiBaseService } from '../../../shared/index';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ApiBaseService, LoadingService } from '../../../shared/index';
 
 declare var _ :any;
 declare var $ :any;
@@ -18,27 +18,30 @@ export class SoPhotoListComponent implements OnInit{
   @ViewChild('filesSelection') fileSelection: ElementRef;
   @Input('show-upload') showUpload: boolean = false;
   @Input('show-favourite') showFavourite: boolean = false;
+
+  @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
+
   photos: Array<any>;
   selectedItems: Array<any>;
-
   pressingCtrl: boolean = false;
 
-  constructor(private apiService: ApiBaseService) {
+  constructor(private apiService: ApiBaseService, private loading: LoadingService) {
   }
 
   ngOnInit(): void {
     this.photos = new Array<any>();
     this.selectedItems = new Array<any>();
 
+    this.loading.start('.photo-grid-list');
     this.apiService.get(`zone/photos`).subscribe(
       (response: any) => {
         this.photos = response['data'];
-        console.log('photos', response['data']);
-        // this.loadingService.stop('#photodata-loading');
+        this.loading.stop('.photo-grid-list');
       },
       error => {
         // this.errorMessage = <any>error;
-        // this.loadingService.stop('#photodata-loading');
+        this.loading.stop('.photo-grid-list');
       }
     );
   }
@@ -66,19 +69,16 @@ export class SoPhotoListComponent implements OnInit{
     if (this.pressingCtrl) {
       el.toggleClass(selectedClass);
       if (_.find(this.selectedItems, _.matchesProperty('id', item['id'])) == undefined) {
-        console.log('selected', this.selectedItems);
         this.selectedItems.push(item); // add
         return;
       }
       _.pull(this.selectedItems, item); // remove
-      console.log('selected', this.selectedItems);
       return;
     }
     this.selectedItems = [];
     parent.find('.photo-box-img').removeClass(selectedClass);
     el.toggleClass(selectedClass);
     this.selectedItems.push(item);
-    console.log('selected', this.selectedItems);
   }
 
   clickParent(event: any) {
@@ -94,5 +94,9 @@ export class SoPhotoListComponent implements OnInit{
     // TODO refactor jquery
     $('div.photo-box-img').removeClass('selected');
     this.selectedItems = [];
+  }
+
+  changeFiles(files: Array<any>) {
+    this.onFilesChanged.emit(files);
   }
 }

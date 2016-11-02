@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Renderer, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, Renderer, OnInit, Output, EventEmitter } from '@angular/core';
 
 declare var $: any;
 
@@ -9,7 +9,9 @@ declare var $: any;
 })
 
 export class FileSelectionComponent implements OnInit{
-  @ViewChild('inputfiles') inputFiles: ElementRef;
+  @ViewChild('fileBrowse') inputFiles: ElementRef;
+  @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
+
   selectedFiles: Array<any>;
 
   constructor(private renderer: Renderer) {
@@ -24,11 +26,12 @@ export class FileSelectionComponent implements OnInit{
     this.renderer.invokeElementMethod(this.inputFiles.nativeElement, 'click');
   }
 
-  chooseFiles(event: any) {
+  changeFiles(event: any) {
     this.selectedFiles = event.target.files;
     if (this.selectedFiles.length == 0) {
       return;
     }
+    this.onFilesChanged.emit(this.selectedFiles);
   }
 
 }

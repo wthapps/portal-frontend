@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { SoPhotoSelectionComponent } from './post/index';
+
 
 declare var $: any;
 
@@ -10,7 +10,7 @@ declare var $: any;
 })
 
 export class ZSocialTempComponent {
-  @ViewChild('photoselection') photoSelection: SoPhotoSelectionComponent;
+
   constructor() {
   }
 }
