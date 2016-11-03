@@ -4,8 +4,12 @@ import { Injectable } from '@angular/core';
 
 import { ApiBaseService } from './apibase.service';
 
+import {Constants} from "../config/constants";
+
 @Injectable()
-export class BaseService extends ApiBaseService {
+export class ApiBaseServiceV2 extends ApiBaseService {
+
+  urls = Constants.urls;
 
   constructor(http: Http) {
     super(http);

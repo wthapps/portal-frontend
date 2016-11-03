@@ -1,0 +1,9 @@
+<post-photo-select #photoSelectModal
+                   (onNext)="next($event)"
+                   (onDismiss)="dismiss($event)"
+                   (onUpload)="upload($event)"
+></post-photo-select>
+
+<post-edit #postAddModal (onMoreAdded)="addMorePhoto($event)" [files]="files" ></post-edit>
+
+

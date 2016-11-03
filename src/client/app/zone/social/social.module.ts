@@ -9,6 +9,15 @@ import { ZSocialTempDetailComponent } from './social-temp-detail.component';
 
 import { PostModule } from "./post/post.module";
 
+import {ZSocialPostListComponent} from "./post-list/post-list.component";
+
+import {
+  ZSocialPostItemComponent,
+  ZSocialPostItemHeaderComponent,
+  ZSocialPostItemBodyComponent,
+  ZSocialPostItemFooterComponent
+} from "./post-item/index";
+
 
 @NgModule({
   imports: [
@@ -20,7 +29,14 @@ import { PostModule } from "./post/post.module";
   declarations: [
     ZSocialComponent,
     ZSocialTempComponent,
-    ZSocialTempDetailComponent
+    ZSocialTempDetailComponent,
+    // List Posts
+    ZSocialPostListComponent,
+    ZSocialPostItemComponent,
+    ZSocialPostItemHeaderComponent,
+    ZSocialPostItemBodyComponent,
+    ZSocialPostItemFooterComponent
+
   ],
   exports: [
     ZSocialComponent,

@@ -75,6 +75,9 @@ export let Constants = {
     tag: true,
     delete: true,
     other: true,
+  },
+  urls: {
+    zoneSoPosts: '/zone/posts'
   }
 };
 
