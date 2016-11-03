@@ -23,3 +23,12 @@
     right: 15px;
   }
 }
+
+.dropdown-menu {
+  .fa {
+    &.pull-right {
+      margin-top: 3px;
+      margin-right: -2px;
+    }
+  }
+}

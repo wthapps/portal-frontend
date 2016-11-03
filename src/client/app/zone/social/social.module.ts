@@ -5,6 +5,8 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { ZSocialComponent } from './social.component';
 import { ZSocialTempComponent } from './social-temp.component';
+import { ZSocialTempDetailComponent } from './social-temp-detail.component';
+
 import { PostModule } from "./post/post.module";
 
 
@@ -17,11 +19,13 @@ import { PostModule } from "./post/post.module";
   ],
   declarations: [
     ZSocialComponent,
-    ZSocialTempComponent
+    ZSocialTempComponent,
+    ZSocialTempDetailComponent
   ],
   exports: [
     ZSocialComponent,
-    ZSocialTempComponent
+    ZSocialTempComponent,
+    ZSocialTempDetailComponent
   ],
   providers: [],
 })
