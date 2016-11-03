@@ -8,9 +8,9 @@
         {{item.owner.nickname}}
       </div>
       <div class="z-shared-with dropdown">
-        <a href="#" data-toggle="dropdown"><i class="fa fa-globe"></i> Public</a>
+        <a href="#" data-toggle="dropdown"><i class="{{item.privacyDisplay.css}}"></i> {{item.privacyDisplay.text}}</a>
         <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu1">
-          <li><a href="#"><i class="fa fa-globe"></i> Public <i class="dropdown-menu-check-item fa fa-check"></i></a>
+          <li><a href="#"><i class="fa fa-globe"></i> {{item.privacyDisplay.text}} <i class="dropdown-menu-check-item fa fa-check"></i></a>
           </li>
           <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
           <li><a href="#"><i class="fa fa-lock"></i> Private</a></li>
@@ -24,11 +24,17 @@
         <li class="z-time">
           Jul 16 2016
         </li>
-        <li>
+        <li *ngIf="item.adult">
           Adult Content
         </li>
-        <li>
-          Muted
+        <li *ngIf="item.mute">
+          Mute
+        </li>
+        <li *ngIf="item.disable_comment">
+          Disable Comment
+        </li>
+        <li *ngIf="item.disable_share">
+          Disable Share
         </li>
       </ul>
     </div>
@@ -41,14 +47,19 @@
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li><a href="#"><i class="fa fa-check"></i> Adult content</a></li>
+        <li><a href="#">
+          <i class="fa fa-check" *ngIf="item.adult"></i>
+          Adult content</a>
+        </li>
         <li role="separator" class="divider"></li>
         <li><a href="#">Edit Post</a></li>
         <li><a href="#">Delete</a></li>
         <li role="separator" class="divider"></li>
-        <li><a href="#">Disable comments</a></li>
-        <li><a href="#">Disable reshare</a></li>
-        <li><a href="#">Mute</a></li>
+        <li><a href="#">
+          <i class="fa fa-check" *ngIf="item.disable_comment"></i>
+          Disable comments</a></li>
+        <li><a href="#"><i class="fa fa-check" *ngIf="item.disable_share"></i>Disable share</a></li>
+        <li><a href="#"><i class="fa fa-check" *ngIf="item.mute"></i>Mute</a></li>
       </ul>
     </div>
 

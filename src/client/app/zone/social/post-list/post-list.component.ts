@@ -15,7 +15,9 @@ declare var _: any;
 export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   listItems: Array<SoPost>;
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2) {
+  constructor(
+    private apiBaseServiceV2: ApiBaseServiceV2
+  ) {
   }
 
   ngOnInit() {

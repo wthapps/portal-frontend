@@ -5,10 +5,11 @@ export class SoPost {
   owner: any;
   photos: Array<any>;
   tags: Array<any>;
-
-  // Frontend additional
-  displayCss: string;
-  remainPhotos: number;
+  adult: boolean;
+  privacy: string;
+  disable_comment: boolean;
+  disable_share: boolean;
+  mute: boolean;
 
   constructor(fields: {
     uuid?: string,
@@ -16,9 +17,12 @@ export class SoPost {
     description?: string;
     owner?: any;
     photos?: Array<any>;
-    displayCss?: string;
-    remainPhotos?: number;
     tags?: Array<any>;
+    adult?: boolean;
+    disable_comment?: boolean;
+    disable_share?: boolean;
+    mute?: boolean;
+    privacy?: string;
   }) {
     if (fields) Object.assign(this, fields);
   }
