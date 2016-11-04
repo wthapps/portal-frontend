@@ -20,12 +20,12 @@ declare var _: any;
 export class ZAlbumDetailInfoComponent implements OnInit, OnChanges {
 
   @Input() album: Album;
-  @Output() closeInfo: EventEmitter = new EventEmitter();
+  @Output() closeInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() tagEvent: EventEmitter<Album> = new EventEmitter<Album>();
-  @Output() showFormEdit: EventEmitter = new EventEmitter();
+  @Output() showFormEdit: EventEmitter<any> = new EventEmitter<any>();
   albumData: Album = null;
 
-  constructor(private albumService?: AlbumService,) {
+  constructor(public albumService?: AlbumService,) {
 
   }
 

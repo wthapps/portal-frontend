@@ -23,11 +23,11 @@ export class ZAlbumComponent extends BaseMediaComponent {
 
   @Input() pageView: string = 'grid';
 
-  constructor(private apiService?: ApiBaseService,
-              private toastsService?: ToastsService,
-              private loadingService?: LoadingService,
-              private confirmationService?: ConfirmationService,) {
-    super(MediaType.album, this.apiService);
+  constructor(public apiService?: ApiBaseService,
+              public toastsService?: ToastsService,
+              public loadingService?: LoadingService,
+              public confirmationService?: ConfirmationService,) {
+    super(MediaType.album);
   }
 
   ngOnInit() {
