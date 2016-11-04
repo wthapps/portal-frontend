@@ -12,7 +12,7 @@ export class FileSelectionComponent implements OnInit{
   @ViewChild('fileBrowse') inputFiles: ElementRef;
   @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  selectedFiles: Array<any>;
+  selectedFiles: Array<any> = new Array<any>();
 
   constructor(private renderer: Renderer) {
   }

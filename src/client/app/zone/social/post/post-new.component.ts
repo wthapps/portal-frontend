@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { PostEditComponent, PostPhotoSelectComponent } from './index';
 
@@ -13,6 +13,7 @@ declare var _: any;
 export class PostNewComponent implements OnInit{
   @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   @ViewChild('postAddModal') postAddModal: PostEditComponent;
+  @Output() onPostAdded: EventEmitter<any> = new EventEmitter<any>();
 
   selectedPhotos: Array<any> = new Array<any>();
   uploadPhotos: Array<any> = new Array<any>();
@@ -25,8 +26,12 @@ export class PostNewComponent implements OnInit{
 
   }
 
-  open(event: any) {
-    this.photoModal.open();
+  open(event: any, choosePhotos?: boolean) {
+    if(choosePhotos == true) {
+      this.photoModal.open();
+      return;
+    }
+    this.postAddModal.open();
   }
  
   next(photos: any) {
@@ -58,10 +63,17 @@ export class PostNewComponent implements OnInit{
     this.photoModal.open(true);
   }
 
-  upload(files: any) {
-    this.files = files;
+  upload(files: Array<any>) {
+    _.forEach(files, (file: any) => {
+      this.files.push(file);
+    });
+    // this.files = files;
     this.photoModal.close();
     this.postAddModal.open();
+  }
+
+  addedPost(post: any) {
+    this.onPostAdded.emit(post);
   }
 
   post(event: any) {

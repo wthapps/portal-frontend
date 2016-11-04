@@ -171,7 +171,7 @@ export class DNSEditComponent implements OnInit {
       (result: any) => {
         //console.log(result);
         (<FormControl>this.host).setValue(result.data.name);
-        (<FormControl>this.ip).setValue(result.data.content);
+        (<FormControl>this.ip).setValue(result.data.description);
       },
       error => this.errorMessage = <any>error
     );

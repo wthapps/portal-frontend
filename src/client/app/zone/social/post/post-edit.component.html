@@ -41,19 +41,16 @@
       </div>
     </div>
     <div class="form-group">
-      <textarea placeholder="Add description" class="form-control" name="" rows="1"></textarea>
+      <textarea placeholder="Share your ideas" class="form-control" [(ngModel)]="description"></textarea>
     </div>
     <div class="form-group">
       <input placeholder="Add tag" class="form-control" type="text">
     </div>
     <ul class="modal-social-photo-grid">
-      <li *ngFor="let p of files" class="photo-item-uploading">
+      <li *ngFor="let f of files">
         <div class="social-photo-grid-item">
-          <figure class="img-center-dv">
-            <i class="fa fa-remove"></i>
-            <img class="img-full" [src]="p['thumbnail_url']" alt="">
-            <img class="img-center"
-                 [src]="p['thumbnail_url']" alt="">
+          <i class="fa fa-remove wth-fa-remove" (click)="cancelUploading(f)"></i>
+          <figure class="img-center-dv photo-item-uploading">
           </figure>
         </div>
       </li>
@@ -73,7 +70,9 @@
     <button type="button" class="btn btn-default pull-left btn-min" (click)="addMorePhoto($event)">
       <i class="fa fa-plus"></i> Add more
     </button>
-    <button type="button" class="btn btn-wth-default btn-min" (click)="post($event)">Done</button>
+    <button type="button" class="btn btn-wth-default btn-min"
+            [disabled]="!validPost()"
+            (click)="post($event)">Done</button>
     <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
   </modal-footer>
 </hd-modal>

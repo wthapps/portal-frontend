@@ -6,7 +6,7 @@ export class DialogService {
    * Information about a dialog.
    *
    * It has the following properties:
-   * - `message` is a content of dialog
+   * - `message` is a description of dialog
    * - `title` is a title of dialog
    * - `okText` is a text of ok
    * - `cancelText` is a title of cancel
