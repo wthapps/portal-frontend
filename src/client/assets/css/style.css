@@ -9861,12 +9861,13 @@ h1, h2, h3, h4, h5, h6,
   .media-center .media-center-right {
     padding-left: 10px; }
   .media-center .media-center-heading {
-    margin: 0 0 5px;
+    margin: 0;
     font-size: 14px;
     font-weight: bold; }
   .media-center .media-center-p {
     font-size: 14px;
-    color: #9B9B9B; }
+    color: #9B9B9B;
+    margin-bottom: 0; }
 
 .media-list-item {
   margin-top: 10px; }
@@ -10707,6 +10708,36 @@ body.drag-active .dropzone-overlap {
 
 .two-layout-slip.active-info .main-layout, .two-layout-slip.active-info .right-layout {
   display: inline; }
+
+.read-more-state {
+  display: none; }
+
+.read-more-target {
+  opacity: 0;
+  max-height: 0;
+  font-size: 0;
+  transition: .25s ease; }
+
+.read-more-state:checked ~ .read-more-wrap .read-more-target {
+  opacity: 1;
+  font-size: inherit;
+  max-height: 9999em; }
+
+.read-more-state ~ .read-more-trigger:before {
+  content: 'Show more'; }
+
+.read-more-state:checked ~ .read-more-trigger:before {
+  content: 'Show less'; }
+
+.read-more-trigger {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 .5em;
+  color: #666;
+  font-size: .9em;
+  line-height: 2;
+  border: 1px solid #ddd;
+  border-radius: .25em; }
 
 .aside-left .navgroup {
   margin-bottom: 20px; }
