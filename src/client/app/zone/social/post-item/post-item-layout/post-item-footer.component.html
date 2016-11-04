@@ -1,7 +1,22 @@
 <div class="z-social-comment">
+  <div class="z-social-media">
+    <div class="z-social-media-left">
+      <img src="assets/images/avatar/avatar.png" alt="">
+    </div>
+    <div class="z-social-media-body">
+      <div class="z-social-media-inputpost">
+          <span class="z-social-media-inputpost">
+            <i class="fa fa-camera"></i>
+            <i class="fa fa-smile-o"></i>
+          </span>
+        <input type="text" class="form-control" placeholder="Add a comment">
+      </div>
+    </div>
+  </div>
   <div class="z-social-comment-num">{{item.comments.length}} Comments</div>
-  <ul class="z-social-comment-list media-list">
-    <li class="media" *ngFor="let comment of item.comments">
+  <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}" />
+  <ul class="z-social-comment-list media-list read-more-wrap">
+    <li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">
       <div class="media-left">
         <a href="#">
           <img alt="64x64" class="media-object" src="assets/images/avatar/avatar.png">
@@ -50,6 +65,6 @@
     </li>
   </ul>
   <div class="z-social-comment-more">
-    <a href="#">View all comments</a>
+    <label attr.for="post-{{item.uuid}}" class="read-more-trigger">View all comments</label>
   </div>
 </div>
