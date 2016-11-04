@@ -1,7 +1,10 @@
-import {Component, ElementRef, ViewChild, OnInit, Input, OnChanges} from '@angular/core';
-import {SoPost} from "../../../shared/models/social_network/so-post.model";
-import {BaseZoneSocialItem} from "../base/base-social-item";
-import {ConstantsSocial} from "../base/constants-social";
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter} from '@angular/core';
+import { SoPost } from "../../../shared/models/social_network/so-post.model";
+import { BaseZoneSocialItem } from "../base/base-social-item";
+import { ConstantsSocial } from "../base/constants-social";
+import { ZSocialPostListComponent } from '../post-list/post-list.component';
+import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { Constants } from '../../../shared/config/constants';
 
 declare var _: any;
 
@@ -11,10 +14,15 @@ declare var _: any;
   templateUrl: 'post-item.component.html'
 })
 
-export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges{
+export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @Input() item: SoPost;
+
   itemDisplay: any;
 
+
+  constructor(private api: ApiBaseServiceV2, private posts?: ZSocialPostListComponent) {
+
+  }
 
   ngOnInit() {
   //
@@ -22,7 +30,6 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   ngOnChanges() {
     this.itemDisplay = _.cloneDeep(this.item);
     this.mapDisplay();
-    console.log(this.itemDisplay);
   }
 
   mapDisplay() {
@@ -91,5 +98,38 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.public;
     }
   }
+
+  /**
+   * Post actions
+   */
+
+  viewDetail() {
+    console.log('viewing details..........', this.posts);
+    this.posts.viewDetail();
+  }
+
+  edit() {
+    console.log('editing..................');
+    this.posts.edit();
+  }
+
+  update(atts: any) {
+    console.log('updating.................');
+    this.posts.update(atts);
+  }
+
+  delete() {
+    this.api.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
+        .subscribe((result: any) => {
+            console.log('deleted items...........', result);
+            this.posts.loadPosts();
+          },
+          error => {
+            console.log(error);
+          }
+        );
+
+  }
+
 
 }
