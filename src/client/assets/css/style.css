@@ -9861,12 +9861,13 @@ h1, h2, h3, h4, h5, h6,
   .media-center .media-center-right {
     padding-left: 10px; }
   .media-center .media-center-heading {
-    margin: 0 0 5px;
+    margin: 0;
     font-size: 14px;
     font-weight: bold; }
   .media-center .media-center-p {
     font-size: 14px;
-    color: #9B9B9B; }
+    color: #9B9B9B;
+    margin-bottom: 0; }
 
 .media-list-item {
   margin-top: 10px; }
@@ -13126,7 +13127,7 @@ wth-app:empty + .dots-loader-wrap {
   .zone-social:after {
     clear: both; }
   .zone-social .zone-social-in {
-    max-width: 670px;
+    width: 670px;
     float: left;
     margin-right: 45px; }
 

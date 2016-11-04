@@ -10,6 +10,7 @@ import { ZSocialTempDetailComponent } from './social-temp-detail.component';
 import { PostModule } from "./post/post.module";
 
 import { ZSocialPostListComponent } from "./post-list/post-list.component";
+import { ZSocialPostDetailComponent } from './post-detail/post-detail.component';
 
 import {
   ZSocialPostItemComponent,
@@ -38,7 +39,8 @@ import { ZSocialCommunityTempComponent } from './communities-temp.component';
     ZSocialPostItemComponent,
     ZSocialPostItemHeaderComponent,
     ZSocialPostItemBodyComponent,
-    ZSocialPostItemFooterComponent
+    ZSocialPostItemFooterComponent,
+    ZSocialPostDetailComponent
 
   ],
   exports: [

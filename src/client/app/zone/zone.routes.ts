@@ -7,6 +7,7 @@ import { ZSocialTempDetailComponent } from './social/social-temp-detail.componen
 
 import { AuthGuard } from "../shared/services/auth-guard.service";
 import { ZSocialCommunityTempComponent } from './social/communities-temp.component';
+import { ZSocialPostDetailComponent } from './social/post-detail/post-detail.component';
 
 export const ZoneRoutes: Route[] = [
   {
@@ -29,6 +30,7 @@ export const ZoneRoutes: Route[] = [
       {path: 'picture/:category/:id', component: ZPictureComponent},
 
       {path: 'social', component: ZSocialComponent},
+      {path: 'social/:id', component: ZSocialPostDetailComponent},
       {path: 'social-temp', component: ZSocialTempComponent},
       {path: 'social-temp-detail', component: ZSocialTempDetailComponent},
       {path: 'social-communities', component: ZSocialCommunityTempComponent},

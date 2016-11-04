@@ -10,7 +10,8 @@
       <div class="z-shared-with dropdown">
         <a href="#" data-toggle="dropdown"><i class="{{item.privacyDisplay.css}}"></i> {{item.privacyDisplay.text}}</a>
         <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu1">
-          <li><a href="#"><i class="fa fa-globe"></i> {{item.privacyDisplay.text}} <i class="dropdown-menu-check-item fa fa-check"></i></a>
+          <li><a href="#"><i class="fa fa-globe"></i> {{item.privacyDisplay.text}} <i
+            class="dropdown-menu-check-item fa fa-check"></i></a>
           </li>
           <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
           <li><a href="#"><i class="fa fa-lock"></i> Private</a></li>
@@ -64,7 +65,7 @@
     </div>
 
     <div class="dropdown pull-right">
-      <a href="javascript:;" class="btn btn-default">
+      <a [routerLink]="['/zone/social', item.uuid]" class="btn btn-default">
         <i class="fa fa-external-link"></i>
       </a>
     </div>
