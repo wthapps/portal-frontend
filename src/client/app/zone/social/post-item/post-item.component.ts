@@ -5,6 +5,7 @@ import { ConstantsSocial } from "../base/constants-social";
 import { ZSocialPostListComponent } from '../post-list/post-list.component';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { Constants } from '../../../shared/config/constants';
+import { LoadingService, ToastsService, ConfirmationService } from '../../../shared/index';
 
 declare var _: any;
 
@@ -16,12 +17,20 @@ declare var _: any;
 
 export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @Input() item: SoPost;
+  @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   itemDisplay: any;
 
-
-  constructor(private api: ApiBaseServiceV2, private posts?: ZSocialPostListComponent) {
-
+  constructor(
+    private api: ApiBaseServiceV2,
+    private loading: LoadingService,
+    private confirmation: ConfirmationService,
+    private toast: ToastsService
+  ) {
+    super();
   }
 
   ngOnInit() {
@@ -104,32 +113,39 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
    */
 
   viewDetail() {
-    console.log('viewing details..........', this.posts);
-    this.posts.viewDetail();
+    console.log('viewing details..........');
+    // this.posts.viewDetail();
   }
 
   edit() {
     console.log('editing..................');
-    this.posts.edit();
+    // this.posts.edit();
   }
 
   update(atts: any) {
     console.log('updating.................');
-    this.posts.update(atts);
+    // this.posts.update(atts);
   }
 
   delete() {
-    this.api.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
-        .subscribe((result: any) => {
-            console.log('deleted items...........', result);
-            this.posts.loadPosts();
-          },
-          error => {
-            console.log(error);
-          }
-        );
-
+    this.confirmation.confirm({
+      message: 'Are you sure to delete this Post?',
+      header: 'Delete Post',
+      accept: () => {
+        this.loading.start();
+        this.api.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
+          .subscribe((result: any) => {
+            this.toast.success('Deleted post successfully','Delete Post');
+            this.loading.stop();
+            this.onDeleted.emit(result);
+            },
+            error => {
+              this.toast.danger('Deleted post error\n' + error,'Delete Post');
+              this.loading.stop();
+            }
+          );
+      }
+    });
   }
-
 
 }
