@@ -1,8 +1,7 @@
-import {Component, ElementRef, ViewChild, OnInit, Input} from '@angular/core';
-import { ApiBaseService, LoadingService } from '../../../shared/index';
-import {BaseSocialList} from "../base/base-social-list";
-import {SoPost} from "../../../shared/models/social_network/so-post.model";
-import {ApiBaseServiceV2} from "../../../shared/services/apibase.service.v2";
+import { Component, OnInit } from '@angular/core';
+import { BaseSocialList } from '../base/base-social-list';
+import { SoPost } from '../../../shared/models/social_network/so-post.model';
+import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 
 declare var _: any;
 
@@ -21,17 +20,23 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   }
 
   ngOnInit() {
-    this.loadList(this.apiBaseServiceV2.urls.zoneSoPosts).subscribe(
-      (res:any) => {
-        this.listItems = res.data;
-        this.listItems = _.map(this.listItems, this.mapPost);
-      }
-    )
+    this.loadPosts();
   }
 
   mapPost(post:any) {
     post = new SoPost(post);
     return post;
   }
+
+  loadPosts(): void {
+    console.log('reoading................');
+    this.loadList(this.apiBaseServiceV2.urls.zoneSoPosts).subscribe(
+      (res: any) => {
+        this.listItems = res.data;
+        this.listItems = _.map(this.listItems, this.mapPost);
+      }
+    )
+  }
+
 }
 

@@ -1,9 +1,31 @@
+<div class="z-social-box">
+  <div class="z-social-media">
+    <div class="z-social-media-left">
+      <img src="assets/images/avatar/avatar.png" alt="">
+    </div>
+    <div class="z-social-media-body">
+      <div class="z-social-media-inputpost">
+          <span class="z-social-media-inputpost">
+            <i (click)="open($event, true)" class="fa fa-camera"></i>
+          </span>
+        <input type="text" class="form-control" placeholder="Share your ideas" (click)="open($event)">
+      </div>
+    </div>
+  </div>
+</div>
+
 <post-photo-select #photoSelectModal
                    (onNext)="next($event)"
                    (onDismiss)="dismiss($event)"
-                   (onUpload)="upload($event)"
-></post-photo-select>
+                   (onUpload)="upload($event)">
 
-<post-edit #postAddModal (onMoreAdded)="addMorePhoto($event)" [files]="files" ></post-edit>
+</post-photo-select>
+
+<post-edit #postAddModal
+           [files]="files"
+           (onMoreAdded)="addMorePhoto($event)"
+           (onPostAdded)="addedPost($event)">
+
+</post-edit>
 
 

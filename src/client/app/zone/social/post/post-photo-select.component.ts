@@ -1,6 +1,5 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal';
-import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { SoPhotoListComponent } from './index';
 
 declare var _: any;
@@ -25,7 +24,7 @@ export class PostPhotoSelectComponent implements OnInit{
   files: Array<any> = new Array<any>();
 
 
-  constructor(private apiService: ApiBaseService, loadingService: LoadingService) {
+  constructor() {
   }
 
   ngOnInit(): void {

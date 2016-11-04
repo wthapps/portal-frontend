@@ -1,24 +1,10 @@
 <div class="zone-social">
   <div class="zone-social-in">
-    <div class="z-social-box">
-      <div class="z-social-media">
-        <div class="z-social-media-left">
-          <img src="assets/images/avatar/avatar.png" alt="">
-        </div>
-        <div class="z-social-media-body">
-          <div class="z-social-media-inputpost">
-          <span class="z-social-media-inputpost">
-            <i (click)="photoSelection.open($event)" class="fa fa-camera"></i>
-          </span>
-            <input type="text" class="form-control" placeholder="Share your ideas">
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <post-new #postNew></post-new>
 
-    <post-list></post-list>
+    <post-new #postNew (onPostAdded)="reloadPosts($event)"></post-new>
+
+    <post-list #posts></post-list>
 
   </div>
   <div class="zone-social-sidebar">

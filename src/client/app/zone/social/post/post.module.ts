@@ -1,14 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HdModalModule } from "../../shared/ng2-hd/modal/hd-modal";
-import { FileSelectionComponent } from "./file-selection.component";
-import { PostNewComponent } from "./post-new.component";
-import { SoPhotoListComponent, PostEditComponent, PostPhotoSelectComponent } from "./index";
+import { FormsModule } from '@angular/forms';
+import { HdModalModule } from '../../shared/ng2-hd/modal/hd-modal';
+
+import {
+  SoPhotoListComponent,
+  FileSelectionComponent,
+  PostEditComponent,
+  PostPhotoSelectComponent,
+  PostNewComponent
+} from './index';
+
 
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     HdModalModule
   ],
   declarations: [
@@ -16,13 +24,16 @@ import { SoPhotoListComponent, PostEditComponent, PostPhotoSelectComponent } fro
     FileSelectionComponent,
     SoPhotoListComponent,
     PostEditComponent,
+    PostNewComponent,
     PostPhotoSelectComponent
   ],
   exports: [
+    CommonModule,
     PostNewComponent,
     FileSelectionComponent,
     SoPhotoListComponent,
     PostEditComponent,
+    PostNewComponent,
     PostPhotoSelectComponent
   ]
 })

@@ -1,8 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { PostNewComponent } from './post/index';
-import {ApiBaseServiceV2} from "../../shared/services/apibase.service.v2";
-import {SoPost} from "../../shared/models/social_network/so-post.model";
-import {BaseSocialList} from "./base/base-social-list";
 import {ZSocialPostListComponent} from "./post-list/post-list.component";
 import {BaseZoneSocialHomePage} from "./base/base-social-home-page";
 
@@ -16,6 +13,11 @@ declare var _: any;
 })
 
 export class ZSocialComponent extends BaseZoneSocialHomePage{
-  @ViewChild('postNew') photoSelection: PostNewComponent;
-  @ViewChild('ZSocialPostListComponent') zSocialPostList: ZSocialPostListComponent;
+  @ViewChild('postNew') postNew: PostNewComponent;
+  @ViewChild('posts') posts: ZSocialPostListComponent;
+
+  reloadPosts(post: any) {
+    this.posts.loadPosts();
+  }
+
 }
