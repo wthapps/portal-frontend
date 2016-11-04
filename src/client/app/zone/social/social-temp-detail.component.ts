@@ -19,9 +19,7 @@ export class ZSocialTempDetailComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    $('body').removeClass('fixed-hidden').css('padding-right', 0);
-    $('#photo-box-detail').removeClass('active');
-    $('#photo-box-detail').removeClass('active-info');
+    this.hidePreview();
   }
 
   showPreview(): void {
@@ -30,7 +28,9 @@ export class ZSocialTempDetailComponent implements OnInit {
     $('#photo-box-detail').addClass('active-info');
   }
 
-  hideModal(): void {
-
+  hidePreview(): void {
+    $('body').removeClass('fixed-hidden').css('padding-right', 0);
+    $('#photo-box-detail').removeClass('active');
+    $('#photo-box-detail').removeClass('active-info');
   }
 }

@@ -23,7 +23,7 @@
         <figure *ngIf="i == 5 && item.remainPhotos == 1">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
-        <a href="#" *ngIf="i == 5 && item.remainPhotos != 1">
+        <a href="javascript:;" (click)="onShowPhotoDetail(i)" *ngIf="i == 5 && item.remainPhotos != 1">
                 <span>
                   + {{item.remainPhotos}}
                 </span>

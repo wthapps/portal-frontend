@@ -1,6 +1,7 @@
-import {Component, ElementRef, ViewChild, OnInit, Input, OnChanges} from '@angular/core';
-import {BaseZoneSocialItem} from "../../base/base-social-item";
-import {SoPost} from "../../../../shared/models/social_network/so-post.model";
+import { Component, ElementRef, ViewChild, OnInit, Input, OnChanges } from '@angular/core';
+import { BaseZoneSocialItem } from "../../base/base-social-item";
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { SoPost } from "../../../../shared/models/social_network/so-post.model";
 
 declare var _: any;
 
@@ -10,8 +11,12 @@ declare var _: any;
   templateUrl: 'post-item-body.component.html'
 })
 
-export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements OnInit, OnChanges{
+export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @Input() item: SoPost;
+
+  constructor(private route: ActivatedRoute,
+              private router: Router) {
+  }
 
   ngOnInit() {
     // this.item = new SoPost(null);
@@ -19,5 +24,11 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
 
   ngOnChanges() {
     // console.log(this.item);
+  }
+
+  onShowPhotoDetail(index: number): void {
+    this.router.navigate(['/zone/social/photo', this.item.uuid], {
+      queryParams: index
+    })
   }
 }

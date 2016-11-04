@@ -20,6 +20,7 @@ import {
 } from "./post-item/index";
 
 import { ZSocialCommunityTempComponent } from './communities-temp.component';
+import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ZSocialCommunityTempComponent } from './communities-temp.component';
     ZSocialPostItemHeaderComponent,
     ZSocialPostItemBodyComponent,
     ZSocialPostItemFooterComponent,
-    ZSocialPostDetailComponent
+    ZSocialPostDetailComponent,
+    ZSocialPhotoDetailComponent
 
   ],
   exports: [
