@@ -69,9 +69,9 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   showTag: boolean;
   showShare: boolean;
 
-  public loadingService: LoadingService;
-  private toastsService: ToastsService;
-  private confirmationService: ConfirmationService;
+  public loadingService?: LoadingService;
+  public toastsService?: ToastsService;
+  public confirmationService?: ConfirmationService;
 
   constructor(private type: string,
               public apiService?: ApiBaseService) {

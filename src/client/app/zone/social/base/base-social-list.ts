@@ -5,7 +5,7 @@ export class BaseSocialList extends BaseZoneSocial{
   listItems: Array<any>;
   apiBaseServiceV2: ApiBaseServiceV2;
 
-  loadList(url) {
+  loadList(url:string) {
     return this.apiBaseServiceV2.get(url);
   }
 }

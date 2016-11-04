@@ -16,7 +16,7 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   listItems: Array<SoPost>;
 
   constructor(
-    private apiBaseServiceV2: ApiBaseServiceV2
+    public apiBaseServiceV2: ApiBaseServiceV2
   ) {
   }
 
@@ -30,7 +30,7 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   }
 
   mapPost(post:any) {
-    let post = new SoPost(post);
+    post = new SoPost(post);
     return post;
   }
 }
