@@ -16,6 +16,20 @@
   padding: 15px;
   margin-bottom: 30px;
   border: 1px solid $line;
+  .z-social-box-header {
+    margin: -15px -15px 15px;
+    padding: 15px;
+    border-bottom: 1px solid $line;
+    @include clearfix;
+    .h4 {
+      margin: 0;
+      float: left;
+      line-height: 34px;
+    }
+    .action {
+      float: right;
+    }
+  }
 }
 
 .z-social-media {

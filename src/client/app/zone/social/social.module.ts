@@ -9,7 +9,7 @@ import { ZSocialTempDetailComponent } from './social-temp-detail.component';
 
 import { PostModule } from "./post/post.module";
 
-import {ZSocialPostListComponent} from "./post-list/post-list.component";
+import { ZSocialPostListComponent } from "./post-list/post-list.component";
 
 import {
   ZSocialPostItemComponent,
@@ -17,6 +17,8 @@ import {
   ZSocialPostItemBodyComponent,
   ZSocialPostItemFooterComponent
 } from "./post-item/index";
+
+import { ZSocialCommunityTempComponent } from './communities-temp.component';
 
 
 @NgModule({
@@ -30,6 +32,7 @@ import {
     ZSocialComponent,
     ZSocialTempComponent,
     ZSocialTempDetailComponent,
+    ZSocialCommunityTempComponent,
     // List Posts
     ZSocialPostListComponent,
     ZSocialPostItemComponent,
