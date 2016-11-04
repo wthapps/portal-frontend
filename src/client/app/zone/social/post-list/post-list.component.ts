@@ -29,13 +29,32 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   }
 
   loadPosts(): void {
-    console.log('reoading................');
     this.loadList(this.apiBaseServiceV2.urls.zoneSoPosts).subscribe(
       (res: any) => {
         this.listItems = res.data;
         this.listItems = _.map(this.listItems, this.mapPost);
       }
     )
+  }
+
+  /**
+   * Post actions
+   */
+
+  viewDetail() {
+    console.log('list viewing details..........');
+  }
+
+  edit() {
+    console.log('list editing..................');
+  }
+
+  update(att: any) {
+    console.log('list updating.................');
+  }
+
+  delete() {
+    console.log('list deleting.................');
   }
 
 }

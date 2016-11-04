@@ -47,19 +47,23 @@
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li><a href="#">
+        <li><a href="#" (click)="update($event)">
           <i class="fa fa-check" *ngIf="item.adult"></i>
           Adult content</a>
         </li>
         <li role="separator" class="divider"></li>
-        <li><a href="#">Edit Post</a></li>
-        <li><a href="#">Delete</a></li>
+        <li><a href="#" (click)="edit($event)" >Edit Post</a></li>
+        <li><a href="#" (click)="delete($event)">Delete</a></li>
         <li role="separator" class="divider"></li>
-        <li><a href="#">
+        <li><a href="#" (click)="update($event)">
           <i class="fa fa-check" *ngIf="item.disable_comment"></i>
           Disable comments</a></li>
-        <li><a href="#"><i class="fa fa-check" *ngIf="item.disable_share"></i>Disable share</a></li>
-        <li><a href="#"><i class="fa fa-check" *ngIf="item.mute"></i>Mute</a></li>
+        <li><a href="#" (click)="update($event)">
+          <i class="fa fa-check" *ngIf="item.disable_share"></i>Disable share</a>
+        </li>
+        <li><a href="#" (click)="update($event)">
+          <i class="fa fa-check" *ngIf="item.mute"></i>Mute</a>
+        </li>
       </ul>
     </div>
 
