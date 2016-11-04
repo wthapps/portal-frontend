@@ -30,7 +30,7 @@ export const ZoneRoutes: Route[] = [
       {path: 'picture/:category/:id', component: ZPictureComponent},
 
       {path: 'social', component: ZSocialComponent},
-      {path: 'social/:id', component: ZSocialPostDetailComponent},
+      {path: 'social/posts/:id', component: ZSocialPostDetailComponent},
       {path: 'social-temp', component: ZSocialTempComponent},
       {path: 'social-temp-detail', component: ZSocialTempDetailComponent},
       {path: 'social-communities', component: ZSocialCommunityTempComponent},

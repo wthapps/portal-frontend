@@ -31,10 +31,8 @@ export class ZSocialPostDetailComponent extends BaseZoneSocialItem implements On
   }
 
   loadPost(uuid: string): void {
-    console.log('reoading................');
-    this.loadItem(`zone/social/${uuid}`)
+    this.loadItem(this.apiBaseServiceV2.urls.zoneSoPosts + '/' + uuid)
       .subscribe((response: any) => {
-          console.log(response);
           this.item = response.data;
         },
         error => {
