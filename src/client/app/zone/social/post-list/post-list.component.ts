@@ -24,7 +24,7 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   }
 
   mapPost(post:any) {
-    post = new SoPost(post);
+    post = new SoPost().from(post);
     return post;
   }
 

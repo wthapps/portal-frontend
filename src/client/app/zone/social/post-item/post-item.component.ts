@@ -34,16 +34,19 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   ngOnInit() {
-  //
+    this.item = new SoPost();
   }
   ngOnChanges() {
+    if (!this.item) {
+      this.item = new SoPost();
+    }
     this.itemDisplay = _.cloneDeep(this.item);
     this.mapDisplay();
   }
 
   mapDisplay() {
     // handle css
-    this.addCssDisplayStyle();
+    this.addCarouselCss();
     // handle photo remain
     this.getRemainPhotos();
     // Right Photos than 6 will be remove for display
@@ -54,7 +57,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.classifyReactions();
   }
 
-  addCssDisplayStyle() {
+  addCarouselCss() {
     this.itemDisplay.displayCss = 'carousel-thumb-style-' + this.itemDisplay.photos.length;
     if (this.itemDisplay.photos.length > 6) {
       this.itemDisplay.displayCss = 'carousel-thumb-style-6';
@@ -101,7 +104,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.private;
         break;
       case ConstantsSocial.userPrivacy.share.data:
-        this.itemDisplay.privacyDisplay =ConstantsSocial.userPrivacy.share;
+        this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.share;
         break;
       default:
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.public;

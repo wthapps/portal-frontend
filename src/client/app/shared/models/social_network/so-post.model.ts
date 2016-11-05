@@ -1,29 +1,24 @@
-export class SoPost {
+import { SoUser } from './so-user.model';
+import { BaseInput } from '../base/base-input.model';
+
+export class SoPost extends BaseInput implements FromData{
   uuid: string;
-  comments: any;
   description: string;
-  owner: any;
-  photos: Array<any>;
-  tags: Array<any>;
+  owner: SoUser = new SoUser();
+  comments: Array<any> = [];
+  photos: Array<any> = [];
+  tags: Array<any> = [];
+  reactions: Array<any> = [];
   adult: boolean;
   privacy: string;
   disable_comment: boolean;
   disable_share: boolean;
   mute: boolean;
 
-  constructor(fields: {
-    uuid?: string,
-    comments?: any;
-    description?: string;
-    owner?: any;
-    photos?: Array<any>;
-    tags?: Array<any>;
-    adult?: boolean;
-    disable_comment?: boolean;
-    disable_share?: boolean;
-    mute?: boolean;
-    privacy?: string;
-  }) {
-    if (fields) Object.assign(this, fields);
+  from(fields) {
+    if (fields) {
+      Object.assign(this, fields)
+    }
+    return this;
   }
 }

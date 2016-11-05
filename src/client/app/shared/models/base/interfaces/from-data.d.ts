@@ -1,0 +1,3 @@
+interface FromData {
+  from(data);
+}

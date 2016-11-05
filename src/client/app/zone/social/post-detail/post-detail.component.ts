@@ -13,7 +13,7 @@ declare var _: any;
 })
 
 export class ZSocialPostDetailComponent extends BaseZoneSocialItem implements OnInit {
-  item: SoPost;
+  item: SoPost = new SoPost();
   errorMessage: string;
 
   private id: string = '';
@@ -23,7 +23,6 @@ export class ZSocialPostDetailComponent extends BaseZoneSocialItem implements On
   }
 
   ngOnInit() {
-
     this.route.params.forEach((params: Params) => {
       this.id = params['id'];
       this.loadPost(this.id);
@@ -33,10 +32,7 @@ export class ZSocialPostDetailComponent extends BaseZoneSocialItem implements On
   loadPost(uuid: string): void {
     this.loadItem(this.apiBaseServiceV2.urls.zoneSoPosts + '/' + uuid)
       .subscribe((response: any) => {
-
-          // this.item = new SoPost(response.data);
-          this.item = response.data;
-          console.log('data', this.item);
+          this.item = new SoPost().from(response.data);
         },
         error => {
           this.errorMessage = <any>error;
