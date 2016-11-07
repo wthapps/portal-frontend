@@ -1,4 +1,4 @@
-<div class="z-social-post">
+<div *ngIf="!showInfo" class="z-social-post">
   <div class="z-social-post-content">
     <div class="z-social-post-txt">
       <div class="z-social-post-txt-in">
@@ -14,7 +14,7 @@
       </a>
     </div>
   </div>
-  <div *ngIf="!showInfo" class="z-social-carousel">
+  <div class="z-social-carousel">
     <ul class="{{item.displayCss}}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
         <figure *ngIf="i < 5" (click)="onShowPhotoDetail(i)">

@@ -26,18 +26,7 @@
             Adult content</a>
           </li>
           <li role="separator" class="divider"></li>
-          <li><a href="#" (click)="edit($event)" >Edit Post</a></li>
           <li><a href="#" (click)="delete($event)">Delete</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="#" (click)="update($event)">
-            <i class="fa fa-check" *ngIf="item.disable_comment"></i>
-            Disable comments</a></li>
-          <li><a href="#" (click)="update($event)">
-            <i class="fa fa-check" *ngIf="item.disable_share"></i>Disable share</a>
-          </li>
-          <li><a href="#" (click)="update($event)">
-            <i class="fa fa-check" *ngIf="item.mute"></i>Mute</a>
-          </li>
         </ul>
       </li>
     </ul>

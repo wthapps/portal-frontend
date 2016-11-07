@@ -68,7 +68,7 @@
       </div>
     </li>
   </ul>
-  <div class="z-social-comment-more">
+  <div *ngIf="!showInfo" class="z-social-comment-more">
     <label attr.for="post-{{item.uuid}}" class="read-more-trigger">View all comments</label>
   </div>
 </div>
