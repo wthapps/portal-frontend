@@ -2,19 +2,19 @@ import { SoUser } from './so-user.model';
 import { BaseInput } from '../base/base-input.model';
 import { SoComment } from './so-comment.model';
 
-export class SoPost extends BaseInput implements FromData{
+export class SoPost extends BaseInput implements FromData {
   uuid: string;
-  description: string;
+  description: string = '';
   owner: SoUser = new SoUser();
   comments: Array<SoComment> = new Array<SoComment>();
   photos: Array<any> = [];
   tags: Array<any> = [];
   reactions: Array<any> = [];
-  adult: boolean;
-  privacy: string;
-  disable_comment: boolean;
-  disable_share: boolean;
-  mute: boolean;
+  adult: boolean = false;
+  privacy: string = 'public';
+  disable_comment: boolean = false;
+  disable_share: boolean = false;
+  mute: boolean = false;
 
   from(fields) {
     if (fields) {

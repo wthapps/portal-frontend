@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter} from '@angular/core';
 import { SoPost } from "../../../shared/models/social_network/so-post.model";
 import { BaseZoneSocialItem } from "../base/base-social-item";
 import { ConstantsSocial } from "../base/constants-social";
@@ -6,6 +6,7 @@ import { ZSocialPostListComponent } from '../post-list/post-list.component';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { Constants } from '../../../shared/config/constants';
 import { LoadingService, ToastsService, ConfirmationService } from '../../../shared/index';
+import { PostEditComponent } from '../post/post-edit.component';
 
 declare var _: any;
 
@@ -16,6 +17,7 @@ declare var _: any;
 })
 
 export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
+  @ViewChild('postEdit') postEdit: PostEditComponent;
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -25,10 +27,12 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
 
   itemDisplay: any;
 
-  constructor(private api: ApiBaseServiceV2,
-              private loading: LoadingService,
-              private confirmation: ConfirmationService,
-              private toast: ToastsService) {
+  constructor(
+    private api: ApiBaseServiceV2,
+    private loading: LoadingService,
+    private confirmation: ConfirmationService,
+    private toast: ToastsService
+  ) {
     super();
   }
 
@@ -42,7 +46,6 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     }
     this.itemDisplay = _.cloneDeep(this.item);
     this.mapDisplay();
-
   }
 
   mapDisplay() {
@@ -122,7 +125,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   edit() {
-    console.log('editing..................');
+    this.postEdit.open();
     // this.posts.edit();
   }
 
@@ -133,7 +136,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
 
   delete() {
     this.confirmation.confirm({
-      message: 'Are you sure to delete this Post?',
+      message: 'Are you sure you want to delete this Post?',
       header: 'Delete Post',
       accept: () => {
         this.loading.start();
@@ -150,6 +153,12 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
           );
       }
     });
+  }
+
+  editedPost(newPost: any) {
+    this.itemDisplay.description = newPost.description;
+    this.itemDisplay.tags = newPost.tags;
+    this.itemDisplay.photos = newPost.photos;
   }
 
 }

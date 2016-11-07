@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HdModalModule } from '../../shared/ng2-hd/modal/hd-modal';
 
 import {
@@ -10,6 +10,7 @@ import {
   PostPhotoSelectComponent,
   PostNewComponent
 } from './index';
+import { TagInputModule } from 'ng2-tag-input';
 
 
 
@@ -17,7 +18,9 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-    HdModalModule
+    ReactiveFormsModule,
+    HdModalModule,
+    TagInputModule
   ],
   declarations: [
     PostNewComponent,
@@ -29,6 +32,9 @@ import {
   ],
   exports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TagInputModule,
     PostNewComponent,
     FileSelectionComponent,
     SoPhotoListComponent,

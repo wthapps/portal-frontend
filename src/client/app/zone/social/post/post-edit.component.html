@@ -39,40 +39,69 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
-      <textarea placeholder="Share your ideas" class="form-control" [(ngModel)]="description"></textarea>
-    </div>
-    <div class="form-group">
-      <input placeholder="Add tag" class="form-control" type="text">
-    </div>
-    <ul class="modal-social-photo-grid">
-      <li *ngFor="let f of files">
-        <div class="social-photo-grid-item">
-          <i class="fa fa-remove wth-fa-remove" (click)="cancelUploading(f)"></i>
-          <figure class="img-center-dv photo-item-uploading">
-          </figure>
+
+    <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
+      <div class="row">
+        <div class="col-xs-6 col-sm-12">
+          <div class="form-group"
+               [ngClass]="{'has-error': (!descCtrl.valid && descCtrl.touched),
+                        'has-success': (descCtrl.valid && descCtrl.touched)}">
+          <textarea placeholder="Share your ideas" class="form-control"
+                    [formControl]="descCtrl"></textarea>
+            <!--<div *ngIf="!form.controls['description'].valid && form.controls['description'].touched">-->
+              <!--<span class="help-block"-->
+                    <!--*ngIf="!form.controls['description'].valid && form.controls['description'].errors.required" >-->
+                <!--Share your ideas is required-->
+              <!--</span>-->
+            <!--</div>-->
+          </div>
+          <div class="form-group">
+            <tag-input [maxItems]='100'
+                       [autocompleteItems]="tags"
+                       [autocomplete]="true"
+                       (onRemove)="removeTag($event)"
+                       (onAdd)="addTag($event)"
+                       [(ngModel)]="tags"
+                       [formControl]="tagsCtrl"
+            ></tag-input>
+          </div>
+          <div class="form-group">
+            <ul class="modal-social-photo-grid">
+              <li *ngFor="let f of files">
+                <div class="social-photo-grid-item">
+                  <i class="fa fa-remove wth-fa-remove" (click)="cancelUploading(f)"></i>
+                  <figure class="img-center-dv photo-item-uploading">
+                  </figure>
+                </div>
+              </li>
+              <li *ngFor="let p of post.photos">
+                <div class="social-photo-grid-item">
+                  <i class="fa fa-remove wth-fa-remove" (click)="removePhoto(p,$event)"></i>
+                  <figure class="img-center-dv">
+                    <img class="img-full" [src]="p['thumbnail_url']" alt="">
+                    <img class="img-center"
+                         [src]="p['thumbnail_url']" alt="">
+                  </figure>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-      </li>
-      <li *ngFor="let p of photos">
-        <div class="social-photo-grid-item">
-          <figure class="img-center-dv">
-            <i class="fa fa-remove"></i>
-            <img class="img-full" [src]="p['thumbnail_url']" alt="">
-            <img class="img-center"
-                 [src]="p['thumbnail_url']" alt="">
-          </figure>
-        </div>
-      </li>
-    </ul>
+      </div>
+      <div class="row">
+        <button type="button" class="btn btn-default pull-left btn-min" (click)="addMorePhoto($event)">
+          <i class="fa fa-plus"></i> Add more
+        </button>
+        <button type="submit" class="btn btn-wth-default btn-min"
+                [disabled]="!validPost()">Done</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+
   </modal-body>
-  <modal-footer>
-    <button type="button" class="btn btn-default pull-left btn-min" (click)="addMorePhoto($event)">
-      <i class="fa fa-plus"></i> Add more
-    </button>
-    <button type="button" class="btn btn-wth-default btn-min"
-            [disabled]="!validPost()"
-            (click)="post($event)">Done</button>
-    <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
-  </modal-footer>
 </hd-modal>
+<post-photo-select #photoSelectModal
+                   (onNext)="next($event)"
+                   (onDismiss)="dismiss($event)"
+                   (onUpload)="upload($event)"></post-photo-select>
 

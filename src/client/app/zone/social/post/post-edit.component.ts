@@ -1,7 +1,11 @@
-import { Component, ViewChild, OnInit, Input, Output,
+import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
   EventEmitter } from '@angular/core';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
+import { SoPost } from '../../../shared/models/social_network/so-post.model';
+import { PostPhotoSelectComponent } from './post-photo-select.component';
+import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
+
 
 declare var _: any;
 
@@ -12,22 +16,53 @@ declare var _: any;
   styleUrls: ['post-edit.component.css']
 })
 
-export class PostEditComponent implements OnInit {
+export class PostEditComponent implements OnInit, OnChanges {
 
   @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
+
+  @Input() openMode: string = 'add'; // add or edit
   @Input() files: Array<any> = new Array<any>();
-  @Input() photos: Array<any> = new Array<any>();
+  @Input() photos: Array<any> = new Array<any>()
+  @Input() post: any;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onPostAdded: EventEmitter<any> = new EventEmitter<any>();
-  description: string = '';
+  @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   tags: Array<string>= new Array<string>();
 
-  constructor(private apiService: ApiBaseService, private loading: LoadingService) {
+  form: FormGroup;
+  descCtrl: AbstractControl;
+  tagsCtrl: AbstractControl;
+  photosCtrl: AbstractControl;
+
+  constructor(
+    private apiService: ApiBaseService,
+    private loading: LoadingService,
+    private fb: FormBuilder
+  ) {
   }
 
   ngOnInit(): void {
-    // this.description = '';
+    this.post = new SoPost();
+    this.form = this.fb.group({
+      'description': [this.post.description, Validators.compose([Validators.required])],
+      'tags': [this.post.tags, null],
+      'photos': [this.post.photos, null]
+    });
+    this.descCtrl = this.form.controls['description'];
+    this.tagsCtrl = this.form.controls['tags'];
+    this.photosCtrl = this.form.controls['photos'];
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.form = this.fb.group({
+      'description': [this.post.description, Validators.compose([Validators.required])],
+      'tags': [_.map(this.post.tags,'name'), null],
+      'photos': [this.post.photos, null]
+    });
+    this.descCtrl = this.form.controls['description'];
+    this.tagsCtrl = this.form.controls['tags'];
+    this.photosCtrl = this.form.controls['photos'];
   }
 
   open() {
@@ -39,21 +74,47 @@ export class PostEditComponent implements OnInit {
   }
 
   addMorePhoto(event: any) {
+    this.photoSelectModal.open(true);
     this.onMoreAdded.emit(true);
   }
 
-  post(event: any) {
-    let body = JSON.stringify({post: {description: this.description, photos: this.photos, tags: this.tags}});
-    this.apiService.post(`zone/social_network/posts`, body)
-      .map(res => res.json())
-      .subscribe((result: any) => {
-          this.onPostAdded.emit(result['data']);
-          this.modal.close();
-        },
-        error => {
-          console.log('error', error);
-        }
-      );
+  done(item: any) {
+    let body: string;
+    let url: string = 'zone/social_network/posts';
+    body = JSON.stringify({
+      post: {
+        description: item.description,
+        photos: item.photos,
+        tags: item.tags
+      }
+    });
+
+    if(this.openMode == 'add') {
+      this.apiService.post(url, body)
+          .map(res => res.json())
+          .subscribe((result: any) => {
+              this.onEdited.emit(result['data']);
+              this.modal.close();
+            },
+            error => {
+              console.log('error', error);
+            }
+          );
+
+    } else if(this.openMode == 'edit') {
+      url += `/${this.post.uuid}`;
+      this.apiService.put(url, body)
+          .map(res => res.json())
+          .subscribe((result: any) => {
+              this.onEdited.emit(result['data']);
+              this.modal.close();
+            },
+            error => {
+              console.log('error', error);
+            }
+          );
+    }
+
   }
 
   uploadFiles(files: Array<any>) {
@@ -93,9 +154,25 @@ export class PostEditComponent implements OnInit {
   }
 
   validPost(): boolean {
-    if(this.description == '' && this.photos.length <= 0) {
+    if(this.post.description == '' && this.photos.length <= 0) {
       return false;
     }
     return true;
   }
+
+  removePhoto(photo: any, event: any) {
+    console.log('removing........');
+  }
+
+  /**
+   * Tagging
+   */
+  addTag(event: any) {
+
+  }
+
+  removeTag(event: any) {
+
+  }
+
 }
