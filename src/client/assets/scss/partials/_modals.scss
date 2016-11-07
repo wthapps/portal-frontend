@@ -79,14 +79,15 @@
       line-height: 34px;
     }
   }
-  .modal-social-photo-grid {
+  .modal-social-photo-grid, .photo-grid-list {
     @include clearfix;
     margin: 0 -2px;
     padding: 0;
     list-style-type: none;
-    > li {
+    > li, .photo-box-img {
       float: left;
       width: 20%;
+      margin: 0 !important;
       padding-bottom: 20% - 5%;
       position: relative;
       .img-center-dv {

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 
 declare var $: any;
@@ -9,8 +9,12 @@ declare var $: any;
   templateUrl: 'social-temp.component.html'
 })
 
-export class ZSocialTempComponent {
+export class ZSocialTempComponent implements OnInit{
 
   constructor() {
+  }
+
+  ngOnInit() {
+    $('#modal-social-upload').modal('show');
   }
 }
