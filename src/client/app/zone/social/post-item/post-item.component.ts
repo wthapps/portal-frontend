@@ -8,6 +8,9 @@ import { Constants } from '../../../shared/config/constants';
 import { LoadingService, ToastsService, ConfirmationService } from '../../../shared/index';
 import { PostEditComponent } from '../post/post-edit.component';
 
+import { CommentCreateEvent, PhotoModalEvent } from '../events/social-events';
+import { PostPhotoSelectComponent } from '../post/post-photo-select.component';
+
 declare var _: any;
 
 @Component({
@@ -20,15 +23,16 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   @ViewChild('postEdit') postEdit: PostEditComponent;
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
-  @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+  @ViewChild('postFooter') postFooter: ZSocialPostItemFooterComponent;
 
   itemDisplay: any;
 
   constructor(
-    private api: ApiBaseServiceV2,
+    public apiBaseServiceV2: ApiBaseServiceV2,
     private loading: LoadingService,
     private confirmation: ConfirmationService,
     private toast: ToastsService
@@ -37,18 +41,20 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   ngOnInit() {
-
+    this.photoModal.action = "DONE";
+    this.photoModal.photoList.multipleSelect = false;
   }
 
   ngOnChanges() {
     if (!this.item) {
       this.item = new SoPost();
     }
-    this.itemDisplay = _.cloneDeep(this.item);
     this.mapDisplay();
   }
 
   mapDisplay() {
+    // Clone object to display
+    this.itemDisplay = _.cloneDeep(this.item);
     // handle css
     this.addCarouselCss();
     // handle photo remain
@@ -69,8 +75,8 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   getRemainPhotos() {
-    if (this.itemDisplay.photos.length > 5) {
-      this.itemDisplay.remainPhotos = this.itemDisplay.photos.length - 6 + 1;
+    if (this.itemDisplay.photos.length > 6) {
+      this.itemDisplay.remainPhotos = this.itemDisplay.photos.length - 6;
     }
   }
 
@@ -141,7 +147,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
       header: 'Delete Post',
       accept: () => {
         this.loading.start();
-        this.api.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
+        this.apiBaseServiceV2.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
           .subscribe((result: any) => {
               this.toast.success('Deleted post successfully', 'Delete Post');
               this.loading.stop();
@@ -155,11 +161,33 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
       }
     });
   }
-
   editedPost(newPost: any) {
     this.itemDisplay.description = newPost.description;
     this.itemDisplay.tags = newPost.tags;
     this.itemDisplay.photos = newPost.photos;
+  }
+
+  onActions(event:BaseEvent) {
+    // Create a comment
+    if (event instanceof CommentCreateEvent) {
+      this.loading.start();
+      this.createComment(event.data).subscribe(
+        (res:any) => {
+          this.item = new SoPost().from(res.data);
+          this.mapDisplay();
+          this.loading.stop();
+        }
+      );
+    }
+    // Open photo modal
+    if (event instanceof PhotoModalEvent) {
+      this.photoModal.open(true);
+    }
+  }
+
+  onSelectPhotoComment(photo:any) {
+    this.photoModal.close();
+    console.log(this.postFooter.newComment);
   }
 
 }

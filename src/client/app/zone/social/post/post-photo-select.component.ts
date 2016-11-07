@@ -17,6 +17,7 @@ export class PostPhotoSelectComponent implements OnInit{
   @Output() onNext: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDismiss: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpload: EventEmitter<any> = new EventEmitter<any>();
+  action: string = 'NEXT';
 
   postPhotos: Array<any> = new Array<any>();
   uploadPhotos: Array<any> = new Array<any>();

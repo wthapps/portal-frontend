@@ -4,7 +4,7 @@ export class SoUser extends BaseInput implements FromData{
   uuid: string = '';
   nickname: string = '';
 
-  from(fields) {
+  from(fields:any) {
     if (fields) {
       Object.assign(this, fields)
     }

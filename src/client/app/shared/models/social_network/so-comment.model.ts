@@ -7,7 +7,7 @@ export class SoComment extends BaseInput implements FromData{
   reactions: Array<any> = [];
   owner: SoUser = new SoUser();
 
-  from(fields) {
+  from(fields:any) {
     if (fields) {
       Object.assign(this, fields)
     }

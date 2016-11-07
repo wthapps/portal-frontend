@@ -6,7 +6,7 @@
     <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
     <!--aria-hidden="true">&times;</span></button>-->
     <button type="button" class="btn btn-wth-default btn-min"
-            (click)="next($event)" [disabled]="photoList.selectedItems.length <= 0">NEXT</button>
+            (click)="next($event)" [disabled]="photoList.selectedItems.length <= 0">{{action}}</button>
     <span>
       {{photoList.selectedItems.length}} photo selected
     </span>

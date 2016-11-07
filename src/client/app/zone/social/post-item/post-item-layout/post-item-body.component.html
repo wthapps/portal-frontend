@@ -20,10 +20,10 @@
         <figure *ngIf="i < 5" (click)="onShowPhotoDetail(i)">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
-        <figure *ngIf="i == 5 && item.remainPhotos == 1" (click)="onShowPhotoDetail(i)">
+        <figure *ngIf="i == 5 && item.remainPhotos == 0" (click)="onShowPhotoDetail(i)">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
-        <a href="javascript:;" (click)="onShowPhotoDetail(i)" *ngIf="i == 5 && item.remainPhotos != 1">
+        <a href="javascript:;" (click)="onShowPhotoDetail(i)" *ngIf="i == 5 && item.remainPhotos != 0">
                 <span>
                   + {{item.remainPhotos}}
                 </span>

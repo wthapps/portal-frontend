@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 
 declare var _ :any;
@@ -14,10 +14,11 @@ declare var $ :any;
   }
 })
 
-export class SoPhotoListComponent implements OnInit{
+export class SoPhotoListComponent implements OnInit {
   @ViewChild('filesSelection') fileSelection: ElementRef;
   @Input('show-upload') showUpload: boolean = false;
   @Input('show-favourite') showFavourite: boolean = false;
+  multipleSelect: boolean = true;
 
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
@@ -47,8 +48,7 @@ export class SoPhotoListComponent implements OnInit{
   }
 
   onDocumentKeyDown(ev: KeyboardEvent) {
-    // console.log(ev.keyCode);
-    if (ev.keyCode == 17) {
+    if (ev.keyCode == 17 && this.multipleSelect) {
       this.pressingCtrl = true;
     }
   }

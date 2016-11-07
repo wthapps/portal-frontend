@@ -1,4 +1,7 @@
+
 <post-item-header [item]="itemDisplay" [type]="type"></post-item-header>
 <post-item-body [item]="itemDisplay" [type]="type"></post-item-body>
-<post-item-footer [item]="itemDisplay" [type]="type"></post-item-footer>
+<post-item-footer #postFooter [item]="itemDisplay" [type]="type" (eventEmitter)="onActions($event)"></post-item-footer>
 <post-edit #postEdit [post]="itemDisplay" [openMode]="'edit'" (onEdited)="editedPost($event)"></post-edit>
+
+<post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>

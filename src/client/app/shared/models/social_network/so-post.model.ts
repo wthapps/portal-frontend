@@ -16,7 +16,7 @@ export class SoPost extends BaseInput implements FromData {
   disable_share: boolean = false;
   mute: boolean = false;
 
-  from(fields) {
+  from(fields:any) {
     if (fields) {
       Object.assign(this, fields)
     }

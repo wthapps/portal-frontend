@@ -17,6 +17,7 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2
   ) {
+    super();
   }
 
   ngOnInit() {

@@ -19,7 +19,7 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
 
 
   constructor(private postItem: ZSocialPostItemComponent) {
-
+    super();
   }
 
   ngOnChanges() {

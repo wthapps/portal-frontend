@@ -6,10 +6,10 @@
     <div class="z-social-media-body">
       <div class="z-social-media-inputpost">
           <span class="z-social-media-inputpost">
-            <i class="fa fa-camera"></i>
+            <i class="fa fa-camera" (click)="onOpenPhotoSelect()"></i>
             <i class="fa fa-smile-o"></i>
           </span>
-        <input type="text" class="form-control" placeholder="Add a comment" (keyup)="onKey($event)">
+        <input type="text" class="form-control" placeholder="Add a comment" (keyup)="onKey($event)" [(ngModel)]="newComment">
       </div>
     </div>
   </div>

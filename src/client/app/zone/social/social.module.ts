@@ -21,6 +21,8 @@ import {
 
 import { ZSocialCommunityTempComponent } from './communities-temp.component';
 import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
+import { CommentPhotoSelectComponent } from './post-item/photo-modal-select/comment-photo-select.component';
+import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.compone
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
-    PostModule
+    PostModule,
+    HdModalModule
   ],
   declarations: [
     ZSocialComponent,
@@ -42,7 +45,8 @@ import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.compone
     ZSocialPostItemBodyComponent,
     ZSocialPostItemFooterComponent,
     ZSocialPostDetailComponent,
-    ZSocialPhotoDetailComponent
+    ZSocialPhotoDetailComponent,
+    CommentPhotoSelectComponent
 
   ],
   exports: [
