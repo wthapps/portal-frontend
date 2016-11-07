@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
-import {BaseZoneSocialItem} from "../../base/base-social-item";
-import {SoPost} from "../../../../shared/models/social_network/so-post.model";
+import { Component, ViewChild, OnInit, Input, OnChanges } from '@angular/core';
+import { BaseZoneSocialItem } from "../../base/base-social-item";
+import { SoPost } from "../../../../shared/models/social_network/so-post.model";
 import { ZSocialPostItemComponent } from '../index';
 
 declare var _: any;
@@ -11,12 +11,21 @@ declare var _: any;
   templateUrl: 'post-item-header.component.html'
 })
 
-export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem{
+export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implements OnChanges {
   @Input() item: SoPost;
+  @Input() type: string;
+
+  showInfo: boolean = false;
 
 
   constructor(private postItem: ZSocialPostItemComponent) {
 
+  }
+
+  ngOnChanges() {
+    if (this.type == 'info') {
+      this.showInfo = true;
+    }
   }
 
   viewDetail(event: any) {

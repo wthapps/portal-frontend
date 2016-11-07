@@ -14,13 +14,13 @@
       </a>
     </div>
   </div>
-  <div class="z-social-carousel">
+  <div *ngIf="!showInfo" class="z-social-carousel">
     <ul class="{{item.displayCss}}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
-        <figure *ngIf="i < 5">
+        <figure *ngIf="i < 5" (click)="onShowPhotoDetail(i)">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
-        <figure *ngIf="i == 5 && item.remainPhotos == 1">
+        <figure *ngIf="i == 5 && item.remainPhotos == 1" (click)="onShowPhotoDetail(i)">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
         <a href="javascript:;" (click)="onShowPhotoDetail(i)" *ngIf="i == 5 && item.remainPhotos != 1">

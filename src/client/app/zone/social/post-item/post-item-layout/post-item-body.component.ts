@@ -13,6 +13,9 @@ declare var _: any;
 
 export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @Input() item: SoPost;
+  @Input() type: string;
+
+  showInfo: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router) {
@@ -23,12 +26,12 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
   }
 
   ngOnChanges() {
-    // console.log(this.item);
+    if (this.type == 'info') {
+      this.showInfo = true;
+    }
   }
 
   onShowPhotoDetail(index: number): void {
-    this.router.navigate(['/zone/social/photo', this.item.uuid], {
-      queryParams: index
-    })
+    this.router.navigate(['/zone/social/photos', this.item.uuid, { index: index }]);
   }
 }

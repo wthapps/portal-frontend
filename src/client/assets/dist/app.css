@@ -13331,7 +13331,7 @@ wth-app:empty + .dots-loader-wrap {
   }*/ }
   .z-social-comment .z-social-comment-num {
     color: #9B9B9B;
-    margin-bottom: 15px; }
+    margin: 15px 0; }
   .z-social-comment .z-social-comment-list .media-left {
     padding-right: 15px; }
   .z-social-comment .z-social-comment-list .media-heading {

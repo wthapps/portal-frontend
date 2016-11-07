@@ -16,6 +16,7 @@ declare var _: any;
 
 export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem{
   @Input() item: SoPost;
+  @Input() type: string;
 
   // onDocumentKeyDown(ev: KeyboardEvent) {
   //   console.log(ev);

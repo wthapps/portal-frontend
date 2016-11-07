@@ -40,7 +40,7 @@
       </ul>
     </div>
   </div>
-  <div class="z-social-media-right">
+  <div *ngIf="!showInfo" class="z-social-media-right">
     <div class="dropdown pull-right">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
               data-toggle="dropdown"
@@ -74,5 +74,14 @@
       </a>
     </div>
   </div>
+
+  <div *ngIf="showInfo" class="z-social-media-right">
+    <div class="dropdown pull-right">
+      <a href="javascript:;" class="btn btn-default" (click)="onShowInfo()">
+        <i class="fa fa-times"></i>
+      </a>
+    </div>
+  </div>
+
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter} from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 import { SoPost } from "../../../shared/models/social_network/so-post.model";
 import { BaseZoneSocialItem } from "../base/base-social-item";
 import { ConstantsSocial } from "../base/constants-social";
@@ -17,6 +17,7 @@ declare var _: any;
 
 export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @Input() item: SoPost = new SoPost();
+  @Input() type: string = '';
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
@@ -24,24 +25,24 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
 
   itemDisplay: any;
 
-  constructor(
-    private api: ApiBaseServiceV2,
-    private loading: LoadingService,
-    private confirmation: ConfirmationService,
-    private toast: ToastsService
-  ) {
+  constructor(private api: ApiBaseServiceV2,
+              private loading: LoadingService,
+              private confirmation: ConfirmationService,
+              private toast: ToastsService) {
     super();
   }
 
   ngOnInit() {
     //
   }
+
   ngOnChanges() {
     if (!this.item) {
       this.item = new SoPost();
     }
     this.itemDisplay = _.cloneDeep(this.item);
     this.mapDisplay();
+
   }
 
   mapDisplay() {
@@ -80,8 +81,8 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.itemDisplay.reactions_dislike = new Array<any>();
     this.itemDisplay.reactions_like = new Array<any>();
     this.itemDisplay.reactions_share = new Array<any>();
-    this.itemDisplay.reactions.forEach((reaction:any) => {
-      switch(reaction.reaction_type) {
+    this.itemDisplay.reactions.forEach((reaction: any) => {
+      switch (reaction.reaction_type) {
         case 'dislike':
           this.itemDisplay.reactions_dislike.push(reaction);
           break;
@@ -96,7 +97,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   privacyDisplay() {
-    switch(this.itemDisplay.privacy) {
+    switch (this.itemDisplay.privacy) {
       case ConstantsSocial.userPrivacy.public.data:
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.public;
         break;
@@ -138,12 +139,12 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
         this.loading.start();
         this.api.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
           .subscribe((result: any) => {
-            this.toast.success('Deleted post successfully','Delete Post');
-            this.loading.stop();
-            this.onDeleted.emit(result);
+              this.toast.success('Deleted post successfully', 'Delete Post');
+              this.loading.stop();
+              this.onDeleted.emit(result);
             },
             error => {
-              this.toast.danger('Deleted post error\n' + error,'Delete Post');
+              this.toast.danger('Deleted post error\n' + error, 'Delete Post');
               this.loading.stop();
             }
           );
