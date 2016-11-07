@@ -16,7 +16,7 @@ declare var _: any;
 })
 
 export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
-  @Input() item: SoPost;
+  @Input() item: SoPost = new SoPost();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
@@ -34,7 +34,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   ngOnInit() {
-    this.item = new SoPost();
+    //
   }
   ngOnChanges() {
     if (!this.item) {

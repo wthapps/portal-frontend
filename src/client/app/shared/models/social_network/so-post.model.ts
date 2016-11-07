@@ -1,11 +1,12 @@
 import { SoUser } from './so-user.model';
 import { BaseInput } from '../base/base-input.model';
+import { SoComment } from './so-comment.model';
 
 export class SoPost extends BaseInput implements FromData{
   uuid: string;
   description: string;
   owner: SoUser = new SoUser();
-  comments: Array<any> = [];
+  comments: Array<SoComment> = new Array<SoComment>();
   photos: Array<any> = [];
   tags: Array<any> = [];
   reactions: Array<any> = [];

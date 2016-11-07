@@ -3,7 +3,7 @@ import { SoUser } from './so-user.model';
 
 export class SoComment extends BaseInput implements FromData{
   content: string = '';
-  replies: SoComment = new SoComment();
+  replies: Array<SoComment> = new Array<SoComment>();
   reactions: Array<any> = [];
   owner: SoUser = new SoUser();
 
