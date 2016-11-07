@@ -9963,7 +9963,9 @@ Header
             font-size: 18px;
             padding-left: 5px;
             padding-right: 5px;
-            line-height: 22px; } }
+            line-height: 22px; }
+        .header.header-over .navbar-nav > li .btn, .header.header-over .navbar-nav > li .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-over .navbar-nav > li button[ng-reflect-icon="fa-close"], .header.header-over .navbar-nav > li .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-over .navbar-nav > li button[ng-reflect-icon="fa-check"] {
+          margin-top: 4px; } }
   .header .navbar-nav > li.open > a, .header .navbar-nav > li.open > a:hover, .header .navbar-nav > li.open > a:focus, .header .navbar-nav > li:hover > a, .header .navbar-nav > li:hover > a:hover, .header .navbar-nav > li:hover > a:focus, .header .navbar-nav > li:focus > a, .header .navbar-nav > li:focus > a:hover, .header .navbar-nav > li:focus > a:focus {
     background-color: transparent;
     color: #4A4A4A; }

@@ -43,7 +43,7 @@ export class ZSocialPhotoDetailComponent extends BaseZoneSocialItem implements O
 
   ngOnDestroy() {
     $('body').removeClass('fixed-hidden').css('padding-right', 0);
-    $('#photo-box-detail').removeClass('active-info');
+    $('#social-photo-detail').removeClass('active-info');
   }
 
   loadPost(uuid: string): void {
@@ -78,7 +78,7 @@ export class ZSocialPhotoDetailComponent extends BaseZoneSocialItem implements O
   }
 
   onShowInfo() {
-    $('#photo-box-detail').toggleClass('active-info');
+    $('#social-photo-detail').toggleClass('active-info');
   }
 
   onBack() {
