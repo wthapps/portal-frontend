@@ -37,7 +37,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   ngOnInit() {
-    //
+
   }
 
   ngOnChanges() {
@@ -125,6 +125,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   edit() {
+    this.postEdit.post = this.item;
     this.postEdit.open();
     // this.posts.edit();
   }

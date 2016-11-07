@@ -24,7 +24,7 @@ export class PostEditComponent implements OnInit, OnChanges {
   @Input() openMode: string = 'add'; // add or edit
   @Input() files: Array<any> = new Array<any>();
   @Input() photos: Array<any> = new Array<any>()
-  @Input() post: any;
+  @Input() post: SoPost;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
@@ -55,17 +55,27 @@ export class PostEditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.form = this.fb.group({
-      'description': [this.post.description, Validators.compose([Validators.required])],
-      'tags': [_.map(this.post.tags,'name'), null],
-      'photos': [this.post.photos, null]
-    });
-    this.descCtrl = this.form.controls['description'];
-    this.tagsCtrl = this.form.controls['tags'];
-    this.photosCtrl = this.form.controls['photos'];
+    if(changes['post']) {
+      // this.form       = this.fb.group({
+      //   'description': [this.post.description, Validators.compose([Validators.required])],
+      //   'tags': [_.map(this.post.tags, 'name'), null],
+      //   'photos': [this.post.photos, null]
+      // });
+      // this.descCtrl   = this.form.controls['description'];
+      // this.tagsCtrl   = this.form.controls['tags'];
+      // this.photosCtrl = this.form.controls['photos'];
+    }
   }
 
   open() {
+    this.form       = this.fb.group({
+      'description': [this.post.description, Validators.compose([Validators.required])],
+      'tags': [_.map(this.post.tags, 'name'), null],
+      'photos': [this.post.photos, null]
+    });
+    this.descCtrl   = this.form.controls['description'];
+    this.tagsCtrl   = this.form.controls['tags'];
+    this.photosCtrl = this.form.controls['photos'];
     this.modal.open();
   }
  
