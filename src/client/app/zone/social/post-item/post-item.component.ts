@@ -10,6 +10,7 @@ import { PostEditComponent } from '../post/post-edit.component';
 
 import { CommentCreateEvent, PhotoModalEvent } from '../events/social-events';
 import { PostPhotoSelectComponent } from '../post/post-photo-select.component';
+import { ZSocialPostItemFooterComponent } from './post-item-layout/post-item-footer.component';
 
 declare var _: any;
 
@@ -171,7 +172,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // Create a comment
     if (event instanceof CommentCreateEvent) {
       this.loading.start();
-      this.createComment(event.data).subscribe(
+      this.createComment({content: event.data}).subscribe(
         (res:any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
@@ -185,9 +186,17 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     }
   }
 
-  onSelectPhotoComment(photo:any) {
-    this.photoModal.close();
-    console.log(this.postFooter.newComment);
+  onSelectPhotoComment(photos:any) {
+    this.loading.start();
+    this.createComment({content: this.postFooter.newComment, photo: photos[0].id}).subscribe(
+      (res:any) => {
+        this.item = new SoPost().from(res.data);
+        this.mapDisplay();
+        this.loading.stop();
+        this.postFooter.newComment = "";
+        this.photoModal.close();
+      }
+    );
   }
 
 }

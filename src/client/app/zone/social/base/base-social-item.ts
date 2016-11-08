@@ -10,7 +10,7 @@ export class BaseZoneSocialItem extends BaseZoneSocial {
     return this.apiBaseServiceV2.get(url);
   }
 
-  createComment(content:string) {
-    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments`, {content: content});
+  createComment(body:any) {
+    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments`, body);
   }
 }
