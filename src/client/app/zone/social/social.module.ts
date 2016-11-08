@@ -21,7 +21,6 @@ import {
 
 import { ZSocialCommunityTempComponent } from './communities-temp.component';
 import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
-import { CommentPhotoSelectComponent } from './post-item/photo-modal-select/comment-photo-select.component';
 import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
 
 
@@ -46,8 +45,6 @@ import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
     ZSocialPostItemFooterComponent,
     ZSocialPostDetailComponent,
     ZSocialPhotoDetailComponent,
-    CommentPhotoSelectComponent
-
   ],
   exports: [
     ZSocialComponent,
