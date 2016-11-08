@@ -9,9 +9,23 @@
     <li>
       <a href="#">Calendar</a>
     </li>
-    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-      <a [routerLink]="['/zone/social']" href="#">Social Network</a>
+
+    <li class="has-sub">
+      <a href="javascript:;" (click)="onMenu($event)">
+        Social Network
+      </a>
+      <ul class="list-unstyled hidden" id="zone_menu_social">
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let social of socialMenu">
+          <a [routerLink]="[social.link]">
+            {{social.name}}
+          </a>
+        </li>
+      </ul>
     </li>
+
+    <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/zone/social']" href="#">Social Network</a>
+    </li>-->
     <li>
       <a href="#">Chat</a>
     </li>

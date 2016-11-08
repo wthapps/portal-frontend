@@ -9254,6 +9254,26 @@ h1, h2, h3, h4, h5, h6,
   .btn-default-inline .badge {
     color: #333;
     background-color: #FFF; }
+  .btn-default-inline:focus, .btn-default-inline.focus {
+    color: #333;
+    background-color: #dbdbdb;
+    border-color: #dbdbdb; }
+  .btn-default-inline:hover {
+    color: #333;
+    background-color: #dbdbdb;
+    border-color: #dbdbdb; }
+  .btn-default-inline:active, .btn-default-inline.active,
+  .open > .btn-default-inline.dropdown-toggle {
+    color: #333;
+    background-color: #dbdbdb;
+    border-color: #dbdbdb; }
+    .btn-default-inline:active:hover, .btn-default-inline:active:focus, .btn-default-inline:active.focus, .btn-default-inline.active:hover, .btn-default-inline.active:focus, .btn-default-inline.active.focus,
+    .open > .btn-default-inline.dropdown-toggle:hover,
+    .open > .btn-default-inline.dropdown-toggle:focus,
+    .open > .btn-default-inline.dropdown-toggle.focus {
+      color: #333;
+      background-color: #dbdbdb;
+      border-color: #dbdbdb; }
 
 .btn-min {
   min-width: 106px;
@@ -13247,7 +13267,7 @@ wth-app:empty + .dots-loader-wrap {
         margin-right: 10px;
         display: inline-block;
         color: #9B9B9B;
-        font-size: 13px; }
+        font-size: 12px; }
       .z-social-media .z-shared-info ul li:first-child:before {
         display: none; }
       .z-social-media .z-shared-info ul li.z-time {
@@ -13605,5 +13625,101 @@ wth-app:empty + .dots-loader-wrap {
       background-color: #f54a59;
       border-color: #f54a59;
       color: #ffffff; }
+
+.zone-social-cover {
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border: 1px solid #dbdbdb;
+  background-color: #ffffff;
+  margin-bottom: 30px; }
+  .zone-social-cover .zone-social-cover-in {
+    position: relative; }
+  .zone-social-cover .zone-social-cover-action {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 3; }
+    .zone-social-cover .zone-social-cover-action .btn, .zone-social-cover .zone-social-cover-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .zone-social-cover .zone-social-cover-action button[ng-reflect-icon="fa-close"], .zone-social-cover .zone-social-cover-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .zone-social-cover .zone-social-cover-action button[ng-reflect-icon="fa-check"] {
+      color: #ffffff;
+      border-width: 0;
+      background-color: rgba(255, 255, 255, 0.3); }
+  .zone-social-cover .zone-social-cover-img {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom: 1px solid #dbdbdb;
+    position: relative;
+    padding-bottom: 50%;
+    overflow: hidden; }
+    .zone-social-cover .zone-social-cover-img img {
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      width: 100%;
+      z-index: 1; }
+    .zone-social-cover .zone-social-cover-img:after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+      content: "";
+      background: -moz-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -moz-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -webkit-gradient(linear, left top, right bottom, color-stop(40%, transparent), color-stop(100%, rgba(0, 0, 0, 0.5))), -webkit-gradient(linear, left top, left bottom, color-stop(10%, transparent), color-stop(100%, rgba(0, 0, 0, 0.3)));
+      background: -webkit-linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -webkit-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -o-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -o-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -ms-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -ms-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.3) 100%); }
+  .zone-social-cover .zone-social-cover-info {
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+    z-index: 3;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.3); }
+    .zone-social-cover .zone-social-cover-info .media-left img {
+      width: 100px;
+      border-radius: 4px;
+      border: 1px solid #FFF; }
+    .zone-social-cover .zone-social-cover-info .media-body {
+      color: #ffffff; }
+      .zone-social-cover .zone-social-cover-info .media-body .media-heading {
+        font-weight: bold;
+        font-size: 18px; }
+      .zone-social-cover .zone-social-cover-info .media-body span {
+        display: block;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+      .zone-social-cover .zone-social-cover-info .media-body p {
+        max-height: 40px;
+        overflow: hidden; }
+  .zone-social-cover .zone-social-cover-nav {
+    padding: 15px; }
+    .zone-social-cover .zone-social-cover-nav > ul {
+      margin: 0; }
+      .zone-social-cover .zone-social-cover-nav > ul > li {
+        float: left; }
+        .zone-social-cover .zone-social-cover-nav > ul > li > a {
+          display: inline-block;
+          line-height: 34px;
+          padding: 0 15px;
+          color: #9B9B9B;
+          position: relative;
+          text-transform: uppercase;
+          font-weight: bold;
+          text-decoration: none; }
+          .zone-social-cover .zone-social-cover-nav > ul > li > a:hover {
+            color: #4A4A4A; }
+        .zone-social-cover .zone-social-cover-nav > ul > li.active > a {
+          color: #4A4A4A; }
+          .zone-social-cover .zone-social-cover-nav > ul > li.active > a:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -15px;
+            right: 0;
+            height: 5px;
+            background-color: #f54a59; }
 
 /*# sourceMappingURL=style.css.map */

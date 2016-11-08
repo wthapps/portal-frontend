@@ -22,6 +22,7 @@ export class ZoneMenuComponent implements AfterViewInit {
 
   urls: any;
   items = Constants.pictureMenuItems;
+  socialMenu = Constants.socialMenuItems;
 
   constructor(private router: Router) {
 
@@ -44,6 +45,9 @@ export class ZoneMenuComponent implements AfterViewInit {
     if (this.urls[1] == '/zone/picture') {
       $('#zone_menu_picture').parent('.has-sub').addClass('active');
       $('#zone_menu_picture').removeClass('hidden');
+    } else if (this.urls[1] == '/zone/social') {
+      $('#zone_menu_social').parent('.has-sub').addClass('active');
+      $('#zone_menu_social').removeClass('hidden');
     }
   }
 
