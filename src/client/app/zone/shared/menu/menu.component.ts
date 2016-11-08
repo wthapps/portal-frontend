@@ -1,10 +1,10 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   Router,
   NavigationEnd
 } from '@angular/router';
 
-import {Constants} from "../../../shared/config/constants";
+import { Constants } from "../../../shared/config/constants";
 
 
 declare var $: any;
@@ -18,23 +18,29 @@ declare var $: any;
   `]
 })
 
-export class ZoneMenuComponent implements AfterViewInit {
+export class ZoneMenuComponent implements OnInit {
 
-  urls: any;
+  urls: any = [];
   items = Constants.pictureMenuItems;
   socialMenu = Constants.socialMenuItems;
 
   constructor(private router: Router) {
-
-    //console.log(this.userService);
-    this.urls = new Array();
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this.urls.length = 0; //Fastest way to clear out array
-      this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+      // this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+      this.getMenuAction(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
     });
+  }
+
+  getMenuAction(url: string): void {
+    $('.page-menuleft .has-sub ul').addClass('hidden');
+    let urlArr = url.split("/");
+    if (urlArr[2]) {
+      $('#zone_menu_' + urlArr[2]).removeClass('hidden');
+    }
   }
 
   getNavTitle(url: string): void {

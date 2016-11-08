@@ -10,7 +10,7 @@
       <a href="#">Calendar</a>
     </li>
 
-    <li class="has-sub">
+    <li class="has-sub" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
       <a href="javascript:;" (click)="onMenu($event)">
         Social Network
       </a>
@@ -32,7 +32,7 @@
     <li>
       <a href="#">Gadget</a>
     </li>
-    <li class="has-sub">
+    <li class="has-sub" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
       <a href="javascript:;" (click)="onMenu($event)">
         Picture
       </a>

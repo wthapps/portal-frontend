@@ -10809,17 +10809,16 @@ body.drag-active .dropzone-overlap {
   .aside-menu .page-menuleft a {
     display: block;
     color: #4A4A4A;
-    padding: 8px 30px;
-    text-decoration: none;
-    font-size: 18px; }
+    padding: 8px 15px;
+    text-decoration: none; }
     .aside-menu .page-menuleft a:hover {
       background-color: #F6F6F6; }
   .aside-menu .page-menuleft > ul > li > a {
-    font-size: 18px;
     font-weight: bold; }
   .aside-menu .page-menuleft > ul > li.active {
     background-color: #F6F6F6; }
     .aside-menu .page-menuleft > ul > li.active > a {
+      color: #ffffff;
       background-color: #f54a59; }
   .aside-menu .page-menuleft > ul > li.has-sub > a {
     position: relative; }
@@ -10831,7 +10830,7 @@ body.drag-active .dropzone-overlap {
       left: auto;
       right: 10px; }
   .aside-menu .page-menuleft > ul > li.has-sub ul li a {
-    padding-left: 60px; }
+    padding-left: 30px; }
     .aside-menu .page-menuleft > ul > li.has-sub ul li a:hover {
       background-color: #d8d8d8; }
   .aside-menu .page-menuleft > ul > li.has-sub ul li.active a {
@@ -13436,6 +13435,8 @@ wth-app:empty + .dots-loader-wrap {
     .z-social-carousel > ul > li {
       padding-left: 2px;
       padding-right: 2px; }
+      .z-social-carousel > ul > li figure {
+        cursor: pointer; }
   .z-social-carousel .carousel-thumb-style-6 > li {
     float: left;
     width: 20%;
