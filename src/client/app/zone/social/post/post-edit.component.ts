@@ -22,14 +22,15 @@ export class PostEditComponent implements OnInit, OnChanges {
   @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
 
   @Input() openMode: string = 'add'; // add or edit
-  @Input() files: Array<any> = new Array<any>();
   @Input() photos: Array<any> = new Array<any>()
   @Input() post: SoPost;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
-  tags: Array<string>= new Array<string>();
+  @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
 
+  files: Array<any> = new Array<any>();
+  tags: Array<string>= new Array<string>();
   form: FormGroup;
   descCtrl: AbstractControl;
   tagsCtrl: AbstractControl;
@@ -67,7 +68,11 @@ export class PostEditComponent implements OnInit, OnChanges {
     }
   }
 
-  open() {
+  open(options: any={mode:'add', addingPhotos: false, post: null}) {
+    console.log('add post', this.post, this.photos, typeof options.post);
+    if(options.post != null) {
+      this.post.photos = options.post.photos;
+    }
     this.form       = this.fb.group({
       'description': [this.post.description, Validators.compose([Validators.required])],
       'tags': [_.map(this.post.tags, 'name'), null],
@@ -76,7 +81,11 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.descCtrl   = this.form.controls['description'];
     this.tagsCtrl   = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    this.modal.open();
+    if(options.addingPhotos) {
+      this.photoSelectModal.open();
+    }else {
+      this.modal.open();
+    }
   }
  
   close() {
@@ -84,7 +93,7 @@ export class PostEditComponent implements OnInit, OnChanges {
   }
 
   addMorePhoto(event: any) {
-    this.photoSelectModal.open(true);
+    // this.photoSelectModal.open({return: true});
     this.onMoreAdded.emit(true);
   }
 
@@ -174,6 +183,32 @@ export class PostEditComponent implements OnInit, OnChanges {
     console.log('removing........');
   }
 
+  next(selectedPhotos: any) {
+    this.post.photos = _.concat(this.post.photos, selectedPhotos);
+    this.photoSelectModal.close();
+    this.modal.open();
+  }
+
+  addMorePhoto(event: any) {
+    this.modal.close();
+    this.photoSelectModal.open({return: true})
+  }
+
+  dismiss(photos: any) {
+    if(photos == null) {
+      this.modal.open();
+    }
+  }
+
+  upload(files: Array<any>) {
+    _.forEach(files, (file: any) => {
+      this.files.push(file);
+    });
+    // this.files = files;
+    this.photoSelectModal.close();
+    this.modal.open();
+  }
+
   /**
    * Tagging
    */
@@ -185,4 +220,12 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   }
 
+  /**
+   * Privacy
+   */
+
+  update(attr: any={}, event: any) {
+    event.preventDefault();
+    this.onUpdated.emit(attr);
+  }
 }

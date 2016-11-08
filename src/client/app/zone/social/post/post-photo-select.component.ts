@@ -32,8 +32,8 @@ export class PostPhotoSelectComponent implements OnInit{
 
   }
 
-  open(back?: boolean) {
-    if (back == true) {
+  open(options:any={return: false}) {
+    if (options.return == true) {
       this.hasBack = true;
     }
     this.modal.open();

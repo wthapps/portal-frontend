@@ -107,15 +107,15 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   privacyDisplay() {
-    switch (this.itemDisplay.privacy) {
+    switch (this.itemDisplay.privacy.toLowerCase()) {
       case ConstantsSocial.userPrivacy.public.data:
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.public;
         break;
       case ConstantsSocial.userPrivacy.private.data:
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.private;
         break;
-      case ConstantsSocial.userPrivacy.share.data:
-        this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.share;
+      case ConstantsSocial.userPrivacy.friends.data:
+        this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.friends;
         break;
       default:
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.public;
@@ -137,9 +137,17 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // this.posts.edit();
   }
 
-  update(atts: any) {
-    console.log('updating.................');
-    // this.posts.update(atts);
+  update(attr: any={}) {
+    let post = JSON.stringify({post: attr});
+    this.apiBaseServiceV2.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, post)
+      .subscribe((result: any) => {
+        this.item = result['data'];
+        this.mapDisplay();
+      },
+      error => {
+
+      }
+    );
   }
 
   delete() {

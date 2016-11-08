@@ -6,26 +6,13 @@
     <div class="z-social-media-body">
       <div class="z-social-media-inputpost">
           <span class="z-social-media-inputpost">
-            <i (click)="open($event, true)" class="fa fa-camera"></i>
+            <i (click)="postAddModal.open({addingPhotos: true})" class="fa fa-camera"></i>
           </span>
-        <input type="text" class="form-control" placeholder="Share your ideas" (click)="open($event)">
+        <input type="text" class="form-control" placeholder="Share your ideas" (click)="postAddModal.open()">
       </div>
     </div>
   </div>
 </div>
-
-<post-photo-select #photoSelectModal
-                   (onNext)="next($event)"
-                   (onDismiss)="dismiss($event)"
-                   (onUpload)="upload($event)">
-
-</post-photo-select>
-
-<post-edit #postAddModal
-           [files]="files"
-           (onMoreAdded)="addMorePhoto($event)"
-           (onEdited)="addedPost($event)">
-
-</post-edit>
+<post-edit #postAddModal (onEdited)="addedPost($event)"></post-edit>
 
 

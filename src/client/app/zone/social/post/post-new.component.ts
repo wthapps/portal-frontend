@@ -11,13 +11,13 @@ declare var _: any;
 })
 
 export class PostNewComponent implements OnInit{
-  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   @ViewChild('postAddModal') postAddModal: PostEditComponent;
   @Output() onPostAdded: EventEmitter<any> = new EventEmitter<any>();
 
   selectedPhotos: Array<any> = new Array<any>();
   uploadPhotos: Array<any> = new Array<any>();
-  files: Array<any> = new Array<any>();
+  // files: Array<any> = new Array<any>();
 
   constructor(private apiService: ApiBaseService, loadingService: LoadingService) {
   }
@@ -28,48 +28,22 @@ export class PostNewComponent implements OnInit{
 
   open(event: any, choosePhotos?: boolean) {
     if(choosePhotos == true) {
-      this.photoModal.open();
+      // this.photoModal.open();
       return;
     }
     this.postAddModal.open();
   }
  
   next(photos: any) {
-    this.photoModal.close();
+    // this.photoModal.close();
     this.selectedPhotos = _.reverse(photos);
-    this.postAddModal.photos = this.selectedPhotos;
-    this.postAddModal.open();
+    this.postAddModal.open({post: {photos: this.selectedPhotos}});
   }
 
   close(photos: any) {
     if (photos.length > 0) {
-      this.photoModal.open();
+      // this.photoModal.open();
     }
-  }
-
-  dismiss(photos: any) {
-    this.photoModal.close();
-    if(photos == null) {
-      this.postAddModal.open();
-    }
-  }
-
-  /**
-   *
-   * @param event
-   */
-  addMorePhoto(event: any) {
-    this.postAddModal.close();
-    this.photoModal.open(true);
-  }
-
-  upload(files: Array<any>) {
-    _.forEach(files, (file: any) => {
-      this.files.push(file);
-    });
-    // this.files = files;
-    this.photoModal.close();
-    this.postAddModal.open();
   }
 
   addedPost(post: any) {

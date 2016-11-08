@@ -36,10 +36,9 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
     this.postItem.viewDetail();
   }
 
-  update(event: any) {
+  update(attr: any={}, event: any) {
     event.preventDefault();
-    let attributes: Array<any> = new Array<any>();
-    this.postItem.update(attributes);
+    this.postItem.update(attr);
   }
 
   edit(event: any) {

@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit, Input, OnChanges } from '@ang
 import { BaseZoneSocialItem } from "../../base/base-social-item";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SoPost } from "../../../../shared/models/social_network/so-post.model";
+import { ZSocialPostItemComponent } from '../post-item.component';
 
 declare var _: any;
 
@@ -18,7 +19,8 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
   showInfo: boolean = false;
 
   constructor(private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private postItem: ZSocialPostItemComponent) {
   }
 
   ngOnInit() {
@@ -33,5 +35,10 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
 
   onShowPhotoDetail(index: number): void {
     this.router.navigate(['/zone/social/photos', this.item.uuid, { index: index }]);
+  }
+
+  update(attr: any={}, event: any) {
+    event.preventDefault();
+    this.postItem.update(attr);
   }
 }

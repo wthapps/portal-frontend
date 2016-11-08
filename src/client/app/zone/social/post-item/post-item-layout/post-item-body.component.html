@@ -37,7 +37,7 @@
   <div class="z-social-post-action">
     <ul>
       <li class="active">
-        <i class="fa fa-thumbs-o-up"></i> {{item.reactions_like.length}}
+        <i class="fa fa-thumbs-o-up" (click)="update({}, $event)"></i> {{item.reactions_like.length}}
       </li>
       <li>
         <i class="fa fa-thumbs-o-down"></i> {{item.reactions_dislike.length}}

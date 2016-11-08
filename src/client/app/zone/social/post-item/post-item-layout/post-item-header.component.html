@@ -10,13 +10,11 @@
       <div class="z-shared-with dropdown">
         <a href="#" data-toggle="dropdown"><i class="{{item.privacyDisplay.css}}"></i> {{item.privacyDisplay.text}}</a>
         <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu1">
-          <li><a href="#"><i class="fa fa-globe"></i> {{item.privacyDisplay.text}} <i
-            class="dropdown-menu-check-item fa fa-check"></i></a>
-          </li>
-          <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-          <li><a href="#"><i class="fa fa-lock"></i> Private</a></li>
+          <li><a href="#" (click)="update({privacy: 'Public'}, $event)"><i class="fa fa-globe"></i> Public</a></li>
+          <li><a href="#" (click)="update({privacy: 'Friends'}, $event)"><i class="fa fa-users"></i> Friends</a></li>
+          <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
           <li role="separator" class="divider"></li>
-          <li><a href="#">Custom</a></li>
+          <li><a href="#" (click)="update({privacy: 'Custom'}, $event)">Custom</a></li>
         </ul>
       </div>
     </div>
@@ -26,16 +24,16 @@
           Jul 16 2016
         </li>
         <li *ngIf="item.adult">
-          Adult Content
+          Adult content
         </li>
         <li *ngIf="item.mute">
           Mute
         </li>
-        <li *ngIf="item.disable_comment">
-          Disable Comment
+        <li *ngIf="!item.disable_comment">
+          Disable comment
         </li>
-        <li *ngIf="item.disable_share">
-          Disable Share
+        <li *ngIf="!item.disable_share">
+          Disable share
         </li>
       </ul>
     </div>
@@ -48,23 +46,31 @@
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li><a href="#" (click)="update($event)">
-          <i class="fa fa-check" *ngIf="item.adult"></i>
-          Adult content</a>
+        <li><a href="#" (click)="update({adult: !item.adult}, $event)">
+          Adult content <i class="fa fa-check" *ngIf="item.adult"></i>
+        </a>
+        </li>
+        <li><a href="#" (click)="update({mute: !item.mute}, $event)">
+          Mute<i class="fa fa-check" *ngIf="item.mute"></i>
+          </a>
         </li>
         <li role="separator" class="divider"></li>
         <li><a href="#" (click)="edit($event)" >Edit Post</a></li>
         <li><a href="#" (click)="delete($event)">Delete</a></li>
         <li role="separator" class="divider"></li>
-        <li><a href="#" (click)="update($event)">
-          <i class="fa fa-check" *ngIf="item.disable_comment"></i>
-          Disable comments</a></li>
-        <li><a href="#" (click)="update($event)">
-          <i class="fa fa-check" *ngIf="item.disable_share"></i>Disable share</a>
-        </li>
-        <li><a href="#" (click)="update($event)">
-          <i class="fa fa-check" *ngIf="item.mute"></i>Mute</a>
-        </li>
+        <li><a href="#" *ngIf="item.disable_comment"
+               (click)="update({disable_comment: false}, $event)">
+          Disable comment</a></li>
+        <li><a href="#" *ngIf="!item.disable_comment"
+               (click)="update({disable_comment: true}, $event)">
+          Enable comment</a></li>
+        <li><a href="#" *ngIf="item.disable_share"
+               (click)="update({disable_share: false}, $event)">
+          Disable share</a></li>
+        <li><a href="#" *ngIf="!item.disable_share"
+               (click)="update({disable_share: true}, $event)">
+          Enable share</a></li>
+
       </ul>
     </div>
 
@@ -75,7 +81,7 @@
     </div>
   </div>
 
-  <div class="z-social-media-right">
+  <div *ngIf="showInfo" class="z-social-media-right">
     <div class="dropdown pull-right">
       <a href="javascript:;" class="btn btn-default" (click)="onShowInfo()">
         <i class="fa fa-times"></i>

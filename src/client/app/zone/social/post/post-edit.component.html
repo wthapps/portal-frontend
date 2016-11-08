@@ -11,17 +11,42 @@
           </div>
           <div class="z-shared-with">
             <span class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="true">Public</a>
+              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="true">
+                 <i class="fa fa-globe" *ngIf="post.privacy=='Public'"></i>
+                 <i class="fa fa-users" *ngIf="post.privacy=='Friends'"></i>
+                 <i class="fa fa-lock" *ngIf="post.privacy=='Private'"></i>
+                {{post.privacy}}</a>
               <ul class="dropdown-menu">
-                <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-                <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="#"><i class="fa fa-lock"></i> Private</a></li>
+                <li><a href="#" (click)="update({privacy: 'Public'}, $event)">
+                  <i class="fa fa-globe"></i> Public</a></li>
+                <li><a href="#" (click)="update({privacy: 'Friends'}, $event)">
+                  <i class="fa fa-users"></i> Friends</a></li>
+                <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#">Custom</a></li>
+                <li><a href="#" (click)="update({privacy: 'Custom'}, $event)">Custom</a></li>
               </ul>
             </span>
           </div>
+        </div>
+        <div class="z-shared-info">
+          <ul>
+            <li class="z-time">
+              Jul 16 2016
+            </li>
+            <li *ngIf="post.adult">
+              Adult content
+            </li>
+            <li *ngIf="post.mute">
+              Mute
+            </li>
+            <li *ngIf="!post.disable_comment">
+              Disable comment
+            </li>
+            <li *ngIf="!post.disable_share">
+              Disable share
+            </li>
+          </ul>
         </div>
       </div>
       <div class="z-social-media-right">
@@ -31,10 +56,19 @@
             <i class="fa fa-ellipsis-v"></i>
           </button>
           <ul class="dropdown-menu">
-            <li><a href="#"><i class="fa fa-check"></i> Adult content</a></li>
+            <li><a href="#" (click)="update({adult: !post.adult}, $event)">Adult content
+              <i class="fa" [ngClass]="post.adult ? 'fa-check' : ''"></i></a></li>
+            <li><a href="#" (click)="update({mute: !post.mute}, $event)">Mute
+              <i class="fa" [ngClass]="post.mute ? 'fa-check' : ''"></i></a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Disable comments</a></li>
-            <li><a href="#">Disable reshare</a></li>
+            <li *ngIf="post.disable_comment">
+              <a href="#" (click)="update({disable_comment: false}, $event)">Disable comment</a></li>
+            <li *ngIf="!post.disable_comment">
+              <a href="#" (click)="update({disable_comment: true}, $event)">Enable comment</a></li>
+            <li *ngIf="post.disable_share">
+              <a href="#" (click)="update({disable_share: false}, $event)">Disable share</a></li>
+            <li *ngIf="!post.disable_share">
+              <a href="#" (click)="update({disable_share: true}, $event)">Enable share</a></li>
           </ul>
         </div>
       </div>
@@ -88,12 +122,12 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="clearfix text-right">
         <button type="button" class="btn btn-default pull-left btn-min" (click)="addMorePhoto($event)">
           <i class="fa fa-plus"></i> Add more
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"
-                [disabled]="!validPost()">Done</button>
+                [disabled]="!form.valid">Done</button>
         <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
       </div>
     </form>
