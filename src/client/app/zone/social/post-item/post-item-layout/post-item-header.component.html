@@ -68,7 +68,7 @@
       </ul>
     </div>
 
-    <div class="dropdown pull-right">
+    <div *ngIf="!showDetail" class="dropdown pull-right">
       <a [routerLink]="['/zone/social/posts', item.uuid]" class="btn btn-default">
         <i class="fa fa-external-link"></i>
       </a>

@@ -16,6 +16,7 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
   @Input() type: string;
 
   showInfo: boolean = false;
+  showDetail: boolean = false;
 
 
   constructor(private postItem: ZSocialPostItemComponent) {
@@ -25,6 +26,8 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
   ngOnChanges() {
     if (this.type == 'info') {
       this.showInfo = true;
+    } else if (this.type == 'detail') {
+      this.showDetail = true;
     }
   }
 
