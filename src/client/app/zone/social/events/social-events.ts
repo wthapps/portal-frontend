@@ -1,11 +1,55 @@
 export class CommentCreateEvent implements BaseEvent {
   description:string = 'Event create a comment for post';
   data: any;
-  constructor(data) {
+  constructor(data:any) {
     this.data = data;
   }
 }
 
-export class PhotoModalEvent implements BaseEvent {
+export class CommentUpdateEvent implements BaseEvent {
+  description:string = 'Event update a comment for post';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
+}
+
+export class OpenPhotoModalEvent implements BaseEvent {
   description:string = 'Open photo modal';
+  data: any;
+  constructor(data?:any) {
+    this.data = data;
+  }
+}
+
+export class DeleteCommentEvent implements BaseEvent {
+  description:string = 'Delete a comment';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
+}
+
+export class CancelEditCommentEvent implements BaseEvent {
+  description:string = 'Cancel a edit comment';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
+}
+
+export class CancelReplyCommentEvent implements BaseEvent {
+  description:string = 'Cancel a reply comment';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
+}
+
+export class ReplyCreateEvent implements BaseEvent {
+  description:string = 'Event create a comment for post';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
 }

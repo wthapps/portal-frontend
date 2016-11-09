@@ -38,9 +38,7 @@ import {
 
 import { LoadingDirective } from './directive/loading.directive';
 
-import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
-
-import { GroupByPipe } from './pipe/groupby.pipe';
+import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/index';
 
 import { FormModalComponent } from './form/form-modal.component';
 import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
@@ -79,8 +77,8 @@ import { NewlinePipe } from './pipe/newline.pipe';
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
-    NewlinePipe
-
+    NewlinePipe,
+    DateUntilNowPipe,
   ],
   exports: [
     ToolbarComponent,
@@ -111,7 +109,8 @@ import { NewlinePipe } from './pipe/newline.pipe';
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
-    NewlinePipe
+    NewlinePipe,
+    DateUntilNowPipe,
   ]
 })
 export class SharedModule {

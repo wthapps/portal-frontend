@@ -1,11 +1,11 @@
 <div *ngIf="!showInfo" class="z-social-media">
   <div class="z-social-media-left">
-    <img src="assets/images/avatar/avatar.png" alt="">
+    <img [src]="item.owner.profile_image" alt="">
   </div>
   <div class="z-social-media-body">
     <div class="z-heading">
       <div class="z-name">
-        {{item.owner.nickname}}
+        {{item.owner.name}}
       </div>
       <div class="z-shared-with dropdown">
         <a href="#" data-toggle="dropdown"><i class="{{item.privacyDisplay.css}}"></i> {{item.privacyDisplay.text}}</a>
@@ -22,7 +22,7 @@
     <div class="z-shared-info">
       <ul>
         <li class="z-time">
-          Jul 16 2016
+          {{item.created_at | date}}
         </li>
         <li *ngIf="item.adult">
           Adult content

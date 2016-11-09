@@ -10754,9 +10754,11 @@ body.drag-active .dropzone-overlap {
   opacity: 0;
   max-height: 0;
   font-size: 0;
-  transition: .25s ease; }
+  transition: .25s ease;
+  display: none; }
 
 .read-more-state:checked ~ .read-more-wrap .read-more-target {
+  display: block;
   opacity: 1;
   font-size: inherit;
   max-height: 9999em; }
