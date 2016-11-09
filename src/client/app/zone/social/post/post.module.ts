@@ -3,12 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HdModalModule } from '../../shared/ng2-hd/modal/hd-modal';
 
+//noinspection TypeScriptCheckImport
 import {
   SoPhotoListComponent,
   FileSelectionComponent,
   PostEditComponent,
   PostPhotoSelectComponent,
-  PostNewComponent
+  PostNewComponent,
+  PostShareComponent,
+  PostActivitiesComponent,
+  PostShareCommunityComponent,
+  PostShareFriendComponent
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
 
@@ -28,7 +33,11 @@ import { TagInputModule } from 'ng2-tag-input';
     SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    PostPhotoSelectComponent
+    PostPhotoSelectComponent,
+    PostShareComponent,
+    PostActivitiesComponent,
+    PostShareCommunityComponent,
+    PostShareFriendComponent
   ],
   exports: [
     CommonModule,
@@ -40,7 +49,11 @@ import { TagInputModule } from 'ng2-tag-input';
     SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    PostPhotoSelectComponent
+    PostPhotoSelectComponent,
+    PostShareComponent,
+    PostActivitiesComponent,
+    PostShareCommunityComponent,
+    PostShareFriendComponent
   ]
 })
 

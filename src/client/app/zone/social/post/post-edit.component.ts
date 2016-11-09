@@ -3,8 +3,9 @@ import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
 import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
-import { PostPhotoSelectComponent } from './post-photo-select.component';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
+import { UserService } from '../../../shared/index';
+import { PostPhotoSelectComponent, PostShareCommunityComponent, PostShareFriendComponent } from './index';
 
 
 declare var _: any;
@@ -20,17 +21,22 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   @ViewChild('modal') modal: HdModalComponent;
   @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
+  @ViewChild('customCommunities') customCommunities: PostShareCommunityComponent;
+  @ViewChild('customFriends') customFriends: PostShareFriendComponent;
 
   @Input() openMode: string = 'add'; // add or edit
   @Input() photos: Array<any> = new Array<any>()
-  post: SoPost;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
 
+  post: SoPost;
   files: Array<any> = new Array<any>();
-  tags: Array<string>= new Array<string>();
+  tags: Array<string> = new Array<string>();
+  objTags: Array<any> = new Array<any>();
+  originalTags: Array<any> = new Array<any>();
+
   form: FormGroup;
   descCtrl: AbstractControl;
   tagsCtrl: AbstractControl;
@@ -41,7 +47,8 @@ export class PostEditComponent implements OnInit, OnChanges {
   constructor(
     private apiService: ApiBaseService,
     private loading: LoadingService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private currentUser: UserService
   ) {
   }
 
@@ -58,22 +65,25 @@ export class PostEditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // if(changes['post']) {
-    //   // this.form       = this.fb.group({
-    //   //   'description': [this.post.description, Validators.compose([Validators.required])],
-    //   //   'tags': [_.map(this.post.tags, 'name'), null],
-    //   //   'photos': [this.post.photos, null]
-    //   // });
-    //   // this.descCtrl   = this.form.controls['description'];
-    //   // this.tagsCtrl   = this.form.controls['tags'];
-    //   // this.photosCtrl = this.form.controls['photos'];
-    // }
+
   }
 
   open(options: any={mode:'add', addingPhotos: false, post: null}) {
+    // load tags
+    this.apiService.get(`zone/tags`)
+      .subscribe((result: any) => {
+          this.objTags = result['data'];
+          this.tags = _.map(result['data'], 'name');
+        },
+        error => {
+          console.log('error', error);
+        });
+
+
     this.post = new SoPost();
     if(options.post != null) {
       this.post = options.post;
+      this.originalTags = this.post.tags;
     }
     this.form       = this.fb.group({
       'description': [this.post.description, Validators.compose([Validators.required])],
@@ -106,7 +116,7 @@ export class PostEditComponent implements OnInit, OnChanges {
       post: {
         description: item.description,
         photos: this.post.photos, // TODO refactor on view formControl=photosCtrl
-        tags: item.tags,
+        tags: this.post.tags,
         privacy: this.post.privacy,
         adult: this.post.adult,
         disable_comment: this.post.disable_comment,
@@ -234,15 +244,35 @@ export class PostEditComponent implements OnInit, OnChanges {
     console.log('closing.........');
   }
 
+  customShare(type: string, event: any) {
+    event.preventDefault();
+    if(type == 'communities') {
+      this.customCommunities.modal.open();
+    } else {
+      this.customFriends.modal.open();
+    }
+  }
+
   /**
    * Tagging
    */
-  addTag(event: any) {
-
+  addTag(tag: any) {
+    let tagObj = _.find(this.objTags, ['name', tag]);
+    if( tagObj == undefined) {
+      tagObj = {
+        id: null,
+        name: tag,
+        user_id: this.currentUser.profile.id
+      }
+    }
+    this.post.tags.push(tagObj);
+    console.log('tag add', tag, this.post.tags);
   }
 
-  removeTag(event: any) {
+  removeTag(tag: any) {
 
+    this.post.tags = _.pull(this.post.tags, _.find(this.post.tags,['name', tag]));
+    console.log('tag remove', tag,  this.post.tags);
   }
 
   /**

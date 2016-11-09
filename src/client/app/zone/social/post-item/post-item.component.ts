@@ -2,15 +2,13 @@ import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, Eve
 import { SoPost } from "../../../shared/models/social_network/so-post.model";
 import { BaseZoneSocialItem } from "../base/base-social-item";
 import { ConstantsSocial } from "../base/constants-social";
-import { ZSocialPostListComponent } from '../post-list/post-list.component';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { Constants } from '../../../shared/config/constants';
 import { LoadingService, ToastsService, ConfirmationService } from '../../../shared/index';
-import { PostEditComponent } from '../post/post-edit.component';
-
+import {  } from '../post/post-edit.component';
 import { CommentCreateEvent, PhotoModalEvent } from '../events/social-events';
-import { PostPhotoSelectComponent } from '../post/post-photo-select.component';
 import { ZSocialPostItemFooterComponent } from './post-item-layout/post-item-footer.component';
+import { PostPhotoSelectComponent, PostShareComponent, PostEditComponent, PostActivitiesComponent } from '../post/index';
 
 declare var _: any;
 
@@ -22,6 +20,9 @@ declare var _: any;
 
 export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @ViewChild('postEdit') postEdit: PostEditComponent;
+  @ViewChild('postShare') postShare: PostShareComponent;
+  @ViewChild('postActivities') postActivities: PostActivitiesComponent;
+
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
@@ -141,6 +142,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
       .subscribe((result: any) => {
         this.item = result['data'];
         this.mapDisplay();
+        this.postEdit.post = this.itemDisplay;
       },
       error => {
 
@@ -205,4 +207,11 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     );
   }
 
+  openShare() {
+    this.postShare.modal.open();
+  }
+
+  openActivities() {
+    this.postActivities.modal.open();
+  }
 }
