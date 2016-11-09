@@ -35,7 +35,7 @@
     </ul>
   </div>
   <div class="z-social-post-action">
-    <ul>
+    <ul class="pull-left">
       <li class="active">
         <i class="fa fa-thumbs-o-up" (click)="update({}, $event)"></i> {{item.reactions_like.length}}
       </li>
@@ -43,8 +43,15 @@
         <i class="fa fa-thumbs-o-down"></i> {{item.reactions_dislike.length}}
       </li>
       <li>
-        <i class="fa fa-share-alt"></i> {{item.reactions_share.length}}
+        <i class="fa fa-share-alt" (click)="openShare($event)"></i> {{item.reactions_share.length}}
       </li>
     </ul>
+
+    <ul class="pull-right">
+      <li>
+        <a data-toggle="modal" href="#" (click)="openActivities($event)">Share Activities</a>
+      </li>
+    </ul>
+
   </div>
 </div>

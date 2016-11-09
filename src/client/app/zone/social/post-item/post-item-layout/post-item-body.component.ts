@@ -41,4 +41,13 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
     event.preventDefault();
     this.postItem.update(attr);
   }
+
+  openShare(event: any) {
+    this.postItem.openShare();
+  }
+
+  openActivities(event: any) {
+    event.preventDefault();
+    this.postItem.openActivities();
+  }
 }

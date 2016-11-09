@@ -24,7 +24,8 @@
                   <i class="fa fa-users"></i> Friends</a></li>
                 <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#" (click)="update({privacy: 'Custom'}, $event)">Custom</a></li>
+                <li><a href="#" (click)="customShare('communities', $event)">Share in Communities</a></li>
+                <li><a href="#" (click)="customShare('friends', $event)">Share with Friends</a></li>
               </ul>
             </span>
           </div>
@@ -95,9 +96,10 @@
                        [autocomplete]="true"
                        (onRemove)="removeTag($event)"
                        (onAdd)="addTag($event)"
-                       [(ngModel)]="tags"
                        [formControl]="tagsCtrl"
             ></tag-input>
+            <!--[(ngModel)]="post.tags"-->
+
           </div>
           <div class="form-group">
             <ul class="modal-social-photo-grid">
@@ -139,4 +141,7 @@
                    (onDismiss)="dismiss($event)"
                    (onClose)="closeSelectPhoto($event)"
                    (onUpload)="upload($event)"></post-photo-select>
+
+<post-share-community #customCommunities></post-share-community>
+<post-share-friend #customFriends></post-share-friend>
 
