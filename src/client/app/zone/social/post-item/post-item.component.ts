@@ -132,9 +132,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   edit() {
-    this.postEdit.post = this.item;
-    this.postEdit.open();
-    // this.posts.edit();
+    this.postEdit.open({mode: 'edit', post: this.itemDisplay});
   }
 
   update(attr: any={}) {

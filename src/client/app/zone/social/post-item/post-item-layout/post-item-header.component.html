@@ -29,10 +29,10 @@
         <li *ngIf="item.mute">
           Mute
         </li>
-        <li *ngIf="!item.disable_comment">
+        <li *ngIf="item.disable_comment">
           Disable comment
         </li>
-        <li *ngIf="!item.disable_share">
+        <li *ngIf="item.disable_share">
           Disable share
         </li>
       </ul>
@@ -58,17 +58,17 @@
         <li><a href="#" (click)="edit($event)" >Edit Post</a></li>
         <li><a href="#" (click)="delete($event)">Delete</a></li>
         <li role="separator" class="divider"></li>
-        <li><a href="#" *ngIf="item.disable_comment"
-               (click)="update({disable_comment: false}, $event)">
-          Disable comment</a></li>
         <li><a href="#" *ngIf="!item.disable_comment"
                (click)="update({disable_comment: true}, $event)">
+          Disable comment</a></li>
+        <li><a href="#" *ngIf="item.disable_comment"
+               (click)="update({disable_comment: false}, $event)">
           Enable comment</a></li>
-        <li><a href="#" *ngIf="item.disable_share"
-               (click)="update({disable_share: false}, $event)">
-          Disable share</a></li>
         <li><a href="#" *ngIf="!item.disable_share"
                (click)="update({disable_share: true}, $event)">
+          Disable share</a></li>
+        <li><a href="#" *ngIf="item.disable_share"
+               (click)="update({disable_share: false}, $event)">
           Enable share</a></li>
 
       </ul>

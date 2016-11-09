@@ -40,10 +40,10 @@
             <li *ngIf="post.mute">
               Mute
             </li>
-            <li *ngIf="!post.disable_comment">
+            <li *ngIf="post.disable_comment">
               Disable comment
             </li>
-            <li *ngIf="!post.disable_share">
+            <li *ngIf="post.disable_share">
               Disable share
             </li>
           </ul>
@@ -61,14 +61,14 @@
             <li><a href="#" (click)="update({mute: !post.mute}, $event)">Mute
               <i class="fa" [ngClass]="post.mute ? 'fa-check' : ''"></i></a></li>
             <li role="separator" class="divider"></li>
-            <li *ngIf="post.disable_comment">
-              <a href="#" (click)="update({disable_comment: false}, $event)">Disable comment</a></li>
             <li *ngIf="!post.disable_comment">
-              <a href="#" (click)="update({disable_comment: true}, $event)">Enable comment</a></li>
-            <li *ngIf="post.disable_share">
-              <a href="#" (click)="update({disable_share: false}, $event)">Disable share</a></li>
+              <a href="#" (click)="update({disable_comment: true}, $event)">Disable comment</a></li>
+            <li *ngIf="post.disable_comment">
+              <a href="#" (click)="update({disable_comment: false}, $event)">Enable comment</a></li>
             <li *ngIf="!post.disable_share">
-              <a href="#" (click)="update({disable_share: true}, $event)">Enable share</a></li>
+              <a href="#" (click)="update({disable_share: true}, $event)">Disable share</a></li>
+            <li *ngIf="post.disable_share">
+              <a href="#" (click)="update({disable_share: false}, $event)">Enable share</a></li>
           </ul>
         </div>
       </div>
@@ -128,7 +128,7 @@
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"
                 [disabled]="!form.valid">Done</button>
-        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel</button>
       </div>
     </form>
 
@@ -137,5 +137,6 @@
 <post-photo-select #photoSelectModal
                    (onNext)="next($event)"
                    (onDismiss)="dismiss($event)"
+                   (onClose)="closeSelectPhoto($event)"
                    (onUpload)="upload($event)"></post-photo-select>
 

@@ -23,7 +23,7 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   @Input() openMode: string = 'add'; // add or edit
   @Input() photos: Array<any> = new Array<any>()
-  @Input() post: SoPost;
+  post: SoPost;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
@@ -35,6 +35,8 @@ export class PostEditComponent implements OnInit, OnChanges {
   descCtrl: AbstractControl;
   tagsCtrl: AbstractControl;
   photosCtrl: AbstractControl;
+  backupPhotos: Array<any> = new Array<any>();
+  uploadedPhotos: Array<any> = new Array<any>();
 
   constructor(
     private apiService: ApiBaseService,
@@ -56,22 +58,22 @@ export class PostEditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['post']) {
-      // this.form       = this.fb.group({
-      //   'description': [this.post.description, Validators.compose([Validators.required])],
-      //   'tags': [_.map(this.post.tags, 'name'), null],
-      //   'photos': [this.post.photos, null]
-      // });
-      // this.descCtrl   = this.form.controls['description'];
-      // this.tagsCtrl   = this.form.controls['tags'];
-      // this.photosCtrl = this.form.controls['photos'];
-    }
+    // if(changes['post']) {
+    //   // this.form       = this.fb.group({
+    //   //   'description': [this.post.description, Validators.compose([Validators.required])],
+    //   //   'tags': [_.map(this.post.tags, 'name'), null],
+    //   //   'photos': [this.post.photos, null]
+    //   // });
+    //   // this.descCtrl   = this.form.controls['description'];
+    //   // this.tagsCtrl   = this.form.controls['tags'];
+    //   // this.photosCtrl = this.form.controls['photos'];
+    // }
   }
 
   open(options: any={mode:'add', addingPhotos: false, post: null}) {
-    console.log('add post', this.post, this.photos, typeof options.post);
+    this.post = new SoPost();
     if(options.post != null) {
-      this.post.photos = options.post.photos;
+      this.post = options.post;
     }
     this.form       = this.fb.group({
       'description': [this.post.description, Validators.compose([Validators.required])],
@@ -103,8 +105,13 @@ export class PostEditComponent implements OnInit, OnChanges {
     body = JSON.stringify({
       post: {
         description: item.description,
-        photos: item.photos,
-        tags: item.tags
+        photos: this.post.photos, // TODO refactor on view formControl=photosCtrl
+        tags: item.tags,
+        privacy: this.post.privacy,
+        adult: this.post.adult,
+        disable_comment: this.post.disable_comment,
+        disable_share: this.post.disable_share,
+        mute: this.post.mute
       }
     });
 
@@ -143,8 +150,7 @@ export class PostEditComponent implements OnInit, OnChanges {
       let reader: FileReader;
       let body: string;
       let fileName: string;
-      this.loading.start('.photo-item-uploading');
-
+      // this.loading.start('.photo-item-uploading');
       do {
         reader = new FileReader();
         reader.onload = (data: any) => {
@@ -153,7 +159,9 @@ export class PostEditComponent implements OnInit, OnChanges {
           this.apiService.post(`zone/social_network/photos/upload`, body)
             .map(res => res.json())
             .subscribe((result: any) => {
-              this.photos.unshift(result['data']);
+              this.post.photos.unshift(result['data']);
+              this.uploadedPhotos.push(result['data']);
+              files.shift(); // remove file was uploaded
               },
               error => {
 
@@ -163,7 +171,7 @@ export class PostEditComponent implements OnInit, OnChanges {
         fileName = files[i].name;
         reader.readAsDataURL(files[i]);
         i++;
-
+        // } while (files.length > 0);
       } while (i < files.length);
 
   }
@@ -181,6 +189,8 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   removePhoto(photo: any, event: any) {
     console.log('removing........');
+    this.backupPhotos = this.post.photos;
+    this.post.photos = _.pull(this.post.photos, photo);
   }
 
   next(selectedPhotos: any) {
@@ -198,6 +208,16 @@ export class PostEditComponent implements OnInit, OnChanges {
     if(photos == null) {
       this.modal.open();
     }
+
+    // restore photos after we cancelled editing
+    if(this.openMode == 'edit' && this.backupPhotos.length > 0) {
+      this.post.photos = this.backupPhotos;
+    }
+    if(this.uploadedPhotos.length > 0) {
+      // delete uploaded files form uploaded photos
+      this.post.photos = _.pullAll(this.post.photos, this.uploadedPhotos);
+      this.files = [];
+    }
   }
 
   upload(files: Array<any>) {
@@ -207,6 +227,11 @@ export class PostEditComponent implements OnInit, OnChanges {
     // this.files = files;
     this.photoSelectModal.close();
     this.modal.open();
+    this.uploadFiles(this.files);
+  }
+
+  closeSelectPhoto(event: any) {
+    console.log('closing.........');
   }
 
   /**
@@ -226,6 +251,10 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   update(attr: any={}, event: any) {
     event.preventDefault();
-    this.onUpdated.emit(attr);
+    if(this.openMode == 'add') {
+      this.post = _.assignIn(this.post, attr);
+    } else {
+      this.onUpdated.emit(attr);
+    }
   }
 }
