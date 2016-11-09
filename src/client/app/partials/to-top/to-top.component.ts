@@ -38,7 +38,7 @@ export class ToTopComponent implements OnInit, OnDestroy {
         backToTop();
       });
 
-      $('body').on('click', '.x-to-top', (e)=> {
+      $('body').on('click', '.x-to-top', (e:any)=> {
         e.preventDefault();
         $('html, body').animate({
           scrollTop: 0

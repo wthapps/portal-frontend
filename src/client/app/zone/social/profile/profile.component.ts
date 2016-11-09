@@ -34,7 +34,7 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
   }
 
   getUserInfo() {
-    this.apiService.get('/zone/social_network/users/user')
+    this.apiService.get('zone/social_network/users/user')
       .subscribe((res: any) => {
           this.userInfo = res.data;
           console.log(res);
