@@ -32,7 +32,8 @@ import {
   BreadcrumbComponent,
   SliderComponent,
   UploadCropImageComponent,
-  ToTopComponent
+  ToTopComponent,
+  ReadMoreComponent
 } from '../partials/index';
 
 import { LoadingDirective } from './directive/loading.directive';
@@ -42,7 +43,8 @@ import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
 import { GroupByPipe } from './pipe/groupby.pipe';
 
 import { FormModalComponent } from './form/form-modal.component';
-import {ApiBaseServiceV2} from "./services/apibase.service.v2";
+import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
+import { NewlinePipe } from './pipe/newline.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -70,12 +72,14 @@ import {ApiBaseServiceV2} from "./services/apibase.service.v2";
     SliderComponent,
     UploadCropImageComponent,
     ToTopComponent,
+    ReadMoreComponent,
     FormModalComponent,
     // Directive
     LoadingDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
+    NewlinePipe
 
   ],
   exports: [
@@ -91,6 +95,7 @@ import {ApiBaseServiceV2} from "./services/apibase.service.v2";
     SliderComponent,
     UploadCropImageComponent,
     ToTopComponent,
+    ReadMoreComponent,
 
     // third party modules
     ConfirmDialogModule,
@@ -106,6 +111,7 @@ import {ApiBaseServiceV2} from "./services/apibase.service.v2";
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
+    NewlinePipe
   ]
 })
 export class SharedModule {

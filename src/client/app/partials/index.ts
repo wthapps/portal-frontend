@@ -9,6 +9,7 @@ export * from './countries/index';
 export * from './table-pricing/index';
 export * from './upload-crop-image/index';
 export * from './to-top/index';
+export * from './read-more/index';
 
 export * from './header/index';
 export * from './footer/index';

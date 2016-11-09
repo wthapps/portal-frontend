@@ -17,6 +17,7 @@ var thirdPartyFile = [
     //zone
     bowerPath + '/wheelzoom/wheelzoom.js',
     bowerPath + '/file-saver/FileSaver.min.js',
+    bowerPath + '/shave/dist/shave.min.js',
     basePath + '/js/common.js'
 ];
 

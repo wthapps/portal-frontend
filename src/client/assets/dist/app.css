@@ -8881,6 +8881,9 @@ body {
 .bold {
   font-weight: bold; }
 
+.word-break {
+  word-break: break-all; }
+
 .text-fade {
   opacity: 0.8;
   filter: alpha(opacity=80); }

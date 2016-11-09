@@ -1,12 +1,8 @@
 <div *ngIf="!showInfo" class="z-social-post">
   <div class="z-social-post-content">
     <div class="z-social-post-txt">
-      <div class="z-social-post-txt-in">
-        {{item.description}}
-      </div>
-      <div class="z-social-post-txt-more">
-        <a href="#">READ MORE</a>
-      </div>
+      <read-more [maxheight]="120" [content]="item.description">
+      </read-more>
     </div>
     <div class="z-social-post-tag">
       <a *ngFor="let tag of item.tags">
