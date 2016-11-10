@@ -1,19 +1,25 @@
-<div class="z-social-comment">
+<div *ngIf="!item.disable_comment" class="z-social-comment">
+  <pre>
+    {{item|json}}
+  </pre>
+
   <!--Add new comment-->
   <comment-box #commentBox (eventEmitter)="onAction($event)" [item]="item" [type]=1></comment-box>
 
   <div class="z-social-comment-num">{{item.comments.length}} Comments</div>
-  <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}" />
+  <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
   <ul class="z-social-comment-list media-list read-more-wrap">
 
 
     <li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">
       <!--Edit comment-->
-      <comment-box id="editComment-{{comment.uuid}}" (eventEmitter)="onAction($event)" [item]="item" [comment]="comment" style="display: none" [type]=2></comment-box>
+      <comment-box id="editComment-{{comment.uuid}}" (eventEmitter)="onAction($event)" [item]="item" [comment]="comment"
+                   style="display: none" [type]=2></comment-box>
       <div id="comment-{{comment.uuid}}">
         <div class="media-left">
           <a href="#">
-            <img alt="64x64" class="media-object" [src]="item.owner.profile_image" style="width: 34px; border-radius: 3px">
+            <img alt="64x64" class="media-object" [src]="item.owner.profile_image"
+                 style="width: 34px; border-radius: 3px">
           </a>
         </div>
         <div class="media-body">
@@ -38,12 +44,13 @@
               <li><a href="javascript:;" (click)="onReply($event, comment)">{{comment.replies.length}} Replies</a></li>
             </ul>
           </div>
-      </div>
+        </div>
       </div>
       <div class="media" *ngFor="let replies of comment.replies" style="position: relative; left: 8%;">
         <div class="media-left">
           <a href="#">
-            <img alt="64x64" class="media-object" [src]="item.owner.profile_image" style="width: 34px; border-radius: 3px">
+            <img alt="64x64" class="media-object" [src]="item.owner.profile_image"
+                 style="width: 34px; border-radius: 3px">
           </a>
         </div>
         <div class="media-body">
@@ -62,7 +69,8 @@
           </div>
         </div>
       </div>
-      <comment-box id="reply-{{comment.uuid}}" (eventEmitter)="onAction($event)" [item]="item" [comment]="comment" style="display: none;" [type]=3></comment-box>
+      <comment-box id="reply-{{comment.uuid}}" (eventEmitter)="onAction($event)" [item]="item" [comment]="comment"
+                   style="display: none;" [type]=3></comment-box>
     </li>
   </ul>
   <div *ngIf="!showInfo" class="z-social-comment-more">
