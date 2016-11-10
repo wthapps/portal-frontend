@@ -30,6 +30,11 @@
       </li>
     </ul>
   </div>
+
+  <pre>
+    {{item|json}}
+  </pre>
+
   <div class="z-social-post-action">
     <ul class="pull-left">
       <li class="active">
@@ -38,7 +43,7 @@
       <li>
         <i class="fa fa-thumbs-o-down"></i> {{item.reactions_dislike.length}}
       </li>
-      <li>
+      <li *ngIf="!item.disable_share">
         <i class="fa fa-share-alt" (click)="openShare($event)"></i> {{item.reactions_share.length}}
       </li>
     </ul>
