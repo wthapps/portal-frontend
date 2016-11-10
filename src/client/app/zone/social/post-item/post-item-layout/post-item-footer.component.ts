@@ -5,9 +5,9 @@ import { ToastsService } from '../../../../partials/toast/toast-message.service'
 import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
-import { DeleteCommentEvent, CancelEditCommentEvent, CancelReplyCommentEvent } from '../../events/social-events';
+import { DeleteCommentEvent, CancelEditCommentEvent, CancelReplyCommentEvent, DeleteReplyEvent, CancelEditReplyCommentEvent} from '../../events/social-events';
 import { SoComment } from '../../../../shared/models/social_network/so-comment.model';
-import { ZSocialCommentBoxComponent } from './sub-layout/comment-box.component';
+import { ZSocialCommentBoxComponent, ZSocialCommentBoxType } from './sub-layout/comment-box.component';
 
 declare var _: any;
 declare var $: any;
@@ -22,8 +22,8 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
 
   @Input() item: SoPost;
   @Input() type: string;
-  @ViewChild('commentBox') commentBox: ZSocialCommentBoxComponent;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
+  commentBoxType = ZSocialCommentBoxType;
 
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2,
@@ -43,7 +43,7 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
   }
 
   onAction(event:any) {
-    if (event instanceof CancelEditCommentEvent) {
+    if (event instanceof CancelEditCommentEvent || event instanceof CancelEditReplyCommentEvent) {
       $("#editComment-" + event.data.uuid).hide();
       $("#comment-" + event.data.uuid).show();
       return;
@@ -63,6 +63,10 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
   onEditComment(comment: SoComment) {
     $("#editComment-" + comment.uuid).show();
     $("#comment-" + comment.uuid).hide();
+  }
+
+  onDeleteReply(comment: SoComment, reply: SoComment, ) {
+    this.eventEmitter.emit(new DeleteReplyEvent({comment_uuid: comment.uuid, reply_uuid: reply.uuid}));
   }
 
   onReply(e:any, comment: SoComment) {

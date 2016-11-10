@@ -25,4 +25,12 @@ export class BaseZoneSocialItem extends BaseZoneSocial {
   createReply(body:any) {
     return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies`, body);
   }
+
+  updateReply(body:any) {
+    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies/${body.reply_uuid}`, body);
+  }
+
+  deleteReply(body:any) {
+    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies/${body.reply_uuid}`);
+  }
 }

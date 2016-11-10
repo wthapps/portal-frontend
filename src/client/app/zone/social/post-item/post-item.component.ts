@@ -9,12 +9,13 @@ import { PostEditComponent } from '../post/post-edit.component';
 
 import {
   CommentCreateEvent, OpenPhotoModalEvent, DeleteCommentEvent,
-  CommentUpdateEvent, ReplyCreateEvent
+  CommentUpdateEvent, ReplyCreateEvent, ReplyUpdateEvent, DeleteReplyEvent
 } from '../events/social-events';
 import { PostPhotoSelectComponent } from '../post/post-photo-select.component';
 
 import { ZSocialPostItemFooterComponent } from './post-item-layout/post-item-footer.component';
 import { PostPhotoSelectComponent, PostShareComponent, PostEditComponent, PostActivitiesComponent } from '../post/index';
+import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './post-item-layout/sub-layout/comment-box.component';
 
 declare var _: any;
 
@@ -35,7 +36,8 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
-  @ViewChild('postFooter') postFooter: ZSocialPostItemFooterComponent;
+  commentBox: ZSocialCommentBoxComponent;
+  commentBoxType = ZSocialCommentBoxType;
 
   itemDisplay: any;
 
@@ -185,73 +187,71 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   onActions(event:BaseEvent) {
     // Create a comment
     if (event instanceof CommentCreateEvent) {
-      this.loading.start();
       this.createComment(event.data).subscribe(
         (res:any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
-          this.loading.stop();
-          this.postFooter.commentBox.newComment = "";
         }
       );
     }
     // Update a comment
     if (event instanceof CommentUpdateEvent) {
-      this.loading.start();
       this.updateComment(event.data).subscribe(
         (res:any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
-          this.loading.stop();
-          this.postFooter.commentBox.editComment = "";
         }
       );
     }
-    // Open photo modal
-    if (event instanceof OpenPhotoModalEvent) {
-      this.postFooter.commentBox.commentData = event.data.comment;
-      this.postFooter.commentBox.type = event.data.type;
-      this.photoModal.open(true);
-    }
     // Delete a comment
     if (event instanceof DeleteCommentEvent) {
-      this.loading.start();
       this.deleteComment(event.data.uuid).subscribe(
         (res:any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
-          this.loading.stop();
         }
       );
     }
     // Create a reply
     if (event instanceof ReplyCreateEvent) {
-      this.loading.start();
       this.createReply(event.data).subscribe(
         (res:any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
-          this.loading.stop();
         }
       );
     }
 
+    // Update a reply
+    if (event instanceof ReplyUpdateEvent) {
+      this.updateReply(event.data).subscribe(
+        (res:any) => {
+          this.item = new SoPost().from(res.data);
+          this.mapDisplay();
+        }
+      );
+    }
+
+    // Delete a reply
+    if (event instanceof DeleteReplyEvent) {
+      this.deleteReply(event.data).subscribe(
+        (res:any) => {
+          this.item = new SoPost().from(res.data);
+          this.mapDisplay();
+        }
+      );
+    }
+
+    // Open photo modal
+    if (event instanceof OpenPhotoModalEvent) {
+      this.commentBox = event.data;
+      this.photoModal.open(true);
+    }
   }
 
   onSelectPhotoComment(photos:any) {
-    console.log(this.postFooter.commentBox.type);
-    if (this.postFooter.commentBox.type == 1) {
-      this.onActions(new CommentCreateEvent({content: this.postFooter.commentBox.newComment, photo: photos[0].id}));
-    }
-    if (this.postFooter.commentBox.type == 2) {
-      this.onActions(new CommentUpdateEvent({content: this.postFooter.commentBox.commentData.content, photo: photos[0].id, uuid: this.postFooter.commentBox.commentData.uuid}));
-      this.postFooter.commentBox.commentData = null;
-      this.postFooter.commentBox.type = 1;
-    }
-    if (this.postFooter.commentBox.type == 3) {
-      this.onActions(new ReplyCreateEvent({content: this.postFooter.commentBox.commentData.content, photo: photos[0].id, comment_uuid: this.postFooter.commentBox.commentData.uuid}));
-      this.postFooter.commentBox.commentData = null;
-      this.postFooter.commentBox.type = 1;
+    if (this.commentBox) {
+      this.commentBox.commentAction(photos);
     }
     this.photoModal.close();
   }

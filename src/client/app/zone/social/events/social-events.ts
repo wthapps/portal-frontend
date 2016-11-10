@@ -47,9 +47,34 @@ export class CancelReplyCommentEvent implements BaseEvent {
 }
 
 export class ReplyCreateEvent implements BaseEvent {
-  description:string = 'Event create a comment for post';
+  description:string = 'Event create a reply for post';
   data: any;
   constructor(data:any) {
     this.data = data;
   }
 }
+
+export class ReplyUpdateEvent implements BaseEvent {
+  description:string = 'Event update a reply for post';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
+}
+
+export class DeleteReplyEvent implements BaseEvent {
+  description:string = 'Delete a reply';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
+}
+
+export class CancelEditReplyCommentEvent implements BaseEvent {
+  description:string = 'Cancel edit a reply comment';
+  data: any;
+  constructor(data:any) {
+    this.data = data;
+  }
+}
+

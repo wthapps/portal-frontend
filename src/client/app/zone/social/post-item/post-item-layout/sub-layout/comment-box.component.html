@@ -5,15 +5,12 @@
   <div class="z-social-media-body">
     <div class="z-social-media-inputpost">
         <span class="z-social-media-inputpost">
-          <!--<i class="fa fa-camera" (click)="onOpenPhotoSelect()"></i>-->
+          <i class="fa fa-camera" (click)="onOpenPhotoSelect()"></i>
           <i class="fa fa-smile-o"></i>
         </span>
-      <input *ngIf="type == 1" type="text" class="form-control" placeholder="Add a comment" (keyup)="onKey($event)" [(ngModel)]="newComment">
-      <input *ngIf="type == 2" type="text" class="form-control" placeholder="Add a comment" (keyup)="onKey($event)" [(ngModel)]="editComment">
-      <input *ngIf="type == 3" type="text" class="form-control" placeholder="Add a comment" (keyup)="onKey($event)" [(ngModel)]="newReply">
+      <input type="text" class="form-control" placeholder="Add a comment" (keyup)="onKey($event)" [(ngModel)]="commentContent">
     </div>
-    <a *ngIf="type == 2" (click)="cancelComment()" href="javascript:;">Cancel</a>
-    <a *ngIf="type == 3" (click)="cancelReply()" href="javascript:;">Cancel</a>
+    <a *ngIf="type != commentBoxType.Add" (click)="cancel()" href="javascript:;">Cancel</a>
   </div>
 </div>
 
