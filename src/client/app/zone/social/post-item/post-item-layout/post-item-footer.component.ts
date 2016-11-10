@@ -8,6 +8,7 @@ import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2
 import { DeleteCommentEvent, CancelEditCommentEvent, CancelReplyCommentEvent, DeleteReplyEvent, CancelEditReplyCommentEvent} from '../../events/social-events';
 import { SoComment } from '../../../../shared/models/social_network/so-comment.model';
 import { ZSocialCommentBoxComponent, ZSocialCommentBoxType } from './sub-layout/comment-box.component';
+import { UserService } from '../../../../shared/services/user.service';
 
 declare var _: any;
 declare var $: any;
@@ -29,7 +30,9 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
     public apiBaseServiceV2: ApiBaseServiceV2,
     public loading: LoadingService,
     public confirmation: ConfirmationService,
-    public toast: ToastsService
+    public toast: ToastsService,
+    public userService: UserService,
+
   ) {
     super();
   }
@@ -37,6 +40,7 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
   showInfo: boolean = false;
 
   ngOnChanges() {
+    console.log(this.userService.profile)
     if (this.type == 'info') {
       this.showInfo = true;
     }
