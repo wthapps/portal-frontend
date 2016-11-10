@@ -193,7 +193,14 @@
   padding: 15px 15px 0;
   margin: 15px -15px 0;
   border-top: 1px solid $line;
-  border-bottom: 1px solid $line;
+  .media {
+    .media {
+      margin-left: 50px;
+    }
+    &, .media-body {
+      overflow: visible;
+    }
+  }
   .z-social-comment-num {
     color: $light-slate;
     margin: 15px 0;
@@ -204,6 +211,7 @@
     }
     .media-heading {
       font-size: 14px;
+      margin-bottom: 0;
       span {
         font-weight: normal;
         display: inline-block;
@@ -246,6 +254,9 @@
     > a {
       cursor: pointer;
       color: inherit;
+    }
+    .dropdown-menu {
+      top: 0;
     }
   }
   .media-body-reply {
