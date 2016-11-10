@@ -18,12 +18,12 @@
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading">{{item.owner.name}}
+          <h4 class="media-heading">{{comment.owner.name}}
             <span class="media-heading-time">{{comment.created_at | dateUntilNow}}</span>
           </h4>
           <p>{{comment.content}}</p>
           <img *ngIf="comment.photos[0]" [src]="comment.photos[0].url" style="max-width: 200px">
-          <div class="media-body-action dropdown pull-right">
+          <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
               <i class="fa fa-pencil"></i>
             </a>
@@ -51,9 +51,9 @@
             </a>
           </div>
           <div class="media-body">
-            <h4 class="media-heading">{{item.owner.name}}
+            <h4 class="media-heading">{{reply.owner.name}}
               <span class="media-heading-time">{{reply.created_at | dateUntilNow}}</span>
-              <div class="media-body-action dropdown pull-right">
+              <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
                 <a data-toggle="dropdown">
                   <i class="fa fa-pencil"></i>
                 </a>
