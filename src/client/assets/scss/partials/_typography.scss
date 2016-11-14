@@ -17,6 +17,10 @@ body {
   font-weight: bold;
 }
 
+.word-break {
+  word-break: break-all;
+}
+
 .text-fade {
   @include opacity(0.8);
 }

@@ -49,3 +49,125 @@
     }
   }
 }
+
+.modal-social {
+  @media (min-width: $screen-sm) {
+    .modal-dialog {
+      width: 670px;
+    }
+  }
+  .modal-social-head {
+    padding: 15px;
+    text-align: center;
+    position: relative;
+
+    background: #FFFFFF;
+    @include box-shadow(0px 2px 4px 0px rgba(163, 163, 163, 0.40));
+
+    .close {
+      position: absolute;
+      @include center(false, true);
+      left: 15px;
+    }
+    .btn {
+      position: absolute;
+      @include center(false, true);
+      right: 15px;
+    }
+    span {
+      display: inline-block;
+      line-height: 34px;
+    }
+  }
+  .modal-social-photo-grid, .photo-grid-list {
+    @include clearfix;
+    margin: 0 -2px;
+    padding: 0;
+    list-style-type: none;
+    > li, .photo-box-img {
+      float: left;
+      width: 20%;
+      margin: 0 !important;
+      padding-bottom: 20% - 5%;
+      position: relative;
+      .img-center-dv {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        bottom: 2px;
+        left: 2px;
+        &:after {
+          @extend .fa;
+          content: "\f058";
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          font-size: 24px;
+          color: #2996cc;
+          @include transition($transition-base);
+          @include opacity(0);
+          z-index: 2;
+        }
+        .fa {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          font-size: 14px;
+          color: #FFF;
+          @include transition($transition-base);
+          @include opacity(0);
+          z-index: 2;
+          width: 24px;
+          height: 24px;
+          text-align: center;
+          background-color: #2996cc;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+          border: 1px solid #FFF;
+          line-height: 22px;
+        }
+        &:hover {
+          .fa {
+            @include opacity(1);
+          }
+        }
+      }
+      &.selected {
+        .img-center-dv {
+          background-color: #e6e6e6;
+          &:after {
+            @include opacity(1);
+          }
+        }
+        .img-center {
+          padding: 15px;
+        }
+      }
+
+      &.z-upload-item {
+        text-align: center;
+        a {
+          display: block;
+          border: 2px dashed $light-slate;
+          position: absolute;
+          top: 2px;
+          right: 2px;
+          bottom: 2px;
+          left: 2px;
+          color: $light-slate;
+          div {
+            @include center();
+          }
+        }
+        i {
+          font-size: 36px;
+        }
+        span {
+          display: block;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}

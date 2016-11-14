@@ -68,6 +68,14 @@ export let Constants = {
     { name: 'Favorites', link: '/zone/picture/favourites' },
     { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },
   ],
+
+  socialMenuItems : [
+    { name: 'Home', link: '/zone/social' },
+    // { name: 'Communities', link: '/zone/social' },
+    // { name: 'Members', link: '/zone/social' },
+    { name: 'Profile', link: '/zone/social/profile' },
+  ],
+
   pictureMenuActions : {
     preview: true,
     share: true,
@@ -75,6 +83,9 @@ export let Constants = {
     tag: true,
     delete: true,
     other: true,
+  },
+  urls: {
+    zoneSoPosts: 'zone/social_network/posts'
   }
 };
 

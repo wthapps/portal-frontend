@@ -11,8 +11,9 @@
         <a href="javascript:;" (click)="onAction($event,'share')"><i class="fa fa-share-alt"></i></a>
       </li>
       <li>
-        <a href="javascript:;" (click)="onAction($event,'favourite')"><i class="fa"
-                                                                         [ngClass]="myItem.favorite ? 'fa-star': 'fa-star-o'"></i></a>
+        <a href="javascript:;" (click)="onAction($event,'favourite')">
+          <i class="fa" [ngClass]="myItem.favorite ? 'fa-star': 'fa-star-o'"></i>
+        </a>
       </li>
       <li>
         <a href="javascript:;" (click)="onAction($event,'tag')"><i class="fa fa-tag"></i></a>

@@ -1,0 +1,84 @@
+<div *ngIf="!item.disable_comment" class="z-social-comment">
+  <!--Add new comment-->
+  <comment-box (eventEmitter)="onAction($event)" [item]="item" [type]="commentBoxType.Add"></comment-box>
+
+  <div class="z-social-comment-num">{{item.comments.length}} Comments</div>
+  <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
+  <ul class="z-social-comment-list media-list read-more-wrap">
+
+
+    <li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">
+      <!--Edit comment-->
+      <comment-box id="editComment-{{comment.uuid}}" (eventEmitter)="onAction($event)" [item]="item" [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
+      <div id="comment-{{comment.uuid}}">
+        <div class="media-left">
+          <a href="#">
+            <img alt="64x64" class="media-object" [src]="item.owner.profile_image"
+                 style="width: 34px; border-radius: 3px">
+          </a>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{comment.owner.name}}
+            <span class="media-heading-time">{{comment.created_at | dateUntilNow}}</span>
+          </h4>
+          <p>{{comment.content}}</p>
+          <img *ngIf="comment.photos[0]" [src]="comment.photos[0].url" style="max-width: 200px">
+          <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
+            <a data-toggle="dropdown">
+              <i class="fa fa-pencil"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="javascript:;" (click)="onEditComment(comment)">Edit Comment</a></li>
+              <li><a href="javascript:;" (click)="onDeleteComment(comment)">Delete</a></li>
+            </ul>
+          </div>
+          <div class="media-body-reply">
+            <ul>
+              <li class="active"><a href="#"><i class="fa fa-thumbs-o-up"></i></a></li>
+              <li><a href="#"><i class="fa fa-thumbs-o-down"></i></a></li>
+              <li><a href="javascript:;" (click)="onReply($event, comment)">{{comment.replies.length}} Replies</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="media" *ngFor="let reply of comment.replies">
+        <!--Edit reply-->
+        <comment-box id="editComment-{{reply.uuid}}" (eventEmitter)="onAction($event)" [item]="item" [comment]="comment" [reply]="reply" style="display: none" [type]="commentBoxType.EditReply"></comment-box>
+        <div id="comment-{{reply.uuid}}">
+          <div class="media-left">
+            <a href="#">
+              <img alt="64x64" class="media-object" [src]="item.owner.profile_image" style="width: 34px; border-radius: 3px">
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">{{reply.owner.name}}
+              <span class="media-heading-time">{{reply.created_at | dateUntilNow}}</span>
+              <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
+                <a data-toggle="dropdown">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="javascript:;" (click)="onEditComment(reply)">Edit Comment</a></li>
+                  <li><a href="javascript:;" (click)="onDeleteReply(comment, reply)">Delete</a></li>
+                </ul>
+              </div>
+            </h4>
+            <p>{{reply.content}}</p>
+            <img *ngIf="reply.photos[0]" [src]="reply.photos[0].url" style="max-width: 200px">
+            <div class="media-body-reply">
+              <ul>
+                <li class="active"><a href="#"><i class="fa fa-thumbs-o-up"></i></a></li>
+                <li><a href="#"><i class="fa fa-thumbs-o-down"></i></a></li>
+                <li><a href="javascript:;" (click)="onReply($event, comment)">{{reply.replies.length}} Replies</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <comment-box id="reply-{{comment.uuid}}" (eventEmitter)="onAction($event)" [item]="item" [comment]="comment" style="display: none;" [type]="commentBoxType.Reply"></comment-box>
+    </li>
+  </ul>
+  <div *ngIf="!showInfo" class="z-social-comment-more">
+    <label attr.for="post-{{item.uuid}}" class="read-more-trigger">View all comments</label>
+  </div>
+</div>

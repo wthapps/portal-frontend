@@ -38,14 +38,14 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
 
 
   constructor(
-    private apiService?: ApiBaseService,
-    private albumService?: AlbumService,
-    private photoService?: PhotoService,
-    private route?: ActivatedRoute,
-    private loadingService?: LoadingService,
-    private router?: Router,
-    private toastsService?: ToastsService,
-    private confirmationService?: ConfirmationService,
+    public apiService?: ApiBaseService,
+    public albumService?: AlbumService,
+    public photoService?: PhotoService,
+    public route?: ActivatedRoute,
+    public loadingService?: LoadingService,
+    public router?: Router,
+    public toastsService?: ToastsService,
+    public confirmationService?: ConfirmationService,
   ) {
     super(MediaType.albumDetail, apiService);
   }

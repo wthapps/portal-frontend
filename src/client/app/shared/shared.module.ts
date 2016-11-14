@@ -31,16 +31,18 @@ import {
   AppCardPlatformComponent,
   BreadcrumbComponent,
   SliderComponent,
-  UploadCropImageComponent
+  UploadCropImageComponent,
+  ToTopComponent,
+  ReadMoreComponent
 } from '../partials/index';
 
 import { LoadingDirective } from './directive/loading.directive';
 
-import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
-
-import { GroupByPipe } from './pipe/groupby.pipe';
+import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/index';
 
 import { FormModalComponent } from './form/form-modal.component';
+import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
+import { NewlinePipe } from './pipe/newline.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -67,13 +69,16 @@ import { FormModalComponent } from './form/form-modal.component';
     BreadcrumbComponent,
     SliderComponent,
     UploadCropImageComponent,
+    ToTopComponent,
+    ReadMoreComponent,
     FormModalComponent,
     // Directive
     LoadingDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
-
+    NewlinePipe,
+    DateUntilNowPipe,
   ],
   exports: [
     ToolbarComponent,
@@ -87,6 +92,8 @@ import { FormModalComponent } from './form/form-modal.component';
     BreadcrumbComponent,
     SliderComponent,
     UploadCropImageComponent,
+    ToTopComponent,
+    ReadMoreComponent,
 
     // third party modules
     ConfirmDialogModule,
@@ -102,6 +109,8 @@ import { FormModalComponent } from './form/form-modal.component';
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
+    NewlinePipe,
+    DateUntilNowPipe,
   ]
 })
 export class SharedModule {
@@ -115,6 +124,7 @@ export class SharedModule {
         CountryService,
         ConfirmationService,
         DeactivateConfirmService,
+        ApiBaseServiceV2,
       ]
     };
   }

@@ -4,9 +4,8 @@
     a {
       display: block;
       color: $text-color;
-      padding: 8px 30px;
+      padding: 8px 15px;
       text-decoration: none;
-      font-size: 18px;
       &:hover {
         background-color: #F6F6F6;
       }
@@ -14,12 +13,12 @@
     > ul {
       > li {
         > a {
-          font-size: 18px;
           font-weight: bold;
         }
         &.active {
           background-color: #F6F6F6;
           > a {
+            color: #ffffff;
             background-color: $color-inverse;
           }
         }
@@ -38,7 +37,7 @@
           ul {
             li {
               a {
-                padding-left: 60px;
+                padding-left: 30px;
                 &:hover {
                   background-color: #d8d8d8;
                 }

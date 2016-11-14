@@ -201,7 +201,7 @@
         }
       }
       &.navbar-right {
-        li {
+        > li {
           margin-left: 15px;
         }
       }
@@ -212,6 +212,7 @@
         > a {
           color: #ffffff;
           display: inline-block;
+          float: left;
           width: 34px;
           height: 34px;
           text-align: center;

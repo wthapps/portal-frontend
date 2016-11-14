@@ -25,6 +25,7 @@ export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnI
   showImg: boolean = false;
   imgId: number;
   sendActionDetail: any;
+  items: any;
 
   @Input() resetSelected: boolean;
   @Input() preview: boolean;
@@ -39,9 +40,9 @@ export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnI
 
   constructor(private apiService: ApiBaseService,
               private toastsService: ToastsService,
-              private loadingService: LoadingService,
+              public loadingService: LoadingService,
               private confirmationService: ConfirmationService) {
-    super(MediaType.sharedWithMe, this.apiService);
+    super(MediaType.sharedWithMe);
   }
 
   ngOnInit() {

@@ -1,0 +1,94 @@
+<div *ngIf="!showInfo" class="z-social-media">
+  <div class="z-social-media-left">
+    <img [src]="item.owner.profile_image" alt="">
+  </div>
+  <div class="z-social-media-body">
+    <div class="z-heading">
+      <div class="z-name">
+        {{item.owner.name}}
+      </div>
+      <div class="z-shared-with dropdown">
+        <a href="#" data-toggle="dropdown"><i class="{{item.privacyDisplay.css}}"></i> {{item.privacyDisplay.text}}</a>
+        <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu1">
+          <li><a href="#" (click)="update({privacy: 'Public'}, $event)"><i class="fa fa-globe"></i> Public</a></li>
+          <li><a href="#" (click)="update({privacy: 'Friends'}, $event)"><i class="fa fa-users"></i> Friends</a></li>
+          <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#" (click)="update({privacy: 'Custom'}, $event)">Custom</a></li>
+          <!--<li><a href="#" (click)="update({privacy: 'Custom'}, $event)">Custom</a></li>-->
+        </ul>
+      </div>
+    </div>
+    <div class="z-shared-info">
+      <ul>
+        <li class="z-time">
+          {{item.created_at | date}}
+        </li>
+        <li *ngIf="item.adult">
+          Adult content
+        </li>
+        <li *ngIf="item.mute">
+          Mute
+        </li>
+        <li *ngIf="item.disable_comment">
+          Disable comment
+        </li>
+        <li *ngIf="item.disable_share">
+          Disable share
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="z-social-media-right">
+    <div class="dropdown pull-right">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+              data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true">
+        <i class="fa fa-ellipsis-v"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><a href="#" (click)="update({adult: !item.adult}, $event)">
+          Adult content <i class="fa fa-check" *ngIf="item.adult"></i>
+        </a>
+        </li>
+        <li><a href="#" (click)="update({mute: !item.mute}, $event)">
+          Mute<i class="fa fa-check" *ngIf="item.mute"></i>
+          </a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#" (click)="edit($event)" >Edit Post</a></li>
+        <li><a href="#" (click)="delete($event)">Delete</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#" *ngIf="!item.disable_comment"
+               (click)="update({disable_comment: true}, $event)">
+          Disable comment</a></li>
+        <li><a href="#" *ngIf="item.disable_comment"
+               (click)="update({disable_comment: false}, $event)">
+          Enable comment</a></li>
+        <li><a href="#" *ngIf="!item.disable_share"
+               (click)="update({disable_share: true}, $event)">
+          Disable share</a></li>
+        <li><a href="#" *ngIf="item.disable_share"
+               (click)="update({disable_share: false}, $event)">
+          Enable share</a></li>
+
+      </ul>
+    </div>
+
+    <div *ngIf="!showDetail" class="dropdown pull-right">
+      <a [routerLink]="['/zone/social/posts', item.uuid]" class="btn btn-default">
+        <i class="fa fa-external-link"></i>
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="showInfo" class="z-social-media-right">
+    <div class="dropdown pull-right">
+      <a href="javascript:;" class="btn btn-default" (click)="onShowInfo()">
+        <i class="fa fa-times"></i>
+      </a>
+    </div>
+  </div>
+
+</div>
+

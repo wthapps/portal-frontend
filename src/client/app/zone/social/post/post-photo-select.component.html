@@ -1,0 +1,20 @@
+<hd-modal #modal cssClass="modal-social modal-long"
+          [keyboard]="false"
+          [backdrop]="'static'"
+          (onDismiss)="dismiss($event)">
+  <modal-header cssClass="modal-social-head" [show-close]="true">
+    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+    <!--aria-hidden="true">&times;</span></button>-->
+    <button type="button" class="btn btn-wth-default btn-min"
+            (click)="next($event)" [disabled]="photoList.selectedItems.length <= 0">{{action}}</button>
+    <span>
+      {{photoList.selectedItems.length}} photo selected
+    </span>
+  </modal-header>
+  <modal-body>
+    <so-photo-list #photoList [show-upload]="true" (onFilesChanged)="chooseFiles($event)"></so-photo-list>
+  </modal-body>
+</hd-modal>
+
+
+

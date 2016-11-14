@@ -29,6 +29,11 @@ export class UserService extends ApiBaseService {
       });
   }
 
+  get() {
+    return super.post('users/get_user', '')
+      .map(res => res.json())
+  }
+
   logout(path: string): Observable<Response> {
     // public logout(path: string) {
     return super.delete(path)

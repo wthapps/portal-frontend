@@ -1,0 +1,146 @@
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+  <modal-body>
+    <div class="z-social-media mb15">
+      <div class="z-social-media-left">
+        <img src="assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="z-social-media-body">
+        <div class="z-heading">
+          <div class="z-name">
+            name
+          </div>
+          <div class="z-shared-with">
+            <span class="dropdown">
+              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="true">
+                 <i class="fa fa-globe" *ngIf="post.privacy=='Public'"></i>
+                 <i class="fa fa-users" *ngIf="post.privacy=='Friends'"></i>
+                 <i class="fa fa-lock" *ngIf="post.privacy=='Private'"></i>
+                {{post.privacy}}</a>
+              <ul class="dropdown-menu">
+                <li><a href="#" (click)="update({privacy: 'Public'}, $event)">
+                  <i class="fa fa-globe"></i> Public</a></li>
+                <li><a href="#" (click)="update({privacy: 'Friends'}, $event)">
+                  <i class="fa fa-users"></i> Friends</a></li>
+                <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#" (click)="customShare('communities', $event)">Share in Communities</a></li>
+                <li><a href="#" (click)="customShare('friends', $event)">Share with Friends</a></li>
+              </ul>
+            </span>
+          </div>
+        </div>
+        <div class="z-shared-info">
+          <ul>
+            <li class="z-time">
+              Jul 16 2016
+            </li>
+            <li *ngIf="post.adult">
+              Adult content
+            </li>
+            <li *ngIf="post.mute">
+              Mute
+            </li>
+            <li *ngIf="post.disable_comment">
+              Disable comment
+            </li>
+            <li *ngIf="post.disable_share">
+              Disable share
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="z-social-media-right">
+        <div class="dropdown pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#" (click)="update({adult: !post.adult}, $event)">Adult content
+              <i class="fa" [ngClass]="post.adult ? 'fa-check' : ''"></i></a></li>
+            <li><a href="#" (click)="update({mute: !post.mute}, $event)">Mute
+              <i class="fa" [ngClass]="post.mute ? 'fa-check' : ''"></i></a></li>
+            <li role="separator" class="divider"></li>
+            <li *ngIf="!post.disable_comment">
+              <a href="#" (click)="update({disable_comment: true}, $event)">Disable comment</a></li>
+            <li *ngIf="post.disable_comment">
+              <a href="#" (click)="update({disable_comment: false}, $event)">Enable comment</a></li>
+            <li *ngIf="!post.disable_share">
+              <a href="#" (click)="update({disable_share: true}, $event)">Disable share</a></li>
+            <li *ngIf="post.disable_share">
+              <a href="#" (click)="update({disable_share: false}, $event)">Enable share</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
+      <div class="row">
+        <div class="col-xs-6 col-sm-12">
+          <div class="form-group"
+               [ngClass]="{'has-error': (!descCtrl.valid && descCtrl.touched),
+                        'has-success': (descCtrl.valid && descCtrl.touched)}">
+          <textarea placeholder="Share your ideas" class="form-control"
+                    [formControl]="descCtrl"></textarea>
+            <!--<div *ngIf="!form.controls['description'].valid && form.controls['description'].touched">-->
+              <!--<span class="help-block"-->
+                    <!--*ngIf="!form.controls['description'].valid && form.controls['description'].errors.required" >-->
+                <!--Share your ideas is required-->
+              <!--</span>-->
+            <!--</div>-->
+          </div>
+          <div class="form-group">
+            <tag-input [maxItems]='100'
+                       [autocompleteItems]="tags"
+                       [autocomplete]="true"
+                       (onRemove)="removeTag($event)"
+                       (onAdd)="addTag($event)"
+                       [formControl]="tagsCtrl"
+            ></tag-input>
+            <!--[(ngModel)]="post.tags"-->
+
+          </div>
+          <div class="form-group">
+            <ul class="modal-social-photo-grid">
+              <li *ngFor="let f of files">
+                <div class="social-photo-grid-item">
+                  <i class="fa fa-remove wth-fa-remove" (click)="cancelUploading(f)"></i>
+                  <figure class="img-center-dv photo-item-uploading loading">
+                  </figure>
+                </div>
+              </li>
+              <li *ngFor="let p of post.photos">
+                <div class="social-photo-grid-item">
+                  <i class="fa fa-remove wth-fa-remove" (click)="removePhoto(p,$event)"></i>
+                  <figure class="img-center-dv">
+                    <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+                    <img class="img-center" [src]="p['thumbnail_url']" alt="">
+                  </figure>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix text-right">
+        <button type="button" class="btn btn-default pull-left btn-min" (click)="addMorePhoto($event)">
+          <i class="fa fa-plus"></i> Add more
+        </button>
+        <button type="submit" class="btn btn-wth-default btn-min"
+                [disabled]="!form.valid">Done</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel</button>
+      </div>
+    </form>
+
+  </modal-body>
+</hd-modal>
+<post-photo-select #photoSelectModal
+                   (onNext)="next($event)"
+                   (onDismiss)="dismiss($event)"
+                   (onClose)="closeSelectPhoto($event)"
+                   (onUpload)="upload($event)"></post-photo-select>
+
+<post-share-community #customCommunities></post-share-community>
+<post-share-friend #customFriends></post-share-friend>
+

@@ -86,6 +86,32 @@
 
 .btn-default-inline {
   @include button-variant-inline($btn-default-color, transparent, transparent);
+  &:focus,
+  &.focus {
+    color: $btn-default-color;
+    background-color: $line;
+    border-color: $line;
+  }
+  &:hover {
+    color: $btn-default-color;
+    background-color: $line;
+    border-color: $line;
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    color: $btn-default-color;
+    background-color: $line;
+    border-color: $line;
+
+    &:hover,
+    &:focus,
+    &.focus {
+      color: $btn-default-color;
+      background-color: $line;
+      border-color: $line;
+    }
+  }
 }
 
 .btn-min {
@@ -99,6 +125,10 @@
 }
 
 .btn {
+
+  text-transform: uppercase;
+  min-width: 34px;
+
   &,
   &:active,
   &.active {
