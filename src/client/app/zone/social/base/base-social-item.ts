@@ -11,19 +11,19 @@ export class BaseZoneSocialItem extends BaseZoneSocial {
   }
 
   createComment(body:any) {
-    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments`, body);
+    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
   }
 
   updateComment(body:any) {
-    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.uuid}`, body);
+    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.uuid}`, body);
   }
 
   deleteComment(commentUuid:string) {
-    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${commentUuid}`);
+    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${commentUuid}`);
   }
 
   createReply(body:any) {
-    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies`, body);
+    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
   }
 
   updateReply(body:any) {
@@ -31,6 +31,6 @@ export class BaseZoneSocialItem extends BaseZoneSocial {
   }
 
   deleteReply(body:any) {
-    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies/${body.reply_uuid}`);
+    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`);
   }
 }
