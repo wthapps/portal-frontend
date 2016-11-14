@@ -21,19 +21,19 @@
     </div>
     <div class="z-shared-info">
       <ul>
-        <li class="z-time">
+        <li>
           {{item.created_at | date}}
         </li>
-        <li *ngIf="item.adult">
+        <li class="note" *ngIf="item.adult">
           Adult content
         </li>
-        <li *ngIf="item.mute">
+        <li class="note" *ngIf="item.mute">
           Mute
         </li>
-        <li *ngIf="item.disable_comment">
+        <li class="note" *ngIf="item.disable_comment">
           Disable comment
         </li>
-        <li *ngIf="item.disable_share">
+        <li class="note" *ngIf="item.disable_share">
           Disable share
         </li>
       </ul>

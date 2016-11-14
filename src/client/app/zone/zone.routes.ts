@@ -10,6 +10,7 @@ import { ZSocialCommunityTempComponent } from './social/communities-temp.compone
 import { ZSocialPostDetailComponent } from './social/post-detail/post-detail.component';
 import { ZSocialPhotoDetailComponent } from './social/photo-detail/photo-detail.component';
 import { ZSocialProfileComponent } from './social/profile/profile.component';
+import { ZSocialHtmlComponent } from './social/social-html.component';
 
 export const ZoneRoutes: Route[] = [
   {
@@ -27,7 +28,8 @@ export const ZoneRoutes: Route[] = [
       {path: 'social/profile', component: ZSocialProfileComponent},
       {path: 'social-temp', component: ZSocialTempComponent},
       {path: 'social-temp-detail', component: ZSocialTempDetailComponent},
-      {path: 'social-communities', component: ZSocialCommunityTempComponent},
+      {path: 'social-communities-temp', component: ZSocialCommunityTempComponent},
+      {path: 'social-html', component: ZSocialHtmlComponent},
 
       {path: '', component: ZPictureComponent}
     ]
