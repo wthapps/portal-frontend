@@ -32,6 +32,7 @@ import { ZSocialCommunityDetailMembersComponent } from './communities/members/me
 import { ZSocialCommunityDetailAboutComponent } from './communities/about/about.component';
 import { ZSocialCommunityDetailPostComponent } from './communities/post/post.component';
 
+import { ZSocialMembersComponent } from './members/members.component'
 
 
 @NgModule({
@@ -58,6 +59,9 @@ import { ZSocialCommunityDetailPostComponent } from './communities/post/post.com
     ZSocialCommunityDetailMembersComponent,
     ZSocialCommunityDetailAboutComponent,
     ZSocialCommunityDetailPostComponent,
+
+    // members
+    ZSocialMembersComponent,
 
 
     // List Posts

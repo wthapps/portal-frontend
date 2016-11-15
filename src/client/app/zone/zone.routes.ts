@@ -15,6 +15,8 @@ import { ZSocialCommunityDetailMembersComponent } from './social/communities/mem
 import { ZSocialCommunityDetailAboutComponent } from './social/communities/about/about.component';
 import { ZSocialCommunityDetailPostComponent } from './social/communities/post/post.component';
 
+import { ZSocialMembersComponent } from './social/members/members.component';
+
 export const ZoneRoutes: Route[] = [
   {
     path: 'zone',
@@ -40,7 +42,7 @@ export const ZoneRoutes: Route[] = [
         ]
       },
       {path: 'social/communities', component: ZSocialCommunityComponent},
-      {path: 'social/members', component: ZSocialProfileComponent},
+      {path: 'social/members', component: ZSocialMembersComponent},
       {path: 'social/profile', component: ZSocialProfileComponent},
       {path: 'social-html', component: ZSocialHtmlComponent},
 
