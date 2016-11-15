@@ -19,13 +19,19 @@ import {
   ZSocialPostItemFooterComponent
 } from "./post-item/index";
 
-import { ZSocialCommunityTempComponent } from './communities-temp.component';
 import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
 import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
 import { ZSocialCommentBoxComponent } from './post-item/post-item-layout/sub-layout/comment-box.component';
 import { ZSocialHtmlComponent } from './social-html.component';
-import { ZSocialCommunityDetailTempComponent } from './html/communities-detail-temp.component';
+
+import { ZSocialCommunityComponent } from './communities/communities.component';
+import { ZSocialCommunityDetailComponent } from './communities/communities-detail.component';
+import { ZSocialCommunityDetailNotificationComponent } from './communities/notification/notification.component';
+import { ZSocialCommunityDetailMembersComponent } from './communities/members/members.component';
+import { ZSocialCommunityDetailAboutComponent } from './communities/about/about.component';
+import { ZSocialCommunityDetailPostComponent } from './communities/post/post.component';
+
 
 
 @NgModule({
@@ -42,10 +48,16 @@ import { ZSocialCommunityDetailTempComponent } from './html/communities-detail-t
     // html
     ZSocialTempComponent,
     ZSocialTempDetailComponent,
-    ZSocialCommunityTempComponent,
     ZSocialHtmlComponent,
-    ZSocialCommunityDetailTempComponent,
     // end html
+
+    // Communities
+    ZSocialCommunityComponent,
+    ZSocialCommunityDetailComponent,
+    ZSocialCommunityDetailNotificationComponent,
+    ZSocialCommunityDetailMembersComponent,
+    ZSocialCommunityDetailAboutComponent,
+    ZSocialCommunityDetailPostComponent,
 
 
     // List Posts
@@ -60,9 +72,7 @@ import { ZSocialCommunityDetailTempComponent } from './html/communities-detail-t
     ZSocialCommentBoxComponent,
   ],
   exports: [
-    ZSocialComponent,
-    ZSocialTempComponent,
-    ZSocialTempDetailComponent
+    ZSocialComponent
   ],
   providers: [],
 })

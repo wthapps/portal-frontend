@@ -17,7 +17,7 @@
   margin-bottom: 30px;
   border: 1px solid $line;
   .z-social-box-header {
-    margin: -15px -15px 15px;
+    margin: -15px -15px 0;
     padding: 15px;
     border-bottom: 1px solid $line;
     @include clearfix;
@@ -28,6 +28,44 @@
     }
     .action {
       float: right;
+    }
+    .z-social-box-header-nav {
+      ul {
+        @include clearfix;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        li {
+          float: left;
+          a {
+            display: block;
+            font-size: 18px;
+            color: $light-slate;
+            position: relative;
+            padding: 8px 15px;
+            text-decoration: none;
+            line-height: 1;
+            &.active {
+              color: $text-color;
+              &:after {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: -15px;
+                background-color: $color-inverse;
+                height: 3px;
+              }
+            }
+            span {
+              font-size: 80%;
+            }
+          }
+        }
+      }
+    }
+    & + .z-social-media {
+      margin-top: 15px;
     }
   }
 }
@@ -694,7 +732,12 @@
 .z-social-box-body-communities {
   .media-center {
     padding-bottom: 15px;
-    margin-bottom: 15px;
+    margin-top: 15px;
     border-bottom: 1px solid $line;
+  }
+  .media-center-heading {
+    a {
+      color: inherit;
+    }
   }
 }

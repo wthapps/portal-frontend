@@ -7,8 +7,8 @@
 
 -----------------------------------------------------------------------------------*/
 /*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
@@ -2033,8 +2033,8 @@ table {
   background-color: transparent; }
 
 caption {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   color: #777777;
   text-align: left; }
 
@@ -2051,7 +2051,7 @@ th {
   .table > tbody > tr > td,
   .table > tfoot > tr > th,
   .table > tfoot > tr > td {
-    padding: 12px;
+    padding: 8px;
     line-height: 1.428571429;
     vertical-align: top;
     border-top: 1px solid #ddd; }
@@ -8854,6 +8854,18 @@ font-family: 'Lato', sans-serif;
     padding-left: 8px;
     padding-right: 8px; }
 
+.row-10 {
+  margin-left: -5px;
+  margin-right: -5px; }
+  .row-10:before, .row-10:after {
+    content: " ";
+    display: table; }
+  .row-10:after {
+    clear: both; }
+  .row-10 .col-xs-1, .row-10 .col-sm-1, .row-10 .col-md-1, .row-10 .col-lg-1, .row-10 .col-xs-2, .row-10 .col-sm-2, .row-10 .col-md-2, .row-10 .col-lg-2, .row-10 .col-xs-3, .row-10 .col-sm-3, .row-10 .col-md-3, .row-10 .col-lg-3, .row-10 .col-xs-4, .row-10 .col-sm-4, .row-10 .col-md-4, .row-10 .col-lg-4, .row-10 .col-xs-5, .row-10 .col-sm-5, .row-10 .col-md-5, .row-10 .col-lg-5, .row-10 .col-xs-6, .row-10 .col-sm-6, .row-10 .col-md-6, .row-10 .col-lg-6, .row-10 .col-xs-7, .row-10 .col-sm-7, .row-10 .col-md-7, .row-10 .col-lg-7, .row-10 .col-xs-8, .row-10 .col-sm-8, .row-10 .col-md-8, .row-10 .col-lg-8, .row-10 .col-xs-9, .row-10 .col-sm-9, .row-10 .col-md-9, .row-10 .col-lg-9, .row-10 .col-xs-10, .row-10 .col-sm-10, .row-10 .col-md-10, .row-10 .col-lg-10, .row-10 .col-xs-11, .row-10 .col-sm-11, .row-10 .col-md-11, .row-10 .col-lg-11, .row-10 .col-xs-12, .row-10 .col-sm-12, .row-10 .col-md-12, .row-10 .col-lg-12 {
+    padding-left: 5px;
+    padding-right: 5px; }
+
 .container {
   max-width: 1200px; }
   @media (min-width: 768px) {
@@ -9451,9 +9463,9 @@ h1, h2, h3, h4, h5, h6,
   .table.table-plan > tbody > tr > th h3,
   .table.table-plan > tfoot > tr > th h3 {
     text-transform: uppercase;
-    margin-top: -12px;
-    margin-left: -12px;
-    margin-right: -12px;
+    margin-top: -8px;
+    margin-left: -8px;
+    margin-right: -8px;
     margin-bottom: 0;
     padding: 5px 10px;
     text-align: center;
@@ -13231,7 +13243,7 @@ wth-app:empty + .dots-loader-wrap {
   margin-bottom: 30px;
   border: 1px solid #dbdbdb; }
   .z-social-box .z-social-box-header {
-    margin: -15px -15px 15px;
+    margin: -15px -15px 0;
     padding: 15px;
     border-bottom: 1px solid #dbdbdb; }
     .z-social-box .z-social-box-header:before, .z-social-box .z-social-box-header:after {
@@ -13245,6 +13257,39 @@ wth-app:empty + .dots-loader-wrap {
       line-height: 34px; }
     .z-social-box .z-social-box-header .action {
       float: right; }
+    .z-social-box .z-social-box-header .z-social-box-header-nav ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none; }
+      .z-social-box .z-social-box-header .z-social-box-header-nav ul:before, .z-social-box .z-social-box-header .z-social-box-header-nav ul:after {
+        content: " ";
+        display: table; }
+      .z-social-box .z-social-box-header .z-social-box-header-nav ul:after {
+        clear: both; }
+      .z-social-box .z-social-box-header .z-social-box-header-nav ul li {
+        float: left; }
+        .z-social-box .z-social-box-header .z-social-box-header-nav ul li a {
+          display: block;
+          font-size: 18px;
+          color: #9B9B9B;
+          position: relative;
+          padding: 8px 15px;
+          text-decoration: none;
+          line-height: 1; }
+          .z-social-box .z-social-box-header .z-social-box-header-nav ul li a.active {
+            color: #4A4A4A; }
+            .z-social-box .z-social-box-header .z-social-box-header-nav ul li a.active:after {
+              content: "";
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: -15px;
+              background-color: #f54a59;
+              height: 3px; }
+          .z-social-box .z-social-box-header .z-social-box-header-nav ul li a span {
+            font-size: 80%; }
+    .z-social-box .z-social-box-header + .z-social-media {
+      margin-top: 15px; }
 
 .z-social-media {
   display: flex;
@@ -13758,7 +13803,10 @@ wth-app:empty + .dots-loader-wrap {
 
 .z-social-box-body-communities .media-center {
   padding-bottom: 15px;
-  margin-bottom: 15px;
+  margin-top: 15px;
   border-bottom: 1px solid #dbdbdb; }
+
+.z-social-box-body-communities .media-center-heading a {
+  color: inherit; }
 
 /*# sourceMappingURL=style.css.map */

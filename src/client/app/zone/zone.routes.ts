@@ -2,15 +2,18 @@ import { Route } from '@angular/router';
 import { ZoneComponent } from './index';
 import { ZPictureComponent } from './index';
 import { ZSocialComponent } from './social/index';
-import { ZSocialTempComponent } from './social/social-temp.component';
-import { ZSocialTempDetailComponent } from './social/social-temp-detail.component';
 
 import { AuthGuard } from "../shared/services/auth-guard.service";
-import { ZSocialCommunityTempComponent } from './social/communities-temp.component';
 import { ZSocialPostDetailComponent } from './social/post-detail/post-detail.component';
 import { ZSocialPhotoDetailComponent } from './social/photo-detail/photo-detail.component';
 import { ZSocialProfileComponent } from './social/profile/profile.component';
 import { ZSocialHtmlComponent } from './social/social-html.component';
+import { ZSocialCommunityComponent } from './social/communities/communities.component';
+import { ZSocialCommunityDetailComponent } from './social/communities/communities-detail.component';
+import { ZSocialCommunityDetailNotificationComponent } from './social/communities/notification/notification.component';
+import { ZSocialCommunityDetailMembersComponent } from './social/communities/members/members.component';
+import { ZSocialCommunityDetailAboutComponent } from './social/communities/about/about.component';
+import { ZSocialCommunityDetailPostComponent } from './social/communities/post/post.component';
 
 export const ZoneRoutes: Route[] = [
   {
@@ -25,10 +28,20 @@ export const ZoneRoutes: Route[] = [
       {path: 'social', component: ZSocialComponent},
       {path: 'social/posts/:id', component: ZSocialPostDetailComponent},
       {path: 'social/photos/:id', component: ZSocialPhotoDetailComponent},
+      {
+        path: 'social/communities/:id',
+        component: ZSocialCommunityDetailComponent,
+        children: [
+          {path: 'post', component: ZSocialCommunityDetailPostComponent},
+          {path: 'about', component: ZSocialCommunityDetailAboutComponent},
+          {path: 'members', component: ZSocialCommunityDetailMembersComponent},
+          {path: 'notification', component: ZSocialCommunityDetailNotificationComponent},
+          {path: '', component: ZSocialCommunityDetailPostComponent}
+        ]
+      },
+      {path: 'social/communities', component: ZSocialCommunityComponent},
+      {path: 'social/members', component: ZSocialProfileComponent},
       {path: 'social/profile', component: ZSocialProfileComponent},
-      {path: 'social-temp', component: ZSocialTempComponent},
-      {path: 'social-temp-detail', component: ZSocialTempDetailComponent},
-      {path: 'social-communities-temp', component: ZSocialCommunityTempComponent},
       {path: 'social-html', component: ZSocialHtmlComponent},
 
       {path: '', component: ZPictureComponent}
