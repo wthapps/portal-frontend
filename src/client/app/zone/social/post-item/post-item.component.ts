@@ -59,6 +59,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     if (!this.item) {
       this.item = new SoPost();
     }
+    console.log(this.item);
     this.mapDisplay();
   }
 
@@ -101,7 +102,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.itemDisplay.reactions_like = new Array<any>();
     this.itemDisplay.reactions_share = new Array<any>();
     this.itemDisplay.reactions.forEach((reaction: any) => {
-      switch (reaction.reaction_type) {
+      switch (reaction.action) {
         case 'dislike':
           this.itemDisplay.reactions_dislike.push(reaction);
           break;

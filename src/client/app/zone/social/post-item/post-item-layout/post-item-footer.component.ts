@@ -40,7 +40,6 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
   showInfo: boolean = false;
 
   ngOnChanges() {
-    console.log(this.userService.profile)
     if (this.type == 'info') {
       this.showInfo = true;
     }

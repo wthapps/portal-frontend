@@ -51,6 +51,7 @@ export class ZSocialCommentBoxComponent implements OnInit{
     if (photos) data.photo = photos[0].id;
     data.content = this.commentContent;
     if (this.type == this.commentBoxType.Add) {
+      data.post_uuid = this.item.uuid;
       commentEvent = new CommentCreateEvent(data);
     }
     if (this.type == this.commentBoxType.Edit) {
@@ -59,6 +60,7 @@ export class ZSocialCommentBoxComponent implements OnInit{
     }
     if (this.type == this.commentBoxType.Reply) {
       data.comment_uuid = this.comment.uuid;
+      data.post_uuid = this.item.uuid;
       commentEvent = new ReplyCreateEvent(data);
     }
     if (this.type == this.commentBoxType.EditReply) {
