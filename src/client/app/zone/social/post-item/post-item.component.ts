@@ -59,7 +59,6 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     if (!this.item) {
       this.item = new SoPost();
     }
-    console.log(this.item);
     this.mapDisplay();
   }
 
@@ -75,7 +74,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // handle user privacy
     this.privacyDisplay();
     // classify reaction
-    this.classifyReactions();
+    // this.classifyReactions();
   }
 
   addCarouselCss() {
@@ -102,7 +101,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.itemDisplay.reactions_like = new Array<any>();
     this.itemDisplay.reactions_share = new Array<any>();
     this.itemDisplay.reactions.forEach((reaction: any) => {
-      switch (reaction.action) {
+      switch (reaction.reaction) {
         case 'dislike':
           this.itemDisplay.reactions_dislike.push(reaction);
           break;
@@ -146,8 +145,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   update(attr: any={}) {
-    let post = JSON.stringify({post: attr});
-    this.apiBaseServiceV2.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, post)
+    this.apiBaseServiceV2.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, {post: attr})
       .subscribe((result: any) => {
         this.item = result['data'];
         this.mapDisplay();
@@ -264,4 +262,24 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   openActivities() {
     this.postActivities.modal.open();
   }
+
+  // createReaction(data:any) {
+  //   this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
+  //     (res:any) => {
+  //       this.item = new SoPost().from(res.data);
+  //       this.mapDisplay();
+  //     }
+  //   );
+  // }
+
+  createReaction(reaction:string, object:string, uuid:string) {
+    let data = {reaction: reaction, reaction_object: object, uuid: uuid};
+    this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
+      (res:any) => {
+        this.item = new SoPost().from(res.data);
+        this.mapDisplay();
+      }
+    );
+  }
 }
+

@@ -9,6 +9,7 @@ import { DeleteCommentEvent, CancelEditCommentEvent, CancelReplyCommentEvent, De
 import { SoComment } from '../../../../shared/models/social_network/so-comment.model';
 import { ZSocialCommentBoxComponent, ZSocialCommentBoxType } from './sub-layout/comment-box.component';
 import { UserService } from '../../../../shared/services/user.service';
+import { ZSocialPostItemComponent } from '../post-item.component';
 
 declare var _: any;
 declare var $: any;
@@ -26,12 +27,16 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   commentBoxType = ZSocialCommentBoxType;
 
+  actions =	{onDeleteComment: 1, onEditComment: 2,
+    onDeleteReply: 3, onReply: 4};
+
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2,
     public loading: LoadingService,
     public confirmation: ConfirmationService,
     public toast: ToastsService,
     public userService: UserService,
+    public postItem: ZSocialPostItemComponent
 
   ) {
     super();
@@ -45,7 +50,25 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
     }
   }
 
-  onAction(event:any) {
+  onActions(action:any, data:any) {
+    switch (action) {
+      case this.actions.onDeleteComment:
+        this.eventEmitter.emit(new DeleteCommentEvent(data));
+        break;
+      case this.actions.onEditComment:
+        $("#editComment-" + data.uuid).show();
+        $("#comment-" + data.uuid).hide();
+        break;
+      case this.actions.onDeleteReply:
+        this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
+        break;
+      case this.actions.onReply:
+        $("#reply-" + data.uuid).show();
+        break;
+    }
+  }
+
+  onCallBack(event:any) {
     if (event instanceof CancelEditCommentEvent || event instanceof CancelEditReplyCommentEvent) {
       $("#editComment-" + event.data.uuid).hide();
       $("#comment-" + event.data.uuid).show();
@@ -57,22 +80,5 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
     }
 
     this.eventEmitter.emit(event);
-  }
-
-  onDeleteComment(comment: SoComment) {
-    this.eventEmitter.emit(new DeleteCommentEvent(comment));
-  }
-
-  onEditComment(comment: SoComment) {
-    $("#editComment-" + comment.uuid).show();
-    $("#comment-" + comment.uuid).hide();
-  }
-
-  onDeleteReply(comment: SoComment, reply: SoComment, ) {
-    this.eventEmitter.emit(new DeleteReplyEvent({comment_uuid: comment.uuid, reply_uuid: reply.uuid}));
-  }
-
-  onReply(e:any, comment: SoComment) {
-    $("#reply-" + comment.uuid).show();
   }
 }

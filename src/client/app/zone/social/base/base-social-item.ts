@@ -1,10 +1,12 @@
 import { BaseZoneSocial } from "./base-social";
 import { ApiBaseServiceV2 } from "../../../shared/services/apibase.service.v2";
+import { ZSocialPostItemComponent } from '../post-item/post-item.component';
 
 export class BaseZoneSocialItem extends BaseZoneSocial {
   item: any;
 
   apiBaseServiceV2: ApiBaseServiceV2;
+  postItem?: ZSocialPostItemComponent;
 
   loadItem(url: string) {
     return this.apiBaseServiceV2.get(url);
@@ -27,7 +29,7 @@ export class BaseZoneSocialItem extends BaseZoneSocial {
   }
 
   updateReply(body:any) {
-    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies/${body.reply_uuid}`, body);
+    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`, body);
   }
 
   deleteReply(body:any) {

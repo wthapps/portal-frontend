@@ -17,6 +17,7 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
   @Input() type: string;
 
   showInfo: boolean = false;
+  actions =	{openShare: 3, openActivities: 4, onShowPhotoDetail: 5};
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -33,21 +34,17 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
     }
   }
 
-  onShowPhotoDetail(index: number): void {
-    this.router.navigate(['/zone/social/photos', this.item.uuid, { index: index }]);
-  }
-
-  update(attr: any={}, event: any) {
-    event.preventDefault();
-    this.postItem.update(attr);
-  }
-
-  openShare(event: any) {
-    this.postItem.openShare();
-  }
-
-  openActivities(event: any) {
-    event.preventDefault();
-    this.postItem.openActivities();
+  onActions(action:any, data?:any) {
+    switch (action) {
+      case this.actions.openShare:
+        this.postItem.openShare();
+        break;
+      case this.actions.openActivities:
+        this.postItem.openActivities();
+        break;
+      case this.actions.onShowPhotoDetail:
+        this.router.navigate(['/zone/social/photos', this.item.uuid, { index: data }]);
+        break;
+    }
   }
 }
