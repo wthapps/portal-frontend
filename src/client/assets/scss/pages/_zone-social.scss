@@ -68,6 +68,18 @@
       margin-top: 15px;
     }
   }
+  .z-social-box-body {
+    hr {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+  }
+  .z-social-box-footer {
+    margin: 15px -15px -15px;
+    padding: 15px;
+    border-top: 1px solid $line;
+    @include clearfix;
+  }
 }
 
 .z-social-media {
@@ -204,7 +216,9 @@
           background-color: $light-slate;
           color: #ffffff;
         }
-        &.active {
+      }
+      &.active {
+        > i {
           background-color: $color-inverse;
           border-color: $color-inverse;
           color: #ffffff;
@@ -329,6 +343,11 @@
         }
         &:first-child:before {
           display: none;
+        }
+        &.active {
+          i {
+            color: $color-inverse;
+          }
         }
       }
     }

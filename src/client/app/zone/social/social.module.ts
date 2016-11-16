@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
+import { InputSwitchModule } from 'primeng/primeng';
+
 import { ZSocialComponent } from './social.component';
 import { ZSocialTempComponent } from './social-temp.component';
 import { ZSocialTempDetailComponent } from './social-temp-detail.component';
@@ -33,6 +35,9 @@ import { ZSocialCommunityDetailAboutComponent } from './communities/about/about.
 import { ZSocialCommunityDetailPostComponent } from './communities/post/post.component';
 
 import { ZSocialMembersComponent } from './members/members.component'
+import { ZSocialProfileAboutComponent } from './profile/about/about.component';
+import { ZSocialProfilePostComponent } from './profile/post/post.component';
+import { ZSocialSettingComponent } from './setting/setting.component';
 
 
 @NgModule({
@@ -41,7 +46,8 @@ import { ZSocialMembersComponent } from './members/members.component'
     SharedModule,
     ReactiveFormsModule,
     PostModule,
-    HdModalModule
+    HdModalModule,
+    InputSwitchModule
   ],
   declarations: [
     ZSocialComponent,
@@ -72,7 +78,14 @@ import { ZSocialMembersComponent } from './members/members.component'
     ZSocialPostItemFooterComponent,
     ZSocialPostDetailComponent,
     ZSocialPhotoDetailComponent,
+
+
     ZSocialProfileComponent,
+    ZSocialProfileAboutComponent,
+    ZSocialProfilePostComponent,
+
+    ZSocialSettingComponent,
+
     ZSocialCommentBoxComponent,
   ],
   exports: [

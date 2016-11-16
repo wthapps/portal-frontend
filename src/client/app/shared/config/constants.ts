@@ -74,6 +74,7 @@ export let Constants = {
     { name: 'Communities', link: '/zone/social/communities' },
     { name: 'Members', link: '/zone/social/members' },
     { name: 'Profile', link: '/zone/social/profile' },
+    { name: 'Settings', link: '/zone/social/setting' },
   ],
 
   pictureMenuActions : {

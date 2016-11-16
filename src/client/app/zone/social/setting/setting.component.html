@@ -1,0 +1,98 @@
+<div class="zone-social">
+  <div class="zone-social-in">
+    <div class="z-social-box">
+      <div class="z-social-box-header">
+        <h3 class="h4"><i class="fa fa-cog"></i> Settings</h3>
+      </div>
+      <div class="z-social-box-body">
+        <h3>General Settings</h3>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="checked1"></p-inputSwitch>
+          <label>
+            Auto import information from your contact profile
+          </label>
+        </div>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="checked2"></p-inputSwitch>
+          <label>
+            Allow friends to import my contact profile
+          </label>
+        </div>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="checked3"></p-inputSwitch>
+          <label>
+            Hide all adult content
+          </label>
+        </div>
+
+        <hr>
+
+
+        <h3>Private</h3>
+        <p class="bold">Who can search and contact you?</p>
+        <div class="radio">
+          <label>
+            <input type="radio" name="name" value="" checked="checked">
+            Anyone can search and contact me
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="name" value="">
+            Only friends of friends and added contacts can search and see my profile
+          </label>
+        </div>
+
+        <br>
+        <p class="bold">Who can see view your social?</p>
+        <p>You can manage who will able to see your friends and communities. If your friends or communities decides not
+          to be public, they will stay hidden.</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <select class="form-control">
+              <option value="">Friends</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="checked4"></p-inputSwitch>
+          <label>
+            Show my communities
+          </label>
+        </div>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="checked5"></p-inputSwitch>
+          <label>
+            Show my friends list
+          </label>
+        </div>
+
+        <hr>
+
+        <h3>Post</h3>
+        <p class="bold">Who can see your post?</p>
+        <p>You can manage who will able to see your posts. This setting remembers your selection so future posts will be
+          shared with the same choice unless you change it.</p>
+        <div class="row">
+          <div class="col-sm-6">
+            <select class="form-control">
+              <option value="">Friends</option>
+            </select>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="z-social-box-footer">
+
+        <button class="btn btn-wth-default mr15">Update</button>
+        <button class="btn btn-default mr15">Cancel</button>
+        <button class="btn btn-link">Reset Default</button>
+
+      </div>
+    </div>
+  </div>
+
+</div>

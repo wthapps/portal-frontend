@@ -40,10 +40,10 @@
       <nav class="zone-social-cover-nav">
         <ul class="list-unstyled clearfix">
           <li class="active">
-            <a href="#">Post</a>
+            <a [routerLink]="['post']">Post</a>
           </li>
           <li>
-            <a href="#">About</a>
+            <a [routerLink]="['about']">About</a>
           </li>
           <li class="pull-right dropdown">
             <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
@@ -60,9 +60,7 @@
       </nav>
     </div>
 
-    <post-new #postNew (onPostAdded)="reloadPosts($event)"></post-new>
-
-    <post-list #posts></post-list>
+    <router-outlet></router-outlet>
 
   </div>
   <div class="zone-social-sidebar">

@@ -6,7 +6,13 @@ import { ZSocialComponent } from './social/index';
 import { AuthGuard } from "../shared/services/auth-guard.service";
 import { ZSocialPostDetailComponent } from './social/post-detail/post-detail.component';
 import { ZSocialPhotoDetailComponent } from './social/photo-detail/photo-detail.component';
+
+
 import { ZSocialProfileComponent } from './social/profile/profile.component';
+import { ZSocialProfileAboutComponent } from './social/profile/about/about.component';
+import { ZSocialProfilePostComponent } from './social/profile/post/post.component';
+
+
 import { ZSocialHtmlComponent } from './social/social-html.component';
 import { ZSocialCommunityComponent } from './social/communities/communities.component';
 import { ZSocialCommunityDetailComponent } from './social/communities/communities-detail.component';
@@ -16,6 +22,8 @@ import { ZSocialCommunityDetailAboutComponent } from './social/communities/about
 import { ZSocialCommunityDetailPostComponent } from './social/communities/post/post.component';
 
 import { ZSocialMembersComponent } from './social/members/members.component';
+import { ZSocialSettingComponent } from './social/setting/setting.component';
+
 
 export const ZoneRoutes: Route[] = [
   {
@@ -38,12 +46,20 @@ export const ZoneRoutes: Route[] = [
           {path: 'about', component: ZSocialCommunityDetailAboutComponent},
           {path: 'members', component: ZSocialCommunityDetailMembersComponent},
           {path: 'notification', component: ZSocialCommunityDetailNotificationComponent},
-          {path: '', component: ZSocialCommunityDetailPostComponent}
+          {path: '*', component: ZSocialCommunityDetailPostComponent}
         ]
       },
       {path: 'social/communities', component: ZSocialCommunityComponent},
       {path: 'social/members', component: ZSocialMembersComponent},
-      {path: 'social/profile', component: ZSocialProfileComponent},
+      {
+        path: 'social/profile', component: ZSocialProfileComponent,
+        children: [
+          {path: 'post', component: ZSocialProfilePostComponent},
+          {path: 'about', component: ZSocialProfileAboutComponent},
+          {path: '', component: ZSocialProfilePostComponent}
+        ]
+      },
+      {path: 'social/setting', component: ZSocialSettingComponent},
       {path: 'social-html', component: ZSocialHtmlComponent},
 
       {path: '', component: ZPictureComponent}

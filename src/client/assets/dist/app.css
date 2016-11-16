@@ -12678,6 +12678,61 @@ wth-app:empty + .dots-loader-wrap {
       -moz-box-shadow: none !important;
       box-shadow: none !important; }
 
+.ui-inputswitch {
+  overflow: visible;
+  background: #F6F6F6;
+  border: 1px solid #D8D8D8;
+  border-radius: 12px; }
+  .ui-inputswitch .ui-inputswitch-on span,
+  .ui-inputswitch .ui-inputswitch-off span {
+    visibility: hidden; }
+  .ui-inputswitch .ui-state-default {
+    background-color: transparent;
+    background-image: none;
+    border-width: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none; }
+    .ui-inputswitch .ui-state-default, .ui-inputswitch .ui-state-default:hover, .ui-inputswitch .ui-state-default:focus {
+      outline: none 0 !important; }
+    .ui-inputswitch .ui-state-default:after {
+      content: "";
+      width: 25px;
+      height: 25px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      border: 1px solid #D8D8D8;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: -1px;
+      /* Oval 2: */
+      background: #F6F6F6;
+      -webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5); }
+  .ui-inputswitch.ui-inputswitch-checked {
+    background: #f54a59; }
+    .ui-inputswitch.ui-inputswitch-checked .ui-state-default:after {
+      border: 1px solid #f54a59; }
+
+.checkbox-switch {
+  margin-bottom: 15px; }
+  .checkbox-switch:before, .checkbox-switch:after {
+    content: " ";
+    display: table; }
+  .checkbox-switch:after {
+    clear: both; }
+  .checkbox-switch .ui-inputswitch {
+    float: left; }
+  .checkbox-switch label {
+    display: block;
+    margin-left: 70px;
+    padding-left: 0;
+    cursor: text; }
+
 .panel-heading-action {
   position: relative; }
   .panel-heading-action .btn, .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-close"], .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-check"] {
@@ -13290,6 +13345,18 @@ wth-app:empty + .dots-loader-wrap {
             font-size: 80%; }
     .z-social-box .z-social-box-header + .z-social-media {
       margin-top: 15px; }
+  .z-social-box .z-social-box-body hr {
+    margin-left: -15px;
+    margin-right: -15px; }
+  .z-social-box .z-social-box-footer {
+    margin: 15px -15px -15px;
+    padding: 15px;
+    border-top: 1px solid #dbdbdb; }
+    .z-social-box .z-social-box-footer:before, .z-social-box .z-social-box-footer:after {
+      content: " ";
+      display: table; }
+    .z-social-box .z-social-box-footer:after {
+      clear: both; }
 
 .z-social-media {
   display: flex;
@@ -13407,10 +13474,10 @@ wth-app:empty + .dots-loader-wrap {
         .z-social-post-action > ul > li > i:hover {
           background-color: #9B9B9B;
           color: #ffffff; }
-        .z-social-post-action > ul > li > i.active {
-          background-color: #f54a59;
-          border-color: #f54a59;
-          color: #ffffff; }
+      .z-social-post-action > ul > li.active > i {
+        background-color: #f54a59;
+        border-color: #f54a59;
+        color: #ffffff; }
     .z-social-post-action > ul.pull-right > li {
       margin-right: 0;
       margin-left: 15px; }
@@ -13503,6 +13570,8 @@ wth-app:empty + .dots-loader-wrap {
         font-size: 13px; }
       .z-social-comment .media-body-reply ul li:first-child:before {
         display: none; }
+      .z-social-comment .media-body-reply ul li.active i {
+        color: #f54a59; }
 
 .z-social-comment-more {
   margin-top: 10px; }
