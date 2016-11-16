@@ -26,18 +26,14 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
   }
 
   ngOnInit() {
+    this.posts.type = "profile";
     this.getUserInfo();
-  }
-
-  reloadPosts(post: any) {
-    this.posts.loadPosts();
   }
 
   getUserInfo() {
     this.apiService.get('zone/social_network/users/user')
       .subscribe((res: any) => {
           this.userInfo = res.data;
-          console.log(res);
         },
         error => {
           this.errorMessage = <any>error;

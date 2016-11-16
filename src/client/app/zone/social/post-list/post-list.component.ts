@@ -13,6 +13,7 @@ declare var _: any;
 
 export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   listItems: Array<SoPost>;
+  type: string = 'home';
 
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2
@@ -29,8 +30,14 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
     return post;
   }
 
-  loadPosts(): void {
-    this.loadList(this.apiBaseServiceV2.urls.zoneSoPosts).subscribe(
+  loadPosts() {
+    let url = "";
+    if (this.type == "home") {
+      url = this.apiBaseServiceV2.urls.zoneSoPosts
+    } else {
+      url = this.apiBaseServiceV2.urls.zoneSoMyPosts
+    }
+    this.loadList(url).subscribe(
       (res: any) => {
         this.listItems = res.data;
         this.listItems = _.map(this.listItems, this.mapPost);

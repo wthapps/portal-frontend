@@ -9,7 +9,9 @@ export class SoPost extends BaseInput implements FromData {
   comments: Array<SoComment> = new Array<SoComment>();
   photos: Array<any> = [];
   tags: Array<any> = [];
-  reactions: Array<any> = [];
+  likes: Array<any> = [];
+  dislikes: Array<any> = [];
+  shares: Array<any> = [];
   adult: boolean = false;
   privacy: string = 'public';
   disable_comment: boolean = false;

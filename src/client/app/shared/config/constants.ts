@@ -87,7 +87,9 @@ export let Constants = {
   },
   urls: {
     zoneSoPosts: 'zone/social_network/posts',
-    zoneSoComments: 'zone/social_network/comments'
+    zoneSoComments: 'zone/social_network/comments',
+    zoneSoMyPosts: 'zone/social_network/my_posts',
+    zoneSoReactions: 'zone/social_network/reactions',
   }
 };
 
