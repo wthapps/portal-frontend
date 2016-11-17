@@ -1,0 +1,25 @@
+.badge-rounded {
+  min-width: 30px;
+  text-align: center;
+  height: 30px;
+  vertical-align: middle;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+
+}
+
+.badge-right {
+  margin-left: 5px;
+}
+
+.badge-wth {
+  position: relative;
+  top: -1px;
+  font-size: 14px;
+  background-color: $color-inverse;
+  color: #ffffff;
+}

@@ -9939,6 +9939,9 @@ h1, h2, h3, h4, h5, h6,
     color: #9B9B9B;
     margin-bottom: 0; }
 
+.media-form, .media-form .media-body {
+  overflow: visible; }
+
 .media-list-item {
   margin-top: 10px; }
   .media-list-item .media-body, .media-list-item .media-right, .media-list-item .media-left {
