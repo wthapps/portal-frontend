@@ -36,6 +36,7 @@ export class PostPhotoSelectComponent implements OnInit{
     if (options.return == true) {
       this.hasBack = true;
     }
+    this.photoList.loadPhotos();
     this.modal.open();
   }
 
