@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { ZSocialPostListComponent } from '../../post-list/post-list.component';
 
 @Component({
   moduleId: module.id,
@@ -6,8 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: 'post.component.html'
 })
 
-export class ZSocialProfilePostComponent {
+export class ZSocialProfilePostComponent implements OnInit{
+  @ViewChild('posts') posts: ZSocialPostListComponent;
 
   constructor() {
+
+  }
+
+  ngOnInit() {
+    this.posts.type = "profile";
   }
 }
