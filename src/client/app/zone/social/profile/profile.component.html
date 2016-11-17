@@ -14,24 +14,23 @@
         <div class="zone-social-cover-info">
           <div class="z-social-media z-social-media-md">
             <div class="z-social-media-left">
-              <img src="assets/images/avatar/avatar-lg.png" alt="">
+              <img [src]="userInfo.profile_image" alt="">
             </div>
             <div class="z-social-media-body">
               <div class="z-heading">
                 <div class="z-name">
-                  Jaime Lannister
+                  {{userInfo.name}}
                 </div>
               </div>
               <div class="z-shared-info">
                 <ul>
                   <li>
-                    Inside Job
+                    {{userInfo.nickname}}
                   </li>
                 </ul>
               </div>
               <div class="z-shared-description">
-                This is a short description line that helps other members to gain some knowledge about this member.
-                This line is around 150 characters long in length.
+
               </div>
             </div>
           </div>

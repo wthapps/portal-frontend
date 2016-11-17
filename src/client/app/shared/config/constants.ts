@@ -73,7 +73,7 @@ export let Constants = {
     { name: 'Home', link: '/zone/social' },
     { name: 'Communities', link: '/zone/social/communities' },
     { name: 'Members', link: '/zone/social/members' },
-    { name: 'Profile', link: '/zone/social/profile' },
+    { name: 'My Page', link: '/zone/social/profile' },
     { name: 'Settings', link: '/zone/social/setting' },
   ],
 
