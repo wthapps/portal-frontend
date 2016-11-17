@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter} from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 import { SoPost } from "../../../shared/models/social_network/so-post.model";
 import { BaseZoneSocialItem } from "../base/base-social-item";
 import { ConstantsSocial } from "../base/constants-social";
@@ -14,9 +14,15 @@ import {
 import { PostPhotoSelectComponent } from '../post/post-photo-select.component';
 
 import { ZSocialPostItemFooterComponent } from './post-item-layout/post-item-footer.component';
-import { PostPhotoSelectComponent, PostShareComponent, PostEditComponent, PostActivitiesComponent } from '../post/index';
+import {
+  PostPhotoSelectComponent,
+  PostShareComponent,
+  PostEditComponent,
+  PostActivitiesComponent
+} from '../post/index';
 import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './post-item-layout/sub-layout/comment-box.component';
 
+declare var $: any;
 declare var _: any;
 
 @Component({
@@ -41,12 +47,10 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
 
   itemDisplay: any;
 
-  constructor(
-    public apiBaseServiceV2: ApiBaseServiceV2,
-    private loading: LoadingService,
-    private confirmation: ConfirmationService,
-    private toast: ToastsService
-  ) {
+  constructor(public apiBaseServiceV2: ApiBaseServiceV2,
+              private loading: LoadingService,
+              private confirmation: ConfirmationService,
+              private toast: ToastsService) {
     super();
   }
 
@@ -144,17 +148,17 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.postEdit.open({mode: 'edit', post: this.itemDisplay});
   }
 
-  update(attr: any={}) {
+  update(attr: any = {}) {
     this.apiBaseServiceV2.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, {post: attr})
       .subscribe((result: any) => {
-        this.item = result['data'];
-        this.mapDisplay();
-        this.postEdit.post = this.itemDisplay;
-      },
-      error => {
+          this.item = result['data'];
+          this.mapDisplay();
+          this.postEdit.post = this.itemDisplay;
+        },
+        error => {
 
-      }
-    );
+        }
+      );
   }
 
   delete() {
@@ -177,17 +181,18 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
       }
     });
   }
+
   editedPost(newPost: any) {
     this.itemDisplay.description = newPost.description;
     this.itemDisplay.tags = newPost.tags;
     this.itemDisplay.photos = newPost.photos;
   }
 
-  onActions(event:BaseEvent) {
+  onActions(event: BaseEvent) {
     // Create a comment
     if (event instanceof CommentCreateEvent) {
       this.createComment(event.data).subscribe(
-        (res:any) => {
+        (res: any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
         }
@@ -196,7 +201,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // Update a comment
     if (event instanceof CommentUpdateEvent) {
       this.updateComment(event.data).subscribe(
-        (res:any) => {
+        (res: any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
         }
@@ -205,7 +210,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // Delete a comment
     if (event instanceof DeleteCommentEvent) {
       this.deleteComment(event.data.uuid).subscribe(
-        (res:any) => {
+        (res: any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
         }
@@ -214,7 +219,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // Create a reply
     if (event instanceof ReplyCreateEvent) {
       this.createReply(event.data).subscribe(
-        (res:any) => {
+        (res: any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
         }
@@ -224,7 +229,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // Update a reply
     if (event instanceof ReplyUpdateEvent) {
       this.updateReply(event.data).subscribe(
-        (res:any) => {
+        (res: any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
         }
@@ -234,7 +239,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     // Delete a reply
     if (event instanceof DeleteReplyEvent) {
       this.deleteReply(event.data).subscribe(
-        (res:any) => {
+        (res: any) => {
           this.item = new SoPost().from(res.data);
           this.mapDisplay();
         }
@@ -248,7 +253,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     }
   }
 
-  onSelectPhotoComment(photos:any) {
+  onSelectPhotoComment(photos: any) {
     if (this.commentBox) {
       this.commentBox.commentAction(photos);
     }
@@ -272,10 +277,17 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   //   );
   // }
 
-  createReaction(reaction:string, object:string, uuid:string) {
+  createReaction(event: any, reaction: string, object: string, uuid: string) {
+    if ($(event.target).hasClass('active')) {
+      $(event.target).removeClass('active');
+    } else {
+      $(event.target).parents('.z-social-post-action').find('.fa').removeClass('active');
+      $(event.target).addClass('active');
+    }
+
     let data = {reaction: reaction, reaction_object: object, uuid: uuid};
     this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
-      (res:any) => {
+      (res: any) => {
         this.item = new SoPost().from(res.data);
         this.mapDisplay();
       }

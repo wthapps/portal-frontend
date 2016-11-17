@@ -13477,10 +13477,10 @@ wth-app:empty + .dots-loader-wrap {
         .z-social-post-action > ul > li > i:hover {
           background-color: #9B9B9B;
           color: #ffffff; }
-      .z-social-post-action > ul > li.active > i {
-        background-color: #f54a59;
-        border-color: #f54a59;
-        color: #ffffff; }
+        .z-social-post-action > ul > li > i.active {
+          background-color: #f54a59;
+          border-color: #f54a59;
+          color: #ffffff; }
     .z-social-post-action > ul.pull-right > li {
       margin-right: 0;
       margin-left: 15px; }
@@ -13573,7 +13573,7 @@ wth-app:empty + .dots-loader-wrap {
         font-size: 13px; }
       .z-social-comment .media-body-reply ul li:first-child:before {
         display: none; }
-      .z-social-comment .media-body-reply ul li.active i {
+      .z-social-comment .media-body-reply ul li .active i {
         color: #f54a59; }
 
 .z-social-comment-more {

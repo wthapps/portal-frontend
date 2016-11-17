@@ -216,14 +216,13 @@
           background-color: $light-slate;
           color: #ffffff;
         }
-      }
-      &.active {
-        > i {
+        &.active {
           background-color: $color-inverse;
           border-color: $color-inverse;
           color: #ffffff;
         }
       }
+
     }
     &.pull-right {
       > li {
@@ -344,7 +343,7 @@
         &:first-child:before {
           display: none;
         }
-        &.active {
+        .active {
           i {
             color: $color-inverse;
           }
