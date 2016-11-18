@@ -200,6 +200,9 @@
     > li {
       float: left;
       margin-right: 15px;
+      a {
+        color: $light-slate;
+      }
       > i {
         margin-right: 5px;
         width: 34px;
@@ -343,8 +346,10 @@
         &:first-child:before {
           display: none;
         }
-        .active {
-          i {
+        .fa {
+          cursor: pointer;
+          color: $link-color;
+          &.active {
             color: $color-inverse;
           }
         }

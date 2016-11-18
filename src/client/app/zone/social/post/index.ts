@@ -7,3 +7,4 @@ export * from './post-share.component';
 export * from './post-activities.component';
 export * from './post-share-community.component';
 export * from './post-share-friend.component';
+export * from './post-likedislike.component';

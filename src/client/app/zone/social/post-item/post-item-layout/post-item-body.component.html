@@ -34,12 +34,16 @@
   <div class="z-social-post-action">
     <ul class="pull-left">
       <li>
-        <i class="fa fa-thumbs-o-up" [ngClass]="{'active' : hasLike}" (click)="postItem.createReaction($event, 'like', 'post', item.uuid)"></i>
-        {{item.likes.length}}
+        <i class="fa fa-thumbs-o-up" [ngClass]="{'active' : hasLike}"
+           (click)="postItem.createReaction($event, 'like', 'post', item.uuid)"></i>
+        <a *ngIf="item.likes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, item.likes, 'like')">{{item.likes.length}}</a>
+        <a *ngIf="item.likes.length==0" href="javascript:;">{{item.likes.length}}</a>
       </li>
       <li>
-        <i class="fa fa-thumbs-o-down" [ngClass]="{'active' : hasDislike}" (click)="postItem.createReaction($event, 'dislike', 'post', item.uuid)"></i>
-        {{item.dislikes.length}}
+        <i class="fa fa-thumbs-o-down" [ngClass]="{'active' : hasDislike}"
+           (click)="postItem.createReaction($event, 'dislike', 'post', item.uuid)"></i>
+        <a *ngIf="item.dislikes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, item.dislikes, 'dislike')">{{item.dislikes.length}}</a>
+        <a *ngIf="item.dislikes.length==0" href="javascript:;">{{item.dislikes.length}}</a>
       </li>
       <li *ngIf="!item.disable_share">
         <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{item.shares.length}}

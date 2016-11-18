@@ -23,7 +23,9 @@ import {
 
 import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
+
 import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
+
 import { ZSocialCommentBoxComponent } from './post-item/post-item-layout/sub-layout/comment-box.component';
 import { ZSocialHtmlComponent } from './social-html.component';
 
@@ -38,6 +40,7 @@ import { ZSocialMembersComponent } from './members/members.component'
 import { ZSocialProfileAboutComponent } from './profile/about/about.component';
 import { ZSocialProfilePostComponent } from './profile/post/post.component';
 import { ZSocialSettingComponent } from './setting/setting.component';
+
 
 
 @NgModule({

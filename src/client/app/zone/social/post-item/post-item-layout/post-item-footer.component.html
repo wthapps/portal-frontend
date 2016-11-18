@@ -9,7 +9,8 @@
 
     <li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">
       <!--Edit comment-->
-      <comment-box id="editComment-{{comment.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item" [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
+      <comment-box id="editComment-{{comment.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
+                   [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
       <div id="comment-{{comment.uuid}}">
         <div class="media-left">
           <a href="#">
@@ -34,20 +35,34 @@
           </div>
           <div class="media-body-reply">
             <ul>
-              <li><a href="javascript:;" [ngClass]="{'active' : hasLike}" (click)="postItem.createReaction($event, 'like', 'comment', comment.uuid)"><i class="fa fa-thumbs-o-up"></i></a> {{comment.likes.length}}</li>
-              <li><a href="javascript:;" [ngClass]="{'active' : hasDislike}" (click)="postItem.createReaction($event, 'dislike', 'comment', comment.uuid)"><i class="fa fa-thumbs-o-down"></i></a> {{comment.dislikes.length}}</li>
-              <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{comment.replies.length}} Replies</a></li>
+              <li>
+                <i class="fa fa-thumbs-o-up mr5" [ngClass]="{'active' : hasLike}"
+                   (click)="postItem.createReaction($event, 'like', 'comment', comment.uuid)"></i>
+                <a *ngIf="comment.likes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, comment.likes, 'like')">{{comment.likes.length}}</a>
+                <a *ngIf="comment.likes.length==0" href="javascript:;">{{comment.likes.length}}</a>
+              </li>
+              <li>
+                <i class="fa fa-thumbs-o-down mr5" [ngClass]="{'active' : hasDislike}"
+                   (click)="postItem.createReaction($event, 'dislike', 'comment', comment.uuid)"></i>
+                <a *ngIf="comment.dislikes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, comment.dislikes, 'dislike')">{{comment.dislikes.length}}</a>
+                <a *ngIf="comment.dislikes.length==0" href="javascript:;">{{comment.dislikes.length}}</a>
+              </li>
+              <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{comment.replies.length}}
+                Replies</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="media" *ngFor="let reply of comment.replies">
         <!--Edit reply-->
-        <comment-box id="editComment-{{reply.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item" [comment]="comment" [reply]="reply" style="display: none" [type]="commentBoxType.EditReply"></comment-box>
+        <comment-box id="editComment-{{reply.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
+                     [comment]="comment" [reply]="reply" style="display: none"
+                     [type]="commentBoxType.EditReply"></comment-box>
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
             <a href="#">
-              <img alt="64x64" class="media-object" [src]="item.owner.profile_image" style="width: 34px; border-radius: 3px">
+              <img alt="64x64" class="media-object" [src]="item.owner.profile_image"
+                   style="width: 34px; border-radius: 3px">
             </a>
           </div>
           <div class="media-body">
@@ -67,15 +82,27 @@
             <img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px">
             <div class="media-body-reply">
               <ul>
-                <li><a href="javascript:;" (click)="postItem.createReaction($event, 'like', 'comment', reply.uuid)"><i class="fa fa-thumbs-o-up"></i></a> {{reply.likes.length}}</li>
-                <li><a href="javascript:;" (click)="postItem.createReaction($event, 'dislike', 'comment', reply.uuid)"><i class="fa fa-thumbs-o-down"></i></a> {{reply.dislikes.length}}</li>
-                <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{reply.replies.length}} Replies</a></li>
+                <li>
+                  <i class="fa fa-thumbs-o-up mr5"
+                     (click)="postItem.createReaction($event, 'like', 'comment', reply.uuid)"></i>
+                  <a *ngIf="reply.likes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, reply.likes, 'like')">{{reply.likes.length}}</a>
+                  <a *ngIf="reply.likes.length==0" href="javascript:;">{{reply.likes.length}}</a>
+                </li>
+                <li>
+                  <i class="fa fa-thumbs-o-down mr5"
+                     (click)="postItem.createReaction($event, 'dislike', 'comment', reply.uuid)"></i>
+                  <a *ngIf="reply.dislikes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, reply.dislikes, 'dislike')">{{reply.dislikes.length}}</a>
+                  <a *ngIf="reply.dislikes.length==0" href="javascript:;">{{reply.dislikes.length}}</a>
+                </li>
+                <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{reply.replies.length}}
+                  Replies</a></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <comment-box id="reply-{{comment.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item" [comment]="comment" style="display: none;" [type]="commentBoxType.Reply"></comment-box>
+      <comment-box id="reply-{{comment.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item" [comment]="comment"
+                   style="display: none;" [type]="commentBoxType.Reply"></comment-box>
     </li>
   </ul>
   <div *ngIf="!showInfo" class="z-social-comment-more">

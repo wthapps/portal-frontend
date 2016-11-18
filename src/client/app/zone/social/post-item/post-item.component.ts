@@ -21,6 +21,7 @@ import {
   PostActivitiesComponent
 } from '../post/index';
 import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './post-item-layout/sub-layout/comment-box.component';
+import { PostLikeDislikeComponent } from '../post/post-likedislike.component';
 
 declare var $: any;
 declare var _: any;
@@ -35,6 +36,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   @ViewChild('postEdit') postEdit: PostEditComponent;
   @ViewChild('postShare') postShare: PostShareComponent;
   @ViewChild('postActivities') postActivities: PostActivitiesComponent;
+  @ViewChild('postLikeDislike') postLikeDislike: PostLikeDislikeComponent;
 
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
@@ -46,6 +48,9 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   commentBoxType = ZSocialCommentBoxType;
 
   itemDisplay: any;
+  typeLikeDislike: any;
+  dataLikeDislike: any;
+
 
   constructor(public apiBaseServiceV2: ApiBaseServiceV2,
               private loading: LoadingService,
@@ -268,6 +273,12 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.postActivities.modal.open();
   }
 
+  openLikeDislike(data: any, type: any) {
+    this.typeLikeDislike = type;
+    this.dataLikeDislike = data;
+    this.postLikeDislike.modal.open();
+  }
+
   // createReaction(data:any) {
   //   this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
   //     (res:any) => {
@@ -281,7 +292,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     if ($(event.target).hasClass('active')) {
       $(event.target).removeClass('active');
     } else {
-      $(event.target).parents('.z-social-post-action').find('.fa').removeClass('active');
+      $(event.target).closest('ul').find('.fa').removeClass('active');
       $(event.target).addClass('active');
     }
 

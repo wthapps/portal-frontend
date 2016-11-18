@@ -13,10 +13,10 @@ import {
   PostShareComponent,
   PostActivitiesComponent,
   PostShareCommunityComponent,
-  PostShareFriendComponent
+  PostShareFriendComponent,
+  PostLikeDislikeComponent
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
-
 
 
 @NgModule({
@@ -36,6 +36,7 @@ import { TagInputModule } from 'ng2-tag-input';
     PostPhotoSelectComponent,
     PostShareComponent,
     PostActivitiesComponent,
+    PostLikeDislikeComponent,
     PostShareCommunityComponent,
     PostShareFriendComponent
   ],
@@ -52,6 +53,7 @@ import { TagInputModule } from 'ng2-tag-input';
     PostPhotoSelectComponent,
     PostShareComponent,
     PostActivitiesComponent,
+    PostLikeDislikeComponent,
     PostShareCommunityComponent,
     PostShareFriendComponent
   ]

@@ -18,7 +18,12 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
   @Input() type: string;
 
   showInfo: boolean = false;
-  actions = {openShare: 3, openActivities: 4, onShowPhotoDetail: 5};
+  actions = {
+    openShare: 3,
+    openActivities: 4,
+    onShowPhotoDetail: 5,
+    openLikeDislike: 6
+  };
 
 
   hasLike: boolean = false;
@@ -57,13 +62,16 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
 
   }
 
-  onActions(action: any, data?: any) {
+  onActions(action: any, data?: any, type?: any) {
     switch (action) {
       case this.actions.openShare:
         this.postItem.openShare();
         break;
       case this.actions.openActivities:
         this.postItem.openActivities();
+        break;
+      case this.actions.openLikeDislike:
+        this.postItem.openLikeDislike(data, type);
         break;
       case this.actions.onShowPhotoDetail:
         this.router.navigate(['/zone/social/photos', this.item.uuid, {index: data}]);
