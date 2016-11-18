@@ -3,6 +3,7 @@ import { Plan } from './plan.model';
 
 export class User {
   id: number;
+  uuid: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -28,6 +29,7 @@ export class User {
 
   constructor(fields: {
     id: number,
+    uuid: string,
     first_name?: string,
     last_name?: string,
     email?: string,

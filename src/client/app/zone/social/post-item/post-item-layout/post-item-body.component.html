@@ -19,7 +19,8 @@
         <figure *ngIf="i == 5 && item.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, i)">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
-        <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, i)" *ngIf="i == 5 && item.remainPhotos != 0">
+        <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, i)"
+           *ngIf="i == 5 && item.remainPhotos != 0">
                 <span>
                   + {{item.remainPhotos}}
                 </span>
@@ -30,14 +31,15 @@
       </li>
     </ul>
   </div>
-
   <div class="z-social-post-action">
     <ul class="pull-left">
-      <li class="active">
-        <i class="fa fa-thumbs-o-up" (click)="postItem.createReaction('like', 'post', item.uuid)"></i> {{item.likes.length}}
+      <li>
+        <i class="fa fa-thumbs-o-up" [ngClass]="{'active' : hasLike}" (click)="postItem.createReaction($event, 'like', 'post', item.uuid)"></i>
+        {{item.likes.length}}
       </li>
       <li>
-        <i class="fa fa-thumbs-o-down" (click)="postItem.createReaction('dislike', 'post', item.uuid)"></i> {{item.dislikes.length}}
+        <i class="fa fa-thumbs-o-down" [ngClass]="{'active' : hasDislike}" (click)="postItem.createReaction($event, 'dislike', 'post', item.uuid)"></i>
+        {{item.dislikes.length}}
       </li>
       <li *ngIf="!item.disable_share">
         <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{item.shares.length}}

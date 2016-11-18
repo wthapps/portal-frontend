@@ -34,8 +34,8 @@
           </div>
           <div class="media-body-reply">
             <ul>
-              <li class="active"><a href="javascript:;" (click)="postItem.createReaction('like', 'comment', comment.uuid)"><i class="fa fa-thumbs-o-up"></i></a> {{comment.likes.length}}</li>
-              <li><a href="javascript:;" (click)="postItem.createReaction('dislike', 'comment', comment.uuid)"><i class="fa fa-thumbs-o-down"></i></a> {{comment.dislikes.length}}</li>
+              <li><a href="javascript:;" [ngClass]="{'active' : hasLike}" (click)="postItem.createReaction('like', 'comment', comment.uuid)"><i class="fa fa-thumbs-o-up"></i></a> {{comment.likes.length}}</li>
+              <li><a href="javascript:;" [ngClass]="{'active' : hasDislike}" (click)="postItem.createReaction('dislike', 'comment', comment.uuid)"><i class="fa fa-thumbs-o-down"></i></a> {{comment.dislikes.length}}</li>
               <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{comment.replies.length}} Replies</a></li>
             </ul>
           </div>
