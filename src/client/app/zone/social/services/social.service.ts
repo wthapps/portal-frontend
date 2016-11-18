@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { Params, Router } from '@angular/router';
+import { UserService } from '../../../shared/index';
 /**
  * Created by phat on 18/11/2016.
  */
 @Injectable()
 export class SoUserService {
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2) {
+  constructor(private apiBaseServiceV2: ApiBaseServiceV2, private user: UserService) {
   }
-  get(uuid?:string) {
+
+  get(uuid?: string) {
     if (uuid) {
       return this.getOther(uuid)
     }
-    return this.apiBaseServiceV2.get('zone/social_network/users/mine');
+    return this.apiBaseServiceV2.get(`zone/social_network/users/${this.user.profile.uuid}`);
   }
 
   private getOther(uuid) {

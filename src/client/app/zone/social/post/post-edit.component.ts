@@ -25,7 +25,7 @@ export class PostEditComponent implements OnInit, OnChanges {
   @ViewChild('customFriends') customFriends: PostShareFriendComponent;
 
   @Input() openMode: string = 'add'; // add or edit
-  @Input() photos: Array<any> = new Array<any>()
+  @Input() photos: Array<any> = new Array<any>();
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
@@ -248,8 +248,10 @@ export class PostEditComponent implements OnInit, OnChanges {
     event.preventDefault();
     if(type == 'communities') {
       this.customCommunities.modal.open();
+      this.customCommunities.loadData();
     } else {
       this.customFriends.modal.open();
+      this.customFriends.loadData();
     }
   }
 
