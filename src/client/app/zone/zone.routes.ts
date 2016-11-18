@@ -59,6 +59,13 @@ export const ZoneRoutes: Route[] = [
           {path: '', component: ZSocialProfilePostComponent}
         ]
       },
+      {
+        path: 'social/profile/:id', component: ZSocialProfileComponent,
+        children: [
+          {path: 'about', component: ZSocialProfileAboutComponent},
+          {path: '', component: ZSocialProfilePostComponent},
+        ]
+      },
       {path: 'social/setting', component: ZSocialSettingComponent},
       {path: 'social-html', component: ZSocialHtmlComponent},
 

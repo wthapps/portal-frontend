@@ -72,8 +72,6 @@ import { NewlinePipe } from './pipe/newline.pipe';
     ToTopComponent,
     ReadMoreComponent,
     FormModalComponent,
-    // Directive
-    LoadingDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
@@ -104,8 +102,6 @@ import { NewlinePipe } from './pipe/newline.pipe';
     FormsModule,
     RouterModule,
     FormModalComponent,
-    // Directive
-    LoadingDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,

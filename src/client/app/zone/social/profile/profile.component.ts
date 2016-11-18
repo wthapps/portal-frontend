@@ -1,9 +1,10 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { PostNewComponent } from '../post/index';
-import { ZSocialPostListComponent } from "../post-list/post-list.component";
 import { BaseZoneSocialHomePage } from "../base/base-social-home-page";
 
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { SocialService } from '../services/social.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var $: any;
 declare var _: any;
@@ -20,22 +21,19 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
   userInfo: any = null;
   errorMessage: string = '';
 
-  constructor(private apiService: ApiBaseService) {
+  constructor(private socialService: SocialService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.getUserInfo();
-  }
-
-  getUserInfo() {
-    this.apiService.get('zone/social_network/users/user')
-      .subscribe((res: any) => {
+    this.route.params.subscribe(params => {
+      this.socialService.user.get(params['id']).subscribe((res: any) => {
           this.userInfo = res.data;
         },
         error => {
           this.errorMessage = <any>error;
         }
       );
+    });
   }
-
 }

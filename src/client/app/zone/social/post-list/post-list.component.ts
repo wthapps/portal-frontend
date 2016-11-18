@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BaseSocialList } from '../base/base-social-list';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { SocialService } from '../services/social.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var _: any;
 
@@ -13,31 +15,29 @@ declare var _: any;
 
 export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   listItems: Array<SoPost>;
-  type: string = 'home';
+  userUuid: string;
 
   constructor(
-    public apiBaseServiceV2: ApiBaseServiceV2
+    public apiBaseServiceV2: ApiBaseServiceV2,
+    private socialService: SocialService,
+    private route: ActivatedRoute,
   ) {
     super();
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.userUuid = params['id'];
+    });
     this.loadPosts();
   }
 
   mapPost(post:any) {
-    post = new SoPost().from(post);
-    return post;
+    return new SoPost().from(post);
   }
 
   loadPosts() {
-    let url = "";
-    if (this.type == "home") {
-      url = this.apiBaseServiceV2.urls.zoneSoPosts
-    } else {
-      url = this.apiBaseServiceV2.urls.zoneSoMyPosts
-    }
-    this.loadList(url).subscribe(
+    this.socialService.post.getList(this.userUuid).subscribe(
       (res: any) => {
         this.listItems = res.data;
         this.listItems = _.map(this.listItems, this.mapPost);

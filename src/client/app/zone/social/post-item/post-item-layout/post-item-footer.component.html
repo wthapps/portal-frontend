@@ -13,15 +13,17 @@
                    [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
       <div id="comment-{{comment.uuid}}">
         <div class="media-left">
-          <a href="#">
-            <img alt="64x64" class="media-object" [src]="item.owner.profile_image"
+          <a href="zone/social/profile/{{comment.owner.uuid}}">
+            <img alt="64x64" class="media-object" [src]="comment.owner.profile_image"
                  style="width: 34px; border-radius: 3px">
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading">{{comment.owner.name}}
-            <span class="media-heading-time">{{comment.created_at | dateUntilNow}}</span>
-          </h4>
+          <a href="zone/social/profile/{{comment.owner.uuid}}">
+            <h4 class="media-heading">{{comment.owner.name}}
+              <span class="media-heading-time">{{comment.created_at | dateUntilNow}}</span>
+            </h4>
+          </a>
           <p>{{comment.content}}</p>
           <img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px">
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
@@ -60,24 +62,25 @@
                      [type]="commentBoxType.EditReply"></comment-box>
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
-            <a href="#">
-              <img alt="64x64" class="media-object" [src]="item.owner.profile_image"
-                   style="width: 34px; border-radius: 3px">
+            <a href="zone/social/profile/{{reply.owner.uuid}}" class="media-object">
+              <img alt="64x64" class="media-object" [src]="reply.owner.profile_image" style="width: 34px; border-radius: 3px">
             </a>
           </div>
           <div class="media-body">
-            <h4 class="media-heading">{{reply.owner.name}}
-              <span class="media-heading-time">{{reply.created_at | dateUntilNow}}</span>
-              <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
-                <a data-toggle="dropdown">
-                  <i class="fa fa-pencil"></i>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="javascript:;" (click)="onActions(actions.onEditComment, reply)">Edit Comment</a></li>
-                  <li><a href="javascript:;" (click)="onActions(actions.onDeleteReply, reply)">Delete</a></li>
-                </ul>
-              </div>
-            </h4>
+            <a href="zone/social/profile/{{reply.owner.uuid}}">
+              <h4 class="media-heading">{{reply.owner.name}}
+                <span class="media-heading-time">{{reply.created_at | dateUntilNow}}</span>
+                <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
+                  <a data-toggle="dropdown">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="javascript:;" (click)="onActions(actions.onEditComment, reply)">Edit Comment</a></li>
+                    <li><a href="javascript:;" (click)="onActions(actions.onDeleteReply, reply)">Delete</a></li>
+                  </ul>
+                </div>
+              </h4>
+            </a>
             <p>{{reply.content}}</p>
             <img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px">
             <div class="media-body-reply">

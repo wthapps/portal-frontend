@@ -4,6 +4,7 @@ import { ZoneMenuComponent } from './index';
 
 import { SharedModule } from '../../shared/shared.module';
 import { Ng2HdModule } from './ng2-hd/ng2-hd';
+import { SocialService, SoUserService, SoPostService } from '../social/services/social.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -27,7 +28,7 @@ export class SharedZoneModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedZoneModule,
-      providers: []
+      providers: [SocialService, SoUserService, SoPostService]
     };
   }
 }

@@ -1,12 +1,17 @@
 <div *ngIf="!showInfo" class="z-social-media">
-  <div class="z-social-media-left">
-    <img [src]="item.owner.profile_image" alt="">
-  </div>
+  <a href="zone/social/profile/{{item.owner.uuid}}">
+    <div class="z-social-media-left">
+      <img [src]="item.owner.profile_image" alt="">
+    </div>
+  </a>
+
   <div class="z-social-media-body">
     <div class="z-heading">
-      <div class="z-name">
-        {{item.owner.name}}
-      </div>
+      <a href="zone/social/profile/{{item.owner.uuid}}">
+        <div class="z-name">
+          {{item.owner.name}}
+        </div>
+      </a>
       <div class="z-shared-with dropdown">
         <a href="#" data-toggle="dropdown"><i class="{{item.privacyDisplay.css}}"></i> {{item.privacyDisplay.text}}</a>
         <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu1">

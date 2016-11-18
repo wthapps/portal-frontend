@@ -15,6 +15,6 @@ export class ZSocialProfilePostComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.posts.type = "profile";
+  //
   }
 }
