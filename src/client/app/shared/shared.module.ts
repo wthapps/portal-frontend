@@ -98,6 +98,7 @@ import { NewlinePipe } from './pipe/newline.pipe';
     AutoCompleteModule,
     TagInputModule,
 
+
     CommonModule,
     FormsModule,
     RouterModule,

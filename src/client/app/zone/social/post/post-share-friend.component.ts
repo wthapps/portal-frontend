@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
   EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal';
+import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
 import { ApiBaseService, UserService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { PostPhotoSelectComponent } from './post-photo-select.component';

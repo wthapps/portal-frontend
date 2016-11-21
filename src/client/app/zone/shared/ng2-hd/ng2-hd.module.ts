@@ -2,16 +2,21 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HdModalModule } from './modal/hd-modal';
+import { HdModalModule } from './modal/hd-modal.module';
+import { HdMultiSelectListModule } from './multi-select-list/hd-multi-select-list.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    HdModalModule
+    HdModalModule,
+    HdMultiSelectListModule
   ],
   declarations: [
+
   ],
   exports: [
+    HdModalModule,
+    HdMultiSelectListModule
   ]
 })
 export class Ng2HdModule {

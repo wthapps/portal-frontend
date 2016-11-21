@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { ZoneMenuComponent } from './index';
 
 import { SharedModule } from '../../shared/shared.module';
-import { Ng2HdModule } from './ng2-hd/ng2-hd';
+import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 import { SocialService, SoUserService, SoPostService } from '../social/services/social.service';
 
 /**

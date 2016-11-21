@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HdModalModule } from '../../shared/ng2-hd/modal/hd-modal';
 
 //noinspection TypeScriptCheckImport
 import {
@@ -17,6 +16,8 @@ import {
   PostLikeDislikeComponent
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
+import { Ng2HdModule } from '../../shared/ng2-hd/index';
+
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { TagInputModule } from 'ng2-tag-input';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HdModalModule,
+    Ng2HdModule,
     TagInputModule
   ],
   declarations: [

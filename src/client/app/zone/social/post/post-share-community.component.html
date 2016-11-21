@@ -10,17 +10,16 @@
     <div class="form-group mb40">
       <label >Community</label>
       <!--<input type="text" class="form-control" id="community" placeholder="Search for community">-->
-      <tag-input placeholder="Search for community"
-                 secondaryPlaceholder="Search for community"
-                 [maxItems]='100'
-                 [autocomplete]="true"
-                 (onRemove)="addCommunity($event)"
-                 (onAdd)="removeCommunity($event)"
-      ></tag-input>
+      <!--<tag-input placeholder="Search for community"-->
+                 <!--secondaryPlaceholder="Search for community"-->
+                 <!--[maxItems]='100'-->
+                 <!--[autocomplete]="true"-->
+                 <!--(onRemove)="addCommunity($event)"-->
+                 <!--(onAdd)="removeCommunity($event)"-->
+      <!--&gt;</tag-input>-->
 
-      <!--[autocompleteItems]="communityNames"-->
-
-      <!--[formControl]="tagsCtrl"-->
+      <!--<hd-testing></hd-testing>-->
+<multi-select-list></multi-select-list>
     </div>
     <ul class="list-unstyled social-list-user wth-scrollable">
       <li *ngFor="let c of communities">

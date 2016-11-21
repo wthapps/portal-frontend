@@ -22,7 +22,7 @@ import { ZSocialProfileComponent } from './profile/profile.component';
 
 import { ZSocialHomeComponent } from './home/social-home.component';
 
-import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
+import { Ng2HdModule } from '../shared/ng2-hd/index';
 
 import { ZSocialCommentBoxComponent } from './post-item/post-item-layout/sub-layout/comment-box.component';
 
@@ -45,7 +45,7 @@ import { ZSocialSettingComponent } from './setting/setting.component';
     SharedModule,
     ReactiveFormsModule,
     PostModule,
-    HdModalModule,
+    Ng2HdModule,
     InputSwitchModule
   ],
   declarations: [
