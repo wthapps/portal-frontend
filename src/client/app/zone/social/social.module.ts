@@ -5,10 +5,6 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { InputSwitchModule } from 'primeng/primeng';
 
-import { ZSocialComponent } from './social.component';
-import { ZSocialTempComponent } from './social-temp.component';
-import { ZSocialTempDetailComponent } from './social-temp-detail.component';
-
 import { PostModule } from "./post/post.module";
 
 import { ZSocialPostListComponent } from "./post-list/post-list.component";
@@ -24,10 +20,11 @@ import {
 import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
 
+import { ZSocialHomeComponent } from './home/social-home.component';
+
 import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
 
 import { ZSocialCommentBoxComponent } from './post-item/post-item-layout/sub-layout/comment-box.component';
-import { ZSocialHtmlComponent } from './social-html.component';
 
 import { ZSocialCommunityComponent } from './communities/communities.component';
 import { ZSocialCommunityDetailComponent } from './communities/communities-detail.component';
@@ -42,7 +39,6 @@ import { ZSocialProfilePostComponent } from './profile/post/post.component';
 import { ZSocialSettingComponent } from './setting/setting.component';
 
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -53,13 +49,7 @@ import { ZSocialSettingComponent } from './setting/setting.component';
     InputSwitchModule
   ],
   declarations: [
-    ZSocialComponent,
-
-    // html
-    ZSocialTempComponent,
-    ZSocialTempDetailComponent,
-    ZSocialHtmlComponent,
-    // end html
+    ZSocialHomeComponent,
 
     // Communities
     ZSocialCommunityComponent,
@@ -92,7 +82,7 @@ import { ZSocialSettingComponent } from './setting/setting.component';
     ZSocialCommentBoxComponent,
   ],
   exports: [
-    ZSocialComponent
+    ZSocialHomeComponent
   ],
   providers: [],
 })

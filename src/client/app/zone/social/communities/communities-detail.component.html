@@ -34,7 +34,7 @@
         </div>
       </div>
       <nav class="zone-social-cover-nav">
-        <ul class="list-unstyled clearfix">
+        <ul class="list-unstyled clearfix" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <a [routerLink]="['post']">Post</a>
           </li>

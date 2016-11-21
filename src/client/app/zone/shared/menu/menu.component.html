@@ -10,12 +10,12 @@
       <a href="#">Calendar</a>
     </li>
 
-    <li class="has-sub" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;" (click)="onMenu($event)">
+    <li class="has-sub" [routerLinkActive]="['active']">
+      <a [routerLink]="[socialMenu[0].link]" (click)="onMenu($event)">
         Social Network
       </a>
       <ul class="list-unstyled hidden" id="zone_menu_social">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let social of socialMenu">
+        <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
           <a [routerLink]="[social.link]">
             {{social.name}}
           </a>

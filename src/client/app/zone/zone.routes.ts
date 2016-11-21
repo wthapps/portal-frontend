@@ -7,13 +7,13 @@ import { AuthGuard } from "../shared/services/auth-guard.service";
 import { ZSocialPostDetailComponent } from './social/post-detail/post-detail.component';
 import { ZSocialPhotoDetailComponent } from './social/photo-detail/photo-detail.component';
 
+import { ZSocialHomeComponent } from './social/home/social-home.component';
+
 
 import { ZSocialProfileComponent } from './social/profile/profile.component';
 import { ZSocialProfileAboutComponent } from './social/profile/about/about.component';
 import { ZSocialProfilePostComponent } from './social/profile/post/post.component';
 
-
-import { ZSocialHtmlComponent } from './social/social-html.component';
 import { ZSocialCommunityComponent } from './social/communities/communities.component';
 import { ZSocialCommunityDetailComponent } from './social/communities/communities-detail.component';
 import { ZSocialCommunityDetailNotificationComponent } from './social/communities/notification/notification.component';
@@ -35,30 +35,26 @@ export const ZoneRoutes: Route[] = [
       {path: 'picture/:category', component: ZPictureComponent},
       {path: 'picture/:category/:id', component: ZPictureComponent},
 
-      {path: 'social', component: ZSocialComponent},
+      {path: 'social/home', component: ZSocialHomeComponent},
       {path: 'social/posts/:id', component: ZSocialPostDetailComponent},
       {path: 'social/photos/:id', component: ZSocialPhotoDetailComponent},
+
+      {path: 'social/communities', component: ZSocialCommunityComponent},
+
       {
         path: 'social/communities/:id',
         component: ZSocialCommunityDetailComponent,
         children: [
+          {path: '', redirectTo: 'post'},
           {path: 'post', component: ZSocialCommunityDetailPostComponent},
           {path: 'about', component: ZSocialCommunityDetailAboutComponent},
           {path: 'members', component: ZSocialCommunityDetailMembersComponent},
-          {path: 'notification', component: ZSocialCommunityDetailNotificationComponent},
-          {path: '*', component: ZSocialCommunityDetailPostComponent}
+          {path: 'notification', component: ZSocialCommunityDetailNotificationComponent}
         ]
       },
-      {path: 'social/communities', component: ZSocialCommunityComponent},
+
       {path: 'social/members', component: ZSocialMembersComponent},
-      {
-        path: 'social/profile', component: ZSocialProfileComponent,
-        children: [
-          {path: 'post', component: ZSocialProfilePostComponent},
-          {path: 'about', component: ZSocialProfileAboutComponent},
-          {path: '', component: ZSocialProfilePostComponent}
-        ]
-      },
+      {path: 'social/profile', component: ZSocialProfileComponent},
       {
         path: 'social/profile/:id', component: ZSocialProfileComponent,
         children: [
@@ -67,7 +63,6 @@ export const ZoneRoutes: Route[] = [
         ]
       },
       {path: 'social/setting', component: ZSocialSettingComponent},
-      {path: 'social-html', component: ZSocialHtmlComponent},
 
       {path: '', component: ZPictureComponent}
     ]

@@ -13,13 +13,13 @@
                    [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
       <div id="comment-{{comment.uuid}}">
         <div class="media-left">
-          <a href="zone/social/profile/{{comment.owner.uuid}}">
+          <a [routerLink]="['profile', comment.owner.uuid]">
             <img alt="64x64" class="media-object" [src]="comment.owner.profile_image"
                  style="width: 34px; border-radius: 3px">
           </a>
         </div>
         <div class="media-body">
-          <a href="zone/social/profile/{{comment.owner.uuid}}">
+          <a [routerLink]="['profile', comment.owner.uuid]">
             <h4 class="media-heading">{{comment.owner.name}}
               <span class="media-heading-time">{{comment.created_at | dateUntilNow}}</span>
             </h4>
@@ -62,12 +62,12 @@
                      [type]="commentBoxType.EditReply"></comment-box>
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
-            <a href="zone/social/profile/{{reply.owner.uuid}}" class="media-object">
+            <a [routerLink]="['profile', reply.owner.uuid]" class="media-object">
               <img alt="64x64" class="media-object" [src]="reply.owner.profile_image" style="width: 34px; border-radius: 3px">
             </a>
           </div>
           <div class="media-body">
-            <a href="zone/social/profile/{{reply.owner.uuid}}">
+            <a [routerLink]="['profile', reply.owner.uuid]">
               <h4 class="media-heading">{{reply.owner.name}}
                 <span class="media-heading-time">{{reply.created_at | dateUntilNow}}</span>
                 <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">

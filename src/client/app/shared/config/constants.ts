@@ -70,7 +70,7 @@ export let Constants = {
   ],
 
   socialMenuItems : [
-    { name: 'Home', link: '/zone/social' },
+    { name: 'Home', link: '/zone/social/home' },
     { name: 'Communities', link: '/zone/social/communities' },
     { name: 'Members', link: '/zone/social/members' },
     { name: 'My Page', link: '/zone/social/profile' },
