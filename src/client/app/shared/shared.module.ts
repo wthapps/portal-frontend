@@ -43,6 +43,7 @@ import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/inde
 import { FormModalComponent } from './form/form-modal.component';
 import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
 import { NewlinePipe } from './pipe/newline.pipe';
+import { TitleCase } from './pipe/titlecase.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -77,6 +78,7 @@ import { NewlinePipe } from './pipe/newline.pipe';
     GroupByPipe,
     NewlinePipe,
     DateUntilNowPipe,
+    TitleCase,
   ],
   exports: [
     ToolbarComponent,
@@ -108,6 +110,7 @@ import { NewlinePipe } from './pipe/newline.pipe';
     GroupByPipe,
     NewlinePipe,
     DateUntilNowPipe,
+    TitleCase,
   ]
 })
 export class SharedModule {

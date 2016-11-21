@@ -4,22 +4,22 @@
       <div class="z-social-box-header">
         <h3 class="h4"><i class="fa fa-cog"></i> Settings</h3>
       </div>
-      <div class="z-social-box-body">
+      <div class="z-social-box-body" *ngIf="user.settings">
         <h3>General Settings</h3>
         <div class="checkbox checkbox-switch">
-          <p-inputSwitch [(ngModel)]="checked1"></p-inputSwitch>
+          <p-inputSwitch [(ngModel)]="user.settings.auto_import_from_contact.value" (ngModelChange)="updateSettings({auto_import_from_contact: user.settings.auto_import_from_contact})"></p-inputSwitch>
           <label>
             Auto import information from your contact profile
           </label>
         </div>
         <div class="checkbox checkbox-switch">
-          <p-inputSwitch [(ngModel)]="checked2"></p-inputSwitch>
+          <p-inputSwitch [(ngModel)]="user.settings.allow_friend_import_contact.value" (ngModelChange)="updateSettings({allow_friend_import_contact: user.settings.allow_friend_import_contact})"></p-inputSwitch>
           <label>
             Allow friends to import my contact profile
           </label>
         </div>
         <div class="checkbox checkbox-switch">
-          <p-inputSwitch [(ngModel)]="checked3"></p-inputSwitch>
+          <p-inputSwitch [(ngModel)]="user.settings.hide_adult_content.value" (ngModelChange)="updateSettings({hide_adult_content: user.settings.hide_adult_content})"></p-inputSwitch>
           <label>
             Hide all adult content
           </label>
@@ -28,17 +28,17 @@
         <hr>
 
 
-        <h3>Private</h3>
+        <h3>Privacy</h3>
         <p class="bold">Who can search and contact you?</p>
         <div class="radio">
           <label>
-            <input type="radio" name="name" value="" checked="checked">
+            <input type="radio" name="searchable_contact" value="" [attr.checked]="user.settings.check_contact_any" (click)="user.settings.searchable_contact.value = 'public'; updateSettings({searchable_contact: user.settings.searchable_contact})">
             Anyone can search and contact me
           </label>
         </div>
         <div class="radio">
           <label>
-            <input type="radio" name="name" value="">
+            <input type="radio" name="searchable_contact" value="" [attr.checked]="user.settings.check_contact_friends" (click)="user.settings.searchable_contact.value = 'friends'; updateSettings({searchable_contact: user.settings.searchable_contact})">
             Only friends of friends and added contacts can search and see my profile
           </label>
         </div>
@@ -50,20 +50,24 @@
 
         <div class="row">
           <div class="col-sm-6">
-            <select class="form-control">
-              <option value="">Friends</option>
-            </select>
+            <div>
+              <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i class="fa fa-check"></i> {{user.settings.viewable_social.value |  titleCase}} <span class="caret"></span></a>
+              <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu">
+                <li><a href="javascript:;" (click)="user.settings.viewable_social.value = 'public'; updateSettings({viewable_social: user.settings.viewable_social})"> <i class="fa fa-check" *ngIf="user.settings.viewable_social.value == 'public'"></i> Public</a></li>
+                <li><a href="javascript:;" (click)="user.settings.viewable_social.value = 'friends'; updateSettings({viewable_social: user.settings.viewable_social})"> <i class="fa fa-check" *ngIf="user.settings.viewable_social.value == 'friends'"></i> Friends</a></li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="checkbox checkbox-switch">
-          <p-inputSwitch [(ngModel)]="checked4"></p-inputSwitch>
+          <p-inputSwitch [(ngModel)]="user.settings.show_communities.value" (ngModelChange)="updateSettings({show_communities: user.settings.show_communities})"></p-inputSwitch>
           <label>
             Show my communities
           </label>
         </div>
         <div class="checkbox checkbox-switch">
-          <p-inputSwitch [(ngModel)]="checked5"></p-inputSwitch>
+          <p-inputSwitch [(ngModel)]="user.settings.show_friends.value" (ngModelChange)="updateSettings({show_friends: user.settings.show_friends})"></p-inputSwitch>
           <label>
             Show my friends list
           </label>
@@ -77,20 +81,24 @@
           shared with the same choice unless you change it.</p>
         <div class="row">
           <div class="col-sm-6">
-            <select class="form-control">
-              <option value="">Friends</option>
-            </select>
+            <!--<select class="form-control">-->
+              <!--<option value="">Public</option>-->
+              <!--<option value="">Friends</option>-->
+            <!--</select>-->
+            <div>
+              <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i class="fa fa-check"></i> {{user.settings.viewable_post.value |  titleCase}} <span class="caret"></span></a>
+              <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu">
+                <li><a href="javascript:;" (click)="user.settings.viewable_post.value = 'public'; updateSettings({viewable_post: user.settings.viewable_post})"> <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'public'"></i> Public</a></li>
+                <li><a href="javascript:;" (click)="user.settings.viewable_post.value = 'friends'; updateSettings({viewable_post: user.settings.viewable_post})"> <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'friends'"></i> Friends</a></li>
+              </ul>
+            </div>
           </div>
         </div>
 
 
       </div>
       <div class="z-social-box-footer">
-
-        <button class="btn btn-wth-default mr15">Update</button>
-        <button class="btn btn-default mr15">Cancel</button>
-        <button class="btn btn-link">Reset Default</button>
-
+        <button class="btn btn-link" (click)="resetSettings()">Reset Default</button>
       </div>
     </div>
   </div>

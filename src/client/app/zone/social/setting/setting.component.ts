@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SocialService } from '../services/social.service';
+import { SoUser } from '../../../shared/models/social_network/so-user.model';
 
 @Component({
   moduleId: module.id,
@@ -7,16 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ZSocialSettingComponent implements OnInit {
 
-  checked1: boolean = true;
-  checked2: boolean = true;
-  checked3: boolean = true;
-  checked4: boolean = true;
-  checked5: boolean = true;
+  user: SoUser = new SoUser();
 
-  constructor() {
+  constructor(private socialService: SocialService) {
   }
 
   ngOnInit() {
+    this.socialService.user.get().subscribe((res: any) => {
+      this.user = new SoUser().from(res.data);
+      console.log(this.user);
+      },
+    );
   }
 
+  updateSettings(settings:any) {
+    this.socialService.user.update({settings: settings}).subscribe((res: any) => {
+      this.user = new SoUser().from(res.data);
+      },
+    );
+  }
+  resetSettings() {
+    this.socialService.user.reset_setting().subscribe((res: any) => {
+        this.user = new SoUser().from(res.data);
+      },
+    );
+  }
 }

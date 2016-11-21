@@ -17,6 +17,14 @@ export class SoUserService {
     return this.apiBaseServiceV2.get(`zone/social_network/users/${this.user.profile.uuid}`);
   }
 
+  update(body:any) {
+    return this.apiBaseServiceV2.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
+  }
+
+  reset_setting() {
+    return this.apiBaseServiceV2.post(`zone/social_network/users/reset_settings`);
+  }
+
   private getOther(uuid) {
     return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
   }

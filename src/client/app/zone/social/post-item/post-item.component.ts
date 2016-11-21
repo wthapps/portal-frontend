@@ -135,6 +135,9 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
       case ConstantsSocial.userPrivacy.friends.data:
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.friends;
         break;
+      case ConstantsSocial.userPrivacy.custom_friend.data:
+        this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.custom_friend;
+        break;
       default:
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.public;
     }
