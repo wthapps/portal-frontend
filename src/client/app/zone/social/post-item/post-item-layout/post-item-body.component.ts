@@ -25,12 +25,6 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
     openLikeDislike: 6
   };
 
-
-  hasLike: boolean = false;
-  hasDislike: boolean = false;
-  arrDislike: any = [];
-  arrLike: any = [];
-
   constructor(private route: ActivatedRoute,
               public userService: UserService,
               private router: Router,
@@ -43,23 +37,9 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
   }
 
   ngOnChanges() {
-
-    let _this = this;
-    _.map(this.item.dislikes, function (v) {
-      _this.arrDislike.push(v.owner.uuid);
-    });
-    this.hasDislike = (this.arrDislike.indexOf(this.userService.profile.uuid) >= 0) ? true : false;
-
-    _.map(this.item.likes, function (v) {
-      _this.arrLike.push(v.owner.uuid);
-    });
-    this.hasLike = (this.arrLike.indexOf(this.userService.profile.uuid) >= 0) ? true : false;
-
-
     if (this.type == 'info') {
       this.showInfo = true;
     }
-
   }
 
   onActions(action: any, data?: any, type?: any) {

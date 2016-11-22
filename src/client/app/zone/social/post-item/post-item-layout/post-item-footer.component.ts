@@ -51,11 +51,8 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
     openLikeDislike: 6
   };
 
-  currentUUID: string = '';
   hasLike: boolean = false;
   hasDislike: boolean = false;
-  arrDislike: any = [];
-  arrLike: any = [];
 
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
@@ -71,39 +68,9 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
 
   ngOnChanges() {
 
-    /*let _this = this;
-     _this.arrLike.length = 0;
-     _this.arrDislike.length = 0;
-
-     _.map(this.item.comments, function (v) {
-     _.map(v.dislikes, function (v) {
-     _this.arrDislike.push(v.owner.uuid);
-     });
-     console.log("_this.arrDislike:", _this.arrDislike);
-     _this.hasDislike = (_this.arrDislike.indexOf(_this.userService.profile.uuid) >= 0) ? true : false;
-
-
-     _.map(v.likes, function (v) {
-     _this.arrLike.push(v.owner.uuid);
-     });
-     console.log("_this.arrLike:", _this.arrLike);
-
-     _this.hasLike = (_this.arrLike.indexOf(_this.userService.profile.uuid) >= 0) ? true : false;
-
-     });*/
-
-
-    //this.hasDislike = (this.arrDislike.indexOf(this.userService.profile.uuid) >= 0) ? true : false;
-
-    /*_.map(this.item.dislikes, function (v) {
-     _this.arrDislike.push(v.owner.uuid);
-     });
-     this.hasDislike = (this.arrDislike.indexOf(this.userService.profile.uuid) >= 0) ? true : false;
-
-     _.map(this.item.likes, function (v) {
-     _this.arrLike.push(v.owner.uuid);
-     });
-     this.hasLike = (this.arrLike.indexOf(this.userService.profile.uuid) >= 0) ? true : false;*/
+    /*this.hasDislike = (this.item.reactions.indexOf('dislike') >= 0) ? true : false;
+     this.hasLike = (this.item.reactions.indexOf('like') >= 0) ? true : false;*/
+    console.log(this.item);
 
 
     if (this.type == 'info') {

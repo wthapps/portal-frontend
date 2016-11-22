@@ -12,6 +12,7 @@ export class SoPost extends BaseInput implements FromData {
   likes: Array<any> = [];
   dislikes: Array<any> = [];
   shares: Array<any> = [];
+  reactions: Array<any> = [];
   adult: boolean = false;
   privacy: string = 'public';
   disable_comment: boolean = false;

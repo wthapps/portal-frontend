@@ -38,15 +38,17 @@
           <div class="media-body-reply">
             <ul>
               <li>
-                <i class="fa fa-thumbs-o-up mr5" [ngClass]="{'active' : hasLike}"
+                <i class="fa fa-thumbs-o-up mr5" [ngClass]="{'active' : (comment.reactions.indexOf('like') >= 0)}"
                    (click)="postItem.createReaction($event, 'like', 'comment', comment.uuid)"></i>
-                <a *ngIf="comment.likes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, comment.likes, 'like')">{{comment.likes.length}}</a>
+                <a *ngIf="comment.likes.length>0" data-toggle="modal" href="#"
+                   (click)="onActions(actions.openLikeDislike, comment.likes, 'like')">{{comment.likes.length}}</a>
                 <a *ngIf="comment.likes.length==0" href="javascript:;">{{comment.likes.length}}</a>
               </li>
               <li>
-                <i class="fa fa-thumbs-o-down mr5" [ngClass]="{'active' : hasDislike}"
+                <i class="fa fa-thumbs-o-down mr5" [ngClass]="{'active' : (comment.reactions.indexOf('dislike') >= 0)}"
                    (click)="postItem.createReaction($event, 'dislike', 'comment', comment.uuid)"></i>
-                <a *ngIf="comment.dislikes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, comment.dislikes, 'dislike')">{{comment.dislikes.length}}</a>
+                <a *ngIf="comment.dislikes.length>0" data-toggle="modal" href="#"
+                   (click)="onActions(actions.openLikeDislike, comment.dislikes, 'dislike')">{{comment.dislikes.length}}</a>
                 <a *ngIf="comment.dislikes.length==0" href="javascript:;">{{comment.dislikes.length}}</a>
               </li>
               <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{comment.replies.length}}
@@ -63,7 +65,8 @@
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
             <a [routerLink]="['profile', reply.owner.uuid]" class="media-object">
-              <img alt="64x64" class="media-object" [src]="reply.owner.profile_image" style="width: 34px; border-radius: 3px">
+              <img alt="64x64" class="media-object" [src]="reply.owner.profile_image"
+                   style="width: 34px; border-radius: 3px">
             </a>
           </div>
           <div class="media-body">
@@ -86,15 +89,17 @@
             <div class="media-body-reply">
               <ul>
                 <li>
-                  <i class="fa fa-thumbs-o-up mr5"
+                  <i class="fa fa-thumbs-o-up mr5" [ngClass]="{'active' : (reply.reactions.indexOf('like') >= 0)}"
                      (click)="postItem.createReaction($event, 'like', 'comment', reply.uuid)"></i>
-                  <a *ngIf="reply.likes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, reply.likes, 'like')">{{reply.likes.length}}</a>
+                  <a *ngIf="reply.likes.length>0" data-toggle="modal" href="#"
+                     (click)="onActions(actions.openLikeDislike, reply.likes, 'like')">{{reply.likes.length}}</a>
                   <a *ngIf="reply.likes.length==0" href="javascript:;">{{reply.likes.length}}</a>
                 </li>
                 <li>
-                  <i class="fa fa-thumbs-o-down mr5"
+                  <i class="fa fa-thumbs-o-down mr5" [ngClass]="{'active' : (reply.reactions.indexOf('dislike') >= 0)}"
                      (click)="postItem.createReaction($event, 'dislike', 'comment', reply.uuid)"></i>
-                  <a *ngIf="reply.dislikes.length>0" data-toggle="modal" href="#" (click)="onActions(actions.openLikeDislike, reply.dislikes, 'dislike')">{{reply.dislikes.length}}</a>
+                  <a *ngIf="reply.dislikes.length>0" data-toggle="modal" href="#"
+                     (click)="onActions(actions.openLikeDislike, reply.dislikes, 'dislike')">{{reply.dislikes.length}}</a>
                   <a *ngIf="reply.dislikes.length==0" href="javascript:;">{{reply.dislikes.length}}</a>
                 </li>
                 <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{reply.replies.length}}
