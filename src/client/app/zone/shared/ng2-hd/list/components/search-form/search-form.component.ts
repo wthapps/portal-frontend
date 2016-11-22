@@ -17,10 +17,10 @@ import {
 
 @Component({
   moduleId: module.id,
-    selector: 'multi-select-list-form',
-    templateUrl: 'multi-select-list-form.template.html'
+    selector: 'search-form',
+    templateUrl: 'search-form.component.html'
 })
-export class MultiSelectListForm {
+export class SearchForm {
     @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
     @Output() public onBlur: EventEmitter<any> = new EventEmitter();
     @Output() public onFocus: EventEmitter<any> = new EventEmitter();

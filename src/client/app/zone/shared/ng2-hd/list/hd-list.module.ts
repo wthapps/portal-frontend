@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { DeleteIconComponent } from './components/icon/index';
-import { MultiSelectListForm } from './components/multi-select-list-form/index';
-import { MultiSelectListComponent } from './components/index';
-import { ReactiveFormsModule } from '@angular/forms';
+import { SearchForm } from './components/search-form/index';
+import { ListComponent } from './components/index';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { HighlightPipe } from './components/pipes/highlight.pipe';
@@ -11,19 +11,20 @@ import { Ng2DropdownModule } from 'ng2-material-dropdown';
 @NgModule({
     imports: [
         CommonModule,
+        FormsModule,
         ReactiveFormsModule,
         Ng2DropdownModule
     ],
     declarations: [
-        MultiSelectListComponent,
+        ListComponent,
         DeleteIconComponent,
-        MultiSelectListForm,
+        SearchForm,
         HighlightPipe
     ],
     exports: [
-        MultiSelectListComponent,
+        ListComponent,
         DeleteIconComponent,
-        MultiSelectListForm,
+        SearchForm,
         HighlightPipe
     ]
 })

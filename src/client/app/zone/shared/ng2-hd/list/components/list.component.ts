@@ -8,6 +8,8 @@ import {
     Renderer,
     ViewChild,
     OnInit,
+    OnChanges,
+    SimpleChanges,
     HostListener
 } from '@angular/core';
 
@@ -27,19 +29,20 @@ import {
 
 import {
     backSpaceListener,
-    autoCompleteListener,
+    autoSearchListener,
     customSeparatorKeys,
-    addListener,
-    onAutocompleteItemClicked
+    addListener
+    // onAutocompleteItemClicked
 } from './helpers/events-actions';
 
-import { Ng2Dropdown } from 'ng2-material-dropdown';
-import { MultiSelectInputAccessor } from './helpers/accessor';
+// import { Ng2Dropdown } from 'ng2-material-dropdown';
+import { SearchInputAccessor } from './helpers/accessor';
 import { getAction } from './helpers/keypress-actions';
-import { MultiSelectListForm } from './multi-select-list-form/multi-select-list-form.component';
+import { SearchForm } from './search-form/search-form.component';
 
 import 'rxjs/add/operator/debounceTime';
 
+declare var _: any;
 
 // tag-input Component
 
@@ -48,17 +51,17 @@ import 'rxjs/add/operator/debounceTime';
  */
 @Component({
     moduleId: module.id,
-    selector: 'multi-select-list',
+    selector: 'hd-list',
     providers: [ {
         provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => MultiSelectListComponent),
+        useExisting: forwardRef(() => ListComponent),
         multi: true
     } ],
-    templateUrl: 'multi-select-list.component.html',
-    styleUrls: [ 'multi-select-list.component.css']
+    templateUrl: 'list.component.html',
+    styleUrls: [ 'list.component.css']
 
 })
-export class MultiSelectListComponent extends MultiSelectInputAccessor implements OnInit {
+export class ListComponent extends SearchInputAccessor implements OnInit, OnChanges {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
@@ -108,18 +111,18 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
     @Input() public validators = [];
 
     /**
-     * @name autocomplete
-     * @desc sets if autocomplete is enabled. By default it's not.
+     * @name searchable
+     * @desc sets if searchable is enabled. By default it's not.
      * @type {boolean}
      */
-    @Input() public autocomplete: boolean = false;
+    @Input() public searchable: boolean = false;
 
     /**
-     * @name autocompleteItems
+     * @name searchItems
      * @desc array of items that will populate the autocomplete
-     * @type {Array<string>}
+     * @type {Array<any>}
      */
-    @Input() public autocompleteItems: string[] = undefined;
+    @Input() public searchItems: Array<any> = undefined;
 
     /**
     * - if set to true, it will only possible to add items from the autocomplete
@@ -167,46 +170,58 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
     @Input() private inputClass: string;
 
     /**
+     * - custom class assigned to the input
+     */
+    @Input() private objectName: string = undefined;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
      */
-    @Output() public onAdd = new EventEmitter<string>();
+    @Output() public onAdd = new EventEmitter<any>();
 
     /**
      * @name onRemove
      * @desc event emitted when removing an existing item
      * @type {EventEmitter<string>}
      */
-    @Output() public onRemove = new EventEmitter<string>();
+    @Output() public onRemove = new EventEmitter<any>();
 
     /**
      * @name onSelect
      * @desc event emitted when selecting an item
      * @type {EventEmitter<string>}
      */
-    @Output() public onSelect = new EventEmitter<string>();
+    @Output() public onSelect = new EventEmitter<any>();
 
     /**
      * @name onFocus
      * @desc event emitted when the input is focused
      * @type {EventEmitter<string>}
      */
-    @Output() public onFocus = new EventEmitter<string>();
+    @Output() public onFocus = new EventEmitter<any>();
 
     /**
      * @name onFocus
      * @desc event emitted when the input is blurred
      * @type {EventEmitter<string>}
      */
-    @Output() public onBlur = new EventEmitter<string>();
+    @Output() public onBlur = new EventEmitter<any>();
 
     /**
      * @name onTextChange
      * @desc event emitted when the input value changes
      * @type {EventEmitter<string>}
      */
-    @Output() public onTextChange = new EventEmitter<string>();
+    @Output() public onTextChange = new EventEmitter<any>();
+
+    /**
+     * @name onTextChange
+     * @desc event emitted when the input value changes
+     * @type {EventEmitter<string>}
+     */
+    @Output() public onSelected = new EventEmitter<Array<any>>();
 
     /**
      * @name template
@@ -215,23 +230,23 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
      */
     @ViewChild('template') public template: ElementRef;
 
-    /**
-     * @name dropdown
-     */
-    @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
+    // /**
+    //  * @name dropdown
+    //  */
+    // @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
 
 	/**
      * @name inputForm
-     * @type {MultiSelectListForm}
+     * @type {SearchForm}
      */
-    @ViewChild(MultiSelectListForm) public inputForm: MultiSelectListForm;
+    @ViewChild(SearchForm) public inputForm: SearchForm;
 
     /**
     * list of items that match the current value of the input (for autocomplete)
-    * @name itemsMatching
+    * @name itemsSearching
     * @type {String[]}
     */
-    public itemsMatching: string[] = [];
+    public itemsSearching: Array<any> = new Array<any>();
 
     /**
      * @name selectedTag
@@ -266,10 +281,19 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
     /**
      * @name removeItem
      * @desc removes an item from the array of the model
-     * @param item {string}
+     * @param item {any}
      */
-    public removeItem(item: string): void {
+    public removeItem(item: any): void {
+
+      // remove selected item from list item
+        if(_.find(this.itemsSearching, item) != undefined) {
+          item.selected = false;
+        }
+
+        // remove selected item from search input
         this.items = this.items.filter(_item => _item !== item);
+
+        this.onSelected.emit(this.items);
 
         // if the removed tag was selected, set it as undefined
         if (this.selectedTag === item) {
@@ -287,10 +311,10 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
      * @name addItem
      * @desc adds the current text model to the items array
      */
-    public addItem(isFromAutocomplete = false): void {
-        if (this.autocomplete && this.dropdown.state.selectedItem && !isFromAutocomplete) {
-            return;
-        }
+    public addItem(isFromAutocomplete: boolean = false): void {
+        // if (this.autocomplete && this.dropdown.state.selectedItem && !isFromAutocomplete) {
+        //     return;
+        // }
 
         // update form value with the transformed item
         const item = this.setInputValue(this.inputForm.value.value);
@@ -399,8 +423,8 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
             return;
         }
 
-        if (this.autocomplete) {
-            autoCompleteListener.call(this, {});
+        if (this.searchable) {
+            // autoSearchListener.call(this, {});
         }
 
         this.selectItem(undefined);
@@ -456,6 +480,7 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
     }
 
     ngOnInit() {
+
         // setting up the keypress listeners
         addListener.call(this, KEYDOWN, backSpaceListener);
         addListener.call(this, KEYDOWN, customSeparatorKeys, this.separatorKeys.length > 0);
@@ -470,35 +495,56 @@ export class MultiSelectListComponent extends MultiSelectInputAccessor implement
         }
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+      console.log('update items', this.searchItems);
+      this.itemsSearching = this.searchItems;
+      _.forEach(this.itemsSearching, item => {
+        _.assign(item, {selected: false});
+      });
+    }
+
     ngAfterViewChecked() {
-        this.tagElements = this.element.nativeElement.querySelectorAll('.ng2-tag');
+        this.tagElements = this.element.nativeElement.querySelectorAll('.hd-list');
     }
 
     ngAfterViewInit() {
         // if autocomplete is set to true, set up its events
-        if (this.autocomplete) {
-            addListener.call(this, KEYUP, autoCompleteListener);
+      // this.itemsSearching = this.searchItems;
+      if (this.searchable) {
 
-            this.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(this));
-            this.dropdown.onHide.subscribe(() => this.itemsMatching = []);
+            addListener.call(this, KEYUP, autoSearchListener);
+
+            // this.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(this));
+            // this.dropdown.onHide.subscribe(() => this.itemsSearching = []);
         }
 
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
         });
 
-        this.inputForm.form.valueChanges
-            .debounceTime(this.onTextChangeDebounce)
-            .subscribe(() => {
-                const value = this.inputForm.value.value;
-                this.onTextChange.emit(value);
-            });
+        // this.inputForm.form.valueChanges
+        //     .debounceTime(this.onTextChangeDebounce)
+        //     .subscribe(() => {
+        //         const value = this.inputForm.value.value;
+        //         this.onTextChange.emit(value);
+        //     });
     }
 
     @HostListener('window:scroll')
     private scrollListener() {
-        if (this.dropdown && this.dropdown.menu.state.isVisible) {
-            this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
-        }
+        // if (this.dropdown && this.dropdown.menu.state.isVisible) {
+        //     this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
+        // }
+    }
+
+    public toggleSelectItem(item: any, event: any): void {
+      if(_.find(this.items, item) == undefined) {
+        this.items.push(item);
+      } else {
+        // _.pullAllWith(this.items, item, (i) => {return (i.id == item.id); });
+        this.items = this.items.filter(_item => _item !== item);
+
+      }
+      this.onSelected.emit(this.items);
     }
 }

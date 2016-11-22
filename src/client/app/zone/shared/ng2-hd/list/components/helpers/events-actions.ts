@@ -50,42 +50,48 @@ export function addListener(listenerType: string, action: () => any, condition =
  * @param value
  * @returns {string[]}
  */
-function getMatchingItems(value: string): string[] {
-    if (!value && !this.showDropdownIfEmpty) {
-        return [];
-    }
+function getMatchingItems(value: string): Array<any> {
+    // if (!value && !this.showDropdownIfEmpty) {
+    //     return [];
+    // }
 
-    const itemsMatching: string[] = [];
+
+    const itemsMatching: Array<any> = _.filter(this.autocompleteItems, (item) => {
+      return (item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
+    });
     const items = this.autocompleteItems;
     const lowercaseValue = value.toLowerCase();
 
-    items.forEach(item => {
-        const condition = item.toLowerCase().indexOf(lowercaseValue) >= 0 && this.items.indexOf(item) === -1;
+    console.log('loading matching items', value, itemsMatching);
 
-        if (condition) {
-            itemsMatching.push(item);
-        }
-    });
+    // items.forEach(item => {
+    //     const condition = item.toLowerCase().indexOf(lowercaseValue) >= 0 && this.items.indexOf(item) === -1;
+    //
+    //     if (condition) {
+    //         itemsSearching.push(item);
+    //     }
+    // });
 
     return itemsMatching;
 }
 
-export function autoCompleteListener(ev): void {
+export function autoSearchListener(ev): void {
     const value: string = this.inputForm.value.value;
     const position: ClientRect = this.inputForm.getElementPosition();
     const key = ev.keyCode;
     const itemsMatching = getMatchingItems.call(this, value);
 
-    this.itemsMatching = itemsMatching;
+    this.itemsSearching = itemsMatching;
 
-    if (itemsMatching.length || (this.showDropdownIfEmpty && !value)) {
-        const focus = key === 40 ? true : false;
-        this.dropdown.show(position, focus);
-    }
 
-    if (!itemsMatching.length && this.dropdown.menu.state.isVisible) {
-        this.dropdown.hide();
-    }
+    // if (itemsSearching.length || (this.showDropdownIfEmpty && !value)) {
+    //     const focus = key === 40 ? true : false;
+    //     this.dropdown.show(position, focus);
+    // }
+
+    // if (!itemsSearching.length && this.dropdown.menu.state.isVisible) {
+    //     this.dropdown.hide();
+    // }
 }
 
 /**

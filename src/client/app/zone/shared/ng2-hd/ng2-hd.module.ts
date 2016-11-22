@@ -3,7 +3,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HdModalModule } from './modal/hd-modal.module';
-import { HdMultiSelectListModule } from './multi-select-list/hd-multi-select-list.module';
+import { HdMultiSelectListModule } from './list/hd-list.module';
+
 
 @NgModule({
   imports: [

@@ -20,6 +20,7 @@ export class PostShareFriendComponent implements OnInit{
   @ViewChild('modal') modal: HdModalComponent;
 
   friends: Array<any> = new Array<any>();
+  selectedItems: Array<any> = new Array<any>();
 
   constructor(private apiService: ApiBaseService, private userService: UserService) {
 
@@ -27,6 +28,23 @@ export class PostShareFriendComponent implements OnInit{
 
   ngOnInit(): void {
 
+  }
+
+  addItem(item: any) {
+
+  }
+
+  removeItem(item: any) {
+
+  }
+
+  onSelectedItems(items: any) {
+    console.log('selected items', items);
+    this.selectedItems = items;
+  }
+
+  selectItems(event: any) {
+    console.log('select item', this.selectedItems);
   }
 
   loadData(): void {

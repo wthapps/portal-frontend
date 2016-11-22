@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
   EventEmitter } from '@angular/core';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
-// import { MultiSelectListComponent } from '../../shared/ng2-hd/multi-select-list/hd-multi-select-list.module';
+// import { ListComponent } from '../../shared/ng2-hd/list/hd-list.module';
 import { ApiBaseService, UserService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { PostPhotoSelectComponent } from './post-photo-select.component';
@@ -23,22 +23,30 @@ export class PostShareCommunityComponent {
 
   communities: Array<any> = new Array<any>();
   communityNames: Array<any> = new Array<any>();
+  selectedItems: Array<any> = new Array<any>();
 
   constructor(private apiService: ApiBaseService, private userService: UserService) {
 
   }
 
-  addCommunity(commnity: any) {
+  addItem(item: any) {
 
   }
 
-  removeCommunity(community: any) {
+  removeItem(item: any) {
 
   }
 
+  onSelectedItems(items: any) {
+    console.log('selected items', items);
+    this.selectedItems = items;
+  }
+
+  selectItems(event: any) {
+    console.log('select item', this.selectedItems);
+  }
   loadData(): void {
-    console.log('loading data');// load tags
-    this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}`)
+    this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}?selectable=true`)
         .subscribe((result: any) => {
             this.communities = result['data']['communities'];
             this.communityNames = _.map(result['data']['communities'], 'name');
