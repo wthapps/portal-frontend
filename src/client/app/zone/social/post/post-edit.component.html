@@ -11,18 +11,15 @@
           </div>
           <div class="z-shared-with">
             <span class="dropdown">
-              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown"
+              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
                  aria-haspopup="true" aria-expanded="true">
-                 <i class="fa fa-globe" *ngIf="post.privacy=='Public'"></i>
-                 <i class="fa fa-users" *ngIf="post.privacy=='Friends'"></i>
-                 <i class="fa fa-lock" *ngIf="post.privacy=='Private'"></i>
-                {{post.privacy}}</a>
+                  <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{privacyName(post)}} </a>
               <ul class="dropdown-menu">
-                <li><a href="#" (click)="update({privacy: 'Public'}, $event)">
+                <li><a href="#" (click)="update({privacy: 'public'}, $event)">
                   <i class="fa fa-globe"></i> Public</a></li>
-                <li><a href="#" (click)="update({privacy: 'Friends'}, $event)">
+                <li><a href="#" (click)="update({privacy: 'friends'}, $event)">
                   <i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
+                <li><a href="#" (click)="update({privacy: 'personal'}, $event)"><i class="fa fa-lock"></i> Personal</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" (click)="customShare('communities', $event)">Share in Communities</a></li>
                 <li><a href="#" (click)="customShare('friends', $event)">Share with Friends</a></li>
@@ -141,6 +138,6 @@
                    (onClose)="closeSelectPhoto($event)"
                    (onUpload)="upload($event)"></post-photo-select>
 
-<post-share-community #customCommunities></post-share-community>
-<post-share-friend #customFriends></post-share-friend>
+<post-share-community #customCommunities (onSelected)="selectedItems($event)"></post-share-community>
+<post-share-friend #customFriends (onSelected)="selectedItems($event)"></post-share-friend>
 

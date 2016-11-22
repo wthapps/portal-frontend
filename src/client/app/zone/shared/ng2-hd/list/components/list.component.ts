@@ -496,7 +496,6 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-      console.log('update items', this.searchItems);
       this.itemsSearching = this.searchItems;
       _.forEach(this.itemsSearching, item => {
         _.assign(item, {selected: false});

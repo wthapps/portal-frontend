@@ -247,14 +247,36 @@ export class PostEditComponent implements OnInit, OnChanges {
   customShare(type: string, event: any) {
     event.preventDefault();
     if(type == 'communities') {
-      this.customCommunities.modal.open();
-      this.customCommunities.loadData();
+      this.customCommunities.open();
     } else {
-      this.customFriends.modal.open();
-      this.customFriends.loadData();
+      this.customFriends.open();
     }
   }
 
+  selectedItems(response: any) {
+    this.update({privacy: response.type}, null);
+    console.log('items ........', response.items);
+  }
+
+  privacyName(post: any): string {
+    return post.privacy.replace('_', ' ');
+  }
+
+  privacyClassIcon(post: any): string {
+    switch (post.privacy) {
+      case 'friends':
+        return 'fa-users';
+      case 'public':
+        return 'fa-globe';
+      case 'personal':
+        return 'fa-lock';
+      case 'custom_friend':
+        return 'fa-user-times';
+      case 'custom_community':
+        return 'fa-group';
+    }
+    return '';
+  }
   /**
    * Tagging
    */
@@ -271,6 +293,7 @@ export class PostEditComponent implements OnInit, OnChanges {
     console.log('tag add', tag, this.post.tags);
   }
 
+
   removeTag(tag: any) {
 
     this.post.tags = _.pull(this.post.tags, _.find(this.post.tags,['name', tag]));
@@ -282,7 +305,10 @@ export class PostEditComponent implements OnInit, OnChanges {
    */
 
   update(attr: any={}, event: any) {
-    event.preventDefault();
+    if( event != null) {
+      event.preventDefault();
+    }
+
     if(this.openMode == 'add') {
       this.post = _.assignIn(this.post, attr);
     } else {

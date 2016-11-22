@@ -21,6 +21,8 @@ declare var _: any;
 export class PostShareCommunityComponent {
   @ViewChild('modal') modal: HdModalComponent;
 
+  @Output() onSelected: EventEmitter<any> = new EventEmitter<any>();
+
   communities: Array<any> = new Array<any>();
   communityNames: Array<any> = new Array<any>();
   selectedItems: Array<any> = new Array<any>();
@@ -28,6 +30,13 @@ export class PostShareCommunityComponent {
   constructor(private apiService: ApiBaseService, private userService: UserService) {
 
   }
+
+  open(options:any = {}) {
+    this.modal.open();
+    this.loadData();
+  }
+
+
 
   addItem(item: any) {
 
@@ -38,15 +47,19 @@ export class PostShareCommunityComponent {
   }
 
   onSelectedItems(items: any) {
-    console.log('selected items', items);
     this.selectedItems = items;
   }
 
   selectItems(event: any) {
-    console.log('select item', this.selectedItems);
+    this.onSelected.emit({
+      type: 'custom_community',
+      items: this.selectedItems
+    });
+
+    this.modal.close();
   }
   loadData(): void {
-    this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}?selectable=true`)
+    this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}`)
         .subscribe((result: any) => {
             this.communities = result['data']['communities'];
             this.communityNames = _.map(result['data']['communities'], 'name');

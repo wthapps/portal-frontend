@@ -19,6 +19,8 @@ declare var _: any;
 export class PostShareFriendComponent implements OnInit{
   @ViewChild('modal') modal: HdModalComponent;
 
+  @Output() onSelected: EventEmitter<any> = new EventEmitter<any>();
+
   friends: Array<any> = new Array<any>();
   selectedItems: Array<any> = new Array<any>();
 
@@ -30,6 +32,12 @@ export class PostShareFriendComponent implements OnInit{
 
   }
 
+  open(options:any = {}) {
+    this.modal.open();
+    this.loadData();
+  }
+
+
   addItem(item: any) {
 
   }
@@ -39,12 +47,15 @@ export class PostShareFriendComponent implements OnInit{
   }
 
   onSelectedItems(items: any) {
-    console.log('selected items', items);
     this.selectedItems = items;
   }
 
   selectItems(event: any) {
-    console.log('select item', this.selectedItems);
+    this.onSelected.emit({
+      type: 'custom_friend',
+      items: this.selectedItems
+    });
+    this.modal.close();
   }
 
   loadData(): void {
