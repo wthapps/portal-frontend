@@ -10,6 +10,7 @@ export enum ZSocialCommentBoxType {
   EditReply,
 }
 
+declare var $: any;
 @Component({
   moduleId: module.id,
   selector: 'comment-box',
@@ -32,6 +33,12 @@ export class ZSocialCommentBoxComponent implements OnInit{
     if (this.type == this.commentBoxType.EditReply) {
       this.commentContent = this.reply.content
     }
+    $('textarea').each(function () {
+      this.setAttribute('style', 'height: 40px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
+    }).on('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
   }
 
   onKey(e:any) {
