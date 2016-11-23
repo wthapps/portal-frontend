@@ -17,15 +17,18 @@
 // --------------------------------------------------
 @import "custom-bootstrap";
 //
-// =Fonts
-// --------------------------------------------------
-@import "partials/fonts";
-//
 // =Global
 // --------------------------------------------------
 @import "general/mixin";
 @import "general/setting";
 @import "partials/constants";
+//
+// =Fonts
+// --------------------------------------------------
+@import "partials/fonts";
+//
+// =Partials
+// --------------------------------------------------
 @import "partials/colors";
 @import "partials/grid";
 @import "partials/typography";

@@ -193,7 +193,6 @@ module.exports = function (grunt) {
     ]);
     grunt.registerTask('build', [
         'sass',
-        'sassApp',
         'jshint',
         'concat',
         'cssmin',
