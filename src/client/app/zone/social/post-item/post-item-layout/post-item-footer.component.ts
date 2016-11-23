@@ -67,12 +67,6 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
   showInfo: boolean = false;
 
   ngOnChanges() {
-
-    /*this.hasDislike = (this.item.reactions.indexOf('dislike') >= 0) ? true : false;
-     this.hasLike = (this.item.reactions.indexOf('like') >= 0) ? true : false;*/
-    console.log(this.item);
-
-
     if (this.type == 'info') {
       this.showInfo = true;
     }

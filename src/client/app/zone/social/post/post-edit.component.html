@@ -75,7 +75,7 @@
     <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
       <div class="row">
         <div class="col-xs-6 col-sm-12">
-          <div class="form-group"
+          <div class="form-group no-label"
                [ngClass]="{'has-error': (!descCtrl.valid && descCtrl.touched),
                         'has-success': (descCtrl.valid && descCtrl.touched)}">
           <textarea placeholder="Share your ideas" class="form-control"
