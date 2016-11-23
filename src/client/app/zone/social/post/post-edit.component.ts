@@ -36,6 +36,7 @@ export class PostEditComponent implements OnInit, OnChanges {
   tags: Array<string> = new Array<string>();
   objTags: Array<any> = new Array<any>();
   originalTags: Array<any> = new Array<any>();
+  custom_objects: Array<any> = new Array<any>();
 
   form: FormGroup;
   descCtrl: AbstractControl;
@@ -116,13 +117,15 @@ export class PostEditComponent implements OnInit, OnChanges {
       post: {
         description: item.description,
         photos: this.post.photos, // TODO refactor on view formControl=photosCtrl
-        tags: this.post.tags,
+        tags_json: this.post.tags,
         privacy: this.post.privacy,
         adult: this.post.adult,
         disable_comment: this.post.disable_comment,
         disable_share: this.post.disable_share,
         mute: this.post.mute
-      }
+      },
+      custom_objects: this.custom_objects,
+
     });
 
     if(this.openMode == 'add') {
@@ -255,7 +258,7 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   selectedItems(response: any) {
     this.update({privacy: response.type}, null);
-    console.log('items ........', response.items);
+    this.custom_objects = response.items;
   }
 
   privacyName(post: any): string {

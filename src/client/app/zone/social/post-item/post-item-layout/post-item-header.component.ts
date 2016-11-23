@@ -51,4 +51,23 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
     this.postItem.delete();
   }
 
+  privacyName(post: any): string {
+    return post.privacy.replace('_', ' ');
+  }
+
+  privacyClassIcon(post: any): string {
+    switch (post.privacy) {
+      case 'friends':
+        return 'fa-users';
+      case 'public':
+        return 'fa-globe';
+      case 'personal':
+        return 'fa-lock';
+      case 'custom_friend':
+        return 'fa-user-times';
+      case 'custom_community':
+        return 'fa-group';
+    }
+    return '';
+  }
 }

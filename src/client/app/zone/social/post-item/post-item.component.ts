@@ -74,6 +74,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   mapDisplay() {
     // Clone object to display
     this.itemDisplay = _.cloneDeep(this.item);
+    this.itemDisplay.tags = this.item['tags_json'];
     // handle css
     this.addCarouselCss();
     // handle photo remain
@@ -192,7 +193,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
 
   editedPost(newPost: any) {
     this.itemDisplay.description = newPost.description;
-    this.itemDisplay.tags = newPost.tags;
+    this.itemDisplay.tags = newPost.tags_json;
     this.itemDisplay.photos = newPost.photos;
   }
 
