@@ -13,15 +13,32 @@
         </div>
       </a>
       <div class="z-shared-with dropdown">
-        <a href="#" data-toggle="dropdown"><i class="{{item.privacyDisplay.css}}"></i> {{item.privacyDisplay.text}}</a>
-        <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu1">
-          <li><a href="#" (click)="update({privacy: 'Public'}, $event)"><i class="fa fa-globe"></i> Public</a></li>
-          <li><a href="#" (click)="update({privacy: 'Friends'}, $event)"><i class="fa fa-users"></i> Friends</a></li>
-          <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="#" (click)="update({privacy: 'Custom'}, $event)">Custom</a></li>
-          <!--<li><a href="#" (click)="update({privacy: 'Custom'}, $event)">Custom</a></li>-->
-        </ul>
+        <a class="text-capitalize" href="#" (click)="modal.open();" data-toggle="dropdown">
+          <i class="fa {{privacyClassIcon(item)}}">
+          </i> {{privacyName(item)}}</a>
+
+        <hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+          <modal-header cssClass="modal-social-head" [show-close]="true">
+            <h4 class="modal-title text-left text-capitalize"> {{privacyName(item)}}</h4>
+            <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </modal-header>
+          <modal-body>
+            <ul class="list-unstyled social-list-user wth-scrollable">
+              <li *ngFor="let item of item.custom_objects">
+            <span class="social-list-user-action">
+            </span>
+                <img alt="" [src]="item.profile_image" title="" width="30">
+                <span>{{item.name}}</span>
+              </li>
+            </ul>
+          </modal-body>
+          <modal-footer>
+            <button type="button" class="btn btn-wth-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">DONE</button>
+          </modal-footer>
+        </hd-modal>
+
       </div>
     </div>
     <div class="z-shared-info">
