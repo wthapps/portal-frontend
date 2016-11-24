@@ -25,6 +25,16 @@ export class SoUserService {
     return this.apiBaseServiceV2.post(`zone/social_network/users/reset_settings`);
   }
 
+
+
+  addFriend(body:any) {
+    return this.apiBaseServiceV2.post(`zone/social_network/users/add_friend`, body);
+  }
+
+  removeFriend(body:any) {
+    return this.apiBaseServiceV2.post(`zone/social_network/users/remove_friend`, body);
+  }
+
   private getOther(uuid) {
     return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
   }
