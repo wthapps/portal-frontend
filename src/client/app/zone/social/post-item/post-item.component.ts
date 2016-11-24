@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { SoPost } from "../../../shared/models/social_network/so-post.model";
 import { BaseZoneSocialItem } from "../base/base-social-item";
 import { ConstantsSocial } from "../base/constants-social";
@@ -35,6 +35,7 @@ declare var _: any;
 export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @ViewChild('postEdit') postEdit: PostEditComponent;
   @ViewChild('postShare') postShare: PostShareComponent;
+  @ViewChild('shareEdit') shareEdit: PostEditComponent;
   @ViewChild('postActivities') postActivities: PostActivitiesComponent;
   @ViewChild('postLikeDislike') postLikeDislike: PostLikeDislikeComponent;
 
@@ -64,7 +65,10 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.photoModal.photoList.multipleSelect = false;
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['item'].currentValue.id != undefined) {
+      console.log("item", changes['item'].currentValue);
+    }
     if (!this.item) {
       this.item = new SoPost();
     }
@@ -270,7 +274,8 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   openShare() {
-    this.postShare.modal.open();
+    this.shareEdit.open();
+    // this.postShare.modal.open();
   }
 
   openActivities() {

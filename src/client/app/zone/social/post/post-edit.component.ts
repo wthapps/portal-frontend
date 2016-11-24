@@ -24,6 +24,10 @@ export class PostEditComponent implements OnInit, OnChanges {
   @ViewChild('customCommunities') customCommunities: PostShareCommunityComponent;
   @ViewChild('customFriends') customFriends: PostShareFriendComponent;
 
+  // For share
+  // @Input() isShare: boolean = false;
+  @Input() postItem: any = undefined;
+
   @Input() openMode: string = 'add'; // add or edit
   @Input() photos: Array<any> = new Array<any>();
 
@@ -116,7 +120,7 @@ export class PostEditComponent implements OnInit, OnChanges {
     body = JSON.stringify({
       post: {
         description: item.description,
-        photos: this.post.photos, // TODO refactor on view formControl=photosCtrl
+        photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
         tags_json: this.post.tags,
         privacy: this.post.privacy,
         adult: this.post.adult,
@@ -124,8 +128,8 @@ export class PostEditComponent implements OnInit, OnChanges {
         disable_share: this.post.disable_share,
         mute: this.post.mute
       },
-      custom_objects: this.custom_objects,
-
+      parent_id: 22, // get parent post id
+      custom_objects: this.custom_objects
     });
 
     if(this.openMode == 'add') {

@@ -17,11 +17,13 @@ import {
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
 import { Ng2HdModule } from '../../shared/ng2-hd/index';
+import { RouterModule } from '@angular/router';
 
 
 
 @NgModule({
   imports: [
+    RouterModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

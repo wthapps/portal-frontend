@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseZoneSocialItem } from "../../base/base-social-item";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SoPost } from "../../../../shared/models/social_network/so-post.model";
@@ -16,6 +16,7 @@ declare var _: any;
 export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
+  parentItem: SoPost = new SoPost();
 
   showInfo: boolean = false;
   actions = {
@@ -36,9 +37,13 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
     // console.log('ngOnInit:', this);
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.type == 'info') {
       this.showInfo = true;
+    }
+
+    if(changes['item'].currentValue.parent) {
+      this.parentItem = changes['item'].currentValue.parent;
     }
   }
 

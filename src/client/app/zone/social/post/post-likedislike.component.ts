@@ -25,7 +25,7 @@ export class PostLikeDislikeComponent implements OnChanges {
   @ViewChild('modal') modal: HdModalComponent;
 
   ngOnChanges() {
-    console.log('this.type:', this.type);
-    console.log('this.item:', this.item);
+    // console.log('this.type:', this.type);
+    // console.log('this.item:', this.item);
   }
 }

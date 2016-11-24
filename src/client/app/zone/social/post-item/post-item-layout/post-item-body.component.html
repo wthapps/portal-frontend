@@ -10,6 +10,7 @@
       </a>
     </div>
   </div>
+
   <div class="z-social-carousel">
     <ul class="{{item.displayCss}}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
@@ -31,6 +32,48 @@
       </li>
     </ul>
   </div>
+
+  <!--original post or parent post-->
+  <div *ngIf="!item.is_post">
+    <hr/>
+    <div class="form-group">
+      Shared from <a [routerLink]="['/zone/social/profile/', parentItem.owner.uuid, 'about']" >{{parentItem.owner.name}}</a>
+    </div>
+    <div class="z-social-post-content" >
+      <div class="z-social-post-txt">
+        <read-more [maxheight]="120" [content]="parentItem.description">
+        </read-more>
+      </div>
+      <div class="z-social-post-tag">
+        <a *ngFor="let tag of parentItem.tags_json">
+          {{tag.name}}
+        </a>
+      </div>
+    </div>
+
+    <div class="z-social-carousel">
+      <ul class="{{parentItem.displayCss}}">
+        <li *ngFor="let photo of parentItem.photos;	let	i	=	index">
+          <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, i)">
+            <img class="img-full" [src]="photo.url" alt="">
+          </figure>
+          <figure *ngIf="i == 5 && parentItem.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, i)">
+            <img class="img-full" [src]="photo.url" alt="">
+          </figure>
+          <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, i)"
+             *ngIf="i == 5 && parentItem.remainPhotos != 0">
+                  <span>
+                    + {{parentItem.remainPhotos}}
+                  </span>
+            <figure>
+              <img class="img-full" [src]="photo.url" alt="">
+            </figure>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <div class="z-social-post-action">
     <ul class="pull-left">
       <li>

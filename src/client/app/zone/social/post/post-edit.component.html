@@ -120,8 +120,11 @@
           </div>
         </div>
       </div>
+      <div class="form-group" *ngIf="isShare">
+        Shared from <a [routerLink]="['/zone/social/profile/', postItem.owner.uuid, 'about']" >{{postItem.owner.name}}</a>
+      </div>
       <div class="clearfix text-right">
-        <button type="button" class="btn btn-default pull-left btn-min" (click)="addMorePhoto($event)">
+        <button type="button" class="btn btn-default pull-left btn-min" *ngIf="!isShare" (click)="addMorePhoto($event)">
           <i class="fa fa-camera"></i>
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"
@@ -129,7 +132,6 @@
         <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel</button>
       </div>
     </form>
-
   </modal-body>
 </hd-modal>
 <post-photo-select #photoSelectModal
