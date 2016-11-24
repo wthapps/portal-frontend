@@ -1,7 +1,6 @@
 import { Route } from '@angular/router';
 import { ZoneComponent } from './index';
 import { ZPictureComponent } from './index';
-import { ZSocialComponent } from './social/index';
 
 import { AuthGuard } from "../shared/services/auth-guard.service";
 import { ZSocialPostDetailComponent } from './social/post-detail/post-detail.component';

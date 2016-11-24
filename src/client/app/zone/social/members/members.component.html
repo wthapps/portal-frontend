@@ -5,48 +5,76 @@
         <nav class="z-social-box-header-nav pull-left">
           <ul>
             <li>
-              <a class="active" href="#">FRIENDS <span class="text-fade">10</span></a>
+              <a [ngClass]="{'active': currentState == 'friends'}" (click)="getDataList('friends')" href="#">
+                FRIENDS <span *ngIf="data.friends" class="text-fade">{{data.friends.length}}</span>
+              </a>
             </li>
             <li>
-              <a href="#">FOLLOWERS <span class="text-fade">11</span></a>
+              <a [ngClass]="{'active': currentState == 'followers'}" (click)="getDataList('followers')" href="#">
+                FOLLOWERS <span *ngIf="data.followers" class="text-fade">{{data.followers.length}}</span>
+              </a>
             </li>
             <li>
-              <a href="#">FOLLOWING <span class="text-fade">5</span></a>
+              <a [ngClass]="{'active': currentState == 'followings'}" (click)="getDataList('followings')" href="#">
+                FOLLOWING <span *ngIf="data.followings" class="text-fade">{{data.followings.length}}</span>
+              </a>
             </li>
             <li>
-              <a href="#">BLACKLIST <span class="text-fade">3</span></a>
+              <a [ngClass]="{'active': currentState == 'blacklists'}" (click)="getDataList('blacklists')" href="#">
+                BLACKLIST <span *ngIf="data.blacklists" class="text-fade">{{data.blacklists.length}}</span>
+              </a>
             </li>
           </ul>
         </nav>
 
       </div>
       <div class="z-social-box-body z-social-box-body-communities">
-        <div class="p40 text-center">
-          <h3 class="text-fade">
-            There is no friend on your friend list yet
-          </h3>
-          <button class="btn btn-default">
-            Seach for Friend
-          </button>
+        <div *ngIf="list.length==0" class="p40 text-center">
+          <div *ngIf="currentState == 'friends'">
+            <h3 class="text-fade">
+              There is no friend on your friend list yet
+            </h3>
+            <button class="btn btn-default">
+              Seach for Friend
+            </button>
+          </div>
+          <div *ngIf="currentState == 'followers'">
+            <h3 class="text-fade">
+              There is no followers
+            </h3>
+          </div>
+          <div *ngIf="currentState == 'followings'">
+            <h3 class="text-fade">
+              There is no followings
+            </h3>
+          </div>
+          <div *ngIf="currentState == 'blacklists'">
+            <h3 class="text-fade">
+              There is no blacklist
+            </h3>
+          </div>
+
         </div>
-        <div class="row">
-          <div class="col-xs-12 col-lg-6">
+        <div *ngIf="list.length>0" class="row">
+          <div *ngFor="let item of list" class="col-xs-12 col-lg-6">
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
-                  <a href="/zone/social/communities/detail">
-                    <img src="/assets/images/avatar/avatar-lg.png" width="70" alt="">
+                  <a [routerLink]="['/zone/social/profile', item.uuid]">
+                    <img [src]="item.profile_image" width="70" alt="">
                   </a>
                 </figure>
               </div>
               <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Friendly User No
-                  01</a>
+                <h4 class="media-center-heading">
+                  <a href="/zone/social/communities/detail">
+                    {{item.name}}
+                  </a>
                 </h4>
-                <p class="media-center-p">Nickname</p>
+                <p *ngIf="nickname" class="media-center-p">{{item.nickname}}</p>
               </div>
               <div class="media-center-right">
-                <div class="dropdown pull-right">
+                <div *ngIf="currentState == 'friends'" class="dropdown pull-right">
                   <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="true">
                     <i class="fa fa-check"></i> Friend <span class="caret"></span>
@@ -58,75 +86,21 @@
                     <li><a href="#">Unfriend</a></li>
                   </ul>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-lg-6">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a href="/zone/social/communities/detail">
-                    <img src="/assets/images/avatar/avatar-lg.png" width="70" alt="">
-                  </a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Friendly User No
-                  01</a>
-                </h4>
-                <p class="media-center-p">Nickname</p>
-              </div>
-              <div class="media-center-right">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                  <i class="fa fa-share"></i> Follow
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-lg-6">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a href="/zone/social/communities/detail">
-                    <img src="/assets/images/avatar/avatar-lg.png" width="70" alt="">
-                  </a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Friendly User No
-                  01</a>
-                </h4>
-                <p class="media-center-p">Nickname</p>
-              </div>
-              <div class="media-center-right">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                  <i class="fa fa-times"></i> Unfollow
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-lg-6">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a href="/zone/social/communities/detail">
-                    <img src="/assets/images/avatar/avatar-lg.png" width="70" alt="">
-                  </a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Friendly User No
-                  01</a>
-                </h4>
-                <p class="media-center-p">Nickname</p>
-              </div>
-              <div class="media-center-right">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                  Remove
-                </button>
+                <div *ngIf="currentState == 'followers'" class="pull-right">
+                  <button class="btn btn-default" type="button">
+                    <i class="fa fa-share"></i> Follow
+                  </button>
+                </div>
+                <div *ngIf="currentState == 'followings'" class="pull-right">
+                  <button class="btn btn-default" type="button">
+                    <i class="fa fa-times"></i> Unfollow
+                  </button>
+                </div>
+                <div *ngIf="currentState == 'blacklists'" class="dropdown pull-right">
+                  <button class="btn btn-default" type="button">
+                    Remove
+                  </button>
+                </div>
               </div>
             </div>
           </div>
