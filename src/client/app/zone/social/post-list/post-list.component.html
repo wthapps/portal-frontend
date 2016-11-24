@@ -1,5 +1,5 @@
 <div class="z-social-box" *ngFor="let item of listItems">
-  <post-item [item]="item" (onDeleted)="deletedPost($event)"></post-item>
+  <post-item [item]="item" (onDeleted)="deletedPost($event)" (onUpdated)="updatedPost($event)"></post-item>
 </div>
 
 

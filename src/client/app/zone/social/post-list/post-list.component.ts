@@ -66,6 +66,10 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
     console.log('list deleting.................');
   }
 
+  updatedPost(event: any) {
+    this.loadPosts();
+  }
+
   deletedPost(event: any) {
     this.loadPosts();
   }

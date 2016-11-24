@@ -91,7 +91,7 @@
         <a *ngIf="item.dislikes.length==0" href="javascript:;">{{item.dislikes.length}}</a>
       </li>
       <li *ngIf="!item.disable_share">
-        <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{item.shares.length}}
+        <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{item.shared_count}}
       </li>
     </ul>
 

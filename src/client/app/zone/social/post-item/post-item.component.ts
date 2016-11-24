@@ -199,6 +199,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
     this.itemDisplay.description = newPost.description;
     this.itemDisplay.tags = newPost.tags_json;
     this.itemDisplay.photos = newPost.photos;
+    this.onUpdated.emit(newPost);
   }
 
   onActions(event: BaseEvent) {
@@ -274,8 +275,8 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   openShare() {
-    this.shareEdit.open();
-    // this.postShare.modal.open();
+    // this.item['is_post'] ? this.item : this.item['parent']
+    this.shareEdit.open({parent: this.item});
   }
 
   openActivities() {

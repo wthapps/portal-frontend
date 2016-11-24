@@ -26,7 +26,6 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   // For share
   // @Input() isShare: boolean = false;
-  @Input() postItem: any = undefined;
 
   @Input() openMode: string = 'add'; // add or edit
   @Input() photos: Array<any> = new Array<any>();
@@ -48,6 +47,8 @@ export class PostEditComponent implements OnInit, OnChanges {
   photosCtrl: AbstractControl;
   backupPhotos: Array<any> = new Array<any>();
   uploadedPhotos: Array<any> = new Array<any>();
+
+  parent: any = null;
 
   constructor(
     private apiService: ApiBaseService,
@@ -73,7 +74,7 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   }
 
-  open(options: any={mode:'add', addingPhotos: false, post: null}) {
+  open(options: any={mode:'add', addingPhotos: false, post: null, parent: null }) {
     // load tags
     this.apiService.get(`zone/tags`)
       .subscribe((result: any) => {
@@ -90,6 +91,10 @@ export class PostEditComponent implements OnInit, OnChanges {
       this.post = options.post;
       this.originalTags = this.post.tags;
     }
+    if(options.parent != null) {
+      this.parent = options.parent;
+    }
+
     this.form       = this.fb.group({
       'description': [this.post.description, Validators.compose([Validators.required])],
       'tags': [_.map(this.post.tags, 'name'), null],
@@ -128,7 +133,7 @@ export class PostEditComponent implements OnInit, OnChanges {
         disable_share: this.post.disable_share,
         mute: this.post.mute
       },
-      parent_id: 22, // get parent post id
+      parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
       custom_objects: this.custom_objects
     });
 

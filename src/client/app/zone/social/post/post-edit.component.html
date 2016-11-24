@@ -120,11 +120,11 @@
           </div>
         </div>
       </div>
-      <div class="form-group" *ngIf="isShare">
-        Shared from <a [routerLink]="['/zone/social/profile/', postItem.owner.uuid, 'about']" >{{postItem.owner.name}}</a>
+      <div class="form-group" *ngIf="parent != null">
+        Shared from <a [routerLink]="['/zone/social/profile/', parent.owner.uuid, 'about']" >{{parent.owner.name}}</a>
       </div>
       <div class="clearfix text-right">
-        <button type="button" class="btn btn-default pull-left btn-min" *ngIf="!isShare" (click)="addMorePhoto($event)">
+        <button type="button" class="btn btn-default pull-left btn-min" *ngIf="parent == null" (click)="addMorePhoto($event)">
           <i class="fa fa-camera"></i>
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"

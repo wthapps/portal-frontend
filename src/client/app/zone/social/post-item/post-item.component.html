@@ -9,7 +9,7 @@
 ></post-edit>
 
 <post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>
-<post-edit #shareEdit [postItem]="item"
+<post-edit #shareEdit
            (onEdited)="editedPost($event)"
            (onUpdated)="update($event)"></post-edit>
 <post-share #postShare></post-share>
