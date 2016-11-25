@@ -7,7 +7,6 @@ import { PostPhotoSelectComponent } from './post-photo-select.component';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { UserService } from '../../../shared/index';
 
-
 declare var _: any;
 
 @Component({
@@ -18,5 +17,22 @@ declare var _: any;
 
 export class PostActivitiesComponent {
   @ViewChild('modal') modal: HdModalComponent;
+  shares: Array<any>;
 
+  constructor(private api: ApiBaseService) {}
+
+  open(options: any = {item: undefined}) {
+    this.modal.open();
+
+    this.api.get(`zone/social_network/posts/list_shares`).subscribe(
+      (response: any) => {
+        this.shares = response['data'];
+      }
+    )
+
+
+
+
+
+  }
 }
