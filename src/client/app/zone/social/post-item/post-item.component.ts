@@ -275,12 +275,11 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
   }
 
   openShare() {
-    // this.item['is_post'] ? this.item : this.item['parent']
     this.shareEdit.open({parent: this.item});
   }
 
   openActivities() {
-    this.postActivities.modal.open();
+    this.postActivities.open({item: this.item});
   }
 
   openLikeDislike(data: any, type: any) {
