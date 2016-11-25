@@ -9,20 +9,24 @@
           </button>
         </div>
       </div>
-      <div class="z-social-box-body z-social-box-body-communities">
+      <div *ngIf="myList.length==0" class="z-social-box-body z-social-box-body-communities">
+        <p class="mt20">There is no community on your communities list</p>
+      </div>
+      <div *ngIf="myList.length>0" class="z-social-box-body z-social-box-body-communities">
         <div class="row">
-          <div class="col-xs-12 col-md-6 col-lg-4">
+          <div *ngFor="let my of myList" class="col-xs-12 col-md-6 col-lg-4">
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
-                  <a [routerLink]="['/zone/social/communities/uuid/post']">
-                    <img src="/assets/images/zone/img-groups-lg.png" alt="">
+                  <a [routerLink]="['/zone/social/communities', my.uuid]">
+                    <img width="70" [src]="my.profile_image" alt="">
                   </a>
                 </figure>
               </div>
               <div class="media-center-body">
-                <h4 class="media-center-heading"><a [routerLink]="['/zone/social/communities/detail']">Group Number 01</a></h4>
-                <p class="media-center-p">12 members</p>
+                <h4 class="media-center-heading"><a [routerLink]="['/zone/social/communities', my.uuid]">{{my.name}}</a></h4>
+                <p *ngIf="my.users.length<2" class="media-center-p">{{my.users.length}} member</p>
+                <p *ngIf="my.users.length>1" class="media-center-p">{{my.users.length}} members</p>
               </div>
               <div class="media-center-right">
                 <div class="dropdown pull-right">
@@ -46,142 +50,25 @@
         </div>
       </div>
     </div>
-    <div class="z-social-box">
+    <div *ngIf="list.length>0" class="z-social-box">
       <div class="z-social-box-header">
-        <h3 class="h4">Your Communites</h3>
+        <h3 class="h4">Your Communities</h3>
       </div>
       <div class="z-social-box-body z-social-box-body-communities">
         <div class="row">
-          <div class="col-xs-12 col-md-6 col-lg-4">
+          <div *ngFor="let item of list" class="col-xs-12 col-md-6 col-lg-4">
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
-                  <a href="/zone/social/communities/detail"><img src="/assets/images/zone/img-groups-lg.png" alt=""></a>
+                  <a [routerLink]="['/zone/social/communities', item.uuid]">
+                    <img width="70" [src]="item.profile_image" alt="">
+                  </a>
                 </figure>
               </div>
               <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Group Number 01</a></h4>
-                <p class="media-center-p">12 members</p>
-              </div>
-              <div class="media-center-right">
-                <div class="dropdown pull-right">
-                  <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="#">Edit Information</a></li>
-                    <li><a href="#">Preferences</a></li>
-                    <li><a href="#">Manage members</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Remove from Favourites</a></li>
-                    <li><a href="#">Leave community</a></li>
-                    <li><a href="#">Delete community</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6 col-lg-4">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a href="/zone/social/communities/detail"><img src="/assets/images/zone/img-groups-lg.png" alt=""></a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Group Number 01</a></h4>
-                <p class="media-center-p">12 members</p>
-              </div>
-              <div class="media-center-right">
-                <div class="dropdown pull-right">
-                  <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="#">Edit Information</a></li>
-                    <li><a href="#">Preferences</a></li>
-                    <li><a href="#">Manage members</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Remove from Favourites</a></li>
-                    <li><a href="#">Leave community</a></li>
-                    <li><a href="#">Delete community</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6 col-lg-4">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a href="/zone/social/communities/detail"><img src="/assets/images/zone/img-groups-lg.png" alt=""></a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Group Number 01</a></h4>
-                <p class="media-center-p">12 members</p>
-              </div>
-              <div class="media-center-right">
-                <div class="dropdown pull-right">
-                  <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="#">Edit Information</a></li>
-                    <li><a href="#">Preferences</a></li>
-                    <li><a href="#">Manage members</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Remove from Favourites</a></li>
-                    <li><a href="#">Leave community</a></li>
-                    <li><a href="#">Delete community</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6 col-lg-4">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a href="/zone/social/communities/detail"><img src="/assets/images/zone/img-groups-lg.png" alt=""></a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Group Number 01</a></h4>
-                <p class="media-center-p">12 members</p>
-              </div>
-              <div class="media-center-right">
-                <div class="dropdown pull-right">
-                  <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="#">Edit Information</a></li>
-                    <li><a href="#">Preferences</a></li>
-                    <li><a href="#">Manage members</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Remove from Favourites</a></li>
-                    <li><a href="#">Leave community</a></li>
-                    <li><a href="#">Delete community</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6 col-lg-4">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a href="/zone/social/communities/detail"><img src="/assets/images/zone/img-groups-lg.png" alt=""></a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading"><a href="/zone/social/communities/detail">Group Number 01</a></h4>
-                <p class="media-center-p">12 members</p>
+                <h4 class="media-center-heading"><a [routerLink]="['/zone/social/communities', item.uuid]">{{item.name}}</a></h4>
+                <p *ngIf="item.users.length<2" class="media-center-p">{{item.users.length}} member</p>
+                <p *ngIf="item.users.length>1" class="media-center-p">{{item.users.length}} members</p>
               </div>
               <div class="media-center-right">
                 <div class="dropdown pull-right">
