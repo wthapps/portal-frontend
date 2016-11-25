@@ -26,7 +26,7 @@
           </template>
 
           <template [ngIf]="!userService.profile">
-            <button (click)="getStarted(pp)" class="btn btn-default btn-min">Sign up</button>
+            <a [routerLink]="['/signup']" class="btn btn-default btn-min">Sign up</a>
           </template>
 
 
@@ -55,7 +55,7 @@
         </template>
 
         <template [ngIf]="!userService.profile">
-          <button (click)="getStarted(pp)" class="btn btn-default btn-min">Sign up</button>
+          <a [routerLink]="['/signup']" class="btn btn-default btn-min">Sign up</a>
         </template>
       </td>
     </tr>

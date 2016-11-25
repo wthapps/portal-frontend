@@ -76,7 +76,7 @@ export class TablePricingComponent implements OnInit {
     });
     // Cookie.delete('selected_plan');
     Cookie.set('selected_plan', p, 365, '/');
-    if (this.userService.profile.has_payment_info) {
+    if (this.userService.profile && this.userService.profile.has_payment_info) {
       this.router.navigateByUrl('account/payment/confirm');
     } else {
       this.router.navigateByUrl('account/payment');
