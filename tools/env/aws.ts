@@ -1,7 +1,7 @@
 import { EnvConfig } from './env-config.interface';
 
 const ProdConfig: EnvConfig = {
-  API: 'http://localhost:4000/',
+  API: 'http://52.221.221.245:4000/',
   ENV: 'PROD'
 };
 

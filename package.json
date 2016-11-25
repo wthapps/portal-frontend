@@ -8,9 +8,11 @@
   "scripts": {
     "build.predev": "cd dist/dev\nln -s ../../node_modules/ ./",
     "build.dev": "gulp build.dev --color --config-env dev",
+    "build.dev.aws": "gulp build.dev --color --config-env dev-aws",
     "build.dev.watch": "gulp build.dev.watch --color",
     "build.e2e": "gulp build.e2e --color",
     "build.prod": "gulp build.prod --color --config-env prod",
+    "build.aws": "gulp build.prod --color --config-env aws",
     "build.prod.exp": "gulp build.prod.exp --color --config-env prod",
     "build.test": "gulp build.test --color",
     "test.watch": "gulp test.watch --color",
