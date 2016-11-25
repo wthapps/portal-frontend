@@ -63,36 +63,50 @@
   </div>
   <div class="z-social-media-right">
     <div class="dropdown pull-right">
+      <!--<post-settings [item]="item"></post-settings>-->
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
               data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true">
+              aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)">
         <i class="fa fa-ellipsis-v"></i>
       </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li><a href="#" (click)="update({adult: !item.adult}, $event)">
-          Adult content <i class="fa fa-check" *ngIf="item.adult"></i>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" *ngIf="settings">
+        <li><a href="javascript:;" (click)="update({adult: !item.mute}, $event)" *ngIf="settings.enable_adult != null">
+          Adult content <i class="fa fa-check" *ngIf="adult"></i>
         </a>
         </li>
-        <li><a href="#" (click)="update({mute: !item.mute}, $event)">
+        <li><a href="#" (click)="update({mute: !item.mute}, $event)" *ngIf="settings.mute != null">
           Mute<i class="fa fa-check" *ngIf="item.mute"></i>
+        </a>
+        </li>
+        <li role="separator" class="divider" *ngIf="settings.edit != null || settings.delete != null"></li>
+        <li *ngIf="settings.edit != null"><a href="#" (click)="edit($event)" >Edit Post</a></li>
+        <li *ngIf="settings.delete != null"><a href="#" (click)="delete($event)">Delete</a></li>
+
+        <li role="separator" class="divider" *ngIf="settings.enable_comment != null || settings.enable_share != null"></li>
+
+        <li *ngIf="settings.enable_comment != null  && item.disable_comment == false">
+          <a href="javascript;" (click)="update({disable_comment: true}, $event)">
+            Disable comment
           </a>
         </li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#" (click)="edit($event)" >Edit Post</a></li>
-        <li><a href="#" (click)="delete($event)">Delete</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#" *ngIf="!item.disable_comment"
-               (click)="update({disable_comment: true}, $event)">
-          Disable comment</a></li>
-        <li><a href="#" *ngIf="item.disable_comment"
-               (click)="update({disable_comment: false}, $event)">
-          Enable comment</a></li>
-        <li><a href="#" *ngIf="!item.disable_share"
-               (click)="update({disable_share: true}, $event)">
-          Disable share</a></li>
-        <li><a href="#" *ngIf="item.disable_share"
-               (click)="update({disable_share: false}, $event)">
-          Enable share</a></li>
+
+        <li *ngIf="settings.enable_comment != null && item.disable_comment == true">
+          <a href="javascript;" (click)="update({disable_comment: false}, $event)">
+            Enable comment
+          </a>
+        </li>
+
+        <li>
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == true"
+               (click)="update({disable_share: false}, $event)">Enable share
+          </a>
+        </li>
+
+        <li>
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == false"
+             (click)="update({disable_share: true}, $event)">Disable share
+          </a>
+        </li>
 
       </ul>
     </div>

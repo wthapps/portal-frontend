@@ -50,21 +50,17 @@ export class SoPostService {
       return this.getListOtherPosts(uuid)
     }
     switch (this.router.url) {
-      case '/zone/social':
+      case '/zone/social/home':
         return this.getListSocialPosts();
-      case '/zone/social/profile':
-        return this.getListMyPosts();
-      default:
-        return this.getListMyPosts();
     }
+  }
+
+  getSettings(uuid:string) {
+    return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoPostSettings}/${uuid}`);
   }
 
   private getListSocialPosts() {
     return this.apiBaseServiceV2.get(this.apiBaseServiceV2.urls.zoneSoPosts);
-  }
-
-  private getListMyPosts() {
-    return this.apiBaseServiceV2.get(this.apiBaseServiceV2.urls.zoneSoMyPosts);
   }
 
   private getListOtherPosts(uuid) {

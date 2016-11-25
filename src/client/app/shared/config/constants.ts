@@ -91,6 +91,7 @@ export let Constants = {
     zoneSoMyPosts: 'zone/social_network/my_posts',
     zoneSoUserPosts: 'zone/social_network/user_posts',
     zoneSoReactions: 'zone/social_network/reactions',
+    zoneSoPostSettings: 'zone/social_network/post_settings',
   }
 };
 

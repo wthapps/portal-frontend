@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit, Input, OnChanges } from '@angular/core';
 import { BaseZoneSocialItem } from "../../base/base-social-item";
 import { SoPost } from "../../../../shared/models/social_network/so-post.model";
 import { ZSocialPostItemComponent } from '../index';
+import { SocialService } from '../../services/social.service';
 
 declare var _: any;
 
@@ -17,9 +18,10 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
 
   showInfo: boolean = false;
   showDetail: boolean = false;
+  settings:any;
 
 
-  constructor(private postItem: ZSocialPostItemComponent) {
+  constructor(private postItem: ZSocialPostItemComponent, private socialService: SocialService) {
     super();
   }
 
@@ -69,5 +71,16 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
         return 'fa-group';
     }
     return '';
+  }
+
+  getSettings(e:any) {
+    e.preventDefault();
+    this.socialService.post.getSettings(this.item.uuid).subscribe(
+      (res:any) => {
+
+        this.settings = res.data.settings
+        console.log(this.settings)
+      }
+    )
   }
 }

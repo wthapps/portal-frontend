@@ -67,7 +67,6 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes['item'].currentValue.id != undefined) {
-      console.log("item", changes['item'].currentValue);
     }
     if (!this.item) {
       this.item = new SoPost();
@@ -144,7 +143,7 @@ export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnIn
         this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.custom_friend;
         break;
       default:
-        this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.public;
+        this.itemDisplay.privacyDisplay = ConstantsSocial.userPrivacy.unknow;
     }
   }
 
