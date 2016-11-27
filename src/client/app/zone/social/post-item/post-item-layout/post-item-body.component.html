@@ -95,7 +95,7 @@
       </li>
     </ul>
 
-    <ul class="pull-right">
+    <ul class="pull-right" *ngIf="item.shared_count > 0">
       <li>
         <a data-toggle="modal" href="#" (click)="onActions(actions.openActivities)">Share Activities</a>
       </li>

@@ -17,19 +17,32 @@ declare var _: any;
 
 export class PostActivitiesComponent {
   @ViewChild('modal') modal: HdModalComponent;
-  shares: Array<any>;
+
+  shares: Array<any> = new Array<any>();
+  item: any = undefined;
 
   constructor(private api: ApiBaseService) {}
 
   open(options: any = {item: undefined}) {
     this.modal.open();
 
-    this.api.get(`zone/social_network/posts/list_shares`).subscribe(
-      (response: any) => {
-        this.shares = response['data'];
-      }
-    )
+    if (options.item != undefined) {
+      this.item = options.item;
+    }
+    this.loadData();
+  }
 
+  loadData(): void {
+
+  this.api.post(`zone/social_network/posts/show_activities`, JSON.stringify({post_id:this.item.uuid}))
+    .map(res => res.json())
+    .subscribe((result: any) => {
+        this.shares = result['data'];
+      },
+      error => {
+        console.log('error', error);
+      });
+  }
 
 
 
