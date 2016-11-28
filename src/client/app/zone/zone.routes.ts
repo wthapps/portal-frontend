@@ -14,7 +14,11 @@ import { ZSocialProfileAboutComponent } from './social/profile/about/about.compo
 import { ZSocialProfilePostComponent } from './social/profile/post/post.component';
 
 import { ZSocialCommunityComponent } from './social/communities/communities.component';
+import { ZSocialCommunityListComponent } from './social/communities/list/list.component';
+
 import { ZSocialCommunityDetailComponent } from './social/communities/communities-detail.component';
+
+
 import { ZSocialCommunityDetailNotificationComponent } from './social/communities/notification/notification.component';
 import { ZSocialCommunityDetailMembersComponent } from './social/communities/members/members.component';
 import { ZSocialCommunityDetailAboutComponent } from './social/communities/about/about.component';
@@ -38,9 +42,22 @@ export const ZoneRoutes: Route[] = [
       {path: 'social/posts/:id', component: ZSocialPostDetailComponent},
       {path: 'social/photos/:id', component: ZSocialPhotoDetailComponent},
 
-      {path: 'social/communities', component: ZSocialCommunityComponent},
+      // {path: 'social/communities', component: ZSocialCommunityComponent},
 
       {
+        path: 'social/communities',
+        component: ZSocialCommunityComponent,
+        children: [
+          {path: ':id/about', component: ZSocialCommunityDetailAboutComponent},
+          {path: ':id/members', component: ZSocialCommunityDetailMembersComponent},
+          {path: ':id/notification', component: ZSocialCommunityDetailNotificationComponent},
+          {path: ':id/post', component: ZSocialCommunityDetailPostComponent},
+          {path: ':id', component: ZSocialCommunityDetailPostComponent},
+          {path: '', component: ZSocialCommunityListComponent}
+        ]
+      },
+
+      /*{
         path: 'social/communities/:id',
         component: ZSocialCommunityDetailComponent,
         children: [
@@ -50,7 +67,7 @@ export const ZoneRoutes: Route[] = [
           {path: 'members', component: ZSocialCommunityDetailMembersComponent},
           {path: 'notification', component: ZSocialCommunityDetailNotificationComponent}
         ]
-      },
+      },*/
 
       {path: 'social/members', component: ZSocialMembersComponent},
       {path: 'social/profile', component: ZSocialProfileComponent},

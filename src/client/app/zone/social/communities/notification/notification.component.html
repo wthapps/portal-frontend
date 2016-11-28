@@ -1,86 +1,134 @@
-<div class="z-social-box">
-  <div class="z-social-box-header">
-    <div class="pull-right dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true">
-        VIEW ALL
-      </button>
-      <ul class="dropdown-menu dropdown-custom">
-        <li><a href="#"><i class="fa fa-check"></i> View All</a></li>
-        <li><a href="#"><i class="fa fa-check invisible"></i> Post Requests</a></li>
-        <li><a href="#"><i class="fa fa-check invisible"></i> Reports</a></li>
-        <li><a href="#"><i class="fa fa-check invisible"></i> Join Requests</a></li>
-      </ul>
-    </div>
+<div class="zone-social">
+  <div class="zone-social-in">
 
-    <h4 class="h4">
-      Notification
-    </h4>
-  </div>
-  <div class="z-social-media">
-    <div class="z-social-media-left">
-      <img alt=""
-           src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-    </div>
-    <div class="z-social-media-body">
-      <div class="z-heading">
-        <div class="z-name">
-          Philip Chisholm
+    <z-social-community-cover></z-social-community-cover>
+
+    <div class="z-social-box">
+      <div class="z-social-box-header">
+        <div class="pull-right dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="true">
+            VIEW ALL
+          </button>
+          <ul class="dropdown-menu dropdown-custom">
+            <li><a href="#"><i class="fa fa-check"></i> View All</a></li>
+            <li><a href="#"><i class="fa fa-check invisible"></i> Post Requests</a></li>
+            <li><a href="#"><i class="fa fa-check invisible"></i> Reports</a></li>
+            <li><a href="#"><i class="fa fa-check invisible"></i> Join Requests</a></li>
+          </ul>
         </div>
-        <span class="text-fade">
+
+        <h4 class="h4">
+          Notification
+        </h4>
+      </div>
+      <div class="z-social-media">
+        <div class="z-social-media-left">
+          <img alt=""
+               src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
+        </div>
+        <div class="z-social-media-body">
+          <div class="z-heading">
+            <div class="z-name">
+              Philip Chisholm
+            </div>
+            <span class="text-fade">
                         reported by <a href="#">Username</a>
                       </span>
+          </div>
+          <div class="z-shared-info">
+            <ul>
+              <li>
+                Nov 15, 2016
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="z-social-media-right">
+          <a class="btn btn-link" href="#">ACCEPT</a>
+          <a class="btn btn-link" href="#">DENY</a>
+          <a class="btn btn-link" href="#">BLOCK USER</a>
+        </div>
       </div>
-      <div class="z-shared-info">
-        <ul>
+      <div class="z-social-post">
+        <div class="z-social-carousel">
+          <ul class="carousel-thumb-style-1">
+            <li>
+              <figure>
+                <img class="img-full"
+                     src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250"
+                     alt="">
+              </figure>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+      <div class="z-social-post">
+        <ul class="list-unstyled social-list-user">
           <li>
-            Nov 15, 2016
+            <div class="dropdown pull-right">
+              <a href="#" class="btn btn-link">ACCEPT</a>
+              <a href="#" class="btn btn-link">DENY</a>
+              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-custom">
+                <li><a href="#">Make Admin</a></li>
+                <li><a href="#">Make Moderator</a></li>
+                <li><a href="#">Remove</a></li>
+                <li><a href="#">Blacklist</a></li>
+              </ul>
+            </div>
+            <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
+            <span>
+                      Random weird user 01
+                    </span>
           </li>
         </ul>
       </div>
     </div>
-    <div class="z-social-media-right">
-      <a class="btn btn-link" href="#">ACCEPT</a>
-      <a class="btn btn-link" href="#">DENY</a>
-      <a class="btn btn-link" href="#">BLOCK USER</a>
-    </div>
+
   </div>
-  <div class="z-social-post">
-    <div class="z-social-carousel">
-      <ul class="carousel-thumb-style-1">
-        <li>
-          <figure>
-            <img class="img-full"
-                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97250&w=350&h=250"
-                 alt="">
-          </figure>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <hr>
-  <div class="z-social-post">
-    <ul class="list-unstyled social-list-user">
-      <li>
-        <div class="dropdown pull-right">
-          <a href="#" class="btn btn-link">ACCEPT</a>
-          <a href="#" class="btn btn-link">DENY</a>
-          <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="true">
-            <i class="fa fa-ellipsis-v"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-custom">
-            <li><a href="#">Make Admin</a></li>
-            <li><a href="#">Make Moderator</a></li>
-            <li><a href="#">Remove</a></li>
-            <li><a href="#">Blacklist</a></li>
-          </ul>
-        </div>
-        <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
-        <span>
-                      Random weird user 01
-                    </span>
-      </li>
-    </ul>
+  <div class="zone-social-sidebar">
+    <dl>
+      <dt>Favourite</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <li>
+            <img alt="" src="/assets/images/zone/img-group.png" width="30">
+            <span> Username 01 </span>
+          </li>
+          <li>
+            <img alt="" src="/assets/images/zone/img-group.png" width="30">
+            <span> Username 01 </span>
+          </li>
+          <li>
+            <img alt="" src="/assets/images/zone/img-group.png" width="30">
+            <span> Username 01 </span>
+          </li>
+          <li>
+            <img alt="" src="/assets/images/zone/img-group.png" width="30">
+            <span> Username 01 </span>
+          </li>
+          <li>
+            <img alt="" src="/assets/images/zone/img-groups.png" width="30">
+            <span> Group Number 02 </span>
+          </li>
+          <li>
+            <img alt="" src="/assets/images/zone/img-groups.png" width="30">
+            <span> Group Number 03 </span>
+          </li>
+        </ul>
+      </dd>
+    </dl>
   </div>
 </div>
+
+
+
+
+
+
+

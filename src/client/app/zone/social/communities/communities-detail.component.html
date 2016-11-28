@@ -1,69 +1,7 @@
 <div class="zone-social">
   <div class="zone-social-in">
 
-    <div class="zone-social-cover">
-      <div class="zone-social-cover-in group">
-        <div class="zone-social-cover-info">
-          <div class="z-social-media z-social-media-md">
-            <div class="z-social-media-left">
-              <img src="/assets/images/avatar/avatar-lg.png" alt="">
-            </div>
-            <div class="z-social-media-body">
-              <div class="z-heading">
-                <div class="z-name">
-                  Group Number 01
-                </div>
-              </div>
-              <div class="z-shared-info">
-                <ul>
-                  <li>
-                    12 members
-                  </li>
-                  <li>
-                    Private
-                  </li>
-                </ul>
-              </div>
-              <div class="z-shared-description">
-                This is a short description line that helps other members to gain some knowledge about this
-                member.
-                This line is around 150 characters long in length.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <nav class="zone-social-cover-nav">
-        <ul class="list-unstyled clearfix" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a [routerLink]="['post']">Post</a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a [routerLink]="['about']">About</a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a [routerLink]="['members']">Members</a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a [routerLink]="['notification']">Notification <span class="badge badge-rounded badge-wth badge-right">15</span></a>
-          </li>
-          <li class="pull-right dropdown">
-            <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="true">
-              <i class="fa fa-ellipsis-v"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-custom">
-              <li><a href="#modal-social-com-preferences" data-toggle="modal">Preferences</a></li>
-              <li><a href="#">Manage members</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Remove from Favourites</a></li>
-              <li><a href="#">Leave community</a></li>
-              <li><a href="#">Delete community</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    <z-social-community-cover></z-social-community-cover>
 
     <router-outlet></router-outlet>
 

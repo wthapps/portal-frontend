@@ -37,6 +37,8 @@ import { ZSocialMembersComponent } from './members/members.component'
 import { ZSocialProfileAboutComponent } from './profile/about/about.component';
 import { ZSocialProfilePostComponent } from './profile/post/post.component';
 import { ZSocialSettingComponent } from './setting/setting.component';
+import { ZSocialCommunityListComponent } from './communities/list/list.component';
+import { ZSocialCommunityCoverComponent } from './communities/cover/cover.component';
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import { ZSocialSettingComponent } from './setting/setting.component';
 
     // Communities
     ZSocialCommunityComponent,
+    ZSocialCommunityListComponent,
+    ZSocialCommunityCoverComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityDetailNotificationComponent,
     ZSocialCommunityDetailMembersComponent,
