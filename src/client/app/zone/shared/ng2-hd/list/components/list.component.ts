@@ -542,8 +542,11 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
       } else {
         // _.pullAllWith(this.items, item, (i) => {return (i.id == item.id); });
         this.items = this.items.filter(_item => _item !== item);
-
       }
       this.onSelected.emit(this.items);
+    }
+
+    public resetSelectedItems() {
+      this.items = [];
     }
 }
