@@ -1,5 +1,5 @@
-<div *ngIf="data" class="zone-social-cover">
-  <div class="zone-social-cover-in group">
+<div class="zone-social-cover">
+  <div *ngIf="data" class="zone-social-cover-in group">
     <div class="zone-social-cover-info">
       <div class="z-social-media z-social-media-md">
         <div class="z-social-media-left">
@@ -30,16 +30,16 @@
   <nav class="zone-social-cover-nav">
     <ul class="list-unstyled clearfix" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/', data.uuid]">Post</a>
+        <a [routerLink]="['/zone/social/communities/', uuid]">Post</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+data.uuid+'/about']">About</a>
+        <a [routerLink]="['/zone/social/communities/'+uuid+'/about']">About</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+data.uuid+'/members']">Members</a>
+        <a [routerLink]="['/zone/social/communities/'+uuid+'/members']">Members</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+data.uuid+'/notification']">Notification <span
+        <a [routerLink]="['/zone/social/communities/'+uuid+'/notification']">Notification <span
           class="badge badge-rounded badge-wth badge-right">15</span></a>
       </li>
       <li class="pull-right dropdown">
