@@ -16,12 +16,14 @@ export class ZSocialCommunityCoverComponent implements OnInit {
   errorMessage: string = '';
   data: any = [];
 
+
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
               private route: ActivatedRoute,
               private userService: UserService) {
   }
 
   ngOnInit() {
+    this.data.users = [];
     this.route.params.subscribe(params => {
       console.log(params);
       this.apiBaseServiceV2.get(`zone/social_network/communities/${params['id']}`).subscribe(

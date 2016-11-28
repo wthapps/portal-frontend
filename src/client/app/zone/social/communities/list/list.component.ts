@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { UserService } from '../../../../shared/services/user.service';
+import { LoadingService } from '../../../../partials/loading/loading.service';
 
 declare var _: any;
 
@@ -17,10 +18,12 @@ export class ZSocialCommunityListComponent implements OnInit {
   list: any = [];
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+              private loadingService: LoadingService,
               private userService: UserService) {
   }
 
   ngOnInit() {
+    this.loadingService.start('#communites-list');
     let myuuid = this.userService.profile.uuid;
     let _this = this;
     this.apiBaseServiceV2.get('zone/social_network/communities').subscribe(
@@ -32,6 +35,7 @@ export class ZSocialCommunityListComponent implements OnInit {
             _this.list.push(v);
           }
         });
+        this.loadingService.stop('#communites-list');
       },
       error => this.errorMessage = <any>error
     );
