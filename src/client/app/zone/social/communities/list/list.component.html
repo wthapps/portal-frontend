@@ -24,7 +24,8 @@
                 </figure>
               </div>
               <div class="media-center-body">
-                <h4 class="media-center-heading"><a [routerLink]="['/zone/social/communities', my.uuid]">{{my.name}}</a></h4>
+                <h4 class="media-center-heading"><a [routerLink]="['/zone/social/communities', my.uuid]">{{my.name}}</a>
+                </h4>
                 <p *ngIf="my.users.length<2" class="media-center-p">{{my.users.length}} member</p>
                 <p *ngIf="my.users.length>1" class="media-center-p">{{my.users.length}} members</p>
               </div>
@@ -35,7 +36,7 @@
                     <i class="fa fa-ellipsis-v"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="#">Edit Information</a></li>
+                    <li><a href="javascript:;" (click)="onEdit(my)">Edit Information</a></li>
                     <li><a href="#">Preferences</a></li>
                     <li><a href="#">Manage members</a></li>
                     <li role="separator" class="divider"></li>
@@ -66,7 +67,8 @@
                 </figure>
               </div>
               <div class="media-center-body">
-                <h4 class="media-center-heading"><a [routerLink]="['/zone/social/communities', item.uuid]">{{item.name}}</a></h4>
+                <h4 class="media-center-heading"><a
+                  [routerLink]="['/zone/social/communities', item.uuid]">{{item.name}}</a></h4>
                 <p *ngIf="item.users.length<2" class="media-center-p">{{item.users.length}} member</p>
                 <p *ngIf="item.users.length>1" class="media-center-p">{{item.users.length}} members</p>
               </div>
@@ -77,7 +79,7 @@
                     <i class="fa fa-ellipsis-v"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="#">Edit Information</a></li>
+                    <li><a href="javascript:;" (click)="onEdit(item)">Edit Information</a></li>
                     <li><a href="#">Preferences</a></li>
                     <li><a href="#">Manage members</a></li>
                     <li role="separator" class="divider"></li>
@@ -94,3 +96,81 @@
     </div>
   </div>
 </div>
+
+
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+  <modal-body>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+      <div class="form-group" [ngClass]="{'has-error': (!community_name.valid && community_name.touched),
+        'has-success': (community_name.valid && community_name.touched)}">
+        <label for="community_name">Community Name</label>
+        <input [formControl]="community_name" type="text" class="form-control" id="community_name"
+               placeholder="Community Name">
+        <div *ngIf="!community_name.valid && community_name.touched">
+              <span *ngIf="!community_name.valid && community_name.errors.required" class="help-block">
+                Community name is required
+              </span>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': (!tag_line.valid && tag_line.touched),
+        'has-success': (tag_line.valid && tag_line.touched)}">
+        <div class="pull-right text-fade"><span class="x-showLength">0</span>/150 characters</div>
+        <label>Tag Line</label>
+        <textarea (keyup)='onCheckLength($event)' [formControl]="tag_line" maxlength="150" rows="3" class="form-control" id="tag_line"
+                  placeholder="Tag Line"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Link</label>
+        <div class="mb15">
+          <div class="media">
+            <div class="media-body">
+              <div class="row row-10">
+                <div class="col-sm-6">
+                  <input [formControl]="external_title" type="text" class="form-control" id="external_title"
+                         placeholder="External link title">
+                </div>
+                <div class="col-sm-6">
+                  <input [formControl]="external_link" type="text" class="form-control" id="external_link"
+                         placeholder="http://...">
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button type="button" class="btn btn-default">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+          <!--<div class="media">
+            <div class="media-body">
+              <div class="row row-10">
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" placeholder="Text" value="External link title">
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" placeholder="http://..." value="https://stuffs.com">
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button class="btn btn-default">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>-->
+        </div>
+        <!--<div class="mt15">
+          <button class="btn btn-default">
+            <i class="fa fa-plus"></i> Add more
+          </button>
+        </div>-->
+      </div>
+      <div class="clearfix text-right">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+  </modal-body>
+</hd-modal>
