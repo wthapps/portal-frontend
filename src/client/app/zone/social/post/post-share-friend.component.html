@@ -1,10 +1,6 @@
 <hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
-  <modal-header cssClass="modal-social-head" [show-close]="true">
-
+  <modal-header [show-close]="true">
     <h4 class="modal-title text-left"> <i class="fa fa-share-alt"></i> Share with Friends</h4>
-    <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </modal-header>
   <modal-body>
     <hd-list
@@ -12,7 +8,7 @@
       [searchable]="true"
       [inputClass]="hd-search-input"
       [searchItems]="friends"
-      (onRemove)="addCommunity($event)"
+      (onRemove)="addItem($event)"
       (onSelected)="onSelectedItems($event)"
       (onAdd)="removeCommunity($event)"
     ></hd-list>

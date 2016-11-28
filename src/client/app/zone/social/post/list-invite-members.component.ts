@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
   EventEmitter } from '@angular/core';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
-// import { ListComponent } from '../../shared/ng2-hd/list/hd-list.module';
+import { ListComponent } from '../../shared/ng2-hd/list/hd-list.module';
 import { ApiBaseService, UserService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { PostPhotoSelectComponent } from './post-photo-select.component';
@@ -13,25 +13,30 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-share-community',
-  templateUrl: 'post-share-community.component.html',
-  styleUrls: ['post-share-community.component.css']
+  selector: 'list-invite-members',
+  templateUrl: 'list-invite-members.component.html',
+  styleUrls: ['list-invite-members.component.css']
 })
 
-export class PostShareCommunityComponent {
+export class ListInviteMembersComponent {
   @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('list') list: ListComponent;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter<any>();
 
-  communities: Array<any> = new Array<any>();
-  communityNames: Array<any> = new Array<any>();
+  items: Array<any> = new Array<any>();
+  itemNames: Array<any> = new Array<any>();
   selectedItems: Array<any> = new Array<any>();
+  url: string = undefined;
 
   constructor(private apiService: ApiBaseService, private userService: UserService) {
 
   }
 
-  open(options:any = {}) {
+  open(options:any = {url: undefined}) {
+    if (options.url != undefined) {
+      this.url = options.url;
+    }
     this.modal.open();
     this.loadData();
   }
@@ -63,17 +68,27 @@ export class PostShareCommunityComponent {
     if (this.selectedItems.length > 0) {
       this.selectedItems = [];
       this.modal.dismiss();
+      this.list.resetSelectedItems();
     }
   }
 
+  selectItems(event: any) {
+    this.onSelected.emit({
+      type: 'invite_members',
+      items: this.selectedItems
+    });
+
+    this.modal.close();
+  }
+
   loadData(): void {
-    this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}`)
-        .subscribe((result: any) => {
-            this.communities = result['data']['communities'];
-            this.communityNames = _.map(result['data']['communities'], 'name');
-          },
-          error => {
-            console.log('error', error);
-          });
+    this.apiService.get(this.url)
+      .subscribe((result: any) => {
+          this.items = result['data'];
+          this.itemNames = _.map(result['data'], 'name');
+        },
+        error => {
+          console.log('error', error);
+        });
   }
 }

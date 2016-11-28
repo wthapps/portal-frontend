@@ -2,7 +2,7 @@
   <div class="zone-social-in">
 
     <z-social-community-cover></z-social-community-cover>
-
+    <list-invite-members #users (onSelected)="inviteMembers($event)"></list-invite-members>
     <div class="z-social-box">
       <div class="z-social-box-header">
         <div class="pull-left dropdown">
@@ -30,7 +30,7 @@
             </li>
           </ul>
         </div>
-        <button class="btn btn-default pull-right" type="button" data-toggle="modal"
+        <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)" data-toggle="modal"
                 data-target="#modal-social-share-com">
           <i class="fa fa-user-plus"></i> Invite Member
         </button>
