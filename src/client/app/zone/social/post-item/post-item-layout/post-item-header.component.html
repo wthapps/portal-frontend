@@ -70,7 +70,7 @@
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" *ngIf="settings">
-        <li><a href="javascript:;" (click)="update({adult: !item.mute}, $event)" *ngIf="settings.enable_adult != null">
+        <li><a href="javascript:;" (click)="update({adult: !item.adult}, $event)" *ngIf="settings.enable_adult != null">
           Adult content <i class="fa fa-check" *ngIf="adult"></i>
         </a>
         </li>

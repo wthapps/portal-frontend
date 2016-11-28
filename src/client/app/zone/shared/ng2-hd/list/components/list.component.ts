@@ -529,12 +529,12 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
         //     });
     }
 
-    @HostListener('window:scroll')
-    private scrollListener() {
-        // if (this.dropdown && this.dropdown.menu.state.isVisible) {
-        //     this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
-        // }
-    }
+    // @HostListener('window:scroll')
+    // private scrollListener() {
+    //     // if (this.dropdown && this.dropdown.menu.state.isVisible) {
+    //     //     this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
+    //     // }
+    // }
 
     public toggleSelectItem(item: any, event: any): void {
       if(_.find(this.items, item) == undefined) {
