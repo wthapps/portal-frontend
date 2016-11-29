@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
@@ -25,6 +25,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
 
   @ViewChild('modal') modal: HdModalComponent;
   @Input() data: any;
+  @Output() updated: EventEmitter<any> = new EventEmitter<any>();
 
   errorMessage: string = '';
   list: any = [];
@@ -81,19 +82,21 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     console.log(values);
 
     let body = JSON.stringify({
-      name: values.name,
+      name: values.community_name,
       tag_line: values.tag_line,
-      additional_links: 'ksjjsdkfgsdkf'
+      additional_links: ''
     });
 
     this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}`, body)
       .subscribe((result: any) => {
           console.log(result);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);
         }
       );
 
+    this.modal.close();
   }
 }

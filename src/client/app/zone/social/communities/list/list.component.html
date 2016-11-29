@@ -37,8 +37,8 @@
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
                     <li><a href="javascript:;" (click)="onEdit(my)">Edit Information</a></li>
-                    <li><a href="#">Preferences</a></li>
-                    <li><a href="#">Manage members</a></li>
+                    <li><a href="#" (click)="onPreference(my)">Preferences</a></li>
+                    <li><a [routerLink]="['/zone/social/communities/'+my.uuid+'/members']">Manage members</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Remove from Favourites</a></li>
                     <li><a href="#">Leave community</a></li>
@@ -80,8 +80,8 @@
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
                     <li><a href="javascript:;" (click)="onEdit(item)">Edit Information</a></li>
-                    <li><a href="#">Preferences</a></li>
-                    <li><a href="#">Manage members</a></li>
+                    <li><a href="#" (click)="onPreference(item)">Preferences</a></li>
+                    <li><a [routerLink]="['/zone/social/communities/'+item.uuid+'/members']">Manage members</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Remove from Favourites</a></li>
                     <li><a href="#">Leave community</a></li>
@@ -98,4 +98,5 @@
 </div>
 
 
-<z-social-community-form-edit #modalEdit [data]="currentItem"></z-social-community-form-edit>
+<z-social-community-form-edit #modalEdit [data]="currentItem" (updated)="onUpdated($event)"></z-social-community-form-edit>
+<z-social-community-form-preference #modalPreference [data]="currentItem" (updated)="onUpdated($event)"></z-social-community-form-preference>

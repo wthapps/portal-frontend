@@ -40,6 +40,7 @@ import { ZSocialSettingComponent } from './setting/setting.component';
 import { ZSocialCommunityListComponent } from './communities/list/list.component';
 import { ZSocialCommunityCoverComponent } from './communities/cover/cover.component';
 import { ZSocialCommunityFormEditComponent } from './communities/form/edit.component';
+import { ZSocialCommunityFormPreferenceComponent } from './communities/form/preferences.component';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { ZSocialCommunityFormEditComponent } from './communities/form/edit.compo
     ZSocialCommunityDetailAboutComponent,
     ZSocialCommunityDetailPostComponent,
     ZSocialCommunityFormEditComponent,
+    ZSocialCommunityFormPreferenceComponent,
 
     // members
     ZSocialMembersComponent,
