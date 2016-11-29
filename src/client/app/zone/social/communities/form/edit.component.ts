@@ -36,6 +36,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   form: FormGroup;
   community_name: AbstractControl;
   tag_line: AbstractControl;
+  description: AbstractControl;
   external_title: AbstractControl;
   external_link: AbstractControl;
 
@@ -48,12 +49,14 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     this.form = fb.group({
       'community_name': ['', Validators.compose([Validators.required])],
       'tag_line': ['', Validators.maxLength(150)],
+      'description': [''],
       'external_title': [''],
       'external_link': ['']
     });
 
     this.community_name = this.form.controls['community_name'];
     this.tag_line = this.form.controls['tag_line'];
+    this.description = this.form.controls['description'];
     this.external_title = this.form.controls['external_title'];
     this.external_link = this.form.controls['external_link'];
   }
@@ -67,6 +70,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       console.log(this.data);
       (<FormControl>this.community_name).setValue(this.data.name);
       (<FormControl>this.tag_line).setValue(this.data.tag_line);
+      (<FormControl>this.description).setValue(this.data.description);
       (<FormControl>this.external_title).setValue('');
       (<FormControl>this.external_link).setValue('');
     }
@@ -84,6 +88,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     let body = JSON.stringify({
       name: values.community_name,
       tag_line: values.tag_line,
+      description: values.description,
       additional_links: ''
     });
 

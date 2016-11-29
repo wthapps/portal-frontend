@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';
@@ -11,10 +11,12 @@ declare var _: any;
   templateUrl: 'cover.component.html'
 })
 
-export class ZSocialCommunityCoverComponent implements OnInit {
+export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
+
+  @Input() data: any;
 
   errorMessage: string = '';
-  data: any = [];
+  item: any = [];
   uuid: string = '';
 
 
@@ -23,18 +25,16 @@ export class ZSocialCommunityCoverComponent implements OnInit {
               private route: ActivatedRoute) {
   }
 
+  ngOnChanges() {
+    if (this.data) {
+      this.item = this.data;
+    }
+  }
+
   ngOnInit() {
     // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
-
       this.uuid = params['id'];
-      this.apiBaseServiceV2.get(`zone/social_network/communities/${params['id']}`).subscribe(
-        (res: any)=> {
-          this.data = res.data;
-          // this.loadingService.stop('.zone-social-cover');
-        },
-        error => this.errorMessage = <any>error
-      );
     });
   }
 }

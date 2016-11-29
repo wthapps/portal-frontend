@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { UserService } from '../../../../shared/services/user.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { LoadingService } from '../../../../partials/loading/loading.service';
 
 declare var _: any;
 
@@ -14,31 +15,31 @@ declare var _: any;
 export class ZSocialCommunityDetailPostComponent implements OnInit {
 
   errorMessage: string = '';
+  data: any = [];
+  uuid: string = '';
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
-              private route: ActivatedRoute,
-              private router: Router,
-              private userService: UserService) {
+              private loadingService: LoadingService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
-      console.log(params);
-      /*this.apiBaseServiceV2.get(`/zone/social_network/communities/${params['id']}`).subscribe(
-       (res: any)=> {
-       console.log(res.data);
-       },
-       error => this.errorMessage = <any>error
-       );*/
+
+      this.uuid = params['id'];
+      this.getItem(params['id']);
+
     });
+  }
 
-
-
-    /*this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}`).subscribe(
+  getItem(id: string) {
+    this.apiBaseServiceV2.get(`zone/social_network/communities/${id}`).subscribe(
       (res: any)=> {
-        console.log(res.data);
+        this.data = res.data;
+        // this.loadingService.stop('.zone-social-cover');
       },
       error => this.errorMessage = <any>error
-    );*/
+    );
   }
 }

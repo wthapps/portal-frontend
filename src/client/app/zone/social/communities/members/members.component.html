@@ -1,9 +1,10 @@
 <div class="zone-social">
   <div class="zone-social-in">
 
-    <z-social-community-cover></z-social-community-cover>
+    <z-social-community-cover [data]="data"></z-social-community-cover>
+
     <list-invite-members #users (onSelected)="inviteMembers($event)"></list-invite-members>
-    <div class="z-social-box">
+    <div *ngIf="data" class="z-social-box">
       <div class="z-social-box-header">
         <div class="pull-left dropdown">
           <button class="btn btn-default-inline" type="button" data-toggle="dropdown">
@@ -12,9 +13,6 @@
           <ul class="dropdown-menu dropdown-custom">
             <li>
               <a href="#">View All</a>
-            </li>
-            <li>
-              <a href="#">Moderators</a>
             </li>
             <li>
               <a href="#">Member</a>
@@ -37,124 +35,37 @@
       </div>
       <div class="z-social-post">
         <ul class="list-unstyled social-list-user">
-          <li>
-            <div class="dropdown pull-right">
-              <a href="#" class="btn btn-link">ACCEPT</a>
-              <a href="#" class="btn btn-link">DENY</a>
-              <span class="text-fade">Member</span>
-              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-custom">
-                <li><a href="#">Make Admin</a></li>
-                <li><a href="#">Make Moderator</a></li>
-                <li><a href="#">Remove</a></li>
-                <li><a href="#">Blacklist</a></li>
-              </ul>
-            </div>
-            <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
-            <span>
-                      Group Number 01
-                    </span>
-          </li>
-          <li>
-            <div class="dropdown pull-right">
-              <a href="#" class="btn btn-link">RE-INVITE</a>
-              <a href="#" class="btn btn-link">CANCEL</a>
-              <span class="text-fade">Member</span>
-              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-custom">
-                <li><a href="#">Make Admin</a></li>
-                <li><a href="#">Make Moderator</a></li>
-                <li><a href="#">Remove</a></li>
-                <li><a href="#">Blacklist</a></li>
-              </ul>
-            </div>
-            <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
-            <span>
-                      Group Number 01
-                    </span>
-          </li>
-          <li>
-            <div class="dropdown pull-right">
-              <span class="text-fade">Member</span>
-              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-custom">
-                <li><a href="#">Make Admin</a></li>
-                <li><a href="#">Make Moderator</a></li>
-                <li><a href="#">Remove</a></li>
-                <li><a href="#">Blacklist</a></li>
-              </ul>
-            </div>
-            <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
-            <span>
-                      Group Number 01
-                    </span>
-          </li>
-          <li>
-            <div class="dropdown pull-right">
-              <span class="text-fade">Member</span>
-              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-custom">
-                <li><a href="#">Make Admin</a></li>
-                <li><a href="#">Make Moderator</a></li>
-                <li><a href="#">Remove</a></li>
-                <li><a href="#">Blacklist</a></li>
-              </ul>
-            </div>
-            <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
-            <span>
-                      Group Number 01
-                    </span>
-          </li>
-          <li>
-            <div class="dropdown pull-right">
-              <span class="text-fade">Member</span>
-              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-custom">
-                <li><a href="#">Make Admin</a></li>
-                <li><a href="#">Make Moderator</a></li>
-                <li><a href="#">Remove</a></li>
-                <li><a href="#">Blacklist</a></li>
-              </ul>
-            </div>
-            <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
-            <span>
-                      Group Number 01
-                    </span>
-          </li>
-          <li>
-            <div class="dropdown pull-right">
-              <span class="text-fade">Member</span>
-              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-custom">
-                <li><a href="#">Make Admin</a></li>
-                <li><a href="#">Make Moderator</a></li>
-                <li><a href="#">Remove</a></li>
-                <li><a href="#">Blacklist</a></li>
-              </ul>
-            </div>
-            <img alt="" src="/assets/images/zone/img-groups.png" title="" width="30">
-            <span>
-                      Group Number 01
-                    </span>
-          </li>
+          <template ngFor let-user [ngForOf]="data.users" [ngForTrackBy]="trackByUsers">
+            <li *ngIf="user.id == data.admin.id">
+              <div class="dropdown pull-right">
+                <span class="text-fade">Admin</span>
+              </div>
+              <img [alt]="user.name" [src]="user.profile_image" title="" width="30">
+              <span>{{user.name}}</span>
+            </li>
+          </template>
+          <template ngFor let-user [ngForOf]="data.users" [ngForTrackBy]="trackByUsers">
+            <li *ngIf="user.id != data.admin.id">
+              <div class="dropdown pull-right">
+                <!--<a href="#" class="btn btn-link">ACCEPT</a>
+                <a href="#" class="btn btn-link">DENY</a>
+                <a href="#" class="btn btn-link">RE-INVITE</a>
+                <a href="#" class="btn btn-link">CANCEL</a>-->
+                <span class="text-fade">Member</span>
+                <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="true">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-custom">
+                  <li><a href="#">Make Admin</a></li>
+                  <li><a href="#">Remove</a></li>
+                  <li><a href="#">Blacklist</a></li>
+                </ul>
+              </div>
+              <img [alt]="user.name" [src]="user.profile_image" title="" width="30">
+              <span>{{user.name}}</span>
+            </li>
+          </template>
         </ul>
       </div>
     </div>

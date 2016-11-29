@@ -1,27 +1,27 @@
 <div class="zone-social-cover">
-  <div *ngIf="data" class="zone-social-cover-in group">
+  <div *ngIf="item" class="zone-social-cover-in group">
     <div class="zone-social-cover-info">
       <div class="z-social-media z-social-media-md">
         <div class="z-social-media-left">
-          <img src="/assets/images/avatar/avatar-lg.png" alt="">
+          <img [src]="item.profile_image">
         </div>
         <div class="z-social-media-body">
           <div class="z-heading">
             <div class="z-name">
-              {{data.name}}
+              {{item.name}}
             </div>
           </div>
           <div class="z-shared-info">
             <ul>
-              <li *ngIf="data.users && data.users.length>2">{{data.users.length}} members</li>
-              <li *ngIf="data.users && data.users.length<2">{{data.users.length}} member</li>
+              <li *ngIf="item.users && item.users.length>2">{{item.users.length}} members</li>
+              <li *ngIf="item.users && item.users.length<2">{{item.users.length}} member</li>
               <li *ngIf="is_close">
                 Private
               </li>
             </ul>
           </div>
           <div class="z-shared-description">
-            {{data.description}}
+            {{item.tag_line}}
           </div>
         </div>
       </div>

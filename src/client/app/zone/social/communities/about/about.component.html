@@ -1,11 +1,11 @@
 <div class="zone-social">
   <div class="zone-social-in">
 
-    <z-social-community-cover></z-social-community-cover>
+    <z-social-community-cover [data]="data"></z-social-community-cover>
 
-    <div class="z-social-box">
+    <div *ngIf="data" class="z-social-box">
       <div class="z-social-box-header">
-        <a href="#modal-social-com-edit" class="btn btn-default-inline pull-right" data-toggle="modal">
+        <a href="#" (click)="onEdit()" class="btn btn-default-inline pull-right">
           <i class="fa fa-pencil"></i>
         </a>
         <h4 class="h4">
@@ -13,21 +13,20 @@
         </h4>
       </div>
       <div class="z-social-post">
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-          laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-          ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-          Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum
-          dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent
-          luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis
-          eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent
-          claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt
-          lectores legere me lius quod ii legunt saepius.</p>
-        <ul class="list-unstyled">
+        <div>
+          {{data.description}}
+        </div>
+        <!--<ul class="list-unstyled">
           <li>
             <i class="fa fa-globe"></i> <a href="#">External link description</a>
           </li>
           <li>
             <i class="fa fa-globe"></i> <a href="#">External link description</a>
+          </li>
+        </ul>-->
+        <ul *ngIf="data.additional_links" class="list-unstyled">
+          <li>
+            <i class="fa fa-globe"></i> <a href="#">{{data.additional_links}}</a>
           </li>
         </ul>
       </div>
@@ -68,3 +67,6 @@
     </dl>
   </div>
 </div>
+
+
+<z-social-community-form-edit #modalEdit [data]="data" (updated)="onUpdated($event)"></z-social-community-form-edit>

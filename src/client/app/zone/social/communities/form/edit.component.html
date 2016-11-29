@@ -21,6 +21,13 @@
                   placeholder="Tag Line"></textarea>
       </div>
 
+      <div class="form-group" [ngClass]="{'has-error': (!description.valid && description.touched),
+        'has-success': (description.valid && description.touched)}">
+        <label>Description</label>
+        <textarea [formControl]="description" rows="3" class="form-control" id="description"
+                  placeholder="Description"></textarea>
+      </div>
+
       <div class="form-group">
         <label>Additional Link</label>
         <div class="mb15">
