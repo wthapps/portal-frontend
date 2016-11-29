@@ -24,6 +24,8 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
   hasFriends: boolean = false;
   showFollow: boolean = false;
 
+  requestStatus:number
+
   constructor(private socialService: SocialService,
               private route: ActivatedRoute,
               private router: Router,

@@ -4,6 +4,7 @@ import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { SocialService } from '../services/social.service';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingService } from '../../../partials/loading/loading.service';
 
 declare var _: any;
 
@@ -20,6 +21,7 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2,
     private socialService: SocialService,
+    private loadingService: LoadingService,
     private route: ActivatedRoute,
   ) {
     super();
@@ -37,8 +39,10 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   }
 
   loadPosts() {
+    this.loadingService.start();
     this.socialService.post.getList(this.userUuid).subscribe(
       (res: any) => {
+        this.loadingService.stop();
         this.listItems = res.data;
         this.listItems = _.map(this.listItems, this.mapPost);
       }
