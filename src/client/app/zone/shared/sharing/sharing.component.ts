@@ -57,7 +57,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
           this.filteredContacts = result['data'];
         },
         error => {
-          console.log('error', error);
+          // console.log('error', error);
         });
     this.apiService.get(`zone/contactgroups`)
       .subscribe((result: any) => {
@@ -65,7 +65,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
           this.filteredContactGroups = result['data'];
         },
         error => {
-          console.log('error', error);
+          // console.log('error', error);
         });
   }
 

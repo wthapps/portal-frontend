@@ -39,10 +39,10 @@ export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
   }
 
   loadPosts() {
-    this.loadingService.start();
+    this.loadingService.start('#post-list-component');
     this.socialService.post.getList(this.userUuid).subscribe(
       (res: any) => {
-        this.loadingService.stop();
+        this.loadingService.stop('#post-list-component');
         this.listItems = res.data;
         this.listItems = _.map(this.listItems, this.mapPost);
       }

@@ -55,16 +55,14 @@
               <li><a href="#">Settings</a></li>
             </ul>
           </li>
-          <li *ngIf="!hasFriends && userService.profile.uuid!=userInfo.uuid" class="pull-right mr10">
-            <button *ngIf="!showFollow" class="btn btn-default" type="button" (click)="onAddfriend()">
+          <li *ngIf="relationships" class="pull-right mr10">
+            <button *ngIf="relationships.status == 0" class="btn btn-default" type="button" (click)="onAddfriend()">
               <i class="fa fa-user-plus"></i> Add Friend
             </button>
-            <button *ngIf="showFollow" class="btn btn-default" type="button" (click)="onUnfollow()">
-              Following
+            <button *ngIf="relationships.status == 1" class="btn btn-default" type="button" (click)="onCancelRequest()">
+              <i class="fa fa-times"></i> Friend Requested
             </button>
-          </li>
-          <li *ngIf="hasFriends && userService.profile.uuid!=userInfo.uuid" class="pull-right mr10">
-            <button class="btn btn-default" type="button" (click)="onUnfriend()">
+            <button *ngIf="relationships.status == 2" class="btn btn-default" type="button" (click)="onUnfriend()">
               <i class="fa fa-times"></i> Unfriend
             </button>
           </li>

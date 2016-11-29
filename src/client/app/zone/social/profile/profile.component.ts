@@ -23,8 +23,14 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
   currentUserInfo: any = [];
   hasFriends: boolean = false;
   showFollow: boolean = false;
+  relationships: any;
 
-  requestStatus:number
+  // noneFriend: 0,
+  // pending: 1,
+  // accepted: 2,
+  // rejected: 3,
+  // unfriend: 4,
+  // blocked: 5,
 
   constructor(private socialService: SocialService,
               private route: ActivatedRoute,
@@ -52,6 +58,14 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
             this.errorMessage = <any>error;
           }
         );
+
+        if (this.userService.profile.uuid != params['id']) {
+          this.socialService.user.getRelationShips(params['id']).subscribe((res: any) => {
+              this.relationships = res.data;
+              console.log(res);
+            },
+          );
+        }
       }
 
 
@@ -60,39 +74,32 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
 
   onAddfriend() {
     let body = {
-      inviter_id: this.userService.profile.uuid,
-      accepter_id: this.userInfo.uuid
+      user_uuid: this.userInfo.uuid
     };
 
     this.socialService.user.addFriend(body).subscribe(
       (res: any) => {
-        this.showFollow = true;
+        this.relationships = res.data;
         console.log(res);
-      },
-      error => {
-        this.errorMessage = <any>error;
       }
     );
   }
 
   onUnfriend() {
-    let unfriend = {
-      'inviter_id': this.userService.profile.uuid,
-      'accepter_id': this.userInfo.uuid
-    };
-    this.socialService.user.removeFriend(JSON.stringify(unfriend)).subscribe(
+    this.socialService.user.unfriend(this.userInfo.uuid).subscribe(
       (res: any) => {
+        this.relationships = res.data;
         console.log(res);
       },
-      error => {
-        this.errorMessage = <any>error;
-      }
     );
   }
 
-  onUnfollow() {
-    this.showFollow = false;
-
-    //@todo post to api
+  onCancelRequest() {
+    this.socialService.user.cancelFriendRequest(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+        console.log(res);
+      },
+    );
   }
 }
