@@ -25,14 +25,20 @@ export class SoUserService {
     return this.apiBaseServiceV2.post(`zone/social_network/users/reset_settings`);
   }
 
-
-
   addFriend(body:any) {
-    return this.apiBaseServiceV2.post(`zone/social_network/users/add_friend`, body);
+    return this.apiBaseServiceV2.post(`zone/social_network/invitations`, body);
   }
 
-  removeFriend(body:any) {
-    return this.apiBaseServiceV2.post(`zone/social_network/users/remove_friend`, body);
+  unfriend(uuid:any) {
+    return this.apiBaseServiceV2.delete(`zone/social_network/invitations/unfriend/${uuid}`);
+  }
+
+  cancelFriendRequest(uuid:any) {
+    return this.apiBaseServiceV2.delete(`zone/social_network/invitations/${uuid}`);
+  }
+
+  getRelationShips(uuid?: string) {
+    return this.apiBaseServiceV2.get(`zone/social_network/invitations/${uuid}`);
   }
 
   private getOther(uuid) {
