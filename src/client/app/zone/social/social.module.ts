@@ -41,6 +41,7 @@ import { ZSocialCommunityListComponent } from './communities/list/list.component
 import { ZSocialCommunityCoverComponent } from './communities/cover/cover.component';
 import { ZSocialCommunityFormEditComponent } from './communities/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from './communities/form/preferences.component';
+import { ZSocialCommunityService } from './communities/communities.service';
 
 
 @NgModule({
@@ -92,7 +93,7 @@ import { ZSocialCommunityFormPreferenceComponent } from './communities/form/pref
   exports: [
     ZSocialHomeComponent
   ],
-  providers: [],
+  providers: [ZSocialCommunityService],
 })
 
 export class ZSocialModule {

@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';
+import { ZSocialCommunityFormPreferenceComponent } from '../form/preferences.component';
 
 declare var _: any;
 
@@ -13,6 +14,7 @@ declare var _: any;
 
 export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
 
+  @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @Input() data: any;
 
   errorMessage: string = '';
@@ -36,5 +38,17 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
     });
+  }
+
+  onPreference(item: any) {
+    this.modalPreference.modal.open();
+    this.item = item;
+    return false;
+  }
+
+  onUpdated(item: any) {
+    if (item) {
+      this.item = item;
+    }
   }
 }
