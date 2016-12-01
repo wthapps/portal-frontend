@@ -27,7 +27,8 @@ export class ProjectConfig extends SeedConfig {
       ...this.NPM_DEPENDENCIES,
       {src: 'lodash/lodash.min.js', inject: 'libs'},
       {src: 'primeng/resources/primeng.min.css', inject: true},
-      {src: 'primeng/resources/themes/bootstrap/theme.css', inject: true}
+      {src: 'primeng/resources/themes/bootstrap/theme.css', inject: true},
+      {src: 'actioncable/lib/assets/compiled/action_cable.js', inject: 'libs'}
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
     ];
