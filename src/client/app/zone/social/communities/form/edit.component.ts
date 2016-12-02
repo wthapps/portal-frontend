@@ -74,7 +74,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       (<FormControl>this.tag_line).setValue(this.data.tag_line);
       (<FormControl>this.description).setValue(this.data.description);
 
-      let additional_links_edit = JSON.parse(this.data.additional_links);
+      let additional_links_edit = this.data.additional_links;
 
       this.removeAllLink();
       _.map(additional_links_edit, (v)=> {
