@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../services/social.service';
 import { SoUser } from '../../../shared/models/social_network/so-user.model';
 
+declare var _:any;
+
 @Component({
   moduleId: module.id,
   selector: 'z-social-members',
@@ -19,18 +21,59 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.socialService.user.get().subscribe(
-      (res: any) => {
-        this.data = res.data;
-        this.list = res.data[this.currentState];
-      },
-      error => this.errorMessage = <any>error
-    );
+    this.getUser();
   }
 
   getDataList(type: string) {
     this.currentState = type;
     this.list = this.data[type];
     return false;
+  }
+
+  unfriend(uuid:any) {
+    this.socialService.user.unfriend(uuid).subscribe(
+      (res: any) => {
+        this.getUser();
+      },
+    );
+  }
+
+  unfollow(uuid:any) {
+    this.socialService.user.unfollow(uuid).subscribe(
+      (res: any) => {
+        this.getUser();
+      },
+    );
+  }
+
+  follow(uuid:any) {
+    this.socialService.user.follow(uuid).subscribe(
+      (res: any) => {
+        this.getUser();
+      },
+    );
+  }
+
+  getUser() {
+    this.socialService.user.get().subscribe(
+      (res: any) => {
+        this.data = res.data;
+        this.addFollowingIntoFollower();
+        this.list = res.data[this.currentState];
+      },
+      error => this.errorMessage = <any>error
+    );
+  }
+
+  addFollowingIntoFollower() {
+    this.data['followers'] = _.map(this.data['followers'], (follower:any) => {
+      follower.isFollowing = false;
+      _.forEach(this.data['followings'], (following:any) => {
+        if (follower.uuid == following.uuid) {
+          follower.isFollowing = true;
+        }
+      });
+      return follower;
+    });
   }
 }
