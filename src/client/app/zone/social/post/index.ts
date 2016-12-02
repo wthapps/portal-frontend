@@ -8,4 +8,7 @@ export * from './post-activities.component';
 export * from './post-share-community.component';
 export * from './post-share-friend.component';
 export * from './post-likedislike.component';
-export * from './list-invite-members.component';
+export * from '../communities/member/member-list-invite.component';
+export * from './post.component';
+export * from './components/index';
+

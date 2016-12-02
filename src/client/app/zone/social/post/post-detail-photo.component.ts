@@ -11,11 +11,11 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'zone-social-photo-detail',
-  templateUrl: 'photo-detail.component.html'
+  selector: 'so-post-detail-photo',
+  templateUrl: 'post-detail-photo.component.html'
 })
 
-export class ZSocialPhotoDetailComponent extends BaseZoneSocialItem implements OnInit, OnDestroy, AfterViewInit {
+export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnInit, OnDestroy, AfterViewInit {
   item: SoPost;
   errorMessage: string;
 
@@ -82,7 +82,7 @@ export class ZSocialPhotoDetailComponent extends BaseZoneSocialItem implements O
   }
 
   onBack() {
-    this.router.navigate(['/zone/social']);
+    this.router.navigate(['/zone/social/home']);
   }
 
 

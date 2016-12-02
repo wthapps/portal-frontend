@@ -8,11 +8,11 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-detail',
+  selector: 'so-post-detail',
   templateUrl: 'post-detail.component.html'
 })
 
-export class ZSocialPostDetailComponent extends BaseZoneSocialItem implements OnInit {
+export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   item: SoPost = new SoPost();
   errorMessage: string;
 

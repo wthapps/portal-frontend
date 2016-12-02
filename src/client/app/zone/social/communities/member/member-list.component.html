@@ -3,7 +3,7 @@
 
     <z-social-community-cover [data]="data"></z-social-community-cover>
 
-    <list-invite-members #users (onSelected)="inviteMembers($event)"></list-invite-members>
+    <member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>
     <div *ngIf="data" class="z-social-box">
       <div class="z-social-box-header">
         <div class="pull-left dropdown">

@@ -1,18 +1,18 @@
 import { Component, ViewChild, OnInit, Input, OnChanges } from '@angular/core';
 import { BaseZoneSocialItem } from "../../base/base-social-item";
 import { SoPost } from "../../../../shared/models/social_network/so-post.model";
-import { ZSocialPostItemComponent } from '../index';
+import { PostComponent } from '../index';
 import { SocialService } from '../../services/social.service';
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-item-header',
-  templateUrl: 'post-item-header.component.html'
+  selector: 'so-post-header',
+  templateUrl: 'post-header.component.html'
 })
 
-export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implements OnChanges {
+export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
 
@@ -21,7 +21,7 @@ export class ZSocialPostItemHeaderComponent extends BaseZoneSocialItem implement
   settings:any;
 
 
-  constructor(private postItem: ZSocialPostItemComponent, private socialService: SocialService) {
+  constructor(private postItem: PostComponent, private socialService: SocialService) {
     super();
   }
 

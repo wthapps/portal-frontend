@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { PostNewComponent } from '../post/index';
-import { ZSocialPostListComponent } from "../post-list/post-list.component";
+import { PostListComponent } from "../post/post-list.component";
 import { BaseZoneSocialHomePage } from "../base/base-social-home-page";
 
 @Component({
@@ -11,7 +11,7 @@ import { BaseZoneSocialHomePage } from "../base/base-social-home-page";
 
 export class ZSocialHomeComponent extends BaseZoneSocialHomePage {
   @ViewChild('postNew') postNew: PostNewComponent;
-  @ViewChild('posts') posts: ZSocialPostListComponent;
+  @ViewChild('posts') posts: PostListComponent;
 
   reloadPosts(post: any) {
     this.posts.loadPosts();

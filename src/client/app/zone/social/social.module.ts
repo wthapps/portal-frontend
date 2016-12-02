@@ -7,29 +7,29 @@ import { InputSwitchModule } from 'primeng/primeng';
 
 import { PostModule } from "./post/post.module";
 
-import { ZSocialPostListComponent } from "./post-list/post-list.component";
-import { ZSocialPostDetailComponent } from './post-detail/post-detail.component';
+import { PostListComponent } from "./post/post-list.component";
+import { PostDetailComponent } from './post/post-detail.component';
 
 import {
-  ZSocialPostItemComponent,
-  ZSocialPostItemHeaderComponent,
-  ZSocialPostItemBodyComponent,
-  ZSocialPostItemFooterComponent
-} from "./post-item/index";
+  PostComponent,
+  PostHeaderComponent,
+  PostBodyComponent,
+  PostFooterComponent
+} from "./post/index";
 
-import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
+import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
 
 import { ZSocialHomeComponent } from './home/social-home.component';
 
 import { Ng2HdModule } from '../shared/ng2-hd/index';
 
-import { ZSocialCommentBoxComponent } from './post-item/post-item-layout/sub-layout/comment-box.component';
+import { ZSocialCommentBoxComponent } from './post/components/sub-layout/comment-box.component';
 
 import { ZSocialCommunityComponent } from './communities/communities.component';
 import { ZSocialCommunityDetailComponent } from './communities/communities-detail.component';
 import { ZSocialCommunityDetailNotificationComponent } from './communities/notification/notification.component';
-import { ZSocialCommunityDetailMembersComponent } from './communities/members/members.component';
+import { ComMemberListComponent } from './communities/member/member-list.component';
 import { ZSocialCommunityDetailAboutComponent } from './communities/about/about.component';
 import { ZSocialCommunityDetailPostComponent } from './communities/post/post.component';
 
@@ -62,7 +62,7 @@ import { ZSocialCommunityService } from './communities/communities.service';
     ZSocialCommunityCoverComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityDetailNotificationComponent,
-    ZSocialCommunityDetailMembersComponent,
+    ComMemberListComponent,
     ZSocialCommunityDetailAboutComponent,
     ZSocialCommunityDetailPostComponent,
     ZSocialCommunityFormEditComponent,
@@ -73,13 +73,13 @@ import { ZSocialCommunityService } from './communities/communities.service';
 
 
     // List Posts
-    ZSocialPostListComponent,
-    ZSocialPostItemComponent,
-    ZSocialPostItemHeaderComponent,
-    ZSocialPostItemBodyComponent,
-    ZSocialPostItemFooterComponent,
-    ZSocialPostDetailComponent,
-    ZSocialPhotoDetailComponent,
+    PostListComponent,
+    PostComponent,
+    PostHeaderComponent,
+    PostBodyComponent,
+    PostFooterComponent,
+    PostDetailComponent,
+    PostDetailPhotoComponent,
 
 
     ZSocialProfileComponent,

@@ -12,7 +12,7 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-edit',
+  selector: 'so-post-edit',
   templateUrl: 'post-edit.component.html',
   styleUrls: ['post-edit.component.css']
 })

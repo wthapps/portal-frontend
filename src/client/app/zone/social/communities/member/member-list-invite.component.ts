@@ -1,24 +1,24 @@
 import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
   EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
-import { ListComponent } from '../../shared/ng2-hd/list/hd-list.module';
-import { ApiBaseService, UserService, LoadingService } from '../../../shared/index';
-import { SoPost } from '../../../shared/models/social_network/so-post.model';
-import { PostPhotoSelectComponent } from './post-photo-select.component';
+import { HdModalComponent } from '../../../shared/ng2-hd/modal/hd-modal.module';
+import { ListComponent } from '../../../shared/ng2-hd/list/hd-list.module';
+import { ApiBaseService, UserService, LoadingService } from '../../../../shared/index';
+import { SoPost } from '../../../../shared/models/social_network/so-post.model';
+import { PostPhotoSelectComponent } from '../../post/post-photo-select.component';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-import { UserService } from '../../../shared/index';
+import { UserService } from '../../../../shared/index';
 
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'list-invite-members',
-  templateUrl: 'list-invite-members.component.html',
-  styleUrls: ['list-invite-members.component.css']
+  selector: 'member-list-invite',
+  templateUrl: 'member-list-invite.component.html',
+  styleUrls: ['member-list-invite.component.css']
 })
 
-export class ListInviteMembersComponent {
+export class MemberListInviteComponent {
   @ViewChild('modal') modal: HdModalComponent;
   @ViewChild('list') list: ListComponent;
 

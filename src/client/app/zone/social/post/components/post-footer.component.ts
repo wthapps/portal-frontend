@@ -25,18 +25,18 @@ import {
 import { SoComment } from '../../../../shared/models/social_network/so-comment.model';
 import { ZSocialCommentBoxComponent, ZSocialCommentBoxType } from './sub-layout/comment-box.component';
 import { UserService } from '../../../../shared/services/user.service';
-import { ZSocialPostItemComponent } from '../post-item.component';
+import { PostComponent } from '../post.component';
 
 declare var _: any;
 declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-item-footer',
-  templateUrl: 'post-item-footer.component.html',
+  selector: 'so-post-footer',
+  templateUrl: 'post-footer.component.html',
 })
 
-export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implements OnChanges {
+export class PostFooterComponent extends BaseZoneSocialItem implements OnChanges {
 
   @Input() item: SoPost;
   @Input() type: string;
@@ -60,7 +60,7 @@ export class ZSocialPostItemFooterComponent extends BaseZoneSocialItem implement
               private confirmation: ConfirmationService,
               private toast: ToastsService,
               private userService: UserService,
-              private postItem: ZSocialPostItemComponent) {
+              private postItem: PostComponent) {
     super();
   }
 
