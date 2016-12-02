@@ -9,8 +9,10 @@ import {
   AbstractControl,
   FormBuilder,
   Validators,
-  FormControl
+  FormControl,
+  FormArray
 } from '@angular/forms';
+import { CustomValidator } from '../../../../shared/validator/custom.validator';
 
 declare var $: any;
 declare var _: any;
@@ -25,6 +27,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
 
   @ViewChild('modal') modal: HdModalComponent;
   @Input() data: any;
+  @Input() action: string;
   @Output() updated: EventEmitter<any> = new EventEmitter<any>();
 
   errorMessage: string = '';
@@ -45,20 +48,18 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
               private apiBaseServiceV2: ApiBaseServiceV2,
               private loadingService: LoadingService,
               private userService: UserService) {
-
     this.form = fb.group({
       'community_name': ['', Validators.compose([Validators.required])],
       'tag_line': ['', Validators.maxLength(150)],
       'description': [''],
-      'external_title': [''],
-      'external_link': ['']
+      'additional_links': fb.array([
+        this.initLink(),
+      ])
     });
 
     this.community_name = this.form.controls['community_name'];
     this.tag_line = this.form.controls['tag_line'];
     this.description = this.form.controls['description'];
-    this.external_title = this.form.controls['external_title'];
-    this.external_link = this.form.controls['external_link'];
   }
 
   ngOnInit() {
@@ -66,20 +67,74 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.data) {
-      console.log(this.data);
+    let _this = this;
+    // console.log(this.form.controls['additional_links'].controls.length=0);
+    if (this.action == 'edit') {
       (<FormControl>this.community_name).setValue(this.data.name);
       (<FormControl>this.tag_line).setValue(this.data.tag_line);
       (<FormControl>this.description).setValue(this.data.description);
-      (<FormControl>this.external_title).setValue('');
-      (<FormControl>this.external_link).setValue('');
+
+      let additional_links_edit = JSON.parse(this.data.additional_links);
+
+      this.removeAllLink();
+      _.map(additional_links_edit, (v)=> {
+        console.log(v);
+        _this.addLink(v);
+      });
+
+    } else {
+      (<FormControl>this.community_name).setValue('');
+      (<FormControl>this.tag_line).setValue('');
+      (<FormControl>this.description).setValue('');
+      this.removeAllLink();
     }
   }
 
   onCheckLength(event: any) {
     $(event.target).parents('.form-group').find('.x-showLength').text(event.target.value.length);
-    // console.log(event.target.value.length);
-    // console.log(this.tag_line.value);
+  }
+
+
+  initLink(link?: any) {
+
+    if (link) {
+      return this.fb.group({
+        key: [link.key],
+        name: [link.name],
+        url: [link.url, Validators.compose([CustomValidator.url])],
+        order: [link.order]
+      });
+    } else {
+      return this.fb.group({
+        key: [''],
+        name: [''],
+        url: ['', Validators.compose([CustomValidator.url])],
+        order: ['']
+      });
+    }
+  }
+
+  addLink(link?: any) {
+    const control = <FormArray>this.form.controls['additional_links'];
+    if (link) {
+      control.push(this.initLink(link));
+    } else {
+      control.push(this.initLink());
+    }
+
+  }
+
+  removeLink(i: number) {
+    const control = <FormArray>this.form.controls['additional_links'];
+    control.removeAt(i);
+  }
+
+  removeAllLink() {
+    const control = <FormArray>this.form.controls['additional_links'];
+    // console.log(control.length);
+    for (let i = 0; i < control.length; i++) {
+      control.removeAt(i);
+    }
   }
 
   onSubmit(values: any): void {
@@ -89,18 +144,33 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       name: values.community_name,
       tag_line: values.tag_line,
       description: values.description,
-      additional_links: ''
+      additional_links: values.additional_links
     });
 
-    this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}`, body)
-      .subscribe((result: any) => {
-          console.log(result);
-          this.updated.emit(result.data);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    console.log('body:', body);
+
+    if (this.action == 'edit') {
+      this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}`, body)
+        .subscribe((result: any) => {
+            console.log(result);
+            this.updated.emit(result.data);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    } else {
+      this.apiBaseServiceV2.post(`zone/social_network/communities`, body)
+        .subscribe((result: any) => {
+            console.log(result);
+            this.updated.emit(result.data);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    }
+
 
     this.modal.close();
   }

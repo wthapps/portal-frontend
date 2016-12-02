@@ -59,6 +59,11 @@ export class CustomValidator {
     };
   }
 
+  public static url(c: AbstractControl) {
+    let REGEXP = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    return REGEXP.test(c.value) ? null : {'url': true};
+  }
+
   public static ipHostFormat(c: AbstractControl) {
     if (c.value.length === 0) {
       return null;

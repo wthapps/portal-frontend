@@ -4,7 +4,7 @@
       <div class="z-social-box-header">
         <h3 class="h4">Communities You Manage</h3>
         <div class="action">
-          <button class="btn btn-wth-default">
+          <button type="button" (click)="onCreate()" class="btn btn-wth-default">
             <i class="fa fa-plus"></i> New Community
           </button>
         </div>
@@ -42,7 +42,7 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Remove from Favourites</a></li>
                     <li><a href="#">Leave community</a></li>
-                    <li><a href="#">Delete community</a></li>
+                    <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
                   </ul>
                 </div>
               </div>
@@ -85,7 +85,7 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Remove from Favourites</a></li>
                     <li><a href="#">Leave community</a></li>
-                    <li><a href="#">Delete community</a></li>
+                    <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
                   </ul>
                 </div>
               </div>
@@ -98,5 +98,5 @@
 </div>
 
 
-<z-social-community-form-edit #modalEdit [data]="currentItem" (updated)="onUpdated($event)"></z-social-community-form-edit>
+<z-social-community-form-edit #modalEdit [data]="currentItem" [action]="action" (updated)="onUpdated($event)"></z-social-community-form-edit>
 <z-social-community-form-preference #modalPreference [data]="currentItem" (updated)="onUpdated($event)"></z-social-community-form-preference>

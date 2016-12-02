@@ -5,6 +5,8 @@ import { LoadingService } from '../../../../partials/loading/loading.service';
 
 import { ZSocialCommunityFormEditComponent } from '../form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../form/preferences.component';
+import { ConfirmationService } from 'primeng/components/common/api';
+import { ToastsService } from '../../../../partials/toast/toast-message.service';
 
 declare var _: any;
 
@@ -22,11 +24,14 @@ export class ZSocialCommunityListComponent implements OnInit {
   errorMessage: string = '';
   myList: any = [];
   list: any = [];
-  currentItem: string = '';
+  currentItem: any = null;
+  action: string = 'create';
 
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
               private loadingService: LoadingService,
+              private confirmationService: ConfirmationService,
+              private toastsService: ToastsService,
               private userService: UserService) {
   }
 
@@ -56,9 +61,45 @@ export class ZSocialCommunityListComponent implements OnInit {
     );
   }
 
+  onCreate() {
+    this.modalEdit.modal.open();
+    this.action = 'create';
+    return false;
+  }
+
   onEdit(item: any) {
     this.modalEdit.modal.open();
     this.currentItem = item;
+    this.action = 'edit';
+    return false;
+  }
+
+  onDelete(item: any) {
+    console.log(item);
+    this.confirmationService.confirm({
+      message: '',
+      header: 'Delete Account',
+      accept: () => {
+        this.loadingService.start();
+        this.apiBaseServiceV2.delete(`zone/social_network/communities/${item.uuid}`)
+          .subscribe((response: any) => {
+              console.log(response);
+              this.onUpdated(response.data);
+              this.toastsService.success(response.message);
+              this.loadingService.stop();
+            },
+            error => {
+              console.log(error);
+              this.toastsService.danger(error);
+              this.loadingService.stop();
+            }
+          );
+      }
+    });
+
+
+
+
     return false;
   }
 

@@ -98,12 +98,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   resetSettings() {
-
-    let body = JSON.stringify({
-      community_id: this.data.uuid
-    });
-
-    this.apiBaseServiceV2.put(`zone/social_network/communities/reset_settings`, body)
+    this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}/reset_settings`)
       .subscribe((result: any) => {
           console.log(result);
           this.updated.emit(result.data);
