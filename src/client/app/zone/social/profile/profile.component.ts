@@ -73,14 +73,10 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
   }
 
   onAddfriend() {
-    let body = {
-      user_uuid: this.userInfo.uuid
-    };
 
-    this.socialService.user.addFriend(body).subscribe(
+    this.socialService.user.addFriend(this.userInfo.uuid).subscribe(
       (res: any) => {
         this.relationships = res.data;
-        console.log(res);
       }
     );
   }

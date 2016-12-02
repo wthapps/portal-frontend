@@ -9,8 +9,11 @@ import {
   Constants
 } from '../../shared/index';
 
-declare var $: any;
 
+import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
+
+declare var $: any;
+declare let ActionCable: any;
 /**
  * This class represents the header component.
  */
@@ -30,9 +33,13 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   imgLogo: string = Constants.img.logoWhite;
 
   showSearchBar: boolean = false;
+  App:any = {};
 
   constructor(private userService: UserService,
-              private router: Router) {
+              private router: Router,
+              private cable: Ng2Cable,
+              private broadcaster: Broadcaster
+  ) {
 
     //console.log(this.userService);
     this.urls = new Array();
@@ -43,6 +50,16 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
+    //
+    // this.cable.subscribe('http://localhost:4000/cable', 'Notification');
+    //
+    // this.broadcaster.on<string>('Notification').subscribe(
+    //   message => {
+    //     console.log('cable message: ', message);
+    //   }
+    // );
+
+
     if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;
@@ -148,5 +165,66 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   isLoggedIn() {
     // Check if there's an unexpired JWT
     return this.userService.loggedIn;
+  }
+
+  sendMessage(event: any) {
+    ActionCable.startDebugging();
+    var app: any = {cable: null, notification: null};
+    app.cable = ActionCable.createConsumer("ws://localhost:4000/cable");
+    app.notification = app.cable.subscriptions.create('NotificationChannel', {
+      //   // ActionCable callbacks
+        connected: function() {
+          console.log('received: ******************************************************************************', data);
+          // writeLog("connected", this.identifier);
+        },
+      //   disconnected: function() {
+      //     writeLog("disconnected", this.identifier);
+      //   },
+      //   rejected: function() {
+      //     writeLog("rejected");
+      //   },
+        received: function(data: any) {
+          console.log('received: ******************************************************************************', data);
+          // writeLog('received: ******************************************************************************', data);
+          // this.tick(data);
+        }
+      // ,
+      //   // Custom methods
+      //   start: function() {
+      //     writeLog("starting clock");
+      //     this.perform("start");
+      //   },
+      //   stop: function() {
+      //     writeLog("stopping clock");
+      //     this.perform("stop");
+      //   },
+      //   tick: function(data: any) {
+      //     writeLog("tick received", data);
+      //     this.tock("ack");
+      //   },
+      //   tock: function(message: any) {
+      //     writeLog("tock sent", message);
+      //     return this.perform("tock", { message: message });
+      //   }
+      // });
+      //
+      // function writeLog(message: any, data: any = null) {
+      //   console.log(message, data);
+      // }
+      //
+      // function deserialize(data) {
+      //   return JSON.stringify(data);
+      // }
+      //
+      // function guid() {
+      //   function s4() {
+      //     return Math.floor((1 + Math.random()) * 0x10000)
+      //                .toString(16)
+      //                .substring(1);
+      //   }
+      //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      //     s4() + '-' + s4() + s4() + s4();
+      // }
+     });
   }
 }

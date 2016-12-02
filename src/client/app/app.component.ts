@@ -4,6 +4,9 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { Config } from './shared/index';
 import './operators';
+// import 'actioncable-js'
+
+// declare let ActionCable: any;
 
 /**
  * This class represents the main application component. Within the @Routes annotation is the configuration of the
@@ -22,7 +25,7 @@ export class AppComponent implements OnInit {
 
   /**
    * Issues https://github.com/angular/angular/issues/7791
-   * 
+   *
    * Changing route doesn't scroll to top in the new page
    */
   ngOnInit() {

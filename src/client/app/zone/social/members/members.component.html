@@ -67,7 +67,7 @@
               </div>
               <div class="media-center-body">
                 <h4 class="media-center-heading">
-                  <a href="/zone/social/communities/detail">
+                  <a [routerLink]="['/zone/social/profile', item.uuid]">
                     {{item.name}}
                   </a>
                 </h4>
@@ -80,19 +80,17 @@
                     <i class="fa fa-check"></i> Friend <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="#"><i class="fa fa-check"></i> Following</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Import to Contact</a></li>
-                    <li><a href="#">Unfriend</a></li>
+                    <li><a href="javascript:;" >Favorite</a></li>
+                    <li><a href="javascript:;" (click)="unfriend(item.uuid)">Unfriend</a></li>
                   </ul>
                 </div>
-                <div *ngIf="currentState == 'followers'" class="pull-right">
-                  <button class="btn btn-default" type="button">
+                <div *ngIf="currentState == 'followers' && item.isFollowing == false" class="pull-right">
+                  <button class="btn btn-default" type="button" (click)="follow(item.uuid)">
                     <i class="fa fa-share"></i> Follow
                   </button>
                 </div>
                 <div *ngIf="currentState == 'followings'" class="pull-right">
-                  <button class="btn btn-default" type="button">
+                  <button class="btn btn-default" type="button" (click)="unfollow(item.uuid)">
                     <i class="fa fa-times"></i> Unfollow
                   </button>
                 </div>
