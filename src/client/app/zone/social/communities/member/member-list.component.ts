@@ -5,20 +5,23 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
-import { ListInviteMembersComponent } from '../../post/list-invite-members.component';
+import { MemberListInviteComponent } from './member-list-invite.component';
 import { ApiBaseService } from '../../../../shared/index';
 import { ZPictureFormReportMemberComponent } from '../../../shared/form/report/member.component';
 
 declare var _: any;
+/**
+ * selector: com stands for community.
+ */
 
 @Component({
   moduleId: module.id,
-  selector: 'z-social-community-detail-members',
-  templateUrl: 'members.component.html'
+  selector: 'com-member-list',
+  templateUrl: 'member-list.component.html'
 })
 
-export class ZSocialCommunityDetailMembersComponent implements OnInit {
-  @ViewChild('users') users: ListInviteMembersComponent;
+export class ComMemberListComponent implements OnInit {
+  @ViewChild('users') users: MemberListInviteComponent;
 
   @ViewChild('modalReportUser') modalReportUser: ZPictureFormReportMemberComponent;
 

@@ -10,11 +10,11 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-list',
+  selector: 'so-post-list',
   templateUrl: 'post-list.component.html'
 })
 
-export class ZSocialPostListComponent extends BaseSocialList implements OnInit {
+export class PostListComponent extends BaseSocialList implements OnInit {
   listItems: Array<SoPost>;
   userUuid: string;
 

@@ -1,17 +1,17 @@
 
-<post-item-header [item]="itemDisplay" [type]="type"></post-item-header>
-<post-item-body [item]="itemDisplay" [type]="type"></post-item-body>
-<post-item-footer #postFooter [item]="itemDisplay" [type]="type" (eventEmitter)="onActions($event)"></post-item-footer>
-<post-edit #postEdit
+<so-post-header [item]="itemDisplay" [type]="type"></so-post-header>
+<so-post-body [item]="itemDisplay" [type]="type"></so-post-body>
+<so-post-footer #postFooter [item]="itemDisplay" [type]="type" (eventEmitter)="onActions($event)"></so-post-footer>
+<so-post-edit #postEdit
            [openMode]="'edit'"
            (onEdited)="editedPost($event)"
            (onUpdated)="update($event)"
-></post-edit>
+></so-post-edit>
 
 <post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>
-<post-edit #shareEdit
+<so-post-edit #shareEdit
            (onEdited)="editedPost($event)"
-           (onUpdated)="update($event)"></post-edit>
+           (onUpdated)="update($event)"></so-post-edit>
 <post-share #postShare></post-share>
 <post-activities #postActivities></post-activities>
 <post-likedislike #postLikeDislike [item]="dataLikeDislike" [type]="typeLikeDislike"></post-likedislike>

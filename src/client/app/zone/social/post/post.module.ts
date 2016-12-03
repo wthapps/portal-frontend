@@ -14,7 +14,7 @@ import {
   PostShareCommunityComponent,
   PostShareFriendComponent,
   PostLikeDislikeComponent,
-  ListInviteMembersComponent
+  MemberListInviteComponent
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
 import { Ng2HdModule } from '../../shared/ng2-hd/index';
@@ -43,7 +43,7 @@ import { RouterModule } from '@angular/router';
     PostLikeDislikeComponent,
     PostShareCommunityComponent,
     PostShareFriendComponent,
-    ListInviteMembersComponent
+    MemberListInviteComponent
   ],
   exports: [
     CommonModule,
@@ -61,7 +61,7 @@ import { RouterModule } from '@angular/router';
     PostLikeDislikeComponent,
     PostShareCommunityComponent,
     PostShareFriendComponent,
-    ListInviteMembersComponent
+    MemberListInviteComponent
   ]
 })
 

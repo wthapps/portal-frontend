@@ -1,12 +1,12 @@
 import { BaseZoneSocial } from "./base-social";
 import { ApiBaseServiceV2 } from "../../../shared/services/apibase.service.v2";
-import { ZSocialPostItemComponent } from '../post-item/post-item.component';
+import { PostComponent } from '../post/post.component';
 
 export class BaseZoneSocialItem extends BaseZoneSocial {
   item: any;
 
   apiBaseServiceV2: ApiBaseServiceV2;
-  postItem?: ZSocialPostItemComponent;
+  postItem?: PostComponent;
 
   loadItem(url: string) {
     return this.apiBaseServiceV2.get(url);

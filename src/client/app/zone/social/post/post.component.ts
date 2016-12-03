@@ -5,34 +5,29 @@ import { ConstantsSocial } from "../base/constants-social";
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { Constants } from '../../../shared/config/constants';
 import { LoadingService, ToastsService, ConfirmationService } from '../../../shared/index';
-import { PostEditComponent } from '../post/post-edit.component';
-
 import {
   CommentCreateEvent, OpenPhotoModalEvent, DeleteCommentEvent,
   CommentUpdateEvent, ReplyCreateEvent, ReplyUpdateEvent, DeleteReplyEvent
 } from '../events/social-events';
-import { PostPhotoSelectComponent } from '../post/post-photo-select.component';
-
-import { ZSocialPostItemFooterComponent } from './post-item-layout/post-item-footer.component';
 import {
   PostPhotoSelectComponent,
   PostShareComponent,
   PostEditComponent,
   PostActivitiesComponent
-} from '../post/index';
-import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './post-item-layout/sub-layout/comment-box.component';
-import { PostLikeDislikeComponent } from '../post/post-likedislike.component';
+} from './index';
+import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
+import { PostLikeDislikeComponent } from './post-likedislike.component';
 
 declare var $: any;
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-item',
-  templateUrl: 'post-item.component.html'
+  selector: 'so-post',
+  templateUrl: 'post.component.html'
 })
 
-export class ZSocialPostItemComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
+export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @ViewChild('postEdit') postEdit: PostEditComponent;
   @ViewChild('postShare') postShare: PostShareComponent;
   @ViewChild('shareEdit') shareEdit: PostEditComponent;

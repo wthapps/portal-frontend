@@ -16,6 +16,16 @@ export class CustomValidator {
     return EMAIL_REGEXP.test(c.value) ? null : {'emailFormat': true};
   }
 
+  public static urlFormat(c: AbstractControl) {
+    let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+    /*return EMAIL_REGEXP.test(c.value) ? null : {
+     emailFormat: {
+     valid: false
+     }
+     };*/
+    return true;// EMAIL_REGEXP.test(c.value) ? null : {'emailFormat': true};
+  }
   // refs Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number:
   public static passwordCheck(c: AbstractControl) {
     let PASS_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/i;
@@ -57,11 +67,6 @@ export class CustomValidator {
     return (c: FormGroup) => {
       return (c.controls && c.controls[firstField].value == c.controls[secondField].value) ? null : {'passwordsEqual': true};
     };
-  }
-
-  public static url(c: AbstractControl) {
-    let REGEXP = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
-    return REGEXP.test(c.value) ? null : {'url': true};
   }
 
   public static ipHostFormat(c: AbstractControl) {

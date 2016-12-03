@@ -2,18 +2,18 @@ import { Component, ElementRef, ViewChild, OnInit, Input, OnChanges, SimpleChang
 import { BaseZoneSocialItem } from "../../base/base-social-item";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SoPost } from "../../../../shared/models/social_network/so-post.model";
-import { ZSocialPostItemComponent } from '../post-item.component';
+import { PostComponent } from '../post.component';
 import { UserService } from '../../../../shared/services/user.service';
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'post-item-body',
-  templateUrl: 'post-item-body.component.html'
+  selector: 'so-post-body',
+  templateUrl: 'post-body.component.html'
 })
 
-export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
+export class PostBodyComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
   parentItem: SoPost = new SoPost();
@@ -29,7 +29,7 @@ export class ZSocialPostItemBodyComponent extends BaseZoneSocialItem implements 
   constructor(private route: ActivatedRoute,
               public userService: UserService,
               private router: Router,
-              private postItem: ZSocialPostItemComponent) {
+              private postItem: PostComponent) {
   }
 
   ngOnInit() {

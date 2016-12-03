@@ -3,8 +3,8 @@ import { ZoneComponent } from './index';
 import { ZPictureComponent } from './index';
 
 import { AuthGuard } from "../shared/services/auth-guard.service";
-import { ZSocialPostDetailComponent } from './social/post-detail/post-detail.component';
-import { ZSocialPhotoDetailComponent } from './social/photo-detail/photo-detail.component';
+import { PostDetailComponent } from './social/post/post-detail.component';
+import { PostDetailPhotoComponent } from './social/post/post-detail-photo.component';
 
 import { ZSocialHomeComponent } from './social/home/social-home.component';
 
@@ -20,7 +20,7 @@ import { ZSocialCommunityDetailComponent } from './social/communities/communitie
 
 
 import { ZSocialCommunityDetailNotificationComponent } from './social/communities/notification/notification.component';
-import { ZSocialCommunityDetailMembersComponent } from './social/communities/members/members.component';
+import { ComMemberListComponent } from './social/communities/member/member-list.component';
 import { ZSocialCommunityDetailAboutComponent } from './social/communities/about/about.component';
 import { ZSocialCommunityDetailPostComponent } from './social/communities/post/post.component';
 
@@ -39,8 +39,8 @@ export const ZoneRoutes: Route[] = [
       {path: 'picture/:category/:id', component: ZPictureComponent},
 
       {path: 'social/home', component: ZSocialHomeComponent},
-      {path: 'social/posts/:id', component: ZSocialPostDetailComponent},
-      {path: 'social/photos/:id', component: ZSocialPhotoDetailComponent},
+      {path: 'social/posts/:id', component: PostDetailComponent},
+      {path: 'social/photos/:id', component: PostDetailPhotoComponent},
 
       // {path: 'social/communities', component: ZSocialCommunityComponent},
 
@@ -49,7 +49,7 @@ export const ZoneRoutes: Route[] = [
         component: ZSocialCommunityComponent,
         children: [
           {path: ':id/about', component: ZSocialCommunityDetailAboutComponent},
-          {path: ':id/members', component: ZSocialCommunityDetailMembersComponent},
+          {path: ':id/members', component: ComMemberListComponent},
           {path: ':id/notification', component: ZSocialCommunityDetailNotificationComponent},
           {path: ':id/post', component: ZSocialCommunityDetailPostComponent},
           {path: ':id', component: ZSocialCommunityDetailPostComponent},
@@ -64,7 +64,7 @@ export const ZoneRoutes: Route[] = [
           {path: '', redirectTo: 'post'},
           {path: 'post', component: ZSocialCommunityDetailPostComponent},
           {path: 'about', component: ZSocialCommunityDetailAboutComponent},
-          {path: 'members', component: ZSocialCommunityDetailMembersComponent},
+          {path: 'members', component: ComMemberListComponent},
           {path: 'notification', component: ZSocialCommunityDetailNotificationComponent}
         ]
       },*/

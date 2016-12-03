@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ZSocialPostListComponent } from '../../post-list/post-list.component';
+import { PostListComponent } from '../../post/post-list.component';
 
 @Component({
   moduleId: module.id,
@@ -8,7 +8,7 @@ import { ZSocialPostListComponent } from '../../post-list/post-list.component';
 })
 
 export class ZSocialProfilePostComponent implements OnInit{
-  @ViewChild('posts') posts: ZSocialPostListComponent;
+  @ViewChild('posts') posts: PostListComponent;
 
   constructor() {
 
