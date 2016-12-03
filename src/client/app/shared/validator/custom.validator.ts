@@ -17,14 +17,8 @@ export class CustomValidator {
   }
 
   public static urlFormat(c: AbstractControl) {
-    let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-
-    /*return EMAIL_REGEXP.test(c.value) ? null : {
-     emailFormat: {
-     valid: false
-     }
-     };*/
-    return true;// EMAIL_REGEXP.test(c.value) ? null : {'emailFormat': true};
+    let REGEXP = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    return REGEXP.test(c.value) ? null : {'url': true};
   }
   // refs Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number:
   public static passwordCheck(c: AbstractControl) {

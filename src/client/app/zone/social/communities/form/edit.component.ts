@@ -102,14 +102,14 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       return this.fb.group({
         key: [link.key],
         name: [link.name],
-        url: [link.url, Validators.compose([CustomValidator.url])],
+        url: [link.url, Validators.compose([CustomValidator.urlFormat])],
         order: [link.order]
       });
     } else {
       return this.fb.group({
         key: [''],
         name: [''],
-        url: ['', Validators.compose([CustomValidator.url])],
+        url: ['', Validators.compose([CustomValidator.urlFormat])],
         order: ['']
       });
     }
