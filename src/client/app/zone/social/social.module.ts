@@ -42,6 +42,9 @@ import { ZSocialCommunityCoverComponent } from './communities/cover/cover.compon
 import { ZSocialCommunityFormEditComponent } from './communities/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from './communities/form/preferences.component';
 import { ZSocialCommunityService } from './communities/communities.service';
+import { ZPictureFormReportPostComponent } from '../shared/form/report/post.component';
+import { ZPictureFormReportMemberComponent } from '../shared/form/report/member.component';
+import { ZPictureFormReportCommunityComponent } from '../shared/form/report/community.component';
 
 
 @NgModule({
@@ -55,6 +58,11 @@ import { ZSocialCommunityService } from './communities/communities.service';
   ],
   declarations: [
     ZSocialHomeComponent,
+
+    //Share
+    ZPictureFormReportPostComponent,
+    ZPictureFormReportMemberComponent,
+    ZPictureFormReportCommunityComponent,
 
     // Communities
     ZSocialCommunityComponent,

@@ -59,6 +59,7 @@
                 <ul class="dropdown-menu dropdown-custom">
                   <li><a href="#">Make Admin</a></li>
                   <li><a href="#">Remove</a></li>
+                  <li><a href="#" (click)="onReportMember(user.uuid)">Report Member</a></li>
                   <li><a href="#">Blacklist</a></li>
                 </ul>
               </div>
@@ -105,6 +106,9 @@
     </dl>
   </div>
 </div>
+
+
+<page-zone-form-report-member id="modalReportUser" [data]="uuidUser"></page-zone-form-report-member>
 
 
 

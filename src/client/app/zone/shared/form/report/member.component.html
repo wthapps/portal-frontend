@@ -1,0 +1,56 @@
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+  <modal-body>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+      <div *ngIf="data" class="mb20">
+        <label>Please specify your reason for reporting.</label>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="data.report_member_level = 3; getValue(data.report_member_level)"
+                   [checked]="data.report_member_level == 3"
+                   value="1">
+            Fake Account or Impersonating
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="data.report_member_level = 2; getValue(data.report_member_level)"
+                   [checked]="data.report_member_level == 2"
+                   value="2">
+            Hate Speech or Personal Harassement
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="data.report_member_level = 1; getValue(data.report_member_level)"
+                   [checked]="data.report_member_level == 1"
+                   value="3">
+            Inappropriate content or Fail Information.
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="data.report_member_level = 1; getValue(data.report_member_level)"
+                   [checked]="data.report_member_level == 1"
+                   value="99">
+            Other
+          </label>
+        </div>
+        <div class="form-group">
+          <input [formControl]="other" type="text" class="form-control" id="other"
+                 placeholder="Please specify the reason">
+        </div>
+        <p>For futher information about reporting policies, please read <a [routerLink]="['/policies/terms']">Term of Services</a></p>
+      </div>
+
+      <div class="clearfix text-right">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">SUBMIT</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+
+  </modal-body>
+</hd-modal>

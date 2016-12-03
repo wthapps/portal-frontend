@@ -7,6 +7,7 @@ import { LoadingService } from '../../../../partials/loading/loading.service';
 
 import { ListInviteMembersComponent } from '../../post/list-invite-members.component';
 import { ApiBaseService } from '../../../../shared/index';
+import { ZPictureFormReportMemberComponent } from '../../../shared/form/report/member.component';
 
 declare var _: any;
 
@@ -19,9 +20,12 @@ declare var _: any;
 export class ZSocialCommunityDetailMembersComponent implements OnInit {
   @ViewChild('users') users: ListInviteMembersComponent;
 
+  @ViewChild('modalReportUser') modalReportUser: ZPictureFormReportMemberComponent;
+
   errorMessage: string = '';
   data: any = [];
   uuid: string = '';
+  uuidUser: string = '';
 
   constructor(private api: ApiBaseService,
               private apiBaseServiceV2: ApiBaseServiceV2,
@@ -45,6 +49,11 @@ export class ZSocialCommunityDetailMembersComponent implements OnInit {
       );
     });
 
+  }
+
+  onReportMember(uuid: string) {
+    this.uuidUser = uuid;
+    this.modalReportUser.modal.open();
   }
 
   chooseMembers() {
