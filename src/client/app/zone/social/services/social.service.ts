@@ -49,6 +49,11 @@ export class SoUserService {
     return this.apiBaseServiceV2.get(`zone/social_network/invitations/${uuid}`);
   }
 
+  getFavorites() {
+    console.log('get favorites');
+    return this.apiBaseServiceV2.get(`zone/social_network/favorites`);
+  }
+
   private getOther(uuid) {
     return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
   }

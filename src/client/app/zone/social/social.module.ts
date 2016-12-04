@@ -44,6 +44,7 @@ import { ZSocialCommunityFormPreferenceComponent } from './communities/form/pref
 import { ZSocialCommunityService } from './communities/communities.service';
 import { ZoneReportComponent } from '../shared/form/report/report.component';
 import { ZoneReportService } from '../shared/form/report/report.service';
+import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 
 
 @NgModule({
@@ -56,7 +57,9 @@ import { ZoneReportService } from '../shared/form/report/report.service';
     InputSwitchModule
   ],
   declarations: [
+    // Home
     ZSocialHomeComponent,
+    ZSocialFavoritesComponent,
 
     //Share
     ZoneReportComponent,
