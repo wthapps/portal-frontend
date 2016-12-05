@@ -61,7 +61,7 @@ export class PostEditComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.post = new SoPost();
     this.form = this.fb.group({
-      'description': [this.post.description, Validators.compose([Validators.required])],
+      'description': [this.post.description, null],
       'tags': [this.post.tags, null],
       'photos': [this.post.photos, null]
     });

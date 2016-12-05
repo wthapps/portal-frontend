@@ -48,14 +48,14 @@
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-custom">
-          <li><a href="#modal-social-com-preferences" data-toggle="modal">Preferences</a></li>
-          <li><a href="#">Manage members</a></li>
+          <li><a href="javascript:;" (click)="onEdit(data)">Edit Information</a></li>
+          <li><a href="#" (click)="onPreference(data)">Preferences</a></li>
+          <li><a [routerLink]="['/zone/social/communities/'+data.uuid+'/members']">Manage members</a></li>
           <li role="separator" class="divider"></li>
           <li><a href="#">Remove from Favourites</a></li>
-          <li><a href="#">Add to favourite</a></li>
-          <li><a href="#">Leave community</a></li>
+          <li><a href="#" (click)="onLeave(my)">Leave community</a></li>
           <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-          <li><a href="#">Delete community</a></li>
+          <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
         </ul>
       </li>
     </ul>

@@ -30,8 +30,8 @@ export class PostListComponent extends BaseSocialList implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.userUuid = params['id'];
+      this.loadPosts();
     });
-    this.loadPosts();
   }
 
   mapPost(post:any) {

@@ -16,6 +16,7 @@ export class ZSocialMembersComponent implements OnInit {
   data: any = [];
   list: any = [];
   currentState: string = 'friends'; //followers, followings, blacklists
+  favourite:any;
 
   constructor(private socialService: SocialService) {
   }
@@ -75,5 +76,21 @@ export class ZSocialMembersComponent implements OnInit {
       });
       return follower;
     });
+  }
+
+  getFavourite(uuid:any) {
+    this.socialService.user.getFavourite(uuid, "friend").subscribe(
+      (res:any) => {
+        this.favourite = res.data
+      }
+    );
+  }
+
+  addFavourite(uuid:any) {
+    this.socialService.user.addFavourites(uuid, "friend").subscribe(
+      (res:any) => {
+        this.favourite = res.data
+      }
+    );
   }
 }
