@@ -71,7 +71,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     // console.log(this.form.controls['additional_links'].controls.length=0);
     if (this.data) {
       // console.log(this.form);
-      // console.log(this.data.additional_links);
+      console.log('ZSocialCommunityFormEditComponent:', this.data);
       this.removeAllLink();
     }
     if (this.action == 'edit') {

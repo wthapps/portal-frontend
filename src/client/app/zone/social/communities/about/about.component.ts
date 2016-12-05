@@ -46,6 +46,7 @@ export class ZSocialCommunityDetailAboutComponent implements OnInit {
   }
 
   onEdit() {
+    console.log('ZSocialCommunityDetailAboutComponent:', this.data);
     this.modalEdit.modal.open();
     return false;
   }
