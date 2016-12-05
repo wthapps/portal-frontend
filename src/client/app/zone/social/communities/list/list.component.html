@@ -32,7 +32,7 @@
               <div class="media-center-right">
                 <div class="dropdown pull-right">
                   <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true">
+                          aria-haspopup="true" aria-expanded="true" (click)="getFavourite(my.uuid)">
                     <i class="fa fa-ellipsis-v"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
@@ -40,8 +40,8 @@
                     <li><a href="#" (click)="onPreference(my)">Preferences</a></li>
                     <li><a [routerLink]="['/zone/social/communities/'+my.uuid+'/members']">Manage members</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#">Remove from Favourites</a></li>
-                    <li><a href="#" (click)="onLeave(my)">Leave community</a></li>
+                    <li><a href="javascript:;" (click)="addFavourite(my.uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
+                    <li><a href="#">Leave community</a></li>
                     <li><a href="#" (click)="onReport(my.uuid)">Report community</a></li>
                     <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
                   </ul>
@@ -84,7 +84,7 @@
                     <li><a href="#" (click)="onPreference(item)">Preferences</a></li>
                     <li><a [routerLink]="['/zone/social/communities/'+item.uuid+'/members']">Manage members</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#">Remove from Favourites</a></li>
+                    <li><a href="javascript:;" (click)="addFavourite(item.uuid)"> Favourites</a></li>
                     <li><a href="#">Leave community</a></li>
                     <li><a href="#" (click)="onReport(item.uuid)">Report community</a></li>
                     <li><a href="#" (click)="onDelete(item)">Delete community</a></li>

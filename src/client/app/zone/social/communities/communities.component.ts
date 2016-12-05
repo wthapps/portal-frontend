@@ -11,4 +11,7 @@ declare var _: any;
 })
 
 export class ZSocialCommunityComponent implements OnInit {
+  ngOnInit() {
+  //
+  }
 }

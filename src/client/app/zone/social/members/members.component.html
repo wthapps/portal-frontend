@@ -76,11 +76,11 @@
               <div class="media-center-right">
                 <div *ngIf="currentState == 'friends'" class="dropdown pull-right">
                   <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true">
+                          aria-haspopup="true" aria-expanded="true" (click)="getFavourite(item.uuid)">
                     <i class="fa fa-check"></i> Friend <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="javascript:;" >Favorite</a></li>
+                    <li><a href="javascript:;" (click)="addFavourite(item.uuid)">Favorite <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
                     <li><a href="javascript:;" (click)="unfriend(item.uuid)">Unfriend</a></li>
                   </ul>
                 </div>
@@ -89,7 +89,7 @@
                     <i class="fa fa-share"></i> Follow
                   </button>
                 </div>
-                <div *ngIf="currentState == 'followings'" class="pull-right">
+                <div *ngIf="currentState == 'followings'" class="prull-right">
                   <button class="btn btn-default" type="button" (click)="unfollow(item.uuid)">
                     <i class="fa fa-times"></i> Unfollow
                   </button>

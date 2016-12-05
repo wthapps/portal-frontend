@@ -68,7 +68,6 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
         if (this.userService.profile.uuid != params['id']) {
           this.socialService.user.getRelationShips(params['id']).subscribe((res: any) => {
               this.relationships = res.data;
-              console.log(res);
             },
           );
         }
@@ -91,7 +90,6 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
     this.socialService.user.unfriend(this.userInfo.uuid).subscribe(
       (res: any) => {
         this.relationships = res.data;
-        console.log(res);
       },
     );
   }
@@ -100,7 +98,6 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
     this.socialService.user.cancelFriendRequest(this.userInfo.uuid).subscribe(
       (res: any) => {
         this.relationships = res.data;
-        console.log(res);
       },
     );
   }

@@ -19,7 +19,7 @@ export class ApiBaseServiceV2 extends ApiBaseService {
     if (typeof params == 'object') {
       params = this.paramsToString(params);
     }
-    return super.get(url + params);
+    return super.get(url + "?" + params);
   }
 
   post(url: string, params: any = '') {

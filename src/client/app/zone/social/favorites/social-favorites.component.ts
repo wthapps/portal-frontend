@@ -9,14 +9,17 @@ import { SocialService } from '../services/social.service';
 
 export class ZSocialFavoritesComponent implements OnInit{
 
+  favourites: any = [];
+
   constructor(private socialService: SocialService) {
 
   }
 
   ngOnInit() {
-    this.socialService.user.getFavorites().subscribe(
-
+    this.socialService.user.getFavourites().subscribe(
+      (res:any) => {
+        this.favourites = res.data;
+      }
     );
   }
-
 }

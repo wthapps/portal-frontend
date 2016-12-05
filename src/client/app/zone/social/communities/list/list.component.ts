@@ -8,6 +8,7 @@ import { ZSocialCommunityFormPreferenceComponent } from '../form/preferences.com
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ToastsService } from '../../../../partials/toast/toast-message.service';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
+import { SocialService } from '../../services/social.service';
 
 declare var _: any;
 
@@ -27,6 +28,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   list: any = [];
   currentItem: any = null;
   action: string = 'create';
+  favourite:any;
 
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
@@ -34,6 +36,7 @@ export class ZSocialCommunityListComponent implements OnInit {
               private confirmationService: ConfirmationService,
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
+              private socialService: SocialService,
               private userService: UserService) {
   }
 
@@ -48,7 +51,7 @@ export class ZSocialCommunityListComponent implements OnInit {
 
     this.apiBaseServiceV2.get('zone/social_network/communities').subscribe(
       (res: any)=> {
-        console.log(res);
+        // console.log(res);
         _this.myList.length = 0;
         _this.list.length = 0;
         _.map(res.data, (v: any)=> {
@@ -86,13 +89,13 @@ export class ZSocialCommunityListComponent implements OnInit {
         this.loadingService.start();
         this.apiBaseServiceV2.delete(`zone/social_network/communities/${item.uuid}`)
           .subscribe((response: any) => {
-              console.log(response);
+              // console.log(response);
               this.onUpdated(response.data);
               this.toastsService.success(response.message);
               this.loadingService.stop();
             },
             error => {
-              console.log(error);
+              // console.log(error);
               this.toastsService.danger(error);
               this.loadingService.stop();
             }
@@ -144,4 +147,20 @@ export class ZSocialCommunityListComponent implements OnInit {
     return false;
   }
 
+
+  addFavourite(uuid:any) {
+    this.socialService.user.addFavourites(uuid, "community").subscribe(
+      (res:any) => {
+
+      }
+    )
+  }
+
+  getFavourite(uuid:any) {
+    this.socialService.user.getFavourite(uuid, "community").subscribe(
+      (res:any) => {
+        this.favourite = res.data;
+      }
+    )
+  }
 }

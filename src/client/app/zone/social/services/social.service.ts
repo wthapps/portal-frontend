@@ -49,9 +49,16 @@ export class SoUserService {
     return this.apiBaseServiceV2.get(`zone/social_network/invitations/${uuid}`);
   }
 
-  getFavorites() {
-    console.log('get favorites');
-    return this.apiBaseServiceV2.get(`zone/social_network/favorites`);
+  getFavourites() {
+    return this.apiBaseServiceV2.get(`zone/social_network/favourites`);
+  }
+
+  getFavourite(uuid:any, type:string) {
+    return this.apiBaseServiceV2.get(`zone/social_network/favourites/${uuid}`, {type: type});
+  }
+
+  addFavourites(uuid:any, type:string) {
+    return this.apiBaseServiceV2.post(`zone/social_network/favourites`, {uuid: uuid, type: type});
   }
 
   private getOther(uuid) {
@@ -83,7 +90,7 @@ export class SoPostService {
   }
 
   private getListOtherPosts(uuid) {
-    return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoUserPosts}/${uuid}`);
+    return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoUserPosts}/${uuid}/`, {type: "user"});
   }
 }
 
