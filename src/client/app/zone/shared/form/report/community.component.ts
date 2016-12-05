@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef } from '@angular/core';
-import { LoadingService } from "../../../partials/loading/loading.service";
 import { HdModalComponent } from '../../ng2-hd/modal/components/modal';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../../../shared/services/user.service';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { LoadingService } from '../../../../partials/loading/loading.service';
 
 declare var $: any;
 declare var _: any;
