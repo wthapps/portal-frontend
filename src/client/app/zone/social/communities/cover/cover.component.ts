@@ -3,6 +3,7 @@ import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../form/preferences.component';
+import { ZoneReportService } from '../../../shared/form/report/report.service';
 
 declare var _: any;
 
@@ -24,6 +25,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
               private loadingService: LoadingService,
+              private zoneReportService: ZoneReportService,
               private route: ActivatedRoute) {
   }
 
@@ -50,5 +52,10 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
     if (item) {
       this.item = item;
     }
+  }
+
+  onReport() {
+    this.zoneReportService.community(this.uuid);
+    return false;
   }
 }

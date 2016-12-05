@@ -1,0 +1,178 @@
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+
+  <modal-header [show-close]="true">
+    <h4 *ngIf="displayType == 'member'" class="modal-title text-left"> Report Member</h4>
+    <h4 *ngIf="displayType == 'community'" class="modal-title text-left"> Report Community</h4>
+    <h4 *ngIf="displayType == 'post'" class="modal-title text-left"> Report Post</h4>
+  </modal-header>
+
+  <modal-body>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+
+      <!--member-->
+      <div *ngIf="displayType == 'member'" class="mb20">
+        <p>Please specify your reason for reporting.</p>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 3; getValue(report_level)"
+                   [checked]="report_level == 3"
+                   value="1">
+            Fake Account or Impersonating
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 2; getValue(report_level)"
+                   [checked]="report_level == 2"
+                   value="2">
+            Hate Speech or Personal Harassment
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 1; getValue(report_level)"
+                   [checked]="report_level == 1"
+                   value="3">
+            Inappropriate content or Fail Information.
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 99; getValue(report_level)"
+                   [checked]="report_level == 99"
+                   value="99">
+            Other
+          </label>
+        </div>
+        <div class="form-group">
+          <input [formControl]="other" type="text" class="form-control" id="other"
+                 placeholder="Please specify the reason">
+        </div>
+        <p>For futher information about reporting policies, please read <a [routerLink]="['/policies/terms']">Term of
+          Services</a></p>
+      </div>
+
+      <!--community-->
+      <div *ngIf="displayType == 'community'" class="mb20">
+        <p>Please specify your reason for reporting.</p>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 3; getValue(report_level)"
+                   [checked]="report_level == 3"
+                   value="1">
+            Spam or Scam
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 2; getValue(report_level)"
+                   [checked]="report_level == 2"
+                   value="2">
+            Duplicate, fake or misleading
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 1; getValue(report_level)"
+                   [checked]="report_level == 1"
+                   value="3">
+            Hate Speech or Personal Harassment
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 4; getValue(report_level)"
+                   [checked]="report_level == 4"
+                   value="4">
+            Inappropriate content or Fail Information.
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 99; getValue(report_level)"
+                   [checked]="report_level == 99"
+                   value="99">
+            Other
+          </label>
+        </div>
+        <div class="form-group">
+          <input [formControl]="other" type="text" class="form-control" id="other"
+                 placeholder="Please specify the reason">
+        </div>
+        <p>For futher information about reporting policies, please read <a [routerLink]="['/policies/terms']">Term of
+          Services</a></p>
+      </div>
+
+      <!--post-->
+      <div *ngIf="displayType == 'post'" class="mb20">
+        <p>Please specify your reason for reporting.</p>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 3; getValue(report_level)"
+                   [checked]="report_level == 3"
+                   value="1">
+            Spam or Scam
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 2; getValue(report_level)"
+                   [checked]="report_level == 2"
+                   value="2">
+            Hate Speech or Personal Harassment
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 1; getValue(report_level)"
+                   [checked]="report_level == 1"
+                   value="3">
+            Inappropriate content or Fail Information.
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 4; getValue(report_level)"
+                   [checked]="report_level == 4"
+                   value="4">
+            Adult content without marked “Adult content”.
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio"
+                   (click)="report_level = 99; getValue(report_level)"
+                   [checked]="report_level == 99"
+                   value="99">
+            Other
+          </label>
+        </div>
+        <div class="form-group">
+          <input [formControl]="other" type="text" class="form-control" id="other"
+                 placeholder="Please specify the reason">
+        </div>
+        <p>For futher information about reporting policies, please read <a [routerLink]="['/policies/terms']">Term of
+          Services</a></p>
+      </div>
+
+      <div class="clearfix text-right">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">SUBMIT</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+
+  </modal-body>
+</hd-modal>

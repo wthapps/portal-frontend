@@ -6,6 +6,7 @@ import { SocialService } from '../services/social.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { ZoneReportService } from '../../shared/form/report/report.service';
 
 declare var _: any;
 
@@ -25,6 +26,8 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
   showFollow: boolean = false;
   relationships: any;
 
+  uuidUser: string = '';
+
   // noneFriend: 0,
   // pending: 1,
   // accepted: 2,
@@ -36,6 +39,7 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
               private route: ActivatedRoute,
               private router: Router,
               private apiBaseService: ApiBaseService,
+              private zoneReportService: ZoneReportService,
               private userService: UserService) {
   }
 
@@ -46,10 +50,12 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
 
       if (!params['id']) {
         this.router.navigate(['/zone/social/profile', this.userService.profile.uuid]);
+        this.uuidUser = this.userService.profile.uuid;
       } else {
 
         this.socialService.user.get(params['id']).subscribe((res: any) => {
             this.userInfo = res.data;
+            this.uuidUser = res.data.uuid;
 
             let uuid = this.userService.profile.uuid;
             this.hasFriends = _.some(res.data.friends, {'uuid': uuid});
@@ -97,5 +103,11 @@ export class ZSocialProfileComponent extends BaseZoneSocialHomePage implements O
         console.log(res);
       },
     );
+  }
+
+
+  onReport() {
+    this.zoneReportService.member(this.uuidUser);
+    return false;
   }
 }

@@ -7,6 +7,7 @@ import { ZSocialCommunityFormEditComponent } from '../form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../form/preferences.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ToastsService } from '../../../../partials/toast/toast-message.service';
+import { ZoneReportService } from '../../../shared/form/report/report.service';
 
 declare var _: any;
 
@@ -32,6 +33,7 @@ export class ZSocialCommunityListComponent implements OnInit {
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
               private toastsService: ToastsService,
+              private zoneReportService: ZoneReportService,
               private userService: UserService) {
   }
 
@@ -98,9 +100,6 @@ export class ZSocialCommunityListComponent implements OnInit {
       }
     });
 
-
-
-
     return false;
   }
 
@@ -114,6 +113,11 @@ export class ZSocialCommunityListComponent implements OnInit {
     if (item) {
       this.getList();
     }
+  }
+
+  onReport(uuid) {
+    this.zoneReportService.community(uuid);
+    return false;
   }
 
 }

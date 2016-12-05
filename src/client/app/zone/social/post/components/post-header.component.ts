@@ -3,6 +3,8 @@ import { BaseZoneSocialItem } from "../../base/base-social-item";
 import { SoPost } from "../../../../shared/models/social_network/so-post.model";
 import { PostComponent } from '../index';
 import { SocialService } from '../../services/social.service';
+import { ZoneReportService } from '../../../shared/form/report/report.service';
+import { UserService } from '../../../../shared/services/user.service';
 
 declare var _: any;
 
@@ -18,10 +20,13 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
 
   showInfo: boolean = false;
   showDetail: boolean = false;
-  settings:any;
+  settings: any;
 
 
-  constructor(private postItem: PostComponent, private socialService: SocialService) {
+  constructor(private postItem: PostComponent,
+              private socialService: SocialService,
+              private userService: UserService,
+              private zoneReportService: ZoneReportService) {
     super();
   }
 
@@ -38,7 +43,7 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
     this.postItem.viewDetail();
   }
 
-  update(attr: any={}, event: any) {
+  update(attr: any = {}, event: any) {
     event.preventDefault();
     this.postItem.update(attr);
   }
@@ -73,14 +78,21 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
     return '';
   }
 
-  getSettings(e:any) {
+  getSettings(e: any) {
     e.preventDefault();
     this.socialService.post.getSettings(this.item.uuid).subscribe(
-      (res:any) => {
+      (res: any) => {
 
-        this.settings = res.data.settings
-        console.log(this.settings)
+        this.settings = res.data.settings;
+        console.log(this.settings);
       }
     )
   }
+
+
+  onReport() {
+    this.zoneReportService.post(this.item.uuid);
+    return false;
+  }
+
 }

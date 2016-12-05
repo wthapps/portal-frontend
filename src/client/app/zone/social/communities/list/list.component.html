@@ -42,6 +42,7 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Remove from Favourites</a></li>
                     <li><a href="#">Leave community</a></li>
+                    <li><a href="#" (click)="onReport(my.uuid)">Report community</a></li>
                     <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
                   </ul>
                 </div>
@@ -85,7 +86,8 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Remove from Favourites</a></li>
                     <li><a href="#">Leave community</a></li>
-                    <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
+                    <li><a href="#" (click)="onReport(item.uuid)">Report community</a></li>
+                    <li><a href="#" (click)="onDelete(item)">Delete community</a></li>
                   </ul>
                 </div>
               </div>
@@ -98,5 +100,7 @@
 </div>
 
 
-<z-social-community-form-edit #modalEdit [data]="currentItem" [action]="action" (updated)="onUpdated($event)"></z-social-community-form-edit>
-<z-social-community-form-preference #modalPreference [data]="currentItem" (updated)="onUpdated($event)"></z-social-community-form-preference>
+<z-social-community-form-edit #modalEdit [data]="currentItem" [action]="action"
+                              (updated)="onUpdated($event)"></z-social-community-form-edit>
+<z-social-community-form-preference #modalPreference [data]="currentItem"
+                                    (updated)="onUpdated($event)"></z-social-community-form-preference>

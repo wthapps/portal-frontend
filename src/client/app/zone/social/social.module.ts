@@ -42,9 +42,8 @@ import { ZSocialCommunityCoverComponent } from './communities/cover/cover.compon
 import { ZSocialCommunityFormEditComponent } from './communities/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from './communities/form/preferences.component';
 import { ZSocialCommunityService } from './communities/communities.service';
-import { ZPictureFormReportPostComponent } from '../shared/form/report/post.component';
-import { ZPictureFormReportMemberComponent } from '../shared/form/report/member.component';
-import { ZPictureFormReportCommunityComponent } from '../shared/form/report/community.component';
+import { ZoneReportComponent } from '../shared/form/report/report.component';
+import { ZoneReportService } from '../shared/form/report/report.service';
 
 
 @NgModule({
@@ -60,9 +59,7 @@ import { ZPictureFormReportCommunityComponent } from '../shared/form/report/comm
     ZSocialHomeComponent,
 
     //Share
-    ZPictureFormReportPostComponent,
-    ZPictureFormReportMemberComponent,
-    ZPictureFormReportCommunityComponent,
+    ZoneReportComponent,
 
     // Communities
     ZSocialCommunityComponent,
@@ -99,9 +96,13 @@ import { ZPictureFormReportCommunityComponent } from '../shared/form/report/comm
     ZSocialCommentBoxComponent,
   ],
   exports: [
-    ZSocialHomeComponent
+    ZSocialHomeComponent,
+    ZoneReportComponent
   ],
-  providers: [ZSocialCommunityService],
+  providers: [
+    ZSocialCommunityService,
+    ZoneReportService
+  ],
 })
 
 export class ZSocialModule {

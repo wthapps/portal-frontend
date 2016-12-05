@@ -53,6 +53,7 @@
               <li><a href="#">Edit Contact Profile</a></li>
               <li><a href="#">Privacy</a></li>
               <li><a href="#">Settings</a></li>
+              <li *ngIf="uuidUser != userService.profile.uuid"><a href="#" (click)="onReport()">Report member</a></li>
             </ul>
           </li>
           <li *ngIf="relationships" class="pull-right mr10">
