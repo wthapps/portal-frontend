@@ -41,7 +41,7 @@
                     <li><a [routerLink]="['/zone/social/communities/'+my.uuid+'/members']">Manage members</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#">Remove from Favourites</a></li>
-                    <li><a href="#">Leave community</a></li>
+                    <li><a href="#" (click)="onLeave(my)">Leave community</a></li>
                     <li><a href="#" (click)="onReport(my.uuid)">Report community</a></li>
                     <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
                   </ul>

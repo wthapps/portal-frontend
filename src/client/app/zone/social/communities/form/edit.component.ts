@@ -100,16 +100,16 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
 
     if (link) {
       return this.fb.group({
-        key: [link.key],
+        key: [link.name.toLowerCase().replace(' ','_')],
         name: [link.name],
-        url: [link.url, Validators.compose([CustomValidator.urlFormat])],
+        url: [link.url, Validators.compose([CustomValidator.url])],
         order: [link.order]
       });
     } else {
       return this.fb.group({
         key: [''],
         name: [''],
-        url: ['', Validators.compose([CustomValidator.urlFormat])],
+        url: ['', Validators.compose([CustomValidator.url])],
         order: ['']
       });
     }

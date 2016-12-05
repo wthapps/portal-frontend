@@ -80,8 +80,8 @@ export class ZSocialCommunityListComponent implements OnInit {
   onDelete(item: any) {
     console.log(item);
     this.confirmationService.confirm({
-      message: '',
-      header: 'Delete Account',
+      message: `Are you sure to delete the community ${item.name}`,
+      header: 'Delete Community',
       accept: () => {
         this.loadingService.start();
         this.apiBaseServiceV2.delete(`zone/social_network/communities/${item.uuid}`)
@@ -97,6 +97,30 @@ export class ZSocialCommunityListComponent implements OnInit {
               this.loadingService.stop();
             }
           );
+      }
+    });
+
+    return false;
+  }
+
+  onLeave(item: any) {
+
+    this.confirmationService.confirm({
+      message: `Are you sure to leave the community ${item.name}.`,
+      header: 'Leave Community',
+      accept: () => {
+        this.loadingService.start();
+        // this.apiBaseServiceV2.put(`zone/social_network/communities/${item.uuid}/leave`)
+        //     .subscribe((response: any) => {
+        //         this.onUpdated(response.data);
+        //         this.toastsService.success(response.message);
+        //         this.loadingService.stop();
+        //       },
+        //       error => {
+        //         this.toastsService.danger(error);
+        //         this.loadingService.stop();
+        //       }
+        //     );
       }
     });
 

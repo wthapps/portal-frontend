@@ -7,7 +7,7 @@ import { LoadingService } from '../../../../partials/loading/loading.service';
 
 import { MemberListInviteComponent } from './member-list-invite.component';
 import { ApiBaseService } from '../../../../shared/index';
-import { ZoneReportService } from '../../../shared/form/report/report.service';
+import { ZPictureFormReportMemberComponent } from '../../../shared/form/report/member.component';
 
 declare var _: any;
 /**
@@ -23,6 +23,8 @@ declare var _: any;
 export class ComMemberListComponent implements OnInit {
   @ViewChild('users') users: MemberListInviteComponent;
 
+  @ViewChild('modalReportUser') modalReportUser: ZPictureFormReportMemberComponent;
+
   errorMessage: string = '';
   data: any = [];
   uuid: string = '';
@@ -31,7 +33,6 @@ export class ComMemberListComponent implements OnInit {
   constructor(private api: ApiBaseService,
               private apiBaseServiceV2: ApiBaseServiceV2,
               private loadingService: LoadingService,
-              private zoneReportService: ZoneReportService,
               private route: ActivatedRoute) {
   }
 
@@ -54,9 +55,8 @@ export class ComMemberListComponent implements OnInit {
   }
 
   onReportMember(uuid: string) {
-    this.zoneReportService.member(uuid);
     this.uuidUser = uuid;
-    return false;
+    this.modalReportUser.modal.open();
   }
 
   chooseMembers() {
@@ -65,7 +65,7 @@ export class ComMemberListComponent implements OnInit {
 
   inviteMembers(response: any) {
     this.api.post(`zone/social_network/communities/invite`, JSON.stringify({
-      community_id: this.uuid,
+      uuid: this.uuid,
       user_ids: _.map(response.items, 'uuid')
     }))
       .map(res => res.json)
