@@ -45,6 +45,7 @@ import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
 import { NewlinePipe } from './pipe/newline.pipe';
 import { TitleCase } from './pipe/titlecase.pipe';
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
+import { UrlTransformPipe } from './pipe/url.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -80,6 +81,7 @@ import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
     NewlinePipe,
     DateUntilNowPipe,
     TitleCase,
+    UrlTransformPipe
   ],
   exports: [
     ToolbarComponent,
@@ -112,6 +114,7 @@ import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
     NewlinePipe,
     DateUntilNowPipe,
     TitleCase,
+    UrlTransformPipe
   ]
 })
 export class SharedModule {
