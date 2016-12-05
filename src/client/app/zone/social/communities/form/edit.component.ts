@@ -75,6 +75,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       this.removeAllLink();
     }
     if (this.action == 'edit') {
+      this.removeAllLink();
       (<FormControl>this.community_name).setValue(this.data.name);
       (<FormControl>this.tag_line).setValue(this.data.tag_line);
       (<FormControl>this.description).setValue(this.data.description);
@@ -85,6 +86,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       });
 
     } else {
+      this.removeAllLink();
       (<FormControl>this.community_name).setValue('');
       (<FormControl>this.tag_line).setValue('');
       (<FormControl>this.description).setValue('');
@@ -146,14 +148,18 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   }
 
   onSubmit(values: any): void {
-    console.log(values.additional_links);
-    console.log('filter:', _.filter(values.additional_links, ['url', null]));
+    let additional_links_filter = [];
+    _.map(values.additional_links, (v)=> {
+      if (v.url) {
+        additional_links_filter.push(v);
+      }
+    });
 
     let body = JSON.stringify({
       name: values.community_name,
       tag_line: values.tag_line,
       description: values.description,
-      additional_links: values.additional_links
+      additional_links: additional_links_filter
     });
 
     console.log('body:', body);
