@@ -13,6 +13,7 @@ import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -22,12 +23,20 @@ declare var $: any;
 export class ZoneReportComponent implements OnInit {
   @ViewChild('modal') modal: HdModalComponent;
 
-  uuid: string = '';
-  displayType: string = '';
+  REASONS: Array<any> = [
+    {id: 1, description: 'Spam or Scam', entity: 'post;community'},
+    {id: 2, description: 'Hate Speech or Personal Harassment', entity: 'post;community;member'},
+    {id: 3, description: 'Inappropriate content or Fail Information', entity: 'post;member;community'},
+    {id: 4, description: 'Adult content without marked “Adult content”', entity: 'post'},
+    {id: 4, description: 'Duplicate, fake or misleading', entity: 'community'},
+    {id: 1, description: 'Fake Account or Impersonating', entity: 'member'},
+    {id: 99, description: 'Other', entity: 'member;post;community'}
+  ];
 
-  report_level: number;
-
-
+  reasons: Array<any> = [];
+  uuid: string       = '';
+  entityType: string = '';
+  reason: any = {id: 0, description: ''};
   errorMessage: string = '';
 
   form: FormGroup;
@@ -57,71 +66,39 @@ export class ZoneReportComponent implements OnInit {
     return promise;
   }
 
-  getValue(value: any): any {
-    console.log(value);
-    return value;
+  getValue(reason: any = {id: 0, description: ''}): any {
+    this.reason = reason;
+    console.log('reason', this.reason);
+    return this.reason;
   }
 
   onSubmit(values: any): void {
-    console.log(values);
-
-    if (this.displayType == 'member') { //member
-      let body = JSON.stringify({
-        report_level: this.report_level,
-        other: values.other
-      });
-      console.log(body);
-      this.apiBaseServiceV2.put(`zone/social_network/communities/${this.uuid}`, body)
-        .subscribe((result: any) => {
-            console.log(result);
-          },
-          error => {
-            console.log(error);
-          }
-        );
-    } else if (this.displayType == 'member') { //member
-      let body = JSON.stringify({
-        report_level: this.report_level,
-        other: values.other
-      });
-      console.log(body);
-      this.apiBaseServiceV2.put(`zone/social_network/communities/${this.uuid}`, body)
-        .subscribe((result: any) => {
-            console.log(result);
-          },
-          error => {
-            console.log(error);
-          }
-        );
-    } else { //post
-      let body = JSON.stringify({
-        report_level: this.report_level,
-        other: values.other
-      });
-      console.log(body);
-      this.apiBaseServiceV2.put(`zone/social_network/communities/${this.uuid}`, body)
-        .subscribe((result: any) => {
-            console.log(result);
-          },
-          error => {
-            console.log(error);
-          }
-        );
-    }
-
+    let body = JSON.stringify({
+      object_id: this.uuid,
+      entity: this.entityType == 'post' ? 1 : this.entityType == 'member' ? 2 : 3,
+      reports: [{id: this.reason.id, description: this.reason.id == 99 ? values.other: this.reason.description }]});
+    console.log('body', body, values);
+    this.apiBaseServiceV2.post(`zone/social_network/userreportreasons`, body)
+      .subscribe((result: any) => {
+          console.log(result);
+        },
+        error => {
+          console.log(error);
+        }
+      );
     this.modal.close();
   }
 
   private show(type: string, uuid: string) {
+   (<FormControl>this.other).setValue('');
 
-    this.report_level = 0;
-    (<FormControl>this.other).setValue('');
-
-    this.uuid = uuid;
-    this.displayType = type;
-
+    this.uuid       = uuid;
+    this.entityType = type;
+    // this.reason     = {id: 0, description: ''};
+    this.reasons    = _.filter(this.REASONS, (reason :any) => {
+      return reason.entity.indexOf(type) !== -1;
+    });
     this.modal.open();
-
-    console.log('ZoneReportComponent:', type, uuid)
+    console.log('testing...........');
   }
 }
