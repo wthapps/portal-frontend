@@ -52,12 +52,12 @@
         </div>
       </div>
     </div>
-    <div *ngIf="list.length>0" class="z-social-box">
+    <div class="z-social-box">
       <div class="z-social-box-header">
         <h3 class="h4">Your Communities</h3>
       </div>
       <div class="z-social-box-body z-social-box-body-communities">
-        <div class="row">
+        <div *ngIf="list.length>0" class="row">
           <div *ngFor="let item of list" class="col-xs-12 col-md-6 col-lg-4">
             <div class="media-center">
               <div class="media-center-left">
@@ -93,6 +93,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div *ngIf="list.length==0" class="p40 text-center">
+          No data
         </div>
       </div>
     </div>
