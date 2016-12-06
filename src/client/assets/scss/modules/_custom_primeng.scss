@@ -56,10 +56,10 @@
   }
 
   &.ui-inputswitch-checked {
-    background: $color-inverse;
+    background: $color-success;
     .ui-state-default {
       &:after {
-        border: 1px solid $color-inverse;
+        border: 1px solid $color-success;
       }
     }
   }

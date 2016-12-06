@@ -12812,9 +12812,9 @@ wth-app:empty + .dots-loader-wrap {
       -moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5); }
   .ui-inputswitch.ui-inputswitch-checked {
-    background: #f54a59; }
+    background: #6DD9AC; }
     .ui-inputswitch.ui-inputswitch-checked .ui-state-default:after {
-      border: 1px solid #f54a59; }
+      border: 1px solid #6DD9AC; }
 
 .checkbox-switch {
   margin-bottom: 15px; }
