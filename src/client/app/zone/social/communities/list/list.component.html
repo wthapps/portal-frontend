@@ -95,7 +95,9 @@
           </div>
         </div>
         <div *ngIf="list.length==0" class="p40 text-center">
-          No data
+          <h3 class="text-fade">
+            There is no blacklist
+          </h3>
         </div>
       </div>
     </div>
@@ -107,3 +109,6 @@
                               (updated)="onUpdated($event)"></z-social-community-form-edit>
 <z-social-community-form-preference #modalPreference [data]="currentItem"
                                     (updated)="onUpdated($event)"></z-social-community-form-preference>
+
+
+<wth-zone-report></wth-zone-report>

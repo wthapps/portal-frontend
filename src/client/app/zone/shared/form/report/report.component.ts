@@ -99,6 +99,6 @@ export class ZoneReportComponent implements OnInit {
       return reason.entity.indexOf(type) !== -1;
     });
     this.modal.open();
-    console.log('testing...........');
+    // console.log('testing...........', this);
   }
 }
