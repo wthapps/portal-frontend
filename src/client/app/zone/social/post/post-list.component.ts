@@ -16,7 +16,8 @@ declare var _: any;
 
 export class PostListComponent extends BaseSocialList implements OnInit {
   listItems: Array<SoPost>;
-  userUuid: string;
+  uuid: string;
+  type:string = "user";
 
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2,
@@ -29,7 +30,7 @@ export class PostListComponent extends BaseSocialList implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.userUuid = params['id'];
+      this.uuid = params['id'];
       this.loadPosts();
     });
   }
@@ -40,7 +41,7 @@ export class PostListComponent extends BaseSocialList implements OnInit {
 
   loadPosts() {
     this.loadingService.start('#post-list-component');
-    this.socialService.post.getList(this.userUuid).subscribe(
+    this.socialService.post.getList(this.uuid, this.type).subscribe(
       (res: any) => {
         this.loadingService.stop('#post-list-component');
         this.listItems = res.data;
