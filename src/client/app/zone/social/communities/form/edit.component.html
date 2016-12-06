@@ -32,31 +32,44 @@
         <div formArrayName="additional_links">
 
           <!--<pre>-->
-            <!--{{form.value|json}}-->
+          <!--{{form.value|json}}-->
           <!--</pre>-->
 
           <div *ngFor="let add_link of form.controls.additional_links.controls; let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
 
               <!--<pre>-->
-                <!--{{form.value.additional_links[i].name|json}}-->
-          <!--</pre>-->
+              <!--{{form.value.additional_links[i].name|json}}-->
+              <!--</pre>-->
 
               <div class="row row-10">
                 <div class="col-sm-6">
                   <div class="form-group mb0 no-label"
                        [ngClass]="{
-                       'has-error': (form.controls.additional_links.controls[i].controls.url.valid && form.value.additional_links[i].name.length==0),
+                       'has-error': (form.controls.additional_links.controls[i].controls.url.valid
+                       && form.controls.additional_links.controls[i].controls.url.touched
+                       && form.value.additional_links[i].name.length==0
+                       && form.value.additional_links[i].url.length>1),
                        'has-success': (form.controls.additional_links.controls[i].controls.url.valid
                        && form.controls.additional_links.controls[i].controls.url.touched
                        && form.value.additional_links[i].name.length>1)}">
                     <input type="text" class="form-control" formControlName="name" placeholder="External link title">
+                    <div *ngIf="(form.controls.additional_links.controls[i].controls.url.valid
+                       && form.controls.additional_links.controls[i].controls.url.touched
+                       && form.value.additional_links[i].name.length==0
+                       && form.value.additional_links[i].url.length>1)">
+                      <span class="help-block">
+                        Title is required
+                      </span>
+                    </div>
                   </div>
 
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group mb0 no-label" [ngClass]="{'has-error': (!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.touched),
-        'has-success': (form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.touched)}">
+        'has-success': (form.controls.additional_links.controls[i].controls.url.valid
+        && form.controls.additional_links.controls[i].controls.url.touched
+        && form.value.additional_links[i].url.length>1)}">
                     <input type="text" class="form-control" formControlName="url" placeholder="http://...">
                     <div
                       *ngIf="!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.touched">

@@ -26,7 +26,7 @@
         </ul>-->
         <ul *ngIf="data.additional_links" class="list-unstyled">
           <li *ngFor="let link of data.additional_links">
-            <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url}}">{{link.name}}</a>
+            <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url|urlTransform}}">{{link.name}}</a>
           </li>
         </ul>
       </div>
