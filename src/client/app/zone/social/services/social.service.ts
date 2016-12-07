@@ -71,9 +71,9 @@ export class SoPostService {
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
               private	router:	Router) {
   }
-  getList(uuid?:string) {
+  getList(uuid?:string, type?:string) {
     if (uuid) {
-      return this.getListOtherPosts(uuid)
+      return this.getListOtherPosts(uuid, type)
     }
     switch (this.router.url) {
       case '/zone/social/home':
@@ -89,8 +89,8 @@ export class SoPostService {
     return this.apiBaseServiceV2.get(this.apiBaseServiceV2.urls.zoneSoPosts);
   }
 
-  private getListOtherPosts(uuid) {
-    return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoUserPosts}/${uuid}/`, {type: "user"});
+  private getListOtherPosts(uuid:string, type:string) {
+    return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoUserPosts}/${uuid}/`, {type: type});
   }
 }
 
