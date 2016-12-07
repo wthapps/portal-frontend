@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../services/social.service';
 import { SoUser } from '../../../shared/models/social_network/so-user.model';
+import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 
 declare var _:any;
 
@@ -15,11 +16,11 @@ export class ZSocialMembersComponent implements OnInit {
   user: SoUser = new SoUser();
   data: any = [];
   list: any = [];
-  notifications: any = {};
+  notifications: any = [];
   currentState: string = 'friends'; //followers, followings, blacklists
   favourite:any;
 
-  constructor(private socialService: SocialService) {
+  constructor(private socialService: SocialService, private apiBaseServiceV2: ApiBaseServiceV2) {
   }
 
   ngOnInit() {
@@ -105,5 +106,23 @@ export class ZSocialMembersComponent implements OnInit {
     this.currentState = 'notification';
     this.list = this.notifications;
     return false;
+  }
+
+  doAction(action:any) {
+    let api = null;
+    switch (action.method) {
+      case 'post':
+        api = this.apiBaseServiceV2.post(action.link, action.params);
+        break;
+      case 'delete':
+        api = this.apiBaseServiceV2.delete(action.link);
+        break;
+    }
+
+    api.subscribe(
+      (res:any) => {
+        console.log(res)
+      }
+    )
   }
 }
