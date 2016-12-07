@@ -57,27 +57,23 @@ export const ZoneRoutes: Route[] = [
         ]
       },
 
-      /*{
-        path: 'social/communities/:id',
-        component: ZSocialCommunityDetailComponent,
-        children: [
-          {path: '', redirectTo: 'post'},
-          {path: 'post', component: ZSocialCommunityDetailPostComponent},
-          {path: 'about', component: ZSocialCommunityDetailAboutComponent},
-          {path: 'members', component: ComMemberListComponent},
-          {path: 'notification', component: ZSocialCommunityDetailNotificationComponent}
-        ]
-      },*/
-
       {path: 'social/members', component: ZSocialMembersComponent},
-      {path: 'social/profile', component: ZSocialProfileComponent},
       {
+        path: 'social/profile', component: ZSocialProfileComponent,
+        children: [
+          {path: ':id/about', component: ZSocialProfileAboutComponent},
+          {path: ':id/post', component: ZSocialProfilePostComponent},
+          {path: ':id', component: ZSocialProfilePostComponent},
+          {path: '', component: ZSocialProfilePostComponent}
+        ]
+      },
+      /*{
         path: 'social/profile/:id', component: ZSocialProfileComponent,
         children: [
           {path: 'about', component: ZSocialProfileAboutComponent},
           {path: '', component: ZSocialProfilePostComponent},
         ]
-      },
+      },*/
       {path: 'social/setting', component: ZSocialSettingComponent},
 
       {path: '', component: ZPictureComponent}

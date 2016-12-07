@@ -45,6 +45,7 @@ import { ZSocialCommunityService } from './communities/communities.service';
 import { ZoneReportComponent } from '../shared/form/report/report.component';
 import { ZoneReportService } from '../shared/form/report/report.service';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
+import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
 
 
 @NgModule({
@@ -90,9 +91,11 @@ import { ZSocialFavoritesComponent } from './favorites/social-favorites.componen
     PostDetailPhotoComponent,
 
 
+    // Profile
     ZSocialProfileComponent,
     ZSocialProfileAboutComponent,
     ZSocialProfilePostComponent,
+    ZSocialProfileCoverComponent,
 
     ZSocialSettingComponent,
 
