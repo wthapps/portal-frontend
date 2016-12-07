@@ -10,11 +10,8 @@ export class SoUserService {
   constructor(private apiBaseServiceV2: ApiBaseServiceV2, private user: UserService) {
   }
 
-  get(uuid?: string) {
-    if (uuid) {
-      return this.getOther(uuid)
-    }
-    return this.apiBaseServiceV2.get(`zone/social_network/users/${this.user.profile.uuid}`);
+  get(uuid: string = this.user.profile.uuid) {
+    return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
   }
 
   update(body:any) {
@@ -65,24 +62,20 @@ export class SoUserService {
     return this.apiBaseServiceV2.get(`zone/social_network/notifications`);
   }
 
-  private getOther(uuid) {
-    return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
-  }
 }
 
 @Injectable()
 export class SoPostService {
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+              private user: UserService,
               private	router:	Router) {
   }
-  getList(uuid?:string, type?:string) {
-    if (uuid) {
-      return this.getListOtherPosts(uuid, type)
-    }
+  getList(uuid:string = this.user.profile.uuid, type?:string) {
     switch (this.router.url) {
       case '/zone/social/home':
         return this.getListSocialPosts();
     }
+    return this.getListOtherPosts(uuid, type);
   }
 
   getSettings(uuid:string) {

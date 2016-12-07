@@ -3,6 +3,8 @@ import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
+import { SocialService } from '../../services/social.service';
+import { UserService } from '../../../../shared/services/user.service';
 
 declare var _: any;
 
@@ -19,9 +21,12 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   errorMessage: string = '';
   item: any = [];
   uuid: string = '';
+  userInfo: any;
 
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+              private socialService: SocialService,
+              private userService: UserService,
               private loadingService: LoadingService,
               private zoneReportService: ZoneReportService,
               private route: ActivatedRoute) {
@@ -37,6 +42,11 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
     // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
+      this.socialService.user.get(this.uuid).subscribe(
+        (res:any) => {
+          this.userInfo = res.data
+        }
+      )
     });
   }
 
