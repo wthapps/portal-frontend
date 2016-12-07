@@ -9003,6 +9003,11 @@ body {
 .text-normal {
   font-weight: normal; }
 
+.content-overflow {
+  overflow: auto;
+  margin-right: -15px;
+  padding-right: 15px; }
+
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: "Source Sans Pro", sans-serif;
@@ -12831,6 +12836,12 @@ wth-app:empty + .dots-loader-wrap {
     padding-left: 0;
     cursor: text; }
 
+.ui-widget-overlay {
+  z-index: 2000 !important; }
+
+.ui-dialog.ui-widget-content {
+  z-index: 2001 !important; }
+
 .panel-heading-action {
   position: relative; }
   .panel-heading-action .btn, .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-close"], .panel-heading-action .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .panel-heading-action button[ng-reflect-icon="fa-check"] {
@@ -13523,9 +13534,7 @@ wth-app:empty + .dots-loader-wrap {
   position: relative; }
   .z-social-media-inputpost .z-social-media-inputpost {
     position: absolute;
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
+    bottom: 10px;
     right: 10px;
     z-index: 2; }
   .z-social-media-inputpost .fa, .z-social-media-inputpost .form-validation.has-error:before, .z-social-media-inputpost .modal-social .modal-social-photo-grid > li .img-center-dv:after, .modal-social .modal-social-photo-grid > li .z-social-media-inputpost .img-center-dv:after, .z-social-media-inputpost .modal-social .modal-social-photo-grid .photo-box-img .img-center-dv:after, .modal-social .modal-social-photo-grid .photo-box-img .z-social-media-inputpost .img-center-dv:after, .z-social-media-inputpost .modal-social .photo-grid-list > li .img-center-dv:after, .modal-social .photo-grid-list > li .z-social-media-inputpost .img-center-dv:after, .z-social-media-inputpost .modal-social .photo-grid-list .photo-box-img .img-center-dv:after, .modal-social .photo-grid-list .photo-box-img .z-social-media-inputpost .img-center-dv:after, .z-social-media-inputpost .aside-menu .page-menuleft > ul > li.has-sub > a:after, .aside-menu .z-social-media-inputpost .page-menuleft > ul > li.has-sub > a:after, .z-social-media-inputpost .row-img .img-center-dv:after, .row-img .z-social-media-inputpost .img-center-dv:after, .z-social-media-inputpost .row-img .photo-box-img.removed .img-center-dv:after, .row-img .photo-box-img.removed .z-social-media-inputpost .img-center-dv:after, .z-social-media-inputpost .z-social-media .z-heading .z-shared-with:before, .z-social-media .z-heading .z-social-media-inputpost .z-shared-with:before {

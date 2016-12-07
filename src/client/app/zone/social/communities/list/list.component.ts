@@ -28,7 +28,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   list: any = [];
   currentItem: any = null;
   action: string = 'create';
-  favourite:any;
+  favourite: any;
 
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
@@ -91,7 +91,7 @@ export class ZSocialCommunityListComponent implements OnInit {
           .subscribe((response: any) => {
               // console.log(response);
               this.onUpdated(response.data);
-              this.toastsService.success(response.message);
+              this.toastsService.success('Your community has been deleted successfully');
               this.loadingService.stop();
             },
             error => {
@@ -148,17 +148,17 @@ export class ZSocialCommunityListComponent implements OnInit {
   }
 
 
-  addFavourite(uuid:any) {
+  addFavourite(uuid: any) {
     this.socialService.user.addFavourites(uuid, "community").subscribe(
-      (res:any) => {
+      (res: any) => {
 
       }
     )
   }
 
-  getFavourite(uuid:any) {
+  getFavourite(uuid: any) {
     this.socialService.user.getFavourite(uuid, "community").subscribe(
-      (res:any) => {
+      (res: any) => {
         this.favourite = res.data;
       }
     )

@@ -172,7 +172,7 @@
   position: relative;
   .z-social-media-inputpost {
     position: absolute;
-    @include center(false, true);
+    bottom: 10px;
     right: 10px;
     z-index: 2;
   }

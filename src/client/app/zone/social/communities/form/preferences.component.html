@@ -1,4 +1,9 @@
 <hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+
+  <modal-header [show-close]="true">
+    <h4 class="modal-title text-left"> Preferences</h4>
+  </modal-header>
+
   <modal-body>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
       <template [ngIf]="isAdmin">
@@ -110,10 +115,11 @@
       </div>
       <!--end Notification Settings-->
       <div class="clearfix text-right">
-        <button type="button" class="btn btn-default btn-min pull-left" (click)="resetSettings()">Reset Default</button>
+        <button type="button" class="btn btn-link btn-min pull-left" (click)="resetSettings()">Reset Default</button>
 
-        <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
-        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+        <button [disabled]="!form.valid || (!hasChange && form.valid)"
+                type="submit" class="btn btn-wth-default btn-min mr10">Done
+        </button>
       </div>
     </form>
 

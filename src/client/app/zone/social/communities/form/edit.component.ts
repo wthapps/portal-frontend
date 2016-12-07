@@ -63,10 +63,11 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+    this.removeAllLink();
   }
 
   ngOnChanges() {
+    this.removeAllLink();
     let _this = this;
     // console.log(this.form.controls['additional_links'].controls.length=0);
     if (this.data) {

@@ -1,7 +1,5 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
-import { UserService } from '../../../../shared/services/user.service';
-import { LoadingService } from '../../../../partials/loading/loading.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
 import {
@@ -11,6 +9,12 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
+
+import {
+  UserService,
+  LoadingService,
+  ConfirmationService
+}                           from '../../../../shared/index';
 
 declare var $: any;
 declare var _: any;
@@ -33,11 +37,13 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   form: FormGroup;
   setting_notification_posts: AbstractControl;
   setting_notification_request: AbstractControl;
+  hasChange: boolean = false;
 
 
   constructor(private fb: FormBuilder,
               private apiBaseServiceV2: ApiBaseServiceV2,
               private loadingService: LoadingService,
+              private confirmationService: ConfirmationService,
               private userService: UserService) {
 
     this.form = fb.group({
@@ -50,11 +56,15 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   ngOnInit() {
-
+    this.form.valueChanges.subscribe(data => {
+      this.hasChange = true;
+      // console.log('form changes', data);
+    });
   }
 
   ngOnChanges() {
     if (this.data) {
+      this.hasChange = false;
       console.log(this.data);
 
       // check if admin
@@ -67,6 +77,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   getValue(value: any): any {
+    this.hasChange = true;
     return value;
   }
 
@@ -97,16 +108,21 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   resetSettings() {
-
-    this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}/reset_settings`)
-      .subscribe((result: any) => {
-          this.updated.emit(result.data);
-        },
-        error => {
-          console.log(error);
-        }
-      );
-
-    this.modal.close();
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to reset settings',
+      header: 'Reset Default',
+      accept: () => {
+        this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}/reset_settings`)
+          .subscribe((result: any) => {
+              this.data = result.data;
+              // this.updated.emit(result.data);
+            },
+            error => {
+              console.log(error);
+            }
+          );
+      }
+    });
+    // this.modal.close();
   }
 }
