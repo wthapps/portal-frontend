@@ -15,6 +15,7 @@ export class ZSocialMembersComponent implements OnInit {
   user: SoUser = new SoUser();
   data: any = [];
   list: any = [];
+  notifications: any = {};
   currentState: string = 'friends'; //followers, followings, blacklists
   favourite:any;
 
@@ -23,6 +24,12 @@ export class ZSocialMembersComponent implements OnInit {
 
   ngOnInit() {
     this.getUser();
+    this.socialService.user.getNotifications().subscribe(
+      (res:any) => {
+        console.log(res);
+        this.notifications = res.data;
+      }
+    );
   }
 
   getDataList(type: string) {
@@ -92,5 +99,11 @@ export class ZSocialMembersComponent implements OnInit {
         this.favourite = res.data
       }
     );
+  }
+
+  getNotifications() {
+    this.currentState = 'notification';
+    this.list = this.notifications;
+    return false;
   }
 }

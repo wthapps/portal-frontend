@@ -61,6 +61,10 @@ export class SoUserService {
     return this.apiBaseServiceV2.post(`zone/social_network/favourites`, {uuid: uuid, type: type});
   }
 
+  getNotifications() {
+    return this.apiBaseServiceV2.get(`zone/social_network/notifications`);
+  }
+
   private getOther(uuid) {
     return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
   }

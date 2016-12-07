@@ -24,6 +24,11 @@
                 BLACKLIST <span *ngIf="data.blacklists" class="text-fade">{{data.blacklists.length}}</span>
               </a>
             </li>
+            <li>
+              <a style="padding: 2px !important" [ngClass]="{'active': currentState == 'notification'}" (click)="getNotifications()" href="javascript:;">
+                NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right">15</span>
+              </a>
+            </li>
           </ul>
         </nav>
 
