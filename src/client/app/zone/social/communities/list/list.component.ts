@@ -109,21 +109,23 @@ export class ZSocialCommunityListComponent implements OnInit {
   onLeave(item: any) {
 
     this.confirmationService.confirm({
-      message: `Are you sure to leave the community ${item.name}.`,
+      message: this.userService.profile.uuid == item.admin.uuid ?
+        `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
+        `Are you sure to leave the community ${item.name}?`,
       header: 'Leave Community',
       accept: () => {
         this.loadingService.start();
-        // this.apiBaseServiceV2.put(`zone/social_network/communities/${item.uuid}/leave`)
-        //     .subscribe((response: any) => {
-        //         this.onUpdated(response.data);
-        //         this.toastsService.success(response.message);
-        //         this.loadingService.stop();
-        //       },
-        //       error => {
-        //         this.toastsService.danger(error);
-        //         this.loadingService.stop();
-        //       }
-        //     );
+        this.apiBaseServiceV2.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
+          .subscribe((response: any) => {
+              this.getList();
+              this.toastsService.success(`You left the community ${item.name} successfully`);
+              this.loadingService.stop();
+            },
+            error => {
+              this.toastsService.danger(error);
+              this.loadingService.stop();
+            }
+          );
       }
     });
 

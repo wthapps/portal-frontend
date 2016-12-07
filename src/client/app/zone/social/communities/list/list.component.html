@@ -9,8 +9,10 @@
           </button>
         </div>
       </div>
-      <div *ngIf="myList.length==0" class="z-social-box-body z-social-box-body-communities">
-        <p class="mt20">There is no community on your communities list</p>
+      <div *ngIf="myList.length==0" class="p40 text-center">
+          <h3 class="text-fade">
+            There is no Community you are managing
+          </h3>
       </div>
       <div *ngIf="myList.length>0" class="z-social-box-body z-social-box-body-communities">
         <div class="row">
@@ -41,7 +43,7 @@
                     <li><a [routerLink]="['/zone/social/communities/'+my.uuid+'/members']">Manage members</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="javascript:;" (click)="addFavourite(my.uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
-                    <li><a href="#">Leave community</a></li>
+                    <li><a href="#" (click)="onLeave(my)">Leave community</a></li>
                     <li><a href="#" (click)="onReport(my.uuid)">Report community</a></li>
                     <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
                   </ul>
@@ -85,7 +87,7 @@
                     <li><a [routerLink]="['/zone/social/communities/'+item.uuid+'/members']">Manage members</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="javascript:;" (click)="addFavourite(item.uuid)"> Favourites</a></li>
-                    <li><a href="#">Leave community</a></li>
+                    <li><a href="#" (click)="onLeave(item)">Leave community</a></li>
                     <li><a href="#" (click)="onReport(item.uuid)">Report community</a></li>
                     <li><a href="#" (click)="onDelete(item)">Delete community</a></li>
                   </ul>
@@ -96,7 +98,7 @@
         </div>
         <div *ngIf="list.length==0" class="p40 text-center">
           <h3 class="text-fade">
-            There is no blacklist
+            There is no Your Community
           </h3>
         </div>
       </div>
