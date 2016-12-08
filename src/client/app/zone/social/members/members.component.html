@@ -26,7 +26,7 @@
             </li>
             <li>
               <a style="padding: 2px !important" [ngClass]="{'active': currentState == 'notification'}" (click)="getNotifications()" href="javascript:;">
-                NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right">15</span>
+                NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right">{{newNotifications.length}}</span>
               </a>
             </li>
           </ul>
@@ -34,7 +34,7 @@
 
       </div>
       <div class="z-social-box-body z-social-box-body-communities">
-        <div *ngIf="list.length==0" class="p40 text-center">
+        <div *ngIf="list && list.length == 0" class="p40 text-center">
           <div *ngIf="currentState == 'friends'">
             <h3 class="text-fade">
               There is no friend on your friend list yet
@@ -60,9 +60,9 @@
           </div>
 
         </div>
-        <div *ngIf="list.length>0" class="row">
+        <div *ngIf="list && list.length > 0" class="row">
           <div *ngFor="let item of list" class="col-xs-12 col-lg-6">
-            <div class="media-center">
+            <div class="media-center" *ngIf="currentState != 'notification'">
               <div class="media-center-left">
                 <figure>
                   <a [routerLink]="['/zone/social/profile', item.uuid]">
@@ -94,7 +94,7 @@
                     <i class="fa fa-share"></i> Follow
                   </button>
                 </div>
-                <div *ngIf="currentState == 'followings'" class="prull-right">
+                <div *ngIf="currentState == 'followings'" class="pull-right">
                   <button class="btn btn-default" type="button" (click)="unfollow(item.uuid)">
                     <i class="fa fa-times"></i> Unfollow
                   </button>
@@ -104,6 +104,29 @@
                     Remove
                   </button>
                 </div>
+              </div>
+            </div>
+            <div class="media-center" *ngIf="currentState == 'notification'">
+              <div class="media-center-left">
+                <figure>
+                  <a [routerLink]="['/zone/social/profile', item.uuid]">
+                    <img [src]="item.actor.profile_image" width="70" alt="">
+                  </a>
+                </figure>
+              </div>
+              <div class="media-center-body">
+                <h4 class="media-center-heading">
+                  <a [routerLink]="['/zone/social/profile', item.uuid]">
+                    {{item.actor.name}}
+                  </a>
+                  <span style="font-weight:normal">{{item.text}}</span>
+                </h4>
+
+              </div>
+              <div style="white-space: nowrap" class="media-center-right">
+                <button  *ngFor="let action of item.actions" class="btn btn-default ml5" type="button" (click)="doAction(action)">
+                  {{action.name}}
+                </button>
               </div>
             </div>
           </div>

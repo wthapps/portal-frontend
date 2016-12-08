@@ -5,14 +5,15 @@ import { Injectable } from '@angular/core';
 import { ApiBaseService } from './apibase.service';
 
 import {Constants} from "../config/constants";
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiBaseServiceV2 extends ApiBaseService {
 
   urls = Constants.urls;
 
-  constructor(http: Http) {
-    super(http);
+  constructor(http: Http, private router: Router) {
+    super(http, router);
   }
 
   get(url: string, params: any = '') {

@@ -68,7 +68,6 @@ export class ZoneReportComponent implements OnInit {
 
   getValue(reason: any = {id: 0, description: ''}): any {
     this.reason = reason;
-    console.log('reason', this.reason);
     return this.reason;
   }
 
@@ -77,8 +76,7 @@ export class ZoneReportComponent implements OnInit {
       object_id: this.uuid,
       entity: this.entityType == 'post' ? 1 : this.entityType == 'member' ? 2 : 3,
       reports: [{id: this.reason.id, description: this.reason.id == 99 ? values.other: this.reason.description }]});
-    console.log('body', body, values);
-    this.apiBaseServiceV2.post(`zone/social_network/userreportreasons`, body)
+    this.apiBaseServiceV2.post(`zone/social_network/userreports`, body)
       .subscribe((result: any) => {
           console.log(result);
         },

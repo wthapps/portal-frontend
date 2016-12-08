@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { LoadingService } from '../../../../partials/loading/loading.service';
@@ -27,16 +27,26 @@ export class ComMemberListComponent implements OnInit {
   data: any = [];
   uuid: string = '';
   uuidUser: string = '';
+  selectedTab: string = 'member';
+  items: Array<any> = new Array<any>(); // this store member, invitations, join requests and blacklist
 
   constructor(private api: ApiBaseService,
               private apiBaseServiceV2: ApiBaseServiceV2,
               private loadingService: LoadingService,
               private zoneReportService: ZoneReportService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
-    // this.loadingService.start('.zone-social-cover');
+
+    this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        this.selectedTab = queryParams['tab'] == undefined ? 'member': queryParams['tab'];
+      }
+    );
+   // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
       this.apiBaseServiceV2.get(`zone/social_network/communities/${params['id']}`).subscribe(
@@ -77,4 +87,17 @@ export class ComMemberListComponent implements OnInit {
         });
   }
 
+  viewMember(data: any) {
+    this.router.navigate([`/zone/social/communities/${this.uuid}/members`], {queryParams: {tab: this.selectedTab}});
+    this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}/${this.selectedTab}s`).subscribe(
+      (res: any)=> {
+       this.items = res.data;
+        console.log('response ', res.data);
+      },
+      error => {
+        // this.loadingService.stop('.zone-social-cover');
+        this.errorMessage = <any>error
+      }
+    );
+  }
 }
