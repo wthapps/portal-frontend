@@ -11,4 +11,6 @@ export * from './post-likedislike.component';
 export * from '../communities/member/member-list-invite.component';
 export * from './post.component';
 export * from './components/index';
+export * from './shared/post.service';
+export * from './shared/post.model';
 

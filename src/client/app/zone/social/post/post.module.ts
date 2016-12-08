@@ -14,7 +14,8 @@ import {
   PostShareCommunityComponent,
   PostShareFriendComponent,
   PostLikeDislikeComponent,
-  MemberListInviteComponent
+  MemberListInviteComponent,
+  PostService
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
 import { Ng2HdModule } from '../../shared/ng2-hd/index';
@@ -63,6 +64,9 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostShareCommunityComponent,
     PostShareFriendComponent,
     MemberListInviteComponent
+  ],
+  providers: [
+    PostService
   ]
 })
 

@@ -39,6 +39,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output() modalOpened: EventEmitter<any> = new EventEmitter<any>();
+
   @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   commentBox: ZSocialCommentBoxComponent;
   commentBoxType = ZSocialCommentBoxType;
@@ -152,7 +155,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   edit() {
-    this.postEdit.open({mode: 'edit', post: this.itemDisplay});
+    this.modalOpened.emit({mode: 'edit', post: this.itemDisplay});
+    // this.postEdit.open({mode: 'edit', post: this.itemDisplay});
   }
 
   update(attr: any = {}) {
@@ -269,7 +273,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   openShare() {
-    this.shareEdit.open({parent: this.item});
+    // this.shareEdit.open({parent: this.item});
+    this.modalOpened.emit({parent: this.item});
   }
 
   openActivities() {

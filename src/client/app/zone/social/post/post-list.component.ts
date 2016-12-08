@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { BaseSocialList } from '../base/base-social-list';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { SocialService } from '../services/social.service';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../partials/loading/loading.service';
+import { PostEditComponent } from './post-edit.component';
+import { PostService } from './index';
 
 declare var _: any;
 
@@ -14,25 +15,28 @@ declare var _: any;
   templateUrl: 'post-list.component.html'
 })
 
-export class PostListComponent extends BaseSocialList implements OnInit {
-  listItems: Array<SoPost>;
+export class PostListComponent implements OnInit {
+  @ViewChild('postEditModal') postEditModal: PostEditComponent;
+
+
+  items: Array<SoPost>;
   uuid: string;
-  type:string = "user";
+  type: string = "user";
 
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2,
     private socialService: SocialService,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
+    private postService: PostService
   ) {
-    super();
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'];
+    // this.route.params.subscribe(params => {
+    //   this.uuid = params['id'];
       this.loadPosts();
-    });
+    // });
   }
 
   mapPost(post:any) {
@@ -41,11 +45,12 @@ export class PostListComponent extends BaseSocialList implements OnInit {
 
   loadPosts() {
     this.loadingService.start('#post-list-component');
-    this.socialService.post.getList(this.uuid, this.type).subscribe(
+    this.postService.list({uuid: this.uuid, type: this.type})
+    .subscribe(
       (res: any) => {
         this.loadingService.stop('#post-list-component');
-        this.listItems = res.data;
-        this.listItems = _.map(this.listItems, this.mapPost);
+        this.items = res.data;
+        this.items = _.map(this.items, this.mapPost);
       }
     )
   }
@@ -53,6 +58,83 @@ export class PostListComponent extends BaseSocialList implements OnInit {
   /**
    * Post actions
    */
+
+  openEditModal(options: any) {
+    this.postEditModal.open(options);
+  }
+
+  save(options: any = { mode: 'add', item: null, isShare: false}) {
+    // _.assign(options.item, {tags_json: options.item.tags, photos_json: options.item.photos});
+    if (options.mode == 'add') {
+      this.postService.add(options.item)
+        .subscribe((response: any) => {
+          this.loadPosts();
+          this.postEditModal.close();
+        },
+        error => {
+          console.log('error', error);
+        }
+      );
+    } else if(options.mode == 'edit'){
+      this.postService.update(options.item)
+        .subscribe((response: any) => {
+            this.loadPosts();
+            this.postEditModal.close();
+          },
+          error => {
+            console.log('error', error);
+          }
+        );
+    }
+    // console.log('save item...............', item);
+    //
+    // let body: string;
+    // let url: string = 'zone/social_network/posts';
+    // body = JSON.stringify({
+    //   post: {
+    //     description: item.description,
+    //     photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
+    //     tags_json: this.post.tags,
+    //     privacy: this.post.privacy,
+    //     adult: this.post.adult,
+    //     disable_comment: this.post.disable_comment,
+    //     disable_share: this.post.disable_share,
+    //     mute: this.post.mute
+    //   },
+    //   parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
+    //   custom_objects: this.custom_objects
+    // });
+    //
+    // if(this.mode == 'add') {
+    //   this.apiService.post(url, body)
+    //       .map(res => res.json())
+    //       .subscribe((result: any) => {
+    //           this.onEdited.emit(result['data']);
+    //           this.modal.close();
+    //         },
+    //         error => {
+    //           console.log('error', error);
+    //         }
+    //       );
+    //
+    // } else if(this.mode == 'edit') {
+    //   url += `/${this.post.uuid}`;
+    //   this.apiService.put(url, body)
+    //       .map(res => res.json())
+    //       .subscribe((result: any) => {
+    //           this.onEdited.emit(result['data']);
+    //           this.modal.close();
+    //         },
+    //         error => {
+    //           console.log('error', error);
+    //         }
+    //       );
+    // }
+  }
+
+  dismiss(item: any) {
+    console.log('dismiss item...............', item);
+  }
 
   viewDetail() {
     console.log('list viewing details..........');
