@@ -51,6 +51,7 @@ import { ZSocialProfileFormAboutComponent } from './profile/form/about.component
 import { ZSocialProfileFormContactComponent } from './profile/form/contact.component';
 import { ZSocialProfileFormWorkEduComponent } from './profile/form/work-edu.component';
 import { ZSocialProfileFormInterestComponent } from './profile/form/interest.component';
+import { ZSocialProfileService } from './profile/profile.service';
 
 
 @NgModule({
