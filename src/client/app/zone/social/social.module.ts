@@ -46,6 +46,7 @@ import { ZoneReportComponent } from '../shared/form/report/report.component';
 import { ZoneReportService } from '../shared/form/report/report.service';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
+import { ZSocialNotificationsComponent } from './notifications/notifications.component';
 
 
 @NgModule({
@@ -100,6 +101,8 @@ import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
     ZSocialSettingComponent,
 
     ZSocialCommentBoxComponent,
+    // Notification
+    ZSocialNotificationsComponent
   ],
   exports: [
     ZSocialHomeComponent,

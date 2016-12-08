@@ -26,7 +26,7 @@
             </li>
             <li>
               <a style="padding: 2px !important" [ngClass]="{'active': currentState == 'notification'}" (click)="getNotifications()" href="javascript:;">
-                NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right">{{notifications.length}}</span>
+                NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right">{{newNotifications.length}}</span>
               </a>
             </li>
           </ul>
@@ -34,7 +34,7 @@
 
       </div>
       <div class="z-social-box-body z-social-box-body-communities">
-        <div *ngIf="list.length==0" class="p40 text-center">
+        <div *ngIf="list && list.length == 0" class="p40 text-center">
           <div *ngIf="currentState == 'friends'">
             <h3 class="text-fade">
               There is no friend on your friend list yet
@@ -60,7 +60,7 @@
           </div>
 
         </div>
-        <div *ngIf="list.length>0" class="row">
+        <div *ngIf="list && list.length > 0" class="row">
           <div *ngFor="let item of list" class="col-xs-12 col-lg-6">
             <div class="media-center" *ngIf="currentState != 'notification'">
               <div class="media-center-left">

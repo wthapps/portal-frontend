@@ -72,6 +72,7 @@ export let Constants = {
   socialMenuItems : [
     { name: 'Home', link: '/zone/social/home' },
     { name: 'Communities', link: '/zone/social/communities' },
+    { name: 'Notifications', link: '/zone/social/notifications' },
     { name: 'Members', link: '/zone/social/members' },
     { name: 'My Page', link: '/zone/social/profile' },
     { name: 'Settings', link: '/zone/social/setting' },

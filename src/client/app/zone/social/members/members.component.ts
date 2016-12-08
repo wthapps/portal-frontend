@@ -17,6 +17,7 @@ export class ZSocialMembersComponent implements OnInit {
   data: any = [];
   list: any = [];
   notifications: any = [];
+  newNotifications: any = [];
   currentState: string = 'friends'; //followers, followings, blacklists
   favourite:any;
 
@@ -25,10 +26,15 @@ export class ZSocialMembersComponent implements OnInit {
 
   ngOnInit() {
     this.getUser();
+    this.callNotifications();
+  }
+
+  callNotifications() {
     this.socialService.user.getNotifications().subscribe(
       (res:any) => {
-        console.log(res);
         this.notifications = res.data;
+        this.newNotifications = _.filter(this.notifications, { 'seen_state': 'new' });
+        this.list = this.notifications;
       }
     );
   }
@@ -68,7 +74,9 @@ export class ZSocialMembersComponent implements OnInit {
       (res: any) => {
         this.data = res.data;
         this.addFollowingIntoFollower();
-        this.list = res.data[this.currentState];
+        if (this.currentState != "notification") {
+          this.list = res.data[this.currentState];
+        }
       },
       error => this.errorMessage = <any>error
     );
@@ -105,7 +113,13 @@ export class ZSocialMembersComponent implements OnInit {
   getNotifications() {
     this.currentState = 'notification';
     this.list = this.notifications;
-    return false;
+    this.socialService.user.checkedNotifications().subscribe(
+      (res:any) => {
+        this.notifications = res.data;
+        this.newNotifications = _.filter(this.notifications, { 'seen_state': 'new' });
+        this.getUser();
+      }
+    );
   }
 
   doAction(action:any) {
@@ -121,7 +135,8 @@ export class ZSocialMembersComponent implements OnInit {
 
     api.subscribe(
       (res:any) => {
-        console.log(res)
+        this.callNotifications();
+        this.getUser();
       }
     )
   }

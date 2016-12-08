@@ -62,6 +62,9 @@ export class SoUserService {
     return this.apiBaseServiceV2.get(`zone/social_network/notifications`);
   }
 
+  checkedNotifications() {
+    return this.apiBaseServiceV2.post(`zone/social_network/notifications/checked`);
+  }
 }
 
 @Injectable()
