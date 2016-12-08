@@ -36,10 +36,10 @@
   <nav class="zone-social-cover-nav">
     <ul class="list-unstyled clearfix">
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/profile/', userInfo.uuid]">Posts</a>
+        <a [routerLink]="['/zone/social/profile/'+userInfo.uuid+'/post']">Posts</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['about']">About</a>
+        <a [routerLink]="['/zone/social/profile/'+userInfo.uuid+'/about']">About</a>
       </li>
       <li class="pull-right dropdown">
         <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"

@@ -46,6 +46,11 @@ import { ZoneReportComponent } from '../shared/form/report/report.component';
 import { ZoneReportService } from '../shared/form/report/report.service';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
+import { ZSocialProfileService } from './profile/profile.service';
+import { ZSocialProfileFormAboutComponent } from './profile/form/about.component';
+import { ZSocialProfileFormContactComponent } from './profile/form/contact.component';
+import { ZSocialProfileFormWorkEduComponent } from './profile/form/work-edu.component';
+import { ZSocialProfileFormInterestComponent } from './profile/form/interest.component';
 
 
 @NgModule({
@@ -96,6 +101,10 @@ import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
     ZSocialProfileAboutComponent,
     ZSocialProfilePostComponent,
     ZSocialProfileCoverComponent,
+    ZSocialProfileFormAboutComponent,
+    ZSocialProfileFormContactComponent,
+    ZSocialProfileFormWorkEduComponent,
+    ZSocialProfileFormInterestComponent,
 
     ZSocialSettingComponent,
 
@@ -107,7 +116,8 @@ import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
   ],
   providers: [
     ZSocialCommunityService,
-    ZoneReportService
+    ZoneReportService,
+    ZSocialProfileService
   ],
 })
 

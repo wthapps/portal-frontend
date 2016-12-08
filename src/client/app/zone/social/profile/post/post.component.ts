@@ -18,8 +18,8 @@ export class ZSocialProfilePostComponent implements OnInit {
   @ViewChild('posts') posts: PostListComponent;
   @ViewChild('postNew') postNew: PostNewComponent;
 
-  uuidUser: string = '';
-  errorMessage: string = '';
+  uuid: any;
+  userInfo: any;
 
   constructor(private socialService: SocialService,
               private route: ActivatedRoute,
@@ -29,8 +29,14 @@ export class ZSocialProfilePostComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
-      console.log(params);
+      this.uuid = params['id'];
+      this.socialService.user.get(this.uuid).subscribe(
+        (res: any) => {
+          this.userInfo = res.data
+        }
+      )
     });
   }
 }

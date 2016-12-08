@@ -40,9 +40,6 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   community_name: AbstractControl;
   tag_line: AbstractControl;
   description: AbstractControl;
-  external_title: AbstractControl;
-  external_link: AbstractControl;
-
 
   constructor(private fb: FormBuilder,
               private apiBaseServiceV2: ApiBaseServiceV2,

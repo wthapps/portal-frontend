@@ -34,25 +34,17 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.data) {
-      this.item = this.data;
+      this.userInfo = this.data;
     }
   }
 
   ngOnInit() {
-    // this.loadingService.start('.zone-social-cover');
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'];
-      this.socialService.user.get(this.uuid).subscribe(
-        (res:any) => {
-          this.userInfo = res.data
-        }
-      )
-    });
+
   }
 
   onUpdated(item: any) {
     if (item) {
-      this.item = item;
+      this.userInfo = item;
     }
   }
 
