@@ -7,7 +7,7 @@ import {
   Type,
   ElementRef,
   HostBinding,
-  Inject
+  Inject, OnInit
 } from '@angular/core';
 import { ModalInstance, ModalResult } from './modal-instance';
 
@@ -30,7 +30,7 @@ declare var $: any;
     <!--</div>    -->
     `
 })
-export class HdModalComponent implements OnDestroy {
+export class HdModalComponent implements OnInit, OnDestroy {
 
   private overrideSize: string = null;
 
@@ -73,6 +73,13 @@ export class HdModalComponent implements OnDestroy {
       this.onOpen.emit(undefined);
     });
   }
+
+  ngOnInit(): void {
+    $(document).on('hidden.bs.modal', '.modal', function () {
+      $('.modal:visible').length && $(document.body).addClass('modal-open');
+    });
+  }
+
 
   ngOnDestroy() {
     return this.instance && this.instance.destroy();
