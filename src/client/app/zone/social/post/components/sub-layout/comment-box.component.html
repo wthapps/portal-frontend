@@ -4,10 +4,10 @@
   </div>
   <div class="z-social-media-body">
     <div class="z-social-media-inputpost">
-        <span class="z-social-media-inputpost">
-          <i class="fa fa-camera" (click)="onOpenPhotoSelect()"></i>
-          <i class="fa fa-smile-o"></i>
-        </span>
+      <span class="z-social-media-inputpost-icon">
+        <i class="fa fa-camera" (click)="onOpenPhotoSelect()"></i>
+        <i class="fa fa-smile-o"></i>
+      </span>
       <textarea class="form-control" placeholder="Add a comment" (keyup)="onKey($event)" [(ngModel)]="commentContent"></textarea>
     </div>
     <a *ngIf="type != commentBoxType.Add" (click)="cancel()" href="javascript:;">Cancel</a>

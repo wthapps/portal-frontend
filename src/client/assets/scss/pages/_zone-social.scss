@@ -171,7 +171,12 @@
 .z-social-media-inputpost {
   position: relative;
 
-  .z-social-media-inputpost {
+  &.inputpost-new {
+    .z-social-media-inputpost-icon {
+      bottom: 7px;
+    }
+  }
+  .z-social-media-inputpost-icon {
     position: absolute;
     bottom: 10px;
     right: 10px;
