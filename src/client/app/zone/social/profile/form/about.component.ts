@@ -109,7 +109,6 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
       (<FormControl>this.about).setValue(this.data.about);
       (<FormControl>this.gender).setValue(this.data.gender);
       (<FormControl>this.tag_line).setValue(this.data.tag_line);
-      (<FormControl>this.tag_line).setValue(this.data.tag_line);
 
       if (this.data.birthday !== null) {
         let birthday = new Date(this.userService.profile.birthday);

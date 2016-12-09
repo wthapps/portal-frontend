@@ -200,15 +200,17 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
     console.log(values);
 
     // get links if link is not empty
-    let emails_filter = [];
+    /*let emails_filter = [];
     _.map(values.email, (v)=> {
       if (v.email != '') {
         emails_filter.push(v);
       }
-    });
+    });*/
 
     let body = JSON.stringify({
-      email: emails_filter
+      email: values.emails,
+      phone: values.phones,
+      address: values.addresses
     });
 
     console.log('body:', body);

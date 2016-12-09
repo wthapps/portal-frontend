@@ -6,6 +6,7 @@
   "last_name": "Phan",
   "profile_image": "https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png",
   "cover_image": null,
+  "tag_line": "Lorem ipsum dolor sit amet",
   "about": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tationullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
   "nationality": "CA",
   "gender": "male",

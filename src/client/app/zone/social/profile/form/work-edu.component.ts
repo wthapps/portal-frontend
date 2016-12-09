@@ -74,10 +74,6 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
     }
   }
 
-  onCheckLength(event: any) {
-    $(event.target).parents('.form-group').find('.x-showLength').text(event.target.value.length);
-  }
-
   removeAll() {
     const control_work = <FormArray>this.form.controls['works'];
     for (let i = 0; i < control_work.length; i++) {
@@ -159,15 +155,16 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
     console.log(values);
 
     // get links if link is not empty
-    let emails_filter = [];
+    /*let emails_filter = [];
     _.map(values.email, (v)=> {
       if (v.email != '') {
         emails_filter.push(v);
       }
-    });
+    });*/
 
     let body = JSON.stringify({
-      email: emails_filter
+      employment: values.works,
+      education: values.educations
     });
 
     console.log('body:', body);

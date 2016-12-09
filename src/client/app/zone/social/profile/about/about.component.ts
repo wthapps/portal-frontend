@@ -36,18 +36,18 @@ export class ZSocialProfileAboutComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
-      /*this.socialService.user.get(this.uuid).subscribe(
-       (res: any) => {
-       console.log(res);
-       this.userInfo = res.data;
-       }
-       )*/
-      this.socialProfileService.getInfo().subscribe(
+      this.socialService.user.get(this.uuid).subscribe(
         (res: any) => {
           console.log(res);
-          this.userInfo = res;
+          this.userInfo = res.data;
         }
-      )
+      );
+      /*this.socialProfileService.getInfo().subscribe(
+       (res: any) => {
+       console.log(res);
+       this.userInfo = res;
+       }
+       )*/
     });
   }
 
