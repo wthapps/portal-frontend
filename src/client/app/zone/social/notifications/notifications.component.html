@@ -20,7 +20,9 @@
                   <a [routerLink]="['/zone/social/profile', notification.actor.uuid]">
                     {{notification.actor.name}}
                   </a>
-                  <span style="font-weight:normal">{{notification.text}}</span>
+                  <span style="font-weight:normal">{{notification.text}}
+                    <a *ngIf="notification.community" [routerLink]="['/zone/social/communities/', notification.community.uuid]"> {{notification.community.name}}</a>
+                  </span>
                 </h4>
 
               </div>
