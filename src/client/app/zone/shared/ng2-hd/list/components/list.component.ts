@@ -125,6 +125,13 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     @Input() public searchItems: Array<any> = undefined;
 
     /**
+     * @name searchItems
+     * @desc array of items that will populate the autocomplete
+     * @type {Array<any>}
+     */
+    @Input() public selectedItems: Array<any> = undefined;
+
+    /**
     * - if set to true, it will only possible to add items from the autocomplete
     * @name onlyFromAutocomplete
     * @type {Boolean}
@@ -276,6 +283,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
 
     constructor(private element: ElementRef, private renderer: Renderer) {
         super();
+      console.log('list constructor.................');
     }
 
     /**
@@ -480,7 +488,6 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     }
 
     ngOnInit() {
-
         // setting up the keypress listeners
         addListener.call(this, KEYDOWN, backSpaceListener);
         addListener.call(this, KEYDOWN, customSeparatorKeys, this.separatorKeys.length > 0);
@@ -497,8 +504,14 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
 
     ngOnChanges(changes: SimpleChanges): void {
       this.itemsSearching = this.searchItems;
+      this.items = this.selectedItems;
       _.forEach(this.itemsSearching, item => {
         _.assign(item, {selected: false});
+        _.forEach(this.items, (selectedItem) => {
+          if(item.id === selectedItem.id) {
+            _.assign(item, {selected: true});
+          }
+        });
       });
     }
 
@@ -544,9 +557,5 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
         this.items = this.items.filter(_item => _item !== item);
       }
       this.onSelected.emit(this.items);
-    }
-
-    public resetSelectedItems() {
-      this.items = [];
     }
 }

@@ -9,12 +9,12 @@ import {
   PostEditComponent,
   PostPhotoSelectComponent,
   PostNewComponent,
-  PostShareComponent,
   PostActivitiesComponent,
   PostShareCommunityComponent,
-  PostShareFriendComponent,
+  PostPrivacyCustomComponent,
   PostLikeDislikeComponent,
-  MemberListInviteComponent
+  MemberListInviteComponent,
+  PostService
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
 import { Ng2HdModule } from '../../shared/ng2-hd/index';
@@ -39,11 +39,10 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostEditComponent,
     PostNewComponent,
     PostPhotoSelectComponent,
-    PostShareComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostShareCommunityComponent,
-    PostShareFriendComponent,
+    PostPrivacyCustomComponent,
     MemberListInviteComponent
   ],
   exports: [
@@ -57,12 +56,14 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostEditComponent,
     PostNewComponent,
     PostPhotoSelectComponent,
-    PostShareComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostShareCommunityComponent,
-    PostShareFriendComponent,
+    PostPrivacyCustomComponent,
     MemberListInviteComponent
+  ],
+  providers: [
+    PostService
   ]
 })
 

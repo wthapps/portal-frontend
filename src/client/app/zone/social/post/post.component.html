@@ -2,16 +2,15 @@
 <so-post-header [item]="itemDisplay" [type]="type"></so-post-header>
 <so-post-body [item]="itemDisplay" [type]="type"></so-post-body>
 <so-post-footer #postFooter [item]="itemDisplay" [type]="type" (eventEmitter)="onActions($event)"></so-post-footer>
-<so-post-edit #postEdit
-           [openMode]="'edit'"
-           (onEdited)="editedPost($event)"
-           (onUpdated)="update($event)"
-></so-post-edit>
+<!--<so-post-edit #postEdit-->
+           <!--[openMode]="'edit'"-->
+           <!--(onEdited)="editedPost($event)"-->
+           <!--(onUpdated)="update($event)"-->
+<!--&gt;</so-post-edit>-->
 
 <post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>
-<so-post-edit #shareEdit
-           (onEdited)="editedPost($event)"
-           (onUpdated)="update($event)"></so-post-edit>
-<post-share #postShare></post-share>
+<!--<so-post-edit #shareEdit-->
+           <!--(onEdited)="editedPost($event)"-->
+           <!--(onUpdated)="update($event)"></so-post-edit>-->
 <post-activities #postActivities></post-activities>
 <post-likedislike #postLikeDislike [item]="dataLikeDislike" [type]="typeLikeDislike"></post-likedislike>

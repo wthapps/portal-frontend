@@ -1,11 +1,10 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
-  EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { UserService } from '../../../shared/index';
-import { PostPhotoSelectComponent, PostShareCommunityComponent, PostShareFriendComponent } from './index';
+import { PostPhotoSelectComponent, PostPrivacyCustomComponent } from './index';
 
 
 declare var _: any;
@@ -21,18 +20,20 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   @ViewChild('modal') modal: HdModalComponent;
   @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
-  @ViewChild('customCommunities') customCommunities: PostShareCommunityComponent;
-  @ViewChild('customFriends') customFriends: PostShareFriendComponent;
+  @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
 
   // For share
   // @Input() isShare: boolean = false;
 
-  @Input() openMode: string = 'add'; // add or edit
+  mode: string = 'add'; // add or edit
+  isShare: boolean = false; // if we are creating a new share that means isShare's value is 'true'
   @Input() photos: Array<any> = new Array<any>();
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
+  @Output() saved: EventEmitter<any> = new EventEmitter<any>();
+  @Output() dismissed: EventEmitter<any> = new EventEmitter<any>();
 
   post: SoPost;
   files: Array<any> = new Array<any>();
@@ -74,7 +75,7 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   }
 
-  open(options: any={mode:'add', addingPhotos: false, post: null, parent: null }) {
+  open(options: any={ mode:'add', isShare: false, addingPhotos: false, post: null, parent: null }) {
     // load tags
     this.apiService.get(`zone/tags`)
       .subscribe((result: any) => {
@@ -87,6 +88,10 @@ export class PostEditComponent implements OnInit, OnChanges {
 
 
     this.post = new SoPost();
+
+    this.mode = options.mode;
+    this.isShare = options.isShare;
+
     if(options.post != null) {
       this.post = options.post;
       this.originalTags = this.post.tags;
@@ -94,6 +99,7 @@ export class PostEditComponent implements OnInit, OnChanges {
     if(options.parent != null) {
       this.parent = options.parent;
     }
+
 
     this.form       = this.fb.group({
       'description': [this.post.description, Validators.compose([Validators.required])],
@@ -120,10 +126,11 @@ export class PostEditComponent implements OnInit, OnChanges {
   }
 
   done(item: any) {
-    let body: string;
-    let url: string = 'zone/social_network/posts';
-    body = JSON.stringify({
-      post: {
+
+    let options: any = {
+      mode: this.mode,
+      item: {
+        uuid: this.post.uuid,
         description: item.description,
         photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
         tags_json: this.post.tags,
@@ -131,37 +138,58 @@ export class PostEditComponent implements OnInit, OnChanges {
         adult: this.post.adult,
         disable_comment: this.post.disable_comment,
         disable_share: this.post.disable_share,
-        mute: this.post.mute
+        mute: this.post.mute,
+        parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
+        custom_objects: this.custom_objects
       },
-      parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-      custom_objects: this.custom_objects
-    });
+      isShare: this.isShare
+    };
+    console.log('adding................', options);
+    this.saved.emit(options);
 
-    if(this.openMode == 'add') {
-      this.apiService.post(url, body)
-          .map(res => res.json())
-          .subscribe((result: any) => {
-              this.onEdited.emit(result['data']);
-              this.modal.close();
-            },
-            error => {
-              console.log('error', error);
-            }
-          );
 
-    } else if(this.openMode == 'edit') {
-      url += `/${this.post.uuid}`;
-      this.apiService.put(url, body)
-          .map(res => res.json())
-          .subscribe((result: any) => {
-              this.onEdited.emit(result['data']);
-              this.modal.close();
-            },
-            error => {
-              console.log('error', error);
-            }
-          );
-    }
+    // let body: string;
+    // let url: string = 'zone/social_network/posts';
+    // body = JSON.stringify({
+    //   post: {
+    //     description: item.description,
+    //     photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
+    //     tags_json: this.post.tags,
+    //     privacy: this.post.privacy,
+    //     adult: this.post.adult,
+    //     disable_comment: this.post.disable_comment,
+    //     disable_share: this.post.disable_share,
+    //     mute: this.post.mute
+    //   },
+    //   parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
+    //   custom_objects: this.custom_objects
+    // });
+    //
+    // if(this.mode == 'add') {
+    //   this.apiService.post(url, body)
+    //       .map(res => res.json())
+    //       .subscribe((result: any) => {
+    //           this.onEdited.emit(result['data']);
+    //           this.modal.close();
+    //         },
+    //         error => {
+    //           console.log('error', error);
+    //         }
+    //       );
+    //
+    // } else if(this.mode == 'edit') {
+    //   url += `/${this.post.uuid}`;
+    //   this.apiService.put(url, body)
+    //       .map(res => res.json())
+    //       .subscribe((result: any) => {
+    //           this.onEdited.emit(result['data']);
+    //           this.modal.close();
+    //         },
+    //         error => {
+    //           console.log('error', error);
+    //         }
+    //       );
+    // }
 
   }
 
@@ -227,19 +255,20 @@ export class PostEditComponent implements OnInit, OnChanges {
   }
 
   dismiss(photos: any) {
-    if(photos == null) {
-      this.modal.open();
-    }
-
-    // restore photos after we cancelled editing
-    if(this.openMode == 'edit' && this.backupPhotos.length > 0) {
-      this.post.photos = this.backupPhotos;
-    }
-    if(this.uploadedPhotos.length > 0) {
-      // delete uploaded files form uploaded photos
-      this.post.photos = _.pullAll(this.post.photos, this.uploadedPhotos);
-      this.files = [];
-    }
+    // if(photos == null) {
+    //   this.modal.open();
+    // }
+    //
+    // // restore photos after we cancelled editing
+    // if(this.mode == 'edit' && this.backupPhotos.length > 0) {
+    //   this.post.photos = this.backupPhotos;
+    // }
+    // if(this.uploadedPhotos.length > 0) {
+    //   // delete uploaded files form uploaded photos
+    //   this.post.photos = _.pullAll(this.post.photos, this.uploadedPhotos);
+    //   this.files = [];
+    // }
+    this.dismissed.emit(photos);
   }
 
   upload(files: Array<any>) {
@@ -256,13 +285,9 @@ export class PostEditComponent implements OnInit, OnChanges {
     console.log('closing.........');
   }
 
-  customShare(type: string, event: any) {
+  customPrivacy(type: string, event: any) {
     event.preventDefault();
-    if(type == 'communities') {
-      this.customCommunities.open();
-    } else {
-      this.customFriends.open();
-    }
+    this.privacyCustomModal.open({type: type})
   }
 
   selectedItems(response: any) {
@@ -321,7 +346,7 @@ export class PostEditComponent implements OnInit, OnChanges {
       event.preventDefault();
     }
 
-    if(this.openMode == 'add') {
+    if(this.mode == 'add') {
       this.post = _.assignIn(this.post, attr);
     } else {
       this.onUpdated.emit(attr);

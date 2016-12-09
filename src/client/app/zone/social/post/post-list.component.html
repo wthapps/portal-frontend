@@ -1,7 +1,28 @@
-<div class="z-social-box" *ngFor="let item of listItems">
-  <so-post [item]="item" (onDeleted)="deletedPost($event)" (onUpdated)="updatedPost($event)"></so-post>
+<!--<post-new #postNew (onPostAdded)="reloadPosts($event)"></post-new>-->
+
+<!--Create new post here-->
+<div class="z-social-box">
+  <div class="z-social-media">
+    <div class="z-social-media-left">
+      <img src="assets/images/avatar/avatar.png" alt="">
+    </div>
+    <div class="z-social-media-body">
+      <div class="z-social-media-inputpost">
+        <input type="text" class="form-control" placeholder="Share your ideas" (click)="postEditModal.open()">
+        <span class="z-social-media-inputpost">
+            <i (click)="postEditModal.open({addingPhotos: true})" class="fa fa-camera"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--List of post items-->
+<div class="z-social-box" *ngFor="let item of items">
+  <so-post [item]="item" (onDeleted)="deletedPost($event)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)"></so-post>
 </div>
 <div id="post-list-component"></div>
 
-
+<!--Edit post modal. This modal will handle add new, edit post and share-->
+<so-post-edit #postEditModal (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
 
