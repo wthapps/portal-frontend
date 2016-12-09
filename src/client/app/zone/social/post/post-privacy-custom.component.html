@@ -1,13 +1,14 @@
-<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'" (onDismiss)="cancel($event)">
   <modal-header [show-close]="true">
-    <h4 class="modal-title text-left"> <i class="fa fa-share-alt"></i> Share with Friends</h4>
+    <h4 class="modal-title text-left"> <i class="fa fa-share-alt"></i> {{title}}</h4>
   </modal-header>
   <modal-body>
-    <hd-list
+    <hd-list #list
       [maxItems]='100'
       [searchable]="true"
       [inputClass]="hd-search-input"
-      [searchItems]="friends"
+      [searchItems]="items"
+      [selectedItems]="selectedItems"
       (onRemove)="addItem($event)"
       (onSelected)="onSelectedItems($event)"
       (onAdd)="removeCommunity($event)"

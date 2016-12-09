@@ -12,7 +12,10 @@ export class PostService {
               ) {
   }
 
-  list(option: any = null) {
+  list(queryParams: any = null) {
+    if (typeof queryParams == 'object') {
+      this.url += '?' + this.api.paramsToString(queryParams);
+    }
     return this.api.get(this.url);
   }
 

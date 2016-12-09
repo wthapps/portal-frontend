@@ -9,10 +9,9 @@ import {
   PostEditComponent,
   PostPhotoSelectComponent,
   PostNewComponent,
-  PostShareComponent,
   PostActivitiesComponent,
   PostShareCommunityComponent,
-  PostShareFriendComponent,
+  PostPrivacyCustomComponent,
   PostLikeDislikeComponent,
   MemberListInviteComponent,
   PostService
@@ -40,11 +39,10 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostEditComponent,
     PostNewComponent,
     PostPhotoSelectComponent,
-    PostShareComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostShareCommunityComponent,
-    PostShareFriendComponent,
+    PostPrivacyCustomComponent,
     MemberListInviteComponent
   ],
   exports: [
@@ -58,11 +56,10 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostEditComponent,
     PostNewComponent,
     PostPhotoSelectComponent,
-    PostShareComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostShareCommunityComponent,
-    PostShareFriendComponent,
+    PostPrivacyCustomComponent,
     MemberListInviteComponent
   ],
   providers: [

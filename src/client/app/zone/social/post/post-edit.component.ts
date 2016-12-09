@@ -1,11 +1,10 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
-  EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { UserService } from '../../../shared/index';
-import { PostPhotoSelectComponent, PostShareCommunityComponent, PostShareFriendComponent } from './index';
+import { PostPhotoSelectComponent, PostPrivacyCustomComponent } from './index';
 
 
 declare var _: any;
@@ -21,8 +20,7 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   @ViewChild('modal') modal: HdModalComponent;
   @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
-  @ViewChild('customCommunities') customCommunities: PostShareCommunityComponent;
-  @ViewChild('customFriends') customFriends: PostShareFriendComponent;
+  @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
 
   // For share
   // @Input() isShare: boolean = false;
@@ -140,10 +138,13 @@ export class PostEditComponent implements OnInit, OnChanges {
         adult: this.post.adult,
         disable_comment: this.post.disable_comment,
         disable_share: this.post.disable_share,
-        mute: this.post.mute
+        mute: this.post.mute,
+        parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
+        custom_objects: this.custom_objects
       },
       isShare: this.isShare
     };
+    console.log('adding................', options);
     this.saved.emit(options);
 
 
@@ -284,13 +285,9 @@ export class PostEditComponent implements OnInit, OnChanges {
     console.log('closing.........');
   }
 
-  customShare(type: string, event: any) {
+  customPrivacy(type: string, event: any) {
     event.preventDefault();
-    if(type == 'communities') {
-      this.customCommunities.open();
-    } else {
-      this.customFriends.open();
-    }
+    this.privacyCustomModal.open({type: type})
   }
 
   selectedItems(response: any) {

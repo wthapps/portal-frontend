@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { SocialService } from '../services/social.service';
@@ -18,10 +18,11 @@ declare var _: any;
 export class PostListComponent implements OnInit {
   @ViewChild('postEditModal') postEditModal: PostEditComponent;
 
+  @Input() type: string = undefined;
 
   items: Array<SoPost>;
   uuid: string;
-  type: string = "user";
+  // type: string = "user";
 
   constructor(
     public apiBaseServiceV2: ApiBaseServiceV2,
@@ -33,10 +34,10 @@ export class PostListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.route.params.subscribe(params => {
-    //   this.uuid = params['id'];
+    this.route.params.subscribe(params => {
+      this.uuid = params['id'];
       this.loadPosts();
-    // });
+    });
   }
 
   mapPost(post:any) {
