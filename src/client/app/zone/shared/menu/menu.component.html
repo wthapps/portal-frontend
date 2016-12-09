@@ -16,7 +16,7 @@
       </a>
       <ul class="list-unstyled hidden" id="zone_menu_social">
         <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
-          <a *ngIf="social.link == '/zone/social/profile'" [routerLink]="['/zone/social/profile/'+uuid+'/post']">
+          <a *ngIf="social.link == '/zone/social/profile'" [routerLink]="['/zone/social/profile',uuid]">
             {{social.name}}</a>
           <a *ngIf="social.link != '/zone/social/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
         </li>

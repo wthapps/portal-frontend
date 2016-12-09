@@ -23,6 +23,8 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   uuid: string = '';
   userInfo: any;
 
+  relationships: any;
+
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
               private socialService: SocialService,
@@ -39,7 +41,17 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.uuid = params['id'];
 
+      if (this.userService.profile.uuid != params['id']) {
+        this.socialService.user.getRelationShips(params['id']).subscribe((res: any) => {
+            this.relationships = res.data;
+          },
+        );
+      }
+
+    });
   }
 
   onUpdated(item: any) {
@@ -48,8 +60,34 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
     }
   }
 
+  onAddfriend() {
+
+    this.socialService.user.addFriend(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+      }
+    );
+  }
+
+  onUnfriend() {
+    this.socialService.user.unfriend(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+      },
+    );
+  }
+
+  onCancelRequest() {
+    this.socialService.user.cancelFriendRequest(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+      },
+    );
+  }
+
+
   onReport() {
-    this.zoneReportService.community(this.uuid);
+    this.zoneReportService.member(this.userInfo.uuid);
     return false;
   }
 }

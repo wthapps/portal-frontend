@@ -90,7 +90,6 @@ export class HdModalComponent implements OnDestroy {
   }
 
   close(value?: any): Promise<void> {
-    $('body').css('padding-right', 0);
     return this.instance.close().then(() => {
       this.onClose.emit(value);
     });

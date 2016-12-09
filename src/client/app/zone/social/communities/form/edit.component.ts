@@ -91,11 +91,6 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     }
   }
 
-  onCheckLength(event: any) {
-    $(event.target).parents('.form-group').find('.x-showLength').text(event.target.value.length);
-  }
-
-
   initLink(link?: any) {
 
     if (link) {
