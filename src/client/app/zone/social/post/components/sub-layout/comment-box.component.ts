@@ -1,5 +1,14 @@
 import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
-import { CommentCreateEvent, OpenPhotoModalEvent, CommentUpdateEvent, CancelEditCommentEvent, CancelReplyCommentEvent, ReplyCreateEvent, ReplyUpdateEvent, CancelEditReplyCommentEvent } from '../../../events/social-events';
+import {
+  CommentCreateEvent,
+  OpenPhotoModalEvent,
+  CommentUpdateEvent,
+  CancelEditCommentEvent,
+  CancelReplyCommentEvent,
+  ReplyCreateEvent,
+  ReplyUpdateEvent,
+  CancelEditReplyCommentEvent
+} from '../../../events/social-events';
 import { SoPost } from '../../../../../shared/models/social_network/so-post.model';
 import { SoComment } from '../../../../../shared/models/social_network/so-comment.model';
 
@@ -17,7 +26,7 @@ declare var $: any;
   templateUrl: 'comment-box.component.html',
 })
 
-export class ZSocialCommentBoxComponent implements OnInit{
+export class ZSocialCommentBoxComponent implements OnInit {
   @Input() item: SoPost;
   @Input() comment: SoComment;
   @Input() reply: SoComment;
@@ -33,7 +42,7 @@ export class ZSocialCommentBoxComponent implements OnInit{
     if (this.type == this.commentBoxType.EditReply) {
       this.commentContent = this.reply.content
     }
-    $('textarea').each(function () {
+    $('.js-textarea-autoheight').each(function () {
       this.setAttribute('style', 'height: 40px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
     }).on('input', function () {
       this.style.height = 'auto';
@@ -41,20 +50,20 @@ export class ZSocialCommentBoxComponent implements OnInit{
     });
   }
 
-  onKey(e:any) {
+  onKey(e: any) {
     // Create, Update, Reply
-    if(e.keyCode == 13 && this.commentContent != "") {
+    if (e.keyCode == 13 && this.commentContent != "") {
       this.commentAction();
     }
     // Cancel comment
-    if(e.keyCode == 27) {
+    if (e.keyCode == 27) {
       this.cancel();
     }
   }
 
-  commentAction(photos?:any) {
-    let commentEvent:any;
-    let data:any = {};
+  commentAction(photos?: any) {
+    let commentEvent: any;
+    let data: any = {};
     if (photos) data.photo = photos[0].id;
     data.content = this.commentContent;
     if (this.type == this.commentBoxType.Add) {

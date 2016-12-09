@@ -75,8 +75,10 @@
     <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
       <div class="row">
         <div class="col-xs-6 col-sm-12">
-          <textarea placeholder="Share your ideas" class="form-control"
-                    [formControl]="descCtrl"></textarea>
+          <textarea rows="3" pInputTextarea autoResize="autoResize" class="form-control" [formControl]="descCtrl"></textarea>
+
+          <!--<textarea placeholder="Share your ideas" class="form-control"
+                    [formControl]="descCtrl"></textarea>-->
             <!--<div *ngIf="!form.controls['description'].valid && form.controls['description'].touched">-->
               <!--<span class="help-block"-->
                     <!--*ngIf="!form.controls['description'].valid && form.controls['description'].errors.required" >-->

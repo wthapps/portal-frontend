@@ -11,7 +11,8 @@ import { NameListService } from './name-list/index';
 import {
   ConfirmDialogModule,
   ConfirmationService,
-  AutoCompleteModule
+  AutoCompleteModule,
+  InputTextareaModule
 } from 'primeng/primeng';
 import { TagInputModule } from 'ng2-tag-input';
 
@@ -59,7 +60,9 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 
     ConfirmDialogModule,
     AutoCompleteModule,
-    TagInputModule
+    TagInputModule,
+    InputTextareaModule
+
   ],
   declarations: [
     ToolbarComponent,
@@ -104,6 +107,7 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     ConfirmDialogModule,
     AutoCompleteModule,
     TagInputModule,
+    InputTextareaModule,
 
 
     CommonModule,
