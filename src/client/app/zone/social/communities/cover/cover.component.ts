@@ -23,7 +23,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   uuid: string = '';
 
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private api: ApiBaseServiceV2,
               private loadingService: LoadingService,
               private zoneReportService: ZoneReportService,
               private route: ActivatedRoute) {
@@ -57,5 +57,27 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   onReport() {
     this.zoneReportService.community(this.uuid);
     return false;
+  }
+
+  askToJoin() {
+    this.api.post(`zone/social_network/communities/${this.uuid}/join`, JSON.stringify({
+      uuid: this.uuid,
+      user_ids: null
+    }))
+    .map(res => res.json)
+    .subscribe((result: any) => {
+        console.log('jone communities');
+      },
+      error => {
+        console.log('error', error);
+      });
+  }
+
+  cancelJoinRequest() {
+
+  }
+
+  leave() {
+
   }
 }
