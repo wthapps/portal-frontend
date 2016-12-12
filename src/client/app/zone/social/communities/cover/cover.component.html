@@ -52,14 +52,22 @@
           <li><a href="#" (click)="onPreference(data)">Preferences</a></li>
           <li><a [routerLink]="['/zone/social/communities/'+data.uuid+'/members']">Manage members</a></li>
           <li role="separator" class="divider"></li>
-          <li><a href="#">Remove from Favourites</a></li>
-          <li><a href="#" (click)="onLeave(my)">Leave community</a></li>
+          <li><a href="javascript:;" (click)="addFavourite(data.uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
+          <li><a href="#" (click)="onLeave(data)">Leave community</a></li>
           <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-          <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
+          <li><a (click)="onDelete(data)" href="#">Delete community</a></li>
         </ul>
       </li>
     </ul>
   </nav>
 </div>
+
+<template [ngIf]="item">
+  <z-social-community-form-edit #modalEdit [data]="item" [action]="'edit'"
+                                (updated)="onUpdated($event)"></z-social-community-form-edit>
+  <z-social-community-form-preference #modalPreference [data]="item"
+                                      (updated)="onUpdated($event)"></z-social-community-form-preference>
+</template>
+
 
 <wth-zone-report></wth-zone-report>

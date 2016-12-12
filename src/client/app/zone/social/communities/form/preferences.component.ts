@@ -65,11 +65,12 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   ngOnChanges() {
     if (this.data) {
       this.hasChange = false;
-      console.log(this.data);
+      console.log(this.data.admin);
 
-      // check if admin
-      this.isAdmin = (this.data.admin.uuid == this.userService.profile.uuid) ? true : false;
-
+      if(this.data.admin){
+        // check if admin
+        this.isAdmin = (this.data.admin.uuid == this.userService.profile.uuid) ? true : false;
+      }
 
       /*(<FormControl>this.setting_notification_posts).setValue(this.data.setting_notification_posts);*/
       /*(<FormControl>this.setting_notification_request).setValue(this.data.setting_notification_request);*/
