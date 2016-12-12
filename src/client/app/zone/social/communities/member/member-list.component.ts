@@ -27,7 +27,7 @@ export class ComMemberListComponent implements OnInit {
   data: any = [];
   uuid: string = '';
   uuidUser: string = '';
-  selectedTab: string = 'member';
+  selectedTab: string;
   items: Array<any> = new Array<any>(); // this store member, invitations, join requests and blacklist
 
   constructor(private api: ApiBaseService,
@@ -41,11 +41,7 @@ export class ComMemberListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.queryParams.subscribe(
-      (queryParams: any) => {
-        this.selectedTab = queryParams['tab'] == undefined ? 'member': queryParams['tab'];
-      }
-    );
+
    // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
@@ -57,6 +53,13 @@ export class ComMemberListComponent implements OnInit {
         error => {
           // this.loadingService.stop('.zone-social-cover');
           this.errorMessage = <any>error
+        }
+      );
+
+      this.route.queryParams.subscribe(
+        (queryParams: any) => {
+          this.selectedTab = queryParams['tab'] == undefined ? 'members': queryParams['tab'];
+          this.loadDataBySelectedTab();
         }
       );
     });
@@ -89,9 +92,14 @@ export class ComMemberListComponent implements OnInit {
 
   viewMember(data: any) {
     this.router.navigate([`/zone/social/communities/${this.uuid}/members`], {queryParams: {tab: this.selectedTab}});
-    this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}/${this.selectedTab}s`).subscribe(
+    this.loadDataBySelectedTab();
+  }
+
+  loadDataBySelectedTab() {
+    if (this.selectedTab == 'members') return;
+    this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}/${this.selectedTab}`).subscribe(
       (res: any)=> {
-       this.items = res.data;
+        this.items = res.data;
         console.log('response ', res.data);
       },
       error => {

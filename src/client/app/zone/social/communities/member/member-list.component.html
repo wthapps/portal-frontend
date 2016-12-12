@@ -8,9 +8,9 @@
       <div class="z-social-box-header">
         <div class="pull-left dropdown">
           <select class="form-control" [(ngModel)]="selectedTab" (change)="viewMember($event)">
-            <option value="member">All member</option>
-            <option value="invitation">Invitation</option>
-            <option value="request">Join request</option>
+            <option value="members">All members</option>
+            <option value="invitations">Invitations</option>
+            <option value="join_requests">Join requests</option>
             <option value="blacklist">Blacklist</option>
           </select>
         </div>
@@ -20,7 +20,7 @@
         </button>
       </div>
       <div class="z-social-post">
-        <ul class="list-unstyled social-list-user">
+        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
           <template ngFor let-user [ngForOf]="data.users" [ngForTrackBy]="trackByUsers">
             <!--<li *ngIf="user.id == data.admin.id">-->
               <!--<div class="dropdown pull-right">-->
@@ -29,7 +29,7 @@
               <!--<img [alt]="user.name" [src]="user.profile_image" title="" width="30">-->
               <!--<span>{{user.name}}</span>-->
             <!--</li>          -->
-            <li *ngIf="selectedTab == 'member'">
+            <li >
               <div class="dropdown pull-right">
                 <span class="text-fade">{{ user.id == data.admin.id ? 'Admin' :'Member'}}</span>
                 <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
@@ -46,26 +46,41 @@
               <img [alt]="user.name" [src]="user.profile_image" title="" width="30">
               <span>{{user.name}}</span>
             </li>
-            <li *ngIf="selectedTab == 'invitation'">
+          </template>
+        </ul>
+
+        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'invitations'">
+          <template ngFor let-item [ngForOf]="items">
+
+            <li >
               <div class="dropdown pull-right">
                 <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
                 <!--<a href="#" class="btn btn-link">DENY</a>-->
-                <a href="#" class="btn btn-link">RE-INVITE</a>
+                <a href="#" class="btn btn-link">INVITED</a>
                 <a href="#" class="btn btn-link">CANCEL</a>
-
-                <!--<button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"-->
-                        <!--aria-haspopup="true" aria-expanded="true">-->
-                  <!--<i class="fa fa-ellipsis-v"></i>-->
-                <!--</button>-->
-                <!--<ul class="dropdown-menu dropdown-custom">-->
-                  <!--<li><a href="#">Make Admin</a></li>-->
-                  <!--<li><a href="#">Remove</a></li>-->
-                  <!--<li><a href="#" (click)="onReportMember(user.uuid)">Report Member</a></li>-->
-                  <!--<li><a href="#">Blacklist</a></li>-->
-                <!--</ul>-->
               </div>
-              <img [alt]="user.name" [src]="user.profile_image" title="" width="30">
-              <span>{{user.name}}</span>
+              <a href="#">
+                <img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">
+                <span>{{item['accepter']['name']}}</span>
+              </a>
+            </li>
+          </template>
+        </ul>
+
+        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'join_requests'">
+          <template ngFor let-item [ngForOf]="items">
+
+            <li>
+              <div class="dropdown pull-right">
+                <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
+                <!--<a href="#" class="btn btn-link">DENY</a>-->
+                <a href="#" class="btn btn-link">REQUESTED</a>
+                <a href="#" class="btn btn-link">CANCEL</a>
+              </div>
+              <a href="#">
+                <img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">
+                <span>{{item['accepter']['name']}}</span>
+              </a>
             </li>
           </template>
         </ul>
