@@ -57,9 +57,19 @@
         <button *ngIf="relationships.status == 0" class="btn btn-default" type="button" (click)="onAddfriend()">
           <i class="fa fa-user-plus"></i> Add Friend
         </button>
-        <button *ngIf="relationships.status == 1" class="btn btn-default" type="button" (click)="onCancelRequest()">
-          <i class="fa fa-times"></i> Friend Requested
-        </button>
+
+        <div *ngIf="relationships.status == 1" class="btn-group pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+            Friend Requested <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-custom">
+            <li>
+              <a href="javascript:;" (click)="onCancelRequest()">Cancel Request</a>
+            </li>
+          </ul>
+        </div>
+
         <button *ngIf="relationships.status == 2" class="btn btn-default" type="button" (click)="onUnfriend()">
           <i class="fa fa-times"></i> Unfriend
         </button>
