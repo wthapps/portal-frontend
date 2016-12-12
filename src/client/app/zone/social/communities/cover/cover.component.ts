@@ -146,4 +146,22 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       }
     )
   }
+
+  askToJoin() {
+    this.apiBaseServiceV2.post(`zone/social_network/communities/${this.uuid}/join`, JSON.stringify({
+      uuid: this.uuid,
+      user_ids: null
+    }))
+      .map(res => res.json)
+      .subscribe((result: any) => {
+          console.log('jone communities');
+        },
+        error => {
+          console.log('error', error);
+        });
+  }
+
+  cancelJoinRequest() {
+
+  }
 }

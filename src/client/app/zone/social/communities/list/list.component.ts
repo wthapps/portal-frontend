@@ -51,7 +51,7 @@ export class ZSocialCommunityListComponent implements OnInit {
 
     this.apiBaseServiceV2.get('zone/social_network/communities').subscribe(
       (res: any)=> {
-        // console.log(res);
+        console.log(res);
         _this.myList.length = 0;
         _this.list.length = 0;
         _.map(res.data, (v: any)=> {

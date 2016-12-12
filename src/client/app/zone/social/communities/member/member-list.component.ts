@@ -108,4 +108,16 @@ export class ComMemberListComponent implements OnInit {
       }
     );
   }
+
+  cancelInvitation(id:any) {
+    this.apiBaseServiceV2.delete(`zone/social_network/communities/cancel_invitation/${id}`).subscribe(
+      (res: any)=> {
+        this.loadDataBySelectedTab();
+      },
+      error => {
+        // this.loadingService.stop('.zone-social-cover');
+        this.errorMessage = <any>error
+      }
+    );
+  }
 }

@@ -58,6 +58,31 @@
           <li><a (click)="onDelete(data)" href="#">Delete community</a></li>
         </ul>
       </li>
+
+
+
+      <li class="pull-right mr10">
+        <button class="btn btn-default" type="button" (click)="askToJoin()">
+          <i class="fa fa-user-plus"></i> Ask to join
+        </button>
+
+        <div *ngIf="relationships.status == 1" class="btn-group pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+            Asked to join <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-custom">
+            <li>
+              <a href="javascript:;" (click)="cancelJoinRequest()">Cancel Join Request</a>
+            </li>
+          </ul>
+        </div>
+
+        <!--<button class="btn btn-default" type="button" (click)="leave()">-->
+          <!--<i class="fa fa-times"></i> Leave Community-->
+        <!--</button>-->
+      </li>
+
     </ul>
   </nav>
 </div>
