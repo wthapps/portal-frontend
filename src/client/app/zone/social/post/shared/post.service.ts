@@ -14,9 +14,12 @@ export class PostService {
 
   list(queryParams: any = null) {
     if (typeof queryParams == 'object') {
-      this.url += '?' + this.api.paramsToString(queryParams);
+      if(queryParams['uuid'] == undefined) {
+        return this.api.get(this.url);
+      } else {
+        return this.api.get(`zone/social_network/user_posts/${queryParams['uuid']}`, {type: queryParams['type']});
+      }
     }
-    return this.api.get(this.url);
   }
 
   get(item: any) {

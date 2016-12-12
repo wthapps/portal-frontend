@@ -61,9 +61,9 @@
       </nav>
     </div>
 
-    <post-new #postNew (onPostAdded)="reloadPosts($event)"></post-new>
+    <!--<post-new #postNew (onPostAdded)="reloadPosts($event)"></post-new>-->
 
-    <so-post-list #posts></so-post-list>
+    <so-post-list #posts [type]="'community'"></so-post-list>
 
   </div>
   <div class="zone-social-sidebar">

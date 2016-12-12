@@ -27,7 +27,6 @@ declare var _: any;
 })
 
 export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
-  @ViewChild('postEdit') postEdit: PostEditComponent;
   @ViewChild('postActivities') postActivities: PostActivitiesComponent;
   @ViewChild('postLikeDislike') postLikeDislike: PostLikeDislikeComponent;
 
@@ -67,6 +66,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       this.item = new SoPost();
     }
     this.mapDisplay();
+    // if(changes['item'].currentValue.parent) {
+    //   this.parentItem = changes['item'].currentValue.parent;
+    // }
   }
 
   mapDisplay() {
@@ -89,6 +91,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.itemDisplay.displayCss = 'carousel-thumb-style-' + this.itemDisplay.photos.length;
     if (this.itemDisplay.photos.length > 6) {
       this.itemDisplay.displayCss = 'carousel-thumb-style-6';
+    }
+    if(this.itemDisplay.parent != null && this.itemDisplay.parent != undefined) {
+      this.itemDisplay.parent.displayCss = 'carousel-thumb-style-' + this.itemDisplay.parent.photos.length;
+      if (this.itemDisplay.parent.photos.length > 6) {
+        this.itemDisplay.parent.displayCss = 'carousel-thumb-style-6';
+      }
     }
   }
 
@@ -153,15 +161,14 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   edit() {
     this.modalOpened.emit({mode: 'edit', post: this.itemDisplay});
-    // this.postEdit.open({mode: 'edit', post: this.itemDisplay});
   }
 
   update(attr: any = {}) {
-    this.apiBaseServiceV2.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, {post: attr})
+    console.log('attt ', attr);
+    this.apiBaseServiceV2.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, attr)
       .subscribe((result: any) => {
           this.item = result['data'];
           this.mapDisplay();
-          this.postEdit.post = this.itemDisplay;
         },
         error => {
 

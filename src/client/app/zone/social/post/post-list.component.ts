@@ -35,7 +35,7 @@ export class PostListComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.uuid = params['id'];
+      this.uuid = params['id'];  // this can be user uuid or community uuid
       this.loadPosts();
     });
   }
@@ -69,6 +69,7 @@ export class PostListComponent implements OnInit {
     if (options.mode == 'add') {
       this.postService.add(options.item)
         .subscribe((response: any) => {
+          console.log('response', response);
           this.loadPosts();
           this.postEditModal.close();
         },

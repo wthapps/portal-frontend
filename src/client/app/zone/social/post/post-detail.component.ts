@@ -58,5 +58,9 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
     );
   }
 
+  openEditModal(options: any) {
+    this.postEditModal.open(options);
+  }
+
 }
 

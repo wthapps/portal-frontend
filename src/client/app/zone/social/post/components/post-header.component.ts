@@ -82,9 +82,7 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
     e.preventDefault();
     this.socialService.post.getSettings(this.item.uuid).subscribe(
       (res: any) => {
-
         this.settings = res.data.settings;
-        console.log(this.settings);
       }
     )
   }
@@ -93,6 +91,12 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
   onReport() {
     this.zoneReportService.post(this.item.uuid);
     return false;
+  }
+
+  viewPrivacyCustom(post: any, modal: any) {
+    if (post.privacy == 'custom_friend' || post.privacy == 'custom_community') {
+      modal.open();
+    }
   }
 
 }

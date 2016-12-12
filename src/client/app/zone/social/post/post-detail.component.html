@@ -6,7 +6,7 @@
       </a>
     </div>
     <div class="z-social-box">
-      <so-post [item]="item" [type]="'detail'"></so-post>
+      <so-post [item]="item" [type]="'detail'" (modalOpened)="openEditModal($event)"></so-post>
     </div>
   </div>
 </div>

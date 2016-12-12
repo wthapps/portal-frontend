@@ -129,7 +129,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
      * @desc array of items that will populate the autocomplete
      * @type {Array<any>}
      */
-    @Input() public selectedItems: Array<any> = undefined;
+    @Input() public selectedItems: Array<any> = new Array<any>();
 
     /**
     * - if set to true, it will only possible to add items from the autocomplete
@@ -283,7 +283,6 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
 
     constructor(private element: ElementRef, private renderer: Renderer) {
         super();
-      console.log('list constructor.................');
     }
 
     /**
