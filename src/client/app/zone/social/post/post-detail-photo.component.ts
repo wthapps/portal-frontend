@@ -22,6 +22,10 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
   itemDisplay: any;
 
   index: number = 0;
+
+  commentIndex: number;
+  replyIndex: number;
+
   private id: string = '';
 
   constructor(private route: ActivatedRoute,
@@ -34,6 +38,8 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
       this.id = params['id'];
       this.index = +params['index'];
       this.loadPost(this.id);
+      this.commentIndex = params['commentIndex'];
+      this.replyIndex = params['replyIndex'];
     });
   }
 
@@ -52,6 +58,7 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
           this.item = response.data;
           this.itemDisplay = _.cloneDeep(this.item);
           this.classifyReactions();
+          console.log(this.item);
         },
         error => {
           this.errorMessage = <any>error;
@@ -103,8 +110,6 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
           break;
       }
     });
-
-    console.log(this.itemDisplay);
 
   }
 

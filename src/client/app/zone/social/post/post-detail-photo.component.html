@@ -31,7 +31,7 @@
       </li>
     </ul>
   </div>
-  <div class="photo-detail-content">
+  <div class="photo-detail-content" *ngIf="commentIndex == null">
     <div class="photo-detail-img">
       <figure>
         <img [src]="item.photos[index].url" alt="">
@@ -44,6 +44,16 @@
       </span>
     </div>
   </div>
+
+  <div class="photo-detail-content" *ngIf="commentIndex != null">
+    <div class="photo-detail-img">
+      <figure>
+        <img *ngIf="replyIndex == null" [src]="item.comments[commentIndex].photo.url" alt="">
+        <img *ngIf="replyIndex != null" [src]="item.comments[commentIndex].replies[replyIndex].photo.url" alt="">
+      </figure>
+    </div>
+  </div>
+
   <div class="photo-detail-info">
     <so-post [item]="item" [type]="'info'"></so-post>
   </div>

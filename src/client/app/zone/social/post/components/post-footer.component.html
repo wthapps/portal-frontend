@@ -23,7 +23,7 @@
             <span class="media-heading-time">{{comment.created_at | dateUntilNow}}</span>
           </h4>
           <p>{{comment.content}}</p>
-          <img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px">
+          <a *ngIf="comment.photo" [routerLink]="['/zone/social/photos', item.uuid, {commentIndex: i}]"><img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px"></a>
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
               <i class="fa fa-pencil"></i>
@@ -55,7 +55,7 @@
           </div>
         </div>
       </div>
-      <div class="media" *ngFor="let reply of comment.replies">
+      <div class="media" *ngFor="let reply of comment.replies; let j = index">
         <!--Edit reply-->
         <comment-box id="editComment-{{reply.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
                      [comment]="comment" [reply]="reply" style="display: none"
@@ -80,7 +80,7 @@
               </div>
             </h4>
             <p>{{reply.content}}</p>
-            <img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px">
+            <a *ngIf="comment.photo" [routerLink]="['/zone/social/photos', item.uuid, {commentIndex: i, replyIndex: j}]"><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
             <div class="media-body-reply">
               <ul>
                 <li>
