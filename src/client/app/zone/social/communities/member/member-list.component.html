@@ -56,8 +56,8 @@
               <div class="dropdown pull-right">
                 <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
                 <!--<a href="#" class="btn btn-link">DENY</a>-->
-                <a href="#" class="btn btn-link">INVITED</a>
-                <a href="#" class="btn btn-link">CANCEL</a>
+                <!--<a href="#" class="btn btn-link">INVITED</a>-->
+                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
               </div>
               <a href="#">
                 <img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">
@@ -74,8 +74,8 @@
               <div class="dropdown pull-right">
                 <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
                 <!--<a href="#" class="btn btn-link">DENY</a>-->
-                <a href="#" class="btn btn-link">REQUESTED</a>
-                <a href="#" class="btn btn-link">CANCEL</a>
+                <!--<a href="#" class="btn btn-link">REQUESTED</a>-->
+                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
               </div>
               <a href="#">
                 <img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">
