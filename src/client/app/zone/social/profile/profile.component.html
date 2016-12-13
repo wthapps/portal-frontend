@@ -1,105 +1,11 @@
 <div class="zone-social">
   <div class="zone-social-in">
-
-    <div *ngIf="userInfo" class="zone-social-cover">
-      <div class="zone-social-cover-in">
-        <div class="zone-social-cover-action">
-          <button class="btn btn-wth-default">
-            <i class="fa fa-pencil"></i>
-          </button>
-        </div>
-        <div class="zone-social-cover-img">
-          <img class="img-bg img-full" src="assets/images/landing/hero-image.jpg" alt="">
-        </div>
-        <div class="zone-social-cover-info">
-          <div class="media">
-            <div class="media-left">
-              <img width="30" src="assets/images/avatar/avatar-lg.png" alt="" title="">
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">{{userInfo.nickname}}</h4>
-              <span>Inside Job</span>
-              <p>This is a short description line that helps other members to gain some knowledge about this member.
-                This
-                line is around 150 characters long in length.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <nav class="zone-social-cover-nav">
-        <ul class="list-unstyled clearfix">
-          <li class="active">
-            <a href="#">Post</a>
-          </li>
-          <li>
-            <a href="#">About</a>
-          </li>
-          <li class="pull-right dropdown">
-            <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="true">
-              <i class="fa fa-ellipsis-v"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-custom">
-              <li><a href="#">Edit Contact Profile</a></li>
-              <li><a href="#">Privacy</a></li>
-              <li><a href="#">Settings</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
-    <post-new #postNew (onPostAdded)="reloadPosts($event)"></post-new>
-
-    <post-list #posts></post-list>
-
+    <router-outlet></router-outlet>
   </div>
-  <div class="zone-social-sidebar">
-    <dl>
-      <dt>Favourite</dt>
-      <dd>
-        <ul class="list-unstyled">
-          <li>
-            <img width="30" src="assets/images/zone/img-group.png" alt="" title="">
-            <span>
-              Username 01
-            </span>
-          </li>
-          <li>
-            <img width="30" src="assets/images/zone/img-group.png" alt="" title="">
-            <span>
-              Username 02
-            </span>
-          </li>
-          <li>
-            <img width="30" src="assets/images/zone/img-groups.png" alt="" title="">
-            <span>
-              Group Number 01
-            </span>
-          </li>
-          <li>
-            <img width="30" src="assets/images/zone/img-group.png" alt="" title="">
-            <span>
-              Username 01
-            </span>
-          </li>
-          <li>
-            <img width="30" src="assets/images/zone/img-groups.png" alt="" title="">
-            <span>
-              Group Number 02
-            </span>
-          </li>
-          <li>
-            <img src="assets/images/zone/img-groups.png" alt="" title="">
-            <span>
-              Group Number 03
-            </span>
-          </li>
-        </ul>
-      </dd>
-    </dl>
-  </div>
+  <z-social-favorites></z-social-favorites>
 
   <!--<wth-to-top></wth-to-top>-->
 
 </div>
+
+<wth-zone-report></wth-zone-report>

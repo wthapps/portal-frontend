@@ -1,36 +1,38 @@
 import { BaseZoneSocial } from "./base-social";
 import { ApiBaseServiceV2 } from "../../../shared/services/apibase.service.v2";
+import { PostComponent } from '../post/post.component';
 
 export class BaseZoneSocialItem extends BaseZoneSocial {
   item: any;
 
   apiBaseServiceV2: ApiBaseServiceV2;
+  postItem?: PostComponent;
 
   loadItem(url: string) {
     return this.apiBaseServiceV2.get(url);
   }
 
   createComment(body:any) {
-    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments`, body);
+    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
   }
 
   updateComment(body:any) {
-    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.uuid}`, body);
+    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.uuid}`, body);
   }
 
   deleteComment(commentUuid:string) {
-    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${commentUuid}`);
+    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${commentUuid}`);
   }
 
   createReply(body:any) {
-    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies`, body);
+    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
   }
 
   updateReply(body:any) {
-    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies/${body.reply_uuid}`, body);
+    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`, body);
   }
 
   deleteReply(body:any) {
-    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoPosts}/${this.item.uuid}/comments/${body.comment_uuid}/replies/${body.reply_uuid}`);
+    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`);
   }
 }

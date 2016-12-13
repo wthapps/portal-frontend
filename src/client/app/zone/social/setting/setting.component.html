@@ -1,0 +1,104 @@
+<div class="zone-social">
+  <div class="zone-social-in">
+    <div class="z-social-box">
+      <div class="z-social-box-header">
+        <h3 class="h4"><i class="fa fa-cog"></i> Settings</h3>
+      </div>
+      <div class="z-social-box-body" *ngIf="user.settings">
+        <h3>General Settings</h3>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="user.settings.auto_import_from_contact.value" (ngModelChange)="updateSettings({auto_import_from_contact: user.settings.auto_import_from_contact})"></p-inputSwitch>
+          <label>
+            Auto import information from your contact profile
+          </label>
+        </div>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="user.settings.allow_friend_import_contact.value" (ngModelChange)="updateSettings({allow_friend_import_contact: user.settings.allow_friend_import_contact})"></p-inputSwitch>
+          <label>
+            Allow friends to import my contact profile
+          </label>
+        </div>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="user.settings.hide_adult_content.value" (ngModelChange)="updateSettings({hide_adult_content: user.settings.hide_adult_content})"></p-inputSwitch>
+          <label>
+            Hide all adult content
+          </label>
+        </div>
+
+        <hr>
+
+
+        <h3>Privacy</h3>
+        <p class="bold">Who can search and contact you?</p>
+        <div class="radio">
+          <label>
+            <input type="radio" name="searchable_contact" value="" [attr.checked]="user.settings.check_contact_any" (click)="user.settings.searchable_contact.value = 'public'; updateSettings({searchable_contact: user.settings.searchable_contact})">
+            Anyone can search and contact me
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="searchable_contact" value="" [attr.checked]="user.settings.check_contact_friends" (click)="user.settings.searchable_contact.value = 'friends'; updateSettings({searchable_contact: user.settings.searchable_contact})">
+            Only friends of friends and added contacts can search and see my profile
+          </label>
+        </div>
+
+        <br>
+        <p class="bold">Who can see view your social?</p>
+        <p>You can manage who will able to see your friends and communities. If your friends or communities decides not
+          to be public, they will stay hidden.</p>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div>
+              <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i class="fa fa-check"></i> {{user.settings.viewable_social.value |  titleCase}} <span class="caret"></span></a>
+              <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu">
+                <li><a href="javascript:;" (click)="user.settings.viewable_social.value = 'public'; updateSettings({viewable_social: user.settings.viewable_social})"> <i class="fa fa-check" *ngIf="user.settings.viewable_social.value == 'public'"></i> Public</a></li>
+                <li><a href="javascript:;" (click)="user.settings.viewable_social.value = 'friends'; updateSettings({viewable_social: user.settings.viewable_social})"> <i class="fa fa-check" *ngIf="user.settings.viewable_social.value == 'friends'"></i> Friends</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="user.settings.show_communities.value" (ngModelChange)="updateSettings({show_communities: user.settings.show_communities})"></p-inputSwitch>
+          <label>
+            Show my communities
+          </label>
+        </div>
+        <div class="checkbox checkbox-switch">
+          <p-inputSwitch [(ngModel)]="user.settings.show_friends.value" (ngModelChange)="updateSettings({show_friends: user.settings.show_friends})"></p-inputSwitch>
+          <label>
+            Show my friends list
+          </label>
+        </div>
+
+        <hr>
+
+        <h3>Post</h3>
+        <p class="bold">Who can see your post?</p>
+        <p>You can manage who will able to see your posts. This setting remembers your selection so future posts will be
+          shared with the same choice unless you change it.</p>
+        <div class="row">
+          <div class="col-sm-6">
+            <!--<select class="form-control">-->
+              <!--<option value="">Public</option>-->
+              <!--<option value="">Friends</option>-->
+            <!--</select>-->
+            <div>
+              <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i class="fa fa-check"></i> {{user.settings.viewable_post.value |  titleCase}} <span class="caret"></span></a>
+              <ul class="dropdown-menu dropdown-menu-wth dropdown-menu-check" aria-labelledby="dropdownMenu">
+                <li><a href="javascript:;" (click)="user.settings.viewable_post.value = 'public'; updateSettings({viewable_post: user.settings.viewable_post})"> <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'public'"></i> Public</a></li>
+                <li><a href="javascript:;" (click)="user.settings.viewable_post.value = 'friends'; updateSettings({viewable_post: user.settings.viewable_post})"> <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'friends'"></i> Friends</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="z-social-box-footer">
+        <button class="btn btn-link" (click)="resetSettings()">Reset Default</button>
+      </div>
+    </div>
+  </div>
+
+</div>

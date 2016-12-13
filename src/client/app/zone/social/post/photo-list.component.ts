@@ -23,17 +23,28 @@ export class SoPhotoListComponent implements OnInit {
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  photos: Array<any>;
-  selectedItems: Array<any>;
+  photos: Array<any> = new Array<any>();
+  selectedItems: Array<any> = new Array<any>();
   pressingCtrl: boolean = false;
 
   constructor(private apiService: ApiBaseService, private loading: LoadingService) {
   }
 
   ngOnInit(): void {
-    this.photos = new Array<any>();
-    this.selectedItems = new Array<any>();
+    // this.loading.start('.photo-grid-list');
+    // this.apiService.get(`zone/photos`).subscribe(
+    //   (response: any) => {
+    //     this.photos = response['data'];
+    //     this.loading.stop('.photo-grid-list');
+    //   },
+    //   error => {
+    //     // this.errorMessage = <any>error;
+    //     this.loading.stop('.photo-grid-list');
+    //   }
+    // );
+  }
 
+  loadPhotos() {
     this.loading.start('.photo-grid-list');
     this.apiService.get(`zone/photos`).subscribe(
       (response: any) => {

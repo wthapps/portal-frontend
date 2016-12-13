@@ -1,4 +1,4 @@
-<div class="row-img photo-grid-list" (click)="clickParent($event)">
+<div *ngIf="photos" class="row-img photo-grid-list" (click)="clickParent($event)">
   <div class="photo-box-img z-upload-item" *ngIf="showUpload">
     <a href="#" (click)="fileSelection.open($event)">
       <div>

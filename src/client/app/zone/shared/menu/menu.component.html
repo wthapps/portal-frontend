@@ -10,15 +10,15 @@
       <a href="#">Calendar</a>
     </li>
 
-    <li class="has-sub" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;" (click)="onMenu($event)">
+    <li class="has-sub" [routerLinkActive]="['active']">
+      <a [routerLink]="[socialMenu[0].link]" (click)="onMenu($event)">
         Social Network
       </a>
       <ul class="list-unstyled hidden" id="zone_menu_social">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let social of socialMenu">
-          <a [routerLink]="[social.link]">
-            {{social.name}}
-          </a>
+        <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
+          <a *ngIf="social.link == '/zone/social/profile'" [routerLink]="['/zone/social/profile',uuid]">
+            {{social.name}}</a>
+          <a *ngIf="social.link != '/zone/social/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
         </li>
       </ul>
     </li>
@@ -37,18 +37,6 @@
         Picture
       </a>
       <ul class="list-unstyled hidden" id="zone_menu_picture">
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/photo']">Photos</a>-->
-        <!--</li>-->
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/album']">Albums</a>-->
-        <!--</li>-->
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/video']">Videos</a>-->
-        <!--</li>-->
-        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
-        <!--<a [routerLink]="['/zone/picture/favourites']">Favourites</a>-->
-        <!--</li>-->
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
           <a [routerLink]="[item.link]">
             {{item.name}}

@@ -1,0 +1,40 @@
+<div class="zone-social">
+  <div class="zone-social-in">
+
+    <z-social-community-cover [data]="data"></z-social-community-cover>
+
+    <div *ngIf="data" class="z-social-box">
+      <div class="z-social-box-header">
+        <a href="#" (click)="onEdit()" class="btn btn-default-inline pull-right">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <h4 class="h4">
+          About Us
+        </h4>
+      </div>
+      <div class="z-social-post">
+        <div>
+          {{data.description}}
+        </div>
+        <!--<ul class="list-unstyled">
+          <li>
+            <i class="fa fa-globe"></i> <a href="#">External link description</a>
+          </li>
+          <li>
+            <i class="fa fa-globe"></i> <a href="#">External link description</a>
+          </li>
+        </ul>-->
+        <ul *ngIf="data.additional_links" class="list-unstyled">
+          <li *ngFor="let link of data.additional_links">
+            <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url|urlTransform}}">{{link.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <z-social-favorites></z-social-favorites>
+</div>
+
+
+<z-social-community-form-edit #modalEdit [data]="data" [action]="'edit'" (updated)="onUpdated($event)"></z-social-community-form-edit>

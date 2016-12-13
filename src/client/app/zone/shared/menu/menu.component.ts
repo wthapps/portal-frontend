@@ -5,6 +5,7 @@ import {
 } from '@angular/router';
 
 import { Constants } from "../../../shared/config/constants";
+import { UserService } from '../../../shared/services/user.service';
 
 
 declare var $: any;
@@ -20,11 +21,14 @@ declare var $: any;
 
 export class ZoneMenuComponent implements OnInit {
 
+  uuid: string;
   urls: any = [];
   items = Constants.pictureMenuItems;
   socialMenu = Constants.socialMenuItems;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private userService: UserService) {
+    this.uuid = this.userService.profile.uuid;
   }
 
   ngOnInit() {

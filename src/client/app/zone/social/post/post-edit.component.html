@@ -11,21 +11,18 @@
           </div>
           <div class="z-shared-with">
             <span class="dropdown">
-              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown"
+              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
                  aria-haspopup="true" aria-expanded="true">
-                 <i class="fa fa-globe" *ngIf="post.privacy=='Public'"></i>
-                 <i class="fa fa-users" *ngIf="post.privacy=='Friends'"></i>
-                 <i class="fa fa-lock" *ngIf="post.privacy=='Private'"></i>
-                {{post.privacy}}</a>
+                  <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{privacyName(post)}} </a>
               <ul class="dropdown-menu">
-                <li><a href="#" (click)="update({privacy: 'Public'}, $event)">
+                <li><a href="#" (click)="update({privacy: 'public'}, $event)">
                   <i class="fa fa-globe"></i> Public</a></li>
-                <li><a href="#" (click)="update({privacy: 'Friends'}, $event)">
+                <li><a href="#" (click)="update({privacy: 'friends'}, $event)">
                   <i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="#" (click)="update({privacy: 'Private'}, $event)"><i class="fa fa-lock"></i> Private</a></li>
+                <li><a href="#" (click)="update({privacy: 'personal'}, $event)"><i class="fa fa-lock"></i> Personal</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#" (click)="customShare('communities', $event)">Share in Communities</a></li>
-                <li><a href="#" (click)="customShare('friends', $event)">Share with Friends</a></li>
+                <li><a href="#" (click)="customPrivacy('custom_friend', $event)">Share with Friends</a></li>
+                <li><a href="#" (click)="customPrivacy('custom_community', $event)">Share in Communities</a></li>
               </ul>
             </span>
           </div>
@@ -78,18 +75,8 @@
     <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
       <div class="row">
         <div class="col-xs-6 col-sm-12">
-          <div class="form-group"
-               [ngClass]="{'has-error': (!descCtrl.valid && descCtrl.touched),
-                        'has-success': (descCtrl.valid && descCtrl.touched)}">
           <textarea placeholder="Share your ideas" class="form-control"
                     [formControl]="descCtrl"></textarea>
-            <!--<div *ngIf="!form.controls['description'].valid && form.controls['description'].touched">-->
-              <!--<span class="help-block"-->
-                    <!--*ngIf="!form.controls['description'].valid && form.controls['description'].errors.required" >-->
-                <!--Share your ideas is required-->
-              <!--</span>-->
-            <!--</div>-->
-          </div>
           <div class="form-group">
             <tag-input [maxItems]='100'
                        [autocompleteItems]="tags"
@@ -123,16 +110,18 @@
           </div>
         </div>
       </div>
+      <div class="form-group" *ngIf="parent != null">
+        Shared from <a [routerLink]="['/zone/social/profile/', parent.owner.uuid, 'about']" >{{parent.owner.name}}</a>
+      </div>
       <div class="clearfix text-right">
-        <button type="button" class="btn btn-default pull-left btn-min" (click)="addMorePhoto($event)">
-          <i class="fa fa-plus"></i> Add more
+        <button type="button" class="btn btn-default pull-left btn-min" *ngIf="parent == null" (click)="addMorePhoto($event)">
+          <i class="fa fa-camera"></i>
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"
-                [disabled]="!form.valid">Done</button>
+                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0))">Done</button>
         <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel</button>
       </div>
     </form>
-
   </modal-body>
 </hd-modal>
 <post-photo-select #photoSelectModal
@@ -141,6 +130,6 @@
                    (onClose)="closeSelectPhoto($event)"
                    (onUpload)="upload($event)"></post-photo-select>
 
-<post-share-community #customCommunities></post-share-community>
-<post-share-friend #customFriends></post-share-friend>
+<post-privacy-custom #privacyCustomModal (onSelected)="selectedItems($event)"></post-privacy-custom>
+
 

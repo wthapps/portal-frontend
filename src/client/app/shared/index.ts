@@ -18,7 +18,6 @@ export * from './services/can-deactivate-guard.service';
 export * from './services/deactivate-confirm.service';
 
 export * from '../partials/footer/index';
-export * from '../partials/dialogs/index';
 export * from '../partials/toast/index';
 export * from '../partials/loading/index';
 export * from '../partials/captcha/index';

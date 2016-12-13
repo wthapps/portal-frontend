@@ -4,6 +4,7 @@
 var basePath = '../client/assets',
     distPath = basePath + '/dist',
     thirdPartyPath = basePath + '/third_party',
+    appComponentPath = '../client/app',
     bowerPath = 'bower_components';
 
 // Configurable vendor scripts
@@ -107,12 +108,22 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: basePath + '/scss',
-                    src: ['*.{scss,sass}'],
+                    src: ['**/*.{scss,sass}'],
                     dest: basePath + '/css',
                     ext: '.css'
                 }]
+            },
+            dist2: {
+              files: [{
+                expand: true,
+                cwd: appComponentPath,
+                src: ['**/*.{scss,sass}'],
+                dest: appComponentPath,
+                ext: '.css'
+              }]
             }
         },
+
         watch: {
             appjs: {
                 files: [
@@ -187,5 +198,8 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'imagemin'
+    ]);
+    grunt.registerTask('buildAppComponent', [
+        'sass'
     ]);
 };

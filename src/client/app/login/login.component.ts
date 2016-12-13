@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import {
   FormBuilder,
@@ -25,7 +25,7 @@ declare var $: any;
   selector: 'page-login',
   templateUrl: 'login.component.html'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   form: FormGroup;
   email: AbstractControl;
   password: AbstractControl;
@@ -52,6 +52,10 @@ export class LoginComponent {
 
     this.email = this.form.controls['email'];
     this.password = this.form.controls['password'];
+  }
+
+  ngOnInit() {
+    this.loadingService.stop();
   }
 
   onSubmit(values: any): void {

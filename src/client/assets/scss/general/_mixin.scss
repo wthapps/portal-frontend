@@ -86,6 +86,104 @@ $prefix-for-spec: true !default;
   @include font-size(14px)
 }*/
 
+
+// =============================================================================
+// String Replace
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+// =============================================================================
+// Font Face
+// =============================================================================
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+  $src: null;
+
+  $extmods: (
+    eot: "?",
+    svg: "#" + str-replace($name, " ", "_")
+  );
+
+  $formats: (
+    otf: "opentype",
+    ttf: "truetype"
+  );
+
+  @each $ext in $exts {
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append($src, url(quote("../fonts/" + $path + "." + $extmod)) format(quote($format)), comma);
+  }
+
+  @font-face {
+    font-family: quote($name);
+    font-style: $style;
+    font-weight: $weight;
+    src: $src;
+  }
+}
+
+/*
+Create a font face rule. Embedded OpenType, WOFF2, WOFF, TrueType, and SVG files are automatically sourced.
+
+@include font-face(Samplino, fonts/Samplino);
+Rendered as CSS:
+
+@font-face {
+  font-family: "Samplino";
+  src: url("fonts/Samplino.eot?") format("eot"),
+  url("fonts/Samplino.woff2") format("woff2"),
+  url("fonts/Samplino.woff") format("woff"),
+  url("fonts/Samplino.ttf") format("truetype"),
+  url("fonts/Samplino.svg#Samplino") format("svg");
+}
+
+
+
+@include font-face("Samplina Neue", fonts/SamplinaNeue, bold, italic);
+@font-face {
+    font-family: "Samplina Neue";
+    font-style: italic;
+    font-weight: bold;
+    src: url("fonts/SamplinaNeue.eot?") format("eot"),
+         url("fonts/SamplinaNeue.woff2") format("woff2"),
+         url("fonts/SamplinaNeue.woff") format("woff"),
+         url("fonts/SamplinaNeue.ttf") format("truetype"),
+         url("fonts/SamplinaNeue.svg#Samplina_Neue") format("svg");
+}
+
+
+
+
+@include font-face(Samplinoff, fonts/Samplinoff, null, null, woff);
+@font-face {
+    font-family: "Samplinoff";
+    src: url("fonts/Samplinoff.woff") format("woff");
+}
+
+
+@include font-face(Samplinal, fonts/Samplinal, 500, normal, eot woff2 woff);
+@font-face {
+    font-family: "Samplinal";
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Samplinal.eot?") format("eot"),
+         url("fonts/Samplinal.woff2") format("woff2"),
+         url("fonts/Samplinal.woff") format("woff");
+}
+
+
+*/
+
 //
 //SVG background images with PNG and retina fallback
 //

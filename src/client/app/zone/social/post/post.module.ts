@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HdModalModule } from '../../shared/ng2-hd/modal/hd-modal';
 
 //noinspection TypeScriptCheckImport
 import {
@@ -10,22 +9,28 @@ import {
   PostEditComponent,
   PostPhotoSelectComponent,
   PostNewComponent,
-  PostShareComponent,
   PostActivitiesComponent,
   PostShareCommunityComponent,
-  PostShareFriendComponent
+  PostPrivacyCustomComponent,
+  PostLikeDislikeComponent,
+  MemberListInviteComponent,
+  PostService
 } from './index';
 import { TagInputModule } from 'ng2-tag-input';
+import { Ng2HdModule } from '../../shared/ng2-hd/index';
+import { RouterModule } from '@angular/router';
 
-
+import { InputTextareaModule } from 'primeng/primeng';
 
 @NgModule({
   imports: [
+    RouterModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HdModalModule,
-    TagInputModule
+    Ng2HdModule,
+    TagInputModule,
+    InputTextareaModule
   ],
   declarations: [
     PostNewComponent,
@@ -34,10 +39,11 @@ import { TagInputModule } from 'ng2-tag-input';
     PostEditComponent,
     PostNewComponent,
     PostPhotoSelectComponent,
-    PostShareComponent,
     PostActivitiesComponent,
+    PostLikeDislikeComponent,
     PostShareCommunityComponent,
-    PostShareFriendComponent
+    PostPrivacyCustomComponent,
+    MemberListInviteComponent
   ],
   exports: [
     CommonModule,
@@ -50,10 +56,14 @@ import { TagInputModule } from 'ng2-tag-input';
     PostEditComponent,
     PostNewComponent,
     PostPhotoSelectComponent,
-    PostShareComponent,
     PostActivitiesComponent,
+    PostLikeDislikeComponent,
     PostShareCommunityComponent,
-    PostShareFriendComponent
+    PostPrivacyCustomComponent,
+    MemberListInviteComponent
+  ],
+  providers: [
+    PostService
   ]
 })
 

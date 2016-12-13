@@ -1,0 +1,189 @@
+<div class="zone-social">
+  <div class="zone-social-in">
+
+    <z-social-community-cover></z-social-community-cover>
+
+    <router-outlet></router-outlet>
+
+  </div>
+  <z-social-favorites></z-social-favorites>
+</div>
+
+
+<div class="modal modal-custom" id="modal-social-com-edit" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-social modal-long" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><i class="fa fa-pencil"></i> Edit Information</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Community Name</label>
+          <input type="text" class="form-control" placeholder="" value="Group number 01">
+        </div>
+        <div class="form-group">
+          <span class="pull-right text-fade">18/150 characters</span>
+          <label>Tag Line</label>
+          <input type="text" class="form-control" placeholder="" value="This is the tag line">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" rows="5">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label>Additional Link</label>
+          <div class="mb15">
+            <div class="media">
+              <div class="media-body">
+                <div class="row row-10">
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" placeholder="Text" value="External link title">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" placeholder="http://..." value="https://stuffs.com">
+                  </div>
+                </div>
+              </div>
+              <div class="media-right">
+                <button class="btn btn-default">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </div>
+            </div>
+            <div class="media">
+              <div class="media-body">
+                <div class="row row-10">
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" placeholder="Text" value="External link title">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" placeholder="http://..." value="https://stuffs.com">
+                  </div>
+                </div>
+              </div>
+              <div class="media-right">
+                <button class="btn btn-default">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mt15">
+            <button class="btn btn-default">
+              <i class="fa fa-plus"></i> Add more
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-wth-default btn-min">Done</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal modal-custom" id="modal-social-com-preferences" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-social modal-long" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Preferences</h4>
+      </div>
+      <div class="modal-body">
+        <div class="mb20">
+          <label>Privacy Settings</label>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Public
+              <span class="help-block">
+                Anyone can see the group, its members and their posts
+              </span>
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Private
+              <span class="help-block">
+                Only members can see posts
+              </span>
+            </label>
+          </div>
+        </div>
+        <!--end Privacy Settings-->
+        <div class="mb20">
+          <label>Search Settings</label>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Anyone can search, see and join the group
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Only connected members can search and ask to join the group
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Only invited members can search and join the group
+            </label>
+          </div>
+        </div>
+        <!--end Search Settings-->
+        <div class="mb20">
+          <label>Post Settings</label>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Member can post
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Post must be review and approved by admin or moderator
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Only admin can post
+            </label>
+          </div>
+        </div>
+        <div class="mb20">
+          <label>Notification</label>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Get notified about new posts
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              Get notified about users request
+            </label>
+          </div>
+        </div>
+        <!--end Post Settings-->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-wth-default btn-min">Done</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

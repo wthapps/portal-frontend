@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal';
+import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
 import { SoPhotoListComponent } from './index';
 
 declare var _: any;
@@ -36,6 +36,7 @@ export class PostPhotoSelectComponent implements OnInit{
     if (options.return == true) {
       this.hasBack = true;
     }
+    this.photoList.loadPhotos();
     this.modal.open();
   }
 

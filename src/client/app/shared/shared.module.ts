@@ -11,7 +11,8 @@ import { NameListService } from './name-list/index';
 import {
   ConfirmDialogModule,
   ConfirmationService,
-  AutoCompleteModule
+  AutoCompleteModule,
+  InputTextareaModule
 } from 'primeng/primeng';
 import { TagInputModule } from 'ng2-tag-input';
 
@@ -43,6 +44,10 @@ import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/inde
 import { FormModalComponent } from './form/form-modal.component';
 import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
 import { NewlinePipe } from './pipe/newline.pipe';
+import { TitleCase } from './pipe/titlecase.pipe';
+import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
+import { UrlTransformPipe } from './pipe/url.pipe';
+import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -55,7 +60,9 @@ import { NewlinePipe } from './pipe/newline.pipe';
 
     ConfirmDialogModule,
     AutoCompleteModule,
-    TagInputModule
+    TagInputModule,
+    InputTextareaModule
+
   ],
   declarations: [
     ToolbarComponent,
@@ -72,13 +79,14 @@ import { NewlinePipe } from './pipe/newline.pipe';
     ToTopComponent,
     ReadMoreComponent,
     FormModalComponent,
-    // Directive
-    LoadingDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
     NewlinePipe,
     DateUntilNowPipe,
+    TitleCase,
+    UrlTransformPipe,
+    ShowLengthTransformPipe
   ],
   exports: [
     ToolbarComponent,
@@ -99,18 +107,21 @@ import { NewlinePipe } from './pipe/newline.pipe';
     ConfirmDialogModule,
     AutoCompleteModule,
     TagInputModule,
+    InputTextareaModule,
+
 
     CommonModule,
     FormsModule,
     RouterModule,
     FormModalComponent,
-    // Directive
-    LoadingDirective,
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
     NewlinePipe,
     DateUntilNowPipe,
+    TitleCase,
+    UrlTransformPipe,
+    ShowLengthTransformPipe
   ]
 })
 export class SharedModule {
@@ -125,6 +136,8 @@ export class SharedModule {
         ConfirmationService,
         DeactivateConfirmService,
         ApiBaseServiceV2,
+        Ng2Cable,
+        Broadcaster
       ]
     };
   }

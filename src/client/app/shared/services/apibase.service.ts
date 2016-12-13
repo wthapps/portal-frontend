@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions, RequestOptionsArgs, Response } from '@an
 import { Observable } from 'rxjs/Observable';
 import { Cookie }     from 'ng2-cookies/ng2-cookies';
 import { Constants }     from '../index';
+import { Router } from '@angular/router';
 
 @Injectable()
 export abstract class ApiBaseService {
@@ -12,7 +13,7 @@ export abstract class ApiBaseService {
   private _baseUrl: string = Constants.baseUrls.apiBaseService;
   private _headers: Headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(http: Http) {
+  constructor(private http: Http, private router: Router) {
     this._http = http;
   }
 
@@ -23,9 +24,10 @@ export abstract class ApiBaseService {
     this.buildOptions();
     return this._http.get(this._baseUrl + path, this._options)
       .map(res => res.json())
-      .map((res) => {
-        if (res) {
-          return res;
+      .catch(err =>  {
+        if (err.status == 401 && err.statusText == "Unauthorized") {
+          let _route = this.router;
+          _route.navigate(['/login']);
         }
       });
   }
@@ -35,7 +37,13 @@ export abstract class ApiBaseService {
    */
   public post(path: string, body: string): Observable<Response> {
     this.buildOptions();
-    return this._http.post(this._baseUrl + path, body, this._options);
+    return this._http.post(this._baseUrl + path, body, this._options)
+      .catch(err =>  {
+      if (err.status == 401 && err.statusText == "Unauthorized") {
+        let _route = this.router;
+        _route.navigate(['/login']);
+      }
+    });
   }
 
   /**
@@ -43,7 +51,13 @@ export abstract class ApiBaseService {
    */
   public put(path: string, body: string): Observable<Response> {
     this.buildOptions();
-    return this._http.put(this._baseUrl + path, body, this._options);
+    return this._http.put(this._baseUrl + path, body, this._options)
+      .catch(err =>  {
+      if (err.status == 401 && err.statusText == "Unauthorized") {
+        let _route = this.router;
+        _route.navigate(['/login']);
+      }
+    });
   }
 
   /**
@@ -51,7 +65,13 @@ export abstract class ApiBaseService {
    */
   public delete(path: string): Observable<Response> {
     this.buildOptions();
-    return this._http.delete(this._baseUrl + path, this._options);
+    return this._http.delete(this._baseUrl + path, this._options)
+      .catch(err =>  {
+      if (err.status == 401 && err.statusText == "Unauthorized") {
+        let _route = this.router;
+        _route.navigate(['/login']);
+      }
+    });
   }
 
   /**
@@ -59,7 +79,13 @@ export abstract class ApiBaseService {
    */
   public patch(path: string, body: string): Observable<Response> {
     this.buildOptions();
-    return this._http.patch(this._baseUrl + path, body, this._options);
+    return this._http.patch(this._baseUrl + path, body, this._options)
+      .catch(err =>  {
+      if (err.status == 401 && err.statusText == "Unauthorized") {
+        let _route = this.router;
+        _route.navigate(['/login']);
+      }
+    });
   }
 
   private buildOptions() {

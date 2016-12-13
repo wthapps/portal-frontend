@@ -3,27 +3,55 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
-import { ZSocialComponent } from './social.component';
-import { ZSocialTempComponent } from './social-temp.component';
-import { ZSocialTempDetailComponent } from './social-temp-detail.component';
+import { InputSwitchModule } from 'primeng/primeng';
 
 import { PostModule } from "./post/post.module";
 
-import { ZSocialPostListComponent } from "./post-list/post-list.component";
-import { ZSocialPostDetailComponent } from './post-detail/post-detail.component';
+import { PostListComponent } from "./post/post-list.component";
+import { PostDetailComponent } from './post/post-detail.component';
 
 import {
-  ZSocialPostItemComponent,
-  ZSocialPostItemHeaderComponent,
-  ZSocialPostItemBodyComponent,
-  ZSocialPostItemFooterComponent
-} from "./post-item/index";
+  PostComponent,
+  PostHeaderComponent,
+  PostBodyComponent,
+  PostFooterComponent
+} from "./post/index";
 
-import { ZSocialCommunityTempComponent } from './communities-temp.component';
-import { ZSocialPhotoDetailComponent } from './photo-detail/photo-detail.component';
+import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
-import { HdModalModule } from '../shared/ng2-hd/modal/hd-modal';
-import { ZSocialCommentBoxComponent } from './post-item/post-item-layout/sub-layout/comment-box.component';
+
+import { ZSocialHomeComponent } from './home/social-home.component';
+
+import { Ng2HdModule } from '../shared/ng2-hd/index';
+
+import { ZSocialCommentBoxComponent } from './post/components/sub-layout/comment-box.component';
+
+import { ZSocialCommunityComponent } from './communities/communities.component';
+import { ZSocialCommunityDetailComponent } from './communities/communities-detail.component';
+import { ZSocialCommunityDetailNotificationComponent } from './communities/notification/notification.component';
+import { ComMemberListComponent } from './communities/member/member-list.component';
+import { ZSocialCommunityDetailAboutComponent } from './communities/about/about.component';
+import { ZSocialCommunityDetailPostComponent } from './communities/post/post.component';
+
+import { ZSocialMembersComponent } from './members/members.component'
+import { ZSocialProfileAboutComponent } from './profile/about/about.component';
+import { ZSocialProfilePostComponent } from './profile/post/post.component';
+import { ZSocialSettingComponent } from './setting/setting.component';
+import { ZSocialCommunityListComponent } from './communities/list/list.component';
+import { ZSocialCommunityCoverComponent } from './communities/cover/cover.component';
+import { ZSocialCommunityFormEditComponent } from './communities/form/edit.component';
+import { ZSocialCommunityFormPreferenceComponent } from './communities/form/preferences.component';
+import { ZSocialCommunityService } from './communities/communities.service';
+import { ZoneReportComponent } from '../shared/form/report/report.component';
+import { ZoneReportService } from '../shared/form/report/report.service';
+import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
+import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
+import { ZSocialNotificationsComponent } from './notifications/notifications.component';
+import { ZSocialProfileFormAboutComponent } from './profile/form/about.component';
+import { ZSocialProfileFormContactComponent } from './profile/form/contact.component';
+import { ZSocialProfileFormWorkEduComponent } from './profile/form/work-edu.component';
+import { ZSocialProfileFormInterestComponent } from './profile/form/interest.component';
+import { ZSocialProfileService } from './profile/profile.service';
 
 
 @NgModule({
@@ -32,30 +60,68 @@ import { ZSocialCommentBoxComponent } from './post-item/post-item-layout/sub-lay
     SharedModule,
     ReactiveFormsModule,
     PostModule,
-    HdModalModule
+    Ng2HdModule,
+    InputSwitchModule
   ],
   declarations: [
-    ZSocialComponent,
-    ZSocialTempComponent,
-    ZSocialTempDetailComponent,
-    ZSocialCommunityTempComponent,
+    // Home
+    ZSocialHomeComponent,
+    ZSocialFavoritesComponent,
+
+    //Share
+    ZoneReportComponent,
+
+    // Communities
+    ZSocialCommunityComponent,
+    ZSocialCommunityListComponent,
+    ZSocialCommunityCoverComponent,
+    ZSocialCommunityDetailComponent,
+    ZSocialCommunityDetailNotificationComponent,
+    ComMemberListComponent,
+    ZSocialCommunityDetailAboutComponent,
+    ZSocialCommunityDetailPostComponent,
+    ZSocialCommunityFormEditComponent,
+    ZSocialCommunityFormPreferenceComponent,
+
+    // members
+    ZSocialMembersComponent,
+
+
     // List Posts
-    ZSocialPostListComponent,
-    ZSocialPostItemComponent,
-    ZSocialPostItemHeaderComponent,
-    ZSocialPostItemBodyComponent,
-    ZSocialPostItemFooterComponent,
-    ZSocialPostDetailComponent,
-    ZSocialPhotoDetailComponent,
+    PostListComponent,
+    PostComponent,
+    PostHeaderComponent,
+    PostBodyComponent,
+    PostFooterComponent,
+    PostDetailComponent,
+    PostDetailPhotoComponent,
+
+
+    // Profile
     ZSocialProfileComponent,
+    ZSocialProfileAboutComponent,
+    ZSocialProfilePostComponent,
+    ZSocialProfileCoverComponent,
+    ZSocialProfileFormAboutComponent,
+    ZSocialProfileFormContactComponent,
+    ZSocialProfileFormWorkEduComponent,
+    ZSocialProfileFormInterestComponent,
+
+    ZSocialSettingComponent,
+
     ZSocialCommentBoxComponent,
+    // Notification
+    ZSocialNotificationsComponent
   ],
   exports: [
-    ZSocialComponent,
-    ZSocialTempComponent,
-    ZSocialTempDetailComponent
+    ZSocialHomeComponent,
+    ZoneReportComponent
   ],
-  providers: [],
+  providers: [
+    ZSocialCommunityService,
+    ZoneReportService,
+    ZSocialProfileService
+  ],
 })
 
 export class ZSocialModule {
