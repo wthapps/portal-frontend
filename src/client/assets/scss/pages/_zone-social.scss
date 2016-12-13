@@ -1,10 +1,18 @@
 .zone-social {
   padding: 30px 45px 0;
   @include clearfix;
+  display: flex;
+  align-items: flex-start;
   .zone-social-in {
-    width: 670px;
-    float: left;
+    flex: 1;
     margin-right: 45px;
+  }
+  .zone-social-sidebar {
+    float: right;
+    width: 300px;
+    @media (max-width: $screen-md-max) {
+      width: 200px;
+    }
   }
 }
 
@@ -21,6 +29,9 @@
     padding: 15px;
     border-bottom: 1px solid $line;
     @include clearfix;
+    .badge-wth {
+      top: 2px;
+    }
     .h4 {
       margin: 0;
       float: left;
@@ -537,7 +548,6 @@
 }
 
 .zone-social-sidebar {
-  float: left;
   dl {
     dt {
       font-size: 18px;
