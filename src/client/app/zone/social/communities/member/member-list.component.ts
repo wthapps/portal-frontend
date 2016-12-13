@@ -6,8 +6,9 @@ import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
 import { MemberListInviteComponent } from './member-list-invite.component';
-import { ApiBaseService } from '../../../../shared/index';
+import { ApiBaseService, ToastsService, ConfirmationService } from '../../../../shared/index';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
+
 
 declare var _: any;
 /**
@@ -35,7 +36,9 @@ export class ComMemberListComponent implements OnInit {
               private loadingService: LoadingService,
               private zoneReportService: ZoneReportService,
               private route: ActivatedRoute,
-    private router: Router
+              private router: Router,
+              private confirmationService: ConfirmationService,
+              private toastsService: ToastsService
   ) {
   }
 
@@ -48,6 +51,7 @@ export class ComMemberListComponent implements OnInit {
       this.apiBaseServiceV2.get(`zone/social_network/communities/${params['id']}`).subscribe(
         (res: any)=> {
           this.data = res.data;
+          console.log('data', this.data);
           // this.loadingService.stop('.zone-social-cover');
         },
         error => {
@@ -109,6 +113,19 @@ export class ComMemberListComponent implements OnInit {
     );
   }
 
+  acceptJoinRequest(item: any) {
+    this.apiBaseServiceV2.post(`zone/social_network/communities/accept_join_request/`,
+      JSON.stringify({uuid: this.uuid, user_id: item.inviter.uuid})).subscribe(
+      (res: any)=> {
+        this.loadDataBySelectedTab();
+      },
+      error => {
+        // this.loadingService.stop('.zone-social-cover');
+        this.errorMessage = <any>error
+      }
+    );
+  }
+
   cancelInvitation(id:any) {
     this.apiBaseServiceV2.delete(`zone/social_network/communities/cancel_invitation/${id}`).subscribe(
       (res: any)=> {
@@ -119,5 +136,25 @@ export class ComMemberListComponent implements OnInit {
         this.errorMessage = <any>error
       }
     );
+  }
+
+  deleteMember(user: any) {
+    this.confirmationService.confirm({
+      message: `Are you sure to delete member ${user.name} from the community?`,
+      header: 'Delete Member',
+      accept: () => {
+        this.apiBaseServiceV2.delete(`zone/social_network/communities/${this.uuid}/members/${user.uuid}`).subscribe(
+          (res: any)=> {
+            this.toastsService.success('You deleted member successfully');
+
+            this.loadDataBySelectedTab();
+          },
+          error => {
+            this.toastsService.danger(error);
+            this.loadingService.stop();
+          }
+        );
+      }
+    });
   }
 }

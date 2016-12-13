@@ -61,12 +61,12 @@
 
 
 
-      <li class="pull-right mr10">
-        <button class="btn btn-default" type="button" (click)="askToJoin()">
+      <li class="pull-right mr10" *ngIf="!isMember()">
+        <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="invitation == undefined">
           <i class="fa fa-user-plus"></i> Ask to join
         </button>
 
-        <div *ngIf="relationships.status == 1" class="btn-group pull-right">
+        <div class="btn-group pull-right" *ngIf="invitation != undefined">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
             Asked to join <span class="caret"></span>
