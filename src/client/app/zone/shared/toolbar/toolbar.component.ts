@@ -1,6 +1,16 @@
-import { Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+  Input,
+  Output,
+  EventEmitter,
+  DoCheck
+} from '@angular/core';
 import { Router } from '@angular/router';
-import {Constants} from "../../../shared/config/constants";
+import { Constants } from '../../../shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -12,7 +22,7 @@ declare var _: any;
   templateUrl: 'toolbar.component.html'
 })
 
-export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
+export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges, DoCheck {
 
   advSearch: boolean = false;
   listFilter: string = '';
@@ -79,10 +89,10 @@ export class ZoneToolbarComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // console.log(" has selected item change", changes['hasSelectedItem']);
+    // console.log(' has selected item change', changes['hasSelectedItem']);
     // if (changes['hasSelectedItem'].currentValue) {
     //   var view = changes['hasSelectedItem'].currentValue;
-    //   // console.log(" has selected item change", view);
+    //   // console.log(' has selected item change', view);
     // }
     if (changes['selectedItems'] != undefined) {
       // var view = changes['hasSelectedItem'].currentValue;

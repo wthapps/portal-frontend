@@ -4,8 +4,7 @@ import {
   FormGroup,
   AbstractControl,
   FormBuilder,
-  Validators,
-  FormControl
+  Validators
 }                           from '@angular/forms';
 
 import {

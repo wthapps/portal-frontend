@@ -1,7 +1,16 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { SoPost } from "../../../shared/models/social_network/so-post.model";
-import { BaseZoneSocialItem } from "../base/base-social-item";
-import { ConstantsSocial } from "../base/constants-social";
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  EventEmitter
+} from '@angular/core';
+import { SoPost } from '../../../shared/models/social_network/so-post.model';
+import { BaseZoneSocialItem } from '../base/base-social-item';
+import { ConstantsSocial } from '../base/constants-social';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { Constants } from '../../../shared/config/constants';
 import { LoadingService, ToastsService, ConfirmationService } from '../../../shared/index';
@@ -11,7 +20,6 @@ import {
 } from '../events/social-events';
 import {
   PostPhotoSelectComponent,
-  PostEditComponent,
   PostActivitiesComponent
 } from './index';
 import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
@@ -55,12 +63,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnInit() {
-    this.photoModal.action = "DONE";
+    this.photoModal.action = 'DONE';
     this.photoModal.photoList.multipleSelect = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['item'].currentValue.id != undefined) {
+    if (changes['item'].currentValue.id != undefined) {
     }
     if (!this.item) {
       this.item = new SoPost();
@@ -92,7 +100,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (this.itemDisplay.photos.length > 6) {
       this.itemDisplay.displayCss = 'carousel-thumb-style-6';
     }
-    if(this.itemDisplay.parent != null && this.itemDisplay.parent != undefined) {
+    if (this.itemDisplay.parent != null && this.itemDisplay.parent != undefined) {
       this.itemDisplay.parent.displayCss = 'carousel-thumb-style-' + this.itemDisplay.parent.photos.length;
       if (this.itemDisplay.parent.photos.length > 6) {
         this.itemDisplay.parent.displayCss = 'carousel-thumb-style-6';
@@ -277,7 +285,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   openShare() {
-    this.modalOpened.emit({ mode: 'add', parent: this.item, isShare: true});
+    this.modalOpened.emit({mode: 'add', parent: this.item, isShare: true});
   }
 
   openActivities() {

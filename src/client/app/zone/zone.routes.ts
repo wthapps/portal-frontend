@@ -2,12 +2,11 @@ import { Route } from '@angular/router';
 import { ZoneComponent } from './index';
 import { ZPictureComponent } from './index';
 
-import { AuthGuard } from "../shared/services/auth-guard.service";
+import { AuthGuard } from '../shared/services/auth-guard.service';
 import { PostDetailComponent } from './social/post/post-detail.component';
 import { PostDetailPhotoComponent } from './social/post/post-detail-photo.component';
 
 import { ZSocialHomeComponent } from './social/home/social-home.component';
-
 
 import { ZSocialProfileComponent } from './social/profile/profile.component';
 import { ZSocialProfileAboutComponent } from './social/profile/about/about.component';
@@ -15,9 +14,6 @@ import { ZSocialProfilePostComponent } from './social/profile/post/post.componen
 
 import { ZSocialCommunityComponent } from './social/communities/communities.component';
 import { ZSocialCommunityListComponent } from './social/communities/list/list.component';
-
-import { ZSocialCommunityDetailComponent } from './social/communities/communities-detail.component';
-
 
 import { ZSocialCommunityDetailNotificationComponent } from './social/communities/notification/notification.component';
 import { ComMemberListComponent } from './social/communities/member/member-list.component';

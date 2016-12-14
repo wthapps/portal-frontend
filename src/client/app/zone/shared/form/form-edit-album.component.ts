@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
-import { FormModalComponent } from "../../../shared/form/form-modal.component";
-import { AlbumService } from "../../../shared/services/picture/album.service";
-import { Album } from "../../../shared/models/album.model";
-import { AlbumPhoto } from "../../../shared/models/album-photos.model";
-import { ToastsService } from "../../../partials/toast/toast-message.service";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormModalComponent } from '../../../shared/form/form-modal.component';
+import { AlbumService } from '../../../shared/services/picture/album.service';
+import { Album } from '../../../shared/models/album.model';
+import { ToastsService } from '../../../partials/toast/toast-message.service';
 
 declare var $: any;
 declare var _: any;
@@ -33,8 +32,8 @@ export class ZPictureFormEditAlbumComponent extends FormModalComponent {
     let album = new Album({name: albumName, description: albumDes});
     this.albumService.put(this.albumService.url + this.album.id, album)
       .subscribe(
-        res => {
-          this.toastService.success('Album is edited')
+        (res: any) => {
+          this.toastService.success('Album is edited');
           this.album = new Album(res.data);
           this.doneFormModal.emit(this.album);
         },

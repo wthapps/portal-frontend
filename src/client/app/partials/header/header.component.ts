@@ -155,7 +155,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   sendMessage(event: any) {
     ActionCable.startDebugging();
     var app: any = {cable: null, notification: null};
-    app.cable = ActionCable.createConsumer("ws://localhost:4000/cable");
+    app.cable = ActionCable.createConsumer('ws://localhost:4000/cable');
     app.notification = app.cable.subscriptions.create('NotificationChannel', {
       //   // ActionCable callbacks
       connected: function (data: any) {

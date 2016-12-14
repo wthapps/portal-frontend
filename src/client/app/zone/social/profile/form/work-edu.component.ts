@@ -6,13 +6,9 @@ import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal'
 
 import {
   FormGroup,
-  AbstractControl,
   FormBuilder,
-  Validators,
-  FormControl,
   FormArray
 } from '@angular/forms';
-import { CustomValidator } from '../../../../shared/validator/custom.validator';
 import { SocialService } from '../../services/social.service';
 
 declare var $: any;
@@ -63,12 +59,12 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
       this.removeAll();
 
       let additional_employment_edit = this.data.employment;
-      _.map(additional_employment_edit, (v)=> {
+      _.map(additional_employment_edit, (v: any)=> {
         _this.addWork(v);
       });
 
       let additional_education_edit = this.data.education;
-      _.map(additional_education_edit, (v)=> {
+      _.map(additional_education_edit, (v: any)=> {
         _this.addEducation(v);
       });
     }
@@ -156,11 +152,11 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
 
     // get links if link is not empty
     /*let emails_filter = [];
-    _.map(values.email, (v)=> {
-      if (v.email != '') {
-        emails_filter.push(v);
-      }
-    });*/
+     _.map(values.email, (v)=> {
+     if (v.email != '') {
+     emails_filter.push(v);
+     }
+     });*/
 
     let body = JSON.stringify({
       employment: values.works,

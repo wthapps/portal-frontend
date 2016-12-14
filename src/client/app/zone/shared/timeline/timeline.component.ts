@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, HostListener } from '@angular/core';
 
 import { Photo } from '../../../shared/models/photo.model';
 
@@ -8,11 +8,7 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'page-zone-timeline',
-  templateUrl: 'timeline.component.html',
-  host: {
-    '(document:keydown)': 'onDocumentKeyDown($event)',
-    '(document:keyup)': 'onDocumentKeyUp($event)'
-  },
+  templateUrl: 'timeline.component.html'
 })
 
 export class ZPictureTimelineComponent implements OnChanges {
@@ -24,13 +20,15 @@ export class ZPictureTimelineComponent implements OnChanges {
 
   keyCtrl: boolean = false;
 
-  onDocumentKeyDown(ev: KeyboardEvent) {
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
       this.keyCtrl = true;
     }
   }
 
-  onDocumentKeyUp(ev: KeyboardEvent) {
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(ev: KeyboardEvent) {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
       this.keyCtrl = false;
     }

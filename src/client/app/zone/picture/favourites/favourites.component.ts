@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, Input, EventEmitter } from '@angular/core';
 
 // import {ZPhotoDetailComponent} from './photo-detail.component';
 import { Photo } from '../../../shared/models/photo.model';
@@ -21,7 +21,7 @@ declare var _: any;
   styleUrls: ['favourites.component.css']
 })
 
-export class ZoneFavouritesComponent extends BaseMediaComponent implements OnInit {
+export class ZoneFavouritesComponent extends BaseMediaComponent implements OnInit, OnChanges {
   showImg: boolean = false;
   imgId: number;
   sendActionDetail: any;

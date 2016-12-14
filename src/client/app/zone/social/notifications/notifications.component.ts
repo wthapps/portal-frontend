@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../services/social.service';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 
-declare var _:any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -10,7 +10,7 @@ declare var _:any;
   templateUrl: 'notifications.component.html'
 })
 
-export class ZSocialNotificationsComponent implements OnInit{
+export class ZSocialNotificationsComponent implements OnInit {
   notifications: any = [];
   newNotifications: any = [];
 
@@ -24,15 +24,15 @@ export class ZSocialNotificationsComponent implements OnInit{
 
   callNotifications() {
     this.socialService.user.getNotifications().subscribe(
-      (res:any) => {
+      (res: any) => {
         console.log(res.data);
         this.notifications = res.data;
-        this.newNotifications = _.filter(this.notifications, { 'seen_state': 'new' });
+        this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
       }
     );
   }
 
-  doAction(action:any) {
+  doAction(action: any) {
     let api = null;
     switch (action.method) {
       case 'post':
@@ -44,9 +44,9 @@ export class ZSocialNotificationsComponent implements OnInit{
     }
 
     api.subscribe(
-      (res:any) => {
+      (res: any) => {
         this.callNotifications();
       }
-    )
+    );
   }
 }

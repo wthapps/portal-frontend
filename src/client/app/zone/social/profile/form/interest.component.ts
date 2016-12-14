@@ -6,13 +6,9 @@ import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal'
 
 import {
   FormGroup,
-  AbstractControl,
   FormBuilder,
-  Validators,
-  FormControl,
   FormArray
 } from '@angular/forms';
-import { CustomValidator } from '../../../../shared/validator/custom.validator';
 import { SocialService } from '../../services/social.service';
 
 declare var $: any;
@@ -60,7 +56,7 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
       this.removeAll();
 
       let additional_hobby_interest_edit = this.data.hobby_interest;
-      _.map(additional_hobby_interest_edit, (v)=> {
+      _.map(additional_hobby_interest_edit, (v: any)=> {
         _this.addHobbyInterest(v);
       });
     }
@@ -111,14 +107,6 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
   onSubmit(values: any): void {
 
     console.log(values);
-
-    // get links if link is not empty
-    /*let emails_filter = [];
-    _.map(values.email, (v)=> {
-      if (v.email != '') {
-        emails_filter.push(v);
-      }
-    });*/
 
     let body = JSON.stringify({
       hobby_interest: values.hobby_interests

@@ -79,7 +79,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       (<FormControl>this.description).setValue(this.data.description);
 
       let additional_links_edit = this.data.additional_links;
-      _.map(additional_links_edit, (v)=> {
+      _.map(additional_links_edit, (v: any)=> {
         _this.addLink(v);
       });
 
@@ -95,7 +95,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
 
     if (link) {
       return this.fb.group({
-        key: [link.name.toLowerCase().replace(' ','_')],
+        key: [link.name.toLowerCase().replace(' ', '_')],
         name: [link.name],
         url: [link.url, Validators.compose([CustomValidator.urlFormat])],
         order: [link.order]
@@ -141,8 +141,8 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   }
 
   onSubmit(values: any): void {
-    let additional_links_filter = [];
-    _.map(values.additional_links, (v)=> {
+    let additional_links_filter: any = [];
+    _.map(values.additional_links, (v: any)=> {
       if (v.url) {
         additional_links_filter.push(v);
       }

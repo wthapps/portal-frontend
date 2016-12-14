@@ -12,9 +12,7 @@ import { HdMultiSelectListModule } from './list/hd-list.module';
     HdModalModule,
     HdMultiSelectListModule
   ],
-  declarations: [
-
-  ],
+  declarations: [],
   exports: [
     HdModalModule,
     HdMultiSelectListModule

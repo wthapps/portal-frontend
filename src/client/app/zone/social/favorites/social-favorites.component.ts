@@ -7,7 +7,7 @@ import { SocialService } from '../services/social.service';
   templateUrl: 'social-favorites.component.html'
 })
 
-export class ZSocialFavoritesComponent implements OnInit{
+export class ZSocialFavoritesComponent implements OnInit {
 
   favourites: any = [];
 
@@ -17,7 +17,7 @@ export class ZSocialFavoritesComponent implements OnInit{
 
   ngOnInit() {
     this.socialService.user.getFavourites().subscribe(
-      (res:any) => {
+      (res: any) => {
         this.favourites = res.data;
       }
     );

@@ -34,9 +34,9 @@ export class ZSocialProfilePostComponent implements OnInit {
       this.uuid = params['id'];
       this.socialService.user.get(this.uuid).subscribe(
         (res: any) => {
-          this.userInfo = res.data
+          this.userInfo = res.data;
         }
-      )
+      );
     });
   }
 }

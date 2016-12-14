@@ -1,7 +1,7 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { BaseZoneSocialItem } from "../../base/base-social-item";
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { SoPost } from "../../../../shared/models/social_network/so-post.model";
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { BaseZoneSocialItem } from '../../base/base-social-item';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { PostComponent } from '../post.component';
 import { UserService } from '../../../../shared/services/user.service';
 
@@ -42,7 +42,7 @@ export class PostBodyComponent extends BaseZoneSocialItem implements OnInit, OnC
       this.showInfo = true;
     }
 
-    if(changes['item'].currentValue.parent) {
+    if (changes['item'].currentValue.parent) {
       this.parentItem = changes['item'].currentValue.parent;
     }
   }

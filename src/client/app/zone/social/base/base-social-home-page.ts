@@ -1,5 +1,5 @@
-import {BaseZoneSocial} from "./base-social";
+import { BaseZoneSocial } from './base-social';
 
-export class BaseZoneSocialHomePage extends BaseZoneSocial{
+export class BaseZoneSocialHomePage extends BaseZoneSocial {
 
 }

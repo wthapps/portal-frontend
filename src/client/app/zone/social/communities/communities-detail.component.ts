@@ -9,7 +9,7 @@ import { UserService } from '../../../shared/services/user.service';
   templateUrl: 'communities-detail.component.html'
 })
 
-export class ZSocialCommunityDetailComponent implements OnInit{
+export class ZSocialCommunityDetailComponent implements OnInit {
   errorMessage: string = '';
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { PostNewComponent } from '../post/index';
-import { PostListComponent } from "../post/post-list.component";
-import { BaseZoneSocialHomePage } from "../base/base-social-home-page";
+import { PostListComponent } from '../post/post-list.component';
+import { BaseZoneSocialHomePage } from '../base/base-social-home-page';
 
 @Component({
   moduleId: module.id,

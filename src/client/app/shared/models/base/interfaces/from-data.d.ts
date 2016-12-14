@@ -1,3 +1,3 @@
 interface FromData {
-  from(data);
+  from(data: any): any;
 }

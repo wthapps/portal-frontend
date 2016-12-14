@@ -1,17 +1,13 @@
-import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 
-declare var _ :any;
-declare var $ :any;
+declare var _: any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
   selector: 'so-photo-list',
-  templateUrl: 'photo-list.component.html',
-  host: {
-    '(document:keydown)': 'onDocumentKeyDown($event)',
-    '(document:keyup)': 'onDocumentKeyUp($event)'
-  }
+  templateUrl: 'photo-list.component.html'
 })
 
 export class SoPhotoListComponent implements OnInit {
@@ -26,6 +22,21 @@ export class SoPhotoListComponent implements OnInit {
   photos: Array<any> = new Array<any>();
   selectedItems: Array<any> = new Array<any>();
   pressingCtrl: boolean = false;
+
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
+    if (ev.keyCode == 17 && this.multipleSelect) {
+      this.pressingCtrl = true;
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(ev: KeyboardEvent) {
+    if (ev.keyCode == 17) {
+      this.pressingCtrl = false;
+    }
+  }
 
   constructor(private apiService: ApiBaseService, private loading: LoadingService) {
   }
@@ -58,20 +69,8 @@ export class SoPhotoListComponent implements OnInit {
     );
   }
 
-  onDocumentKeyDown(ev: KeyboardEvent) {
-    if (ev.keyCode == 17 && this.multipleSelect) {
-      this.pressingCtrl = true;
-    }
-  }
-
-  onDocumentKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 17) {
-      this.pressingCtrl = false;
-    }
-  }
-
   toggleSelectedItem(e: any, item: any) {
-        let parent = $(e.target).parents('.row-img');
+    let parent = $(e.target).parents('.row-img');
     let el = $(e.target).parents('.photo-box-img');
     let selectedClass = 'selected';
 

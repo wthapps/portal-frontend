@@ -1,11 +1,11 @@
 import { Http } from '@angular/http';
+import { Router } from '@angular/router';
 
 import { Injectable } from '@angular/core';
 
 import { ApiBaseService } from './apibase.service';
 
-import {Constants} from "../config/constants";
-import { Router } from '@angular/router';
+import { Constants } from '../config/constants';
 
 @Injectable()
 export class ApiBaseServiceV2 extends ApiBaseService {
@@ -20,7 +20,7 @@ export class ApiBaseServiceV2 extends ApiBaseService {
     if (typeof params == 'object') {
       params = this.paramsToString(params);
     }
-    return super.get(url + "?" + params);
+    return super.get(url + '?' + params);
   }
 
   post(url: string, params: any = '') {

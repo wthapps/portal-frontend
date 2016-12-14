@@ -3,7 +3,7 @@ import { SocialService } from '../services/social.service';
 import { SoUser } from '../../../shared/models/social_network/so-user.model';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 
-declare var _:any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -19,7 +19,7 @@ export class ZSocialMembersComponent implements OnInit {
   notifications: any = [];
   newNotifications: any = [];
   currentState: string = 'friends'; //followers, followings, blacklists
-  favourite:any;
+  favourite: any;
 
   constructor(private socialService: SocialService, private apiBaseServiceV2: ApiBaseServiceV2) {
   }
@@ -31,9 +31,9 @@ export class ZSocialMembersComponent implements OnInit {
 
   callNotifications() {
     this.socialService.user.getNotifications().subscribe(
-      (res:any) => {
+      (res: any) => {
         this.notifications = res.data;
-        this.newNotifications = _.filter(this.notifications, { 'seen_state': 'new' });
+        this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
         this.list = this.notifications;
       }
     );
@@ -45,7 +45,7 @@ export class ZSocialMembersComponent implements OnInit {
     return false;
   }
 
-  unfriend(uuid:any) {
+  unfriend(uuid: any) {
     this.socialService.user.unfriend(uuid).subscribe(
       (res: any) => {
         this.getUser();
@@ -53,7 +53,7 @@ export class ZSocialMembersComponent implements OnInit {
     );
   }
 
-  unfollow(uuid:any) {
+  unfollow(uuid: any) {
     this.socialService.user.unfollow(uuid).subscribe(
       (res: any) => {
         this.getUser();
@@ -61,7 +61,7 @@ export class ZSocialMembersComponent implements OnInit {
     );
   }
 
-  follow(uuid:any) {
+  follow(uuid: any) {
     this.socialService.user.follow(uuid).subscribe(
       (res: any) => {
         this.getUser();
@@ -74,7 +74,7 @@ export class ZSocialMembersComponent implements OnInit {
       (res: any) => {
         this.data = res.data;
         this.addFollowingIntoFollower();
-        if (this.currentState != "notification") {
+        if (this.currentState != 'notification') {
           this.list = res.data[this.currentState];
         }
       },
@@ -83,9 +83,9 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   addFollowingIntoFollower() {
-    this.data['followers'] = _.map(this.data['followers'], (follower:any) => {
+    this.data['followers'] = _.map(this.data['followers'], (follower: any) => {
       follower.isFollowing = false;
-      _.forEach(this.data['followings'], (following:any) => {
+      _.forEach(this.data['followings'], (following: any) => {
         if (follower.uuid == following.uuid) {
           follower.isFollowing = true;
         }
@@ -94,18 +94,18 @@ export class ZSocialMembersComponent implements OnInit {
     });
   }
 
-  getFavourite(uuid:any) {
-    this.socialService.user.getFavourite(uuid, "friend").subscribe(
-      (res:any) => {
-        this.favourite = res.data
+  getFavourite(uuid: any) {
+    this.socialService.user.getFavourite(uuid, 'friend').subscribe(
+      (res: any) => {
+        this.favourite = res.data;
       }
     );
   }
 
-  addFavourite(uuid:any) {
-    this.socialService.user.addFavourites(uuid, "friend").subscribe(
-      (res:any) => {
-        this.favourite = res.data
+  addFavourite(uuid: any) {
+    this.socialService.user.addFavourites(uuid, 'friend').subscribe(
+      (res: any) => {
+        this.favourite = res.data;
       }
     );
   }
@@ -114,15 +114,15 @@ export class ZSocialMembersComponent implements OnInit {
     this.currentState = 'notification';
     this.list = this.notifications;
     this.socialService.user.checkedNotifications().subscribe(
-      (res:any) => {
+      (res: any) => {
         this.notifications = res.data;
-        this.newNotifications = _.filter(this.notifications, { 'seen_state': 'new' });
+        this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
         this.getUser();
       }
     );
   }
 
-  doAction(action:any) {
+  doAction(action: any) {
     let api = null;
     switch (action.method) {
       case 'post':
@@ -134,10 +134,10 @@ export class ZSocialMembersComponent implements OnInit {
     }
 
     api.subscribe(
-      (res:any) => {
+      (res: any) => {
         this.callNotifications();
         this.getUser();
       }
-    )
+    );
   }
 }

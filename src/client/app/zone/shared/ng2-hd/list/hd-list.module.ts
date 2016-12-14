@@ -9,25 +9,26 @@ import { HighlightPipe } from './components/pipes/highlight.pipe';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        Ng2DropdownModule
-    ],
-    declarations: [
-        ListComponent,
-        DeleteIconComponent,
-        SearchForm,
-        HighlightPipe
-    ],
-    exports: [
-        ListComponent,
-        DeleteIconComponent,
-        SearchForm,
-        HighlightPipe
-    ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    Ng2DropdownModule
+  ],
+  declarations: [
+    ListComponent,
+    DeleteIconComponent,
+    SearchForm,
+    HighlightPipe
+  ],
+  exports: [
+    ListComponent,
+    DeleteIconComponent,
+    SearchForm,
+    HighlightPipe
+  ]
 })
-export class HdMultiSelectListModule {}
+export class HdMultiSelectListModule {
+}
 
 

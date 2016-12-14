@@ -1,8 +1,8 @@
 import {
-  Component, Input, EventEmitter, Output
-}                          from '@angular/core';
+  Component, Input, EventEmitter, Output, HostListener
+} from '@angular/core';
 
-import { ZPictureGridComponent } from "./grid.component";
+import { ZPictureGridComponent } from './grid.component';
 
 declare var $: any;
 declare var _: any;
@@ -10,17 +10,31 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'page-zone-remove-gridview',
-  templateUrl: 'grid.component.html',
-  host: {
-    '(document:keydown)': 'onDocumentKeyDown($event)',
-    '(document:keyup)': 'onDocumentKeyUp($event)'
-  },
+  templateUrl: 'grid.component.html'
 })
 
 export class ZPictureGridRemoveComponent extends ZPictureGridComponent {
-  @Input() items: Array<any>;
+  @Input() items: any;
   @Output() addItems: EventEmitter<any> = new EventEmitter<any>();
-  allItems: Array<any> = [];
+
+  keyCtrl: boolean = false;
+  reset: boolean;
+  allItems: any = [];
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
+    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
+      this.keyCtrl = true;
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(ev: KeyboardEvent) {
+    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
+      this.keyCtrl = false;
+    }
+  }
+
 
   constructor() {
     super();
@@ -59,12 +73,12 @@ export class ZPictureGridRemoveComponent extends ZPictureGridComponent {
     this.filterItemRemove(this.selectedPhotos);
   }
 
-  filterItemRemove(selectedPhotos:any) {
+  filterItemRemove(selectedPhotos: any) {
     this.allItems = [];
-    _.map(this.items, (v:any) => {
+    _.map(this.items, (v: any) => {
       this.allItems.push(v.id);
     });
-    let remainItems = _.pullAll(this.allItems, selectedPhotos)
+    let remainItems = _.pullAll(this.allItems, selectedPhotos);
     this.addItems.emit(remainItems);
   }
 }

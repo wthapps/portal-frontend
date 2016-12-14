@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';

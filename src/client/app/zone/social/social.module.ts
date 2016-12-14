@@ -5,9 +5,9 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { InputSwitchModule } from 'primeng/primeng';
 
-import { PostModule } from "./post/post.module";
+import { PostModule } from './post/post.module';
 
-import { PostListComponent } from "./post/post-list.component";
+import { PostListComponent } from './post/post-list.component';
 import { PostDetailComponent } from './post/post-detail.component';
 
 import {
@@ -15,7 +15,7 @@ import {
   PostHeaderComponent,
   PostBodyComponent,
   PostFooterComponent
-} from "./post/index";
+} from './post/index';
 
 import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
@@ -33,7 +33,7 @@ import { ComMemberListComponent } from './communities/member/member-list.compone
 import { ZSocialCommunityDetailAboutComponent } from './communities/about/about.component';
 import { ZSocialCommunityDetailPostComponent } from './communities/post/post.component';
 
-import { ZSocialMembersComponent } from './members/members.component'
+import { ZSocialMembersComponent } from './members/members.component';
 import { ZSocialProfileAboutComponent } from './profile/about/about.component';
 import { ZSocialProfilePostComponent } from './profile/post/post.component';
 import { ZSocialSettingComponent } from './setting/setting.component';

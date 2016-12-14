@@ -1,10 +1,9 @@
 import {
   Component, Input, Output,
-  EventEmitter, OnChanges
-  //HostListener,
+  EventEmitter, OnChanges,
+  HostListener
 }                          from '@angular/core';
 
-import { Photo } from '../../../shared/models/photo.model';
 import {
   LoadingService,
   ApiBaseService,
@@ -17,15 +16,14 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'page-zone-gridview',
-  templateUrl: 'grid.component.html',
-  host: {
-    '(document:keydown)': 'onDocumentKeyDown($event)',
-    '(document:keyup)': 'onDocumentKeyUp($event)'
-  }
+  templateUrl: 'grid.component.html'
 })
 
 export abstract class ZPictureGridComponent implements OnChanges {
-  @Input() items: Array<any>;
+
+
+
+  @Input() items: any;
   @Input() resetSelected: boolean;
   @Input() category: string;
 
@@ -40,23 +38,26 @@ export abstract class ZPictureGridComponent implements OnChanges {
   keyCtrl: boolean = false;
   reset: boolean;
 
-  constructor(private apiService?: ApiBaseService,
-              private loadingService?: LoadingService,
-              private toastsService?: ToastsService) {
-  }
-
-  onDocumentKeyDown(ev: KeyboardEvent) {
-    // console.log(ev);
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
       this.keyCtrl = true;
     }
   }
 
-  onDocumentKeyUp(ev: KeyboardEvent) {
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(ev: KeyboardEvent) {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) {
       this.keyCtrl = false;
     }
   }
+
+
+  constructor(private apiService?: ApiBaseService,
+              private loadingService?: LoadingService,
+              private toastsService?: ToastsService) {
+  }
+
 
   ngOnChanges() {
     if (this.reset != this.resetSelected) {
@@ -135,6 +136,8 @@ export abstract class ZPictureGridComponent implements OnChanges {
 
     //this.onAddFavourite_type(e, item);
 
+    console.log(this.onAddFavourite_type(e, item));
+
   }
 
   private onAddFavourite_type(event: any, item: any = null) {
@@ -160,7 +163,7 @@ export abstract class ZPictureGridComponent implements OnChanges {
       .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
-          _.map(newFavourite, (v:any)=> {
+          _.map(newFavourite, (v: any)=> {
             let vitem = _.find(this.items, ['id', v.id]);
             vitem.favorite = setFavourite;
           });

@@ -23,8 +23,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   constructor(public apiBaseServiceV2: ApiBaseServiceV2,
               private route: ActivatedRoute,
-    private postService: PostService
-  ) {
+              private postService: PostService) {
   }
 
   ngOnInit() {
@@ -46,16 +45,16 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
 
-  save(options: any = { mode: 'edit', item: null, isShare: false}) {
+  save(options: any = {mode: 'edit', item: null, isShare: false}) {
     this.postService.update(options.item)
-    .subscribe((response: any) => {
-        this.loadPost(options.item.uuid);
-        this.postEditModal.close();
-      },
-      error => {
-        console.log('error', error);
-      }
-    );
+      .subscribe((response: any) => {
+          this.loadPost(options.item.uuid);
+          this.postEditModal.close();
+        },
+        error => {
+          console.log('error', error);
+        }
+      );
   }
 
   openEditModal(options: any) {

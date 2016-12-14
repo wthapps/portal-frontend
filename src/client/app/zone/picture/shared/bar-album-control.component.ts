@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
-import { AlbumService } from "../../../shared/services/picture/album.service";
-import { Album } from "../../../shared/models/album.model";
+import { AlbumService } from '../../../shared/services/picture/album.service';
+import { Album } from '../../../shared/models/album.model';
 
 declare var $: any;
 
@@ -64,10 +64,10 @@ export class ZPictureBarAlbumComponent implements AfterViewInit, OnInit, OnChang
   }
 
   onEditAction() {
-    this.editAction.emit()
+    this.editAction.emit();
   }
 
   onRemoveAction() {
-    this.removeAction.emit()
+    this.removeAction.emit();
   }
 }

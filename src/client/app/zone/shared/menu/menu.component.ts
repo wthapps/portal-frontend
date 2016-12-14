@@ -4,7 +4,7 @@ import {
   NavigationEnd
 } from '@angular/router';
 
-import { Constants } from "../../../shared/config/constants";
+import { Constants } from '../../../shared/config/constants';
 import { UserService } from '../../../shared/services/user.service';
 
 
@@ -41,7 +41,7 @@ export class ZoneMenuComponent implements OnInit {
 
   getMenuAction(url: string): void {
     $('.page-menuleft .has-sub ul').addClass('hidden');
-    let urlArr = url.split("/");
+    let urlArr = url.split('/');
     if (urlArr[2]) {
       $('#zone_menu_' + urlArr[2]).removeClass('hidden');
     }

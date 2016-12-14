@@ -5,9 +5,7 @@ import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal'
 import {
   FormGroup,
   AbstractControl,
-  FormBuilder,
-  Validators,
-  FormControl
+  FormBuilder
 } from '@angular/forms';
 
 import {
@@ -67,7 +65,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
       this.hasChange = false;
       console.log(this.data.admin);
 
-      if(this.data.admin){
+      if (this.data.admin) {
         // check if admin
         this.isAdmin = (this.data.admin.uuid == this.userService.profile.uuid) ? true : false;
       }

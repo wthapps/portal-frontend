@@ -1,9 +1,7 @@
-import {EventEmitter, OnChanges, OnInit} from "@angular/core";
-
 declare var $: any;
 
-export abstract class ToastBase{
-  toastId:string;
+export abstract class ToastBase {
+  toastId: string;
   isShow: boolean;
 
   constructor(toastId: string) {

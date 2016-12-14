@@ -121,7 +121,7 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
 
 
       let additional_links_edit = this.data.additional_links;
-      _.map(additional_links_edit, (v)=> {
+      _.map(additional_links_edit, (v: any)=> {
         _this.addLink(v);
       });
     }
@@ -186,8 +186,8 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
     console.log(values);
 
     // get links if link is not empty
-    let additional_links_filter = [];
-    _.map(values.additional_links, (v)=> {
+    let additional_links_filter: any = [];
+    _.map(values.additional_links, (v: any)=> {
       if (v.url != '') {
         additional_links_filter.push(v);
       }

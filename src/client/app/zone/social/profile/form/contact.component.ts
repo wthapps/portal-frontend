@@ -6,10 +6,8 @@ import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal'
 
 import {
   FormGroup,
-  AbstractControl,
   FormBuilder,
   Validators,
-  FormControl,
   FormArray
 } from '@angular/forms';
 import { CustomValidator } from '../../../../shared/validator/custom.validator';
@@ -71,15 +69,15 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
       this.removeAll();
 
       let additional_emails_edit = this.data.email;
-      _.map(additional_emails_edit, (v)=> {
+      _.map(additional_emails_edit, (v: any)=> {
         _this.addEmail(v);
       });
       let additional_phones_edit = this.data.phone;
-      _.map(additional_phones_edit, (v)=> {
+      _.map(additional_phones_edit, (v: any)=> {
         _this.addPhone(v);
       });
       let additional_address_edit = this.data.address;
-      _.map(additional_address_edit, (v)=> {
+      _.map(additional_address_edit, (v: any)=> {
         _this.addAddress(v);
       });
     }
@@ -201,11 +199,11 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
 
     // get links if link is not empty
     /*let emails_filter = [];
-    _.map(values.email, (v)=> {
-      if (v.email != '') {
-        emails_filter.push(v);
-      }
-    });*/
+     _.map(values.email, (v)=> {
+     if (v.email != '') {
+     emails_filter.push(v);
+     }
+     });*/
 
     let body = JSON.stringify({
       email: values.emails,

@@ -1,4 +1,3 @@
-//@TODO remove ElementRef
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,7 +20,7 @@ import {
   UserService,
   CountryService,
   DeactivateConfirmService
-}                     from './index';
+} from './index';
 
 import {
   HeaderComponent,
@@ -37,12 +36,10 @@ import {
   ReadMoreComponent
 } from '../partials/index';
 
-import { LoadingDirective } from './directive/loading.directive';
-
 import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/index';
 
 import { FormModalComponent } from './form/form-modal.component';
-import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
+import { ApiBaseServiceV2 } from './services/apibase.service.v2';
 import { NewlinePipe } from './pipe/newline.pipe';
 import { TitleCase } from './pipe/titlecase.pipe';
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';

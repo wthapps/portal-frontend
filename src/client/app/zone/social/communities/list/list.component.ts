@@ -47,7 +47,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   getList() {
     this.loadingService.start('#communites-list');
     let myuuid = this.userService.profile.uuid;
-    let _this = this;
+    var _this = this;
 
     this.apiBaseServiceV2.get('zone/social_network/communities').subscribe(
       (res: any)=> {
@@ -132,7 +132,7 @@ export class ZSocialCommunityListComponent implements OnInit {
     return false;
   }
 
-  onPreference(item: any) {
+  onPreference(item: any): any {
     this.modalPreference.modal.open();
     this.currentItem = item;
     return false;
@@ -144,25 +144,25 @@ export class ZSocialCommunityListComponent implements OnInit {
     }
   }
 
-  onReport(uuid) {
+  onReport(uuid: any): any {
     this.zoneReportService.community(uuid);
     return false;
   }
 
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, "community").subscribe(
+    this.socialService.user.addFavourites(uuid, 'community').subscribe(
       (res: any) => {
 
       }
-    )
+    );
   }
 
   getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, "community").subscribe(
+    this.socialService.user.getFavourite(uuid, 'community').subscribe(
       (res: any) => {
         this.favourite = res.data;
       }
-    )
+    );
   }
 }

@@ -1,16 +1,12 @@
 import {
   Component,
-  ViewChild,
-  OnInit,
   Input,
   Output,
   EventEmitter,
-  OnChanges,
-  QueryList,
-  ViewChildren
+  OnChanges
 } from '@angular/core';
-import { BaseZoneSocialItem } from "../../base/base-social-item";
-import { SoPost } from "../../../../shared/models/social_network/so-post.model";
+import { BaseZoneSocialItem } from '../../base/base-social-item';
+import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { ToastsService } from '../../../../partials/toast/toast-message.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../../../partials/loading/loading.service';
@@ -22,8 +18,7 @@ import {
   DeleteReplyEvent,
   CancelEditReplyCommentEvent
 } from '../../events/social-events';
-import { SoComment } from '../../../../shared/models/social_network/so-comment.model';
-import { ZSocialCommentBoxComponent, ZSocialCommentBoxType } from './sub-layout/comment-box.component';
+import { ZSocialCommentBoxType } from './sub-layout/comment-box.component';
 import { UserService } from '../../../../shared/services/user.service';
 import { PostComponent } from '../post.component';
 
@@ -53,7 +48,7 @@ export class PostFooterComponent extends BaseZoneSocialItem implements OnChanges
 
   hasLike: boolean = false;
   hasDislike: boolean = false;
-
+  showInfo: boolean = false;
 
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
               private loading: LoadingService,
@@ -63,8 +58,6 @@ export class PostFooterComponent extends BaseZoneSocialItem implements OnChanges
               private postItem: PostComponent) {
     super();
   }
-
-  showInfo: boolean = false;
 
   ngOnChanges() {
     if (this.type == 'info') {
@@ -78,14 +71,14 @@ export class PostFooterComponent extends BaseZoneSocialItem implements OnChanges
         this.eventEmitter.emit(new DeleteCommentEvent(data));
         break;
       case this.actions.onEditComment:
-        $("#editComment-" + data.uuid).show();
-        $("#comment-" + data.uuid).hide();
+        $('#editComment-' + data.uuid).show();
+        $('#comment-' + data.uuid).hide();
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
         break;
       case this.actions.onReply:
-        $("#reply-" + data.uuid).show();
+        $('#reply-' + data.uuid).show();
         break;
       case this.actions.openLikeDislike:
         this.postItem.openLikeDislike(data, type);
@@ -95,12 +88,12 @@ export class PostFooterComponent extends BaseZoneSocialItem implements OnChanges
 
   onCallBack(event: any) {
     if (event instanceof CancelEditCommentEvent || event instanceof CancelEditReplyCommentEvent) {
-      $("#editComment-" + event.data.uuid).hide();
-      $("#comment-" + event.data.uuid).show();
+      $('#editComment-' + event.data.uuid).hide();
+      $('#comment-' + event.data.uuid).show();
       return;
     }
     if (event instanceof CancelReplyCommentEvent) {
-      $("#reply-" + event.data.uuid).hide();
+      $('#reply-' + event.data.uuid).hide();
       return;
     }
 

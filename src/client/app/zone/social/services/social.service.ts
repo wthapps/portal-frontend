@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
-import { Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../../shared/index';
 /**
  * Created by phat on 18/11/2016.
@@ -14,7 +14,7 @@ export class SoUserService {
     return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
   }
 
-  update(body:any) {
+  update(body: any) {
     return this.apiBaseServiceV2.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
   }
 
@@ -22,23 +22,23 @@ export class SoUserService {
     return this.apiBaseServiceV2.post(`zone/social_network/users/reset_settings`);
   }
 
-  addFriend(uuid:any) {
+  addFriend(uuid: any) {
     return this.apiBaseServiceV2.post(`zone/social_network/invitations`, {uuid: uuid});
   }
 
-  unfriend(uuid:any) {
+  unfriend(uuid: any) {
     return this.apiBaseServiceV2.delete(`zone/social_network/invitations/unfriend/${uuid}`);
   }
 
-  unfollow(uuid:any) {
+  unfollow(uuid: any) {
     return this.apiBaseServiceV2.post(`zone/social_network/invitations/unfollow`, {uuid: uuid});
   }
 
-  follow(uuid:any) {
+  follow(uuid: any) {
     return this.apiBaseServiceV2.post(`zone/social_network/invitations/follow`, {uuid: uuid});
   }
 
-  cancelFriendRequest(uuid:any) {
+  cancelFriendRequest(uuid: any) {
     return this.apiBaseServiceV2.delete(`zone/social_network/invitations/${uuid}`);
   }
 
@@ -50,11 +50,11 @@ export class SoUserService {
     return this.apiBaseServiceV2.get(`zone/social_network/favourites`);
   }
 
-  getFavourite(uuid:any, type:string) {
+  getFavourite(uuid: any, type: string) {
     return this.apiBaseServiceV2.get(`zone/social_network/favourites/${uuid}`, {type: type});
   }
 
-  addFavourites(uuid:any, type:string) {
+  addFavourites(uuid: any, type: string) {
     return this.apiBaseServiceV2.post(`zone/social_network/favourites`, {uuid: uuid, type: type});
   }
 
@@ -71,9 +71,10 @@ export class SoUserService {
 export class SoPostService {
   constructor(private apiBaseServiceV2: ApiBaseServiceV2,
               private user: UserService,
-              private	router:	Router) {
+              private  router: Router) {
   }
-  getList(uuid:string = this.user.profile.uuid, type?:string) {
+
+  getList(uuid: string = this.user.profile.uuid, type?: string) {
     switch (this.router.url) {
       case '/zone/social/home':
         return this.getListSocialPosts();
@@ -81,7 +82,7 @@ export class SoPostService {
     return this.getListOtherPosts(uuid, type);
   }
 
-  getSettings(uuid:string) {
+  getSettings(uuid: string) {
     return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoPostSettings}/${uuid}`);
   }
 
@@ -89,7 +90,7 @@ export class SoPostService {
     return this.apiBaseServiceV2.get(this.apiBaseServiceV2.urls.zoneSoPosts);
   }
 
-  private getListOtherPosts(uuid:string, type:string) {
+  private getListOtherPosts(uuid: string, type: string) {
     return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoUserPosts}/${uuid}/`, {type: type});
   }
 }

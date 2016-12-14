@@ -1,10 +1,10 @@
-import {Renderer, ElementRef, Directive, Input, OnInit, OnChanges} from "@angular/core";
+import { Renderer, ElementRef, Directive, Input, OnInit, OnChanges } from '@angular/core';
 
 @Directive({
-  selector:	`[loading]`
+  selector: `[loading]`
 })
 
-export	class	LoadingDirective implements OnInit, OnChanges {
+export class LoadingDirective implements OnInit, OnChanges {
   @Input() loading: boolean;
   el: ElementRef;
   renderer: Renderer;
@@ -23,6 +23,6 @@ export	class	LoadingDirective implements OnInit, OnChanges {
   }
 
   render() {
-    this.renderer.setElementClass(this.el.nativeElement, "inside-loading", this.loading);
+    this.renderer.setElementClass(this.el.nativeElement, 'inside-loading', this.loading);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
 import { Photo } from '../../../shared/models/photo.model';
 import { BaseMediaComponent } from '../../shared/index';
 import { MediaType } from '../../../shared/index';
@@ -12,7 +12,7 @@ declare var _: any;
   templateUrl: 'media-list.component.html'
 })
 
-export class MediaListComponent extends BaseMediaComponent implements OnInit, OnChanges {
+export class MediaListComponent extends BaseMediaComponent implements OnInit, OnChanges,AfterViewInit {
 
 
   errorMessage: string = '1212121212121212';
@@ -58,17 +58,7 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit, On
   }
 
   ngAfterViewInit() {
-    let win = $(window);
-    let _this = this;
 
-    // Each time the user scrolls
-    win.scroll(function () {
-      // End of the document reached?
-      if ($(document).height() - win.height() == win.scrollTop()) {
-        _this.currentPage = _this.currentPage + 1;
-        _this.getPhotos(_this.currentPage);
-      }
-    });
   }
 
   ngOnChanges() {
@@ -144,14 +134,14 @@ export class MediaListComponent extends BaseMediaComponent implements OnInit, On
   onImgsSelected(event: any) {
     let _this_photos = this;
     this.dataSelectedPhotos = [];
-    _.map(event, function (v:any) {
+    _.map(event, function (v: any) {
       _this_photos.dataSelectedPhotos.push(_.find(_this_photos.photos, ['id', v]));
     });
     this.selectedPhotos.emit(event);
     this.selectedPhotoFull.emit(this.dataSelectedPhotos);
   }
 
-  onActionDeleteOne(id:any): void {
+  onActionDeleteOne(id: any): void {
     this.showImg = false;
     this.modalHide.emit(false);
     this.photos = _.dropWhile(this.photos, ['id', id]);

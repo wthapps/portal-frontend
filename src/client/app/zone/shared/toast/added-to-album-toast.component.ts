@@ -1,6 +1,6 @@
-import { Component, OnChanges, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { AlbumPhoto } from "../../../shared/models/album-photos.model";
-import { ToastBase } from "../../../shared/toast/toast-base.component";
+import { Component, Input } from '@angular/core';
+import { AlbumPhoto } from '../../../shared/models/album-photos.model';
+import { ToastBase } from '../../../shared/toast/toast-base.component';
 
 @Component({
   moduleId: module.id,

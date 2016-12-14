@@ -4,10 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  Type,
   ElementRef,
-  HostBinding,
-  Inject, OnInit
+  HostBinding, OnInit
 } from '@angular/core';
 import { ModalInstance, ModalResult } from './modal-instance';
 
@@ -21,9 +19,9 @@ declare var $: any;
     'tabindex': '-1'
   },
   template: `
-    <!--<div class="modal modal-social">-->
-        <div class="modal-dialog" [ngClass]="getCssClasses()">
-            <div class="modal-content">
+    <!--<div class='modal modal-social'>-->
+        <div class='modal-dialog' [ngClass]='getCssClasses()'>
+            <div class='modal-content'>
                 <ng-content></ng-content>
             </div>
         </div>

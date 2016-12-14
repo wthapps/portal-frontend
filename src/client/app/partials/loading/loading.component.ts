@@ -10,7 +10,7 @@ declare var $: any;
   templateUrl: 'loading.component.html',
   styleUrls: ['loading.component.css']
 })
-export class LoadingComponent implements OnInit{
+export class LoadingComponent implements OnInit {
   display: boolean = false;
 
   constructor(private loadingService: LoadingService) {

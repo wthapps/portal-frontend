@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 
 import { ApiBaseService, LoadingService } from '../../../shared/index';
-import { BaseMediaComponent } from "../../shared/media/base-media.component";
-import { MediaType } from "../../../shared/config/constants";
-import { ToastsService } from "../../../partials/toast/toast-message.service";
-import { ConfirmationService } from "primeng/components/common/api";
-import { Photo } from "../../../shared/models/photo.model";
+import { BaseMediaComponent } from '../../shared/media/base-media.component';
+import { MediaType } from '../../../shared/config/constants';
+import { ToastsService } from '../../../partials/toast/toast-message.service';
+import { ConfirmationService } from 'primeng/components/common/api';
+import { Photo } from '../../../shared/models/photo.model';
 
 declare var $: any;
 declare var _: any;
@@ -16,7 +16,7 @@ declare var _: any;
   templateUrl: 'album.component.html',
 })
 
-export class ZAlbumComponent extends BaseMediaComponent {
+export class ZAlbumComponent extends BaseMediaComponent implements OnInit {
 
   @Output() selectedPhotos: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
   @Output() selectedPhotoFull: EventEmitter<Array<Photo>> = new EventEmitter<Array<Photo>>();

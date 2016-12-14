@@ -1,5 +1,5 @@
-import { BaseZoneSocial } from "./base-social";
-import { ApiBaseServiceV2 } from "../../../shared/services/apibase.service.v2";
+import { BaseZoneSocial } from './base-social';
+import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { PostComponent } from '../post/post.component';
 
 export class BaseZoneSocialItem extends BaseZoneSocial {
@@ -12,27 +12,27 @@ export class BaseZoneSocialItem extends BaseZoneSocial {
     return this.apiBaseServiceV2.get(url);
   }
 
-  createComment(body:any) {
+  createComment(body: any) {
     return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
   }
 
-  updateComment(body:any) {
+  updateComment(body: any) {
     return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.uuid}`, body);
   }
 
-  deleteComment(commentUuid:string) {
+  deleteComment(commentUuid: string) {
     return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${commentUuid}`);
   }
 
-  createReply(body:any) {
+  createReply(body: any) {
     return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
   }
 
-  updateReply(body:any) {
+  updateReply(body: any) {
     return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`, body);
   }
 
-  deleteReply(body:any) {
+  deleteReply(body: any) {
     return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`);
   }
 }

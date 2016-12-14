@@ -135,29 +135,29 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, "community").subscribe(
+    this.socialService.user.addFavourites(uuid, 'community').subscribe(
       (res: any) => {
 
       }
-    )
+    );
   }
 
   getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, "community").subscribe(
+    this.socialService.user.getFavourite(uuid, 'community').subscribe(
       (res: any) => {
         this.favourite = res.data;
       }
-    )
+    );
   }
 
   askToJoin() {
     this.apiBaseServiceV2.post(`zone/social_network/communities/join`, JSON.stringify({uuid: this.uuid}))
       .subscribe((result: any) => {
-        this.invitation = result.data;
-      },
-      error => {
-        console.log('error', error);
-      });
+          this.invitation = result.data;
+        },
+        error => {
+          console.log('error', error);
+        });
   }
 
   cancelJoinRequest() {
@@ -167,15 +167,15 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
 
-  isMember(): boolean {
+  isMember(): any {
     let result = false;
-    _.forEach(this.item.users, (user) => {
-      if(user.uuid == this.userService.profile.uuid) {
+    _.forEach(this.item.users, (user: any) => {
+      if (user.uuid == this.userService.profile.uuid) {
         result = true;
         return false;
       }
@@ -186,10 +186,10 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   checkJoinRequestStatus() {
     this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}/join_request_status`)
       .subscribe((result: any) => {
-        this.invitation = result.data;
-      },
-      error => {
-        console.log('error', error);
-      });
+          this.invitation = result.data;
+        },
+        error => {
+          console.log('error', error);
+        });
   }
 }

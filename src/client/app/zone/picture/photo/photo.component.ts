@@ -203,7 +203,7 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit,OnC
       .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
-          _.map(newFavourite, (v)=> {
+          _.map(newFavourite, (v: any)=> {
             let vitem = _.find(this.items, ['id', v.id]);
             vitem.favorite = setFavourite;
           });

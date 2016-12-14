@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
-import { UserService } from '../../../shared/services/user.service';
-
-declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -12,6 +8,6 @@ declare var _: any;
 
 export class ZSocialCommunityComponent implements OnInit {
   ngOnInit() {
-  //
+    //
   }
 }

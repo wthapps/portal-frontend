@@ -1,5 +1,4 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
@@ -38,31 +37,27 @@ export class ComMemberListComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private toastsService: ToastsService
-  ) {
+              private toastsService: ToastsService) {
   }
 
   ngOnInit() {
-
-
-   // this.loadingService.start('.zone-social-cover');
+    // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
       this.apiBaseServiceV2.get(`zone/social_network/communities/${params['id']}`).subscribe(
         (res: any)=> {
           this.data = res.data;
-          console.log('data', this.data);
           // this.loadingService.stop('.zone-social-cover');
         },
         error => {
           // this.loadingService.stop('.zone-social-cover');
-          this.errorMessage = <any>error
+          this.errorMessage = <any>error;
         }
       );
 
       this.route.queryParams.subscribe(
         (queryParams: any) => {
-          this.selectedTab = queryParams['tab'] == undefined ? 'members': queryParams['tab'];
+          this.selectedTab = queryParams['tab'] == undefined ? 'members' : queryParams['tab'];
           this.loadDataBySelectedTab();
         }
       );
@@ -70,7 +65,7 @@ export class ComMemberListComponent implements OnInit {
 
   }
 
-  onReportMember(uuid: string) {
+  onReportMember(uuid: string): any {
     this.zoneReportService.member(uuid);
     this.uuidUser = uuid;
     return false;
@@ -108,7 +103,7 @@ export class ComMemberListComponent implements OnInit {
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
@@ -121,19 +116,19 @@ export class ComMemberListComponent implements OnInit {
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
 
-  cancelInvitation(id:any) {
+  cancelInvitation(id: any) {
     this.apiBaseServiceV2.delete(`zone/social_network/communities/cancel_invitation/${id}`).subscribe(
       (res: any)=> {
         this.loadDataBySelectedTab();
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }

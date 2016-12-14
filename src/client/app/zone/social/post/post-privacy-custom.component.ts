@@ -1,8 +1,6 @@
-import { Component, ViewChild, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 import { HdModalComponent, ListComponent } from '../../shared/ng2-hd/index';
-import { ApiBaseService, UserService, LoadingService } from '../../../shared/index';
-import { UserService } from '../../../shared/index';
-
+import { ApiBaseService, UserService } from '../../../shared/index';
 
 declare var _: any;
 
@@ -12,7 +10,7 @@ declare var _: any;
   templateUrl: 'post-privacy-custom.component.html'
 })
 
-export class PostPrivacyCustomComponent implements OnInit{
+export class PostPrivacyCustomComponent implements OnInit {
   @ViewChild('modal') modal: HdModalComponent;
   @ViewChild('list') list: ListComponent;
 
@@ -70,10 +68,10 @@ export class PostPrivacyCustomComponent implements OnInit{
   loadData(): void {
     this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}`)
       .subscribe((result: any) => {
-        if (this.isCustomFriend()) {
-          this.items = result['data']['friends'];
-          this.itemNames = _.map(result['data']['friends'], 'name');
-        } else {
+          if (this.isCustomFriend()) {
+            this.items = result['data']['friends'];
+            this.itemNames = _.map(result['data']['friends'], 'name');
+          } else {
             this.items = result['data']['communities'];
             this.itemNames = _.map(result['data']['communities'], 'name');
           }
@@ -83,7 +81,7 @@ export class PostPrivacyCustomComponent implements OnInit{
         });
   }
 
-  isCustomFriend () : boolean {
+  isCustomFriend(): boolean {
     return this.type == 'custom_friend';
   }
 }

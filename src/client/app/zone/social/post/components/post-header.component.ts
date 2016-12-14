@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnInit, Input, OnChanges } from '@angular/core';
-import { BaseZoneSocialItem } from "../../base/base-social-item";
-import { SoPost } from "../../../../shared/models/social_network/so-post.model";
+import { Component, Input, OnChanges } from '@angular/core';
+import { BaseZoneSocialItem } from '../../base/base-social-item';
+import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { PostComponent } from '../index';
 import { SocialService } from '../../services/social.service';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
@@ -84,7 +84,7 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
       (res: any) => {
         this.settings = res.data.settings;
       }
-    )
+    );
   }
 
 

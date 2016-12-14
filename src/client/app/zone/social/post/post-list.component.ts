@@ -22,15 +22,13 @@ export class PostListComponent implements OnInit {
 
   items: Array<SoPost>;
   uuid: string;
-  // type: string = "user";
+  // type: string = 'user';
 
-  constructor(
-    public apiBaseServiceV2: ApiBaseServiceV2,
-    private socialService: SocialService,
-    private loadingService: LoadingService,
-    private route: ActivatedRoute,
-    private postService: PostService
-  ) {
+  constructor(public apiBaseServiceV2: ApiBaseServiceV2,
+              private socialService: SocialService,
+              private loadingService: LoadingService,
+              private route: ActivatedRoute,
+              private postService: PostService) {
   }
 
   ngOnInit() {
@@ -40,20 +38,20 @@ export class PostListComponent implements OnInit {
     });
   }
 
-  mapPost(post:any) {
+  mapPost(post: any) {
     return new SoPost().from(post);
   }
 
   loadPosts() {
     this.loadingService.start('#post-list-component');
     this.postService.list({uuid: this.uuid, type: this.type})
-    .subscribe(
-      (res: any) => {
-        this.loadingService.stop('#post-list-component');
-        this.items = res.data;
-        this.items = _.map(this.items, this.mapPost);
-      }
-    )
+      .subscribe(
+        (res: any) => {
+          this.loadingService.stop('#post-list-component');
+          this.items = res.data;
+          this.items = _.map(this.items, this.mapPost);
+        }
+      );
   }
 
   /**
@@ -64,20 +62,20 @@ export class PostListComponent implements OnInit {
     this.postEditModal.open(options);
   }
 
-  save(options: any = { mode: 'add', item: null, isShare: false}) {
+  save(options: any = {mode: 'add', item: null, isShare: false}) {
     // _.assign(options.item, {tags_json: options.item.tags, photos_json: options.item.photos});
     if (options.mode == 'add') {
       this.postService.add(options.item)
         .subscribe((response: any) => {
-          console.log('response', response);
-          this.loadPosts();
-          this.postEditModal.close();
-        },
-        error => {
-          console.log('error', error);
-        }
-      );
-    } else if(options.mode == 'edit'){
+            console.log('response', response);
+            this.loadPosts();
+            this.postEditModal.close();
+          },
+          error => {
+            console.log('error', error);
+          }
+        );
+    } else if (options.mode == 'edit') {
       this.postService.update(options.item)
         .subscribe((response: any) => {
             this.loadPosts();
