@@ -32,14 +32,13 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   headerOver: boolean = true;
   imgLogo: string = Constants.img.logoWhite;
 
-  showSearchBar: boolean = false;
-  App:any = {};
+  showSearchBar: boolean = true;
+  App: any = {};
 
   constructor(private userService: UserService,
               private router: Router,
               private cable: Ng2Cable,
-              private broadcaster: Broadcaster
-  ) {
+              private broadcaster: Broadcaster) {
 
     //console.log(this.userService);
     this.urls = new Array();
@@ -108,10 +107,14 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     } else if (this.urls[0] == '/zone') {
       this.headerOver = false;
       this.imgLogo = Constants.img.logoZone;
+
+      this.showSearchBar = true;
       // zone layout
     } else {
       this.headerOver = true;
       this.imgLogo = Constants.img.logoWhite;
+
+      this.showSearchBar = false;
     }
     // end header overlay
 
@@ -120,24 +123,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     let param_url = this.urls;
     if (this.urls[1]) {
       param_url = (this.urls[1]).split('?');
-    }
-
-    //console.log(param_url);
-
-    if (param_url[0] == '/account/setting') {
-      this.showSearchBar = false;
-    } else if (param_url[0] == '/account/apps') {
-      this.showSearchBar = true;
-    } else if (param_url[0] == '/account/my-apps') {
-      this.showSearchBar = true;
-      // zone layout
-    } else if (param_url[0] == '/zone' || param_url[0] == '/zone/picture') {
-      this.showSearchBar = true;
-      this.navigationUrl = '/zone/picture/photo';
-      // zone layout
-
-    } else {
-      this.showSearchBar = false;
     }
   }
 
@@ -173,21 +158,21 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     app.cable = ActionCable.createConsumer("ws://localhost:4000/cable");
     app.notification = app.cable.subscriptions.create('NotificationChannel', {
       //   // ActionCable callbacks
-        connected: function() {
-          console.log('received: ******************************************************************************', data);
-          // writeLog("connected", this.identifier);
-        },
+      connected: function (data: any) {
+        console.log('received: ******************************************************************************', data);
+        // writeLog("connected", this.identifier);
+      },
       //   disconnected: function() {
       //     writeLog("disconnected", this.identifier);
       //   },
       //   rejected: function() {
       //     writeLog("rejected");
       //   },
-        received: function(data: any) {
-          console.log('received: ******************************************************************************', data);
-          // writeLog('received: ******************************************************************************', data);
-          // this.tick(data);
-        }
+      received: function (data: any) {
+        console.log('received: ******************************************************************************', data);
+        // writeLog('received: ******************************************************************************', data);
+        // this.tick(data);
+      }
       // ,
       //   // Custom methods
       //   start: function() {
@@ -225,6 +210,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
       //     s4() + '-' + s4() + s4() + s4();
       // }
-     });
+    });
   }
 }
