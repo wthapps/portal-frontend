@@ -32,8 +32,6 @@ import {
 import { ZoneModule } from './zone/zone.module';
 
 import { SharedModule } from './shared/shared.module';
-import { LoadingDirective } from "./shared/directive/loading.directive";
-import { LoadingModalDirective } from "./shared/directive/loading-modal.directive";
 
 @NgModule({
   imports: [

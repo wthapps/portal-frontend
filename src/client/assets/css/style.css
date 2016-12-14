@@ -10331,34 +10331,6 @@ Header
   @media (max-width: 767px) {
     .header.header-top .navbar .navbar-form {
       margin-top: -1px; } }
-  .header.header-top .navbar .navbar-form .navbar-searchTop {
-    position: relative; }
-    @media (min-width: 1200px) {
-      .header.header-top .navbar .navbar-form .navbar-searchTop {
-        margin-left: 150px; } }
-    .header.header-top .navbar .navbar-form .navbar-searchTop .btn, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"], .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"] {
-      position: absolute;
-      left: 2px;
-      padding-left: 8px;
-      padding-right: 8px;
-      background-color: transparent;
-      border-width: 0;
-      position: absolute;
-      top: 50%;
-      transform: translate(0, -50%);
-      font-size: 16px; }
-    .header.header-top .navbar .navbar-form .navbar-searchTop .btn:hover, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"]:hover, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"]:hover, .header.header-top .navbar .navbar-form .navbar-searchTop .btn:focus, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"]:focus, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"]:focus, .header.header-top .navbar .navbar-form .navbar-searchTop .btn.focus, .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button.focus[ng-reflect-icon="fa-close"], .header.header-top .navbar .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header.header-top .navbar .navbar-form .navbar-searchTop button.focus[ng-reflect-icon="fa-check"] {
-      background-color: transparent;
-      -webkit-box-shadow: none;
-      box-shadow: none; }
-    .header.header-top .navbar .navbar-form .navbar-searchTop .form-control {
-      height: 38px;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      padding-left: 36px; }
-      @media (min-width: 1200px) {
-        .header.header-top .navbar .navbar-form .navbar-searchTop .form-control {
-          min-width: 370px; } }
   @media (max-width: 767px) {
     .header.header-top .navbar .navbar-page {
       display: none; }
@@ -10390,6 +10362,75 @@ Header
     font-size: 20px;
     position: relative;
     top: 2px; }
+  .header .navbar-form {
+    position: relative; }
+    @media (min-width: 1200px) {
+      .header .navbar-form {
+        margin-left: 150px; } }
+    .header .navbar-form .navbar-searchTop {
+      position: relative; }
+      .header .navbar-form .navbar-searchTop .btn, .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"], .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"] {
+        position: absolute;
+        left: 2px;
+        padding-left: 8px;
+        padding-right: 8px;
+        background-color: transparent;
+        border-width: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        font-size: 16px; }
+      .header .navbar-form .navbar-searchTop .btn:hover, .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"]:hover, .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"]:hover, .header .navbar-form .navbar-searchTop .btn:focus, .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"]:focus, .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"]:focus, .header .navbar-form .navbar-searchTop .btn.focus, .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button.focus[ng-reflect-icon="fa-close"], .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button.focus[ng-reflect-icon="fa-check"] {
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none; }
+      .header .navbar-form .navbar-searchTop .form-control {
+        height: 38px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-left: 36px; }
+        @media (min-width: 1200px) {
+          .header .navbar-form .navbar-searchTop .form-control {
+            min-width: 370px; } }
+    .header .navbar-form .navbar-form-list {
+      position: absolute;
+      top: 38px;
+      left: 15px;
+      right: 15px;
+      z-index: 200;
+      background-color: #FFF;
+      border: 1px solid #dbdbdb;
+      padding: 10px 0; }
+      .header .navbar-form .navbar-form-list hr {
+        margin-top: 10px;
+        margin-bottom: 10px; }
+      .header .navbar-form .navbar-form-list h3 {
+        font-size: 14px;
+        margin: 0 15px 10px;
+        font-weight: bold; }
+      .header .navbar-form .navbar-form-list .navbar-form-list-nav {
+        padding: 0 15px; }
+      .header .navbar-form .navbar-form-list ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none; }
+        .header .navbar-form .navbar-form-list ul li {
+          position: relative;
+          padding: 5px 15px; }
+          .header .navbar-form .navbar-form-list ul li:hover {
+            background-color: #D8D8D8; }
+          .header .navbar-form .navbar-form-list ul li a {
+            color: inherit;
+            font-weight: normal;
+            text-decoration: none; }
+            .header .navbar-form .navbar-form-list ul li a:after {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              bottom: 0;
+              right: 0;
+              z-index: 10; }
 
 .footer {
   font-family: "Source Sans Pro", sans-serif;

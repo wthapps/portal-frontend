@@ -27,6 +27,7 @@ import { ZSocialCommunityDetailPostComponent } from './social/communities/post/p
 import { ZSocialMembersComponent } from './social/members/members.component';
 import { ZSocialSettingComponent } from './social/setting/setting.component';
 import { ZSocialNotificationsComponent } from './social/notifications/notifications.component';
+import { ZSocialSearchResultComponent } from './social/search/search.component';
 
 
 export const ZoneRoutes: Route[] = [
@@ -64,6 +65,7 @@ export const ZoneRoutes: Route[] = [
       },
 
       {path: 'social/members', component: ZSocialMembersComponent},
+      {path: 'social/search', component: ZSocialSearchResultComponent},
       {
         path: 'social/profile', component: ZSocialProfileComponent,
         children: [

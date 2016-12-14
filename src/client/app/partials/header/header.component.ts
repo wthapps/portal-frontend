@@ -132,7 +132,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       this.showSearchBar = true;
       // zone layout
     } else if (param_url[0] == '/zone' || param_url[0] == '/zone/picture') {
-      this.showSearchBar = false;
+      this.showSearchBar = true;
       this.navigationUrl = '/zone/picture/photo';
       // zone layout
 

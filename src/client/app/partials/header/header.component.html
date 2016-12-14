@@ -17,7 +17,125 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
+        <form *ngIf="showSearchBar" class="navbar-form navbar-left">
+          <div class="navbar-searchTop">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search Library">
+            </div>
+            <button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+          </div>
+          <div class="navbar-form-list">
+            <h3>Members</h3>
+            <ul>
+              <li>
+                <div class="media-center">
+                  <div class="media-center-left">
+                    <figure>
+                      <a [routerLink]="['/']">
+                        <img src="/assets/images/avatar/avatar.png">
+                      </a>
+                    </figure>
+                  </div>
+                  <div class="media-center-body">
+                    <h4 class="media-center-heading">
+                      <a [routerLink]="['/']">John</a>
+                    </h4>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="media-center">
+                  <div class="media-center-left">
+                    <figure>
+                      <a [routerLink]="['/']">
+                        <img src="/assets/images/avatar/avatar.png">
+                      </a>
+                    </figure>
+                  </div>
+                  <div class="media-center-body">
+                    <h4 class="media-center-heading">
+                      <a [routerLink]="['/']">John</a>
+                    </h4>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="media-center">
+                  <div class="media-center-left">
+                    <figure>
+                      <a [routerLink]="['/']">
+                        <img src="/assets/images/avatar/avatar.png">
+                      </a>
+                    </figure>
+                  </div>
+                  <div class="media-center-body">
+                    <h4 class="media-center-heading">
+                      <a [routerLink]="['/']">John</a>
+                    </h4>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <hr>
+            <h3>Communities</h3>
+            <ul>
+              <li>
+                <div class="media-center">
+                  <div class="media-center-left">
+                    <figure>
+                      <a [routerLink]="['/']">
+                        <img src="/assets/images/avatar/avatar.png">
+                      </a>
+                    </figure>
+                  </div>
+                  <div class="media-center-body">
+                    <h4 class="media-center-heading">
+                      <a [routerLink]="['/']">communities name</a>
+                    </h4>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="media-center">
+                  <div class="media-center-left">
+                    <figure>
+                      <a [routerLink]="['/']">
+                        <img src="/assets/images/avatar/avatar.png">
+                      </a>
+                    </figure>
+                  </div>
+                  <div class="media-center-body">
+                    <h4 class="media-center-heading">
+                      <a [routerLink]="['/']">communities name</a>
+                    </h4>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="media-center">
+                  <div class="media-center-left">
+                    <figure>
+                      <a [routerLink]="['/']">
+                        <img src="/assets/images/avatar/avatar.png">
+                      </a>
+                    </figure>
+                  </div>
+                  <div class="media-center-body">
+                    <h4 class="media-center-heading">
+                      <a [routerLink]="['/']">communities name</a>
+                    </h4>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <hr>
+            <div class="navbar-form-list-nav">
+              <a href="#">
+                See more
+              </a>
+            </div>
+          </div>
+        </form>
         <ul *ngIf="headerOver" class="nav navbar-nav navbar-right">
           <li><a [routerLink]="['/products']">Products</a></li>
           <li><a [routerLink]="['/pricing']">Pricing</a></li>
@@ -182,7 +300,8 @@
               </ul>
             </li>
             <li class="dropdown navbar-nav-notification">
-              <a class="navbar-nav-icon dropdown-toggle" href="#" (click)="$event.preventDefault(); sendMessage($event)" role="button">
+              <a class="navbar-nav-icon dropdown-toggle" href="#" (click)="$event.preventDefault(); sendMessage($event)"
+                 role="button">
                 <i class="fa fa-bell-o"></i>
               </a>
             </li>

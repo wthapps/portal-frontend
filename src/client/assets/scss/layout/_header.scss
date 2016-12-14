@@ -367,39 +367,6 @@ Header
         @media (max-width: $screen-xs-max) {
           margin-top: -1px;
         }
-        .navbar-searchTop {
-          position: relative;
-          @media (min-width: $screen-lg) {
-            margin-left: 150px;
-          }
-          .btn {
-            & {
-              position: absolute;
-              left: 2px;
-              padding-left: 8px;
-              padding-right: 8px;
-              background-color: transparent;
-              border-width: 0;
-              @include center(false, true);
-              font-size: 16px;
-            }
-            &:hover,
-            &:focus,
-            &.focus {
-              background-color: transparent;
-              @include box-shadow(none);
-            }
-          }
-          .form-control {
-            height: 38px;
-            padding-top: 8px;
-            padding-bottom: 8px;
-            padding-left: 36px;
-            @media (min-width: $screen-lg) {
-              min-width: 370px;
-            }
-          }
-        }
       }
 
       @media (max-width: $screen-xs-max) {
@@ -448,4 +415,88 @@ Header
     }
   }
 
+  .navbar-form {
+    position: relative;
+    @media (min-width: $screen-lg) {
+      margin-left: 150px;
+    }
+    .navbar-searchTop {
+      position: relative;
+      .btn {
+        & {
+          position: absolute;
+          left: 2px;
+          padding-left: 8px;
+          padding-right: 8px;
+          background-color: transparent;
+          border-width: 0;
+          @include center(false, true);
+          font-size: 16px;
+        }
+        &:hover,
+        &:focus,
+        &.focus {
+          background-color: transparent;
+          @include box-shadow(none);
+        }
+      }
+      .form-control {
+        height: 38px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-left: 36px;
+        @media (min-width: $screen-lg) {
+          min-width: 370px;
+        }
+      }
+    }
+    .navbar-form-list {
+      position: absolute;
+      top: 38px;
+      left: 15px;
+      right: 15px;
+      z-index: 200;
+      background-color: #FFF;
+      border: 1px solid $line;
+      padding: 10px 0;
+      hr {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      h3 {
+        font-size: 14px;
+        margin: 0 15px 10px;
+        font-weight: bold;
+      }
+      .navbar-form-list-nav {
+        padding:0 15px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        li {
+          position: relative;
+          padding: 5px 15px;
+          &:hover {
+            background-color: $light-grey;
+          }
+          a {
+            color: inherit;
+            font-weight: normal;
+            text-decoration: none;
+            &:after {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              bottom: 0;
+              right: 0;
+              z-index: 10;
+            }
+          }
+        }
+      }
+    }
+  }
 }
