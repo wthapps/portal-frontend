@@ -45,6 +45,8 @@ import { TitleCase } from './pipe/titlecase.pipe';
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
+import { SearchFormComponent } from '../partials/header/sub/search-form.component';
+import { SoSearchService } from '../partials/header/sub/social-search.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -65,6 +67,7 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     ToolbarComponent,
     NavbarComponent,
     HeaderComponent,
+    SearchFormComponent,
     FooterComponent,
     FooterPromotionComponent,
     TablePricingComponent,
@@ -89,6 +92,7 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     ToolbarComponent,
     NavbarComponent,
     HeaderComponent,
+    SearchFormComponent,
     FooterComponent,
     FooterPromotionComponent,
     TablePricingComponent,
@@ -135,7 +139,8 @@ export class SharedModule {
         DeactivateConfirmService,
         ApiBaseServiceV2,
         Ng2Cable,
-        Broadcaster
+        Broadcaster,
+        SoSearchService
       ]
     };
   }

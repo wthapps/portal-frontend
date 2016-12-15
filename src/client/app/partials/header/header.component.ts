@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
 import {
   Router,
   NavigationEnd
@@ -11,6 +11,7 @@ import {
 
 
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
+import { SearchFormComponent } from './sub/search-form.component';
 
 declare var $: any;
 declare let ActionCable: any;
@@ -34,6 +35,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   showSearchBar: boolean = true;
   App: any = {};
+
+  @ViewChild('search') searchForm: SearchFormComponent;
 
   constructor(private userService: UserService,
               private router: Router,
@@ -94,6 +97,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     //console.log((this.urls[1])); //["/account", "/account/my-apps"]
 
     // header overlay
+    // console.log(this.urls);
     if (this.urls[0] == '/account') {
       if (this.urls[1] && this.urls[1] == '/account/recovery') {
         this.headerOver = true;
@@ -109,6 +113,9 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       this.imgLogo = Constants.img.logoZone;
 
       this.showSearchBar = true;
+      if (this.urls[1] && this.urls[1] == '/zone/social') {
+        this.searchForm.init('social')
+      }
       // zone layout
     } else {
       this.headerOver = true;

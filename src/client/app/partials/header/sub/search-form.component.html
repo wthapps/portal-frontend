@@ -1,0 +1,38 @@
+<form *ngIf="show" class="navbar-form navbar-left">
+  <div class="navbar-searchTop">
+    <div class="form-group">
+      <input #text type="text" class="form-control" placeholder="Search Library" (keyup)="searchWithoutSave(text.value)">
+    </div>
+    <button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+  </div>
+  <div class="navbar-form-list" *ngIf="result && groups && text.value">
+    <div *ngFor="let group of groups">
+      <h3>{{group | titleCase}}</h3>
+      <p *ngIf="result[group].length == 0" style="padding-left: 30px"> No results</p>
+      <ul *ngFor="let item of result[group]">
+        <li>
+          <div class="media-center" (click)="onClick()">
+            <div class="media-center-left">
+              <figure>
+                <a [routerLink]="[item.link]">
+                  <img [src]="item.profile_image" style="width: 33px">
+                </a>
+              </figure>
+            </div>
+            <div class="media-center-body">
+              <h4 class="media-center-heading">
+                <a [routerLink]="[item.link]">{{item.name}}</a>
+              </h4>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <hr>
+    </div>
+    <div class="navbar-form-list-nav" *ngIf="showMore">
+      <a [routerLink]="['/']" href="javascript:;">
+        See more
+      </a>
+    </div>
+  </div>
+</form>
