@@ -30,7 +30,8 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private apiBaseServiceV2: ApiBaseServiceV2) {
+              apiBaseServiceV2: ApiBaseServiceV2) {
+    super();
   }
 
   ngOnInit() {

@@ -26,6 +26,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private postService: PostService) {
+    super();
   }
 
   ngOnInit() {
@@ -40,8 +41,8 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
       .subscribe((response: any) => {
           this.item = new SoPost().from(response.data);
         },
-        error => {
-          this.errorMessage = <any>error;
+        (error: any) => {
+          this.errorMessage = error;
         }
       );
   }
@@ -53,7 +54,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
           this.loadPost(options.item.uuid);
           this.postEditModal.close();
         },
-        error => {
+        (error: any) => {
           console.log('error', error);
         }
       );

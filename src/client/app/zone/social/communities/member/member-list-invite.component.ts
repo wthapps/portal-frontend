@@ -54,7 +54,7 @@ export class MemberListInviteComponent {
     if (this.selectedItems.length > 0) {
       this.selectedItems = [];
       this.modal.dismiss();
-      this.list.resetSelectedItems();
+      // this.list.resetSelectedItems();
     }
   }
 

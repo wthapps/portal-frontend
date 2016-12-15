@@ -88,7 +88,7 @@ export class ModalInstance {
   }
 }
 
-function booleanOrValue(value) {
+function booleanOrValue(value: any) {
   if (value === 'true')
     return true;
   else if (value === 'false')

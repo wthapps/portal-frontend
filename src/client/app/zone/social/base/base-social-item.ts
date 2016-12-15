@@ -1,8 +1,7 @@
-import { BaseZoneSocial } from './base-social';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { PostComponent } from '../post/post.component';
 
-export class BaseZoneSocialItem extends BaseZoneSocial {
+export class BaseZoneSocialItem {
   item: any;
 
   apiBaseServiceV2: ApiBaseServiceV2;

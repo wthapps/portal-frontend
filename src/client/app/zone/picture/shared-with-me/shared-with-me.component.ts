@@ -38,10 +38,10 @@ export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnI
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private apiService: ApiBaseService,
-              private toastsService: ToastsService,
-              public loadingService: LoadingService,
-              private confirmationService: ConfirmationService) {
+  constructor(apiService: ApiBaseService,
+              toastsService: ToastsService,
+              loadingService: LoadingService,
+              confirmationService: ConfirmationService) {
     super(MediaType.sharedWithMe);
   }
 

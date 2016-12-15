@@ -13,7 +13,7 @@ declare var _: any;
   templateUrl: 'post-body.component.html'
 })
 
-export class PostBodyComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
+export class PostBodyComponent implements OnInit, OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
   parentItem: SoPost = new SoPost();

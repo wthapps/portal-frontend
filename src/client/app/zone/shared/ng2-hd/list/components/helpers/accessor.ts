@@ -18,7 +18,7 @@ export class SearchInputAccessor implements ControlValueAccessor {
     // this._onChangeCallback(items);
   }
 
-  onTouched(items) {
+  onTouched(items: any) {
     this._onTouchedCallback(items);
   }
 

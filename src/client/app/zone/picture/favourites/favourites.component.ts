@@ -37,11 +37,11 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private apiService: ApiBaseService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService,
-              private confirmationService: ConfirmationService) {
-    super(MediaType.favourites, this.apiService);
+  constructor(apiService: ApiBaseService,
+              toastsService: ToastsService,
+              loadingService: LoadingService,
+              confirmationService: ConfirmationService) {
+    super(MediaType.favourites, apiService);
   }
 
   ngOnInit() {

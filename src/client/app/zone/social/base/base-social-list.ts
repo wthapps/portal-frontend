@@ -1,7 +1,6 @@
-import { BaseZoneSocial } from './base-social';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 
-export class BaseSocialList extends BaseZoneSocial {
+export class BaseSocialList {
   listItems: Array<any>;
   apiBaseServiceV2: ApiBaseServiceV2;
 

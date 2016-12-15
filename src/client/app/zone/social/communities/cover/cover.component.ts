@@ -172,12 +172,12 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
     );
   }
 
-  isMember(): any {
-    let result = false;
+  isMember(): boolean {
+    let result: boolean = false;
     _.forEach(this.item.users, (user: any) => {
       if (user.uuid == this.userService.profile.uuid) {
         result = true;
-        return false;
+        // return false;
       }
     });
     return result;

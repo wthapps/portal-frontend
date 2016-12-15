@@ -20,7 +20,6 @@ export class UserService extends ApiBaseService {
   login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
     // public login(path: string, body: string, useJwt?: boolean = true) {
     return super.post(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           this.storeUserInfo(res);
@@ -37,7 +36,6 @@ export class UserService extends ApiBaseService {
   logout(path: string): Observable<Response> {
     // public logout(path: string) {
     return super.delete(path)
-      .map(res => res.json())
       .map((res) => {
         this.deleteUserInfo();
         return res;
@@ -49,7 +47,6 @@ export class UserService extends ApiBaseService {
    */
   signup(path: string, body: string): Observable<Response> {
     return super.post(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           this.storeUserInfo(res);
@@ -65,7 +62,6 @@ export class UserService extends ApiBaseService {
   update(path: string, body: string): Observable<Response> {
     // if(is_patch){
     return super.patch(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           // update credit card into to profile
@@ -96,7 +92,6 @@ export class UserService extends ApiBaseService {
    */
   changePassword(path: string, body: string): Observable<Response> {
     return super.patch(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           console.log('changePassword:', res);
@@ -107,7 +102,6 @@ export class UserService extends ApiBaseService {
 
   choosePlan(path: string, body: string): Observable<Response> {
     return super.put(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           this.updateProfile(res.data);

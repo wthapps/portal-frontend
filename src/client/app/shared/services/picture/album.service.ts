@@ -9,7 +9,7 @@ export class AlbumService extends ApiBaseServiceV2 {
 
   url: string = 'zone/albums/';
 
-  constructor(http: Http, private router: Router) {
+  constructor(http: Http, router: Router) {
     super(http, router);
   }
 

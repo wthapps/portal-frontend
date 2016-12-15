@@ -10,7 +10,6 @@ import {
   PostPhotoSelectComponent,
   PostNewComponent,
   PostActivitiesComponent,
-  PostShareCommunityComponent,
   PostPrivacyCustomComponent,
   PostLikeDislikeComponent,
   MemberListInviteComponent,
@@ -41,7 +40,6 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostShareCommunityComponent,
     PostPrivacyCustomComponent,
     MemberListInviteComponent
   ],
@@ -58,7 +56,6 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostShareCommunityComponent,
     PostPrivacyCustomComponent,
     MemberListInviteComponent
   ],

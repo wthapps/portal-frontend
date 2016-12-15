@@ -10,7 +10,7 @@ export class PhotoService extends ApiBaseServiceV2 {
 
   url: string = 'zone/photos/';
 
-  constructor(http: Http, private router: Router) {
+  constructor(http: Http, router: Router) {
     super(http, router);
   }
 

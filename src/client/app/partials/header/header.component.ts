@@ -6,6 +6,7 @@ import {
 
 import {
   UserService,
+  ApiBaseService,
   Constants
 } from '../../shared/index';
 
@@ -41,7 +42,9 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private cable: Ng2Cable,
-              private broadcaster: Broadcaster) {
+              private broadcaster: Broadcaster,
+              private api: ApiBaseService
+  ) {
 
     //console.log(this.userService);
     this.urls = new Array();
@@ -52,17 +55,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    //
-    // this.cable.subscribe('http://localhost:4000/cable', 'Notification');
-    //
-    // this.broadcaster.on<string>('Notification').subscribe(
-    //   message => {
-    //     console.log('cable message: ', message);
-    //   }
-    // );
 
-
-    if (this.userService.loggedIn) {
+   if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;
 
@@ -70,6 +64,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
         this.userService.profile.profile_image = Constants.img.avatar;
       }
     }
+
   }
 
   ngAfterViewInit(): void {
@@ -160,63 +155,79 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
   sendMessage(event: any) {
+
+
+
     ActionCable.startDebugging();
-    var app: any = {cable: null, notification: null};
-    app.cable = ActionCable.createConsumer('ws://localhost:4000/cable');
-    app.notification = app.cable.subscriptions.create('NotificationChannel', {
-      //   // ActionCable callbacks
-      connected: function (data: any) {
-        console.log('received: ******************************************************************************', data);
-        // writeLog("connected", this.identifier);
-      },
-      //   disconnected: function() {
-      //     writeLog("disconnected", this.identifier);
-      //   },
-      //   rejected: function() {
-      //     writeLog("rejected");
-      //   },
-      received: function (data: any) {
-        console.log('received: ******************************************************************************', data);
-        // writeLog('received: ******************************************************************************', data);
-        // this.tick(data);
+    var App: any = {};
+    App.cable = ActionCable.createConsumer("ws://localhost:4444/cable");
+    App.notifications = App.cable.subscriptions.create('ChatroomsChannel', {
+      received: function(response: any) {
+        console.log('response', response);
       }
-      // ,
-      //   // Custom methods
-      //   start: function() {
-      //     writeLog("starting clock");
-      //     this.perform("start");
-      //   },
-      //   stop: function() {
-      //     writeLog("stopping clock");
-      //     this.perform("stop");
-      //   },
-      //   tick: function(data: any) {
-      //     writeLog("tick received", data);
-      //     this.tock("ack");
-      //   },
-      //   tock: function(message: any) {
-      //     writeLog("tock sent", message);
-      //     return this.perform("tock", { message: message });
-      //   }
-      // });
-      //
-      // function writeLog(message: any, data: any = null) {
-      //   console.log(message, data);
-      // }
-      //
-      // function deserialize(data) {
-      //   return JSON.stringify(data);
-      // }
-      //
-      // function guid() {
-      //   function s4() {
-      //     return Math.floor((1 + Math.random()) * 0x10000)
-      //                .toString(16)
-      //                .substring(1);
-      //   }
-      //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      //     s4() + '-' + s4() + s4() + s4();
-      // }
     });
+
+    App.notifications.perform('send_message',{chatroom_id: 3, message: 'hello world'});
+
+    // this.api.get('zone/social_network/notification/broadcast_message')
+    //     .subscribe(result => {
+    //         console.log('message broadcasted', result);
+    //
+    //       },
+    //       error => {
+    //
+    //       });
+    // console.log('cable', App, App.notifications);
+
+
+
+    //   // ActionCable callbacks
+    // connected: function() {
+    //   return this.perform('subscribed', {});
+    //   console.log('connected..................');
+    // },
+    // disconnected: function() {
+    //   console.log("disconnected", this.identifier);
+    // },
+    // rejected: function() {
+    //   console.log("rejected");
+    // },
+    // ,
+    //   // Custom methods
+    //   start: function() {
+    //     writeLog("starting clock");
+    //     this.perform("start");
+    //   },
+    //   stop: function() {
+    //     writeLog("stopping clock");
+    //     this.perform("stop");
+    //   },
+    //   tick: function(data: any) {
+    //     writeLog("tick received", data);
+    //     this.tock("ack");
+    //   },
+    //   tock: function(message: any) {
+    //     writeLog("tock sent", message);
+    //     return this.perform("tock", { message: message });
+    //   }
+    // });
+    //
+    // function writeLog(message: any, data: any = null) {
+    //   console.log(message, data);
+    // }
+    //
+    // function deserialize(data) {
+    //   return JSON.stringify(data);
+    // }
+    //
+    // function guid() {
+    //   function s4() {
+    //     return Math.floor((1 + Math.random()) * 0x10000)
+    //                .toString(16)
+    //                .substring(1);
+    //   }
+    //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    //     s4() + '-' + s4() + s4() + s4();
+    // }
   }
 }

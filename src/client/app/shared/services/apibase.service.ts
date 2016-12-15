@@ -13,7 +13,7 @@ export abstract class ApiBaseService {
   private _baseUrl: string = Constants.baseUrls.apiBaseService;
   private _headers: Headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(private http: Http, private router: Router) {
+  constructor(private http: Http, private router?: Router) {
     this._http = http;
   }
 
@@ -24,26 +24,19 @@ export abstract class ApiBaseService {
     this.buildOptions();
     return this._http.get(this._baseUrl + path, this._options)
       .map(res => res.json())
-      .catch((err: any) => {
-        if (err.status == 401 && err.statusText == 'Unauthorized') {
-          let _route = this.router;
-          _route.navigate(['/login']);
-        }
-      });
+      .catch(this.handleError);
   }
 
   /**
    * Performs a request with `post` http method.
    */
   public post(path: string, body: string): Observable<Response> {
+
     this.buildOptions();
+    console.log('posting..........', path, body, this._options);
     return this._http.post(this._baseUrl + path, body, this._options)
-      .catch((err: any) => {
-        if (err.status == 401 && err.statusText == 'Unauthorized') {
-          let _route = this.router;
-          _route.navigate(['/login']);
-        }
-      });
+     .map(res => res.json())
+    .catch(this.handleError);
   }
 
   /**
@@ -52,12 +45,8 @@ export abstract class ApiBaseService {
   public put(path: string, body: string): Observable<Response> {
     this.buildOptions();
     return this._http.put(this._baseUrl + path, body, this._options)
-      .catch((err: any) => {
-        if (err.status == 401 && err.statusText == 'Unauthorized') {
-          let _route = this.router;
-          _route.navigate(['/login']);
-        }
-      });
+      .map(res => res.json())
+      .catch(this.handleError);
   }
 
   /**
@@ -66,12 +55,8 @@ export abstract class ApiBaseService {
   public delete(path: string): Observable<Response> {
     this.buildOptions();
     return this._http.delete(this._baseUrl + path, this._options)
-      .catch((err: any) => {
-        if (err.status == 401 && err.statusText == 'Unauthorized') {
-          let _route = this.router;
-          _route.navigate(['/login']);
-        }
-      });
+      .map(res => res.json())
+      .catch(this.handleError);
   }
 
   /**
@@ -80,12 +65,8 @@ export abstract class ApiBaseService {
   public patch(path: string, body: string): Observable<Response> {
     this.buildOptions();
     return this._http.patch(this._baseUrl + path, body, this._options)
-      .catch((err: any) => {
-        if (err.status == 401 && err.statusText == 'Unauthorized') {
-          let _route = this.router;
-          _route.navigate(['/login']);
-        }
-      });
+      .map(res => res.json())
+      .catch(this.handleError);
   }
 
   private buildOptions() {
@@ -101,5 +82,26 @@ export abstract class ApiBaseService {
       this._headers.append('Authorization', 'Bearer ' + jwt);
     }
     this._options = new RequestOptions({headers: this._headers});
+  }
+
+  // TODO refactor
+  private handleError(error: Response | any): any {
+    // In a real world app, we might use a remote logging infrastructure
+    let errMsg: string;
+    // if (error instanceof Response) {
+    //   console.log('errro', error);
+    //   const body = error.json() || '';
+    //   const err = body.error || JSON.stringify(body);
+    //   errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    // } else {
+    //   errMsg = error.message ? error.message : error.toString();
+    // }
+    console.error('handle error',error);
+    return Observable.throw(errMsg);
+
+    // if (error.status === 401 && error.statusText == 'Unauthorized') {
+    //   let _route = this.router;
+    //   _route.navigate(['/login']);
+    // }
   }
 }

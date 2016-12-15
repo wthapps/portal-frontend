@@ -16,7 +16,7 @@ export const ACTIONS_KEYS = {
   TAB: 'TAB'
 };
 
-export const KEY_PRESS_ACTIONS = {
+export const KEY_PRESS_ACTIONS: any = {
   8: ACTIONS_KEYS.DELETE,
   37: ACTIONS_KEYS.SWITCH_PREV,
   39: ACTIONS_KEYS.SWITCH_NEXT,

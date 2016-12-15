@@ -108,7 +108,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @desc array of Validators that are used to validate the tag before it gets appended to the list
    * @type {Validators[]}
    */
-  @Input() public validators = [];
+  @Input() public validators: Array<any> = [];
 
   /**
    * @name searchable
@@ -276,9 +276,9 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @type []
    */
   private listeners = {
-    [KEYDOWN]: <{(fun): any}[]>[],
-    [KEYUP]: <{(fun): any}[]>[],
-    change: <{(fun): any}[]>[]
+    [KEYDOWN]: <{(fun: any): any}[]>[],
+    [KEYUP]: <{(fun: any): any}[]>[],
+    change: <{(fun: any): any}[]>[]
   };
 
   constructor(private element: ElementRef, private renderer: Renderer) {
@@ -377,7 +377,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @param eventName
    * @param $event
    */
-  public fireEvents(eventName: string, $event?): void {
+  public fireEvents(eventName: string, $event?: any): void {
     this.listeners[eventName].forEach(listener => listener.call(this, $event));
   }
 
@@ -387,7 +387,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @param $event
    * @param item
    */
-  public handleKeydown($event, item: string): void {
+  public handleKeydown($event: any, item: string): void {
     const action = getAction($event.keyCode || $event.which);
     const itemIndex = this.items.indexOf(item);
 
@@ -503,9 +503,9 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   ngOnChanges(changes: SimpleChanges): void {
     this.itemsSearching = this.searchItems;
     this.items = this.selectedItems;
-    _.forEach(this.itemsSearching, item => {
+    _.forEach(this.itemsSearching, (item: any) => {
       _.assign(item, {selected: false});
-      _.forEach(this.items, (selectedItem) => {
+      _.forEach(this.items, (selectedItem: any) => {
         if (item.id === selectedItem.id) {
           _.assign(item, {selected: true});
         }
@@ -528,7 +528,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
       // this.dropdown.onHide.subscribe(() => this.itemsSearching = []);
     }
 
-    this.inputForm.onKeydown.subscribe(event => {
+    this.inputForm.onKeydown.subscribe((event: any) => {
       this.fireEvents('keydown', event);
     });
 

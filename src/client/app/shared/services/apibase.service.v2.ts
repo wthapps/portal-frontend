@@ -12,7 +12,7 @@ export class ApiBaseServiceV2 extends ApiBaseService {
 
   urls = Constants.urls;
 
-  constructor(http: Http, private router: Router) {
+  constructor(http: Http, router: Router) {
     super(http, router);
   }
 

@@ -117,7 +117,7 @@ export class ZPictureComponent implements OnInit, OnChanges, AfterViewInit {
         this.baseMedia = new ZonePhotoComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
       case MediaType.video:
-        this.baseMedia = new ZoneVideoComponent(this.apiService);
+        this.baseMedia = new ZoneVideoComponent(MediaType.video, this.apiService);
         break;
       case MediaType.album:
         this.baseMedia = new ZAlbumComponent();

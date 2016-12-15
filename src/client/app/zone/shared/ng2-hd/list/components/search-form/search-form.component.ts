@@ -34,7 +34,7 @@ export class SearchForm {
   @Input() public inputId: string;
   @Input() public inputClass: string;
 
-  @ViewChild('input') public input;
+  @ViewChild('input') public input: any;
   public form: FormGroup;
 
   constructor(private renderer: Renderer) {
@@ -68,7 +68,7 @@ export class SearchForm {
    * @param messages
    * @returns {string[]}
    */
-  public getErrorMessages(messages): string[] {
+  public getErrorMessages(messages: any): string[] {
     return Object.keys(messages)
       .filter(err => this.value.hasError(err))
       .map(err => messages[err]);
@@ -101,7 +101,7 @@ export class SearchForm {
    * @name onKeyDown
    * @param $event
    */
-  private onKeyDown($event) {
+  private onKeyDown($event: any) {
     return this.onKeydown.emit($event);
   }
 }

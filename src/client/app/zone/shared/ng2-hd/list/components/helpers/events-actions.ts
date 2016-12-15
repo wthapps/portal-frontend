@@ -1,8 +1,11 @@
+
+declare var _: any;
+
 /**
  * @name customSeparatorKeys
  * @param $event
  */
-export function customSeparatorKeys($event) {
+export function customSeparatorKeys($event: any) {
   if (this.separatorKeys.indexOf($event.keyCode) >= 0) {
     $event.preventDefault();
     this.addItem();
@@ -13,7 +16,7 @@ export function customSeparatorKeys($event) {
  * @name backSpaceListener
  * @param $event
  */
-export function backSpaceListener($event) {
+export function backSpaceListener($event: any) {
   const itemsLength: number = this.items.length,
     inputValue: string = this.inputForm.value.value,
     isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
@@ -30,7 +33,7 @@ export function backSpaceListener($event) {
  * @param action
  * @param condition
  */
-export function addListener(listenerType: string, action: () => any, condition = true): void {
+export function addListener(listenerType: string, action: () => any, condition: boolean = true): void {
   // if the event provided does not exist, throw an error
   if (!this.listeners.hasOwnProperty(listenerType)) {
     throw new Error('The event entered may be wrong');
@@ -56,7 +59,7 @@ function getMatchingItems(value: string): Array<any> {
   // }
 
 
-  const itemsMatching: Array<any> = _.filter(this.autocompleteItems, (item) => {
+  const itemsMatching: Array<any> = _.filter(this.autocompleteItems, (item: any) => {
     return (item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
   });
   const items = this.autocompleteItems;
@@ -75,7 +78,7 @@ function getMatchingItems(value: string): Array<any> {
   return itemsMatching;
 }
 
-export function autoSearchListener(ev): void {
+export function autoSearchListener(ev: any): void {
   const value: string = this.inputForm.value.value;
   const position: ClientRect = this.inputForm.getElementPosition();
   const key = ev.keyCode;
@@ -98,7 +101,7 @@ export function autoSearchListener(ev): void {
  * @name onAutocompleteItemClicked
  * @param item
  */
-export function onAutocompleteItemClicked(item): void {
+export function onAutocompleteItemClicked(item: any): void {
   if (!item) {
     return;
   }

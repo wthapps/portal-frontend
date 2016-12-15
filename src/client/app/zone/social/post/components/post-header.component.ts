@@ -14,7 +14,7 @@ declare var _: any;
   templateUrl: 'post-header.component.html'
 })
 
-export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges {
+export class PostHeaderComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
 
@@ -27,7 +27,6 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
               private socialService: SocialService,
               private userService: UserService,
               private zoneReportService: ZoneReportService) {
-    super();
   }
 
   ngOnChanges() {

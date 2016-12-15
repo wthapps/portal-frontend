@@ -3,10 +3,10 @@ import {
   KEY_PRESS_ACTIONS
 } from './constants';
 
-export function getAction(KEY: number): () => any {
-  const ACTION_TYPE = KEY_PRESS_ACTIONS[KEY];
+export function getAction(key: number): () => any {
+  const ACTION_TYPE = KEY_PRESS_ACTIONS[`'${key}'`];
 
-  let action;
+  let action: any;
 
   switch (ACTION_TYPE) {
     case ACTIONS_KEYS.DELETE:
@@ -36,7 +36,7 @@ function deleteSelectedTag(): void {
   }
 }
 
-function switchPrev(itemIndex): void {
+function switchPrev(itemIndex: number): void {
   if (itemIndex > 0) {
     const el = this.tagElements[itemIndex - 1];
     this.selectItem(this.items[itemIndex - 1]);
@@ -46,7 +46,7 @@ function switchPrev(itemIndex): void {
   }
 }
 
-function switchNext(itemIndex) {
+function switchNext(itemIndex: number) {
   if (itemIndex < this.items.length - 1) {
     const el = this.tagElements[itemIndex + 1];
     this.selectItem(this.items[itemIndex + 1]);

@@ -31,7 +31,7 @@ declare var $: any;
   templateUrl: 'post-footer.component.html',
 })
 
-export class PostFooterComponent extends BaseZoneSocialItem implements OnChanges {
+export class PostFooterComponent implements OnChanges {
 
   @Input() item: SoPost;
   @Input() type: string;
@@ -56,7 +56,6 @@ export class PostFooterComponent extends BaseZoneSocialItem implements OnChanges
               private toast: ToastsService,
               private userService: UserService,
               private postItem: PostComponent) {
-    super();
   }
 
   ngOnChanges() {

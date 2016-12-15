@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
+import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';

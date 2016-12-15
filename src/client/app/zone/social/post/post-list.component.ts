@@ -71,7 +71,7 @@ export class PostListComponent implements OnInit {
             this.loadPosts();
             this.postEditModal.close();
           },
-          error => {
+          (error: any) => {
             console.log('error', error);
           }
         );
@@ -81,7 +81,7 @@ export class PostListComponent implements OnInit {
             this.loadPosts();
             this.postEditModal.close();
           },
-          error => {
+          (error: any) => {
             console.log('error', error);
           }
         );

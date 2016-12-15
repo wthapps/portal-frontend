@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-const escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+const escape = (s: any) => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
 @Pipe({
   name: 'highlight'
