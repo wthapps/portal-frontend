@@ -56,7 +56,7 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
   imports: [
     CommonModule,
     RouterModule,
-
+    FormsModule,
     ConfirmDialogModule,
     AutoCompleteModule,
     TagInputModule,

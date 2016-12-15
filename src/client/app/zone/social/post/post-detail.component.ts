@@ -4,6 +4,7 @@ import { BaseZoneSocialItem } from '../base/base-social-item';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
 import { PostEditComponent, PostService } from './index';
+import {Location} from '@angular/common';
 
 declare var _: any;
 
@@ -23,6 +24,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   constructor(public apiBaseServiceV2: ApiBaseServiceV2,
               private route: ActivatedRoute,
+              private location: Location,
               private postService: PostService) {
   }
 

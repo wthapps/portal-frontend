@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SoSearchService } from './social-search.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   moduleId: module.id,
@@ -13,9 +15,10 @@ export class SearchFormComponent implements OnInit{
   searchService: any;
   result: any;
   groups: any;
-  showMore: boolean = false;
+  showMore: any;
+  text: any = '';
 
-  constructor(private socialSearchService: SoSearchService) {
+  constructor(private socialSearchService: SoSearchService, private router: Router) {
 
   }
 
@@ -31,17 +34,32 @@ export class SearchFormComponent implements OnInit{
     }
   }
 
-  searchWithoutSave(text:any) {
-    this.searchService.search(text).subscribe(
+  searchWithoutSave(e:any) {
+    if(e.key == 'Enter') {
+      this.onSaveKey();
+      this.router.navigate([this.showMore.link, {text: this.text}]);
+      return;
+    }
+    this.searchService.search(this.text, ['user', 'community']).subscribe(
       (res:any) => {
         this.result = res.data;
         this.groups = Object.keys(res.data);
         this.showMore = res.show_more;
-        console.log(res);
       }
     )
   }
-  onClick() {
+
+  onSaveKey() {
     this.result = null;
+    this.searchService.saveKey(this.text).subscribe(
+      (res:any) => {
+
+      }
+    )
+  }
+
+  focusOut() {
+    // console.log('out');
+    // this.result = null;
   }
 }
