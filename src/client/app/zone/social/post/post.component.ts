@@ -79,7 +79,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // }
   }
 
-  mapDisplay() {
+  mapDisplay(): any {
     // Clone object to display
     this.itemDisplay = _.cloneDeep(this.item);
     this.itemDisplay.tags = this.item['tags_json'];

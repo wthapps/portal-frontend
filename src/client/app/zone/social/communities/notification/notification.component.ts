@@ -30,12 +30,12 @@ export class ZSocialCommunityDetailNotificationComponent implements OnInit {
   }
 
   getItem(id: string) {
-    this.apiBaseServiceV2.get(`zone/social_network/communities/${id}`).subscribe(
-      (res: any)=> {
-        this.data = res.data;
-      },
-      error => this.errorMessage = <any>error;
-  )
-    ;
+    this.apiBaseServiceV2.get(`zone/social_network/communities/${id}`)
+      .subscribe((res: any) => {
+          this.data = res.data;
+        },
+        (error: any) => {
+          console.log('error', error);
+        });
   }
 }

@@ -1,7 +1,8 @@
 import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../../shared/ng2-hd/modal/hd-modal.module';
-import { ListComponent } from '../../../shared/ng2-hd/list/hd-list.module';
 import { ApiBaseService, UserService } from '../../../../shared/index';
+
+import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
+import { ListComponent } from '../../../shared/ng2-hd/list/components/list.component';
 
 
 declare var _: any;
@@ -47,15 +48,6 @@ export class MemberListInviteComponent {
 
   onSelectedItems(items: any) {
     this.selectedItems = items;
-  }
-
-  selectItems(event: any) {
-    this.onSelected.emit({
-      type: 'custom_community',
-      items: this.selectedItems
-    });
-
-    this.modal.close();
   }
 
   cancel($event: any) {

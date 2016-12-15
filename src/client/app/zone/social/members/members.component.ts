@@ -123,7 +123,7 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   doAction(action: any) {
-    let api = null;
+    let api: any = null;
     switch (action.method) {
       case 'post':
         api = this.apiBaseServiceV2.post(action.link, action.params);

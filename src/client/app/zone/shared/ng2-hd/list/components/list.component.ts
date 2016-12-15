@@ -10,7 +10,7 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  HostListener
+  AfterViewInit
 } from '@angular/core';
 
 import {
@@ -61,7 +61,7 @@ declare var _: any;
   styleUrls: ['list.component.css']
 
 })
-export class ListComponent extends SearchInputAccessor implements OnInit, OnChanges {
+export class ListComponent extends SearchInputAccessor implements OnInit, OnChanges, AfterViewInit {
   /**
    * @name separatorKeys
    * @desc keyboard keys with which a user can separate items

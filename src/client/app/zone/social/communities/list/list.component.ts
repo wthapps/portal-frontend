@@ -47,18 +47,18 @@ export class ZSocialCommunityListComponent implements OnInit {
   getList() {
     this.loadingService.start('#communites-list');
     let myuuid = this.userService.profile.uuid;
-    var _this = this;
+    var _this_community = this;
 
     this.apiBaseServiceV2.get('zone/social_network/communities').subscribe(
       (res: any)=> {
         console.log(res);
-        _this.myList.length = 0;
-        _this.list.length = 0;
+        _this_community.myList.length = 0;
+        _this_community.list.length = 0;
         _.map(res.data, (v: any)=> {
           if (v.admin.uuid == myuuid) {
-            _this.myList.push(v);
+            _this_community.myList.push(v);
           } else {
-            _this.list.push(v);
+            _this_community.list.push(v);
           }
         });
         this.loadingService.stop('#communites-list');
