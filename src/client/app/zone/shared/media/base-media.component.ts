@@ -27,7 +27,7 @@ declare var _: any;
 `
 })
 
-export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
+export class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
 
   // @Input()
   getAction: any;

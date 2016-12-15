@@ -8,7 +8,7 @@ declare var $: any;
   template: ``,
 })
 
-export abstract class FormModalComponent {
+export class FormModalComponent {
   modalId: string;
 
   constructor(modalId: string) {

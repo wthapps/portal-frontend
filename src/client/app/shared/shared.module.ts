@@ -99,6 +99,7 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     UploadCropImageComponent,
     ToTopComponent,
     ReadMoreComponent,
+    FormModalComponent,
 
     // third party modules
     ConfirmDialogModule,
@@ -110,7 +111,7 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     CommonModule,
     FormsModule,
     RouterModule,
-    FormModalComponent,
+
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,

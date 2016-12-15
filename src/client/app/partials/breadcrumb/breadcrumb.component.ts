@@ -28,7 +28,7 @@ export class BreadcrumbComponent implements OnDestroy {
 
   @Input() styleClass: string;
 
-  constructor(protected router: Router) {
+  constructor(private router: Router) {
   }
 
   itemClick(event: any, item: MenuItemBreadcrumb) {

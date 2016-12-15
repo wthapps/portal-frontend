@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-/**
- * This class represents the toolbar component.
- */
 @Component({
   moduleId: module.id,
   selector: 'sd-toolbar',
-  templateUrl: 'toolbar.component.html',
-  styleUrls: ['toolbar.component.css']
+  templateUrl: 'toolbar.component.html'
 })
+export class ToolbarComponent implements OnInit {
+  constructor() {
+  }
 
-export class ToolbarComponent {}
+  ngOnInit() {
+  }
 
+}

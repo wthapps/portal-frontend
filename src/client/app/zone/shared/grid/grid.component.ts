@@ -19,7 +19,7 @@ declare var _: any;
   templateUrl: 'grid.component.html'
 })
 
-export abstract class ZPictureGridComponent implements OnChanges {
+export class ZPictureGridComponent implements OnChanges {
 
 
 

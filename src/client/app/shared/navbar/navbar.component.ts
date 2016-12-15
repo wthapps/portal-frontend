@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-/**
- * This class represents the navigation bar component.
- */
 @Component({
   moduleId: module.id,
   selector: 'sd-navbar',
-  templateUrl: 'navbar.component.html',
-  styleUrls: ['navbar.component.css'],
+  templateUrl: 'navbar.component.html'
 })
+export class NavbarComponent implements OnInit {
+  constructor() {
+  }
 
-export class NavbarComponent {}
+  ngOnInit() {
+  }
+
+}
