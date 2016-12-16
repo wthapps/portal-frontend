@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../services/social.service';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 
@@ -15,7 +15,7 @@ export class ZSocialNotificationsComponent implements OnInit {
   newNotifications: any = [];
 
 
-  constructor(private socialService: SocialService, private apiBaseServiceV2: ApiBaseServiceV2) {
+  constructor(private socialService: SocialService, private apiBaseService: ApiBaseService) {
   }
 
   ngOnInit() {
@@ -36,10 +36,10 @@ export class ZSocialNotificationsComponent implements OnInit {
     let api: any = null;
     switch (action.method) {
       case 'post':
-        api = this.apiBaseServiceV2.post(action.link, action.params);
+        api = this.apiBaseService.post(action.link, action.params);
         break;
       case 'delete':
-        api = this.apiBaseServiceV2.delete(action.link);
+        api = this.apiBaseService.delete(action.link);
         break;
     }
 

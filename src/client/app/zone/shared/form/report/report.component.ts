@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ZoneReportService } from './report.service';
 import { HdModalComponent } from '../../ng2-hd/modal/components/modal';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
 declare var $: any;
@@ -43,7 +43,7 @@ export class ZoneReportComponent implements OnInit {
 
   constructor(private zoneReportService: ZoneReportService,
               private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService) {
 
     this.form = fb.group({
@@ -76,7 +76,7 @@ export class ZoneReportComponent implements OnInit {
       entity: this.entityType == 'post' ? 1 : this.entityType == 'member' ? 2 : 3,
       reports: [{id: this.reason.id, description: this.reason.id == 99 ? values.other : this.reason.description}]
     });
-    this.apiBaseServiceV2.post(`zone/social_network/userreports`, body)
+    this.apiBaseService.post(`zone/social_network/userreports`, body)
       .subscribe((result: any) => {
           console.log(result);
         },

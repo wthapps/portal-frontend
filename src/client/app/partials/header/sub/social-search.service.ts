@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 /**
  * Created by phat on 18/11/2016.
  */
 @Injectable()
 export class SoSearchService {
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2) {
+  constructor(private apiBaseService: ApiBaseService) {
   }
 
   search(text:string, types:any) {
-    return this.apiBaseServiceV2.post('zone/social_network/search', {text: text, types: types})
+    return this.apiBaseService.post('zone/social_network/search', {text: text, types: types})
   }
 
   saveKey(text:string) {
-    return this.apiBaseServiceV2.post('zone/social_network/search/save_key', {key: text})
+    return this.apiBaseService.post('zone/social_network/search/save_key', {key: text})
   }
 }
 

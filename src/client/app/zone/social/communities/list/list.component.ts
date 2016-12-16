@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
@@ -31,7 +31,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   favourite: any;
 
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
               private toastsService: ToastsService,
@@ -49,7 +49,7 @@ export class ZSocialCommunityListComponent implements OnInit {
     let myuuid = this.userService.profile.uuid;
     var _this_community = this;
 
-    this.apiBaseServiceV2.get('zone/social_network/communities').subscribe(
+    this.apiBaseService.get('zone/social_network/communities').subscribe(
       (res: any)=> {
         console.log(res);
         _this_community.myList.length = 0;
@@ -87,7 +87,7 @@ export class ZSocialCommunityListComponent implements OnInit {
       header: 'Delete Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.delete(`zone/social_network/communities/${item.uuid}`)
+        this.apiBaseService.delete(`zone/social_network/communities/${item.uuid}`)
           .subscribe((response: any) => {
               // console.log(response);
               this.onUpdated(response.data);
@@ -115,7 +115,7 @@ export class ZSocialCommunityListComponent implements OnInit {
       header: 'Leave Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
+        this.apiBaseService.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
           .subscribe((response: any) => {
               this.getList();
               this.toastsService.success(`You left the community ${item.name} successfully`);

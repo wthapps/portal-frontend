@@ -11,7 +11,7 @@ import {
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { BaseZoneSocialItem } from '../base/base-social-item';
 import { ConstantsSocial } from '../base/constants-social';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/config/constants';
 import { LoadingService, ToastsService, ConfirmationService } from '../../../shared/index';
 import {
@@ -55,7 +55,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   dataLikeDislike: any;
 
 
-  constructor(public apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(public apiBaseService: ApiBaseService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private toast: ToastsService) {
@@ -173,7 +173,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   update(attr: any = {}) {
     console.log('attt ', attr);
-    this.apiBaseServiceV2.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, attr)
+    this.apiBaseService.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, attr)
       .subscribe((result: any) => {
           this.item = result['data'];
           this.mapDisplay();
@@ -190,7 +190,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       header: 'Delete Post',
       accept: () => {
         this.loading.start();
-        this.apiBaseServiceV2.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
+        this.apiBaseService.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
           .subscribe((result: any) => {
               this.toast.success('Deleted post successfully', 'Delete Post');
               this.loading.stop();
@@ -316,7 +316,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
 
     let data = {reaction: reaction, reaction_object: object, uuid: uuid};
-    this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
+    this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).subscribe(
       (res: any) => {
         this.item = new SoPost().from(res.data);
         this.mapDisplay();

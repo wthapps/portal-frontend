@@ -1,10 +1,10 @@
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 export class BaseSocialList {
   listItems: Array<any>;
-  apiBaseServiceV2: ApiBaseServiceV2;
+  apiBaseService: ApiBaseService;
 
   loadList(url: string) {
-    return this.apiBaseServiceV2.get(url);
+    return this.apiBaseService.get(url);
   }
 }

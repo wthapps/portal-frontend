@@ -13,6 +13,8 @@ export abstract class ApiBaseService {
   private _baseUrl: string = Constants.baseUrls.apiBaseService;
   private _headers: Headers = new Headers({'Content-Type': 'application/json'});
 
+  urls = Constants.urls;
+
   constructor(private http: Http, private router?: Router) {
     this._http = http;
   }
@@ -20,9 +22,12 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `get` http method.
    */
-  public get(path: string): Observable<Response> {
+  public get(path: string, body?: any = ''): Observable<Response> {
+    if (typeof body == 'object') {
+      body = '?' + this.paramsToString(body);
+    }
     this.buildOptions();
-    return this._http.get(this._baseUrl + path, this._options)
+    return this._http.get(this._baseUrl + path + body, this._options)
       .map(res => res.json())
       .catch(this.handleError);
   }
@@ -30,8 +35,10 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `post` http method.
    */
-  public post(path: string, body: string): Observable<Response> {
-
+  public post(path: string, body?: any): Observable<Response> {
+    if (typeof body == 'object') {
+      body = JSON.stringify(body);
+    }
     this.buildOptions();
     console.log('posting..........', path, body, this._options);
     return this._http.post(this._baseUrl + path, body, this._options)
@@ -42,7 +49,10 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `put` http method.
    */
-  public put(path: string, body: string): Observable<Response> {
+  public put(path: string, body?: any): Observable<Response> {
+    if (typeof body == 'object') {
+      body = JSON.stringify(body);
+    }
     this.buildOptions();
     return this._http.put(this._baseUrl + path, body, this._options)
       .map(res => res.json())
@@ -62,7 +72,7 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `patch` http method.
    */
-  public patch(path: string, body: string): Observable<Response> {
+  public patch(path: string, body?: any): Observable<Response> {
     this.buildOptions();
     return this._http.patch(this._baseUrl + path, body, this._options)
       .map(res => res.json())
@@ -103,5 +113,14 @@ export abstract class ApiBaseService {
     //   let _route = this.router;
     //   _route.navigate(['/login']);
     // }
+  }
+
+  paramsToString(params: any): string {
+    let str: string = '';
+    for (let param in params) {
+      str += param + '=' + params[param] + '&';
+    }
+    str = str.slice(0, -1);
+    return str;
   }
 }

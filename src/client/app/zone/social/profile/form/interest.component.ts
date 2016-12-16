@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
@@ -34,7 +34,7 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
   form: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private socialService: SocialService,
               private userService: UserService) {
@@ -114,7 +114,7 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
 
     console.log('body:', body);
 
-    this.apiBaseServiceV2.put(`zone/social_network/users/${this.data.uuid}`, body)
+    this.apiBaseService.put(`zone/social_network/users/${this.data.uuid}`, body)
       .subscribe((result: any) => {
           console.log(result);
           //this.updated.emit(result.data);

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { UserService } from '../../../shared/services/user.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { UserService } from '../../../shared/services/user.service';
 export class ZSocialCommunityDetailComponent implements OnInit {
   errorMessage: string = '';
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService) {

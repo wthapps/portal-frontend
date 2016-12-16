@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 
 @Injectable()
 export class PostService {
 
   url = 'zone/social_network/posts';
 
-  constructor(private api: ApiBaseServiceV2) {
+  constructor(private api: ApiBaseService) {
   }
 
   list(queryParams: any = null): any {

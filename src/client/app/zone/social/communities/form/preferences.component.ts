@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
 import {
@@ -39,7 +39,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
 
 
   constructor(private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
               private userService: UserService) {
@@ -94,7 +94,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
     console.log(body);
 
 
-    this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}`, body)
+    this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}`, body)
       .subscribe((result: any) => {
           this.updated.emit(result.data);
         },
@@ -111,7 +111,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
       message: 'Are you sure you want to reset settings',
       header: 'Reset Default',
       accept: () => {
-        this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}/reset_settings`)
+        this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}/reset_settings`)
           .subscribe((result: any) => {
               this.data = result.data;
               // this.updated.emit(result.data);

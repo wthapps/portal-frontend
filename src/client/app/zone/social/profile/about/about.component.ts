@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../../../shared/services/user.service';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SocialService } from '../../services/social.service';
 import { ZSocialProfileService } from '../profile.service';
@@ -28,7 +28,7 @@ export class ZSocialProfileAboutComponent implements OnInit {
   constructor(private socialService: SocialService,
               private route: ActivatedRoute,
               private router: Router,
-              private apiBaseService: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private socialProfileService: ZSocialProfileService,
               private userService: UserService) {
   }

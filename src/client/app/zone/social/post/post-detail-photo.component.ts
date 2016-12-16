@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BaseZoneSocialItem } from '../base/base-social-item';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/config/constants';
 
 
@@ -30,7 +30,7 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              apiBaseServiceV2: ApiBaseServiceV2) {
+              apiBaseService: ApiBaseService) {
     super();
   }
 
@@ -54,7 +54,7 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
   }
 
   loadPost(uuid: string): void {
-    this.loadItem(this.apiBaseServiceV2.urls.zoneSoPosts + '/' + uuid)
+    this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + uuid)
       .subscribe((response: any) => {
           this.item = response.data;
           this.itemDisplay = _.cloneDeep(this.item);

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { SocialService } from '../services/social.service';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../partials/loading/loading.service';
@@ -24,7 +24,7 @@ export class PostListComponent implements OnInit {
   uuid: string;
   // type: string = 'user';
 
-  constructor(public apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(public apiBaseService: ApiBaseService,
               private socialService: SocialService,
               private loadingService: LoadingService,
               private route: ActivatedRoute,

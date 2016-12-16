@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
@@ -35,7 +35,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   invitation: any = undefined;
 
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
@@ -67,7 +67,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       header: 'Delete Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.delete(`zone/social_network/communities/${item.uuid}`)
+        this.apiBaseService.delete(`zone/social_network/communities/${item.uuid}`)
           .subscribe((response: any) => {
               // console.log(response);
               this.onUpdated(response.data);
@@ -95,7 +95,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       header: 'Leave Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
+        this.apiBaseService.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
           .subscribe((response: any) => {
               this.loadingService.stop();
               this.router.navigateByUrl('/zone/social/communities');
@@ -151,7 +151,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   askToJoin() {
-    this.apiBaseServiceV2.post(`zone/social_network/communities/join`, JSON.stringify({uuid: this.uuid}))
+    this.apiBaseService.post(`zone/social_network/communities/join`, JSON.stringify({uuid: this.uuid}))
       .subscribe((result: any) => {
           this.invitation = result.data;
         },
@@ -161,7 +161,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   cancelJoinRequest() {
-    this.apiBaseServiceV2.delete(`zone/social_network/communities/cancel_invitation/${this.invitation.id}`).subscribe(
+    this.apiBaseService.delete(`zone/social_network/communities/cancel_invitation/${this.invitation.id}`).subscribe(
       (res: any)=> {
         this.invitation = undefined;
       },
@@ -184,7 +184,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   checkJoinRequestStatus() {
-    this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}/join_request_status`)
+    this.apiBaseService.get(`zone/social_network/communities/${this.uuid}/join_request_status`)
       .subscribe((result: any) => {
           this.invitation = result.data;
         },

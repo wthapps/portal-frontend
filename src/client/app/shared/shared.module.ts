@@ -39,7 +39,6 @@ import {
 import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/index';
 
 import { FormModalComponent } from './form/form-modal.component';
-import { ApiBaseServiceV2 } from './services/apibase.service.v2';
 import { NewlinePipe } from './pipe/newline.pipe';
 import { TitleCase } from './pipe/titlecase.pipe';
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
@@ -137,7 +136,6 @@ export class SharedModule {
         CountryService,
         ConfirmationService,
         DeactivateConfirmService,
-        ApiBaseServiceV2,
         Ng2Cable,
         Broadcaster,
         SoSearchService

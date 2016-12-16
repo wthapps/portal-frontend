@@ -10,7 +10,7 @@ import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { ToastsService } from '../../../../partials/toast/toast-message.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../../../partials/loading/loading.service';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import {
   DeleteCommentEvent,
   CancelEditCommentEvent,
@@ -50,7 +50,7 @@ export class PostFooterComponent implements OnChanges {
   hasDislike: boolean = false;
   showInfo: boolean = false;
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private toast: ToastsService,
