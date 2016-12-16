@@ -30,9 +30,13 @@
     </template>
     <template [ngIf]="isListView">
       <page-zone-listview
-        (imgDetail)="onClick($event)"
-        [data]="items.photos"
-        (imgsSelected)="onImgsSelected($event)">
+        [category]="'photos'"
+        [items]="items.photos"
+        (imgsSelected)="onImgsSelected($event)"
+        (preview)="onPreview($event)"
+        (loadMore)="onLoadMore($event)"
+        (outEvent)="onGridEvent($event)"
+        [resetSelected]="resetSelected">
       </page-zone-listview>
     </template>
 

@@ -20,9 +20,6 @@ declare var _: any;
 })
 
 export class ZPictureGridComponent implements OnChanges {
-
-
-
   @Input() items: any;
   @Input() resetSelected: boolean;
   @Input() category: string;

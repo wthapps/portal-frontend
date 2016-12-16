@@ -103,6 +103,9 @@
   &.list {
     margin-left: -10px;
     margin-right: -10px;
+    .photo-box-img-action {
+      @include center(false, true);
+    }
     .photo-box-img {
       display: table;
       width: 100%;

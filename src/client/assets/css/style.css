@@ -13221,6 +13221,10 @@ wth-app:empty + .dots-loader-wrap {
 .row-img.list {
   margin-left: -10px;
   margin-right: -10px; }
+  .row-img.list .photo-box-img-action {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%); }
   .row-img.list .photo-box-img {
     display: table;
     width: 100%;
