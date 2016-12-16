@@ -240,6 +240,7 @@ export class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
     this.loadingService.start('#photodata-loading');
     this.apiService.get(`${this.buildPathByCat()}`).subscribe(
       (response: any) => {
+        console.log(response);
         this.items = response['data'];
         this.loadingService.stop('#photodata-loading');
       },
