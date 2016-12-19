@@ -14,6 +14,8 @@ import {
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
 import { SearchFormComponent } from './sub/search-form.component';
 
+import { AppBaseTestOther } from '../../shared/function-base/app.call';
+
 declare var $: any;
 declare let ActionCable: any;
 /**
@@ -46,7 +48,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
               private api: ApiBaseService
   ) {
 
-    //console.log(this.userService);
+    console.log('AppBaseTestOther:', AppBaseTestOther('function test'));
     this.urls = new Array();
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this.urls.length = 0; //Fastest way to clear out array
