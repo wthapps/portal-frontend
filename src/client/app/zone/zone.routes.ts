@@ -25,6 +25,11 @@ import { ZSocialSettingComponent } from './social/setting/setting.component';
 import { ZSocialNotificationsComponent } from './social/notifications/notifications.component';
 import { ZSocialSearchResultComponent } from './social/search/search.component';
 
+import {
+  ZMediaComponent,
+  ZMediaPhotoListComponent
+} from './media/index';
+
 
 export const ZoneRoutes: Route[] = [
   {
@@ -32,6 +37,14 @@ export const ZoneRoutes: Route[] = [
     component: ZoneComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: 'media', component: ZMediaComponent,
+        children: [
+          {path: 'photo', component: ZMediaPhotoListComponent},
+          {path: '', component: ZMediaComponent}
+        ]
+      },
+
       {path: 'picture', component: ZPictureComponent},
       {path: 'picture/:category', component: ZPictureComponent},
       {path: 'picture/:category/:id', component: ZPictureComponent},
@@ -72,12 +85,12 @@ export const ZoneRoutes: Route[] = [
         ]
       },
       /*{
-        path: 'social/profile/:id', component: ZSocialProfileComponent,
-        children: [
-          {path: 'about', component: ZSocialProfileAboutComponent},
-          {path: '', component: ZSocialProfilePostComponent},
-        ]
-      },*/
+       path: 'social/profile/:id', component: ZSocialProfileComponent,
+       children: [
+       {path: 'about', component: ZSocialProfileAboutComponent},
+       {path: '', component: ZSocialProfilePostComponent},
+       ]
+       },*/
       {path: 'social/setting', component: ZSocialSettingComponent},
 
       {path: '', component: ZPictureComponent}

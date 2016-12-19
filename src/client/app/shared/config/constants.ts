@@ -62,6 +62,7 @@ export let Constants = {
   },
 
   pictureMenuItems : [
+    { name: 'Media - Photos', link: '/zone/media/photo' },
     { name: 'Photos', link: '/zone/picture/photo' },
     { name: 'Albums', link: '/zone/picture/album' },
     // { name: 'Videos', link: '/zone/picture/video' },
