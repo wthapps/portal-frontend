@@ -200,7 +200,6 @@ export class PostEditComponent implements OnInit, OnChanges {
 
         body = JSON.stringify({photo: {name: fileName, image: data.target['result']}});
         this.apiService.post(`zone/social_network/photos/upload`, body)
-          .map(res => res.json())
           .subscribe((result: any) => {
               this.post.photos.unshift(result['data']);
               this.uploadedPhotos.push(result['data']);

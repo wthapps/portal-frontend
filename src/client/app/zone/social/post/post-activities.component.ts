@@ -31,7 +31,6 @@ export class PostActivitiesComponent {
   loadData(): void {
 
     this.api.post(`zone/social_network/posts/show_activities`, JSON.stringify({post_id: this.item.uuid}))
-      .map(res => res.json())
       .subscribe((result: any) => {
           this.shares = result['data'];
         },

@@ -87,7 +87,6 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
     if (changes['modalShow'] && changes['modalShow'].currentValue) {
       let body = JSON.stringify({photos: _.map(this.selectedItems, 'id'), albums: []});
       this.apiService.post(`zone/sharings/get_sharing_info`, body)
-        .map(res => res.json())
         .subscribe((result: any) => {
             this.sharedContacts = result['data']['contacts'];
             this.sharedContactGroups = result['data']['contactgroups'];
@@ -150,7 +149,6 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
       });
 
       this.apiService.put(`zone/sharings/update`, body)
-        .map(res => res.json())
         .subscribe((result: any) => {
             this.sharedContacts = result['data'].contacts;
             this.sharedContactGroups = result['data'].contactgroups;
@@ -175,7 +173,6 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
         contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
       });
       this.apiService.post(`zone/sharings`, body)
-        .map(res => res.json())
         .subscribe((result: any) => {
             this.sharedContacts = result['data'].contacts;
             this.sharedContactGroups = result['data'].contactgroups;

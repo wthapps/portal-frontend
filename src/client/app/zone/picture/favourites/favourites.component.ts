@@ -197,7 +197,6 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
 
 
     this.apiService.post(`zone/photos/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           _.map(newFavourite, (v: any)=> {
             this.items.photos = _.reject(this.items.photos, ['id', v.id]);

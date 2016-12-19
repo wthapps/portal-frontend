@@ -80,7 +80,6 @@ export class ComMemberListComponent implements OnInit {
       uuid: this.uuid,
       user_ids: _.map(response.items, 'uuid')
     }))
-      .map(res => res.json)
       .subscribe((result: any) => {
           console.log('invited friends');
         },

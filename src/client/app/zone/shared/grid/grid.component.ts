@@ -157,7 +157,6 @@ export class ZPictureGridComponent implements OnChanges {
 
 
     this.apiService.post(`zone/${this.category}/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
           _.map(newFavourite, (v: any)=> {

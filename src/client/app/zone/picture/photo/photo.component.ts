@@ -200,7 +200,6 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit,OnC
 
 
     this.apiService.post(`zone/photos/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
           _.map(newFavourite, (v: any)=> {
