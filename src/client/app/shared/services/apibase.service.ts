@@ -22,7 +22,7 @@ export class ApiBaseService {
   /**
    * Performs a request with `get` http method.
    */
-  public get(path: string, body?: any): Observable<Response> {
+  public get(path: string, body: any = ''): Observable<Response> {
     if (typeof body == 'object') {
       body = '?' + this.paramsToString(body);
     }
@@ -35,7 +35,7 @@ export class ApiBaseService {
   /**
    * Performs a request with `post` http method.
    */
-  public post(path: string, body?: any): Observable<Response> {
+  public post(path: string, body: any = ''): Observable<Response> {
     if (typeof body == 'object') {
       body = JSON.stringify(body);
     }
@@ -49,7 +49,7 @@ export class ApiBaseService {
   /**
    * Performs a request with `put` http method.
    */
-  public put(path: string, body?: any): Observable<Response> {
+  public put(path: string, body: any = ''): Observable<Response> {
     if (typeof body == 'object') {
       body = JSON.stringify(body);
     }
@@ -72,7 +72,7 @@ export class ApiBaseService {
   /**
    * Performs a request with `patch` http method.
    */
-  public patch(path: string, body?: any): Observable<Response> {
+  public patch(path: string, body: any = ''): Observable<Response> {
     this.buildOptions();
     return this._http.patch(this._baseUrl + path, body, this._options)
       .map(res => res.json())
