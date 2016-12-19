@@ -151,7 +151,7 @@ export class ZAlbumDetailComponent extends BaseMediaComponent implements OnInit,
           accept: () => {
             this.loadingService.start();
             this.albumService.post(this.albumService.url + this.album.id + '/photos', {photos: ids, type: 'delete'})
-              .subscribe(res => {
+              .subscribe((res: any) => {
                 this.loadingService.stop();
                 this.toastsService.success('Items are removed from album');
                 this.items = res.data;

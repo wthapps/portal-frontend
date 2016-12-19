@@ -48,11 +48,12 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit,OnC
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(public apiService: ApiBaseService,
+  constructor(apiService: ApiBaseService,
               public toastsService: ToastsService,
               public loadingService: LoadingService,
               public confirmationService: ConfirmationService) {
-    super(MediaType.photo, this.apiService);
+    super(MediaType.photo, apiService);
+    this.apiService = apiService;
   }
 
   ngOnInit() {
@@ -200,7 +201,6 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit,OnC
 
 
     this.apiService.post(`zone/photos/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
           _.map(newFavourite, (v: any)=> {

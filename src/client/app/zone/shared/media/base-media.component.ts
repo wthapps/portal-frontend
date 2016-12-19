@@ -132,7 +132,6 @@ export class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
           _.map(newFavourite, (v: any)=> {
@@ -162,7 +161,6 @@ export class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
           let body = JSON.stringify({ids: _.map(this.selectedItems, 'id')});
           this.loadingService.start();
           this.apiService.post(`${this.buildPathByCat()}/delete`, body)
-            .map(res => res.json())
             .subscribe((result: any) => {
                 // stop loading
                 this.needToReload = true;

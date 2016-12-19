@@ -1,3 +1,8 @@
+<style>
+  .last li {
+    border-bottom: none
+  }
+</style>
 <div class="zone-social">
   <div class="zone-social-in" *ngIf="result && groups">
     <div class="z-social-box" *ngFor="let group of groups">
@@ -6,7 +11,10 @@
           {{group | titleCase}}
         </h4>
       </div>
-      <div class="z-social-post" *ngFor="let item of result[group]">
+      <h3 *ngIf="result[group] && result[group].length == 0" class="text-fade">
+        There is no result
+      </h3>
+      <div class="z-social-post" *ngFor="let item of result[group]; let last = last" [class.last]="last">
         <ul class="list-unstyled social-list-user">
           <li>
             <div class="media-center">
