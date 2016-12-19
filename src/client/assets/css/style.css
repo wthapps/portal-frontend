@@ -10366,7 +10366,7 @@ Header
     position: relative; }
     @media (min-width: 1200px) {
       .header .navbar-form {
-        margin-left: 150px; } }
+        margin-left: 115px; } }
     .header .navbar-form .navbar-searchTop {
       position: relative; }
       .header .navbar-form .navbar-searchTop .btn, .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-close"], .header .navbar-form .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-form .navbar-searchTop button[ng-reflect-icon="fa-check"] {

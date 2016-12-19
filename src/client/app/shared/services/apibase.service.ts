@@ -6,7 +6,7 @@ import { Constants }     from '../index';
 import { Router } from '@angular/router';
 
 @Injectable()
-export abstract class ApiBaseService {
+export class ApiBaseService {
   private _http: Http;
   private _options: RequestOptionsArgs;
   //private _baseUrl:string = 'http://52.221.221.245:4000/';
@@ -22,7 +22,7 @@ export abstract class ApiBaseService {
   /**
    * Performs a request with `get` http method.
    */
-  public get(path: string, body?: any = ''): Observable<Response> {
+  public get(path: string, body?: any): Observable<Response> {
     if (typeof body == 'object') {
       body = '?' + this.paramsToString(body);
     }

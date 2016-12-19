@@ -48,11 +48,12 @@ export class ZonePhotoComponent extends BaseMediaComponent implements OnInit,OnC
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(public apiService: ApiBaseService,
+  constructor(apiService: ApiBaseService,
               public toastsService: ToastsService,
               public loadingService: LoadingService,
               public confirmationService: ConfirmationService) {
-    super(MediaType.photo, this.apiService);
+    super(MediaType.photo, apiService);
+    this.apiService = apiService;
   }
 
   ngOnInit() {

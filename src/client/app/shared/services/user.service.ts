@@ -62,7 +62,7 @@ export class UserService extends ApiBaseService {
   update(path: string, body: string): Observable<Response> {
     // if(is_patch){
     return super.patch(path, body)
-      .map((res) => {
+      .map((res: any) => {
         if (res) {
           // update credit card into to profile
           // this.profile.credit_cards = res.credit_cards;
@@ -102,7 +102,7 @@ export class UserService extends ApiBaseService {
 
   choosePlan(path: string, body: string): Observable<Response> {
     return super.put(path, body)
-      .map((res) => {
+      .map((res: any) => {
         if (res) {
           this.updateProfile(res.data);
           this.readUserInfo();

@@ -17,7 +17,10 @@ import { SearchFormComponent } from './sub/search-form.component';
 import { AppBaseTestOther } from '../../shared/function-base/app.call';
 
 declare var $: any;
-declare let ActionCable: any;
+// declare let ActionCable: any;
+
+declare let App: any;
+
 /**
  * This class represents the header component.
  */
@@ -158,18 +161,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   sendMessage(event: any) {
 
-
-
-    ActionCable.startDebugging();
-    var App: any = {};
-    App.cable = ActionCable.createConsumer("ws://localhost:4444/cable");
-    App.notifications = App.cable.subscriptions.create('ChatroomsChannel', {
-      received: function(response: any) {
-        console.log('response', response);
-      }
-    });
-
-    App.notifications.perform('send_message',{chatroom_id: 3, message: 'hello world'});
+    App.notifications.sendMessage(3, 'hello world');
 
     // this.api.get('zone/social_network/notification/broadcast_message')
     //     .subscribe(result => {

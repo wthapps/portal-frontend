@@ -1,11 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { ApiBaseService } from '../../../../shared/services/apibase.service';
-import { LoadingService } from '../../../../partials/loading/loading.service';
-
 import { MemberListInviteComponent } from './member-list-invite.component';
-import { ApiBaseService, ToastsService, ConfirmationService } from '../../../../shared/index';
+import { ApiBaseService, LoadingService, ToastsService, ConfirmationService } from '../../../../shared/index';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
 
 

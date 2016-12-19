@@ -43,7 +43,7 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent {
     let album = new Album({name: albumName, description: albumDes});
     this.albumService.post(this.albumService.url, album)
       .subscribe(
-        res => {
+        (res: any) => {
           this.album = new Album(res.data);
           this.doneFormModal.emit(this.album);
           if (this.arrayItems.length > 0) {
