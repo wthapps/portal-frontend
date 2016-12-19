@@ -118,7 +118,7 @@ export class RegisterComponent {
             this._loadingService.stop();
 
             console.log('error:', error);
-            let err = JSON.stringify(error._body);
+            let err = error;
 
             this.errorMessage = err;
             //TODO refactoring code check signup

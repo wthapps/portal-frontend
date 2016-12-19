@@ -27,7 +27,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   onLoadMore(event: any) {
     event.preventDefault();
     this.mediaService.loadMore(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v)=> {
+      _.map(res.data, (v: any)=> {
         this.data.push(v);
       });
       this.nextLink = res.page_metadata.links.next;
