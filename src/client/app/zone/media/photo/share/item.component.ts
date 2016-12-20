@@ -28,4 +28,12 @@ export class ZMediaPhotoShareItemComponent {
     });
   }
 
+  onClick() {
+
+  }
+
+  onDbClick() {
+
+  }
+
 }

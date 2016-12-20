@@ -4,6 +4,7 @@ import { SharedModule } from '../../shared/shared.module';
 import {
   ZMediaComponent,
   ZMediaService,
+  ZMediaToolbarComponent,
   ZMediaPhotoListComponent,
   ZMediaPhotoShareItemComponent
 } from './index';
@@ -15,11 +16,13 @@ import {
   ],
   declarations: [
     ZMediaComponent,
+    ZMediaToolbarComponent,
     ZMediaPhotoListComponent,
-    ZMediaPhotoShareItemComponent
+    ZMediaPhotoShareItemComponent,
   ],
   exports: [
     ZMediaComponent,
+    ZMediaToolbarComponent,
     ZMediaPhotoListComponent,
     ZMediaPhotoShareItemComponent
   ],
