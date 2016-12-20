@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SoSearchService } from './social-search.service';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: 'search-form.component.html'
 })
 
-export class SearchFormComponent implements OnInit{
+export class SearchFormComponent implements OnInit {
   show: boolean = false;
   type: string = '';
   searchService: any;
@@ -29,8 +29,8 @@ export class SearchFormComponent implements OnInit{
   init(type:string) {
     this.show = true;
     this.type = type;
-    if(this.type == "social") {
-      this.searchService = this.socialSearchService
+    if(this.type == 'social') {
+      this.searchService = this.socialSearchService;
     }
   }
 
@@ -46,7 +46,7 @@ export class SearchFormComponent implements OnInit{
         this.groups = Object.keys(res.data);
         this.showMore = res.show_more;
       }
-    )
+    );
   }
 
   onSaveKey() {
@@ -55,7 +55,7 @@ export class SearchFormComponent implements OnInit{
       (res:any) => {
 
       }
-    )
+    );
   }
 
   focusOut() {

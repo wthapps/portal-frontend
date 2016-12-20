@@ -30,7 +30,6 @@ declare var $: any;
 })
 export class HdModalComponent implements OnInit, OnDestroy {
 
-  private overrideSize: string = null;
 
   instance: ModalInstance;
   visible: boolean = false;
@@ -44,6 +43,8 @@ export class HdModalComponent implements OnInit, OnDestroy {
   @Output() onClose: EventEmitter<any> = new EventEmitter(false);
   @Output() onDismiss: EventEmitter<any> = new EventEmitter(false);
   @Output() onOpen: EventEmitter<any> = new EventEmitter(false);
+
+  private overrideSize: string = null;
 
   @HostBinding('class.fade') get fadeClass(): boolean {
     return this.animation;
@@ -73,8 +74,8 @@ export class HdModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    $(document).on('hidden.bs.modal', '.modal', function () {
-      $('.modal:visible').length && $(document.body).addClass('modal-open');
+    $(document).on('hidden.bs.modal', '.modal', function() {
+      return ($('.modal:visible').length && $(document.body).addClass('modal-open'));
     });
   }
 

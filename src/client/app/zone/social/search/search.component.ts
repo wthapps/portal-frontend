@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SoSearchService } from '../../../partials/header/sub/social-search.service';
 
 declare var _: any;

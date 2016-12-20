@@ -46,6 +46,7 @@ import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SearchFormComponent } from '../partials/header/sub/search-form.component';
 import { SoSearchService } from '../partials/header/sub/social-search.service';
+import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -59,6 +60,7 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     ConfirmDialogModule,
     AutoCompleteModule,
     TagInputModule,
+    HdTagInputModule,
     InputTextareaModule
 
   ],
@@ -108,6 +110,7 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     ConfirmDialogModule,
     AutoCompleteModule,
     TagInputModule,
+    HdTagInputModule,
     InputTextareaModule,
 
 

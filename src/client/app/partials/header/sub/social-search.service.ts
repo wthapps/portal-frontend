@@ -10,11 +10,11 @@ export class SoSearchService {
   }
 
   search(text:string, types:any) {
-    return this.apiBaseService.post('zone/social_network/search', {text: text, types: types})
+    return this.apiBaseService.post('zone/social_network/search', {text: text, types: types});
   }
 
   saveKey(text:string) {
-    return this.apiBaseService.post('zone/social_network/search/save_key', {key: text})
+    return this.apiBaseService.post('zone/social_network/search/save_key', {key: text});
   }
 }
 

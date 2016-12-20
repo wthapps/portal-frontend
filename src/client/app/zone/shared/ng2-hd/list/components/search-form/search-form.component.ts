@@ -20,7 +20,7 @@ import {
   selector: 'search-form',
   templateUrl: 'search-form.component.html'
 })
-export class SearchForm {
+export class SearchFormComponent {
   @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() public onBlur: EventEmitter<any> = new EventEmitter();
   @Output() public onFocus: EventEmitter<any> = new EventEmitter();
