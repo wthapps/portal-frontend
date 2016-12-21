@@ -11,18 +11,12 @@
   "nationality": "CA",
   "gender": "male",
   "birthday": "2000-12-08T02:35:38.123Z",
-  "additional_link": [
+  "additional_links": [
     {
-      "key": "additional_link1",
-      "name": "additional_link 1",
-      "url": "google.com",
-      "order": 1
-    },
-    {
-      "key": "additional_link2",
-      "name": "additional_link 2",
-      "url": "google2.com",
-      "order": 2
+      "key": "",
+      "url": "http://ruby-doc.org/stdlib-2.3.1/libdoc/date/rdoc/DateTime.html",
+      "name": "phat",
+      "order": ""
     }
   ],
   "email": [

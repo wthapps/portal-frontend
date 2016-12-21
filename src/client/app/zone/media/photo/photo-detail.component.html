@@ -1,0 +1,100 @@
+<div id="photo-box-detail" class="photo-box-detail">
+  <div *ngIf="photo" class="photo-detail-top">
+    <ul class="action navbar-left">
+      <li>
+        <a href="javascript:;" (click)="preview(false)"><i class="fa fa-arrow-left"></i></a>
+      </li>
+    </ul>
+    <div class="name"><i class="fa fa-picture-o"></i> {{photo.name}}</div>
+    <ul class="action navbar-right">
+      <li>
+        <a href="javascript:;" (click)="onAction($event,'share')"><i class="fa fa-share-alt"></i></a>
+      </li>
+      <li>
+        <a href="javascript:;" (click)="onAction($event,'favourite')">
+          <i class="fa" [ngClass]="photo.favorite ? 'fa-star': 'fa-star-o'"></i>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:;" (click)="onAction($event,'tag')"><i class="fa fa-tag"></i></a>
+      </li>
+      <li>
+        <a href="javascript:;" (click)="onAction($event,'delete')"><i class="fa fa-trash-o"></i></a>
+      </li>
+      <li class="dropdown">
+        <a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="javascript:;" (click)="onAction($event, 'addToAlbum')">Add to Album</a></li>
+          <li><a class="text-disable" href="#">Download</a></li>
+          <li><a class="text-disable" href="javascript:;">Edit Photo</a></li>
+          <li><a href="javascript:;" (click)="showInfo()">Information</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="photo" class="photo-detail-content">
+    <div class="photo-detail-img">
+      <figure>
+        <img [src]="photo.url" alt="">
+      </figure>
+      <span *ngIf="data.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
+        <i class="fa fa-angle-left"></i>
+      </span>
+      <span *ngIf="data.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
+        <i class="fa fa-angle-right"></i>
+      </span>
+    </div>
+  </div>
+  <div *ngIf="photo" class="photo-detail-info">
+    <h3>Detail <a href="javascript:;" (click)="showInfo()"><i class="fa fa-times"></i></a></h3>
+    <h4><i class="fa fa-info-circle"></i> General Infomation <a href="javascript:;" (click)="onShowEditInfo()">Edit</a>
+    </h4>
+    <dl class="dl-horizontal">
+      <dt>Name</dt>
+      <dd>{{photo.name}}</dd>
+      <dt>Description</dt>
+      <dd>{{photo.description}}</dd>
+      <dt>Type</dt>
+      <dd>{{photo.extension}}</dd>
+      <dt>Size</dt>
+      <dd>{{photo.size}}</dd>
+      <dt>Demension</dt>
+      <dd>{{photo.dimensions}}</dd>
+      <dt>Uploaded</dt>
+      <dd>{{photo.created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
+    </dl>
+    <hr>
+    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="onAction($event,'tag')">Edit</a></h4>
+    <div class="tags-text">
+      <span *ngFor="let tag of photo.json_tags">{{tag}}</span>
+    </div>
+    <hr>
+    <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="onAction($event,'share')">Edit</a></h4>
+    <dl>
+      <dt>Owner</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <li><img src="assets/images/zone/img-group.png" alt="{{photo.owner.name}}" title="{{photo.owner.name}}">
+          </li>
+        </ul>
+      </dd>
+      <dt>Group</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <li *ngFor="let group of contactGroups">
+            <img src="assets/images/zone/img-group.png" title="{{group.name}}">
+          </li>
+        </ul>
+      </dd>
+      <dt>Contact</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <li *ngFor="let contact of contacts">
+            <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
+          </li>
+        </ul>
+      </dd>
+    </dl>
+  </div>
+</div>
+

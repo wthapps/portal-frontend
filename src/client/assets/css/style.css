@@ -13196,16 +13196,18 @@ wth-app:empty + .dots-loader-wrap {
     filter: alpha(opacity=0);
     z-index: 2; }
 
+.row-img .selected .img-center-dv {
+  border-color: #2996CC;
+  background-color: #e6e6e6; }
+  .row-img .selected .img-center-dv:after {
+    opacity: 1;
+    filter: alpha(opacity=100); }
+
+.row-img .selected .img-center {
+  padding: 15px; }
+
 .row-img .photo-box-img {
   position: relative; }
-  .row-img .photo-box-img.selected .img-center-dv {
-    border-color: #2996CC;
-    background-color: #e6e6e6; }
-    .row-img .photo-box-img.selected .img-center-dv:after {
-      opacity: 1;
-      filter: alpha(opacity=100); }
-  .row-img .photo-box-img.selected .img-center {
-    padding: 15px; }
   .row-img .photo-box-img:hover .photo-box-img-action {
     opacity: 1;
     filter: alpha(opacity=100); }

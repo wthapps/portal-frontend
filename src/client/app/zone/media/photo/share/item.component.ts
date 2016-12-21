@@ -1,5 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnChanges, Input, EventEmitter, Output, HostBinding } from '@angular/core';
 import { ZMediaService } from '../../media.service';
+
+declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -14,10 +17,21 @@ import { ZMediaService } from '../../media.service';
     }
   `]
 })
-export class ZMediaPhotoShareItemComponent {
+export class ZMediaPhotoShareItemComponent implements OnChanges {
+
+
   @Input() data: any;
+  @Input() action: any;
+
+  @HostBinding('class') ItemClass: string = '';
+
+  @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private mediaService: ZMediaService) {
+  }
+
+  ngOnChanges() {
+
   }
 
   onFavourite() {
@@ -28,12 +42,13 @@ export class ZMediaPhotoShareItemComponent {
     });
   }
 
-  onClick() {
-
+  onClick(e: any) {
+    this.outEvent.emit(this.data);
   }
 
   onDbClick() {
-
+    this.action.photo = this.data;
+    this.action.preview(true);
   }
 
 }

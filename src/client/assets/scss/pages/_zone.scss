@@ -49,20 +49,21 @@
     }
   }
 
-  .photo-box-img {
-    position: relative;
-    &.selected {
-      .img-center-dv {
-        border-color: #2996CC;
-        background-color: #e6e6e6;
-        &:after {
-          @include opacity(1);
-        }
-      }
-      .img-center {
-        padding: 15px;
+  .selected {
+    .img-center-dv {
+      border-color: #2996CC;
+      background-color: #e6e6e6;
+      &:after {
+        @include opacity(1);
       }
     }
+    .img-center {
+      padding: 15px;
+    }
+  }
+
+  .photo-box-img {
+    position: relative;
     &:hover {
       .photo-box-img-action {
         @include opacity(1);

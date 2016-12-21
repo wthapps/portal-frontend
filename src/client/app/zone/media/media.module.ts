@@ -3,28 +3,21 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import {
   ZMediaComponent,
-  ZMediaService,
-  ZMediaToolbarComponent,
-  ZMediaPhotoListComponent,
-  ZMediaPhotoShareItemComponent
+  ZMediaService
 } from './index';
+import { ZMediaPhotoModule } from './photo/photo.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    ZMediaPhotoModule
   ],
   declarations: [
-    ZMediaComponent,
-    ZMediaToolbarComponent,
-    ZMediaPhotoListComponent,
-    ZMediaPhotoShareItemComponent,
+    ZMediaComponent
   ],
   exports: [
-    ZMediaComponent,
-    ZMediaToolbarComponent,
-    ZMediaPhotoListComponent,
-    ZMediaPhotoShareItemComponent
+    ZMediaComponent
   ],
   providers: [
     ZMediaService

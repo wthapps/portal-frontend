@@ -2,11 +2,18 @@
 
 <div class="page-body-in">
   <div class="row-img" *ngIf="data">
-    <z-media-photo-share-item *ngFor="let item of data" [data]="item"></z-media-photo-share-item>
+    <z-media-photo-share-item
+      *ngFor="let item of data;"
+      [data]="item"
+      [action]="photoDetail"
+      (outEvent)="addPhoto($event)">
+    </z-media-photo-share-item>
   </div>
 
   <div class="text-center p20">
+    <button class="btn btn-primary" type="button" (click)="onShow(true)">show</button>
     <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load more</button>
   </div>
 </div>
 
+<z-media-photo-detail #photoDetail [data]="selectedPhotos"></z-media-photo-detail>
