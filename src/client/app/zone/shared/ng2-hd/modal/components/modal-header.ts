@@ -14,8 +14,8 @@ import { HdModalComponent } from './modal';
     `
 })
 export class ModalHeaderComponent {
-  @Input('show-close') showClose: boolean = false;
-  @Input('close-position') closePosition: string = '';
+  @Input() showClose: boolean = false;
+  @Input() closePosition: string = '';
   @Input() cssClass: string = '';
 
   constructor(private modal: HdModalComponent) {

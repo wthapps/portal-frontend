@@ -20,6 +20,7 @@ import { Ng2HdModule } from '../../shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';
+import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { InputTextareaModule } from 'primeng/primeng';
     FormsModule,
     ReactiveFormsModule,
     Ng2HdModule,
+    HdTagInputModule,
     TagInputModule,
     InputTextareaModule
   ],
@@ -47,6 +49,7 @@ import { InputTextareaModule } from 'primeng/primeng';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    HdTagInputModule,
     TagInputModule,
     PostNewComponent,
     FileSelectionComponent,

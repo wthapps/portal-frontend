@@ -38,7 +38,7 @@ import {
 // import { Ng2Dropdown } from 'ng2-material-dropdown';
 import { SearchInputAccessor } from './helpers/accessor';
 import { getAction } from './helpers/keypress-actions';
-import { SearchForm } from './search-form/search-form.component';
+import { SearchFormComponent } from './search-form/search-form.component';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -97,11 +97,6 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    */
   @Input() public readonly: boolean = undefined;
 
-  /**
-   * @name transform
-   * @desc function passed to the component to transform the value of the items, or reject them instead
-   */
-  @Input() public transform: (item: string) => string = (item) => item;
 
   /**
    * @name validators
@@ -244,9 +239,11 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
 
   /**
    * @name inputForm
-   * @type {SearchForm}
+   * @type {SearchFormComponent}
    */
-  @ViewChild(SearchForm) public inputForm: SearchForm;
+  @ViewChild(SearchFormComponent) public inputForm: SearchFormComponent;
+
+
 
   /**
    * list of items that match the current value of the input (for autocomplete)
@@ -261,6 +258,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @type {String}
    */
   public selectedTag: string;
+
 
   /**
    * @name tagElements
@@ -284,6 +282,12 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   constructor(private element: ElementRef, private renderer: Renderer) {
     super();
   }
+
+  /**
+   * @name transform
+   * @desc function passed to the component to transform the value of the items, or reject them instead
+   */
+  @Input() public transform: (item: string) => string = (item) => item;
 
   /**
    * @name removeItem
@@ -397,28 +401,6 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     $event.preventDefault();
   }
 
-  /**
-   * @name seyInputValue
-   * @param value
-   * @returns {string}
-   */
-  private setInputValue(value: string): string {
-    const item = value ? this.transform(value) : '';
-    const control = this.getControl();
-
-    // update form value with the transformed item
-    control.setValue(item);
-
-    return item;
-  }
-
-  /**
-   * @name getControl
-   * @returns {FormControl}
-   */
-  private getControl(): FormControl {
-    return <FormControl>this.inputForm.value;
-  }
 
   /**
    * @name focus
@@ -463,14 +445,6 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    */
   public isInputFocused(): boolean {
     return this.inputForm && this.inputForm.isInputFocused() ? true : false;
-  }
-
-  /**
-   * @name maxItemsReached
-   * @returns {boolean}
-   */
-  private get maxItemsReached(): boolean {
-    return this.maxItems !== undefined && this.items.length >= this.maxItems;
   }
 
   /**
@@ -555,5 +529,37 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
       this.items = this.items.filter(_item => _item !== item);
     }
     this.onSelected.emit(this.items);
+  }
+
+
+  /**
+   * @name seyInputValue
+   * @param value
+   * @returns {string}
+   */
+  private setInputValue(value: string): string {
+    const item = value ? this.transform(value) : '';
+    const control = this.getControl();
+
+    // update form value with the transformed item
+    control.setValue(item);
+
+    return item;
+  }
+
+  /**
+   * @name getControl
+   * @returns {FormControl}
+   */
+  private getControl(): FormControl {
+    return <FormControl>this.inputForm.value;
+  }
+
+  /**
+   * @name maxItemsReached
+   * @returns {boolean}
+   */
+  private get maxItemsReached(): boolean {
+    return this.maxItems !== undefined && this.items.length >= this.maxItems;
   }
 }

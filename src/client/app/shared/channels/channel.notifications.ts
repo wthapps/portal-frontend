@@ -23,7 +23,7 @@ console.log('apppppp', App);
       console.log('response', response);
     },
     sendMessage: function(chatroom_id: any, message: any) {
-      return this.perform("send_message", {
+      return this.perform('send_message', {
         chatroom_id: chatroom_id,
         body: message
       });

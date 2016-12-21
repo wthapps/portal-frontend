@@ -114,7 +114,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
       this.showSearchBar = true;
       if (this.urls[1] && this.urls[1] == '/zone/social') {
-        this.searchForm.init('social')
+        this.searchForm.init('social');
       }
       // zone layout
     } else {

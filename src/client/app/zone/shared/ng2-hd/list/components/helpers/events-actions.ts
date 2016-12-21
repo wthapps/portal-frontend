@@ -65,8 +65,6 @@ function getMatchingItems(value: string): Array<any> {
   const items = this.autocompleteItems;
   const lowercaseValue = value.toLowerCase();
 
-  console.log('loading matching items', value, itemsMatching);
-
   // items.forEach(item => {
   //     const condition = item.toLowerCase().indexOf(lowercaseValue) >= 0 && this.items.indexOf(item) === -1;
   //

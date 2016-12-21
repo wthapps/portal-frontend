@@ -4,7 +4,7 @@ import { BaseZoneSocialItem } from '../base/base-social-item';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { PostEditComponent, PostService } from './index';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 declare var _: any;
 

@@ -7,15 +7,15 @@ declare var jQuery: any;
 
 export class ModalInstance {
 
-  private suffix: string = '.ng2-bs3-modal';
-  private shownEventName: string = 'shown.bs.modal' + this.suffix;
-  private hiddenEventName: string = 'hidden.bs.modal' + this.suffix;
-  private $modal: any;
-
   shown: Observable<void>;
   hidden: Observable<ModalResult>;
   result: any;
   visible: boolean = false;
+
+  private suffix: string = '.ng2-bs3-modal';
+  private shownEventName: string = 'shown.bs.modal' + this.suffix;
+  private hiddenEventName: string = 'hidden.bs.modal' + this.suffix;
+  private $modal: any;
 
   constructor(private element: ElementRef) {
     this.init();
@@ -89,10 +89,11 @@ export class ModalInstance {
 }
 
 function booleanOrValue(value: any) {
-  if (value === 'true')
+  if (value === 'true') {
     return true;
-  else if (value === 'false')
+  } else if (value === 'false') {
     return false;
+  }
   return value;
 }
 

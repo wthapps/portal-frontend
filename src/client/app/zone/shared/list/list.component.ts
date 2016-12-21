@@ -13,9 +13,6 @@ import {
 declare var $: any;
 declare var _: any;
 
-declare var $: any;
-declare var _: any;
-
 @Component({
   moduleId: module.id,
   selector: 'page-zone-listview',

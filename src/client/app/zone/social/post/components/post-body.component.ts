@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { PostComponent } from '../post.component';

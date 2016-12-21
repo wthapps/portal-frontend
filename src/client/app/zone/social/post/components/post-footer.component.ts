@@ -5,7 +5,6 @@ import {
   EventEmitter,
   OnChanges
 } from '@angular/core';
-import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { ToastsService } from '../../../../partials/toast/toast-message.service';
 import { ConfirmationService } from 'primeng/components/common/api';

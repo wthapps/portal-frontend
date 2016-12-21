@@ -7,13 +7,16 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiBaseService {
+  urls = Constants.urls;
+
   private _http: Http;
   private _options: RequestOptionsArgs;
   //private _baseUrl:string = 'http://52.221.221.245:4000/';
   private _baseUrl: string = Constants.baseUrls.apiBaseService;
-  private _headers: Headers = new Headers({'Content-Type': 'application/json'});
-
-  urls = Constants.urls;
+  private _headers: Headers = new Headers({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  });
 
   constructor(private http: Http, private router?: Router) {
     this._http = http;
@@ -79,6 +82,15 @@ export class ApiBaseService {
       .catch(this.handleError);
   }
 
+  paramsToString(params: any): string {
+    let str: string = '';
+    for (let param in params) {
+      str += param + '=' + params[param] + '&';
+    }
+    str = str.slice(0, -1);
+    return str;
+  }
+
   private buildOptions() {
     // Json web token
     // let jwt = localStorage.getItem('jwt');
@@ -113,14 +125,5 @@ export class ApiBaseService {
     //   let _route = this.router;
     //   _route.navigate(['/login']);
     // }
-  }
-
-  paramsToString(params: any): string {
-    let str: string = '';
-    for (let param in params) {
-      str += param + '=' + params[param] + '&';
-    }
-    str = str.slice(0, -1);
-    return str;
   }
 }

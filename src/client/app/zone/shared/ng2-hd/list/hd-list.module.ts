@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { DeleteIconComponent } from './components/icon/index';
-import { SearchForm } from './components/search-form/index';
+import { SearchFormComponent } from './components/search-form/index';
 import { ListComponent } from './components/index';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,13 +18,13 @@ import { Ng2DropdownModule } from 'ng2-material-dropdown';
   declarations: [
     ListComponent,
     DeleteIconComponent,
-    SearchForm,
+    SearchFormComponent,
     HighlightPipe
   ],
   exports: [
     ListComponent,
     DeleteIconComponent,
-    SearchForm,
+    SearchFormComponent,
     HighlightPipe
   ]
 })

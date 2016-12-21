@@ -12,8 +12,8 @@ declare var $: any;
 
 export class SoPhotoListComponent implements OnInit {
   @ViewChild('filesSelection') fileSelection: ElementRef;
-  @Input('show-upload') showUpload: boolean = false;
-  @Input('show-favourite') showFavourite: boolean = false;
+  @Input() showUpload: boolean = false;
+  @Input() showFavourite: boolean = false;
   multipleSelect: boolean = true;
 
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
