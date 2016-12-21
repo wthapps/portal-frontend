@@ -350,7 +350,7 @@
         <div class="content-overflow" style="max-height: 155px;" formArrayName="additional_links">
 
           <!--<pre>-->
-          <!--{{form.value|json}}-->
+          <!--{{form.controls.additional_links.controls |json}}-->
           <!--</pre>-->
 
           <div *ngFor="let add_link of form.controls.additional_links.controls; let i=index" class="media">

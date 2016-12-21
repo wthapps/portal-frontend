@@ -17,7 +17,7 @@ let getBarwidth = function () {
 
 export let Constants = {
   baseUrls: {
-    //apiBaseService: 'http://52.221.221.245:4000/',
+    // apiBaseService: 'http://54.213.41.54:4000/',
     apiBaseService: Config.API
   },
   operations: {
@@ -94,7 +94,8 @@ export let Constants = {
     zoneSoUserPosts: 'zone/social_network/user_posts',
     zoneSoReactions: 'zone/social_network/reactions',
     zoneSoPostSettings: 'zone/social_network/post_settings',
-  }
+  },
+  sex : ['', 'Male', 'Female', 'Other']
 };
 
 export let MediaType = {
