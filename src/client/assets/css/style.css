@@ -10518,10 +10518,24 @@ body.fixed-hidden {
   background-color: #f6f6f6; }
 
 .wrapper {
-  display: flex;
   min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
   flex-direction: column; }
   .wrapper .main {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
     flex: 1; }
 
 .banner-wrap {
@@ -13326,9 +13340,22 @@ wth-app:empty + .dots-loader-wrap {
             background-color: #9B9B9B;
             color: #ffffff; }
   .photo-box-detail .photo-detail-content {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    -webkit-align-items: flex-start;
+    -moz-align-items: flex-start;
     align-items: flex-start; }
     .photo-box-detail .photo-detail-content .photo-detail-img {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
       flex: 1;
       height: calc(100vh - 65px);
       position: relative;
@@ -13436,7 +13463,15 @@ wth-app:empty + .dots-loader-wrap {
 
 .zone-social {
   padding: 30px 45px 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  -moz-align-items: flex-start;
   align-items: flex-start; }
   .zone-social:before, .zone-social:after {
     content: " ";
@@ -13444,6 +13479,11 @@ wth-app:empty + .dots-loader-wrap {
   .zone-social:after {
     clear: both; }
   .zone-social .zone-social-in {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
     flex: 1;
     margin-right: 45px; }
   .zone-social .zone-social-sidebar {
@@ -13525,7 +13565,15 @@ wth-app:empty + .dots-loader-wrap {
       clear: both; }
 
 .z-social-media {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  -moz-align-items: flex-start;
   align-items: flex-start; }
   .z-social-media .z-social-media-left {
     width: 34px;
@@ -13538,6 +13586,11 @@ wth-app:empty + .dots-loader-wrap {
       -moz-border-radius: 3px;
       border-radius: 3px; }
   .z-social-media .z-social-media-body {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
     flex: 1; }
   .z-social-media .z-social-media-right .btn, .z-social-media .z-social-media-right .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .z-social-media .z-social-media-right button[ng-reflect-icon="fa-close"], .z-social-media .z-social-media-right .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .z-social-media .z-social-media-right button[ng-reflect-icon="fa-check"] {
     min-width: 34px;

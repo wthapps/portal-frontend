@@ -13,11 +13,11 @@ body {
 }
 
 .wrapper {
-  display: flex;
   min-height: 100vh;
-  flex-direction: column;
+  @include flexbox;
+  @include flex-direction(column);
   .main {
-    flex: 1;
+    @include flex(1);
   }
 }
 

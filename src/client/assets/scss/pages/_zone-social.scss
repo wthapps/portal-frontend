@@ -1,10 +1,10 @@
 .zone-social {
   padding: 30px 45px 0;
   @include clearfix;
-  display: flex;
-  align-items: flex-start;
+  @include flexbox;
+  @include align-items(flex-start);
   .zone-social-in {
-    flex: 1;
+    @include flex(1);
     margin-right: 45px;
   }
   .zone-social-sidebar {
@@ -94,8 +94,8 @@
 }
 
 .z-social-media {
-  display: flex;
-  align-items: flex-start;
+  @include flexbox;
+  @include align-items(flex-start);
   .z-social-media-left {
     width: 34px;
     height: 34px;
@@ -109,7 +109,7 @@
     }
   }
   .z-social-media-body {
-    flex: 1;
+    @include flex(1);
   }
   .z-social-media-right {
     .btn {
