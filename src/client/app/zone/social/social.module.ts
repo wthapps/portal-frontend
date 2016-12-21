@@ -53,6 +53,7 @@ import { ZSocialProfileFormWorkEduComponent } from './profile/form/work-edu.comp
 import { ZSocialProfileFormInterestComponent } from './profile/form/interest.component';
 import { ZSocialProfileService } from './profile/profile.service';
 import { ZSocialSearchResultComponent } from './search/search.component';
+import { ZSocialPrivacyComponent } from './profile/about/components/privacy.component';
 
 
 @NgModule({
@@ -114,7 +115,8 @@ import { ZSocialSearchResultComponent } from './search/search.component';
     // Notification
     ZSocialNotificationsComponent,
     // Search
-    ZSocialSearchResultComponent
+    ZSocialSearchResultComponent,
+    ZSocialPrivacyComponent
   ],
   exports: [
     ZSocialHomeComponent,

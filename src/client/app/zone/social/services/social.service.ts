@@ -14,8 +14,12 @@ export class SoUserService {
     return this.apiBaseService.get(`zone/social_network/users/${uuid}`);
   }
 
+  // update(body: any) {
+  //   return this.apiBaseService.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
+  // }
+
   update(body: any) {
-    return this.apiBaseService.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
+    return this.apiBaseService.put(`zone/social_network/users/update`, body);
   }
 
   reset_setting() {
