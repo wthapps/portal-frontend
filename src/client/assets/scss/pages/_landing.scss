@@ -14,8 +14,10 @@
     @include center();
     color: #ffffff;
     text-align: center;
-    width: 100%;
     font-size: 18px;
+    @media (min-width: $screen-lg) {
+      width: 920px;
+    }
     h1 {
       font-size: 178%;
       margin-bottom: 20px;

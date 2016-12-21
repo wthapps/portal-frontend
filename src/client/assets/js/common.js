@@ -1,5 +1,5 @@
 (function ($) {
-  flexibility(document.documentElement);
+
 })(jQuery);
 
 

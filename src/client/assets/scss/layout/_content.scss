@@ -13,11 +13,13 @@ body {
 }
 
 .wrapper {
+  overflow: hidden;
   min-height: 100vh;
   @include flexbox;
   @include flex-direction(column);
   .main {
     @include flex(1);
+    @include flex-basis(auto);
   }
 }
 
