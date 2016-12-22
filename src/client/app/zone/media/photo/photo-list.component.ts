@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaService } from '../media.service';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 
@@ -19,6 +19,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   selectedPhotos: any = [];
 
   keyCtrl: boolean = false;
+  hasFavourite: boolean = false;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -51,28 +52,73 @@ export class ZMediaPhotoListComponent implements OnInit {
     });
   }
 
-  onShow() {
+  onSelectedPhotos(item: any) {
+    if (this.keyCtrl) {
+      if (_.some(this.selectedPhotos, ['id', item.id])) {
+        $('#photo-box-img-' + item.id).removeClass('selected');
+        _.remove(this.selectedPhotos, ['id', item.id]);
+      } else {
+        $('#photo-box-img-' + item.id).addClass('selected');
+        this.selectedPhotos.push(item);
+      }
+    } else {
+      $('.row-img .photo-box-img').removeClass('selected');
+      $('#photo-box-img-' + item.id).addClass('selected');
+      this.selectedPhotos.length = 0;
+      this.selectedPhotos.push(item);
+    }
+    this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
+  }
+
+  actionPhotos(event: any) {
+    console.log(event);
+    switch (event) {
+      case 'preview':
+        this.onPreview();
+        break;
+      case 'oneFavourite':
+        this.onFavourite();
+        break;
+      case 'favourite':
+        this.onFavourite();
+        break;
+      case 'share':
+
+        break;
+      case 'tag':
+
+        break;
+      case 'delete':
+
+        break;
+      case 'info':
+
+        break;
+      case 'addToAlbum':
+
+        break;
+      default:
+        break;
+    }
+
+  }
+
+  private onPreview() {
+    console.log(this);
     this.photoDetail.preview(true);
   }
 
-  addPhoto(item: any) {
-    if (_.find(this.selectedPhotos, ['id', item.id])) {
-      _.remove(this.selectedPhotos, ['id', item.id]);
 
-      $('#photo-box-img-' + item.id).removeClass('selected');
-
-    } else {
-
-      if (this.keyCtrl) {
-        this.selectedPhotos.push(item);
-      } else {
-        $('.row-img .photo-box-img').removeClass('selected');
-        this.selectedPhotos.length = 0;
-        this.selectedPhotos.push(item);
+  private onFavourite() {
+    // if there was one item's favorite is false, all item will be add to favorite
+    let hasFavourite: boolean = _.some(this.selectedPhotos, ['favorite', false]);
+    this.mediaService.actionAllFavourite('photo', this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
+      if (res.message === 'success') {
+        _.map(this.selectedPhotos, (v: any)=> {
+          v.favorite = hasFavourite;
+        })
       }
-
-      $('#photo-box-img-' + item.id).addClass('selected');
-    }
+    });
   }
 
 }

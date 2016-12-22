@@ -1,4 +1,4 @@
-import { Component, OnChanges, AfterViewInit, Input, HostListener } from '@angular/core';
+import { Component, OnChanges, AfterViewInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
 import { ZMediaService } from '../media.service';
 import { Constants } from '../../../shared/index';
 
@@ -11,13 +11,12 @@ const KEY_ESC = 27;
   selector: 'z-media-photo-detail',
   templateUrl: 'photo-detail.component.html'
 })
-export class ZMediaPhotoDetailComponent implements OnChanges, AfterViewInit {
-  @Input() data: any;
+export class ZMediaPhotoDetailComponent implements AfterViewInit {
+  @Input() selectedPhotos: any = [];
+  @Input() allPhotos: any = [];
+  @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  photo: any;
-
-  constructor(private mediaService: ZMediaService) {
-  }
+  index: number = 0;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -34,11 +33,9 @@ export class ZMediaPhotoDetailComponent implements OnChanges, AfterViewInit {
     });
   }
 
-  ngOnChanges() {
-    console.log(this.data);
-    if (this.data) {
-      this.photo = this.data[0];
-    }
+  onAction(action: string) {
+    this.outEvent.emit(action);
+    return false;
   }
 
   preview(show: boolean): void {
@@ -49,6 +46,16 @@ export class ZMediaPhotoDetailComponent implements OnChanges, AfterViewInit {
       $('body').removeClass('fixed-hidden').css('padding-right', 0);
       $('#photo-box-detail').removeClass('active').removeClass('active-info');
     }
+  }
+
+  imgPrev(): void {
+    this.index = this.index - 1;
+    if (this.index < 0) this.index = this.selectedPhotos.length - 1;
+  }
+
+  imgNext(): void {
+    this.index = this.index + 1;
+    if (this.index == this.selectedPhotos.length) this.index = 0;
   }
 
 }

@@ -18,10 +18,8 @@ declare var _: any;
   `]
 })
 export class ZMediaPhotoShareItemComponent implements OnChanges {
-
-
   @Input() data: any;
-  @Input() action: any;
+  @Input() photoDetail: any;
 
   @HostBinding('class') ItemClass: string = '';
 
@@ -42,13 +40,14 @@ export class ZMediaPhotoShareItemComponent implements OnChanges {
     });
   }
 
-  onClick(e: any) {
+  onClick() {
     this.outEvent.emit(this.data);
   }
 
   onDbClick() {
-    this.action.photo = this.data;
-    this.action.preview(true);
+    this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.data.id]);
+    this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
+    this.photoDetail.preview(true);
   }
 
 }

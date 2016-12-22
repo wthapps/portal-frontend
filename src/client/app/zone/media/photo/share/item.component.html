@@ -2,7 +2,7 @@
   <div class="photo-box-img-action">
     <i (click)="onFavourite()" class="fa" [ngClass]="data.favorite ? 'fa-star': 'fa-star-o'"></i>
   </div>
-  <figure class="img-center-dv" (click)="onClick($event)" (dblclick)="onDbClick()">
+  <figure class="img-center-dv" (click)="onClick()" (dblclick)="onDbClick()">
     <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
     <img class="img-center" [src]="data.thumbnail_url" alt="">
   </figure>
