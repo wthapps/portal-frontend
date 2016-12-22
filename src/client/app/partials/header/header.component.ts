@@ -106,7 +106,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
         this.headerOver = false;
         this.imgLogo = Constants.img.logo;
       }
-
+      this.searchForm.show = false;
       // zone layout
     } else if (this.urls[0] == '/zone') {
       this.headerOver = false;
@@ -118,6 +118,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       }
       // zone layout
     } else {
+      this.searchForm.show = false;
       this.headerOver = true;
       this.imgLogo = Constants.img.logoWhite;
 

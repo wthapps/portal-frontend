@@ -52,10 +52,10 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.removeAll();
     let _this = this;
-    if (this.data) {
+    if (this.data && this.data.hobby) {
       this.removeAll();
 
-      let additional_hobby_interest_edit = this.data.hobby_interest;
+      let additional_hobby_interest_edit = this.data.hobby;
       _.map(additional_hobby_interest_edit, (v: any)=> {
         _this.addHobbyInterest(v);
       });
@@ -108,16 +108,10 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
 
     console.log(values);
 
-    let body = JSON.stringify({
-      hobby_interest: values.hobby_interests
-    });
-
-    console.log('body:', body);
-
-    this.apiBaseService.put(`zone/social_network/users/${this.data.uuid}`, body)
+    this.socialService.user.update({hobby: values.hobby_interests})
       .subscribe((result: any) => {
           console.log(result);
-          //this.updated.emit(result.data);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);

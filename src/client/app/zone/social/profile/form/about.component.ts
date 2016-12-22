@@ -42,7 +42,7 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
   form: FormGroup;
   first_name: AbstractControl;
   last_name: AbstractControl;
-  nick_name: AbstractControl;
+  nickname: AbstractControl;
   about: AbstractControl;
   gender: AbstractControl;
   tag_line: AbstractControl;
@@ -62,7 +62,7 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
     this.form = fb.group({
       'first_name': ['', Validators.compose([Validators.required])],
       'last_name': ['', Validators.compose([Validators.required])],
-      'nick_name': ['', Validators.compose([Validators.required])],
+      'nickname': ['', Validators.compose([Validators.required])],
       'about': [''],
       'gender': [''],
       'tag_line': ['', Validators.maxLength(150)],
@@ -78,7 +78,7 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
 
     this.first_name = this.form.controls['first_name'];
     this.last_name = this.form.controls['last_name'];
-    this.nick_name = this.form.controls['nick_name'];
+    this.nickname = this.form.controls['nickname'];
     this.about = this.form.controls['about'];
     this.gender = this.form.controls['gender'];
     this.tag_line = this.form.controls['tag_line'];
@@ -100,27 +100,26 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.removeAllLink();
     let _this = this;
-    if (this.data) {
+    if (this.data && this.data.basic_info) {
       this.removeAllLink();
 
       (<FormControl>this.first_name).setValue(this.data.first_name);
       (<FormControl>this.last_name).setValue(this.data.last_name);
-      (<FormControl>this.nick_name).setValue(this.data.nick_name);
-      (<FormControl>this.about).setValue(this.data.about);
-      (<FormControl>this.gender).setValue(this.data.gender);
+      (<FormControl>this.nickname).setValue(this.data.nickname);
+      (<FormControl>this.about).setValue(this.data.basic_info.about);
+      (<FormControl>this.gender).setValue(this.data.basic_info.sex);
       (<FormControl>this.tag_line).setValue(this.data.tag_line);
 
-      if (this.data.birthday !== null) {
-        let birthday = new Date(this.userService.profile.birthday);
+      if (this.data.basic_info !== null) {
+        let birthday = new Date(this.data.basic_info.birthday);
         (<FormControl>this.birthday_day).setValue(birthday.getDate());
         (<FormControl>this.birthday_month).setValue(birthday.getMonth() + 1);
         (<FormControl>this.birthday_year).setValue(birthday.getUTCFullYear());
       }
 
-      (<FormControl>this.nationality).setValue(this.data.nationality);
+      (<FormControl>this.nationality).setValue(this.data.basic_info.nationality);
 
-
-      let additional_links_edit = this.data.additional_links;
+      let additional_links_edit = this.data.basic_info.additional_links;
       _.map(additional_links_edit, (v: any)=> {
         _this.addLink(v);
       });
@@ -196,9 +195,9 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
     let body = JSON.stringify({
       first_name: values.first_name,
       last_name: values.last_name,
-      nick_name: values.nick_name,
+      nickname: values.nickname,
       about: values.about,
-      gender: values.gender,
+      sex: values.gender,
       tag_line: values.tag_line,
       birthday_day: values.birthday_day.toString(),
       birthday_month: values.birthday_month.toString(),
@@ -212,7 +211,7 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
     this.apiBaseService.put(`zone/social_network/users/${this.data.uuid}`, body)
       .subscribe((result: any) => {
           console.log(result);
-          //this.updated.emit(result.data);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);

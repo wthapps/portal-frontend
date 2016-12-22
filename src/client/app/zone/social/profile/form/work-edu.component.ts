@@ -55,15 +55,15 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.removeAll();
     let _this = this;
-    if (this.data) {
+    if (this.data && this.data.profile_info) {
       this.removeAll();
 
-      let additional_employment_edit = this.data.employment;
+      let additional_employment_edit = this.data.profile_info.works;
       _.map(additional_employment_edit, (v: any)=> {
         _this.addWork(v);
       });
 
-      let additional_education_edit = this.data.education;
+      let additional_education_edit = this.data.profile_info.educations;
       _.map(additional_education_edit, (v: any)=> {
         _this.addEducation(v);
       });
@@ -158,17 +158,21 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
      }
      });*/
 
-    let body = JSON.stringify({
-      employment: values.works,
-      education: values.educations
-    });
+    // let body = JSON.stringify({
+    //   employment: values.works,
+    //   education: values.educations
+    // });
+    //
+    // console.log('body:', body);
 
-    console.log('body:', body);
+    let data:any = {};
+    data.works = values.works;
+    data.educations = values.educations;
 
-    this.apiBaseService.put(`zone/social_network/users/${this.data.uuid}`, body)
+    this.socialService.user.update({profile_info: data})
       .subscribe((result: any) => {
           console.log(result);
-          //this.updated.emit(result.data);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);
