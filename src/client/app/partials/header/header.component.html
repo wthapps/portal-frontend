@@ -314,6 +314,37 @@
               </a>
               <ul class="dropdown-menu">
                 <li>
+                  <div class="media-center">
+                    <div class="media-center-left">
+                      <figure>
+                        <a [routerLink]="['/zone/social/communities']">
+                          <img width="70" src="/assets/images/apps/default.png" alt="">
+                        </a>
+                      </figure>
+
+                    </div>
+                    <div class="media-center-body">
+                      <span>Random notification about some random app is updated</span>
+                      <time>Jun 16 2016</time>
+                    </div>
+                    <div class="media-center-right">
+                      <div class="dropdown pull-right">
+                        <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="true">
+                          <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-custom">
+                          <li><a href="javascript:;" >Hide this notification</a></li>
+                          <li><a href="#" (click)="onPreference(item)">Turn off all notifications relate to this</a></li>
+                        </ul>
+                      </div>
+                      <div class="dropdown pull-right">
+                        <button class="btn btn-default-inline" type="button">
+                          <i class="fa fa-circle"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                   <a class="active" href="#">
                     <span>Random notification about some random app is updated</span>
                     <time>Jun 16 2016</time>

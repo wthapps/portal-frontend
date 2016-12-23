@@ -7,14 +7,13 @@ import {
 import {
   UserService,
   ApiBaseService,
-  Constants
+  Constants,
+  ChannelNotificationService
 } from '../../shared/index';
 
 
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
 import { SearchFormComponent } from './sub/search-form.component';
-
-import { AppBaseTestOther } from '../../shared/function-base/app.call';
 
 declare var $: any;
 // declare let ActionCable: any;
@@ -46,12 +45,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   constructor(private userService: UserService,
               private router: Router,
-              private cable: Ng2Cable,
-              private broadcaster: Broadcaster,
-              private api: ApiBaseService
+              private channelNotification: ChannelNotificationService
   ) {
-
-    console.log('AppBaseTestOther:', AppBaseTestOther('function test'));
     this.urls = new Array();
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this.urls.length = 0; //Fastest way to clear out array
@@ -162,7 +157,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   sendMessage(event: any) {
 
-    App.notifications.sendMessage(3, 'hello world');
+    App.notification.sendMessage(3, 'hello world');
 
     // this.api.get('zone/social_network/notification/broadcast_message')
     //     .subscribe(result => {
