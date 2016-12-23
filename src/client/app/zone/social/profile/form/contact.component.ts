@@ -65,18 +65,18 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.removeAll();
     let _this = this;
-    if (this.data) {
+    if (this.data && this.data.contact) {
       this.removeAll();
 
-      let additional_emails_edit = this.data.email;
+      let additional_emails_edit = this.data.contact.emails;
       _.map(additional_emails_edit, (v: any)=> {
         _this.addEmail(v);
       });
-      let additional_phones_edit = this.data.phone;
+      let additional_phones_edit = this.data.contact.phones;
       _.map(additional_phones_edit, (v: any)=> {
         _this.addPhone(v);
       });
-      let additional_address_edit = this.data.address;
+      let additional_address_edit = this.data.contact.addresses;
       _.map(additional_address_edit, (v: any)=> {
         _this.addAddress(v);
       });
@@ -198,25 +198,28 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
     console.log(values);
 
     // get links if link is not empty
-    /*let emails_filter = [];
-     _.map(values.email, (v)=> {
+    let emails_filter = [];
+     _.map(values.emails, (v)=> {
      if (v.email != '') {
-     emails_filter.push(v);
+       emails_filter.push(v.email);
      }
-     });*/
-
-    let body = JSON.stringify({
-      email: values.emails,
-      phone: values.phones,
-      address: values.addresses
+     });
+    let phones_filter = [];
+    _.map(values.phones, (v)=> {
+      if (v.phone != '') {
+        phones_filter.push(v.phone);
+      }
     });
+    let data:any = {};
+    data.emails = emails_filter;
+    data.phones = phones_filter;
+    data.addresses = values.addresses;
 
-    console.log('body:', body);
 
-    this.apiBaseService.put(`zone/social_network/users/${this.data.uuid}`, body)
+    this.socialService.user.update({contact: data})
       .subscribe((result: any) => {
           console.log(result);
-          //this.updated.emit(result.data);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);

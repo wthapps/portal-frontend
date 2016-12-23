@@ -29,6 +29,7 @@ export class ZSocialProfileAboutComponent implements OnInit {
   uuid: any;
   userInfo: any;
   constants = Constants;
+  actions:any;
 
   constructor(private socialService: SocialService,
               private route: ActivatedRoute,
@@ -45,7 +46,7 @@ export class ZSocialProfileAboutComponent implements OnInit {
         (res: any) => {
           console.log(res);
           this.userInfo = res.data;
-          // this.privacyUser.privacy = this.userInfo.privacy
+          this.actions = res.actions;
         }
       );
       // this.socialProfileService.getInfo().subscribe(
@@ -56,6 +57,10 @@ export class ZSocialProfileAboutComponent implements OnInit {
       //  )
     });
 
+  }
+
+  onUpdated(userInfo:any) {
+    this.userInfo = userInfo;
   }
 
   onEditAbout() {
