@@ -148,7 +148,7 @@ export class ZMediaPhotoListComponent implements OnInit {
       if (res.message === 'success') {
         _.map(this.selectedPhotos, (v: any)=> {
           v.favorite = hasFavourite;
-        })
+        });
       }
     });
   }

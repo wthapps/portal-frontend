@@ -198,19 +198,19 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
     console.log(values);
 
     // get links if link is not empty
-    let emails_filter = [];
-     _.map(values.emails, (v)=> {
-     if (v.email != '') {
-       emails_filter.push(v.email);
-     }
-     });
-    let phones_filter = [];
-    _.map(values.phones, (v)=> {
+    let emails_filter: any = [];
+    _.map(values.emails, (v: any)=> {
+      if (v.email != '') {
+        emails_filter.push(v.email);
+      }
+    });
+    let phones_filter: any = [];
+    _.map(values.phones, (v: any)=> {
       if (v.phone != '') {
         phones_filter.push(v.phone);
       }
     });
-    let data:any = {};
+    let data: any = {};
     data.emails = emails_filter;
     data.phones = phones_filter;
     data.addresses = values.addresses;

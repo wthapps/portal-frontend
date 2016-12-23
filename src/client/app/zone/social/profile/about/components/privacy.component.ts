@@ -7,13 +7,14 @@ import { SocialService } from '../../../services/social.service';
   templateUrl: 'privacy.component.html'
 })
 
-export class ZSocialPrivacyComponent implements OnInit{
+export class ZSocialPrivacyComponent implements OnInit {
   @Input() url: string;
   @Input() params: any = null;
 
   privacy: string = '';
 
-  constructor(private socialService: SocialService) {}
+  constructor(private socialService: SocialService) {
+  }
 
   ngOnInit() {
     this.privacy = this.params.value;
@@ -21,7 +22,7 @@ export class ZSocialPrivacyComponent implements OnInit{
 
   update(privacy: string) {
     // console.log(this.params);
-    let body:any;
+    let body: any;
     if (this.params.name == 'basic_info_privacy') {
       body = {basic_info_privacy: privacy};
     }
@@ -37,22 +38,21 @@ export class ZSocialPrivacyComponent implements OnInit{
     // console.log(body);
 
     this.socialService.user.update(body).subscribe(
-      (res:any) => {
+      (res: any) => {
         // console.log(res);
         if (this.params.name == 'basic_info_privacy') {
-          this.privacy = res.data.basic_info_privacy
+          this.privacy = res.data.basic_info_privacy;
         }
         if (this.params.name == 'contact_privacy') {
-          this.privacy = res.data.contact_privacy
+          this.privacy = res.data.contact_privacy;
         }
         if (this.params.name == 'profile_privacy') {
-          this.privacy = res.data.profile_privacy
+          this.privacy = res.data.profile_privacy;
         }
         if (this.params.name == 'hobby_privacy') {
-          this.privacy = res.data.hobby_privacy
+          this.privacy = res.data.hobby_privacy;
         }
-
       }
-    )
+    );
   }
 }

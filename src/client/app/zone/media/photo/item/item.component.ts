@@ -25,7 +25,7 @@ export class ZMediaPhotoItemComponent {
     this.outEvent.emit({
       action: ev,
       data: this.data
-    })
+    });
   }
 
 }
