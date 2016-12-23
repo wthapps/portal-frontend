@@ -32,6 +32,10 @@ export class ZMediaPhotoService {
     return this.apiBaseService.post('zone/photos/favourite', body);
   }
 
+  updateInfo(id: number, body: any) {
+    return this.apiBaseService.put(`zone/photos/${id}`, body);
+  }
+
   loadMore(next: string): any {
     return this.apiBaseService.get(next);
   }

@@ -31,3 +31,6 @@ export * from '../partials/read-more/index';
 // export * from './wth.join.us.component';
 
 export * from './validator/index';
+
+// Models
+export * from './models/index';

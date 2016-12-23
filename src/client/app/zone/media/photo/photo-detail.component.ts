@@ -1,6 +1,7 @@
-import { Component, OnChanges, AfterViewInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild } from '@angular/core';
 import { ZMediaPhotoService } from './photo.service';
 import { Constants } from '../../../shared/index';
+import { ZMediaPhotoFormEditComponent } from './form/form-edit-photo.component';
 
 declare var $: any;
 declare var _: any;
@@ -15,6 +16,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   @Input() selectedPhotos: any = [];
   @Input() allPhotos: any = [];
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('formEdit') formEdit: ZMediaPhotoFormEditComponent;
 
   index: number = 0;
 
@@ -72,7 +75,10 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
         break;
       case 'info':
-
+        this.onShowInfo();
+        break;
+      case 'editInfo':
+        this.onEditInfo();
         break;
       case 'addToAlbum':
 
@@ -91,6 +97,14 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         this.selectedPhotos[this.index].favorite = (this.selectedPhotos[this.index].favorite) ? false : true;
       }
     });
+  }
+
+  private onShowInfo() {
+    $('#photo-box-detail').toggleClass('active-info');
+  }
+
+  private onEditInfo() {
+    this.formEdit.onShow();
   }
 
 }
