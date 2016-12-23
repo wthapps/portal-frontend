@@ -43,7 +43,6 @@ export class ApiBaseService {
       body = JSON.stringify(body);
     }
     this.buildOptions();
-    console.log('posting..........', path, body, this._options);
     return this._http.post(this._baseUrl + path, body, this._options)
      .map(res => res.json())
     .catch(this.handleError);

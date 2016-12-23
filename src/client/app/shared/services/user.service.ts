@@ -141,7 +141,6 @@ export class UserService extends ApiBaseService {
   private updateProfile(profile: Object) {
     Cookie.set('profile', JSON.stringify(profile), 365, '/');
   }
-
 }
 
 

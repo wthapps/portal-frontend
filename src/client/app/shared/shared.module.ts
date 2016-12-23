@@ -19,7 +19,10 @@ import {
   ApiBaseService,
   UserService,
   CountryService,
-  DeactivateConfirmService
+  DeactivateConfirmService,
+  CableService,
+  ChannelNotificationService,
+  ChannelChatService
 } from './index';
 
 import {
@@ -141,7 +144,10 @@ export class SharedModule {
         DeactivateConfirmService,
         Ng2Cable,
         Broadcaster,
-        SoSearchService
+        SoSearchService,
+        CableService,
+        ChannelNotificationService,
+        ChannelChatService
       ]
     };
   }
