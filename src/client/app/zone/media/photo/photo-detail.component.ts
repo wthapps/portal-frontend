@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild } from '@angular/core';
 import { ZMediaPhotoService } from './photo.service';
-import { Constants } from '../../../shared/index';
+
+import { Constants, ConfirmationService, LoadingService } from '../../../shared/index';
 import { ZMediaPhotoFormEditComponent } from './form/form-edit-photo.component';
 
 declare var $: any;
@@ -26,7 +27,9 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     if (ev.which === KEY_ESC) this.preview(false);
   }
 
-  constructor(private photoService: ZMediaPhotoService) {
+  constructor(private photoService: ZMediaPhotoService,
+              private confirmationService: ConfirmationService,
+              private loadingService: LoadingService) {
   }
 
   ngAfterViewInit() {
@@ -72,7 +75,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
         break;
       case 'delete':
-
+        this.onDelete();
         break;
       case 'info':
         this.onShowInfo();
@@ -105,6 +108,22 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
   private onEditInfo() {
     this.formEdit.onShow();
+  }
+
+  private onDelete() {
+    let idPhoto = this.selectedPhotos[this.index].id;
+    this.confirmationService.confirm({
+      message: 'Are you sure to delete 1 item ?',
+      accept: () => {
+        let body = JSON.stringify({ids: [idPhoto]});
+        this.loadingService.start();
+        this.photoService.deletePhoto(body).subscribe((res: any)=> {
+          this.preview(false);
+          _.remove(this.allPhotos, ['id', idPhoto]);
+          this.loadingService.stop();
+        });
+      }
+    });
   }
 
 }

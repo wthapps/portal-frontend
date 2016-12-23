@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { ZMediaPhotoService } from './photo.service';
 
+import { LoadingService, ConfirmationService} from '../../../shared/index';
+
 declare var $: any;
 declare var _: any;
 
@@ -32,7 +34,9 @@ export class ZMediaPhotoListComponent implements OnInit {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
   }
 
-  constructor(private photoService: ZMediaPhotoService) {
+  constructor(private photoService: ZMediaPhotoService,
+              private confirmationService: ConfirmationService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -85,7 +89,7 @@ export class ZMediaPhotoListComponent implements OnInit {
 
         break;
       case 'delete':
-
+        this.onDelete();
         break;
       case 'info':
 
@@ -130,12 +134,10 @@ export class ZMediaPhotoListComponent implements OnInit {
 
   // --- Action for Toolbar --- //
   private onPreview() {
-    console.log('Toolbar onPreview', this.selectedPhotos);
     if (this.selectedPhotos.length > 1) {
       this.photoDetail.selectedPhotos = this.selectedPhotos;
     } else {
       this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.selectedPhotos[0].id]);
-      console.log('Toolbar this.photoDetail.index', this.photoDetail.index);
       this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
     }
     this.photoDetail.preview(true);
@@ -148,6 +150,23 @@ export class ZMediaPhotoListComponent implements OnInit {
       if (res.message === 'success') {
         _.map(this.selectedPhotos, (v: any)=> {
           v.favorite = hasFavourite;
+        });
+      }
+    });
+  }
+
+  private onDelete() {
+    let idPhotos = _.map(this.selectedPhotos, 'id'); // ['1','2'];
+    this.confirmationService.confirm({
+      message: 'Are you sure to delete ' + this.selectedPhotos.length + ' item' + (this.selectedPhotos.length > 1 ? 's' : '') + ' ?',
+      accept: () => {
+        let body = JSON.stringify({ids: idPhotos});
+        this.loadingService.start();
+        this.photoService.deletePhoto(body).subscribe((res: any)=> {
+          _.map(idPhotos, (id: any)=> {
+            _.remove(this.data, ['id', id]);
+          });
+          this.loadingService.stop();
         });
       }
     });

@@ -20,7 +20,7 @@ export class ZMediaPhotoService {
       ids: [item.id],
       setFavourite: (item.favorite) ? false : true
     });
-    return this.apiBaseService.post('zone/photos/favourite', body);
+    return this.apiBaseService.post(`${this.url}/favourite`, body);
   }
 
   actionAllFavourite(items: any, setFavourite: boolean) {
@@ -29,11 +29,15 @@ export class ZMediaPhotoService {
       setFavourite: setFavourite
       // setFavourite: (setFavourite ? true : false) // if there was one item's favorite is false
     });
-    return this.apiBaseService.post('zone/photos/favourite', body);
+    return this.apiBaseService.post(`${this.url}/favourite`, body);
   }
 
   updateInfo(id: number, body: any) {
-    return this.apiBaseService.put(`zone/photos/${id}`, body);
+    return this.apiBaseService.put(`${this.url}/${id}`, body);
+  }
+
+  deletePhoto(body: any) {
+    return this.apiBaseService.post(`${this.url}/delete`, body);
   }
 
   loadMore(next: string): any {
