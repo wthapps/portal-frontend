@@ -26,24 +26,18 @@ import { ZSocialNotificationsComponent } from './social/notifications/notificati
 import { ZSocialSearchResultComponent } from './social/search/search.component';
 
 import {
-  ZMediaComponent,
-  ZMediaPhotoListComponent
+  ZMediaRoutes
 } from './media/index';
 
 
 export const ZoneRoutes: Route[] = [
+
   {
     path: 'zone',
     component: ZoneComponent,
     canActivate: [AuthGuard],
     children: [
-      {
-        path: 'media', component: ZMediaComponent,
-        children: [
-          {path: 'photo', component: ZMediaPhotoListComponent},
-          {path: '', component: ZMediaComponent}
-        ]
-      },
+      ...ZMediaRoutes,
 
       {path: 'picture', component: ZPictureComponent},
       {path: 'picture/:category', component: ZPictureComponent},

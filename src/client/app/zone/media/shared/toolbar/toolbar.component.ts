@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 declare var _: any;
 
@@ -9,7 +9,7 @@ declare var _: any;
   templateUrl: 'toolbar.component.html'
 })
 
-export class ZMediaToolbarComponent implements OnChanges {
+export class ZMediaToolbarComponent {
   @Input() data: any;
   @Input() hasFavourite: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
@@ -17,9 +17,5 @@ export class ZMediaToolbarComponent implements OnChanges {
   onAction(action: string) {
     this.outEvent.emit(action);
     return false;
-  }
-
-  ngOnChanges() {
-
   }
 }

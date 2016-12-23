@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
-import { ZMediaService } from '../media.service';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
+import { ZMediaPhotoService } from './photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -32,11 +32,11 @@ export class ZMediaPhotoListComponent implements OnInit {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
   }
 
-  constructor(private mediaService: ZMediaService) {
+  constructor(private photoService: ZMediaPhotoService) {
   }
 
   ngOnInit() {
-    this.mediaService.listPhoto().subscribe((res: any)=> {
+    this.photoService.listPhoto().subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
     });
@@ -44,7 +44,7 @@ export class ZMediaPhotoListComponent implements OnInit {
 
   onLoadMore(event: any) {
     event.preventDefault();
-    this.mediaService.loadMore(this.nextLink).subscribe((res: any)=> {
+    this.photoService.loadMore(this.nextLink).subscribe((res: any)=> {
       _.map(res.data, (v: any)=> {
         this.data.push(v);
       });
@@ -52,25 +52,21 @@ export class ZMediaPhotoListComponent implements OnInit {
     });
   }
 
-  onSelectedPhotos(item: any) {
-    if (this.keyCtrl) {
-      if (_.some(this.selectedPhotos, ['id', item.id])) {
-        $('#photo-box-img-' + item.id).removeClass('selected');
-        _.remove(this.selectedPhotos, ['id', item.id]);
-      } else {
-        $('#photo-box-img-' + item.id).addClass('selected');
-        this.selectedPhotos.push(item);
-      }
-    } else {
-      $('.row-img .photo-box-img').removeClass('selected');
-      $('#photo-box-img-' + item.id).addClass('selected');
-      this.selectedPhotos.length = 0;
-      this.selectedPhotos.push(item);
+
+  actionItem(event: any) {
+    switch (event.action) {
+      case 'select':
+        this.onSelectedPhotos(event.data);
+        break;
+      case 'previewAll':
+        this.onPreviewAll(event.data);
+        break;
+      default:
+        break;
     }
-    this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
   }
 
-  actionPhotos(event: any) {
+  actionToolbar(event: any) {
     console.log(event);
     switch (event) {
       case 'preview':
@@ -100,19 +96,55 @@ export class ZMediaPhotoListComponent implements OnInit {
       default:
         break;
     }
-
   }
 
-  private onPreview() {
-    console.log(this);
+
+  // --- Action for Item --- //
+  private onSelectedPhotos(item: any) {
+    if (this.keyCtrl) {
+      if (_.some(this.selectedPhotos, ['id', item.id])) {
+        $('#photo-box-img-' + item.id).removeClass('selected');
+        _.remove(this.selectedPhotos, ['id', item.id]);
+      } else {
+        $('#photo-box-img-' + item.id).addClass('selected');
+        this.selectedPhotos.push(item);
+      }
+    } else {
+      $('.row-img .photo-box-img').removeClass('selected');
+      $('#photo-box-img-' + item.id).addClass('selected');
+      this.selectedPhotos.length = 0;
+      this.selectedPhotos.push(item);
+      console.log(this.selectedPhotos);
+    }
+    this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
+  }
+
+  private onPreviewAll(item: any) {
+    this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
+    this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
     this.photoDetail.preview(true);
   }
 
+  // --- End Action for Item --- //
+
+
+  // --- Action for Toolbar --- //
+  private onPreview() {
+    console.log('Toolbar onPreview', this.selectedPhotos);
+    if (this.selectedPhotos.length > 1) {
+      this.photoDetail.selectedPhotos = this.selectedPhotos;
+    } else {
+      this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.selectedPhotos[0].id]);
+      console.log('Toolbar this.photoDetail.index', this.photoDetail.index);
+      this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
+    }
+    this.photoDetail.preview(true);
+  }
 
   private onFavourite() {
     // if there was one item's favorite is false, all item will be add to favorite
     let hasFavourite: boolean = _.some(this.selectedPhotos, ['favorite', false]);
-    this.mediaService.actionAllFavourite('photo', this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
+    this.photoService.actionAllFavourite(this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
       if (res.message === 'success') {
         _.map(this.selectedPhotos, (v: any)=> {
           v.favorite = hasFavourite;
@@ -121,4 +153,5 @@ export class ZMediaPhotoListComponent implements OnInit {
     });
   }
 
+  // --- End Action for Toolbar --- //
 }

@@ -1,13 +1,14 @@
-<z-media-share-toolbar [data]="selectedPhotos" [hasFavourite]="hasFavourite" (outEvent)="actionPhotos($event)"></z-media-share-toolbar>
+<z-media-share-toolbar #mediaToolbar [data]="selectedPhotos" [hasFavourite]="hasFavourite" (outEvent)="actionToolbar($event)"></z-media-share-toolbar>
 
 <div class="page-body-in">
   <div class="row-img" *ngIf="data">
-    <z-media-photo-share-item
+    <z-media-photo-item
       *ngFor="let item of data;"
       [data]="item"
       [photoDetail]="photoDetail"
-      (outEvent)="onSelectedPhotos($event)">
-    </z-media-photo-share-item>
+      [mediaToolbar]="mediaToolbar"
+      (outEvent)="actionItem($event)">
+    </z-media-photo-item>
   </div>
 
   <div class="text-center p20">
@@ -15,4 +16,4 @@
   </div>
 </div>
 
-<z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data" (outEvent)="actionPhotos($event)"></z-media-photo-detail>
+<z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data"></z-media-photo-detail>

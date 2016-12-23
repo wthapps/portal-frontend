@@ -5,6 +5,7 @@ import {
   ZMediaComponent,
   ZMediaService
 } from './index';
+
 import { ZMediaPhotoModule } from './photo/photo.module';
 
 @NgModule({

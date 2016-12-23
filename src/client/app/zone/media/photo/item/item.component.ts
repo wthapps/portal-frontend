@@ -6,7 +6,7 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-photo-share-item',
+  selector: 'z-media-photo-item',
   templateUrl: 'item.component.html',
   styles: [`
     :host {
@@ -17,9 +17,10 @@ declare var _: any;
     }
   `]
 })
-export class ZMediaPhotoShareItemComponent implements OnChanges {
+export class ZMediaPhotoItemComponent {
   @Input() data: any;
   @Input() photoDetail: any;
+  @Input() mediaToolbar: any;
 
   @HostBinding('class') ItemClass: string = '';
 
@@ -28,26 +29,15 @@ export class ZMediaPhotoShareItemComponent implements OnChanges {
   constructor(private mediaService: ZMediaService) {
   }
 
-  ngOnChanges() {
-
-  }
-
   onFavourite() {
-    this.mediaService.actionOneFavourite('photo', this.data).subscribe((res: any)=> {
-      if (res.message === 'success') {
-        this.data.favorite = (this.data.favorite) ? false : true;
-      }
-    });
+
   }
 
-  onClick() {
-    this.outEvent.emit(this.data);
-  }
-
-  onDbClick() {
-    this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.data.id]);
-    this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
-    this.photoDetail.preview(true);
+  onAction(ev: string) {
+    this.outEvent.emit({
+      action: ev,
+      data: this.data
+    })
   }
 
 }

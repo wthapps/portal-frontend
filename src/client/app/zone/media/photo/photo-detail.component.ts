@@ -23,6 +23,9 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     if (ev.which === KEY_ESC) this.preview(false);
   }
 
+  constructor(private mediaService: ZMediaService) {
+  }
+
   ngAfterViewInit() {
     let _thisPhotoDetail = this;
     $('body').on('click', '#photo-box-detail .photo-detail-img', function () {
@@ -31,11 +34,6 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     $('body').on('click', '#photo-box-detail figure, .photo-detail-img-control', function (e: any) {
       e.stopPropagation();
     });
-  }
-
-  onAction(action: string) {
-    this.outEvent.emit(action);
-    return false;
   }
 
   preview(show: boolean): void {
@@ -56,6 +54,43 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   imgNext(): void {
     this.index = this.index + 1;
     if (this.index == this.selectedPhotos.length) this.index = 0;
+  }
+
+
+  actionPhoto(event: any) {
+    switch (event) {
+      case 'favourite':
+        this.onFavourite();
+        break;
+      case 'share':
+
+        break;
+      case 'tag':
+
+        break;
+      case 'delete':
+
+        break;
+      case 'info':
+
+        break;
+      case 'addToAlbum':
+
+        break;
+      default:
+        break;
+    }
+
+    return false;
+  }
+
+  private onFavourite() {
+    this.mediaService.actionOneFavourite('photo', this.selectedPhotos[this.index]).subscribe((res: any)=> {
+      if (res.message === 'success') {
+        console.log(this);
+        this.selectedPhotos[this.index].favorite = (this.selectedPhotos[this.index].favorite) ? false : true;
+      }
+    });
   }
 
 }

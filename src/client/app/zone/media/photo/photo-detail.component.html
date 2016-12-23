@@ -8,23 +8,23 @@
     <div class="name"><i class="fa fa-picture-o"></i> {{selectedPhotos[index].name}}</div>
     <ul class="action navbar-right">
       <li>
-        <a href="#" (click)="onAction('share')"><i class="fa fa-share-alt"></i></a>
+        <a href="javascript:;" (click)="actionPhoto('share')"><i class="fa fa-share-alt"></i></a>
       </li>
       <li>
-        <a href="#" (click)="onAction('favourite')">
+        <a href="javascript:;" (click)="actionPhoto('favourite')">
           <i class="fa" [ngClass]="selectedPhotos[index].favorite ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
       <li>
-        <a href="#" (click)="onAction('tag')"><i class="fa fa-tag"></i></a>
+        <a href="javascript:;" (click)="actionPhoto('tag')"><i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a href="#" (click)="onAction('delete')"><i class="fa fa-trash-o"></i></a>
+        <a href="javascript:;" (click)="actionPhoto('delete')"><i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown">
         <a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
         <ul class="dropdown-menu">
-          <li><a href="javascript:;" (click)="onAction($event, 'addToAlbum')">Add to Album</a></li>
+          <li><a href="javascript:;" (click)="actionPhoto($event, 'addToAlbum')">Add to Album</a></li>
           <li><a class="text-disable" href="#">Download</a></li>
           <li><a class="text-disable" href="javascript:;">Edit Photo</a></li>
           <li><a href="javascript:;" (click)="showInfo()">Information</a></li>
@@ -64,12 +64,12 @@
       <dd>{{selectedPhotos[index].created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
     </dl>
     <hr>
-    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="onAction($event,'tag')">Edit</a></h4>
+    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="actionPhoto($event,'tag')">Edit</a></h4>
     <div class="tags-text">
       <span *ngFor="let tag of selectedPhotos[index].json_tags">{{tag}}</span>
     </div>
     <hr>
-    <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="onAction($event,'share')">Edit</a></h4>
+    <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="actionPhoto($event,'share')">Edit</a></h4>
     <dl>
       <dt>Owner</dt>
       <dd>
