@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import {
-  ZMediaComponent,
-  ZMediaService
+  ZMediaComponent
 } from './index';
 
 import { ZMediaPhotoModule } from './photo/photo.module';
@@ -21,7 +20,6 @@ import { ZMediaPhotoModule } from './photo/photo.module';
     ZMediaComponent
   ],
   providers: [
-    ZMediaService
   ]
 })
 

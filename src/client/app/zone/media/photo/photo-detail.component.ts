@@ -1,5 +1,5 @@
 import { Component, OnChanges, AfterViewInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
-import { ZMediaService } from '../media.service';
+import { ZMediaPhotoService } from './photo.service';
 import { Constants } from '../../../shared/index';
 
 declare var $: any;
@@ -23,7 +23,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     if (ev.which === KEY_ESC) this.preview(false);
   }
 
-  constructor(private mediaService: ZMediaService) {
+  constructor(private photoService: ZMediaPhotoService) {
   }
 
   ngAfterViewInit() {
@@ -85,7 +85,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   }
 
   private onFavourite() {
-    this.mediaService.actionOneFavourite('photo', this.selectedPhotos[this.index]).subscribe((res: any)=> {
+    this.photoService.actionOneFavourite(this.selectedPhotos[this.index]).subscribe((res: any)=> {
       if (res.message === 'success') {
         console.log(this);
         this.selectedPhotos[this.index].favorite = (this.selectedPhotos[this.index].favorite) ? false : true;

@@ -1,5 +1,4 @@
-import { Component, OnChanges, Input, EventEmitter, Output, HostBinding } from '@angular/core';
-import { ZMediaService } from '../../media.service';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 declare var $: any;
 declare var _: any;
@@ -19,19 +18,8 @@ declare var _: any;
 })
 export class ZMediaPhotoItemComponent {
   @Input() data: any;
-  @Input() photoDetail: any;
-  @Input() mediaToolbar: any;
-
-  @HostBinding('class') ItemClass: string = '';
 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
-
-  constructor(private mediaService: ZMediaService) {
-  }
-
-  onFavourite() {
-
-  }
 
   onAction(ev: string) {
     this.outEvent.emit({
