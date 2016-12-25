@@ -42,16 +42,6 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     });
   }
 
-  preview(show: boolean): void {
-    if (show) {
-      $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
-      $('#photo-box-detail').addClass('active');
-    } else {
-      $('body').removeClass('fixed-hidden').css('padding-right', 0);
-      $('#photo-box-detail').removeClass('active').removeClass('active-info');
-    }
-  }
-
   imgPrev(): void {
     this.index = this.index - 1;
     if (this.index < 0) this.index = this.selectedPhotos.length - 1;
@@ -93,21 +83,30 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     return false;
   }
 
-  private onFavourite() {
-    this.photoService.actionOneFavourite(this.selectedPhotos[this.index]).subscribe((res: any)=> {
-      if (res.message === 'success') {
-        console.log(this);
-        this.selectedPhotos[this.index].favorite = (this.selectedPhotos[this.index].favorite) ? false : true;
-      }
-    });
+  preview(show: boolean): void {
+    if (show) {
+      $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
+      $('#photo-box-detail').addClass('active');
+    } else {
+      $('body').removeClass('fixed-hidden').css('padding-right', 0);
+      $('#photo-box-detail').removeClass('active').removeClass('active-info');
+    }
   }
 
-  private onShowInfo() {
+  onShowInfo() {
     $('#photo-box-detail').toggleClass('active-info');
   }
 
-  private onEditInfo() {
+  onEditInfo() {
     this.formEdit.onShow();
+  }
+
+  private onFavourite() {
+    this.photoService.actionOneFavourite(this.selectedPhotos[this.index]).subscribe((res: any)=> {
+      if (res.message === 'success') {
+        this.selectedPhotos[this.index].favorite = (this.selectedPhotos[this.index].favorite) ? false : true;
+      }
+    });
   }
 
   private onDelete() {

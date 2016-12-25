@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
+import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -12,10 +13,12 @@ import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
     CommonModule
   ],
   declarations: [
-    ZMediaToolbarComponent
+    ZMediaToolbarComponent,
+    ZMediaSortbarComponent
   ],
   exports: [
-    ZMediaToolbarComponent
+    ZMediaToolbarComponent,
+    ZMediaSortbarComponent
   ]
 })
 export class ZMediaSharedModule {

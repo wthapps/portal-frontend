@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { ZMediaPhotoService } from './photo.service';
 
-import { LoadingService, ConfirmationService} from '../../../shared/index';
+import { LoadingService, ConfirmationService } from '../../../shared/index';
 
 declare var $: any;
 declare var _: any;
@@ -22,6 +22,7 @@ export class ZMediaPhotoListComponent implements OnInit {
 
   keyCtrl: boolean = false;
   hasFavourite: boolean = false;
+  currentView: string = 'grid';
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -65,9 +66,17 @@ export class ZMediaPhotoListComponent implements OnInit {
       case 'previewAll':
         this.onPreviewAll(event.data);
         break;
+      case 'favourite':
+        this.onOneFavourite(event.data);
+        break;
       default:
         break;
     }
+  }
+
+
+  actionSortbar(data: any) {
+    this.data = data;
   }
 
   actionToolbar(event: any) {
@@ -92,10 +101,22 @@ export class ZMediaPhotoListComponent implements OnInit {
         this.onDelete();
         break;
       case 'info':
-
+        // call action from photoDetail
+        this.photoDetail.preview(true);
+        this.photoDetail.onShowInfo();
+        break;
+      case 'editInfo':
+        // call action from photoDetail
+        this.photoDetail.onEditInfo();
         break;
       case 'addToAlbum':
 
+        break;
+      case 'listView':
+        this.currentView = 'list';
+        break;
+      case 'gridView':
+        this.currentView = 'grid';
         break;
       default:
         break;
@@ -127,6 +148,15 @@ export class ZMediaPhotoListComponent implements OnInit {
     this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
     this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
     this.photoDetail.preview(true);
+  }
+
+  private onOneFavourite(item: any) {
+    let findItemFavourite = _.findIndex(this.data, ['id', item.id]);
+    this.photoService.actionOneFavourite(item).subscribe((res: any)=> {
+      if (res.message === 'success') {
+        this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
+      }
+    });
   }
 
   // --- End Action for Item --- //

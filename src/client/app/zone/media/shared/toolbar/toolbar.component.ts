@@ -12,6 +12,7 @@ declare var _: any;
 export class ZMediaToolbarComponent {
   @Input() data: any;
   @Input() hasFavourite: any;
+  @Input() currentView: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   onAction(action: string) {
