@@ -23,12 +23,13 @@
       </a>
       <ul *ngIf="data.length > 1" class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li>
-          <a (click)="add($event)" href="javascript:;">
+          <a (click)="onAction('addToAlbum')" href="javascript:;">
             <i class="fa fa-plus-square"></i> Add to Album
           </a>
         </li>
       </ul>
       <ul *ngIf="data.length == 1" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a (click)="onAction('addToAlbum')" href="javascript:;"><i class="fa fa-plus-square"></i> Add to Album</a></li>
         <!--<li><a (click)="download($event)" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>-->
         <li><a (click)="onAction('info')" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
         <li><a class="text-disable" href="javascript:;"><i class="fa fa-download"></i>Download</a></li>

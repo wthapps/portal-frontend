@@ -1,43 +1,35 @@
 <div *ngIf="items" class="row-img list">
-  <div class="photo-box-img photo-box-img-nav">
-    <figure (click)="sort($event, 'name')" class="img-center-dv can-click">Name
-      <i *ngIf="sortName" class="fa"
-         [ngClass]="{'fa-arrow-down': (sortName == 'desc'), 'fa-arrow-up': (sortName == 'asc')}"></i>
-    </figure>
-    <div class="photo-box-img-name">
-
-    </div>
-    <div class="photo-box-img-owner">
-      Owner
-    </div>
-    <div (click)="sort($event, 'date')" class="photo-box-img-date can-click">
-      Create Date
-      <i *ngIf="sortDate" class="fa"
-         [ngClass]="{'fa-arrow-down': (sortDate == 'desc'), 'fa-arrow-up': (sortDate == 'asc')}"></i>
-    </div>
-    <div class="photo-box-img-size">
-      Size
+  <div class="photo-box-img-nav">
+    <div class="photo-box-img-figure">
+      <div (click)="sort($event, 'name')" class="photo-box-img-name can-click">
+        Name <i *ngIf="sortName" class="fa"
+                [ngClass]="{'fa-arrow-up': (sortName == 'desc'), 'fa-arrow-down': (sortName == 'asc')}"></i>
+      </div>
+      <div class="photo-box-img-owner">Owner</div>
+      <div (click)="sort($event, 'date')" class="photo-box-img-date can-click">
+        Create Date <i *ngIf="sortDate" class="fa"
+                       [ngClass]="{'fa-arrow-up': (sortDate == 'desc'), 'fa-arrow-down': (sortDate == 'asc')}"></i>
+      </div>
+      <div class="photo-box-img-size">Size</div>
     </div>
   </div>
-  <div class="photo-box-img" *ngFor="let item of items" (click)="onSelected($event,item.id)" (dblclick)="onDbClick(item.id)">
-    <div class="photo-box-img-action">
-      <i (click)="addFavourite($event, item)" class="fa" [ngClass]="item.favorite ? 'fa-star': 'fa-star-o'"></i>
-    </div>
-    <figure class="img-center-dv">
-      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="item.thumbnail_url" alt="">
-    </figure>
-    <div class="photo-box-img-name">
-      {{item.name}}
-    </div>
-    <div class="photo-box-img-owner">
-      {{item.owner.name}}
-    </div>
-    <div class="photo-box-img-date">
-      {{item.created_at | date:'MMM dd yyyy' : 'UTC'}}
-    </div>
-    <div class="photo-box-img-size">
-      {{item.size}}
+
+
+  <div class="row-img-item" *ngFor="let data of items">
+    <div class="photo-box-img">
+      <div class="photo-box-img-action">
+        <i (click)="onAction('favourite')" class="fa" [ngClass]="data.favorite ? 'fa-star': 'fa-star-o'"></i>
+      </div>
+      <div class="photo-box-img-figure" (click)="onSelected($event,item.id)" (dblclick)="onDbClick(item.id)">
+        <figure class="img-center-dv">
+          <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+          <img class="img-center" [src]="data.thumbnail_url" alt="">
+        </figure>
+        <div class="photo-box-img-name">{{data.name}}</div>
+        <div class="photo-box-img-owner">{{data.owner.name}}</div>
+        <div class="photo-box-img-date">{{data.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
+        <div class="photo-box-img-size">{{data.size}}</div>
+      </div>
     </div>
   </div>
 </div>

@@ -2,10 +2,10 @@ import { Component, Input, EventEmitter, Output, HostBinding } from '@angular/co
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-photo-item',
+  selector: 'z-media-album-item',
   templateUrl: 'item.component.html'
 })
-export class ZMediaPhotoItemComponent {
+export class ZMediaAlbumItemComponent {
   @HostBinding('class') leftBarClass = 'row-img-item';
   @Input() data: any;
 

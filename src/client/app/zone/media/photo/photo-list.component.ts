@@ -3,6 +3,7 @@ import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { ZMediaPhotoService } from './photo.service';
 
 import { LoadingService, ConfirmationService } from '../../../shared/index';
+import { ZMediaFormAddToAlbumComponent } from '../shared/form/form-add-to-album.component';
 
 declare var $: any;
 declare var _: any;
@@ -14,6 +15,7 @@ declare var _: any;
 })
 export class ZMediaPhotoListComponent implements OnInit {
   @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  @ViewChild('formAddAlbum') formAddAlbum: ZMediaFormAddToAlbumComponent;
 
   data: any = [];
   nextLink: string = null;
@@ -74,7 +76,6 @@ export class ZMediaPhotoListComponent implements OnInit {
     }
   }
 
-
   actionSortbar(data: any) {
     this.data = data;
   }
@@ -110,7 +111,7 @@ export class ZMediaPhotoListComponent implements OnInit {
         this.photoDetail.onEditInfo();
         break;
       case 'addToAlbum':
-
+        this.formAddAlbum.modal.open();
         break;
       case 'listView':
         this.currentView = 'list';

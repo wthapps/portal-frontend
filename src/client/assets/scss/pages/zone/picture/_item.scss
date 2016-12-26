@@ -16,8 +16,18 @@
       @include opacity(0);
       z-index: 2;
     }
+    .photo-box-img-info {
+      display: block !important;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      color: #9b9b9b;
+      z-index: 1;
+      line-height: 1.2;
+    }
   }
-
 
   .photo-box-img {
     position: relative;

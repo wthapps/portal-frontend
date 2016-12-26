@@ -1,0 +1,64 @@
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+
+  <modal-header [showClose]="true">
+    <h4 class="modal-title text-left"> Add to album</h4>
+  </modal-header>
+
+  <modal-body>
+    <div>
+      <span>
+        <a class="btn btn-default btn-circle" data-toggle="dropdown" href="#" (click)="onCreateNewAlbum()">
+          <i class="fa fa-plus"></i>
+        </a>
+      </span>
+      <span> Create New Album</span>
+    </div>
+    <hr>
+    <div class="content-overflow" style="max-height: 300px;">
+      <div class="row-img list" *ngIf="dataAlbums">
+        <div *ngFor="let data of dataAlbums; let i = index;" class="photo-box-img" id="photo-box-img-{{data.id}}">
+          <div class="photo-box-img-figure" (click)="addToAlbum(data, i)">
+            <figure class="img-center-dv">
+              <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+              <img class="img-center" [src]="data.photo_default" alt="">
+            </figure>
+            <div class="photo-box-img-name">{{data.name}}</div>
+            <div class="photo-box-img-size">
+            <span *ngIf="data.photo_number>1">
+              {{data.photo_number}} photos
+            </span>
+              <span *ngIf="data.photo_number<=1">
+              {{data.photo_number}} photo
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center p20">
+      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
+        more
+      </button>
+    </div>
+  </modal-body>
+</hd-modal>
+
+<div class="toast-wrap-bottom toast-upload-wrap" id="added-to-album-toast" *ngIf="showToast">
+  <div class="toast-wrap-bottom-item">
+    <div class="toast-wrap-bottom-header">
+      <button class="toast-wrap-bottom-close" type="button"><i class="fa fa-times" (click)="showToast = false"></i>
+      </button>
+      Added to Album
+    </div>
+    <div class="toast-wrap-bottom-content">
+      <div class="media">
+        <div class="media-body">
+          <p>{{selectedPhotos.length}} item{{(selectedPhotos.length>1)?'s':''}} are added to {{selectedAlbum.name}}</p>
+          <div class="text-right">
+            <a [routerLink]="['/zone/media/album', selectedAlbum.id]">View</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

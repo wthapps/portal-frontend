@@ -6,12 +6,14 @@ import {
 } from './index';
 
 import { ZMediaPhotoModule } from './photo/photo.module';
+import { ZMediaAlbumModule } from './album/album.module';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    ZMediaPhotoModule
+    ZMediaPhotoModule,
+    ZMediaAlbumModule
   ],
   declarations: [
     ZMediaComponent
