@@ -1,0 +1,10 @@
+<div class="row-img" *ngIf="data" [ngClass]="view">
+  <z-media-share-sortbar [data]="data" (outEvent)="actionSortbar($event)"></z-media-share-sortbar>
+  <z-media-share-item *ngFor="let item of data;" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
+</div>
+
+<div *ngIf="data.length==0" class="text-center">
+  <div class="zone-no-photo">
+    <p>Drag photos anywhere to upload</p>
+  </div>
+</div>

@@ -9,6 +9,8 @@ import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
 import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ZMediaShareItemComponent } from './list/item/item.component';
+import { ZMediaShareListComponent } from './list/list.component';
 
 
 /**
@@ -26,13 +28,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     ZMediaToolbarComponent,
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
-    ZMediaFormEditAlbumComponent
+    ZMediaFormEditAlbumComponent,
+    ZMediaShareItemComponent,
+    ZMediaShareListComponent
   ],
   exports: [
     ZMediaToolbarComponent,
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
-    ZMediaFormEditAlbumComponent
+    ZMediaFormEditAlbumComponent,
+    ZMediaShareItemComponent,
+    ZMediaShareListComponent
   ]
 })
 export class ZMediaSharedModule {
