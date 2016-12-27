@@ -26,7 +26,6 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
   }
 
   ngOnInit() {
-
     // Only get data when user clicked add to album
     // this.getAlbum();
   }

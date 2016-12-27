@@ -11,6 +11,7 @@ import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ZMediaShareItemComponent } from './list/item/item.component';
 import { ZMediaShareListComponent } from './list/list.component';
+import { ZMediaUploadingComponent } from './uploading/uploading.component';
 
 
 /**
@@ -30,7 +31,8 @@ import { ZMediaShareListComponent } from './list/list.component';
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
     ZMediaShareItemComponent,
-    ZMediaShareListComponent
+    ZMediaShareListComponent,
+    ZMediaUploadingComponent
   ],
   exports: [
     ZMediaToolbarComponent,
@@ -38,7 +40,8 @@ import { ZMediaShareListComponent } from './list/list.component';
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
     ZMediaShareItemComponent,
-    ZMediaShareListComponent
+    ZMediaShareListComponent,
+    ZMediaUploadingComponent
   ]
 })
 export class ZMediaSharedModule {

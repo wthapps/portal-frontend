@@ -4,6 +4,7 @@ import { ZMediaPhotoService } from './photo.service';
 
 import { LoadingService, ConfirmationService } from '../../../shared/index';
 import { ZMediaFormAddToAlbumComponent } from '../shared/form/form-add-to-album.component';
+import { ZMediaFormEditAlbumComponent } from '../shared/form/form-edit-album.component';
 
 declare var $: any;
 declare var _: any;
@@ -16,6 +17,7 @@ declare var _: any;
 export class ZMediaPhotoListComponent implements OnInit {
   @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
   @ViewChild('formAddAlbum') formAddAlbum: ZMediaFormAddToAlbumComponent;
+  @ViewChild('formEditAlbum') formEditAlbum: ZMediaFormEditAlbumComponent;
 
   data: any = [];
   nextLink: string = null;
@@ -81,7 +83,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   actionToolbar(event: any) {
-    console.log(event);
+    // console.log(event);
     switch (event) {
       case 'preview':
         this.onPreview();
@@ -119,6 +121,28 @@ export class ZMediaPhotoListComponent implements OnInit {
         break;
       case 'gridView':
         this.currentView = 'grid';
+        break;
+      default:
+        break;
+    }
+  }
+
+  actionUploading(event: any) {
+    switch (event.action) {
+      case 'addToAlbum':
+        this.formAddAlbum.selectedPhotos = event.data;
+        this.formAddAlbum.getAlbum();
+        this.formAddAlbum.modal.open();
+        break;
+      case 'createAlbum':
+        this.formEditAlbum.selectedPhotos = event.data;
+        this.formEditAlbum.modal.open();
+        break;
+
+      case 'addPhoto':
+        _.map(event.data, (v: any)=> {
+          this.data.unshift(v);
+        });
         break;
       default:
         break;
