@@ -25,8 +25,8 @@
         <a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
         <ul class="dropdown-menu">
           <li><a href="javascript:;" (click)="actionPhoto($event, 'addToAlbum')">Add to Album</a></li>
-          <li><a class="text-disable" href="#">Download</a></li>
-          <li><a class="text-disable" href="javascript:;">Edit Photo</a></li>
+          <li><a [href]="selectedPhotos[index].url" download>Download</a></li>
+          <!--<li><a class="text-disable" href="javascript:;">Edit Photo</a></li>-->
           <li><a href="javascript:;" (click)="actionPhoto('info')">Information</a></li>
         </ul>
       </li>

@@ -33,7 +33,7 @@
         </li>
         <!--<li><a (click)="download($event)" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>-->
         <li><a (click)="onAction('info')" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
-        <li><a class="text-disable" href="javascript:;"><i class="fa fa-download"></i>Download</a></li>
+        <li><a [href]="data[0].url" download><i class="fa fa-download"></i>Download</a></li>
         <li><a (click)="onAction('editInfo')" href="javascript:;"><i class="fa fa-edit"></i> Edit</a></li>
       </ul>
     </li>
