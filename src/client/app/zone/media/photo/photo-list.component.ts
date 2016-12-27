@@ -111,6 +111,7 @@ export class ZMediaPhotoListComponent implements OnInit {
         this.photoDetail.onEditInfo();
         break;
       case 'addToAlbum':
+        this.formAddAlbum.getAlbum();
         this.formAddAlbum.modal.open();
         break;
       case 'listView':

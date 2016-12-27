@@ -22,6 +22,10 @@ export class ZMediaAlbumService {
     return this.apiBaseService.post(`${this.url}/${id}/photos`, body);
   }
 
+  create(body: any) {
+    return this.apiBaseService.post(`${this.url}`, body);
+  }
+
   actionOneFavourite(item: any) {
     let body = JSON.stringify({
       ids: [item.id],

@@ -1,8 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 
-declare var _: any;
-
-
 @Component({
   moduleId: module.id,
   selector: 'z-media-share-toolbar',

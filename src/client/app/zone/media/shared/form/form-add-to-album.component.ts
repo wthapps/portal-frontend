@@ -14,6 +14,7 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
   @ViewChild('modal') modal: HdModalComponent;
 
   @Input() selectedPhotos: any;
+  @Input() editAlbum: any;
 
   dataAlbums: any = [];
   nextLink: string = null;
@@ -25,7 +26,9 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAlbum();
+
+    // Only get data when user clicked add to album
+    // this.getAlbum();
   }
 
   getAlbum() {
@@ -59,6 +62,11 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
   }
 
   onCreateNewAlbum() {
+    this.modal.close();
+
+    setTimeout(() => {
+      this.editAlbum.modal.open();
+    }, 800);
 
   }
 }
