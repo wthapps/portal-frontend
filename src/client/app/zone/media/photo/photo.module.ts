@@ -4,7 +4,6 @@ import {
   ZMediaPhotoService,
   ZMediaPhotoListComponent,
   ZMediaPhotoDetailComponent,
-  ZMediaPhotoItemComponent,
   ZMediaPhotoFormEditComponent
 } from './index';
 
@@ -22,13 +21,11 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
-    ZMediaPhotoItemComponent,
     ZMediaPhotoFormEditComponent
   ],
   exports: [
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
-    ZMediaPhotoItemComponent,
     ZMediaPhotoFormEditComponent
   ],
   providers: [

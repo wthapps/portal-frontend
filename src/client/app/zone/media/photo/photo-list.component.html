@@ -7,10 +7,12 @@
 </z-media-share-toolbar>
 
 <div class="page-body-in">
-  <div class="row-img" *ngIf="data" [ngClass]="{'list': (currentView=='list'), 'grid': (currentView=='grid')}">
-    <z-media-share-sortbar [data]="data" (outEvent)="actionSortbar($event)"></z-media-share-sortbar>
-    <z-media-photo-item *ngFor="let item of data;" [data]="item" (outEvent)="actionItem($event)"></z-media-photo-item>
-  </div>
+  <z-media-share-list
+    [data]="data"
+    [view]="currentView"
+    [hasAction]="['favourite', 'select', 'previewAll']"
+    (outEvent)="actionItem($event)">
+  </z-media-share-list>
 
   <div class="text-center p20">
     <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load

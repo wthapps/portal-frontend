@@ -38,7 +38,7 @@ export class ZMediaSortbarComponent {
     } else {
       this.outEvent.emit(_.reverse(_.sortBy(this.data, ['name'])));
     }
-    console.log('onSortName');
+    // console.log('onSortName');
   }
 
   private onSortDate() {
@@ -50,6 +50,6 @@ export class ZMediaSortbarComponent {
     } else {
       this.outEvent.emit(_.reverse(_.sortBy(this.data, ['created_at'])));
     }
-    console.log('onSortDate', this);
+    // console.log('onSortDate', this);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -10,11 +10,13 @@ export class ZMediaShareListComponent {
   @Input() view: string = 'grid';
   @Input() hasAction: any = []; // favourite, select, preview, previewAll
 
+  @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
+
   actionItem(ev: any) {
-    console.log('actionItem:', ev);
+    this.outEvent.emit(ev);
   }
 
   actionSortbar(ev: any) {
-    console.log('actionSortbar:', ev);
+    this.data = ev;
   }
 }

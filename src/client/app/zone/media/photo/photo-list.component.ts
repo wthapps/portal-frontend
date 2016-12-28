@@ -63,6 +63,7 @@ export class ZMediaPhotoListComponent implements OnInit {
 
 
   actionItem(event: any) {
+    //console.log(event);
     switch (event.action) {
       case 'select':
         this.onSelectedPhotos(event.data);
@@ -76,10 +77,6 @@ export class ZMediaPhotoListComponent implements OnInit {
       default:
         break;
     }
-  }
-
-  actionSortbar(data: any) {
-    this.data = data;
   }
 
   actionToolbar(event: any) {
