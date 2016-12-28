@@ -185,14 +185,46 @@ Header
       left: -135px;
       padding: 10px;
       > li {
-        > a {
-          &:hover {
-            background-color: #eee;
+        &.dropdown-menu-bar {
+          margin-bottom: 7px;
+          @include clearfix;
+          a {
+            display: inline-block !important;
+            font-size: 12px;
+            &:after {
+              display: inline-block;
+              margin: 0 3px;
+              content: '\2022';
+            }
+            &:last-child {
+              &:after {
+                display: none;
+              }
+            }
           }
         }
-        border-top: 1px solid $light-grey;
-        &:first-child {
-          border-top-width: 0;
+        &.navbar-nav-notification-item {
+          border-top: 1px solid $light-grey;
+          padding: 5px;
+          margin-left: -10px;
+          margin-right: -10px;
+          line-height: 1.2;
+          > a {
+            &:hover {
+              background-color: #eee;
+            }
+          }
+          .btn {
+            padding-left: 0;
+            padding-right: 0;
+          }
+          .dropdown-submenu {
+            .dropdown-menu {
+              left: auto;
+              right: 0;
+              margin-top: 0;
+            }
+          }
         }
         &.view-all {
           margin: 0 -10px -5px;
@@ -469,7 +501,7 @@ Header
         font-weight: bold;
       }
       .navbar-form-list-nav {
-        padding:0 15px;
+        padding: 0 15px;
       }
       ul {
         margin: 0;

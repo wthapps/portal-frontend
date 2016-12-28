@@ -46,8 +46,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private notificationService: NotificationService,
-              private notificationChannel: ChannelNotificationService
-  ) {
+              private notificationChannel: ChannelNotificationService) {
     this.urls = new Array();
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this.urls.length = 0; //Fastest way to clear out array
@@ -57,7 +56,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
 
-   if (this.userService.loggedIn) {
+    if (this.userService.loggedIn) {
       this.first_name = this.userService.profile.first_name;
       this.last_name = this.userService.profile.last_name;
 
@@ -95,6 +94,21 @@ export class HeaderComponent implements AfterViewInit, OnInit {
         nav.removeClass('active');
       }
       lastScrollTop = currentScrollTop;
+    });
+
+    documentElem.on('click', '.navbar-nav-notification .dropdown-menu', function (e: any) {
+      e.stopPropagation();
+      $(this).find('.dropdown-menu').hide();
+    });
+    documentElem.on('click', '.navbar-nav-notification .dropdown-submenu .dropdown-toggle', function (e: any) {
+      e.stopPropagation();
+      e.preventDefault();
+      $(this).next('ul').toggle();
+    });
+    documentElem.on('click', function (e: any) {
+      if (!$('.navbar-nav-notification').hasClass('open')) {
+        $('.navbar-nav-notification .dropdown-submenu').find('.dropdown-menu').hide();
+      }
     });
   }
 
@@ -183,7 +197,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     //
     //       });
     // console.log('cable', App, App.notifications);
-
 
 
     //   // ActionCable callbacks

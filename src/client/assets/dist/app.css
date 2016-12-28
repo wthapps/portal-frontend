@@ -10122,6 +10122,9 @@ h1, h2, h3, h4, h5, h6,
   margin-top: 3px;
   margin-right: -2px; }
 
+.dropdown-submenu {
+  position: relative; }
+
 /* ==========================================================================
 Header
 ========================================================================== */
@@ -10241,27 +10244,50 @@ Header
   .header .navbar-nav-notification .dropdown-menu {
     left: -135px;
     padding: 10px; }
-    .header .navbar-nav-notification .dropdown-menu > li {
-      border-top: 1px solid #D8D8D8; }
-      .header .navbar-nav-notification .dropdown-menu > li > a:hover {
+    .header .navbar-nav-notification .dropdown-menu > li.dropdown-menu-bar {
+      margin-bottom: 7px; }
+      .header .navbar-nav-notification .dropdown-menu > li.dropdown-menu-bar:before, .header .navbar-nav-notification .dropdown-menu > li.dropdown-menu-bar:after {
+        content: " ";
+        display: table; }
+      .header .navbar-nav-notification .dropdown-menu > li.dropdown-menu-bar:after {
+        clear: both; }
+      .header .navbar-nav-notification .dropdown-menu > li.dropdown-menu-bar a {
+        display: inline-block !important;
+        font-size: 12px; }
+        .header .navbar-nav-notification .dropdown-menu > li.dropdown-menu-bar a:after {
+          display: inline-block;
+          margin: 0 3px;
+          content: '\2022'; }
+        .header .navbar-nav-notification .dropdown-menu > li.dropdown-menu-bar a:last-child:after {
+          display: none; }
+    .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item {
+      border-top: 1px solid #D8D8D8;
+      padding: 5px;
+      margin-left: -10px;
+      margin-right: -10px;
+      line-height: 1.2; }
+      .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item > a:hover {
         background-color: #eee; }
-      .header .navbar-nav-notification .dropdown-menu > li:first-child {
-        border-top-width: 0; }
-      .header .navbar-nav-notification .dropdown-menu > li.view-all {
-        margin: 0 -10px -5px;
-        border-top: 1px solid #D8D8D8; }
-        .header .navbar-nav-notification .dropdown-menu > li.view-all a {
-          display: block;
-          padding: 15px 10px;
-          text-align: center;
-          font-size: 16px;
-          font-family: "Source Sans Pro", sans-serif;
-          color: #2996CC; }
+      .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item .btn, .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item button[ng-reflect-icon="fa-close"], .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item button[ng-reflect-icon="fa-check"] {
+        padding-left: 0;
+        padding-right: 0; }
+      .header .navbar-nav-notification .dropdown-menu > li.navbar-nav-notification-item .dropdown-submenu .dropdown-menu {
+        left: auto;
+        right: 0;
+        margin-top: 0; }
+    .header .navbar-nav-notification .dropdown-menu > li.view-all {
+      margin: 0 -10px -5px;
+      border-top: 1px solid #D8D8D8; }
+      .header .navbar-nav-notification .dropdown-menu > li.view-all a {
+        display: block;
+        padding: 15px 10px;
+        text-align: center;
+        font-size: 16px;
+        font-family: "Source Sans Pro", sans-serif;
+        color: #2996CC; }
     .header .navbar-nav-notification .dropdown-menu > li:not(.view-all) a {
       display: block;
-      padding: 5px;
       color: #4A4A4A;
-      padding-left: 28px;
       position: relative;
       white-space: normal; }
       .header .navbar-nav-notification .dropdown-menu > li:not(.view-all) a span {
@@ -10269,17 +10295,6 @@ Header
       .header .navbar-nav-notification .dropdown-menu > li:not(.view-all) a time {
         font-size: 12px;
         color: #9B9B9B; }
-      .header .navbar-nav-notification .dropdown-menu > li:not(.view-all) a:before {
-        position: absolute;
-        left: 5px;
-        top: 10px;
-        content: "";
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: #D8D8D8; }
-      .header .navbar-nav-notification .dropdown-menu > li:not(.view-all) a.active:before {
-        background-color: #f54a59; }
   .header.header-over .navbar-nav > li.navbar-nav-profile > a {
     padding-top: 2px;
     padding-bottom: 2px; }
