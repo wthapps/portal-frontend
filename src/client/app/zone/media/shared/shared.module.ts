@@ -4,7 +4,10 @@ import { RouterModule } from '@angular/router';
 
 import { Ng2HdModule } from '../../shared/ng2-hd/ng2-hd.module';
 
-import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
+import {
+  ZMediaToolbarComponent,
+  ZMediaToolbarPhotoComponent
+} from './toolbar/index';
 import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
 import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
@@ -27,6 +30,8 @@ import { ZMediaUploadingComponent } from './uploading/uploading.component';
   ],
   declarations: [
     ZMediaToolbarComponent,
+    ZMediaToolbarPhotoComponent,
+
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
@@ -36,6 +41,8 @@ import { ZMediaUploadingComponent } from './uploading/uploading.component';
   ],
   exports: [
     ZMediaToolbarComponent,
+    ZMediaToolbarPhotoComponent,
+
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
@@ -48,9 +55,7 @@ export class ZMediaSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZMediaSharedModule,
-      providers: [
-
-      ]
+      providers: []
     };
   }
 }

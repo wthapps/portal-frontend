@@ -10803,7 +10803,7 @@ body.fixed-hidden {
       display: table; }
     .page-full .page-body-control:after {
       clear: both; }
-    .page-full .page-body-control > ul {
+    .page-full .page-body-control ul {
       margin: 0;
       padding: 0;
       list-style-type: none; }
