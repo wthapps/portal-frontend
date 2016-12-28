@@ -1,5 +1,6 @@
 <z-media-share-toolbar
   #mediaToolbar
+  [type]="'photo'"
   [data]="selectedPhotos"
   [hasFavourite]="hasFavourite"
   [currentView]="currentView"
@@ -8,6 +9,7 @@
 
 <div class="page-body-in">
   <z-media-share-list
+    [type]="'photo'"
     [data]="data"
     [view]="currentView"
     [hasAction]="['favourite', 'select', 'previewAll']"

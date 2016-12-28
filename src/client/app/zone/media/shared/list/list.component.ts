@@ -6,6 +6,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: 'list.component.html'
 })
 export class ZMediaShareListComponent {
+  @Input() type: string = '';
   @Input() data: any = [];
   @Input() view: string = 'grid';
   @Input() hasAction: any = []; // favourite, select, preview, previewAll

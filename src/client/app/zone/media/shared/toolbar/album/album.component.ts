@@ -2,12 +2,11 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-share-toolbar',
-  templateUrl: 'toolbar.component.html'
+  selector: 'z-media-share-toolbar-album',
+  templateUrl: 'album.component.html'
 })
 
-export class ZMediaToolbarComponent {
-  @Input() type: string = '';
+export class ZMediaToolbarAlbumComponent {
   @Input() data: any;
   @Input() hasFavourite: any;
   @Input() currentView: any;

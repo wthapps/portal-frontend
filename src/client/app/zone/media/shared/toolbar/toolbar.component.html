@@ -1,8 +1,17 @@
 <div class="page-body-control">
   <z-media-share-toolbar-photo
+    *ngIf="type == 'photo'"
     [data]="data"
     [currentView]="currentView"
     [hasFavourite]="hasFavourite"
     (outEvent)="onAction($event)">
   </z-media-share-toolbar-photo>
+
+  <z-media-share-toolbar-album
+    *ngIf="type == 'album'"
+    [data]="data"
+    [currentView]="currentView"
+    [hasFavourite]="hasFavourite"
+    (outEvent)="onAction($event)">
+  </z-media-share-toolbar-album>
 </div>

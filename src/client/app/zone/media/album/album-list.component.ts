@@ -34,7 +34,9 @@ export class ZMediaAlbumListComponent implements OnInit {
   }
 
 
-  constructor(private albumService: ZMediaAlbumService) {
+  constructor(private albumService: ZMediaAlbumService,
+              private confirmationService: ConfirmationService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -68,6 +70,34 @@ export class ZMediaAlbumListComponent implements OnInit {
     }
   }
 
+  actionToolbar(event: any) {
+    // console.log(event);
+    switch (event) {
+      case 'oneFavourite':
+        this.onFavourite();
+        break;
+      case 'favourite':
+        this.onFavourite();
+        break;
+      case 'share':
+
+        break;
+      case 'tag':
+
+        break;
+      case 'delete':
+        this.onDelete();
+        break;
+      case 'listView':
+        this.currentView = 'list';
+        break;
+      case 'gridView':
+        this.currentView = 'grid';
+        break;
+      default:
+        break;
+    }
+  }
 
 
   // --- Action for Item --- //
@@ -100,4 +130,37 @@ export class ZMediaAlbumListComponent implements OnInit {
   }
 
   // --- End Action for Item --- //
+
+
+  // --- Action for Toolbar --- //
+  private onFavourite() {
+    // if there was one item's favorite is false, all item will be add to favorite
+    let hasFavourite: boolean = _.some(this.selectedPhotos, ['favorite', false]);
+    this.albumService.actionAllFavourite(this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
+      if (res.message === 'success') {
+        _.map(this.selectedPhotos, (v: any)=> {
+          v.favorite = hasFavourite;
+        });
+      }
+    });
+  }
+
+  private onDelete() {
+    let idPhotos = _.map(this.selectedPhotos, 'id'); // ['1','2'];
+    this.confirmationService.confirm({
+      message: 'Are you sure to delete ' + this.selectedPhotos.length + ' item' + (this.selectedPhotos.length > 1 ? 's' : '') + ' ?',
+      accept: () => {
+        let body = JSON.stringify({ids: idPhotos});
+        this.loadingService.start();
+        this.albumService.deletePhoto(body).subscribe((res: any)=> {
+          _.map(idPhotos, (id: any)=> {
+            _.remove(this.data, ['id', id]);
+          });
+          this.loadingService.stop();
+        });
+      }
+    });
+  }
+
+  // --- End Action for Toolbar --- //
 }

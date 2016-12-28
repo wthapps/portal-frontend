@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ZMediaAlbumService,
-  ZMediaAlbumItemComponent,
   ZMediaAlbumListComponent
 } from './index';
 
@@ -18,12 +17,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     ZMediaSharedModule.forRoot()
   ],
   declarations: [
-    ZMediaAlbumListComponent,
-    ZMediaAlbumItemComponent
+    ZMediaAlbumListComponent
   ],
   exports: [
-    ZMediaAlbumListComponent,
-    ZMediaAlbumItemComponent
+    ZMediaAlbumListComponent
   ],
   providers: [
     ZMediaAlbumService

@@ -9,6 +9,7 @@ declare var _: any;
 })
 export class ZMediaShareItemComponent implements OnChanges {
   @HostBinding('class') leftBarClass = 'row-img-item';
+  @Input() type: string = 'photo';
   @Input() data: any;
   @Input() hasAction: any = []; // favourite, select, preview, previewAll
 

@@ -6,8 +6,10 @@ import { Ng2HdModule } from '../../shared/ng2-hd/ng2-hd.module';
 
 import {
   ZMediaToolbarComponent,
-  ZMediaToolbarPhotoComponent
+  ZMediaToolbarPhotoComponent,
+  ZMediaToolbarAlbumComponent
 } from './toolbar/index';
+
 import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
 import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
@@ -31,6 +33,7 @@ import { ZMediaUploadingComponent } from './uploading/uploading.component';
   declarations: [
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
+    ZMediaToolbarAlbumComponent,
 
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
@@ -42,6 +45,7 @@ import { ZMediaUploadingComponent } from './uploading/uploading.component';
   exports: [
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
+    ZMediaToolbarAlbumComponent,
 
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,

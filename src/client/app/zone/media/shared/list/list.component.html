@@ -1,6 +1,6 @@
 <div class="row-img" *ngIf="data" [ngClass]="view">
   <z-media-share-sortbar [data]="data" (outEvent)="actionSortbar($event)"></z-media-share-sortbar>
-  <z-media-share-item *ngFor="let item of data;" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
+  <z-media-share-item *ngFor="let item of data;" [type]="type" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
 </div>
 
 <!--
