@@ -26,6 +26,9 @@
         div[class^="photo-box-img-"] {
           display: none;
         }
+        div.photo-box-img-info {
+          display: block !important;
+        }
       }
     }
     .photo-box-img-nav {
@@ -59,6 +62,9 @@
       }
       div[class^="photo-box-img-"] {
         display: table-cell;
+      }
+      div.photo-box-img-info {
+        display: none !important;
       }
       .photo-box-img-size {
         width: 100px;

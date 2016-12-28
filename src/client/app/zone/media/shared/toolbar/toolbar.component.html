@@ -1,4 +1,17 @@
 <div class="page-body-control">
+  <ul class="control-body-select control-body-btnview">
+    <li class="dropdown">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa" [ngClass]="{'fa-th-large': (currentView == 'grid'), 'fa-th-list': (currentView == 'list')}"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-th-large"></i> Grid</a></li>
+        <li><a (click)="onAction('listView')" href="javascript:;"><i class="fa fa-th-list"></i> List</a></li>
+        <!--<li><a href="#"><i class="fa fa-align-center"></i> Timeline</a></li>-->
+      </ul>
+    </li>
+  </ul>
+
   <z-media-share-toolbar-photo
     *ngIf="type == 'photo'"
     [data]="data"
@@ -14,4 +27,6 @@
     [hasFavourite]="hasFavourite"
     (outEvent)="onAction($event)">
   </z-media-share-toolbar-album>
+
+
 </div>

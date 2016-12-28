@@ -7,13 +7,15 @@ import {
 
 import { ZMediaPhotoModule } from './photo/photo.module';
 import { ZMediaAlbumModule } from './album/album.module';
+import { ZMediaFavoriteModule } from './favourites/favourites.module';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     ZMediaPhotoModule,
-    ZMediaAlbumModule
+    ZMediaAlbumModule,
+    ZMediaFavoriteModule
   ],
   declarations: [
     ZMediaComponent

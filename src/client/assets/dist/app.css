@@ -13196,7 +13196,6 @@ wth-app:empty + .dots-loader-wrap {
     filter: alpha(opacity=0);
     z-index: 2; }
   .row-img .img-center-dv .photo-box-img-info {
-    display: block !important;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -13250,6 +13249,8 @@ wth-app:empty + .dots-loader-wrap {
     padding: 15px; }
   .row-img.grid .photo-box-img .photo-box-img-figure div[class^="photo-box-img-"] {
     display: none; }
+  .row-img.grid .photo-box-img .photo-box-img-figure div.photo-box-img-info {
+    display: block !important; }
   .row-img.grid .photo-box-img-nav {
     display: none; }
 
@@ -13277,6 +13278,8 @@ wth-app:empty + .dots-loader-wrap {
     display: table-cell; }
   .row-img.list .photo-box-img-figure div[class^="photo-box-img-"] {
     display: table-cell; }
+  .row-img.list .photo-box-img-figure div.photo-box-img-info {
+    display: none !important; }
   .row-img.list .photo-box-img-figure .photo-box-img-size {
     width: 100px; }
   .row-img.list .photo-box-img-figure .photo-box-img-date {
