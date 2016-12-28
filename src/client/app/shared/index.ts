@@ -18,6 +18,7 @@ export * from './services/auth-guard.service';
 export * from './services/can-deactivate-guard.service';
 export * from './services/deactivate-confirm.service';
 
+export * from '../partials/header/index';
 export * from '../partials/footer/index';
 export * from '../partials/toast/index';
 export * from '../partials/loading/index';

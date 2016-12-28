@@ -210,9 +210,9 @@ Header
       > li:not(.view-all) {
         a {
           display: block;
-          padding: 5px;
+          //padding: 5px;
           color: $text-color;
-          padding-left: 28px;
+          //padding-left: 28px;
           position: relative;
           white-space: normal;
           span {
@@ -222,21 +222,21 @@ Header
             font-size: 12px;
             color: $light-slate;
           }
-          &:before {
-            position: absolute;
-            left: 5px;
-            top: 10px;
-            content: "";
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #D8D8D8;
-          }
-          &.active {
-            &:before {
-              background-color: $color-inverse;
-            }
-          }
+          //&:before {
+          //  position: absolute;
+          //  left: 5px;
+          //  top: 10px;
+          //  content: "";
+          //  width: 10px;
+          //  height: 10px;
+          //  border-radius: 50%;
+          //  background-color: #D8D8D8;
+          //}
+          //&.active {
+          //  &:before {
+          //    background-color: $color-inverse;
+          //  }
+          //}
         }
       }
     }

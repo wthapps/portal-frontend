@@ -1,5 +1,5 @@
 
-var host = 'localhost:4000';
+var host = '192.168.0.107:4000';
 export let ApiConfig = {
   url: `http://${host}`,
 

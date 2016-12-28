@@ -6,14 +6,13 @@ import {
 
 import {
   UserService,
-  ApiBaseService,
-  Constants,
-  ChannelNotificationService
+  Constants
 } from '../../shared/index';
 
 
-import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
 import { SearchFormComponent } from './sub/search-form.component';
+import { NotificationService } from './notification/notification.service';
+import { ChannelNotificationService } from '../../shared/channels/index';
 
 declare var $: any;
 // declare let ActionCable: any;
@@ -39,13 +38,15 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   imgLogo: string = Constants.img.logoWhite;
 
   showSearchBar: boolean = true;
-  App: any = {};
+
+  notifications: Array<any> = new Array<any>();
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
   constructor(private userService: UserService,
               private router: Router,
-              private channelNotification: ChannelNotificationService
+              private notificationService: NotificationService,
+              private notificationChannel: ChannelNotificationService
   ) {
     this.urls = new Array();
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
@@ -64,6 +65,20 @@ export class HeaderComponent implements AfterViewInit, OnInit {
         this.userService.profile.profile_image = Constants.img.avatar;
       }
     }
+
+    this.notificationService.get().subscribe(
+      (result: any) => {
+        this.notifications = result.data;
+      },
+      (error: any) => {
+        console.log('error', error);
+      }
+    )
+
+    this.notificationChannel.update().subscribe(
+      (response: any) => {
+        console.log('update notification was called', response);
+      });
 
   }
 

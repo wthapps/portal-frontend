@@ -11,11 +11,12 @@ export class ApiBaseService {
 
   private _http: Http;
   private _options: RequestOptionsArgs;
-  //private _baseUrl:string = 'http://52.221.221.245:4000/';
-  private _baseUrl: string = Constants.baseUrls.apiBaseService;
+  private _baseUrl:string = 'http://192.168.0.107:4000/';
+  // private _baseUrl: string = Constants.baseUrls.apiBaseService;
   private _headers: Headers = new Headers({
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    'ACCEPT': 'application/json'
   });
 
   constructor(private http: Http, private router?: Router) {

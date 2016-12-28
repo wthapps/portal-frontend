@@ -36,7 +36,8 @@ import {
   SliderComponent,
   UploadCropImageComponent,
   ToTopComponent,
-  ReadMoreComponent
+  ReadMoreComponent,
+  NotificationService
 } from '../partials/index';
 
 import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/index';
@@ -147,7 +148,8 @@ export class SharedModule {
         SoSearchService,
         CableService,
         ChannelNotificationService,
-        ChannelChatService
+        ChannelChatService,
+        NotificationService
       ]
     };
   }
