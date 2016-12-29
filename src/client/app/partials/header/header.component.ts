@@ -15,7 +15,7 @@ import { NotificationService } from './notification/notification.service';
 import { ChannelNotificationService } from '../../shared/channels/index';
 
 declare var $: any;
-// declare let ActionCable: any;
+declare var _: any;
 
 declare let App: any;
 
@@ -52,6 +52,9 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       this.urls.length = 0; //Fastest way to clear out array
       this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
     });
+
+
+
   }
 
   ngOnInit() {
@@ -65,20 +68,21 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       }
     }
 
-    this.notificationService.get().subscribe(
-      (result: any) => {
-        this.notifications = result.data;
-      },
-      (error: any) => {
-        console.log('error', error);
-      }
-    )
+    if(this.userService.loggedIn) {
+      this.notificationService.get().subscribe(
+        (result: any) => {
+          this.notifications = result.data;
+        },
+        (error: any) => {
+          console.log('error', error);
+        });
 
-    this.notificationChannel.update().subscribe(
-      (response: any) => {
-        console.log('update notification was called', response);
-      });
-
+      this.notificationChannel.notificationUpdated.subscribe(
+        (response: any) => {
+          this.notifications.unshift(response);
+          console.log('response', response);
+        });
+    }
   }
 
   ngAfterViewInit(): void {
