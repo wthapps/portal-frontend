@@ -1,5 +1,7 @@
-import { Injectable, EventEmitter }     from '@angular/core';
+import { Injectable }     from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+
 import { CableService } from './cable.service';
 import { UserService, ApiConfig } from '../../shared/index';
 
@@ -8,44 +10,43 @@ declare let App: any;
 @Injectable()
 export class ChannelNotificationService extends CableService {
 
-  hasNotification: EventEmitter<any> = new EventEmitter();
-  private item: any;
+  // notificationUpdated: EventEmitter = new EventEmitter();
+  observer: Observer;
+  notificationUpdated: Observable<any>;
 
+  private item: any;
   constructor(private userService: UserService) {
     super();
-    // if(this.userService.loggedIn) {
+    if(this.userService.loggedIn) {
       this.createConnectionInstance(this.userService);
 
-    // this.notification = new Observable(observer => {
-    //   observer.next(this.item);
-    // });
-
-    (function () {
-        App.notification = App.cable.subscriptions.create(ApiConfig.actionCable.notificationChannel, {
-
-        connected: function () {
-        },
-        disconnected: function () {
-        },
-        received: function (response: any) {
-          this.item = response;
-          console.log('item: ', this.item);
-         // this.hasNotification.emit(response);
-        },
-        sendMessage: function (chatroom_id: any, message: any) {
-          return this.perform('send_message', {
-            chatroom_id: chatroom_id,
-            body: message
-          });
+      this.notificationUpdated = new Observable(
+        (observer: any) => {
+          this.observer = observer;
         }
-      });
+      );
 
-    }).call(this);
-    // }
-  }
+      var self = this;
+      (function () {
+          App.notification = App.cable.subscriptions.create(ApiConfig.actionCable.notificationChannel, {
 
-  update(): Observable<any> {
-    return this.hasNotification;
+          connected: function () {
+          },
+          disconnected: function () {
+          },
+          received: function (response: any) {
+            this.item = response;
+            self.observer.next(response);
+          },
+          sendMessage: function (chatroom_id: any, message: any) {
+            return this.perform('send_message', {
+              chatroom_id: chatroom_id,
+              body: message
+            });
+          }
+        });
+      }).call(this, self);
+    }
   }
 
   testing() {
