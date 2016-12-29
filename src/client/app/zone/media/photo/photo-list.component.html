@@ -1,10 +1,11 @@
 <z-media-share-toolbar
   #mediaToolbar
   [type]="'photo'"
-  [data]="selectedPhotos"
+  [selectedPhotos]="selectedPhotos"
   [hasFavourite]="hasFavourite"
   [currentView]="currentView"
-  (outEvent)="actionToolbar($event)">
+  (outEvent)="actionToolbar($event)"
+  (outEventUploading)="actionUploading($event)">
 </z-media-share-toolbar>
 
 <div class="page-body-in">
@@ -24,8 +25,3 @@
 </div>
 
 <z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data"></z-media-photo-detail>
-
-<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum" [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
-<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
-
-<z-media-share-uploading #zoneUpload (outEvent)="actionUploading($event)"></z-media-share-uploading>

@@ -124,6 +124,9 @@ export class ZMediaUploadingComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   onAction(ev:string): void {
+    // close uploading form
+    this.step = -1;
+
     this.outEvent.emit({
       action: ev,
       data: this.photos

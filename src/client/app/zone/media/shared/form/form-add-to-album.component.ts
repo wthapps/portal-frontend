@@ -53,6 +53,7 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
     this.selectedAlbum = album;
     this.albumService.addToAlbum(album.id, this.selectedPhotos).subscribe(
       (res: any)=> {
+        console.log(res);
         this.dataAlbums[index].photo_number = res.data.length;
         this.modal.close();
         this.showToast = true;

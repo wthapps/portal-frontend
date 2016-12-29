@@ -3,8 +3,6 @@ import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { ZMediaPhotoService } from './photo.service';
 
 import { LoadingService, ConfirmationService } from '../../../shared/index';
-import { ZMediaFormAddToAlbumComponent } from '../shared/form/form-add-to-album.component';
-import { ZMediaFormEditAlbumComponent } from '../shared/form/form-edit-album.component';
 
 declare var $: any;
 declare var _: any;
@@ -16,8 +14,6 @@ declare var _: any;
 })
 export class ZMediaPhotoListComponent implements OnInit {
   @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
-  @ViewChild('formAddAlbum') formAddAlbum: ZMediaFormAddToAlbumComponent;
-  @ViewChild('formEditAlbum') formEditAlbum: ZMediaFormEditAlbumComponent;
 
   data: any = [];
   nextLink: string = null;
@@ -45,6 +41,10 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getPhotos();
+  }
+
+  getPhotos() {
     this.photoService.listPhoto().subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
@@ -109,10 +109,6 @@ export class ZMediaPhotoListComponent implements OnInit {
         // call action from photoDetail
         this.photoDetail.onEditInfo();
         break;
-      case 'addToAlbum':
-        this.formAddAlbum.getAlbum();
-        this.formAddAlbum.modal.open();
-        break;
       case 'listView':
         this.currentView = 'list';
         break;
@@ -126,20 +122,14 @@ export class ZMediaPhotoListComponent implements OnInit {
 
   actionUploading(event: any) {
     switch (event.action) {
-      case 'addToAlbum':
-        this.formAddAlbum.selectedPhotos = event.data;
-        this.formAddAlbum.getAlbum();
-        this.formAddAlbum.modal.open();
-        break;
-      case 'createAlbum':
-        this.formEditAlbum.selectedPhotos = event.data;
-        this.formEditAlbum.modal.open();
-        break;
-
       case 'addPhoto':
-        _.map(event.data, (v: any)=> {
-          this.data.unshift(v);
-        });
+        /*_.map(event.data, (v: any)=> {
+         this.data.unshift(v);
+         });*/
+
+        //reload data
+        this.getPhotos();
+
         break;
       default:
         break;

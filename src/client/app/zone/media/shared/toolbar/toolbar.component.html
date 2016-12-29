@@ -14,7 +14,7 @@
 
   <z-media-share-toolbar-photo
     *ngIf="type == 'photo'"
-    [data]="data"
+    [selectedPhotos]="selectedPhotos"
     [currentView]="currentView"
     [hasFavourite]="hasFavourite"
     (outEvent)="onAction($event)">
@@ -22,11 +22,17 @@
 
   <z-media-share-toolbar-album
     *ngIf="type == 'album'"
-    [data]="data"
+    [selectedPhotos]="selectedPhotos"
     [currentView]="currentView"
     [hasFavourite]="hasFavourite"
     (outEvent)="onAction($event)">
   </z-media-share-toolbar-album>
 
-
 </div>
+
+
+<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"
+                                 [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
+<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
+
+<z-media-share-uploading (outEvent)="onActionUploading($event)"></z-media-share-uploading>

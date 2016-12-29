@@ -1,7 +1,7 @@
 <z-media-share-toolbar
   #mediaToolbar
   [type]="'favourites'"
-  [data]="selectedPhotos"
+  [selectedPhotos]="selectedPhotos"
   [hasFavourite]="hasFavourite"
   [currentView]="currentView"
   (outEvent)="actionToolbar($event)">
