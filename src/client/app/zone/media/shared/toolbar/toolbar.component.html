@@ -1,4 +1,33 @@
 <div class="page-body-control">
+  <ul class="control-body-select">
+    <li class="dropdown">
+      <a href="#" class="btn btn-default btn-circle" data-toggle="dropdown"><i class="fa fa-plus"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li class="active">
+          <a href="javascript:;" (click)="zoneUpload.browseFiles($event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
+        </li>
+        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
+        <li role="separator" class="divider"></li>
+        <li><a href="javascript:;" (click)="formEditAlbum.modal.open()"><i class="fa fa-files-o"></i> Create Album</a></li>
+        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>-->
+      </ul>
+    </li>
+    <li class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+        <i [ngClass]="selectedEl.css"></i> {{selectedEl.name}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
+          <a [routerLink]="[item.link]">
+            {{item.name}}
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
   <ul class="control-body-select control-body-btnview">
     <li class="dropdown">
       <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,4 +64,4 @@
                                  [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
 <z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
 
-<z-media-share-uploading (outEvent)="onActionUploading($event)"></z-media-share-uploading>
+<z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>
