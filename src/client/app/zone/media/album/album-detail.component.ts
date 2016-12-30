@@ -1,24 +1,29 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { ZMediaAlbumService } from './album.service';
 
 import { LoadingService, ConfirmationService } from '../../../shared/index';
+import { ZMediaPhotoDetailComponent } from '../photo/photo-detail.component';
+import { ZMediaPhotoService } from '../photo/photo.service';
 
 declare var $: any;
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-album-list',
-  templateUrl: 'album-list.component.html'
+  selector: 'z-media-album-detail',
+  templateUrl: 'album-detail.component.html'
 })
-export class ZMediaAlbumListComponent implements OnInit {
+export class ZMediaAlbumDetailComponent implements OnInit {
+  @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  albumDetail: any = [];
 
   data: any = [];
   nextLink: string = null;
 
   selectedPhotos: any = [];
+
 
   keyCtrl: boolean = false;
   hasFavourite: boolean = false;
@@ -35,15 +40,28 @@ export class ZMediaAlbumListComponent implements OnInit {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
   }
 
-
-  constructor(private router: Router,
+  constructor(private route: ActivatedRoute,
               private albumService: ZMediaAlbumService,
+              private photoService: ZMediaPhotoService,
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService) {
   }
 
   ngOnInit() {
-    this.albumService.listAlbum().subscribe((res: any)=> {
+    this.route.params.subscribe((params: Params) => {
+      this.getPhotos(+params['id']);
+      this.getAlbumDetail(+params['id']);
+    });
+  }
+
+  getAlbumDetail(id: number) {
+    this.albumService.getAlbum(id).subscribe((res: any)=> {
+      this.albumDetail = res.data;
+    });
+  }
+
+  getPhotos(id: number) {
+    this.albumService.getPhotosByAlbum(id).subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
     });
@@ -59,13 +77,15 @@ export class ZMediaAlbumListComponent implements OnInit {
     });
   }
 
+
   actionItem(event: any) {
+    //console.log(event);
     switch (event.action) {
       case 'select':
         this.onSelectedPhotos(event.data);
         break;
       case 'previewAll':
-        this.router.navigate([`/zone/media/album`, event.data.id]);
+        this.onPreviewAll(event.data);
         break;
       case 'favourite':
         this.onOneFavourite(event.data);
@@ -78,6 +98,9 @@ export class ZMediaAlbumListComponent implements OnInit {
   actionToolbar(event: any) {
     // console.log(event);
     switch (event) {
+      case 'preview':
+        this.onPreview();
+        break;
       case 'oneFavourite':
         this.onFavourite();
         break;
@@ -93,11 +116,36 @@ export class ZMediaAlbumListComponent implements OnInit {
       case 'delete':
         this.onDelete();
         break;
+      case 'info':
+        // call action from photoDetail
+        this.photoDetail.preview(true);
+        this.photoDetail.onShowInfo();
+        break;
+      case 'editInfo':
+        // call action from photoDetail
+        this.photoDetail.onEditInfo();
+        break;
       case 'listView':
         this.currentView = 'list';
         break;
       case 'gridView':
         this.currentView = 'grid';
+        break;
+      default:
+        break;
+    }
+  }
+
+  actionUploading(event: any) {
+    switch (event.action) {
+      case 'addPhoto':
+        /*_.map(event.data, (v: any)=> {
+         this.data.unshift(v);
+         });*/
+
+        //reload data
+        this.getPhotos();
+
         break;
       default:
         break;
@@ -125,9 +173,15 @@ export class ZMediaAlbumListComponent implements OnInit {
     this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
   }
 
+  private onPreviewAll(item: any) {
+    this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
+    this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
+    this.photoDetail.preview(true);
+  }
+
   private onOneFavourite(item: any) {
     let findItemFavourite = _.findIndex(this.data, ['id', item.id]);
-    this.albumService.actionOneFavourite(item).subscribe((res: any)=> {
+    this.photoService.actionOneFavourite(item).subscribe((res: any)=> {
       if (res.message === 'success') {
         this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
       }
@@ -138,10 +192,20 @@ export class ZMediaAlbumListComponent implements OnInit {
 
 
   // --- Action for Toolbar --- //
+  private onPreview() {
+    if (this.selectedPhotos.length > 1) {
+      this.photoDetail.selectedPhotos = this.selectedPhotos;
+    } else {
+      this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.selectedPhotos[0].id]);
+      this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
+    }
+    this.photoDetail.preview(true);
+  }
+
   private onFavourite() {
     // if there was one item's favorite is false, all item will be add to favorite
     let hasFavourite: boolean = _.some(this.selectedPhotos, ['favorite', false]);
-    this.albumService.actionAllFavourite(this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
+    this.photoService.actionAllFavourite(this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
       if (res.message === 'success') {
         _.map(this.selectedPhotos, (v: any)=> {
           v.favorite = hasFavourite;
@@ -157,7 +221,7 @@ export class ZMediaAlbumListComponent implements OnInit {
       accept: () => {
         let body = JSON.stringify({ids: idPhotos});
         this.loadingService.start();
-        this.albumService.deletePhoto(body).subscribe((res: any)=> {
+        this.photoService.deletePhoto(body).subscribe((res: any)=> {
           _.map(idPhotos, (id: any)=> {
             _.remove(this.data, ['id', id]);
           });

@@ -18,6 +18,9 @@ export class ZMediaToolbarComponent {
 
 
   @Input() type: string = '';
+
+  @Input() albumDetail: any = null;
+
   @Input() selectedPhotos: any;
   @Input() hasFavourite: any;
   @Input() currentView: any;

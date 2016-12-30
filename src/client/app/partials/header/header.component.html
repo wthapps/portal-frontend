@@ -265,7 +265,7 @@
                 <i class="fa fa-bell-o"></i><span class="notification-num">{{notifications.length}}</span>
               </a>
 
-              <ul class="dropdown-menu" id="nav-notification-list">
+              <ul *ngIf="notifications" class="dropdown-menu" id="nav-notification-list">
                 <!--settings-->
                 <li class="dropdown-menu-bar">
                   <div class="pull-right">
