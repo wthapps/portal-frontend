@@ -16,7 +16,7 @@
             </li>
             <li class="list-group-item">
               <p>You’ll be charged &#36;{{selected_plan.price}} monthly including applicable taxes until you cancel your
-                memebership.
+                membership.
                 Previous charges won’t be refunded when you cancel unless it’s legally required. Your payment data is
                 encrypted and secure. All amounts shown are in USD.</p>
             </li>
@@ -148,10 +148,7 @@
                       class="btn btn-wth-default ml10" type="submit" [disabled]="!paymentForm.valid">
                 {{button_text}}
               </button>
-              <!--<a [routerLink]="['/account/payment/confirm']" [style.display]="methodPaypal ? 'inline-block' : 'none'"-->
-              <!--class="btn btn-primary ml10" type="submit">-->
-              <!--{{button_text}}-->
-              <!--</a>-->
+              <img id="paypal-button" (click)="paypal()" [style.display]="methodPaypal ? 'inline-block' : 'none'" class="btn" src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/payments/paypal_vault.png"/>
             </li>
           </ul>
         </form>

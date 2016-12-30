@@ -18,6 +18,7 @@ import {
 
 import { CreditCard } from '../../shared/models/credit-card.model';
 import { BillingAddress } from '../../shared/models/billing-address.model';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 
 declare var braintree: any;
 declare var $: any;
@@ -62,6 +63,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
               private route: ActivatedRoute,
               private userService: UserService,
               private paymentService: PaymentService,
+              private apiBaseService : ApiBaseService,
               private countryService: CountryService,
               private loaddingService: LoadingService,
               private toastsService: ToastsService,
@@ -357,6 +359,47 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           console.log('Add card error:', error);
         });
     _this.loaddingService.start();
+  }
+
+  paypal() {
+    // Get token from server
+    this.apiBaseService.get('payment/paypal').subscribe(
+      (res:any) => {
+        this.callBrainTree(res.data);
+      }
+    )
+  }
+
+  callBrainTree(token:any) {
+    var paypalButton = document.querySelector('#paypal-button');
+    // Create a client.
+    let _this = this
+    braintree.client.create({
+      authorization: token
+    }, function (clientErr, clientInstance) {
+      // Create PayPal component
+      braintree.paypal.create({
+        client: clientInstance
+      }, function (paypalErr, paypalInstance) {
+        paypalButton.addEventListener('click', function () {
+          // Tokenize here!
+          paypalInstance.tokenize({
+            flow: 'vault', // This enables the Vault flow
+            billingAgreementDescription: 'Where is my money',
+            locale: 'en_CA',
+            enableShippingAddress: false,
+            shippingAddressEditable: false,
+          }, function (err, tokenizationPayload) {
+            // Send tokenizationPayload.nonce to server
+            _this.apiBaseService.post('payment/paypal/checkout', {nonce: tokenizationPayload.nonce}).subscribe(
+              (res:any) => {
+                _this.toastsService.success('success');
+              }
+            )
+          });
+        });
+      });
+    });
   }
 }
 
