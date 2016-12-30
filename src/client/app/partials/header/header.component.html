@@ -236,7 +236,7 @@
                  aria-expanded="false">
                 <i class="fa fa-list"></i>
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-menu-right">
                 <li>
                   <a [routerLink]="['/zone/picture/photo']">
                     <i class="fa fa-bullseye"></i>
@@ -274,39 +274,48 @@
                     <a href="#">Settings</a>
                   </div>
                 </li>
-                <li class="navbar-nav-notification-item" *ngFor="let notification of notifications">
-                  <div class="media-center">
-                    <div class="media-center-left">
-                      <figure>
-                        <a [routerLink]="['/zone/social/communities']">
-                          <img width="70" [src]="notification.actor.profile_image" alt="notification.actor.name">
-                        </a>
-                      </figure>
-                    </div>
-                    <div class="media-body">
-                      <p class="media-heading">{{notification.text}}</p>
-                      <small>Jun 16 2016</small>
-                    </div>
-                    <div class="media-center-right">
-                      <div class="dropdown-submenu pull-right clearfix">
-                        <a class="btn btn-sm btn-default-inline dropdown-toggle" tabindex="-1" href="#">
-                          <i class="fa fa-ellipsis-v"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a href="javascript:;">Hide this notification</a></li>
-                          <li><a href="#" (click)="onPreference(item)">Turn off all notifications relate to this</a>
-                          </li>
-                        </ul>
+                <li>
+                  <ul class="list-unstyled content-overflow-y" id="notification-items">
+                    <li class="navbar-nav-notification-item" *ngFor="let notification of notifications">
+                      <div class="media-center">
+                        <div class="media-center-left">
+                          <figure>
+                            <a [routerLink]="['/zone/social/communities']">
+                              <img width="45" [src]="notification.actor.profile_image" alt="notification.actor.name">
+                            </a>
+                          </figure>
+                        </div>
+                        <div class="media-body notification-content">
+                          <p class="media-heading">{{notification.text}}</p>
+                          <small>Jun 16 2016</small>
+                          <div style="white-space: nowrap" class="media-center-right">
+                            <button  *ngFor="let action of notification.actions"
+                                     class="btn btn-xs btn-default mr5" type="button" (click)="doAction(action)">
+                              {{action.name}}
+                            </button>
+                          </div>
+                        </div>
+                        <div class="media-center-right">
+                          <div class="dropdown-submenu pull-right clearfix">
+                            <a class="btn btn-sm btn-default-inline dropdown-toggle" tabindex="-1" href="#">
+                              <i class="fa fa-ellipsis-v"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right sub-menu">
+                              <li><a href="javascript:;">Hide this notification</a></li>
+                              <li><a href="#" (click)="onPreference(item)">Turn off all notifications relate to this</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="pull-right">
+                            <button class="btn btn-sm btn-default-inline" type="button">
+                              <i class="fa fa-circle"></i>
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                      <div class="pull-right">
-                        <button class="btn btn-sm btn-default-inline" type="button">
-                          <i class="fa fa-circle"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                    </li>
+                  </ul>
                 </li>
-
                 <li class="view-all">
                   <a href="#">View All</a>
                 </li>

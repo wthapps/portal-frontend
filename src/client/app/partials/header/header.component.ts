@@ -79,8 +79,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
       this.notificationChannel.notificationUpdated.subscribe(
         (response: any) => {
-          this.notifications.unshift(response);
-          console.log('response', response);
+          this.notifications.unshift(JSON.parse(response));
         });
     }
   }
