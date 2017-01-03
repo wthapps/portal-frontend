@@ -1,0 +1,128 @@
+/*
+<ul class="p-list-user p-list-border p-list-outside-20">
+  <li>
+    <div class="pull-right">
+      <span class="badge badge-wth">4</span>
+    </div>
+    <img alt="David Nguyen"
+         src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
+    <span>David Nguyen</span>
+  </li>
+  <li>
+    <div class="pull-right">
+      <span class="badge badge-wth">4</span>
+    </div>
+    <img alt="David Nguyen"
+         src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
+    <span>David Nguyen</span>
+  </li>
+</ul>
+*/
+
+@mixin p-list-user-item($img:34px) {
+  @include clearfix;
+  img {
+    width: $img;
+    margin-right: 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    float: left;
+  }
+  > span {
+    line-height: 18px;
+    margin-top: ($img - 18px)/2;
+    display: block;
+    float: left;
+  }
+  figure {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    float: left;
+    img {
+      margin-right: 0;
+    }
+    .p-list-user-status {
+      position: absolute;
+      right: -3px;
+      bottom: -3px;
+      width: 18px;
+      height: 18px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      border: 3px solid #FFF;
+      background-color: #d8d8d8;
+      &.online {
+        background-color: #6DD9AC;
+      }
+    }
+  }
+  .pull-right {
+    min-height: $img;
+    .badge {
+      //height: 24px;
+      min-width: 34px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-top: ($img - 24px)/2;
+      margin-bottom: ($img - 24px)/2;
+    }
+  }
+  .p-list-user-namegroup {
+    float: left;
+    color: #9b9b9b;
+    line-height: 1.25;
+    span {
+      display: block;
+      color: $text-color
+    }
+    small {
+      font-size: 100%;
+    }
+  }
+}
+
+.p-list-user-group {
+  dt {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+}
+
+.p-list-user {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  li {
+    margin-bottom: 10px;
+    @include p-list-user-item();
+  }
+
+  &.p-list-border {
+    > li {
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #dbdbdb;
+      position: relative;
+    }
+  }
+  &.p-list-outside {
+    > li {
+      padding: 10px 15px;
+      margin: 0 -15px;
+    }
+  }
+  &.p-list-outside-20 {
+    > li {
+      padding: 10px 20px;
+      margin: 0 -20px;
+    }
+  }
+}
+
+.p-list-user-item {
+  @include p-list-user-item();
+}

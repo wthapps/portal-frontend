@@ -17,6 +17,17 @@ body {
   font-weight: bold;
 }
 
+.can-click {
+  cursor: pointer;
+}
+
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
+
 .word-break {
   word-break: break-all;
 }

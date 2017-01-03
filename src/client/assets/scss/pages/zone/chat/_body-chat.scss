@@ -1,0 +1,15 @@
+.page-body-chat {
+  max-width: 700px;
+  margin: auto;
+  @media (max-width: $screen-xs-max) {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.chat-item-wrap {
+  height: calc(100vh - 100px - 100px);
+  position: relative;
+  overflow: auto;
+  @include flex(1 1 auto);
+}

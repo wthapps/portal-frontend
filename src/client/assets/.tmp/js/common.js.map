@@ -1,0 +1,1 @@
+{"version":3,"sources":["common.js"],"names":["App","call"],"mappings":";AACA,CAAC,YAAW;;AAEV;AACA,OAAKA,GAAL,GAAW,EAAX;AAED,CALD,EAKGC,IALH,CAKQ,IALR","file":"common.js","sourcesContent":["\n(function() {\n\n  // this is global variable that is used for Notification realtime\n  this.App = {};\n\n}).call(this);\n\n\n\n"]}

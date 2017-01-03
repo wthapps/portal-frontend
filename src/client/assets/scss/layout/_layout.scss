@@ -1,0 +1,12 @@
+$header-height: 69px;
+.wrapper {
+  overflow: hidden;
+  position: relative;
+  padding-top: $header-height;
+  .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
