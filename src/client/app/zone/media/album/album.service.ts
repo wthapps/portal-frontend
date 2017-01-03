@@ -15,6 +15,14 @@ export class ZMediaAlbumService {
     return this.apiBaseService.get(this.url);
   }
 
+  getAlbum(id: number): any {
+    return this.apiBaseService.get(`${this.url}/${id}`);
+  }
+
+  getPhotosByAlbum(id: number): any {
+    return this.apiBaseService.get(`zone/photos?album=${id}`);
+  }
+
   addToAlbum(id: number, selectedPhotos: any): any {
     let body = JSON.stringify({
       photos: _.map(selectedPhotos, 'id')

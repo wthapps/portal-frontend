@@ -1,11 +1,10 @@
-(function ($) {
 
-})(jQuery);
+(function() {
+
+  // this is global variable that is used for Notification realtime
+  this.App = {};
+
+}).call(this);
 
 
-// (function() {
-//   this.App || (this.App = {});
-//
-//   App.cable = ActionCable.createConsumer("ws://localhost:7474/cable");
-//
-// }).call(this);
+

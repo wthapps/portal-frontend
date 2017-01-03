@@ -1,0 +1,42 @@
+<ul class="control-body-select control-body-btnview">
+  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+    <a href="#" (click)="onAction('preview')"><i class="fa fa-eye"></i></a>
+  </li>
+  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+    <a href="#" (click)="onAction('share')"><i class="fa fa-share-alt"></i></a>
+  </li>
+  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+    <a href="#" (click)="onAction('favourite', hasFavourite = (hasFavourite ? false : true))">
+      <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
+    </a>
+  </li>
+  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+    <a href="#" (click)="onAction('tag')"><i class="fa fa-tag"></i></a>
+  </li>
+  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+    <a href="#" (click)="onAction('delete')"><i class="fa fa-trash-o"></i></a>
+  </li>
+  <li class="dropdown action" [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+    <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-ellipsis-v"></i>
+    </a>
+    <ul *ngIf="selectedPhotos.length > 1" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <li>
+        <a (click)="onAction('addToAlbum')" href="javascript:;">
+          <i class="fa fa-minus-square"></i> Remove from Album
+        </a>
+      </li>
+    </ul>
+    <ul *ngIf="selectedPhotos.length == 1" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <li>
+        <a (click)="onAction('addToAlbum')" href="javascript:;">
+          <i class="fa fa-minus-square"></i> Remove from Album
+        </a>
+      </li>
+      <!--<li><a (click)="download($event)" href="javascript:;"><i class="fa fa-download"></i> Download</a></li>-->
+      <li><a (click)="onAction('info')" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
+      <li><a [href]="selectedPhotos[0].url" download><i class="fa fa-download"></i>Download</a></li>
+      <li><a (click)="onAction('editInfo')" href="javascript:;"><i class="fa fa-edit"></i> Edit</a></li>
+    </ul>
+  </li>
+</ul>

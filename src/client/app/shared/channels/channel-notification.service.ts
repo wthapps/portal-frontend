@@ -11,7 +11,7 @@ declare let App: any;
 export class ChannelNotificationService extends CableService {
 
   // notificationUpdated: EventEmitter = new EventEmitter();
-  observer: Observer;
+  observer: Observer<any>;
   notificationUpdated: Observable<any>;
 
   private item: any;

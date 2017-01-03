@@ -9008,6 +9008,15 @@ body {
   margin-right: -15px;
   padding-right: 15px; }
 
+.content-overflow-x {
+  overflow-x: auto;
+  margin-right: -15px;
+  padding-right: 15px; }
+
+.content-overflow-y {
+  overflow-y: auto;
+  margin-right: -10px; }
+
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: "Source Sans Pro", sans-serif;
@@ -10214,6 +10223,8 @@ Header
     border-radius: 4px;
     margin-top: 20px;
     width: 300px; }
+    .header .navbar-nav > li .dropdown-menu.sub-menu {
+      margin: 0; }
   .header .dropdown-menu a {
     color: #9B9B9B; }
   .header .navbar-nav-management .dropdown-menu {
@@ -10276,11 +10287,9 @@ Header
         right: 0;
         margin-top: 0; }
     .header .navbar-nav-notification .dropdown-menu > li.view-all {
-      margin: 0 -10px -5px;
       border-top: 1px solid #D8D8D8; }
       .header .navbar-nav-notification .dropdown-menu > li.view-all a {
         display: block;
-        padding: 15px 10px;
         text-align: center;
         font-size: 16px;
         font-family: "Source Sans Pro", sans-serif;
@@ -10478,6 +10487,20 @@ Header
               bottom: 0;
               right: 0;
               z-index: 10; }
+
+#nav-notification-list img {
+  width: 50px; }
+
+#notification-items {
+  max-height: 400px;
+  margin-left: -9px; }
+  #notification-items li {
+    padding: 2px 0 2px 0;
+    border-top: 1px solid #D8D8D8; }
+  #notification-items .notification-content p {
+    margin-bottom: -7px; }
+  #notification-items .notification-content div.media-center-right {
+    padding: 0; }
 
 .footer {
   font-family: "Source Sans Pro", sans-serif;

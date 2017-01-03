@@ -7,7 +7,8 @@ import { Ng2HdModule } from '../../shared/ng2-hd/ng2-hd.module';
 import {
   ZMediaToolbarComponent,
   ZMediaToolbarPhotoComponent,
-  ZMediaToolbarAlbumComponent
+  ZMediaToolbarAlbumComponent,
+  ZMediaToolbarAlbumDetailComponent
 } from './toolbar/index';
 
 import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
@@ -34,6 +35,7 @@ import { ZMediaUploadingComponent } from './uploading/uploading.component';
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
+    ZMediaToolbarAlbumDetailComponent,
 
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
@@ -46,6 +48,7 @@ import { ZMediaUploadingComponent } from './uploading/uploading.component';
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
+    ZMediaToolbarAlbumDetailComponent,
 
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
