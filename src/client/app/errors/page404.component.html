@@ -1,14 +1,18 @@
-<div class="container mb40">
-  <div class="head-line h1">404</div>
-  <div class="subheader h2">Oops, the page you're looking for does not exist.</div>
-  <hr>
-  <div class="context">
-    <p>
-      <span>You may want to head back to the homepage.</span><br>
-      <span>If you think something is broken, report a problem.</span>
-    </p>
+<wth-header></wth-header>
+<main class="main">
+  <div class="container mb40">
+    <div class="head-line h1">404</div>
+    <div class="subheader h2">Oops, the page you're looking for does not exist.</div>
+    <hr>
+    <div class="context">
+      <p>
+        <span>You may want to head back to the homepage.</span><br>
+        <span>If you think something is broken, report a problem.</span>
+      </p>
+    </div>
+    <div class="buttons-container">
+      <a class="btn btn-danger" [routerLink]="['/']">Go to Homepage</a>
+    </div>
   </div>
-  <div class="buttons-container">
-    <a class="btn btn-danger" [routerLink]="['/']">Go to Homepage</a>
-  </div>
-</div>
+</main>
+<wth-footer></wth-footer>

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  template: `<router-outlet></router-outlet>`
+  templateUrl: 'apps.component.html'
 })
 
 export class AccountAppsComponent {
