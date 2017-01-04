@@ -21,15 +21,17 @@ body {
   cursor: pointer;
 }
 
-
-[contenteditable=true]:empty:before{
+[contenteditable=true]:empty:before {
   content: attr(placeholder);
   display: block; /* For Firefox */
 }
 
-
 .word-break {
   word-break: break-all;
+}
+
+.text-line-btn {
+  line-height: 34px;
 }
 
 .text-fade {

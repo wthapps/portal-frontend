@@ -1,13 +1,77 @@
-$header-height: 68px;
-$header-height-xs: 50px;
 .wrapper {
   overflow: hidden;
+  min-height: 100vh;
+  @include flexbox;
+  @include flex-direction(column);
+}
+
+.main {
+  @include flex(1);
+  @include flex-basis(auto);
   position: relative;
-  padding-top: $header-height;
-  .header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+
+  //for child
+  @include flexbox;
+  @include flex-direction(column);
+  .main-page {
+    @include flex(1);
+    @include flex-basis(auto);
+
+    //for child
+    @include flexbox;
+    @include flex-direction(row);
+  }
+  .main-page-left {
+    width: 270px;
+    overflow: auto;
+    position: relative;
+    z-index: 10;
+    background-color: #ffffff;
+    @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
+    .main-page-left-in {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    & + .main-page-left {
+      z-index: 9;
+      & + .main-page-left {
+        z-index: 8;
+      }
+    }
+  }
+  .main-page-body {
+    @include flex(1);
+    @include flex-basis(auto);
+
+    // for child
+    @include flexbox;
+    @include flex-direction(column);
+    position: relative;
+    z-index: 1;
+    .page-body-control {
+      background-color: #ffffff;
+      padding: 15px 30px;
+      position: relative;
+      z-index: 2;
+      @include clearfix;
+      @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.4));
+    }
+    .page-body-content {
+      @include flex(1);
+      @include flex-basis(auto);
+      overflow: auto;
+      position: relative;
+      z-index: 1;
+      .page-body-content-in {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
   }
 }
