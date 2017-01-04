@@ -1,4 +1,4 @@
-<header class="header" [ngClass]="{'header-over': headerOver, 'header-top': !headerOver}">
+<header class="header" [ngClass]="{'header-over': headerOver}">
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -18,346 +18,155 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <search-form #search></search-form>
-        <!--<form *ngIf="showSearchBar" class="navbar-form navbar-left">-->
-        <!--<div class="navbar-searchTop">-->
-        <!--<div class="form-group">-->
-        <!--<input type="text" class="form-control" placeholder="Search Library">-->
-        <!--</div>-->
-        <!--<button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>-->
-        <!--</div>-->
-        <!--<div class="navbar-form-list">-->
-        <!--<h3>Members</h3>-->
-        <!--<ul>-->
-        <!--<li>-->
-        <!--<div class="media-center">-->
-        <!--<div class="media-center-left">-->
-        <!--<figure>-->
-        <!--<a [routerLink]="['/']">-->
-        <!--<img src="/assets/images/avatar/avatar.png">-->
-        <!--</a>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div class="media-center-body">-->
-        <!--<h4 class="media-center-heading">-->
-        <!--<a [routerLink]="['/']">John</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<div class="media-center">-->
-        <!--<div class="media-center-left">-->
-        <!--<figure>-->
-        <!--<a [routerLink]="['/']">-->
-        <!--<img src="/assets/images/avatar/avatar.png">-->
-        <!--</a>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div class="media-center-body">-->
-        <!--<h4 class="media-center-heading">-->
-        <!--<a [routerLink]="['/']">John</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<div class="media-center">-->
-        <!--<div class="media-center-left">-->
-        <!--<figure>-->
-        <!--<a [routerLink]="['/']">-->
-        <!--<img src="/assets/images/avatar/avatar.png">-->
-        <!--</a>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div class="media-center-body">-->
-        <!--<h4 class="media-center-heading">-->
-        <!--<a [routerLink]="['/']">John</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--<hr>-->
-        <!--<h3>Communities</h3>-->
-        <!--<ul>-->
-        <!--<li>-->
-        <!--<div class="media-center">-->
-        <!--<div class="media-center-left">-->
-        <!--<figure>-->
-        <!--<a [routerLink]="['/']">-->
-        <!--<img src="/assets/images/avatar/avatar.png">-->
-        <!--</a>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div class="media-center-body">-->
-        <!--<h4 class="media-center-heading">-->
-        <!--<a [routerLink]="['/']">communities name</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<div class="media-center">-->
-        <!--<div class="media-center-left">-->
-        <!--<figure>-->
-        <!--<a [routerLink]="['/']">-->
-        <!--<img src="/assets/images/avatar/avatar.png">-->
-        <!--</a>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div class="media-center-body">-->
-        <!--<h4 class="media-center-heading">-->
-        <!--<a [routerLink]="['/']">communities name</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<div class="media-center">-->
-        <!--<div class="media-center-left">-->
-        <!--<figure>-->
-        <!--<a [routerLink]="['/']">-->
-        <!--<img src="/assets/images/avatar/avatar.png">-->
-        <!--</a>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div class="media-center-body">-->
-        <!--<h4 class="media-center-heading">-->
-        <!--<a [routerLink]="['/']">communities name</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--<hr>-->
-        <!--<div class="navbar-form-list-nav">-->
-        <!--<a href="#">-->
-        <!--See more-->
-        <!--</a>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</form>-->
-        <ul *ngIf="headerOver" class="nav navbar-nav navbar-right">
-          <li><a [routerLink]="['/products']">Products</a></li>
-          <li><a [routerLink]="['/pricing']">Pricing</a></li>
-          <li><a [routerLink]="['/about']">About us</a></li>
+
+        <ul *ngIf="userService.loggedIn" class="nav navbar-nav-top navbar-right">
+          <li class="dropdown navbar-nav-management">
+            <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown">
+              <i class="fa fa-list"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a [routerLink]="['/zone/picture/photo']">
+                  <i class="fa fa-bullseye"></i>
+                  <span>Zone</span>
+                </a>
+              </li>
+              <li>
+                <a [routerLink]="['/account/apps']">
+                  <i class="fa fa-list-alt"></i>
+                  <span>Apps</span>
+                </a>
+              </li>
+              <li>
+                <a [routerLink]="['/account/my-apps']">
+                  <i class="fa fa-plug"></i>
+                  <span>My Apps</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown navbar-nav-notification">
+            <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
+               data-toggle="dropdown" href="#" role="button">
+              <i class="fa fa-bell-o"></i><span class="notification-num">{{notifications.length}}</span>
+            </a>
+            <ul class="dropdown-menu" id="nav-notification-list">
+              <li class="dropdown-menu-bar">
+                <div class="pull-right">
+                  <a href="#">Mark All as Read</a>
+                  <a href="#">Mute</a>
+                  <a href="#">Settings</a>
+                </div>
+              </li>
+              <li>
+                <ul class="list-unstyled" id="notification-items">
+                  <li class="navbar-nav-notification-item" *ngFor="let notification of notifications">
+                    <div class="media-center">
+                      <div class="media-center-left">
+                        <figure>
+                          <a [routerLink]="['/zone/social/communities']">
+                            <img [src]="notification.actor.profile_image" alt="notification.actor.name">
+                          </a>
+                        </figure>
+                      </div>
+                      <div class="media-body notification-content">
+                        <p class="media-heading">{{notification.text}}</p>
+                        <small>Jun 16 2016</small>
+                        <div style="white-space: nowrap" class="media-center-right">
+                          <button *ngFor="let action of notification.actions"
+                                  class="btn btn-xs btn-default mr5" type="button" (click)="doAction(action)">
+                            {{action.name}}
+                          </button>
+                        </div>
+                      </div>
+                      <div class="media-center-right">
+                        <div class="dropdown-submenu pull-right clearfix">
+                          <a class="btn btn-sm btn-default-inline dropdown-toggle" tabindex="-1" href="#">
+                            <i class="fa fa-ellipsis-v"></i>
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-right sub-menu">
+                            <li><a href="javascript:;">Hide this notification</a></li>
+                            <li><a href="javascript:;" (click)="onPreference(item)">Turn off all notifications relate to this</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="pull-right">
+                          <button class="btn btn-sm btn-default-inline" type="button">
+                            <i class="fa fa-circle"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="view-all">
+                <a href="#">View All</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown navbar-nav-profile">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <img alt="" width="30" [src]="userService.profile.profile_image">
+              <span class="name">{{userService.profile.first_name}}</span>
+              <i class="fa fa-caret-down"></i></a>
+            <ul class="dropdown-menu dropdown-menu-lg">
+              <li>
+                <div class="media p10">
+                  <div class="media-left">
+                    <img alt="" class="img-rounded" width="80" [src]="userService.profile.profile_image">
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading bold mb0">{{userService.profile.first_name}} {{userService.profile.last_name}}</p>
+                    <small class="text-fade">{{userService.profile.email}}</small>
+                    <div class="navbar-nav-plan mt10">
+                      <p class="media-heading bold">{{userService.profile.plan.name}}</p>
+                      <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
+                              [routerLink]="['/account/plans']">
+                        <i class="fa fa-arrow-circle-up"></i> Upgrade
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li><a [routerLink]="['/account/setting/profile']">Profile</a></li>
+              <li><a [routerLink]="['/account/setting/account']">Account</a></li>
+              <li><a [routerLink]="['/account/setting/preferences']">Preferences</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a [routerLink]="['/account/plans']">Plans</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul *ngIf="!userService.loggedIn" class="nav navbar-nav navbar-right">
+          <li class="hidden-xs">
+            <a href="/signup">Sign up</a>
+          </li>
 
           <template [ngIf]="!userService.loggedIn">
-
-            <li class="hidden-xs">
-              <a [routerLink]="['/signup']">Sign up</a>
-            </li>
-            <li class="hidden-xs"><span><a class="btn btn-detail btn-min" [routerLink]="['/login']">Log in</a></span>
+            <li class="hidden-xs navbar-nav-button">
+              <span>
+                <a class="btn btn-detail btn-min" href="/login">Log in</a>
+              </span>
             </li>
             <li class="visible-xs pt10 pb10">
               <div class="container-fluid">
                 <div class="row">
-                  <div class="col-xs-6"><a class="btn btn-detail btn-block" [routerLink]="['/signup']">Sign up</a></div>
-                  <div class="col-xs-6"><a class="btn btn-detail btn-block" [routerLink]="['/login']">Log in</a></div>
+                  <div class="col-xs-6"><a class="btn btn-detail btn-block" href="/signup">Sign up</a></div>
+                  <div class="col-xs-6"><a class="btn btn-detail btn-block" href="/login">Log in</a></div>
                 </div>
               </div>
             </li>
-
           </template>
-
-          <template [ngIf]="userService.loggedIn">
-            <li class="dropdown navbar-nav-management">
-              <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                <i class="fa fa-list"></i>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a [routerLink]="['/zone/picture/photo']">
-                    <i class="fa fa-bullseye"></i>
-                    <span>Zone</span>
-                  </a>
-                </li>
-                <li>
-                  <a [routerLink]="['/account/apps']">
-                    <i class="fa fa-list-alt"></i>
-                    <span>Apps</span>
-                  </a>
-                </li>
-                <li>
-                  <a [routerLink]="['/account/my-apps']">
-                    <i class="fa fa-plug"></i>
-                    <span>My Apps</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="dropdown navbar-nav-profile">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                 aria-expanded="false"><img width="30" [src]="userService.profile.profile_image" alt="">
-                <span class="name">{{userService.profile.first_name}}</span>
-                <i class="fa fa-caret-down"></i></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <div class="media">
-                    <div class="media-left">
-                      <img width="80" class="img-rounded" [src]="userService.profile.profile_image" alt="">
-                    </div>
-                    <div class="media-body">
-                      <p class="media-heading">{{userService.profile.first_name}} {{userService.profile.last_name}}</p>
-                      <span class="in-email">{{userService.profile.email}}</span>
-                      <div class="navbar-nav-plan">
-                        <p class="in-plan"> {{userService.profile.plan.name}}
-                          <!--<span *ngIf="userService.profile.plan.is_trial">- 8 days left</span>-->
-                        </p>
-                        <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
-                                [routerLink]="['/account/plans']">
-                          <i class="fa fa-arrow-circle-up"></i> Upgrade
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li><a [routerLink]="['/account/setting/profile']" href="#">Profile</a></li>
-                <li><a [routerLink]="['/account/setting/account']" href="#">Account</a></li>
-                <li><a [routerLink]="['/account/setting/preferences']" href="#">Preferences</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="/account/plans">Plans</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>
-              </ul>
-            </li>
-          </template>
-
         </ul>
-        <ul *ngIf="!headerOver" class="nav navbar-nav navbar-right">
-          <template [ngIf]="userService.loggedIn">
-            <li class="dropdown navbar-nav-management">
-              <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                <i class="fa fa-list"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li>
-                  <a [routerLink]="['/zone/picture/photo']">
-                    <i class="fa fa-bullseye"></i>
-                    <span>Zone</span>
-                  </a>
-                </li>
-                <li>
-                  <a [routerLink]="['/account/apps']">
-                    <i class="fa fa-list-alt"></i>
-                    <span>Apps</span>
-                  </a>
-                </li>
-                <li>
-                  <a [routerLink]="['/account/my-apps']">
-                    <i class="fa fa-plug"></i>
-                    <span>My Apps</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
 
-            <li class="dropdown navbar-nav-notification">
-              <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                <i class="fa fa-bell-o"></i><span class="notification-num">{{notifications.length}}</span>
-              </a>
-
-              <ul *ngIf="notifications" class="dropdown-menu" id="nav-notification-list">
-                <!--settings-->
-                <li class="dropdown-menu-bar">
-                  <div class="pull-right">
-                    <a href="#">Mark All as Read</a>
-                    <a href="#">Mute</a>
-                    <a href="#">Settings</a>
-                  </div>
-                </li>
-                <li>
-                  <ul class="list-unstyled content-overflow-y" id="notification-items">
-                    <li class="navbar-nav-notification-item" *ngFor="let notification of notifications">
-                      <div class="media-center">
-                        <div class="media-center-left">
-                          <figure>
-                            <a [routerLink]="['/zone/social/communities']">
-                              <img width="45" [src]="notification.actor.profile_image" alt="notification.actor.name">
-                            </a>
-                          </figure>
-                        </div>
-                        <div class="media-body notification-content">
-                          <p class="media-heading">{{notification.text}}</p>
-                          <small>Jun 16 2016</small>
-                          <div style="white-space: nowrap" class="media-center-right">
-                            <button  *ngFor="let action of notification.actions"
-                                     class="btn btn-xs btn-default mr5" type="button" (click)="doAction(action)">
-                              {{action.name}}
-                            </button>
-                          </div>
-                        </div>
-                        <div class="media-center-right">
-                          <div class="dropdown-submenu pull-right clearfix">
-                            <a class="btn btn-sm btn-default-inline dropdown-toggle" tabindex="-1" href="#">
-                              <i class="fa fa-ellipsis-v"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right sub-menu">
-                              <li><a href="javascript:;">Hide this notification</a></li>
-                              <li><a href="#" (click)="onPreference(item)">Turn off all notifications relate to this</a>
-                              </li>
-                            </ul>
-                          </div>
-                          <div class="pull-right">
-                            <button class="btn btn-sm btn-default-inline" type="button">
-                              <i class="fa fa-circle"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <li class="view-all">
-                  <a href="#">View All</a>
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown navbar-nav-profile">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                 aria-expanded="false"><img width="30" [src]="userService.profile.profile_image" alt=""> <span
-                class="name">{{userService.profile.first_name}}</span>
-                <i class="fa fa-caret-down"></i></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <div class="media">
-                    <div class="media-left">
-                      <img width="80" class="img-rounded" [src]="userService.profile.profile_image" alt="">
-                    </div>
-                    <div class="media-body">
-                      <p class="media-heading">{{userService.profile.name}}</p>
-                      <span class="in-email">{{userService.profile.email}}</span>
-                      <div class="navbar-nav-plan">
-                        <p class="in-plan"> {{userService.profile.plan.name}}
-                          <!--<span *ngIf="userService.profile.plan.is_trial">- 8 days left</span>-->
-                        </p>
-                        <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
-                                [routerLink]="['/account/plans']">
-                          <i class="fa fa-arrow-circle-up"></i> Upgrade
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li><a [routerLink]="['/account/setting/profile']" href="#">Profile</a></li>
-                <li><a [routerLink]="['/account/setting/account']" href="#">Account</a></li>
-                <li><a [routerLink]="['/account/setting/preferences']" href="#">Preferences</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="/account/plans">Plans</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>
-              </ul>
-            </li>
-          </template>
+        <ul *ngIf="headerOver" class="nav navbar-nav navbar-right">
+          <li><a [routerLink]="['/products']">Products</a></li>
+          <li><a [routerLink]="['/pricing']">Pricing</a></li>
+          <li><a [routerLink]="['/about']">About us</a></li>
         </ul>
 
       </div><!-- /.navbar-collapse -->
