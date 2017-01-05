@@ -1,20 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../shared/index';
+import { Component, HostBinding } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   moduleId: module.id,
   selector: 'wth-footer',
   templateUrl: 'footer.component.html'
 })
-export class FooterComponent implements OnInit {
-  constructor(private userService: UserService) {
+export class FooterComponent {
+  hideFooter: boolean = false;
+  @HostBinding('class.hidden') hideFooter;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe((navigationEnd: NavigationEnd) => {
+      this.checkUrls(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+    });
   }
 
-  ngOnInit() {
-  }
-
-  isLoggedIn() {
-    return this.userService.loggedIn;
+  checkUrls(url: string): void {
+    let urls = url.split('/');
+    if (urls.indexOf('zone') >= 0) {
+      this.hideFooter = true;
+    } else {
+      this.hideFooter = false;
+    }
   }
 }
 
@@ -23,10 +31,5 @@ export class FooterComponent implements OnInit {
   selector: 'wth-footer-promotion',
   templateUrl: 'footer-promotion.component.html'
 })
-export class FooterPromotionComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
+export class FooterPromotionComponent {
 }

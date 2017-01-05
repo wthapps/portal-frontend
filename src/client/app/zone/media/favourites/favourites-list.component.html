@@ -7,35 +7,36 @@
   (outEvent)="actionToolbar($event)">
 </z-media-share-toolbar>
 
-<div class="page-body-in">
+<div class="page-body-content has-page-body-control gray-light">
+  <div class="page-body-content-in">
+    <div class="page-body-in-title">
+      Album
+    </div>
+    <z-media-share-list
+      [type]="'album'"
+      [data]="data.albums"
+      [view]="currentView"
+      [hasAction]="['favourite']"
+      (outEvent)="actionItem($event)">
+    </z-media-share-list>
 
-  <div class="page-body-in-title">
-    Album
-  </div>
-  <z-media-share-list
-    [type]="'album'"
-    [data]="data.albums"
-    [view]="currentView"
-    [hasAction]="['favourite']"
-    (outEvent)="actionItem($event)">
-  </z-media-share-list>
+    <hr>
 
-  <hr>
+    <div class="page-body-in-title">
+      Photo
+    </div>
+    <z-media-share-list
+      [type]="'photo'"
+      [data]="data.photos"
+      [view]="currentView"
+      [hasAction]="['favourite']"
+      (outEvent)="actionItem($event)">
+    </z-media-share-list>
 
-  <div class="page-body-in-title">
-    Photo
-  </div>
-  <z-media-share-list
-    [type]="'photo'"
-    [data]="data.photos"
-    [view]="currentView"
-    [hasAction]="['favourite']"
-    (outEvent)="actionItem($event)">
-  </z-media-share-list>
-
-  <div class="text-center p20">
-    <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
-      more
-    </button>
+    <div class="text-center p20">
+      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
+        more
+      </button>
+    </div>
   </div>
 </div>

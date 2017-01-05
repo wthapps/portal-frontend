@@ -16,15 +16,17 @@
   .main-page {
     @include flex(1);
     @include flex-basis(auto);
-
-    //for child
-    @include flexbox;
-    @include flex-direction(row);
-  }
-  .main-page-left {
-    width: 270px;
-    overflow: auto;
     position: relative;
+
+  }
+  $main-page-left: 270px;
+  .main-page-left {
+    width: $main-page-left;
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
     z-index: 10;
     background-color: #ffffff;
     @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
@@ -43,34 +45,37 @@
     }
   }
   .main-page-body {
-    @include flex(1);
-    @include flex-basis(auto);
+    position: absolute;
+    top: 0;
+    left: $main-page-left;
+    right: 0;
+    bottom: 0;
 
-    // for child
-    @include flexbox;
-    @include flex-direction(column);
-    position: relative;
-    z-index: 1;
+    $page-body-control-height: 64px;
     .page-body-control {
+      height: $page-body-control-height;
       background-color: #ffffff;
       padding: 15px 30px;
       position: relative;
       z-index: 2;
       @include clearfix;
       @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.4));
+      & + .page-body-content {
+        top: $page-body-control-height;
+      }
     }
     .page-body-content {
-      @include flex(1);
-      @include flex-basis(auto);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       overflow: auto;
-      position: relative;
-      z-index: 1;
+      &.has-page-body-control {
+        top: $page-body-control-height;
+      }
       .page-body-content-in {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        padding: 30px;
       }
     }
   }

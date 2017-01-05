@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, HostBinding } from '@angular/core';
 import {
   Router,
   NavigationEnd
@@ -42,6 +42,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   notifications: Array<any> = new Array<any>();
 
   @ViewChild('search') searchForm: SearchFormComponent;
+  @HostBinding('class.header-over') headerOver;
 
   constructor(private userService: UserService,
               private router: Router,
@@ -52,9 +53,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       this.urls.length = 0; //Fastest way to clear out array
       this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
     });
-
-
-
   }
 
   ngOnInit() {

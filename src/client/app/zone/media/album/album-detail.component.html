@@ -8,20 +8,23 @@
   (outEvent)="actionToolbar($event)">
 </z-media-share-toolbar>
 
-<div class="page-body-in">
-  <z-media-share-list
-    [type]="'photo'"
-    [data]="data"
-    [view]="currentView"
-    [hasAction]="['favourite', 'select', 'previewAll']"
-    (outEvent)="actionItem($event)">
-  </z-media-share-list>
+<div class="page-body-content has-page-body-control gray-light">
+  <div class="page-body-content-in">
+    <z-media-share-list
+      [type]="'photo'"
+      [data]="data"
+      [view]="currentView"
+      [hasAction]="['favourite', 'select', 'previewAll']"
+      (outEvent)="actionItem($event)">
+    </z-media-share-list>
 
-  <div class="text-center p20">
-    <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
-      more
-    </button>
+    <div class="text-center p20">
+      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
+        more
+      </button>
+    </div>
   </div>
+
 </div>
 
 <z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data"></z-media-photo-detail>

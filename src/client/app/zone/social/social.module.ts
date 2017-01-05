@@ -54,6 +54,7 @@ import { ZSocialProfileFormInterestComponent } from './profile/form/interest.com
 import { ZSocialProfileService } from './profile/profile.service';
 import { ZSocialSearchResultComponent } from './search/search.component';
 import { ZSocialPrivacyComponent } from './profile/about/components/privacy.component';
+import { ZSocialComponent } from './social.component';
 
 
 @NgModule({
@@ -66,6 +67,8 @@ import { ZSocialPrivacyComponent } from './profile/about/components/privacy.comp
     InputSwitchModule
   ],
   declarations: [
+    ZSocialComponent,
+
     // Home
     ZSocialHomeComponent,
     ZSocialFavoritesComponent,
@@ -119,6 +122,7 @@ import { ZSocialPrivacyComponent } from './profile/about/components/privacy.comp
     ZSocialPrivacyComponent
   ],
   exports: [
+    ZSocialComponent,
     ZSocialHomeComponent,
     ZoneReportComponent
   ],

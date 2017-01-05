@@ -1,44 +1,41 @@
-<main class="main">
-  <div class="banner-wrap banner-bg" style="background-image: url('assets/images/landing/hero-image.jpg');">
-    <div class="banner-over">
-      <div class="container">
-        <div class="banner-dv">
-          <h2 class="banner-tt">
-            Support
-          </h2>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="main-content">
+<div class="banner-wrap banner-bg" style="background-image: url('assets/images/landing/hero-image.jpg');">
+  <div class="banner-over">
     <div class="container">
-      <div class="row row-layout">
-        <div class="col-sm-3">
-          <aside class="aside-left">
-            <div class="navgroup">
-              <h4 class="aside-title">FAQs</h4>
-              <ul class="navgroup-menu">
-                <li>
-                  <a [routerLink]="['/support/product']">Product</a>
-                </li>
-                <li>
-                  <a [routerLink]="['/support/security']">Sercurity &amp; Privacy</a>
-                </li>
-                <li>
-                  <a [routerLink]="['/support/legal']">Legal</a>
-                </li>
-                <li>
-                  <a [routerLink]="['/support/billing']">Billing &amp; Invoicing</a>
-                </li>
-              </ul>
-            </div>
-          </aside>
-        </div>
-        <div class="col-sm-9">
-          <router-outlet></router-outlet>
-        </div>
+      <div class="banner-dv">
+        <h2 class="banner-tt">
+          Support
+        </h2>
       </div>
     </div>
   </div>
-</main>
-<wth-footer></wth-footer>
+</div>
+<div class="main-content">
+  <div class="container">
+    <div class="row row-layout">
+      <div class="col-sm-3">
+        <aside class="aside-left">
+          <div class="navgroup">
+            <h4 class="aside-title">FAQs</h4>
+            <ul class="navgroup-menu">
+              <li>
+                <a [routerLink]="['/support/product']">Product</a>
+              </li>
+              <li>
+                <a [routerLink]="['/support/security']">Sercurity &amp; Privacy</a>
+              </li>
+              <li>
+                <a [routerLink]="['/support/legal']">Legal</a>
+              </li>
+              <li>
+                <a [routerLink]="['/support/billing']">Billing &amp; Invoicing</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+      <div class="col-sm-9">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

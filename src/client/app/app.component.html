@@ -1,7 +1,9 @@
 <div class="wrapper">
-  <wth-header></wth-header>
-  <router-outlet></router-outlet>
-
+  <wth-header class="header"></wth-header>
+  <main class="main">
+    <router-outlet></router-outlet>
+  </main>
+  <wth-footer></wth-footer>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
   <p-confirmDialog header="Confirmation" width="670"></p-confirmDialog>

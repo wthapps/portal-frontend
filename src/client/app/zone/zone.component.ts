@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
 })
 
 export class ZoneComponent {
-  pageTitle: string = 'Zone';
+  zoneClass: boolean = true;
+  @HostBinding('class.main-page') zoneClass;
 }
