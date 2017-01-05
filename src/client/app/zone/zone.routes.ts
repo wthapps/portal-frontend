@@ -5,8 +5,8 @@ import { ZPictureComponent } from './index';
 import { AuthGuard } from '../shared/services/auth-guard.service';
 
 import { ZMediaRoutes } from './media/index';
-
 import { ZSocialRoutes } from './social/index';
+import { ZChatRoutes } from './chat/index';
 
 
 export const ZoneRoutes: Route[] = [
@@ -18,6 +18,7 @@ export const ZoneRoutes: Route[] = [
     children: [
       ...ZMediaRoutes,
       ...ZSocialRoutes,
+      ...ZChatRoutes,
 
       {path: 'picture', component: ZPictureComponent},
       {path: 'picture/:category', component: ZPictureComponent},

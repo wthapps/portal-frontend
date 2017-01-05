@@ -61,6 +61,13 @@ export let Constants = {
     scrollBarWidth: getBarwidth()
   },
 
+  chatMenuItems : [
+    { name: 'Conversation', link: '/zone/chat/conversation' },
+    { name: 'Contact', link: '/zone/chat/contact' },
+    { name: 'History', link: '/zone/chat/history' },
+    { name: 'Settings', link: '/zone/chat/setting' }
+  ],
+
   pictureMenuItems : [
     { name: 'Media - Photos', link: '/zone/media/photo' },
     { name: 'Media - Albums', link: '/zone/media/album' },

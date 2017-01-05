@@ -7,6 +7,6 @@ import { Component, HostBinding } from '@angular/core';
 })
 
 export class ZoneComponent {
-  zoneClass: boolean = true;
   @HostBinding('class.main-page') zoneClass;
+  zoneClass: any = true;
 }

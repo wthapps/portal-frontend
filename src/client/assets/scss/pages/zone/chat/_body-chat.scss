@@ -1,4 +1,10 @@
-.page-body-chat {
+.page-body-content-chat {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
   @include flexbox;
   @include flex-direction(column);
   .page-body-chat-content {
