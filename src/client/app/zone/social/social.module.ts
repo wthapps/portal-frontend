@@ -55,6 +55,7 @@ import { ZSocialProfileService } from './profile/profile.service';
 import { ZSocialSearchResultComponent } from './search/search.component';
 import { ZSocialPrivacyComponent } from './profile/about/components/privacy.component';
 import { ZSocialComponent } from './social.component';
+import { InvitationListComponent } from './communities/invitation/invitation-list.component';
 
 
 @NgModule({
@@ -83,6 +84,7 @@ import { ZSocialComponent } from './social.component';
     ZSocialCommunityDetailComponent,
     ZSocialCommunityDetailNotificationComponent,
     ComMemberListComponent,
+    InvitationListComponent,
     ZSocialCommunityDetailAboutComponent,
     ZSocialCommunityDetailPostComponent,
     ZSocialCommunityFormEditComponent,

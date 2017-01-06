@@ -68,27 +68,26 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     let _this = this;
     // console.log(this.form.controls['additional_links'].controls.length=0);
     if (this.data) {
-      // console.log(this.form);
-      console.log('ZSocialCommunityFormEditComponent:', this.data);
       this.removeAllLink();
-    }
-    if (this.action == 'edit') {
-      this.removeAllLink();
-      (<FormControl>this.community_name).setValue(this.data.name);
-      (<FormControl>this.tag_line).setValue(this.data.tag_line);
-      (<FormControl>this.description).setValue(this.data.description);
+      if (this.action == 'edit') {
+        this.removeAllLink();
+        (<FormControl>this.community_name).setValue(this.data.name);
+        (<FormControl>this.tag_line).setValue(this.data.tag_line);
+        (<FormControl>this.description).setValue(this.data.description);
 
-      let additional_links_edit = this.data.additional_links;
-      _.map(additional_links_edit, (v: any)=> {
-        _this.addLink(v);
-      });
+        let additional_links_edit = this.data.additional_links;
+        _.map(additional_links_edit, (v: any)=> {
+          _this.addLink(v);
+        });
 
-    } else {
-      this.removeAllLink();
-      (<FormControl>this.community_name).setValue('');
-      (<FormControl>this.tag_line).setValue('');
-      (<FormControl>this.description).setValue('');
+      } else {
+        this.removeAllLink();
+        (<FormControl>this.community_name).setValue('');
+        (<FormControl>this.tag_line).setValue('');
+        (<FormControl>this.description).setValue('');
+      }
     }
+
   }
 
   initLink(link?: any) {
@@ -155,8 +154,6 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       additional_links: additional_links_filter
     });
 
-    console.log('body:', body);
-
     if (this.action == 'edit') {
       this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}`, body)
         .subscribe((result: any) => {
@@ -178,8 +175,6 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
           }
         );
     }
-
-
     this.modal.close();
   }
 }

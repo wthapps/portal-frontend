@@ -18,6 +18,7 @@ import { ZSocialProfileComponent } from './profile/profile.component';
 import { ZSocialSearchResultComponent } from './search/search.component';
 import { ZSocialMembersComponent } from './members/members.component';
 import { ZSocialSettingComponent } from './setting/setting.component';
+import { ZSocialCommunityDetailComponent } from './communities/communities-detail.component';
 
 
 export const ZSocialRoutes: Route[] = [
@@ -32,11 +33,11 @@ export const ZSocialRoutes: Route[] = [
         path: 'communities',
         component: ZSocialCommunityComponent,
         children: [
-          {path: ':id/about', component: ZSocialCommunityDetailAboutComponent},
-          {path: ':id/members', component: ComMemberListComponent},
-          {path: ':id/notification', component: ZSocialCommunityDetailNotificationComponent},
-          {path: ':id/post', component: ZSocialCommunityDetailPostComponent},
-          {path: ':id', component: ZSocialCommunityDetailPostComponent},
+          // {path: ':id/about', component: ZSocialCommunityDetailAboutComponent},
+          // {path: ':id/members', component: ComMemberListComponent},
+          // {path: ':id/notification', component: ZSocialCommunityDetailNotificationComponent},
+          // {path: ':id/post', component: ZSocialCommunityDetailPostComponent},
+          {path: ':id', component: ZSocialCommunityDetailComponent},
           {path: '', component: ZSocialCommunityListComponent}
         ]
       },

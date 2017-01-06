@@ -24,8 +24,10 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
+  @ViewChild('users') users: MemberListInviteComponent;
 
   @Input() data: any;
+  @Input() selectedTab: string;
 
   errorMessage: string = '';
   item: any = [];
@@ -49,6 +51,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.data) {
       this.item = this.data;
+      // console.log('current item', this.item);
     }
   }
 
@@ -57,7 +60,13 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
       this.checkJoinRequestStatus();
+      // console.log('this params', this.uuid);
+
     });
+  }
+
+  changeRoute() {
+    console.log('changiing.........route');
   }
 
   onDelete(item: any) {

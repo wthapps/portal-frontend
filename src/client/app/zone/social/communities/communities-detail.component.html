@@ -1,189 +1,203 @@
 <div class="page-body-content-in zone-social">
   <div class="zone-social-in">
+    <!--<z-social-community-cover [selectedTab]="selectedTab"></z-social-community-cover>-->
+    <div class="zone-social-cover">
+      <div *ngIf="item" class="zone-social-cover-in group">
+        <div class="zone-social-cover-info">
+          <div class="z-social-media z-social-media-md">
+            <div class="z-social-media-left">
+              <img [src]="item.profile_image" width="100">
+            </div>
+            <div class="z-social-media-body">
+              <div class="z-heading">
+                <div class="z-name"> {{item.name}} </div>
+              </div>
+              <div class="z-shared-info">
+                <ul>
+                  <li *ngIf="item.users && item.users.length>2">{{item.users.length}} members</li>
+                  <li *ngIf="item.users && item.users.length<2">{{item.users.length}} member</li>
+                  <li *ngIf="is_close">
+                    Private
+                  </li>
+                </ul>
+              </div>
+              <div class="z-shared-description">{{item.tag_line}}</div>
+            </div>
+            <div class="z-social-media-right mb5">
+              <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)" data-toggle="modal"
+                      data-target="#modal-social-share-com">
+                <i class="fa fa-user-plus"></i> Invite Member
+              </button>
 
-    <z-social-community-cover></z-social-community-cover>
+              <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="invitation == undefined">
+                <i class="fa fa-user-plus"></i> Ask to join
+              </button>
 
-    <router-outlet></router-outlet>
+              <div class="btn-group pull-right" *ngIf="invitation != undefined">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                  Asked to join <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-custom">
+                  <li>
+                    <a href="javascript:;" (click)="cancelJoinRequest()">Cancel Join Request</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="zone-social-cover-nav">
+        <ul class="list-unstyled clearfix">
+          <li [ngClass]="selectedTab==undefined? 'active': ''">
+            <a [routerLink]="['/zone/social/communities/', uuid]" [queryParams]="{}">Post</a>
+          </li>
+          <li [ngClass]="selectedTab=='about'? 'active': ''">
+            <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'about'}">About</a>
+          </li>
+          <li [ngClass]="selectedTab=='members'? 'active': ''">
+            <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'members'}">Members</a>
+          </li>
+          <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
+            <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'invitations'}">Invitations</a>
+          </li>
+          <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
+            <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'join_requests'}">Join Requests</a>
+          </li>
+          <li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">
+            <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>
+          </li>
+
+          <li class="pull-right dropdown">
+            <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+              <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-custom">
+              <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
+              <li><a href="#" (click)="onPreference()">Preferences</a></li>
+              <li *ngIf="isAdmin"><a [routerLink]="['/zone/social/communities/'+uuid+'/members']">Manage members</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
+              <li><a href="#" (click)="onLeave()">Leave community</a></li>
+              <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
+              <li *ngIf="isAdmin"><a (click)="onDelete(data)" href="#">Delete community</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!--post list-->
+    <so-post-list *ngIf="isPostTab" #posts [type]="'community'"></so-post-list>
+
+    <!--about-->
+    <div class="z-social-box" *ngIf="isAboutTab">
+      <div class="z-social-box-header">
+        <a href="#" (click)="onEdit()" class="btn btn-default-inline pull-right" *ngIf="isAdmin">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <h4 class="h4">
+          About Us
+        </h4>
+      </div>
+      <div class="z-social-post">
+        <div>
+          {{item.description}}
+        </div>
+
+        <ul *ngIf="item.additional_links" class="list-unstyled">
+          <li *ngFor="let link of item.additional_links">
+            <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url|urlTransform}}">{{link.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!--members-->
+
+    <member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>
+    <div *ngIf="isMemberTab" class="z-social-box">
+
+
+      <div class="z-social-post">
+        <ul class="list-unstyled social-list-user">
+          <template ngFor let-user [ngForOf]="item.users" [ngForTrackBy]="trackByUsers">
+            <li >
+              <div class="dropdown pull-right">
+                <span class="text-fade">{{ user.id == item.admin.id ? 'Admin' :'Member'}}</span>
+                <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="true">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-custom">
+                  <li><a href="#">Make Admin</a></li>
+                  <li><a href="javascript:;" (click)="deleteMember(user)">Remove</a></li>
+                  <li><a href="#" (click)="onReportMember(user.uuid)">Report Member</a></li>
+                  <li><a href="#">Blacklist</a></li>
+                </ul>
+              </div>
+              <img [alt]="user.name" [src]="user.profile_image" title="" width="30">
+              <span>{{user.name}}</span>
+            </li>
+          </template>
+        </ul>
+
+        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'invitations'">
+          <template ngFor let-item [ngForOf]="items">
+
+            <li >
+              <div class="dropdown pull-right">
+                <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
+                <!--<a href="#" class="btn btn-link">DENY</a>-->
+                <!--<a href="#" class="btn btn-link">INVITED</a>-->
+                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
+              </div>
+              <a href="#">
+                <img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">
+                <span>{{item['accepter']['name']}}</span>
+              </a>
+            </li>
+          </template>
+        </ul>
+
+        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'join_requests'">
+          <template ngFor let-item [ngForOf]="items">
+
+            <li>
+              <div class="dropdown pull-right">
+                <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
+                <!--<a href="#" class="btn btn-link">DENY</a>-->
+                <!--<a href="#" class="btn btn-link">REQUESTED</a>-->
+                <a href="javascript:;" class="btn btn-link" (click)="acceptJoinRequest(item)">ACCEPT</a>
+                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">REJECT</a>
+              </div>
+              <a href="#">
+                <img [alt]="item.inviter.name" [src]="item.inviter.profile_image" title="" width="30">
+                <span>{{item['inviter']['name']}}</span>
+              </a>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+
 
   </div>
   <z-social-favorites></z-social-favorites>
 </div>
 
+<template [ngIf]="item">
+  <z-social-community-form-edit #modalEdit [data]="item" [action]="'edit'"
+                                (updated)="onUpdated($event)"></z-social-community-form-edit>
+  <z-social-community-form-preference #modalPreference [data]="item"
+                                      (updated)="onUpdated($event)"></z-social-community-form-preference>
+</template>
 
-<div class="modal modal-custom" id="modal-social-com-edit" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-social modal-long" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title"><i class="fa fa-pencil"></i> Edit Information</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Community Name</label>
-          <input type="text" class="form-control" placeholder="" value="Group number 01">
-        </div>
-        <div class="form-group">
-          <span class="pull-right text-fade">18/150 characters</span>
-          <label>Tag Line</label>
-          <input type="text" class="form-control" placeholder="" value="This is the tag line">
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea class="form-control" rows="5">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-          </textarea>
-        </div>
-        <div class="form-group">
-          <label>Additional Link</label>
-          <div class="mb15">
-            <div class="media">
-              <div class="media-body">
-                <div class="row row-10">
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control" placeholder="Text" value="External link title">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control" placeholder="http://..." value="https://stuffs.com">
-                  </div>
-                </div>
-              </div>
-              <div class="media-right">
-                <button class="btn btn-default">
-                  <i class="fa fa-trash-o"></i>
-                </button>
-              </div>
-            </div>
-            <div class="media">
-              <div class="media-body">
-                <div class="row row-10">
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control" placeholder="Text" value="External link title">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control" placeholder="http://..." value="https://stuffs.com">
-                  </div>
-                </div>
-              </div>
-              <div class="media-right">
-                <button class="btn btn-default">
-                  <i class="fa fa-trash-o"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="mt15">
-            <button class="btn btn-default">
-              <i class="fa fa-plus"></i> Add more
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-wth-default btn-min">Done</button>
-        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div class="modal modal-custom" id="modal-social-com-preferences" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-social modal-long" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">Preferences</h4>
-      </div>
-      <div class="modal-body">
-        <div class="mb20">
-          <label>Privacy Settings</label>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Public
-              <span class="help-block">
-                Anyone can see the group, its members and their posts
-              </span>
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Private
-              <span class="help-block">
-                Only members can see posts
-              </span>
-            </label>
-          </div>
-        </div>
-        <!--end Privacy Settings-->
-        <div class="mb20">
-          <label>Search Settings</label>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Anyone can search, see and join the group
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Only connected members can search and ask to join the group
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Only invited members can search and join the group
-            </label>
-          </div>
-        </div>
-        <!--end Search Settings-->
-        <div class="mb20">
-          <label>Post Settings</label>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Member can post
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Post must be review and approved by admin or moderator
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Only admin can post
-            </label>
-          </div>
-        </div>
-        <div class="mb20">
-          <label>Notification</label>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Get notified about new posts
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
-              Get notified about users request
-            </label>
-          </div>
-        </div>
-        <!--end Post Settings-->
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-wth-default btn-min">Done</button>
-        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<wth-zone-report></wth-zone-report>
+
+
+<z-social-community-form-edit #modalEdit [data]="item" [action]="'edit'" (updated)="onUpdated($event)"></z-social-community-form-edit>
+
