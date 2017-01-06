@@ -12,7 +12,7 @@ import {
 
 import { SearchFormComponent } from './sub/search-form.component';
 import { NotificationService } from './notification/notification.service';
-import { ChannelNotificationService } from '../../shared/channels/index';
+import { ChannelNotificationService, AppearancesChannelService, ChatChannelService } from '../../shared/channels/index';
 
 declare var $: any;
 declare var _: any;
@@ -47,6 +47,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private notificationService: NotificationService,
+              private appearancesChannelService: AppearancesChannelService,
+              private chatChannelService: ChatChannelService,
               private notificationChannel: ChannelNotificationService) {
     this.urls = new Array();
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
@@ -80,6 +82,10 @@ export class HeaderComponent implements AfterViewInit, OnInit {
           this.notifications.unshift(JSON.parse(response));
         });
     }
+
+    this.appearancesChannelService.subscribe();
+    // //Test
+    // this.chatChannelService.subscribeChat(3);
   }
 
   ngAfterViewInit(): void {
@@ -170,6 +176,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       .subscribe(
         response => {
           this.userService.deleteUserInfo();
+          this.appearancesChannelService.unsubscribe();
           this.router.navigate(['/login']);
         },
         error => {
