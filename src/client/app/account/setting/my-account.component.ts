@@ -18,6 +18,7 @@ import {
   ApiBaseService,
   DeactivateConfirmService
 } from '../../shared/index';
+import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 
 declare var $: any;
 declare var _: any;
@@ -45,6 +46,7 @@ export class MyAccountComponent implements OnInit {
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
               private apiService: ApiBaseService,
+              private appearancesChannelService: AppearancesChannelService,
               private deactivateConfirmService: DeactivateConfirmService,
               private router: Router) {
 
@@ -165,6 +167,7 @@ export class MyAccountComponent implements OnInit {
                 .subscribe(
                   response => {
                     this.userService.deleteUserInfo();
+                    this.appearancesChannelService.unsubscribe();
                     this.router.navigate(['/login']);
                   },
                   error => {

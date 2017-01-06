@@ -14,6 +14,7 @@ import {
   CustomValidator,
   AuthService
 }                           from '../shared/index';
+import { AppearancesChannelService } from '../shared/channels/appearances-channel.service';
 
 declare var $: any;
 
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
               private userService: UserService,
               private toastsService: ToastsService,
               private loadingService: LoadingService,
+              private appearancesChannelService: AppearancesChannelService,
               private authService: AuthService) {
     // if (this.userService.loggedIn) {
     //   this.router.navigate(['/account/setting/profile']);
@@ -84,7 +86,7 @@ export class LoginComponent implements OnInit {
                 preserveQueryParams: true,
                 preserveFragment: true
               };
-
+              this.appearancesChannelService.subscribe();
               // Redirect the user
               this.router.navigate([redirect], navigationExtras);
 

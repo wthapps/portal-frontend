@@ -22,7 +22,8 @@ import {
   DeactivateConfirmService,
   CableService,
   ChannelNotificationService,
-  ChannelChatService
+  AppearancesChannelService,
+  ChatChannelService
 } from './index';
 
 import {
@@ -148,8 +149,9 @@ export class SharedModule {
         SoSearchService,
         CableService,
         ChannelNotificationService,
-        ChannelChatService,
-        NotificationService
+        ChatChannelService,
+        NotificationService,
+        AppearancesChannelService
       ]
     };
   }
