@@ -34,7 +34,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   navigationUrl: string = '/';
 
-  headerOver: boolean = true;
   imgLogo: string = Constants.img.logoWhite;
 
   showSearchBar: boolean = true;
@@ -42,7 +41,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   notifications: Array<any> = new Array<any>();
 
   @ViewChild('search') searchForm: SearchFormComponent;
-  @HostBinding('class.header-over') headerOver;
+  @HostBinding('class.header-over') headerOver: boolean = false;
 
   constructor(private userService: UserService,
               private router: Router,
@@ -66,7 +65,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       }
     }
 
-    if(this.userService.loggedIn) {
+    if (this.userService.loggedIn) {
       this.notificationService.get().subscribe(
         (result: any) => {
           this.notifications = result.data;

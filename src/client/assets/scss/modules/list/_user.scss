@@ -121,6 +121,48 @@
       margin: 0 -20px;
     }
   }
+
+  .media-flex {
+    .media-flex-body {
+      padding-top: 7px;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .text-overflow-name {
+      width: 150px;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .media-flex-item {
+      figure {
+        padding-right: 0;
+      }
+      > span {
+        display: block;
+        padding-top: 7px;
+      }
+      padding-right: 10px;
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    .btn-group {
+      width: 100px;
+      text-align: right;
+      > a {
+        display: block;
+        margin-top: 7px;
+      }
+      .dropdown-toggle {
+        float: right;
+      }
+    }
+  }
 }
 
 .p-list-user-item {

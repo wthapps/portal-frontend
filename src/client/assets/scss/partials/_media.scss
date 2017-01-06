@@ -1,11 +1,11 @@
 .media-flex {
-  display: flex;
+  @include flexbox;
 }
 
 .media-flex-left,
 .media-flex-body,
 .media-flex-right {
-  flex: 1;
+  @include flex(1);
 }
 
 .media-center {

@@ -40,41 +40,6 @@
     .action {
       float: right;
     }
-    .z-social-box-header-nav {
-      ul {
-        @include clearfix;
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-        li {
-          float: left;
-          a {
-            display: block;
-            font-size: 18px;
-            color: $light-slate;
-            position: relative;
-            padding: 8px 15px;
-            text-decoration: none;
-            line-height: 1;
-            &.active {
-              color: $text-color;
-              &:after {
-                content: "";
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: -15px;
-                background-color: $color-inverse;
-                height: 3px;
-              }
-            }
-            span {
-              font-size: 80%;
-            }
-          }
-        }
-      }
-    }
     & + .z-social-media {
       margin-top: 15px;
     }
@@ -645,6 +610,10 @@
       }
     }
   }
+}
+
+.zone-social-container {
+  width: 100%;
 }
 
 .zone-social-cover {

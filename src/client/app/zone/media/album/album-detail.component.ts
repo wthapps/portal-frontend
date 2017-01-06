@@ -144,7 +144,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
          });*/
 
         //reload data
-        this.getPhotos();
+        // this.getPhotos();
 
         break;
       default:

@@ -7,8 +7,7 @@ import { Router, NavigationEnd } from '@angular/router';
   templateUrl: 'footer.component.html'
 })
 export class FooterComponent {
-  hideFooter: boolean = false;
-  @HostBinding('class.hidden') hideFooter;
+  @HostBinding('class.hidden') hideFooter:boolean = false;
 
   constructor(private router: Router) {
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {

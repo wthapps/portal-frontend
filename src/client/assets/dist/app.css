@@ -10094,12 +10094,55 @@ h1, h2, h3, h4, h5, h6,
   background-color: #f54a59;
   color: #ffffff; }
 
+.nav-tabs-wrap .nav-tabs {
+  border-width: 0;
+  margin: 0;
+  padding: 0; }
+  .nav-tabs-wrap .nav-tabs > li {
+    margin: 0; }
+    .nav-tabs-wrap .nav-tabs > li > a, .nav-tabs-wrap .nav-tabs > li > a:hover, .nav-tabs-wrap .nav-tabs > li > a:focus {
+      display: block;
+      font-size: 18px;
+      color: rgba(74, 74, 74, 0.8);
+      position: relative;
+      text-decoration: none;
+      line-height: 1;
+      padding: 8px 15px;
+      border: 0 none;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+      background-color: transparent; }
+    .nav-tabs-wrap .nav-tabs > li > a:hover {
+      color: #4A4A4A; }
+    .nav-tabs-wrap .nav-tabs > li > a span {
+      font-size: 80%; }
+    .nav-tabs-wrap .nav-tabs > li.active > a {
+      color: #4A4A4A; }
+      .nav-tabs-wrap .nav-tabs > li.active > a:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -15px;
+        background-color: #f54a59;
+        height: 3px; }
+
 .media-flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
   display: flex; }
 
 .media-flex-left,
 .media-flex-body,
 .media-flex-right {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-box-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
   flex: 1; }
 
 .media-center {
@@ -11098,6 +11141,35 @@ body.drag-active .dropzone-overlap {
   .p-list-user.p-list-outside-20 > li {
     padding: 10px 20px;
     margin: 0 -20px; }
+  .p-list-user .media-flex .media-flex-body {
+    padding-top: 7px;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .p-list-user .media-flex .text-overflow-name {
+    width: 150px;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .p-list-user .media-flex .media-flex-item {
+    padding-right: 10px; }
+    .p-list-user .media-flex .media-flex-item figure {
+      padding-right: 0; }
+    .p-list-user .media-flex .media-flex-item > span {
+      display: block;
+      padding-top: 7px; }
+    .p-list-user .media-flex .media-flex-item:last-child {
+      padding-right: 0; }
+  .p-list-user .media-flex .btn-group {
+    width: 100px;
+    text-align: right; }
+    .p-list-user .media-flex .btn-group > a {
+      display: block;
+      margin-top: 7px; }
+    .p-list-user .media-flex .btn-group .dropdown-toggle {
+      float: right; }
 
 .p-list-user-item:before, .p-list-user-item:after {
   content: " ";
@@ -13761,37 +13833,6 @@ wth-app:empty + .dots-loader-wrap {
       line-height: 34px; }
     .z-social-box .z-social-box-header .action {
       float: right; }
-    .z-social-box .z-social-box-header .z-social-box-header-nav ul {
-      margin: 0;
-      padding: 0;
-      list-style-type: none; }
-      .z-social-box .z-social-box-header .z-social-box-header-nav ul:before, .z-social-box .z-social-box-header .z-social-box-header-nav ul:after {
-        content: " ";
-        display: table; }
-      .z-social-box .z-social-box-header .z-social-box-header-nav ul:after {
-        clear: both; }
-      .z-social-box .z-social-box-header .z-social-box-header-nav ul li {
-        float: left; }
-        .z-social-box .z-social-box-header .z-social-box-header-nav ul li a {
-          display: block;
-          font-size: 18px;
-          color: #9B9B9B;
-          position: relative;
-          padding: 8px 15px;
-          text-decoration: none;
-          line-height: 1; }
-          .z-social-box .z-social-box-header .z-social-box-header-nav ul li a.active {
-            color: #4A4A4A; }
-            .z-social-box .z-social-box-header .z-social-box-header-nav ul li a.active:after {
-              content: "";
-              position: absolute;
-              left: 0;
-              right: 0;
-              bottom: -15px;
-              background-color: #f54a59;
-              height: 3px; }
-          .z-social-box .z-social-box-header .z-social-box-header-nav ul li a span {
-            font-size: 80%; }
     .z-social-box .z-social-box-header + .z-social-media {
       margin-top: 15px; }
   .z-social-box .z-social-box-body hr {
@@ -14247,6 +14288,9 @@ wth-app:empty + .dots-loader-wrap {
       background-color: #f54a59;
       border-color: #f54a59;
       color: #ffffff; }
+
+.zone-social-container {
+  width: 100%; }
 
 .zone-social-cover {
   border-top-right-radius: 4px;

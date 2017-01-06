@@ -5,15 +5,19 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { Ng2HdModule } from '../shared/ng2-hd/index';
 import { ZChatComponent } from './chat.component';
-import { ZChatConversationComponent } from './index';
 
 import {
   ZChatShareItemComponent,
   ZChatShareListComponent,
   ZChatToolbarComponent,
   ZChatSidebarComponent,
-  ZChatChatboxComponent
+  ZChatChatboxComponent,
+  ZChatShareUserListComponent
 } from './shared/index';
+
+import { ZChatConversationComponent } from './conversation/index';
+import { ZChatContactComponent } from './contact/index';
+import { ZChatHistoryComponent } from './history/index';
 
 
 @NgModule({
@@ -30,7 +34,11 @@ import {
     ZChatChatboxComponent,
     ZChatShareItemComponent,
     ZChatShareListComponent,
-    ZChatConversationComponent
+    ZChatShareUserListComponent,
+
+    ZChatConversationComponent,
+    ZChatContactComponent,
+    ZChatHistoryComponent
   ],
   exports: [
     ZChatComponent
