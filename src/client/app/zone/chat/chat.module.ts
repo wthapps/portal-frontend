@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
+import { InputSwitchModule } from 'primeng/primeng';
+
 import { Ng2HdModule } from '../shared/ng2-hd/index';
 import { ZChatComponent } from './chat.component';
 
@@ -18,6 +20,7 @@ import {
 import { ZChatConversationComponent } from './conversation/index';
 import { ZChatContactComponent } from './contact/index';
 import { ZChatHistoryComponent } from './history/index';
+import { ZChatSettingComponent } from './setting/index';
 
 
 @NgModule({
@@ -25,7 +28,8 @@ import { ZChatHistoryComponent } from './history/index';
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
-    Ng2HdModule
+    Ng2HdModule,
+    InputSwitchModule
   ],
   declarations: [
     ZChatComponent,
@@ -38,7 +42,8 @@ import { ZChatHistoryComponent } from './history/index';
 
     ZChatConversationComponent,
     ZChatContactComponent,
-    ZChatHistoryComponent
+    ZChatHistoryComponent,
+    ZChatSettingComponent
   ],
   exports: [
     ZChatComponent

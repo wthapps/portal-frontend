@@ -112,7 +112,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   private onDelete() {
     let idPhoto = this.selectedPhotos[this.index].id;
     this.confirmationService.confirm({
-      message: 'Are you sure to delete 1 item ?',
+      message: 'Are you sure to delete 1 item?',
       accept: () => {
         let body = JSON.stringify({ids: [idPhoto]});
         this.loadingService.start();

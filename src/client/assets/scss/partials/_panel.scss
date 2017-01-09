@@ -1,4 +1,11 @@
 .panel {
+  .panel-heading {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .panel-title {
+    font-size: 18px;
+  }
   margin-bottom: 30px;
   @include box-shadow(0 0 0 transparent);
   .list-group {
@@ -28,5 +35,11 @@
         background-color: $table-bg-accent;
       }
     }
+  }
+}
+
+.panel-default {
+  > .panel-heading {
+    background-color: transparent;
   }
 }

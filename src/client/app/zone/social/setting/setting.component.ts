@@ -35,7 +35,7 @@ export class ZSocialSettingComponent implements OnInit {
 
   resetSettings() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to reset settings',
+      message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
         this.socialService.user.reset_setting().subscribe((res: any) => {
