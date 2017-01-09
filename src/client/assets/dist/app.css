@@ -10497,6 +10497,9 @@ Header
     background-color: transparent; }
   .header-over .nav > li > a {
     color: #ffffff; }
+    @media (min-width: 768px) {
+      .header-over .nav > li > a {
+        background-color: transparent; } }
 
 .footer {
   font-family: "Source Sans Pro", sans-serif;

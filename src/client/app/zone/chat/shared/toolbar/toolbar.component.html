@@ -17,7 +17,7 @@
           <li role="separator" class="divider"></li>
 
           <!--show if current isn't one user-->
-          <li><a href="#">Edit Conversation</a></li>
+          <li><a href="javascript:;" (click)="editConversation.modal.open()">Edit Conversation</a></li>
           <!--show if current isn't one user-->
 
           <li><a href="#">Leave Conversation</a></li>
@@ -42,3 +42,6 @@
     </div>
   </div>
 </div>
+
+
+<z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>

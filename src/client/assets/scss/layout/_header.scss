@@ -219,5 +219,8 @@ Header
   }
   .nav > li > a {
     color: #ffffff;
+    @media (min-width: $screen-sm) {
+      background-color: transparent;
+    }
   }
 }

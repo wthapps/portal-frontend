@@ -14,7 +14,8 @@ import {
   ZChatToolbarComponent,
   ZChatSidebarComponent,
   ZChatChatboxComponent,
-  ZChatShareUserListComponent
+  ZChatShareUserListComponent,
+  ZChatShareEditConversationComponent
 } from './shared/index';
 
 import { ZChatConversationComponent } from './conversation/index';
@@ -39,6 +40,7 @@ import { ZChatSettingComponent } from './setting/index';
     ZChatShareItemComponent,
     ZChatShareListComponent,
     ZChatShareUserListComponent,
+    ZChatShareEditConversationComponent,
 
     ZChatConversationComponent,
     ZChatContactComponent,
