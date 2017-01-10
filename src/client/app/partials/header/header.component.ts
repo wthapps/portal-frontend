@@ -83,8 +83,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     }
 
     this.appearancesChannelService.subscribe();
-    // //Test
-    // this.chatChannelService.subscribeChat(3);
   }
 
   ngAfterViewInit(): void {

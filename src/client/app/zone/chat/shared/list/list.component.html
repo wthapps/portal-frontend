@@ -2,8 +2,10 @@
   <div class="chat-date">
     <span>Nov 21 2016</span>
   </div>
-  <z-chat-share-item></z-chat-share-item>
-  <z-chat-share-item [byMe]="true"></z-chat-share-item>
-  <z-chat-share-item></z-chat-share-item>
-  <z-chat-share-item></z-chat-share-item>
+  <div *ngFor="let message of messages">
+    <z-chat-share-item [message]="message"></z-chat-share-item>
+  </div>
+  <!--<z-chat-share-item></z-chat-share-item>-->
+  <!--<z-chat-share-item [byMe]="true"></z-chat-share-item>-->
+  <!--<z-chat-share-item></z-chat-share-item>-->
 </div>

@@ -5,103 +5,39 @@
   <dl class="p-list-user-group">
     <dt>Favourites</dt>
     <dd>
-      <ul class="p-list-user p-list-outside">
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
-        </li>
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
-        </li>
-      </ul>
     </dd>
   </dl>
   <dl class="p-list-user-group">
     <dt>Recent</dt>
     <dd>
       <ul class="p-list-user p-list-outside">
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
-        </li>
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
-        </li>
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
-        </li>
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
-        </li>
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
-        </li>
-        <li>
-          <div class="pull-right">
-            <span class="badge badge-wth">4</span>
-          </div>
-          <figure>
-            <img alt="David Nguyen"
-                 src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            <span class="p-list-user-status online"></span>
-          </figure>
-          <span>David Nguyen</span>
+        <!--<li *ngFor="let contact of contacts">-->
+          <!--<div class="pull-right">-->
+            <!--<span class="badge badge-wth">{{contact.notification}}</span>-->
+          <!--</div>-->
+          <!--<figure>-->
+            <!--<img [src]="contact.display.image">-->
+            <!--<span class="p-list-user-status online"></span>-->
+          <!--</figure>-->
+          <!--<span>{{contact.display.name}}</span>-->
+        <!--</li>-->
+        <li *ngFor="let contact of contacts" [routerLinkActive]="['active']" >
+          <a [routerLink]="['/zone/chat/conversation', contact.id]" (click)="chatService.selectContact(contact)">
+            <div class="pull-right">
+              <span class="badge badge-wth">{{contact.notification}}</span>
+            </div>
+            <figure>
+              <img [src]="contact.display.image">
+              <span class="p-list-user-status online"></span>
+            </figure>
+            <span>{{contact.display.name}}</span>
+          </a>
         </li>
       </ul>
     </dd>
   </dl>
+  <!--<div>-->
+    <!--<button (click)="getContact()">Get Contact</button>-->
+  <!--</div>-->
 </aside>
+

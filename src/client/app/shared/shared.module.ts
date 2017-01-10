@@ -25,6 +25,7 @@ import {
   CableService,
   ChannelNotificationService,
   AppearancesChannelService,
+  StorageService,
   ChatChannelService
 } from './index';
 
@@ -143,6 +144,7 @@ export class SharedModule {
       providers: [
         NameListService,
         ApiBaseService,
+        StorageService,
         UserService,
         CountryService,
         ConfirmationService,

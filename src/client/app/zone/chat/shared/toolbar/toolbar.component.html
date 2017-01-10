@@ -34,15 +34,15 @@
         </ul>
       </div>
     </div>
-    <img alt="David Nguyen"
-         src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-    <div class="p-list-user-namegroup">
-      <span>Group Number 03</span>
-      <small>3 people</small>
+    <div *ngIf="contact">
+      <img [src]="contact.display.image">
+      <div class="p-list-user-namegroup">
+        <span>{{contact.display.name}}</span>
+        <small *ngIf="contact.group.member_count > 2">{{contact.group.member_count}} people</small>
+      </div>
     </div>
   </div>
 </div>
-
 
 <z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>
 <z-chat-share-add-contact #addContact></z-chat-share-add-contact>

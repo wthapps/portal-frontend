@@ -19,9 +19,15 @@ export class AppearancesChannelService extends CableService {
       App.personal_appearances = App.cable.subscriptions.create(
         {channel: "AppearancesChannel"},
         {
-          connected: function(){console.log('connected')},
-          disconnected: function(){console.log('disconnected')},
-          received: function(data){console.log('received', data)}
+          connected: function(){
+            // console.log('connected');
+          },
+          disconnected: function(){
+            // console.log('disconnected');
+          },
+          received: function(data){
+            // console.log('received', data);
+          }
         }
       );
     }

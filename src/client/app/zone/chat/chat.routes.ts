@@ -13,7 +13,8 @@ export const ZChatRoutes: Route[] = [
     children: [
       {path: 'setting', component: ZChatSettingComponent},
       {path: 'history', component: ZChatHistoryComponent},
-      {path: 'conversation', component: ZChatConversationComponent},
+      // {path: 'conversation', component: ZChatConversationComponent},
+      {path: 'conversation/:id', component: ZChatConversationComponent},
       {path: 'new', component: ZChatNewConversationComponent},
       {path: 'contact', component: ZChatContactComponent},
       {path: '', component: ZChatConversationComponent}

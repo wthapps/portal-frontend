@@ -13,33 +13,21 @@
 
       <div class="content-overflow" style="max-height: 300px;">
         <ul class="p-list-user p-list-border">
-          <li>
+          <li *ngFor="let friend of friends">
             <div class="pull-right">
-              <input type="checkbox">
+              <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="friend.checked">
             </div>
             <figure>
-              <img alt="David Nguyen"
-                   src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
+              <img [src]="friend.profile_image">
             </figure>
-            <span>Friendly Username 00</span>
+            <span>{{friend.name}}</span>
           </li>
-          <li>
-            <div class="pull-right">
-              <input type="checkbox">
-            </div>
-            <figure>
-              <img alt="David Nguyen"
-                   src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png">
-            </figure>
-            <span>Friendly Username 00</span>
-          </li>
-        </ul>
 
+        </ul>
       </div>
 
-
       <div class="clearfix text-right">
-        <button type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
+        <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="addContact()">Done</button>
         <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
       </div>
 

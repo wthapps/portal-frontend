@@ -26,6 +26,7 @@ import {
 import { ZChatContactComponent } from './contact/index';
 import { ZChatHistoryComponent } from './history/index';
 import { ZChatSettingComponent } from './setting/index';
+import { ChatService } from './shared/services/chat.service';
 
 
 @NgModule({
@@ -56,7 +57,7 @@ import { ZChatSettingComponent } from './setting/index';
   exports: [
     ZChatComponent
   ],
-  providers: []
+  providers: [ChatService]
 })
 
 export class ZChatModule {

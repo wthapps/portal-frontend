@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   templateUrl: 'item.component.html'
 })
 export class ZChatShareItemComponent {
-  @Input() byMe: boolean = false;
+  @Input() message: any;
 }

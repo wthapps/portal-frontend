@@ -1,10 +1,10 @@
-<div class="chat-item" [ngClass]="{'chat-item-left': !byMe, 'chat-item-right': byMe}">
+<div class="chat-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
   <figure class="chat-item-avatar">
     <img
-      src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/avartart/default.png"
+      [src]="message.display.image"
       alt="">
   </figure>
-  <h4 class="chat-item-name">Cersei Lannister</h4>
+  <h4 class="chat-item-name">{{message.display.name}}</h4>
   <div class="chat-item-message">
     <div class="chat-item-card">
       <div class="chat-item-action">
@@ -18,22 +18,7 @@
         </div>
       </div>
       <div class="chat-item-content">
-        <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cupiditate doloremque, ducimus eius enim explicabo illo, incidunt laborum odit omnis perferendis praesentium quisquam quos sapiente tempore unde vero? Distinctio, pariatur.</span>
-      </div>
-    </div>
-    <div class="chat-item-card">
-      <div class="chat-item-action">
-        <small>4:20 PM</small>
-        <div class="btn-group">
-          <i class="fa fa-pencil" data-toggle="dropdown"></i>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="#">Copy</a></li>
-            <li><a href="#">Quote Message</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="chat-item-content">
-        <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cupiditate doloremque, ducimus eius enim explicabo illo, incidunt laborum odit omnis perferendis praesentium quisquam quos sapiente tempore unde vero? Distinctio, pariatur.</span>
+        <span>{{message.message}}</span>
       </div>
     </div>
   </div>

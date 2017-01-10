@@ -12,6 +12,7 @@ export * from './config/constants';
 export * from './config/api.config';
 
 export * from './services/apibase.service';
+export * from './services/storage.service';
 export * from './services/user.service';
 export * from './services/auth.service';
 export * from './services/auth-guard.service';

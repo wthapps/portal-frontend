@@ -13,10 +13,6 @@ export class CableService {
       App.cable = ActionCable.createConsumer(`${ApiConfig.url}/cable?user_id=${userService.profile.id}`);
     }
   }
-
-  createChatInstance(owner_id:number, friend_id:number) {
-    App.cable = ActionCable.createConsumer(`${ApiConfig.url}/cable?user_id=${owner_id}&friend_id=${friend_id}`);
-  }
 }
 
 
