@@ -18,7 +18,6 @@ export class AppService extends ApiBaseService {
 
   get(path: string): Observable<Response> {
     return super.get(path)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           return res;
@@ -29,7 +28,6 @@ export class AppService extends ApiBaseService {
 
   update(path: string, body: string): Observable<Response> {
     return super.patch(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           return res;
@@ -43,7 +41,6 @@ export class AppService extends ApiBaseService {
    */
   add(path: string, body: string): Observable<Response> {
     return super.post(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           return res;

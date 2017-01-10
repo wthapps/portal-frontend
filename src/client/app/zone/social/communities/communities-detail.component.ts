@@ -48,6 +48,8 @@ export class ZSocialCommunityDetailComponent implements OnInit {
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @ViewChild('users') users: MemberListInviteComponent;
+  // @ViewChild('posts') postList: PostListComponent;
+
 
 
   constructor(private apiBaseService: ApiBaseService,
@@ -62,6 +64,7 @@ export class ZSocialCommunityDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.postList.type = 'community';
 
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
@@ -126,7 +129,7 @@ export class ZSocialCommunityDetailComponent implements OnInit {
         this.apiBaseService.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: this.uuid}))
             .subscribe((response: any) => {
                 this.loadingService.stop();
-                // this.router.navigateByUrl('/zone/social/communities');
+                this.router.navigateByUrl('/zone/social/communities');
               },
               error => {
                 this.toastsService.danger(error);

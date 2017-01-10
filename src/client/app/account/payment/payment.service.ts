@@ -12,15 +12,10 @@ export class PaymentService extends ApiBaseService {
 
   public create(path: string, body: string): Observable<Response> {
     return super.post(path, body)
-      .map(res => res.json())
-      .map((res) => {
-        return res;
-      });
   }
 
   public update(path: string, body: string): Observable<Response> {
     return super.patch(path, body)
-      .map(res => res.json())
       .map((res) => {
         return res;
       });
@@ -28,7 +23,6 @@ export class PaymentService extends ApiBaseService {
 
   public get_client_token(path: string): Observable<Response> {
     return super.get(path)
-      .map(res => res.json())
       .map((res) => {
         return res;
       });
@@ -36,7 +30,6 @@ export class PaymentService extends ApiBaseService {
 
   public delete(path: string): Observable<Response> {
     return super.delete(path)
-      .map(res => res.json())
       .map((res) => {
         return res;
       });
