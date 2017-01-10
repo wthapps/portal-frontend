@@ -1,7 +1,7 @@
 <div class="page-body-control has-page-body-sidebar">
   <div class="p-list-user-item">
     <div class="pull-right">
-      <button type="button" class="btn btn-default-inline">
+      <button type="button" class="btn btn-default-inline" (click)="addContact.modal.open()">
         <i class="fa fa-user-plus"></i>
       </button>
       <button type="button" class="btn btn-default-inline">
@@ -45,3 +45,4 @@
 
 
 <z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>
+<z-chat-share-add-contact #addContact></z-chat-share-add-contact>

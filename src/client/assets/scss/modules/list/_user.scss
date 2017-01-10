@@ -99,6 +99,11 @@
   li {
     margin-bottom: 10px;
     @include p-list-user-item();
+    .pull-right {
+      input[type="checkbox"] {
+        margin-top: 12px;
+      }
+    }
   }
 
   &.p-list-border {

@@ -11141,6 +11141,8 @@ body.drag-active .dropzone-overlap {
         color: #4A4A4A; }
       .p-list-user li .p-list-user-namegroup small {
         font-size: 100%; }
+    .p-list-user li .pull-right input[type="checkbox"] {
+      margin-top: 12px; }
   .p-list-user.p-list-border > li {
     padding-bottom: 10px;
     margin-bottom: 10px;
