@@ -19,7 +19,10 @@ import {
   ZChatShareAddContactComponent
 } from './shared/index';
 
-import { ZChatConversationComponent } from './conversation/index';
+import {
+  ZChatConversationComponent,
+  ZChatNewConversationComponent
+} from './conversation/index';
 import { ZChatContactComponent } from './contact/index';
 import { ZChatHistoryComponent } from './history/index';
 import { ZChatSettingComponent } from './setting/index';
@@ -45,6 +48,7 @@ import { ZChatSettingComponent } from './setting/index';
     ZChatShareAddContactComponent,
 
     ZChatConversationComponent,
+    ZChatNewConversationComponent,
     ZChatContactComponent,
     ZChatHistoryComponent,
     ZChatSettingComponent

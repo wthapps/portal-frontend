@@ -1,7 +1,7 @@
 <div class="page-body-control has-page-body-sidebar">
   <div class="p-list-user-item">
     <div class="pull-right">
-      <button type="button" class="btn btn-default-inline" (click)="addContact.modal.open()">
+      <button type="button" class="btn btn-default-inline" (click)="onAddContact()">
         <i class="fa fa-user-plus"></i>
       </button>
       <button type="button" class="btn btn-default-inline">
@@ -17,7 +17,7 @@
           <li role="separator" class="divider"></li>
 
           <!--show if current isn't one user-->
-          <li><a href="javascript:;" (click)="editConversation.modal.open()">Edit Conversation</a></li>
+          <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
           <!--show if current isn't one user-->
 
           <li><a href="#">Leave Conversation</a></li>
