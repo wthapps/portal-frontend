@@ -116,6 +116,9 @@ export class ZMediaAlbumDetailComponent implements OnInit {
       case 'delete':
         this.onDelete();
         break;
+      case 'removeFromAlbum':
+        this.onRemoveFromAlbum();
+        break;
       case 'info':
         // call action from photoDetail
         this.photoDetail.preview(true);
@@ -229,6 +232,27 @@ export class ZMediaAlbumDetailComponent implements OnInit {
         });
       }
     });
+  }
+
+  private onRemoveFromAlbum() {
+    this.confirmationService.confirm({
+        header: 'Remove photos from album',
+        message: this.selectedPhotos.length + ' selected Items will be remove from ' + this.albumDetail.name + '. Removed items from album still remain in your library',
+        accept: () => {
+          this.loadingService.start();
+          this.albumService.removeFromAlbum(this.albumDetail.id, this.selectedPhotos).subscribe(
+            (res: any)=> {
+              if (res.success) {
+                _.map(this.selectedPhotos, (v)=> {
+                  _.remove(this.data, ['id', v.id]);
+                });
+              }
+              this.loadingService.stop();
+            }
+          );
+        }
+      }
+    );
   }
 
   // --- End Action for Toolbar --- //

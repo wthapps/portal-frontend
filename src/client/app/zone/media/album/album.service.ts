@@ -30,6 +30,14 @@ export class ZMediaAlbumService {
     return this.apiBaseService.post(`${this.url}/${id}/photos`, body);
   }
 
+  removeFromAlbum(id: number, selectedPhotos: any): any {
+    let body = JSON.stringify({
+      photos: _.map(selectedPhotos, 'id'),
+      type: 'delete'
+    });
+    return this.apiBaseService.post(`${this.url}/${id}/photos`, body);
+  }
+
   create(body: any) {
     return this.apiBaseService.post(`${this.url}`, body);
   }

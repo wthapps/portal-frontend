@@ -22,14 +22,14 @@
     </a>
     <ul *ngIf="selectedPhotos.length > 1" class="dropdown-menu" aria-labelledby="dropdownMenu2">
       <li>
-        <a (click)="onAction('addToAlbum')" href="javascript:;">
+        <a (click)="onAction('removeFromAlbum')" href="javascript:;">
           <i class="fa fa-minus-square"></i> Remove from Album
         </a>
       </li>
     </ul>
     <ul *ngIf="selectedPhotos.length == 1" class="dropdown-menu" aria-labelledby="dropdownMenu2">
       <li>
-        <a (click)="onAction('addToAlbum')" href="javascript:;">
+        <a (click)="onAction('removeFromAlbum')" href="javascript:;">
           <i class="fa fa-minus-square"></i> Remove from Album
         </a>
       </li>
