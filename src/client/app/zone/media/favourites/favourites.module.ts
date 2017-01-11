@@ -8,6 +8,7 @@ import {
 import { ZMediaSharedModule } from '../shared/shared.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ZMediaFavoriteDetailComponent } from './favourites-detail.component';
 
 @NgModule({
   imports: [
@@ -17,10 +18,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     ZMediaSharedModule.forRoot()
   ],
   declarations: [
-    ZMediaFavoriteListComponent
+    ZMediaFavoriteListComponent,
+    ZMediaFavoriteDetailComponent
   ],
   exports: [
-    ZMediaFavoriteListComponent
+    ZMediaFavoriteListComponent,
+    ZMediaFavoriteDetailComponent
   ],
   providers: [
     ZMediaFavoriteService

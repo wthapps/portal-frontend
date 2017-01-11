@@ -20,6 +20,12 @@
       (outEvent)="actionItem($event)">
     </z-media-share-list>
 
+    <div class="text-center p20">
+      <a [routerLink]="['album']" class="btn btn-primary-inline">
+        View all
+      </a>
+    </div>
+
     <hr>
 
     <div class="page-body-in-title">
@@ -34,9 +40,9 @@
     </z-media-share-list>
 
     <div class="text-center p20">
-      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
-        more
-      </button>
+      <a [routerLink]="['photo']" class="btn btn-primary-inline">
+        View all
+      </a>
     </div>
   </div>
 </div>

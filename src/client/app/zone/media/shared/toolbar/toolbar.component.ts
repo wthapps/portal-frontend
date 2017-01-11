@@ -1,9 +1,11 @@
 import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
 import { Constants } from '../../../../shared/index';
+
 
 
 @Component({
@@ -31,7 +33,7 @@ export class ZMediaToolbarComponent {
   selectedEl: any;
   items = Constants.pictureMenuItems;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private location: Location) {
     // Don't move it to onInit, it's not correct
     this.selectedEl = {name: 'Photos', css: 'fa fa-picture-o', link: '/zone/media/photo'};
     this.router.events.subscribe((navigation: any) => {
@@ -75,5 +77,9 @@ export class ZMediaToolbarComponent {
       default:
         break;
     }
+  }
+
+  onBack() {
+    this.location.back();
   }
 }

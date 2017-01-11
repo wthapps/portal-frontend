@@ -2,7 +2,7 @@
   <!--album-detail-->
   <ul *ngIf="albumDetail && type == 'album-detail'" class="control-body-select">
     <li style="border-right: 1px solid #4A4A4A; padding-right: 10px">
-      <a [routerLink]="['/zone/media/album']" class="btn btn-default btn-circle"><i class="fa fa-arrow-left"></i></a>
+      <a (click)="onBack()" class="btn btn-default btn-circle"><i class="fa fa-arrow-left"></i></a>
     </li>
     <li class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -31,7 +31,8 @@
         </li>
         <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
         <li role="separator" class="divider"></li>
-        <li><a href="javascript:;" (click)="formEditAlbum.modal.open()"><i class="fa fa-files-o"></i> Create Album</a></li>
+        <li><a href="javascript:;" (click)="formEditAlbum.modal.open()"><i class="fa fa-files-o"></i> Create Album</a>
+        </li>
         <!--<li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>-->
       </ul>
     </li>

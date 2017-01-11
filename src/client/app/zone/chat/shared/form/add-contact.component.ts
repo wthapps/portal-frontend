@@ -1,11 +1,4 @@
-import { Component, OnChanges, ViewChild } from '@angular/core';
-
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
 
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
@@ -14,6 +7,6 @@ import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal'
   selector: 'z-chat-share-add-contact',
   templateUrl: 'add-contact.component.html'
 })
-export class ZChatShareAddContactComponent implements OnChanges {
+export class ZChatShareAddContactComponent {
   @ViewChild('modal') modal: HdModalComponent;
 }
