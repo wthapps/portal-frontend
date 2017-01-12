@@ -371,6 +371,7 @@ export class SeedConfig {
 
       // custom add
       'primeng': `node_modules/primeng`,
+      'angular2-infinite-scroll': `node_modules/angular2-infinite-scroll`,
       // For test config
       'dist/dev/*': '/base/dist/dev/*',
       '*': 'node_modules/*'
@@ -441,6 +442,10 @@ export class SeedConfig {
       },
       'rxjs': {
         main: 'Rx.js',
+        defaultExtension: 'js'
+      },
+      'angular2-infinite-scroll': {
+        main: 'angular2-infinite-scroll.js',
         defaultExtension: 'js'
       }
     }

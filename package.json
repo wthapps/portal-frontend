@@ -146,6 +146,7 @@
     "@angular/platform-browser-dynamic": "2.0.1",
     "@angular/router": "3.0.1",
     "actioncable": "5.0.0",
+    "angular2-infinite-scroll": "^0.2.8",
     "angular2-jwt": "0.1.16",
     "bootstrap-sass": "3.3.6",
     "braintree-web": "3.6.3",

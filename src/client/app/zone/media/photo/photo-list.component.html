@@ -8,7 +8,12 @@
   (outEventUploading)="actionUploading($event)">
 </z-media-share-toolbar>
 
-<div class="page-body-content has-page-body-control gray-light">
+<div class="page-body-content has-page-body-control gray-light"
+     infinite-scroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="500"
+     [scrollWindow]="false"
+     (scrolled)="onLoadMore()">
   <div class="page-body-content-in">
     <z-media-share-list
       [type]="'photo'"
@@ -17,12 +22,7 @@
       [hasAction]="['favourite', 'select', 'previewAll']"
       (outEvent)="actionItem($event)">
     </z-media-share-list>
-
-    <div class="text-center p20">
-      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
-        more
-      </button>
-    </div>
+    <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
   </div>
 </div>
 

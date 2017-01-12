@@ -15,6 +15,8 @@ import {
 } from 'primeng/primeng';
 import { TagInputModule } from 'ng2-tag-input';
 
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+
 import {
   ApiBaseService,
   UserService,
@@ -66,8 +68,8 @@ import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.modu
     AutoCompleteModule,
     TagInputModule,
     HdTagInputModule,
-    InputTextareaModule
-
+    InputTextareaModule,
+    InfiniteScrollModule
   ],
   declarations: [
     ToolbarComponent,
@@ -117,6 +119,7 @@ import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.modu
     TagInputModule,
     HdTagInputModule,
     InputTextareaModule,
+    InfiniteScrollModule,
 
 
     CommonModule,
