@@ -10413,6 +10413,72 @@ Header
       .header .navbar-nav-top > li.navbar-nav-profile a.dropdown-toggle img {
         float: left;
         margin-right: 10px; }
+  .header .navbar-form {
+    position: relative; }
+  .header .navbar-searchTop {
+    position: relative; }
+    .header .navbar-searchTop .btn, .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-close"], .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-check"] {
+      position: absolute;
+      left: 2px;
+      padding-left: 8px;
+      padding-right: 8px;
+      background-color: transparent;
+      border-width: 0;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      font-size: 16px; }
+    .header .navbar-searchTop .btn:hover, .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-close"]:hover, .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:hover, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-check"]:hover, .header .navbar-searchTop .btn:focus, .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-close"]:focus, .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"]:focus, .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-check"]:focus, .header .navbar-searchTop .btn.focus, .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button.focus[ng-reflect-icon="fa-close"], .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button.focus[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button.focus[ng-reflect-icon="fa-check"] {
+      background-color: transparent;
+      -webkit-box-shadow: none;
+      box-shadow: none; }
+    .header .navbar-searchTop .form-control, .header .navbar-searchTop .page-body-content-chat .page-body-chat-message .chatbox-container-input, .page-body-content-chat .page-body-chat-message .header .navbar-searchTop .chatbox-container-input {
+      height: 38px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 36px; }
+      @media (min-width: 1200px) {
+        .header .navbar-searchTop .form-control, .header .navbar-searchTop .page-body-content-chat .page-body-chat-message .chatbox-container-input, .page-body-content-chat .page-body-chat-message .header .navbar-searchTop .chatbox-container-input {
+          min-width: 370px; } }
+  .header .navbar-form-list {
+    position: absolute;
+    top: 38px;
+    left: 15px;
+    right: 15px;
+    z-index: 200;
+    background-color: #FFF;
+    border: 1px solid #dbdbdb;
+    padding: 10px 0; }
+    .header .navbar-form-list hr {
+      margin-top: 10px;
+      margin-bottom: 10px; }
+    .header .navbar-form-list h3 {
+      font-size: 14px;
+      margin: 0 15px 10px;
+      font-weight: bold; }
+    .header .navbar-form-list .navbar-form-list-nav {
+      padding: 0 15px; }
+    .header .navbar-form-list ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none; }
+      .header .navbar-form-list ul li {
+        position: relative;
+        padding: 5px 15px; }
+        .header .navbar-form-list ul li:hover {
+          background-color: #D8D8D8; }
+        .header .navbar-form-list ul li a {
+          color: inherit;
+          font-weight: normal;
+          text-decoration: none; }
+          .header .navbar-form-list ul li a:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 10; }
 
 .navbar-nav-management .dropdown-menu {
   padding: 5px; }

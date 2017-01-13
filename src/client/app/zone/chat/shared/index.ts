@@ -4,6 +4,6 @@ export * from './chat-box/chat-box.component';
 export * from './list/item/item.component';
 export * from './list/list.component';
 export * from './user-list/user-list.component';
-export * from './form/edit-conversation.component';
-export * from './form/add-contact.component';
+export * from './modal/edit-conversation.component';
+export * from './modal/add-contact.component';
 

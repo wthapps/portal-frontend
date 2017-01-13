@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { ZChatShareEditConversationComponent } from '../form/edit-conversation.component';
-import { ZChatShareAddContactComponent } from '../form/add-contact.component';
+import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
+import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 
 @Component({
   moduleId: module.id,

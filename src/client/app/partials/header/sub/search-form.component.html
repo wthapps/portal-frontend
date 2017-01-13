@@ -9,8 +9,8 @@
     <div *ngFor="let group of groups">
       <h3>{{group | titleCase}}</h3>
       <p *ngIf="result[group].length == 0" style="padding-left: 30px"> No results</p>
-      <ul *ngFor="let item of result[group]">
-        <li>
+      <ul class="content-overflow" style="max-height: 150px;">
+        <li *ngFor="let item of result[group]">
           <div class="media-center" (click)="onSaveKey()">
             <div class="media-center-left">
               <figure>
