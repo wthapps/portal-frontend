@@ -105,7 +105,11 @@ export let Constants = {
     zoneSoReactions: 'zone/social_network/reactions',
     zoneSoPostSettings: 'zone/social_network/post_settings',
   },
-  sex : ['', 'Male', 'Female', 'Other']
+  sex : ['', 'Male', 'Female', 'Other'],
+  communityRole: {
+    admin: [1, "Admin"],
+    member: [2, "Member"]
+  }
 };
 
 export let MediaType = {

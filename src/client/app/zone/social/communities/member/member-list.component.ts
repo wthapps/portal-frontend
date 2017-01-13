@@ -32,6 +32,7 @@ export class ComMemberListComponent implements OnInit {
   selectedTab: string;
   items: Array<any> = new Array<any>(); // this store member, invitations, join requests and blacklist
 
+
   constructor(private api: ApiBaseService,
               private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
@@ -68,8 +69,10 @@ export class ComMemberListComponent implements OnInit {
   }
 
   onReportMember(uuid: string): any {
-    this.zoneReportService.member(uuid);
-    this.uuidUser = uuid;
+    if (uuid != undefined && uuid != "") {
+      this.zoneReportService.member(uuid);
+      this.uuidUser = uuid;
+    }
     return false;
   }
 
