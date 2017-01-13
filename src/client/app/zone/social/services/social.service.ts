@@ -7,6 +7,7 @@ import { UserService } from '../../../shared/index';
  */
 @Injectable()
 export class SoUserService {
+
   constructor(private apiBaseService: ApiBaseService, private user: UserService) {
   }
 
@@ -102,6 +103,10 @@ export class SoPostService {
 
 @Injectable()
 export class SocialService {
+  static readonly MEMBER_ROLE = { Admin: "Admin" ,
+    Member: "Member"
+  } ;
+
   constructor(public user: SoUserService,
               public post: SoPostService) {
 

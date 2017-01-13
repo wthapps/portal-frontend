@@ -10,7 +10,7 @@
             </div>
             <div class="z-social-media-body">
               <div class="z-heading">
-                <div class="z-name"> {{item.name}} </div>
+                <div class="z-name"> {{item ? item.name : ""}} </div>
               </div>
               <div class="z-shared-info">
                 <ul>
@@ -29,11 +29,12 @@
                 <i class="fa fa-user-plus"></i> Invite Member
               </button>
 
-              <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="invitation == undefined">
+              <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="!isMember">
                 <i class="fa fa-user-plus"></i> Ask to join
               </button>
 
-              <div class="btn-group pull-right" *ngIf="invitation != undefined">
+
+              <div class="btn-group pull-right" *ngIf="!isMember && invitation != undefined">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                   Asked to join <span class="caret"></span>
@@ -51,10 +52,10 @@
       <nav class="zone-social-cover-nav">
         <ul class="list-unstyled clearfix">
           <li [ngClass]="selectedTab==undefined? 'active': ''">
-            <a [routerLink]="['/zone/social/communities/', uuid]" [queryParams]="{}">Post</a>
+            <a [routerLink]="['/zone/social/communities/'+ uuid]" [queryParams]="{}">Post</a>
           </li>
           <li [ngClass]="selectedTab=='about'? 'active': ''">
-            <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'about'}">About</a>
+            <!--<a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'about'}">About</a>-->
           </li>
           <li [ngClass]="selectedTab=='members'? 'active': ''">
             <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'members'}">Members</a>
@@ -66,7 +67,7 @@
             <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'join_requests'}">Join Requests</a>
           </li>
           <li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">
-            <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>
+            <!--<a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
           </li>
 
           <li class="pull-right dropdown">
@@ -109,7 +110,7 @@
 
         <ul *ngIf="item.additional_links" class="list-unstyled">
           <li *ngFor="let link of item.additional_links">
-            <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url|urlTransform}}">{{link.name}}</a>
+            <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url|urlTransform}}">{{ link ? link.name : ""}}</a>
           </li>
         </ul>
       </div>
@@ -118,36 +119,39 @@
     <!--members-->
 
     <member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>
-    <div *ngIf="isMemberTab" class="z-social-box">
+
+    <div *ngIf="isMember" class="z-social-box">
 
 
       <div class="z-social-post">
-        <ul class="list-unstyled social-list-user">
-          <template ngFor let-user [ngForOf]="item.users" [ngForTrackBy]="trackByUsers">
-            <li >
+        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
+
+          <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems"  [ngForTrackBy]="trackByUsers">
+            <li  data-id="user_{{item.user ? item.user.uuid : ''}}" >
               <div class="dropdown pull-right">
-                <span class="text-fade">{{ user.id == item.admin.id ? 'Admin' :'Member'}}</span>
+                <!--<span class="text-fade member-role">{{ item.user.uuid == item.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
+                <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
                 <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="true">
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="#">Make Admin</a></li>
-                  <li><a href="javascript:;" (click)="deleteMember(user)">Remove</a></li>
-                  <li><a href="#" (click)="onReportMember(user.uuid)">Report Member</a></li>
+                  <li><a href="javascript:;" (click)="makeAdmin(item.user)">Make Admin</a></li>
+                  <li><a href="javascript:;" (click)="deleteMember(item.user)">Remove</a></li>
+                  <li><a href="javascript:;" (click)="onReportMember(item.user ? item.user.uuid : '')">Report Member</a></li>
                   <li><a href="#">Blacklist</a></li>
                 </ul>
               </div>
-              <img [alt]="user.name" [src]="user.profile_image" title="" width="30">
-              <span>{{user.name}}</span>
+              <img [alt]="item.user.name" [src]="item.user.profile_image" title="" width="30">
+              <span>{{item.user ? item.user.name : ''}}</span>
             </li>
           </template>
         </ul>
 
         <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'invitations'">
-          <template ngFor let-item [ngForOf]="items">
+          <template ngFor let-item [ngForOf]="tabItems">
 
-            <li >
+            <li data-id="invitation_{{item.id}}">
               <div class="dropdown pull-right">
                 <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
                 <!--<a href="#" class="btn btn-link">DENY</a>-->
@@ -155,7 +159,7 @@
                 <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
               </div>
               <a href="#">
-                <img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">
+                <!--<img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">-->
                 <span>{{item['accepter']['name']}}</span>
               </a>
             </li>
@@ -163,10 +167,10 @@
         </ul>
 
         <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'join_requests'">
-          <template ngFor let-item [ngForOf]="items">
+          <template ngFor let-item [ngForOf]="tabItems">
 
-            <li>
-              <div class="dropdown pull-right">
+            <li data-id="invitation_{{item.id}}">
+              <div class="dropdown pull-right" >
                 <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
                 <!--<a href="#" class="btn btn-link">DENY</a>-->
                 <!--<a href="#" class="btn btn-link">REQUESTED</a>-->
