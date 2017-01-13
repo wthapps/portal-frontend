@@ -41,7 +41,7 @@ export class ZSocialCommunityDetailComponent implements OnInit {
   tabItems: Array<any> = new Array<any>();
   // users: Array<any> = [];
   isAdmin: boolean = false;
-  isMember: boolean = true;
+  isMember: boolean = false;
   favourite: any;
 
   isPostTab: boolean = true;
@@ -273,8 +273,11 @@ export class ZSocialCommunityDetailComponent implements OnInit {
         this.item = res.data;
 
         // Check if this user is a community member
-        var users = _.map(this.item.community_users, function(c) { return c.user.uuid });
-        this.isMember =_.contains(users, this.userService.profile.uuid);
+
+        if (this.item.community_users ) {
+          let users = _.map(this.item.community_users, (c: any) => { return c.user.uuid });
+          this.isMember = _.indexOf(users, this.userService.profile.uuid ) > -1 ? true : false;
+        }
         // this.isAdmin = this.userService.profile.uuid == this.item.admin.uuid ? true : false;
 
       },
