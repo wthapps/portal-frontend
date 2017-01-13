@@ -43,7 +43,7 @@
       <a href="javascript:;" (click)="onMenu($event)">
         Picture
       </a>
-      <ul class="list-unstyled hidden" id="zone_menu_picture">
+      <ul class="list-unstyled hidden" id="zone_menu_media">
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
           <a [routerLink]="[item.link]">
             {{item.name}}
