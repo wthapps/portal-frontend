@@ -11,7 +11,8 @@ export class ApiBaseService {
 
   private _http: Http;
   private _options: RequestOptionsArgs;
-  private _baseUrl:string = 'http://192.168.0.107:4000/';
+  private _baseUrl:string = 'http://192.168.0.115:4000/';
+  // private _baseUrl:string = 'http://192.168.1.9:4000/';
   // private _baseUrl: string = Constants.baseUrls.apiBaseService;
   private _headers: Headers = new Headers({
     'Content-Type': 'application/json',
