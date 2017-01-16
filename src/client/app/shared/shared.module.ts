@@ -55,6 +55,7 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SearchFormComponent } from '../partials/header/sub/search-form.component';
 import { SoSearchService } from '../partials/header/sub/social-search.service';
 import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.module';
+import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -95,7 +96,8 @@ import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.modu
     DateUntilNowPipe,
     TitleCase,
     UrlTransformPipe,
-    ShowLengthTransformPipe
+    ShowLengthTransformPipe,
+    SafeHtmlPipe
   ],
   exports: [
     ToolbarComponent,
@@ -134,7 +136,8 @@ import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.modu
     DateUntilNowPipe,
     TitleCase,
     UrlTransformPipe,
-    ShowLengthTransformPipe
+    ShowLengthTransformPipe,
+    SafeHtmlPipe
   ]
 })
 export class SharedModule {

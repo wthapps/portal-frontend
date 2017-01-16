@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="chat-item-content">
-        <span>{{message.message}}</span>
+        <span [innerHtml]="message.message | wthEmojis | safeHtml"></span>
       </div>
     </div>
   </div>

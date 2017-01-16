@@ -27,6 +27,7 @@ import { ZChatContactComponent } from './contact/index';
 import { ZChatHistoryComponent } from './history/index';
 import { ZChatSettingComponent } from './setting/index';
 import { ChatService } from './shared/services/chat.service';
+import { ZChatEmojiModule } from './shared/emoji/emoji.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ChatService } from './shared/services/chat.service';
     SharedModule,
     ReactiveFormsModule,
     Ng2HdModule,
-    InputSwitchModule
+    InputSwitchModule,
+    ZChatEmojiModule
   ],
   declarations: [
     ZChatComponent,
@@ -57,7 +59,9 @@ import { ChatService } from './shared/services/chat.service';
   exports: [
     ZChatComponent
   ],
-  providers: [ChatService]
+  providers: [
+    ChatService
+  ]
 })
 
 export class ZChatModule {
