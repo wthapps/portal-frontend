@@ -181,13 +181,27 @@ $wth-emojis: "bowtie", "smile", "laughing", "blush", "smiley", "relaxed",
 "white_square_button", "black_circle", "white_circle", "red_circle",
 "large_blue_circle", "large_blue_diamond", "large_orange_diamond",
 "small_blue_diamond", "small_orange_diamond", "small_red_triangle",
-"small_red_triangle_down", "shipit", "D", "d", ")", "(";
+"small_red_triangle_down", "shipit", "D", "d", "\\)", "\\(";
 
-@for $i from 1 through length($wth-emojis) {
-  //.wth-emoji-#{nth($wth-emojis, $i)} {
-  //  background-position: (-32px * $i - 5px) 0;
-  //}
-  .wth-emoji-#{$i} {
+@each $wth-emoji in $wth-emojis {
+  $i: index($wth-emojis, $wth-emoji);
+  .wth-emoji-#{$wth-emoji} {
     background-position: (-32px * $i - 5px) 0;
   }
 }
+
+//@for $i from 1 through length($wth-emojis) {
+//  //.wth-emoji-#{nth($wth-emojis, $i)} {
+//  //  background-position: (-32px * $i - 5px) 0;
+//  //}
+//}
+
+.wth-emoji {
+  &.wth-emoji-D, &.wth-emoji-d, &.wth-emoji-\) {
+    @extend .wth-emoji-smile;
+  }
+  &.wth-emoji-\( {
+    @extend .wth-emoji-disappointed;
+  }
+}
+
