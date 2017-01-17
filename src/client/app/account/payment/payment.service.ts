@@ -4,34 +4,24 @@ import { Http, Response } from '@angular/http';
 import { ApiBaseService } from '../../shared/services/apibase.service';
 
 @Injectable()
-export class PaymentService extends ApiBaseService {
+export class PaymentService {
 
-  constructor(http: Http) {
-    super(http);
+  constructor(private api: ApiBaseService) {
+
+  }
+  create(path: string, body: string): Observable<Response> {
+    return this.api.post(path, body)
   }
 
-  public create(path: string, body: string): Observable<Response> {
-    return super.post(path, body)
+  update(path: string, body: string): Observable<Response> {
+    return this.api.patch(path, body)
   }
 
-  public update(path: string, body: string): Observable<Response> {
-    return super.patch(path, body)
-      .map((res) => {
-        return res;
-      });
+  get_client_token(path: string): Observable<Response> {
+    return this.api.get(path)
   }
 
-  public get_client_token(path: string): Observable<Response> {
-    return super.get(path)
-      .map((res) => {
-        return res;
-      });
-  }
-
-  public delete(path: string): Observable<Response> {
-    return super.delete(path)
-      .map((res) => {
-        return res;
-      });
+  delete(path: string): Observable<Response> {
+    return this.api.delete(path)
   }
 }

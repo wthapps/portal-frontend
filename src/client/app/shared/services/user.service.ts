@@ -5,6 +5,7 @@ import { Cookie }         from 'ng2-cookies/ng2-cookies';
 import { ApiBaseService } from './apibase.service';
 import { Constants }      from '../config/constants';
 import { User }           from '../models/user.model';
+import { Router }         from '@angular/router';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -12,8 +13,8 @@ export class UserService extends ApiBaseService {
   loggedIn: boolean = false;
   profile: User = null;
 
-  constructor(http: Http) {
-    super(http);
+  constructor(http: Http, router: Router) {
+    super(http, router);
     this.readUserInfo();
   }
 

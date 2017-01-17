@@ -19,8 +19,9 @@ export class ApiBaseService {
     'ACCEPT': 'application/json'
   });
 
-  constructor(private http: Http, private router?: Router) {
+  constructor(private http: Http, private router: Router) {
     this._http = http;
+    console.log("this. router api: ",this.router);
   }
 
   /**
@@ -108,22 +109,24 @@ export class ApiBaseService {
 
   // TODO refactor
   private handleError(error: Response | any): any {
+    // redirect to login page if there is not a user logged in
+    if (error.status === 401 && error.statusText == 'Unauthorized') {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     // In a real world app, we might use a remote logging infrastructure
     let errMsg: string;
-    // if (error instanceof Response) {
-    //   console.log('errro', error);
-    //   const body = error.json() || '';
-    //   const err = body.error || JSON.stringify(body);
-    //   errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    // } else {
-    //   errMsg = error.message ? error.message : error.toString();
-    // }
-    console.error('handle error',error);
-    return Observable.throw(errMsg);
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error('handle error', errMsg);
+    // return Observable.throw(errMsg);
 
-    // if (error.status === 401 && error.statusText == 'Unauthorized') {
-    //   let _route = this.router;
-    //   _route.navigate(['/login']);
-    // }
+
   }
 }

@@ -304,19 +304,18 @@ export class PaymentComponent implements AfterViewInit, OnInit {
             paypalButton.addEventListener('click', function (event: any) {
               // Tokenize here!
               paypalInstance.tokenize({
-                flow: 'vault', // This enables the Vault flow
-                billingAgreementDescription: 'Where is my money',
+                flow: 'checkout', //'vault', // This enables the Vault flow
+                //billingAgreementDescription: 'Where is my money',
                 locale: 'en_CA',
                 enableShippingAddress: false,
                 shippingAddressEditable: false,
               }, function (tokenizeErr: any, payload: any) {
-                console.log('paypal payment');
                 // Send tokenizationPayload.nonce to server
-                // _this.apiBaseService.post('payment/paypal/checkout', {nonce: payload.nonce}).subscribe(
-                //   (res:any) => {
-                //     _this.toastsService.success('success');
-                //   }
-                // )
+                _this.apiBaseService.post('payment/paypal/checkout', {nonce: payload.nonce}).subscribe(
+                  (res:any) => {
+                    _this.toastsService.success('success');
+                  }
+                )
               });
             });
           });
