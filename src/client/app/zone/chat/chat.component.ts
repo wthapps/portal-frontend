@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { ChatService } from './shared/services/chat.service';
 
 /**
  * This class represents the lazy loaded ZChatComponent.
@@ -8,5 +9,10 @@ import { Component } from '@angular/core';
   selector: 'z-chat',
   templateUrl: 'chat.component.html'
 })
-export class ZChatComponent {
+export class ZChatComponent implements OnInit{
+  constructor(private chatService: ChatService) {}
+
+  ngOnInit() {
+    this.chatService.subscribeNotification();
+  }
 }

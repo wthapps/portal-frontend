@@ -1,7 +1,7 @@
 <div class="page-body-chat-message">
   <div class="chat-message-container">
-    <div class="chatbox-container-input" contenteditable="true" spellcheck="false" tabindex="1"
-         placeholder="Type message here" autocomplete="off" autocorrect="off" alt=""></div>
+    <div id="chat-message-text" class="chatbox-container-input" contenteditable="true" spellcheck="false" tabindex="1"
+         placeholder="Type message here" autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()"></div>
     <div class="row">
       <div class="col-sm-6">
         <button class="btn btn-default-inline">
@@ -23,7 +23,7 @@
       </div>
       <div class="col-sm-6 text-right">
         <span class="text-line-btn text-fade">Press enter to send message</span>
-        <button class="btn btn-wth-default ml10">Send</button>
+        <div class="btn btn-wth-default ml10" (click)="send()">Send</div>
       </div>
     </div>
   </div>

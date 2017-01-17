@@ -34,15 +34,16 @@
         </ul>
       </div>
     </div>
-    <div *ngIf="contact">
-      <img [src]="contact.display.image">
+    <div *ngIf="item.value">
+      <img [src]="item.value.display.image">
       <div class="p-list-user-namegroup">
-        <span>{{contact.display.name}}</span>
-        <small *ngIf="contact.group.member_count > 2">{{contact.group.member_count}} people</small>
+        <span>{{item.value.display.name}}</span>
+        <small *ngIf="item.value.group.member_count > 2">{{item.value.group.member_count}} people</small>
       </div>
     </div>
   </div>
 </div>
+
 
 <z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>
 <z-chat-share-add-contact #addContact></z-chat-share-add-contact>

@@ -10,15 +10,11 @@ declare var $:any;
 })
 
 export class ZChatSidebarComponent implements OnInit {
-  contacts:any = [];
+  item:any;
 
-  constructor(private chatService: ChatService) {
-  }
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    this.chatService.onContactsUpdate((res:any, newContact:any) => {
-      this.contacts = res.data;
-    });
-    this.chatService.getContacts();
+    this.item = this.chatService.getContacts();
   }
 }
