@@ -123,7 +123,7 @@ export class ApiBaseService {
     // } else {
     //   errMsg = error.message ? error.message : error.toString();
     // }
-    console.error('handle error', errMsg);
+    // console.error('handle error', errMsg);
     // return Observable.throw(errMsg);
 
 

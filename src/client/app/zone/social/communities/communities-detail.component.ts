@@ -11,9 +11,9 @@ import { LoadingService } from '../../../partials/loading/loading.service';
 import { ToastsService } from '../../../partials/toast/toast-message.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 
+declare  let _: any;
+declare  let $: any;
 
-
-declare  var _: any;
 @Component({
   moduleId: module.id,
   selector: 'z-social-community-detail',

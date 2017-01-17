@@ -8,27 +8,12 @@ declare var _: any;
   templateUrl: 'list.component.html'
 })
 export class ZChatShareListComponent implements OnInit {
-  messages: any = [];
+  item: any = [];
 
-  constructor(private chatService: ChatService) {
-    this.chatService.onContactSelect((contact:any) => {
-      this.chatService.getMessages(contact.group.id, (res:any) => {
-        this.messages = res.data;
-        // ByMe
-        this.messages = _.map(this.messages, (m:any) => {
-          if(this.chatService.user.profile.id == m.display.id) {
-            m.byMe = true;
-          } else {
-            m.byMe = false;
-          }
-          return m;
-        });
-        console.log(this.messages)
-      });
-    });
-  }
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    // console.log('ngOnInit2')
+    this.item = this.chatService.getCurrentMessages();
+    this.chatService.subscribeChanel();
   }
 }

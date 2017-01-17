@@ -242,7 +242,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
           this.albumService.removeFromAlbum(this.albumDetail.id, this.selectedPhotos).subscribe(
             (res: any)=> {
               if (res.success) {
-                _.map(this.selectedPhotos, (v)=> {
+                _.map(this.selectedPhotos, (v:any)=> {
                   _.remove(this.data, ['id', v.id]);
                 });
               }

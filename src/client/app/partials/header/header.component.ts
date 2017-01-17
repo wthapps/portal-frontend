@@ -12,7 +12,7 @@ import {
 
 import { SearchFormComponent } from './sub/search-form.component';
 import { NotificationService } from './notification/notification.service';
-import { ChannelNotificationService, AppearancesChannelService, ChatChannelService } from '../../shared/channels/index';
+import { ChannelNotificationService, AppearancesChannelService } from '../../shared/channels/index';
 
 declare var $: any;
 declare var _: any;
@@ -47,7 +47,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
               private router: Router,
               private notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService,
-              private chatChannelService: ChatChannelService,
               private notificationChannel: ChannelNotificationService) {
     this.urls = new Array();
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {

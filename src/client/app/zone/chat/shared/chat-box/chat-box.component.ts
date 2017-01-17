@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
+import { ChatService } from '../services/chat.service';
+
+declare var $:any;
 
 @Component({
   moduleId: module.id,
@@ -10,15 +13,21 @@ import { ZChatEmojiService } from '../emoji/emoji.service';
   `]
 })
 
-export class ZChatChatboxComponent implements OnInit {
-
+export class ZChatChatboxComponent {
   emojiData: any = [];
+
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
   }
 
-  onEmojiClick(e) {
+  send() {
+    this.chatService.sendMessage($('#chat-message-text').text());
+    $('#chat-message-text').text('');
+  }
+
+  onEmojiClick(e:any) {
     console.log(e);
   }
 }

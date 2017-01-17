@@ -120,7 +120,7 @@ export class ZMediaSharingComponent implements OnInit {
             this.hasUpdatedItems = false;
           }
         },
-        error => {
+        (error:any) => {
           console.log('error', error);
         });
 
@@ -136,7 +136,7 @@ export class ZMediaSharingComponent implements OnInit {
           this.selectedContacts = [];
           this.selectedContactGroups = [];
         },
-        error => {
+        (error:any) => {
           console.log('error', error);
         });
     }

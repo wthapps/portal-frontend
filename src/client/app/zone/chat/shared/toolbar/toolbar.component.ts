@@ -12,17 +12,14 @@ import { ChatService } from '../services/chat.service';
 export class ZChatToolbarComponent implements OnInit {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
-  contact: any;
+  item: any;
 
   constructor(private chatService: ChatService) {
 
   }
 
   ngOnInit() {
-    this.chatService.onContactSelect((contact:any) => {
-      this.contact = contact;
-    });
-    this.contact = this.chatService.getContactSelect();
+    this.item = this.chatService.getContactSelect();
   }
 
   onAddContact() {

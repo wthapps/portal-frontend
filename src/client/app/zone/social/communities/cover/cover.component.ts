@@ -11,6 +11,7 @@ import { SocialService } from '../../services/social.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { UserService } from '../../../../shared/services/user.service';
 import { ToastsService } from '../../../../partials/toast/toast-message.service';
+import { MemberListInviteComponent } from '../member/member-list-invite.component';
 
 declare var _: any;
 

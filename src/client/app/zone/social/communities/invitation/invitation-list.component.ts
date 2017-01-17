@@ -7,6 +7,7 @@ import {
   LoadingService
 } from '../../../../shared/index';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
+import { MemberListInviteComponent } from '../member/member-list-invite.component';
 
 
 declare var _: any;

@@ -25,7 +25,7 @@ export class AppearancesChannelService extends CableService {
           disconnected: function(){
             // console.log('disconnected');
           },
-          received: function(data){
+          received: function(data:any){
             // console.log('received', data);
           }
         }

@@ -7,8 +7,29 @@ export class StorageService {
   listItem: Array<StorageItem> = []
 
   save(key:string, value:any) {
+    // Convert StorageItem if need
+    if (value instanceof StorageItem) {
+      value = value.value
+    }
+
+    // Replace old value by new
+    let n  = true;
+    _.forEach(this.listItem, (i:any) => {
+      if(i.key == key)  {
+        i.value = value;
+        n = false;
+      }
+    });
+
+    // Create new store if need
+    if (n) {
+      this.saveNew(key, value);
+    }
+  }
+
+  saveNew(key:string, value:any) {
     let item = new StorageItem(key, value);
-    _.remove(this.listItem, (i) => {
+    _.remove(this.listItem, (i:any) => {
       return i.key == item.key;
     });
     this.listItem.push(item);
@@ -40,6 +61,10 @@ class StorageItem {
   constructor(key:string, value:any) {
     this.key = key;
     this.value = value;
+  }
+
+  save() {
+
   }
 }
 

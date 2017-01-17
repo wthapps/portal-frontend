@@ -8,7 +8,7 @@ import { Router }         from '@angular/router';
 @Injectable()
 export class AppService extends ApiBaseService {
 
-  constructor(http: Http: router: Router) {
+  constructor(http: Http, router: Router) {
     super(http, router);
   }
 
