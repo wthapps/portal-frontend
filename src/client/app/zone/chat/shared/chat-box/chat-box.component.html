@@ -10,9 +10,16 @@
         <button class="btn btn-default-inline">
           <i class="fa fa-book"></i>
         </button>
-        <button class="btn btn-default-inline">
-          <i class="fa fa-smile-o"></i>
-        </button>
+        <div class="btn-group dropup">
+          <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-smile-o"></i>
+          </button>
+          <ul class="dropdown-menu content-overflow p5" style="max-height: 150px;">
+            <li>
+              <i  *ngFor="let emoji of emojiData" class="wth-emoji wth-emoji-{{emoji}}" (click)="onEmojiClick(emoji)"></i>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="col-sm-6 text-right">
         <span class="text-line-btn text-fade">Press enter to send message</span>
