@@ -75,7 +75,8 @@ export class ZSocialCommunityDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
       this.getItem(this.uuid);
-      this.getIsAdmin(this.uuid);
+      this.checkCurrentUser(this.uuid);
+      // this.getIsAdmin(this.uuid);
       this.checkJoinRequestStatus(this.uuid);
     });
 
@@ -274,10 +275,10 @@ export class ZSocialCommunityDetailComponent implements OnInit {
 
         // Check if this user is a community member
 
-        if (this.item.community_users ) {
-          let users = _.map(this.item.community_users, (c: any) => { return c.user.uuid });
-          this.isMember = _.indexOf(users, this.userService.profile.uuid ) > -1 ? true : false;
-        }
+        // if (this.item.community_users ) {
+        //   let users = _.map(this.item.community_users, (c: any) => { return c.user.uuid });
+        //   this.isMember = _.indexOf(users, this.userService.profile.uuid ) > -1 ? true : false;
+        // }
         // this.isAdmin = this.userService.profile.uuid == this.item.admin.uuid ? true : false;
 
       },
@@ -289,10 +290,26 @@ export class ZSocialCommunityDetailComponent implements OnInit {
 
 
 
-  private getIsAdmin(uuid: string) {
-    this.apiBaseService.get(`zone/social_network/communities/${uuid}/is_admin/`).subscribe(
+  // private getIsAdmin(uuid: string) {
+  //   this.apiBaseService.get(`zone/social_network/communities/${uuid}/is_admin/`).subscribe(
+  //     (res: any)=> {
+  //       this.isAdmin = res.data;
+  //
+  //       // this.isAdmin = this.userService.profile.uuid == this.item.admin.uuid ? true : false;
+  //
+  //     },
+  //     error => {
+  //       this.errorMessage = <any>error;
+  //     }
+  //   );
+  // }
+
+  private checkCurrentUser(uuid: string) {
+    this.apiBaseService.get(`zone/social_network/communities/${uuid}/check_current_user/`).subscribe(
       (res: any)=> {
-        this.isAdmin = res.data;
+        this.isAdmin = res.data.is_admin;
+        this.isMember = res.data.is_member;
+        this.invitation = res.data.has_invitation;
 
         // this.isAdmin = this.userService.profile.uuid == this.item.admin.uuid ? true : false;
 

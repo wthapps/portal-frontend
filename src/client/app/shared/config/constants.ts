@@ -109,6 +109,14 @@ export let Constants = {
   communityRole: {
     admin: [1, "Admin"],
     member: [2, "Member"]
+  },
+  notificationSetting: {
+    limit: 2
+  },
+  seenStatus: {
+    new: "new",
+    seen: "seen",
+    seen_and_took_action: "seen_and_took_action"
   }
 };
 
