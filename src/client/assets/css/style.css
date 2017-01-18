@@ -10415,6 +10415,9 @@ Header
         margin-right: 10px; }
   .header .navbar-form {
     position: relative; }
+    @media (min-width: 1200px) {
+      .header .navbar-form {
+        margin-left: 250px; } }
   .header .navbar-searchTop {
     position: relative; }
     .header .navbar-searchTop .btn, .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-close"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-close"], .header .navbar-searchTop .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-icon="fa-check"], .wrapper .ui-dialog .ui-dialog-buttonpane .header .navbar-searchTop button[ng-reflect-icon="fa-check"] {
@@ -10439,7 +10442,7 @@ Header
       padding-left: 36px; }
       @media (min-width: 1200px) {
         .header .navbar-searchTop .form-control, .header .navbar-searchTop .page-body-content-chat .page-body-chat-message .chatbox-container-input, .page-body-content-chat .page-body-chat-message .header .navbar-searchTop .chatbox-container-input {
-          min-width: 370px; } }
+          min-width: 470px; } }
   .header .navbar-form-list {
     position: absolute;
     top: 38px;
