@@ -12,6 +12,15 @@
     @include flex-basis(auto);
     overflow: auto;
     padding-top: 10px;
+    position: relative;
+  }
+  .page-body-chat-content-in {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
   }
   .chat-message-container {
     max-width: 750px;

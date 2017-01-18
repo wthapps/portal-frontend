@@ -1,11 +1,10 @@
-<div class="chat-item-wrap">
-  <div class="chat-date">
-    <span>Nov 21 2016</span>
+<div class="page-body-chat-content-in" scrollToBottom lock-y-offset="10" observe-attributes="true">
+  <div class="chat-item-wrap">
+    <div class="chat-date">
+      <span>Nov 21 2016</span>
+    </div>
+    <div *ngFor="let message of messages">
+      <z-chat-share-item [message]="message"></z-chat-share-item>
+    </div>
   </div>
-  <div *ngFor="let message of messages">
-    <z-chat-share-item [message]="message"></z-chat-share-item>
-  </div>
-  <!--<z-chat-share-item></z-chat-share-item>-->
-  <!--<z-chat-share-item [byMe]="true"></z-chat-share-item>-->
-  <!--<z-chat-share-item></z-chat-share-item>-->
 </div>

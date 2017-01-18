@@ -56,6 +56,7 @@ import { SearchFormComponent } from '../partials/header/sub/search-form.componen
 import { SoSearchService } from '../partials/header/sub/social-search.service';
 import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.module';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
+import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -97,7 +98,8 @@ import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
     TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    scrollToBottomDirective
   ],
   exports: [
     ToolbarComponent,
@@ -137,7 +139,8 @@ import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
     TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    scrollToBottomDirective
   ]
 })
 export class SharedModule {
