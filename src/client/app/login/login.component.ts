@@ -90,6 +90,9 @@ export class LoginComponent implements OnInit {
               // Redirect the user
               this.router.navigate([redirect], navigationExtras);
 
+              // Store payment info
+
+
             }
           },
           error => {

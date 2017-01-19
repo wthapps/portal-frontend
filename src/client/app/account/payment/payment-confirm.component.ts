@@ -20,7 +20,8 @@ export class PaymentConfirmComponent implements OnInit {
   PanelTitle: string = 'Confirm Your Purchase';
   selected_plan: any = null;
   upgraded: boolean = false;
-  card: CreditCard;
+  // card: CreditCard;
+  card: any; // TODO: Refractor later
 
   constructor(private router: Router,
               private toastsService: ToastsService,
@@ -32,7 +33,11 @@ export class PaymentConfirmComponent implements OnInit {
   ngOnInit(): void {
     this.selected_plan = JSON.parse(Cookie.get('selected_plan'));
     if (this.userService.profile.has_payment_info) {
-      this.card = this.userService.profile.credit_cards[0];
+      // this.card = this.userService.profile.credit_cards[0];
+      if ( this.userService.defaultPayment.payment_type == 'creditcard')
+        this.card = this.userService.defaultPayment;
+      else
+        this.card = new CreditCard({billing_address: new BillingAddress});
     } else {
       this.card = new CreditCard({billing_address: new BillingAddress});
     }

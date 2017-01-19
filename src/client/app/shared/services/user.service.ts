@@ -12,6 +12,7 @@ export class UserService extends ApiBaseService {
 
   loggedIn: boolean = false;
   profile: User = null;
+  defaultPayment: any;
 
   constructor(http: Http, router: Router) {
     super(http, router);
@@ -119,6 +120,28 @@ export class UserService extends ApiBaseService {
     this.loggedIn = false;
     this.profile = null;
   }
+
+  getDefaultPayment(): Observable<Response> {
+    let userId = 1;
+    let path = "/users/" + userId + "/payments";
+
+    return super.post(path, [])
+      .map((res: any) => {
+        if (res) {
+          this.storeDefaultPayment(res);
+        }
+        return res;
+    });
+  }
+
+  private storeDefaultPayment(response: any) {
+    // Check if profile_image is null
+    if (response.user.default_payment) {
+      this.defaultPayment = response.user.default_payment;
+    }
+
+  }
+
 
   private storeUserInfo(response: any) {
     // Check if profile_image is null

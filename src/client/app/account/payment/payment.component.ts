@@ -51,6 +51,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   region: AbstractControl = null;
   postcode: AbstractControl = null;
 
+
   selected_plan: any = null;
   private next: string = '';
   private operation: string = '';
@@ -364,7 +365,8 @@ export class PaymentComponent implements AfterViewInit, OnInit {
           _this.loaddingService.stop();
           if (response.success) { // TODO refactor this code in server
             _this.userService.profile.has_payment_info = true;
-            _this.userService.profile.credit_cards = response.data.credit_cards;
+            // _this.userService.profile.credit_cards = response.data.credit_cards;
+            _this.userService.defaultPayment = response.user.default_payment;
 
             // Cookie.delete('profile');
             Cookie.set('profile', JSON.stringify(_this.userService.profile), 365, '/');
@@ -408,6 +410,9 @@ export class PaymentComponent implements AfterViewInit, OnInit {
         });
     _this.loaddingService.start();
   }
+
+
+
 }
 
 
