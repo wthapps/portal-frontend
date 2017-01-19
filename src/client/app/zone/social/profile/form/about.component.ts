@@ -103,8 +103,8 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
     if (this.data && this.data.basic_info) {
       this.removeAllLink();
 
-      (<FormControl>this.first_name).setValue(this.data.firstName);
-      (<FormControl>this.last_name).setValue(this.data.lastName);
+      (<FormControl>this.first_name).setValue(this.data.first_name);
+      (<FormControl>this.last_name).setValue(this.data.last_name);
       (<FormControl>this.nickname).setValue(this.data.nickname);
       (<FormControl>this.about).setValue(this.data.basic_info.about);
       (<FormControl>this.gender).setValue(this.data.basic_info.sex);
@@ -193,8 +193,8 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
     });
 
     let body = JSON.stringify({
-      first_name: values.firstName,
-      last_name: values.lastName,
+      first_name: values.first_name,
+      last_name: values.last_name,
       nickname: values.nickname,
       about: values.about,
       sex: values.gender,

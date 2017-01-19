@@ -10,17 +10,7 @@
     </p>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-      <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched),
-        'has-success': (first_name.valid && first_name.touched)}">
-        <label for="first_name">First name <span class="text-danger">*</span></label>
-        <input [formControl]="first_name" type="text" class="form-control" id="first_name"
-               placeholder="First name">
-        <div *ngIf="!first_name.valid && first_name.touched">
-              <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">
-                First name is required
-              </span>
-        </div>
-      </div>
+      last_name
 
       <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched),
         'has-success': (last_name.valid && last_name.touched)}">
