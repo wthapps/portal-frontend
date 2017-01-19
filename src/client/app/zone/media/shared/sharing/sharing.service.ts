@@ -17,4 +17,12 @@ export class ZMediaSharingService {
   getShared(body: any): any {
     return this.apiBaseService.post('zone/sharings/get_sharing_info', body);
   }
+
+  update(body: any): any {
+    return this.apiBaseService.put('zone/sharings/update', body);
+  }
+
+  add(body: any): any {
+    return this.apiBaseService.post(`zone/sharings`, body);
+  }
 }
