@@ -79,12 +79,12 @@
                     [formControl]="descCtrl"></textarea>
           <div class="form-group">
             <tag-input [maxItems]='100'
-                       [autocompleteItems]="tags"
-                       [autocomplete]="true"
                        (onRemove)="removeTag($event)"
                        (onAdd)="addTag($event)"
                        [formControl]="tagsCtrl"
             ></tag-input>
+            <!--[autocomplete]="true"-->
+            <!--[autocompleteItems]="tags"-->
             <!--[(ngModel)]="post.tags"-->
 
           </div>

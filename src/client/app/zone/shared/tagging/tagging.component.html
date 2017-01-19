@@ -21,10 +21,10 @@
 
           <tag-input [(ngModel)]='selectedTags'
                      [maxItems]='100'
-                     [autocompleteItems]="tags"
-                     [autocomplete]="true"
                      (onRemove)="onItemRemoved($event)"
                      (onAdd)="onItemAdded($event)">
+            <!--[autocomplete]="true"-->
+            <!--[autocompleteItems]="tags"-->
 
           </tag-input>
 
