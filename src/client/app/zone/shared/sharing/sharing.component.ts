@@ -71,7 +71,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     let _this = this;
-    $('#sharingModal').on('hidden.bs.modal', function (e:any) {
+    $('#sharingModal').on('hidden.bs.modal', function (e: any) {
       _this.modalHide.emit(false);
     });
   }
@@ -205,7 +205,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   unSelectContact(contact: any) {
-    _.remove(this.selectedContacts, (c:any) => {
+    _.remove(this.selectedContacts, (c: any) => {
       return c['id'] == contact['id'];
     });
     this.setUpdatedItemsStatus();
@@ -213,7 +213,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   searchContact(event: any) {
     this.filteredContacts = _.filter(this.contacts,
-      (c:any) => {
+      (c: any) => {
         return c['name'].toLowerCase().indexOf(event.query) != -1;
       });
   }
@@ -224,7 +224,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   unSelectContactGroup(group: any) {
-    _.remove(this.selectedContactGroups, (c:any) => {
+    _.remove(this.selectedContactGroups, (c: any) => {
       return c['id'] == group['id'];
     });
     this.setUpdatedItemsStatus();
@@ -232,7 +232,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   searchContactGroup(event: any) {
     this.filteredContactGroups = _.filter(this.contactGroups,
-      (c:any) => {
+      (c: any) => {
         return c['name'].toLowerCase().indexOf(event.query) != -1;
       });
   }

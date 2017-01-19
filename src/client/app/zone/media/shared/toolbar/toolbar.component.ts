@@ -2,10 +2,11 @@ import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
-import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
 import { Constants } from '../../../../shared/index';
 
+import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
+import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
+import { ZMediaSharingComponent } from '../sharing/sharing.component';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { Constants } from '../../../../shared/index';
 export class ZMediaToolbarComponent {
   @ViewChild('formAddAlbum') formAddAlbum: ZMediaFormAddToAlbumComponent;
   @ViewChild('formEditAlbum') formEditAlbum: ZMediaFormEditAlbumComponent;
+  @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
 
 
   @Input() type: string = '';
@@ -50,6 +52,10 @@ export class ZMediaToolbarComponent {
       case 'addToAlbum':
         this.formAddAlbum.getAlbum();
         this.formAddAlbum.modal.open();
+        break;
+      case 'share':
+        this.zoneSharing.modal.open();
+        this.zoneSharing.getShared();
         break;
       default:
         this.outEvent.emit(action);
