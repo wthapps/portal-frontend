@@ -5,19 +5,8 @@
   </modal-header>
 
   <modal-body>
-    {{selectedItems|json}}
-    <hr>
-    {{dataContacts|json}}
-    <hr>
-    {{dataContactGroups|json}}
-    <hr>
-    {{sharedContacts|json}}
-    <hr>
-    {{sharedContactGroups|json}}
     <p>Group</p>
-
-
-    <!--<div class="form-group">
+    <div class="form-group">
       <p-autoComplete
         [(ngModel)]="textContactGroups"
         [suggestions]="filteredContactGroups"
@@ -48,7 +37,8 @@
                 {{group.name}}
               </div>
               <div class="media-right">
-                <a href="#" (click)="toggleRemoving($event, group.id, false)">{{isDeletedItem(group.id, false) ? 'Cancel': 'Remove'}}</a>
+                <a href="#" (click)="toggleRemoving($event, group.id, false)">{{isDeletedItem(group.id, false) ?
+                  'Cancel': 'Remove'}}</a>
               </div>
             </div>
           </div>
@@ -76,7 +66,7 @@
       </a>
       <div class="collapse" id="collapseContact">
         <div class="modal-body-collapse-in">
-          <div class="media-list-item" *ngFor="let contact of sharedContacts" >
+          <div class="media-list-item" *ngFor="let contact of sharedContacts">
             <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
               <div class="media-left">
                 <figure>
@@ -87,14 +77,15 @@
                 {{contact.name}}
               </div>
               <div class="media-right">
-                <a href="#" (click)="toggleRemoving($event, contact.id)">{{isDeletedItem(contact.id) ? 'Cancel': 'Remove'}}</a>
+                <a href="#" (click)="toggleRemoving($event, contact.id)">{{isDeletedItem(contact.id) ? 'Cancel':
+                  'Remove'}}</a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>-->
+    <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>
     <div class="text-right">
       <button type="button" (click)="save()" class="btn btn-primary-inline">Save</button>
       <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
