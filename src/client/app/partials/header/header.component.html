@@ -44,22 +44,22 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown navbar-nav-notification">
+        <li class="dropdown navbar-nav-notification" >
           <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
-             data-toggle="dropdown" href="#" role="button">
-            <i class="fa fa-bell-o"></i><span class="notification-num">{{notifications.length}}</span>
+             data-toggle="dropdown" href="javascript:;" role="button" (click)="markAsSeen()">
+            <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="newNotifCount > 0">{{ newNotifCount }}</span>
           </a>
           <ul class="dropdown-menu" id="nav-notification-list">
             <li class="dropdown-menu-bar">
               <div class="pull-right">
-                <a href="#">Mark All as Read</a>
-                <a href="#">Mute</a>
-                <a href="#">Settings</a>
+                <a href="javascript:;" (click)="toggleAllReadStatus()">Mark All as Read</a>
+                <!--<a href="#">Mute</a>-->
+                <!--<a href="#">Settings</a>-->
               </div>
             </li>
             <li>
               <ul class="list-unstyled" id="notification-items">
-                <li class="navbar-nav-notification-item" *ngFor="let notification of notifications">
+                <li class="navbar-nav-notification-item" *ngFor="let notification of notifications" data-id="notification_{{notification.id}}">
                   <div class="media-center">
                     <div class="media-center-left">
                       <figure>
@@ -69,11 +69,12 @@
                       </figure>
                     </div>
                     <div class="media-body notification-content">
-                      <p class="media-heading">{{notification.text}}</p>
-                      <small>Jun 16 2016</small>
+                      <!--<p class="media-heading">{{notification.text}}</p>-->
+                      <p class="media-heading" [innerHTML]="notification.text"></p>
+                      <small>{{ notification.created_at | dateUntilNow }}</small>
                       <div style="white-space: nowrap" class="media-center-right">
                         <button *ngFor="let action of notification.actions"
-                                class="btn btn-xs btn-default mr5" type="button" (click)="doAction(action)">
+                                class="btn btn-xs btn-default mr5" type="button" (click)="doAction(action, notification.id)">
                           {{action.name}}
                         </button>
                       </div>
@@ -84,14 +85,15 @@
                           <i class="fa fa-ellipsis-v"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right sub-menu">
-                          <li><a href="javascript:;">Hide this notification</a></li>
-                          <li><a href="javascript:;" (click)="onPreference(item)">Turn off all notifications relate to this</a>
-                          </li>
+                          <li><a href="javascript:;" (click)="hideNotification(notification)">Hide this notification</a></li>
+                          <!--<li><a href="javascript:;" (click)="turnOffNotificaion(notification)">Turn off all notifications relate to this</a>
+                          </li>-->
                         </ul>
                       </div>
                       <div class="pull-right">
-                        <button class="btn btn-sm btn-default-inline" type="button">
-                          <i class="fa fa-circle"></i>
+                        <button class="btn btn-sm btn-default-inline" type="button" (click)="toggleReadStatus(notification)">
+                          <i class="fa fa-circle-o" *ngIf="!notification.is_read" ></i>
+                          <i class="fa fa-circle" *ngIf="notification.is_read" ></i>
                         </button>
                       </div>
                     </div>
@@ -100,7 +102,7 @@
               </ul>
             </li>
             <li class="view-all">
-              <a href="#">View All</a>
+              <a href="javascript:;" (click)="viewAllNotifications()">View All</a>
             </li>
           </ul>
         </li>
@@ -118,7 +120,7 @@
                 <div class="media-body">
                   <p class="media-heading bold mb0">{{userService.profile.first_name}} {{userService.profile.last_name}}</p>
                   <small class="text-fade">{{userService.profile.email}}</small>
-                  <div class="navbar-nav-plan mt10">
+                  <div class="navbar-nav-plan m">
                     <p class="media-heading bold">{{userService.profile.plan.name}}</p>
                     <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
                             [routerLink]="['/account/plans']">

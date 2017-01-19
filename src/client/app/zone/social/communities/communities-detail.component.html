@@ -25,7 +25,7 @@
             </div>
             <div class="z-social-media-right mb5">
               <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)" data-toggle="modal"
-                      data-target="#modal-social-share-com">
+                      data-target="#modal-social-share-com" *ngIf="isMember">
                 <i class="fa fa-user-plus"></i> Invite Member
               </button>
 

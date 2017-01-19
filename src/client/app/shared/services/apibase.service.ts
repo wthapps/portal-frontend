@@ -5,6 +5,7 @@ import { Cookie }     from 'ng2-cookies/ng2-cookies';
 import { Constants }     from '../index';
 import { Router } from '@angular/router';
 
+declare  var _: any;
 @Injectable()
 export class ApiBaseService {
   urls = Constants.urls;
@@ -117,6 +118,7 @@ export class ApiBaseService {
     // // In a real world app, we might use a remote logging infrastructure
     // let errMsg: string;
     // if (error instanceof Response) {
+    //   console.log('errro', error);
     //   const body = error.json() || '';
     //   const err = body.error || JSON.stringify(body);
     //   errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
@@ -124,8 +126,12 @@ export class ApiBaseService {
     //   errMsg = error.message ? error.message : error.toString();
     // }
     // console.error('handle error', errMsg);
+
     // return Observable.throw(errMsg);
 
-
+    // if (error.status === 401 && error.statusText == 'Unauthorized') {
+    //   let _route = this.router;
+    //   _route.navigate(['/login']);
+    // }
   }
 }
