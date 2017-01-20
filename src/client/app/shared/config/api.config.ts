@@ -1,7 +1,8 @@
-
-var host = '127.0.0.1:4000';
+import { Config } from './env.config';
+// var host = '54.213.41.54:40000';
 export let ApiConfig = {
-  url: `http://${host}`,
+  // url: `https://${host}`,
+  url: Config.API,
 
   actionCable: {
     notificationChannel: 'NotificationChannel',

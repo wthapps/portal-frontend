@@ -44,7 +44,9 @@ export class ZMediaFormEditAlbumComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     $(document).on('hidden.bs.modal', '.modal', function () {
-      $('.modal:visible').length && $(document.body).addClass('modal-open');
+      if($('.modal:visible').length){
+        $(document.body).addClass('modal-open');
+      }
     });
   }
 
