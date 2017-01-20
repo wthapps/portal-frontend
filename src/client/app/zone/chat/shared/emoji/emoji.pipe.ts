@@ -10,7 +10,7 @@ export class ZChatEmojiPipe implements PipeTransform {
   transform(value: string, args: any[]) {
     value = value + ''; // make sure it's a string
     return value.replace(ZChatEmojiService.emojisRegex, (match, text)=> {
-      return "<i class=\"wth-emoji wth-emoji-" + text + "\" title=\":" + text + ":\"></i>";
+      return '<i class=\'wth-emoji wth-emoji-' + text + '\' title=\':' + text + ':\'></i>';
     });
   }
 }
