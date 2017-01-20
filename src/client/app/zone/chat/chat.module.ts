@@ -28,6 +28,7 @@ import { ZChatHistoryComponent } from './history/index';
 import { ZChatSettingComponent } from './setting/index';
 import { ChatService } from './shared/services/chat.service';
 import { ZChatEmojiModule } from './shared/emoji/emoji.module';
+import { PostModule } from '../social/post/post.module';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ZChatEmojiModule } from './shared/emoji/emoji.module';
     ReactiveFormsModule,
     Ng2HdModule,
     InputSwitchModule,
-    ZChatEmojiModule
+    ZChatEmojiModule,
+    PostModule
   ],
   declarations: [
     ZChatComponent,

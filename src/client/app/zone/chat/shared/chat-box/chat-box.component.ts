@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
+import { PostPhotoSelectComponent } from '../../../social/post/post-photo-select.component';
 
 declare var $:any;
 
@@ -15,11 +16,13 @@ declare var $:any;
 
 export class ZChatChatboxComponent {
   emojiData: any = [];
+  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
+    this.photoModal.action = 'UPLOAD';
   }
 
   send() {
@@ -29,5 +32,16 @@ export class ZChatChatboxComponent {
 
   onEmojiClick(e:any) {
     console.log(e);
+  }
+
+  onOpenSelectPhotos() {
+    this.photoModal.open();
+  }
+
+  upload(e:any) {
+    console.log('aaaaaaaaaaaaaaaaaaaa', e);
+  }
+  done(e:any) {
+    console.log('aaaaaaaaaaaaaaaaaaaa', e);
   }
 }

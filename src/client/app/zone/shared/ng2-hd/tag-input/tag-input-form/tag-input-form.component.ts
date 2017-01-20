@@ -51,7 +51,7 @@ export class TagInputFormComponent implements OnInit {
      * @name value
      * @returns {AbstractControl}
      */
-    public get value(): AbstractControl {
+    get value(): AbstractControl {
         return this.form.get('item');
     }
 
@@ -59,7 +59,7 @@ export class TagInputFormComponent implements OnInit {
      * @name isInputFocused
      * @returns {boolean}
      */
-    public isInputFocused(): boolean {
+    isInputFocused(): boolean {
         return document.activeElement === this.input.nativeElement;
     }
 
@@ -68,7 +68,7 @@ export class TagInputFormComponent implements OnInit {
      * @param messages
      * @returns {string[]}
      */
-    public getErrorMessages(messages: any): string[] {
+    getErrorMessages(messages: any): string[] {
         return Object.keys(messages)
             .filter(err => this.value.hasError(err))
             .map(err => messages[ err ]);
@@ -78,14 +78,14 @@ export class TagInputFormComponent implements OnInit {
      * @name hasErrors
      * @returns {boolean}
      */
-    public hasErrors(): boolean {
+    hasErrors(): boolean {
         return this.form.dirty && this.form.value.item && this.form.invalid;
     }
 
 	/**
      * @name focus
      */
-    public focus(): void {
+    focus(): void {
         this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
     }
 
@@ -93,7 +93,7 @@ export class TagInputFormComponent implements OnInit {
      * @name getElementPosition
      * @returns {ClientRect}
      */
-    public getElementPosition(): ClientRect {
+    getElementPosition(): ClientRect {
         return this.input.nativeElement.getBoundingClientRect();
     }
 
@@ -101,7 +101,7 @@ export class TagInputFormComponent implements OnInit {
      * @name onKeyDown
      * @param $event
      */
-    private onKeyDown($event: any) {
+    onKeyDown($event: any) {
         return this.onKeydown.emit($event);
     }
 }

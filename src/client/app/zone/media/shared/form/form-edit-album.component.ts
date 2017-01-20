@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 import {
   FormGroup,
   AbstractControl,
@@ -43,8 +43,8 @@ export class ZMediaFormEditAlbumComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    $(document).on('hidden.bs.modal', '.modal', function () {
-      if($('.modal:visible').length){
+    $(document).on('hidden.bs.modal', '.modal', ()=> {
+      if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
       }
     });

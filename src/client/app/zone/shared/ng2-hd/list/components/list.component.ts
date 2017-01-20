@@ -10,7 +10,8 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  AfterViewInit
+  AfterViewInit,
+  AfterViewChecked
 } from '@angular/core';
 
 import {
@@ -61,7 +62,7 @@ declare var _: any;
   styleUrls: ['list.component.css']
 
 })
-export class ListComponent extends SearchInputAccessor implements OnInit, OnChanges, AfterViewInit {
+export class ListComponent extends SearchInputAccessor implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
   /**
    * @name separatorKeys
    * @desc keyboard keys with which a user can separate items
@@ -158,23 +159,23 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name onTextChangeDebounce
    * @type {number}
    */
-  @Input() private onTextChangeDebounce: number = 250;
+  @Input() onTextChangeDebounce: number = 250;
 
   /**
    * - custom id assigned to the input
    * @name id
    */
-  @Input() private inputId: string;
+  @Input() inputId: string;
 
   /**
    * - custom class assigned to the input
    */
-  @Input() private inputClass: string;
+  @Input() inputClass: string;
 
   /**
    * - custom class assigned to the input
    */
-  @Input() private objectName: string = undefined;
+  @Input() objectName: string = undefined;
 
   /**
    * @name onAdd
@@ -451,7 +452,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name hasCustomTemplate
    * @returns {boolean}
    */
-  private hasCustomTemplate(): boolean {
+  hasCustomTemplate(): boolean {
     if (!this.template.nativeElement) {
       return false;
     }

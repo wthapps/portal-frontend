@@ -62,8 +62,8 @@ function getMatchingItems(value: string): Array<any> {
   const itemsMatching: Array<any> = _.filter(this.autocompleteItems, (item: any) => {
     return (item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
   });
-  const items = this.autocompleteItems;
-  const lowercaseValue = value.toLowerCase();
+  // const items = this.autocompleteItems;
+  // const lowercaseValue = value.toLowerCase();
 
   // items.forEach(item => {
   //     const condition = item.toLowerCase().indexOf(lowercaseValue) >= 0 && this.items.indexOf(item) === -1;
@@ -78,8 +78,8 @@ function getMatchingItems(value: string): Array<any> {
 
 export function autoSearchListener(ev: any): void {
   const value: string = this.inputForm.value.value;
-  const position: ClientRect = this.inputForm.getElementPosition();
-  const key = ev.keyCode;
+  // const position: ClientRect = this.inputForm.getElementPosition();
+  // const key = ev.keyCode;
   const itemsMatching = getMatchingItems.call(this, value);
 
   this.itemsSearching = itemsMatching;

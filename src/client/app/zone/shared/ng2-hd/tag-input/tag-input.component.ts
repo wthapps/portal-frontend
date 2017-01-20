@@ -7,7 +7,9 @@ import {
     EventEmitter,
     Renderer,
     ViewChild,
-    OnInit
+    OnInit,
+    AfterViewChecked,
+    AfterViewInit
 } from '@angular/core';
 
 import {
@@ -28,8 +30,8 @@ import {
     backSpaceListener,
     autoCompleteListener,
     customSeparatorKeys,
-    addListener,
-    onAutocompleteItemClicked
+    addListener
+    //onAutocompleteItemClicked
 } from './helpers/events-actions';
 
 import { Ng2Dropdown } from 'ng2-material-dropdown';
@@ -55,7 +57,7 @@ import 'rxjs/add/operator/debounceTime';
     styleUrls: ['tag-input.css'],
     templateUrl: 'tag-input.component.html'
 })
-export class TagInputComponent extends TagInputAccessor implements OnInit {
+export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewChecked, AfterViewInit {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
@@ -466,24 +468,24 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     //     }
     // }
 
+  /**
+   * @name hasCustomTemplate
+   * @returns {boolean}
+   */
+   hasCustomTemplate(): boolean {
+      if (!this.template.nativeElement) {
+        return false;
+      }
+
+      return this.template.nativeElement.children.length > 0;
+    }
+
     /**
      * @name maxItemsReached
      * @returns {boolean}
      */
     private get maxItemsReached(): boolean {
       return this.maxItems !== undefined && this.items.length >= this.maxItems;
-    }
-
-    /**
-     * @name hasCustomTemplate
-     * @returns {boolean}
-     */
-    private hasCustomTemplate(): boolean {
-      if (!this.template.nativeElement) {
-        return false;
-      }
-
-      return this.template.nativeElement.children.length > 0;
     }
 
     /**

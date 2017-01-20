@@ -34,10 +34,11 @@ export class PaymentConfirmComponent implements OnInit {
     this.selected_plan = JSON.parse(Cookie.get('selected_plan'));
     if (this.userService.profile.has_payment_info) {
       // this.card = this.userService.profile.credit_cards[0];
-      if ( this.userService.defaultPayment.payment_type == 'creditcard')
+      if ( this.userService.defaultPayment.payment_type == 'creditcard') {
         this.card = this.userService.defaultPayment;
-      else
+      } else {
         this.card = new CreditCard({billing_address: new BillingAddress});
+      }
     } else {
       this.card = new CreditCard({billing_address: new BillingAddress});
     }

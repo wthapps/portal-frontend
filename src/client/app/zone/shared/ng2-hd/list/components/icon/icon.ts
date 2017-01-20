@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: 'icon.html'
 })
 export class DeleteIconComponent {
-  ngOnInit() {
-  }
+  // ngOnInit() {
+  // }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 import { ChatService } from '../services/chat.service';
 

@@ -48,7 +48,7 @@ export class ChatService {
           // this.handler.triggerEvent('on_contacts_change', res);
         }
       }
-    )
+    );
   }
 
   selectContact(contact:any) {
@@ -74,7 +74,7 @@ export class ChatService {
           this.storage.save('chat_messages_group_' + groupId, res);
           this.storage.save('current_chat_messages', res);
         }
-      )
+      );
     }
   }
 
@@ -103,7 +103,7 @@ export class ChatService {
   sendMessage(message:any) {
     let item = this.storage.find('contact_select');
     if (item && item.value && message) {
-      this.chanel.sendMessage(item.value.group.id, message)
+      this.chanel.sendMessage(item.value.group.id, message);
     }
   }
 
