@@ -21,12 +21,12 @@ export class NotificationService {
     return this.api.get(`zone/social_network/notifications/get_latest/` + offset + `/` + limit);
   }
 
-  hideNotification(notification) {
+  hideNotification(notification: any) {
     let notif_id = notification.id;
     return this.api.delete(`zone/social_network/notifications/` + notif_id);
   }
 
-  turnOffNotification(notification) {
+  turnOffNotification(notification: any) {
     // TODO
   }
 
@@ -36,7 +36,7 @@ export class NotificationService {
 
   markAsSeen(notifications: any) {
 
-    let notif_ids = _.map(notifications, (i) => i.id);
+    let notif_ids = _.map(notifications, (i: any) => i.id);
     let body = {"ids" : notif_ids};
 
     // TODO: Convert this method to put

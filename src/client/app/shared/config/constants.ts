@@ -111,7 +111,7 @@ export let Constants = {
     member: [2, "Member"]
   },
   notificationSetting: {
-    limit: 2
+    limit: 10
   },
   seenStatus: {
     new: "new",

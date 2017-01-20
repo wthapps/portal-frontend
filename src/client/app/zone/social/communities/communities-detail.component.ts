@@ -31,7 +31,7 @@ export class ZSocialCommunityDetailComponent implements OnInit {
     joinRequests: 'join_requests',
     blacklist: 'blacklist'
   };
-  selectedTab: string = '';
+  selectedTab: string = 'post';
 
   item: any = null;
   uuid: string;
@@ -322,6 +322,8 @@ export class ZSocialCommunityDetailComponent implements OnInit {
 
   private getTabItems(uuid: string, tabName: string) {
     this.tabItems = [];
+    if(tabName == undefined)
+      return;
     this.apiBaseService.get(`zone/social_network/communities/${uuid}/${tabName}`).subscribe(
       (res: any)=> {
         this.tabItems = res.data;

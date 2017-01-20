@@ -207,14 +207,14 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       });
   }
 
-  turnOffNotification(notification) {
+  turnOffNotification(notification: any) {
 
   }
 
   countNewNotifications() {
     // this.newNotifCount = 0;
     // this.newNotifCount = _.filter(this.notifications, (n) => n.seen_state == Constants.seenStatus.new).length;
-    let temp_notif_count = _.filter(this.notifications, (n) => n.seen_state == Constants.seenStatus.new).length;
+    let temp_notif_count = _.filter(this.notifications, (n: any) => n.seen_state == Constants.seenStatus.new).length;
     if (temp_notif_count > 0)
       this.newNotifCount -= temp_notif_count;
   }
@@ -263,7 +263,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   }
 
-  doAction(action: string, notif_id: string) {
+  doAction(action: any, notif_id: string) {
     let link = action.link;
     let method = action.method;
     let params = action.params;
@@ -373,7 +373,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       .subscribe(
         (result: any) => {
           this.countNewNotifications();
-          _.each(this.notifications, (i) => i.seen_state = Constants.seenStatus.seen);
+          _.each(this.notifications, (i: any) => i.seen_state = Constants.seenStatus.seen);
 
           // this.newNotifCount -= this.notifications.length;
           // this.notifications = result.data;
@@ -392,7 +392,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
           // let currentNotif =  _.filter(this.notifications, {id: this.currentNotifId});
           // currentNotif.is_read = !currentNotif.is_read ;
 
-          _.each(this.notifications, (n) => { if(n.id == this.currentNotifId) n.is_read = !n.is_read;});
+          _.each(this.notifications, (n: any) => { if(n.id == this.currentNotifId) n.is_read = !n.is_read;});
 
         },
         (error: any) => {
@@ -405,7 +405,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       .subscribe(
         (result: any) => {
           let overallReadStatus = result.data;
-          _.each(this.notifications, (n) => {n.is_read = overallReadStatus});
+          _.each(this.notifications, (n: any) => {n.is_read = overallReadStatus});
 
         },
         (error: any) => {

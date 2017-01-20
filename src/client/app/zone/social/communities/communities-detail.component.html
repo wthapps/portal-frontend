@@ -51,7 +51,7 @@
       </div>
       <nav class="zone-social-cover-nav">
         <ul class="list-unstyled clearfix">
-          <li [ngClass]="selectedTab==undefined? 'active': ''">
+          <li [ngClass]="selectedTab==undefined || selectedTab == 'post' ? 'active': ''">
             <a [routerLink]="['/zone/social/communities/'+ uuid]" [queryParams]="{}">Post</a>
           </li>
           <li [ngClass]="selectedTab=='about'? 'active': ''">
@@ -78,7 +78,8 @@
             <ul class="dropdown-menu dropdown-custom">
               <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
               <li><a href="#" (click)="onPreference()">Preferences</a></li>
-              <li *ngIf="isAdmin"><a [routerLink]="['/zone/social/communities/'+uuid+'/members']">Manage members</a></li>
+              <!--<li *ngIf="isAdmin"><a [routerLink]="['/zone/social/communities/'+uuid+'/members']">Manage members</a></li>-->
+              <li *ngIf="isAdmin"><a [routerLink]="['/zone/social/communities/'+uuid+'?tab=members']">Manage members</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
               <li><a href="#" (click)="onLeave()">Leave community</a></li>
@@ -136,10 +137,10 @@
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="javascript:;" (click)="makeAdmin(item.user)">Make Admin</a></li>
-                  <li><a href="javascript:;" (click)="deleteMember(item.user)">Remove</a></li>
+                  <li><a href="javascript:;" (click)="makeAdmin(item.user)" *ngIf="isAdmin">Make Admin</a></li>
+                  <li><a href="javascript:;" (click)="deleteMember(item.user)" *ngIf="isAdmin">Remove</a></li>
                   <li><a href="javascript:;" (click)="onReportMember(item.user ? item.user.uuid : '')">Report Member</a></li>
-                  <li><a href="#">Blacklist</a></li>
+                  <li><a href="#" *ngIf="isAdmin">Blacklist</a></li>
                 </ul>
               </div>
               <img [alt]="item.user.name" [src]="item.user.profile_image" title="" width="30">
