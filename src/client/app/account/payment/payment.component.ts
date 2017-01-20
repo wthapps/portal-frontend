@@ -339,7 +339,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
   }
 
 
-  changePaymentMethod(element: any){
+  changePaymentMethod(element: any) {
     this.paymentMethod = element.value;
   }
 

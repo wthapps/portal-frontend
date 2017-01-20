@@ -69,7 +69,7 @@ export class ComMemberListComponent implements OnInit {
   }
 
   onReportMember(uuid: string): any {
-    if (uuid != undefined && uuid != "") {
+    if (uuid != undefined && uuid != '') {
       this.zoneReportService.member(uuid);
       this.uuidUser = uuid;
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 

@@ -4,7 +4,8 @@ import {
   Output,
   EventEmitter,
   Renderer,
-  ViewChild
+  ViewChild,
+  OnInit
 } from '@angular/core';
 
 import {
@@ -20,7 +21,7 @@ import {
   selector: 'search-form',
   templateUrl: 'search-form.component.html'
 })
-export class SearchFormComponent {
+export class SearchFormComponent implements OnInit {
   @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() public onBlur: EventEmitter<any> = new EventEmitter();
   @Output() public onFocus: EventEmitter<any> = new EventEmitter();
@@ -30,7 +31,6 @@ export class SearchFormComponent {
   // inputs
   @Input() public placeholder: string;
   @Input() public validators: ValidatorFn[] = [];
-
   @Input() public inputId: string;
   @Input() public inputClass: string;
 
@@ -51,7 +51,7 @@ export class SearchFormComponent {
    * @name value
    * @returns {AbstractControl}
    */
-  public get value(): AbstractControl {
+  get value(): AbstractControl {
     return this.form.get('item');
   }
 
@@ -59,7 +59,7 @@ export class SearchFormComponent {
    * @name isInputFocused
    * @returns {boolean}
    */
-  public isInputFocused(): boolean {
+  isInputFocused(): boolean {
     return document.activeElement === this.input.nativeElement;
   }
 
@@ -68,7 +68,7 @@ export class SearchFormComponent {
    * @param messages
    * @returns {string[]}
    */
-  public getErrorMessages(messages: any): string[] {
+  getErrorMessages(messages: any): string[] {
     return Object.keys(messages)
       .filter(err => this.value.hasError(err))
       .map(err => messages[err]);
@@ -78,14 +78,14 @@ export class SearchFormComponent {
    * @name hasErrors
    * @returns {boolean}
    */
-  public hasErrors(): boolean {
+  hasErrors(): boolean {
     return this.form.dirty && this.form.value.item && this.form.invalid;
   }
 
   /**
    * @name focus
    */
-  public focus(): void {
+  focus(): void {
     this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
   }
 
@@ -93,7 +93,7 @@ export class SearchFormComponent {
    * @name getElementPosition
    * @returns {ClientRect}
    */
-  public getElementPosition(): ClientRect {
+  getElementPosition(): ClientRect {
     return this.input.nativeElement.getBoundingClientRect();
   }
 
@@ -101,7 +101,7 @@ export class SearchFormComponent {
    * @name onKeyDown
    * @param $event
    */
-  private onKeyDown($event: any) {
+  onKeyDown($event: any) {
     return this.onKeydown.emit($event);
   }
 }

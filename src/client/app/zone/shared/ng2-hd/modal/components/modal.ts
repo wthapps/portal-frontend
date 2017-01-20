@@ -13,11 +13,6 @@ declare var $: any;
 
 @Component({
   selector: 'hd-modal',
-  host: {
-    'class': 'modal',
-    'role': 'dialog',
-    'tabindex': '-1'
-  },
   template: `
     <!--<div class='modal modal-social'>-->
         <div class='modal-dialog' [ngClass]='getCssClasses()'>
@@ -33,6 +28,11 @@ export class HdModalComponent implements OnInit, OnDestroy {
 
   instance: ModalInstance;
   visible: boolean = false;
+
+  @HostBinding('attr.class') class = 'modal';
+  @HostBinding('attr.role') role = 'dialog';
+  @HostBinding('attr.tabindex') tabindex = '-1';
+
 
   @Input() animation: boolean = true;
   @Input() backdrop: string | boolean = true;
