@@ -16343,6 +16343,23 @@ wth-app:empty + .dots-loader-wrap {
       float: left;
       margin: 0 5px 5px 0; }
 
+.aside-chat .p-list-user li {
+  position: relative; }
+  .aside-chat .p-list-user li:hover {
+    background-color: rgba(216, 216, 216, 0.5); }
+
+.aside-chat .p-list-user a {
+  display: block; }
+  .aside-chat .p-list-user a, .aside-chat .p-list-user a:hover {
+    text-decoration: none !important; }
+  .aside-chat .p-list-user a:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; }
+
 .page-body-content-chat {
   position: absolute;
   top: 0;

@@ -1,3 +1,28 @@
+.aside-chat {
+  .p-list-user {
+    li {
+      position: relative;
+      &:hover {
+        background-color: rgba(#d8d8d8, 0.5);
+      }
+    }
+    a {
+      display: block;
+      &, &:hover {
+        text-decoration: none !important;
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
+  }
+}
+
 .page-body-content-chat {
   position: absolute;
   top: 0;
