@@ -4,8 +4,8 @@
          placeholder="Type message here" autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()"></div>
     <div class="row">
       <div class="col-sm-6">
-        <button class="btn btn-default-inline">
-          <i class="fa fa-camera"></i>
+        <button class="btn btn-default-inline" (click)="onOpenSelectPhotos()">
+          <i class="fa fa-camera" ></i>
         </button>
         <button class="btn btn-default-inline">
           <i class="fa fa-book"></i>
@@ -28,3 +28,4 @@
     </div>
   </div>
 </div>
+<post-photo-select #photoSelectModal (onUpload)="upload($event)" (onNext)="done($event)"></post-photo-select>
