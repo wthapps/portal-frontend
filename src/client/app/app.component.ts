@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Config } from './shared/index';
 import './operators';
 // import 'actioncable-js'
 
@@ -19,9 +18,7 @@ import './operators';
 })
 
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {
-    console.log('Environment config', Config);
-  }
+  constructor(private router: Router) {}
 
   /**
    * Issues https://github.com/angular/angular/issues/7791

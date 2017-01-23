@@ -50,3 +50,4 @@ gulpfile.js.map
 *_BAK*
 
 /src/client/assets/.tmp/
+tools/env/dev.ts
