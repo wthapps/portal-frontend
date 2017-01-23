@@ -1,15 +1,13 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
 import {
   FormGroup,
-  AbstractControl,
   FormBuilder,
   Validators,
-  FormControl,
   FormArray
 } from '@angular/forms';
 import { CustomValidator } from '../../../../shared/validator/custom.validator';
@@ -40,7 +38,7 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
   form: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private countryService: CountryService,
               private loadingService: LoadingService,
               private socialService: SocialService,
@@ -67,19 +65,19 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.removeAll();
     let _this = this;
-    if (this.data) {
+    if (this.data && this.data.contact) {
       this.removeAll();
 
-      let additional_emails_edit = this.data.email;
-      _.map(additional_emails_edit, (v)=> {
+      let additional_emails_edit = this.data.contact.emails;
+      _.map(additional_emails_edit, (v: any)=> {
         _this.addEmail(v);
       });
-      let additional_phones_edit = this.data.phone;
-      _.map(additional_phones_edit, (v)=> {
+      let additional_phones_edit = this.data.contact.phones;
+      _.map(additional_phones_edit, (v: any)=> {
         _this.addPhone(v);
       });
-      let additional_address_edit = this.data.address;
-      _.map(additional_address_edit, (v)=> {
+      let additional_address_edit = this.data.contact.addresses;
+      _.map(additional_address_edit, (v: any)=> {
         _this.addAddress(v);
       });
     }
@@ -200,25 +198,28 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
     console.log(values);
 
     // get links if link is not empty
-    /*let emails_filter = [];
-    _.map(values.email, (v)=> {
+    let emails_filter: any = [];
+    _.map(values.emails, (v: any)=> {
       if (v.email != '') {
-        emails_filter.push(v);
+        emails_filter.push(v.email);
       }
-    });*/
-
-    let body = JSON.stringify({
-      email: values.emails,
-      phone: values.phones,
-      address: values.addresses
     });
+    let phones_filter: any = [];
+    _.map(values.phones, (v: any)=> {
+      if (v.phone != '') {
+        phones_filter.push(v.phone);
+      }
+    });
+    let data: any = {};
+    data.emails = emails_filter;
+    data.phones = phones_filter;
+    data.addresses = values.addresses;
 
-    console.log('body:', body);
 
-    this.apiBaseServiceV2.put(`zone/social_network/users/${this.data.uuid}`, body)
+    this.socialService.user.update({contact: data})
       .subscribe((result: any) => {
           console.log(result);
-          //this.updated.emit(result.data);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, Input, EventEmitter } from '@angular/core';
 
 // import {ZPhotoDetailComponent} from './photo-detail.component';
 import { Photo } from '../../../shared/models/photo.model';
@@ -21,7 +21,7 @@ declare var _: any;
   styleUrls: ['favourites.component.css']
 })
 
-export class ZoneFavouritesComponent extends BaseMediaComponent implements OnInit {
+export class ZoneFavouritesComponent extends BaseMediaComponent implements OnInit, OnChanges {
   showImg: boolean = false;
   imgId: number;
   sendActionDetail: any;
@@ -37,11 +37,11 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private apiService: ApiBaseService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService,
-              private confirmationService: ConfirmationService) {
-    super(MediaType.favourites, this.apiService);
+  constructor(public apiService: ApiBaseService,
+              public toastsService: ToastsService,
+              public loadingService: LoadingService,
+              public confirmationService: ConfirmationService) {
+    super(MediaType.favourites, apiService);
   }
 
   ngOnInit() {
@@ -197,7 +197,6 @@ export class ZoneFavouritesComponent extends BaseMediaComponent implements OnIni
 
 
     this.apiService.post(`zone/photos/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           _.map(newFavourite, (v: any)=> {
             this.items.photos = _.reject(this.items.photos, ['id', v.id]);

@@ -1,34 +1,42 @@
-<div class="zone-social">
+<div class="page-body-content-in zone-social">
   <div class="zone-social-container">
     <div class="z-social-box">
       <div class="z-social-box-header">
-        <nav class="z-social-box-header-nav pull-left">
-          <ul>
-            <li>
-              <a [ngClass]="{'active': currentState == 'friends'}" (click)="getDataList('friends')" href="#">
+        <nav class="z-social-box-header-nav pull-left nav-tabs-wrap">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs">
+            <li [ngClass]="{'active': currentState == 'friends'}">
+              <a (click)="getDataList('friends')" href="#">
                 FRIENDS <span *ngIf="data.friends" class="text-fade">{{data.friends.length}}</span>
               </a>
             </li>
-            <li>
-              <a [ngClass]="{'active': currentState == 'followers'}" (click)="getDataList('followers')" href="#">
+            <li [ngClass]="{'active': currentState == 'followers'}">
+              <a (click)="getDataList('followers')" href="#">
                 FOLLOWERS <span *ngIf="data.followers" class="text-fade">{{data.followers.length}}</span>
               </a>
             </li>
-            <li>
-              <a [ngClass]="{'active': currentState == 'followings'}" (click)="getDataList('followings')" href="#">
+            <li [ngClass]="{'active': currentState == 'followings'}">
+              <a (click)="getDataList('followings')" href="#">
                 FOLLOWING <span *ngIf="data.followings" class="text-fade">{{data.followings.length}}</span>
               </a>
             </li>
-            <li>
-              <a [ngClass]="{'active': currentState == 'blacklists'}" (click)="getDataList('blacklists')" href="#">
+            <li [ngClass]="{'active': currentState == 'blacklists'}">
+              <a (click)="getDataList('blacklists')" href="#">
                 BLACKLIST <span *ngIf="data.blacklists" class="text-fade">{{data.blacklists.length}}</span>
               </a>
             </li>
-            <li>
-              <a style="padding: 2px !important" [ngClass]="{'active': currentState == 'notification'}" (click)="getNotifications()" href="javascript:;">
+            <li [ngClass]="{'active': currentState == 'notification'}">
+              <a style="padding: 2px !important" (click)="getNotifications()" href="javascript:;">
                 NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right">{{newNotifications.length}}</span>
               </a>
             </li>
+          </ul>
+        </nav>
+
+
+        <nav class="z-social-box-header-nav pull-left">
+          <ul>
+
           </ul>
         </nav>
 

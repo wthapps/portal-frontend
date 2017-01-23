@@ -71,7 +71,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     let _this = this;
-    $('#sharingModal').on('hidden.bs.modal', function (e:any) {
+    $('#sharingModal').on('hidden.bs.modal', function (e: any) {
       _this.modalHide.emit(false);
     });
   }
@@ -87,7 +87,6 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
     if (changes['modalShow'] && changes['modalShow'].currentValue) {
       let body = JSON.stringify({photos: _.map(this.selectedItems, 'id'), albums: []});
       this.apiService.post(`zone/sharings/get_sharing_info`, body)
-        .map(res => res.json())
         .subscribe((result: any) => {
             this.sharedContacts = result['data']['contacts'];
             this.sharedContactGroups = result['data']['contactgroups'];
@@ -150,7 +149,6 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
       });
 
       this.apiService.put(`zone/sharings/update`, body)
-        .map(res => res.json())
         .subscribe((result: any) => {
             this.sharedContacts = result['data'].contacts;
             this.sharedContactGroups = result['data'].contactgroups;
@@ -175,7 +173,6 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
         contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
       });
       this.apiService.post(`zone/sharings`, body)
-        .map(res => res.json())
         .subscribe((result: any) => {
             this.sharedContacts = result['data'].contacts;
             this.sharedContactGroups = result['data'].contactgroups;
@@ -208,7 +205,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   unSelectContact(contact: any) {
-    _.remove(this.selectedContacts, (c:any) => {
+    _.remove(this.selectedContacts, (c: any) => {
       return c['id'] == contact['id'];
     });
     this.setUpdatedItemsStatus();
@@ -216,7 +213,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   searchContact(event: any) {
     this.filteredContacts = _.filter(this.contacts,
-      (c:any) => {
+      (c: any) => {
         return c['name'].toLowerCase().indexOf(event.query) != -1;
       });
   }
@@ -227,7 +224,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   unSelectContactGroup(group: any) {
-    _.remove(this.selectedContactGroups, (c:any) => {
+    _.remove(this.selectedContactGroups, (c: any) => {
       return c['id'] == group['id'];
     });
     this.setUpdatedItemsStatus();
@@ -235,7 +232,7 @@ export class ZoneSharingComponent implements OnInit, OnChanges, AfterViewInit {
 
   searchContactGroup(event: any) {
     this.filteredContactGroups = _.filter(this.contactGroups,
-      (c:any) => {
+      (c: any) => {
         return c['name'].toLowerCase().indexOf(event.query) != -1;
       });
   }

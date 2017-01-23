@@ -43,6 +43,7 @@
 @import "partials/confirm-dialog";
 @import "partials/lines";
 @import "partials/badges";
+@import "partials/navs";
 @import "partials/media";
 @import "partials/list-group";
 @import "partials/dropdowns";
@@ -53,14 +54,17 @@
 //
 // =Layout
 // --------------------------------------------------
+@import "layout/layout";
 @import "layout/header";
 @import "layout/footer";
 @import "layout/content";
 @import "layout/aside-left";
 @import "layout/aside-menu";
+@import "layout/aside-chat";
 //
 // =modules
 // --------------------------------------------------
+@import "modules/list";
 @import "modules/breadcrumb";
 @import "modules/nav-menuleft";
 @import "modules/panel-creditcard";
@@ -78,6 +82,7 @@
 @import "modules/scrollbar-measure";
 @import "modules/ng2-dropdown";
 @import "modules/custom_primeng";
+@import "modules/chat/emoji";
 //
 // =Content
 // --------------------------------------------------

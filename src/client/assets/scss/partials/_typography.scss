@@ -17,8 +17,21 @@ body {
   font-weight: bold;
 }
 
+.can-click {
+  cursor: pointer;
+}
+
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
 .word-break {
   word-break: break-all;
+}
+
+.text-line-btn {
+  line-height: 34px;
 }
 
 .text-fade {
@@ -38,6 +51,17 @@ body {
   overflow: auto;
   margin-right: -15px;
   padding-right: 15px;
+}
+
+.content-overflow-x {
+  overflow-x: auto;
+  margin-right: -15px;
+  padding-right: 15px;
+}
+
+.content-overflow-y {
+  overflow-y: auto;
+  margin-right: -10px;
 }
 
 h1, h2, h3, h4, h5, h6,

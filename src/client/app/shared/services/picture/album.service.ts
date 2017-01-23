@@ -1,16 +1,15 @@
-import {Http} from '@angular/http';
-
-import {Injectable} from '@angular/core';
-
-import {ApiBaseServiceV2} from "../apibase.service.v2";
+import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 
+import { Injectable } from '@angular/core';
+import { ApiBaseService } from '../apibase.service';
+
 @Injectable()
-export class AlbumService extends ApiBaseServiceV2 {
+export class AlbumService extends ApiBaseService {
 
-  url:string = 'zone/albums/';
+  url: string = 'zone/albums/';
 
-  constructor(http: Http, private router: Router) {
+  constructor(http: Http, router: Router) {
     super(http, router);
   }
 

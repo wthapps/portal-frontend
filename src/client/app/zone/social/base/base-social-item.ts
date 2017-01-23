@@ -1,38 +1,37 @@
-import { BaseZoneSocial } from "./base-social";
-import { ApiBaseServiceV2 } from "../../../shared/services/apibase.service.v2";
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { PostComponent } from '../post/post.component';
 
-export class BaseZoneSocialItem extends BaseZoneSocial {
+export class BaseZoneSocialItem {
   item: any;
 
-  apiBaseServiceV2: ApiBaseServiceV2;
+  apiBaseService: ApiBaseService;
   postItem?: PostComponent;
 
   loadItem(url: string) {
-    return this.apiBaseServiceV2.get(url);
+    return this.apiBaseService.get(url);
   }
 
-  createComment(body:any) {
-    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
+  createComment(body: any) {
+    return this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoComments}`, body);
   }
 
-  updateComment(body:any) {
-    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.uuid}`, body);
+  updateComment(body: any) {
+    return this.apiBaseService.put(`${this.apiBaseService.urls.zoneSoComments}/${body.uuid}`, body);
   }
 
-  deleteComment(commentUuid:string) {
-    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${commentUuid}`);
+  deleteComment(commentUuid: string) {
+    return this.apiBaseService.delete(`${this.apiBaseService.urls.zoneSoComments}/${commentUuid}`);
   }
 
-  createReply(body:any) {
-    return this.apiBaseServiceV2.post(`${this.apiBaseServiceV2.urls.zoneSoComments}`, body);
+  createReply(body: any) {
+    return this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoComments}`, body);
   }
 
-  updateReply(body:any) {
-    return this.apiBaseServiceV2.put(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`, body);
+  updateReply(body: any) {
+    return this.apiBaseService.put(`${this.apiBaseService.urls.zoneSoComments}/${body.reply_uuid}`, body);
   }
 
-  deleteReply(body:any) {
-    return this.apiBaseServiceV2.delete(`${this.apiBaseServiceV2.urls.zoneSoComments}/${body.reply_uuid}`);
+  deleteReply(body: any) {
+    return this.apiBaseService.delete(`${this.apiBaseService.urls.zoneSoComments}/${body.reply_uuid}`);
   }
 }

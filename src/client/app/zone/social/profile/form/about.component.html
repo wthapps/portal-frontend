@@ -1,6 +1,6 @@
 <hd-modal #modal cssClass="modal-social modal-custom modal-long" [keyboard]="false" [backdrop]="'static'">
 
-  <modal-header [show-close]="true">
+  <modal-header [showClose]="true">
     <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> About</h4>
   </modal-header>
 
@@ -10,17 +10,7 @@
     </p>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-      <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched),
-        'has-success': (first_name.valid && first_name.touched)}">
-        <label for="first_name">First name <span class="text-danger">*</span></label>
-        <input [formControl]="first_name" type="text" class="form-control" id="first_name"
-               placeholder="First name">
-        <div *ngIf="!first_name.valid && first_name.touched">
-              <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">
-                First name is required
-              </span>
-        </div>
-      </div>
+      last_name
 
       <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched),
         'has-success': (last_name.valid && last_name.touched)}">
@@ -36,13 +26,13 @@
 
       <hr>
 
-      <div class="form-group" [ngClass]="{'has-error': (!nick_name.valid && nick_name.touched),
-        'has-success': (nick_name.valid && nick_name.touched)}">
-        <label for="nick_name">Nickname <span class="text-danger">*</span></label>
-        <input [formControl]="nick_name" type="text" class="form-control" id="nick_name"
+      <div class="form-group" [ngClass]="{'has-error': (!nickname.valid && nickname.touched),
+        'has-success': (nickname.valid && nickname.touched)}">
+        <label for="nickname">Nickname <span class="text-danger">*</span></label>
+        <input [formControl]="nickname" type="text" class="form-control" id="nickname"
                placeholder="Nickname">
-        <div *ngIf="!nick_name.valid && nick_name.touched">
-              <span *ngIf="!nick_name.valid && nick_name.errors.required" class="help-block">
+        <div *ngIf="!nickname.valid && nickname.touched">
+              <span *ngIf="!nickname.valid && nickname.errors.required" class="help-block">
                 Nickname is required
               </span>
         </div>
@@ -65,19 +55,6 @@
               <div class="media-body">
                 <textarea class="form-control" rows="5" [formControl]="about"></textarea>
               </div>
-              <div class="media-right">
-                <div class="btn-group pull-right">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-lock"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-                    <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-                    <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-                  </ul>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -97,19 +74,6 @@
                   <option value="2"> Female</option>
                   <option value="0"> Other</option>
                 </select>
-              </div>
-              <div class="media-right">
-                <div class="btn-group pull-right">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-lock"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-                    <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-                    <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-                  </ul>
-                </div>
               </div>
             </div>
           </div>
@@ -297,19 +261,6 @@
                   </div>
                 </div>
               </div>
-              <div class="media-right">
-                <div class="btn-group pull-right">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-lock"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-                    <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-                    <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-                  </ul>
-                </div>
-              </div>
             </div>
 
           </div>
@@ -327,19 +278,6 @@
                   <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}}</option>
                 </select>
               </div>
-              <div class="media-right">
-                <div class="btn-group pull-right">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-lock"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-                    <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-                    <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-                  </ul>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -350,7 +288,7 @@
         <div class="content-overflow" style="max-height: 155px;" formArrayName="additional_links">
 
           <!--<pre>-->
-          <!--{{form.value|json}}-->
+          <!--{{form.controls.additional_links.controls |json}}-->
           <!--</pre>-->
 
           <div *ngFor="let add_link of form.controls.additional_links.controls; let i=index" class="media">

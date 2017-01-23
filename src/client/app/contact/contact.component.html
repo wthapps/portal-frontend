@@ -23,7 +23,8 @@
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2">
         <h3 class="h1">Anything comes in mind?</h3>
-        <p>If you are interested in our business or having any issue idea that you want to share, feel free to drop us a message.</p>
+        <p>If you are interested in our business or having any issue idea that you want to share, feel free to drop us
+          a message.</p>
         <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
           <div class="row">
             <div class="col-sm-6">
@@ -79,7 +80,9 @@
             <re-captcha [site_key]="siteKey" (captchaResponse)="handleCorrectCaptcha($event)"></re-captcha>
           </div>
 
-          <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-wth-default btn-min mr20">Send</button>
+          <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-wth-default btn-min mr20">
+            Send
+          </button>
           <a [routerLink]="['/']" class="btn btn-default btn-min">Cancel</a>
         </form>
       </div>
@@ -87,4 +90,3 @@
   </div>
 </section>
 <wth-footer-promotion></wth-footer-promotion>
-

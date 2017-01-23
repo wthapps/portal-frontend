@@ -97,12 +97,6 @@ export class ZoneUploadingComponent implements OnInit, OnChanges, AfterViewInit 
         body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
 
         this.pending_request = this.apiService.post(`zone/photos`, body)
-          .map(res => res.json())
-          .map((res) => {
-            if (res) {
-              return res;
-            }
-          })
           .subscribe((result: any) => {
               this.uploaded_num++;
               if (this.uploaded_num == this.files_num) {

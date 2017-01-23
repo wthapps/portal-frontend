@@ -1,18 +1,14 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
 import {
   FormGroup,
-  AbstractControl,
   FormBuilder,
-  Validators,
-  FormControl,
   FormArray
 } from '@angular/forms';
-import { CustomValidator } from '../../../../shared/validator/custom.validator';
 import { SocialService } from '../../services/social.service';
 
 declare var $: any;
@@ -38,7 +34,7 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
   form: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private socialService: SocialService,
               private userService: UserService) {
@@ -59,16 +55,16 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.removeAll();
     let _this = this;
-    if (this.data) {
+    if (this.data && this.data.profile_info) {
       this.removeAll();
 
-      let additional_employment_edit = this.data.employment;
-      _.map(additional_employment_edit, (v)=> {
+      let additional_employment_edit = this.data.profile_info.works;
+      _.map(additional_employment_edit, (v: any)=> {
         _this.addWork(v);
       });
 
-      let additional_education_edit = this.data.education;
-      _.map(additional_education_edit, (v)=> {
+      let additional_education_edit = this.data.profile_info.educations;
+      _.map(additional_education_edit, (v: any)=> {
         _this.addEducation(v);
       });
     }
@@ -156,23 +152,27 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
 
     // get links if link is not empty
     /*let emails_filter = [];
-    _.map(values.email, (v)=> {
-      if (v.email != '') {
-        emails_filter.push(v);
-      }
-    });*/
+     _.map(values.email, (v)=> {
+     if (v.email != '') {
+     emails_filter.push(v);
+     }
+     });*/
 
-    let body = JSON.stringify({
-      employment: values.works,
-      education: values.educations
-    });
+    // let body = JSON.stringify({
+    //   employment: values.works,
+    //   education: values.educations
+    // });
+    //
+    // console.log('body:', body);
 
-    console.log('body:', body);
+    let data:any = {};
+    data.works = values.works;
+    data.educations = values.educations;
 
-    this.apiBaseServiceV2.put(`zone/social_network/users/${this.data.uuid}`, body)
+    this.socialService.user.update({profile_info: data})
       .subscribe((result: any) => {
           console.log(result);
-          //this.updated.emit(result.data);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);

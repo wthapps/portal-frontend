@@ -44,9 +44,6 @@ export class ZPhotoEditComponent implements OnChanges, AfterViewInit {
 
 
   private reInitPhoto(): void {
-    // Define variables
-    let _this = this;
-
     let elImage = $('#photo-detail-img');
     let cropperRotateLeft = $('#photo-detail-rotate-left');
     let cropperRotateRigth = $('#photo-detail-rotate-right');
@@ -84,23 +81,23 @@ export class ZPhotoEditComponent implements OnChanges, AfterViewInit {
       elImage.cropper('rotate', 90);
     });
     cropperCrop.on('click', function () {
-      elImage.cropper("setDragMode", "crop");
+      elImage.cropper('setDragMode', 'crop');
     });
     cropperZoomIn.on('click', function () {
-      elImage.cropper("zoom", 0.1);
+      elImage.cropper('zoom', 0.1);
     });
     cropperZoomOut.on('click', function () {
-      elImage.cropper("zoom", -0.1);
+      elImage.cropper('zoom', -0.1);
     });
     cropperReset.on('click', function () {
-      elImage.cropper("reset");
+      elImage.cropper('reset');
     });
   }
 
   private getBarwidth(): number {
     // Create the measurement node
-    let scrollDiv = document.createElement("div");
-    scrollDiv.className = "scrollbar-measure";
+    let scrollDiv = document.createElement('div');
+    scrollDiv.className = 'scrollbar-measure';
     document.body.appendChild(scrollDiv);
 
     // Get the scrollbar width

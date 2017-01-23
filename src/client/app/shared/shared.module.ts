@@ -1,4 +1,3 @@
-//@TODO remove ElementRef
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,12 +15,21 @@ import {
 } from 'primeng/primeng';
 import { TagInputModule } from 'ng2-tag-input';
 
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+
 import {
   ApiBaseService,
   UserService,
   CountryService,
-  DeactivateConfirmService
-}                     from './index';
+  DeactivateConfirmService,
+  CableService,
+  ChannelNotificationService,
+  AppearancesChannelService,
+  ChatNotificationChannelService,
+  StorageService,
+  HandlerService,
+  ChatChannelService
+} from './index';
 
 import {
   HeaderComponent,
@@ -34,20 +42,23 @@ import {
   SliderComponent,
   UploadCropImageComponent,
   ToTopComponent,
-  ReadMoreComponent
+  ReadMoreComponent,
+  NotificationService
 } from '../partials/index';
-
-import { LoadingDirective } from './directive/loading.directive';
 
 import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/index';
 
 import { FormModalComponent } from './form/form-modal.component';
-import { ApiBaseServiceV2 } from "./services/apibase.service.v2";
 import { NewlinePipe } from './pipe/newline.pipe';
 import { TitleCase } from './pipe/titlecase.pipe';
 import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
+import { SearchFormComponent } from '../partials/header/sub/search-form.component';
+import { SoSearchService } from '../partials/header/sub/social-search.service';
+import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.module';
+import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
+import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -57,17 +68,19 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
   imports: [
     CommonModule,
     RouterModule,
-
+    FormsModule,
     ConfirmDialogModule,
     AutoCompleteModule,
     TagInputModule,
-    InputTextareaModule
-
+    HdTagInputModule,
+    InputTextareaModule,
+    InfiniteScrollModule
   ],
   declarations: [
     ToolbarComponent,
     NavbarComponent,
     HeaderComponent,
+    SearchFormComponent,
     FooterComponent,
     FooterPromotionComponent,
     TablePricingComponent,
@@ -86,12 +99,15 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     DateUntilNowPipe,
     TitleCase,
     UrlTransformPipe,
-    ShowLengthTransformPipe
+    ShowLengthTransformPipe,
+    SafeHtmlPipe,
+    scrollToBottomDirective
   ],
   exports: [
     ToolbarComponent,
     NavbarComponent,
     HeaderComponent,
+    SearchFormComponent,
     FooterComponent,
     FooterPromotionComponent,
     TablePricingComponent,
@@ -102,18 +118,21 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     UploadCropImageComponent,
     ToTopComponent,
     ReadMoreComponent,
+    FormModalComponent,
 
     // third party modules
     ConfirmDialogModule,
     AutoCompleteModule,
     TagInputModule,
+    HdTagInputModule,
     InputTextareaModule,
+    InfiniteScrollModule,
 
 
     CommonModule,
     FormsModule,
     RouterModule,
-    FormModalComponent,
+
     // Pipe
     GroupByMonthYearPipe,
     GroupByPipe,
@@ -121,7 +140,9 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
     DateUntilNowPipe,
     TitleCase,
     UrlTransformPipe,
-    ShowLengthTransformPipe
+    ShowLengthTransformPipe,
+    SafeHtmlPipe,
+    scrollToBottomDirective
   ]
 })
 export class SharedModule {
@@ -131,13 +152,21 @@ export class SharedModule {
       providers: [
         NameListService,
         ApiBaseService,
+        StorageService,
+        HandlerService,
         UserService,
         CountryService,
         ConfirmationService,
         DeactivateConfirmService,
-        ApiBaseServiceV2,
         Ng2Cable,
-        Broadcaster
+        Broadcaster,
+        SoSearchService,
+        CableService,
+        ChannelNotificationService,
+        ChatChannelService,
+        ChatNotificationChannelService,
+        NotificationService,
+        AppearancesChannelService
       ]
     };
   }

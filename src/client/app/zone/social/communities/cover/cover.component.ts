@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
@@ -11,6 +11,7 @@ import { SocialService } from '../../services/social.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { UserService } from '../../../../shared/services/user.service';
 import { ToastsService } from '../../../../partials/toast/toast-message.service';
+import { MemberListInviteComponent } from '../member/member-list-invite.component';
 
 declare var _: any;
 
@@ -24,8 +25,10 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
+  @ViewChild('users') users: MemberListInviteComponent;
 
   @Input() data: any;
+  @Input() selectedTab: string;
 
   errorMessage: string = '';
   item: any = [];
@@ -35,7 +38,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   invitation: any = undefined;
 
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
@@ -49,6 +52,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.data) {
       this.item = this.data;
+      // console.log('current item', this.item);
     }
   }
 
@@ -57,7 +61,13 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
       this.checkJoinRequestStatus();
+      // console.log('this params', this.uuid);
+
     });
+  }
+
+  changeRoute() {
+    console.log('changiing.........route');
   }
 
   onDelete(item: any) {
@@ -67,7 +77,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       header: 'Delete Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.delete(`zone/social_network/communities/${item.uuid}`)
+        this.apiBaseService.delete(`zone/social_network/communities/${item.uuid}`)
           .subscribe((response: any) => {
               // console.log(response);
               this.onUpdated(response.data);
@@ -95,7 +105,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       header: 'Leave Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
+        this.apiBaseService.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
           .subscribe((response: any) => {
               this.loadingService.stop();
               this.router.navigateByUrl('/zone/social/communities');
@@ -135,61 +145,61 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, "community").subscribe(
+    this.socialService.user.addFavourites(uuid, 'community').subscribe(
       (res: any) => {
 
       }
-    )
+    );
   }
 
   getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, "community").subscribe(
+    this.socialService.user.getFavourite(uuid, 'community').subscribe(
       (res: any) => {
         this.favourite = res.data;
       }
-    )
+    );
   }
 
   askToJoin() {
-    this.apiBaseServiceV2.post(`zone/social_network/communities/join`, JSON.stringify({uuid: this.uuid}))
+    this.apiBaseService.post(`zone/social_network/communities/join`, JSON.stringify({uuid: this.uuid}))
       .subscribe((result: any) => {
-        this.invitation = result.data;
-      },
-      error => {
-        console.log('error', error);
-      });
+          this.invitation = result.data;
+        },
+        error => {
+          console.log('error', error);
+        });
   }
 
   cancelJoinRequest() {
-    this.apiBaseServiceV2.delete(`zone/social_network/communities/cancel_invitation/${this.invitation.id}`).subscribe(
+    this.apiBaseService.delete(`zone/social_network/communities/cancel_invitation/${this.invitation.id}`).subscribe(
       (res: any)=> {
         this.invitation = undefined;
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
 
   isMember(): boolean {
-    let result = false;
-    _.forEach(this.item.users, (user) => {
-      if(user.uuid == this.userService.profile.uuid) {
+    let result: boolean = false;
+    _.forEach(this.item.users, (user: any) => {
+      if (user.uuid == this.userService.profile.uuid) {
         result = true;
-        return false;
+        // return false;
       }
     });
     return result;
   }
 
   checkJoinRequestStatus() {
-    this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}/join_request_status`)
+    this.apiBaseService.get(`zone/social_network/communities/${this.uuid}/join_request_status`)
       .subscribe((result: any) => {
-        this.invitation = result.data;
-      },
-      error => {
-        console.log('error', error);
-      });
+          this.invitation = result.data;
+        },
+        error => {
+          console.log('error', error);
+        });
   }
 }

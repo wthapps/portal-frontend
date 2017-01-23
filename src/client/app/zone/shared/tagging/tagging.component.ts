@@ -67,7 +67,6 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
 
       let body = JSON.stringify({objects: _.map(this.selectedItems, 'id'), type: this.getType()});
       this.apiService.post(`zone/tags/get_tags`, body)
-        .map(res => res.json())
         .subscribe((result: any) => {
             this.selectedTags = result['data'];
             this.currentTags = result['data'];
@@ -120,7 +119,6 @@ export class ZoneTaggingComponent implements OnInit, OnChanges, AfterViewInit {
     });
 
     this.apiService.put(`zone/tags/update`, body)
-      .map(result => result.json())
       .subscribe((result: any) => {
           this.hasChanged = false;
           this.selectedItems = result['data'];

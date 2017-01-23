@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
@@ -26,7 +26,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   relationships: any;
 
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,
               private userService: UserService,
               private loadingService: LoadingService,

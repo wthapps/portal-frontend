@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit} from '@angular/core';
+import { Component } from '@angular/core';
 
 
 declare var $: any;
@@ -8,17 +8,17 @@ declare var $: any;
   template: ``,
 })
 
-export abstract class FormModalComponent {
+export class FormModalComponent {
   modalId: string;
 
-  constructor(modalId:string
-  ) {
+  constructor(modalId: string) {
     this.modalId = modalId;
   }
 
   show() {
     $('#' + this.modalId).modal('show');
   }
+
   hide() {
     $('#' + this.modalId).modal('hide');
   }

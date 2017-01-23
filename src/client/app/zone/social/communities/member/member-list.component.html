@@ -1,24 +1,12 @@
-<div class="zone-social">
+<div class="page-body-content-in zone-social">
   <div class="zone-social-in">
 
-    <z-social-community-cover [data]="data"></z-social-community-cover>
+    <!--<z-social-community-cover [data]="data"></z-social-community-cover>-->
 
     <member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>
     <div *ngIf="data" class="z-social-box">
-      <div class="z-social-box-header">
-        <div class="pull-left dropdown">
-          <select class="form-control" [(ngModel)]="selectedTab" (change)="viewMember($event)">
-            <option value="members">All members</option>
-            <option value="invitations">Invitations</option>
-            <option value="join_requests">Join requests</option>
-            <option value="blacklist">Blacklist</option>
-          </select>
-        </div>
-        <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)" data-toggle="modal"
-                data-target="#modal-social-share-com">
-          <i class="fa fa-user-plus"></i> Invite Member
-        </button>
-      </div>
+
+
       <div class="z-social-post">
         <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
           <template ngFor let-user [ngForOf]="data.users" [ngForTrackBy]="trackByUsers">

@@ -8,7 +8,7 @@ declare var $: any;
   templateUrl: 'file-selection.component.html'
 })
 
-export class FileSelectionComponent implements OnInit{
+export class FileSelectionComponent implements OnInit {
   @ViewChild('fileBrowse') inputFiles: ElementRef;
   @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
 
@@ -22,7 +22,7 @@ export class FileSelectionComponent implements OnInit{
   }
 
   open(event: any) {
-   event.preventDefault();
+    event.preventDefault();
     this.renderer.invokeElementMethod(this.inputFiles.nativeElement, 'click');
   }
 

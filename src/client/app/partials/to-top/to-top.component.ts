@@ -38,15 +38,15 @@ export class ToTopComponent implements OnInit, OnDestroy {
         backToTop();
       });
 
-      $('body').on('click', '.x-to-top', (e:any)=> {
+      $('body').on('click', '.x-to-top', (e: any)=> {
         e.preventDefault();
         $('html, body').animate({
           scrollTop: 0
         }, 1000);
-      })
+      });
     }
 
-    this.router.events.subscribe()
+    this.router.events.subscribe();
 
   }
 

@@ -37,10 +37,10 @@ export class ZSocialCommentBoxComponent implements OnInit {
 
   ngOnInit() {
     if (this.type == this.commentBoxType.Edit) {
-      this.commentContent = this.comment.content
+      this.commentContent = this.comment.content;
     }
     if (this.type == this.commentBoxType.EditReply) {
-      this.commentContent = this.reply.content
+      this.commentContent = this.reply.content;
     }
     $('.js-textarea-autoheight').each(function () {
       this.setAttribute('style', 'height: 40px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
@@ -52,7 +52,7 @@ export class ZSocialCommentBoxComponent implements OnInit {
 
   onKey(e: any) {
     // Create, Update, Reply
-    if (e.keyCode == 13 && this.commentContent != "") {
+    if (e.keyCode == 13 && this.commentContent != '') {
       this.commentAction();
     }
     // Cancel comment

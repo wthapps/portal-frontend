@@ -66,7 +66,7 @@ export class AccountAppsDetailComponent implements OnInit {
     this.apiBaseService.post(`users/${this.userService.profile.id}/apps/${this.app_id}`, '').subscribe(
       (response: any) => {
         //console.log(this.app_id, response);
-        let data: any = JSON.parse(response._body);
+        let data: any = response.data;
         this.added = data.added;
       },
       error => this.errorMessage = <any>error

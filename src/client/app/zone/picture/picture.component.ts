@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnChanges } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, ViewChild, OnChanges, AfterViewInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BaseMediaComponent } from '../shared/media/base-media.component';
 import { ZonePhotoComponent } from './photo/photo.component';
 import { ZoneVideoComponent } from './video/video.component';
@@ -13,8 +13,8 @@ import {
   ConfirmationService
 
 } from '../../shared/index';
-import { ZAlbumComponent } from "./album/album.component";
-import { ZAlbumDetailComponent } from "./album/album-detail.component";
+import { ZAlbumComponent } from './album/album.component';
+import { ZAlbumDetailComponent } from './album/album-detail.component';
 import { ZoneUploadingComponent } from '../shared/index';
 
 
@@ -28,7 +28,7 @@ declare var _: any;
   styleUrls: ['picture.component.css']
 })
 
-export class ZPictureComponent implements OnChanges {
+export class ZPictureComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild('media') baseMedia: BaseMediaComponent;
   @ViewChild('zoneUpload') zoneUpload: ZoneUploadingComponent;// = new ZoneUploadingComponent(this.apiService);
@@ -117,7 +117,7 @@ export class ZPictureComponent implements OnChanges {
         this.baseMedia = new ZonePhotoComponent(this.apiService, this.toastsService, this.loadingService, this.confirmationService);
         break;
       case MediaType.video:
-        this.baseMedia = new ZoneVideoComponent(this.apiService);
+        this.baseMedia = new ZoneVideoComponent(MediaType.video, this.apiService);
         break;
       case MediaType.album:
         this.baseMedia = new ZAlbumComponent();
@@ -209,6 +209,7 @@ export class ZPictureComponent implements OnChanges {
             // stop loading
             this.loadingService.stop();
             let blob: Blob = new Blob([result._body], {type: 'image/jpeg'});
+            console.log(blob);
             // window['saveAs'](blob, 'image-download.jpeg');
             //this.toastsService.success(result.message);
           },

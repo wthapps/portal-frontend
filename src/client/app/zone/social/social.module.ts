@@ -5,9 +5,9 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { InputSwitchModule } from 'primeng/primeng';
 
-import { PostModule } from "./post/post.module";
+import { PostModule } from './post/post.module';
 
-import { PostListComponent } from "./post/post-list.component";
+import { PostListComponent } from './post/post-list.component';
 import { PostDetailComponent } from './post/post-detail.component';
 
 import {
@@ -15,7 +15,7 @@ import {
   PostHeaderComponent,
   PostBodyComponent,
   PostFooterComponent
-} from "./post/index";
+} from './post/index';
 
 import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
@@ -33,7 +33,7 @@ import { ComMemberListComponent } from './communities/member/member-list.compone
 import { ZSocialCommunityDetailAboutComponent } from './communities/about/about.component';
 import { ZSocialCommunityDetailPostComponent } from './communities/post/post.component';
 
-import { ZSocialMembersComponent } from './members/members.component'
+import { ZSocialMembersComponent } from './members/members.component';
 import { ZSocialProfileAboutComponent } from './profile/about/about.component';
 import { ZSocialProfilePostComponent } from './profile/post/post.component';
 import { ZSocialSettingComponent } from './setting/setting.component';
@@ -52,6 +52,10 @@ import { ZSocialProfileFormContactComponent } from './profile/form/contact.compo
 import { ZSocialProfileFormWorkEduComponent } from './profile/form/work-edu.component';
 import { ZSocialProfileFormInterestComponent } from './profile/form/interest.component';
 import { ZSocialProfileService } from './profile/profile.service';
+import { ZSocialSearchResultComponent } from './search/search.component';
+import { ZSocialPrivacyComponent } from './profile/about/components/privacy.component';
+import { ZSocialComponent } from './social.component';
+import { InvitationListComponent } from './communities/invitation/invitation-list.component';
 
 
 @NgModule({
@@ -64,6 +68,8 @@ import { ZSocialProfileService } from './profile/profile.service';
     InputSwitchModule
   ],
   declarations: [
+    ZSocialComponent,
+
     // Home
     ZSocialHomeComponent,
     ZSocialFavoritesComponent,
@@ -78,6 +84,7 @@ import { ZSocialProfileService } from './profile/profile.service';
     ZSocialCommunityDetailComponent,
     ZSocialCommunityDetailNotificationComponent,
     ComMemberListComponent,
+    InvitationListComponent,
     ZSocialCommunityDetailAboutComponent,
     ZSocialCommunityDetailPostComponent,
     ZSocialCommunityFormEditComponent,
@@ -111,9 +118,13 @@ import { ZSocialProfileService } from './profile/profile.service';
 
     ZSocialCommentBoxComponent,
     // Notification
-    ZSocialNotificationsComponent
+    ZSocialNotificationsComponent,
+    // Search
+    ZSocialSearchResultComponent,
+    ZSocialPrivacyComponent
   ],
   exports: [
+    ZSocialComponent,
     ZSocialHomeComponent,
     ZoneReportComponent
   ],

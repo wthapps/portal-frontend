@@ -12,14 +12,6 @@ body {
   background-color: #f6f6f6;
 }
 
-.wrapper {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  .main {
-    flex: 1;
-  }
-}
 
 .banner-wrap {
   margin-top: -20px;
@@ -267,30 +259,9 @@ $footer-height: 222px;
   }
 }
 
-.page-full {
-  position: relative;
-  .page-left {
-    width: 270px;
-    @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
-    background-color: #ffffff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 2;
-  }
-  .page-body {
-    padding-left: 270px;
-    background-color: #F6F6F6;
-    min-height: 800px;
-    padding-bottom: 60px;
-  }
+.main-page-body {
   .page-body-control {
-    background-color: #ffffff;
-    padding: 15px 30px;
-    @include clearfix;
-    @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.40));
-    > ul {
+    ul {
       margin: 0;
       padding: 0;
       list-style-type: none;
@@ -434,8 +405,7 @@ $footer-height: 222px;
     }
 
   }
-  .page-body-in {
-    padding: 30px;
+  .page-body-content-in {
     > section {
       &:first-child {
         .page-body-in-title {
@@ -494,10 +464,6 @@ body.drag-active {
   .img-center {
     @include center();
     max-width: 100%;
-  }
-  .img-bottom-left {
-    @include bottom-left();
-    width: 100px;
   }
 }
 

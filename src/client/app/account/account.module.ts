@@ -29,10 +29,14 @@ import {
 } from './index';
 
 import {
-  //2 PaymentConfirmComponent,
+  PaymentConfirmComponent,
   //2 PaymentEditComponent,
   PaymentComponent,
-  PlansComponent
+  PlansComponent,
+  BillingDetailsComponent,
+  BillingHistoryComponent,
+  ReceiptComponent,
+  TransactionDetailsComponent
 } from './index';
 
 import {
@@ -70,10 +74,14 @@ import {
     DNSComponent,
     DNSEditComponent,
 
-    //2 PaymentConfirmComponent,
-    //2 PaymentEditComponent,
+    PaymentConfirmComponent,
+    // PaymentEditComponent,
     PaymentComponent,
-    PlansComponent
+    PlansComponent,
+    BillingDetailsComponent,
+    BillingHistoryComponent,
+    ReceiptComponent,
+    TransactionDetailsComponent
   ],
   exports: [
     AccountComponent

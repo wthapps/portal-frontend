@@ -1,0 +1,102 @@
+<div class="page-body-control">
+  <!--album-detail-->
+  <ul *ngIf="albumDetail && type == 'album-detail'" class="control-body-select">
+    <li style="border-right: 1px solid #4A4A4A; padding-right: 10px">
+      <a (click)="onBack()" class="btn btn-default btn-circle"><i class="fa fa-arrow-left"></i></a>
+    </li>
+    <li class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        {{albumDetail.name}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-upload"></i> Upload to album</a></li>
+        <li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-edit"></i> Edit album</a></li>
+        <li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-share-alt"></i> Share Album</a></li>
+        <li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-tag"></i> Tag album</a></li>
+        <li class="divider"></li>
+        <li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-trash-o"></i> Delete album</a></li>
+      </ul>
+    </li>
+  </ul>
+  <!--end album-detail-->
+
+
+  <ul *ngIf="type != 'album-detail'" class="control-body-select">
+    <li class="dropdown">
+      <a href="#" class="btn btn-default btn-circle" data-toggle="dropdown"><i class="fa fa-plus"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li class="active">
+          <a href="javascript:;" (click)="zoneUpload.browseFiles($event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
+        </li>
+        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
+        <li role="separator" class="divider"></li>
+        <li><a href="javascript:;" (click)="formEditAlbum.modal.open()"><i class="fa fa-files-o"></i> Create Album</a>
+        </li>
+        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>-->
+      </ul>
+    </li>
+    <li class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+        <i [ngClass]="selectedEl.css"></i> {{selectedEl.name}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
+          <a [routerLink]="[item.link]">
+            {{item.name}}
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul class="control-body-select control-body-btnview">
+    <li class="dropdown">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa" [ngClass]="{'fa-th-large': (currentView == 'grid'), 'fa-th-list': (currentView == 'list')}"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-th-large"></i> Grid</a></li>
+        <li><a (click)="onAction('listView')" href="javascript:;"><i class="fa fa-th-list"></i> List</a></li>
+        <!--<li><a href="#"><i class="fa fa-align-center"></i> Timeline</a></li>-->
+      </ul>
+    </li>
+  </ul>
+
+  <z-media-share-toolbar-photo
+    *ngIf="type == 'photo'"
+    [selectedPhotos]="selectedPhotos"
+    [currentView]="currentView"
+    [hasFavourite]="hasFavourite"
+    (outEvent)="onAction($event)">
+  </z-media-share-toolbar-photo>
+
+  <z-media-share-toolbar-album
+    *ngIf="type == 'album'"
+    [selectedPhotos]="selectedPhotos"
+    [currentView]="currentView"
+    [hasFavourite]="hasFavourite"
+    (outEvent)="onAction($event)">
+  </z-media-share-toolbar-album>
+
+  <z-media-share-toolbar-album-detail
+    *ngIf="type == 'album-detail'"
+    [selectedPhotos]="selectedPhotos"
+    [currentView]="currentView"
+    [hasFavourite]="hasFavourite"
+    (outEvent)="onAction($event)">
+  </z-media-share-toolbar-album-detail>
+
+</div>
+
+
+<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"
+                                 [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
+<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
+
+<z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>
+
+
+<zone-media-sharing #zoneSharing [selectedItems]="selectedPhotos"></zone-media-sharing>

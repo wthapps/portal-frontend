@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
-import { FormModalComponent } from "../../../shared/form/form-modal.component";
-import { AlbumService } from "../../../shared/services/picture/album.service";
-import { Album } from "../../../shared/models/album.model";
-import { AlbumPhoto } from "../../../shared/models/album-photos.model";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormModalComponent } from '../../../shared/form/form-modal.component';
+import { AlbumService } from '../../../shared/services/picture/album.service';
+import { Album } from '../../../shared/models/album.model';
+import { AlbumPhoto } from '../../../shared/models/album-photos.model';
 
 declare var $: any;
 declare var _: any;
@@ -27,7 +27,7 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent {
   onCreatedAlbum() {
     if (!this.isChanged) {
       this.arrayItems = [];
-      _.map(this.items, (v:any) => {
+      _.map(this.items, (v: any) => {
         this.arrayItems.push(v.id);
       });
     }
@@ -43,17 +43,17 @@ export class ZPictureFormCreateAlbumComponent extends FormModalComponent {
     let album = new Album({name: albumName, description: albumDes});
     this.albumService.post(this.albumService.url, album)
       .subscribe(
-        res => {
+        (res: any) => {
           this.album = new Album(res.data);
           this.doneFormModal.emit(this.album);
           if (this.arrayItems.length > 0) {
             this.albumService.post(this.albumService.url + res.data.id + '/photos', {photos: this.arrayItems})
               .subscribe(
-                (res:any) => {
-                  let albumPhotos = new AlbumPhoto({album: this.album, photos: this.arrayItems})
+                (res: any) => {
+                  let albumPhotos = new AlbumPhoto({album: this.album, photos: this.arrayItems});
                   this.doneFormModal.emit(albumPhotos);
                 }
-              )
+              );
           }
         }
       );

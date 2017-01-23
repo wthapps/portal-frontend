@@ -17,7 +17,7 @@ let getBarwidth = function () {
 
 export let Constants = {
   baseUrls: {
-    //apiBaseService: 'http://52.221.221.245:4000/',
+    // apiBaseService: 'http://54.213.41.54:4000/',
     apiBaseService: Config.API
   },
   operations: {
@@ -61,12 +61,23 @@ export let Constants = {
     scrollBarWidth: getBarwidth()
   },
 
+  chatMenuItems : [
+    { name: 'Conversation', link: '/zone/chat/conversation/dashboard' },
+    { name: 'Contact', link: '/zone/chat/contact' },
+    { name: 'History', link: '/zone/chat/history' },
+    { name: 'Settings', link: '/zone/chat/setting' }
+  ],
+
   pictureMenuItems : [
-    { name: 'Photos', link: '/zone/picture/photo' },
+    { name: 'Photos', link: '/zone/media/photo' },
+    { name: 'Albums', link: '/zone/media/album' },
+    { name: 'Favourites', link: '/zone/media/favourites' },
+    { name: 'Shared with me', link: '/zone/media/sharedWithMe' } //,
+    /*{ name: 'Photos', link: '/zone/picture/photo' },
     { name: 'Albums', link: '/zone/picture/album' },
     // { name: 'Videos', link: '/zone/picture/video' },
     { name: 'Favorites', link: '/zone/picture/favourites' },
-    { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },
+    { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },*/
   ],
 
   socialMenuItems : [
@@ -93,6 +104,19 @@ export let Constants = {
     zoneSoUserPosts: 'zone/social_network/user_posts',
     zoneSoReactions: 'zone/social_network/reactions',
     zoneSoPostSettings: 'zone/social_network/post_settings',
+  },
+  sex : ['', 'Male', 'Female', 'Other'],
+  communityRole: {
+    admin: [1, "Admin"],
+    member: [2, "Member"]
+  },
+  notificationSetting: {
+    limit: 10
+  },
+  seenStatus: {
+    new: "new",
+    seen: "seen",
+    seen_and_took_action: "seen_and_took_action"
   }
 };
 

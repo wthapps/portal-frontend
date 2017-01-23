@@ -1,19 +1,19 @@
 import {
-  Component, AfterViewInit, OnDestroy, Input, OnChanges, SimpleChange, ElementRef, Output,
+  Component, OnInit, AfterViewInit, OnDestroy, OnChanges, Output,
   EventEmitter, ViewChild
 } from '@angular/core';
-import {ApiBaseService} from '../../../shared/services/apibase.service';
-import {BaseMediaComponent} from "../../shared/media/base-media.component";
-import {MediaType} from "../../../shared/config/constants";
-import {AlbumService} from "../../../shared/services/picture/album.service";
-import {Album} from "../../../shared/models/album.model";
-import {PhotoService} from "../../../shared/services/picture/photo.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {LoadingService} from "../../../partials/loading/loading.service";
-import {ConfirmationService} from "primeng/components/common/api";
-import {ToastsService} from "../../../partials/toast/toast-message.service";
-import {Photo} from "../../../shared/models/photo.model";
-import {ZPictureFormEditAlbumComponent} from "../../shared/form/form-edit-album.component";
+import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { BaseMediaComponent } from '../../shared/media/base-media.component';
+import { MediaType } from '../../../shared/config/constants';
+import { AlbumService } from '../../../shared/services/picture/album.service';
+import { Album } from '../../../shared/models/album.model';
+import { PhotoService } from '../../../shared/services/picture/photo.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingService } from '../../../partials/loading/loading.service';
+import { ConfirmationService } from 'primeng/components/common/api';
+import { ToastsService } from '../../../partials/toast/toast-message.service';
+import { Photo } from '../../../shared/models/photo.model';
+import { ZPictureFormEditAlbumComponent } from '../../shared/form/form-edit-album.component';
 
 declare var wheelzoom: any;
 declare var $: any;
@@ -26,7 +26,7 @@ declare var _: any;
   styleUrls: ['album.component.css'],
 })
 
-export class ZAlbumDetailComponent extends BaseMediaComponent {
+export class ZAlbumDetailComponent extends BaseMediaComponent implements OnInit,OnChanges, AfterViewInit, OnDestroy {
 
   album: Album = new Album(null);
   albumId: number;
@@ -37,16 +37,14 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
   @ViewChild(ZPictureFormEditAlbumComponent) formEditAlbum: ZPictureFormEditAlbumComponent;
 
 
-  constructor(
-    public apiService?: ApiBaseService,
-    public albumService?: AlbumService,
-    public photoService?: PhotoService,
-    public route?: ActivatedRoute,
-    public loadingService?: LoadingService,
-    public router?: Router,
-    public toastsService?: ToastsService,
-    public confirmationService?: ConfirmationService,
-  ) {
+  constructor(public apiService?: ApiBaseService,
+              public albumService?: AlbumService,
+              public photoService?: PhotoService,
+              public route?: ActivatedRoute,
+              public loadingService?: LoadingService,
+              public router?: Router,
+              public toastsService?: ToastsService,
+              public confirmationService?: ConfirmationService,) {
     super(MediaType.albumDetail, apiService);
   }
 
@@ -111,10 +109,10 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
             .subscribe(res => {
               this.loadingService.stop();
               this.router.navigate(['/zone/picture/album']);
-            })
+            });
         }
       }
-    )
+    );
   }
 
   onEditAction() {
@@ -149,18 +147,18 @@ export class ZAlbumDetailComponent extends BaseMediaComponent {
     if (ids.length > 0) {
       this.confirmationService.confirm({
           header: 'Remove photos from album',
-          message: ids.length + ' selected Items will be remove from '+ this.album.name + '. Removed items from album still remain in your library',
+          message: ids.length + ' selected Items will be remove from ' + this.album.name + '. Removed items from album still remain in your library',
           accept: () => {
             this.loadingService.start();
             this.albumService.post(this.albumService.url + this.album.id + '/photos', {photos: ids, type: 'delete'})
-              .subscribe(res => {
+              .subscribe((res: any) => {
                 this.loadingService.stop();
                 this.toastsService.success('Items are removed from album');
                 this.items = res.data;
-              })
+              });
           }
         }
-      )
+      );
     }
   }
 }

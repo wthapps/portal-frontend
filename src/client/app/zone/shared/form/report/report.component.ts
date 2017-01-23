@@ -1,15 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import {
   FormGroup,
   AbstractControl,
   FormBuilder,
-  Validators,
   FormControl
 } from '@angular/forms';
 import { ZoneReportService } from './report.service';
 import { HdModalComponent } from '../../ng2-hd/modal/components/modal';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
 declare var $: any;
@@ -34,7 +33,7 @@ export class ZoneReportComponent implements OnInit {
   ];
 
   reasons: Array<any> = [];
-  uuid: string       = '';
+  uuid: string = '';
   entityType: string = '';
   reason: any = {id: 0, description: ''};
   errorMessage: string = '';
@@ -44,7 +43,7 @@ export class ZoneReportComponent implements OnInit {
 
   constructor(private zoneReportService: ZoneReportService,
               private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService) {
 
     this.form = fb.group({
@@ -75,8 +74,9 @@ export class ZoneReportComponent implements OnInit {
     let body = JSON.stringify({
       object_id: this.uuid,
       entity: this.entityType == 'post' ? 1 : this.entityType == 'member' ? 2 : 3,
-      reports: [{id: this.reason.id, description: this.reason.id == 99 ? values.other: this.reason.description }]});
-    this.apiBaseServiceV2.post(`zone/social_network/userreports`, body)
+      reports: [{id: this.reason.id, description: this.reason.id == 99 ? values.other : this.reason.description}]
+    });
+    this.apiBaseService.post(`zone/social_network/userreports`, body)
       .subscribe((result: any) => {
           console.log(result);
         },
@@ -88,12 +88,12 @@ export class ZoneReportComponent implements OnInit {
   }
 
   private show(type: string, uuid: string) {
-   (<FormControl>this.other).setValue('');
+    (<FormControl>this.other).setValue('');
 
-    this.uuid       = uuid;
+    this.uuid = uuid;
     this.entityType = type;
     // this.reason     = {id: 0, description: ''};
-    this.reasons    = _.filter(this.REASONS, (reason :any) => {
+    this.reasons = _.filter(this.REASONS, (reason: any) => {
       return reason.entity.indexOf(type) !== -1;
     });
     this.modal.open();

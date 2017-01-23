@@ -49,7 +49,8 @@
             <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
 
             <p class="mt10 mb0">New password must:</p>
-            <ul [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
+            <ul
+              [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
 
               <template [ngIf]="!password.valid">
                 <template [ngIf]="password.errors.required">
@@ -61,8 +62,12 @@
                 <template [ngIf]="!password.errors.required && !password.errors.minlength">
                   <li class="text-success">Contain at least 8 characters or more</li>
                 </template>
-                <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and lowercase characters</li>
-                <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number or symbol</li>
+                <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and
+                  lowercase characters
+                </li>
+                <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number
+                  or symbol
+                </li>
 
               </template>
               <template [ngIf]="password.valid">

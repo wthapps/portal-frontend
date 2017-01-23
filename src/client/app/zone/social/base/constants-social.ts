@@ -4,6 +4,6 @@ export class ConstantsSocial {
     private: {css: 'fa fa-lock', text: 'Private', data: 'private'},
     friends: {css: 'fa fa-users', text: 'Friends', data: 'friends'},
     custom_friend: {css: 'fa fa-users', text: 'Friends', data: 'custom_friend'},
-    unknow: {css: '', text: '', data: ''},
-  }
+    unknow: {css: '', text: '', data: ''}
+  };
 }

@@ -11,7 +11,7 @@ export class GroupByPipe implements PipeTransform {
     let newValue = Array<any>();
 
     for (let i = 0; i < collection.length; i++) {
-      let keyVal = GroupByPipe.deepFind(collection[i], term);
+      let keyVal = this.deepFind(collection[i], term);
       let index = newValue.findIndex(myObj => myObj.key == keyVal);
       if (index >= 0) {
         newValue[index].value.push(collection[i]);
@@ -23,7 +23,7 @@ export class GroupByPipe implements PipeTransform {
 
   }
 
-  static deepFind(obj: any, path: any) {
+  private deepFind(obj: any, path: any) {
 
     var paths = path.toString().split(/[\.\[\]]/);
     var current = obj;

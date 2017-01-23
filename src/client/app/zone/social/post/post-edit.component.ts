@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
+import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
@@ -51,12 +51,10 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   parent: any = null;
 
-  constructor(
-    private apiService: ApiBaseService,
-    private loading: LoadingService,
-    private fb: FormBuilder,
-    private currentUser: UserService
-  ) {
+  constructor(private apiService: ApiBaseService,
+              private loading: LoadingService,
+              private fb: FormBuilder,
+              private currentUser: UserService) {
   }
 
   ngOnInit(): void {
@@ -71,11 +69,11 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.photosCtrl = this.form.controls['photos'];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
 
   }
 
-  open(options: any={ mode:'add', isShare: false, addingPhotos: false, post: null, parent: null }) {
+  open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
     // load tags
     this.apiService.get(`zone/tags`)
       .subscribe((result: any) => {
@@ -92,37 +90,32 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.mode = options.mode;
     this.isShare = options.isShare;
 
-    if(options.post != null) {
+    if (options.post != null) {
       this.post = options.post;
       this.originalTags = this.post.tags;
     }
-    if(options.parent != null) {
+    if (options.parent != null) {
       this.parent = options.parent;
     }
 
 
-    this.form       = this.fb.group({
+    this.form = this.fb.group({
       'description': [this.post.description, Validators.compose([Validators.required])],
       'tags': [_.map(this.post.tags, 'name'), null],
       'photos': [this.post.photos, null]
     });
-    this.descCtrl   = this.form.controls['description'];
-    this.tagsCtrl   = this.form.controls['tags'];
+    this.descCtrl = this.form.controls['description'];
+    this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    if(options.addingPhotos) {
+    if (options.addingPhotos) {
       this.photoSelectModal.open();
-    }else {
+    } else {
       this.modal.open();
     }
   }
- 
+
   close() {
     this.modal.close();
-  }
-
-  addMorePhoto(event: any) {
-    // this.photoSelectModal.open({return: true});
-    this.onMoreAdded.emit(true);
   }
 
   done(item: any) {
@@ -195,34 +188,33 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   uploadFiles(files: Array<any>) {
 
-      // this.photos = event['data'];
-      let i = 0;
-      let reader: FileReader;
-      let body: string;
-      let fileName: string;
-      // this.loading.start('.photo-item-uploading');
-      do {
-        reader = new FileReader();
-        reader.onload = (data: any) => {
+    // this.photos = event['data'];
+    let i = 0;
+    let reader: FileReader;
+    let body: string;
+    let fileName: string;
+    // this.loading.start('.photo-item-uploading');
+    do {
+      reader = new FileReader();
+      reader.onload = (data: any) => {
 
-          body = JSON.stringify({photo: {name: fileName, image: data.target['result']}});
-          this.apiService.post(`zone/social_network/photos/upload`, body)
-            .map(res => res.json())
-            .subscribe((result: any) => {
+        body = JSON.stringify({photo: {name: fileName, image: data.target['result']}});
+        this.apiService.post(`zone/social_network/photos/upload`, body)
+          .subscribe((result: any) => {
               this.post.photos.unshift(result['data']);
               this.uploadedPhotos.push(result['data']);
               files.shift(); // remove file was uploaded
-              },
-              error => {
+            },
+            error => {
 
-              }
-            );
-        };
-        fileName = files[i].name;
-        reader.readAsDataURL(files[i]);
-        i++;
-        // } while (files.length > 0);
-      } while (i < files.length);
+            }
+          );
+      };
+      fileName = files[i].name;
+      reader.readAsDataURL(files[i]);
+      i++;
+      // } while (files.length > 0);
+    } while (i < files.length);
 
   }
 
@@ -231,7 +223,7 @@ export class PostEditComponent implements OnInit, OnChanges {
   }
 
   validPost(): boolean {
-    if(this.post.description == '' && this.photos.length <= 0) {
+    if (this.post.description == '' && this.photos.length <= 0) {
       return false;
     }
     return true;
@@ -251,7 +243,8 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   addMorePhoto(event: any) {
     this.modal.close();
-    this.photoSelectModal.open({return: true})
+    this.onMoreAdded.emit(true);
+    this.photoSelectModal.open({return: true});
   }
 
   dismiss(photos: any) {
@@ -287,7 +280,7 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   customPrivacy(type: string, event: any) {
     event.preventDefault();
-    this.privacyCustomModal.open({type: type})
+    this.privacyCustomModal.open({type: type});
   }
 
   selectedItems(response: any) {
@@ -314,17 +307,18 @@ export class PostEditComponent implements OnInit, OnChanges {
     }
     return '';
   }
+
   /**
    * Tagging
    */
   addTag(tag: any) {
     let tagObj = _.find(this.objTags, ['name', tag]);
-    if( tagObj == undefined) {
+    if (tagObj == undefined) {
       tagObj = {
         id: null,
         name: tag,
         user_id: this.currentUser.profile.id
-      }
+      };
     }
     this.post.tags.push(tagObj);
     console.log('tag add', tag, this.post.tags);
@@ -333,20 +327,20 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   removeTag(tag: any) {
 
-    this.post.tags = _.pull(this.post.tags, _.find(this.post.tags,['name', tag]));
-    console.log('tag remove', tag,  this.post.tags);
+    this.post.tags = _.pull(this.post.tags, _.find(this.post.tags, ['name', tag]));
+    console.log('tag remove', tag, this.post.tags);
   }
 
   /**
    * Privacy
    */
 
-  update(attr: any={}, event: any) {
-    if( event != null) {
+  update(attr: any = {}, event: any) {
+    if (event != null) {
       event.preventDefault();
     }
 
-    if(this.mode == 'add') {
+    if (this.mode == 'add') {
       this.post = _.assignIn(this.post, attr);
     } else {
       this.onUpdated.emit(attr);

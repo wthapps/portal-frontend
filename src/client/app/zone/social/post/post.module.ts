@@ -10,7 +10,6 @@ import {
   PostPhotoSelectComponent,
   PostNewComponent,
   PostActivitiesComponent,
-  PostShareCommunityComponent,
   PostPrivacyCustomComponent,
   PostLikeDislikeComponent,
   MemberListInviteComponent,
@@ -21,6 +20,7 @@ import { Ng2HdModule } from '../../shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';
+import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 
 @NgModule({
   imports: [
@@ -29,6 +29,7 @@ import { InputTextareaModule } from 'primeng/primeng';
     FormsModule,
     ReactiveFormsModule,
     Ng2HdModule,
+    HdTagInputModule,
     TagInputModule,
     InputTextareaModule
   ],
@@ -41,7 +42,6 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostShareCommunityComponent,
     PostPrivacyCustomComponent,
     MemberListInviteComponent
   ],
@@ -49,6 +49,7 @@ import { InputTextareaModule } from 'primeng/primeng';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    HdTagInputModule,
     TagInputModule,
     PostNewComponent,
     FileSelectionComponent,
@@ -58,7 +59,6 @@ import { InputTextareaModule } from 'primeng/primeng';
     PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostShareCommunityComponent,
     PostPrivacyCustomComponent,
     MemberListInviteComponent
   ],

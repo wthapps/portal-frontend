@@ -1,7 +1,7 @@
 import { EnvConfig } from './env-config.interface';
 
 const DevConfig: EnvConfig = {
-  API: 'http://54.213.41.54:4000/',
+  API: 'https://54.213.41.54:40000/',
   ENV: 'DEV'
 };
 

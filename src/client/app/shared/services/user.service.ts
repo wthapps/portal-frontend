@@ -5,22 +5,23 @@ import { Cookie }         from 'ng2-cookies/ng2-cookies';
 import { ApiBaseService } from './apibase.service';
 import { Constants }      from '../config/constants';
 import { User }           from '../models/user.model';
+import { Router }         from '@angular/router';
 
 @Injectable()
 export class UserService extends ApiBaseService {
 
   loggedIn: boolean = false;
   profile: User = null;
+  defaultPayment: any;
 
-  constructor(http: Http) {
-    super(http);
+  constructor(http: Http, router: Router) {
+    super(http, router);
     this.readUserInfo();
   }
 
   login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
     // public login(path: string, body: string, useJwt?: boolean = true) {
     return super.post(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           this.storeUserInfo(res);
@@ -37,7 +38,6 @@ export class UserService extends ApiBaseService {
   logout(path: string): Observable<Response> {
     // public logout(path: string) {
     return super.delete(path)
-      .map(res => res.json())
       .map((res) => {
         this.deleteUserInfo();
         return res;
@@ -49,7 +49,6 @@ export class UserService extends ApiBaseService {
    */
   signup(path: string, body: string): Observable<Response> {
     return super.post(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           this.storeUserInfo(res);
@@ -65,8 +64,7 @@ export class UserService extends ApiBaseService {
   update(path: string, body: string): Observable<Response> {
     // if(is_patch){
     return super.patch(path, body)
-      .map(res => res.json())
-      .map((res) => {
+      .map((res: any) => {
         if (res) {
           // update credit card into to profile
           // this.profile.credit_cards = res.credit_cards;
@@ -96,7 +94,6 @@ export class UserService extends ApiBaseService {
    */
   changePassword(path: string, body: string): Observable<Response> {
     return super.patch(path, body)
-      .map(res => res.json())
       .map((res) => {
         if (res) {
           console.log('changePassword:', res);
@@ -107,8 +104,7 @@ export class UserService extends ApiBaseService {
 
   choosePlan(path: string, body: string): Observable<Response> {
     return super.put(path, body)
-      .map(res => res.json())
-      .map((res) => {
+      .map((res: any) => {
         if (res) {
           this.updateProfile(res.data);
           this.readUserInfo();
@@ -124,6 +120,28 @@ export class UserService extends ApiBaseService {
     this.loggedIn = false;
     this.profile = null;
   }
+
+  getDefaultPayment(): Observable<Response> {
+    let userId = 1;
+    let path = "/users/" + userId + "/payments";
+
+    return super.post(path, [])
+      .map((res: any) => {
+        if (res) {
+          this.storeDefaultPayment(res);
+        }
+        return res;
+    });
+  }
+
+  private storeDefaultPayment(response: any) {
+    // Check if profile_image is null
+    if (response.user.default_payment) {
+      this.defaultPayment = response.user.default_payment;
+    }
+
+  }
+
 
   private storeUserInfo(response: any) {
     // Check if profile_image is null
@@ -147,7 +165,6 @@ export class UserService extends ApiBaseService {
   private updateProfile(profile: Object) {
     Cookie.set('profile', JSON.stringify(profile), 365, '/');
   }
-
 }
 
 

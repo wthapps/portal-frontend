@@ -1,12 +1,8 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges,
-  EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../../shared/ng2-hd/modal/hd-modal.module';
-import { ListComponent } from '../../../shared/ng2-hd/list/hd-list.module';
-import { ApiBaseService, UserService, LoadingService } from '../../../../shared/index';
-import { SoPost } from '../../../../shared/models/social_network/so-post.model';
-import { PostPhotoSelectComponent } from '../../post/post-photo-select.component';
-import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-import { UserService } from '../../../../shared/index';
+import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
+import { ApiBaseService, UserService } from '../../../../shared/index';
+
+import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
+import { ListComponent } from '../../../shared/ng2-hd/list/components/list.component';
 
 
 declare var _: any;
@@ -33,14 +29,13 @@ export class MemberListInviteComponent {
 
   }
 
-  open(options:any = {url: undefined}) {
+  open(options: any = {url: undefined}) {
     if (options.url != undefined) {
       this.url = options.url;
     }
     this.modal.open();
     this.loadData();
   }
-
 
 
   addItem(item: any) {
@@ -55,20 +50,11 @@ export class MemberListInviteComponent {
     this.selectedItems = items;
   }
 
-  selectItems(event: any) {
-    this.onSelected.emit({
-      type: 'custom_community',
-      items: this.selectedItems
-    });
-
-    this.modal.close();
-  }
-
   cancel($event: any) {
     if (this.selectedItems.length > 0) {
       this.selectedItems = [];
       this.modal.dismiss();
-      this.list.resetSelectedItems();
+      // this.list.resetSelectedItems();
     }
   }
 

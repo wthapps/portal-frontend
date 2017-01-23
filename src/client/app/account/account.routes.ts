@@ -19,10 +19,14 @@ import {
 } from './index';
 
 import {
-  //2 PaymentConfirmComponent,
-  //2 PaymentEditComponent,
+  PaymentConfirmComponent,
+  // PaymentEditComponent,
   PaymentComponent,
-  PlansComponent
+  PlansComponent,
+  BillingDetailsComponent,
+  BillingHistoryComponent,
+  ReceiptComponent,
+  TransactionDetailsComponent
 } from './index';
 
 import {
@@ -31,6 +35,8 @@ import {
   MyAccountComponent,
   PreferencesComponent
 } from './index';
+
+
 
 import {
   CanDeactivateGuard,
@@ -43,14 +49,13 @@ export const AccountRoutes: Route[] = [
     component: AccountComponent,
     canActivate: [AuthGuard],
     children: [
-      //2
-      /*{path: 'billing-details', component: BillingDetailsComponent},
-       {path: 'billing-history', component: BillingHistoryComponent},
-       {path: 'transactions/:id/receipt', component: ReceiptComponent},
-       {path: 'transactions/:id', component: TransactionDetailsComponent},
 
-       {path: 'services', component: AccountServicesListComponent},
-       */
+      {path: 'billing-details', component: BillingDetailsComponent},
+      {path: 'billing-history', component: BillingHistoryComponent},
+      {path: 'transactions/:id/receipt', component: ReceiptComponent},
+      {path: 'transactions/:id', component: TransactionDetailsComponent},
+      // {path: 'services', component: AccountServicesListComponent},
+
       // Setting
       {
         path: 'setting/profile', component: ProfileComponent,
@@ -92,8 +97,8 @@ export const AccountRoutes: Route[] = [
     ]
   },
 
-  //{path: 'account/payment/confirm', component: PaymentConfirmComponent},
-  //{path: 'account/payment/edit', component: PaymentEditComponent},
+  {path: 'account/payment/confirm', component: PaymentConfirmComponent},
+  // {path: 'account/payment/edit', component: PaymentEditComponent},
   {path: 'account/payment', component: PaymentComponent},
   {path: 'account/plans', component: PlansComponent},
 

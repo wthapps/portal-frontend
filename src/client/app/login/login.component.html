@@ -8,7 +8,7 @@
         <p>Welcome back</p>
       </div>
       <div class="page-hero-body">
-        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+        <div [formGroup]="form" novalidate>
           <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
             <label for="email">Email</label>
             <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
@@ -25,12 +25,15 @@
             <input [formControl]="password" type="password" class="form-control" id="password" placeholder="Password">
             <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
             <div *ngIf="!password.valid && password.touched">
-              <span *ngIf="!password.valid && password.errors.required" class="help-block">A password is required</span>
+                <span *ngIf="!password.valid && password.errors.required"
+                      class="help-block">A password is required</span>
             </div>
 
           </div>
           <div class="form-group">
-            <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-wth">Sign in</button>
+            <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-wth"
+                    (click)="onSubmit(form.value)">Sign in
+            </button>
           </div>
 
           <div class="checkbox">
@@ -40,7 +43,7 @@
               <input type="checkbox"> Remember me
             </label>
           </div>
-        </form>
+        </div>
       </div>
       <hr role="separator" class="divider">
       <div class="page-hero-tt">
@@ -52,5 +55,3 @@
     </div>
   </div>
 </section>
-
-

@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
-import { Observable } from 'rxjs';
-
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 
 @Injectable()
 export class PostService {
 
   url = 'zone/social_network/posts';
 
-  constructor(private api: ApiBaseServiceV2
-              ) {
+  constructor(private api: ApiBaseService) {
   }
 
-  list(queryParams: any = null) {
+  list(queryParams: any = null): any {
     if (typeof queryParams == 'object') {
-      if(queryParams['uuid'] == undefined) {
+      if (queryParams['uuid'] == undefined) {
         return this.api.get(this.url);
       } else {
         return this.api.get(`zone/social_network/user_posts/${queryParams['uuid']}`, {type: queryParams['type']});
@@ -36,13 +33,41 @@ export class PostService {
   }
 
   update(item: any): any {
-    console.log("updateing .............", item);
+    console.log('updateing .............', item);
     let body: any = JSON.stringify(item);
     return this.api.put(`${this.url}/${item.uuid}`, body);
   }
 
   delete(item: any) {
 
+  }
+
+  loadItem(url: string) {
+    return this.api.get(url);
+  }
+
+  createComment(body: any) {
+    return this.api.post(`${this.api.urls.zoneSoComments}`, body);
+  }
+
+  updateComment(body: any) {
+    return this.api.put(`${this.api.urls.zoneSoComments}/${body.uuid}`, body);
+  }
+
+  deleteComment(commentUuid: string) {
+    return this.api.delete(`${this.api.urls.zoneSoComments}/${commentUuid}`);
+  }
+
+  createReply(body: any) {
+    return this.api.post(`${this.api.urls.zoneSoComments}`, body);
+  }
+
+  updateReply(body: any) {
+    return this.api.put(`${this.api.urls.zoneSoComments}/${body.reply_uuid}`, body);
+  }
+
+  deleteReply(body: any) {
+    return this.api.delete(`${this.api.urls.zoneSoComments}/${body.reply_uuid}`);
   }
 
 }

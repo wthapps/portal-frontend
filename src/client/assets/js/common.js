@@ -1,45 +1,10 @@
-/*!--------------------------------------------------------------------------------
 
- Theme Name: WTHApps
- Version:    1.0.0
- Author:     John <john@wthapps.com>
+(function() {
 
- -----------------------------------------------------------------------------------*/
+  // this is global variable that is used for Notification realtime
+  this.App = {};
 
-/*if (Modernizr.touch === true && $(window).width() <= 767) {
- //alert('Touch Screen');
- } else {
+}).call(this);
 
- }
 
- (function ($) {
- "use strict";
 
- // Placeholders
- // https://github.com/mathiasbynens/jquery-placeholder
- function inputPlaceholders() {
- $('input, textarea').placeholder();
- }
-
- // Scroll to top
- function scrollToTop() {
- $('.x-scroll-top').on('click', function () {
- $('html, body').animate({
- scrollTop: 0
- }, 1000);
- return false;
- });
- }
-
- function init() {
- inputPlaceholders();
- scrollToTop();
- }
-
- init();
-
- })(jQuery);
- */
-(function ($) {
-  
-})(jQuery);

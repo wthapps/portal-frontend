@@ -14,8 +14,15 @@
 
     </template>
     <template [ngIf]="isListView">
-      <page-zone-listview (imgDetail)="onClick($event)" [data]="items"
-                          (imgsSelected)="onImgsSelected($event)"></page-zone-listview>
+      <page-zone-listview
+        [category]="'photos'"
+        [items]="items"
+        (imgsSelected)="onImgsSelected($event)"
+        (preview)="onPreview($event)"
+        (loadMore)="onLoadMore($event)"
+        (outEvent)="onGridEvent($event)"
+        [resetSelected]="resetSelected"
+      ></page-zone-listview>
     </template>
   </template>
 
@@ -48,7 +55,7 @@
 <!--[showImg]="showImg"></zone-photo-detail>-->
 
 
-<!--&lt;!&ndash; <wth-toast-upload></wth-toast-upload> &ndash;&gt;-->
+<!-- <wth-toast-upload></wth-toast-upload> -->
 <!--<toast-uploading (addedToAlbumEvent)="addedToAlbum($event)"></toast-uploading>-->
 <page-zone-form-create-album
   [items]="addItems"

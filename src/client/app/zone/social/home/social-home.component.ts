@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { PostNewComponent } from '../post/index';
-import { PostListComponent } from "../post/post-list.component";
-import { BaseZoneSocialHomePage } from "../base/base-social-home-page";
+import { PostListComponent } from '../post/post-list.component';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +8,7 @@ import { BaseZoneSocialHomePage } from "../base/base-social-home-page";
   templateUrl: 'social-home.component.html'
 })
 
-export class ZSocialHomeComponent extends BaseZoneSocialHomePage {
+export class ZSocialHomeComponent {
   @ViewChild('postNew') postNew: PostNewComponent;
   @ViewChild('posts') posts: PostListComponent;
 

@@ -117,3 +117,43 @@
     }
   }
 }
+
+.toast-wrap-bottom {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: 200;
+  .toast-wrap-bottom-item {
+    margin-bottom: 10px;
+    width: 370px;
+    border: 1px solid #d8d8d8;
+  }
+  .toast-wrap-bottom-header {
+    line-height: 20px;
+    padding: 15px;
+    background-color: #4a4a4a;
+    color: #ffffff;
+    position: relative;
+    .toast-wrap-bottom-close {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      margin-top: -13px;
+      height: 20px;
+      color: #9b9b9b;
+      font-size: 24px;
+      padding: 0;
+      background-color: transparent;
+      border-width: 0;
+      outline-style: none;
+    }
+  }
+  .toast-wrap-bottom-content {
+    padding: 15px;
+    background-color: #ffffff;
+    color: #9b9b9b;
+    .media-heading {
+      font-size: 18px;
+    }
+  }
+}

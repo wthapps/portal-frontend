@@ -7,9 +7,11 @@ export class ZoneReportService {
   post(uuid: string = null) {
     this.set('post', uuid);
   }
+
   member(uuid: string = null) {
     this.set('member', uuid);
   }
+
   community(uuid: string = null) {
     this.set('community', uuid);
   }

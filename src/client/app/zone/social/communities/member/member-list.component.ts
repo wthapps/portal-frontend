@@ -1,12 +1,13 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
-import { LoadingService } from '../../../../partials/loading/loading.service';
-
 import { MemberListInviteComponent } from './member-list-invite.component';
-import { ApiBaseService, ToastsService, ConfirmationService } from '../../../../shared/index';
+import {
+  ApiBaseService,
+  ToastsService,
+  ConfirmationService,
+  LoadingService
+} from '../../../../shared/index';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
 
 
@@ -31,38 +32,35 @@ export class ComMemberListComponent implements OnInit {
   selectedTab: string;
   items: Array<any> = new Array<any>(); // this store member, invitations, join requests and blacklist
 
+
   constructor(private api: ApiBaseService,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private zoneReportService: ZoneReportService,
               private route: ActivatedRoute,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private toastsService: ToastsService
-  ) {
+              private toastsService: ToastsService) {
   }
 
   ngOnInit() {
-
-
-   // this.loadingService.start('.zone-social-cover');
+    // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
-      this.apiBaseServiceV2.get(`zone/social_network/communities/${params['id']}`).subscribe(
+      this.apiBaseService.get(`zone/social_network/communities/${params['id']}`).subscribe(
         (res: any)=> {
           this.data = res.data;
-          console.log('data', this.data);
           // this.loadingService.stop('.zone-social-cover');
         },
         error => {
           // this.loadingService.stop('.zone-social-cover');
-          this.errorMessage = <any>error
+          this.errorMessage = <any>error;
         }
       );
 
       this.route.queryParams.subscribe(
         (queryParams: any) => {
-          this.selectedTab = queryParams['tab'] == undefined ? 'members': queryParams['tab'];
+          this.selectedTab = queryParams['tab'] == undefined ? 'members' : queryParams['tab'];
           this.loadDataBySelectedTab();
         }
       );
@@ -70,9 +68,11 @@ export class ComMemberListComponent implements OnInit {
 
   }
 
-  onReportMember(uuid: string) {
-    this.zoneReportService.member(uuid);
-    this.uuidUser = uuid;
+  onReportMember(uuid: string): any {
+    if (uuid != undefined && uuid != '') {
+      this.zoneReportService.member(uuid);
+      this.uuidUser = uuid;
+    }
     return false;
   }
 
@@ -85,7 +85,6 @@ export class ComMemberListComponent implements OnInit {
       uuid: this.uuid,
       user_ids: _.map(response.items, 'uuid')
     }))
-      .map(res => res.json)
       .subscribe((result: any) => {
           console.log('invited friends');
         },
@@ -101,39 +100,39 @@ export class ComMemberListComponent implements OnInit {
 
   loadDataBySelectedTab() {
     if (this.selectedTab == 'members') return;
-    this.apiBaseServiceV2.get(`zone/social_network/communities/${this.uuid}/${this.selectedTab}`).subscribe(
+    this.apiBaseService.get(`zone/social_network/communities/${this.uuid}/${this.selectedTab}`).subscribe(
       (res: any)=> {
         this.items = res.data;
         console.log('response ', res.data);
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
 
   acceptJoinRequest(item: any) {
-    this.apiBaseServiceV2.post(`zone/social_network/communities/accept_join_request/`,
+    this.apiBaseService.post(`zone/social_network/communities/accept_join_request/`,
       JSON.stringify({uuid: this.uuid, user_id: item.inviter.uuid})).subscribe(
       (res: any)=> {
         this.loadDataBySelectedTab();
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
 
-  cancelInvitation(id:any) {
-    this.apiBaseServiceV2.delete(`zone/social_network/communities/cancel_invitation/${id}`).subscribe(
+  cancelInvitation(id: any) {
+    this.apiBaseService.delete(`zone/social_network/communities/cancel_invitation/${id}`).subscribe(
       (res: any)=> {
         this.loadDataBySelectedTab();
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
-        this.errorMessage = <any>error
+        this.errorMessage = <any>error;
       }
     );
   }
@@ -143,7 +142,7 @@ export class ComMemberListComponent implements OnInit {
       message: `Are you sure to delete member ${user.name} from the community?`,
       header: 'Delete Member',
       accept: () => {
-        this.apiBaseServiceV2.delete(`zone/social_network/communities/${this.uuid}/members/${user.uuid}`).subscribe(
+        this.apiBaseService.delete(`zone/social_network/communities/${this.uuid}/members/${user.uuid}`).subscribe(
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
 

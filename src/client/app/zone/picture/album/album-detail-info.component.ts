@@ -1,14 +1,6 @@
-import {
-  Component, AfterViewInit, OnDestroy, Output, Input, EventEmitter, OnChanges, SimpleChange,
-  OnInit, SimpleChanges
-} from '@angular/core';
-import { Album } from "../../../shared/models/album.model";
-import { AlbumService } from "../../../shared/services/picture/album.service";
-
-
-declare var wheelzoom: any;
-declare var $: any;
-declare var _: any;
+import { Component, Output, Input, EventEmitter, OnChanges, OnInit } from '@angular/core';
+import { Album } from '../../../shared/models/album.model';
+import { AlbumService } from '../../../shared/services/picture/album.service';
 
 @Component({
   moduleId: module.id,

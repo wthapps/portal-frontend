@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/hd-modal.module';
+import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 import { SoPhotoListComponent } from './index';
 
 declare var _: any;
@@ -10,7 +10,7 @@ declare var _: any;
   templateUrl: 'post-photo-select.component.html'
 })
 
-export class PostPhotoSelectComponent implements OnInit{
+export class PostPhotoSelectComponent implements OnInit {
   @ViewChild('modal') modal: HdModalComponent;
   @ViewChild('photoList') photoList: SoPhotoListComponent;
   @Input() selectedItems: Array<any>;
@@ -32,7 +32,7 @@ export class PostPhotoSelectComponent implements OnInit{
 
   }
 
-  open(options:any={return: false}) {
+  open(options: any = {return: false}) {
     if (options.return == true) {
       this.hasBack = true;
     }
@@ -43,7 +43,7 @@ export class PostPhotoSelectComponent implements OnInit{
   close() {
     this.modal.close();
   }
- 
+
   next(event: any) {
     this.onNext.emit(_.reverse(this.photoList.selectedItems));
   }

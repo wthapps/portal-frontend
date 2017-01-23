@@ -1,4 +1,4 @@
-import {Component, OnInit, OnChanges, OnDestroy, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, EventEmitter } from '@angular/core';
 import {
   MediaType,
   ApiBaseService,
@@ -8,10 +8,10 @@ import {
 } from '../../../shared/index';
 import { Album } from '../../../shared/models/album.model';
 import { AlbumPhoto } from '../../../shared/models/album-photos.model';
-import {ZPictureFormAddToAlbumComponent} from "../form/form-add-to-album.component";
-import {ZPictureFormCreateAlbumComponent} from "../form/form-create-album.component";
-import {ZAddedToAlbumToastComponent} from "../toast/added-to-album-toast.component";
-import {ZCreatedAlbumToastComponent} from "../toast/created-album-toast.component";
+import { ZPictureFormAddToAlbumComponent } from '../form/form-add-to-album.component';
+import { ZPictureFormCreateAlbumComponent } from '../form/form-create-album.component';
+import { ZAddedToAlbumToastComponent } from '../toast/added-to-album-toast.component';
+import { ZCreatedAlbumToastComponent } from '../toast/created-album-toast.component';
 
 
 declare var $: any;
@@ -20,14 +20,14 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'base-media',
-  template: `<zone-photo *ngIf="category=='photo'"></zone-photo>
-  <div *ngIf="category=='album'"> album </div>
-  <div *ngIf="category=='playlist'"> playlist</div>
+  template: `<zone-photo *ngIf='category=="photo"'></zone-photo>
+  <div *ngIf='category=="album"'> album </div>
+  <div *ngIf='category=="playlist"'> playlist</div>
   
 `
 })
 
-export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
+export class BaseMediaComponent implements OnInit, OnChanges, OnDestroy {
 
   // @Input()
   getAction: any;
@@ -41,7 +41,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   selectedItems: Array<any> = new Array<any>();
   addItems: Array<any> = new Array<any>();
   previewItems: Array<any> = new Array<any>();
-  items: Array<any> = new Array<any>();
+  items: any = [];
   currentPage: number = 1;
   perPage: number = 1;
   total: number = 1;
@@ -132,10 +132,9 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
     });
 
     this.apiService.post(`${this.buildPathByCat()}/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           // stop loading
-          _.map(newFavourite, (v:any)=> {
+          _.map(newFavourite, (v: any)=> {
             let vitem = _.find(this.items, ['id', v.id]);
             vitem.favorite = setFavourite;
           });
@@ -162,7 +161,6 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
           let body = JSON.stringify({ids: _.map(this.selectedItems, 'id')});
           this.loadingService.start();
           this.apiService.post(`${this.buildPathByCat()}/delete`, body)
-            .map(res => res.json())
             .subscribe((result: any) => {
                 // stop loading
                 this.needToReload = true;
@@ -186,7 +184,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onImgsSelected(event: any) {
     let _this = this;
     this.selectedItems = [];
-    _.map(event, function (v:any) {
+    _.map(event, function (v: any) {
       _this.selectedItems.push(_.find(_this.items, ['id', v]));
     });
     this.selectedPhotos.emit(event);
@@ -212,34 +210,35 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   /*public loadItems(page: number) {
-    if (page <= Math.ceil(this.total / this.perPage)) {
-      this.loadingService.start('#photodata-loading');
-      this.currentPage = page;
-      this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
-        (response: any) => {
-          this.perPage = response['per_page'];
-          this.total = response['total'];
-          if (page == 1) {
-            this.items = response['data'];
-          }
-          if (!_.isEqual(this.items, response['data'])) {
-            this.items = _.concat(this.items, response['data']);
-          }
-          this.loadingService.stop('#photodata-loading');
-        },
-        error => {
-          // this.errorMessage = <any>error;
-          this.loadingService.stop('#photodata-loading');
-        }
-      );
+   if (page <= Math.ceil(this.total / this.perPage)) {
+   this.loadingService.start('#photodata-loading');
+   this.currentPage = page;
+   this.apiService.get(`${this.buildPathByCat()}?page=${page}`).subscribe(
+   (response: any) => {
+   this.perPage = response['per_page'];
+   this.total = response['total'];
+   if (page == 1) {
+   this.items = response['data'];
+   }
+   if (!_.isEqual(this.items, response['data'])) {
+   this.items = _.concat(this.items, response['data']);
+   }
+   this.loadingService.stop('#photodata-loading');
+   },
+   error => {
+   // this.errorMessage = <any>error;
+   this.loadingService.stop('#photodata-loading');
+   }
+   );
 
-    }
-  }*/
+   }
+   }*/
 
   public loadItems(page: number) {
     this.loadingService.start('#photodata-loading');
     this.apiService.get(`${this.buildPathByCat()}`).subscribe(
       (response: any) => {
+        console.log(response);
         this.items = response['data'];
         this.loadingService.stop('#photodata-loading');
       },
@@ -318,7 +317,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   onDoneCreateFormModal(e: any) {
     this.formCreateAlbum.hide();
     if (e instanceof Album) {
-      this.createdAlbumToast.show()
+      this.createdAlbumToast.show();
       this.album = e;
     } else {
       this.createdAlbumToast.hide();
@@ -338,7 +337,7 @@ export abstract class BaseMediaComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onHideAddedToAlbumToast() {
-    this.addedToAlbumToast.hide()
+    this.addedToAlbumToast.hide();
   }
 
   hasOpeningModal(): boolean {

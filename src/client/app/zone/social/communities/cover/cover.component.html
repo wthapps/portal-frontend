@@ -3,7 +3,7 @@
     <div class="zone-social-cover-info">
       <div class="z-social-media z-social-media-md">
         <div class="z-social-media-left">
-          <img [src]="item.profile_image">
+          <img [src]="item.profile_image" width="100">
         </div>
         <div class="z-social-media-body">
           <div class="z-heading">
@@ -24,19 +24,51 @@
             {{item.tag_line}}
           </div>
         </div>
+        <div>
+          <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)" data-toggle="modal"
+                  data-target="#modal-social-share-com">
+            <i class="fa fa-user-plus"></i> Invite Member
+          </button>
+
+          <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="invitation == undefined">
+            <i class="fa fa-user-plus"></i> Ask to join
+          </button>
+
+          <div class="btn-group pull-right" *ngIf="invitation != undefined">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+              Asked to join <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-custom">
+              <li>
+                <a href="javascript:;" (click)="cancelJoinRequest()">Cancel Join Request</a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
   <nav class="zone-social-cover-nav">
-    <ul class="list-unstyled clearfix" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+    <ul class="list-unstyled clearfix">
+      <li [ngClass]="selectedTab==undefined? 'active': ''">
         <a [routerLink]="['/zone/social/communities/', uuid]">Post</a>
       </li>
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+uuid+'/about']">About</a>
+      <li [ngClass]="selectedTab=='about'? 'active': ''">
+        <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'about'}" (click)="changeRoute()">About</a>
+      </li>
+      <li [ngClass]="selectedTab=='members'? 'active': ''">
+        <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'members'}">Members</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+uuid+'/members']">Members</a>
+        <a [routerLink]="['/zone/social/communities/'+uuid+'/invitations']">Invitations</a>
+      </li>
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/zone/social/communities/'+uuid+'/join_requests']">Join Requests</a>
+      </li>
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/zone/social/communities/'+uuid+'/blacklist']">Blacklist</a>
       </li>
       <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
         <!--<a [routerLink]="['/zone/social/communities/'+uuid+'/notification']">Notification <span-->
@@ -47,42 +79,17 @@
                 aria-haspopup="true" aria-expanded="true">
           <i class="fa fa-ellipsis-v"></i>
         </button>
-        <ul class="dropdown-menu dropdown-custom">
-          <li><a href="javascript:;" (click)="onEdit(data)">Edit Information</a></li>
-          <li><a href="#" (click)="onPreference(data)">Preferences</a></li>
-          <li><a [routerLink]="['/zone/social/communities/'+data.uuid+'/members']">Manage members</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="javascript:;" (click)="addFavourite(data.uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
-          <li><a href="#" (click)="onLeave(data)">Leave community</a></li>
-          <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-          <li><a (click)="onDelete(data)" href="#">Delete community</a></li>
-        </ul>
+        <!--<ul class="dropdown-menu dropdown-custom">-->
+          <!--<li><a href="javascript:;" (click)="onEdit(data)">Edit Information</a></li>-->
+          <!--<li><a href="#" (click)="onPreference(data)">Preferences</a></li>-->
+          <!--<li><a [routerLink]="['/zone/social/communities/'+data.uuid+'/members']">Manage members</a></li>-->
+          <!--<li role="separator" class="divider"></li>-->
+          <!--<li><a href="javascript:;" (click)="addFavourite(data.uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>-->
+          <!--<li><a href="#" (click)="onLeave(data)">Leave community</a></li>-->
+          <!--<li><a href="javascript:;" (click)="onReport()">Report community</a></li>-->
+          <!--<li><a (click)="onDelete(data)" href="#">Delete community</a></li>-->
+        <!--</ul>-->
       </li>
-
-
-
-      <li class="pull-right mr10" *ngIf="!isMember()">
-        <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="invitation == undefined">
-          <i class="fa fa-user-plus"></i> Ask to join
-        </button>
-
-        <div class="btn-group pull-right" *ngIf="invitation != undefined">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-            Asked to join <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-custom">
-            <li>
-              <a href="javascript:;" (click)="cancelJoinRequest()">Cancel Join Request</a>
-            </li>
-          </ul>
-        </div>
-
-        <!--<button class="btn btn-default" type="button" (click)="leave()">-->
-          <!--<i class="fa fa-times"></i> Leave Community-->
-        <!--</button>-->
-      </li>
-
     </ul>
   </nav>
 </div>

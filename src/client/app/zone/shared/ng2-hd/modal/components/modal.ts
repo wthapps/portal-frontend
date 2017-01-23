@@ -4,10 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  Type,
   ElementRef,
-  HostBinding,
-  Inject, OnInit
+  HostBinding, OnInit
 } from '@angular/core';
 import { ModalInstance, ModalResult } from './modal-instance';
 
@@ -15,15 +13,10 @@ declare var $: any;
 
 @Component({
   selector: 'hd-modal',
-  host: {
-    'class': 'modal',
-    'role': 'dialog',
-    'tabindex': '-1'
-  },
   template: `
-    <!--<div class="modal modal-social">-->
-        <div class="modal-dialog" [ngClass]="getCssClasses()">
-            <div class="modal-content">
+    <!--<div class='modal modal-social'>-->
+        <div class='modal-dialog' [ngClass]='getCssClasses()'>
+            <div class='modal-content'>
                 <ng-content></ng-content>
             </div>
         </div>
@@ -32,10 +25,14 @@ declare var $: any;
 })
 export class HdModalComponent implements OnInit, OnDestroy {
 
-  private overrideSize: string = null;
 
   instance: ModalInstance;
   visible: boolean = false;
+
+  @HostBinding('attr.class') class = 'modal';
+  @HostBinding('attr.role') role = 'dialog';
+  @HostBinding('attr.tabindex') tabindex = '-1';
+
 
   @Input() animation: boolean = true;
   @Input() backdrop: string | boolean = true;
@@ -46,6 +43,8 @@ export class HdModalComponent implements OnInit, OnDestroy {
   @Output() onClose: EventEmitter<any> = new EventEmitter(false);
   @Output() onDismiss: EventEmitter<any> = new EventEmitter(false);
   @Output() onOpen: EventEmitter<any> = new EventEmitter(false);
+
+  private overrideSize: string = null;
 
   @HostBinding('class.fade') get fadeClass(): boolean {
     return this.animation;
@@ -75,8 +74,8 @@ export class HdModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    $(document).on('hidden.bs.modal', '.modal', function () {
-      $('.modal:visible').length && $(document.body).addClass('modal-open');
+    $(document).on('hidden.bs.modal', '.modal', function() {
+      return ($('.modal:visible').length && $(document.body).addClass('modal-open'));
     });
   }
 

@@ -9,6 +9,7 @@ export class SoPost extends BaseInput implements FromData {
   comments: Array<SoComment> = new Array<SoComment>();
   photos: Array<any> = [];
   tags: Array<any> = [];
+  tags_json: Array<any> = [];
   likes: Array<any> = [];
   dislikes: Array<any> = [];
   shares: Array<any> = [];
@@ -19,9 +20,9 @@ export class SoPost extends BaseInput implements FromData {
   disable_share: boolean = false;
   mute: boolean = false;
 
-  from(fields:any) {
+  from(fields: any) {
     if (fields) {
-      Object.assign(this, fields)
+      Object.assign(this, fields);
     }
     return this;
   }

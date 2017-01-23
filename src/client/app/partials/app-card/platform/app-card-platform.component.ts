@@ -1,7 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
-/**
- * This class represents the AppCardSmComponent.
- */
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+
 @Component({
   moduleId: module.id,
   selector: 'app-card-platform',
@@ -17,13 +15,20 @@ import { Component, Input, OnChanges } from '@angular/core';
           </ul>
   `
 })
-export class AppCardPlatformComponent implements OnChanges {
+export class AppCardPlatformComponent implements OnInit, OnChanges {
   @Input() data: any;
 
   platforms: any;
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
 
   ngOnChanges(): void {
     //console.log(this.data);
     this.platforms = this.data;
   }
+
 }

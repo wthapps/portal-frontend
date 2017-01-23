@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 
@@ -31,7 +31,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   favourite: any;
 
 
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
               private toastsService: ToastsService,
@@ -47,18 +47,17 @@ export class ZSocialCommunityListComponent implements OnInit {
   getList() {
     this.loadingService.start('#communites-list');
     let myuuid = this.userService.profile.uuid;
-    let _this = this;
+    var _this_community = this;
 
-    this.apiBaseServiceV2.get('zone/social_network/communities').subscribe(
+    this.apiBaseService.get('zone/social_network/communities').subscribe(
       (res: any)=> {
-        console.log(res);
-        _this.myList.length = 0;
-        _this.list.length = 0;
+        _this_community.myList.length = 0;
+        _this_community.list.length = 0;
         _.map(res.data, (v: any)=> {
           if (v.admin.uuid == myuuid) {
-            _this.myList.push(v);
+            _this_community.myList.push(v);
           } else {
-            _this.list.push(v);
+            _this_community.list.push(v);
           }
         });
         this.loadingService.stop('#communites-list');
@@ -87,7 +86,7 @@ export class ZSocialCommunityListComponent implements OnInit {
       header: 'Delete Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.delete(`zone/social_network/communities/${item.uuid}`)
+        this.apiBaseService.delete(`zone/social_network/communities/${item.uuid}`)
           .subscribe((response: any) => {
               // console.log(response);
               this.onUpdated(response.data);
@@ -115,7 +114,7 @@ export class ZSocialCommunityListComponent implements OnInit {
       header: 'Leave Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseServiceV2.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
+        this.apiBaseService.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
           .subscribe((response: any) => {
               this.getList();
               this.toastsService.success(`You left the community ${item.name} successfully`);
@@ -132,7 +131,7 @@ export class ZSocialCommunityListComponent implements OnInit {
     return false;
   }
 
-  onPreference(item: any) {
+  onPreference(item: any): any {
     this.modalPreference.modal.open();
     this.currentItem = item;
     return false;
@@ -144,25 +143,25 @@ export class ZSocialCommunityListComponent implements OnInit {
     }
   }
 
-  onReport(uuid) {
+  onReport(uuid: any): any {
     this.zoneReportService.community(uuid);
     return false;
   }
 
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, "community").subscribe(
+    this.socialService.user.addFavourites(uuid, 'community').subscribe(
       (res: any) => {
 
       }
-    )
+    );
   }
 
   getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, "community").subscribe(
+    this.socialService.user.getFavourite(uuid, 'community').subscribe(
       (res: any) => {
         this.favourite = res.data;
       }
-    )
+    );
   }
 }

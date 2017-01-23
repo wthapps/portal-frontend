@@ -1,3 +1,5 @@
+@import "flex";
+
 $prefix-for-webkit: true !default;
 $prefix-for-mozilla: true !default;
 $prefix-for-microsoft: true !default;
@@ -288,26 +290,6 @@ $retina-suffix: '@2x';
   }
 }
 
-//
-// Bottom Left Mixin
-//
-@mixin bottom-left($horizontal: true, $vertical: true) {
-  position: absolute;
-
-  @if ($horizontal and $vertical) {
-    top: 85%;
-    left: 60px;
-    transform: translate(-50%, -50%);
-
-  } @else if ($horizontal) {
-    left: 10%;
-    transform: translate(-50%, 0);
-
-  } @else if ($vertical) {
-    top: 80%;
-    transform: translate(0, -50%);
-  }
-}
 
 /*.parent {
   position: relative;

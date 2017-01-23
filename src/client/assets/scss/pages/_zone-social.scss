@@ -1,10 +1,18 @@
 .zone-social {
   padding: 30px 45px 0;
   @include clearfix;
+  @include flexbox;
+  @include align-items(flex-start);
   .zone-social-in {
-    width: 670px;
-    float: left;
+    @include flex(1);
     margin-right: 45px;
+  }
+  .zone-social-sidebar {
+    float: right;
+    width: 300px;
+    @media (max-width: $screen-md-max) {
+      width: 200px;
+    }
   }
 }
 
@@ -21,6 +29,9 @@
     padding: 15px;
     border-bottom: 1px solid $line;
     @include clearfix;
+    .badge-wth {
+      top: 2px;
+    }
     .h4 {
       margin: 0;
       float: left;
@@ -28,41 +39,6 @@
     }
     .action {
       float: right;
-    }
-    .z-social-box-header-nav {
-      ul {
-        @include clearfix;
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-        li {
-          float: left;
-          a {
-            display: block;
-            font-size: 18px;
-            color: $light-slate;
-            position: relative;
-            padding: 8px 15px;
-            text-decoration: none;
-            line-height: 1;
-            &.active {
-              color: $text-color;
-              &:after {
-                content: "";
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: -15px;
-                background-color: $color-inverse;
-                height: 3px;
-              }
-            }
-            span {
-              font-size: 80%;
-            }
-          }
-        }
-      }
     }
     & + .z-social-media {
       margin-top: 15px;
@@ -83,8 +59,8 @@
 }
 
 .z-social-media {
-  display: flex;
-  align-items: flex-start;
+  @include flexbox;
+  @include align-items(flex-start);
   .z-social-media-left {
     width: 34px;
     height: 34px;
@@ -98,7 +74,7 @@
     }
   }
   .z-social-media-body {
-    flex: 1;
+    @include flex(1);
   }
   .z-social-media-right {
     .btn {
@@ -537,7 +513,6 @@
 }
 
 .zone-social-sidebar {
-  float: left;
   dl {
     dt {
       font-size: 18px;
@@ -635,6 +610,10 @@
       }
     }
   }
+}
+
+.zone-social-container {
+  width: 100%;
 }
 
 .zone-social-cover {

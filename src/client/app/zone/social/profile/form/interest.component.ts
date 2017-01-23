@@ -1,18 +1,14 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
 import {
   FormGroup,
-  AbstractControl,
   FormBuilder,
-  Validators,
-  FormControl,
   FormArray
 } from '@angular/forms';
-import { CustomValidator } from '../../../../shared/validator/custom.validator';
 import { SocialService } from '../../services/social.service';
 
 declare var $: any;
@@ -38,7 +34,7 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
   form: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private socialService: SocialService,
               private userService: UserService) {
@@ -56,11 +52,11 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.removeAll();
     let _this = this;
-    if (this.data) {
+    if (this.data && this.data.hobby) {
       this.removeAll();
 
-      let additional_hobby_interest_edit = this.data.hobby_interest;
-      _.map(additional_hobby_interest_edit, (v)=> {
+      let additional_hobby_interest_edit = this.data.hobby;
+      _.map(additional_hobby_interest_edit, (v: any)=> {
         _this.addHobbyInterest(v);
       });
     }
@@ -112,24 +108,10 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
 
     console.log(values);
 
-    // get links if link is not empty
-    /*let emails_filter = [];
-    _.map(values.email, (v)=> {
-      if (v.email != '') {
-        emails_filter.push(v);
-      }
-    });*/
-
-    let body = JSON.stringify({
-      hobby_interest: values.hobby_interests
-    });
-
-    console.log('body:', body);
-
-    this.apiBaseServiceV2.put(`zone/social_network/users/${this.data.uuid}`, body)
+    this.socialService.user.update({hobby: values.hobby_interests})
       .subscribe((result: any) => {
           console.log(result);
-          //this.updated.emit(result.data);
+          this.updated.emit(result.data);
         },
         error => {
           console.log(error);

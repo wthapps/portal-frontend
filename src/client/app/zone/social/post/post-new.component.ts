@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiBaseService, LoadingService } from '../../../shared/index';
-import { PostEditComponent, PostPhotoSelectComponent } from './index';
+import { PostEditComponent } from './index';
 
 declare var _: any;
 
@@ -10,7 +10,7 @@ declare var _: any;
   templateUrl: 'post-new.component.html'
 })
 
-export class PostNewComponent implements OnInit{
+export class PostNewComponent implements OnInit {
   // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   @ViewChild('postAddModal') postAddModal: PostEditComponent;
   @Output() onPostAdded: EventEmitter<any> = new EventEmitter<any>();
@@ -27,13 +27,13 @@ export class PostNewComponent implements OnInit{
   }
 
   open(event: any, choosePhotos?: boolean) {
-    if(choosePhotos == true) {
+    if (choosePhotos == true) {
       // this.photoModal.open();
       return;
     }
     this.postAddModal.open();
   }
- 
+
   next(photos: any) {
     // this.photoModal.close();
     this.selectedPhotos = _.reverse(photos);

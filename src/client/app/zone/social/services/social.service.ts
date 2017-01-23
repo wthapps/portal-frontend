@@ -1,79 +1,85 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
-import { Params, Router } from '@angular/router';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { Router } from '@angular/router';
 import { UserService } from '../../../shared/index';
 /**
  * Created by phat on 18/11/2016.
  */
 @Injectable()
 export class SoUserService {
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2, private user: UserService) {
+
+  constructor(private apiBaseService: ApiBaseService, private user: UserService) {
   }
 
   get(uuid: string = this.user.profile.uuid) {
-    return this.apiBaseServiceV2.get(`zone/social_network/users/${uuid}`);
+    return this.apiBaseService.get(`zone/social_network/users/${uuid}`);
   }
 
-  update(body:any) {
-    return this.apiBaseServiceV2.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
+  // update(body: any) {
+  //   return this.apiBaseService.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
+  // }
+
+  update(body: any) {
+    return this.apiBaseService.put(`zone/social_network/users/update`, body);
   }
 
   reset_setting() {
-    return this.apiBaseServiceV2.post(`zone/social_network/users/reset_settings`);
+    return this.apiBaseService.post(`zone/social_network/users/reset_settings`);
   }
 
-  addFriend(uuid:any) {
-    return this.apiBaseServiceV2.post(`zone/social_network/invitations`, {uuid: uuid});
+  addFriend(uuid: any) {
+    return this.apiBaseService.post(`zone/social_network/invitations`, {uuid: uuid});
   }
 
-  unfriend(uuid:any) {
-    return this.apiBaseServiceV2.delete(`zone/social_network/invitations/unfriend/${uuid}`);
+  unfriend(uuid: any) {
+    return this.apiBaseService.delete(`zone/social_network/invitations/unfriend/${uuid}`);
   }
 
-  unfollow(uuid:any) {
-    return this.apiBaseServiceV2.post(`zone/social_network/invitations/unfollow`, {uuid: uuid});
+  unfollow(uuid: any) {
+    return this.apiBaseService.post(`zone/social_network/invitations/unfollow`, {uuid: uuid});
   }
 
-  follow(uuid:any) {
-    return this.apiBaseServiceV2.post(`zone/social_network/invitations/follow`, {uuid: uuid});
+  follow(uuid: any) {
+    return this.apiBaseService.post(`zone/social_network/invitations/follow`, {uuid: uuid});
   }
 
-  cancelFriendRequest(uuid:any) {
-    return this.apiBaseServiceV2.delete(`zone/social_network/invitations/${uuid}`);
+  cancelFriendRequest(uuid: any) {
+    return this.apiBaseService.delete(`zone/social_network/invitations/${uuid}`);
   }
 
   getRelationShips(uuid?: string) {
-    return this.apiBaseServiceV2.get(`zone/social_network/invitations/${uuid}`);
+    return this.apiBaseService.get(`zone/social_network/invitations/${uuid}`);
   }
 
   getFavourites() {
-    return this.apiBaseServiceV2.get(`zone/social_network/favourites`);
+    return this.apiBaseService.get(`zone/social_network/favourites`);
   }
 
-  getFavourite(uuid:any, type:string) {
-    return this.apiBaseServiceV2.get(`zone/social_network/favourites/${uuid}`, {type: type});
+  getFavourite(uuid: any, type: string) {
+    return this.apiBaseService.get(`zone/social_network/favourites/${uuid}`, {type: type});
   }
 
-  addFavourites(uuid:any, type:string) {
-    return this.apiBaseServiceV2.post(`zone/social_network/favourites`, {uuid: uuid, type: type});
+  addFavourites(uuid: any, type: string) {
+    return this.apiBaseService.post(`zone/social_network/favourites`, {uuid: uuid, type: type});
   }
 
   getNotifications() {
-    return this.apiBaseServiceV2.get(`zone/social_network/notifications`);
+    return this.apiBaseService.get(`zone/social_network/notifications`);
   }
 
   checkedNotifications() {
-    return this.apiBaseServiceV2.post(`zone/social_network/notifications/checked`);
+    return this.apiBaseService.post(`zone/social_network/notifications/checked`);
   }
 }
 
 @Injectable()
 export class SoPostService {
-  constructor(private apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(private apiBaseService: ApiBaseService,
               private user: UserService,
-              private	router:	Router) {
+              private  router: Router) {
   }
-  getList(uuid:string = this.user.profile.uuid, type?:string) {
+
+  getList(uuid: string = this.user.profile.uuid, type?: string) {
     switch (this.router.url) {
       case '/zone/social/home':
         return this.getListSocialPosts();
@@ -81,22 +87,26 @@ export class SoPostService {
     return this.getListOtherPosts(uuid, type);
   }
 
-  getSettings(uuid:string) {
-    return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoPostSettings}/${uuid}`);
+  getSettings(uuid: string) {
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`);
   }
 
   private getListSocialPosts() {
-    return this.apiBaseServiceV2.get(this.apiBaseServiceV2.urls.zoneSoPosts);
+    return this.apiBaseService.get(this.apiBaseService.urls.zoneSoPosts);
   }
 
-  private getListOtherPosts(uuid:string, type:string) {
-    return this.apiBaseServiceV2.get(`${this.apiBaseServiceV2.urls.zoneSoUserPosts}/${uuid}/`, {type: type});
+  private getListOtherPosts(uuid: string, type: string) {
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoUserPosts}/${uuid}/`, {type: type});
   }
 }
 
 
 @Injectable()
 export class SocialService {
+  static readonly MEMBER_ROLE = { Admin: "Admin" ,
+    Member: "Member"
+  } ;
+
   constructor(public user: SoUserService,
               public post: SoPostService) {
 

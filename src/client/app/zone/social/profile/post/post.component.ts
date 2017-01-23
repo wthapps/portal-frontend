@@ -6,7 +6,7 @@ import { PostListComponent } from '../../post/post-list.component';
 import { PostNewComponent } from '../../post/post-new.component';
 import { SocialService } from '../../services/social.service';
 import { UserService } from '../../../../shared/services/user.service';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 
 @Component({
   moduleId: module.id,
@@ -24,7 +24,7 @@ export class ZSocialProfilePostComponent implements OnInit {
   constructor(private socialService: SocialService,
               private route: ActivatedRoute,
               private router: Router,
-              private apiBaseService: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private userService: UserService) {
   }
 
@@ -34,9 +34,9 @@ export class ZSocialProfilePostComponent implements OnInit {
       this.uuid = params['id'];
       this.socialService.user.get(this.uuid).subscribe(
         (res: any) => {
-          this.userInfo = res.data
+          this.userInfo = res.data;
         }
-      )
+      );
     });
   }
 }

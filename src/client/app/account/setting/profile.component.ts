@@ -126,8 +126,8 @@ export class ProfileComponent implements OnInit {
       values.sex = this.sex;
 
       let body = JSON.stringify({
-        first_name: values.first_name,
-        last_name: values.last_name,
+        first_name: values.firstName,
+        last_name: values.lastName,
         nationality: values.phone_prefix,
         phone_number: values.phone_number,
         birthday_day: values.birthday_day.toString(),

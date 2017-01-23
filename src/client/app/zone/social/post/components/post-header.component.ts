@@ -1,6 +1,5 @@
-import { Component, ViewChild, OnInit, Input, OnChanges } from '@angular/core';
-import { BaseZoneSocialItem } from "../../base/base-social-item";
-import { SoPost } from "../../../../shared/models/social_network/so-post.model";
+import { Component, Input, OnChanges } from '@angular/core';
+import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { PostComponent } from '../index';
 import { SocialService } from '../../services/social.service';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
@@ -14,7 +13,7 @@ declare var _: any;
   templateUrl: 'post-header.component.html'
 })
 
-export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges {
+export class PostHeaderComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
 
@@ -27,7 +26,6 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
               private socialService: SocialService,
               private userService: UserService,
               private zoneReportService: ZoneReportService) {
-    super();
   }
 
   ngOnChanges() {
@@ -84,7 +82,7 @@ export class PostHeaderComponent extends BaseZoneSocialItem implements OnChanges
       (res: any) => {
         this.settings = res.data.settings;
       }
-    )
+    );
   }
 
 

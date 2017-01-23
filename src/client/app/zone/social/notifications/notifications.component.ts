@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../services/social.service';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
-declare var _:any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -10,12 +10,12 @@ declare var _:any;
   templateUrl: 'notifications.component.html'
 })
 
-export class ZSocialNotificationsComponent implements OnInit{
+export class ZSocialNotificationsComponent implements OnInit {
   notifications: any = [];
   newNotifications: any = [];
 
 
-  constructor(private socialService: SocialService, private apiBaseServiceV2: ApiBaseServiceV2) {
+  constructor(private socialService: SocialService, private apiBaseService: ApiBaseService) {
   }
 
   ngOnInit() {
@@ -24,29 +24,29 @@ export class ZSocialNotificationsComponent implements OnInit{
 
   callNotifications() {
     this.socialService.user.getNotifications().subscribe(
-      (res:any) => {
+      (res: any) => {
         console.log(res.data);
         this.notifications = res.data;
-        this.newNotifications = _.filter(this.notifications, { 'seen_state': 'new' });
+        this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
       }
     );
   }
 
-  doAction(action:any) {
-    let api = null;
+  doAction(action: any) {
+    let api: any = null;
     switch (action.method) {
       case 'post':
-        api = this.apiBaseServiceV2.post(action.link, action.params);
+        api = this.apiBaseService.post(action.link, action.params);
         break;
       case 'delete':
-        api = this.apiBaseServiceV2.delete(action.link);
+        api = this.apiBaseService.delete(action.link);
         break;
     }
 
     api.subscribe(
-      (res:any) => {
+      (res: any) => {
         this.callNotifications();
       }
-    )
+    );
   }
 }

@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, ElementRef } from '@angular/core';
-import { FormModalComponent } from "../../../shared/form/form-modal.component";
-import { LoadingService } from "../../../partials/loading/loading.service";
-import { AlbumService } from "../../../shared/services/picture/album.service";
-import { Album } from "../../../shared/models/album.model";
-import { Photo } from "../../../shared/models/photo.model";
-import { AlbumPhoto } from "../../../shared/models/album-photos.model";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormModalComponent } from '../../../shared/form/form-modal.component';
+import { LoadingService } from '../../../partials/loading/loading.service';
+import { AlbumService } from '../../../shared/services/picture/album.service';
+import { Album } from '../../../shared/models/album.model';
+import { Photo } from '../../../shared/models/photo.model';
+import { AlbumPhoto } from '../../../shared/models/album-photos.model';
 
 declare var $: any;
 declare var _: any;
@@ -14,7 +14,7 @@ declare var _: any;
   selector: 'page-zone-form-add-to-album',
   templateUrl: 'form-add-to-album.component.html',
 })
-export class ZPictureFormAddToAlbumComponent extends FormModalComponent {
+export class ZPictureFormAddToAlbumComponent extends FormModalComponent implements OnInit {
   @Input() selectedItems: Array<Photo>;
   @Output() createNewAlbum: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
@@ -59,7 +59,7 @@ export class ZPictureFormAddToAlbumComponent extends FormModalComponent {
           this.dataAlbums = [];
           this.getAlbum();
         }
-      )
+      );
   }
 
   //

@@ -1,69 +1,51 @@
 <z-social-profile-cover [data]="userInfo"></z-social-profile-cover>
 <div *ngIf="userInfo">
-  <div class="z-social-box">
+  <div class="z-social-box" *ngIf="userInfo.basic_info">
     <div class="z-social-box-header">
 
-      <a href="#" (click)="onEditAbout()" class="btn btn-default-inline pull-right">
-        <i class="fa fa-pencil"></i>
-      </a>
-
-      <div class="btn-group pull-right mr10">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-users"></i> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-          <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-          <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-        </ul>
+      <div *ngIf="actions.update">
+        <a href="#" (click)="onEditAbout()" class="btn btn-default-inline pull-right">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <z-social-privacy #privacyUser [params]="{name: 'basic_info_privacy', value: userInfo.basic_info_privacy}"></z-social-privacy>
       </div>
 
       <h4 class="h4">
-        About Us
+        About
       </h4>
     </div>
     <div class="z-social-post">
       <div>
-        {{userInfo.about}}
+        {{userInfo.basic_info.about}}
       </div>
       <dl>
         <dt>Gender</dt>
-        <dd>{{userInfo.gender}}</dd>
+        <dd>{{constants.sex[userInfo.basic_info.sex]}}</dd>
       </dl>
       <dl>
         <dt>Date of Birth</dt>
-        <dd>{{userInfo.birthday | date:'MMM dd, yyyy' : 'UTC'}}</dd>
+        <dd *ngIf="userInfo.basic_info.birthday">{{userInfo.basic_info.birthday | date:'MMM dd, yyyy' : 'UTC'}}</dd>
       </dl>
       <dl>
         <dt>Nationality</dt>
-        <dd>{{userInfo.nationality}}</dd>
+        <dd>{{userInfo.basic_info.nationality}}</dd>
       </dl>
-      <ul *ngIf="userInfo.additional_link" class="list-unstyled">
-        <li *ngFor="let link of userInfo.additional_link">
+      <ul *ngIf="userInfo.basic_info.additional_links" class="list-unstyled">
+        <li *ngFor="let link of userInfo.basic_info.additional_links">
           <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url|urlTransform}}">{{link.name}}</a>
         </li>
       </ul>
     </div>
   </div>
 
-  <div class="z-social-box">
+  <div class="z-social-box" *ngIf="userInfo.contact">
     <div class="z-social-box-header">
 
-      <a href="#" (click)="onEditContact()" class="btn btn-default-inline pull-right" data-toggle="modal">
-        <i class="fa fa-pencil"></i>
-      </a>
-
-      <div class="btn-group pull-right mr10">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-users"></i> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-          <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-          <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-        </ul>
+      <div *ngIf="actions.update">
+        <a href="#" (click)="onEditContact()" class="btn btn-default-inline pull-right" data-toggle="modal">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <z-social-privacy [params]="{name: 'contact_privacy', value: userInfo.contact_privacy}"></z-social-privacy>
       </div>
 
       <h4 class="h4">
@@ -71,56 +53,46 @@
       </h4>
     </div>
     <div class="z-social-post">
-      <dl *ngIf="userInfo.email">
+      <dl *ngIf="userInfo.contact.emails">
         <dt>Email</dt>
-        <dd *ngFor="let email of userInfo.email">
+        <dd *ngFor="let email of userInfo.contact.emails">
           {{email}}
         </dd>
       </dl>
 
-      <dl *ngIf="userInfo.phone">
+      <dl *ngIf="userInfo.contact.phones">
         <dt>Phone</dt>
-        <dd *ngFor="let phone of userInfo.phone">
+        <dd *ngFor="let phone of userInfo.contact.phones">
           {{phone}}
         </dd>
       </dl>
 
 
-      <dl *ngIf="userInfo.address">
+      <dl *ngIf="userInfo.contact.addresses">
         <dt>Address</dt>
-        <dd *ngFor="let address of userInfo.address">
+        <dd *ngFor="let address of userInfo.contact.addresses">
           {{address.street}}, {{address.city}}, {{address.country}}
         </dd>
       </dl>
     </div>
   </div>
 
-  <div class="z-social-box">
+  <div class="z-social-box" *ngIf="userInfo.profile_info">
     <div class="z-social-box-header">
-
-      <a href="#" (click)="onEditWorkEdu()" class="btn btn-default-inline pull-right" data-toggle="modal">
-        <i class="fa fa-pencil"></i>
-      </a>
-      <div class="btn-group pull-right mr10">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-users"></i> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-          <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-          <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-        </ul>
+      <div *ngIf="actions.update">
+        <a href="#" (click)="onEditWorkEdu()" class="btn btn-default-inline pull-right" data-toggle="modal">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <z-social-privacy [params]="{name: 'profile_privacy', value: userInfo.profile_privacy}"></z-social-privacy>
       </div>
-
       <h4 class="h4">
         Work &amp; Education
       </h4>
     </div>
     <div class="z-social-post">
       <h4 class="text-fade">Employment</h4>
-      <div *ngIf="userInfo.employment">
-        <dl *ngFor="let employment of userInfo.employment">
+      <div *ngIf="userInfo.profile_info.works">
+        <dl *ngFor="let employment of userInfo.profile_info.works">
           <dt>{{employment.title}}</dt>
           <dd>
             {{employment.description}}
@@ -130,8 +102,8 @@
 
       <h4 class="text-fade">Education</h4>
 
-      <div *ngIf="userInfo.education">
-        <dl *ngFor="let education of userInfo.education">
+      <div *ngIf="userInfo.profile_info.educations">
+        <dl *ngFor="let education of userInfo.profile_info.educations">
           <dt>{{education.title}}</dt>
           <dd>
             {{education.description}}
@@ -141,22 +113,13 @@
     </div>
   </div>
 
-  <div class="z-social-box">
+  <div class="z-social-box" *ngIf="userInfo.hobby">
     <div class="z-social-box-header">
-
-      <a href="#" (click)="onEditInterest()" class="btn btn-default-inline pull-right" data-toggle="modal">
-        <i class="fa fa-pencil"></i>
-      </a>
-      <div class="btn-group pull-right mr10">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-users"></i> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-          <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-          <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-        </ul>
+      <div *ngIf="actions.update">
+        <a href="#" (click)="onEditInterest()" class="btn btn-default-inline pull-right" data-toggle="modal">
+          <i class="fa fa-pencil"></i>
+        </a>
+        <z-social-privacy [params]="{name: 'hobby_privacy', value: userInfo.hobby_privacy}"></z-social-privacy>
       </div>
 
       <h4 class="h4">
@@ -164,8 +127,8 @@
       </h4>
     </div>
     <div class="z-social-post">
-      <div *ngIf="userInfo.hobby_interest">
-        <dl *ngFor="let hobby_interest of userInfo.hobby_interest">
+      <div *ngIf="userInfo.hobby && userInfo.hobby.length > 0">
+        <dl *ngFor="let hobby_interest of userInfo.hobby">
           <dt>{{hobby_interest.title}}</dt>
           <dd>
             {{hobby_interest.description}}
@@ -174,70 +137,9 @@
       </div>
     </div>
   </div>
-
-  <div class="z-social-box">
-    <div class="z-social-box-header">
-
-      <a href="#" class="btn btn-default-inline pull-right" data-toggle="modal">
-        <i class="fa fa-pencil"></i>
-      </a>
-      <div class="btn-group pull-right mr10">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-users"></i> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#"><i class="fa fa-globe"></i> Public</a></li>
-          <li><a href="#"><i class="fa fa-users"></i> Friends</a></li>
-          <li><a href="#"><i class="fa fa-lock"></i> Personal</a></li>
-        </ul>
-      </div>
-
-      <h4 class="h4">
-        Communitites
-      </h4>
-    </div>
-    <div class="z-social-post">
-      <ul *ngIf="userInfo.communities" class="list-unstyled social-list-user">
-        <li *ngFor="let communitiy of userInfo.communities">
-          <div class="media-center">
-            <div class="media-center-left">
-              <figure>
-                <a [routerLink]="['/zone/social/communities', communitiy.uuid]">
-                  <img [src]="communitiy.profile_image" alt="{{communitiy.name}}">
-                </a>
-              </figure>
-            </div>
-            <div class="media-center-body">
-              <h4 class="media-center-heading">
-                <a [routerLink]="['/zone/social/communities', communitiy.uuid]">{{communitiy.name}}</a>
-              </h4>
-              <p class="media-center-p">---------- members</p>
-            </div>
-            <div class="media-center-right">
-              <div class="dropdown pull-right">
-                <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                  <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="#">Edit Information</a></li>
-                  <li><a href="#">Preferences</a></li>
-                  <li><a href="#">Manage members</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">Remove from Favourites</a></li>
-                  <li><a href="#">Leave community</a></li>
-                  <li><a href="#">Delete community</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
 </div>
 <z-social-profile-form-about #modalAbout [data]="userInfo" (updated)="onUpdated($event)"></z-social-profile-form-about>
 <z-social-profile-form-contact #modalContact [data]="userInfo" (updated)="onUpdated($event)"></z-social-profile-form-contact>
 <z-social-profile-form-workedu #modalWorkEdu [data]="userInfo" (updated)="onUpdated($event)"></z-social-profile-form-workedu>
 <z-social-profile-form-interest #modalInterest [data]="userInfo" (updated)="onUpdated($event)"></z-social-profile-form-interest>
+

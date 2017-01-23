@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BaseZoneSocialItem } from '../base/base-social-item';
 import { SoPost } from '../../../shared/models/social_network/so-post.model';
-import { ApiBaseServiceV2 } from '../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { PostEditComponent, PostService } from './index';
+import { Location } from '@angular/common';
 
 declare var _: any;
 
@@ -21,10 +22,11 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   private id: string = '';
 
-  constructor(public apiBaseServiceV2: ApiBaseServiceV2,
+  constructor(public apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
-    private postService: PostService
-  ) {
+              private location: Location,
+              private postService: PostService) {
+    super();
   }
 
   ngOnInit() {
@@ -35,27 +37,27 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
   loadPost(uuid: string): void {
-    this.loadItem(this.apiBaseServiceV2.urls.zoneSoPosts + '/' + uuid)
+    this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + uuid)
       .subscribe((response: any) => {
           this.item = new SoPost().from(response.data);
         },
-        error => {
-          this.errorMessage = <any>error;
+        (error: any) => {
+          this.errorMessage = error;
         }
       );
   }
 
 
-  save(options: any = { mode: 'edit', item: null, isShare: false}) {
+  save(options: any = {mode: 'edit', item: null, isShare: false}) {
     this.postService.update(options.item)
-    .subscribe((response: any) => {
-        this.loadPost(options.item.uuid);
-        this.postEditModal.close();
-      },
-      error => {
-        console.log('error', error);
-      }
-    );
+      .subscribe((response: any) => {
+          this.loadPost(options.item.uuid);
+          this.postEditModal.close();
+        },
+        (error: any) => {
+          console.log('error', error);
+        }
+      );
   }
 
   openEditModal(options: any) {

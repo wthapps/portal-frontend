@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, Input, EventEmitter } from '@angular/core';
 
 // import {ZPhotoDetailComponent} from './photo-detail.component';
 import { Photo } from '../../../shared/models/photo.model';
@@ -21,7 +21,7 @@ declare var _: any;
   styleUrls: ['shared-with-me.component.css']
 })
 
-export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnInit {
+export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnInit, OnChanges {
   showImg: boolean = false;
   imgId: number;
   sendActionDetail: any;
@@ -38,10 +38,10 @@ export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnI
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() modalAction: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private apiService: ApiBaseService,
-              private toastsService: ToastsService,
+  constructor(public apiService: ApiBaseService,
+              public toastsService: ToastsService,
               public loadingService: LoadingService,
-              private confirmationService: ConfirmationService) {
+              public confirmationService: ConfirmationService) {
     super(MediaType.sharedWithMe);
   }
 
@@ -198,7 +198,6 @@ export class ZoneSharedWithMeComponent extends BaseMediaComponent implements OnI
 
 
     this.apiService.post(`zone/photos/favourite`, body)
-      .map(res => res.json())
       .subscribe((result: any) => {
           _.map(newFavourite, (v: any)=> {
             this.items.photos = _.reject(this.items.photos, ['id', v.id]);

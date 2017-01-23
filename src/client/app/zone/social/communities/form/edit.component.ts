@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { ApiBaseServiceV2 } from '../../../../shared/services/apibase.service.v2';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { LoadingService } from '../../../../partials/loading/loading.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
@@ -42,7 +42,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   description: AbstractControl;
 
   constructor(private fb: FormBuilder,
-              private apiBaseServiceV2: ApiBaseServiceV2,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
               private userService: UserService) {
     this.form = fb.group({
@@ -68,34 +68,33 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     let _this = this;
     // console.log(this.form.controls['additional_links'].controls.length=0);
     if (this.data) {
-      // console.log(this.form);
-      console.log('ZSocialCommunityFormEditComponent:', this.data);
       this.removeAllLink();
-    }
-    if (this.action == 'edit') {
-      this.removeAllLink();
-      (<FormControl>this.community_name).setValue(this.data.name);
-      (<FormControl>this.tag_line).setValue(this.data.tag_line);
-      (<FormControl>this.description).setValue(this.data.description);
+      if (this.action == 'edit') {
+        this.removeAllLink();
+        (<FormControl>this.community_name).setValue(this.data.name);
+        (<FormControl>this.tag_line).setValue(this.data.tag_line);
+        (<FormControl>this.description).setValue(this.data.description);
 
-      let additional_links_edit = this.data.additional_links;
-      _.map(additional_links_edit, (v)=> {
-        _this.addLink(v);
-      });
+        let additional_links_edit = this.data.additional_links;
+        _.map(additional_links_edit, (v: any)=> {
+          _this.addLink(v);
+        });
 
-    } else {
-      this.removeAllLink();
-      (<FormControl>this.community_name).setValue('');
-      (<FormControl>this.tag_line).setValue('');
-      (<FormControl>this.description).setValue('');
+      } else {
+        this.removeAllLink();
+        (<FormControl>this.community_name).setValue('');
+        (<FormControl>this.tag_line).setValue('');
+        (<FormControl>this.description).setValue('');
+      }
     }
+
   }
 
   initLink(link?: any) {
 
     if (link) {
       return this.fb.group({
-        key: [link.name.toLowerCase().replace(' ','_')],
+        key: [link.name.toLowerCase().replace(' ', '_')],
         name: [link.name],
         url: [link.url, Validators.compose([CustomValidator.urlFormat])],
         order: [link.order]
@@ -141,8 +140,8 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   }
 
   onSubmit(values: any): void {
-    let additional_links_filter = [];
-    _.map(values.additional_links, (v)=> {
+    let additional_links_filter: any = [];
+    _.map(values.additional_links, (v: any)=> {
       if (v.url) {
         additional_links_filter.push(v);
       }
@@ -155,10 +154,8 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
       additional_links: additional_links_filter
     });
 
-    console.log('body:', body);
-
     if (this.action == 'edit') {
-      this.apiBaseServiceV2.put(`zone/social_network/communities/${this.data.uuid}`, body)
+      this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}`, body)
         .subscribe((result: any) => {
             // console.log(result);
             this.updated.emit(result.data);
@@ -168,7 +165,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
           }
         );
     } else {
-      this.apiBaseServiceV2.post(`zone/social_network/communities`, body)
+      this.apiBaseService.post(`zone/social_network/communities`, body)
         .subscribe((result: any) => {
             // console.log(result);
             this.updated.emit(result.data);
@@ -178,8 +175,6 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
           }
         );
     }
-
-
     this.modal.close();
   }
 }
