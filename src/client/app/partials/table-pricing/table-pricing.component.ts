@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import {
-  UserService,
-  LoadingService,
-  ApiBaseService
-} from '../../shared/index';
-
-import { Product } from '../../shared/models/product.model';
+import { Cookie } from 'ng2-cookies';
+import { LoadingService } from '../loading/loading.service';
+import { ApiBaseService } from '../../shared/services/apibase.service';
+import { UserService } from '../../shared/services/user.service';
 import { Plan } from '../../shared/models/plan.model';
-
 
 @Component({
   moduleId: module.id,
@@ -20,8 +15,8 @@ import { Plan } from '../../shared/models/plan.model';
 export class TablePricingComponent implements OnInit {
   pageTitle: string = 'Plan Options';
 
-  products: Product[] = [];
-  plans: Plan[] = [];
+  products: Array<any> = [];
+  plans: Array<any> = [];
 
   percentage: number = 1;
 

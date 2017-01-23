@@ -1,0 +1,92 @@
+.nav-menuleft {
+  /*.list-group-item {
+    a {
+      display: block;
+      margin: -10px -15px;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: $color;
+      position: relative;
+    }
+    &:hover {
+      a {
+        background-color: #f9f9f9;
+        color: $black;
+        text-decoration: none;
+      }
+    }
+    &:active
+    &:focus
+    &.active {
+      background-color: transparent;
+      &:hover {
+        a {
+          background-color: #f9f9f9;
+        }
+      }
+      a {
+        &,
+        &:hover,
+        &:focus{
+          color: $black;
+          outline: 0 none;
+          text-decoration: none;
+        }
+        &:before {
+          content: "";
+          width: 2px;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          background-color: $color-inverse;
+          font-weight: bold;
+        }
+      }
+    }
+  }*/
+}
+
+.nav-menuleft {
+  .panel > .list-group .list-group-item,
+  .panel > .panel-collapse > .list-group .list-group-item {
+    &,
+    &.active {
+      background-color: transparent;
+      border-color: #dddddd;
+    }
+    a {
+      display: block;
+      margin: -10px -15px;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: $color;
+      position: relative;
+    }
+    &:hover {
+      a {
+        background-color: #f9f9f9;
+        color: $black;
+        text-decoration: none;
+      }
+    }
+    &.active {
+      a {
+        font-weight: bold;
+        color: $black;
+        &:before {
+          content: "";
+          width: 2px;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          background-color: $color-inverse;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

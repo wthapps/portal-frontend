@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
+import { PoliciesRoutingModule } from './policies-routing.module';
+import { PoliciesComponent } from './policies.component';
+import { TermsComponent } from './terms.component';
+import { PrivacyComponent } from './privacy.component';
+import { CookiesComponent } from './cookies.component';
+import { PartialsModule } from '../partials/partials.module';
 
-import {
-  PoliciesComponent,
-  TermsComponent,
-  CookiesComponent,
-  PrivacyComponent
-}                           from './index';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    PoliciesRoutingModule,
+    PartialsModule
   ],
   declarations: [
     PoliciesComponent,

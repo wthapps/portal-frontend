@@ -1,36 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import './operators';
-// import 'actioncable-js'
+import { Config } from './shared/config/env.config';
 
-// declare let ActionCable: any;
+import { Subscription } from 'rxjs/Rx';
+import './operators';
+import 'rxjs/add/operator/filter';
 
 /**
- * This class represents the main application component. Within the @Routes annotation is the configuration of the
- * applications routes, configuring the paths for the lazy loaded components (HomeComponent, AboutComponent).
+ * This class represents the main application component.
  */
 @Component({
   moduleId: module.id,
-  selector: 'wth-app',
+  selector: 'sd-app',
   templateUrl: 'app.component.html',
 })
+export class AppComponent implements OnInit, OnDestroy {
+  routerSubscription: Subscription;
 
-export class AppComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    console.log('Environment config', Config);
+  }
 
-  /**
-   * Issues https://github.com/angular/angular/issues/7791
-   *
-   * Changing route doesn't scroll to top in the new page
-   */
   ngOnInit() {
-    this.router.events.subscribe((navigationEnd: NavigationEnd) => {
-      if (!(navigationEnd instanceof NavigationEnd)) {
-        return;
-      }
-      document.body.scrollTop = 0;
-    });
+    this.routerSubscription = this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe((event: any) => {
+        document.body.scrollTop = 0;
+      });
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
   }
 }

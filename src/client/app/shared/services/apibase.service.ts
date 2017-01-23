@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Cookie }     from 'ng2-cookies/ng2-cookies';
-import { Constants }     from '../index';
 import { Router } from '@angular/router';
 
-declare  var _: any;
+import { Cookie } from 'ng2-cookies';
+
+import { Constants } from '../config/constants';
+
 @Injectable()
 export class ApiBaseService {
   urls = Constants.urls;
 
   private _http: Http;
   private _options: RequestOptionsArgs;
-  // private _baseUrl:string = 'http://192.168.0.107:4000/';
   private _baseUrl: string = Constants.baseUrls.apiBaseService;
   private _headers: Headers = new Headers({
     'Content-Type': 'application/json',
@@ -46,8 +46,8 @@ export class ApiBaseService {
     }
     this.buildOptions();
     return this._http.post(this._baseUrl + path, body, this._options)
-     .map(res => res.json())
-    .catch(this.handleError);
+      .map(res => res.json())
+      .catch(this.handleError);
   }
 
   /**

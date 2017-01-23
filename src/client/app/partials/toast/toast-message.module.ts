@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared/shared.module';
 
 import { GrowlModule } from 'primeng/primeng';
 
@@ -10,7 +9,6 @@ import { ToastsService } from './toast-message.service';
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     GrowlModule
   ],
   declarations: [ToastsComponent],

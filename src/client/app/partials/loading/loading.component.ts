@@ -1,3 +1,19 @@
+// ## Using
+// import {LoadingService} from '../shared/index';
+//
+// constructor(private _loadingService:LoadingService) {
+// }
+//
+// ## Start
+// this._loadingService.start(); // loading fullpage
+// this._loadingService.start('#example');
+// this._loadingService.start('.example');
+//
+// ## Stop
+// this._loadingService.stop();
+// this._loadingService.stop('#example');
+// this._loadingService.stop('.example');
+
 import { Component, OnInit } from '@angular/core';
 
 import { LoadingService } from './loading.service';
@@ -22,7 +38,7 @@ export class LoadingComponent implements OnInit {
   }
 
   activate(action: boolean, el: string) {
-    let promise = new Promise<boolean>((resolve, reject) => {
+    let promise = new Promise<boolean>(() => {
       this.show(action, el);
     });
     return promise;

@@ -1,0 +1,56 @@
+.aside-menu {
+  padding-top: 20px;
+  .page-menuleft {
+    a {
+      display: block;
+      color: $text-color;
+      padding: 8px 15px;
+      text-decoration: none;
+      &:hover {
+        background-color: #F6F6F6;
+      }
+    }
+    > ul {
+      > li {
+        > a {
+          font-weight: bold;
+        }
+        &.active {
+          background-color: #F6F6F6;
+          > a {
+            color: #ffffff;
+            background-color: $color-inverse;
+          }
+        }
+        &.has-sub {
+          > a {
+            position: relative;
+            &:after {
+              @extend .fa;
+              @extend .fa-caret-down;
+              position: absolute;
+              @include center(false, true);
+              left: auto;
+              right: 10px;
+            }
+          }
+          ul {
+            li {
+              a {
+                padding-left: 30px;
+                &:hover {
+                  background-color: #d8d8d8;
+                }
+              }
+              &.active {
+                a {
+                  background-color: #d8d8d8;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

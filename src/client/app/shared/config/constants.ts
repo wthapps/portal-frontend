@@ -17,7 +17,6 @@ let getBarwidth = function () {
 
 export let Constants = {
   baseUrls: {
-    // apiBaseService: 'http://54.213.41.54:4000/',
     apiBaseService: Config.API
   },
   operations: {
@@ -61,35 +60,35 @@ export let Constants = {
     scrollBarWidth: getBarwidth()
   },
 
-  chatMenuItems : [
-    { name: 'Conversation', link: '/zone/chat/conversation' },
-    { name: 'Contact', link: '/zone/chat/contact' },
-    { name: 'History', link: '/zone/chat/history' },
-    { name: 'Settings', link: '/zone/chat/setting' }
+  chatMenuItems: [
+    {name: 'Conversation', link: '/zone/chat/conversation/dashboard'},
+    {name: 'Contact', link: '/zone/chat/contact'},
+    {name: 'History', link: '/zone/chat/history'},
+    {name: 'Settings', link: '/zone/chat/setting'}
   ],
 
-  pictureMenuItems : [
-    { name: 'Photos', link: '/zone/media/photo' },
-    { name: 'Albums', link: '/zone/media/album' },
-    { name: 'Favourites', link: '/zone/media/favourites' },
-    { name: 'Shared with me', link: '/zone/media/sharedWithMe' } //,
+  pictureMenuItems: [
+    {name: 'Photos', link: '/zone/media/photo'},
+    {name: 'Albums', link: '/zone/media/album'},
+    {name: 'Favourites', link: '/zone/media/favourites'},
+    {name: 'Shared with me', link: '/zone/media/sharedWithMe'}
     /*{ name: 'Photos', link: '/zone/picture/photo' },
-    { name: 'Albums', link: '/zone/picture/album' },
-    // { name: 'Videos', link: '/zone/picture/video' },
-    { name: 'Favorites', link: '/zone/picture/favourites' },
-    { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },*/
+     { name: 'Albums', link: '/zone/picture/album' },
+     { name: 'Videos', link: '/zone/picture/video' },
+     { name: 'Favorites', link: '/zone/picture/favourites' },
+     { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },*/
   ],
 
-  socialMenuItems : [
-    { name: 'Home', link: '/zone/social/home' },
-    { name: 'Communities', link: '/zone/social/communities' },
-    { name: 'Notifications', link: '/zone/social/notifications' },
-    { name: 'Members', link: '/zone/social/members' },
-    { name: 'My Page', link: '/zone/social/profile' },
-    { name: 'Settings', link: '/zone/social/setting' },
+  socialMenuItems: [
+    {name: 'Home', link: '/zone/social/home'},
+    {name: 'Communities', link: '/zone/social/communities'},
+    {name: 'Notifications', link: '/zone/social/notifications'},
+    {name: 'Members', link: '/zone/social/members'},
+    {name: 'My Page', link: '/zone/social/profile'},
+    {name: 'Settings', link: '/zone/social/setting'},
   ],
 
-  pictureMenuActions : {
+  pictureMenuActions: {
     preview: true,
     share: true,
     addFavourite: true,
@@ -105,18 +104,18 @@ export let Constants = {
     zoneSoReactions: 'zone/social_network/reactions',
     zoneSoPostSettings: 'zone/social_network/post_settings',
   },
-  sex : ['', 'Male', 'Female', 'Other'],
+  sex: ['', 'Male', 'Female', 'Other'],
   communityRole: {
-    admin: [1, "Admin"],
-    member: [2, "Member"]
+    admin: [1, 'Admin'],
+    member: [2, 'Member']
   },
   notificationSetting: {
     limit: 10
   },
   seenStatus: {
-    new: "new",
-    seen: "seen",
-    seen_and_took_action: "seen_and_took_action"
+    new: 'new',
+    seen: 'seen',
+    seen_and_took_action: 'seen_and_took_action'
   }
 };
 

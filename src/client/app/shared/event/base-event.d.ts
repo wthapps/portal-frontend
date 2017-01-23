@@ -1,3 +1,0 @@
-interface BaseEvent {
-  description:string;
-}

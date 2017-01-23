@@ -3,62 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { ToolbarComponent } from './toolbar/index';
-import { NavbarComponent } from './navbar/index';
-import { NameListService } from './name-list/index';
+import { ApiBaseService } from './services/apibase.service';
 
-import {
-  ConfirmDialogModule,
-  ConfirmationService,
-  AutoCompleteModule,
-  InputTextareaModule
-} from 'primeng/primeng';
-import { TagInputModule } from 'ng2-tag-input';
-
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-
-import {
-  ApiBaseService,
-  UserService,
-  CountryService,
-  DeactivateConfirmService,
-  CableService,
-  ChannelNotificationService,
-  AppearancesChannelService,
-  ChatNotificationChannelService,
-  StorageService,
-  HandlerService,
-  ChatChannelService
-} from './index';
-
-import {
-  HeaderComponent,
-  FooterComponent,
-  FooterPromotionComponent,
-  TablePricingComponent,
-  AppCardComponent,
-  AppCardPlatformComponent,
-  BreadcrumbComponent,
-  SliderComponent,
-  UploadCropImageComponent,
-  ToTopComponent,
-  ReadMoreComponent,
-  NotificationService
-} from '../partials/index';
-
-import { GroupByMonthYearPipe, GroupByPipe, DateUntilNowPipe } from './pipe/index';
-
-import { FormModalComponent } from './form/form-modal.component';
-import { NewlinePipe } from './pipe/newline.pipe';
-import { TitleCase } from './pipe/titlecase.pipe';
-import { Ng2Cable, Broadcaster } from 'ng2-cable/js/index';
-import { UrlTransformPipe } from './pipe/url.pipe';
-import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
-import { SearchFormComponent } from '../partials/header/sub/search-form.component';
-import { SoSearchService } from '../partials/header/sub/social-search.service';
-import { HdTagInputModule } from '../zone/shared/ng2-hd/tag-input/tag-input.module';
-import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
-import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { NameListService } from './name-list/name-list.service';
+import { PartialsModule } from '../partials/partials.module';
+import { UserService } from './services/user.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -68,81 +19,19 @@ import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive'
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule,
-    ConfirmDialogModule,
-    AutoCompleteModule,
-    TagInputModule,
-    HdTagInputModule,
-    InputTextareaModule,
-    InfiniteScrollModule
+    PartialsModule
   ],
   declarations: [
     ToolbarComponent,
-    NavbarComponent,
-    HeaderComponent,
-    SearchFormComponent,
-    FooterComponent,
-    FooterPromotionComponent,
-    TablePricingComponent,
-    AppCardComponent,
-    AppCardPlatformComponent,
-    BreadcrumbComponent,
-    SliderComponent,
-    UploadCropImageComponent,
-    ToTopComponent,
-    ReadMoreComponent,
-    FormModalComponent,
-    // Pipe
-    GroupByMonthYearPipe,
-    GroupByPipe,
-    NewlinePipe,
-    DateUntilNowPipe,
-    TitleCase,
-    UrlTransformPipe,
-    ShowLengthTransformPipe,
-    SafeHtmlPipe,
-    scrollToBottomDirective
+    NavbarComponent
   ],
   exports: [
     ToolbarComponent,
     NavbarComponent,
-    HeaderComponent,
-    SearchFormComponent,
-    FooterComponent,
-    FooterPromotionComponent,
-    TablePricingComponent,
-    AppCardComponent,
-    AppCardPlatformComponent,
-    BreadcrumbComponent,
-    SliderComponent,
-    UploadCropImageComponent,
-    ToTopComponent,
-    ReadMoreComponent,
-    FormModalComponent,
-
-    // third party modules
-    ConfirmDialogModule,
-    AutoCompleteModule,
-    TagInputModule,
-    HdTagInputModule,
-    InputTextareaModule,
-    InfiniteScrollModule,
-
-
     CommonModule,
     FormsModule,
     RouterModule,
-
-    // Pipe
-    GroupByMonthYearPipe,
-    GroupByPipe,
-    NewlinePipe,
-    DateUntilNowPipe,
-    TitleCase,
-    UrlTransformPipe,
-    ShowLengthTransformPipe,
-    SafeHtmlPipe,
-    scrollToBottomDirective
+    PartialsModule
   ]
 })
 export class SharedModule {
@@ -150,23 +39,9 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        NameListService,
         ApiBaseService,
-        StorageService,
-        HandlerService,
         UserService,
-        CountryService,
-        ConfirmationService,
-        DeactivateConfirmService,
-        Ng2Cable,
-        Broadcaster,
-        SoSearchService,
-        CableService,
-        ChannelNotificationService,
-        ChatChannelService,
-        ChatNotificationChannelService,
-        NotificationService,
-        AppearancesChannelService
+        NameListService
       ]
     };
   }

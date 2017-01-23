@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared/shared.module';
 
-import { DialogModule } from 'primeng/primeng';
+import { DialogModule } from 'primeng/components/dialog/dialog';
 
 import { LoadingComponent } from './loading.component';
 import { LoadingService } from './loading.service';
@@ -10,7 +9,6 @@ import { LoadingService } from './loading.service';
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     DialogModule
   ],
   declarations: [LoadingComponent],

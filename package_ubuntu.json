@@ -1,5 +1,0 @@
-{
-  "scripts": {
-    "postinstall": "sudo gulp check.versions && sudo gulp build.bundle.rxjs && sudo npm prune && sudo gulp webdriver && sudo gulp print.banner"
-  }
-}

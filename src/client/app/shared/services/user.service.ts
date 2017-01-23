@@ -1,11 +1,13 @@
 import { Injectable }     from '@angular/core';
-import { Observable }     from 'rxjs/Observable';
+import { Router }         from '@angular/router';
+
 import { Http, Response } from '@angular/http';
-import { Cookie }         from 'ng2-cookies/ng2-cookies';
+import { Observable }     from 'rxjs/Observable';
+
+import { Cookie } from 'ng2-cookies';
 import { ApiBaseService } from './apibase.service';
 import { Constants }      from '../config/constants';
 import { User }           from '../models/user.model';
-import { Router }         from '@angular/router';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -123,7 +125,7 @@ export class UserService extends ApiBaseService {
 
   getDefaultPayment(): Observable<Response> {
     let userId = 1;
-    let path = "users/" + userId + "/payments";
+    let path = 'users/' + userId + '/payments';
 
     return super.post(path, [])
       .map((res: any) => {
@@ -131,7 +133,7 @@ export class UserService extends ApiBaseService {
           this.storeDefaultPayment(res);
         }
         return res;
-    });
+      });
   }
 
   private storeDefaultPayment(response: any) {

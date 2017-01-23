@@ -1,0 +1,26 @@
+// Colours partial
+$color: #2a363f;
+$color-inverse: #f54a59;
+$color-inverse-dark: darken($color-inverse, 10%);
+
+$text-color-fade: rgba($text-color, 0.8);
+
+$color-success: #6DD9AC;
+
+// Text colours
+$white: #ffffff; //white
+$black: #000000; //black
+$slate: #414A52; //body font
+$line: #dbdbdb;
+
+$grey: #4b4b4b;
+
+$dark-grey: #8A9097;
+$teal: #7AE2DE; //cta
+$dark-teal: #71D5D2; //cta-hover
+$porcelain: #E5E7E9; //keylines
+
+// Don't edit
+$color-link: #2996CC;
+$light-slate: #9B9B9B; // header
+$light-grey: #D8D8D8; //light section
