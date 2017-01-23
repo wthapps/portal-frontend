@@ -123,7 +123,7 @@ export class UserService extends ApiBaseService {
 
   getDefaultPayment(): Observable<Response> {
     let userId = 1;
-    let path = "/users/" + userId + "/payments";
+    let path = "users/" + userId + "/payments";
 
     return super.post(path, [])
       .map((res: any) => {

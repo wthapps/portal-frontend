@@ -447,6 +447,9 @@ export class SeedConfig {
       'angular2-infinite-scroll': {
         main: 'angular2-infinite-scroll.js',
         defaultExtension: 'js'
+      },
+      'ng2-tag-input': { // add this item for fixing production build
+        format: 'cjs'
       }
     }
   };

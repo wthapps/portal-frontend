@@ -77,13 +77,14 @@ export class TablePricingComponent implements OnInit {
     // Cookie.delete('selected_plan');
     Cookie.set('selected_plan', p, 365, '/');
     if (this.userService.profile && this.userService.profile.has_payment_info) {
-      this.userService.getDefaultPayment()
-        .subscribe((response: any) => {
-            this.router.navigateByUrl('account/payment/confirm');
-        },
-        error => {
-          console.log('error products: ', error.message);
-        });
+      this.router.navigateByUrl('account/payment/confirm');
+      // this.userService.getDefaultPayment()
+      //   .subscribe((response: any) => {
+      //
+      //   },
+      //   error => {
+      //     console.log('error products: ', error.message);
+      //   });
     } else {
       this.router.navigateByUrl('account/payment');
     }
