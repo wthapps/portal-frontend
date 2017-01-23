@@ -24,6 +24,9 @@ cd portal-frontend
 # install the project's dependencies
 npm install
 
+# copy file dev.sample.ts to dev.ts
+cp tools/env/dev.sample.ts ./dev.ts
+
 # watches your files and uses livereload by default
 npm start
 

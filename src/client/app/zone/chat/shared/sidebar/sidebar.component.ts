@@ -15,6 +15,9 @@ export class ZChatSidebarComponent implements OnInit {
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
+    this.chatService.handler.addListener('on_default_contact_select_side_bar', 'on_default_contact_select', (contact:any) => {
+      this.chatService.router.navigate([`/zone/chat/conversation/${contact.id}`]);
+    });
     this.item = this.chatService.getContacts();
   }
 }

@@ -5,6 +5,7 @@ import { StorageService } from '../../../../shared/services/storage.service';
 import { HandlerService } from '../../../../shared/services/handler.service';
 import { ChatChannelService } from '../../../../shared/channels/chat-channel.service';
 import { ChatNotificationChannelService } from '../../../../shared/channels/chat-notification-channel.service';
+import { Router } from '@angular/router';
 
 declare var _:any;
 
@@ -15,8 +16,9 @@ export class ChatService {
               private apiBaseService: ApiBaseService,
               public user: UserService,
               public chanel: ChatChannelService,
-              private notificationChannel: ChatNotificationChannelService,
-              private handler: HandlerService,) {
+              public notificationChannel: ChatNotificationChannelService,
+              public router: Router,
+              public handler: HandlerService,) {
     this.storage.save('chat_contacts', null);
     this.storage.save('contact_select', null);
     this.storage.save('current_chat_messages', null);
@@ -30,6 +32,7 @@ export class ChatService {
       this.apiBaseService.get('zone/chat/contacts').subscribe(
         (res:any) => {
           this.storage.save('chat_contacts', res);
+          this.setDefaultSelectContact();
         }
       );
       return res;
@@ -49,6 +52,15 @@ export class ChatService {
         }
       }
     );
+  }
+
+  setDefaultSelectContact() {
+    let res:any = this.storage.find('chat_contacts');
+    if(res && res.value && res.value.data[0]) {
+      this.storage.save('contact_select', res.value.data[0]);
+      this.handler.triggerEvent('on_default_contact_select', res.value.data[0]);
+      this.getMessages(res.value.data[0].group.id);
+    }
   }
 
   selectContact(contact:any) {

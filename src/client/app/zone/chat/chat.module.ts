@@ -21,7 +21,8 @@ import {
 
 import {
   ZChatConversationComponent,
-  ZChatNewConversationComponent
+  ZChatNewConversationComponent,
+  ZChatConversationGlobalComponent
 } from './conversation/index';
 import { ZChatContactComponent } from './contact/index';
 import { ZChatHistoryComponent } from './history/index';
@@ -51,6 +52,7 @@ import { PostModule } from '../social/post/post.module';
     ZChatShareUserListComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
+    ZChatConversationGlobalComponent,
 
     ZChatConversationComponent,
     ZChatNewConversationComponent,

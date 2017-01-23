@@ -1,5 +1,6 @@
 import { Injectable }     from '@angular/core';
 import { StorageService } from './storage.service';
+import { UserService } from './user.service';
 
 declare var _:any;
 
@@ -7,6 +8,10 @@ declare var _:any;
 export class HandlerService extends StorageService{
   handlers: any = {};
   prefix: string = "callbacks_";
+
+  constructor(public userService: UserService) {
+    super(userService);
+  }
 
   addListener(id:string, event:string, callback:any) {
     if(this.handlers[id] == undefined) {

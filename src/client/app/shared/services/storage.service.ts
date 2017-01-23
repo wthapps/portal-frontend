@@ -1,10 +1,19 @@
 import { Injectable }     from '@angular/core';
+import { UserService } from './user.service';
+import { Cookie }         from 'ng2-cookies/ng2-cookies';
 
 declare var _:any;
 
 @Injectable()
 export class StorageService {
-  listItem: Array<StorageItem> = []
+  listItem: Array<StorageItem> = [];
+  storageId: any;
+  constructor(public userService: UserService) {
+    // console.log(userService.profile);
+    // console.log('storageId',  JSON.parse(Cookie.get('profile')));
+    this.storageId = userService.profile.id;
+    console.log('storageId',  this.storageId);
+  }
 
   save(key:string, value:any) {
     // Convert StorageItem if need
@@ -46,6 +55,10 @@ export class StorageService {
       if(item.key == key) return item
     }
     return null;
+  }
+
+  verifyStorage() {
+    // if()
   }
 
   getList() {

@@ -62,7 +62,7 @@ export let Constants = {
   },
 
   chatMenuItems : [
-    { name: 'Conversation', link: '/zone/chat/conversation/dashboard' },
+    { name: 'Conversation', link: '/zone/chat/conversation' },
     { name: 'Contact', link: '/zone/chat/contact' },
     { name: 'History', link: '/zone/chat/history' },
     { name: 'Settings', link: '/zone/chat/setting' }
