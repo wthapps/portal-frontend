@@ -14,6 +14,10 @@ import { PageErrorsModule } from './errors/errors.module';
 import { PoliciesModule } from './policies/policies.module';
 import { PricingModule } from './pricing/pricing.module';
 import { ProductsModule } from './products/products.module';
+import { SupportModule } from './support/support.module';
+import { WelcomeModule } from './welcome/welcome.module';
+import { RegisterModule } from './register/register.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   imports: [
@@ -21,6 +25,10 @@ import { ProductsModule } from './products/products.module';
     HttpModule,
     AppRoutingModule,
     PageErrorsModule,
+    LoginModule,
+    RegisterModule,
+    WelcomeModule,
+    SupportModule,
     ProductsModule,
     PricingModule,
     PoliciesModule,
