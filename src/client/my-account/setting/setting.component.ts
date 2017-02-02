@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component }                from '@angular/core';
 
-/**
- * This class represents the lazy loaded AboutComponent.
- */
 @Component({
   moduleId: module.id,
-  selector: 'sd-setting',
-  templateUrl: 'setting.component.html',
-  styleUrls: ['setting.component.css']
+  selector: 'ac-setting',
+  templateUrl: 'setting.component.html'
 })
-export class SettingComponent { }
+
+export class ACSettingComponent {
+}

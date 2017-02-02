@@ -163,6 +163,10 @@ gulp.task('serveLite', ['watch'], () => {
 });
 
 //*** BUILD compiler task
+gulp.task('buildCss', ['minify:css'], () => {
+  return gulp.src(path.dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
+});
+//*** BUILD compiler task
 gulp.task('build', ['lint', 'minify'], () => {
   return gulp.src(path.dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
 });

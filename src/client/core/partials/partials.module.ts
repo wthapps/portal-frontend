@@ -7,6 +7,7 @@ import { LoadingModule } from './loading/loading.module';
 import { ToastsModule } from './toast/toast-message.module';
 import { TablePricingModule } from './table-pricing/table-pricing.module';
 import { CountryModule } from './countries/countries.module';
+import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { CountryModule } from './countries/countries.module';
     LoadingModule,
     ToastsModule,
     TablePricingModule,
-    CountryModule
+    CountryModule,
+    BreadcrumbModule
   ],
   declarations: [
     FooterComponent,
@@ -27,7 +29,8 @@ import { CountryModule } from './countries/countries.module';
     LoadingModule,
     ToastsModule,
     TablePricingModule,
-    CountryModule
+    CountryModule,
+    BreadcrumbModule
   ],
   providers: []
 })

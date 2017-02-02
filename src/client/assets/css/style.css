@@ -12,7 +12,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url(../third_party/Swiper/dist/css/swiper.min.css);
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -13424,6 +13423,129 @@ fieldset[disabled] .wrapper .ui-dialog .ui-dialog-buttonpane button[ng-reflect-i
 
 .dropdown-submenu {
   position: relative;
+}
+
+/* Slider */
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.slick-list {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-list:focus {
+  outline: none;
+}
+
+.slick-list.dragging {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.slick-track {
+  position: relative;
+  left: 0;
+  top: 0;
+  display: block;
+}
+
+.slick-track:before, .slick-track:after {
+  content: "";
+  display: table;
+}
+
+.slick-track:after {
+  clear: both;
+}
+
+.slick-loading .slick-track {
+  visibility: hidden;
+}
+
+.slick-slide {
+  float: left;
+  height: 100%;
+  min-height: 1px;
+  display: none;
+}
+
+[dir="rtl"] .slick-slide {
+  float: right;
+}
+
+.slick-slide img {
+  display: block;
+}
+
+.slick-slide.slick-loading img {
+  display: none;
+}
+
+.slick-slide.dragging img {
+  pointer-events: none;
+}
+
+.slick-initialized .slick-slide {
+  display: block;
+}
+
+.slick-loading .slick-slide {
+  visibility: hidden;
+}
+
+.slick-vertical .slick-slide {
+  display: block;
+  height: auto;
+  border: 1px solid transparent;
+}
+
+.slick-arrow.slick-hidden {
+  display: none;
+}
+
+.article-slide-wrap .slider-nav {
+  margin-top: 10px;
+}
+
+.article-slide-wrap .slider-nav .slick-list {
+  padding: 0 !important;
+}
+
+.article-slide-wrap .slider-nav .slick-slide {
+  cursor: pointer;
+  outline: 0 none !important;
+  padding: 10px;
+  border: 1px solid transparent;
+}
+
+.article-slide-wrap .slider-nav .slick-slide.slick-current {
+  border-color: #f54a59;
+}
+
+.article-slide-wrap .slider-nav .slick-slide img {
+  width: 100%;
+  height: auto;
 }
 
 .wrapper {

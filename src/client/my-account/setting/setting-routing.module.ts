@@ -1,29 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SettingComponent } from './setting.component';
-import { ProfileComponent } from './profile.component';
-import { MyAccountComponent } from './my-account.component';
-import { PreferencesComponent } from './preferences.component';
 
+import { ACSettingComponent } from './setting.component';
+
+import { ACProfileComponent } from './profile/profile.component';
+import { ACAccountComponent } from './account/account.component';
+import { ACPreferencesComponent } from './preferences/preferences.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
-        // path: 'setting',
-        path: '',
-        component: SettingComponent,
+        path: 'setting',
+        component: ACSettingComponent,
         children: [
-          {path: 'preferences', component: PreferencesComponent},
-          {path: 'account', component: MyAccountComponent},
-          {path: 'profile', component: ProfileComponent},
-          {path: '', component: ProfileComponent},
-          {path: '*', component: ProfileComponent}
+          {path: 'preferences', component: ACPreferencesComponent},
+          {path: 'account', component: ACAccountComponent},
+          {path: 'profile', component: ACProfileComponent},
+          {path: '', component: ACProfileComponent},
+          {path: '*', component: ACProfileComponent}
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class SettingRoutingModule {
+export class ACSettingRoutingModule {
 }
