@@ -10,7 +10,8 @@ const path = {
 
 const coreScripts = [
   path.bower + '/jquery/dist/jquery.min.js',
-  path.bower + '/bootstrap-sass/assets/javascripts/bootstrap.min.js'
+  path.bower + '/bootstrap-sass/assets/javascripts/bootstrap.min.js',
+  path.bower + '/slick-carousel/slick/slick.min.js'
 ];
 
 const gulp = require('gulp');
