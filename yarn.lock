@@ -5150,8 +5150,8 @@ pretty-hrtime@^1.0.0:
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
 
 primeng@^2.0.0-rc.1:
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/primeng/-/primeng-2.0.0-rc.1.tgz#1872645b1339eb66e503637eaeaf3812e34a20b4"
+  version "2.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-2.0.0-rc.3.tgz#06463d65840c5f6c48b394be1de0ce259f8c09e3"
 
 private@^0.1.6, private@~0.1.5:
   version "0.1.6"
@@ -5681,6 +5681,10 @@ rollup-plugin-commonjs@^7.0.0:
     magic-string "^0.19.0"
     resolve "^1.1.7"
     rollup-pluginutils "^1.5.1"
+
+rollup-plugin-includepaths@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-includepaths/-/rollup-plugin-includepaths-0.2.1.tgz#6674f3cab87fac834ea8aed3245dc4b8ab0997a8"
 
 rollup-plugin-node-resolve@^2.0.0:
   version "2.0.0"
