@@ -1,0 +1,34 @@
+<div class="main-content">
+  <div class="container">
+    <wth-breadcrumb [model]="breadcrumbs"></wth-breadcrumb>
+    <div class="page-app-detail">
+      <div class="row">
+        <div class="col-sm-3 col-md-2">
+          <figure class="page-app-icon"><img class="img-full" [src]="item.img_src" [alt]="item.name"></figure>
+        </div>
+        <div class="col-sm-9 col-md-10">
+          <div class="page-app-info">
+            <h2 class="page-app-info-tt">{{item.name}}</h2>
+            <p class="cat">{{item.category.name}}</p>
+            <ac-apps-shared-platform [data]="item.platforms"></ac-apps-shared-platform>
+          </div>
+          <div class="row page-app-content">
+            <div class="col-sm-11">
+              <div class="box-panel">
+                <div class="box-panel-top">
+                  <h3>Manage</h3>
+                </div>
+                <div class="box-panel-body">
+                  <apps-dns *ngIf="type == 'dynamicdns'"></apps-dns>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
