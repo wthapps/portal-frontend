@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-
 import { ReCaptchaModule } from 'angular2-recaptcha';
+
+import { PartialsModule } from '../../core/partials/partials.module';
 
 import { ContactComponent } from './contact.component';
 import { ContactRoutingModule } from './contact-routing.module';
-import { PartialsModule } from '../partials/partials.module';
 import { ContactService } from './contact.service';
 
 @NgModule({

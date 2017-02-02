@@ -7,11 +7,13 @@ import {
   Validators
 } from '@angular/forms';
 
-import { CustomValidator } from '../shared/validator/custom.validator';
-import { ContactService } from './contact.service';
-import { LoadingService } from '../partials/loading/loading.service';
-import { ToastsService } from '../partials/toast/toast-message.service';
 import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
+
+import { LoadingService } from '../../core/partials/loading/loading.service';
+import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { CustomValidator } from '../../core/shared/validator/custom.validator';
+
+import { ContactService } from './contact.service';
 
 /**
  * This class represents the lazy loaded AboutComponent.

@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Config } from './shared/config/env.config';
-
 import { Subscription } from 'rxjs/Rx';
 import './operators';
 import 'rxjs/add/operator/filter';
+
+import { Config } from '../core/shared/config/env.config';
 
 /**
  * This class represents the main application component.

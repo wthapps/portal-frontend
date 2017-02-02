@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
-import { UserService } from '../shared/services/user.service';
-import { ToastsService } from '../partials/toast/toast-message.service';
-import { LoadingService } from '../partials/loading/loading.service';
-import { CustomValidator } from '../shared/validator/custom.validator';
+import { UserService } from '../../core/shared/services/user.service';
+import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { LoadingService } from '../../core/partials/loading/loading.service';
+import { CustomValidator } from '../../core/shared/validator/custom.validator';
 
 declare var $: any;
 

@@ -7,13 +7,12 @@ import {
   AbstractControl
 } from '@angular/forms';
 
-import { CustomValidator } from '../shared/validator/custom.validator';
-
-import { AppearancesChannelService } from '../shared/channels/appearances-channel.service';
-import { UserService } from '../shared/services/user.service';
-import { ToastsService } from '../partials/toast/toast-message.service';
-import { LoadingService } from '../partials/loading/loading.service';
-import { AuthService } from '../shared/services/auth.service';
+import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { LoadingService } from '../../core/partials/loading/loading.service';
+import { AppearancesChannelService } from '../../core/shared/channels/appearances-channel.service';
+import { UserService } from '../../core/shared/services/user.service';
+import { AuthService } from '../../core/shared/services/auth.service';
+import { CustomValidator } from '../../core/shared/validator/custom.validator';
 
 declare var $: any;
 
