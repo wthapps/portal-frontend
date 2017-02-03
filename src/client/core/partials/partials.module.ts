@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+// import { HeaderComponent } from './header/header.component';
 import { FooterPromotionComponent, FooterComponent } from './footer/footer.component';
 import { LoadingModule } from './loading/loading.module';
 import { ToastsModule } from './toast/toast-message.module';
@@ -20,10 +21,12 @@ import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
     BreadcrumbModule
   ],
   declarations: [
+    // HeaderComponent,
     FooterComponent,
     FooterPromotionComponent
   ],
   exports: [
+    // HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
     LoadingModule,

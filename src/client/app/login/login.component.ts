@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
 
               // Get the redirect URL from our auth service
               // If no redirect has been set, use the default
-              let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/account/my-apps';
+              let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'my-apps';
 
               // Set our navigation extras object
               // that passes on our global query params and fragment
