@@ -1,0 +1,175 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="javascript:;" (click)="onNavigation($event)">
+        <img alt="WTHApps" [src]="imgLogo">
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <!--<search-form #search></search-form>-->
+
+      <ul *ngIf="userService.loggedIn" class="nav navbar-nav-top navbar-right">
+        <li class="dropdown navbar-nav-management">
+          <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown">
+            <i class="fa fa-list"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a [routerLink]="['/zone/media/photo']">
+                <i class="fa fa-bullseye"></i>
+                <span>Zone</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/account/apps']">
+                <i class="fa fa-list-alt"></i>
+                <span>Apps</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/account/my-apps']">
+                <i class="fa fa-plug"></i>
+                <span>My Apps</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown navbar-nav-notification" >
+          <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
+             data-toggle="dropdown" href="javascript:;" role="button" (click)="markAsSeen()">
+            <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="newNotifCount > 0">{{ newNotifCount }}</span>
+          </a>
+          <ul class="dropdown-menu" id="nav-notification-list">
+            <li class="dropdown-menu-bar">
+              <div class="pull-right">
+                <a href="javascript:;" (click)="toggleAllReadStatus()">Mark All as Read</a>
+                <!--<a href="#">Mute</a>-->
+                <!--<a href="#">Settings</a>-->
+              </div>
+            </li>
+            <li>
+              <ul class="list-unstyled" id="notification-items">
+                <li class="navbar-nav-notification-item" *ngFor="let notification of notifications" data-id="notification_{{notification.id}}">
+                  <div class="media-center">
+                    <div class="media-center-left">
+                      <figure>
+                        <a [routerLink]="['/zone/social/communities']">
+                          <img [src]="notification.actor.profile_image" alt="notification.actor.name">
+                        </a>
+                      </figure>
+                    </div>
+                    <div class="media-body notification-content">
+                      <!--<p class="media-heading">{{notification.text}}</p>-->
+                      <p class="media-heading" [innerHTML]="notification.text"></p>
+                      <small>{{ notification.created_at | timeFormat }}</small>
+                      <div style="white-space: nowrap" class="media-center-right">
+                        <button *ngFor="let action of notification.actions"
+                                class="btn btn-xs btn-default mr5" type="button" (click)="doAction(action, notification.id)">
+                          {{action.name}}
+                        </button>
+                      </div>
+                    </div>
+                    <div class="media-center-right">
+                      <div class="dropdown-submenu pull-right clearfix">
+                        <a class="btn btn-sm btn-default-inline dropdown-toggle" tabindex="-1" href="#">
+                          <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right sub-menu">
+                          <li><a href="javascript:;" (click)="hideNotification(notification)">Hide this notification</a></li>
+                          <!--<li><a href="javascript:;" (click)="turnOffNotificaion(notification)">Turn off all notifications relate to this</a>
+                          </li>-->
+                        </ul>
+                      </div>
+                      <div class="pull-right">
+                        <button class="btn btn-sm btn-default-inline" type="button" (click)="toggleReadStatus(notification)">
+                          <i class="fa fa-circle-o" *ngIf="!notification.is_read" ></i>
+                          <i class="fa fa-circle" *ngIf="notification.is_read" ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li class="view-all">
+              <a href="javascript:;" (click)="viewAllNotifications()">View All</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown navbar-nav-profile">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <img alt="" width="30" [src]="userService.profile.profile_image">
+            <span class="name">{{userService.profile.first_name}}</span>
+            <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu dropdown-menu-lg">
+            <li>
+              <div class="media p10">
+                <div class="media-left">
+                  <img alt="" class="img-rounded" width="80" [src]="userService.profile.profile_image">
+                </div>
+                <div class="media-body">
+                  <p class="media-heading bold mb0">{{userService.profile.first_name}} {{userService.profile.last_name}}</p>
+                  <small class="text-fade">{{userService.profile.email}}</small>
+                  <div class="navbar-nav-plan m">
+                    <p class="media-heading bold">{{userService.profile.plan.name}}</p>
+                    <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
+                            [routerLink]="['/account/plans']">
+                      <i class="fa fa-arrow-circle-up"></i> Upgrade
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li><a [routerLink]="['/account/setting/profile']">Profile</a></li>
+            <li><a [routerLink]="['/account/setting/account']">Account</a></li>
+            <li><a [routerLink]="['/account/setting/preferences']">Preferences</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a [routerLink]="['/account/plans']">Plans</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul *ngIf="!userService.loggedIn" class="nav navbar-nav navbar-right">
+        <li class="hidden-xs">
+          <a href="/signup">Sign up</a>
+        </li>
+
+        <template [ngIf]="!userService.loggedIn">
+          <li class="hidden-xs navbar-nav-button">
+              <span>
+                <a class="btn btn-detail btn-min" [routerLink]="['/login']">Log in</a>
+              </span>
+          </li>
+          <li class="visible-xs pt10 pb10">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-6"><a class="btn btn-detail btn-block" [routerLink]="['/signup']">Sign up</a></div>
+                <div class="col-xs-6"><a class="btn btn-detail btn-block" [routerLink]="['/login']">Log in</a></div>
+              </div>
+            </div>
+          </li>
+        </template>
+      </ul>
+
+      <ul *ngIf="headerOver" class="nav navbar-nav navbar-right">
+        <li><a [routerLink]="['/products']">Products</a></li>
+        <li><a [routerLink]="['/pricing']">Pricing</a></li>
+        <li><a [routerLink]="['/about']">About us</a></li>
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

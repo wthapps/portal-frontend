@@ -152,6 +152,7 @@
     "lodash": "^4.17.4",
     "ng2-bs3-modal": "^0.10.4",
     "ng2-cookies": "^1.0.4",
-    "primeng": "^2.0.0-rc.1"
+    "primeng": "^2.0.0-rc.1",
+    "actioncable": "5.0.0"
   }
 }

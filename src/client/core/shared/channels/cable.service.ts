@@ -10,6 +10,7 @@ export class CableService {
 
   createConnectionInstance(userService: any) {
     if (App.cable == undefined) {
+      console.log('url action cable', ApiConfig.url);
       App.cable = ActionCable.createConsumer(`${ApiConfig.url}/cable?user_id=${userService.profile.id}`);
     }
   }
