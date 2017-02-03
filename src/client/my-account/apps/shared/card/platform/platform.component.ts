@@ -20,9 +20,6 @@ export class ACAppsSharedCardPlatformComponent implements OnChanges {
 
   platforms: any;
 
-  constructor() {
-  }
-
   ngOnChanges(): void {
     this.platforms = this.data;
   }

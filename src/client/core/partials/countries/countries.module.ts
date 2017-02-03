@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CountriesComponent } from './countries.component';
 import { CountryService } from './countries.service';
-
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [CountriesComponent],
-  exports: [CountriesComponent],
+  declarations: [],
+  exports: [],
   providers: [CountryService]
 })
 

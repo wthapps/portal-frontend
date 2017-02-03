@@ -55,7 +55,7 @@ export class ACProfileComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private countryService: CountryService,
-              private userService: UserService,
+              public userService: UserService,
               private toastsService: ToastsService,
               private loadingService: LoadingService,
               //2 private deactivateConfirmService: DeactivateConfirmService,

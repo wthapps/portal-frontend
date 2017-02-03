@@ -35,10 +35,11 @@ export class ACDNSEditComponent implements OnInit {
   submitted: boolean = false;
   submittedAdd: boolean = true;
 
+  breadcrumbs: MenuItemBreadcrumb[];
+
   private app_id: number = 0;
   private dns_id: number = 0;
   private sub: any;
-  private breadcrumbs: MenuItemBreadcrumb[];
 
   constructor(private dnsService: ACDNSService,
               private router: Router,

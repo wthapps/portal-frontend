@@ -21,8 +21,9 @@ export class ACAppsDetailComponent implements OnInit {
   descriptionContent: any = '';
   added: boolean = false;
 
+  breadcrumbs: MenuItemBreadcrumb[];
+
   private app_id: number = 0;
-  private breadcrumbs: MenuItemBreadcrumb[];
 
   constructor(private route: ActivatedRoute,
               private appsService: ACAppsService,

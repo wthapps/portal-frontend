@@ -23,9 +23,10 @@ export class ACMyAppsDetailComponent implements OnInit, OnDestroy {
 
   type: string = '';
 
+  breadcrumbs: MenuItemBreadcrumb[];
+
   private app_id: number = 0;
   private sub: any;
-  private breadcrumbs: MenuItemBreadcrumb[];
 
   constructor(private route: ActivatedRoute,
               private myAppsService: ACMyAppsService,

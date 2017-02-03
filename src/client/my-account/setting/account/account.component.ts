@@ -41,7 +41,7 @@ export class ACAccountComponent implements OnInit {
   submitted: boolean = false;
 
   constructor(private fb: FormBuilder,
-              private userService: UserService,
+              public userService: UserService,
               private toastsService: ToastsService,
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
