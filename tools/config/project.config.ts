@@ -21,6 +21,7 @@ export class ProjectConfig extends SeedConfig {
     // Add `NPM` third-party libraries to be injected/bundled.
     this.NPM_DEPENDENCIES = [
       ...this.NPM_DEPENDENCIES,
+      {src: 'lodash/lodash.min.js', inject: 'libs'},
       {src: 'primeng/resources/primeng.min.css', inject: true},
       {src: 'primeng/resources/themes/bootstrap/theme.css', inject: true},
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
@@ -47,6 +48,14 @@ export class ProjectConfig extends SeedConfig {
       {
         name: 'angular2-recaptcha',
         path: 'node_modules/angular2-recaptcha/index.js'
+      },
+      {
+        name: 'ng2-bs3-modal',
+        path: 'node_modules/ng2-bs3-modal/ng2-bs3-modal.js'
+      },
+      {
+        name: 'angular2-infinite-scroll',
+        path: 'node_modules/angular2-infinite-scroll/angular2-infinite-scroll.js'
       }
     ];
 
