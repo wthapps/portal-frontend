@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MyAccountComponent } from './my-account.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: '', redirectTo: '/setting/profile', pathMatch: 'full' }
+      {path: 'my-account', component: MyAccountComponent}
     ])
   ],
   exports: [RouterModule]
 })
-export class HomeRoutingModule { }
+export class MyAccountRoutingModule {
+}

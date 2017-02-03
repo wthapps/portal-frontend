@@ -19,6 +19,7 @@ import { SupportModule } from './support/support.module';
 import { WelcomeModule } from './welcome/welcome.module';
 import { RegisterModule } from './register/register.module';
 import { LoginModule } from './login/login.module';
+import { MyAccountModule } from './my-account/my-account.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { LoginModule } from './login/login.module';
     HttpModule,
     AppRoutingModule,
     PageErrorsModule,
+    MyAccountModule,
     LoginModule,
     RegisterModule,
     WelcomeModule,
