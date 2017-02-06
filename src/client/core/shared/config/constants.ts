@@ -61,31 +61,31 @@ export let Constants = {
   },
 
   chatMenuItems: [
-    {name: 'Conversation', link: '/zone/chat/conversation/dashboard'},
-    {name: 'Contact', link: '/zone/chat/contact'},
-    {name: 'History', link: '/zone/chat/history'},
-    {name: 'Settings', link: '/zone/chat/setting'}
+    {name: 'Conversation', link: '/chat/conversation/dashboard'},
+    {name: 'Contact', link: '/chat/contact'},
+    {name: 'History', link: '/chat/history'},
+    {name: 'Settings', link: '/chat/setting'}
   ],
 
   pictureMenuItems: [
-    {name: 'Photos', link: '/zone/media/photo'},
-    {name: 'Albums', link: '/zone/media/album'},
-    {name: 'Favourites', link: '/zone/media/favourites'},
-    {name: 'Shared with me', link: '/zone/media/sharedWithMe'}
-    /*{ name: 'Photos', link: '/zone/picture/photo' },
-     { name: 'Albums', link: '/zone/picture/album' },
-     { name: 'Videos', link: '/zone/picture/video' },
-     { name: 'Favorites', link: '/zone/picture/favourites' },
-     { name: 'Shared with me', link: '/zone/picture/sharedWithMe' },*/
+    {name: 'Photos', link: '/media/photo'},
+    {name: 'Albums', link: '/media/album'},
+    {name: 'Favourites', link: '/media/favourites'},
+    {name: 'Shared with me', link: '/media/sharedWithMe'}
+    /*{ name: 'Photos', link: '/picture/photo' },
+     { name: 'Albums', link: '/picture/album' },
+     { name: 'Videos', link: '/picture/video' },
+     { name: 'Favorites', link: '/picture/favourites' },
+     { name: 'Shared with me', link: '/picture/sharedWithMe' },*/
   ],
 
   socialMenuItems: [
-    {name: 'Home', link: '/zone/social/home'},
-    {name: 'Communities', link: '/zone/social/communities'},
-    {name: 'Notifications', link: '/zone/social/notifications'},
-    {name: 'Members', link: '/zone/social/members'},
-    {name: 'My Page', link: '/zone/social/profile'},
-    {name: 'Settings', link: '/zone/social/setting'},
+    {name: 'Home', link: '/social/home'},
+    {name: 'Communities', link: '/social/communities'},
+    {name: 'Notifications', link: '/social/notifications'},
+    {name: 'Members', link: '/social/members'},
+    {name: 'My Page', link: '/social/profile'},
+    {name: 'Settings', link: '/social/setting'},
   ],
 
   pictureMenuActions: {

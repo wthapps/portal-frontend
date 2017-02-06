@@ -12,6 +12,8 @@ import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
 import { ZMediaModule } from './media/media.module';
 
+import { ZSharedModule } from './shared/shared.module';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -20,7 +22,8 @@ import { ZMediaModule } from './media/media.module';
     ZMediaModule,
     AboutModule,
     HomeModule,
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    ZSharedModule.forRoot()
   ],
   declarations: [AppComponent],
   providers: [{
