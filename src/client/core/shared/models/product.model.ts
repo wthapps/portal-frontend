@@ -20,6 +20,7 @@ export class Product {
   category: Category;
   platforms: Array<Platform>;
   updated_at: string;
+  screenshots: any;
 
 
   constructor(fields?: {
@@ -39,7 +40,8 @@ export class Product {
     active?: boolean,
     category?: Category,
     platforms?: Array<Platform>,
-    updated_at?: string
+    updated_at?: string,
+    screenshots?: any
   }) {
     if (fields) Object.assign(this, fields);
 

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Product } from '../../../../core/shared/models/product.model';
 import { Constants } from '../../../../core/shared/config/constants';
@@ -10,43 +10,34 @@ import { Constants } from '../../../../core/shared/config/constants';
   moduleId: module.id,
   selector: 'ac-apps-shared-card',
   template: `
-    <div class="app-card" [ngClass]="{'app-card-sm': (type == 'small'), 'app-card-md': (type == 'medium')}">
+    <div *ngIf="data" class="app-card" [ngClass]="{'app-card-sm': (type == 'small'), 'app-card-md': (type == 'medium')}">
       <a href="javascript:;" (click)='onClick()'>
         <div class="app-card-cover">
           <figure>
-            <img [src]="card.img_src" (error)="checkError($event)" [alt]="card.display_name">
+            <img [src]="data.img_src" (error)="checkError($event)" [alt]="data.display_name">
           </figure>
         </div>
         <div class="app-card-content">
-          <p class="name">{{card.display_name}}</p>
-          <p class="cat">{{card.category.name}}</p>
-          <ac-apps-shared-platform [data]="card.platforms"></ac-apps-shared-platform>
+          <p class="name">{{data.display_name}}</p>
+          <p class="cat">{{data.category.name}}</p>
+          <ac-apps-shared-platform [data]="data.platforms"></ac-apps-shared-platform>
         </div>
       </a>
     </div>
   `
 })
-export class ACAppsSharedCardComponent implements OnChanges {
+export class ACAppsSharedCardComponent {
   @Input() data: Product = new Product();
   @Input() type: string = 'small';
 
   @Output() appCardClicked: EventEmitter<number> = new EventEmitter<number>();
 
-  card: Product;
-
-  cardId: number = 0;
-
   category: string = '';
 
   errorMessage: string = '';
 
-  ngOnChanges(): void {
-    this.card = this.data;
-    this.cardId = this.data.id;
-  }
-
-  onClick(): void {
-    this.appCardClicked.emit(this.cardId);
+  onClick(id: any): void {
+    this.appCardClicked.emit(id);
   }
 
   checkError(event: any) {

@@ -22,7 +22,7 @@ export class ACAppsListComponent implements OnInit {
   apps: Array<Product>;
 
   featured: string = '';              // detect selected featured
-  private has_filter: boolean = false;
+  has_filter: boolean = false;
 
 
   constructor(private route: ActivatedRoute,
