@@ -12696,28 +12696,6 @@ fieldset[disabled] .btn-default-inline.focus {
   color: #A2D96D;
 }
 
-@media (min-width: 768px) {
-  .modal:not(.in-loading) .modal-dialog:not(.modal-long) {
-    top: 0;
-    -webkit-transform: translateY(0%);
-    transform: translateY(0%);
-  }
-  .modal:not(.in-loading).in .modal-dialog:not(.modal-long) {
-    margin-top: 0;
-    margin-bottom: 0;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
-}
-
-.modal {
-  padding-right: 0 !important;
-}
-
 .modal-custom .modal-content {
   border-radius: 0;
 }

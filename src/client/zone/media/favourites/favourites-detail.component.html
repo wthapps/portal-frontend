@@ -1,0 +1,36 @@
+<z-media-share-toolbar
+  #mediaToolbar
+  [type]="type"
+  [selectedPhotos]="selectedPhotos"
+  [hasFavourite]="hasFavourite"
+  [currentView]="currentView"
+  (outEvent)="actionToolbar($event)">
+</z-media-share-toolbar>
+
+<div class="page-body-content has-page-body-control gray-light">
+  <div class="page-body-content-in">
+    <div class="page-body-in-title" style="text-transform: capitalize;">
+      {{type}}
+    </div>
+    <template [ngIf]="type == 'album'">
+      <z-media-share-list
+        [type]="'album'"
+        [data]="data.albums"
+        [view]="currentView"
+        [hasAction]="['favourite', 'select', 'previewAll']"
+        (outEvent)="actionAlbumItem($event)">
+      </z-media-share-list>
+    </template>
+
+    <template [ngIf]="type == 'photo'">
+      <z-media-share-list
+        [type]="'photo'"
+        [data]="data.photos"
+        [view]="currentView"
+        [hasAction]="['favourite', 'select', 'previewAll']"
+        (outEvent)="actionPhotoItem($event)">
+      </z-media-share-list>
+
+    </template>
+  </div>
+</div>

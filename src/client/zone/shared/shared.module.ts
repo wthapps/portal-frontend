@@ -1,6 +1,10 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 
 import { ZSharedMenuComponent } from './menu/menu.component';
 
@@ -11,14 +15,22 @@ import { ZSharedMenuComponent } from './menu/menu.component';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule,
+    Ng2Bs3ModalModule,
+    AutoCompleteModule
   ],
   declarations: [
     ZSharedMenuComponent
   ],
   exports: [
+    ZSharedMenuComponent,
+
     CommonModule,
-    ZSharedMenuComponent
+    RouterModule,
+    ReactiveFormsModule,
+    Ng2Bs3ModalModule,
+    AutoCompleteModule
   ]
 })
 export class ZSharedModule {

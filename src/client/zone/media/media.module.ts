@@ -5,13 +5,15 @@ import { ZMediaRoutingModule } from './media-routing.module';
 import { ZMediaComponent } from './media.component';
 
 import { ZMediaPhotoModule } from './photo/photo.module';
+import { ZSharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
     ZMediaRoutingModule,
-    ZMediaPhotoModule
+    ZMediaPhotoModule,
+    ZSharedModule.forRoot()
   ],
   declarations: [
     ZMediaComponent
@@ -19,8 +21,7 @@ import { ZMediaPhotoModule } from './photo/photo.module';
   exports: [
     ZMediaComponent
   ],
-  providers: [
-  ]
+  providers: []
 })
 
 export class ZMediaModule {

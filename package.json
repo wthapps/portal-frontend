@@ -6,6 +6,7 @@
     "url": "https://github.com/mgechev/angular-seed"
   },
   "scripts": {
+    "build.predev": "cd dist/dev\nln -s ../../node_modules/ ./",
     "build.dev": "gulp build.dev --color --env-config dev",
     "build.dev.watch": "gulp build.dev.watch --color",
     "build.e2e": "gulp build.e2e --color",
@@ -33,6 +34,8 @@
     "serve.prod.exp": "gulp serve.prod.aot --color --env-config prod --build-type prod",
     "serve.prod.rollup.aot": "gulp serve.prod.rollup.aot --color --env-config prod --build-type prod",
     "start": "gulp serve.dev --color",
+    "start-my": "npm start -- --app my-account --port 3100",
+    "start-zone": "npm start -- --app zone --port 3200",
     "start.deving": "gulp start.deving --color",
     "tasks.list": "gulp --tasks-simple --color",
     "test": "gulp test --color",

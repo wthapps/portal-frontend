@@ -1,12 +1,11 @@
-<!--<z-media-share-toolbar-->
-<!--#mediaToolbar-->
-<!--[type]="'photo'"-->
-<!--[selectedPhotos]="selectedPhotos"-->
-<!--[hasFavourite]="hasFavourite"-->
-<!--[currentView]="currentView"-->
-<!--(outEvent)="actionToolbar($event)"-->
-<!--(outEventUploading)="actionUploading($event)">-->
-<!--</z-media-share-toolbar>-->
+<z-media-share-toolbar
+  #mediaToolbar
+  [type]="'album'"
+  [selectedPhotos]="selectedPhotos"
+  [hasFavourite]="hasFavourite"
+  [currentView]="currentView"
+  (outEvent)="actionToolbar($event)">
+</z-media-share-toolbar>
 
 <div class="page-body-content has-page-body-control gray-light"
      infinite-scroll
@@ -16,7 +15,7 @@
      (scrolled)="onLoadMore()">
   <div class="page-body-content-in">
     <z-media-share-list
-      [type]="'photo'"
+      [type]="'album'"
       [data]="data"
       [view]="currentView"
       [hasAction]="['favourite', 'select', 'previewAll']"
@@ -25,5 +24,3 @@
     <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
   </div>
 </div>
-
-<!--<z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data"></z-media-photo-detail>-->

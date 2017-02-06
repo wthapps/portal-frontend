@@ -1,12 +1,12 @@
-<!--<z-media-share-toolbar-->
-<!--#mediaToolbar-->
-<!--[type]="'photo'"-->
-<!--[selectedPhotos]="selectedPhotos"-->
-<!--[hasFavourite]="hasFavourite"-->
-<!--[currentView]="currentView"-->
-<!--(outEvent)="actionToolbar($event)"-->
-<!--(outEventUploading)="actionUploading($event)">-->
-<!--</z-media-share-toolbar>-->
+<z-media-share-toolbar
+  #mediaToolbar
+  [type]="'album-detail'"
+  [albumDetail]="albumDetail"
+  [selectedPhotos]="selectedPhotos"
+  [hasFavourite]="hasFavourite"
+  [currentView]="currentView"
+  (outEvent)="actionToolbar($event)">
+</z-media-share-toolbar>
 
 <div class="page-body-content has-page-body-control gray-light"
      infinite-scroll
@@ -26,4 +26,4 @@
   </div>
 </div>
 
-<!--<z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data"></z-media-photo-detail>-->
+<z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data"></z-media-photo-detail>
