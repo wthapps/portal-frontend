@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants } from '../../core/shared/config/constants';
 
 /**
  * This class represents the lazy loaded MyAccountComponent.
@@ -10,6 +11,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyAccountComponent implements OnInit {
   ngOnInit() {
-    window.location.href = 'http://google.com';
+    window.location.href = Constants.baseUrls.myAccount;
   }
 }

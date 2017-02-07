@@ -57,6 +57,10 @@ export class ProjectConfig extends SeedConfig {
       {
         name: 'angular2-infinite-scroll',
         path: 'node_modules/angular2-infinite-scroll/angular2-infinite-scroll.js'
+      },
+      {
+        name: 'angular2-cookie',
+        path: 'node_modules/angular2-cookie/core.js'
       }
     ];
 

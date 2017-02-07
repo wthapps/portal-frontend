@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { ApiBaseService } from './services/apibase.service';
 
@@ -46,7 +47,8 @@ export class SharedModule {
         ApiBaseService,
         UserService,
         NameListService,
-        ConfirmationService
+        ConfirmationService,
+        CookieService
       ]
     };
   }

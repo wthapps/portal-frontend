@@ -4,10 +4,12 @@ import { Router }         from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
-import { Cookie } from 'ng2-cookies';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
+
 import { ApiBaseService } from './apibase.service';
-import { Constants }      from '../config/constants';
 import { User }           from '../models/user.model';
+import { Constants } from '../config/constants';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -16,7 +18,13 @@ export class UserService extends ApiBaseService {
   profile: User = null;
   defaultPayment: any;
 
-  constructor(http: Http, router: Router) {
+  private cookieOptionsArgs: CookieOptionsArgs = {
+    path: '/',
+    expires: new Date('2030-07-19')
+  };
+
+  constructor(http: Http, router: Router,
+              private cookieService: CookieService) {
     super(http, router);
     this.readUserInfo();
   }
@@ -116,9 +124,12 @@ export class UserService extends ApiBaseService {
   }
 
   deleteUserInfo() {
-    Cookie.delete('jwt', '/');
-    Cookie.delete('logged_in', '/');
-    Cookie.delete('profile', '/');
+    //2 Cookie.delete('jwt', '/');
+    //2 Cookie.delete('logged_in', '/');
+    //2 Cookie.delete('profile', '/');
+
+    this.cookieService.removeAll();
+
     this.loggedIn = false;
     this.profile = null;
   }
@@ -152,20 +163,23 @@ export class UserService extends ApiBaseService {
     }
 
     // TODO move string constants to config file
-    Cookie.set('jwt', response.token, 365, '/');
-    Cookie.set('profile', JSON.stringify(response.data), 365, '/');
-    Cookie.set('logged_in', 'true', 365, '/');
+    this.cookieService.put('jwt', response.token, this.cookieOptionsArgs);
+    this.cookieService.put('profile', JSON.stringify(response.data), this.cookieOptionsArgs);
+    this.cookieService.put('logged_in', 'true', this.cookieOptionsArgs);
+
     this.loggedIn = true;
     this.profile = response.data;
   }
 
   private readUserInfo() {
-    this.profile = JSON.parse(Cookie.get('profile'));
-    this.loggedIn = Boolean(Cookie.get('logged_in'));
+    if (this.cookieService.get('logged_in')) {
+      this.profile = JSON.parse(this.cookieService.get('profile'));
+      this.loggedIn = Boolean(this.cookieService.get('logged_in'));
+    }
   }
 
   private updateProfile(profile: Object) {
-    Cookie.set('profile', JSON.stringify(profile), 365, '/');
+    this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
   }
 }
 
