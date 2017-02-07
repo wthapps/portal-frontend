@@ -65,7 +65,7 @@ export class ZMediaAlbumListComponent implements OnInit {
         this.onSelectedPhotos(event.data);
         break;
       case 'previewAll':
-        this.router.navigate([`/zone/media/album`, event.data.id]);
+        this.router.navigate([`/media/album`, event.data.id]);
         break;
       case 'favourite':
         this.onOneFavourite(event.data);

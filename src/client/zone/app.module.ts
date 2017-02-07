@@ -8,7 +8,7 @@ import { SharedModule } from '../core/shared/shared.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { HomeModule } from './home/home.module';
+import { ZHomeModule } from './home/home.module';
 import { ZMediaModule } from './media/media.module';
 
 import { ZSharedModule } from './shared/shared.module';
@@ -19,7 +19,7 @@ import { ZSharedModule } from './shared/shared.module';
     HttpModule,
     AppRoutingModule,
     ZMediaModule,
-    HomeModule,
+    ZHomeModule,
     SharedModule.forRoot(),
     ZSharedModule.forRoot()
   ],

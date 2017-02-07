@@ -5,7 +5,7 @@
   <modal-body>
     <p>Group</p>
     <div class="form-group">
-      <!--<p-autoComplete
+      <p-autoComplete
         [(ngModel)]="textContactGroups"
         [suggestions]="filteredContactGroups"
         [multiple]="true"
@@ -14,7 +14,7 @@
         (onSelect)="selectContactGroup($event)"
         (onUnselect)="unSelectContactGroup($event)"
         (completeMethod)="searchContactGroup($event)"
-      ></p-autoComplete>-->
+      ></p-autoComplete>
 
     </div>
     <div class="modal-body-collapse" *ngIf="sharedContactGroups.length > 0">
@@ -46,7 +46,7 @@
     <hr>
     <p>Contact</p>
     <div class="form-group">
-      <!--<p-autoComplete [(ngModel)]="textContacts"
+      <p-autoComplete [(ngModel)]="textContacts"
                       [suggestions]="filteredContacts"
                       [multiple]="true"
                       [minLength]="1"
@@ -55,7 +55,7 @@
                       (onUnselect)="unSelectContact($event)"
                       (completeMethod)="searchContact($event)"
       >
-      </p-autoComplete>-->
+      </p-autoComplete>
     </div>
     <div class="modal-body-collapse" *ngIf="sharedContacts.length">
       <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"

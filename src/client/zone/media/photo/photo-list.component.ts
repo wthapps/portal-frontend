@@ -54,12 +54,14 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   onLoadMore() {
-    this.photoService.loadMore(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v: any)=> {
-        this.data.push(v);
+    if (this.nextLink) {
+      this.photoService.loadMore(this.nextLink).subscribe((res: any)=> {
+        _.map(res.data, (v: any)=> {
+          this.data.push(v);
+        });
+        this.nextLink = res.page_metadata.links.next;
       });
-      this.nextLink = res.page_metadata.links.next;
-    });
+    }
   }
 
 

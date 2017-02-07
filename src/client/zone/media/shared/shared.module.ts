@@ -16,6 +16,9 @@ import { ZMediaUploadingComponent } from './uploading/uploading.component';
 import { ZMediaSharingComponent } from './sharing/sharing.component';
 import { ZSharedModule } from '../../shared/shared.module';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
+import { ZMediaAlbumService } from '../album/album.service';
+import { ZMediaSharingService } from './sharing/sharing.service';
+import { ZSharedAutoCompleteModule } from '../../shared/auto-complete/auto-complete.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -25,6 +28,7 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
   imports: [
     InfiniteScrollModule,
     AutoCompleteModule,
+    ZSharedAutoCompleteModule,
     ZSharedModule.forRoot()
   ],
   declarations: [
@@ -61,14 +65,18 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
 
     //Module
     InfiniteScrollModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    ZSharedModule
   ]
 })
 export class ZMediaSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZMediaSharedModule,
-      providers: []
+      providers: [
+        ZMediaAlbumService,
+        ZMediaSharingService
+      ]
     };
   }
 }
