@@ -60,4 +60,5 @@ bower_components
 !/src/html/assets/dist/
 /src/html/assets/.tmp/
 /src/client/app/core/
+/src/client/my-account/core/
 /tools/env/dev.ts

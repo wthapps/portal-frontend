@@ -7,9 +7,10 @@ import { Observable }     from 'rxjs/Observable';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
 
+import { Constants } from '../config/constants';
+
 import { ApiBaseService } from './apibase.service';
 import { User }           from '../models/user.model';
-import { Constants } from '../config/constants';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -20,6 +21,7 @@ export class UserService extends ApiBaseService {
 
   private cookieOptionsArgs: CookieOptionsArgs = {
     path: '/',
+    domain: Constants.baseUrls.domain,
     expires: new Date('2030-07-19')
   };
 

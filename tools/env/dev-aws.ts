@@ -1,8 +1,10 @@
 import { EnvConfig } from './env-config.interface';
 
 const DevConfig: EnvConfig = {
-  API: 'https://54.213.41.54:40000/',
-  ENV: 'DEV'
+  API: '54.213.41.54:4000',
+  ENV: 'DEV',
+  DOMAIN: 'localhost',
+  PROTOCOL: 'https'
 };
 
 export = DevConfig;

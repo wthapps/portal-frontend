@@ -3,5 +3,6 @@
 export interface EnvConfig {
   API?: string;
   ENV?: string;
-  URL?: any;
+  DOMAIN?: string;
+  PROTOCOL?: string;
 }
