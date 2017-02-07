@@ -3,7 +3,7 @@ import { ZSharedAutoCompleteService } from './auto-complete.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'z-shared-autoComplete',
+  selector: 'z-shared-auto-complete',
   templateUrl: 'auto-complete.component.html'
 })
 export class ZSharedAutoCompleteComponent {
@@ -66,6 +66,6 @@ export class ZSharedAutoCompleteComponent {
     //mimic remote call
     setTimeout(() => {
       this.filteredBrands = this.brands;
-    }, 100)
+    }, 100);
   }
 }
