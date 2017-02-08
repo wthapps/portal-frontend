@@ -1,5 +1,4 @@
 import { Injectable }     from '@angular/core';
-import { Cookie } from 'ng2-cookies/';
 import { UserService } from '../services/user.service';
 
 declare var _: any;
@@ -10,8 +9,6 @@ export class StorageService {
   storageId: any;
 
   constructor(public userService: UserService) {
-    // console.log(userService.profile);
-    // console.log('storageId',  JSON.parse(Cookie.get('profile')));
     this.storageId = userService.profile.id;
     console.log('storageId', this.storageId);
   }

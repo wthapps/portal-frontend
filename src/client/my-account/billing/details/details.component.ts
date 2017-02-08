@@ -1,6 +1,6 @@
 import { Component, OnInit }            from '@angular/core';
-import { Router }    from '@angular/router';
-import { Cookie }                       from 'ng2-cookies';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
 
 import { UserService } from '../../../core/shared/services/user.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
@@ -9,6 +9,7 @@ import { ToastsService } from '../../../core/partials/toast/toast-message.servic
 
 import { CreditCard } from '../../../core/shared/models/credit-card.model';
 import { BillingAddress } from '../../../core/shared/models/billing-address.model';
+import { Constants } from '../../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -20,11 +21,17 @@ export class ACBillingDetailsComponent implements OnInit {
   pageTitle: string = 'Billing Details';
   credit_card: CreditCard;
 
+  private cookieOptionsArgs: CookieOptionsArgs = {
+    path: '/',
+    domain: Constants.baseUrls.domain,
+    expires: new Date('2030-07-19')
+  };
+
   constructor(private userService: UserService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
               private toastsService: ToastsService,
-              private router: Router) {
+              private cookieService: CookieService) {
     //console.log(this.userService);
   }
 
@@ -58,7 +65,7 @@ export class ACBillingDetailsComponent implements OnInit {
             this.userService.profile.has_payment_info = false;
             this.userService.profile.credit_cards = null;
             // Cookie.delete('profile');
-            Cookie.set('profile', JSON.stringify(this.userService.profile), 365, '/');
+            this.cookieService.put('profile', JSON.stringify(this.userService.profile), this.cookieOptionsArgs);
           },
           error => {
             this.loadingService.stop();

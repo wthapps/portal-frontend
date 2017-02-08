@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies';
+
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
+
 import { LoadingService } from '../loading/loading.service';
 import { ApiBaseService } from '../../shared/services/apibase.service';
 import { UserService } from '../../shared/services/user.service';
 import { Plan } from '../../shared/models/plan.model';
+import { Constants } from '../../shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -21,10 +25,17 @@ export class TablePricingComponent implements OnInit {
   percentage: number = 1;
 
 
+  private cookieOptionsArgs: CookieOptionsArgs = {
+    path: '/',
+    domain: Constants.baseUrls.domain,
+    expires: new Date('2030-07-19')
+  };
+
   constructor(private router: Router,
               private loadingService: LoadingService,
               private userService: UserService,
-              private apiService: ApiBaseService) {
+              private apiService: ApiBaseService,
+              private cookieService: CookieService) {
     //console.log(this.userService)
   }
 
@@ -69,8 +80,7 @@ export class TablePricingComponent implements OnInit {
       is_trial: plan.is_trial,
       price: plan.price
     });
-    // Cookie.delete('selected_plan');
-    Cookie.set('selected_plan', p, 365, '/');
+    this.cookieService.put('selected_plan', p, this.cookieOptionsArgs);
     if (this.userService.profile && this.userService.profile.has_payment_info) {
       this.router.navigateByUrl('account/payment/confirm');
       // this.userService.getDefaultPayment()

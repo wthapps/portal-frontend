@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, RequestOptionsArgs, Response } from '@an
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import { Cookie } from 'ng2-cookies';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { Constants } from '../config/constants';
 
@@ -20,7 +20,8 @@ export class ApiBaseService {
     'ACCEPT': 'application/json'
   });
 
-  constructor(private http: Http, private router: Router) {
+  constructor(private http: Http,
+              private cookieService: CookieService) {
     this._http = http;
   }
 
@@ -97,7 +98,8 @@ export class ApiBaseService {
     // let jwt = localStorage.getItem('jwt');
     // let profile = JSON.parse(localStorage.getItem('profile'));
 
-    let jwt = Cookie.get('jwt');
+    let jwt = this.cookieService.get('jwt');
+
     //let profile = JSON.parse(Cookie.get('profile'));
 
     this._headers.delete('Authorization');

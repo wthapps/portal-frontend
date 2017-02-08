@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Cookie } from 'ng2-cookies';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
 
 import { Product } from '../../core/shared/models/product.model';
 import { Plan } from '../../core/shared/models/plan.model';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { UserService } from '../../core/shared/services/user.service';
 import { ACPlansService } from './plans.service';
+import { Constants } from '../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -21,11 +23,16 @@ export class ACPlansComponent implements OnInit {
   products: Product[] = [];
   plans: Plan[] = [];
 
-
+  private cookieOptionsArgs: CookieOptionsArgs = {
+    path: '/',
+    domain: Constants.baseUrls.domain,
+    expires: new Date('2030-07-19')
+  };
   constructor(private router: Router,
               private loadingService: LoadingService,
               private userService: UserService,
-              private plansService: ACPlansService) {
+              private plansService: ACPlansService,
+              private cookieService: CookieService) {
     //console.log(this.userService)
   }
 
@@ -69,7 +76,7 @@ export class ACPlansComponent implements OnInit {
       price: plan.price
     });
     // Cookie.delete('selected_plan');
-    Cookie.set('selected_plan', p, 365, '/');
+    this.cookieService.put('selected_plan', p, this.cookieOptionsArgs);
     if (this.userService.profile.has_payment_info) {
       this.router.navigateByUrl('payment/confirm');
     } else {
