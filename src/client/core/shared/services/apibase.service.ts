@@ -21,7 +21,8 @@ export class ApiBaseService {
   });
 
   constructor(private http: Http,
-              private cookieService: CookieService) {
+              public router: Router,
+              public cookieService: CookieService) {
     this._http = http;
   }
 

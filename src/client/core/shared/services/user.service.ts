@@ -26,8 +26,8 @@ export class UserService extends ApiBaseService {
   };
 
   constructor(http: Http, router: Router,
-              private cookieService: CookieService) {
-    super(http, router);
+              cookieService: CookieService) {
+    super(http, router, cookieService);
     this.readUserInfo();
   }
 
