@@ -72,15 +72,10 @@ export let Constants = {
   ],
 
   pictureMenuItems: [
-    {name: 'Photos', link: '/media/photo'},
-    {name: 'Albums', link: '/media/album'},
-    {name: 'Favourites', link: '/media/favourites'},
-    {name: 'Shared with me', link: '/media/sharedWithMe'}
-    /*{ name: 'Photos', link: '/picture/photo' },
-     { name: 'Albums', link: '/picture/album' },
-     { name: 'Videos', link: '/picture/video' },
-     { name: 'Favorites', link: '/picture/favourites' },
-     { name: 'Shared with me', link: '/picture/sharedWithMe' },*/
+    {name: 'Photos', link: '/photo'},
+    {name: 'Albums', link: '/album'},
+    {name: 'Favourites', link: '/favourites'},
+    {name: 'Shared with me', link: '/sharedWithMe'}
   ],
 
   socialMenuItems: [

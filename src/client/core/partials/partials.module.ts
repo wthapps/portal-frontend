@@ -9,6 +9,7 @@ import { ToastsModule } from './toast/toast-message.module';
 import { TablePricingModule } from './table-pricing/table-pricing.module';
 import { CountryModule } from './countries/countries.module';
 import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
+import { ZSharedModule } from './zone/zone.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
     ToastsModule,
     TablePricingModule,
     CountryModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    ZSharedModule
   ],
   declarations: [
     // HeaderComponent,
@@ -33,7 +35,8 @@ import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
     ToastsModule,
     TablePricingModule,
     CountryModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    ZSharedModule
   ],
   providers: []
 })
