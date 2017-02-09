@@ -29,6 +29,7 @@
     "wheelzoom": "jackmoore/wheelzoom#^3.0.4",
     "file-saver": "^1.3.3",
     "shave": "^0.2.0",
-    "slick-carousel": "^1.6.0"
+    "slick-carousel": "^1.6.0",
+    "selectables": "p34eu/selectables#^1.4.1"
   }
 }

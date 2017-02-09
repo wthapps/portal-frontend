@@ -20617,6 +20617,21 @@ wth-app:empty + .dots-loader-wrap .dots-loader {
   background-position: -27909px 0;
 }
 
+.s-noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#s-rectBox {
+  position: fixed;
+  z-index: 9999;
+  border: 2px dashed #cbd3e3;
+  background-color: rgba(219, 219, 219, 0.5);
+}
+
 .panel-heading-action {
   position: relative;
 }
