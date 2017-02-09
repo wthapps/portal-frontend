@@ -20,7 +20,7 @@ export let Constants = {
     apiBaseService: Config.PROTOCOL + '://' + Config.API + '/',
     domain: Config.DOMAIN,
     app: Config.PROTOCOL + '://' + Config.DOMAIN,
-    myAccount: Config.PROTOCOL + '://my.' + Config.DOMAIN,
+    myAccount: Config.SUB_DOMAIN.FE_MYACCOUNT,
     zone: Config.PROTOCOL + '://zone.' + Config.DOMAIN
   },
   operations: {

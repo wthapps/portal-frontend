@@ -1,7 +1,7 @@
 import { Injectable }     from '@angular/core';
 import { CableService } from './cable.service';
+import { StorageService } from '../services/storage.service';
 import { UserService } from '../services/user.service';
-import { StorageService } from './storage.service';
 
 declare let ActionCable: any;
 declare let App: any;
@@ -15,23 +15,21 @@ export class ChatChannelService extends CableService {
     super();
   }
 
-  subscribeChat(groupId: any) {
+  subscribe(groupId:any) {
     let _this = this;
-    if (this.userService.loggedIn) {
+    if(this.userService.loggedIn) {
       this.createConnectionInstance(this.userService);
-      if (App['groupChat' + groupId] == undefined) {
-        App['groupChat' + groupId] = App.cable.subscriptions.create(
-          {channel: 'ChatChannel', group_id: groupId},
+      if(App["groupChat" + groupId] == undefined) {
+        App["groupChat" + groupId] = App.cable.subscriptions.create(
+          {channel: "ChatChannel", group_id: groupId},
           {
-            connected() {
+            connected(){
               console.log('chat connected', groupId);
             },
-            disconnected() {
-              console.log('chat disconnected');
-            },
-            received(data: any) {
+            disconnected(){console.log('chat disconnected')},
+            received(data: any){
               console.log('chat received', data);
-              if (data.type == 'send_message_chat') {
+              if (data.type == "send_message_chat") {
                 _this.addMessage(data.group, data.message);
               }
             },
@@ -41,20 +39,22 @@ export class ChatChannelService extends CableService {
     }
   }
 
-  sendMessage(groupId: any, message: any) {
-    App['groupChat' + groupId].send({type: 'send_message_chat', group: groupId, body: message});
+  sendMessage(groupId:any, message:any, file?:any) {
+    App["groupChat" + groupId].send({type: "send_message_chat", group: groupId, message: message, file: file});
   }
 
-  addMessage(groupId: any, data: any) {
+  addMessage(groupId:any, data:any) {
     let item = this.storage.find('chat_messages_group_' + groupId);
     if (item && item.value) {
       item.value.data.push(data);
-      this.storage.save('current_chat_messages', item.value);
+      let currentGroupId = this.storage.find('contact_select').value.group.id;
+      if(currentGroupId == groupId)
+        this.storage.save('current_chat_messages', item.value);
     }
   }
 
-  unsubscribe(groupId: any) {
-    App['groupChat' + groupId].unsubscribe();
+  unsubscribe(groupId:any) {
+    App["groupChat" + groupId].unsubscribe();
   }
 }
 
