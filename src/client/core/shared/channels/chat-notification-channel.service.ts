@@ -16,23 +16,21 @@ export class ChatNotificationChannelService extends CableService {
 
   subscribe() {
     let _this = this;
-    if (this.userService.loggedIn) {
+    if(this.userService.loggedIn) {
       this.createConnectionInstance(this.userService);
       App.chatNotification = App.cable.subscriptions.create(
-        {channel: 'ChatNotificationChannel'},
+        {channel: "ChatNotificationChannel"},
         {
-          connected() {
+          connected(){
             console.log('chat notification connected');
           },
-          disconnected() {
-            console.log('chat notification disconnected');
-          },
-          received(data: any) {
+          disconnected(){console.log('chat notification disconnected')},
+          received(data: any){
             console.log('chat notification recive', data);
-            if (data.type == 'mark_as_read') {
+            if (data.type == "mark_as_read") {
               _this.removeNotification(data.group);
             }
-            if (data.type == 'notification_count') {
+            if (data.type == "notification_count") {
               _this.addNotification(data);
             }
           },
@@ -41,30 +39,26 @@ export class ChatNotificationChannelService extends CableService {
     }
   }
 
-  markAsRead(groupId: any) {
-    App.chatNotification.send({type: 'mark_as_read', group: groupId});
+  markAsRead(groupId:any) {
+    App.chatNotification.send({type: "mark_as_read", group: groupId});
   }
 
-  removeNotification(groupId: any) {
+  removeNotification(groupId:any) {
     let item = this.storage.find('chat_contacts');
-    if (item && item.value) {
-      let contact = _.find(item.value.data, (contact: any) => {
-        if (contact.group.id == groupId) return contact;
-      });
+    if(item && item.value) {
+      let contact = _.find(item.value.data, (contact:any) => {if(contact.group.id == groupId) return contact});
       if (contact) {
-        contact.notification = 0;
+        contact.notification = 0
       }
     }
   }
 
-  addNotification(data: any) {
+  addNotification(data:any) {
     let item = this.storage.find('chat_contacts');
-    if (item && item.value) {
-      let contact = _.find(item.value.data, (contact: any) => {
-        if (contact.group.id == data.group) return contact;
-      });
+    if(item && item.value) {
+      let contact = _.find(item.value.data, (contact:any) => {if(contact.group.id == data.group) return contact});
       if (contact) {
-        contact.notification = data.count;
+        contact.notification = data.count
       }
     }
   }

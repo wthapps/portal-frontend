@@ -1,0 +1,37 @@
+<div class="page-body-chat-message">
+  <div class="chat-message-container">
+    <div id="chat-message-text" class="chatbox-container-input" contenteditable="true" spellcheck="false" tabindex="1"
+         placeholder="Type message here" autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()"></div>
+    <div class="row">
+      <div class="col-sm-6">
+        <button class="btn btn-default-inline" (click)="onOpenSelectPhotos()">
+          <i class="fa fa-camera" ></i>
+        </button>
+        <!--<button class="btn btn-default-inline">-->
+          <!--<i class="fa fa-book"></i>-->
+        <!--</button>-->
+        <span class="btn btn-style-1 fileinput-button">
+          <button class="btn btn-default-inline">
+            <i class="fa fa-book"></i>
+          </button>
+          <input id="files" type="file" (change)="uploadFile($event)"/>
+        </span>
+        <div class="btn-group dropup">
+          <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-smile-o"></i>
+          </button>
+          <ul class="dropdown-menu content-overflow p5" style="max-height: 150px;">
+            <li>
+              <i  *ngFor="let emoji of emojiData" class="wth-emoji wth-emoji-{{emoji}}" (click)="onEmojiClick(emoji)"></i>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 text-right">
+        <span class="text-line-btn text-fade">Press enter to send message</span>
+        <div class="btn btn-wth-default ml10" (click)="send()">Send</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<post-photo-select #photoSelectModal (onNext)="chooseDone($event)" (onUpload)="uploadPhoto($event)"></post-photo-select>-->

@@ -1,62 +1,60 @@
 import { Injectable }     from '@angular/core';
 import { UserService } from './user.service';
 
-declare var _: any;
+declare var _:any;
 
 @Injectable()
 export class StorageService {
   listItem: Array<StorageItem> = [];
   storageId: any;
-
+  reset: boolean = true;
   constructor(public userService: UserService) {
     this.storageId = userService.profile.id;
-    console.log('storageId', this.storageId);
   }
 
-  save(key: string, value: any) {
+  save(key:string, value:any) {
     // Convert StorageItem if need
     if (value instanceof StorageItem) {
-      value = value.value;
+      value = value.value
     }
-
-    // Replace old value by new
-    let n = true;
-    _.forEach(this.listItem, (i: any) => {
-      if (i.key == key) {
-        i.value = value;
-        n = false;
-      }
-    });
-
     // Create new store if need
-    if (n) {
+    let item = this.find(key);
+    if (item) {
+      item.value = value;
+    } else {
       this.saveNew(key, value);
     }
   }
 
-  saveNew(key: string, value: any) {
+  saveNew(key:string, value:any) {
     let item = new StorageItem(key, value);
-    _.remove(this.listItem, (i: any) => {
+    _.remove(this.listItem, (i:any) => {
       return i.key == item.key;
     });
     this.listItem.push(item);
   }
 
-  get(key: string) {
+  get(key:string) {
     let item = this.find(key);
-    if (item != undefined) return item.value;
+    if(item != undefined) return item.value;
     return null;
   }
 
-  find(key: string) {
+  find(key:string) {
+    this.resetIfNeed();
     for (let item of this.listItem) {
-      if (item.key == key) return item;
+      if(item.key == key) return item
     }
     return null;
   }
 
-  verifyStorage() {
-    // if()
+  resetIfNeed() {
+    if(this.storageId != this.userService.profile.id && this.reset) {
+      for (let item of this.listItem) {
+        item.value = null;
+      }
+      this.storageId = this.userService.profile.id;
+    }
   }
 
   getList() {
@@ -66,16 +64,16 @@ export class StorageService {
 
 
 class StorageItem {
-  key: string;
-  value: any;
+  key:string;
+  value:any;
 
-  constructor(key: string, value: any) {
+  constructor(key:string, value:any) {
     this.key = key;
     this.value = value;
   }
 
   save() {
-    console.log('save');
+
   }
 }
 

@@ -5,4 +5,5 @@ export interface EnvConfig {
   ENV?: string;
   DOMAIN?: string;
   PROTOCOL?: string;
+  SUB_DOMAIN?: any;
 }
