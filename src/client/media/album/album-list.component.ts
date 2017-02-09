@@ -2,7 +2,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/components/common/api';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+
+import { LoadingService } from '../../core/partials/loading/loading.service';
 
 import { ZMediaAlbumService } from './album.service';
 

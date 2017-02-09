@@ -11,8 +11,8 @@ import {
   Renderer
 } from '@angular/core';
 
-import { Photo } from '../../../../core/shared/models/photo.model';
-import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { Photo } from '../../../core/shared/models/photo.model';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 declare var $: any;
 
@@ -112,7 +112,7 @@ export class ZMediaUploadingComponent implements OnInit, OnChanges, AfterViewIni
               }
               this.photos.push(new Photo(result.data));
             },
-            error => {
+            (error: any) => {
               this.step = 3;
             }
           );
@@ -124,7 +124,7 @@ export class ZMediaUploadingComponent implements OnInit, OnChanges, AfterViewIni
     } while (i < files.length);
   }
 
-  onAction(ev:string): void {
+  onAction(ev: string): void {
     // close uploading form
     this.step = -1;
 

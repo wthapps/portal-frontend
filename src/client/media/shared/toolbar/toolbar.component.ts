@@ -2,7 +2,7 @@ import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { Constants } from '../../../../core/shared/config/constants';
+import { Constants } from '../../../core/shared/config/constants';
 
 import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
