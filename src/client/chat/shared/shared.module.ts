@@ -1,24 +1,17 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-import { ACMenuComponent } from './menu/menu.component';
-import { ZChatConversationGlobalComponent } from '../conversation/conversation-global.component';
 import { ZChatComponent } from '../chat.component';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatChatboxComponent } from './chat-box/chat-box.component';
-import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
-import { ZChatConversationComponent } from '../conversation/conversation.component';
-import { ZChatHistoryComponent } from '../history/history.component';
-import { ZChatSettingComponent } from '../setting/setting.component';
 import { ZChatShareUserListComponent } from './user-list/user-list.component';
-import { ZChatShareAddContactComponent } from './modal/add-contact.component';
-import { ZChatContactComponent } from '../contact/contact.component';
 import { ZChatShareListComponent } from './list/list.component';
 import { ZChatShareItemComponent } from './list/item/item.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
-import { ZChatNewConversationComponent } from '../conversation/new-conversation.component';
 import { ChatService } from './services/chat.service';
+import { SharedModule } from '../../core/shared/shared.module';
+import { ZChatEmojiModule } from './emoji/emoji.module';
+import { ChatChannelService } from './channels/chat-channel.service';
+import { ChatNotificationChannelService } from './channels/chat-notification-channel.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -26,8 +19,8 @@ import { ChatService } from './services/chat.service';
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule,
+    SharedModule.forRoot(),
+    ZChatEmojiModule
   ],
   declarations: [
     ZChatComponent,
@@ -37,14 +30,8 @@ import { ChatService } from './services/chat.service';
     ZChatShareItemComponent,
     ZChatShareListComponent,
     ZChatShareUserListComponent,
-    ZChatShareEditConversationComponent,
-    ZChatShareAddContactComponent,
-    ZChatConversationGlobalComponent,
-    ZChatConversationComponent,
-    ZChatNewConversationComponent,
-    ZChatContactComponent,
-    ZChatHistoryComponent,
-    ZChatSettingComponent
+    // ZChatShareEditConversationComponent,
+    // ZChatShareAddContactComponent,
   ],
   exports: [
     CommonModule,
@@ -55,21 +42,15 @@ import { ChatService } from './services/chat.service';
     ZChatShareItemComponent,
     ZChatShareListComponent,
     ZChatShareUserListComponent,
-    ZChatShareEditConversationComponent,
-    ZChatShareAddContactComponent,
-    ZChatConversationGlobalComponent,
-    ZChatConversationComponent,
-    ZChatNewConversationComponent,
-    ZChatContactComponent,
-    ZChatHistoryComponent,
-    ZChatSettingComponent
+    // ZChatShareEditConversationComponent,
+    // ZChatShareAddContactComponent,
   ]
 })
 export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService]
+      providers: [ChatService, ChatChannelService, ChatNotificationChannelService]
     };
   }
 }

@@ -158,6 +158,7 @@
     "ng2-bs3-modal": "^0.10.4",
     "angular2-cookie": "^1.2.6",
     "primeng": "^2.0.0-rc.1",
-    "actioncable": "5.0.0"
+    "actioncable": "5.0.1",
+    "ng2-cable": "1.0.5"
   }
 }

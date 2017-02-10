@@ -21,12 +21,4 @@ export class FileUploadHelper extends BaseHelper {
       fileReader.readAsDataURL(file);
     }
   }
-
-  afterLoad(event:any, file:any) {
-    let fileTarget = event.target;
-    console.log(fileTarget);
-    this.apiBaseService.post(this.config.url, {file: fileTarget['result'], file_name: file.name}).subscribe((res:any) => {
-      this.callback(res);
-    });
-  }
 }

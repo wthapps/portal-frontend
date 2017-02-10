@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
-import { Config } from '../../../../../shared/config/env.config';
+import { Config } from '../../../../core/shared/config/env.config';
 
 @Component({
   moduleId: module.id,

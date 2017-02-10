@@ -1,7 +1,7 @@
 import { Injectable }     from '@angular/core';
-import { CableService } from './cable.service';
-import { StorageService } from '../services/storage.service';
-import { UserService } from '../services/user.service';
+import { StorageService } from '../../../core/shared/services/storage.service';
+import { UserService } from '../../../core/shared/services/user.service';
+import { CableService } from '../../../core/shared/channels/cable.service';
 
 declare let App: any;
 declare let $: any;

@@ -1,7 +1,5 @@
 import { Config } from './env.config';
-// var host = '54.213.41.54:40000';
 export let ApiConfig = {
-  // url: `https://${host}`,
   url: Config.PROTOCOL + '://' + Config.API + '/',
 
   actionCable: {

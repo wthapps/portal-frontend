@@ -20,13 +20,13 @@ export class AppearancesChannelService extends CableService {
         {channel: 'AppearancesChannel'},
         {
           connected: function(){
-            // console.log('connected');
+            console.log('connected');
           },
           disconnected: function(){
-            // console.log('disconnected');
+            console.log('disconnected');
           },
           received: function(data:any){
-            // console.log('received', data);
+            console.log('received', data);
           }
         }
       );

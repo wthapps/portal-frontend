@@ -7,6 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { SharedModule } from '../core/shared/shared.module';
 import { ChatSharedModule } from './shared/shared.module';
+import { ZChatSettingModule } from './setting/setting.module';
+import { ZChatConversationModule } from './conversation/conversation.module';
+import { ZChatContactModule } from './contact/contact.module';
 
 @NgModule({
   imports: [
@@ -14,9 +17,14 @@ import { ChatSharedModule } from './shared/shared.module';
     HttpModule,
     AppRoutingModule,
     ChatSharedModule.forRoot(),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    ZChatSettingModule,
+    ZChatConversationModule,
+    ZChatContactModule
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'

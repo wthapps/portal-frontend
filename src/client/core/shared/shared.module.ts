@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import {InputSwitchModule} from 'primeng/primeng';
+
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { ApiBaseService } from './services/apibase.service';
@@ -13,6 +15,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NameListService } from './name-list/name-list.service';
 import { PartialsModule } from '../partials/partials.module';
 import { UserService } from './services/user.service';
+import { TimeFormatPipe } from './pipe/time-format.pipe';
+import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
+import { StorageService } from './services/storage.service';
+import { HandlerService } from './services/handler.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -23,11 +29,15 @@ import { UserService } from './services/user.service';
     CommonModule,
     RouterModule,
     PartialsModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputSwitchModule
   ],
   declarations: [
     ToolbarComponent,
-    NavbarComponent
+    NavbarComponent,
+    // PIPE
+    TimeFormatPipe,
+    SafeHtmlPipe
   ],
   exports: [
     ToolbarComponent,
@@ -36,7 +46,11 @@ import { UserService } from './services/user.service';
     FormsModule,
     RouterModule,
     PartialsModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputSwitchModule,
+    // PIPE
+    TimeFormatPipe,
+    SafeHtmlPipe
   ]
 })
 export class SharedModule {
@@ -48,7 +62,9 @@ export class SharedModule {
         UserService,
         NameListService,
         ConfirmationService,
-        CookieService
+        CookieService,
+        StorageService,
+        HandlerService
       ]
     };
   }
