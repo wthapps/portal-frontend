@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZChatConversationGlobalComponent } from './conversation-global.component';
 import { ZChatConversationComponent } from './conversation.component';
+import { ZChatNewConversationComponent } from './new-conversation.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,10 @@ import { ZChatConversationComponent } from './conversation.component';
       {
         path: 'conversation/:id',
         component: ZChatConversationComponent
+      },
+      {
+        path: 'new_conversation',
+        component: ZChatNewConversationComponent
       },
     ])
   ],

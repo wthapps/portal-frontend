@@ -98,7 +98,7 @@
     position: relative;
     .chat-item-avatar {
       display: table-cell;
-      padding-right: 10px;
+      width: 50px;
       img {
         width: 34px;
       }
@@ -146,6 +146,9 @@
         border-radius: 4px;
         padding: 15px;
         position: relative;
+        display: inline-block;
+        max-width: 100%;
+        word-break: break-all;
         &:before {
           display: none;
           content: "";
@@ -176,6 +179,7 @@
       }
     }
     &.chat-item-right {
+      text-align: right;
       .chat-item-avatar, .chat-item-name {
         display: none;
       }

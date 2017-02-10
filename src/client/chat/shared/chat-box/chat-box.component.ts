@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
-// import { PostPhotoSelectComponent } from '../../../social/post/post-photo-select.component';
 
 declare var $:any;
 

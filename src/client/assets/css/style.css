@@ -21519,7 +21519,7 @@ wth-app:empty + .dots-loader-wrap .dots-loader {
 
 .chat-item-wrap .chat-item .chat-item-avatar {
   display: table-cell;
-  padding-right: 10px;
+  width: 50px;
 }
 
 .chat-item-wrap .chat-item .chat-item-avatar img {
@@ -21572,6 +21572,9 @@ wth-app:empty + .dots-loader-wrap .dots-loader {
   border-radius: 4px;
   padding: 15px;
   position: relative;
+  display: inline-block;
+  max-width: 100%;
+  word-break: break-all;
 }
 
 .chat-item-wrap .chat-item .chat-item-card .chat-item-content:before {
@@ -21596,6 +21599,10 @@ wth-app:empty + .dots-loader-wrap .dots-loader {
 .chat-item-wrap .chat-item.chat-item-left .chat-item-content:before {
   left: -8px;
   border-right: 8px solid #EFF1F2;
+}
+
+.chat-item-wrap .chat-item.chat-item-right {
+  text-align: right;
 }
 
 .chat-item-wrap .chat-item.chat-item-right .chat-item-avatar, .chat-item-wrap .chat-item.chat-item-right .chat-item-name {

@@ -12,6 +12,8 @@ import { SharedModule } from '../../core/shared/shared.module';
 import { ZChatEmojiModule } from './emoji/emoji.module';
 import { ChatChannelService } from './channels/chat-channel.service';
 import { ChatNotificationChannelService } from './channels/chat-notification-channel.service';
+import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
+import { ZChatShareAddContactComponent } from './modal/add-contact.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -30,8 +32,8 @@ import { ChatNotificationChannelService } from './channels/chat-notification-cha
     ZChatShareItemComponent,
     ZChatShareListComponent,
     ZChatShareUserListComponent,
-    // ZChatShareEditConversationComponent,
-    // ZChatShareAddContactComponent,
+    ZChatShareEditConversationComponent,
+    ZChatShareAddContactComponent,
   ],
   exports: [
     CommonModule,
@@ -42,8 +44,8 @@ import { ChatNotificationChannelService } from './channels/chat-notification-cha
     ZChatShareItemComponent,
     ZChatShareListComponent,
     ZChatShareUserListComponent,
-    // ZChatShareEditConversationComponent,
-    // ZChatShareAddContactComponent,
+    ZChatShareEditConversationComponent,
+    ZChatShareAddContactComponent,
   ]
 })
 export class ChatSharedModule {

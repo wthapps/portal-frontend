@@ -24,8 +24,7 @@ export class ChatChannelService extends CableService {
           {channel: "ChatChannel", group_id: groupId},
           {
             connected: function(){
-              console.log('connected 444444444444444');
-              console.log('connected 222222222222');
+              console.log('connected');
             },
             disconnected: function(){console.log('chat disconnected')},
             received: function(data: any){

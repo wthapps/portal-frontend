@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-// import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
-// import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { ChatService } from '../services/chat.service';
+import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
+import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 
 @Component({
   moduleId: module.id,
@@ -10,8 +10,8 @@ import { ChatService } from '../services/chat.service';
 })
 
 export class ZChatToolbarComponent implements OnInit {
-  // @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
-  // @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
+  @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
+  @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   item: any;
 
   constructor(private chatService: ChatService) {
