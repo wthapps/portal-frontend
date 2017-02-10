@@ -6,7 +6,12 @@ const DevConfig: EnvConfig = {
   API: 'localhost:4000',
   ENV: 'DEV',
   DOMAIN: 'localhost',
-  PROTOCOL: 'http'
+  PROTOCOL: 'http',
+  SUB_DOMAIN: {
+    FE_APP: 'http://localhost:3000',
+    FE_MYACCOUNT: 'http://localhost:3100'
+  },
+  RES: 'https://s3-ap-southeast-1.amazonaws.com/env-staging'
 };
 
 export = DevConfig;

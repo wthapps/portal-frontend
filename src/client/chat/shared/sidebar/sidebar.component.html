@@ -12,7 +12,7 @@
     <dd>
       <ul class="p-list-user p-list-outside" *ngIf="item.value">
         <li *ngFor="let contact of item.value.data" [routerLinkActive]="['active']" >
-          <a [routerLink]="['/zone/chat/conversation', contact.id]" (click)="onSelect(contact)">
+          <a [routerLink]="[chatService.constant.conversation_url, contact.id]" (click)="onSelect(contact)">
             <div class="pull-right">
               <span class="badge badge-wth" *ngIf="contact.notification > 0">{{contact.notification}}</span>
             </div>

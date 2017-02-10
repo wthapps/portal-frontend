@@ -1,7 +1,7 @@
 import { Injectable }     from '@angular/core';
-import { CableService } from './cable.service';
-import { StorageService } from '../services/storage.service';
-import { UserService } from '../services/user.service';
+import { CableService } from '../../../core/shared/channels/cable.service';
+import { UserService } from '../../../core/shared/services/user.service';
+import { StorageService } from '../../../core/shared/services/storage.service';
 
 declare let ActionCable: any;
 declare let App: any;
@@ -23,16 +23,17 @@ export class ChatChannelService extends CableService {
         App["groupChat" + groupId] = App.cable.subscriptions.create(
           {channel: "ChatChannel", group_id: groupId},
           {
-            connected(){
-              console.log('chat connected', groupId);
+            connected: function(){
+              console.log('connected 444444444444444');
+              console.log('connected 222222222222');
             },
-            disconnected(){console.log('chat disconnected')},
-            received(data: any){
+            disconnected: function(){console.log('chat disconnected')},
+            received: function(data: any){
               console.log('chat received', data);
               if (data.type == "send_message_chat") {
                 _this.addMessage(data.group, data.message);
               }
-            },
+            }
           }
         );
       }

@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-import { ACAppsComponent } from './apps.component';
-import { ACAppsListComponent } from './list/list.component';
-import { ACAppsDetailComponent } from './detail/detail.component';
 import { ZChatConversationGlobalComponent } from './conversation-global.component';
+import { ZChatConversationComponent } from './conversation.component';
 
 @NgModule({
   imports: [
@@ -12,7 +9,11 @@ import { ZChatConversationGlobalComponent } from './conversation-global.componen
       {
         path: 'conversation',
         component: ZChatConversationGlobalComponent
-      }
+      },
+      {
+        path: 'conversation/:id',
+        component: ZChatConversationComponent
+      },
     ])
   ],
   exports: [RouterModule]

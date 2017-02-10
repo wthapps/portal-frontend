@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
-import { PostPhotoSelectComponent } from '../../../social/post/post-photo-select.component';
-import { Config } from '../../../../shared/config/env.config';
+// import { PostPhotoSelectComponent } from '../../../social/post/post-photo-select.component';
 
 declare var $:any;
 
@@ -15,13 +14,13 @@ declare var $:any;
 
 export class ZChatChatboxComponent {
   emojiData: any = [];
-  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
-    this.photoModal.action = 'UPLOAD';
+    // this.photoModal.action = 'UPLOAD';
   }
 
   send() {
@@ -34,11 +33,11 @@ export class ZChatChatboxComponent {
   }
 
   onOpenSelectPhotos() {
-    this.photoModal.open();
+    // this.photoModal.open();
   }
 
   chooseDone(e:any) {
-    this.photoModal.close();
+    // this.photoModal.close();
     for (let photo of e) {
       photo.type = 'Photo';
       this.chatService.sendMessage('', photo);
@@ -55,6 +54,6 @@ export class ZChatChatboxComponent {
   uploadPhoto(e:any) {
     this.chatService.createUploadingFile();
     this.chatService.uploadPhotos(e);
-    this.photoModal.close();
+    // this.photoModal.close();
   }
 }

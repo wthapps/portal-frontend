@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { ConfirmationService } from '../../../shared/index';
-
 import {
   FormGroup,
   AbstractControl,
   FormBuilder
 } from '@angular/forms';
+import { ConfirmationService } from 'primeng/components/common/api';
 
 @Component({
   moduleId: module.id,

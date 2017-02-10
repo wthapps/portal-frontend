@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { InputSwitchModule } from 'primeng/primeng';
+
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
@@ -14,7 +16,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NameListService } from './name-list/name-list.service';
 import { PartialsModule } from '../partials/partials.module';
 import { UserService } from './services/user.service';
-
+import { StorageService } from './services/storage.service';
+import { HandlerService } from './services/handler.service';
 
 import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
 import { GroupByPipe } from './pipe/groupby.pipe';
@@ -37,7 +40,8 @@ import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
     ReactiveFormsModule,
     PartialsModule,
     ConfirmDialogModule,
-    Ng2Bs3ModalModule
+    Ng2Bs3ModalModule,
+    InputSwitchModule
   ],
   declarations: [
     ToolbarComponent,
@@ -61,6 +65,7 @@ import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
     PartialsModule,
     ConfirmDialogModule,
     Ng2Bs3ModalModule,
+    InputSwitchModule,
 
     // Component
     ToolbarComponent,
@@ -86,7 +91,9 @@ export class SharedModule {
         UserService,
         NameListService,
         ConfirmationService,
-        CookieService
+        CookieService,
+        StorageService,
+        HandlerService
       ]
     };
   }

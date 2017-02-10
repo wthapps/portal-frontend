@@ -4,15 +4,17 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { StorageService } from '../../../core/shared/services/storage.service';
 import { HandlerService } from '../../../core/shared/services/handler.service';
-import { ChatChannelService } from '../../../core/shared/channels/chat-channel.service';
-import { ChatNotificationChannelService } from '../../../core/shared/channels/chat-notification-channel.service';
 import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.helper';
+import { ChatConstant } from '../constants/chat-constant';
+import { ChatChannelService } from '../channels/chat-channel.service';
+import { ChatNotificationChannelService } from '../channels/chat-notification-channel.service';
 
 declare var _:any;
 
 @Injectable()
 export class ChatService {
   fileUploadHelper:any;
+  constant:any;
 
   constructor(public storage: StorageService,
               private apiBaseService: ApiBaseService,
@@ -25,6 +27,7 @@ export class ChatService {
     this.storage.save('contact_select', null);
     this.storage.save('current_chat_messages', null);
     this.fileUploadHelper = new FileUploadHelper();
+    this.constant = ChatConstant;
   }
 
   getContacts() {
