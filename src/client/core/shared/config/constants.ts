@@ -79,12 +79,12 @@ export let Constants = {
   ],
 
   socialMenuItems: [
-    {name: 'Home', link: '/social/home'},
-    {name: 'Communities', link: '/social/communities'},
-    {name: 'Notifications', link: '/social/notifications'},
-    {name: 'Members', link: '/social/members'},
-    {name: 'My Page', link: '/social/profile'},
-    {name: 'Settings', link: '/social/setting'},
+    {name: 'Home', link: '/home'},
+    {name: 'Communities', link: '/communities'},
+    {name: 'Notifications', link: '/notifications'},
+    {name: 'Members', link: '/members'},
+    {name: 'My Page', link: '/profile'},
+    {name: 'Settings', link: '/setting'},
   ],
 
   pictureMenuActions: {

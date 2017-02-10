@@ -6,14 +6,17 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { SharedModule } from '../core/shared/shared.module';
-import { ChatSharedModule } from './shared/shared.module';
+
+import { ZSocialHomeModule } from './home/home.module';
+import { ZSocialCommunityModule } from './communities/communities.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
     AppRoutingModule,
-    ChatSharedModule.forRoot(),
+    ZSocialHomeModule,
+    ZSocialCommunityModule,
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],

@@ -36,7 +36,7 @@
     "start": "gulp serve.dev --color",
     "start-my": "npm start -- --app my-account --port 3100",
     "start-media": "npm start -- --app media --port 3200",
-    "start-social": "npm start -- --app zone --port 3300",
+    "start-social": "npm start -- --app social --port 3300",
     "start-chat": "npm start -- --app chat --port 3400",
     "start.deving": "gulp start.deving --color",
     "tasks.list": "gulp --tasks-simple --color",

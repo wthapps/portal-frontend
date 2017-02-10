@@ -1,0 +1,110 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> Preferences</h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group" [ngClass]="{'has-error': (!community_name.valid && community_name.touched),
+        'has-success': (community_name.valid && community_name.touched)}">
+        <label for="community_name">Community Name</label>
+        <input [formControl]="community_name" type="text" class="form-control" id="community_name"
+               placeholder="Community Name">
+        <div *ngIf="!community_name.valid && community_name.touched">
+              <span *ngIf="!community_name.valid && community_name.errors.required" class="help-block">
+                Community name is required
+              </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="pull-right text-fade"><span>{{tag_line.value|showLength}}</span>/150 characters</div>
+        <label>Tag Line</label>
+        <textarea [formControl]="tag_line" maxlength="150" rows="3" class="form-control"
+                  id="tag_line"
+                  placeholder="Tag Line"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [formControl]="description" rows="3" class="form-control" id="description"
+                  placeholder="Description"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Link</label>
+        <div class="content-overflow" style="max-height: 155px;" formArrayName="additional_links">
+
+          <!--<pre>-->
+          <!--{{form.value|json}}-->
+          <!--</pre>-->
+
+          <div *ngFor="let add_link of form.controls.additional_links.controls; let i=index" class="media">
+            <div class="media-body" [formGroupName]="i">
+
+              <!--<pre>-->
+              <!--{{form.value.additional_links[i].name|json}}-->
+              <!--</pre>-->
+
+              <div class="row row-10">
+                <div class="col-sm-6">
+                  <div class="form-group mb0 no-label"
+                       [ngClass]="{
+                       'has-error': (form.controls.additional_links.controls[i].controls.url.valid
+                       && form.controls.additional_links.controls[i].controls.url.touched
+                       && form.value.additional_links[i].name.length==0
+                       && form.value.additional_links[i].url.length>1),
+                       'has-success': (form.controls.additional_links.controls[i].controls.url.valid
+                       && form.controls.additional_links.controls[i].controls.url.touched
+                       && form.value.additional_links[i].name.length>1)}">
+                    <input type="text" class="form-control" formControlName="name" placeholder="External link title">
+                    <div *ngIf="(form.controls.additional_links.controls[i].controls.url.valid
+                       && form.controls.additional_links.controls[i].controls.url.touched
+                       && form.value.additional_links[i].name.length==0
+                       && form.value.additional_links[i].url.length>1)">
+                      <span class="help-block">
+                        Title is required
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group mb0 no-label" [ngClass]="{'has-error': (!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.touched),
+        'has-success': (form.controls.additional_links.controls[i].controls.url.valid
+        && form.controls.additional_links.controls[i].controls.url.touched
+        && form.value.additional_links[i].url.length>1)}">
+                    <input type="text" class="form-control" formControlName="url" placeholder="http://...">
+                    <div
+                      *ngIf="!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.touched">
+                    <span
+                      *ngIf="!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.errors.url"
+                      class="help-block text-danger">
+                      URL is not valid
+                    </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button type="button" class="btn btn-default" (click)="removeLink(i)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mt15">
+          <button type="button" class="btn btn-default" (click)="addLink()">
+            <i class="fa fa-plus"></i> More link
+          </button>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <!--@TODO ignore Additional Link function-->
+      <!--<button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>-->
+      <button [disabled]="!community_name.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
+      <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>
