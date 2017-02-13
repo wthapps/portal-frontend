@@ -39,14 +39,14 @@ export class ZMediaShareListComponent implements AfterViewInit {
 
   onDragenter(e: any) {
     e.preventDefault();
-    if (!this.selectablesEnable) {
-      this.selectables.enable();
-    }
+    // if (!this.selectablesEnable) {
+    //   this.selectables.enable();
+    // }
   }
 
   onDragleave(e: any) {
     e.preventDefault();
-    this.selectablesEnable = false;
+    // this.selectablesEnable = false;
   }
 
   actionItem(ev: any) {
