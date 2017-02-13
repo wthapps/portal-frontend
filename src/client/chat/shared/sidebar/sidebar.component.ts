@@ -21,6 +21,7 @@ export class ZChatSidebarComponent implements OnInit {
       this.chatService.chanel.subscribe(contact.group.id);
     });
     this.item = this.chatService.getContacts();
+    this.usersOnlineItem = this.chatService.getUsersOnline();
   }
 
   onSelect(contact:any) {

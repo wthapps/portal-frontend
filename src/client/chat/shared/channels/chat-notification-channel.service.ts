@@ -33,6 +33,9 @@ export class ChatNotificationChannelService extends CableService {
             if (data.type == "notification_count") {
               _this.addNotification(data);
             }
+            if (data.type == "added_contact") {
+              _this.addedContact(data);
+            }
           },
         }
       );
@@ -41,6 +44,10 @@ export class ChatNotificationChannelService extends CableService {
 
   markAsRead(groupId:any) {
     App.chatNotification.send({type: "mark_as_read", group: groupId});
+  }
+
+  addedContactNotification(groupId:any) {
+    App.chatNotification.send({type: "added_contact", group: groupId});
   }
 
   removeNotification(groupId:any) {
@@ -60,6 +67,17 @@ export class ChatNotificationChannelService extends CableService {
       if (contact) {
         contact.notification = data.count
       }
+    }
+  }
+
+  addedContact(data:any) {
+    let item = this.storage.find('chat_contacts');
+    let index = _.findIndex(item.value.data, { id: data.group.id });
+    if(index != -1) {
+      // this.handler.triggerEvent('on_contacts_change', res);
+    } else {
+      item.value.data.push(data.group);
+      // this.handler.triggerEvent('on_contacts_change', res);
     }
   }
 }

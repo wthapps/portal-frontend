@@ -8,6 +8,7 @@ import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.
 import { ChatConstant } from '../constants/chat-constant';
 import { ChatChannelService } from '../channels/chat-channel.service';
 import { ChatNotificationChannelService } from '../channels/chat-notification-channel.service';
+import { AppearancesChannelService } from '../../../core/shared/channels/appearances-channel.service';
 
 declare var _:any;
 
@@ -21,11 +22,16 @@ export class ChatService {
               public user: UserService,
               public chanel: ChatChannelService,
               public notificationChannel: ChatNotificationChannelService,
+              public appearancesChannelService: AppearancesChannelService,
               public router: Router,
               public handler: HandlerService) {
+    // Hard code to test
+    this.appearancesChannelService.subscribe();
+    // =============================
     this.storage.save('chat_contacts', null);
     this.storage.save('contact_select', null);
     this.storage.save('current_chat_messages', null);
+    this.storage.save('users_online', []);
     this.fileUploadHelper = new FileUploadHelper();
     this.constant = ChatConstant;
   }
@@ -48,6 +54,8 @@ export class ChatService {
   addContact(ids:number) {
     this.apiBaseService.post('zone/chat/create_contact', {user_id: ids}).subscribe(
       (res:any) => {
+        this.notificationChannel.addedContactNotification(res.data.group.id);
+
         let item = this.storage.find('chat_contacts');
         let index = _.findIndex(item.value.data, { id: res.data.id });
         if(index != -1) {
@@ -171,6 +179,10 @@ export class ChatService {
     let currentGroupId = this.storage.find('contact_select').value.group.id;
     if(currentGroupId == groupId)
       this.storage.save('current_chat_messages', item);
+  }
+
+  getUsersOnline() {
+    return this.storage.find('users_online')
   }
 }
 

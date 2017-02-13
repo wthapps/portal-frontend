@@ -27,6 +27,7 @@ import { TitleCase } from './pipe/titlecase.pipe';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
+import { AppearancesChannelService } from './channels/appearances-channel.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -93,7 +94,8 @@ export class SharedModule {
         ConfirmationService,
         CookieService,
         StorageService,
-        HandlerService
+        HandlerService,
+        AppearancesChannelService
       ]
     };
   }

@@ -1,6 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ZChatComponent } from '../chat.component';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatChatboxComponent } from './chat-box/chat-box.component';
 import { ZChatShareUserListComponent } from './user-list/user-list.component';
@@ -25,7 +24,6 @@ import { ZChatShareAddContactComponent } from './modal/add-contact.component';
     ZChatEmojiModule
   ],
   declarations: [
-    ZChatComponent,
     ZChatSidebarComponent,
     ZChatToolbarComponent,
     ZChatChatboxComponent,
@@ -37,7 +35,6 @@ import { ZChatShareAddContactComponent } from './modal/add-contact.component';
   ],
   exports: [
     CommonModule,
-    ZChatComponent,
     ZChatSidebarComponent,
     ZChatToolbarComponent,
     ZChatChatboxComponent,

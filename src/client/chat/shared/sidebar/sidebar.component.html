@@ -18,7 +18,9 @@
             </div>
             <figure>
               <img [src]="contact.display.image">
-              <span class="p-list-user-status online"></span>
+              <span *ngIf="contact.group.group_type == 'couple'">
+                <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
+              </span>
             </figure>
             <span>{{contact.display.name}}</span>
           </a>
@@ -26,8 +28,5 @@
       </ul>
     </dd>
   </dl>
-  <!--<div>-->
-    <!--<button (click)="getContact()">Get Contact</button>-->
-  <!--</div>-->
 </aside>
 
