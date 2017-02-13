@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
+import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 
 declare var $:any;
 
@@ -13,13 +14,13 @@ declare var $:any;
 
 export class ZChatChatboxComponent {
   emojiData: any = [];
-  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
-    // this.photoModal.action = 'UPLOAD';
+    this.photoModal.action = 'UPLOAD';
   }
 
   send() {
@@ -28,11 +29,12 @@ export class ZChatChatboxComponent {
   }
 
   onEmojiClick(e:any) {
-    $('#chat-message-text').append('<i class="wth-emoji wth-emoji-(" title=":(:"></i>')
+    $('#chat-message-text').append(`:${e}`);
+    this.placeCaretAtEnd(document.getElementById("chat-message-text"));
   }
 
   onOpenSelectPhotos() {
-    // this.photoModal.open();
+    this.photoModal.open();
   }
 
   chooseDone(e:any) {
@@ -53,6 +55,24 @@ export class ZChatChatboxComponent {
   uploadPhoto(e:any) {
     this.chatService.createUploadingFile();
     this.chatService.uploadPhotos(e);
-    // this.photoModal.close();
+    this.photoModal.close();
+  }
+
+  placeCaretAtEnd(el:any) {
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+      && typeof document.createRange != "undefined") {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else if (typeof document.body.createTextRange != "undefined") {
+      var textRange = document.body.createTextRange();
+      textRange.moveToElementText(el);
+      textRange.collapse(false);
+      textRange.select();
+    }
   }
 }

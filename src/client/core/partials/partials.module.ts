@@ -10,6 +10,7 @@ import { TablePricingModule } from './table-pricing/table-pricing.module';
 import { CountryModule } from './countries/countries.module';
 import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
 import { ZSharedModule } from './zone/zone.module';
+import { PhotoModule } from './zone/photo/photo.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { ZSharedModule } from './zone/zone.module';
     TablePricingModule,
     CountryModule,
     BreadcrumbModule,
-    ZSharedModule
+    ZSharedModule,
+    PhotoModule
   ],
   declarations: [
     // HeaderComponent,
@@ -36,7 +38,8 @@ import { ZSharedModule } from './zone/zone.module';
     TablePricingModule,
     CountryModule,
     BreadcrumbModule,
-    ZSharedModule
+    ZSharedModule,
+    PhotoModule
   ],
   providers: []
 })
