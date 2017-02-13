@@ -11,6 +11,7 @@ import { CountryModule } from './countries/countries.module';
 import { BreadcrumbModule } from './breadcrumb/breadcrumb.module';
 import { ZSharedModule } from './zone/zone.module';
 import { PhotoModule } from './zone/photo/photo.module';
+import { UploadCropImageModule } from './upload-crop-image/upload-crop-image.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { PhotoModule } from './zone/photo/photo.module';
     TablePricingModule,
     CountryModule,
     BreadcrumbModule,
+    UploadCropImageModule,
     ZSharedModule,
     PhotoModule
   ],
@@ -38,6 +40,7 @@ import { PhotoModule } from './zone/photo/photo.module';
     TablePricingModule,
     CountryModule,
     BreadcrumbModule,
+    UploadCropImageModule,
     ZSharedModule,
     PhotoModule
   ],

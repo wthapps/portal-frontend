@@ -1,4 +1,4 @@
-import { Component, OnInit }    from '@angular/core';
+import { Component, OnInit, ViewChild }    from '@angular/core';
 import 'rxjs/add/observable/fromPromise';
 
 import {
@@ -11,6 +11,7 @@ import {
 import { Constants } from '../../../core/shared/config/constants';
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 import { UserService } from '../../../core/shared/services/user.service';
+import { UploadCropImageComponent } from '../../../core/partials/upload-crop-image/upload-crop-image.component';
 
 import { CountryService } from '../../../core/partials/countries/countries.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
@@ -26,6 +27,8 @@ declare var _: any;
 })
 
 export class ACProfileComponent implements OnInit {
+  @ViewChild('uploadProfile') uploadProfile: UploadCropImageComponent;
+
   pageTitle: string = 'Profile';
   errorMessage: string = Constants.errorMessage.default;
   profile_image: string = '';
@@ -59,7 +62,7 @@ export class ACProfileComponent implements OnInit {
               private toastsService: ToastsService,
               private loadingService: LoadingService,
               //2 private deactivateConfirmService: DeactivateConfirmService,
-              ) {
+  ) {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
 
@@ -155,7 +158,7 @@ export class ACProfileComponent implements OnInit {
 
   uploadImage(event: any): void {
     event.preventDefault();
-    $('#modalUploadImage').modal('show');
+    this.uploadProfile.modal.open();
   }
 
   onImageClicked(img: string): void {
