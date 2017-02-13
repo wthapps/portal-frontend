@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 import { ChatService } from '../services/chat.service';
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 declare var _:any;
 
@@ -12,7 +12,7 @@ declare var _:any;
 
 export class ZChatShareAddContactComponent implements OnInit {
 
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: ModalComponent;
   friends:any = [];
 
   constructor(private chatService: ChatService ) {

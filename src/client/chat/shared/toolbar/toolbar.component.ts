@@ -23,7 +23,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onAddContact() {
-    // this.addContact.modal.open();
+    this.addContact.modal.open();
   }
 
   onEditConversation() {

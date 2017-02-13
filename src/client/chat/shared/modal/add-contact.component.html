@@ -1,7 +1,7 @@
 <!--<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">-->
 
   <!--<modal-header [showClose]="true">-->
-    <!--<h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Edit Conversation</h4>-->
+    <!--<h4 class="modal-title text-left"></h4>-->
   <!--</modal-header>-->
 
   <!--<modal-body>-->
@@ -35,3 +35,34 @@
 
   <!--</modal-body>-->
 <!--</hd-modal>-->
+
+<form>
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> <i class="fa fa-pencil"></i> Edit Conversation</h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group">
+        <input type="text" name="name" class="form-control" placeholder="Name" value="">
+      </div>
+      <div class="content-overflow" style="max-height: 300px;">
+        <ul class="p-list-user p-list-border">
+          <li *ngFor="let friend of friends">
+            <div class="pull-right">
+              <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="friend.checked">
+            </div>
+            <figure>
+              <img [src]="friend.profile_image">
+            </figure>
+            <span>{{friend.name}}</span>
+          </li>
+        </ul>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="addContact()">Done</button>
+      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+    </modal-footer>
+  </modal>
+
+</form>

@@ -6,6 +6,7 @@ import {
   FormBuilder,
   Validators
 } from '@angular/forms';
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 
 @Component({
@@ -14,7 +15,7 @@ import {
   templateUrl: 'edit-conversation.component.html'
 })
 export class ZChatShareEditConversationComponent implements OnChanges {
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: ModalComponent;
 
 
   form: FormGroup;
