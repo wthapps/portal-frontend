@@ -1,0 +1,41 @@
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+
+  <modal-header [showClose]="true">
+    <h4 *ngIf="entityType == 'member'" class="modal-title text-left"> Report Member</h4>
+    <h4 *ngIf="entityType == 'community'" class="modal-title text-left"> Report Community</h4>
+    <h4 *ngIf="entityType == 'post'" class="modal-title text-left"> Report Post</h4>
+  </modal-header>
+
+  <modal-body>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+
+      <!--member-->
+      <div class="mb20">
+        <p>Please specify your reason for reporting.</p>
+        <div class="radio" *ngFor="let reason of reasons">
+          <label>
+            <input type="radio" name="reason"
+                   (click)="getValue(reason)"
+                   value="reason.id">
+            {{reason.description}}
+          </label>
+        </div>
+        <div *ngIf="reason.id==99" class="form-group">
+          <input [formControl]="other" type="text" class="form-control" id="other"
+                 placeholder="Please specify the reason">
+        </div>
+
+        <p>For further information about reporting policies, please read <a [routerLink]="['/policies/terms']">Term of
+          Services</a>
+        </p>
+
+      </div>
+
+      <div class="clearfix text-right">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">SUBMIT</button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+
+  </modal-body>
+</hd-modal>

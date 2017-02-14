@@ -25,7 +25,8 @@ export class ZSharedMenuComponent implements OnInit {
 
   constructor(private router: Router,
               private userService: UserService) {
-    this.uuid = this.userService.profile.uuid;
+    // this.uuid = this.userService.profile?.uuid;
+    this.uuid = this.userService.getProfileUuid();
   }
 
   ngOnInit() {
@@ -38,8 +39,9 @@ export class ZSharedMenuComponent implements OnInit {
   getMenuAction(url: string): void {
     $('.page-menuleft .has-sub ul').addClass('hidden');
     let urlArr = url.split('/');
+    console.log('menu url: ' + url);
     if (urlArr[2]) {
-      $('#zone_menu_' + urlArr[2]).removeClass('hidden');
+      // $('#zone_menu_' + urlArr[2]).removeClass('hidden');
     }
   }
 

@@ -1,126 +1,126 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-  <modal #modal [keyboard]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
-      <h4 class="modal-title"> Preferences</h4>
-    </modal-header>
-    <modal-body>
-      <div *ngIf="data">
-        <template [ngIf]="isAdmin">
-          <div class="mb20">
-            <label>Privacy Settings</label>
-            <div class="radio">
-              <label>
-                <input type="radio" name="is_close"
-                       (click)="data.is_close = 0; getValue(data.is_close)"
-                       [checked]="data.is_close == 0"
-                       value="0">Open
-                <span class="help-block">
-                Anyone can see the group, its members and their posts.
-              </span>
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                <input type="radio" name="is_close"
-                       (click)="data.is_close = 1; getValue(data.is_close)"
-                       [checked]="data.is_close == 1"
-                       value="1">
-                Closed
-                <span class="help-block">
-                Only members can find the group and see posts.
-              </span>
-              </label>
-            </div>
-          </div>
-          <!--end Privacy Settings-->
-          <div class="mb20">
-            <label>Search Settings</label>
-            <div class="radio">
-              <label>
-                <input type="radio"
-                       (click)="data.searchable_level = 3; getValue(data.searchable_level)"
-                       [checked]="data.searchable_level == 3"
-                       value="3">
-                Anyone can search, see and join the group
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                <input type="radio"
-                       (click)="data.searchable_level = 2; getValue(data.searchable_level)"
-                       [checked]="data.searchable_level == 2"
-                       value="2">
-                Only connected members can search and ask to join the group
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                <input type="radio"
-                       (click)="data.searchable_level = 1; getValue(data.searchable_level)"
-                       [checked]="data.searchable_level == 1"
-                       value="1">
-                Only invited members can search and join the group
-              </label>
-            </div>
-          </div>
-          <!--end Search Settings-->
-          <div class="mb20">
-            <label>Post Settings</label>
-            <div class="radio">
-              <label>
-                <input type="radio"
-                       (click)="data.posted_level = 3; getValue(data.posted_level)"
-                       [checked]="data.posted_level == 3"
-                       value="3">
-                Member can post
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                <input type="radio"
-                       (click)="data.posted_level = 2; getValue(data.posted_level)"
-                       [checked]="data.posted_level == 2"
-                       value="2">
-                Post must be review and approved by admin
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                <input type="radio"
-                       (click)="data.posted_level = 1; getValue(data.posted_level)"
-                       [checked]="data.posted_level == 1"
-                       value="1">
-                Only admin can post
-              </label>
-            </div>
-          </div>
-          <!--end Post Settings-->
-        </template>
+<!--<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>-->
+  <!--<hd-modal #modal [keyboard]="false" [backdrop]="'static'">-->
+    <!--<hd-modal-header [show-close]="true">-->
+      <!--<h4 class="modal-title"> Preferences</h4>-->
+    <!--</hd-modal-header>-->
+    <!--<hd-modal-body>-->
+      <!--<div *ngIf="data">-->
+        <!--<template [ngIf]="isAdmin">-->
+          <!--<div class="mb20">-->
+            <!--<label>Privacy Settings</label>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio" name="is_close"-->
+                       <!--(click)="data.is_close = 0; getValue(data.is_close)"-->
+                       <!--[checked]="data.is_close == 0"-->
+                       <!--value="0">Open-->
+                <!--<span class="help-block">-->
+                <!--Anyone can see the group, its members and their posts.-->
+              <!--</span>-->
+              <!--</label>-->
+            <!--</div>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio" name="is_close"-->
+                       <!--(click)="data.is_close = 1; getValue(data.is_close)"-->
+                       <!--[checked]="data.is_close == 1"-->
+                       <!--value="1">-->
+                <!--Closed-->
+                <!--<span class="help-block">-->
+                <!--Only members can find the group and see posts.-->
+              <!--</span>-->
+              <!--</label>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;end Privacy Settings&ndash;&gt;-->
+          <!--<div class="mb20">-->
+            <!--<label>Search Settings</label>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio"-->
+                       <!--(click)="data.searchable_level = 3; getValue(data.searchable_level)"-->
+                       <!--[checked]="data.searchable_level == 3"-->
+                       <!--value="3">-->
+                <!--Anyone can search, see and join the group-->
+              <!--</label>-->
+            <!--</div>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio"-->
+                       <!--(click)="data.searchable_level = 2; getValue(data.searchable_level)"-->
+                       <!--[checked]="data.searchable_level == 2"-->
+                       <!--value="2">-->
+                <!--Only connected members can search and ask to join the group-->
+              <!--</label>-->
+            <!--</div>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio"-->
+                       <!--(click)="data.searchable_level = 1; getValue(data.searchable_level)"-->
+                       <!--[checked]="data.searchable_level == 1"-->
+                       <!--value="1">-->
+                <!--Only invited members can search and join the group-->
+              <!--</label>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;end Search Settings&ndash;&gt;-->
+          <!--<div class="mb20">-->
+            <!--<label>Post Settings</label>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio"-->
+                       <!--(click)="data.posted_level = 3; getValue(data.posted_level)"-->
+                       <!--[checked]="data.posted_level == 3"-->
+                       <!--value="3">-->
+                <!--Member can post-->
+              <!--</label>-->
+            <!--</div>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio"-->
+                       <!--(click)="data.posted_level = 2; getValue(data.posted_level)"-->
+                       <!--[checked]="data.posted_level == 2"-->
+                       <!--value="2">-->
+                <!--Post must be review and approved by admin-->
+              <!--</label>-->
+            <!--</div>-->
+            <!--<div class="radio">-->
+              <!--<label>-->
+                <!--<input type="radio"-->
+                       <!--(click)="data.posted_level = 1; getValue(data.posted_level)"-->
+                       <!--[checked]="data.posted_level == 1"-->
+                       <!--value="1">-->
+                <!--Only admin can post-->
+              <!--</label>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;end Post Settings&ndash;&gt;-->
+        <!--</template>-->
 
-        <div class="mb20">
-          <label>Notification</label>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [formControl]="setting_notification_posts">
-              Get notified about new posts
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [formControl]="setting_notification_request">
-              Get notified about users request
-            </label>
-          </div>
-        </div>
-      </div>
-    </modal-body>
-    <modal-footer>
-      <button type="button" class="btn btn-link btn-min pull-left" (click)="resetSettings()">Reset Default</button>
+        <!--<div class="mb20">-->
+          <!--<label>Notification</label>-->
+          <!--<div class="checkbox">-->
+            <!--<label>-->
+              <!--<input type="checkbox" [formControl]="setting_notification_posts">-->
+              <!--Get notified about new posts-->
+            <!--</label>-->
+          <!--</div>-->
+          <!--<div class="checkbox">-->
+            <!--<label>-->
+              <!--<input type="checkbox" [formControl]="setting_notification_request">-->
+              <!--Get notified about users request-->
+            <!--</label>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</hd-modal-body>-->
+    <!--<hd-modal-footer>-->
+      <!--<button type="button" class="btn btn-link btn-min pull-left" (click)="resetSettings()">Reset Default</button>-->
 
-      <button [disabled]="!form.valid || (!hasChange && form.valid)"
-              type="submit" class="btn btn-wth-default btn-min mr10">Done
-      </button>
-    </modal-footer>
+      <!--<button [disabled]="!form.valid || (!hasChange && form.valid)"-->
+              <!--type="submit" class="btn btn-wth-default btn-min mr10">Done-->
+      <!--</button>-->
+    <!--</hd-modal-footer>-->
 
-  </modal>
-</form>
+  <!--</hd-modal>-->
+<!--</form>-->

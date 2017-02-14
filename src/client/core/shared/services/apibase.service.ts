@@ -96,8 +96,8 @@ export class ApiBaseService {
 
   private buildOptions() {
     // Json web token
-    // let jwt = localStorage.getItem('jwt');
-    // let profile = JSON.parse(localStorage.getItem('profile'));
+    // let jwt = localStorage.getCommunity('jwt');
+    // let profile = JSON.parse(localStorage.getCommunity('profile'));
 
     let jwt = this.cookieService.get('jwt');
 

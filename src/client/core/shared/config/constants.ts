@@ -102,6 +102,13 @@ export let Constants = {
     zoneSoUserPosts: 'zone/social_network/user_posts',
     zoneSoReactions: 'zone/social_network/reactions',
     zoneSoPostSettings: 'zone/social_network/post_settings',
+    communities: 'communities',
+    zoneSoCommunities: 'zone/social_network/communities',
+    zoneSoUsers: 'zone/social_network/users',
+    zoneSoInvitations: 'zone/social_network/invitations',
+    zoneSoFavourites: 'zone/social_network/favourites',
+    zoneSoNotifications: 'zone/social_network/notifications',
+    zoneSoReportList: 'zone/social_network/report_list'
   },
   sex: ['', 'Male', 'Female', 'Other'],
   communityRole: {
@@ -115,6 +122,13 @@ export let Constants = {
     new: 'new',
     seen: 'seen',
     seen_and_took_action: 'seen_and_took_action'
+  },
+  soUserPrivacy: {
+    public: {css: 'fa fa-globe', text: 'Public', data: 'public'},
+    private: {css: 'fa fa-lock', text: 'Private', data: 'private'},
+    friends: {css: 'fa fa-users', text: 'Friends', data: 'friends'},
+    custom_friend: {css: 'fa fa-users', text: 'Friends', data: 'custom_friend'},
+    unknow: {css: '', text: '', data: ''}
   }
 };
 

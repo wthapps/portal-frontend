@@ -3,17 +3,30 @@ import { Router } from '@angular/router';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
+import SocialConstants = require("../../shared/social.constants");
+import {SoCommunityService} from "./community.service";
+import {Constants} from "../../../core/shared/config/constants";
 /**
  * Created by phat on 18/11/2016.
  */
 @Injectable()
 export class SoUserService {
+  soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
+  soUsersUrl: string = Constants.urls.zoneSoUsers;
+  soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
+  soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
+  soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
+
 
   constructor(private apiBaseService: ApiBaseService, private user: UserService) {
+
+  }
+
+  ngOnInit() {
   }
 
   get(uuid: string = this.user.profile.uuid) {
-    return this.apiBaseService.get(`zone/social_network/users/${uuid}`);
+    return this.apiBaseService.get(`${this.soUsersUrl}/${uuid}`);
   }
 
   // update(body: any) {
@@ -21,55 +34,56 @@ export class SoUserService {
   // }
 
   update(body: any) {
-    return this.apiBaseService.put(`zone/social_network/users/update`, body);
+    return this.apiBaseService.put(`${this.soUsersUrl}/update`, body);
   }
 
   reset_setting() {
-    return this.apiBaseService.post(`zone/social_network/users/reset_settings`);
+    return this.apiBaseService.post(`${this.soUsersUrl}/reset_settings`);
   }
 
   addFriend(uuid: any) {
-    return this.apiBaseService.post(`zone/social_network/invitations`, {uuid: uuid});
+    return this.apiBaseService.post(`${this.soInvitationsUrl}`, {uuid: uuid});
   }
 
   unfriend(uuid: any) {
-    return this.apiBaseService.delete(`zone/social_network/invitations/unfriend/${uuid}`);
+    return this.apiBaseService.delete(`${this.soInvitationsUrl}/unfriend/${uuid}`);
   }
 
   unfollow(uuid: any) {
-    return this.apiBaseService.post(`zone/social_network/invitations/unfollow`, {uuid: uuid});
+    return this.apiBaseService.post(`${this.soInvitationsUrl}/unfollow`, {uuid: uuid});
   }
 
   follow(uuid: any) {
-    return this.apiBaseService.post(`zone/social_network/invitations/follow`, {uuid: uuid});
+    return this.apiBaseService.post(`${this.soInvitationsUrl}/follow`, {uuid: uuid});
   }
 
   cancelFriendRequest(uuid: any) {
-    return this.apiBaseService.delete(`zone/social_network/invitations/${uuid}`);
+    return this.apiBaseService.delete(`${this.soInvitationsUrl}/${uuid}`);
   }
 
   getRelationShips(uuid?: string) {
-    return this.apiBaseService.get(`zone/social_network/invitations/${uuid}`);
+    return this.apiBaseService.get(`${this.soInvitationsUrl}/${uuid}`);
   }
 
   getFavourites() {
-    return this.apiBaseService.get(`zone/social_network/favourites`);
+    console.log('soFavouriteUrl: ' + this.soFavouritesUrl);
+    return this.apiBaseService.get(`${this.soFavouritesUrl}`);
   }
 
   getFavourite(uuid: any, type: string) {
-    return this.apiBaseService.get(`zone/social_network/favourites/${uuid}`, {type: type});
+    return this.apiBaseService.get(`${this.soFavouritesUrl}/${uuid}`, {type: type});
   }
 
   addFavourites(uuid: any, type: string) {
-    return this.apiBaseService.post(`zone/social_network/favourites`, {uuid: uuid, type: type});
+    return this.apiBaseService.post(`${this.soFavouritesUrl}`, {uuid: uuid, type: type});
   }
 
   getNotifications() {
-    return this.apiBaseService.get(`zone/social_network/notifications`);
+    return this.apiBaseService.get(`${this.soNotificationsUrl}`);
   }
 
   checkedNotifications() {
-    return this.apiBaseService.post(`zone/social_network/notifications/checked`);
+    return this.apiBaseService.post(`${this.soNotificationsUrl}/checked`);
   }
 }
 
@@ -102,15 +116,14 @@ export class SoPostService {
 }
 
 
+
+
 @Injectable()
 export class SocialService {
-  static readonly MEMBER_ROLE = {
-    Admin: 'Admin',
-    Member: 'Member'
-  };
-
   constructor(public user: SoUserService,
-              public post: SoPostService) {
+              public post: SoPostService,
+              public community: SoCommunityService
+              ) {
 
   }
 }

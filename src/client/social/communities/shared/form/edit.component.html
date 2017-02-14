@@ -1,9 +1,6 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-  <modal #modal [keyboard]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
-      <h4 class="modal-title"> Preferences</h4>
-    </modal-header>
-    <modal-body>
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+  <hd-modal-body>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
       <div class="form-group" [ngClass]="{'has-error': (!community_name.valid && community_name.touched),
         'has-success': (community_name.valid && community_name.touched)}">
         <label for="community_name">Community Name</label>
@@ -99,12 +96,12 @@
           </button>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
-      <!--@TODO ignore Additional Link function-->
-      <!--<button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>-->
-      <button [disabled]="!community_name.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
-      <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
-    </modal-footer>
-  </modal>
-</form>
+      <div class="clearfix text-right">
+        <!--@TODO ignore Additional Link function-->
+        <!--<button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>-->
+        <button [disabled]="!community_name.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
+        <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
+      </div>
+    </form>
+  </hd-modal-body>
+</hd-modal>
