@@ -5,7 +5,7 @@ import { ApiBaseService } from '../../../shared/services/apibase.service';
  * Created by phat on 18/11/2016.
  */
 
-declare  var _: any;
+declare var _: any;
 
 @Injectable()
 export class NotificationService {
@@ -30,28 +30,27 @@ export class NotificationService {
     // TODO
   }
 
-  getNewNotificationsCount(){
+  getNewNotificationsCount() {
     return this.api.get(`zone/social_network/notifications/get_new_notifications/count`);
   }
 
   markAsSeen(notifications: any) {
 
     let notif_ids = _.map(notifications, (i: any) => i.id);
-    let body = {"ids" : notif_ids};
+    let body = {'ids': notif_ids};
 
     // TODO: Convert this method to put
     return this.api.post(`zone/social_network/notifications/mark_as_seen`, body);
   }
 
   toggleReadStatus(notif_ids: any) {
-    let body = {"ids" : notif_ids};
+    let body = {'ids': notif_ids};
     return this.api.post(`zone/social_network/notifications/toggle_read_status`, body);
   }
 
   toggleAllReadStatus() {
     return this.api.post(`zone/social_network/notifications/toggle_all_read_status`, []);
   }
-
 
 
   viewAllNotifications() {

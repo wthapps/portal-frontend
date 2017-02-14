@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { SoPhotoListComponent } from '../photo-list/photo-list.component';
 
@@ -10,7 +10,7 @@ declare var _: any;
   templateUrl: 'post-photo-select.component.html'
 })
 
-export class PostPhotoSelectComponent implements OnInit {
+export class PostPhotoSelectComponent {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('photoList') photoList: SoPhotoListComponent;
   @Input() selectedItems: Array<any>;
@@ -23,14 +23,6 @@ export class PostPhotoSelectComponent implements OnInit {
   uploadPhotos: Array<any> = new Array<any>();
   hasBack: boolean = false;
   files: Array<any> = new Array<any>();
-
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-
-  }
 
   open(options: any = {return: false}) {
     if (options.return == true) {

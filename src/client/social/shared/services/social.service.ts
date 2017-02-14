@@ -104,9 +104,10 @@ export class SoPostService {
 
 @Injectable()
 export class SocialService {
-  static readonly MEMBER_ROLE = { Admin: "Admin" ,
-    Member: "Member"
-  } ;
+  static readonly MEMBER_ROLE = {
+    Admin: 'Admin',
+    Member: 'Member'
+  };
 
   constructor(public user: SoUserService,
               public post: SoPostService) {
