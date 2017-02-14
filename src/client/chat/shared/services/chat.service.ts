@@ -32,6 +32,7 @@ export class ChatService {
     this.storage.save('contact_select', null);
     this.storage.save('current_chat_messages', null);
     this.storage.save('users_online', []);
+    this.storage.save('number_message', 10);
     this.fileUploadHelper = new FileUploadHelper();
     this.constant = ChatConstant;
   }
@@ -183,6 +184,25 @@ export class ChatService {
 
   getUsersOnline() {
     return this.storage.find('users_online')
+  }
+
+  loadMoreMessages() {
+    // TODO Optimize load times
+    let n:any = this.storage.find('number_message').value;
+    let currentMessages:any = this.storage.find('current_chat_messages').value.data;
+    let page:any = Math.floor(currentMessages.length/n)+1;
+    let body:any = {page: page};
+    let groupId:any = this.storage.find('contact_select').value.group.id;
+    this.apiBaseService.get('zone/chat/messages/' + groupId, body).subscribe(
+      (res:any) => {
+        let newMessages:any = _.concat(currentMessages, res.data);
+        newMessages = _.uniqBy(newMessages, 'id');
+        newMessages = _.orderBy(newMessages, ['id'], ['asc']);
+        res.data = newMessages;
+        this.storage.save('chat_messages_group_' + groupId, res);
+        this.storage.save('current_chat_messages', res);
+      }
+    );
   }
 }
 

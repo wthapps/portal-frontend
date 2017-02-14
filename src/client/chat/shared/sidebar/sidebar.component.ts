@@ -11,6 +11,7 @@ declare var $:any;
 
 export class ZChatSidebarComponent implements OnInit {
   item:any;
+  usersOnlineItem:any;
 
   constructor(private chatService: ChatService) {}
 

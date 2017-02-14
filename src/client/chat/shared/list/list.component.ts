@@ -16,4 +16,8 @@ export class ZChatShareListComponent implements OnInit {
     this.item = this.chatService.getCurrentMessages();
     this.chatService.subscribeChanel();
   }
+
+  onLoadMore() {
+    this.chatService.loadMoreMessages();
+  }
 }
