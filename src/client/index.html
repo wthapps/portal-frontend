@@ -8,16 +8,16 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
-  <link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
-  <link rel="manifest" href="/assets/images/favicons/manifest.json">
-  <link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
-  <meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= APP_BASE %>assets/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="<%= APP_BASE %>assets/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="<%= APP_BASE %>assets/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="<%= APP_BASE %>assets/images/favicons/manifest.json">
+  <link rel="mask-icon" href="<%= APP_BASE %>assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="<%= APP_BASE %>assets/images/favicons/favicon.ico">
+  <meta name="msapplication-config" content="<%= APP_BASE %>assets/images/favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="<%= APP_BASE %>assets/css/style.css">
   <!-- inject:css -->
   <!-- endinject -->
 </head>
@@ -25,8 +25,8 @@
 
   <sd-app>Loading...</sd-app>
 
-  <script src="assets/dist/core.min.js"></script>
-  <script src="assets/dist/app.min.js"></script>
+  <script src="<%= APP_BASE %>assets/dist/core.min.js"></script>
+  <script src="<%= APP_BASE %>assets/dist/app.min.js"></script>
   <script>
   // Fixes undefined module function in SystemJS bundle
   function module() {}

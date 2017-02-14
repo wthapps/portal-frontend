@@ -25,10 +25,10 @@ export = () => {
  * @param {Array<string>} files - The files to be injected.
  */
 function inject(...files: Array<string>) {
-    return plugins.inject(gulp.src(files, { read: false }), {
-        files,
-        transform: transformPath()
-    });
+  return plugins.inject(gulp.src(files, { read: false }), {
+    files,
+    transform: transformPath()
+  });
 }
 
 /**
@@ -42,7 +42,7 @@ function injectJs() {
  * Injects the bundled CSS files for the production environment.
  */
 function injectCss() {
-  return inject(join(Config.CSS_DEST, Config.CSS_PROD_BUNDLE));
+  return inject(join(Config.CSS_DEST, `${Config.CSS_BUNDLE_NAME}.css`));
 }
 
 /**
