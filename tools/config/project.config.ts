@@ -60,6 +60,10 @@ export class ProjectConfig extends SeedConfig {
       {
         name: 'angular2-cookie',
         path: 'node_modules/angular2-cookie/core.js'
+      },
+      {
+        name: 'ng2-material-dropdown',
+        path: 'node_modules/ng2-material-dropdown/dist/ng2-dropdown.bundle.js'
       }
     ];
 

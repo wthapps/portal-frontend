@@ -4,6 +4,7 @@ import { ZSocialFavoritesComponent } from './favorites/social-favorites.componen
 import { SharedModule } from '../../core/shared/shared.module';
 
 import { SoUserService, SocialService, SoPostService } from './services/social.service';
+import {SoCommunityService} from "./services/community.service";
 
 
 
@@ -28,7 +29,7 @@ export class ZSocialSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZSocialSharedModule,
-      providers: [SocialService, SoUserService, SoPostService]
+      providers: [SocialService, SoUserService, SoPostService, SoCommunityService]
     };
   }
 }
