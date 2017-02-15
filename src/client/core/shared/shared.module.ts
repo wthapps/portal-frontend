@@ -27,6 +27,8 @@ import { TitleCase } from './pipe/titlecase.pipe';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
+import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive';
+
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 
 /**
@@ -56,7 +58,10 @@ import { AppearancesChannelService } from './channels/appearances-channel.servic
     TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+
+    //Directive
+    scrollToBottomDirective
   ],
   exports: [
     CommonModule,
@@ -80,7 +85,10 @@ import { AppearancesChannelService } from './channels/appearances-channel.servic
     TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+
+    //Directive
+    scrollToBottomDirective
   ]
 })
 export class SharedModule {

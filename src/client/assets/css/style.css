@@ -17003,17 +17003,12 @@ wth-app:empty + .dots-loader-wrap .dots-loader {
   z-index: 1060 !important;
 }
 
-.ui-autocomplete {
+.ui-autocomplete.ui-widget {
   display: block;
 }
 
-.ui-autocomplete .ui-autocomplete-input-token {
-  float: none;
-}
-
-.ui-autocomplete .ui-autocomplete-input-token .ui-inputtext {
-  display: inline-block;
-  box-shadow: none !important;
+.ui-autocomplete.ui-widget .ui-inputtext {
+  display: block;
 }
 
 .ui-inputswitch {

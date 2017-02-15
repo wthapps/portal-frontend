@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 
 import {
   FormGroup,
@@ -7,6 +7,8 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
+
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { Photo } from '../../../core/shared/models/photo.model';
@@ -22,6 +24,7 @@ declare var $: any;
 })
 export class ZMediaPhotoFormEditComponent implements OnChanges {
   @Input() data: Photo = null;
+  @ViewChild('modal') modal: ModalComponent;
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() updatePhoto: EventEmitter<Photo> = new EventEmitter<Photo>();
@@ -72,17 +75,17 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
   }
 
   onShow() {
-    $('#editPhotoModal').modal('show');
+    this.modal.open();
   }
 
-
   onSubmit(values: any): void {
+    this.modal.close();
+
     // Set value after updating form (checking user leave this page)
     this.formValue = values;
 
     if (this.form.valid) {
-
-      $('#editPhotoModal').modal('hide');
+      this.modal.close();
       // start loading
       this.loadingService.start();
       let body = JSON.stringify({

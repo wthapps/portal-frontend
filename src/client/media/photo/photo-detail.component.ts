@@ -6,6 +6,9 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { Constants } from '../../core/shared/config/constants';
 
+import { ZMediaSharingComponent } from '../shared/sharing/sharing.component';
+import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
+
 declare var $: any;
 declare var _: any;
 const KEY_ESC = 27;
@@ -18,9 +21,13 @@ const KEY_ESC = 27;
 export class ZMediaPhotoDetailComponent implements AfterViewInit {
   @Input() selectedPhotos: any = [];
   @Input() allPhotos: any = [];
+
+  @Input() mediaToolbar: ZMediaToolbarComponent;
+
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('formEdit') formEdit: ZMediaPhotoFormEditComponent;
+  @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
 
   index: number = 0;
 
@@ -61,7 +68,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         this.onFavourite();
         break;
       case 'share':
-
+        this.mediaToolbar.zoneSharing.modal.open();
         break;
       case 'tag':
 
@@ -76,7 +83,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         this.onEditInfo();
         break;
       case 'addToAlbum':
-
+        console.log(this.mediaToolbar.formAddAlbum);
+        this.mediaToolbar.formAddAlbum.modal.open();
         break;
       default:
         break;
