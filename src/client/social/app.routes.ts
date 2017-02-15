@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ZSocialHomeComponent } from './home/home.component';
 
 // import { AboutRoutes } from './about/index';
 // import { HomeRoutes } from './home/index';
@@ -18,7 +19,11 @@ import { Routes } from '@angular/router';
 // import { ZoneRoutes } from './zone/index';
 
 export const routes: Routes = [
-  // ...HomeRoutes,
+{
+  path: 'home', component: ZSocialHomeComponent,
+  path: '', component: ZSocialHomeComponent
+}
+// ...HomeRoutes,
   // ...AboutRoutes,
   // ...LoginRoutes,
   // ...RegisterRoutes,

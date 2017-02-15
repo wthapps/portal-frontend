@@ -8,10 +8,11 @@ import { SharedModule } from '../core/shared/shared.module';
 
 import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialCommunityModule } from './communities/communities.module';
-import {ZoneReportService} from "./shared/form/report/report.service";
-import {routes} from "./app.routes";
-import {RouterModule} from "@angular/router";
-// import {PostModule} from "./shared/post/post.module";
+import { ZoneReportService } from './shared/form/report/report.service';
+import { routes } from './app.routes';
+import { RouterModule } from "@angular/router";
+import { PostListComponent } from './post/post-list.component';
+import { PostModule } from './post/post.module';
 import {ZSocialCommunityComponent} from "./communities/communities.component";
 import {ZSocialCommunityListComponent} from "../../../dist/tmp/social/communities/list/list.component";
 import {ZSocialCommunityCoverComponent} from "./communities/cover/cover.component";
@@ -20,6 +21,8 @@ import {ComMemberListComponent} from "./communities/member/member-list.component
 import {ZSocialCommunityFormEditComponent} from "./communities/shared/form/edit.component";
 import {ZSocialCommunityFormPreferenceComponent} from "./communities/shared/form/preferences.component";
 import {ZSocialSharedModule} from "./shared/shared.module";
+
+
 
 @NgModule({
   imports: [
@@ -31,6 +34,10 @@ import {ZSocialSharedModule} from "./shared/shared.module";
     ZSocialSharedModule,
     SharedModule.forRoot(),
   ],
+  declarations: [
+    AppComponent
+  ],
+
   declarations: [AppComponent,
 
     // // Communities

@@ -1,12 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { HdModalComponent } from './modal';
 
+
+
 @Component({
   selector: 'hd-modal-header',
   template: `
-        <div class='modal-header' [ngClass]='getCssClasses()'>
+        <div class='modal-header' [ngClass]='getCssClasses()'>   
             <button *ngIf='showClose' type='button' class='close' [ngClass]='getClosePosition()' 
-            data-dismiss='modal' aria-label='Close' (click)='modal.dismiss()'>
+              data-dismiss='modal' aria-label='Close' (click)='modal.dismiss()'>
               <span aria-hidden='true'>&times;</span>
             </button>           
             <ng-content></ng-content>

@@ -29,8 +29,11 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
 import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
+import { NotificationService } from './channels/notification.service';
+import { ChannelNotificationService } from './channels/channel-notification.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import {ReadMoreComponent} from "../partials/read-more/read-more.component";
+import { SoSearchService } from '../partials/header/sub/social-search.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -107,6 +110,9 @@ export class SharedModule {
         CookieService,
         StorageService,
         HandlerService,
+        SoSearchService,
+        NotificationService,
+        ChannelNotificationService,
         AppearancesChannelService
       ]
     };
