@@ -8,9 +8,12 @@ import { SharedModule } from '../core/shared/shared.module';
 
 import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialCommunityModule } from './communities/communities.module';
-import {ZoneReportService} from "./shared/form/report/report.service";
-import {routes} from "./app.routes";
-import {RouterModule} from "@angular/router";
+import { ZoneReportService } from './shared/form/report/report.service';
+import { routes } from './app.routes';
+import { RouterModule } from "@angular/router";
+import { ZSocialSharedModule } from './shared/shared.module';
+
+
 
 @NgModule({
   imports: [
@@ -19,9 +22,28 @@ import {RouterModule} from "@angular/router";
     RouterModule.forRoot(routes),
     ZSocialHomeModule,
     ZSocialCommunityModule,
-    SharedModule.forRoot()
+    ZSocialSharedModule,
+    SharedModule.forRoot(),
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
+
+  declarations: [AppComponent,
+
+    // // Communities
+    // ZSocialCommunityComponent,
+    // ZSocialCommunityListComponent,
+    // ZSocialCommunityCoverComponent,
+    // ZSocialCommunityDetailComponent,
+    // // ZSocialCommunityDetailNotificationComponent,
+    // ComMemberListComponent,
+    // // InvitationListComponent,
+    // // ZSocialCommunityDetailAboutComponent,
+    // // ZSocialCommunityDetailPostComponent,
+    // ZSocialCommunityFormEditComponent,
+    // ZSocialCommunityFormPreferenceComponent,
+  ],
   // providers: [{
   //   provide: APP_BASE_HREF,
   //   useValue: '<%= APP_BASE %>'

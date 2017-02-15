@@ -9,11 +9,13 @@ import { HdModalHeaderComponent } from './components/modal-header';
 import { HdModalBodyComponent } from './components/modal-body';
 import { HdModalFooterComponent } from './components/modal-footer';
 import { AutofocusDirective } from './directives/autofocus';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    BrowserModule
   ],
   declarations: [
     HdModalComponent,

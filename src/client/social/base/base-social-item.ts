@@ -1,4 +1,4 @@
-import { PostComponent } from '../post/post.component';
+import { PostComponent } from '../shared/post/post.component';
 import {ApiBaseService} from "../../core/shared/services/apibase.service";
 
 export class BaseZoneSocialItem {

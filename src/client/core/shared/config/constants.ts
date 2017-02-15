@@ -108,7 +108,9 @@ export let Constants = {
     zoneSoInvitations: 'zone/social_network/invitations',
     zoneSoFavourites: 'zone/social_network/favourites',
     zoneSoNotifications: 'zone/social_network/notifications',
-    zoneSoReportList: 'zone/social_network/report_list'
+    zoneSoReportList: 'zone/social_network/report_list',
+    posts: 'posts',
+    profile: 'profile'
   },
   sex: ['', 'Male', 'Female', 'Other'],
   communityRole: {

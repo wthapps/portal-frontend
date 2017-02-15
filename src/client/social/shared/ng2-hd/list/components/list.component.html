@@ -40,9 +40,9 @@
            [class.hd-list--readonly]="readonly"
            [attr.aria-label]="item">
 
-        <img alt="" [src]="item.profile_image" title="" width="30">
+        <img alt="" [src]="item?.profile_image" title="" width="30">
         <!-- tag name -->
-        <span class="hd-list__name"> {{ item.name }} </span>
+        <span class="hd-list__name"> {{ item?.name }} </span>
 
         <!-- remove 'x' button -->
         <delete-icon class="hd-list__remove-button"

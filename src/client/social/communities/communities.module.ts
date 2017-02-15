@@ -12,17 +12,17 @@ import { ZSocialCommunitySharedModule } from './shared/shared.module';
 import {ZSocialCommunityFormEditComponent} from "./shared/form/edit.component";
 import {ZSocialCommunityFormPreferenceComponent} from "./shared/form/preferences.component";
 import {MemberListInviteComponent} from "./member/member-list-invite.component";
-import {PostListComponent} from "../post/post-list.component";
 import {Ng2HdModule} from "../shared/ng2-hd/ng2-hd.module";
-import {PostModule} from "../post/post.module";
+import {PostModule} from "../shared/post/post.module";
 import {ZSocialCommunityCoverComponent} from "./cover/cover.component";
-// import {HdModalModule} from "../shared/ng2-hd/modal/hd-modal.module";
+import { HdModalHeaderComponent } from '../shared/ng2-hd/modal/components/modal-header';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule.forRoot(),
     ZSocialSharedModule.forRoot(),
+    // ZSocialSharedModule,
     ZSocialCommunitySharedModule.forRoot(),
     ZSocialCommunityRoutingModule,
     Ng2HdModule,
@@ -34,14 +34,18 @@ import {ZSocialCommunityCoverComponent} from "./cover/cover.component";
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormEditComponent,
     ZSocialCommunityFormPreferenceComponent,
-    MemberListInviteComponent,
-    PostListComponent,
-    ZSocialCommunityCoverComponent
+    // MemberListInviteComponent,
+    ZSocialCommunityCoverComponent,
+    ZSocialCommunityFormPreferenceComponent
+
+    // // PostListComponent,
+    // ZSocialCommunityCoverComponent
   ],
   exports: [
+    ZSocialSharedModule,
     ZSocialCommunityComponent,
     ZSocialCommunityFormEditComponent,
-    ZSocialCommunityFormPreferenceComponent
+    ZSocialCommunityDetailComponent
   ],
   providers: []
 })

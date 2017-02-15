@@ -14,9 +14,6 @@ import {ToastsService} from "../../../core/partials/toast/toast-message.service"
 import {UserService} from "../../../core/shared/services/user.service";
 import {ZoneReportService} from "../../shared/form/report/report.service";
 import {ZSocialCommunityFormPreferenceComponent} from "../shared/form/preferences.component";
-import SocialConstants = require("../../shared/social.constants");
-import {SoCommunityService} from "../../shared/services/community.service";
-import {soCommunitiesUrl} from "../../shared/social.constants";
 import {Constants} from "../../../core/shared/config/constants";
 
 declare var _: any;

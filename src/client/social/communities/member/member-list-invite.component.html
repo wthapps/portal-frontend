@@ -1,27 +1,27 @@
-<!--<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'"-->
-          <!--(onDismiss)="cancel($event)">-->
-  <!--<modal-header [showClose]="true">-->
-    <!--<h4 class="modal-title text-left"><i class="fa fa-share-alt"></i> Share in Community</h4>-->
-  <!--</modal-header>-->
-  <!--<modal-body>-->
-    <!--<hd-list #list-->
-             <!--[maxItems]='100'-->
-             <!--[searchable]="true"-->
-             <!--[inputClass]="hd-search-input"-->
-             <!--[searchItems]="items"-->
-             <!--(onRemove)="removeItem($event)"-->
-             <!--(onSelected)="onSelectedItems($event)"-->
-             <!--(onAdd)="addItem($event)"-->
-    <!--&gt;-->
-    <!--</hd-list>-->
-  <!--</modal-body>-->
-  <!--<modal-footer>-->
-    <!--<button type="button" class="btn btn-wth-default btn-min"-->
-            <!--[disabled]="selectedItems.length<=0"-->
-            <!--(click)="selectItems(event)">Done-->
-    <!--</button>-->
-    <!--<button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>-->
-  <!--</modal-footer>-->
-<!--</hd-modal>-->
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'"
+          (onDismiss)="cancel($event)">
+  <hd-modal-header [showClose]="true">
+    <h4 class="modal-title text-left"><i class="fa fa-share-alt"></i> Share in Community</h4>
+  </hd-modal-header>
+  <hd-modal-body>
+    <hd-list #list
+             [maxItems]='100'
+             [searchable]="true"
+             [inputClass]="hd-search-input"
+             [searchItems]="items"
+             (onRemove)="removeItem($event)"
+             (onSelected)="onSelectedItems($event)"
+             (onAdd)="addItem($event)"
+    >
+    </hd-list>
+  </hd-modal-body>
+  <hd-modal-footer>
+    <button type="button" class="btn btn-wth-default btn-min"
+            [disabled]="selectedItems.length<=0"
+            (click)="selectItems(event)">Done
+    </button>
+    <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (onDismiss)="cancel($event)">Cancel</button>
+  </hd-modal-footer>
+</hd-modal>
 
 

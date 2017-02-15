@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import SocialConstants = require("../../shared/social.constants");
 import {SoCommunityService} from "./community.service";
 import {Constants} from "../../../core/shared/config/constants";
 /**
