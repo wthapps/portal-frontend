@@ -30,6 +30,7 @@ import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
 import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
 import { AppearancesChannelService } from './channels/appearances-channel.service';
+import {ReadMoreComponent} from "../partials/read-more/read-more.component";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -49,6 +50,7 @@ import { AppearancesChannelService } from './channels/appearances-channel.servic
   declarations: [
     ToolbarComponent,
     NavbarComponent,
+    ReadMoreComponent,
 
     // Pipe
     GroupByMonthYearPipe,
@@ -58,6 +60,7 @@ import { AppearancesChannelService } from './channels/appearances-channel.servic
     TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
+    SafeHtmlPipe
     SafeHtmlPipe,
 
     //Directive
@@ -76,6 +79,7 @@ import { AppearancesChannelService } from './channels/appearances-channel.servic
     // Component
     ToolbarComponent,
     NavbarComponent,
+    ReadMoreComponent,
 
     // Pipe
     GroupByMonthYearPipe,

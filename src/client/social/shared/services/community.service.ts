@@ -1,7 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import SocialConstants = require("../../shared/social.constants");
 import {Constants} from "../../../core/shared/config/constants";
 /**
  *

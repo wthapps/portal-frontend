@@ -64,6 +64,10 @@ export class ProjectConfig extends SeedConfig {
       {
         name: 'ng2-material-dropdown',
         path: 'node_modules/ng2-material-dropdown/dist/ng2-dropdown.bundle.js'
+      },
+      {
+        name: 'ng2-tag-input',
+        path: 'node_modules/ng2-tag-input/dist/ng2-tag-input.bundle.js'
       }
     ];
 

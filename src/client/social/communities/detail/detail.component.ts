@@ -65,7 +65,7 @@ export class ZSocialCommunityDetailComponent {
   isBlacklistTab: boolean = false;
   private communitiesUrl: string = Constants.urls.communities;
 
-  // @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
+  @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @ViewChild('users') users: MemberListInviteComponent;
   // @ViewChild('posts') postList: PostListComponent;
@@ -85,19 +85,23 @@ export class ZSocialCommunityDetailComponent {
 
   ngOnInit() {
     // this.postList.type = 'community';
-    console.log('communitiesUrl: ' + this.communitiesUrl );
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
       console.log("this.uuid: " + this.uuid);
       this.getCommunity(this.uuid);
       this.checkCurrentUser(this.uuid);
-      // this.checkJoinRequestStatus(this.uuid);
 
-      this.selectedTab = params['tab'];
-      this.setTabVisibility();
-      if (this.selectedTab !== undefined)
-        this.getTabItems(this.uuid, this.selectedTab);
     });
+
+    this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        this.selectedTab = queryParams['tab'];
+        this.setTabVisibility();
+        if (this.selectedTab !== undefined)
+          this.getTabItems(this.uuid, this.selectedTab);
+        // this.isMember = true; // testing
+      }
+    );
 
   }
 
@@ -107,7 +111,7 @@ export class ZSocialCommunityDetailComponent {
   }
 
   onEdit() {
-    // this.modalEdit.modal.open();
+    this.modalEdit.modal.open();
     return false;
   }
 
@@ -264,7 +268,7 @@ export class ZSocialCommunityDetailComponent {
   }
 
   chooseMembers() {
-    this.users.open({url: `social_network/users/users_not_in_community/${this.uuid}`});
+    this.users.open({url: `/zone/social_network/users/users_not_in_community/${this.uuid}`});
 
   }
 
