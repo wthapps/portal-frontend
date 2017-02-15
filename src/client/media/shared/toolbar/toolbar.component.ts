@@ -7,6 +7,7 @@ import { Constants } from '../../../core/shared/config/constants';
 import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
 import { ZMediaSharingComponent } from '../sharing/sharing.component';
+import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class ZMediaToolbarComponent {
   @ViewChild('formAddAlbum') formAddAlbum: ZMediaFormAddToAlbumComponent;
   @ViewChild('formEditAlbum') formEditAlbum: ZMediaFormEditAlbumComponent;
   @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
+  @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
 
 
   @Input() type: string = '';
@@ -56,6 +58,10 @@ export class ZMediaToolbarComponent {
       case 'share':
         this.zoneSharing.modal.open();
         this.zoneSharing.getShared();
+        break;
+
+      case 'tag':
+        this.zoneTagging.modal.open();
         break;
       default:
         this.outEvent.emit(action);

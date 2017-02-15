@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService, ChipsModule } from 'primeng/primeng';
 import { InputSwitchModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 
 import { ApiBaseService } from './services/apibase.service';
 
@@ -43,8 +45,11 @@ import { AppearancesChannelService } from './channels/appearances-channel.servic
     ReactiveFormsModule,
     PartialsModule,
     ConfirmDialogModule,
+    ChipsModule,
     Ng2Bs3ModalModule,
-    InputSwitchModule
+    InputSwitchModule,
+    AutoCompleteModule,
+    InfiniteScrollModule
   ],
   declarations: [
     ToolbarComponent,
@@ -70,8 +75,11 @@ import { AppearancesChannelService } from './channels/appearances-channel.servic
     ReactiveFormsModule,
     PartialsModule,
     ConfirmDialogModule,
+    ChipsModule,
     Ng2Bs3ModalModule,
     InputSwitchModule,
+    AutoCompleteModule,
+    InfiniteScrollModule,
 
     // Component
     ToolbarComponent,
