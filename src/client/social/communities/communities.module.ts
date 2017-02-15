@@ -34,7 +34,7 @@ import { HdModalHeaderComponent } from '../shared/ng2-hd/modal/components/modal-
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormEditComponent,
     ZSocialCommunityFormPreferenceComponent,
-    MemberListInviteComponent,
+    // MemberListInviteComponent,
     ZSocialCommunityCoverComponent,
     ZSocialCommunityFormPreferenceComponent
 

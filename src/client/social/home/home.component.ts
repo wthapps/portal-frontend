@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { PostNewComponent } from '../post/post-new.component';
-import { PostListComponent } from '../post/post-list.component';
+import { PostListComponent } from '../shared/post/post-list.component';
+
 
 /**
  * This class represents the lazy loaded HomeComponent.

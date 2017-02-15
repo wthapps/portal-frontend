@@ -39,7 +39,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     SearchFormComponent,
     HeaderComponent,
     FooterComponent,
-    FooterPromotionComponent,
+    FooterPromotionComponent
 
     // Pipe
     TitleCase,

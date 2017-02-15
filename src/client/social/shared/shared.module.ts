@@ -5,7 +5,6 @@ import { SharedModule } from '../../core/shared/shared.module';
 
 import { SoUserService, SocialService, SoPostService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
-import { PostModule } from '../post/post.module';
 import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 

@@ -59,11 +59,11 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     GroupByMonthYearPipe,
     GroupByPipe,
     NewlinePipe,
-    TimeFormatPipe,
-    TitleCase,
+    // TimeFormatPipe,
+    // TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
     SafeHtmlPipe,
 
     //Directive
@@ -88,8 +88,8 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     GroupByMonthYearPipe,
     GroupByPipe,
     NewlinePipe,
-    TimeFormatPipe,
-    TitleCase,
+    // TimeFormatPipe,
+    // TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
     SafeHtmlPipe,
