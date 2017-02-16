@@ -86,7 +86,7 @@ export let Constants = {
     {name: 'Notifications', link: '/notifications'},
     {name: 'Members', link: '/members'},
     {name: 'My Page', link: '/profile'},
-    {name: 'Settings', link: '/setting'},
+    {name: 'Settings', link: '/settings'},
   ],
 
   pictureMenuActions: {

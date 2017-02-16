@@ -27,6 +27,7 @@ import { ZSocialPrivacyComponent } from './profile/about/components/privacy.comp
 import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
+import { ZSocialMembersComponent } from '../members/members.component';
 
 
 /**
@@ -43,6 +44,7 @@ import { ZSocialNotificationsComponent } from '../notifications/notifications.co
   declarations: [
     ZSocialFavoritesComponent,
 
+    ZSocialMembersComponent,
     // List Posts
     PostListComponent,
     PostComponent,

@@ -24,7 +24,7 @@ import { ModuleWithProviders } from '@angular/core';
 // import { ZoneRoutes } from './zone/index';
 
 export const routes: Routes = [
-{
+  {
   path: 'home', component: ZSocialHomeComponent
 },
   {
