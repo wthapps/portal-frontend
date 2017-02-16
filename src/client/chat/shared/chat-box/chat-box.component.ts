@@ -38,7 +38,7 @@ export class ZChatChatboxComponent {
   }
 
   chooseDone(e:any) {
-    // this.photoModal.close();
+    this.photoModal.close();
     for (let photo of e) {
       photo.type = 'Photo';
       this.chatService.sendMessage('', photo);
@@ -53,9 +53,9 @@ export class ZChatChatboxComponent {
   }
 
   uploadPhoto(e:any) {
+    this.photoModal.close();
     this.chatService.createUploadingFile();
     this.chatService.uploadPhotos(e);
-    this.photoModal.close();
   }
 
   placeCaretAtEnd(el:any) {

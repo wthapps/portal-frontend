@@ -2,7 +2,7 @@
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar">
   <div class="page-body-content-chat">
-    <z-chat-share-list class="page-body-chat-content"></z-chat-share-list>
+    <z-chat-share-list *ngIf="item.value" class="page-body-chat-content"></z-chat-share-list>
     <z-chat-share-chatbox></z-chat-share-chatbox>
   </div>
 </div>

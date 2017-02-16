@@ -5,20 +5,38 @@
   <dl class="p-list-user-group">
     <dt>Favourites</dt>
     <dd>
-    </dd>
-  </dl>
-  <dl class="p-list-user-group">
-    <dt>Recent</dt>
-    <dd>
-      <ul class="p-list-user p-list-outside" *ngIf="item.value">
-        <li *ngFor="let contact of item.value.data" [routerLinkActive]="['active']" >
+      <ul class="p-list-user p-list-outside" *ngIf="favouriteContacts.value">
+        <li *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
           <a [routerLink]="[chatService.constant.conversation_url, contact.id]" (click)="onSelect(contact)">
             <div class="pull-right">
               <span class="badge badge-wth" *ngIf="contact.notification > 0">{{contact.notification}}</span>
             </div>
             <figure>
               <img [src]="contact.display.image">
-              <span *ngIf="contact.group.group_type == 'couple'">
+              <span *ngIf="contact.group_json.group_type == 'couple'">
+                  <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
+                </span>
+            </figure>
+            <span>{{contact.display.name}}</span>
+          </a>
+        </li>
+      </ul>
+    </dd>
+    <dd>
+    </dd>
+  </dl>
+  <dl class="p-list-user-group">
+    <dt>Recent</dt>
+    <dd>
+      <ul class="p-list-user p-list-outside" *ngIf="recentContacts.value">
+        <li *ngFor="let contact of recentContacts.value" [routerLinkActive]="['active']">
+          <a [routerLink]="[chatService.constant.conversation_url, contact.id]" (click)="onSelect(contact)">
+            <div class="pull-right">
+              <span class="badge badge-wth" *ngIf="contact.notification > 0">{{contact.notification}}</span>
+            </div>
+            <figure>
+              <img [src]="contact.display.image">
+              <span *ngIf="contact.group_json.group_type == 'couple'">
                 <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
               </span>
             </figure>

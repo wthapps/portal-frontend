@@ -1,11 +1,11 @@
-<div class="page-body-control has-page-body-sidebar">
+<div class="page-body-control has-page-body-sidebar" *ngIf="item.value">
   <div class="p-list-user-item">
     <div class="pull-right">
-      <button type="button" class="btn btn-default-inline" (click)="onAddContact()">
+      <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default-inline" (click)="onAddMember()">
         <i class="fa fa-user-plus"></i>
       </button>
-      <button type="button" class="btn btn-default-inline">
-        <i class="fa fa-star-o"></i>
+      <button type="button" class="btn btn-default-inline" (click)="onFavorite()">
+        <i class="fa" [ngClass]="item.value.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
       <div class="btn-group">
         <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown">
@@ -38,7 +38,7 @@
       <img [src]="item.value.display.image">
       <div class="p-list-user-namegroup">
         <span>{{item.value.display.name}}</span>
-        <small *ngIf="item.value.group.member_count > 2">{{item.value.group.member_count}} people</small>
+        <small *ngIf="item.value.group_json.member_count > 2">{{item.value.group_json.member_count}} people</small>
       </div>
     </div>
   </div>
