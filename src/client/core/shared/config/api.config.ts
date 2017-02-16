@@ -1,6 +1,6 @@
 import { Config } from './env.config';
 export let ApiConfig = {
-  url: Config.PROTOCOL + '://' + Config.API + '/',
+  url: Config.API + '/',
 
   actionCable: {
     notificationChannel: 'NotificationChannel',

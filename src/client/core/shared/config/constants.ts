@@ -17,11 +17,13 @@ let getBarwidth = function () {
 
 export let Constants = {
   baseUrls: {
-    apiBaseService: Config.PROTOCOL + '://' + Config.API + '/',
+    apiBaseService: Config.API + '/',
     domain: Config.DOMAIN,
-    app: Config.PROTOCOL + '://' + Config.DOMAIN,
-    myAccount: Config.SUB_DOMAIN.FE_MYACCOUNT,
-    zone: Config.PROTOCOL + '://zone.' + Config.DOMAIN
+    app: Config.SUB_DOMAIN.APP,
+    myAccount: Config.SUB_DOMAIN.MYACCOUNT,
+    media: Config.SUB_DOMAIN.MEDIA,
+    social: Config.SUB_DOMAIN.SOCIAL,
+    chat: Config.SUB_DOMAIN.CHAT
   },
   operations: {
     update: 'update',

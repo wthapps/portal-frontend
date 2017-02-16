@@ -2,12 +2,14 @@ import { EnvConfig } from './env-config.interface';
 
 const BaseConfig: EnvConfig = {
   // Sample API url
-  API: 'localhost:4000',
-  DOMAIN: 'wthapps.com',
-  PROTOCOL: 'http',
+  API: 'http://localhost:4000',
+  DOMAIN: 'localhost',
   SUB_DOMAIN: {
-    FE_APP: 'http://localhost:3000',
-    FE_MYACCOUNT: 'http://localhost:3100'
+    APP: 'http://localhost:3000',
+    MYACCOUNT: 'http://localhost:3100',
+    MEDIA: 'http://localhost:3200',
+    SOCIAL: 'http://localhost:3300',
+    CHAT: 'http://localhost:3400'
   },
   RES: 'https://s3-ap-southeast-1.amazonaws.com/env-staging'
 };
