@@ -14743,15 +14743,24 @@ body.drag-active .dropzone-overlap:after {
   right: 10px;
 }
 
-.aside-menu .page-menuleft > ul > li.has-sub ul li a {
+.aside-menu .page-menuleft > ul > li.has-sub > ul {
+  display: none;
+}
+
+.aside-menu .page-menuleft > ul > li.has-sub > ul.active {
+  display: block;
+}
+
+.aside-menu .page-menuleft > ul > li.has-sub > ul li a {
   padding-left: 30px;
 }
 
-.aside-menu .page-menuleft > ul > li.has-sub ul li a:hover {
-  background-color: #d8d8d8;
+.aside-menu .page-menuleft > ul > li.has-sub > ul li a:hover {
+  background-color: #e5e5e5;
+  color: #f54a59;
 }
 
-.aside-menu .page-menuleft > ul > li.has-sub ul li.active a {
+.aside-menu .page-menuleft > ul > li.has-sub > ul li.active a {
   background-color: #d8d8d8;
 }
 

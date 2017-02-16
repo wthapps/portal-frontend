@@ -34,12 +34,17 @@
               right: 10px;
             }
           }
-          ul {
+          > ul {
+            display: none;
+            &.active {
+              display: block;
+            }
             li {
               a {
                 padding-left: 30px;
                 &:hover {
-                  background-color: #d8d8d8;
+                  background-color: lighten(#d8d8d8, 5%);
+                  color: $color-inverse;
                 }
               }
               &.active {
