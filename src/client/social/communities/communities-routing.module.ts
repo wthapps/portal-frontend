@@ -3,9 +3,9 @@ import { RouterModule } from '@angular/router';
 import { ZSocialCommunityComponent } from './communities.component';
 import { ZSocialCommunityDetailComponent } from './detail/detail.component';
 import { ZSocialCommunityListComponent } from './list/list.component';
-import {PostComponent} from "../shared/post/post.component";
-import {ZSocialProfileComponent} from "../shared/profile/profile.component";
-import {ZSocialProfileAboutComponent} from "../shared/profile/about/about.component";
+import { PostComponent } from '../shared/post/post.component';
+import { ZSocialProfileComponent } from '../shared/profile/profile.component';
+import { ZSocialProfileAboutComponent } from '../shared/profile/about/about.component';
 
 @NgModule({
   imports: [

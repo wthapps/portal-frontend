@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 // import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { PostEditComponent } from './index';
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
 
 declare var _: any;
 

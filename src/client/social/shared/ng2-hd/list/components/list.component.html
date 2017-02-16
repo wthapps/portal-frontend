@@ -23,7 +23,7 @@
             (onKeypress)="handleKeyPress()"
             [validators]="validators"
             [hidden]="readonly || maxItemsReached"
-            [placeholder]="items.length ? placeholder : secondaryPlaceholder"
+            [placeholder]="searchItems.length ? placeholder : secondaryPlaceholder"
             [inputClass]="inputClass"
             [inputId]="inputId"
         ></search-form>
@@ -60,7 +60,7 @@
         (onKeyup)="fireEvents('keyup', $event)"
         [validators]="validators"
         [hidden]="readonly || maxItemsReached"
-        [placeholder]="items.length ? placeholder : secondaryPlaceholder"
+        [placeholder]="searchItems.length ? placeholder : secondaryPlaceholder"
         [inputClass]="inputClass"
         [inputId]="inputId"
       ></search-form>

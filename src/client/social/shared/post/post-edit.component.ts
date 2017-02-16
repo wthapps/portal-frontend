@@ -5,11 +5,11 @@ import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } 
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 // import { UserService } from '../../../shared/index';
 import { PostPhotoSelectComponent, PostPrivacyCustomComponent } from './index';
-import {HdModalComponent} from "../../shared/ng2-hd/modal/components/modal";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
-import {UserService} from "../../../core/shared/services/user.service";
-import {SoPost} from "../../../core/shared/models/social_network/so-post.model";
+import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { UserService } from '../../../core/shared/services/user.service';
+import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 
 
 declare var _: any;

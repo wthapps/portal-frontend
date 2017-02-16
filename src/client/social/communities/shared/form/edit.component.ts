@@ -15,7 +15,7 @@ import { CustomValidator } from '../../../../core/shared/validator/custom.valida
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
 import { UserService } from '../../../../core/shared/services/user.service';
-import {HdModalComponent} from "../../../shared/ng2-hd/modal/components/modal";
+import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
 declare var $: any;
 declare var _: any;

@@ -6,7 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { HighlightPipe } from './components/pipes/highlight.pipe';
-// import {Ng2DropdownModule} from "ng2-material-dropdown/dist/src/modules/ng2-dropdown.module";
+// import { Ng2DropdownModule } from 'ng2-material-dropdown/dist/src/modules/ng2-dropdown.module';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
 
 @NgModule({

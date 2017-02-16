@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import {HdModalComponent} from "../../shared/ng2-hd/modal/components/modal";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
+import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 // import { ApiBaseService } from '../../../shared/index';
 

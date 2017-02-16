@@ -6,15 +6,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // import { ZSocialCommunityFormEditComponent } from '../form/edit.component';
 // import { ZSocialCommunityFormPreferenceComponent } from '../form/preferences.component';
 import { ConfirmationService } from 'primeng/components/common/api';
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
-import {ZSocialCommunityFormEditComponent} from "../shared/form/edit.component";
-import {SocialService} from "../../shared/services/social.service";
-import {ToastsService} from "../../../core/partials/toast/toast-message.service";
-import {UserService} from "../../../core/shared/services/user.service";
-import {ZoneReportService} from "../../shared/form/report/report.service";
-import {ZSocialCommunityFormPreferenceComponent} from "../shared/form/preferences.component";
-import {Constants} from "../../../core/shared/config/constants";
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
+import { SocialService } from '../../shared/services/social.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { UserService } from '../../../core/shared/services/user.service';
+import { ZoneReportService } from '../../shared/form/report/report.service';
+import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -156,6 +156,14 @@ export class ZSocialCommunityListComponent implements OnInit {
   onReport(uuid: any): any {
     this.zoneReportService.community(uuid);
     return false;
+  }
+
+  onCreate() {
+
+  }
+
+  onEdit() {
+
   }
 
 

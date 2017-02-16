@@ -3,13 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SocialService } from '../../services/social.service';
 import { ZSocialProfileService } from '../profile.service';
 import { ZSocialPrivacyComponent } from './components/privacy.component';
-import {Constants} from "../../../../core/shared/config/constants";
-import {ApiBaseService} from "../../../../core/shared/services/apibase.service";
-import {UserService} from "../../../../core/shared/services/user.service";
-import {ZSocialProfileFormAboutComponent} from "../form/about.component";
-import {ZSocialProfileFormContactComponent} from "../form/contact.component";
-import {ZSocialProfileFormWorkEduComponent} from "../form/work-edu.component";
-import {ZSocialProfileFormInterestComponent} from "../form/interest.component";
+import { Constants } from '../../../../core/shared/config/constants';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { UserService } from '../../../../core/shared/services/user.service';
+import { ZSocialProfileFormAboutComponent } from '../form/about.component';
+import { ZSocialProfileFormContactComponent } from '../form/contact.component';
+import { ZSocialProfileFormWorkEduComponent } from '../form/work-edu.component';
+import { ZSocialProfileFormInterestComponent } from '../form/interest.component';
 
 @Component({
   moduleId: module.id,

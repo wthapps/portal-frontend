@@ -96,6 +96,10 @@ export class SoPhotoListComponent implements OnInit {
     this.clearSelection();
   }
 
+  addFavourite(event: any, item: any) {
+
+  }
+
   toggleSelectedClass(event: any): void {
     // this.selectedClass = '';
 

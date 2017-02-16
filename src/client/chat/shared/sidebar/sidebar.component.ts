@@ -21,11 +21,16 @@ export class ZChatSidebarComponent implements OnInit {
       this.chatService.chanel.subscribe(contact.group.id);
     });
     this.item = this.chatService.getContacts();
-    this.usersOnlineItem = this.chatService.getUsersOnline();
+    // this.usersOnlineItem = this.chatService.getUsersOnline();
   }
 
   onSelect(contact:any) {
     $('#chat-message-text').focus();
     this.chatService.selectContact(contact);
+  }
+
+
+  usersOnlineItem() {
+
   }
 }

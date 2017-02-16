@@ -122,7 +122,8 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
 
   /**
    * @name searchItems
-   * @desc array of items that will populate the autocomplete
+   * @desc array of items that will
+   * the autocomplete
    * @type {Array<any>}
    */
   @Input() public selectedItems: Array<any> = new Array<any>();
