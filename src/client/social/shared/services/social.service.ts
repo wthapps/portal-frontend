@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import {SoCommunityService} from "./community.service";
-import {Constants} from "../../../core/shared/config/constants";
+import { SoCommunityService } from './community.service';
+import { Constants } from '../../../core/shared/config/constants';
+import { User } from '../../../core/shared/models/user.model';
 /**
  * Created by phat on 18/11/2016.
  */
@@ -15,13 +16,15 @@ export class SoUserService {
   soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
   soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
   soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
+  profile: User = null;
 
 
   constructor(private apiBaseService: ApiBaseService, private user: UserService) {
-
+    this.profile = user.profile;
   }
 
   ngOnInit() {
+    return ;
   }
 
   get(uuid: string = this.user.profile.uuid) {

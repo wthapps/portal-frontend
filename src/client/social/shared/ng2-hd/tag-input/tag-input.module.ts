@@ -6,7 +6,7 @@ import { TagInputFormComponent } from './tag-input-form/tag-input-form.component
 import { DeleteIconComponent } from './icon/icon';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
 import { HighlightPipe } from './pipes/highlight.pipe';
-// import {Ng2DropdownModule} from "ng2-material-dropdown/dist/src/modules/ng2-dropdown.module";
+// import { Ng2DropdownModule } from 'ng2-material-dropdown/dist/src/modules/ng2-dropdown.module';
 
 @NgModule({
   imports: [

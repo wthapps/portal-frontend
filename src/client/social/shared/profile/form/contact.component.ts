@@ -1,8 +1,4 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-// import { ApiBaseService } from '../../../../shared/services/apibase.service';
-// import { UserService } from '../../../../shared/services/user.service';
-// import { LoadingService } from '../../../../partials/loading/loading.service';
-// import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
 
 import {
   FormGroup,
@@ -10,15 +6,13 @@ import {
   Validators,
   FormArray
 } from '@angular/forms';
-// import { CustomValidator } from '../../../../shared/validator/custom.validator';
-// import { CountryService } from '../../../../partials/countries/countries.service';
 import { SocialService } from '../../services/social.service';
-import {HdModalComponent} from "../../ng2-hd/modal/components/modal";
-import {ApiBaseService} from "../../../../core/shared/services/apibase.service";
-import {CountryService} from "../../../../core/partials/countries/countries.service";
-import {LoadingService} from "../../../../core/partials/loading/loading.service";
-import {UserService} from "../../../../core/shared/services/user.service";
-import {CustomValidator} from "../../../../core/shared/validator/custom.validator";
+import { HdModalComponent } from '../../ng2-hd/modal/components/modal';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { CountryService } from '../../../../core/partials/countries/countries.service';
+import { LoadingService } from '../../../../core/partials/loading/loading.service';
+import { UserService } from '../../../../core/shared/services/user.service';
+import { CustomValidator } from '../../../../core/shared/validator/custom.validator';
 
 declare var $: any;
 declare var _: any;

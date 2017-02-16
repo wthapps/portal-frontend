@@ -17,7 +17,7 @@ export class ZChatShareItemComponent implements OnInit {
       this.message.byMe = this.chatService.user.profile.id == this.message.display.id;
     } else {
       this.message.file_json = {};
-      this.message.file_json.thumbnail_url = Config.RES + "/portal-frontend/common-images/file/file_upload/filethumb.png";
+      this.message.file_json.thumbnail_url = Config.RES + '/portal-frontend/common-images/file/file_upload/filethumb.png';
     }
   }
 }

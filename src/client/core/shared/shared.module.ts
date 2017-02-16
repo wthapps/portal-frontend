@@ -34,7 +34,7 @@ import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive'
 import { NotificationService } from './channels/notification.service';
 import { ChannelNotificationService } from './channels/channel-notification.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
-import {ReadMoreComponent} from "../partials/read-more/read-more.component";
+import {ReadMoreComponent} from '../partials/read-more/read-more.component';
 import { SoSearchService } from '../partials/header/sub/social-search.service';
 
 /**
@@ -68,8 +68,7 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     // TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe,
-    SafeHtmlPipe,
+    SafeHtmlPipe
 
     //Directive
     scrollToBottomDirective

@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 import { SoPhotoListComponent } from './index';
-import {HdModalComponent} from "../../shared/ng2-hd/modal/components/modal";
+import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
 
 declare var _: any;
 

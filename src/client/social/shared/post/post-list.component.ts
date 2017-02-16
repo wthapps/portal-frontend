@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-// import { SoPost } from '../../../shared/models/social_network/so-post.model';
-// import { ApiBaseService } from '../../../shared/services/apibase.service';
-// import { SocialService } from '../services/social.service';
 import { ActivatedRoute } from '@angular/router';
-// import { LoadingService } from '../../../partials/loading/loading.service';
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {SocialService} from "../../shared/services/social.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
-import {SoPost} from "../../../core/shared/models/social_network/so-post.model";
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { SocialService } from '../../shared/services/social.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
+import { User } from '../../../core/shared/models/user.model';
 
 declare var _: any;
 
@@ -27,6 +24,7 @@ export class PostListComponent implements OnInit {
 
   items: Array<SoPost>;
   uuid: string;
+  currentUser: User;
   // type: string = 'user';
 
   constructor(public apiBaseService: ApiBaseService,

@@ -13,8 +13,8 @@ import { HdModalComponent } from './modal';
 })
 export class HdModalFooterComponent {
   @Input() showDefaultButtons: any = false;
-  @Input() dismissButtonLabel: string = 'Dismiss';
-  @Input() closeButtonLabel: string = 'Close';
+  @Input() public dismissButtonLabel: string = 'Dismiss';
+  @Input() public closeButtonLabel: string = 'Close';
 
   constructor(private modal: HdModalComponent) {
   }

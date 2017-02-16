@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
-import {SoPost} from "../../../core/shared/models/social_network/so-post.model";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {Constants} from "../../../core/shared/config/constants";
+import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { Constants } from '../../../core/shared/config/constants';
 // import { SoPost } from '../../../shared/models/social_network/so-post.model';
 // import { ApiBaseService } from '../../../shared/services/apibase.service';
 // import { Constants } from '../../../shared/config/constants';
@@ -94,6 +94,14 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
 
   onBack() {
     this.router.navigate(['/zone/social/home']);
+  }
+
+  update(e: any) {
+
+  }
+
+  delete(e: any) {
+
   }
 
 

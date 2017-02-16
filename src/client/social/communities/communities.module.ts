@@ -9,12 +9,11 @@ import { ZSocialCommunityComponent } from './communities.component';
 import { ZSocialCommunityListComponent } from './list/list.component';
 import { ZSocialCommunityDetailComponent } from './detail/detail.component';
 import { ZSocialCommunitySharedModule } from './shared/shared.module';
-import {ZSocialCommunityFormEditComponent} from "./shared/form/edit.component";
-import {ZSocialCommunityFormPreferenceComponent} from "./shared/form/preferences.component";
-import {MemberListInviteComponent} from "./member/member-list-invite.component";
-import {Ng2HdModule} from "../shared/ng2-hd/ng2-hd.module";
-import {PostModule} from "../shared/post/post.module";
-import {ZSocialCommunityCoverComponent} from "./cover/cover.component";
+import { ZSocialCommunityFormEditComponent } from './shared/form/edit.component';
+import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferences.component';
+import { Ng2HdModule } from '../shared/ng2-hd/ng2-hd.module';
+import { PostModule } from '../shared/post/post.module';
+import {ZSocialCommunityCoverComponent} from './cover/cover.component';
 import { HdModalHeaderComponent } from '../shared/ng2-hd/modal/components/modal-header';
 
 @NgModule({

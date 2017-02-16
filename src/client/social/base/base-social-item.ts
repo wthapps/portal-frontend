@@ -1,11 +1,11 @@
 import { PostComponent } from '../shared/post/post.component';
-import {ApiBaseService} from "../../core/shared/services/apibase.service";
+import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
 export class BaseZoneSocialItem {
   item: any;
 
   apiBaseService: ApiBaseService;
-  postItem?: PostComponent;
+  public postItem?: PostComponent;
 
   loadItem(url: string) {
     return this.apiBaseService.get(url);

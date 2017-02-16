@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 // import { LoadingService } from '../../../../partials/loading/loading.service';
 // import { ZoneReportService } from '../../../shared/form/report/report.service';
 import { SocialService } from '../../services/social.service';
-import {ApiBaseService} from "../../../../core/shared/services/apibase.service";
-import {UserService} from "../../../../core/shared/services/user.service";
-import {LoadingService} from "../../../../core/partials/loading/loading.service";
-import {ZoneReportService} from "../../form/report/report.service";
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { UserService } from '../../../../core/shared/services/user.service';
+import { LoadingService } from '../../../../core/partials/loading/loading.service';
+import { ZoneReportService } from '../../form/report/report.service';
 // import { UserService } from '../../../../shared/services/user.service';
 
 declare var _: any;

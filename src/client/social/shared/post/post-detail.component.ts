@@ -3,8 +3,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { PostEditComponent, PostService } from './index';
 import { Location } from '@angular/common';
-import {SoPost} from "../../../core/shared/models/social_network/so-post.model";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
+import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 declare var _: any;
 

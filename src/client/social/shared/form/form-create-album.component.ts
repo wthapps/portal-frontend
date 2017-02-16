@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {FormModalComponent} from "../../../core/shared/form/form-modal.component";
-import {Album} from "../../../core/shared/models/album.model";
-import {AlbumPhoto} from "../../../core/shared/models/album-photos.model";
-import {AlbumService} from "../../../core/shared/services/album.service";
+import { FormModalComponent } from '../../../core/shared/form/form-modal.component';
+import { Album } from '../../../core/shared/models/album.model';
+import { AlbumPhoto } from '../../../core/shared/models/album-photos.model';
+import { AlbumService } from '../../../core/shared/services/album.service';
 // import { FormModalComponent } from '../../../shared/form/form-modal.component';
 // import { AlbumService } from '../../../shared/services/picture/album.service';
 // import { Album } from '../../../shared/models/album.model';

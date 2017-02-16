@@ -48,7 +48,7 @@ export class ApiBaseService {
     }
     this.buildOptions();
     return this._http.post(this._baseUrl + path, body, this._options)
-      .map(res => res.json())
+      .map((res: any) => res.json())
       .catch(this.handleError);
   }
 
@@ -61,7 +61,7 @@ export class ApiBaseService {
     }
     this.buildOptions();
     return this._http.put(this._baseUrl + path, body, this._options)
-      .map(res => res.json())
+      .map((res: any) => res.json())
       .catch(this.handleError);
   }
 
@@ -71,7 +71,7 @@ export class ApiBaseService {
   public delete(path: string): Observable<Response> {
     this.buildOptions();
     return this._http.delete(this._baseUrl + path, this._options)
-      .map(res => res.json())
+      .map((res: any) => res.json())
       .catch(this.handleError);
   }
 
@@ -81,7 +81,7 @@ export class ApiBaseService {
   public patch(path: string, body: any = ''): Observable<Response> {
     this.buildOptions();
     return this._http.patch(this._baseUrl + path, body, this._options)
-      .map(res => res.json())
+      .map((res: any) => res.json())
       .catch(this.handleError);
   }
 

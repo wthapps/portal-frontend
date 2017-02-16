@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PostComponent } from '../post.component';
-import {SoPost} from "../../../../core/shared/models/social_network/so-post.model";
-import {UserService} from "../../../../core/shared/services/user.service";
+import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
+import { UserService } from '../../../../core/shared/services/user.service';
 
 declare var _: any;
 

@@ -15,11 +15,11 @@ import {
 } from '../../../events/social-events';
 import { ZSocialCommentBoxType } from './sub-layout/comment-box.component';
 import { PostComponent } from '../post.component';
-import {SoPost} from "../../../../core/shared/models/social_network/so-post.model";
-import {ApiBaseService} from "../../../../core/shared/services/apibase.service";
-import {LoadingService} from "../../../../core/partials/loading/loading.service";
-import {ToastsService} from "../../../../core/partials/toast/toast-message.service";
-import {UserService} from "../../../../core/shared/services/user.service";
+import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { LoadingService } from '../../../../core/partials/loading/loading.service';
+import { ToastsService } from '../../../../core/partials/toast/toast-message.service';
+import { UserService } from '../../../../core/shared/services/user.service';
 
 declare var _: any;
 declare var $: any;
@@ -54,7 +54,7 @@ export class PostFooterComponent implements OnChanges {
               private confirmation: ConfirmationService,
               private toast: ToastsService,
               private userService: UserService,
-              private postItem: PostComponent) {
+              public postItem: PostComponent) {
   }
 
   ngOnChanges() {

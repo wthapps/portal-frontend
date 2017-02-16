@@ -2,7 +2,7 @@ import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { Injectable } from '@angular/core';
-import {ApiBaseService} from "./apibase.service";
+import {ApiBaseService} from './apibase.service';
 
 @Injectable()
 export class AlbumService extends ApiBaseService {

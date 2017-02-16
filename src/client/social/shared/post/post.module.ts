@@ -19,7 +19,7 @@ import { Ng2HdModule } from '../../shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';
-import {HdTagInputModule} from "../../shared/ng2-hd/tag-input/tag-input.module";
+import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 import { TagInputModule } from 'ng2-tag-input';
 
 // import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
@@ -30,12 +30,12 @@ import { TagInputModule } from 'ng2-tag-input';
 //   PostBodyComponent,
 //   PostFooterComponent
 // } from './index';
-// import {PostListComponent} from "./post-list.component";
-// import {PostDetailComponent} from "./post-detail.component";
-// import {PostDetailPhotoComponent} from "./post-detail-photo.component";
-import {ZSocialCommentBoxComponent} from "./components/sub-layout/comment-box.component";
-import {SharedModule} from "../../../core/shared/shared.module";
-import {MemberListInviteComponent} from "../../communities/member/member-list-invite.component";
+// import { PostListComponent } from './post-list.component';
+// import { PostDetailComponent } from './post-detail.component';
+// import { PostDetailPhotoComponent } from './post-detail-photo.component';
+import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
+import { SharedModule } from '../../../core/shared/shared.module';
+import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
 
 @NgModule({
   imports: [

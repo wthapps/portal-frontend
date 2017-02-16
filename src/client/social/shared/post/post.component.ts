@@ -14,17 +14,17 @@ import {
 } from './index';
 import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
-import {SoPost} from "../../../core/shared/models/social_network/so-post.model";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
-import {ConfirmationService} from "primeng/components/common/api";
-import {ToastsService} from "../../../core/partials/toast/toast-message.service";
-import {Constants} from "../../../core/shared/config/constants";
+import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ConfirmationService } from 'primeng/components/common/api';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { Constants } from '../../../core/shared/config/constants';
 import {
   CommentCreateEvent, CommentUpdateEvent, ReplyCreateEvent, ReplyUpdateEvent,
   DeleteReplyEvent, OpenPhotoModalEvent, DeleteCommentEvent
-} from "../../events/social-events";
-import {BaseZoneSocialItem} from "../../base/base-social-item";
+} from '../../events/social-events';
+import { BaseZoneSocialItem } from '../../base/base-social-item';
 
 declare var $: any;
 declare var _: any;

@@ -10,10 +10,8 @@ import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialCommunityModule } from './communities/communities.module';
 import { ZoneReportService } from './shared/form/report/report.service';
 import { routes } from './app.routes';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import { ZSocialSharedModule } from './shared/shared.module';
-
-
 
 @NgModule({
   imports: [
@@ -25,10 +23,6 @@ import { ZSocialSharedModule } from './shared/shared.module';
     ZSocialSharedModule,
     SharedModule.forRoot(),
   ],
-  declarations: [
-    AppComponent
-  ],
-
   declarations: [AppComponent,
 
     // // Communities

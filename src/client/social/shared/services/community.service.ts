@@ -1,14 +1,14 @@
 import {Injectable, OnInit} from '@angular/core';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import {Constants} from "../../../core/shared/config/constants";
+import { Constants } from '../../../core/shared/config/constants';
 /**
  *
  */
 @Injectable()
 export class SoCommunityService implements OnInit {
-  static readonly MEMBER_ROLE = { Admin: "Admin" ,
-    Member: "Member"
+  static readonly MEMBER_ROLE = { Admin: 'Admin' ,
+    Member: 'Member'
   } ;
 
   soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
@@ -27,7 +27,6 @@ export class SoCommunityService implements OnInit {
 
 
   getCommunitiesList() {
-    console.log("soCommunitiesUrl: " + this.soCommunitiesUrl);
     return this.apiBaseService.get(this.soCommunitiesUrl);
   }
 

@@ -13,16 +13,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 // import { ToastsService } from '../../../../partials/toast/toast-message.service';
 // import { MemberListInviteComponent } from '../member/member-list-invite.component';
 
-import {ZSocialCommunityFormEditComponent} from "../shared/form/edit.component";
-import {ZSocialCommunityFormPreferenceComponent} from "../shared/form/preferences.component";
-import {MemberListInviteComponent} from "../member/member-list-invite.component";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
-import {ToastsService} from "../../../core/partials/toast/toast-message.service";
-import {ConfirmationService} from "primeng/components/common/api";
-import {SocialService} from "../../shared/services/social.service";
-import {UserService} from "../../../core/shared/services/user.service";
-import {ZoneReportService} from "../../shared/form/report/report.service";
+import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
+import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
+import { MemberListInviteComponent } from '../member/member-list-invite.component';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ConfirmationService } from 'primeng/components/common/api';
+import { SocialService } from '../../shared/services/social.service';
+import { UserService } from '../../../core/shared/services/user.service';
+import { ZoneReportService } from '../../shared/form/report/report.service';
 
 declare var _: any;
 
@@ -47,6 +47,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   favourite: any;
   sentJoinRequest: boolean = false;
   invitation: any = undefined;
+  is_close: boolean = true;
 
 
   constructor(private apiBaseService: ApiBaseService,
@@ -212,5 +213,9 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
         error => {
           console.log('error', error);
         });
+  }
+
+  chooseMembers() {
+
   }
 }

@@ -9,8 +9,8 @@ import {
   ReplyUpdateEvent,
   CancelEditReplyCommentEvent
 } from '../../../../events/social-events';
-import {SoPost} from "../../../../../core/shared/models/social_network/so-post.model";
-import {SoComment} from "../../../../../core/shared/models/social_network/so-comment.model";
+import { SoPost } from '../../../../../core/shared/models/social_network/so-post.model';
+import { SoComment } from '../../../../../core/shared/models/social_network/so-comment.model';
 
 export enum ZSocialCommentBoxType {
   Add,

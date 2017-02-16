@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
 // import { ApiBaseService, LoadingService } from '../../../shared/index';
 
 declare var _: any;

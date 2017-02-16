@@ -7,10 +7,10 @@ import {
   Validators,
   FormControl
 }                           from '@angular/forms';
-import {Photo} from "../../../core/shared/models/photo.model";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {ToastsService} from "../../../core/partials/toast/toast-message.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
+import { Photo } from '../../../core/shared/models/photo.model';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
 
 // import {
 //   ToastsService,

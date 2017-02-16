@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {Photo} from "../../../core/shared/models/photo.model";
-import {Album} from "../../../core/shared/models/album.model";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
-import {AlbumPhoto} from "../../../core/shared/models/album-photos.model";
-import {FormModalComponent} from "../../../core/shared/form/form-modal.component";
-import {AlbumService} from "../../../core/shared/services/album.service";
-// import {AlbumService} from "../../../../media/album/album.service";
+import { Photo } from '../../../core/shared/models/photo.model';
+import { Album } from '../../../core/shared/models/album.model';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { AlbumPhoto } from '../../../core/shared/models/album-photos.model';
+import { FormModalComponent } from '../../../core/shared/form/form-modal.component';
+import { AlbumService } from '../../../core/shared/services/album.service';
+// import { AlbumService } from '../../../../media/album/album.service';
 // import { FormModalComponent } from '../../../shared/form/form-modal.component';
 // import { LoadingService } from '../../../partials/loading/loading.service';
 // import { AlbumService } from '../../../shared/services/picture/album.service';

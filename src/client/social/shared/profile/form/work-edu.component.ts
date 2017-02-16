@@ -10,9 +10,9 @@ import {
   FormArray
 } from '@angular/forms';
 import { SocialService } from '../../services/social.service';
-import {LoadingService} from "../../../../core/partials/loading/loading.service";
-import {ApiBaseService} from "../../../../core/shared/services/apibase.service";
-import {UserService} from "../../../../core/shared/services/user.service";
+import { LoadingService } from '../../../../core/partials/loading/loading.service';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { UserService } from '../../../../core/shared/services/user.service';
 
 declare var $: any;
 declare var _: any;

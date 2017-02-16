@@ -10,15 +10,15 @@ import { ZoneReportService } from '../../shared/form/report/report.service';
 // import { LoadingService } from '../../../partials/loading/loading.service';
 // import { ToastsService } from '../../../partials/toast/toast-message.service';
 import { ConfirmationService } from 'primeng/components/common/api';
-import {ZSocialCommunityFormEditComponent} from "../shared/form/edit.component";
-import {ZSocialCommunityFormPreferenceComponent} from "../shared/form/preferences.component";
-import {ApiBaseService} from "../../../core/shared/services/apibase.service";
-import {UserService} from "../../../core/shared/services/user.service";
-import {LoadingService} from "../../../core/partials/loading/loading.service";
-import {ToastsService} from "../../../core/partials/toast/toast-message.service";
-import {SocialService} from "../../shared/services/social.service";
-import {MemberListInviteComponent} from "../member/member-list-invite.component";
-import {Constants} from "../../../core/shared/config/constants";
+import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component'
+import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { UserService } from '../../../core/shared/services/user.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { SocialService } from '../../shared/services/social.service';
+import { MemberListInviteComponent } from '../member/member-list-invite.component';
+import { Constants } from '../../../core/shared/config/constants';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
 
 declare  let _: any;
 declare  let $: any;
@@ -55,6 +55,7 @@ export class ZSocialCommunityDetailComponent {
   // users: Array<any> = [];
   isAdmin: boolean = false;
   isMember: boolean = false;
+  is_close: boolean = true;
   favourite: any;
 
   isPostTab: boolean = true;
@@ -63,7 +64,7 @@ export class ZSocialCommunityDetailComponent {
   isInvitationTab: boolean = false;
   isJoinRequestTab: boolean = false;
   isBlacklistTab: boolean = false;
-  private communitiesUrl: string = Constants.urls.communities;
+  communitiesUrl: string = Constants.urls.communities;
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
@@ -87,7 +88,6 @@ export class ZSocialCommunityDetailComponent {
     // this.postList.type = 'community';
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
-      console.log("this.uuid: " + this.uuid);
       this.getCommunity(this.uuid);
       this.checkCurrentUser(this.uuid);
 
@@ -254,7 +254,7 @@ export class ZSocialCommunityDetailComponent {
       accept: () => {
         this.apiBaseService.put(`${this.communitiesUrl}/${this.uuid}/make_admin/${user.uuid}`).subscribe(
           (res: any)=> {
-            this.toastsService.success('You have changed ${this.user ? this.user.name : ""} role to ADMIN successfully');
+            this.toastsService.success(`You have changed ${this.user ? this.user.name : ''} role to ADMIN successfully`);
             $('#user_'+user.uuid).find("span.member-role").text("Admin");
             // this.loadDataBySelectedTab();
           },
@@ -293,6 +293,10 @@ export class ZSocialCommunityDetailComponent {
         error => {
           console.log('error', error);
         });
+  }
+
+  onDelete(item: any) {
+
   }
 
   private getCommunity(uuid: string) {
