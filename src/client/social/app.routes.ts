@@ -1,5 +1,10 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { ZSocialHomeComponent } from './home/home.component';
+import { ZSocialNotificationsComponent } from './notifications/notifications.component';
+import { ZSocialProfileComponent } from './shared/profile/profile.component';
+import { ZSocialProfileAboutComponent } from './shared/profile/about/about.component';
+import { PostDetailComponent } from './shared/post/post-detail.component';
+import { ModuleWithProviders } from '@angular/core';
 
 // import { AboutRoutes } from './about/index';
 // import { HomeRoutes } from './home/index';
@@ -20,9 +25,22 @@ import { ZSocialHomeComponent } from './home/home.component';
 
 export const routes: Routes = [
 {
-  path: 'home', component: ZSocialHomeComponent,
-  path: '', component: ZSocialHomeComponent
-}
+  path: 'home', component: ZSocialHomeComponent
+},
+  {
+    path: 'profile', component: ZSocialProfileComponent,
+    children: [
+      {path: ':id/about', component: ZSocialProfileAboutComponent},
+      // {path: ':id/post', component: ZSocialProfilePostComponent},
+      // {path: ':id', component: ZSocialProfilePostComponent},
+      // {path: '', component: ZSocialProfilePostComponent}
+    ]
+  },
+  {
+    path: 'notifications', component: ZSocialNotificationsComponent
+  },
+  { path: 'posts/:id', component: PostDetailComponent },
+  // { path: 'communities', loadChildren: './social/communities/communities.module#ZSocialCommunityModule'}
 // ...HomeRoutes,
   // ...AboutRoutes,
   // ...LoginRoutes,
@@ -37,3 +55,6 @@ export const routes: Routes = [
   // ...AccountRoutes,
   // ...ZoneRoutes
 ];
+
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

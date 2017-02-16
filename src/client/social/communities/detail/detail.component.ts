@@ -1,14 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { ApiBaseService } from '../../shared/services/apibase.service';
-// import { UserService } from '../../shared/services/user.service';
-// import { ZSocialCommunityFormEditComponent } from './form/edit.component';
-// import { MemberListInviteComponent } from './member/member-list-invite.component';
-// import { ZSocialCommunityFormPreferenceComponent } from './form/preferences.component';
-// import { SocialService } from '../services/social.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
-// import { LoadingService } from '../../../partials/loading/loading.service';
-// import { ToastsService } from '../../../partials/toast/toast-message.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component'
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
@@ -64,7 +56,7 @@ export class ZSocialCommunityDetailComponent {
   isInvitationTab: boolean = false;
   isJoinRequestTab: boolean = false;
   isBlacklistTab: boolean = false;
-  communitiesUrl: string = Constants.urls.communities;
+  readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;

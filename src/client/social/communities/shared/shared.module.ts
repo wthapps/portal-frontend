@@ -14,8 +14,7 @@ import { Ng2HdModule } from '../../shared/ng2-hd/ng2-hd.module';
 @NgModule({
   imports: [
     ZSocialSharedModule.forRoot(),
-    SharedModule,
-    Ng2HdModule
+    SharedModule
   ],
   // declarations: [
   //   ZSocialCommunityFormEditComponent,

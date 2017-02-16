@@ -30,8 +30,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   showSearchBar: boolean = true;
 
-  notifications: Array<any> = new Array<any>();
-  newNotifCount: number = 0 ;
+  // notifications: Array<any> = new Array<any>();
+  // newNotifCount: number = 0 ;
   currentNotifId: any;
   notifOffset: number = 0;
 
@@ -41,8 +41,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
               private userService: UserService,
               private router: Router,
               private notificationService: NotificationService,
-              private appearancesChannelService: AppearancesChannelService,
-              private notificationChannel: ChannelNotificationService) {
+              private appearancesChannelService: AppearancesChannelService) {
     this.urls = new Array();
     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       this.urls.length = 0; //Fastest way to clear out array
@@ -59,27 +58,14 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       if (!this.userService.profile.profile_image) {
         this.userService.profile.profile_image = Constants.img.avatar;
       }
+
+      this.notificationService.startChannel();
     }
 
-    if (this.userService.loggedIn) {
-      // this.notificationService.get().subscribe(
-      //   (result: any) => {
-      //     this.notifications = result.data;
-      //   },
-      //   (error: any) => {
-      //     console.log('error', error);
-      //   });
-      this.getNewNotificationsCount();
-      this.getLatestNotifications();
-
-      this.notificationChannel.notificationUpdated.subscribe(
-        (response: any) => {
-          this.notifications.unshift(JSON.parse(response));
-        });
-    }
 
     this.appearancesChannelService.subscribe();
   }
+
 
   ngAfterViewInit(): void {
     let documentElem = $(document);
@@ -182,15 +168,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
   hideNotification(notification: any) {
-    this.currentNotifId = notification.id;
-    this.notificationService.hideNotification(notification)
-      .subscribe((result: any) => {
-        _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
-        console.log('result: ', result);
-      },
-      error => {
-        console.log('error', error);
-      });
+    this.notificationService.hideNotification(notification);
   }
 
   turnOffNotification(notification: any) {
@@ -198,93 +176,26 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
   countNewNotifications() {
-    // this.newNotifCount = 0;
-    // this.newNotifCount = _.filter(this.notifications, (n) => n.seen_state == Constants.seenStatus.new).length;
-    let temp_notif_count = _.filter(this.notifications, (n: any) => n.seen_state == Constants.seenStatus.new).length;
-    if (temp_notif_count > 0)
-      this.newNotifCount -= temp_notif_count;
+    this.notificationService.countNewNotifications();
   }
 
 
   getLatestNotifications() {
-    let notif_limit = Constants.notificationSetting.limit;
-    this.notificationService.getLatestNotifications(this.notifOffset, notif_limit)
-      .subscribe(
-        (result: any) => {
-          _.remove(this.notifications); // Make sure this.notifications has no value before assigning
-          this.notifications = result.data;
-          // this.countNewNotifications();
-
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+    this.notificationService.getLatestNotifications();
   }
 
   getNewNotificationsCount() {
-    this.notificationService.getNewNotificationsCount()
-      .subscribe(
-        (result: any) => {
-          this.newNotifCount = result.data;
-
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+    this.notificationService.getNewNotificationsCount();
   }
 
 
   viewAllNotifications() {
-  this.notificationService.viewAllNotifications()
-    .subscribe(
-      (result: any) => {
-        _.remove(this.notifications);
-        this.notifications = result.data;
-        this.newNotifCount = 0;
-        this.markAsSeen();
-      },
-      (error: any) => {
-        console.log('error', error);
-      });
+    this.notificationService.viewAllNotifications();
 
   }
 
   doAction(action: any, notif_id: string) {
-    let link = action.link;
-    let method = action.method;
-    let params = action.params;
-    let method_name = action.name;
-    let body = { url: link,
-      // method: method
-    };
-    Object.assign(body, params);
-    this.currentNotifId = notif_id;
-
-    // switch (method_name) {
-    //   case "accept":
-    //     acceptInvitation(body); break;
-    //   case "cancel":
-    //     cancelInvitation(body); break;
-    //   default:
-    //     console.log('error', 'Unhandle method ' + method_name);
-    // }
-
-    switch (method) {
-      case "post":
-        this.apiBaseService.post(link, JSON.stringify(body))
-          .subscribe((result: any) => {
-              // Reload data
-              _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
-              // $('#notification_'+this.currentNotifId).remove();
-              console.log('result: ', result);
-            },
-            error => {
-              console.log('error', error);
-            });
-        break;
-      default:
-        console.log('error', 'DoAction: Unhandle method ' + method + ' with method name: ' + method_name);
-    }
+    this.notificationService.doAction(action, notif_id);
   }
 
   sendMessage(event: any) {
@@ -353,49 +264,14 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
   markAsSeen(){
-
-    console.log('markAsSeen', this.notifications.length);
-    this.notificationService.markAsSeen(this.notifications)
-      .subscribe(
-        (result: any) => {
-          this.countNewNotifications();
-          _.each(this.notifications, (i: any) => i.seen_state = Constants.seenStatus.seen);
-
-          // this.newNotifCount -= this.notifications.length;
-          // this.notifications = result.data;
-
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+    this.notificationService.markAsSeen();
   }
 
   toggleReadStatus(notification: any){
-    this.currentNotifId = notification.id;
-    this.notificationService.toggleReadStatus(notification.id)
-      .subscribe(
-        (result: any) => {
-          // let currentNotif =  _.filter(this.notifications, {id: this.currentNotifId});
-          // currentNotif.is_read = !currentNotif.is_read ;
-
-          _.each(this.notifications, (n: any) => { if(n.id == this.currentNotifId) n.is_read = !n.is_read;});
-
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+    this.notificationService.toggleReadStatus(notification);
   }
 
   toggleAllReadStatus(){
-    this.notificationService.toggleAllReadStatus()
-      .subscribe(
-        (result: any) => {
-          let overallReadStatus = result.data;
-          _.each(this.notifications, (n: any) => {n.is_read = overallReadStatus});
-
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+    this.notificationService.toggleAllReadStatus();
   }
 }

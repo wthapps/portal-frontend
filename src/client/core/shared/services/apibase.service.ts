@@ -35,8 +35,8 @@ export class ApiBaseService {
     }
     this.buildOptions();
     return this._http.get(this._baseUrl + path + body, this._options)
-      .map(res => res.json())
-      .catch(this.handleError);
+      .map<Response>(res => res.json())
+      .catch<Response>(this.handleError);
   }
 
   /**
@@ -48,8 +48,8 @@ export class ApiBaseService {
     }
     this.buildOptions();
     return this._http.post(this._baseUrl + path, body, this._options)
-      .map((res: any) => res.json())
-      .catch(this.handleError);
+      .map<Response>((res: any) => res.json())
+      .catch<Response>(this.handleError);
   }
 
   /**
@@ -61,8 +61,8 @@ export class ApiBaseService {
     }
     this.buildOptions();
     return this._http.put(this._baseUrl + path, body, this._options)
-      .map((res: any) => res.json())
-      .catch(this.handleError);
+      .map<Response>((res: any) => res.json())
+      .catch<Response>(this.handleError);
   }
 
   /**
@@ -71,8 +71,8 @@ export class ApiBaseService {
   public delete(path: string): Observable<Response> {
     this.buildOptions();
     return this._http.delete(this._baseUrl + path, this._options)
-      .map((res: any) => res.json())
-      .catch(this.handleError);
+      .map<Response>((res: any) => res.json())
+      .catch<Response>(this.handleError);
   }
 
   /**
@@ -81,8 +81,8 @@ export class ApiBaseService {
   public patch(path: string, body: any = ''): Observable<Response> {
     this.buildOptions();
     return this._http.patch(this._baseUrl + path, body, this._options)
-      .map((res: any) => res.json())
-      .catch(this.handleError);
+      .map<Response>((res: any) => res.json())
+      .catch<Response>(this.handleError);
   }
 
   paramsToString(params: any): string {

@@ -70,6 +70,8 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     FormsModule,
     ReactiveFormsModule,
     HdTagInputModule,
+    Ng2HdModule,
+
     // TagInputModule,
     PostNewComponent,
     FileSelectionComponent,

@@ -25,7 +25,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     CommonModule,
     RouterModule,
     FormsModule,
-    BrowserModule,
+    // BrowserModule,
     LoadingModule,
     ToastsModule,
     TablePricingModule,
@@ -39,7 +39,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     SearchFormComponent,
     HeaderComponent,
     FooterComponent,
-    FooterPromotionComponent
+    FooterPromotionComponent,
 
     // Pipe
     TitleCase,

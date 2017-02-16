@@ -35,7 +35,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   currentItem: any = null;
   action: string = 'create';
   favourite: any;
-  communitiesUrl: string = Constants.urls.communities;
+  readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
   constructor(private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
@@ -48,12 +48,12 @@ export class ZSocialCommunityListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // console.log('Test: ' + SocialConstants.communitiesUrl);
     this.getList();
   }
 
   getList() {
     this.loadingService.start('#communites-list');
+    // this.loadingService.start();
     let myuuid = this.userService.profile.uuid;
     var _this_community = this;
 

@@ -22,35 +22,38 @@ export class ChannelNotificationService extends CableService {
     if (this.userService.loggedIn) {
       this.createConnectionInstance(this.userService);
 
-      this.notificationUpdated = new Observable(
-        (observer: any) => {
-          this.observer = observer;
-        }
-      );
-
-      var self = this;
-      (function () {
-        App.notification = App.cable.subscriptions.create(ApiConfig.actionCable.notificationChannel, {
-
-          connected: function () {
-            console.log('connected');
-          },
-          disconnected: function () {
-            console.log('disconnected');
-          },
-          received: function (response: any) {
-            this.item = response;
-            self.observer.next(response);
-          },
-          sendMessage: function (chatroom_id: any, message: any) {
-            return this.perform('send_message', {
-              chatroom_id: chatroom_id,
-              body: message
-            });
-          }
-        });
-      }).call(this, self);
+      // this.createSubscription();
     }
+  }
+
+
+  createSubscription() {
+    this.notificationUpdated = new Observable(
+      (observer: any) => {
+        this.observer = observer;}
+    );
+
+    var self = this;
+    (function () {
+
+      App.notification = App.cable.subscriptions.create(ApiConfig.actionCable.notificationChannel, {
+
+        connected: function () {
+        },
+        disconnected: function () {
+        },
+        received: function (response: any) {
+          this.item = response;
+          self.observer.next(response);
+        },
+        sendMessage: function (chatroom_id: any, message: any) {
+          return this.perform('send_message', {
+            chatroom_id: chatroom_id,
+            body: message
+          });
+        }
+      });
+    }).call(this, self);
   }
 
   testing() {

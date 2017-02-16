@@ -20,13 +20,13 @@
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
-                  <a [routerLink]="['/' + communitiesUrl, my.uuid]">
+                  <a [routerLink]="[communitiesUrl, my.uuid]">
                     <img width="70" [src]="my.profile_image" alt="">
                   </a>
                 </figure>
               </div>
               <div class="media-center-body">
-                <h4 class="media-center-heading"><a [routerLink]="['/' + communitiesUrl, my.uuid]">{{my.name}}</a>
+                <h4 class="media-center-heading"><a [routerLink]="[communitiesUrl, my.uuid]">{{my.name}}</a>
                 </h4>
                 <p *ngIf="my.users.length<2" class="media-center-p">{{my.users.length}} member</p>
                 <p *ngIf="my.users.length>1" class="media-center-p">{{my.users.length}} members</p>
@@ -40,12 +40,12 @@
                   <ul class="dropdown-menu dropdown-custom">
                     <li><a href="javascript:;" (click)="onEdit(my)">Edit Information</a></li>
                     <li><a href="#" (click)="onPreference(my)">Preferences</a></li>
-                    <li><a [routerLink]="['/' + communitiesUrl+'/'+my.uuid+'/members']">Manage members</a></li>
+                    <li><a [routerLink]="[communitiesUrl,my.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="javascript:;" (click)="addFavourite(my.uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
-                    <li><a href="#" (click)="onLeave(my)">Leave community</a></li>
-                    <li><a href="#" (click)="onReport(my.uuid)">Report community</a></li>
-                    <li><a (click)="onDelete(my)" href="#">Delete community</a></li>
+                    <li><a href="javascript:;" (click)="onLeave(my)">Leave community</a></li>
+                    <li><a href="javascript:;" (click)="onReport(my.uuid)">Report community</a></li>
+                    <li><a (click)="onDelete(my)" href="javascript:;">Delete community</a></li>
                   </ul>
                 </div>
               </div>
@@ -64,14 +64,14 @@
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
-                  <a [routerLink]="['/' + communitiesUrl, item.uuid]">
+                  <a [routerLink]="[communitiesUrl, item.uuid]">
                     <img width="70" [src]="item.profile_image" alt="">
                   </a>
                 </figure>
               </div>
               <div class="media-center-body">
                 <h4 class="media-center-heading"><a
-                  [routerLink]="['/' + communitiesUrl, item.uuid]">{{item.name}}</a></h4>
+                  [routerLink]="[communitiesUrl, item.uuid]">{{item.name}}</a></h4>
                 <p *ngIf="item.users.length<2" class="media-center-p">{{item.users.length}} member</p>
                 <p *ngIf="item.users.length>1" class="media-center-p">{{item.users.length}} members</p>
               </div>

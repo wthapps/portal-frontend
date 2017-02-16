@@ -64,20 +64,20 @@
       <nav class="zone-social-cover-nav">
         <ul class="list-unstyled clearfix">
           <li [ngClass]="selectedTab==undefined || selectedTab == 'post' ? 'active': ''">
-            <a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{}">Post</a>
+            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{}">Post</a>
           </li>
           <li [ngClass]="selectedTab=='about'? 'active': ''">
             <!--<a [routerLink]="['/'+ communitiesUrl+ '/'+ uuid]" [queryParams]="{tab:'about'}">About</a>-->
-            <a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
+            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
           </li>
           <li [ngClass]="selectedTab=='members'? 'active': ''">
-            <a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members</a>
+            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members</a>
           </li>
           <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
-            <a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations</a>
+            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations</a>
           </li>
           <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
-            <a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests</a>
+            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests</a>
           </li>
           <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
             <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
@@ -90,9 +90,9 @@
             </button>
             <ul class="dropdown-menu dropdown-custom">
               <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
-              <!--<li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>-->
+              <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
               <!--<li *ngIf="isAdmin"><a [routerLink]="['/zone/social/communities/'+uuid+'/members']">Manage members</a></li>-->
-              <li *ngIf="isAdmin"><a [routerLink]="['/' + communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
+              <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
               <li><a href="#" (click)="onLeave()">Leave community</a></li>

@@ -14,39 +14,47 @@ import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferenc
 import { Ng2HdModule } from '../shared/ng2-hd/ng2-hd.module';
 import { PostModule } from '../shared/post/post.module';
 import {ZSocialCommunityCoverComponent} from './cover/cover.component';
-import { HdModalHeaderComponent } from '../shared/ng2-hd/modal/components/modal-header';
+import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
+import { LoadingModule } from '../../core/partials/loading/loading.module';
+import { LoadingService } from '../../core/partials/loading/loading.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule.forRoot(),
-    ZSocialSharedModule.forRoot(),
-    // ZSocialSharedModule,
-    ZSocialCommunitySharedModule.forRoot(),
     ZSocialCommunityRoutingModule,
+    PostModule,
     Ng2HdModule,
-    PostModule
+    LoadingModule,
+    ZSocialSharedModule.forRoot(),
+    SharedModule.forRoot(),
+    ZSocialCommunitySharedModule.forRoot()
   ],
   declarations: [
     ZSocialCommunityComponent,
     ZSocialCommunityListComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormEditComponent,
-    ZSocialCommunityFormPreferenceComponent,
     // MemberListInviteComponent,
     ZSocialCommunityCoverComponent,
-    ZSocialCommunityFormPreferenceComponent
 
     // // PostListComponent,
     // ZSocialCommunityCoverComponent
+
+    // Preferences
+    ZSocialCommunityFormPreferenceComponent,
+
+    // // Notifications
+    // ZSocialNotificationsComponent
+
   ],
   exports: [
     ZSocialSharedModule,
     ZSocialCommunityComponent,
     ZSocialCommunityFormEditComponent,
-    ZSocialCommunityDetailComponent
+    ZSocialCommunityDetailComponent,
+    ZSocialCommunityFormPreferenceComponent
   ],
-  providers: []
+  providers: [LoadingService]
 })
 export class ZSocialCommunityModule {
 }

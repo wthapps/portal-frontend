@@ -6,7 +6,6 @@ import { SharedModule } from '../../core/shared/shared.module';
 import { SoUserService, SocialService, SoPostService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
 
-import { HdModalModule } from './ng2-hd/modal/hd-modal.module';
 import { PostModule } from './post/post.module';
 import {
   PostComponent,
@@ -27,6 +26,7 @@ import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
 import { ZSocialPrivacyComponent } from './profile/about/components/privacy.component';
 import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
+import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 
 
 /**
@@ -65,6 +65,9 @@ import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
     //Share
     ZoneReportComponent,
 
+    // Notifications
+    ZSocialNotificationsComponent,
+
     // Search
     // ZSocialSearchResultComponent,
     ZSocialPrivacyComponent
@@ -72,11 +75,12 @@ import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
   ],
   exports: [
     ZSocialFavoritesComponent,
-    Ng2HdModule,
-    // HdModalModule,
     PostListComponent,
-    PostModule,
     ZoneReportComponent,
+    ZSocialNotificationsComponent,
+
+    Ng2HdModule,
+    PostModule,
     SharedModule
   ]
 })

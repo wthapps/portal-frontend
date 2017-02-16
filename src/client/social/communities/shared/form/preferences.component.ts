@@ -11,6 +11,7 @@ import { ApiBaseService } from '../../../../core/shared/services/apibase.service
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { UserService } from '../../../../core/shared/services/user.service';
+import { SocialService } from '../../../shared/services/social.service';
 
 
 declare var $: any;
@@ -38,7 +39,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
 
 
   constructor(private fb: FormBuilder,
-              private apiBaseService: ApiBaseService,
+              private socialService: SocialService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
               private userService: UserService) {
@@ -79,9 +80,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
     return value;
   }
 
-  onSubmit(values: any): void {
-    console.log(values);
-
+  onSubmit(): void {
     let body = JSON.stringify({
       // setting_notification_posts: this.setting_notification_posts,
       // setting_notification_request: this.setting_notification_request,
@@ -93,11 +92,12 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
     console.log(body);
 
 
-    this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}`, body)
+    // this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}`, body)
+    this.socialService.community.updateCommunity(this.data.uuid, body)
       .subscribe((result: any) => {
           this.updated.emit(result.data);
         },
-        error => {
+        (error: any) => {
           console.log(error);
         }
       );
@@ -110,12 +110,13 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
       message: 'Are you sure you want to reset settings',
       header: 'Reset Default',
       accept: () => {
-        this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}/reset_settings`)
+        // this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}/reset_settings`)
+        this.socialService.community.resetSettings(this.data.uuid)
           .subscribe((result: any) => {
               this.data = result.data;
               // this.updated.emit(result.data);
             },
-            error => {
+            (error: any) => {
               console.log(error);
             }
           );

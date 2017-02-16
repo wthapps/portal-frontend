@@ -15,7 +15,7 @@ import { BrowserModule } from '@angular/platform-browser';
 @NgModule({
   imports: [
     CommonModule,
-    BrowserModule
+    // BrowserModule
   ],
   declarations: [
     HdModalComponent,

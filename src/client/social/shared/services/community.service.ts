@@ -11,12 +11,12 @@ export class SoCommunityService implements OnInit {
     Member: 'Member'
   } ;
 
-  soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
-  soUsersUrl: string = Constants.urls.zoneSoUsers;
-  soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
-  soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-  soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
-  soReportList: string = Constants.urls.zoneSoReportList;
+  readonly soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
+  readonly soUsersUrl: string = Constants.urls.zoneSoUsers;
+  readonly soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
+  readonly soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
+  readonly soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
+  readonly soReportList: string = Constants.urls.zoneSoReportList;
 
   constructor(private apiBaseService: ApiBaseService  ) {
   }
@@ -31,7 +31,7 @@ export class SoCommunityService implements OnInit {
   }
 
   deleteCommunity(uuid: string) {
-    return this.apiBaseService.delete(`$this.communitiesUrl}/${uuid}`);
+    return this.apiBaseService.delete(`${this.soCommunitiesUrl}/${uuid}`);
   }
 
   leaveCommunity(uuid: string) {
@@ -96,6 +96,14 @@ export class SoCommunityService implements OnInit {
 
   checkJoinRequestStatus(uuid: string) {
     return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/join_request_status`);
+  }
+
+  updateCommunity(uuid: string, body: any) {
+    return this.apiBaseService.put(`${this.soCommunitiesUrl}/${uuid}`, body);
+  }
+
+  resetSettings(uuid:string ) {
+    return this.apiBaseService.put(`${this.soCommunitiesUrl}/${uuid}/reset_settings`);
   }
 }
 

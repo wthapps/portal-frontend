@@ -68,7 +68,7 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     // TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
 
     //Directive
     scrollToBottomDirective
