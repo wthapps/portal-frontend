@@ -60,7 +60,7 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   parent: any = null;
   currentUser: User;
-  readonly soUserPrivacy : any = Constants.soPostPrivacy;
+  readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
   constructor(private apiService: ApiBaseService,
               private loading: LoadingService,
@@ -101,6 +101,7 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.post = new SoPost();
     if(this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
+      this.custom_objects.length = 0; //
       this.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
     }
 

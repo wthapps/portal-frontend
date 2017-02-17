@@ -106,7 +106,7 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   viewPrivacyCustom(post: any, modal: any) {
-    if (post.privacy == 'customFriend' || post.privacy == 'custom_community') {
+    if (post.privacy == Constants.soPostPrivacy.customFriend.data || post.privacy == Constants.soPostPrivacy.customCommunity.data) {
       modal.open();
     }
   }

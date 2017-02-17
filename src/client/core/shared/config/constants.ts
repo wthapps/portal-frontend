@@ -132,8 +132,8 @@ export let Constants = {
     personal: {css: 'fa fa-lock', text: 'personal', data: 'personal'},
     private: {css: 'fa fa-lock', text: 'private', data: 'private'},
     friends: {css: 'fa fa-users', text: 'Friends', data: 'friends'},
-    customFriend: {css: 'fa fa-user-times', text: 'Custom Friends', data: 'customFriend'},
-    customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'customCommunity'},
+    customFriend: {css: 'fa fa-user-times', text: 'Custom Friends', data: 'custom_friend'},
+    customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
     unknown: {css: '', text: '', data: ''}
   },
   soCommunityPrivacy: {

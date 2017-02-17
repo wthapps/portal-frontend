@@ -16,14 +16,14 @@
                  aria-haspopup="true" aria-expanded="true">
                   <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{privacyName(post)}} </a>
               <ul class="dropdown-menu">
-                <li><a href="#" (click)="update({privacy: 'public'}, $event)">
+                <li><a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
                   <i class="fa fa-globe"></i> Public</a></li>
-                <li><a href="#" (click)="update({privacy: 'friends'}, $event)">
+                <li><a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
                   <i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="#" (click)="update({privacy: 'personal'}, $event)"><i class="fa fa-lock"></i> Personal</a></li>
+                <li><a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)"><i class="fa fa-lock"></i> Personal</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#" (click)="customPrivacy('custom_friend', $event)">Share with Friends</a></li>
-                <li><a href="#" (click)="customPrivacy('custom_community', $event)">Share in Communities</a></li>
+                <li><a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a></li>
+                <li><a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities</a></li>
               </ul>
             </span>
           </div>
