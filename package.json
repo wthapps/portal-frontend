@@ -152,15 +152,14 @@
     "zone.js": "^0.7.2",
     "angular2-infinite-scroll": "^0.3.0",
     "angular2-recaptcha": "^0.3.7",
-    "ng2-material-dropdown": "^0.7.2",
-    "bootstrap": "^3.3.7",
-    "lodash": "4.17.4",
-    "ng2-bs3-modal": "^0.10.4",
     "angular2-cookie": "^1.2.6",
+    "ng2-bs3-modal": "^0.10.4",
     "ng2-material-dropdown": "^0.7.2",
     "ng2-tag-input": "^0.7.4",
+    "ng2-cable": "1.0.5",
+    "bootstrap": "^3.3.7",
+    "lodash": "4.17.4",
     "primeng": "^2.0.0-rc.1",
-    "actioncable": "5.0.1",
-    "ng2-cable": "1.0.5"
+    "actioncable": "5.0.1"
   }
 }

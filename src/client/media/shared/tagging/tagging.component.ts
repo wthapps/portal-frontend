@@ -15,11 +15,16 @@ export class ZMediaTaggingComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
   values: string[];
+  dataTags: string[];
 
   constructor(private taggingService: ZMediaTaggingService) {
   }
 
   ngOnInit() {
-
+    console.log(this.taggingService);
+    this.taggingService.getAll().subscribe(
+      (res: any)=> {
+        this.dataTags = _.map(res.data, 'name');
+      });
   }
 }

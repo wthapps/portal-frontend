@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { SharedModule } from '../../core/shared/shared.module';
+import { TagInputModule } from 'ng2-tag-input';
 
 import { ZMediaShareItemComponent } from './list/item/item.component';
 import { ZMediaShareListComponent } from './list/list.component';
@@ -25,7 +26,8 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
 
 @NgModule({
   imports: [
-    SharedModule
+    SharedModule,
+    TagInputModule
   ],
   declarations: [
     ZMediaShareItemComponent,
@@ -62,7 +64,8 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
     ZMediaTaggingComponent,
 
 
-    SharedModule
+    SharedModule,
+    TagInputModule
   ]
 })
 export class ZMediaSharedModule {

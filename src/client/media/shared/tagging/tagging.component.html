@@ -3,8 +3,11 @@
     <h4 class="modal-title"><i class="fa fa-tag"></i> Tagging</h4>
   </modal-header>
   <modal-body>
-    <p-chips [(ngModel)]="values"></p-chips>
-    {{values|json}}
+    <tag-input [ngModel]="values">
+      <tag-input-dropdown
+        [autocompleteItems]="dataTags">
+      </tag-input-dropdown>
+    </tag-input>
   </modal-body>
   <modal-footer>
     <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>
