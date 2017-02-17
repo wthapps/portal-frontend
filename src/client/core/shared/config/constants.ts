@@ -130,10 +130,10 @@ export let Constants = {
   soPostPrivacy: {
     public: {css: 'fa fa-globe', text: 'Public', data: 'public'},
     personal: {css: 'fa fa-lock', text: 'personal', data: 'personal'},
-    private: {css: 'fa fa-lock', text: 'private', data: 'personal'},
+    private: {css: 'fa fa-lock', text: 'private', data: 'private'},
     friends: {css: 'fa fa-users', text: 'Friends', data: 'friends'},
     customFriend: {css: 'fa fa-user-times', text: 'Custom Friends', data: 'customFriend'},
-    customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
+    customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'customCommunity'},
     unknown: {css: '', text: '', data: ''}
   },
   soCommunityPrivacy: {

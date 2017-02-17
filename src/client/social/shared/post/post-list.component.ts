@@ -28,13 +28,14 @@ export class PostListComponent implements OnInit {
   // type: string = 'user';
 
   constructor(public apiBaseService: ApiBaseService,
-              private socialService: SocialService,
+              public socialService: SocialService,
               private loadingService: LoadingService,
               private route: ActivatedRoute,
               private postService: PostService) {
   }
 
   ngOnInit() {
+    this.currentUser = this.socialService.user.profile;
     this.route.params.subscribe(params => {
       this.uuid = params['id'];  // this can be user uuid or community uuid
       this.loadPosts();
@@ -53,6 +54,9 @@ export class PostListComponent implements OnInit {
           this.loadingService.stop('#post-list-component');
           this.items = _.orderBy(res.data, ['created_at'], ['desc']);
           this.items = _.map(this.items, this.mapPost);
+        },
+        (error: any) => {
+          console.log('loading posts errors: ', error);
         }
       );
   }

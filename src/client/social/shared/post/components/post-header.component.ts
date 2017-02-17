@@ -6,6 +6,7 @@ import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
 import { Constants } from '../../../../core/shared/config/constants';
+import { User } from '../../../../core/shared/models/user.model';
 // import { SocialService } from '../../services/social.service';
 // import { ZoneReportService } from '../../../shared/form/report/report.service';
 // import { UserService } from '../../../../shared/services/user.service';
@@ -25,14 +26,16 @@ export class PostHeaderComponent implements OnChanges {
   showInfo: boolean = false;
   showDetail: boolean = false;
   settings: any;
-  postUrl: string = Constants.urls.posts;
-  profileUrl: string = Constants.urls.profile;
+  user: User;
+  readonly postUrl: string = Constants.urls.posts;
+  readonly profileUrl: string = Constants.urls.profile;
 
 
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
               private userService: UserService,
               private zoneReportService: ZoneReportService) {
+    this.user = this.socialService.user.profile;
   }
 
   ngOnChanges() {
@@ -69,15 +72,15 @@ export class PostHeaderComponent implements OnChanges {
 
   privacyClassIcon(post: any): string {
     switch (post.privacy) {
-      case 'friends':
+      case Constants.soPostPrivacy.friends.data:
         return 'fa-users';
-      case 'public':
+      case  Constants.soPostPrivacy.public.data:
         return 'fa-globe';
-      case 'personal':
+      case  Constants.soPostPrivacy.personal.data:
         return 'fa-lock';
-      case 'custom_friend':
+      case  Constants.soPostPrivacy.customFriend.data:
         return 'fa-user-times';
-      case 'custom_community':
+      case  Constants.soPostPrivacy.customCommunity.data:
         return 'fa-group';
     }
     return '';
@@ -103,7 +106,7 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   viewPrivacyCustom(post: any, modal: any) {
-    if (post.privacy == 'custom_friend' || post.privacy == 'custom_community') {
+    if (post.privacy == 'customFriend' || post.privacy == 'custom_community') {
       modal.open();
     }
   }

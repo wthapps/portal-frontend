@@ -311,15 +311,15 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   privacyClassIcon(post: any): string {
     switch (post.privacy) {
-      case 'friends':
+      case Constants.soPostPrivacy.friends.data:
         return 'fa-users';
-      case 'public':
+      case  Constants.soPostPrivacy.public.data:
         return 'fa-globe';
-      case 'personal':
+      case  Constants.soPostPrivacy.personal.data:
         return 'fa-lock';
-      case 'customFriend':
+      case  Constants.soPostPrivacy.customFriend.data:
         return 'fa-user-times';
-      case 'custom_community':
+      case  Constants.soPostPrivacy.customCommunity.data:
         return 'fa-group';
     }
     return '';
