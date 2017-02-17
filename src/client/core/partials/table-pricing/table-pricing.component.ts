@@ -53,13 +53,13 @@ export class TablePricingComponent implements OnInit {
                   }
                   this.loadingService.stop('#tablePlan');
                 },
-                error => {
+                (error:any) => {
                   this.loadingService.stop('#tablePlan');
                   console.log('error plans: ', error.message);
                 });
           }
         },
-        error => {
+        (error:any) => {
           this.loadingService.stop('#tablePlan');
           console.log('error products: ', error.message);
         });

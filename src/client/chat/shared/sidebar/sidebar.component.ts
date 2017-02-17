@@ -33,9 +33,4 @@ export class ZChatSidebarComponent implements OnInit {
     $('#chat-message-text').focus();
     this.chatService.selectContact(contact);
   }
-
-
-  usersOnlineItem() {
-
-  }
 }
