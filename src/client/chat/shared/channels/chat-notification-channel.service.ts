@@ -28,13 +28,13 @@ export class ChatNotificationChannelService extends CableService {
           received(data: any){
             console.log('chat notification recive', data);
             if (data.type == "mark_as_read") {
-              _this.removeNotification(data.group);
+              _this.removeNotification(data);
             }
             if (data.type == "notification_count") {
               _this.addNotification(data);
             }
             if (data.type == "added_contact") {
-              _this.addedContact(data);
+              _this.addContact(data);
             }
           },
         }
@@ -43,17 +43,17 @@ export class ChatNotificationChannelService extends CableService {
   }
 
   markAsRead(groupId:any) {
-    App.chatNotification.send({type: "mark_as_read", group: groupId});
+    App.chatNotification.send({type: "mark_as_read", group_id: groupId});
   }
 
   addedContactNotification(groupId:any) {
-    App.chatNotification.send({type: "added_contact", group: groupId});
+    App.chatNotification.send({type: "added_contact", group_id: groupId});
   }
 
-  removeNotification(groupId:any) {
+  removeNotification(data:any) {
     let item = this.storage.find('chat_contacts');
     if(item && item.value) {
-      let contact = _.find(item.value.data, (contact:any) => {if(contact.group.id == groupId) return contact});
+      let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.group_id) return contact});
       if (contact) {
         contact.notification = 0
       }
@@ -63,21 +63,20 @@ export class ChatNotificationChannelService extends CableService {
   addNotification(data:any) {
     let item = this.storage.find('chat_contacts');
     if(item && item.value) {
-      let contact = _.find(item.value.data, (contact:any) => {if(contact.group.id == data.group) return contact});
+      let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.group_id) return contact});
       if (contact) {
         contact.notification = data.count
       }
     }
   }
 
-  addedContact(data:any) {
+  addContact(data:any) {
     let item = this.storage.find('chat_contacts');
-    let index = _.findIndex(item.value.data, { id: data.group.id });
-    if(index != -1) {
-      // this.handler.triggerEvent('on_contacts_change', res);
-    } else {
-      item.value.data.push(data.group);
-      // this.handler.triggerEvent('on_contacts_change', res);
+    let index = _.findIndex(item.value.data, { id: data.group_user.id });
+    if(index == -1) {
+      item.value.data.push(data.group_user);
+      let recentContacts = _.filter(item.value.data, ['favourite', false]);
+      this.storage.save('chat_recent_contacts', recentContacts);
     }
   }
 }

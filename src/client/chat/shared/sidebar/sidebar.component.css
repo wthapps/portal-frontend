@@ -5,3 +5,7 @@
 a {
   color: #4A4A4A;
 }
+
+.remove-p-list-outside {
+  padding: 0px;
+}

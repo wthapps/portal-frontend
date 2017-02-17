@@ -10,8 +10,6 @@ import { Constants } from '../config/constants';
 @Injectable()
 export class ApiBaseService {
   urls = Constants.urls;
-
-  private _http: Http;
   private _options: RequestOptionsArgs;
   private _baseUrl: string = Constants.baseUrls.apiBaseService;
   private _headers: Headers = new Headers({
@@ -22,9 +20,7 @@ export class ApiBaseService {
 
   constructor(private http: Http,
               public router: Router,
-              public cookieService: CookieService) {
-    this._http = http;
-  }
+              public cookieService: CookieService) {  }
 
   /**
    * Performs a request with `get` http method.
@@ -34,9 +30,9 @@ export class ApiBaseService {
       body = '?' + this.paramsToString(body);
     }
     this.buildOptions();
-    return this._http.get(this._baseUrl + path + body, this._options)
-      .map<Response>(res => res.json())
-      .catch<Response>(this.handleError);
+    return this.http.get(this._baseUrl + path + body, this._options)
+      .map((res:any) => res.json())
+      .catch(this.handleError);
   }
 
   /**
@@ -47,9 +43,9 @@ export class ApiBaseService {
       body = JSON.stringify(body);
     }
     this.buildOptions();
-    return this._http.post(this._baseUrl + path, body, this._options)
-      .map<Response>((res: any) => res.json())
-      .catch<Response>(this.handleError);
+    return this.http.post(this._baseUrl + path, body, this._options)
+      .map((res: any) => res.json())
+      .catch(this.handleError);
   }
 
   /**
@@ -60,9 +56,9 @@ export class ApiBaseService {
       body = JSON.stringify(body);
     }
     this.buildOptions();
-    return this._http.put(this._baseUrl + path, body, this._options)
-      .map<Response>((res: any) => res.json())
-      .catch<Response>(this.handleError);
+    return this.http.put(this._baseUrl + path, body, this._options)
+      .map((res: any) => res.json())
+      .catch(this.handleError);
   }
 
   /**
@@ -70,9 +66,9 @@ export class ApiBaseService {
    */
   public delete(path: string): Observable<Response> {
     this.buildOptions();
-    return this._http.delete(this._baseUrl + path, this._options)
-      .map<Response>((res: any) => res.json())
-      .catch<Response>(this.handleError);
+    return this.http.delete(this._baseUrl + path, this._options)
+      .map((res: any) => res.json())
+      .catch(this.handleError);
   }
 
   /**
@@ -80,9 +76,9 @@ export class ApiBaseService {
    */
   public patch(path: string, body: any = ''): Observable<Response> {
     this.buildOptions();
-    return this._http.patch(this._baseUrl + path, body, this._options)
-      .map<Response>((res: any) => res.json())
-      .catch<Response>(this.handleError);
+    return this.http.patch(this._baseUrl + path, body, this._options)
+      .map((res: any) => res.json())
+      .catch(this.handleError);
   }
 
   paramsToString(params: any): string {

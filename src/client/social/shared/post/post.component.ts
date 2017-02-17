@@ -142,20 +142,20 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   privacyDisplay() {
     switch (this.itemDisplay.privacy.toLowerCase()) {
-      case Constants.soUserPrivacy.public.data:
-        this.itemDisplay.privacyDisplay = Constants.soUserPrivacy.public;
+      case Constants.soPostPrivacy.public.data:
+        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.public;
         break;
-      case Constants.soUserPrivacy.private.data:
-        this.itemDisplay.privacyDisplay = Constants.soUserPrivacy.private;
+      case Constants.soPostPrivacy.personal.data:
+        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.personal;
         break;
-      case Constants.soUserPrivacy.friends.data:
-        this.itemDisplay.privacyDisplay = Constants.soUserPrivacy.friends;
+      case Constants.soPostPrivacy.friends.data:
+        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.friends;
         break;
-      case Constants.soUserPrivacy.custom_friend.data:
-        this.itemDisplay.privacyDisplay = Constants.soUserPrivacy.custom_friend;
+      case Constants.soPostPrivacy.customFriend.data:
+        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.customCommunity;
         break;
       default:
-        this.itemDisplay.privacyDisplay = Constants.soUserPrivacy.unknow;
+        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.unknown;
     }
   }
 

@@ -127,12 +127,18 @@ export let Constants = {
     seen: 'seen',
     seen_and_took_action: 'seen_and_took_action'
   },
-  soUserPrivacy: {
+  soPostPrivacy: {
     public: {css: 'fa fa-globe', text: 'Public', data: 'public'},
-    private: {css: 'fa fa-lock', text: 'Private', data: 'private'},
+    personal: {css: 'fa fa-lock', text: 'personal', data: 'personal'},
+    private: {css: 'fa fa-lock', text: 'private', data: 'private'},
     friends: {css: 'fa fa-users', text: 'Friends', data: 'friends'},
-    custom_friend: {css: 'fa fa-users', text: 'Friends', data: 'custom_friend'},
-    unknow: {css: '', text: '', data: ''}
+    customFriend: {css: 'fa fa-user-times', text: 'Custom Friends', data: 'custom_friend'},
+    customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
+    unknown: {css: '', text: '', data: ''}
+  },
+  soCommunityPrivacy: {
+    open: {name: 'open' },
+    close: {name: 'close' }
   }
 };
 

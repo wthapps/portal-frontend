@@ -1,10 +1,27 @@
-<div class="page-body-chat-content-in" scrollToBottom lock-y-offset="10" observe-attributes="true">
+<!--<div class="page-body-chat-content-in" scrollToBottom lock-y-offset="10" observe-attributes="true">-->
+  <!--<div class="chat-item-wrap">-->
+    <!--<div *ngIf="item.value">-->
+      <!--<z-chat-share-item *ngFor="let message of item.value.data" [message]="message"></z-chat-share-item>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<div class="page-body-chat-content-in"
+     scrollToBottom
+     lock-y-offset="10"
+     observe-attributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolledUp)="onLoadMore()">
   <div class="chat-item-wrap">
-    <div class="chat-date">
-      <span>Nov 21 2016</span>
-    </div>
     <div *ngIf="item.value">
-      <z-chat-share-item *ngFor="let message of item.value.data" [message]="message"></z-chat-share-item>
+      <div *ngFor="let message of item.value.data">
+        <div class="chat-date" *ngIf="message | groupByDayMonthYear:'created_at'">
+          <span>{{ message.created_at |date }}</span>
+        </div>
+        <z-chat-share-item [message]="message"></z-chat-share-item>
+      </div>
     </div>
   </div>
 </div>
+

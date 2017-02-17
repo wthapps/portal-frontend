@@ -63,7 +63,7 @@ export class SoPhotoListComponent implements OnInit {
         this.photos = response['data'];
         this.loading.stop('.photo-grid-list');
       },
-      error => {
+      (error:any) => {
         // this.errorMessage = <any>error;
         this.loading.stop('.photo-grid-list');
       }

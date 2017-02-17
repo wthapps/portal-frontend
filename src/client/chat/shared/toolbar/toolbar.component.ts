@@ -23,10 +23,19 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onAddContact() {
+    this.addContact.type = 'addContact';
     this.addContact.modal.open();
   }
 
   onEditConversation() {
     // this.editConversation.modal.open();
+  }
+
+  onAddMember() {
+    this.addContact.type = 'addMember';
+    this.addContact.modal.open();
+  }
+  onFavorite() {
+    this.chatService.groupUserFavorite();
   }
 }

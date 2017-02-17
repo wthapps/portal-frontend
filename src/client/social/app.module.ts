@@ -8,7 +8,6 @@ import { SharedModule } from '../core/shared/shared.module';
 import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialCommunityModule } from './communities/communities.module';
 import { ZoneReportService } from './shared/form/report/report.service';
-import { routes, routing } from './app.routes';
 import { RouterModule } from '@angular/router';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,8 +24,7 @@ import { SocialSettingsModule } from './setting/setting.module';
     SocialSettingsModule,
     ZSocialSharedModule,
     SharedModule.forRoot(),
-    AppRoutingModule,
-    RouterModule.forRoot(routes)
+    AppRoutingModule
   ],
 
   declarations: [AppComponent,

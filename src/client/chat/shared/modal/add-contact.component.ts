@@ -14,6 +14,7 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   @ViewChild('modal') modal: ModalComponent;
   friends:any = [];
+  type:string = "addContact";
 
   constructor(private chatService: ChatService ) {
 
@@ -26,13 +27,25 @@ export class ZChatShareAddContactComponent implements OnInit {
     });
   }
 
+  add() {
+    if(this.type == "addContact") {
+      this.addContact();
+    } else {
+      this.addMember();
+    }
+  }
+
   addContact() {
-    // console.log( $('.new-contact').prop('checked', true) );
-    // this.chatService.addContact(id);
-    // this.modal.close();
     let friends = _.filter(this.friends, { checked: true });
     let ids = _.map(friends, 'id');
     this.chatService.addContact(ids);
+    this.modal.close();
+  }
+
+  addMember() {
+    let friends = _.filter(this.friends, { checked: true });
+    let ids = _.map(friends, 'id');
+    this.chatService.addMemberGroup(ids);
     this.modal.close();
   }
 

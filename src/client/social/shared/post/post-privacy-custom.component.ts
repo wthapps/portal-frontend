@@ -3,6 +3,7 @@ import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
 import { ListComponent } from '../../shared/ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
+import { Constants } from '../../../core/shared/config/constants';
 // import { HdModalComponent, ListComponent } from '../../shared/ng2-hd/index';
 // import { ApiBaseService, UserService } from '../../../shared/index';
 
@@ -86,6 +87,7 @@ export class PostPrivacyCustomComponent implements OnInit {
   }
 
   isCustomFriend(): boolean {
-    return this.type == 'custom_friend';
+    // return this.type == 'customFriend';
+    return this.type == Constants.soPostPrivacy.customFriend.data;
   }
 }

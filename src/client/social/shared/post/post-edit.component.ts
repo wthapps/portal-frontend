@@ -10,6 +10,9 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
+import { User } from '../../../core/shared/models/user.model';
+import { Constants } from '../../../core/shared/config/constants';
+import { SocialService } from '../services/social.service';
 
 
 declare var _: any;
@@ -56,11 +59,14 @@ export class PostEditComponent implements OnInit, OnChanges {
   uploadedPhotos: Array<any> = new Array<any>();
 
   parent: any = null;
+  currentUser: User;
+  readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
   constructor(private apiService: ApiBaseService,
               private loading: LoadingService,
               private fb: FormBuilder,
-              private currentUser: UserService) {
+              private socialService: SocialService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -73,6 +79,7 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
+    this.currentUser = this.userService.profile;
   }
 
   ngOnChanges() {
@@ -92,7 +99,11 @@ export class PostEditComponent implements OnInit, OnChanges {
 
 
     this.post = new SoPost();
-    this.custom_objects.push(this.community); // Default share new post to current community
+    if(this.socialService.community.currentCommunity) {
+      this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
+      this.custom_objects.length = 0; //
+      this.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
+    }
 
     this.mode = options.mode;
     this.isShare = options.isShare;
@@ -301,18 +312,19 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   privacyClassIcon(post: any): string {
     switch (post.privacy) {
-      case 'friends':
+      case Constants.soPostPrivacy.friends.data:
         return 'fa-users';
-      case 'public':
+      case  Constants.soPostPrivacy.public.data:
         return 'fa-globe';
-      case 'personal':
+      case  Constants.soPostPrivacy.personal.data:
         return 'fa-lock';
-      case 'custom_friend':
+      case  Constants.soPostPrivacy.customFriend.data:
         return 'fa-user-times';
-      case 'custom_community':
+      case  Constants.soPostPrivacy.customCommunity.data:
         return 'fa-group';
     }
     return '';
+    // return `Constants.soPostPrivacy.${post.privacy}.class`;
   }
 
   /**
@@ -324,7 +336,7 @@ export class PostEditComponent implements OnInit, OnChanges {
       tagObj = {
         id: null,
         name: tag,
-        user_id: this.currentUser.profile.id
+        user_id: this.userService.profile.id
       };
     }
     this.post.tags.push(tagObj);
