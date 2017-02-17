@@ -17,6 +17,7 @@ export class SoCommunityService implements OnInit {
   readonly soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
   readonly soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
   readonly soReportList: string = Constants.urls.zoneSoReportList;
+  currentCommunity: any;
 
   constructor(private apiBaseService: ApiBaseService  ) {
   }
@@ -24,6 +25,7 @@ export class SoCommunityService implements OnInit {
 
   ngOnInit() {
   }
+
 
 
   getCommunitiesList() {

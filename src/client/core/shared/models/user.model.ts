@@ -55,4 +55,5 @@ export class User {
   }) {
     if (fields) Object.assign(this, fields);
   }
+
 }

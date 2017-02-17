@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { PostListComponent } from '../shared/post/post-list.component';
+import { SocialService } from '../shared/services/social.service';
 
 
 /**
@@ -13,6 +14,10 @@ import { PostListComponent } from '../shared/post/post-list.component';
 export class ZSocialHomeComponent {
   // @ViewChild('postNew') postNew: PostNewComponent;
   @ViewChild('posts') posts: PostListComponent;
+
+  constructor(private socialService:SocialService) {
+    this.socialService.community.currentCommunity = undefined;
+  }
 
   reloadPosts(post: any) {
     this.posts.loadPosts();

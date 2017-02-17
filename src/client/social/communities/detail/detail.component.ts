@@ -297,7 +297,7 @@ export class ZSocialCommunityDetailComponent {
       (res: any)=> {
         this.item = res.data;
         this.community = res.data;
-
+        this.socialService.community.currentCommunity = this.community;
         // Check if this user is a community member
 
         // if (this.item.community_users ) {

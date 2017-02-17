@@ -5,7 +5,7 @@ import { ApiBaseService } from '../../../../core/shared/services/apibase.service
 @Injectable()
 export class PostService {
 
-  url = 'zone/social_network/posts';
+  readonly  url: string = 'zone/social_network/posts';
 
   constructor(private api: ApiBaseService) {
   }
