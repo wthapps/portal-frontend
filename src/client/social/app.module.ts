@@ -26,8 +26,9 @@ import { SocialSettingsModule } from './setting/setting.module';
     ZSocialSharedModule,
     SharedModule.forRoot(),
     AppRoutingModule,
-    routing
+    RouterModule.forRoot(routes)
   ],
+
   declarations: [AppComponent,
     // ZSocialSettingComponent,
     ZSocialProfileComponent

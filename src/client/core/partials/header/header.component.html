@@ -47,7 +47,7 @@
         <li class="dropdown navbar-nav-notification" >
           <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
              data-toggle="dropdown" href="javascript:;" role="button" (click)="markAsSeen()">
-            <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="newNotifCount > 0">{{ newNotifCount }}</span>
+            <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="notificationService.newNotifCount > 0">{{ notificationService.newNotifCount }}</span>
           </a>
           <ul class="dropdown-menu" id="nav-notification-list">
             <li class="dropdown-menu-bar">
@@ -59,11 +59,11 @@
             </li>
             <li>
               <ul class="list-unstyled" id="notification-items">
-                <li class="navbar-nav-notification-item" *ngFor="let notification of notifications" data-id="notification_{{notification.id}}">
+                <li class="navbar-nav-notification-item" *ngFor="let notification of notificationService.notifications" data-id="notification_{{notification.id}}">
                   <div class="media-center">
                     <div class="media-center-left">
                       <figure>
-                        <a [routerLink]="['/zone/social/communities']">
+                        <a [routerLink]="[communitiesUrl]">
                           <img [src]="notification.actor.profile_image" alt="notification.actor.name">
                         </a>
                       </figure>

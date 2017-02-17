@@ -1,11 +1,11 @@
-import {Directive, ElementRef, HostListener, AfterContentInit, Input, OnDestroy} from "@angular/core";
+import {Directive, ElementRef, HostListener, AfterContentInit, Input, OnDestroy} from '@angular/core';
 
 @Directive({
   selector: '[scrollToBottom]'
 })
 export class scrollToBottomDirective implements AfterContentInit, OnDestroy {
   @Input('lock-y-offset') lockYOffset = 10;
-  @Input('observe-attributes') observeAttributes: string = "false";
+  @Input('observe-attributes') observeAttributes: string = 'false';
 
   private nativeElement: HTMLElement;
   private isLocked = false;

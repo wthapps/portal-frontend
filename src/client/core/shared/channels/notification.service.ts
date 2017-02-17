@@ -64,7 +64,7 @@ export class NotificationService {
     // }
 
     switch (method) {
-      case "post":
+      case 'post':
         this.api.post(link, JSON.stringify(body))
           .subscribe((result: any) => {
               // Reload data
@@ -92,12 +92,12 @@ export class NotificationService {
   }
 
 
-  markAsSeen(){
+  markAsSeen() {
 
     console.log('markAsSeen', this.notifications.length);
     // this.notificationService.markAsSeen(this.notifications)
     let notif_ids = _.map(this.notifications, (i: any) => i.id);
-    let body = {"ids" : notif_ids};
+    let body = {'ids' : notif_ids};
 
     // TODO: Convert this method to put
     return this.api.post(`${Constants.urls.zoneSoNotifications}/mark_as_seen`, body)
@@ -115,9 +115,9 @@ export class NotificationService {
         });
   }
 
-  toggleReadStatus(notification: any){
+  toggleReadStatus(notification: any) {
     this.currentNotifId = notification.id;
-    let body = {"ids" : this.currentNotifId};
+    let body = {'ids' : this.currentNotifId};
     return this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_read_status`, body)
       .subscribe(
         (result: any) => {
@@ -129,7 +129,7 @@ export class NotificationService {
         });
   }
 
-  toggleAllReadStatus(){
+  toggleAllReadStatus() {
     this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_all_read_status`, [])
       .subscribe(
         (result: any) => {

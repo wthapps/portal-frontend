@@ -25,8 +25,11 @@ import { ModuleWithProviders } from '@angular/core';
 
 export const routes: Routes = [
   {
-  path: 'home', component: ZSocialHomeComponent
-},
+    path: 'home', component: ZSocialHomeComponent
+  },
+  {
+    path: '', redirectTo: '/home', pathMatch: 'full'
+  },
   {
     path: 'profile', component: ZSocialProfileComponent,
     children: [

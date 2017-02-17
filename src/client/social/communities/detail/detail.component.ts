@@ -247,7 +247,7 @@ export class ZSocialCommunityDetailComponent {
         this.apiBaseService.put(`${this.communitiesUrl}/${this.uuid}/make_admin/${user.uuid}`).subscribe(
           (res: any)=> {
             this.toastsService.success(`You have changed ${this.user ? this.user.name : ''} role to ADMIN successfully`);
-            $('#user_'+user.uuid).find("span.member-role").text("Admin");
+            $('#user_'+user.uuid).find('span.member-role').text('Admin');
             // this.loadDataBySelectedTab();
           },
           error => {
