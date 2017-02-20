@@ -1,9 +1,9 @@
-import { Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, HostListener, ElementRef, HostBinding } from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -13,10 +13,28 @@ declare var $:any;
 })
 
 export class ZChatChatboxComponent {
-  emojiData: any = [];
   @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+  @HostBinding('class') keyCtrlClass = '';
 
-  constructor(private chatService: ChatService) {}
+  emojiData: any = [];
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
+    // console.log(ev);
+    if (ev.keyCode == 16) {
+      this.keyCtrlClass = 'active';
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(ev: KeyboardEvent) {
+    if (ev.keyCode == 16) {
+      this.keyCtrlClass = 'active';
+    }
+  }
+
+  constructor(private chatService: ChatService) {
+  }
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
@@ -28,7 +46,7 @@ export class ZChatChatboxComponent {
     $('#chat-message-text').text('');
   }
 
-  onEmojiClick(e:any) {
+  onEmojiClick(e: any) {
     $('#chat-message-text').append(`:${e}`);
     this.placeCaretAtEnd(document.getElementById("chat-message-text"));
   }
@@ -37,7 +55,7 @@ export class ZChatChatboxComponent {
     this.photoModal.open();
   }
 
-  chooseDone(e:any) {
+  chooseDone(e: any) {
     this.photoModal.close();
     for (let photo of e) {
       photo.type = 'Photo';
@@ -45,27 +63,27 @@ export class ZChatChatboxComponent {
     }
   }
 
-  uploadFile(e:any) {
+  uploadFile(e: any) {
     let files = e.target.files;
     // Create a file uploading
     this.chatService.createUploadingFile();
     this.chatService.uploadFiles(files);
   }
 
-  uploadPhoto(e:any) {
+  uploadPhoto(e: any) {
     this.photoModal.close();
     this.chatService.createUploadingFile();
     this.chatService.uploadPhotos(e);
   }
 
-  placeCaretAtEnd(el:any) {
+  placeCaretAtEnd(el: any) {
     el.focus();
     if (typeof window.getSelection != "undefined"
       && typeof document.createRange != "undefined") {
-      let range:any = document.createRange();
+      let range: any = document.createRange();
       range.selectNodeContents(el);
       range.collapse(false);
-      let sel:any = window.getSelection();
+      let sel: any = window.getSelection();
       sel.removeAllRanges();
       sel.addRange(range);
     }

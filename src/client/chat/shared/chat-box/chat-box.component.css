@@ -3,6 +3,7 @@
   overflow: hidden;
   display: inline-block;
 }
+
 .fileinput-button input {
   position: absolute;
   top: 0;
@@ -14,4 +15,17 @@
   direction: ltr;
   cursor: pointer;
 }
-.wth-emoji {cursor:pointer;}
+
+.wth-emoji {
+  cursor: pointer;
+}
+
+.chatbox-container-input {
+  height: 34px !important;
+  overflow: hidden !important;
+}
+
+:host.active .chatbox-container-input {
+  height: auto !important;
+  overflow: auto !important;
+}

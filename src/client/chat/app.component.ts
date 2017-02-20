@@ -9,7 +9,7 @@ import { ChatService } from './shared/services/chat.service';
 @Component({
   moduleId: module.id,
   selector: 'sd-app',
-  templateUrl: 'app.component.html',
+  templateUrl: 'app.component.html'
 })
 export class AppComponent implements OnInit {
   constructor(private chatService: ChatService) {}
