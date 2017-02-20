@@ -14,17 +14,61 @@ declare var _: any;
 export class ZMediaTaggingComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
-  values: string[];
-  dataTags: string[];
+  @Input() mediaType: string = 'photo';
+  dataTags: any = [];
+
+  newTags: any = [];
+  addedTags: any = [];
+  removedTags: any = [];
 
   constructor(private taggingService: ZMediaTaggingService) {
   }
 
   ngOnInit() {
-    console.log(this.taggingService);
+    this.getAllTags();
+    this.getCurrentTags();
+  }
+
+  getAllTags() {
     this.taggingService.getAll().subscribe(
       (res: any)=> {
         this.dataTags = _.map(res.data, 'name');
       });
+  }
+
+  getCurrentTags() {
+    let body = JSON.stringify({objects: _.map(this.selectedItems, 'id'), type: this.getType()});
+    this.taggingService.getByItem(body).subscribe(
+      (res: any)=> {
+        console.log(res);
+        this.addedTags = res.data;
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
+  }
+
+  save() {
+    let body = JSON.stringify({
+      objects: _.map(this.selectedItems, 'id'),
+      type: this.getType(),
+      newTags: this.newTags,
+      addedTags: this.addedTags,
+      removedTags: this.removedTags
+    });
+    console.log(body);
+  }
+
+  private getType(): number {
+    if (this.mediaType == 'photo') {
+      return 1;
+    }
+    if (this.mediaType == 'album') {
+      return 2;
+    }
+    if (this.mediaType == 'albumDetail') {
+      return 2;
+    }
+    return 1;
   }
 }
