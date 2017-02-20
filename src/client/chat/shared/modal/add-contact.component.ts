@@ -45,7 +45,7 @@ export class ZChatShareAddContactComponent implements OnInit {
   addMember() {
     let friends = _.filter(this.friends, { checked: true });
     let ids = _.map(friends, 'id');
-    this.chatService.addMemberGroup(ids);
+    this.chatService.addMembersGroup(ids);
     this.modal.close();
   }
 

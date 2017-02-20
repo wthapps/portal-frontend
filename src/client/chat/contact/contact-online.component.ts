@@ -4,9 +4,10 @@ import { ChatService } from '../shared/services/chat.service';
 @Component({
   moduleId: module.id,
   selector: 'z-chat-contact',
-  templateUrl: 'contact.component.html'
+  templateUrl: 'contact-online.component.html'
 })
-export class ZChatContactComponent implements OnInit {
+export class ZChatContactOnlineComponent implements OnInit {
+  usersOnlineItem:any;
   contactItem:any;
 
   constructor(private chatService: ChatService) {
@@ -14,5 +15,6 @@ export class ZChatContactComponent implements OnInit {
 
   ngOnInit() {
     this.contactItem = this.chatService.getContacts();
+    this.usersOnlineItem = this.chatService.getUsersOnline();
   }
 }

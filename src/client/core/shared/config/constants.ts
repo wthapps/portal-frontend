@@ -67,7 +67,7 @@ export let Constants = {
   },
 
   chatMenuItems: [
-    {name: 'Conversation', link: '/conversation/dashboard'},
+    {name: 'Conversation', link: '/conversation'},
     {name: 'Contact', link: '/contact'},
     {name: 'History', link: '/history'},
     {name: 'Settings', link: '/setting'}
@@ -112,7 +112,8 @@ export let Constants = {
     zoneSoNotifications: 'zone/social_network/notifications',
     zoneSoReportList: 'zone/social_network/report_list',
     posts: 'posts',
-    profile: 'profile'
+    profile: 'profile',
+    chatConversation: 'conversation'
   },
   sex: ['', 'Male', 'Female', 'Other'],
   communityRole: {

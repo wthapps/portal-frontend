@@ -36,6 +36,6 @@ export class ZChatToolbarComponent implements OnInit {
     this.addContact.modal.open();
   }
   onFavorite() {
-    this.chatService.groupUserFavorite();
+    this.chatService.addGroupUserFavorite();
   }
 }

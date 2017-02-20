@@ -14,8 +14,7 @@ export class ZChatConversationGlobalComponent implements OnInit {
   ngOnInit() {
     this.selectContact = this.chatService.getContactSelect();
     if (this.selectContact && this.selectContact.value) {
-      console.log('inti chatService');
-      this.chatService.router.navigate([`${this.chatService.constant.conversation_url}/${this.selectContact.value.id}`]);
+      this.chatService.router.navigate([`${this.chatService.constant.conversationUrl}/${this.selectContact.value.id}`]);
     }
   }
 }

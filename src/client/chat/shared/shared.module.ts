@@ -14,6 +14,11 @@ import { ChatNotificationChannelService } from './channels/chat-notification-cha
 import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from './modal/add-contact.component';
 import { ChatMonthDayYearPipe } from './pipe/chat-month-day-year.pipe';
+import { ChatGroupCouplePipe } from './pipe/chat-group-couple.pipe';
+import { ChatUserOnlinePipe } from './pipe/chat-user-online.pipe';
+import { ZChatShareAddToConversationComponent } from './modal/add-to-conversation.component';
+import { ChatGroupMultiplePipe } from './pipe/chat-group-multiple.pipe';
+import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -33,7 +38,12 @@ import { ChatMonthDayYearPipe } from './pipe/chat-month-day-year.pipe';
     ZChatShareUserListComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
-    ChatMonthDayYearPipe
+    ZChatShareAddToConversationComponent,
+    ChatMonthDayYearPipe,
+    ChatGroupCouplePipe,
+    ChatGroupMultiplePipe,
+    ChatGroupBlackListPipe,
+    ChatUserOnlinePipe
   ],
   exports: [
     CommonModule,
@@ -45,7 +55,12 @@ import { ChatMonthDayYearPipe } from './pipe/chat-month-day-year.pipe';
     ZChatShareUserListComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
-    ChatMonthDayYearPipe
+    ZChatShareAddToConversationComponent,
+    ChatMonthDayYearPipe,
+    ChatGroupCouplePipe,
+    ChatGroupMultiplePipe,
+    ChatGroupBlackListPipe,
+    ChatUserOnlinePipe
   ]
 })
 export class ChatSharedModule {

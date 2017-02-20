@@ -1,15 +1,16 @@
+<z-chat-share-toolbar #chatToolbar></z-chat-share-toolbar>
 <aside class="main-page-left-in page-body-sidebar aside-chat">
   <div class="form-group">
-    <a [routerLink]="['new_conversation']" class="btn btn-default"><i class="fa fa-plus"></i> New Message</a>
+    <a href="javascript:;" class="btn btn-default" (click)="onAddContact()"><i class="fa fa-plus"></i> New Message</a>
   </div>
   <dl class="p-list-user-group">
     <dt>Favourites</dt>
     <dd>
       <ul class="p-list-user p-list-outside" *ngIf="favouriteContacts.value">
         <li *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
-          <a [routerLink]="[chatService.constant.conversation_url, contact.id]" (click)="onSelect(contact)">
+          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
             <div class="pull-right">
-              <span class="badge badge-wth" *ngIf="contact.notification > 0">{{contact.notification}}</span>
+              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
             </div>
             <figure>
               <img [src]="contact.display.image">
@@ -22,17 +23,15 @@
         </li>
       </ul>
     </dd>
-    <dd>
-    </dd>
   </dl>
   <dl class="p-list-user-group">
     <dt>Recent</dt>
     <dd>
       <ul class="p-list-user p-list-outside" *ngIf="recentContacts.value">
         <li *ngFor="let contact of recentContacts.value" [routerLinkActive]="['active']">
-          <a [routerLink]="[chatService.constant.conversation_url, contact.id]" (click)="onSelect(contact)">
+          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
             <div class="pull-right">
-              <span class="badge badge-wth" *ngIf="contact.notification > 0">{{contact.notification}}</span>
+              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
             </div>
             <figure>
               <img [src]="contact.display.image">

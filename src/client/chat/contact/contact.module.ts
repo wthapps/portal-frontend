@@ -4,20 +4,28 @@ import { ChatSharedModule } from '../shared/shared.module';
 import { SharedModule } from '../../core/shared/shared.module';
 import { ZChatContactComponent } from './contact.component';
 import { ZChatContactRoutingModule } from './contact-routing.module';
+import { ZChatContactOnlineComponent } from './contact-online.component';
+import { ZChatContactSharedModule } from './shared/shared.module';
+import { ZChatContactBlackListComponent } from './contact-black-list.component';
 
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ZChatContactRoutingModule,
+    ZChatContactSharedModule,
     SharedModule.forRoot(),
     ChatSharedModule.forRoot()
   ],
   declarations: [
-    ZChatContactComponent
+    ZChatContactComponent,
+    ZChatContactBlackListComponent,
+    ZChatContactOnlineComponent
   ],
   exports: [
-    ZChatContactComponent
+    ZChatContactComponent,
+    ZChatContactBlackListComponent,
+    ZChatContactOnlineComponent
   ],
   providers: []
 })
