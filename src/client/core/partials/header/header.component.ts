@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, ViewChild, HostBinding } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { SearchFormComponent } from './sub/search-form.component';
@@ -20,13 +20,16 @@ declare let App: any; //This App stands for ActionCable
   templateUrl: 'header.component.html'
 })
 export class HeaderComponent implements AfterViewInit, OnInit {
+  @Input('headerOver') headerOver: boolean = false;
+  @HostBinding('class') headerClass = 'header';
+
   firstName: string = '';
   lastName: string = '';
   urls: any;
 
   navigationUrl: string = '/';
 
-  imgLogo: string = Constants.img.logoWhite;
+  imgLogo: string = Constants.img.logo;
 
   showSearchBar: boolean = true;
 
@@ -42,14 +45,19 @@ export class HeaderComponent implements AfterViewInit, OnInit {
               private router: Router,
               private notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {
-    this.urls = new Array();
-    this.router.events.subscribe((navigationEnd: NavigationEnd) => {
-      this.urls.length = 0; //Fastest way to clear out array
-      this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
-    });
+    /*this.urls = new Array();
+     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
+     this.urls.length = 0; //Fastest way to clear out array
+     this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+     });*/
   }
 
   ngOnInit() {
+
+    if (this.headerOver) {
+      this.headerClass = 'header header-over';
+      this.imgLogo = Constants.img.logoWhite;
+    }
 
     if (this.userService.loggedIn) {
       this.firstName = this.userService.profile.first_name;
@@ -264,15 +272,15 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     // }
   }
 
-  markAsSeen(){
+  markAsSeen() {
     this.notificationService.markAsSeen();
   }
 
-  toggleReadStatus(notification: any){
+  toggleReadStatus(notification: any) {
     this.notificationService.toggleReadStatus(notification);
   }
 
-  toggleAllReadStatus(){
+  toggleAllReadStatus() {
     this.notificationService.toggleAllReadStatus();
   }
 }
