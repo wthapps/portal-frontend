@@ -19,6 +19,7 @@ export class ZMediaTaggingComponent implements OnInit {
 
   newTags: any = [];
   addedTags: any = [];
+  currentTags: any = [];
   removedTags: any = [];
 
   constructor(private taggingService: ZMediaTaggingService) {
@@ -33,6 +34,9 @@ export class ZMediaTaggingComponent implements OnInit {
     this.taggingService.getAll().subscribe(
       (res: any)=> {
         this.dataTags = _.map(res.data, 'name');
+      },
+      (error: any) => {
+        console.log('error', error);
       });
   }
 
@@ -42,6 +46,7 @@ export class ZMediaTaggingComponent implements OnInit {
       (res: any)=> {
         console.log(res);
         this.addedTags = res.data;
+        this.currentTags = res.data;
       },
       (error: any) => {
         console.log('error', error);
@@ -49,6 +54,17 @@ export class ZMediaTaggingComponent implements OnInit {
   }
 
   save() {
+    this.removedTags.length = 0;
+
+    this.newTags = _.difference(this.addedTags, this.dataTags);
+
+    let _this = this;
+    _.map(this.currentTags, (v: any)=> {
+      if (_this.addedTags.indexOf(v) == -1) {
+        _this.removedTags.push(v);
+      }
+    });
+
     let body = JSON.stringify({
       objects: _.map(this.selectedItems, 'id'),
       type: this.getType(),
