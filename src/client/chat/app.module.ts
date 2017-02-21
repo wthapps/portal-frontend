@@ -10,6 +10,7 @@ import { ChatSharedModule } from './shared/shared.module';
 import { ZChatSettingModule } from './setting/setting.module';
 import { ZChatConversationModule } from './conversation/conversation.module';
 import { ZChatContactModule } from './contact/contact.module';
+import { ZChatHistoryModule } from './history/history.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { ZChatContactModule } from './contact/contact.module';
     SharedModule.forRoot(),
     ZChatSettingModule,
     ZChatConversationModule,
-    ZChatContactModule
+    ZChatContactModule,
+    ZChatHistoryModule
   ],
   declarations: [
     AppComponent

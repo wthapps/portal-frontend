@@ -55,7 +55,7 @@ export class ChatNotificationChannelService extends CableService {
     if(item && item.value) {
       let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.group_id) return contact});
       if (contact) {
-        contact.notification = 0
+        contact.notification_count = 0
       }
     }
   }
@@ -64,8 +64,8 @@ export class ChatNotificationChannelService extends CableService {
     let item = this.storage.find('chat_contacts');
     if(item && item.value) {
       let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.group_id) return contact});
-      if (contact) {
-        contact.notification = data.count
+      if (contact && contact.notification) {
+        contact.notification_count = data.count
       }
     }
   }

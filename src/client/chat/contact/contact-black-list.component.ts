@@ -4,9 +4,9 @@ import { ChatService } from '../shared/services/chat.service';
 @Component({
   moduleId: module.id,
   selector: 'z-chat-contact',
-  templateUrl: 'contact.component.html'
+  templateUrl: 'contact-black-list.component.html'
 })
-export class ZChatContactComponent implements OnInit {
+export class ZChatContactBlackListComponent implements OnInit {
   contactItem:any;
 
   constructor(private chatService: ChatService) {
@@ -14,5 +14,9 @@ export class ZChatContactComponent implements OnInit {
 
   ngOnInit() {
     this.contactItem = this.chatService.getContacts();
+  }
+
+  removeBlackList(contact:any) {
+    this.chatService.removeBlackList(contact);
   }
 }

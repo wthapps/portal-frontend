@@ -58,13 +58,13 @@ export class ChatService {
 
   setRecentContacts() {
     let contacts = this.storage.find('chat_contacts').value.data;
-    let recentContacts = _.filter(contacts, ['favourite', false]);
+    let recentContacts = _.filter(contacts, { 'favourite': false, 'black_list': false });
     this.storage.save('chat_recent_contacts', recentContacts);
   }
 
   setFavouriteContacts() {
     let contacts = this.storage.find('chat_contacts').value.data;
-    let favouriteContacts = _.filter(contacts, ['favourite', true]);
+    let favouriteContacts = _.filter(contacts, { 'favourite': true, 'black_list': false });
     this.storage.save('chat_favourite_contacts', favouriteContacts);
   }
 
@@ -228,28 +228,70 @@ export class ChatService {
     );
   }
 
-  groupUserFavorite() {
-    let groupId:any = this.storage.find('contact_select').value.group_json.id;
+  addGroupUserFavorite() {
+    let groupUserId:any = this.storage.find('contact_select').value.id;
     let favourite:any = !this.storage.find('contact_select').value.favourite;
     let body:any = {favourite: favourite};
-    this.apiBaseService.put('zone/chat/group_user/' + groupId, body).subscribe(
+    this.updateGroupUser(groupUserId, body);
+    this.storage.find('contact_select').value.favourite = !this.storage.find('contact_select').value.favourite;
+  }
+
+  addGroupUserBlackList(contact:any) {
+    let groupUserId:any = contact.id;
+    let body:any = {black_list: true};
+    this.updateGroupUser(groupUserId, body);
+  }
+
+  updateGroupUserNotification(contact:any) {
+    let groupUserId:any = contact.id;
+    let notification:any = !contact.notification;
+    let body:any = {notification: notification};
+    this.updateGroupUser(groupUserId, body);
+  }
+
+  removeBlackList(contact:any) {
+    let groupUserId:any = contact.id;
+    let body:any = {black_list: false};
+    this.updateGroupUser(groupUserId, body);
+  }
+
+  updateNotification(contact:any, data:any) {
+    this.updateGroupUser(contact.id, data);
+  }
+
+  deleteContact(contact:any) {
+    this.updateGroupUser(contact.id, {deleted: true});
+  }
+
+  updateGroupUser(groupUserId:any, data:any) {
+    this.apiBaseService.put('zone/chat/group_user/' + groupUserId, data).subscribe(
       (res:any) => {
         this.storage.save('chat_contacts', res);
-        this.storage.find('contact_select').value.favourite = !this.storage.find('contact_select').value.favourite;
         this.setRecentContacts();
         this.setFavouriteContacts();
       }
     );
   }
 
-  addMemberGroup(friends:any) {
-    let groupId:any = this.storage.find('contact_select').value.group_json.id;
+  addMembersGroup(friends:any, group?:any) {
+    let groupId:any = null;
+    if(group) {
+      groupId = group;
+    } else {
+      groupId = this.storage.find('contact_select').value.group_json.id;
+    }
     let body = {friends: friends};
     this.apiBaseService.put('zone/chat/group/' + groupId, body).subscribe(
       (res:any) => {
         this.notificationChannel.addedContactNotification(groupId);
       }
     );
+  }
+
+  addMemberGroups(friendId:any, groupIds:any) {
+    for(let groupId of groupIds) {
+      this.addMembersGroup([friendId], groupId);
+    }
   }
 }
 

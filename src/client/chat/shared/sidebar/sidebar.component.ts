@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
+import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
 
 declare var $:any;
 @Component({
@@ -14,12 +15,13 @@ export class ZChatSidebarComponent implements OnInit {
   usersOnlineItem:any;
   favouriteContacts:any;
   recentContacts:any;
+  @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.chatService.handler.addListener('on_default_contact_select_side_bar', 'on_default_contact_select', (contact:any) => {
-      this.chatService.router.navigate([`${this.chatService.constant.conversation_url}/${contact.id}`]);
+      this.chatService.router.navigate([`${this.chatService.constant.conversationUrl}/${contact.id}`]);
       this.chatService.getMessages(contact.group_json.id);
       this.chatService.chanel.subscribe(contact.group_json.id);
     });
@@ -33,4 +35,9 @@ export class ZChatSidebarComponent implements OnInit {
     $('#chat-message-text').focus();
     this.chatService.selectContact(contact);
   }
+
+  onAddContact() {
+    this.chatToolbar.onAddContact();
+  }
+
 }

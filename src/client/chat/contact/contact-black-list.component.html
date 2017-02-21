@@ -2,9 +2,9 @@
   <nav class="nav-tabs-wrap">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
-      <li class="active"><a href="javascript:;">ALL</a></li>
+      <li><a [routerLink]="['/contact']">ALL</a></li>
       <li><a [routerLink]="['/contact/online']">ONLINE</a></li>
-      <li><a [routerLink]="['/contact/blacklist']">BLACKLIST</a></li>
+      <li class="active"><a href="javascript:;">BLACKLIST</a></li>
     </ul>
   </nav>
 </div>
@@ -12,7 +12,7 @@
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
   <div class="page-body-content-in">
     <ul class="p-list-user p-list-border">
-      <li *ngFor="let contact of contactItem.value.data | chatGroupCouple" >
+      <li *ngFor="let contact of contactItem.value.data | chatGroupBlackList" >
         <div class="media-flex">
           <div class="media-flex-item">
             <figure>
@@ -25,7 +25,11 @@
           <div class="media-flex-body text-fade">
             <!--Nickname-->
           </div>
-          <z-chat-contact-actions [contact]="contact"></z-chat-contact-actions>
+          <div class="media-flex-item">
+            <div class="btn-group">
+              <a href="javascript:;" (click)="removeBlackList(contact)">REMOVE</a>
+            </div>
+          </div>
         </div>
       </li>
     </ul>

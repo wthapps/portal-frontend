@@ -44,17 +44,12 @@ export class ChatChannelService extends CableService {
   }
 
   addMessage(groupId:any, data:any) {
-
     let item = this.storage.find('chat_messages_group_' + groupId);
     if (item && item.value) {
       item.value.data.push(data);
       let currentGroupId = this.storage.find('contact_select').value.group_json.id;
-      console.log('currentGroupId', currentGroupId );
       if(currentGroupId == groupId) {
-        console.log('addMessage', item.value);
         this.storage.save('current_chat_messages', item);
-
-        console.log('addMessage2', this.storage.find('current_chat_messages').value);
       }
 
     }

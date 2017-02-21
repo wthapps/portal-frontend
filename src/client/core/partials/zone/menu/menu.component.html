@@ -24,11 +24,11 @@
     </li>
 
     <li class="has-sub" [routerLinkActive]="['active']">
-      <a href="javascript:;" (click)="onMenu('chat')">
+      <a [routerLink]="[chatMenu[0].link]" (click)="onMenu($event)">
         Chat
       </a>
-      <ul [routerLinkActive]="['active']" class="list-unstyled">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let chat of chatMenu">
+      <ul [routerLinkActive]="['active']" class="list-unstyled" id="zone_menu_chat">
+        <li [routerLinkActive]="['active']" *ngFor="let chat of chatMenu">
           <a [routerLink]="[chat.link]">
             {{chat.name}}
           </a>

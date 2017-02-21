@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ChatSharedModule } from '../shared/shared.module';
 import { SharedModule } from '../../core/shared/shared.module';
 import { ZChatConversationGlobalComponent } from './conversation-global.component';
-import { ZChatNewConversationComponent } from './new-conversation.component';
 import { ZChatConversationRoutingModule } from './conversation-routing.module';
 import { ZChatConversationComponent } from './conversation.component';
 
@@ -17,12 +16,10 @@ import { ZChatConversationComponent } from './conversation.component';
   ],
   declarations: [
     ZChatConversationGlobalComponent,
-    ZChatNewConversationComponent,
     ZChatConversationComponent
   ],
   exports: [
     ZChatConversationGlobalComponent,
-    ZChatNewConversationComponent,
     ZChatConversationComponent
   ],
   providers: []
