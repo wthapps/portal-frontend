@@ -91,7 +91,6 @@
             <ul class="dropdown-menu dropdown-custom">
               <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
               <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
-              <!--<li *ngIf="isAdmin"><a [routerLink]="['/zone/social/communities/'+uuid+'/members']">Manage members</a></li>-->
               <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>

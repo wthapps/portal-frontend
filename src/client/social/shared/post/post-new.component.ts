@@ -3,6 +3,8 @@ import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/cor
 import { PostEditComponent } from './index';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { User } from '../../../core/shared/models/user.model';
+import { SocialService } from '../services/social.service';
 
 declare var _: any;
 
@@ -20,8 +22,11 @@ export class PostNewComponent implements OnInit {
   selectedPhotos: Array<any> = new Array<any>();
   uploadPhotos: Array<any> = new Array<any>();
   // files: Array<any> = new Array<any>();
+  user: User;
 
-  constructor(private apiService: ApiBaseService, loadingService: LoadingService) {
+  constructor(private apiService: ApiBaseService,
+              private socialService: SocialService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit(): void {

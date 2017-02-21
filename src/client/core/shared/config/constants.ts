@@ -111,6 +111,7 @@ export let Constants = {
     zoneSoFavourites: 'zone/social_network/favourites',
     zoneSoNotifications: 'zone/social_network/notifications',
     zoneSoReportList: 'zone/social_network/report_list',
+    zoneSoProfile: 'zone/social_network/profile',
     posts: 'posts',
     profile: 'profile',
     chatConversation: 'conversation'
@@ -140,6 +141,10 @@ export let Constants = {
   soCommunityPrivacy: {
     open: {name: 'open' },
     close: {name: 'close' }
+  },
+  soCommunityReportEntity: {
+    user: 1,
+    community: 2
   }
 };
 

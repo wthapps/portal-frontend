@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
 import { ChannelNotificationService } from './channel-notification.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 /**
  * Created by phat on 18/11/2016.
@@ -21,6 +22,8 @@ export class NotificationService {
   }
 
   constructor(private api: ApiBaseService,
+              private router: Router,
+              private route: ActivatedRoute,
               private notificationChannel: ChannelNotificationService) {
   }
 
@@ -44,7 +47,7 @@ export class NotificationService {
   }
 
   doAction(action: any, notif_id: string) {
-    let link = action.link;
+    let link: string = action.link;
     let method = action.method;
     let params = action.params;
     let method_name = action.name;
@@ -54,22 +57,19 @@ export class NotificationService {
     Object.assign(body, params);
     this.currentNotifId = notif_id;
 
-    // switch (method_name) {
-    //   case "accept":
-    //     acceptInvitation(body); break;
-    //   case "cancel":
-    //     cancelInvitation(body); break;
-    //   default:
-    //     console.log('error', 'Unhandle method ' + method_name);
-    // }
-
     switch (method) {
+      case 'navigate':
+        this.router.navigate(['/' + link ], { relativeTo: this.route });
+
+        let currentNotif = _.find(this.notifications, {id: this.currentNotifId});
+        this.markAsRead(currentNotif);
+
+        break;
       case 'post':
         this.api.post(link, JSON.stringify(body))
           .subscribe((result: any) => {
               // Reload data
               _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
-              // $('#notification_'+this.currentNotifId).remove();
               console.log('result: ', result);
             },
             (error: any) => {
@@ -87,7 +87,7 @@ export class NotificationService {
           });
         break;
       default:
-        console.log('error', 'DoAction: Unhandle method ' + method + ' with method name: ' + method_name);
+        console.log('error', 'DoAction: Unhandled method ' + method + ' with method name: ' + method_name);
     }
   }
 
@@ -129,12 +129,18 @@ export class NotificationService {
         });
   }
 
+  markAsRead(notification: any) {
+    // Mark this notification as read
+    if ( !notification.is_read )
+      this.toggleReadStatus(notification);
+  }
+
   toggleAllReadStatus() {
     this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_all_read_status`, [])
       .subscribe(
         (result: any) => {
           let overallReadStatus = result.data;
-          _.each(this.notifications, (n: any) => {n.is_read = overallReadStatus});
+          _.each(this.notifications, (n: any) => {n.is_read = overallReadStatus ;});
 
         },
         (error: any) => {
@@ -197,7 +203,7 @@ export class NotificationService {
 
     this.notificationChannel.createSubscription();
 
-    if( this.notificationChannel.notificationUpdated){
+    if( this.notificationChannel.notificationUpdated) {
       this.notificationChannel.notificationUpdated
         .subscribe(
           (notification: any) => {

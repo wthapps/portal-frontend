@@ -23,7 +23,7 @@ export const routes: Routes = [
   },
   {  path: 'notifications', component: ZSocialNotificationsComponent  },
   { path: 'posts/:id', component: PostDetailComponent },
-  {  path: 'settings', loadChildren: 'social/setting/setting.module#SocialSettingsModule'  }
+  {  path: 'settings', loadChildren: './social/setting/setting.module#SocialSettingsModule'  }
 
 ];
 

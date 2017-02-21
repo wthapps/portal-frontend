@@ -6,7 +6,7 @@ import { ZSocialCommunityComponent } from '../communities/communities.component'
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'settings',  component: ZSocialCommunityComponent }
+      { path: '',  component: ZSocialCommunityComponent }
     ])
   ],
   exports: [RouterModule]

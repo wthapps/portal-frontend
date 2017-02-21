@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component'
+import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
@@ -22,7 +22,7 @@ declare  let $: any;
 })
 
 
-export class ZSocialCommunityDetailComponent {
+export class ZSocialCommunityDetailComponent implements OnInit{
   errorMessage: string = '';
 
   tab: any = {

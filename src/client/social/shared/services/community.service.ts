@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Constants } from '../../../core/shared/config/constants';

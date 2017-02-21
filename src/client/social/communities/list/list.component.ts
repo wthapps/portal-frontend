@@ -26,7 +26,7 @@ declare var _: any;
 
 export class ZSocialCommunityListComponent implements OnInit {
 
-  // @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
+  @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
 
   errorMessage: string = '';
@@ -36,6 +36,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   action: string = 'create';
   favourite: any;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
+  // readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
 
   constructor(private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
@@ -53,7 +54,7 @@ export class ZSocialCommunityListComponent implements OnInit {
 
   getList() {
     this.loadingService.start('#communites-list');
-    // this.loadingService.start();
+
     let myuuid = this.userService.profile.uuid;
     var _this_community = this;
 
@@ -74,18 +75,18 @@ export class ZSocialCommunityListComponent implements OnInit {
     );
   }
 
-  // onCreate() {
-  //   this.modalEdit.modal.open();
-  //   this.action = 'create';
-  //   return false;
-  // }
-  //
-  // onEdit(item: any) {
-  //   this.modalEdit.modal.open();
-  //   this.currentItem = item;
-  //   this.action = 'edit';
-  //   return false;
-  // }
+  onCreate() {
+    this.modalEdit.modal.open();
+    this.action = 'create';
+    return false;
+  }
+
+  onEdit(item: any) {
+    this.modalEdit.modal.open();
+    this.currentItem = item;
+    this.action = 'edit';
+    return false;
+  }
 
   onDelete(item: any) {
     console.log(item);
@@ -156,14 +157,6 @@ export class ZSocialCommunityListComponent implements OnInit {
   onReport(uuid: any): any {
     this.zoneReportService.community(uuid);
     return false;
-  }
-
-  onCreate() {
-
-  }
-
-  onEdit() {
-
   }
 
 
