@@ -150,6 +150,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     this.userService.logout('users/sign_out')
       .subscribe(
         response => {
+          window.location.href = `${Constants.baseUrls.app}/login`
           // this.userService.deleteUserInfo();
           // this.appearancesChannelService.unsubscribe();
           // this.router.navigate(['/login']);

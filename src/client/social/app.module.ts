@@ -11,9 +11,11 @@ import { ZoneReportService } from './shared/form/report/report.service';
 import { RouterModule } from '@angular/router';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { ZSocialSettingComponent } from './setting/setting.component';
 import { ZSocialProfileComponent } from './profile/profile.component';
 import { SocialSettingsModule } from './setting/setting.module';
+import { CoreModule } from '../core/core.module';
+import { ZSocialHomeComponent } from './home/home.component';
+
 
 @NgModule({
   imports: [
@@ -23,6 +25,7 @@ import { SocialSettingsModule } from './setting/setting.module';
     ZSocialCommunityModule,
     SocialSettingsModule,
     ZSocialSharedModule,
+    CoreModule.forRoot(),
     SharedModule.forRoot(),
     AppRoutingModule
   ],

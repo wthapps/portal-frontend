@@ -10,7 +10,8 @@ export class StorageService {
   reset: boolean = true;
 
   constructor(public userService: UserService) {
-    this.storageId = userService.profile.id;
+    // TODO Must refactor this line
+    // this.storageId = userService.profile.id;
   }
 
   save(key: string, value: any) {

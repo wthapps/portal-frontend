@@ -4,10 +4,10 @@ import { ZSocialHomeComponent } from './home.component';
 
 @NgModule({
   imports: [
-    RouterModule.forChild([
-      { path: '', redirectTo: '/home', pathMatch: 'full' },
-      { path: 'home', component: ZSocialHomeComponent }
-    ])
+    // RouterModule.forChild([
+    //   { path: '', redirectTo: '/home', pathMatch: 'full' },
+    //   { path: 'home', component: ZSocialHomeComponent }
+    // ])
   ],
   exports: [RouterModule]
 })
