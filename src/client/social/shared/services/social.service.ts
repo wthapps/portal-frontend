@@ -9,13 +9,18 @@ import { User } from '../../../core/shared/models/user.model';
 /**
  * Created by phat on 18/11/2016.
  */
+
+declare  let _: any;
+
 @Injectable()
 export class SoUserService {
-  soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
-  soUsersUrl: string = Constants.urls.zoneSoUsers;
-  soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
-  soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-  soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
+  readonly soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
+  readonly soUsersUrl: string = Constants.urls.zoneSoUsers;
+  readonly soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
+  readonly soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
+  readonly soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
+  readonly soReportUrl: string = Constants.urls.zoneSoReportList;
+  readonly soReportEntity: any = Constants.soCommunityReportEntity;
   profile: User = null;
 
 
@@ -87,6 +92,23 @@ export class SoUserService {
   checkedNotifications() {
     return this.apiBaseService.post(`${this.soNotificationsUrl}/checked`);
   }
+
+  reportUser(body: any) {
+  // required params: report_entity_id, entity_type, reason, reporter_id, community_id
+    _.merge(body, {entity_type : this.soReportEntity.user});
+    return this.apiBaseService.post(`${this.soReportUrl}`, body);
+  }
+
+  reportCommuntity(body: any) {
+    _.merge(body, {entity_type : this.soReportEntity.user});
+    return this.apiBaseService.post(`${this.soReportUrl}`, body);
+  }
+
+  getReportList(community: any) {
+    let body = {'community_id': community.id};
+    return this.apiBaseService.get(`${this.soReportUrl}`, body);
+  }
+
 }
 
 @Injectable()

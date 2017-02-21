@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../shared/services/social.service';
+import { Constants } from '../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -10,6 +11,8 @@ import { SocialService } from '../shared/services/social.service';
 export class ZSocialFavoritesComponent implements OnInit {
 
   favourites: any = [];
+  readonly soProfileUrl: string = '/' + Constants.urls.zoneSoProfile;
+  readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
 
   constructor(private socialService: SocialService) {
 
