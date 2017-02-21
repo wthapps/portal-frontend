@@ -17020,84 +17020,165 @@ wth-app:empty + .dots-loader-wrap .dots-loader {
   display: block;
 }
 
-.ui-inputswitch {
-  overflow: visible;
-  background: #F6F6F6;
-  border: 1px solid #D8D8D8;
-  border-radius: 12px;
-}
+/*body .wrapper {
+  .ui-inputswitch {
+    overflow: visible;
 
-.ui-inputswitch .ui-inputswitch-on span,
-.ui-inputswitch .ui-inputswitch-off span {
-  visibility: hidden;
-}
+    background: #F6F6F6;
+    border: 1px solid #D8D8D8;
+    border-radius: 12px;
 
-.ui-inputswitch .ui-state-default {
-  background-color: transparent;
-  background-image: none;
-  border-width: 0;
-  box-shadow: none;
-}
+    .ui-inputswitch-on span,
+    .ui-inputswitch-off span {
+      visibility: hidden;
+    }
 
-.ui-inputswitch .ui-state-default, .ui-inputswitch .ui-state-default:hover, .ui-inputswitch .ui-state-default:focus {
-  outline: none 0 !important;
-}
+    .ui-state-default {
+      background-color: transparent;
+      background-image: none;
+      border-width: 0;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+      &,
+      &.ui-state-focus,
+      &:hover,
+      &:focus {
+        outline: none 0 !important;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+      &:after {
+        content: "";
+        width: 25px;
+        height: 25px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        border: 1px solid #D8D8D8;
+        @include center();
+        margin-top: -1px;
 
-.ui-inputswitch .ui-state-default:after {
-  content: "";
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid #D8D8D8;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  margin-top: -1px;
-  /* Oval 2: */
-  background: #F6F6F6;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
-}
+        !* Oval 2: *!
+        background: #F6F6F6;
+        -webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+        -moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
 
-.ui-inputswitch.ui-inputswitch-checked {
-  background: #6DD9AC;
-}
+      }
+    }
 
-.ui-inputswitch.ui-inputswitch-checked .ui-state-default:after {
-  border: 1px solid #6DD9AC;
-}
+    &.ui-inputswitch-checked {
+      background: $color-success;
+      .ui-state-default {
+        &:after {
+          border: 1px solid $color-success;
+        }
+      }
+    }
 
-.checkbox-switch {
-  margin-bottom: 15px;
-}
+  }
 
-.checkbox-switch:before, .checkbox-switch:after {
-  content: " ";
-  display: table;
-}
+  .checkbox-switch {
+    @include clearfix;
+    margin-bottom: 15px;
+    .ui-inputswitch {
+      float: left;
+    }
+    label {
+      display: block;
+      margin-left: 80px;
+      padding-left: 0;
+      cursor: text;
+    }
+  }
 
-.checkbox-switch:after {
-  clear: both;
-}
 
-.checkbox-switch .ui-inputswitch {
-  float: left;
-}
 
-.checkbox-switch label {
-  display: block;
-  margin-left: 70px;
-  padding-left: 0;
-  cursor: text;
-}
-
+}*/
 .ui-widget-overlay {
   z-index: 2000 !important;
 }
 
 .ui-dialog.ui-widget-content {
   z-index: 2001 !important;
+}
+
+body .checkbox-switch {
+  margin-bottom: 15px;
+}
+
+body .checkbox-switch:before, body .checkbox-switch:after {
+  content: " ";
+  display: table;
+}
+
+body .checkbox-switch:after {
+  clear: both;
+}
+
+body .checkbox-switch .ui-inputswitch {
+  float: left;
+}
+
+body .checkbox-switch label {
+  display: block;
+  margin-left: 80px;
+  padding-left: 0;
+  cursor: text;
+}
+
+body .ui-inputswitch.ui-widget {
+  overflow: visible;
+  background-color: #F6F6F6;
+  border: 1px solid #D8D8D8;
+}
+
+body .ui-inputswitch.ui-widget.ui-corner-all {
+  border-radius: 12px;
+}
+
+body .ui-inputswitch.ui-widget [class^="ui-inputswitch-"] span {
+  visibility: hidden;
+}
+
+body .ui-inputswitch.ui-widget .ui-inputswitch-handle.ui-state-default {
+  background-color: transparent;
+  background-image: none;
+  border-width: 0;
+  box-shadow: none;
+}
+
+body .ui-inputswitch.ui-widget .ui-inputswitch-handle.ui-state-default, body .ui-inputswitch.ui-widget .ui-inputswitch-handle.ui-state-default.ui-state-focus, body .ui-inputswitch.ui-widget .ui-inputswitch-handle.ui-state-default:hover, body .ui-inputswitch.ui-widget .ui-inputswitch-handle.ui-state-default:focus {
+  outline: none 0 !important;
+  box-shadow: none;
+}
+
+body .ui-inputswitch.ui-widget .ui-inputswitch-handle.ui-state-default:after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid #D8D8D8;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+  left: -2px;
+  margin-top: -1px;
+  background: #F6F6F6;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+body .ui-inputswitch.ui-widget.ui-inputswitch-checked {
+  background-color: #6DD9AC;
+}
+
+body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:after {
+  right: 0;
+  left: auto;
+  border: 1px solid #6DD9AC;
 }
 
 .wth-emoji {
