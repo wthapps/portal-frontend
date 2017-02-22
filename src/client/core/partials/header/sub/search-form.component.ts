@@ -48,7 +48,7 @@ export class SearchFormComponent {
     this.result = null;
     this.searchService.saveKey(this.text).subscribe(
       (res: any) => {
-
+        console.log(res);
       }
     );
   }

@@ -29,12 +29,12 @@ import { TitleCase } from './pipe/titlecase.pipe';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
-import { scrollToBottomDirective } from './directive/scroll-to-bottom.directive';
+import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
 import { NotificationService } from './channels/notification.service';
 import { ChannelNotificationService } from './channels/channel-notification.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
-import {ReadMoreComponent} from '../partials/read-more/read-more.component';
+import { ReadMoreComponent } from '../partials/read-more/read-more.component';
 import { SoSearchService } from '../partials/header/sub/social-search.service';
 
 /**
@@ -71,7 +71,7 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     SafeHtmlPipe,
 
     //Directive
-    scrollToBottomDirective
+    ScrollToBottomDirective
   ],
   exports: [
     CommonModule,
@@ -102,7 +102,7 @@ import { SoSearchService } from '../partials/header/sub/social-search.service';
     SafeHtmlPipe,
 
     //Directive
-    scrollToBottomDirective
+    ScrollToBottomDirective
   ]
 })
 export class SharedModule {

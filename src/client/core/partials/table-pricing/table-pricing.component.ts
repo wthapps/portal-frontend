@@ -33,7 +33,7 @@ export class TablePricingComponent implements OnInit {
 
   constructor(private router: Router,
               private loadingService: LoadingService,
-              private userService: UserService,
+              public userService: UserService,
               private apiService: ApiBaseService,
               private cookieService: CookieService) {
     //console.log(this.userService)

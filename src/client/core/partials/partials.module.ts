@@ -68,7 +68,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     // UrlTransformPipe,
     // ShowLengthTransformPipe,
     // SafeHtmlPipe,
-    // scrollToBottomDirective
+    // ScrollToBottomDirective
   ],
   providers: []
 })

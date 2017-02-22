@@ -30,7 +30,8 @@ export class ChannelNotificationService extends CableService {
   createSubscription() {
     this.notificationUpdated = new Observable(
       (observer: any) => {
-        this.observer = observer;}
+        this.observer = observer;
+      }
     );
 
     var self = this;
@@ -39,8 +40,10 @@ export class ChannelNotificationService extends CableService {
       App.notification = App.cable.subscriptions.create(ApiConfig.actionCable.notificationChannel, {
 
         connected: function () {
+          console.log('connected');
         },
         disconnected: function () {
+          console.log('disconnected');
         },
         received: function (response: any) {
           this.item = response;

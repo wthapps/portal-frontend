@@ -4,10 +4,9 @@
  * </read-more>
  */
 
-import { Component, OnInit, OnChanges, AfterViewInit, Input } from '@angular/core';
+import { Component, AfterViewInit, Input } from '@angular/core';
 
 declare var $: any;
-declare var shave: any;
 
 @Component({
   selector: 'read-more',
@@ -23,23 +22,14 @@ declare var shave: any;
     `]
 })
 
-export class ReadMoreComponent implements OnInit, OnChanges, AfterViewInit {
+export class ReadMoreComponent implements AfterViewInit {
   @Input() maxheight: number = 120;
   @Input() content: string = '';
 
   isCollapsedText: string = 'READ MORE';
 
-  ngOnInit() {
-
-  }
-
-  ngOnChanges() {
-
-  }
-
   ngAfterViewInit() {
     let maxheight = this.maxheight;
-    // $('.wth-read-more-in').shave(maxheight);
     $('.js-shave-char').parents('.wth-read-more-wrap').find('.wth-read-more-btn').show();
   }
 

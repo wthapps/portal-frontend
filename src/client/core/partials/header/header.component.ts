@@ -33,6 +33,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   showSearchBar: boolean = true;
 
+  communitiesUrl: string = '';
+
   // notifications: Array<any> = new Array<any>();
   // newNotifCount: number = 0 ;
   currentNotifId: any;
@@ -40,10 +42,10 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(public apiBaseService: ApiBaseService,
               private userService: UserService,
               private router: Router,
-              private notificationService: NotificationService,
+              public notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {
     /*this.urls = new Array();
      this.router.events.subscribe((navigationEnd: NavigationEnd) => {
@@ -158,7 +160,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     this.userService.logout('users/sign_out')
       .subscribe(
         response => {
-          window.location.href = `${Constants.baseUrls.app}/login`
+          window.location.href = `${Constants.baseUrls.app}/login`;
           // this.userService.deleteUserInfo();
           // this.appearancesChannelService.unsubscribe();
           // this.router.navigate(['/login']);
@@ -181,7 +183,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
   turnOffNotification(notification: any) {
-
+    console.log('turnOffNotification');
   }
 
   countNewNotifications() {

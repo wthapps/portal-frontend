@@ -63,7 +63,7 @@ export class SoPhotoListComponent implements OnInit {
         this.photos = response['data'];
         this.loading.stop('.photo-grid-list');
       },
-      (error:any) => {
+      (error: any) => {
         // this.errorMessage = <any>error;
         this.loading.stop('.photo-grid-list');
       }
@@ -97,12 +97,12 @@ export class SoPhotoListComponent implements OnInit {
   }
 
   addFavourite(event: any, item: any) {
-
+    console.log('addFavourite event:', event, item);
   }
 
   toggleSelectedClass(event: any): void {
     // this.selectedClass = '';
-
+    console.log('toggleSelectedClass event:', event);
   }
 
   clearSelection() {
