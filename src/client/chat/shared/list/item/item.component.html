@@ -1,0 +1,42 @@
+<div *ngIf="!message.uploading" class="chat-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
+  <figure class="chat-item-avatar">
+    <img [src]="message.display.image" alt="">
+  </figure>
+  <h4 class="chat-item-name">{{message.display.name}}</h4>
+  <div class="chat-item-message">
+    <div class="chat-item-card">
+      <div class="chat-item-action">
+        <small>{{message.created_at | timeFormat: "time_only"}}</small>
+        <div class="btn-group">
+          <i class="fa fa-pencil" data-toggle="dropdown"></i>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li *ngIf="!message.file_json"><a href="#">Copy</a></li>
+            <li *ngIf="!message.file_json"><a href="#">Quote Message</a></li>
+            <li  *ngIf="message.file_json"><a [href]="message.file_json.url" download>Download</a></li>
+          </ul>
+        </div>
+      </div>
+      <!--{{message | json}}-->
+      <div class="chat-item-content">
+        <span [innerHtml]="message.message | wthEmojis | safeHtml"></span>
+        <span *ngIf="message.file_json">
+          <img  *ngIf="message.file_type == 'Photo'" [src]="message.file_json.url" alt="" style="width: 200px">
+
+          <a *ngIf="message.file_type == 'FileMedium'" [href]="message.file_json.url" download style="color: #4A4A4A">
+            <img [src]="message.file_json.thumbnail_url" alt="">
+            <span *ngIf="message.file_type == 'FileMedium'" style="position: relative; top: -10px; left: 2px">
+              <span *ngIf="message.file_json.name">{{message.file_json.name}}</span>
+              <div *ngIf="message.file_json.size" style="position: relative; top: -5px;">{{message.file_json.size}} B</div>
+            </span>
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="message.uploading" class="chat-item chat-item-right" style="opacity: 0.3">
+  <span *ngIf="message.file_json" >
+    <img [src]="message.file_json.thumbnail_url" alt=""> Uploading ...
+  </span>
+</div>

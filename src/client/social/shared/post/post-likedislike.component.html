@@ -1,0 +1,28 @@
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+  <hd-modal-header cssClass="modal-social-head" [showClose]="true">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">All {{type}}s</h4>
+  </hd-modal-header>
+  <hd-modal-body>
+    <div *ngIf="item">
+      <ul class="list-unstyled social-list-user">
+        <li *ngFor="let i of item">
+          <img alt="" [src]="i.owner.profile_image" title="" width="30">
+          <span>
+              {{i.owner.name}}
+        </span>
+        </li>
+      </ul>
+
+    </div>
+
+  </hd-modal-body>
+  <hd-modal-footer>
+    <button type="button" class="btn btn-wth-default btn-min">Done</button>
+    <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
+  </hd-modal-footer>
+</hd-modal>
+
+

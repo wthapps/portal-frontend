@@ -7,10 +7,11 @@ declare var _: any;
 export class StorageService {
   listItem: Array<StorageItem> = [];
   storageId: any;
+  reset: boolean = true;
 
   constructor(public userService: UserService) {
-    this.storageId = userService.profile.id;
-    console.log('storageId', this.storageId);
+    // TODO Must refactor this line
+    // this.storageId = userService.profile.id;
   }
 
   save(key: string, value: any) {
@@ -18,18 +19,11 @@ export class StorageService {
     if (value instanceof StorageItem) {
       value = value.value;
     }
-
-    // Replace old value by new
-    let n = true;
-    _.forEach(this.listItem, (i: any) => {
-      if (i.key == key) {
-        i.value = value;
-        n = false;
-      }
-    });
-
     // Create new store if need
-    if (n) {
+    let item = this.find(key);
+    if (item) {
+      item.value = value;
+    } else {
       this.saveNew(key, value);
     }
   }
@@ -49,14 +43,20 @@ export class StorageService {
   }
 
   find(key: string) {
+    this.resetIfNeed();
     for (let item of this.listItem) {
       if (item.key == key) return item;
     }
     return null;
   }
 
-  verifyStorage() {
-    // if()
+  resetIfNeed() {
+    if (this.storageId != this.userService.profile.id && this.reset) {
+      for (let item of this.listItem) {
+        item.value = null;
+      }
+      this.storageId = this.userService.profile.id;
+    }
   }
 
   getList() {

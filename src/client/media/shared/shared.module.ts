@@ -1,13 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-
-import { ZSharedAutoCompleteModule } from '../../zone/shared/auto-complete/auto-complete.module';
+import { SharedModule } from '../../core/shared/shared.module';
+import { TagInputModule } from 'ng2-tag-input';
 
 import { ZMediaShareItemComponent } from './list/item/item.component';
 import { ZMediaShareListComponent } from './list/list.component';
@@ -22,23 +16,18 @@ import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.componen
 import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
 import { ZMediaUploadingComponent } from './uploading/uploading.component';
 import { ZMediaSharingComponent } from './sharing/sharing.component';
-import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { ZMediaAlbumService } from '../album/album.service';
 import { ZMediaSharingService } from './sharing/sharing.service';
+import { ZMediaTaggingService } from './tagging/tagging.service';
+import { ZMediaTaggingComponent } from './tagging/tagging.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InfiniteScrollModule,
-    AutoCompleteModule,
-    Ng2Bs3ModalModule,
-    ZSharedAutoCompleteModule
+    SharedModule,
+    TagInputModule
   ],
   declarations: [
     ZMediaShareItemComponent,
@@ -54,7 +43,8 @@ import { ZMediaSharingService } from './sharing/sharing.service';
     ZMediaFormEditAlbumComponent,
 
     ZMediaUploadingComponent,
-    ZMediaSharingComponent
+    ZMediaSharingComponent,
+    ZMediaTaggingComponent
   ],
   exports: [
     ZMediaShareItemComponent,
@@ -71,16 +61,11 @@ import { ZMediaSharingService } from './sharing/sharing.service';
 
     ZMediaUploadingComponent,
     ZMediaSharingComponent,
+    ZMediaTaggingComponent,
 
 
-
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InfiniteScrollModule,
-    AutoCompleteModule,
-    ZSharedAutoCompleteModule
+    SharedModule,
+    TagInputModule
   ]
 })
 export class ZMediaSharedModule {
@@ -89,7 +74,8 @@ export class ZMediaSharedModule {
       ngModule: ZMediaSharedModule,
       providers: [
         ZMediaAlbumService,
-        ZMediaSharingService
+        ZMediaSharingService,
+        ZMediaTaggingService
       ]
     };
   }

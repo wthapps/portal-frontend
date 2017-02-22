@@ -1,4 +1,5 @@
-<div class="row-img" *ngIf="data" [ngClass]="view">
+<div id="list-photo" class="row-img" *ngIf="data" [ngClass]="view" (dragenter)="onDragenter($event)"
+     (dragleave)="onDragleave($event)">
   <z-media-share-sortbar [data]="data" (outEvent)="actionSortbar($event)"></z-media-share-sortbar>
   <z-media-share-item *ngFor="let item of data;" [type]="type" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
 </div>

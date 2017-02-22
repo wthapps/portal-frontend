@@ -1,0 +1,139 @@
+<div *ngIf="!showInfo" class="z-social-media">
+  <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
+    <div class="z-social-media-left">
+      <img [src]="item.owner.profile_image" alt="">
+    </div>
+  </a>
+
+  <div class="z-social-media-body">
+    <div class="z-heading">
+      <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
+        <div class="z-name">
+          {{item.owner.name}}
+        </div>
+      </a>
+      <div class="z-shared-with dropdown">
+        <a class="text-capitalize" href="#" (click)="viewPrivacyCustom(item, modal)" data-toggle="dropdown">
+          <i class="fa {{privacyClassIcon(item)}}">
+          </i> {{privacyName(item)}}</a>
+
+        <hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+          <hd-modal-header cssClass="modal-social-head" [showClose]="true">
+            <h4 class="modal-title text-left text-capitalize"> {{privacyName(item)}}</h4>
+            <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </hd-modal-header>
+          <hd-modal-body>
+            <ul class="list-unstyled social-list-user wth-scrollable">
+              <li *ngFor="let item of item.custom_objects">
+            <span class="social-list-user-action">
+            </span>
+                <img alt="" [src]="item.profile_image" title="" width="30">
+                <span>{{item.name}}</span>
+              </li>
+            </ul>
+          </hd-modal-body>
+          <hd-modal-footer>
+            <button type="button" class="btn btn-wth-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">
+              DONE
+            </button>
+          </hd-modal-footer>
+        </hd-modal>
+
+      </div>
+    </div>
+    <div class="z-shared-info">
+      <ul>
+        <li>
+          {{item.created_at | date}}
+        </li>
+        <li class="note" *ngIf="item.adult">
+          Adult content
+        </li>
+        <li class="note" *ngIf="item.mute">
+          Mute
+        </li>
+        <li class="note" *ngIf="item.disable_comment">
+          Disable comment
+        </li>
+        <li class="note" *ngIf="item.disable_share">
+          Disable share
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="z-social-media-right">
+    <div class="dropdown pull-right">
+      <!--<post-settings [item]="item"></post-settings>-->
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+              data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)">
+        <i class="fa fa-ellipsis-v"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" *ngIf="settings">
+        <li>
+          <a href="javascript:;" (click)="update({adult: !item.adult}, $event)" *ngIf="settings.enable_adult != null">
+            Adult content <i class="fa fa-check" *ngIf="adult"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#" (click)="update({mute: !item.mute}, $event)" *ngIf="settings.mute != null">
+            Mute<i class="fa fa-check" *ngIf="item.mute"></i>
+          </a>
+        </li>
+        <li role="separator" class="divider" *ngIf="settings.edit != null || settings.delete != null"></li>
+        <li *ngIf="settings.edit != null"><a href="#" (click)="edit($event)">Edit Post</a></li>
+        <li *ngIf="settings.delete != null"><a href="#" (click)="delete($event)">Delete</a></li>
+
+        <li role="separator" class="divider"
+            *ngIf="settings.enable_comment != null || settings.enable_share != null"></li>
+
+        <li *ngIf="settings.enable_comment != null  && item.disable_comment == false">
+          <a href="javascript;" (click)="update({disable_comment: true}, $event)">
+            Disable comment
+          </a>
+        </li>
+
+        <li *ngIf="settings.enable_comment != null && item.disable_comment == true">
+          <a href="javascript;" (click)="update({disable_comment: false}, $event)">
+            Enable comment
+          </a>
+        </li>
+
+        <li>
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == true"
+             (click)="update({disable_share: false}, $event)">Enable share
+          </a>
+        </li>
+
+        <li>
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == false"
+             (click)="update({disable_share: true}, $event)">Disable share
+          </a>
+        </li>
+
+        <li *ngIf="item.owner.uuid != userService.profile.uuid">
+          <a href="javascript:;" (click)="onReport()">Report post</a>
+        </li>
+
+      </ul>
+    </div>
+
+    <div *ngIf="!showDetail" class="dropdown pull-right">
+      <a [routerLink]="['/'+ postUrl, item.uuid]" class="btn btn-default">
+        <i class="fa fa-external-link"></i>
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="showInfo" class="z-social-media-right">
+    <div class="dropdown pull-right">
+      <a href="javascript:;" class="btn btn-default" (click)="onShowInfo()">
+        <i class="fa fa-times"></i>
+      </a>
+    </div>
+  </div>
+
+</div>
+

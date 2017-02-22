@@ -103,6 +103,7 @@ export class ZMediaSharingComponent implements OnInit {
       });
 
       this.mediaSharingService.update(body).subscribe((res: any) => {
+          console.log(res);
           this.sharedContacts = res.data['contacts'];
           this.sharedContactGroups = res.data['contactgroups'];
 

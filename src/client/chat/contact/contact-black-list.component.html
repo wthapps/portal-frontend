@@ -1,0 +1,37 @@
+<div class="page-body-control has-page-body-sidebar">
+  <nav class="nav-tabs-wrap">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      <li><a [routerLink]="['/contact']">ALL</a></li>
+      <li><a [routerLink]="['/contact/online']">ONLINE</a></li>
+      <li class="active"><a href="javascript:;">BLACKLIST</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
+  <div class="page-body-content-in">
+    <ul class="p-list-user p-list-border">
+      <li *ngFor="let contact of contactItem.value.data | chatGroupBlackList" >
+        <div class="media-flex">
+          <div class="media-flex-item">
+            <figure>
+              <img [src]="contact.display.image">
+            </figure>
+          </div>
+          <div class="media-flex-item">
+            <span class="text-overflow-name">{{contact.display.name}}</span>
+          </div>
+          <div class="media-flex-body text-fade">
+            <!--Nickname-->
+          </div>
+          <div class="media-flex-item">
+            <div class="btn-group">
+              <a href="javascript:;" (click)="removeBlackList(contact)">REMOVE</a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

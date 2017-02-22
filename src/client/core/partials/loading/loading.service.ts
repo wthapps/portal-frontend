@@ -12,4 +12,3 @@ export class LoadingService {
     this.set(false, el);
   }
 }
-

@@ -1,0 +1,143 @@
+<hd-modal #modal cssClass="modal-social modal-custom modal-long" [keyboard]="false" [backdrop]="'static'">
+
+  <modal-header [showClose]="true">
+    <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Contact Information</h4>
+  </modal-header>
+
+  <modal-body>
+    <p>
+      This section will atomatically update from your WTHApps contact profile.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+      <div class="form-group">
+        <label>Email</label>
+        <div class="content-overflow" style="max-height: 95px;" formArrayName="emails">
+          <div *ngFor="let add_email of form.controls.emails.controls; let i=index" class="media">
+            <div class="media-body" [formGroupName]="i">
+              <div class="row row-10">
+                <div class="col-sm-12">
+                  <div class="form-group mb0 no-label" [ngClass]="{
+                  'has-error': (!form.controls.emails.controls[i].controls.email.valid
+                  && form.controls.emails.controls[i].controls.email.touched),
+                  'has-success': (form.controls.emails.controls[i].controls.email.valid
+                  && form.controls.emails.controls[i].controls.email.touched
+                  && form.value.emails[i].email.length>1)}">
+                    <input type="text" class="form-control" formControlName="email" placeholder="">
+                    <div
+                      *ngIf="!form.controls.emails.controls[i].controls.email.valid && form.controls.emails.controls[i].controls.email.touched">
+                    <span
+                      *ngIf="!form.controls.emails.controls[i].controls.email.valid && form.controls.emails.controls[i].controls.email.errors.url"
+                      class="help-block text-danger">
+                      Email is not valid
+                    </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button type="button" class="btn btn-default" (click)="removeEmail(i)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mt15">
+          <button type="button" class="btn btn-default" (click)="addEmail()">
+            <i class="fa fa-plus"></i> Add more
+          </button>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <div class="content-overflow" style="max-height: 95px;" formArrayName="phones">
+          <div *ngFor="let add_phone of form.controls.phones.controls; let i=index" class="media">
+            <div class="media-body" [formGroupName]="i">
+              <div class="row row-10">
+                <div class="col-sm-12">
+                  <div class="form-group mb0 no-label" [ngClass]="{
+                  'has-error': (!form.controls.phones.controls[i].controls.phone.valid
+                  && form.controls.phones.controls[i].controls.phone.touched),
+                  'has-success': (form.controls.phones.controls[i].controls.phone.valid
+                  && form.controls.phones.controls[i].controls.phone.touched
+                  && form.value.phones[i].phone.length>1)}">
+                    <input type="text" class="form-control" formControlName="phone" placeholder="">
+                    <div
+                      *ngIf="!form.controls.phones.controls[i].controls.phone.valid && form.controls.phones.controls[i].controls.phone.touched">
+                    <span
+                      *ngIf="!form.controls.phones.controls[i].controls.phone.valid && form.controls.phones.controls[i].controls.phone.errors.url"
+                      class="help-block text-danger">
+                      Phone is not valid
+                    </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button type="button" class="btn btn-default" (click)="removePhone(i)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mt15">
+          <button type="button" class="btn btn-default" (click)="addPhone()">
+            <i class="fa fa-plus"></i> Add more
+          </button>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group">
+        <label>Address</label>
+        <div class="content-overflow" style="max-height: 172px;" formArrayName="addresses">
+          <div *ngFor="let add_address of form.controls.addresses.controls; let i=index" class="media">
+            <div class="media-body" [formGroupName]="i">
+              <div class="row row-10">
+                <div class="col-sm-12">
+                  <div class="form-group no-label">
+                    <input type="text" class="form-control" formControlName="street" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group mb0 no-label">
+                    <input type="text" class="form-control" formControlName="city" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group mb0 no-label">
+                    <select name="country" class="form-control" formControlName="country">
+                      <option value="">Select your country</option>
+                      <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button type="button" class="btn btn-default" (click)="removeAddress(i)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mt15">
+          <button type="button" class="btn btn-default" (click)="addAddress()">
+            <i class="fa fa-plus"></i> Add more
+          </button>
+        </div>
+      </div>
+
+      <div class="clearfix text-right">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
+        <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
+      </div>
+    </form>
+  </modal-body>
+</hd-modal>

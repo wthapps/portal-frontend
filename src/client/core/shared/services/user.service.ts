@@ -149,6 +149,10 @@ export class UserService extends ApiBaseService {
       });
   }
 
+  getProfileUuid(): string {
+    return this.profile != null ? this.profile.uuid : '';
+  }
+
   private storeDefaultPayment(response: any) {
     // Check if profile_image is null
     if (response.user.default_payment) {

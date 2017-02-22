@@ -17,13 +17,14 @@ import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module
   imports: [
     BrowserModule,
     HttpModule,
+    SharedModule.forRoot(),
+
     AppRoutingModule,
     ZMediaHomeModule,
     ZMediaPhotoModule,
     ZMediaAlbumModule,
     ZMediaFavoriteModule,
     ZMediaSharedWithMeModule,
-    SharedModule.forRoot()
   ],
   declarations: [AppComponent],
   providers: [{

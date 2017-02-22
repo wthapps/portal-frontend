@@ -11,7 +11,7 @@ import { ZMediaAlbumRoutingModule } from './album-routing.module';
 @NgModule({
   imports: [
     ZMediaPhotoModule,
-    ZMediaAlbumRoutingModule
+    ZMediaAlbumRoutingModule,
     ZMediaSharedModule.forRoot()
   ],
   declarations: [

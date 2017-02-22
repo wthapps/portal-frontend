@@ -17,11 +17,13 @@ let getBarwidth = function () {
 
 export let Constants = {
   baseUrls: {
-    apiBaseService: Config.PROTOCOL + '://' + Config.API + '/',
+    apiBaseService: Config.API + '/',
     domain: Config.DOMAIN,
-    app: Config.PROTOCOL + '://' + Config.DOMAIN,
-    myAccount: Config.PROTOCOL + '://my.' + Config.DOMAIN,
-    zone: Config.PROTOCOL + '://zone.' + Config.DOMAIN
+    app: Config.SUB_DOMAIN.APP,
+    myAccount: Config.SUB_DOMAIN.MYACCOUNT,
+    media: Config.SUB_DOMAIN.MEDIA,
+    social: Config.SUB_DOMAIN.SOCIAL,
+    chat: Config.SUB_DOMAIN.CHAT
   },
   operations: {
     update: 'update',
@@ -65,10 +67,10 @@ export let Constants = {
   },
 
   chatMenuItems: [
-    {name: 'Conversation', link: '/chat/conversation/dashboard'},
-    {name: 'Contact', link: '/chat/contact'},
-    {name: 'History', link: '/chat/history'},
-    {name: 'Settings', link: '/chat/setting'}
+    {name: 'Conversation', link: '/conversation'},
+    {name: 'Contact', link: '/contact'},
+    {name: 'History', link: '/history'},
+    {name: 'Settings', link: '/setting'}
   ],
 
   pictureMenuItems: [
@@ -79,12 +81,12 @@ export let Constants = {
   ],
 
   socialMenuItems: [
-    {name: 'Home', link: '/social/home'},
-    {name: 'Communities', link: '/social/communities'},
-    {name: 'Notifications', link: '/social/notifications'},
-    {name: 'Members', link: '/social/members'},
-    {name: 'My Page', link: '/social/profile'},
-    {name: 'Settings', link: '/social/setting'},
+    {name: 'Home', link: '/home'},
+    {name: 'Communities', link: '/communities'},
+    {name: 'Notifications', link: '/notifications'},
+    {name: 'Members', link: '/members'},
+    {name: 'My Page', link: '/profile'},
+    {name: 'Settings', link: '/settings'},
   ],
 
   pictureMenuActions: {
@@ -102,6 +104,17 @@ export let Constants = {
     zoneSoUserPosts: 'zone/social_network/user_posts',
     zoneSoReactions: 'zone/social_network/reactions',
     zoneSoPostSettings: 'zone/social_network/post_settings',
+    communities: 'communities',
+    zoneSoCommunities: 'zone/social_network/communities',
+    zoneSoUsers: 'zone/social_network/users',
+    zoneSoInvitations: 'zone/social_network/invitations',
+    zoneSoFavourites: 'zone/social_network/favourites',
+    zoneSoNotifications: 'zone/social_network/notifications',
+    zoneSoReportList: 'zone/social_network/report_list',
+    zoneSoProfile: 'zone/social_network/profile',
+    posts: 'posts',
+    profile: 'profile',
+    chatConversation: 'conversation'
   },
   sex: ['', 'Male', 'Female', 'Other'],
   communityRole: {
@@ -115,6 +128,23 @@ export let Constants = {
     new: 'new',
     seen: 'seen',
     seen_and_took_action: 'seen_and_took_action'
+  },
+  soPostPrivacy: {
+    public: {css: 'fa fa-globe', text: 'Public', data: 'public'},
+    personal: {css: 'fa fa-lock', text: 'personal', data: 'personal'},
+    private: {css: 'fa fa-lock', text: 'private', data: 'private'},
+    friends: {css: 'fa fa-users', text: 'Friends', data: 'friends'},
+    customFriend: {css: 'fa fa-user-times', text: 'Custom Friends', data: 'custom_friend'},
+    customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
+    unknown: {css: '', text: '', data: ''}
+  },
+  soCommunityPrivacy: {
+    open: {name: 'open' },
+    close: {name: 'close' }
+  },
+  soCommunityReportEntity: {
+    user: 1,
+    community: 2
   }
 };
 

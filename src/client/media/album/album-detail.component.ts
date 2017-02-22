@@ -2,7 +2,8 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/components/common/api';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+
+import { LoadingService } from '../../core/partials/loading/loading.service';
 
 import { ZMediaAlbumService } from './album.service';
 
@@ -244,7 +245,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
           this.albumService.removeFromAlbum(this.albumDetail.id, this.selectedPhotos).subscribe(
             (res: any)=> {
               if (res.success) {
-                _.map(this.selectedPhotos, (v:any)=> {
+                _.map(this.selectedPhotos, (v: any)=> {
                   _.remove(this.data, ['id', v.id]);
                 });
               }
