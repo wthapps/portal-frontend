@@ -42,8 +42,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
-  constructor(public apiBaseService: ApiBaseService,
-              private userService: UserService,
+  constructor(private apiBaseService: ApiBaseService,
+              public userService: UserService,
               private router: Router,
               public notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {

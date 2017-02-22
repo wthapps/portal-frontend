@@ -27,7 +27,7 @@ export class ACBillingDetailsComponent implements OnInit {
     expires: new Date('2030-07-19')
   };
 
-  constructor(private userService: UserService,
+  constructor(public userService: UserService,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
               private toastsService: ToastsService,

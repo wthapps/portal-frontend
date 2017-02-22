@@ -13,7 +13,7 @@ export class ScrollToBottomDirective implements AfterContentInit, OnDestroy {
     this.isLocked = scrollFromBottom > this.lockYOffset;
   }
 
-  private nativeElement: HTMLElement;
+  nativeElement: HTMLElement;
   private isLocked = false;
   private mutationObserver: MutationObserver;
 

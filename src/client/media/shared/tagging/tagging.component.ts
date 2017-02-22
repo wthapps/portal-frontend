@@ -22,6 +22,8 @@ export class ZMediaTaggingComponent implements OnInit {
   currentTags: any = [];
   removedTags: any = [];
 
+  hasDeletedItems: boolean = false;
+
   constructor(private taggingService: ZMediaTaggingService) {
   }
 
