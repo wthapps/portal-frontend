@@ -285,4 +285,21 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   toggleAllReadStatus() {
     this.notificationService.toggleAllReadStatus();
   }
+
+  redirectTo(path: string, event: any) {
+    event.preventDefault();
+
+    let url: string = '';
+    switch (path) {
+      case '/apps':
+      case '/my-apps':
+        url = `${Constants.baseUrls.myAccount}${path}`;
+        break;
+      case '/social':
+        url = `${Constants.baseUrls.social}`;
+        break;
+    }
+
+    window.location.href = url;
+  }
 }

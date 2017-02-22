@@ -25,19 +25,19 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a [routerLink]="['/zone/media/photo']">
+              <a (click)="redirectTo('/social', $event)">
                 <i class="fa fa-bullseye"></i>
                 <span>Zone</span>
               </a>
             </li>
             <li>
-              <a [routerLink]="['/account/apps']">
+              <a (click)="redirectTo('/apps', $event)">
                 <i class="fa fa-list-alt"></i>
                 <span>Apps</span>
               </a>
             </li>
             <li>
-              <a [routerLink]="['/account/my-apps']">
+              <a (click)="redirectTo('/my-apps', $event)">
                 <i class="fa fa-plug"></i>
                 <span>My Apps</span>
               </a>
