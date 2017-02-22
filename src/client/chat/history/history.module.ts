@@ -4,12 +4,14 @@ import { ChatSharedModule } from '../shared/shared.module';
 import { SharedModule } from '../../core/shared/shared.module';
 import { ZChatHistoryRoutingModule } from './history-routing.module';
 import { ZChatHistoryComponent } from './history.component';
+import { ZChatContactSharedModule } from '../contact/shared/shared.module';
 
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ZChatHistoryRoutingModule,
+    ZChatContactSharedModule,
     SharedModule.forRoot(),
     ChatSharedModule.forRoot()
   ],

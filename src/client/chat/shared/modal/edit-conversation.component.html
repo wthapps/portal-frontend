@@ -83,3 +83,28 @@
 
   <!--</modal-body>-->
 <!--</hd-modal>-->
+<form *ngIf="item.value">
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> <i class="fa fa-plus"></i> Edit Conversation </h4>
+    </modal-header>
+    <modal-body>
+      <div class="media mb20">
+        <div class="media-left">
+          <img class="img-rounded" width="100"
+               [src]="item.value.display.image">
+        </div>
+        <div class="media-body">
+          <div class="form-group">
+            <input type="text" name="name" class="form-control" placeholder="Name" [(ngModel)]="item.value.display.name">
+          </div>
+          <!--<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Edit Photo</button>-->
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit()">Done</button>
+      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>
