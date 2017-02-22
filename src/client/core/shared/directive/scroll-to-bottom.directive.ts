@@ -3,7 +3,7 @@ import { Directive, ElementRef, HostListener, AfterContentInit, Input, OnDestroy
 @Directive({
   selector: '[scrollToBottom]'
 })
-export class scrollToBottomDirective implements AfterContentInit, OnDestroy {
+export class ScrollToBottomDirective implements AfterContentInit, OnDestroy {
   @Input('lock-y-offset') lockYOffset = 10;
   @Input('observe-attributes') observeAttributes: string = 'false';
 

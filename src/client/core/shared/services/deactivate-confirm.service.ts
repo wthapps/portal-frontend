@@ -13,7 +13,7 @@ export class DeactivateConfirmService {
     if (!x || _.isEqual(x, y)) {
       return true;
     }
-    let decides = null;
+    let decides: any = null;
     // let decides = new Promise<boolean>(resolve => {
     //   this.confirmationService.confirm({
     //     message: 'Leaving this page will lose your changes. Are you sure?',
