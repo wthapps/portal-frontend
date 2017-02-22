@@ -60,3 +60,4 @@ bower_components
 !/src/html/assets/dist/
 /src/html/assets/.tmp/
 /tools/env/dev.ts
+/deploy-*.sh
