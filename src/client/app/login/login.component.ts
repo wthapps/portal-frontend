@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   password: AbstractControl;
   submitted: boolean = false;
 
-  private returnUrl: string = '';
+  private returnUrl: string;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -82,6 +82,9 @@ export class LoginComponent implements OnInit {
               this.appearancesChannelService.subscribe();
 
               // Redirect to previous url
+              if (this.returnUrl == undefined) {
+                this.returnUrl = '';
+              }
               window.location.href = this.returnUrl;
 
               // TODO Store payment info

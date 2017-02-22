@@ -144,7 +144,7 @@
 
       <ul *ngIf="!userService.loggedIn" class="nav navbar-nav navbar-right">
         <li class="hidden-xs">
-          <a href="/signup">Sign up</a>
+          <a [routerLink]="['/signup']">Sign up</a>
         </li>
 
         <template [ngIf]="!userService.loggedIn">
