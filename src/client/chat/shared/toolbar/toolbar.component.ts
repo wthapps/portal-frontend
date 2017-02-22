@@ -28,7 +28,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onEditConversation() {
-    // this.editConversation.modal.open();
+    this.editConversation.modal.open();
   }
 
   onAddMember() {
@@ -37,5 +37,13 @@ export class ZChatToolbarComponent implements OnInit {
   }
   onFavorite() {
     this.chatService.addGroupUserFavorite();
+  }
+
+  disableNotification() {
+    this.chatService.updateNotification(this.item.value, {notification: false});
+  }
+
+  enableNotification() {
+    this.chatService.updateNotification(this.item.value, {notification: true});
   }
 }

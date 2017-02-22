@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../shared/services/chat.service';
 
 @Component({
   moduleId: module.id,
@@ -6,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: 'history.component.html'
 })
 export class ZChatHistoryComponent implements OnInit {
-  constructor() {
+  contactItem:any;
+
+  constructor(private chatService: ChatService) {
   }
 
   ngOnInit() {
+    this.contactItem = this.chatService.getContacts();
   }
 }

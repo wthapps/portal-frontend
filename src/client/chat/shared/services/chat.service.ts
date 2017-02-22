@@ -25,8 +25,6 @@ export class ChatService {
               public appearancesChannelService: AppearancesChannelService,
               public router: Router,
               public handler: HandlerService) {
-    // Hard code to test
-    this.appearancesChannelService.subscribe();
     // =============================
     this.storage.save('chat_contacts', null);
     this.storage.save('chat_recent_contacts', null);
@@ -79,15 +77,16 @@ export class ChatService {
   addContact(ids:number) {
     this.apiBaseService.post('zone/chat/create_contact', {user_id: ids}).subscribe(
       (res:any) => {
+        console.log(res);
         this.notificationChannel.addedContactNotification(res.data.group_json.id);
         let item = this.storage.find('chat_contacts');
-        let index = _.findIndex(item.value.data, { id: res.data.id });
-
-        if(index == -1) {
-          item.value.data.push(res.data);
-          let recentContacts = _.filter(item.value.data, ['favourite', false]);
-          this.storage.save('chat_recent_contacts', recentContacts);
-        }
+        // let index = _.findIndex(item.value.data, { id: res.data.id });
+        //
+        // if(index == -1) {
+        //   item.value.data.push(res.data);
+        //   let recentContacts = _.filter(item.value.data, ['favourite', false]);
+        //   this.storage.save('chat_recent_contacts', recentContacts);
+        // }
       }
     );
   }
@@ -242,13 +241,6 @@ export class ChatService {
     this.updateGroupUser(groupUserId, body);
   }
 
-  updateGroupUserNotification(contact:any) {
-    let groupUserId:any = contact.id;
-    let notification:any = !contact.notification;
-    let body:any = {notification: notification};
-    this.updateGroupUser(groupUserId, body);
-  }
-
   removeBlackList(contact:any) {
     let groupUserId:any = contact.id;
     let body:any = {black_list: false};
@@ -256,11 +248,16 @@ export class ChatService {
   }
 
   updateNotification(contact:any, data:any) {
+    this.storage.find('contact_select').value.notification = !this.storage.find('contact_select').value.notification;
     this.updateGroupUser(contact.id, data);
   }
 
   deleteContact(contact:any) {
     this.updateGroupUser(contact.id, {deleted: true});
+  }
+
+  updateDisplay(contact:any, data:any) {
+    this.updateGroupUser(contact.id, data);
   }
 
   updateGroupUser(groupUserId:any, data:any) {
