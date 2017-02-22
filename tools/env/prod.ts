@@ -1,7 +1,7 @@
 import { EnvConfig } from './env-config.interface';
 
 const ProdConfig: EnvConfig = {
-  API: 'http://54.213.41.54:4000',
+  API: 'https://54.213.41.54:4000',
   ENV: 'PROD',
   DOMAIN: '54.213.41.54',
   SUB_DOMAIN: {
