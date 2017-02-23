@@ -13,7 +13,7 @@ import {
   templateUrl: 'chat-support.component.html',
   styleUrls: ['chat-support.component.css'],
   animations: [
-    trigger('heroState', [
+    trigger('chatState', [
       state('active', style({opacity: 1, transform: 'translateX(0)'})),
       transition('void => *', [
         style({
@@ -33,7 +33,7 @@ import {
 })
 export class CoreChatSupportComponent implements OnInit {
   showChat: boolean = false;
-  hero: string = 'inactive';
+  chatState: string = 'inactive';
 
   constructor() {
   }
@@ -43,6 +43,6 @@ export class CoreChatSupportComponent implements OnInit {
 
   onShow() {
     this.showChat = !this.showChat;
-    this.hero = (this.hero == 'inactive' ? 'active' : 'inactive');
+    this.chatState = (this.chatState == 'inactive' ? 'active' : 'inactive');
   }
 }
