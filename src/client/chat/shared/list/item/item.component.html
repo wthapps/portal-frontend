@@ -12,7 +12,7 @@
           <ul class="dropdown-menu dropdown-menu-right">
             <li *ngIf="!message.file_json"><a href="#">Copy</a></li>
             <li *ngIf="!message.file_json"><a href="#">Quote Message</a></li>
-            <li  *ngIf="message.file_json"><a [href]="message.file_json.url" download>Download</a></li>
+            <li *ngIf="message.file_json"><a [href]="message.file_json.url" download>Download</a></li>
           </ul>
         </div>
       </div>

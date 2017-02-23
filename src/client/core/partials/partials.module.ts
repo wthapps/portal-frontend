@@ -17,6 +17,7 @@ import { PhotoModule } from './zone/photo/photo.module';
 import { UploadCropImageModule } from './upload-crop-image/upload-crop-image.module';
 import { TitleCase } from '../shared/pipe/titlecase.pipe';
 import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
+import { CoreChatSupportModule } from './chat-support/chat-support.module';
 
 
 
@@ -31,6 +32,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     TablePricingModule,
     CountryModule,
     BreadcrumbModule,
+    CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
     PhotoModule
@@ -55,6 +57,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     TablePricingModule,
     CountryModule,
     BreadcrumbModule,
+    CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
     PhotoModule,
