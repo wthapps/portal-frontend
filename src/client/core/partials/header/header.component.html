@@ -25,26 +25,26 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a (click)="redirectTo('/social', $event)">
+              <a (click)="redirectTo('media', '', $event)">
                 <i class="fa fa-bullseye"></i>
                 <span>Zone</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('/apps', $event)">
+              <a (click)="redirectTo('my', 'apps', $event)">
                 <i class="fa fa-list-alt"></i>
                 <span>Apps</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('/my-apps', $event)">
+              <a (click)="redirectTo('my', 'my-apps', $event)">
                 <i class="fa fa-plug"></i>
                 <span>My Apps</span>
               </a>
             </li>
           </ul>
         </li>
-        <li class="dropdown navbar-nav-notification" >
+        <li class="dropdown navbar-nav-notification">
           <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
              data-toggle="dropdown" href="javascript:;" role="button" (click)="markAsSeen()">
             <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="notificationService.newNotifCount > 0">{{ notificationService.newNotifCount }}</span>
@@ -59,7 +59,8 @@
             </li>
             <li>
               <ul class="list-unstyled" id="notification-items">
-                <li class="navbar-nav-notification-item" *ngFor="let notification of notificationService.notifications" data-id="notification_{{notification.id}}">
+                <li class="navbar-nav-notification-item" *ngFor="let notification of notificationService.notifications"
+                    data-id="notification_{{notification.id}}">
                   <div class="media-center">
                     <div class="media-center-left">
                       <figure>
@@ -74,7 +75,8 @@
                       <small>{{ notification.created_at | timeFormat }}</small>
                       <div style="white-space: nowrap" class="media-center-right">
                         <button *ngFor="let action of notification.actions"
-                                class="btn btn-xs btn-default mr5" type="button" (click)="doAction(action, notification.id)">
+                                class="btn btn-xs btn-default mr5" type="button"
+                                (click)="doAction(action, notification.id)">
                           {{action.name}}
                         </button>
                       </div>
@@ -85,15 +87,17 @@
                           <i class="fa fa-ellipsis-v"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right sub-menu">
-                          <li><a href="javascript:;" (click)="hideNotification(notification)">Hide this notification</a></li>
+                          <li><a href="javascript:;" (click)="hideNotification(notification)">Hide this notification</a>
+                          </li>
                           <!--<li><a href="javascript:;" (click)="turnOffNotificaion(notification)">Turn off all notifications relate to this</a>
                           </li>-->
                         </ul>
                       </div>
                       <div class="pull-right">
-                        <button class="btn btn-sm btn-default-inline" type="button" (click)="toggleReadStatus(notification)">
-                          <i class="fa fa-circle-o" *ngIf="!notification.is_read" ></i>
-                          <i class="fa fa-circle" *ngIf="notification.is_read" ></i>
+                        <button class="btn btn-sm btn-default-inline" type="button"
+                                (click)="toggleReadStatus(notification)">
+                          <i class="fa fa-circle-o" *ngIf="!notification.is_read"></i>
+                          <i class="fa fa-circle" *ngIf="notification.is_read"></i>
                         </button>
                       </div>
                     </div>
@@ -118,12 +122,13 @@
                   <img alt="" class="img-rounded" width="80" [src]="userService.profile.profile_image">
                 </div>
                 <div class="media-body">
-                  <p class="media-heading bold mb0">{{userService.profile.first_name}} {{userService.profile.last_name}}</p>
+                  <p class="media-heading bold mb0">{{userService.profile.first_name}}
+                    {{userService.profile.last_name}}</p>
                   <small class="text-fade">{{userService.profile.email}}</small>
                   <div class="navbar-nav-plan m">
                     <p class="media-heading bold">{{userService.profile.plan.name}}</p>
                     <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
-                            [routerLink]="['/account/plans']">
+                            (click)="redirectTo('my', 'plans', $event)">
                       <i class="fa fa-arrow-circle-up"></i> Upgrade
                     </button>
                   </div>
@@ -131,11 +136,11 @@
               </div>
             </li>
             <li role="separator" class="divider"></li>
-            <li><a [routerLink]="['/account/setting/profile']">Profile</a></li>
-            <li><a [routerLink]="['/account/setting/account']">Account</a></li>
-            <li><a [routerLink]="['/account/setting/preferences']">Preferences</a></li>
+            <li><a (click)="redirectTo('my', 'setting/profile', $event)">Profile</a></li>
+            <li><a (click)="redirectTo('my', 'setting/account', $event)">Account</a></li>
+            <li><a (click)="redirectTo('my', 'setting/preferences', $event)">Preferences</a></li>
             <li role="separator" class="divider"></li>
-            <li><a [routerLink]="['/account/plans']">Plans</a></li>
+            <li><a (click)="redirectTo('my', 'plans', $event)">Plans</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>
           </ul>
