@@ -48,6 +48,7 @@ export class PostFooterComponent implements OnChanges {
   hasLike: boolean = false;
   hasDislike: boolean = false;
   showInfo: boolean = false;
+  showComments: boolean = false;
 
   constructor(private apiBaseService: ApiBaseService,
               private loading: LoadingService,
@@ -96,6 +97,11 @@ export class PostFooterComponent implements OnChanges {
     }
 
     this.eventEmitter.emit(event);
+    this.viewAllComments();
+  }
+
+  viewAllComments() {
+    this.showComments = true;
   }
 
 }

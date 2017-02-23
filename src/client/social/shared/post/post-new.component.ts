@@ -30,7 +30,7 @@ export class PostNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+      this.user = this.socialService.user.profile;
   }
 
   open(event: any, choosePhotos?: boolean) {

@@ -28,6 +28,7 @@ import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../members/members.component';
+import { ZSocialProfileService } from './profile/profile.service';
 
 
 /**
@@ -90,7 +91,7 @@ export class ZSocialSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZSocialSharedModule,
-      providers: [SocialService, SoUserService, SoPostService, SoCommunityService]
+      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService]
     };
   }
 }

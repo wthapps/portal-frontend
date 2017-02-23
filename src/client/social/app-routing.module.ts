@@ -7,7 +7,7 @@ import { ZSocialProfileAboutComponent } from './shared/profile/about/about.compo
 import { ZSocialNotificationsComponent } from './notifications/notifications.component';
 import { PostDetailComponent } from './shared/post/post-detail.component';
 import { AuthGuard } from '../core/shared/services/auth-guard.service';
-import { AppComponent } from './app.component';
+import { ZSocialProfilePostComponent } from './profile/post/post.component';
 
 export const routes: Routes = [
   { path: '', component: ZSocialHomeComponent, canActivate: [AuthGuard] },
@@ -19,7 +19,7 @@ export const routes: Routes = [
     children: [
       {path: ':id/about', component: ZSocialProfileAboutComponent},
       // {path: ':id/post', component: ZSocialProfilePostComponent},
-      // {path: ':id', component: ZSocialProfilePostComponent},
+      {path: ':id', component: ZSocialProfileAboutComponent},
       // {path: '', component: ZSocialProfilePostComponent}
     ]
   },
