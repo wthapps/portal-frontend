@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 import {
@@ -13,7 +13,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
   selector: 'z-chat-setting',
   templateUrl: 'setting.component.html'
 })
-export class ZChatSettingComponent {
+export class ZChatSettingComponent implements OnInit{
 
   form: FormGroup;
   import_information: AbstractControl;
@@ -23,21 +23,19 @@ export class ZChatSettingComponent {
 
   constructor(private fb: FormBuilder,
               private location: Location,
-              private confirmationService: ConfirmationService) {
-    this.form = fb.group({
+              private confirmationService: ConfirmationService) {}
+
+  ngOnInit() {
+    console.log('settings');
+    this.form = this.fb.group({
       'import_information': [true],
       'hide_online': [true],
       'time_to_history': [12]
     });
-
     this.import_information = this.form.controls['import_information'];
     this.hide_online = this.form.controls['hide_online'];
     this.time_to_history = this.form.controls['time_to_history'];
   }
-
-  // getValue(value: any): any {
-  //   return value;
-  // }
 
 
   onSubmit(value: any) {

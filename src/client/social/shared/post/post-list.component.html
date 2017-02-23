@@ -18,10 +18,11 @@
 
 <!--List of post items-->
 <div class="z-social-box" *ngFor="let item of items">
-  <so-post [item]="item" (onDeleted)="deletedPost($event)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)"></so-post>
+  <so-post [item]="item" (onDeleted)="deletedPost($event)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (openPhotoModal)="openPhotoModal($event)"></so-post>
 </div>
 <div id="post-list-component"></div>
 
 <!--Edit post modal. This modal will handle add new, edit post and share-->
 <so-post-edit #postEditModal (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
+<post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>
 
