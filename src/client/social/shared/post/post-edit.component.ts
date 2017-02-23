@@ -73,7 +73,7 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.post = new SoPost();
     this.form = this.fb.group({
       'description': [this.post.description, null],
-      'tags': [this.post.tags, null],
+      'tags': [this.post.tags],
       'photos': [this.post.photos, null]
     });
     this.descCtrl = this.form.controls['description'];
@@ -331,15 +331,15 @@ export class PostEditComponent implements OnInit, OnChanges {
    * Tagging
    */
   addTag(tag: any) {
-    let tagObj = _.find(this.objTags, ['name', tag]);
-    if (tagObj == undefined) {
-      tagObj = {
-        id: null,
-        name: tag,
-        user_id: this.userService.profile.id
-      };
-    }
-    this.post.tags.push(tagObj);
+    // let tagObj = _.find(this.objTags, ['name', tag]);
+    // if (tagObj == undefined) {
+    //   tagObj = {
+    //     id: null,
+    //     name: tag,
+    //     user_id: this.userService.profile.id
+    //   };
+    // }
+    // this.post.tags.push(tagObj);
     console.log('tag add', tag, this.post.tags);
   }
 

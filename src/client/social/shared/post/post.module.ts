@@ -36,6 +36,7 @@ import { TagInputModule } from 'ng2-tag-input';
 import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
 import { SharedModule } from '../../../core/shared/shared.module';
 import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
+import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
 
 @NgModule({
   imports: [
@@ -49,6 +50,8 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     SharedModule,
     TagInputModule,
     InputTextareaModule
+
+
   ],
   declarations: [
     PostNewComponent,
@@ -61,9 +64,9 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
     MemberListInviteComponent,
-
     // Comments
     ZSocialCommentBoxComponent
+
   ],
   exports: [
     CommonModule,

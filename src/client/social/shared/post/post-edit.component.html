@@ -106,7 +106,7 @@
                 <div class="social-photo-grid-item">
                   <i class="fa fa-remove wth-fa-remove" (click)="removePhoto(p,$event)"></i>
                   <figure class="img-center-dv">
-                    <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+                    <img class="img-full" [src]="currentUser.profile_image" alt="">
                     <img class="img-center" [src]="p['thumbnail_url']" alt="">
                   </figure>
                 </div>
@@ -116,7 +116,7 @@
         </div>
       </div>
       <div class="form-group" *ngIf="parent != null">
-        Shared from <a [routerLink]="['/zone/social/profile/', parent.owner.uuid, 'about']" >{{parent.owner.name}}</a>
+        Shared from <a [routerLink]="['/profile/', parent.owner.uuid, 'about']" >{{parent.owner.name}}</a>
       </div>
       <div class="clearfix text-right">
         <button type="button" class="btn btn-default pull-left btn-min" *ngIf="parent == null" (click)="addMorePhoto($event)">

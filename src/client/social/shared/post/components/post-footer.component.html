@@ -4,7 +4,7 @@
 
   <div class="z-social-comment-num">{{item.comments.length}} Comments</div>
   <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
-  <ul class="z-social-comment-list media-list read-more-wrap">
+  <ul class="z-social-comment-list media-list read-more-wrap"  *ngIf="showComments" >
 
 
     <li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">
@@ -13,17 +13,17 @@
                    [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
       <div id="comment-{{comment.uuid}}">
         <div class="media-left">
-          <a [routerLink]="['/zone/social/profile/', comment.owner.uuid]">
+          <a [routerLink]="['/profile/', comment.owner.uuid]">
             <img alt="64x64" class="media-object" [src]="comment.owner.profile_image"
                  style="width: 34px; border-radius: 3px">
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading"> <a [routerLink]="['/zone/social/profile/', comment.owner.uuid]">{{comment.owner.name}}</a>
+          <h4 class="media-heading"> <a [routerLink]="['/profile', comment.owner.uuid]">{{comment.owner.name}}</a>
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
           <p>{{comment.content}}</p>
-          <a *ngIf="comment.photo" [routerLink]="['/zone/social/photos', item.uuid, {commentIndex: i}]"><img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px"></a>
+          <a *ngIf="comment.photo" [routerLink]="['/photos', item.uuid, {commentIndex: i}]"><img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px"></a>
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
               <i class="fa fa-pencil"></i>
@@ -62,12 +62,12 @@
                      [type]="commentBoxType.EditReply"></comment-box>
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
-            <a [routerLink]="['/zone/social/profile/', reply.owner.uuid]" class="media-object">
+            <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
               <img alt="64x64" class="media-object" [src]="reply.owner.profile_image" style="width: 34px; border-radius: 3px">
             </a>
           </div>
           <div class="media-body">
-            <h4 class="media-heading"><a [routerLink]="['/zone/social/profile/', reply.owner.uuid]">{{reply.owner.name}}</a>
+            <h4 class="media-heading"><a [routerLink]="['/profile', reply.owner.uuid]">{{reply.owner.name}}</a>
               <span class="media-heading-time">{{reply.created_at | timeFormat}}</span>
               <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
                 <a data-toggle="dropdown">
@@ -80,7 +80,7 @@
               </div>
             </h4>
             <p>{{reply.content}}</p>
-            <a *ngIf="comment.photo" [routerLink]="['/zone/social/photos', item.uuid, {commentIndex: i, replyIndex: j}]"><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
+            <a *ngIf="comment.photo" [routerLink]="['/photos', item.uuid, {commentIndex: i, replyIndex: j}]"><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
             <div class="media-body-reply">
               <ul>
                 <li>
@@ -109,6 +109,6 @@
     </li>
   </ul>
   <div *ngIf="!showInfo" class="z-social-comment-more">
-    <label attr.for="post-{{item.uuid}}" class="read-more-trigger">View all comments</label>
+    <label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="viewAllComments()">View all comments</label>
   </div>
 </div>
