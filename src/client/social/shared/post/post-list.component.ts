@@ -7,6 +7,7 @@ import { SocialService } from '../../shared/services/social.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { User } from '../../../core/shared/models/user.model';
+import { PostPhotoSelectComponent } from './post-photo-select.component';
 
 declare var _: any;
 
@@ -18,6 +19,7 @@ declare var _: any;
 
 export class PostListComponent implements OnInit {
   @ViewChild('postEditModal') postEditModal: PostEditComponent;
+  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
 
   @Input() type: string = undefined;
   @Input() community: any = undefined;
@@ -25,6 +27,7 @@ export class PostListComponent implements OnInit {
   items: Array<SoPost>;
   uuid: string;
   currentUser: User;
+  commentBox:any;
   // type: string = 'user';
 
   constructor(public apiBaseService: ApiBaseService,
@@ -40,6 +43,8 @@ export class PostListComponent implements OnInit {
       this.uuid = params['id'];  // this can be user uuid or community uuid
       this.loadPosts();
     });
+    this.photoModal.action = 'DONE';
+    this.photoModal.photoList.multipleSelect = false;
   }
 
   mapPost(post: any) {
@@ -165,6 +170,19 @@ export class PostListComponent implements OnInit {
 
   deletedPost(event: any) {
     this.loadPosts();
+  }
+
+
+  openPhotoModal(e:any) {
+    this.commentBox = e;
+    this.photoModal.open();
+  }
+
+  onSelectPhotoComment(photos: any) {
+    if (this.commentBox) {
+      this.commentBox.commentAction(photos);
+    }
+    this.photoModal.close();
   }
 
 }

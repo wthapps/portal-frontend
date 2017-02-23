@@ -46,8 +46,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   @Output() modalOpened: EventEmitter<any> = new EventEmitter<any>();
+  @Output() openPhotoModal: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   commentBox: ZSocialCommentBoxComponent;
   commentBoxType = ZSocialCommentBoxType;
 
@@ -64,8 +65,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnInit() {
-    this.photoModal.action = 'DONE';
-    this.photoModal.photoList.multipleSelect = false;
+    // this.photoModal.action = 'DONE';
+    // this.photoModal.photoList.multipleSelect = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -274,15 +275,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // Open photo modal
     if (event instanceof OpenPhotoModalEvent) {
       this.commentBox = event.data;
-      this.photoModal.open(true);
+      this.openPhotoModal.emit(this.commentBox);
     }
-  }
-
-  onSelectPhotoComment(photos: any) {
-    if (this.commentBox) {
-      this.commentBox.commentAction(photos);
-    }
-    this.photoModal.close();
   }
 
   openShare() {
