@@ -25,6 +25,12 @@ export let Constants = {
     social: Config.SUB_DOMAIN.SOCIAL,
     chat: Config.SUB_DOMAIN.CHAT
   },
+
+  cookieOptionsArgs: {
+    path: '/',
+    domain: Config.DOMAIN,
+    expires: new Date('2030-07-19')
+  },
   operations: {
     update: 'update',
     edit: 'edit',
@@ -139,8 +145,8 @@ export let Constants = {
     unknown: {css: '', text: '', data: ''}
   },
   soCommunityPrivacy: {
-    open: {name: 'open' },
-    close: {name: 'close' }
+    open: {name: 'open'},
+    close: {name: 'close'}
   },
   soCommunityReportEntity: {
     user: 1,

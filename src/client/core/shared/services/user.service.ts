@@ -19,11 +19,7 @@ export class UserService extends ApiBaseService {
   profile: User = null;
   defaultPayment: any;
 
-  private cookieOptionsArgs: CookieOptionsArgs = {
-    path: '/',
-    domain: Constants.baseUrls.domain,
-    expires: new Date('2030-07-19')
-  };
+  private cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
 
   constructor(http: Http, router: Router,
               cookieService: CookieService) {

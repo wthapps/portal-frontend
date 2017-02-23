@@ -14,6 +14,7 @@ import { ACPlansModule } from './plans/plans.module';
 import { ACBillingModule } from './billing/billing.module';
 import { ACAppsModule } from './apps/apps.module';
 import { ACMyAppsModule } from './my-apps/my-apps.module';
+import { ACPaymentModule } from './payment/payment.module';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { ACMyAppsModule } from './my-apps/my-apps.module';
     ACAppsModule,
     ACBillingModule,
     ACPlansModule,
+    ACPaymentModule,
     ACSettingModule,
     HomeModule,
     ACSharedModule.forRoot(),

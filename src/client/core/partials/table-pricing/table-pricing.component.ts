@@ -82,7 +82,7 @@ export class TablePricingComponent implements OnInit {
     });
     this.cookieService.put('selected_plan', p, this.cookieOptionsArgs);
     if (this.userService.profile && this.userService.profile.has_payment_info) {
-      this.router.navigateByUrl('account/payment/confirm');
+      this.router.navigateByUrl('payment/confirm');
       // this.userService.getDefaultPayment()
       //   .subscribe((response: any) => {
       //
@@ -91,7 +91,7 @@ export class TablePricingComponent implements OnInit {
       //     console.log('error products: ', error.message);
       //   });
     } else {
-      this.router.navigateByUrl('account/payment');
+      this.router.navigateByUrl('payment');
     }
   }
 }
