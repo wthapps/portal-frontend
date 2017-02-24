@@ -27,7 +27,7 @@
 
               </div>
               <div style="white-space: nowrap" class="media-center-right">
-                <button  *ngFor="let action of notification.actions" class="btn btn-default ml5" type="button" (click)="doAction(action)">
+                <button  *ngFor="let action of notification.actions" class="btn btn-default ml5" type="button" (click)="doAction(action, notification.id)">
                   {{action.name}}
                 </button>
               </div>

@@ -151,7 +151,8 @@ export let Constants = {
   soCommunityReportEntity: {
     user: 1,
     community: 2
-  }
+  },
+  soPostLimit: 10,
 };
 
 export let MediaType = {

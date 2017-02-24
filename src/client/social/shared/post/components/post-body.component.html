@@ -4,11 +4,6 @@
       <read-more [maxheight]="120" [content]="item.description">
       </read-more>
     </div>
-    <div class="z-social-post-tag">
-      <a *ngFor="let tag of item.tags">
-        {{tag.name}}
-      </a>
-    </div>
   </div>
 
   <div class="z-social-carousel">
@@ -32,6 +27,12 @@
       </li>
     </ul>
   </div>
+  <div class="z-social-post-tag">
+    <!--<a *ngFor="let tag of item.tags">-->
+    <a *ngFor="let tag of item.tags_json">
+      {{tag.value}}
+    </a>
+  </div>
 
   <!--original post or parent post-->
   <div *ngIf="!item.is_post">
@@ -46,7 +47,7 @@
       </div>
       <div class="z-social-post-tag">
         <a *ngFor="let tag of parentItem.tags_json">
-          {{tag.name}}
+          {{tag.value}}
         </a>
       </div>
     </div>

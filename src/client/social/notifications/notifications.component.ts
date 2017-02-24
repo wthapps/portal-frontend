@@ -22,8 +22,7 @@ export class ZSocialNotificationsComponent implements OnInit {
 
 
   constructor(private socialService: SocialService,
-              private notificationService: NotificationService,
-              private apiBaseService: ApiBaseService) {
+              private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -40,21 +39,23 @@ export class ZSocialNotificationsComponent implements OnInit {
     );
   }
 
-  doAction(action: any) {
-    let api: any = null;
-    switch (action.method) {
-      case 'post':
-        api = this.apiBaseService.post(action.link, action.params);
-        break;
-      case 'delete':
-        api = this.apiBaseService.delete(action.link);
-        break;
-    }
+  doAction(action: any, notif_id: string) {
+    // let api: any = null;
+    // switch (action.method) {
+    //   case 'post':
+    //     api = this.apiBaseService.post(action.link, action.params);
+    //     break;
+    //   case 'delete':
+    //     api = this.apiBaseService.delete(action.link);
+    //     break;
+    // }
+    //
+    // api.subscribe(
+    //   (res: any) => {
+    //     this.callNotifications();
+    //   }
+    // );
 
-    api.subscribe(
-      (res: any) => {
-        this.callNotifications();
-      }
-    );
+    this.notificationService.doAction(action, notif_id);
   }
 }

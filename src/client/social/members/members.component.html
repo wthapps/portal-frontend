@@ -48,7 +48,7 @@
               There is no friend on your friend list yet
             </h3>
             <button class="btn btn-default">
-              Seach for Friend
+              Search for Friends
             </button>
           </div>
           <div *ngIf="currentState == 'followers'">
@@ -73,14 +73,14 @@
             <div class="media-center" *ngIf="currentState != 'notification'">
               <div class="media-center-left">
                 <figure>
-                  <a [routerLink]="['/zone/social/profile', item.uuid]">
+                  <a [routerLink]="['/profile', item?.uuid]">
                     <img [src]="item.profile_image" width="70" alt="">
                   </a>
                 </figure>
               </div>
               <div class="media-center-body">
                 <h4 class="media-center-heading">
-                  <a [routerLink]="['/zone/social/profile', item.uuid]">
+                  <a [routerLink]="['/profile', item?.uuid]">
                     {{item.name}}
                   </a>
                 </h4>
@@ -89,21 +89,21 @@
               <div class="media-center-right">
                 <div *ngIf="currentState == 'friends'" class="dropdown pull-right">
                   <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true" (click)="getFavourite(item.uuid)">
+                          aria-haspopup="true" aria-expanded="true" (click)="getFavourite(item?.uuid)">
                     <i class="fa fa-check"></i> Friend <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="javascript:;" (click)="addFavourite(item.uuid)">Favorite <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
-                    <li><a href="javascript:;" (click)="unfriend(item.uuid)">Unfriend</a></li>
+                    <li><a href="javascript:;" (click)="addFavourite(item?.uuid)">Favorite <i class="fa pull-right" [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
+                    <li><a href="javascript:;" (click)="unfriend(item?.uuid)">Unfriend</a></li>
                   </ul>
                 </div>
                 <div *ngIf="currentState == 'followers' && item.isFollowing == false" class="pull-right">
-                  <button class="btn btn-default" type="button" (click)="follow(item.uuid)">
+                  <button class="btn btn-default" type="button" (click)="follow(item?.uuid)">
                     <i class="fa fa-share"></i> Follow
                   </button>
                 </div>
                 <div *ngIf="currentState == 'followings'" class="pull-right">
-                  <button class="btn btn-default" type="button" (click)="unfollow(item.uuid)">
+                  <button class="btn btn-default" type="button" (click)="unfollow(item?.uuid)">
                     <i class="fa fa-times"></i> Unfollow
                   </button>
                 </div>
@@ -117,22 +117,22 @@
             <div class="media-center" *ngIf="currentState == 'notification'">
               <div class="media-center-left">
                 <figure>
-                  <a [routerLink]="['/zone/social/profile', item.uuid]">
+                  <a [routerLink]="['/profile', item?.uuid]">
                     <img [src]="item.actor.profile_image" width="70" alt="">
                   </a>
                 </figure>
               </div>
               <div class="media-center-body">
                 <h4 class="media-center-heading">
-                  <a [routerLink]="['/zone/social/profile', item.uuid]">
-                    {{item.actor.name}}
-                  </a>
-                  <span style="font-weight:normal">{{item.text}}</span>
+                  <!--<a [routerLink]="['/profile', item.uuid]">-->
+                    <!--{{item.actor.name}}-->
+                  <!--</a>-->
+                  <span style="font-weight:normal" [innerHtml]="item?.text"></span>
                 </h4>
 
               </div>
               <div style="white-space: nowrap" class="media-center-right">
-                <button  *ngFor="let action of item.actions" class="btn btn-default ml5" type="button" (click)="doAction(action)">
+                <button  *ngFor="let action of item?.actions" class="btn btn-default ml5" type="button" (click)="doAction(action, item?.id)">
                   {{action.name}}
                 </button>
               </div>

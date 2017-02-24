@@ -1,7 +1,7 @@
 <div #form *ngIf="show" class="navbar-form navbar-left">
   <div class="navbar-searchTop">
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Search Library" [(ngModel)]="text"  (keyup)="searchWithoutSave($event)">
+      <input type="text" class="form-control" placeholder="Search " [(ngModel)]="text"  (keyup)="searchWithoutSave($event)">
     </div>
     <button class="btn btn-default"><i class="fa fa-search" aria-hidden="true" (click)="onSaveKey()"></i></button>
   </div>

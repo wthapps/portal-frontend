@@ -24,7 +24,7 @@
     </li>
 
     <li class="has-sub" [routerLinkActive]="['active']">
-      <a [routerLink]="[chatMenu[0].link]" (click)="onMenu($event)">
+      <a [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
         Chat
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled" id="zone_menu_chat">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SoUser } from '../../core/shared/models/social_network/so-user.model';
 import { SocialService } from '../shared/services/social.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
+import { NotificationService } from '../../core/shared/channels/notification.service';
 
 
 declare var _: any;
@@ -22,12 +23,14 @@ export class ZSocialMembersComponent implements OnInit {
   currentState: string = 'friends'; //followers, followings, blacklists
   favourite: any;
 
-  constructor(private socialService: SocialService, private apiBaseService: ApiBaseService) {
+  constructor(private socialService: SocialService,
+              private notificationService: NotificationService,
+              private apiBaseService: ApiBaseService) {
   }
 
   ngOnInit() {
     this.getUser();
-    this.callNotifications();
+    // this.callNotifications();
   }
 
   callNotifications() {
@@ -35,13 +38,14 @@ export class ZSocialMembersComponent implements OnInit {
       (res: any) => {
         this.notifications = res.data;
         this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
-        this.list = this.notifications;
+        // this.list = this.notifications;
       }
     );
   }
 
   getDataList(type: string) {
     this.currentState = type;
+    this.list.length = 0;
     this.list = this.data[type];
     return false;
   }
@@ -113,32 +117,35 @@ export class ZSocialMembersComponent implements OnInit {
 
   getNotifications() {
     this.currentState = 'notification';
-    this.list = this.notifications;
+    // this.list = this.notifications;
     this.socialService.user.checkedNotifications().subscribe(
       (res: any) => {
         this.notifications = res.data;
         this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
-        this.getUser();
+        this.list = this.notifications;
+        // this.getUser();
       }
     );
   }
 
-  doAction(action: any) {
-    let api: any = null;
-    switch (action.method) {
-      case 'post':
-        api = this.apiBaseService.post(action.link, action.params);
-        break;
-      case 'delete':
-        api = this.apiBaseService.delete(action.link);
-        break;
-    }
+  doAction(action: any, notif_id: string) {
+    this.notificationService.doAction(action, notif_id);
 
-    api.subscribe(
-      (res: any) => {
-        this.callNotifications();
-        this.getUser();
-      }
-    );
+    // let api: any = null;
+    // switch (action.method) {
+    //   case 'post':
+    //     api = this.apiBaseService.post(action.link, action.params);
+    //     break;
+    //   case 'delete':
+    //     api = this.apiBaseService.delete(action.link);
+    //     break;
+    // }
+
+    // api.subscribe(
+    //   (res: any) => {
+    //     this.callNotifications();
+    //     this.getUser();
+    //   }
+    // );
   }
 }

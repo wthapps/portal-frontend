@@ -16,6 +16,7 @@ import { ApiBaseService } from '../../../../core/shared/services/apibase.service
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
+import { Constants } from '../../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -38,6 +39,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   list: any = [];
   maxLength: number = 0;
   currentUUID: string = '';
+  readonly communitiesUrl: string = Constants.urls.zoneSoCommunities;
 
 
   form: FormGroup;
@@ -159,7 +161,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     });
 
     if (this.action == 'edit') {
-      this.apiBaseService.put(`zone/social_network/communities/${this.data.uuid}`, body)
+      this.apiBaseService.put(`${this.communitiesUrl}/${this.data.uuid}`, body)
         .subscribe((result: any) => {
             // console.log(result);
             this.updated.emit(result.data);
@@ -169,7 +171,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
           }
         );
     } else {
-      this.apiBaseService.post(`zone/social_network/communities`, body)
+      this.apiBaseService.post(`${this.communitiesUrl}`, body)
         .subscribe((result: any) => {
             // console.log(result);
             this.updated.emit(result.data);
