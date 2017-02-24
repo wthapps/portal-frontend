@@ -17,9 +17,17 @@
   <meta name="msapplication-config" content="<%= APP_BASE %>assets/images/favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="<%= APP_BASE %>assets/css/style.css">
   <!-- inject:css -->
   <!-- endinject -->
+
+  <% if (BUILD_TYPE === 'dev') { %>
+  <link rel="stylesheet" href="<%= APP_BASE %>assets/css/style.css">
+  <% } %>
+
+  <% if (BUILD_TYPE === 'prod') { %>
+  <link rel="stylesheet" href="<%= APP_BASE %>assets/dist/app.min.css">
+  <% } %>
+
 </head>
 <body>
 
