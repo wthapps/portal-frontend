@@ -1,4 +1,4 @@
-<div class="page-body-content has-page-body-sidebar">
+<div class="page-body-content has-page-body-sidebar" *ngIf="setting">
   <div class="page-body-content-in">
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
       <div class="panel panel-default">
@@ -15,7 +15,7 @@
               </label>
             </div>
             <div class="checkbox checkbox-switch">
-              <p-inputSwitch [formControl]="hide_online"></p-inputSwitch>
+              <p-inputSwitch [formControl]="online"></p-inputSwitch>
               <label>
                 Online
               </label>
@@ -27,8 +27,8 @@
             <div class="radio">
               <label>
                 <input type="radio" name="private"
-                       (click)="private = 1"
-                       [checked]="private == 1"
+                       (click)="privacy = 'public'"
+                       [checked]="privacy == 'public'"
                        value="1">
                 Anyone can search and contact me
               </label>
@@ -36,8 +36,8 @@
             <div class="radio">
               <label>
                 <input type="radio" name="private"
-                       (click)="private = 2"
-                       [checked]="private == 2"
+                       (click)="privacy = 'friend'"
+                       [checked]="privacy == 'friend'"
                        value="2">
                 Only friends and added contacts can contact me.
               </label>
@@ -50,9 +50,9 @@
               <div class="row">
                 <div class="col-sm-6">
                   <select [formControl]="time_to_history" name="time_to_history" class="form-control">
-                    <option value="24"> 24 hours</option>
-                    <option value="48"> 48 hours</option>
-                    <option value="72"> 72 hours</option>
+                    <option value="1"> 1 day</option>
+                    <option value="2"> 2 days</option>
+                    <option value="3"> 3 days</option>
                   </select>
                 </div>
               </div>

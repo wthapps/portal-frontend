@@ -290,6 +290,18 @@ export class ChatService {
       this.addMembersGroup([friendId], groupId);
     }
   }
+
+  getSetting() {
+    return this.apiBaseService.get('zone/chat/setting');
+  }
+
+  updateSetting(body:any) {
+    return this.apiBaseService.post('zone/chat/update_setting', body);
+  }
+
+  restoreSetting() {
+    return this.apiBaseService.post('zone/chat/restore_setting');
+  }
 }
 
 

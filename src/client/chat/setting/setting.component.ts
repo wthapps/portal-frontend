@@ -7,6 +7,7 @@ import {
   FormBuilder
 } from '@angular/forms';
 import { ConfirmationService } from 'primeng/components/common/api';
+import { ChatService } from '../shared/services/chat.service';
 
 @Component({
   moduleId: module.id,
@@ -17,29 +18,42 @@ export class ZChatSettingComponent implements OnInit{
 
   form: FormGroup;
   import_information: AbstractControl;
-  hide_online: AbstractControl;
+  online: AbstractControl;
   time_to_history: AbstractControl;
-  private: number = 1;
+  privacy:string;
+  setting:any;
 
   constructor(private fb: FormBuilder,
               private location: Location,
+              private chatService: ChatService,
               private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
-    console.log('settings');
-    this.form = this.fb.group({
-      'import_information': [true],
-      'hide_online': [true],
-      'time_to_history': [12]
-    });
-    this.import_information = this.form.controls['import_information'];
-    this.hide_online = this.form.controls['hide_online'];
-    this.time_to_history = this.form.controls['time_to_history'];
+    this.chatService.getSetting().subscribe(
+      (res:any) => {
+        this.setting = res.data;
+        this.form = this.fb.group({
+          'import_information': this.setting.import_information,
+          'online': this.setting.online,
+          'time_to_history': this.setting.time_to_history,
+          'privacy': this.setting.privacy
+        });
+        this.import_information = this.form.controls['import_information'];
+        this.online = this.form.controls['online'];
+        this.time_to_history = this.form.controls['time_to_history'];
+        this.privacy = this.setting.privacy;
+      }
+    );
   }
 
 
   onSubmit(value: any) {
-    console.log(value);
+    value.privacy = this.privacy;
+    this.chatService.updateSetting(value).subscribe(
+      (res:any) => {
+        this.setting = res.data;
+      }
+    );
   }
 
 
@@ -58,7 +72,15 @@ export class ZChatSettingComponent implements OnInit{
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
-        //Actual logic to perform a confirmation
+        this.chatService.restoreSetting().subscribe(
+          (res:any) => {
+            this.setting = res.data;
+            this.import_information.setValue(this.setting.import_information);
+            this.online.setValue(this.setting.online);
+            this.time_to_history.setValue(this.setting.time_to_history);
+            this.privacy = this.setting.privacy;
+          }
+        );
       }
     });
   }
