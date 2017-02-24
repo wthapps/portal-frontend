@@ -1,11 +1,13 @@
 import {
-  Component, OnInit,
+  Component, OnInit, ViewChild,
   trigger,
   state,
   style,
   transition,
   animate
 } from '@angular/core';
+import { CoreChatSupportListComponent } from './list/list.component';
+import { CoreChatSupportDetailComponent } from './detail/detail.component';
 
 @Component({
   moduleId: module.id,
@@ -32,7 +34,12 @@ import {
   ]
 })
 export class CoreChatSupportComponent implements OnInit {
+  @ViewChild('chatSupportList') chatSupportList: CoreChatSupportListComponent;
+  @ViewChild('chatSupportDetail') chatSupportDetail: CoreChatSupportDetailComponent;
+
+
   showChat: boolean = false;
+  showChatList: boolean = true;
   chatState: string = 'inactive';
 
   constructor() {
@@ -44,5 +51,9 @@ export class CoreChatSupportComponent implements OnInit {
   onShow() {
     this.showChat = !this.showChat;
     this.chatState = (this.chatState == 'inactive' ? 'active' : 'inactive');
+  }
+
+  onShowChatList(e: boolean) {
+    this.showChatList = (e ? false : true);
   }
 }

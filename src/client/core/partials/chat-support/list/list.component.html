@@ -1,41 +1,40 @@
-<div class="intercom-container-body">
-  <div *ngIf="showChat" [@chatState]="chatState" class="intercom-content">
-    <div class="intercom-content-header">
-      <h4>Conversations</h4>
-      <p>with Humi</p>
-    </div>
-    <div class="intercom-content-body">
-      <div class="intercom-conversation-part intercom-conversation-part-user">
-        <div class="intercom-avatar">
-          <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
-        </div>
-        <div class="intercom-comment-container">
-          <p>Hi, sorry I don't speak Latin but I'm happy to help if you have any ReleasePage questions!</p>
-        </div>
-      </div>
-      <div class="intercom-conversation-part intercom-conversation-part-admin">
-        <div class="intercom-avatar">
-          <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
-        </div>
-        <div class="intercom-comment-container">
-          <p>Hi, sorry I don't speak Latin but I'm happy to help if you have any ReleasePage questions!</p>
-        </div>
-      </div>
-    </div>
-    <div class="intercom-content-footer">
-      <div id="chat-message-text" class="chatbox-container-input form-control" contenteditable="true" spellcheck="false"
-           tabindex="1"
-           placeholder="Write a reply..." autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()"></div>
-      <div class="intercom-content-footer-action">
-        <button class="btn btn-default-inline">
-          <i class="fa fa-link"></i>
-        </button>
-      </div>
-    </div>
+<div class="intercom-content">
+  <div class="intercom-content-header">
+    <h4>Conversations</h4>
+    <p>with Humi</p>
   </div>
-  <div class="intercom-button">
-    <button (click)="onShow()" class="btn btn-circle" type="button">
-      <i class="fa" [ngClass]="{'fa-commenting-o': !showChat, 'fa-times': showChat}"></i>
-    </button>
+  <div class="intercom-content-body">
+    <div class="intercom-conversation-btn-new">
+      <button class="btn btn-wth btn-min-sm " type="button">
+        <i class="fa fa-edit"></i> New Conversation
+      </button>
+    </div>
+    <div class="intercom-conversation-summary intercom-conversation-summary-unread" (click)="onShowDetail()">
+      <div class="intercom-conversation-summary-avatar">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+    <div class="intercom-conversation-summary" (click)="onShowDetail()">
+      <div class="intercom-conversation-summary-avatar">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+    <div class="intercom-conversation-summary" (click)="onShowDetail()">
+      <div class="intercom-conversation-summary-avatar">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
   </div>
 </div>
