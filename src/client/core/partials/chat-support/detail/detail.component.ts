@@ -9,29 +9,28 @@ import {
 
 @Component({
   moduleId: module.id,
-  selector: 'wth-chat-support',
-  templateUrl: 'chat-support.component.html',
-  styleUrls: ['chat-support.component.css'],
+  selector: 'wth-chat-support-detail',
+  templateUrl: 'detail.component.html',
   animations: [
     trigger('chatState', [
-      state('active', style({opacity: 1, transform: 'translateY(0)'})),
+      state('active', style({opacity: 1, transform: 'translateX(0)'})),
       transition('void => *', [
         style({
           opacity: 0,
-          transform: 'translateY(20%)'
+          transform: 'translateY(-100%)'
         }),
-        animate('0.3s ease-in')
+        animate('0.2s ease-in')
       ]),
       transition('* => void', [
-        animate('0.3s 10 ease-out', style({
+        animate('0.2s 10 ease-out', style({
           opacity: 0,
-          transform: 'translateY(20%)'
+          transform: 'translateY(100%)'
         }))
       ])
     ])
   ]
 })
-export class CoreChatSupportComponent implements OnInit {
+export class CoreChatSupportDetailComponent implements OnInit {
   showChat: boolean = false;
   chatState: string = 'inactive';
 
