@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SoSearchService } from './social-search.service';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: 'search-form.component.html'
 })
 
-export class SearchFormComponent {
+export class SearchFormComponent implements OnInit{
   show: boolean = false;
   type: string = '';
   searchService: any;
@@ -19,6 +19,10 @@ export class SearchFormComponent {
   text: any = '';
 
   constructor(private socialSearchService: SoSearchService, private router: Router) {
+  }
+
+  ngOnInit() {
+    this.init('social');
   }
 
   init(type: string) {

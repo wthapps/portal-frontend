@@ -2,7 +2,8 @@
   <!--Add new comment-->
   <comment-box (eventEmitter)="onCallBack($event)" [item]="item" [type]="commentBoxType.Add"></comment-box>
 
-  <div class="z-social-comment-num">{{item.comments.length}} Comments</div>
+  <div class="z-social-comment-num" *ngIf="item.comments.length > 0 && item.comments.length <= 1">{{item.comments.length}} Comment</div>
+  <div class="z-social-comment-num" *ngIf="item.comments.length > 1">{{item.comments.length}} Comments </div>
   <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
   <ul class="z-social-comment-list media-list read-more-wrap"  *ngIf="showComments" >
 
@@ -108,7 +109,7 @@
                    style="display: none;" [type]="commentBoxType.Reply"></comment-box>
     </li>
   </ul>
-  <div *ngIf="!showInfo" class="z-social-comment-more">
+  <div *ngIf="item.comments.length && !showInfo" class="z-social-comment-more">
     <label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="viewAllComments()">View all comments</label>
   </div>
 </div>

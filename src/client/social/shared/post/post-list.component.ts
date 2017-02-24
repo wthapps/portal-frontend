@@ -8,6 +8,7 @@ import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { User } from '../../../core/shared/models/user.model';
 import { PostPhotoSelectComponent } from './post-photo-select.component';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -28,6 +29,8 @@ export class PostListComponent implements OnInit {
   uuid: string;
   currentUser: User;
   commentBox:any;
+  page_index:number = 0;
+  readonly post_limit: number = Constants.soPostLimit;
   // type: string = 'user';
 
   constructor(public apiBaseService: ApiBaseService,
@@ -53,12 +56,17 @@ export class PostListComponent implements OnInit {
 
   loadPosts() {
     this.loadingService.start('#post-list-component');
-    this.postService.list({uuid: this.uuid, type: this.type})
+    this.postService.list({uuid: this.uuid, type: this.type, page_index: this.page_index, limit: this.post_limit})
       .subscribe(
         (res: any) => {
           this.loadingService.stop('#post-list-component');
-          this.items = _.orderBy(res.data, ['created_at'], ['desc']);
-          this.items = _.map(this.items, this.mapPost);
+          // this.items = _.orderBy(res.data, ['updated_at'], ['desc']);
+          // this.items = _.map(this.items, this.mapPost);
+          if(this.items == undefined)
+            this.items = _.map(res.data, this.mapPost);
+          else
+            this.items = _.concat(this.items, _.map(res.data, this.mapPost));
+          this.page_index += 1;
         },
         (error: any) => {
           console.log('loading posts errors: ', error);
@@ -183,6 +191,23 @@ export class PostListComponent implements OnInit {
       this.commentBox.commentAction(photos);
     }
     this.photoModal.close();
+  }
+
+  viewMorePosts() {
+    // this.postService.list({uuid: this.uuid, type: this.type, page_index: this.page_index, limit: this.post_limit})
+    //   .subscribe(
+    //     (res: any) => {
+    //       if(this.items == undefined)
+    //         this.items = _.map(res.data, this.mapPost);
+    //       else
+    //         this.items = _.concat(this.items, _.map(res.data, this.mapPost));
+    //       this.page_index += 1;
+    //     },
+    //     (error: any) => {
+    //       console.log('view more posts errors: ', error);
+    //     }
+    //   );
+    this.loadPosts();
   }
 
 }

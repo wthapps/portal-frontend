@@ -13,9 +13,9 @@ export class PostService {
   list(queryParams: any = null): any {
     if (typeof queryParams == 'object') {
       if (queryParams['uuid'] == undefined) {
-        return this.api.get(this.url);
+        return this.api.get(this.url, {page_index: queryParams['page_index'], limit: queryParams['limit']});
       } else {
-        return this.api.get(`zone/social_network/user_posts/${queryParams['uuid']}`, {type: queryParams['type']});
+        return this.api.get(`zone/social_network/user_posts/${queryParams['uuid']}`, {type: queryParams['type'], page_index: queryParams['page_index'], limit: queryParams['limit']});
       }
     }
   }
