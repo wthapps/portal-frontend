@@ -19,6 +19,7 @@ import { ChatUserOnlinePipe } from './pipe/chat-user-online.pipe';
 import { ZChatShareAddToConversationComponent } from './modal/add-to-conversation.component';
 import { ChatGroupMultiplePipe } from './pipe/chat-group-multiple.pipe';
 import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
+import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -39,6 +40,7 @@ import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
+    ZChatContactActionsComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
@@ -56,6 +58,7 @@ import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
+    ZChatContactActionsComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,

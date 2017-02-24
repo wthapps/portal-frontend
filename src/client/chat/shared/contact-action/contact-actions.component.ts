@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ChatService } from '../../../shared/services/chat.service';
-import { ZChatShareAddToConversationComponent } from '../../../shared/modal/add-to-conversation.component';
+import { ChatService } from '../services/chat.service';
+import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversation.component';
 
 declare let $:any;
 
@@ -13,6 +13,10 @@ export class ZChatContactActionsComponent implements OnInit {
   @Input() contact:any;
   conversationUrl:any;
   @ViewChild('addConversation') addConversation: ZChatShareAddToConversationComponent;
+  // Config component
+  @Input() config:any = {
+    history: false
+  };
 
   constructor(private chatService: ChatService) {
     this.conversationUrl = this.chatService.constant.conversationUrl
@@ -20,9 +24,13 @@ export class ZChatContactActionsComponent implements OnInit {
 
   ngOnInit() {
   //
+  //   console.log(this.config)
   }
 
   onSelect(contact:any) {
+    if(this.config.history) {
+      this.chatService.updateHistory(contact);
+    }
     $('#chat-message-text').focus();
     this.chatService.selectContact(contact);
   }

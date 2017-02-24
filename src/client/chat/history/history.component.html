@@ -1,7 +1,7 @@
 <div class="page-body-content has-page-body-sidebar" *ngIf="contactItem.value">
   <div class="page-body-content-in">
     <ul class="p-list-user p-list-border">
-      <li *ngFor="let contact of contactItem.value.data | chatGroupCouple" >
+      <li *ngFor="let contact of contactItem.value" >
         <div class="media-flex">
           <div class="media-flex-item">
             <figure>
@@ -14,7 +14,7 @@
           <div class="media-flex-body text-fade">
             <!--Nickname-->
           </div>
-          <z-chat-contact-actions [contact]="contact"></z-chat-contact-actions>
+          <z-chat-contact-actions [contact]="contact" [config]="configActions"></z-chat-contact-actions>
         </div>
       </li>
     </ul>
