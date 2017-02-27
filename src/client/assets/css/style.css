@@ -20756,7 +20756,7 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
 }
 
 .intercom-content-body {
-  max-height: 300px;
+  max-height: 500px;
   overflow: auto;
 }
 
