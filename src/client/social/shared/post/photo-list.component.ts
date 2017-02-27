@@ -102,6 +102,10 @@ export class SoPhotoListComponent implements OnInit {
 
   }
 
+  addFavourite(e: any, i: any) {
+
+  }
+
   clearSelection() {
     // TODO refactor jquery
     $('div.photo-box-img').removeClass('selected');
