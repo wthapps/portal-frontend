@@ -14,10 +14,10 @@ const plugins = <any>gulpLoadPlugins();
  */
 export = () => {
   return gulp.src(join(Config.APP_SRC, 'index.html'))
-    .pipe(injectJs())
-    .pipe(injectCss())
-    .pipe(plugins.template(new TemplateLocalsBuilder().wihtoutStringifiedEnvConfig().build()))
-    .pipe(gulp.dest(Config.APP_DEST));
+      .pipe(injectJs())
+      .pipe(injectCss())
+      .pipe(plugins.template(new TemplateLocalsBuilder().withoutStringifiedEnvConfig().build()))
+      .pipe(gulp.dest(Config.APP_DEST));
 };
 
 /**

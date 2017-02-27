@@ -189,6 +189,23 @@ $ npm start -- --env-config ENV_NAME
 
 Currently the `ENV_NAME`s are `dev`, `prod`, `staging`, but you can simply add a different file `"ENV_NAME.ts".` file in order to alter extra such environments.
 
+# Task run 
+```bash
+npm run start-my
+```
+
+```bash
+npm run start-media
+```
+
+```bash
+npm run start-social
+```
+
+```bash
+npm run start-chat
+```
+
 # List task
 ```bash
 npm run tasks.list
