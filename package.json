@@ -159,6 +159,8 @@
     "ng2-tag-input": "^0.7.4",
     "ng2-cable": "1.0.5",
     "bootstrap": "^3.3.7",
+    "bootstrap-sass": "~3.3.7",
+    "font-awesome": "github:fortawesome/Font-Awesome",
     "lodash": "4.17.4",
     "primeng": "^2.0.0-rc.1",
     "actioncable": "5.0.1"

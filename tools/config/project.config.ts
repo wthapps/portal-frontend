@@ -14,6 +14,11 @@ export class ProjectConfig extends SeedConfig {
   constructor() {
     super();
     this.APP_TITLE = 'WTHApps';
+
+    this.ENABLE_SCSS = true;
+    this.SCSS_SRC = `${this.APP_SRC}/core/scss`;
+
+
     // this.GOOGLE_ANALYTICS_ID = 'Your site's ID';
 
     /* Enable typeless compiler runs (faster) between typed compiler runs. */
