@@ -2,7 +2,7 @@
   "name": "WTHApps",
   "version": "1.0.0",
   "description": "WTHApps",
-  "homepage": "https://trungnghia112@bitbucket.org/WTHteam/portal-frontend.git",
+  "homepage": "git@bitbucket.org:WTHteam/portal-frontend.git",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -23,9 +23,8 @@
   <% if (BUILD_TYPE === 'dev') { %>
   <link rel="stylesheet" href="<%= APP_BASE %>assets/css/style.css">
   <% } %>
-
   <% if (BUILD_TYPE === 'prod') { %>
-  <link rel="stylesheet" href="<%= APP_BASE %>assets/dist/app.min.css">
+  <link rel="stylesheet" href="<%= APP_BASE %>assets/css/app.min.css">
   <% } %>
 
 </head>
@@ -33,8 +32,15 @@
 
   <sd-app>Loading...</sd-app>
 
-  <script src="<%= APP_BASE %>assets/dist/core.min.js"></script>
-  <script src="<%= APP_BASE %>assets/dist/app.min.js"></script>
+  <script src="<%= APP_BASE %>assets/js/core.min.js"></script>
+
+  <% if (BUILD_TYPE === 'dev') { %>
+  <script src="<%= APP_BASE %>assets/js/common.js"></script>
+  <% } %>
+  <% if (BUILD_TYPE === 'prod') { %>
+  <script src="<%= APP_BASE %>assets/js/app.min.js"></script>
+  <% } %>
+
 
   <!--
   // GOOGLE ANALYTICS

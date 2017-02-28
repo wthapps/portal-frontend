@@ -61,3 +61,4 @@ bower_components
 /src/html/assets/.tmp/
 /tools/env/dev.ts
 /deploy-*.sh
+/src/client/assets/.tmp/
