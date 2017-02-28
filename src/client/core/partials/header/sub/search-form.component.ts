@@ -13,7 +13,7 @@ import { Constants } from '../../../shared/config/constants';
 export class SearchFormComponent implements OnInit {
   show: boolean = false;
   type: string = '';
-  searchService: any;
+  searchService: SoSearchService;
   result: any;
   groups: any;
   showMore: any;

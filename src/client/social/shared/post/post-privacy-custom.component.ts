@@ -90,4 +90,8 @@ export class PostPrivacyCustomComponent implements OnInit {
     // return this.type == 'customFriend';
     return this.type == Constants.soPostPrivacy.customFriend.data;
   }
+
+  removeCommunity(e: any) {
+
+  }
 }

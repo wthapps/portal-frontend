@@ -19,4 +19,8 @@ export class CoreChatSupportDetailComponent implements OnInit {
   onShowList() {
     this.clickList.emit(false);
   }
+
+  send() {
+
+  }
 }

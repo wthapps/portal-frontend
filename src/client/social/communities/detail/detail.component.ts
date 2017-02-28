@@ -11,6 +11,8 @@ import { SocialService } from '../../shared/services/social.service';
 import { MemberListInviteComponent } from '../member/member-list-invite.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { PostListComponent } from '../../shared/post/post-list.component';
+import { CommunitiesDataService } from '../communities-data.service';
 
 declare  let _: any;
 declare  let $: any;
@@ -61,7 +63,7 @@ export class ZSocialCommunityDetailComponent implements OnInit{
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @ViewChild('users') users: MemberListInviteComponent;
-  // @ViewChild('posts') postList: PostListComponent;
+  @ViewChild('posts') posts: PostListComponent;
 
 
 
@@ -73,6 +75,7 @@ export class ZSocialCommunityDetailComponent implements OnInit{
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
+              private comDataService: CommunitiesDataService,
               private socialService: SocialService) {
   }
 
@@ -95,6 +98,10 @@ export class ZSocialCommunityDetailComponent implements OnInit{
       }
     );
 
+    this.comDataService.getPost().subscribe(data => {
+      this.posts.loadPosts();
+      console.log('Loading more posts');
+    })
   }
 
   onPreference() {
