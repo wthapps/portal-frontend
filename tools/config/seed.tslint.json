@@ -14,7 +14,7 @@
     "no-arg": true,
     "no-construct": true,
     "no-duplicate-variable": true,
-    "no-empty": true,
+    "no-empty": false,
     "no-eval": true,
     "no-trailing-whitespace": true,
     "no-unused-expression": true,

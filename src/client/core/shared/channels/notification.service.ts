@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
-import { ChannelNotificationService } from './channel-notification.service';
+import { NotificationChannelService } from './notification-channel.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 /**
@@ -24,7 +24,7 @@ export class NotificationService {
   constructor(private api: ApiBaseService,
               private router: Router,
               private route: ActivatedRoute,
-              private notificationChannel: ChannelNotificationService) {
+              private notificationChannel: NotificationChannelService) {
   }
 
   get() {

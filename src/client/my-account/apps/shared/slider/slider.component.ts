@@ -2,7 +2,7 @@
  * <wth-slider [data]="images"></wth-slider>
  */
 
-import { Component, AfterViewInit, Input, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 declare var $: any;
 /**
@@ -67,7 +67,7 @@ export class ACAppsSharedSliderComponent implements OnChanges, AfterViewInit {
     });
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.data) {
       this.imagesBg = this.data;
     }

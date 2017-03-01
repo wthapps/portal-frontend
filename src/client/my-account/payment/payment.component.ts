@@ -50,9 +50,9 @@ export class ACPaymentComponent implements AfterViewInit, OnInit {
 
 
   selected_plan: any = null;
+  paymentMethod: string = 'credit';
   private next: string = '';
   private operation: string = '';
-  private paymentMethod: string = 'credit';
 
   private cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
 
