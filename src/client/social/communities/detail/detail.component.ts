@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ConfirmationService } from 'primeng/components/common/api';
@@ -12,7 +12,6 @@ import { MemberListInviteComponent } from '../member/member-list-invite.componen
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
-import { CommunitiesDataService } from '../communities-data.service';
 
 declare  let _: any;
 declare  let $: any;
@@ -24,7 +23,7 @@ declare  let $: any;
 })
 
 
-export class ZSocialCommunityDetailComponent implements OnInit{
+export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy{
   errorMessage: string = '';
 
   tab: any = {
@@ -66,7 +65,6 @@ export class ZSocialCommunityDetailComponent implements OnInit{
   @ViewChild('posts') posts: PostListComponent;
 
 
-
   constructor(private apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
               private router: Router,
@@ -75,7 +73,6 @@ export class ZSocialCommunityDetailComponent implements OnInit{
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
-              private comDataService: CommunitiesDataService,
               private socialService: SocialService) {
   }
 
@@ -98,10 +95,10 @@ export class ZSocialCommunityDetailComponent implements OnInit{
       }
     );
 
-    this.comDataService.getPost().subscribe(data => {
-      this.posts.loadPosts();
-      console.log('Loading more posts');
-    })
+  }
+
+  ngOnDestroy() {
+    // this.loadSubscription.unsubscribe();
   }
 
   onPreference() {

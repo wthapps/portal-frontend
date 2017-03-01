@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SoUser } from '../../core/shared/models/social_network/so-user.model';
 import { SocialService } from '../shared/services/social.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
-import { NotificationService } from '../../core/shared/channels/notification.service';
+import { NotificationService } from '../../core/shared/services/notification.service';
 
 
 declare var _: any;

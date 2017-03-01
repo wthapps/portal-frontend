@@ -15,6 +15,7 @@ import { ZSocialProfileComponent } from './profile/profile.component';
 import { SocialSettingsModule } from './setting/setting.module';
 import { CoreModule } from '../core/core.module';
 import { ZSocialHomeComponent } from './home/home.component';
+import { SocialDataService } from './shared/services/social-data.service';
 
 
 @NgModule({
@@ -54,10 +55,10 @@ import { ZSocialHomeComponent } from './home/home.component';
   providers: [
     // ZSocialCommunityService,
     // ZSocialProfileService,
+    SocialDataService,
     ZoneReportService
   ],
   bootstrap: [AppComponent]
-
 })
 export class AppModule {
 }

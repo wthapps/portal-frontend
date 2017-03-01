@@ -20,6 +20,9 @@ import { ApiBaseService } from '../../../../core/shared/services/apibase.service
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
 import { ToastsService } from '../../../../core/partials/toast/toast-message.service';
 import { UserService } from '../../../../core/shared/services/user.service';
+import { PostService } from '../shared/post.service';
+import { Constants } from '../../../../core/shared/config/constants';
+import { SoComment } from '../../../../core/shared/models/social_network/so-comment.model';
 
 declare var _: any;
 declare var $: any;
@@ -48,13 +51,18 @@ export class PostFooterComponent implements OnChanges {
   hasLike: boolean = false;
   hasDislike: boolean = false;
   showInfo: boolean = false;
-  showComments: boolean = false;
+  // showComments: boolean = false;
+  totalComment: number = 1;
+  commentPageIndex: number = 0;
+  loadingDone: boolean = false;
+  readonly commentLimit: number = Constants.soCommentLimit;
 
   constructor(private apiBaseService: ApiBaseService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private toast: ToastsService,
               private userService: UserService,
+              private postService: PostService,
               public postItem: PostComponent) {
   }
 
@@ -62,6 +70,7 @@ export class PostFooterComponent implements OnChanges {
     if (this.type == 'info') {
       this.showInfo = true;
     }
+    this.totalComment = this.item.total_comments;
   }
 
   onActions(action: any, data: any, type?: any) {
@@ -97,11 +106,42 @@ export class PostFooterComponent implements OnChanges {
     }
 
     this.eventEmitter.emit(event);
-    this.viewAllComments();
+    // this.viewAllComments();
   }
 
-  viewAllComments() {
-    this.showComments = true;
+  // viewAllComments() {
+  //   this.showComments = true;
+  // }
+
+  mapComment(comment: any) {
+    return new SoComment().from(comment);
+  }
+
+  getMoreComments() {
+    if (this.loadingDone) {
+      console.error('All comments are loaded!')
+      return;
+    }
+
+    let body = { 'post_uuid' : this.item.uuid, 'page_index' : this.commentPageIndex, 'limit' : this.commentLimit };
+    this.postService.loadComments(body)
+      .subscribe((result: any) => {
+          console.log('Get more comments successfully');
+          if ( this.commentPageIndex == 0 ) {
+            // this.item.comments.length = 0; // Clear comments data in the first loading
+            this.item.comments = _.map(result.data.comments, this.mapComment);
+          } else {
+            this.item.comments.push(..._.map(result.data.comments, this.mapComment));
+          }
+          this.loadingDone = result.loading_done;
+
+          this.commentPageIndex += 1;
+
+        },
+        (error: any) => {
+          console.error('Cannot get more comments: ' + error);
+        });
+
   }
 
 }

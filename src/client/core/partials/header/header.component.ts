@@ -5,7 +5,7 @@ import { UserService } from '../../shared/services/user.service';
 import { Constants } from '../../shared/config/constants';
 
 import { SearchFormComponent } from './sub/search-form.component';
-import { NotificationService } from '../../shared/channels/notification.service';
+import { NotificationService } from '../../shared/services/notification.service';
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 
 declare var $: any;
@@ -153,10 +153,8 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     this.notificationService.getNewNotificationsCount();
   }
 
-
-  viewAllNotifications() {
-    this.notificationService.viewAllNotifications();
-
+  getMoreNotifications() {
+    this.notificationService.getMoreNotifications();
   }
 
   doAction(action: any, notif_id: string) {

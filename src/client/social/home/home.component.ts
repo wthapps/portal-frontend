@@ -31,15 +31,15 @@ export class ZSocialHomeComponent {
     this.posts.loadPosts();
   }
 
-  private debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
-
-  onScroll(event: any) {
-    // if($(window).scrollTop() + $(window).height() > $(document).height() - 10) {
-    let elem = $('.page-body-content');
-
-    if (!this.posts.loading_done && elem[0].scrollHeight  - elem.scrollTop() - 10 <= elem.outerHeight() ) {
-      this.posts.loadPosts();
-      console.log("Load more posts");
-    }
-  }
+  // private debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
+  //
+  // onScroll(event: any) {
+  //   // if($(window).scrollTop() + $(window).height() > $(document).height() - 10) {
+  //   let elem = $('.page-body-content');
+  //
+  //   if (!this.posts.loading_done && elem[0].scrollHeight  - elem.scrollTop() - 10 <= elem.outerHeight() ) {
+  //     this.posts.loadPosts();
+  //     console.log("Load more posts");
+  //   }
+  // }
 }

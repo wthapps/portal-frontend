@@ -31,11 +31,12 @@ import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
 import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
-import { NotificationService } from './channels/notification.service';
+import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './channels/notification-channel.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import { ReadMoreComponent } from '../partials/read-more/read-more.component';
 import { SoSearchService } from '../partials/header/sub/social-search.service';
+import { SocialDataService } from '../../social/shared/services/social-data.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.

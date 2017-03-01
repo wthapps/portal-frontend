@@ -51,6 +51,10 @@ export class PostService {
     return this.api.post(`${this.api.urls.zoneSoComments}`, body);
   }
 
+  loadComments(body: any) {
+    return this.api.get(`${this.api.urls.zoneSoComments}`, body);
+  }
+
   updateComment(body: any) {
     return this.api.put(`${this.api.urls.zoneSoComments}/${body.uuid}`, body);
   }
