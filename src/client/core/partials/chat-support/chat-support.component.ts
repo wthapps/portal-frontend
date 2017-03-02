@@ -6,8 +6,8 @@ import {
   transition,
   animate
 } from '@angular/core';
-import { CoreChatSupportListComponent } from './list/list.component';
-import { CoreChatSupportDetailComponent } from './detail/detail.component';
+import { ChatSupportListComponent } from './chat-support-list.component';
+import { ChatSupportDetailComponent } from './chat-support-detail.component';
 
 @Component({
   moduleId: module.id,
@@ -34,8 +34,8 @@ import { CoreChatSupportDetailComponent } from './detail/detail.component';
   ]
 })
 export class CoreChatSupportComponent implements OnInit {
-  @ViewChild('chatSupportList') chatSupportList: CoreChatSupportListComponent;
-  @ViewChild('chatSupportDetail') chatSupportDetail: CoreChatSupportDetailComponent;
+  @ViewChild('chatSupportList') chatSupportList: ChatSupportListComponent;
+  @ViewChild('chatSupportDetail') chatSupportDetail: ChatSupportDetailComponent;
 
 
   showChat: boolean = false;

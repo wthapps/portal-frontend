@@ -5,9 +5,9 @@ import {
 @Component({
   moduleId: module.id,
   selector: 'wth-chat-support-list',
-  templateUrl: 'list.component.html'
+  templateUrl: 'chat-support-list.component.html'
 })
-export class CoreChatSupportListComponent implements OnInit {
+export class ChatSupportListComponent implements OnInit {
   @Output() clickDetail: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {

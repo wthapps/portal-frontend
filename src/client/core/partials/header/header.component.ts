@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { SearchFormComponent } from './sub/search-form.component';
 import { NotificationService } from '../../shared/channels/notification.service';
-import { ChannelNotificationService, AppearancesChannelService } from '../../shared/channels/index';
+import { NotificationChannelService, AppearancesChannelService } from '../../shared/channels/index';
 import { ApiBaseService } from '../../shared/services/apibase.service';
 import { Constants } from '../../shared/config/constants';
 
