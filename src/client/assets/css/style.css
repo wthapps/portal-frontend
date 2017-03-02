@@ -17195,7 +17195,7 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
   background-position: -37px 0;
 }
 
-.wth-emoji-smile, .wth-emoji.wth-emoji-D, .wth-emoji.wth-emoji-d, .wth-emoji.wth-emoji-\) {
+.wth-emoji-smile, .wth-emoji.wth-emoji-\), .wth-emoji.wth-emoji-\-\), .wth-emoji.wth-emoji-\=\) {
   background-position: -69px 0;
 }
 
@@ -17207,7 +17207,7 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
   background-position: -133px 0;
 }
 
-.wth-emoji-smiley {
+.wth-emoji-smiley, .wth-emoji.wth-emoji-D, .wth-emoji.wth-emoji-\-D, .wth-emoji.wth-emoji-\=D, .wth-emoji.wth-emoji-d, .wth-emoji.wth-emoji-\-d, .wth-emoji.wth-emoji-\=d, .wth-emoji.wth-emoji-laugh {
   background-position: -165px 0;
 }
 
@@ -17223,7 +17223,7 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
   background-position: -261px 0;
 }
 
-.wth-emoji-kissing_heart {
+.wth-emoji-kissing_heart, .wth-emoji.wth-emoji-\*, .wth-emoji.wth-emoji-\-\*, .wth-emoji.wth-emoji-\=\* {
   background-position: -293px 0;
 }
 
@@ -17247,7 +17247,7 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
   background-position: -453px 0;
 }
 
-.wth-emoji-wink {
+.wth-emoji-wink, .wth-emoji.wth-emoji-\;\), .wth-emoji.wth-emoji-\;\-\), .wth-emoji.wth-emoji-\;\=\) {
   background-position: -485px 0;
 }
 
@@ -17335,7 +17335,7 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
   background-position: -1157px 0;
 }
 
-.wth-emoji-disappointed, .wth-emoji.wth-emoji-\( {
+.wth-emoji-disappointed, .wth-emoji.wth-emoji-\(, .wth-emoji.wth-emoji-\-\(, .wth-emoji.wth-emoji-\=\( {
   background-position: -1189px 0;
 }
 
@@ -17407,7 +17407,7 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
   background-position: -1733px 0;
 }
 
-.wth-emoji-sunglasses {
+.wth-emoji-sunglasses, .wth-emoji.wth-emoji-8\-\), .wth-emoji.wth-emoji-8\=\), .wth-emoji.wth-emoji-B\-\), .wth-emoji.wth-emoji-B\=\) {
   background-position: -1765px 0;
 }
 
@@ -20677,6 +20677,30 @@ body .ui-inputswitch.ui-widget.ui-inputswitch-checked .ui-inputswitch-handle:aft
 
 .wth-emoji-\( {
   background-position: -27909px 0;
+}
+
+.wth-emoji-dropdown .wth-emoji.wth-emoji-D, .wth-emoji-dropdown .wth-emoji.wth-emoji-\-D, .wth-emoji-dropdown .wth-emoji.wth-emoji-\=D, .wth-emoji-dropdown .wth-emoji.wth-emoji-d, .wth-emoji-dropdown .wth-emoji.wth-emoji-\-d, .wth-emoji-dropdown .wth-emoji.wth-emoji-\=d, .wth-emoji-dropdown .wth-emoji.wth-emoji-laugh {
+  display: none;
+}
+
+.wth-emoji-dropdown .wth-emoji.wth-emoji-\), .wth-emoji-dropdown .wth-emoji.wth-emoji-\-\), .wth-emoji-dropdown .wth-emoji.wth-emoji-\=\) {
+  display: none;
+}
+
+.wth-emoji-dropdown .wth-emoji.wth-emoji-\(, .wth-emoji-dropdown .wth-emoji.wth-emoji-\-\(, .wth-emoji-dropdown .wth-emoji.wth-emoji-\=\( {
+  display: none;
+}
+
+.wth-emoji-dropdown .wth-emoji.wth-emoji-\;\), .wth-emoji-dropdown .wth-emoji.wth-emoji-\;\-\), .wth-emoji-dropdown .wth-emoji.wth-emoji-\;\=\) {
+  display: none;
+}
+
+.wth-emoji-dropdown .wth-emoji.wth-emoji-\*, .wth-emoji-dropdown .wth-emoji.wth-emoji-\-\*, .wth-emoji-dropdown .wth-emoji.wth-emoji-\=\* {
+  display: none;
+}
+
+.wth-emoji-dropdown .wth-emoji.wth-emoji-8\-\), .wth-emoji-dropdown .wth-emoji.wth-emoji-8\=\), .wth-emoji-dropdown .wth-emoji.wth-emoji-B\-\), .wth-emoji-dropdown .wth-emoji.wth-emoji-B\=\) {
+  display: none;
 }
 
 .intercom-container-body {
