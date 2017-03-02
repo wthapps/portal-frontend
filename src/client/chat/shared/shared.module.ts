@@ -20,6 +20,7 @@ import { ZChatShareAddToConversationComponent } from './modal/add-to-conversatio
 import { ChatGroupMultiplePipe } from './pipe/chat-group-multiple.pipe';
 import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
 import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
+import { ChatCommonService } from './services/chat.common.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -70,7 +71,7 @@ export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService, ChatChannelService, ChatNotificationChannelService]
+      providers: [ChatService, ChatChannelService, ChatNotificationChannelService, ChatCommonService]
     };
   }
 }

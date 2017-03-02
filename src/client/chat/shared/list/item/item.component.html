@@ -21,13 +21,14 @@
         <span [innerHtml]="message.message | wthEmojis | safeHtml"></span>
         <span *ngIf="message.file_json">
           <img  *ngIf="message.file_type == 'Photo'" [src]="message.file_json.url" alt="" style="width: 200px">
-
-          <a *ngIf="message.file_type == 'FileMedium'" [href]="message.file_json.url" download style="color: #4A4A4A">
-            <img [src]="message.file_json.thumbnail_url" alt="">
-            <span *ngIf="message.file_type == 'FileMedium'" style="position: relative; top: -10px; left: 2px">
+          <a *ngIf="message.file_type == 'FileMedium'" [href]="message.file_json.url" target="_blank" style="color: #4A4A4A" download>
+            <div style="float: left">
+              <img [src]="message.file_json.thumbnail_url" alt="">
+            </div>
+            <div *ngIf="message.file_type == 'FileMedium'" style="position: relative; left: 10px; float: right">
               <span *ngIf="message.file_json.name">{{message.file_json.name}}</span>
               <div *ngIf="message.file_json.size" style="position: relative; top: -5px;">{{message.file_json.size}} B</div>
-            </span>
+            </div>
           </a>
         </span>
       </div>
