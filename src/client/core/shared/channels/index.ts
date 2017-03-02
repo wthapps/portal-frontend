@@ -1,3 +1,3 @@
 export * from './cable.service';
-export * from './channel-notification.service';
+export * from './notification-channel.service';
 export * from './appearances-channel.service';

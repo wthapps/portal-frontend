@@ -10,7 +10,7 @@ import { StorageService } from './shared/services/storage.service';
 import { HandlerService } from './shared/services/handler.service';
 import { SoSearchService } from './partials/header/sub/social-search.service';
 import { NotificationService } from './shared/channels/notification.service';
-import { NotificationChannelService } from './shared/channels/channel-notification.service';
+import { NotificationChannelService } from './shared/channels/notification-channel.service';
 import { AppearancesChannelService } from './shared/channels/appearances-channel.service';
 import { AuthGuard } from './shared/services/auth-guard.service';
 import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
