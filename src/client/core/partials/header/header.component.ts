@@ -1,11 +1,12 @@
 import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 import { UserService } from '../../shared/services/user.service';
+import { Constants } from '../../shared/config/constants';
+
 import { SearchFormComponent } from './sub/search-form.component';
 import { NotificationService } from '../../shared/channels/notification.service';
-import { NotificationChannelService, AppearancesChannelService } from '../../shared/channels/index';
-import { ApiBaseService } from '../../shared/services/apibase.service';
-import { Constants } from '../../shared/config/constants';
+import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 
 declare var $: any;
 declare var _: any;
