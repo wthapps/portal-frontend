@@ -22,9 +22,12 @@ import { ToastsService } from '../../../core/partials/toast/toast-message.servic
 import { Constants } from '../../../core/shared/config/constants';
 import {
   CommentCreateEvent, CommentUpdateEvent, ReplyCreateEvent, ReplyUpdateEvent,
-  DeleteReplyEvent, OpenPhotoModalEvent, DeleteCommentEvent
+  DeleteReplyEvent, OpenPhotoModalEvent, DeleteCommentEvent, ViewMoreCommentsEvent
 } from '../../events/social-events';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
+import { PhotoModalDataService } from '../services/photo-modal-data.service';
+import { Subscription } from 'rxjs';
+import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
 
 declare var $: any;
 declare var _: any;
@@ -56,10 +59,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   typeLikeDislike: any;
   dataLikeDislike: any;
 
-
   constructor(public apiBaseService: ApiBaseService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
+              private photoSelectDataService: PhotoModalDataService,
               private toast: ToastsService) {
     super();
   }
@@ -67,6 +70,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   ngOnInit() {
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
+    this.photoSelectDataService.init();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -180,7 +184,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           this.item = result['data'];
           this.mapDisplay();
         },
-        error => {
+        ( error : any ) => {
 
         }
       );
@@ -214,12 +218,23 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.onUpdated.emit(newPost);
   }
 
+  private updateItemComments(data: any) {
+    let updatedComment = new SoComment().from(data);
+    _.forEach(this.item.comments, (comment: SoComment, index : any) => {
+      if (comment.uuid == updatedComment.uuid)
+        this.item.comments[index] = updatedComment;
+    });
+  }
+
   onActions(event: BaseEvent) {
     // Create a comment
     if (event instanceof CommentCreateEvent) {
       this.createComment(event.data).subscribe(
         (res: any) => {
-          this.item = new SoPost().from(res.data);
+          // this.item = new SoPost().from(res.data);
+          // this.mapDisplay();
+          let comment = new SoComment().from(res.data);
+          _.uniqBy(this.item.comments.unshift(comment),'uuid');
           this.mapDisplay();
         }
       );
@@ -228,7 +243,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof CommentUpdateEvent) {
       this.updateComment(event.data).subscribe(
         (res: any) => {
-          this.item = new SoPost().from(res.data);
+          // let updatedComment = new SoComment().from(res.data);
+          // _.forEach(this.item.comments, (comment: SoComment, index : any) => {
+          //   if (comment.uuid == updatedComment.uuid)
+          //     this.item.comments[index] = updatedComment;
+          // });
+          this.updateItemComments(res.data);
+
           this.mapDisplay();
         }
       );
@@ -237,7 +258,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof DeleteCommentEvent) {
       this.deleteComment(event.data.uuid).subscribe(
         (res: any) => {
-          this.item = new SoPost().from(res.data);
+          // this.item = new SoPost().from(res.data);
+          _.remove(this.item.comments, {uuid: event.data.uuid});
           this.mapDisplay();
         }
       );
@@ -246,7 +268,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof ReplyCreateEvent) {
       this.createReply(event.data).subscribe(
         (res: any) => {
-          this.item = new SoPost().from(res.data);
+          // this.item = new SoPost().from(res.data);
+          this.updateItemComments(res.data);
           this.mapDisplay();
         }
       );
@@ -256,7 +279,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof ReplyUpdateEvent) {
       this.updateReply(event.data).subscribe(
         (res: any) => {
-          this.item = new SoPost().from(res.data);
+          // this.item = new SoPost().from(res.data);
+          this.updateItemComments(res.data);
           this.mapDisplay();
         }
       );
@@ -266,7 +290,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof DeleteReplyEvent) {
       this.deleteReply(event.data).subscribe(
         (res: any) => {
-          this.item = new SoPost().from(res.data);
+          // this.item = new SoPost().from(res.data);
+          this.updateItemComments(res.data);
           this.mapDisplay();
         }
       );
@@ -275,8 +300,67 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // Open photo modal
     if (event instanceof OpenPhotoModalEvent) {
       this.commentBox = event.data;
-      this.photoModalOpened.emit(this.commentBox);
+      // this.photoModalOpened.emit(this.commentBox);
+      this.openPhotoModal(this.commentBox);
+
     }
+
+    // View more comments
+    if (event instanceof ViewMoreCommentsEvent) {
+      this.syncComments(event.data);
+    }
+
+  }
+
+  syncComments(post: any) {
+    _.merge(this.item, post);
+    console.log("Synced comments", this.item);
+  }
+
+
+  mapPost(post: any) {
+    return new SoPost().from(post);
+  }
+
+  mapComment(comment: any) {
+    return new SoComment().from(comment);
+  }
+
+
+  closePhotoSubscription : Subscription;
+  nextPhotoSubscription: Subscription;
+  dismissPhotoSubscription: Subscription;
+  // uploadSubscription  ????
+
+  openPhotoModal(data: any){
+    console.debug("Opening post : photo modal");
+    this.photoSelectDataService.open(data);
+
+    this.subscribePhotoEvents();
+  }
+
+  private subscribePhotoEvents() {
+    // Subscribe actions corresponding with photo modal actions
+    this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
+      () => {this.unsubscribePhotoEvents();
+      });
+
+    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+      (photos: any) => {
+        this.commentBox.commentAction(photos);
+      });
+
+    this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
+      () => {
+        this.unsubscribePhotoEvents();
+      });
+  }
+
+  private unsubscribePhotoEvents() {
+    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
+      if(sub)
+        sub.unsubscribe();}
+    )
   }
 
   onSelectPhotoComment(photos: any) {
@@ -300,6 +384,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.postLikeDislike.modal.open();
   }
 
+  save(post: any) {
+    this.item = post;
+  }
+
   // createReaction(data:any) {
   //   this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
   //     (res:any) => {
@@ -320,7 +408,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     let data = {reaction: reaction, reaction_object: object, uuid: uuid};
     this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).subscribe(
       (res: any) => {
-        this.item = new SoPost().from(res.data);
+        // this.item = new SoPost().from(res.data);
+        _.merge(this.item, new SoPost().from(res.data).excludeComments());
         this.mapDisplay();
       }
     );

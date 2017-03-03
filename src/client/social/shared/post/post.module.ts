@@ -37,6 +37,7 @@ import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.
 import { SharedModule } from '../../../core/shared/shared.module';
 import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
 import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
+import { PhotoModalDataService } from '../services/photo-modal-data.service';
 
 @NgModule({
   imports: [
@@ -59,7 +60,7 @@ import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    // PostPhotoSelectComponent,
+    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
@@ -81,7 +82,7 @@ import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    // PostPhotoSelectComponent,
+    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,

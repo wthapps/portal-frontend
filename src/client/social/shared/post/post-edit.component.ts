@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy } from '@angular/core';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 // import { ApiBaseService, LoadingService } from '../../../shared/index';
 // import { SoPost } from '../../../shared/models/social_network/so-post.model';
@@ -13,6 +13,8 @@ import { SoPost } from '../../../core/shared/models/social_network/so-post.model
 import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialService } from '../services/social.service';
+import { PhotoModalDataService } from '../services/photo-modal-data.service';
+import { Subscription } from 'rxjs';
 
 
 declare var _: any;
@@ -24,10 +26,10 @@ declare var _: any;
   styleUrls: ['post-edit.component.css']
 })
 
-export class PostEditComponent implements OnInit, OnChanges {
+export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('modal') modal: HdModalComponent;
-  @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
+  // @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
 
   // For share
@@ -62,10 +64,17 @@ export class PostEditComponent implements OnInit, OnChanges {
   currentUser: User;
   readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
+  // Subscription list
+  nextSubscription : Subscription;
+  dismissSubscription : Subscription;
+  closeSubscription : Subscription;
+  uploadSubscription : Subscription;
+
   constructor(private apiService: ApiBaseService,
               private loading: LoadingService,
               private fb: FormBuilder,
               private socialService: SocialService,
+              private photoSelectDataService : PhotoModalDataService,
               private userService: UserService) {
   }
 
@@ -80,10 +89,44 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     this.currentUser = this.userService.profile;
+
+  }
+
+  private subscribePhotoSelectEvents() {
+    this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
+      this.next(photos);
+    })
+
+    this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
+      this.dismiss(photos);
+    })
+
+    this.closeSubscription = this.photoSelectDataService.closeObs$.subscribe((event: any) => {
+      this.closeSelectPhoto(event);
+    })
+
+    this.uploadSubscription = this.photoSelectDataService.uploadObs$.subscribe((files: any) => {
+      this.upload(files);
+    })
+  }
+
+  private unsubscribeAll() {
+    _.forEach([this.nextSubscription, this.dismissSubscription, this.closeSubscription, this.uploadSubscription], (sub: Subscription) => {
+      if (sub)
+        sub.unsubscribe();
+    });
+    // this.nextSubscription.unsubscribe();
+    // this.dismissSubscription.unsubscribe();
+    // this.closeSubscription.unsubscribe();
+    // this.uploadSubscription.unsubscribe();
   }
 
   ngOnChanges() {
 
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeAll();
   }
 
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
@@ -126,14 +169,19 @@ export class PostEditComponent implements OnInit, OnChanges {
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
-      this.photoSelectModal.open();
+      // this.photoSelectModal.open();
+      this.photoSelectDataService.open();
+
     } else {
       this.modal.open();
     }
+
+    this.subscribePhotoSelectEvents();
   }
 
   close() {
     this.modal.close();
+    this.unsubscribeAll();
   }
 
   done(item: any) {
@@ -223,7 +271,7 @@ export class PostEditComponent implements OnInit, OnChanges {
               this.uploadedPhotos.push(result['data']);
               files.shift(); // remove file was uploaded
             },
-            error => {
+            (error : any) => {
 
             }
           );
@@ -255,39 +303,33 @@ export class PostEditComponent implements OnInit, OnChanges {
 
   next(selectedPhotos: any) {
     this.post.photos = _.concat(this.post.photos, selectedPhotos);
-    this.photoSelectModal.close();
+    // this.photoSelectModal.close();
+    this.photoSelectDataService.close();
     this.modal.open();
   }
 
   addMorePhoto(event: any) {
     this.modal.close();
     this.onMoreAdded.emit(true);
-    this.photoSelectModal.open({return: true});
+    // this.photoSelectModal.open({return: true});
+    this.photoSelectDataService.open({return: true});
+
   }
 
   dismiss(photos: any) {
-    // if(photos == null) {
-    //   this.modal.open();
-    // }
-    //
-    // // restore photos after we cancelled editing
-    // if(this.mode == 'edit' && this.backupPhotos.length > 0) {
-    //   this.post.photos = this.backupPhotos;
-    // }
-    // if(this.uploadedPhotos.length > 0) {
-    //   // delete uploaded files form uploaded photos
-    //   this.post.photos = _.pullAll(this.post.photos, this.uploadedPhotos);
-    //   this.files = [];
-    // }
-    this.dismissed.emit(photos);
+    console.log("inside post-edit: dismiss");
+    // this.photos.length = 0;
+    // this.dismissed.emit(photos);
   }
 
   upload(files: Array<any>) {
+    console.log("inside post-edit.component: upload");
     _.forEach(files, (file: any) => {
       this.files.push(file);
     });
     // this.files = files;
-    this.photoSelectModal.close();
+    // this.photoSelectModal.close();
+    this.photoSelectDataService.close();
     this.modal.open();
     this.uploadFiles(this.files);
   }

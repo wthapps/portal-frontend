@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { PostEditComponent, PostService } from './index';
 import { Location } from '@angular/common';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { PhotoModalDataService } from '../services/photo-modal-data.service';
 
 declare var _: any;
 
@@ -22,6 +23,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   private id: string = '';
 
+
   constructor(public apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
               private location: Location,
@@ -34,6 +36,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
       this.id = params['id'];
       this.loadPost(this.id);
     });
+
   }
 
   loadPost(uuid: string): void {
@@ -51,8 +54,13 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   save(options: any = {mode: 'edit', item: null, isShare: false}) {
     this.postService.update(options.item)
       .subscribe((response: any) => {
-          this.loadPost(options.item.uuid);
+          // // Update item
+          let updatedPost = new SoPost().from(response.data);
+          delete updatedPost.comments;
+          this.item = _.merge({}, this.item, updatedPost);
+
           this.postEditModal.close();
+          console.log("Post after save: ", this.item);
         },
         (error: any) => {
           console.log('error', error);
@@ -65,4 +73,5 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
 }
+
 

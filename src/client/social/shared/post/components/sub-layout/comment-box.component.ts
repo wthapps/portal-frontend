@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, OnDestroy } from '@angular/core';
 import {
   CommentCreateEvent,
   OpenPhotoModalEvent,
@@ -7,10 +7,13 @@ import {
   CancelReplyCommentEvent,
   ReplyCreateEvent,
   ReplyUpdateEvent,
-  CancelEditReplyCommentEvent
+  CancelEditReplyCommentEvent, DeleteCommentEvent, DeleteReplyEvent
 } from '../../../../events/social-events';
 import { SoPost } from '../../../../../core/shared/models/social_network/so-post.model';
 import { SoComment } from '../../../../../core/shared/models/social_network/so-comment.model';
+import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
+import { BaseZoneSocialItem } from '../../../../base/base-social-item';
+import { Subscription } from 'rxjs';
 
 export enum ZSocialCommentBoxType {
   Add,
@@ -26,7 +29,7 @@ declare var $: any;
   templateUrl: 'comment-box.component.html',
 })
 
-export class ZSocialCommentBoxComponent implements OnInit {
+export class ZSocialCommentBoxComponent implements OnInit, OnDestroy {
   @Input() item: SoPost;
   @Input() comment: SoComment;
   @Input() reply: SoComment;
@@ -34,6 +37,14 @@ export class ZSocialCommentBoxComponent implements OnInit {
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   commentContent: string = '';
   commentBoxType = ZSocialCommentBoxType;
+
+  // Subscription objects
+  // photoSelectDataSubscription : Subscription;
+  nextPhotoSubscription : Subscription;
+
+  constructor(private photoSelectDataService : PhotoModalDataService) {
+
+  }
 
   ngOnInit() {
     if (this.type == this.commentBoxType.Edit) {
@@ -48,6 +59,10 @@ export class ZSocialCommentBoxComponent implements OnInit {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
     });
+  }
+
+  ngOnDestroy() {
+
   }
 
   onKey(e: any) {
@@ -88,8 +103,74 @@ export class ZSocialCommentBoxComponent implements OnInit {
     this.commentContent = '';
   }
 
+  // onActions(event: BaseEvent) {
+  //   // Create a comment
+  //   if (event instanceof CommentCreateEvent) {
+  //     this.createComment(event.data).subscribe(
+  //       (res: any) => {
+  //         // this.item = new SoPost().from(res.data);
+  //         // this.mapDisplay();
+  //         let post = new SoPost().from(res.data);
+  //         _.uniqBy(this.item.comments.unshift(...post.comments),'uuid');
+  //         this.mapDisplay();
+  //       }
+  //     );
+  //   }
+  //   // Update a comment
+  //   if (event instanceof CommentUpdateEvent) {
+  //     this.updateComment(event.data).subscribe(
+  //       (res: any) => {
+  //         this.item = new SoPost().from(res.data);
+  //         this.mapDisplay();
+  //       }
+  //     );
+  //   }
+  //   // Delete a comment
+  //   if (event instanceof DeleteCommentEvent) {
+  //     this.deleteComment(event.data.uuid).subscribe(
+  //       (res: any) => {
+  //         this.item = new SoPost().from(res.data);
+  //         this.mapDisplay();
+  //       }
+  //     );
+  //   }
+  //   // Create a reply
+  //   if (event instanceof ReplyCreateEvent) {
+  //     this.createReply(event.data).subscribe(
+  //       (res: any) => {
+  //         this.item = new SoPost().from(res.data);
+  //         this.mapDisplay();
+  //       }
+  //     );
+  //   }
+  //
+  //   // Update a reply
+  //   if (event instanceof ReplyUpdateEvent) {
+  //     this.updateReply(event.data).subscribe(
+  //       (res: any) => {
+  //         this.item = new SoPost().from(res.data);
+  //         this.mapDisplay();
+  //       }
+  //     );
+  //   }
+  //
+  //   // Delete a reply
+  //   if (event instanceof DeleteReplyEvent) {
+  //     this.deleteReply(event.data).subscribe(
+  //       (res: any) => {
+  //         this.item = new SoPost().from(res.data);
+  //         this.mapDisplay();
+  //       }
+  //     );
+  //   }
+  //
+  // }
+
   onOpenPhotoSelect() {
     this.eventEmitter.emit(new OpenPhotoModalEvent(this));
+    console.log("inside onOpenPhotoSelect");
+    // this.photoSelectDataService.open(new OpenPhotoModalEvent(this));
+
   }
 
   cancel() {

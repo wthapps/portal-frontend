@@ -29,4 +29,13 @@ export class SoPost extends BaseInput implements FromData {
     }
     return this;
   }
+
+  excludeComments() {
+    delete this['comments'];
+    return this;
+  }
+
+  isEmpty() {
+    return !this.uuid;
+  }
 }

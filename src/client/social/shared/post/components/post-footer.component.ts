@@ -11,7 +11,7 @@ import {
   CancelEditCommentEvent,
   CancelReplyCommentEvent,
   DeleteReplyEvent,
-  CancelEditReplyCommentEvent
+  CancelEditReplyCommentEvent, ViewMoreCommentsEvent
 } from '../../../events/social-events';
 import { ZSocialCommentBoxType } from './sub-layout/comment-box.component';
 import { PostComponent } from '../post.component';
@@ -109,19 +109,20 @@ export class PostFooterComponent implements OnChanges {
     // this.viewAllComments();
   }
 
-  // viewAllComments() {
-  //   this.showComments = true;
-  // }
+  notAllCommentsLoaded() {
+    return ( this.totalComment > 0  && !this.loadingDone);
+    // return ( this.totalComment > 0  && !this.loadingDone) || ( this.item.comments.length < this.item.total_comments);
+  }
 
   mapComment(comment: any) {
     return new SoComment().from(comment);
   }
 
   getMoreComments() {
-    if (this.loadingDone) {
-      console.error('All comments are loaded!')
-      return;
-    }
+    // if (this.loadingDone) {
+    //   console.error('All comments are loaded!')
+    //   return;
+    // }
 
     let body = { 'post_uuid' : this.item.uuid, 'page_index' : this.commentPageIndex, 'limit' : this.commentLimit };
     this.postService.loadComments(body)
@@ -131,11 +132,16 @@ export class PostFooterComponent implements OnChanges {
             // this.item.comments.length = 0; // Clear comments data in the first loading
             this.item.comments = _.map(result.data.comments, this.mapComment);
           } else {
-            this.item.comments.push(..._.map(result.data.comments, this.mapComment));
+            let cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
+            this.item = _.clone(cloneItem); // clone this item to notify parent components
           }
-          this.loadingDone = result.loading_done;
+          if(result.loading_done)
+            this.loadingDone = result.loading_done;
 
           this.commentPageIndex += 1;
+
+        //  Update comments for (parent) post component
+        this.eventEmitter.emit(new ViewMoreCommentsEvent(this.item));
 
         },
         (error: any) => {

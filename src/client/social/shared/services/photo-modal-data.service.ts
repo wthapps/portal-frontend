@@ -35,8 +35,9 @@ export class PhotoModalDataService {
     this.modalOpenSource.next(options);
   }
 
-  upload(item: any) {
-    this.modalUploadSource.next(item);
+  upload(files: any) {
+    console.log("inside PhotoModalDataService.upload");
+    this.modalUploadSource.next(files);
   }
 
   next(items: any) {

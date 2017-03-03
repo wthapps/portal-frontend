@@ -10,6 +10,7 @@ import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
 import { Subscription } from 'rxjs';
+import { PhotoModalDataService } from '../services/photo-modal-data.service';
 
 declare var _: any;
 declare var $: any;
@@ -38,6 +39,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   // Subscription
   loadSubscription : Subscription;
+  nextPhotoSubscription : Subscription;
 
   constructor(public apiBaseService: ApiBaseService,
               public socialService: SocialService,
@@ -45,6 +47,7 @@ export class PostListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private postService: PostService,
+              private photoSelectDataService : PhotoModalDataService,
               private socialDataService: SocialDataService
               // private comDataService: CommunitiesDataService
   ) {
@@ -59,6 +62,12 @@ export class PostListComponent implements OnInit, OnDestroy {
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
 
+    // Subscribe photo select events
+    this.photoSelectDataService.init();
+
+    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+      (photos: any) => {this.onSelectPhotoComment(photos);
+    })
 
     this.loadSubscription = this.socialDataService.itemObs$.subscribe(() => {
       this.loadPosts();
@@ -67,7 +76,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.loadSubscription.unsubscribe();
+    if(this.loadSubscription)
+      this.loadSubscription.unsubscribe();
+
+    this.nextPhotoSubscription.unsubscribe();
   }
 
   mapPost(post: any) {
@@ -80,10 +92,15 @@ export class PostListComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: any) => {
           this.loadingService.stop('#post-list-component');
-          if(this.items == undefined)
-            this.items = _.map(res.data, this.mapPost);
-          else
-            this.items.push(..._.map(res.data, this.mapPost));
+          // if(this.items === undefined)
+          //   this.items = _.map(res.data, this.mapPost);
+          // else {
+          //   // this.items.push(..._.map(res.data, this.mapPost));
+          //   this.items = _.extend(this.items, ..._.map(res.data, this.mapPost));
+          //   _.orderBy(this.items, ['created_at'], ['desc']);
+          //
+          // }
+          this.items = _.map(res.data, this.mapPost);
           this.loading_done = res.loading_done;
           this.socialDataService.loadingDone = this.loading_done;
           if(!this.loading_done)
@@ -127,7 +144,9 @@ export class PostListComponent implements OnInit, OnDestroy {
     } else if (options.mode == 'edit') {
       this.postService.update(options.item)
         .subscribe((response: any) => {
-            this.loadPosts();
+            // this.loadPosts();
+            _.extend(this.items, _.map([response.data], this.mapPost));
+            // TODO: Update posts only, not reload all
             this.postEditModal.close();
           },
           (error: any) => {
@@ -182,6 +201,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   dismiss(item: any) {
+    // this.postEditModal.dismiss(item);
     console.log('dismiss item...............', item);
   }
 
@@ -220,6 +240,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.commentBox.commentAction(photos);
     }
     // this.photoModal.close();
+    this.photoSelectDataService.close();
   }
 
   viewMorePosts() {

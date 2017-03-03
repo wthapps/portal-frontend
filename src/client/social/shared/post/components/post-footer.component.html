@@ -109,7 +109,7 @@
                    style="display: none;" [type]="commentBoxType.Reply"></comment-box>
     </li>
   </ul>
-  <div *ngIf="!loadingDone && totalComment > 0" class="z-social-comment-more">
+  <div *ngIf="notAllCommentsLoaded()" class="z-social-comment-more">
     <!--<label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="viewAllComments()">View all comments</label>-->
     <label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="getMoreComments()">View more comments</label>
   </div>
