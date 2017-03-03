@@ -1,6 +1,6 @@
 <div class="intercom-content">
   <div class="intercom-content-header">
-    <button (click)="onShowList()" type="button" class="btn btn-lg btn-default intercom-content-header-back">
+    <button (click)="onBack()" type="button" class="btn btn-lg btn-default intercom-content-header-back">
       <i class="fa fa-angle-left"></i>
     </button>
     <div class="media">
@@ -20,7 +20,7 @@
           <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
         </div>
         <div class="intercom-comment-container">
-          <p>Hi, sorry I don't speak Latin but I'm happy to help if you have any ReleasePage questions!</p>
+          <p>Hi!</p>
         </div>
       </div>
       <div class="intercom-conversation-part intercom-conversation-part-admin">
@@ -28,7 +28,7 @@
           <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
         </div>
         <div class="intercom-comment-container">
-          <p>Hi, sorry I don't speak Latin but I'm happy to help if you have any ReleasePage questions!</p>
+          <p>Hi! How are you</p>
         </div>
         <span class="intercom-comment-time">1h ago</span>
       </div>
@@ -37,7 +37,7 @@
                 <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
             </div>
             <div class="intercom-comment-container">
-                <p>Hi, sorry I don't speak Latin but I'm happy to help if you have any ReleasePage questions!</p>
+                <p>I am doing very well</p>
             </div>
         </div>
         <div class="intercom-conversation-part intercom-conversation-part-admin">
@@ -49,7 +49,9 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="email@domain.com">
                     <span class="input-group-btn">
-                      <button class="btn btn-wth" type="button"><i class="fa fa-angle-right"></i></button>
+                      <button class="btn btn-wth" type="button" (click)="onRegister()" >
+                        <i class="fa fa-angle-right"></i>
+                      </button>
                     </span>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import { ChatSupportListComponent } from './chat-support-list.component';
 import { ChatSupportDetailComponent } from './chat-support-detail.component';
 import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
 import { ChatSupportDirective } from './chat-support.directive';
+import { ChatSupportChannelService } from './shared/channel/chat-support-channel.service';
 
 @NgModule({
   imports: [
@@ -25,8 +26,8 @@ import { ChatSupportDirective } from './chat-support.directive';
     ChatSupportUserInfoComponent,
     ChatSupportDirective
   ],
-  providers: [],
-  entryComponents:[ChatSupportListComponent, ChatSupportDetailComponent]
+  providers: [ChatSupportChannelService],
+  entryComponents:[ChatSupportListComponent, ChatSupportUserInfoComponent, ChatSupportDetailComponent]
 })
 
 export class CoreChatSupportModule {

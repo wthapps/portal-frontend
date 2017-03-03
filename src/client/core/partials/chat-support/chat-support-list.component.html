@@ -5,11 +5,11 @@
   </div>
   <div class="intercom-content-body" style="position: relative;">
     <div class="intercom-conversation-btn-new">
-      <button class="btn btn-wth btn-min-sm " type="button" (click)="createNewConversation()">
+      <button class="btn btn-wth btn-min-sm " type="button" (click)="createConversation()">
         <i class="fa fa-edit"></i> New Conversation
       </button>
     </div>
-    <div class="intercom-conversation-summary intercom-conversation-summary-unread" (click)="onShowDetail()">
+    <div class="intercom-conversation-summary intercom-conversation-summary-unread" (click)="goToDetail()">
       <div class="intercom-conversation-summary-avatar">
         <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
       </div>
@@ -18,7 +18,7 @@
         <p>Hey! Just message us here if you have any questions</p>
       </div>
     </div>
-    <div class="intercom-conversation-summary" (click)="onShowDetail()">
+    <div class="intercom-conversation-summary" (click)="goToDetail()">
       <div class="intercom-conversation-summary-avatar">
         <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
       </div>
@@ -27,7 +27,7 @@
         <p>Hey! Just message us here if you have any questions</p>
       </div>
     </div>
-    <div class="intercom-conversation-summary" (click)="onShowDetail()">
+    <div class="intercom-conversation-summary" (click)="goToDetail()">
       <div class="intercom-conversation-summary-avatar">
         <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
       </div>

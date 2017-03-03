@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, EventEmitter, Output, Input
+  Component, OnInit, EventEmitter, Output, Input, AfterViewInit
 } from '@angular/core';
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 
@@ -9,10 +9,10 @@ import { ChatSupportBaseComponent } from './chat-support-base.component';
   moduleId: module.id,
   templateUrl: 'chat-support-list.component.html'
 })
-export class ChatSupportListComponent implements ChatSupportBaseComponent, OnInit {
+export class ChatSupportListComponent implements ChatSupportBaseComponent, OnInit, AfterViewInit{
   @Input() data: any;
-  @Output() clickDetail: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
+  conversations: Array<any>;
 
   constructor() {
   }
@@ -20,11 +20,18 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
   ngOnInit() {
   }
 
-  onShowDetail() {
-    // this.clickDetail.emit(true);
+  ngAfterViewInit() {
+    this.conversations = new Array<any>();
+    this.conversations = [
+
+    ];
   }
 
-  createNewConversation() {
-    this.clickDetail.emit(true);
+  goToDetail() {
+    this.actionEvent.emit({name: 'goToDetail'});
+  }
+
+  createConversation() {
+    this.actionEvent.emit({name: 'createConversation'});
   }
 }

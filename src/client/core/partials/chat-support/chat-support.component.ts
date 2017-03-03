@@ -12,6 +12,19 @@ import { ChatSupportDetailComponent } from './chat-support-detail.component';
 // import { ChatSupportDirective } from './chat-support.module';
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { ChatSupportDirective } from './chat-support.directive';
+import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
+
+const ChatSupportView = {
+  list: 'list',
+  detail: 'detail',
+  userInfo: 'userInfo'
+};
+
+const ChatSupportAction = {
+  createConversation: 'createConversation',
+  goBack: 'goBack',
+  goToDetail: 'goToDetail'
+};
 
 @Component({
   moduleId: module.id,
@@ -19,9 +32,9 @@ import { ChatSupportDirective } from './chat-support.directive';
   templateUrl: 'chat-support.component.html',
   styleUrls: ['chat-support.component.css'],
   animations: [
-    trigger('chatState', [
-      state('active', style({opacity: 1, transform: 'translateY(0)'})),
-      state('inactive', style({display: 'none'})),
+    trigger('showChat', [
+      state('true', style({opacity: 1, transform: 'translateY(0)'})),
+      state('false', style({display: 'none'})),
       transition('void => *', [
         style({
           opacity: 0,
@@ -39,23 +52,11 @@ import { ChatSupportDirective } from './chat-support.directive';
   ]
 })
 export class CoreChatSupportComponent implements OnInit, AfterViewInit {
-  // @ViewChild('chatSupportList') chatSupportList: ChatSupportListComponent;
-  // @ViewChild('chatSupportDetail') chatSupportDetail: ChatSupportDetailComponent;
-  // @ViewChild('chatSupportUserInfo') chatSupportUserInfo: ChatSupportUserInfoComponent;
   @ViewChild(ChatSupportDirective) chatSupport: ChatSupportDirective;
-  // @ViewChild('chatSupport', {read: ViewContainerRef}) chatSupport: ViewContainerRef;
 
-  // @ViewChildren('chatSupport', {read: ViewContainerRef}) chatSupport: QueryList;
+  showChat: boolean = false;
+  currentView: string;
 
-
-  // private chatSupport: ViewContainerRef;
-  //
-  // @ViewChild('chatSupport') set content(content: ViewContainerRef) {
-  //   this.chatSupport = content;
-  // }
-
-  showChatList: boolean = true;
-  chatState: string = 'inactive';
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {
   }
@@ -64,20 +65,15 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if(this.chatState == 'active') {
-      this.loadComponent(ChatSupportListComponent);
-    }
+
   }
 
   onShow() {
-    this.chatState = (this.chatState == 'inactive' ? 'active' : 'inactive');
-    if(this.chatState == 'active') {
+    this.showChat = !this.showChat;
+
+    if(this.showChat) {
       this.loadComponent(ChatSupportListComponent);
     }
-  }
-
-  onShowChatList(e: boolean) {
-    this.showChatList = (e ? false : true);
   }
 
   loadComponent(component: any) {
@@ -85,18 +81,32 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
     let viewContainerRef = this.chatSupport.viewContainerRef;
     viewContainerRef.clear();
     let componentRef = viewContainerRef.createComponent(componentFactory);
-    // this.chatSupport.createComponent(componentFactory);
-    console.log('component', typeof(component));
 
-    if (componentRef.instance.clickDetail !== undefined) {
-      componentRef.instance.clickDetail.subscribe(() => {
-        this.createNewConversation(null);
-      })
+    (<ChatSupportBaseComponent>componentRef.instance).actionEvent.subscribe((action: any) => {
+      this.doAction(action);
+    });
+  }
+
+  doAction(action: any) {
+    switch (action['name']) {
+      case ChatSupportAction.createConversation:
+        this.loadComponent(ChatSupportUserInfoComponent);
+        break;
+
+      case ChatSupportAction.goToDetail:
+        this.loadComponent(ChatSupportDetailComponent);
+        break;
+
+      case ChatSupportAction.goBack:
+        if (action['previous'] == 'ChatSupportListComponent') {
+          this.loadComponent(ChatSupportListComponent);
+        } else {
+          this.loadComponent(ChatSupportUserInfoComponent);
+        }
+        break;
     }
   }
 
-  createNewConversation(event: any) {
-    this.loadComponent(ChatSupportDetailComponent);
-  }
+
 
 }
