@@ -18,7 +18,8 @@
                   <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
                 </span>
             </figure>
-            <span>{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>
         </li>
       </ul>
@@ -39,7 +40,8 @@
                 <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
               </span>
             </figure>
-            <span>{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>
         </li>
       </ul>

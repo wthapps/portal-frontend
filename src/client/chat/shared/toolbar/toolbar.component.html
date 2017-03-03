@@ -38,7 +38,8 @@
     <div *ngIf="item.value">
       <img [src]="item.value.display.image">
       <div class="p-list-user-namegroup">
-        <span>{{item.value.display.name}}</span>
+        <span *ngIf="item.value.group_json.group_type == 'couple'">{{item.value.display.name}}</span>
+        <span *ngIf="item.value.group_json.group_type == 'multiple'">{{item.value.group_json | chatGroupName:50}}</span>
         <small *ngIf="item.value.group_json.member_count > 2">{{item.value.group_json.member_count}} people</small>
       </div>
     </div>

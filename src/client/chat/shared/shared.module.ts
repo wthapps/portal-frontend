@@ -21,6 +21,7 @@ import { ChatGroupMultiplePipe } from './pipe/chat-group-multiple.pipe';
 import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
 import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
 import { ChatCommonService } from './services/chat.common.service';
+import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -46,6 +47,7 @@ import { ChatCommonService } from './services/chat.common.service';
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
+    ChatGroupNamePipe,
     ChatUserOnlinePipe
   ],
   exports: [
@@ -64,6 +66,7 @@ import { ChatCommonService } from './services/chat.common.service';
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
+    ChatGroupNamePipe,
     ChatUserOnlinePipe
   ]
 })
