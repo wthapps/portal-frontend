@@ -47,7 +47,7 @@ export class ZChatChatboxComponent {
   }
 
   onEmojiClick(e: any) {
-    $('#chat-message-text').append(`:${e}`);
+    $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
     this.placeCaretAtEnd(document.getElementById("chat-message-text"));
   }
 

@@ -11,6 +11,8 @@
 //  }
 //}
 
+//@TODO move to component chat
+
 .wth-emoji {
   vertical-align: middle;
   display: inline-block;
@@ -197,11 +199,71 @@ $wth-emojis: "bowtie", "smile", "laughing", "blush", "smiley", "relaxed",
 //}
 
 .wth-emoji {
-  &.wth-emoji-D, &.wth-emoji-d, &.wth-emoji-\) {
-    @extend .wth-emoji-smile;
+  &.wth-emoji-D, &.wth-emoji-\-D, &.wth-emoji-\=D, &.wth-emoji-d, &.wth-emoji-\-d, &.wth-emoji-\=d, &.wth-emoji-laugh {
+    @extend .wth-emoji-smiley;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
   }
-  &.wth-emoji-\( {
+  &.wth-emoji-\), &.wth-emoji-\-\), &.wth-emoji-\=\) {
+    @extend .wth-emoji-smile;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-\(, &.wth-emoji-\-\(, &.wth-emoji-\=\( {
     @extend .wth-emoji-disappointed;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-\;\), &.wth-emoji-\;\-\), &.wth-emoji-\;\=\) {
+    @extend .wth-emoji-wink;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-\*, &.wth-emoji-\-\*, &.wth-emoji-\=\* {
+    @extend .wth-emoji-kissing_heart;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-8\-\), &.wth-emoji-8\=\), &.wth-emoji-B\-\), &.wth-emoji-B\=\) {
+    @extend .wth-emoji-sunglasses;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-\|, &.wth-emoji-\-\|, &.wth-emoji-\=\| {
+    @extend .wth-emoji-sunglasses;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-y, &.wth-emoji-Y, &.wth-emoji-ok {
+    @extend .wth-emoji-thumbsup;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-n, &.wth-emoji-N {
+    @extend .wth-emoji-thumbsdown;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-h, &.wth-emoji-H, &.wth-emoji-l, &.wth-emoji-L {
+    @extend .wth-emoji-heart;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-u, &.wth-emoji-U {
+    @extend .wth-emoji-broken_heart;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
   }
 }
 

@@ -1,8 +1,11 @@
 <div class="intercom-container-body">
-  <div *ngIf="showChat" [@chatState]="chatState">
+  <div [@chatState]="chatState">
+    <template chat-support ></template>
 
-    <wth-chat-support-list *ngIf="showChatList" #chatSupportList (clickDetail)="onShowChatList($event)"></wth-chat-support-list>
-    <wth-chat-support-detail *ngIf="!showChatList" #chatSupportDetail (clickList)="onShowChatList($event)"></wth-chat-support-detail>
+    <!--<wth-chat-support-list *ngIf="showChatList" #chatSupportList (clickDetail)="onShowChatList($event)"></wth-chat-support-list>-->
+    <!--<wth-chat-support-detail *ngIf="!showChatList" #chatSupportDetail (clickList)="onShowChatList($event)"></wth-chat-support-detail>-->
+
+    <!--<wth-chat-support-user-info *ngIf="!showChatList" #chatSupportUserInfo (clickList)="onShowChatList($event)"></wth-chat-support-user-info>-->
 
   </div>
   <div class="intercom-button">
