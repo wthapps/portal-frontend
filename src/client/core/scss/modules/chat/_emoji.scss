@@ -235,5 +235,35 @@ $wth-emojis: "bowtie", "smile", "laughing", "blush", "smiley", "relaxed",
       display: none;
     }
   }
+  &.wth-emoji-\|, &.wth-emoji-\-\|, &.wth-emoji-\=\| {
+    @extend .wth-emoji-sunglasses;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-y, &.wth-emoji-Y, &.wth-emoji-ok {
+    @extend .wth-emoji-thumbsup;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-n, &.wth-emoji-N {
+    @extend .wth-emoji-thumbsdown;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-h, &.wth-emoji-H, &.wth-emoji-l, &.wth-emoji-L {
+    @extend .wth-emoji-heart;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
+  &.wth-emoji-u, &.wth-emoji-U {
+    @extend .wth-emoji-broken_heart;
+    .wth-emoji-dropdown & {
+      display: none;
+    }
+  }
 }
 

@@ -171,6 +171,11 @@ export class ZChatEmojiService {
     '\\:8\\-\\)', '\\:8\\=\\)', '\\:B\\-\\)', '\\:B\\=\\)', //Cool
     '\\;\\)', '\\;\\-\\)', '\\;\\=\\)', //Wink
     '\\:\\*', '\\:\\-\\*', '\\:\\=\\*', //Kiss
+    '\\:\\|', '\\:\\-\\|', '\\:\\=\\|', //Speechless
+    '\\(y\\)', '\\(Y\\)', '\\(ok\\)', //Yes
+    '\\(n\\)', '\\(N\\)', //No
+    '\\(h\\)', '\\(H\\)', '\\(l\\)', '\\(L\\)', //Heart
+    '\\(u\\)', '\\(U\\)', //Bear-hug
   ];
   // public static emojisRegex = new RegExp(':(' + ZChatEmojiService.emojis.join('|') + '):', 'g');
   public static emojisRegex = new RegExp('(' + ZChatEmojiService.emojis.join('|') + ')', 'g');

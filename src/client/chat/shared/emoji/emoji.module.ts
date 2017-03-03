@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ZChatEmojiPipe, ZChatEmojiCharPipe, ZChatEmojiClassPipe } from './emoji.pipe';
+import { ZChatEmojiPipe, ZChatEmojiClassPipe } from './emoji.pipe';
 import { ZChatEmojiService } from './emoji.service';
 
 @NgModule({
