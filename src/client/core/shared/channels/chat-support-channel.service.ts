@@ -17,10 +17,6 @@ export class ChatSupportChannelService extends CableService {
   private item: any;
   constructor(private userService: UserService) {
     super();
-    if (this.userService.loggedIn) {
-      this.createConnectionInstance(this.userService);
-      // this.createSubscription();
-    }
   }
 
 
@@ -35,7 +31,6 @@ export class ChatSupportChannelService extends CableService {
     (function () {
 
       App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
-
         connected: function () {
           console.log('connected');
         },
@@ -56,8 +51,23 @@ export class ChatSupportChannelService extends CableService {
     }).call(this, self);
   }
 
-  testing() {
 
+  subscribe() {
+    this.createConnectionInstance(this.userService);
+    let _this = this;
+    App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
+      connected: function(){
+        console.log('connected');
+      },
+      disconnected: function(){
+        console.log('disconnected');
+      },
+      received: function(data:any){
+        console.log('received', data);
+
+      }
+    });
   }
+
 }
 
