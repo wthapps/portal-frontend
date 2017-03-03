@@ -4,10 +4,10 @@ import {
 
 @Component({
   moduleId: module.id,
-  selector: 'wth-chat-support-detail',
-  templateUrl: 'detail.component.html'
+  selector: 'wth-chat-support-user-info',
+  templateUrl: 'chat-support-user-info.component.html'
 })
-export class CoreChatSupportDetailComponent implements OnInit {
+export class ChatSupportUserInfoComponent implements OnInit {
   @Output() clickList: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {
@@ -18,5 +18,9 @@ export class CoreChatSupportDetailComponent implements OnInit {
 
   onShowList() {
     this.clickList.emit(false);
+  }
+
+  send() {
+
   }
 }

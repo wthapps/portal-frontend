@@ -1,26 +1,16 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   moduleId: module.id,
   selector: 'ac-apps-shared-platform',
-  template: `
-          <ul class="platform">
-            <li *ngFor="let c of platforms">
-              <i class="fa fa-windows" [ngClass]="{
-              'fa-windows': (c.name == 'windows' || c.name == 'windowsphone'), 
-              'fa-apple': (c.name == 'macos' || c.name == 'ios'), 
-              'fa-android': (c.name == 'android'), 
-              'fa-desktop': (c.name == 'browser')}"></i>
-            </li>
-          </ul>
-  `
+  templateUrl: 'platform.component.html'
 })
 export class ACAppsSharedCardPlatformComponent implements OnChanges {
   @Input() data: any;
 
   platforms: any;
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.platforms = this.data;
   }
 

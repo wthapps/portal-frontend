@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CoreChatSupportComponent } from './chat-support.component';
-import { CoreChatSupportListComponent } from './list/list.component';
-import { CoreChatSupportDetailComponent } from './detail/detail.component';
+import { ChatSupportListComponent } from './chat-support-list.component';
+import { ChatSupportDetailComponent } from './chat-support-detail.component';
+import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
+import { ChatSupportDirective } from './chat-support.directive';
 
 @NgModule({
   imports: [
@@ -11,15 +13,20 @@ import { CoreChatSupportDetailComponent } from './detail/detail.component';
   ],
   declarations: [
     CoreChatSupportComponent,
-    CoreChatSupportListComponent,
-    CoreChatSupportDetailComponent
+    ChatSupportListComponent,
+    ChatSupportDetailComponent,
+    ChatSupportUserInfoComponent,
+    ChatSupportDirective
   ],
   exports: [
     CoreChatSupportComponent,
-    CoreChatSupportListComponent,
-    CoreChatSupportDetailComponent
+    ChatSupportListComponent,
+    ChatSupportDetailComponent,
+    ChatSupportUserInfoComponent,
+    ChatSupportDirective
   ],
-  providers: []
+  providers: [],
+  entryComponents:[ChatSupportListComponent, ChatSupportDetailComponent]
 })
 
 export class CoreChatSupportModule {

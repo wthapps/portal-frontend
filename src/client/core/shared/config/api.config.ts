@@ -4,7 +4,8 @@ export let ApiConfig = {
 
   actionCable: {
     notificationChannel: 'NotificationChannel',
-    chatChannel: 'ChatChannel'
+    chatChannel: 'ChatChannel',
+    chatSupportChannel: 'ChatSupportChannel'
   },
 
   paramName: {

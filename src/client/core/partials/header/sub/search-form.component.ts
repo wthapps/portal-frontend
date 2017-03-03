@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SoSearchService } from './social-search.service';
 import { Router } from '@angular/router';
+import { Constants } from '../../../shared/config/constants';
 
 
 @Component({
@@ -9,16 +10,17 @@ import { Router } from '@angular/router';
   templateUrl: 'search-form.component.html'
 })
 
-export class SearchFormComponent implements OnInit{
+export class SearchFormComponent implements OnInit {
   show: boolean = false;
   type: string = '';
-  searchService: any;
+  searchService: SoSearchService;
   result: any;
   groups: any;
   showMore: any;
   text: any = '';
 
   constructor(private socialSearchService: SoSearchService, private router: Router) {
+    this.showSearchBar();
   }
 
   ngOnInit() {
@@ -26,7 +28,6 @@ export class SearchFormComponent implements OnInit{
   }
 
   init(type: string) {
-    this.show = true;
     this.type = type;
     if (this.type == 'social') {
       this.searchService = this.socialSearchService;
@@ -60,5 +61,15 @@ export class SearchFormComponent implements OnInit{
   focusOut() {
     // console.log('out');
     // this.result = null;
+  }
+
+  private showSearchBar() {
+    let urlOrigin = window.location.origin;
+
+    if (Constants.baseUrls.media == urlOrigin || Constants.baseUrls.chat == urlOrigin || Constants.baseUrls.social == urlOrigin) {
+      this.show = true;
+    } else {
+      this.show = false;
+    }
   }
 }

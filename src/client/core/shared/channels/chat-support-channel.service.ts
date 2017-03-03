@@ -9,21 +9,14 @@ import { ApiConfig } from '../config/api.config';
 declare let App: any;
 
 @Injectable()
-export class ChannelNotificationService extends CableService {
+export class ChatSupportChannelService extends CableService {
 
-  // notificationUpdated: EventEmitter = new EventEmitter();
   observer: Observer<any>;
   notificationUpdated: Observable<any>;
 
   private item: any;
-
   constructor(private userService: UserService) {
     super();
-    if (this.userService.loggedIn) {
-      this.createConnectionInstance(this.userService);
-
-      // this.createSubscription();
-    }
   }
 
 
@@ -37,8 +30,7 @@ export class ChannelNotificationService extends CableService {
     var self = this;
     (function () {
 
-      App.notification = App.cable.subscriptions.create(ApiConfig.actionCable.notificationChannel, {
-
+      App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
         connected: function () {
           console.log('connected');
         },
@@ -59,24 +51,23 @@ export class ChannelNotificationService extends CableService {
     }).call(this, self);
   }
 
-  testing() {
 
+  subscribe() {
+    this.createConnectionInstance(this.userService);
+    let _this = this;
+    App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
+      connected: function(){
+        console.log('connected');
+      },
+      disconnected: function(){
+        console.log('disconnected');
+      },
+      received: function(data:any){
+        console.log('received', data);
 
-
-    // App.notifications = App.cable.subscriptions.create('NotificationsChannel', {
-    //
-    //   connected: function() {},
-    //   disconnected: function() {},
-    //   received: function(response: any) {
-    //     console.log('response', response);
-    //   },
-    //   sendMessage: function(chatroom_id: any, message: any) {
-    //     return this.perform('send_message', {
-    //       chatroom_id: chatroom_id,
-    //       body: message
-    //     });
-    //   }
-    // });
+      }
+    });
   }
+
 }
 

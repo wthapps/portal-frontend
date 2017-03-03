@@ -1,5 +1,6 @@
 const path = {
   base: './assets',
+  scss: './scss',
   html: './',
   temp: './assets/.tmp',
   dist: './assets/dist',
@@ -27,7 +28,7 @@ const reload = browserSync.reload;
 
 //*** SASS compiler task
 gulp.task('styles', () => {
-  return gulp.src(path.base + '/scss/*.scss')
+  return gulp.src(path.scss + '/*.scss')
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.sass.sync({
@@ -87,7 +88,8 @@ gulp.task('minify:css', ['styles'], () => {
   return gulp.src([path.base + '/css/*.css', '!' + path.base + '/css/*.min.css'])
     .pipe($.cssnano({safe: true, autoprefixer: false}))
     .pipe($.rename('app.min.css'))
-    .pipe(gulp.dest(path.dist));
+    // .pipe(gulp.dest(path.dist));
+    .pipe(gulp.dest(path.base + '/css'));
 });
 
 //*** JS minify task
@@ -95,7 +97,8 @@ gulp.task('minify:js', ['scripts'], () => {
   return gulp.src([path.temp + '/js/*.js', '!' + path.temp + '/js/*.min.js'])
     .pipe($.uglify())
     .pipe($.rename('app.min.js'))
-    .pipe(gulp.dest(path.dist));
+    // .pipe(gulp.dest(path.dist));
+    .pipe(gulp.dest(path.base + '/js'));
 });
 
 //*** CORE JS minify task
@@ -103,7 +106,8 @@ gulp.task('minify:corejs', ['coreScripts'], () => {
   return gulp.src([path.temp + '/third_party/*.js', '!' + path.temp + '/third_party/*.min.js'])
     .pipe($.uglify())
     .pipe($.rename('core.min.js'))
-    .pipe(gulp.dest(path.dist));
+    // .pipe(gulp.dest(path.dist));
+    .pipe(gulp.dest(path.base + '/js'));
 });
 
 //*** IMAGES minify task
@@ -137,7 +141,7 @@ gulp.task("watch", () => {
     path.base + '/images/**/*'
   ]).on('change', reload);
 
-  gulp.watch(path.base + '/scss/**/*.scss', ['minify:css']);
+  gulp.watch(path.scss + '/**/*.scss', ['minify:css']);
   gulp.watch(path.base + '/third_party/**/*.js', ['minify:corejs']);
   gulp.watch(path.base + '/js/**/*.js', ['minify:js']);
   gulp.watch(path.base + '/images_temp/**/*', ['minify:images']);
@@ -167,11 +171,13 @@ gulp.task('serveLite', ['watch'], () => {
 
 //*** BUILD compiler task
 gulp.task('buildCss', ['minify:css'], () => {
-  return gulp.src(path.dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
+  // return gulp.src(path.dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
+  return gulp.src(path.base + '/css' + '/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 //*** BUILD compiler task
 gulp.task('build', ['lint', 'minify'], () => {
-  return gulp.src(path.dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
+  // return gulp.src(path.dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
+  return gulp.src(path.base + '/js' + '/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
 //*** DEFAULT compiler task

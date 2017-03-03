@@ -1,11 +1,12 @@
 import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 import { UserService } from '../../shared/services/user.service';
+import { Constants } from '../../shared/config/constants';
+
 import { SearchFormComponent } from './sub/search-form.component';
 import { NotificationService } from '../../shared/channels/notification.service';
-import { ChannelNotificationService, AppearancesChannelService } from '../../shared/channels/index';
-import { ApiBaseService } from '../../shared/services/apibase.service';
-import { Constants } from '../../shared/config/constants';
+import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 
 declare var $: any;
 declare var _: any;
@@ -47,11 +48,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
               private router: Router,
               public notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {
-    /*this.urls = new Array();
-     this.router.events.subscribe((navigationEnd: NavigationEnd) => {
-     this.urls.length = 0; //Fastest way to clear out array
-     this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
-     });*/
   }
 
   ngOnInit() {
@@ -106,48 +102,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
         $('.navbar-nav-notification .dropdown-submenu').find('.dropdown-menu').hide();
       }
     });
-  }
-
-  getNavTitle(url: string): void {
-    this.urls.unshift(url); //Add url to beginning of array (since the url is being recursively broken down from full url to its parent)
-    if (url.lastIndexOf('/') > 0) {
-      this.getNavTitle(url.substr(0, url.lastIndexOf('/'))); //Find last '/' and add everything before it as a parent route
-    }
-
-    //console.log((this.urls[1])); //["/account", "/account/my-apps"]
-
-    // header overlay
-    // console.log(this.urls);
-    if (this.urls[0] == '/account') {
-      if (this.urls[1] && this.urls[1] == '/account/recovery') {
-        this.imgLogo = Constants.img.logoWhite;
-      } else {
-        this.imgLogo = Constants.img.logo;
-      }
-      this.searchForm.show = false;
-      // zone layout
-    } else if (this.urls[0] == '/zone') {
-      this.imgLogo = Constants.img.logoZone;
-
-      this.showSearchBar = true;
-      if (this.urls[1] && this.urls[1] == '/zone/social') {
-        this.searchForm.init('social');
-      }
-      // zone layout
-    } else {
-      this.searchForm.show = false;
-      this.imgLogo = Constants.img.logoWhite;
-
-      this.showSearchBar = false;
-    }
-    // end header overlay
-
-
-    // show navTitle
-    let param_url = this.urls;
-    if (this.urls[1]) {
-      param_url = (this.urls[1]).split('?');
-    }
   }
 
   onNavigation(event: any): void {
