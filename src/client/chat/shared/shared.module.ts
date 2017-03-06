@@ -19,6 +19,9 @@ import { ChatUserOnlinePipe } from './pipe/chat-user-online.pipe';
 import { ZChatShareAddToConversationComponent } from './modal/add-to-conversation.component';
 import { ChatGroupMultiplePipe } from './pipe/chat-group-multiple.pipe';
 import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
+import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
+import { ChatCommonService } from './services/chat.common.service';
+import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -39,10 +42,12 @@ import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
+    ZChatContactActionsComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
+    ChatGroupNamePipe,
     ChatUserOnlinePipe
   ],
   exports: [
@@ -56,10 +61,12 @@ import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
+    ZChatContactActionsComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
+    ChatGroupNamePipe,
     ChatUserOnlinePipe
   ]
 })
@@ -67,7 +74,7 @@ export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService, ChatChannelService, ChatNotificationChannelService]
+      providers: [ChatService, ChatChannelService, ChatNotificationChannelService, ChatCommonService]
     };
   }
 }

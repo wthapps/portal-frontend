@@ -9,6 +9,7 @@ import { ChatConstant } from '../constants/chat-constant';
 import { ChatChannelService } from '../channels/chat-channel.service';
 import { ChatNotificationChannelService } from '../channels/chat-notification-channel.service';
 import { AppearancesChannelService } from '../../../core/shared/channels/appearances-channel.service';
+import { ChatCommonService } from './chat.common.service';
 
 declare var _:any;
 
@@ -18,17 +19,19 @@ export class ChatService {
   constant:any;
 
   constructor(public storage: StorageService,
-              private apiBaseService: ApiBaseService,
+              public apiBaseService: ApiBaseService,
               public user: UserService,
               public chanel: ChatChannelService,
               public notificationChannel: ChatNotificationChannelService,
               public appearancesChannelService: AppearancesChannelService,
+              public chatCommonService: ChatCommonService,
               public router: Router,
               public handler: HandlerService) {
     // =============================
     this.storage.save('chat_contacts', null);
     this.storage.save('chat_recent_contacts', null);
     this.storage.save('chat_favourite_contacts', null);
+    this.storage.save('chat_history_contacts', null);
     this.storage.save('contact_select', null);
     this.storage.save('current_chat_messages', null);
     this.storage.save('users_online', []);
@@ -46,24 +49,13 @@ export class ChatService {
         (res:any) => {
           this.storage.save('chat_contacts', res);
           this.setDefaultSelectContact();
-          this.setRecentContacts();
-          this.setFavouriteContacts();
+          this.chatCommonService.setRecentContacts();
+          this.chatCommonService.setFavouriteContacts();
+          this.chatCommonService.setHistoryContacts();
         }
       );
       return res;
     }
-  }
-
-  setRecentContacts() {
-    let contacts = this.storage.find('chat_contacts').value.data;
-    let recentContacts = _.filter(contacts, { 'favourite': false, 'black_list': false });
-    this.storage.save('chat_recent_contacts', recentContacts);
-  }
-
-  setFavouriteContacts() {
-    let contacts = this.storage.find('chat_contacts').value.data;
-    let favouriteContacts = _.filter(contacts, { 'favourite': true, 'black_list': false });
-    this.storage.save('chat_favourite_contacts', favouriteContacts);
   }
 
   getRecentContacts() {
@@ -74,19 +66,15 @@ export class ChatService {
     return this.storage.find('chat_favourite_contacts');
   }
 
+  getHistoryContacts() {
+    return this.storage.find('chat_history_contacts');
+  }
+
   addContact(ids:number) {
     this.apiBaseService.post('zone/chat/create_contact', {user_id: ids}).subscribe(
       (res:any) => {
         console.log(res);
         this.notificationChannel.addedContactNotification(res.data.group_json.id);
-        let item = this.storage.find('chat_contacts');
-        // let index = _.findIndex(item.value.data, { id: res.data.id });
-        //
-        // if(index == -1) {
-        //   item.value.data.push(res.data);
-        //   let recentContacts = _.filter(item.value.data, ['favourite', false]);
-        //   this.storage.save('chat_recent_contacts', recentContacts);
-        // }
       }
     );
   }
@@ -260,12 +248,17 @@ export class ChatService {
     this.updateGroupUser(contact.id, data);
   }
 
+  updateHistory(contact:any) {
+    this.updateGroupUser(contact.id, {history: false});
+  }
+
   updateGroupUser(groupUserId:any, data:any) {
     this.apiBaseService.put('zone/chat/group_user/' + groupUserId, data).subscribe(
       (res:any) => {
         this.storage.save('chat_contacts', res);
-        this.setRecentContacts();
-        this.setFavouriteContacts();
+        this.chatCommonService.setRecentContacts();
+        this.chatCommonService.setFavouriteContacts();
+        this.chatCommonService.setHistoryContacts();
       }
     );
   }

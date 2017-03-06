@@ -2,6 +2,7 @@ import { Injectable }     from '@angular/core';
 import { StorageService } from '../../../core/shared/services/storage.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { CableService } from '../../../core/shared/channels/cable.service';
+import { ChatCommonService } from '../services/chat.common.service';
 
 declare let App: any;
 declare let $: any;
@@ -10,7 +11,9 @@ declare let _: any;
 @Injectable()
 export class ChatNotificationChannelService extends CableService {
 
-  constructor(private userService: UserService, private storage: StorageService) {
+  constructor(private userService: UserService,
+              private chatCommonService: ChatCommonService,
+              private storage: StorageService) {
     super();
   }
 
@@ -71,12 +74,24 @@ export class ChatNotificationChannelService extends CableService {
   }
 
   addContact(data:any) {
+    console.log('addContact');
     let item = this.storage.find('chat_contacts');
     let index = _.findIndex(item.value.data, { id: data.group_user.id });
     if(index == -1) {
+      console.log('contact', this.storage.find('chat_recent_contacts').value);
       item.value.data.push(data.group_user);
-      let recentContacts = _.filter(item.value.data, ['favourite', false]);
+      let recentContacts = _.filter(item.value.data, { 'favourite': false, 'black_list': false, 'history': false });
       this.storage.save('chat_recent_contacts', recentContacts);
+    } else {
+      item.value.data[index] = data.group_user;
+      this.storage.save('contact_select', data.group_user);
+      this.storage.save('chat_contacts', item);
+
+      this.chatCommonService.setRecentContacts();
+      console.log('contact', this.storage.find('chat_recent_contacts').value);
+      this.chatCommonService.setFavouriteContacts();
+      this.chatCommonService.setHistoryContacts();
+
     }
   }
 }

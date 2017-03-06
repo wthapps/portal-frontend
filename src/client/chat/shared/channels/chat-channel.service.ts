@@ -47,12 +47,22 @@ export class ChatChannelService extends CableService {
     let item = this.storage.find('chat_messages_group_' + groupId);
     if (item && item.value) {
       item.value.data.push(data);
-      let currentGroupId = this.storage.find('contact_select').value.group_json.id;
-      if(currentGroupId == groupId) {
+      let contactSelect = this.storage.find('contact_select').value;
+      if(contactSelect.group_json.id == groupId) {
         this.storage.save('current_chat_messages', item);
       }
-
+      if (!contactSelect.favourite) {
+        this.moveFristRecentList();
+      }
     }
+  }
+
+  moveFristRecentList() {
+    let contactSelect:any = this.storage.find('contact_select').value;
+    let chatRecentContacts:any = this.storage.find('chat_recent_contacts').value;
+    chatRecentContacts.unshift(contactSelect);
+    chatRecentContacts = _.uniqBy(chatRecentContacts, 'id');
+    this.storage.save('chat_recent_contacts', chatRecentContacts);
   }
 
   unsubscribe(groupId:any) {

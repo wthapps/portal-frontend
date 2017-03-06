@@ -2,9 +2,9 @@ import { Injectable }     from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
-import { CableService } from './cable.service';
-import { UserService } from '../services/user.service';
-import { ApiConfig } from '../config/api.config';
+import { CableService } from '../../../../shared/channels/cable.service';
+import { UserService } from '../../../../shared/services/user.service';
+import { ApiConfig } from '../../../../shared/config/api.config';
 
 declare let App: any;
 
@@ -53,7 +53,7 @@ export class ChatSupportChannelService extends CableService {
 
 
   subscribe() {
-    this.createConnectionInstance(this.userService);
+    this.createConnectionInstance(null, 'support', '123456789');
     let _this = this;
     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
       connected: function(){
