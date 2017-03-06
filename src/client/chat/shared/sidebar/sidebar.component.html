@@ -47,5 +47,29 @@
       </ul>
     </dd>
   </dl>
+  <div class="form-group">
+    <a href="javascript:;" class="btn btn-default" (click)="historyToggle()"><i class="fa fa-clock-o"></i> History</a>
+  </div>
+  <dl class="p-list-user-group" *ngIf="historyShow">
+    <dd>
+      <ul class="p-list-user p-list-outside" *ngIf="historyContacts.value">
+        <li *ngFor="let contact of historyContacts.value" [routerLinkActive]="['active']">
+          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
+            <div class="pull-right">
+              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+            </div>
+            <figure>
+              <img [src]="contact.display.image">
+              <span *ngIf="contact.group_json.group_type == 'couple'">
+                <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
+              </span>
+            </figure>
+            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
+          </a>
+        </li>
+      </ul>
+    </dd>
+  </dl>
 </aside>
 

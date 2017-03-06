@@ -39,6 +39,9 @@ export class ChatNotificationChannelService extends CableService {
             if (data.type == "added_contact") {
               _this.addContact(data);
             }
+            if (data.type == "update_display") {
+              _this.updateDisplay(data);
+            }
           },
         }
       );
@@ -53,6 +56,10 @@ export class ChatNotificationChannelService extends CableService {
     App.chatNotification.send({type: "added_contact", group_id: groupId});
   }
 
+  updateDisplayNotification(groupId:any) {
+    App.chatNotification.send({type: "update_display", group_id: groupId});
+  }
+
   removeNotification(data:any) {
     let item = this.storage.find('chat_contacts');
     if(item && item.value) {
@@ -60,6 +67,17 @@ export class ChatNotificationChannelService extends CableService {
       if (contact) {
         contact.notification_count = 0
       }
+    }
+  }
+
+  updateDisplay(data:any) {
+    let item = this.storage.find('chat_contacts');
+    let index = _.findIndex(item.value.data, { id: data.group_user.id });
+    if(index != -1) {
+      item.value.data[index] = data.group_user;
+      this.storage.save('contact_select', data.group_user);
+      this.storage.save('chat_contacts', item);
+      this.updateAll();
     }
   }
 
@@ -74,11 +92,9 @@ export class ChatNotificationChannelService extends CableService {
   }
 
   addContact(data:any) {
-    console.log('addContact');
     let item = this.storage.find('chat_contacts');
     let index = _.findIndex(item.value.data, { id: data.group_user.id });
     if(index == -1) {
-      console.log('contact', this.storage.find('chat_recent_contacts').value);
       item.value.data.push(data.group_user);
       let recentContacts = _.filter(item.value.data, { 'favourite': false, 'black_list': false, 'history': false });
       this.storage.save('chat_recent_contacts', recentContacts);
@@ -86,13 +102,14 @@ export class ChatNotificationChannelService extends CableService {
       item.value.data[index] = data.group_user;
       this.storage.save('contact_select', data.group_user);
       this.storage.save('chat_contacts', item);
-
-      this.chatCommonService.setRecentContacts();
-      console.log('contact', this.storage.find('chat_recent_contacts').value);
-      this.chatCommonService.setFavouriteContacts();
-      this.chatCommonService.setHistoryContacts();
-
+      this.updateAll();
     }
+  }
+
+  updateAll() {
+    this.chatCommonService.setRecentContacts();
+    this.chatCommonService.setFavouriteContacts();
+    this.chatCommonService.setHistoryContacts();
   }
 }
 
