@@ -8,9 +8,9 @@ export class SocialDataService {
   private itemSource = new Subject<string>();
 
   itemObs$ = this.itemSource.asObservable();
-  public loadingDone = false;
+  loadingDone = false;
 
-  loadItem(data: string = "") {
+  loadItem(data: string = '') {
     this.itemSource.next(data);
   }
 

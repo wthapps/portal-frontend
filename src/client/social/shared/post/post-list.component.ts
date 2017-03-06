@@ -67,12 +67,12 @@ export class PostListComponent implements OnInit, OnDestroy {
 
     this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
       (photos: any) => {this.onSelectPhotoComment(photos);
-    })
+    });
 
     this.loadSubscription = this.socialDataService.itemObs$.subscribe(() => {
       this.loadPosts();
       console.log('Loading more posts');
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -84,6 +84,11 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   mapPost(post: any) {
     return new SoPost().from(post);
+  }
+
+  mapPostNoComments(post: any) {
+    let mappedPost =  new SoPost().from(post).excludeComments();
+    return mappedPost;
   }
 
   loadPosts() {
@@ -142,13 +147,19 @@ export class PostListComponent implements OnInit, OnDestroy {
           }
         );
     } else if (options.mode == 'edit') {
-      this.postService.update(options.item)
-        .subscribe((response: any) => {
-            // this.loadPosts();
-            _.extend(this.items, _.map([response.data], this.mapPost));
-            // TODO: Update posts only, not reload all
+            // Update post content only, not reload comments
             this.postEditModal.close();
-          },
+        this.postService.update(options.item)
+          .subscribe((response: any) => {
+            // this.loadPosts();
+            let editedItem = _.map([response.data], this.mapPostNoComments)[0];
+            let idx = _.findIndex(this.items, ( i:SoPost ) => { return  i.uuid == editedItem.uuid; });
+            if(idx >= 0) {
+              editedItem.comments = this.items[idx].comments;
+              this.items[idx] = editedItem;
+            }
+
+    },
           (error: any) => {
             console.log('error', error);
           }
@@ -240,7 +251,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.commentBox.commentAction(photos);
     }
     // this.photoModal.close();
-    this.photoSelectDataService.close();
+    // this.photoSelectDataService.close();
   }
 
   viewMorePosts() {

@@ -7,7 +7,6 @@ import { ZSocialProfileAboutComponent } from './shared/profile/about/about.compo
 import { ZSocialNotificationsComponent } from './notifications/notifications.component';
 import { PostDetailComponent } from './shared/post/post-detail.component';
 import { AuthGuard } from '../core/shared/services/auth-guard.service';
-import { ZSocialProfilePostComponent } from './profile/post/post.component';
 
 export const routes: Routes = [
   { path: '', component: ZSocialHomeComponent, canActivate: [AuthGuard] },

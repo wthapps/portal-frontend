@@ -29,7 +29,7 @@ declare var $: any;
   templateUrl: 'comment-box.component.html',
 })
 
-export class ZSocialCommentBoxComponent implements OnInit, OnDestroy {
+export class ZSocialCommentBoxComponent implements OnInit {
   @Input() item: SoPost;
   @Input() comment: SoComment;
   @Input() reply: SoComment;
@@ -38,11 +38,7 @@ export class ZSocialCommentBoxComponent implements OnInit, OnDestroy {
   commentContent: string = '';
   commentBoxType = ZSocialCommentBoxType;
 
-  // Subscription objects
-  // photoSelectDataSubscription : Subscription;
-  nextPhotoSubscription : Subscription;
-
-  constructor(private photoSelectDataService : PhotoModalDataService) {
+  constructor() {
 
   }
 
@@ -61,9 +57,6 @@ export class ZSocialCommentBoxComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-
-  }
 
   onKey(e: any) {
     // Create, Update, Reply
@@ -103,73 +96,8 @@ export class ZSocialCommentBoxComponent implements OnInit, OnDestroy {
     this.commentContent = '';
   }
 
-  // onActions(event: BaseEvent) {
-  //   // Create a comment
-  //   if (event instanceof CommentCreateEvent) {
-  //     this.createComment(event.data).subscribe(
-  //       (res: any) => {
-  //         // this.item = new SoPost().from(res.data);
-  //         // this.mapDisplay();
-  //         let post = new SoPost().from(res.data);
-  //         _.uniqBy(this.item.comments.unshift(...post.comments),'uuid');
-  //         this.mapDisplay();
-  //       }
-  //     );
-  //   }
-  //   // Update a comment
-  //   if (event instanceof CommentUpdateEvent) {
-  //     this.updateComment(event.data).subscribe(
-  //       (res: any) => {
-  //         this.item = new SoPost().from(res.data);
-  //         this.mapDisplay();
-  //       }
-  //     );
-  //   }
-  //   // Delete a comment
-  //   if (event instanceof DeleteCommentEvent) {
-  //     this.deleteComment(event.data.uuid).subscribe(
-  //       (res: any) => {
-  //         this.item = new SoPost().from(res.data);
-  //         this.mapDisplay();
-  //       }
-  //     );
-  //   }
-  //   // Create a reply
-  //   if (event instanceof ReplyCreateEvent) {
-  //     this.createReply(event.data).subscribe(
-  //       (res: any) => {
-  //         this.item = new SoPost().from(res.data);
-  //         this.mapDisplay();
-  //       }
-  //     );
-  //   }
-  //
-  //   // Update a reply
-  //   if (event instanceof ReplyUpdateEvent) {
-  //     this.updateReply(event.data).subscribe(
-  //       (res: any) => {
-  //         this.item = new SoPost().from(res.data);
-  //         this.mapDisplay();
-  //       }
-  //     );
-  //   }
-  //
-  //   // Delete a reply
-  //   if (event instanceof DeleteReplyEvent) {
-  //     this.deleteReply(event.data).subscribe(
-  //       (res: any) => {
-  //         this.item = new SoPost().from(res.data);
-  //         this.mapDisplay();
-  //       }
-  //     );
-  //   }
-  //
-  // }
-
   onOpenPhotoSelect() {
     this.eventEmitter.emit(new OpenPhotoModalEvent(this));
-    console.log("inside onOpenPhotoSelect");
-    // this.photoSelectDataService.open(new OpenPhotoModalEvent(this));
 
   }
 

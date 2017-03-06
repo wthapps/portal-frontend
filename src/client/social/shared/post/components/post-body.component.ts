@@ -26,9 +26,9 @@ export class PostBodyComponent implements OnInit, OnChanges {
   };
 
   constructor(private route: ActivatedRoute,
-              public userService: UserService,
               private router: Router,
-              private postItem: PostComponent) {
+              public userService: UserService,
+              public postItem: PostComponent) {
   }
 
   ngOnInit() {

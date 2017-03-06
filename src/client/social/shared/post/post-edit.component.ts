@@ -93,26 +93,38 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private subscribePhotoSelectEvents() {
-    this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
-      this.next(photos);
-    })
+    if (this.needInitSubscription(this.nextSubscription)) {
+      this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
+        this.next(photos);
+      });
+    }
 
-    this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
-      this.dismiss(photos);
-    })
+    if (this.needInitSubscription(this.dismissSubscription)) {
+      this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
+        this.dismiss(photos);
+      });
+    }
 
-    this.closeSubscription = this.photoSelectDataService.closeObs$.subscribe((event: any) => {
-      this.closeSelectPhoto(event);
-    })
+    if (this.needInitSubscription(this.closeSubscription)) {
+      this.closeSubscription = this.photoSelectDataService.closeObs$.subscribe((event: any) => {
+        this.closeSelectPhoto(event);
+      });
+    }
 
-    this.uploadSubscription = this.photoSelectDataService.uploadObs$.subscribe((files: any) => {
-      this.upload(files);
-    })
+    if (this.needInitSubscription(this.uploadSubscription)) {
+      this.uploadSubscription = this.photoSelectDataService.uploadObs$.subscribe((files: any) => {
+        this.upload(files);
+      });
+    }
+  }
+
+  private needInitSubscription(sub : Subscription) {
+    return !sub || sub.closed;
   }
 
   private unsubscribeAll() {
     _.forEach([this.nextSubscription, this.dismissSubscription, this.closeSubscription, this.uploadSubscription], (sub: Subscription) => {
-      if (sub)
+      if (sub && !sub.closed)
         sub.unsubscribe();
     });
     // this.nextSubscription.unsubscribe();
@@ -317,18 +329,15 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   dismiss(photos: any) {
-    console.log("inside post-edit: dismiss");
     // this.photos.length = 0;
     // this.dismissed.emit(photos);
   }
 
   upload(files: Array<any>) {
-    console.log("inside post-edit.component: upload");
     _.forEach(files, (file: any) => {
       this.files.push(file);
     });
     // this.files = files;
-    // this.photoSelectModal.close();
     this.photoSelectDataService.close();
     this.modal.open();
     this.uploadFiles(this.files);

@@ -61,8 +61,8 @@ export class PostFooterComponent implements OnChanges {
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private toast: ToastsService,
-              private userService: UserService,
               private postService: PostService,
+              public userService: UserService,
               public postItem: PostComponent) {
   }
 

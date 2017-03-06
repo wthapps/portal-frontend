@@ -40,7 +40,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
     this.initSubscription = this.photoDataService.initObs$.subscribe( () => {
         this.init();
       }
-    )
+    );
 
     this.openSubscription = this.photoDataService.openObs$.subscribe(
       (options: any ) => {
@@ -59,7 +59,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
 
   public init() {
     this.action = 'DONE';
-    this.photoList.multipleSelect = false;
+    this.photoList.multipleSelect = true;
   };
 
   open(options: any = {return: false}) {
@@ -74,6 +74,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
 
   close() {
     this.modal.close();
+    // this.photoDataService.close();
   }
 
   next(event: any) {
@@ -98,7 +99,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
   }
 
   private unsubscribeAll(subs: Array<Subscription>){
-    _.each(subs, (s: Subscription) => {if(s) s.unsubscribe();});
+    _.each(subs, (s: Subscription) => {if (s) s.unsubscribe();});
   }
 
 }

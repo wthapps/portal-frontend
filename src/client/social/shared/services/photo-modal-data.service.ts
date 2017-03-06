@@ -27,16 +27,14 @@ export class PhotoModalDataService {
   initObs$ = this.modalInitSource.asObservable();
 
   init() {
-    this.modalInitSource.next("");
+    this.modalInitSource.next('');
   }
 
   open(options: any = {return: false}) {
-    console.log("inside PhotoModalDataService.open");
     this.modalOpenSource.next(options);
   }
 
   upload(files: any) {
-    console.log("inside PhotoModalDataService.upload");
     this.modalUploadSource.next(files);
   }
 

@@ -23,7 +23,7 @@ declare  let $: any;
 })
 
 
-export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy{
+export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
   tab: any = {

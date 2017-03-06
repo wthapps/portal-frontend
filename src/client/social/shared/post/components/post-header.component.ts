@@ -33,7 +33,7 @@ export class PostHeaderComponent implements OnChanges {
 
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
-              private userService: UserService,
+              public userService: UserService,
               private zoneReportService: ZoneReportService) {
     this.user = this.socialService.user.profile;
   }

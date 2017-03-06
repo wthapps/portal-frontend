@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { PostEditComponent, PostService } from './index';
 import { Location } from '@angular/common';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { PhotoModalDataService } from '../services/photo-modal-data.service';
 
 declare var _: any;
 
@@ -26,7 +25,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   constructor(public apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
-              private location: Location,
+              public location: Location,
               private postService: PostService) {
     super();
   }
@@ -60,7 +59,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
           this.item = _.merge({}, this.item, updatedPost);
 
           this.postEditModal.close();
-          console.log("Post after save: ", this.item);
+          console.log('Post after save: ', this.item);
         },
         (error: any) => {
           console.log('error', error);

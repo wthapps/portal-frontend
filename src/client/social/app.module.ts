@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ZSocialProfileComponent } from './profile/profile.component';
-import { SocialSettingsModule } from './setting/setting.module';
+// import { SocialSettingsModule } from './setting/setting.module';
 import { CoreModule } from '../core/core.module';
 import { ZSocialHomeComponent } from './home/home.component';
 import { SocialDataService } from './shared/services/social-data.service';
@@ -24,7 +24,7 @@ import { SocialDataService } from './shared/services/social-data.service';
     HttpModule,
     ZSocialHomeModule,
     ZSocialCommunityModule,
-    SocialSettingsModule,
+    // SocialSettingsModule,
     ZSocialSharedModule,
     CoreModule.forRoot(),
     SharedModule.forRoot(),

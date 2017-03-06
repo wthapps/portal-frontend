@@ -2,8 +2,8 @@
   <!--Add new comment-->
   <comment-box (eventEmitter)="onCallBack($event)" [item]="item" [type]="commentBoxType.Add"></comment-box>
 
-  <div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">{{item.comments.length}} of {{item.total_comments}} Comment</div>
-  <div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{item.comments.length}} of {{item.total_comments}} Comments </div><input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
+  <div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">{{item.comments?.length}} of {{item.total_comments}} Comment</div>
+  <div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{item.comments?.length}} of {{item.total_comments}} Comments </div><input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
   <ul class="z-social-comment-list media-list read-more-wrap"  >
 
 

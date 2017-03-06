@@ -21,11 +21,11 @@ export class PostService {
   }
 
   get(item: any) {
-
+  //
   }
 
   search(query: any) {
-
+  //
   }
 
   add(item: any): any {
@@ -40,7 +40,7 @@ export class PostService {
   }
 
   delete(item: any) {
-
+  //
   }
 
   loadItem(url: string) {

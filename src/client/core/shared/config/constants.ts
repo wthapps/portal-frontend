@@ -153,7 +153,7 @@ export let Constants = {
     community: 2
   },
   soPostLimit: 10,
-  soCommentLimit: 50,
+  soCommentLimit: 20,
 };
 
 export let MediaType = {
