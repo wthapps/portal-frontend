@@ -16,18 +16,20 @@ import { ZSocialProfileComponent } from './profile/profile.component';
 import { CoreModule } from '../core/core.module';
 import { ZSocialHomeComponent } from './home/home.component';
 import { SocialDataService } from './shared/services/social-data.service';
+import { SocialSettingsModule } from './setting/setting.module';
 
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
+    CoreModule.forRoot(),
+    SharedModule.forRoot(),
+    // SharedModule,
+    ZSocialSharedModule,
     ZSocialHomeModule,
     ZSocialCommunityModule,
     // SocialSettingsModule,
-    ZSocialSharedModule,
-    CoreModule.forRoot(),
-    SharedModule.forRoot(),
     AppRoutingModule
   ],
 

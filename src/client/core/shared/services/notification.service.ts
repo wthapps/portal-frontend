@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
-import { NotificationChannelService } from './notification-channel.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NotificationChannelService } from '../channels/notification-channel.service';
 
 /**
  * Created by phat on 18/11/2016.

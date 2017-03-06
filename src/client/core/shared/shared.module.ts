@@ -24,8 +24,6 @@ import { HandlerService } from './services/handler.service';
 import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
 import { GroupByPipe } from './pipe/groupby.pipe';
 import { NewlinePipe } from './pipe/newline.pipe';
-import { TimeFormatPipe } from './pipe/time-format.pipe';
-import { TitleCase } from './pipe/titlecase.pipe';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
@@ -36,7 +34,6 @@ import { NotificationChannelService } from './channels/notification-channel.serv
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import { ReadMoreComponent } from '../partials/read-more/read-more.component';
 import { SoSearchService } from '../partials/header/sub/social-search.service';
-import { SocialDataService } from '../../social/shared/services/social-data.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
