@@ -84,8 +84,8 @@ import { PhotoModalDataService } from './services/photo-modal-data.service';
     ZSocialNotificationsComponent,
 
     Ng2HdModule,
-    PostModule,
-    SharedModule
+    SharedModule,
+    PostModule
   ]
 })
 export class ZSocialSharedModule {
