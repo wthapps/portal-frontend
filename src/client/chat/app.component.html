@@ -1,0 +1,17 @@
+<div class="wrapper">
+  <wth-header></wth-header>
+  <main class="main">
+    <div class="main-page-left">
+      <aside class="main-page-left-in aside-menu">
+        <z-shared-menu></z-shared-menu>
+      </aside>
+    </div>
+    <div class="main-page-body">
+      <z-chat-share-sidebar class="main-page-left"></z-chat-share-sidebar>
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  <wth-toast></wth-toast>
+  <wth-loading></wth-loading>
+  <p-confirmDialog header="Confirmation" width="670"></p-confirmDialog>
+</div>

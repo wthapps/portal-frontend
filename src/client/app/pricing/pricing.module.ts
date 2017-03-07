@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
+
+import { PartialsModule } from '../../core/partials/partials.module';
 
 import { PricingComponent } from './pricing.component';
+import { PricingRoutingModule } from './pricing-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    PartialsModule,
+    PricingRoutingModule
   ],
   declarations: [PricingComponent],
   exports: [PricingComponent]

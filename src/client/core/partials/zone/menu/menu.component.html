@@ -1,0 +1,73 @@
+<nav class="page-menuleft">
+  <ul class="list-unstyled">
+    <li>
+      <a href="#">Profile</a>
+    </li>
+    <li>
+      <a href="#">Contact</a>
+    </li>
+    <li>
+      <a href="#">Calendar</a>
+    </li>
+
+    <li class="has-sub" [routerLinkActive]="['active']">
+      <a href="javascript:;" (click)="onMenu('social')">
+        Social Network
+      </a>
+      <ul [routerLinkActive]="['active']" class="list-unstyled">
+        <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
+          <a *ngIf="social.link == '/zone/social/profile'" [routerLink]="['/zone/social/profile',uuid]">
+            {{social.name}}</a>
+          <a *ngIf="social.link != '/zone/social/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="has-sub" [routerLinkActive]="['active']">
+      <a [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
+        Chat
+      </a>
+      <ul [routerLinkActive]="['active']" class="list-unstyled" id="zone_menu_chat">
+        <li [routerLinkActive]="['active']" *ngFor="let chat of chatMenu">
+          <a [routerLink]="[chat.link]">
+            {{chat.name}}
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <a href="#">Gadget</a>
+    </li>
+    <li class="has-sub" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a href="javascript:;" (click)="onMenu('media')">
+        Picture
+      </a>
+      <ul [routerLinkActive]="['active']" class="list-unstyled">
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let media of mediaMenu">
+          <a [routerLink]="[media.link]">
+            {{media.name}}
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">Bookmarks</a>
+    </li>
+    <li>
+      <a href="#">Documents</a>
+    </li>
+    <li>
+      <a href="#">Networking</a>
+    </li>
+    <li>
+      <a href="#">Games</a>
+    </li>
+    <li>
+      <a href="#">Dating</a>
+    </li>
+    <li>
+      <a href="#">Project</a>
+    </li>
+  </ul>
+</nav>

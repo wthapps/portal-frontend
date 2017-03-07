@@ -1,0 +1,40 @@
+<div class="intercom-content">
+  <div class="intercom-content-header">
+    <h4>Conversations</h4>
+    <p>with Humi</p>
+  </div>
+  <div class="intercom-content-body" style="position: relative;">
+    <div class="intercom-conversation-btn-new">
+      <button class="btn btn-wth btn-min-sm " type="button" (click)="createConversation()">
+        <i class="fa fa-edit"></i> New Conversation
+      </button>
+    </div>
+    <div class="intercom-conversation-summary intercom-conversation-summary-unread" (click)="goToDetail()">
+      <div class="intercom-conversation-summary-avatar">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+    <div class="intercom-conversation-summary" (click)="goToDetail()">
+      <div class="intercom-conversation-summary-avatar">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+    <div class="intercom-conversation-summary" (click)="goToDetail()">
+      <div class="intercom-conversation-summary-avatar">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+  </div>
+</div>

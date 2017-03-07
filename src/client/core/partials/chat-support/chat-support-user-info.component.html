@@ -1,0 +1,73 @@
+<div class="intercom-content">
+  <div class="intercom-content-header">
+    <button (click)="onBack()" type="button" class="btn btn-lg btn-default intercom-content-header-back">
+      <i class="fa fa-angle-left"></i>
+    </button>
+    <div class="media">
+      <div class="media-left">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="media-body">
+        <h4>Conversations</h4>
+        <p>with Humi</p>
+      </div>
+    </div>
+  </div>
+  <div class="intercom-content-body">
+    <div class="p30">
+      <div class="intercom-conversation-part intercom-conversation-part-user">
+        <div class="intercom-avatar">
+          <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
+        </div>
+        <div class="intercom-comment-container">
+          <p>Hi!</p>
+        </div>
+      </div>
+      <div class="intercom-conversation-part intercom-conversation-part-admin">
+        <div class="intercom-avatar">
+          <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
+        </div>
+        <div class="intercom-comment-container">
+          <p>Hi! How are you</p>
+        </div>
+        <span class="intercom-comment-time">1h ago</span>
+      </div>
+        <div class="intercom-conversation-part intercom-conversation-part-user">
+            <div class="intercom-avatar">
+                <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
+            </div>
+            <div class="intercom-comment-container">
+                <p>I am doing very well</p>
+            </div>
+        </div>
+        <div class="intercom-conversation-part intercom-conversation-part-admin">
+            <div class="intercom-avatar">
+                <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
+            </div>
+            <div class="intercom-comment-container intercom-comment-container-email">
+                <p>Get notified by email</p>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="email@domain.com">
+                    <span class="input-group-btn">
+                      <button class="btn btn-wth" type="button" (click)="onRegister()" >
+                        <i class="fa fa-angle-right"></i>
+                      </button>
+                    </span>
+                </div>
+            </div>
+            <span class="intercom-comment-time">1h ago</span>
+        </div>
+    </div>
+
+  </div>
+  <div class="intercom-content-footer">
+    <div id="chat-message-text" class="chatbox-container-input form-control" contenteditable="true" spellcheck="false"
+         tabindex="1"
+         placeholder="Write a reply..." autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()"></div>
+    <div class="intercom-content-footer-action">
+      <button class="btn btn-default-inline">
+        <i class="fa fa-link"></i>
+      </button>
+    </div>
+  </div>
+</div>

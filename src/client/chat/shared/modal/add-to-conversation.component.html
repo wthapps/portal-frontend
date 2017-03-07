@@ -1,0 +1,29 @@
+<form>
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> <i class="fa fa-plus"></i> Add To Conversation </h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group">
+        <input type="text" name="name" class="form-control" placeholder="Name" value="">
+      </div>
+      <div class="content-overflow" style="max-height: 300px;">
+        <ul class="p-list-user p-list-border">
+          <li *ngFor="let contact of contactItem.value.data | chatGroupMultiple">
+            <div class="pull-right">
+              <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="contact.checked">
+            </div>
+            <figure>
+              <img [src]="contact.display.image">
+            </figure>
+            <span>{{contact.display.name}}</span>
+          </li>
+        </ul>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="add()">Done</button>
+      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

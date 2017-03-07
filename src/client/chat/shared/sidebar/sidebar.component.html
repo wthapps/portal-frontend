@@ -1,0 +1,78 @@
+<z-chat-share-toolbar #chatToolbar style="display: none"></z-chat-share-toolbar>
+<aside class="main-page-left-in page-body-sidebar aside-chat">
+  <div class="form-group">
+    <a href="javascript:;" class="btn btn-default" (click)="onAddContact()"><i class="fa fa-plus"></i> New Message</a>
+  </div>
+  <dl class="p-list-user-group">
+    <dt>Favourites</dt>
+    <dd>
+      <ul class="p-list-user p-list-outside" *ngIf="favouriteContacts.value">
+        <li *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
+          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
+            <div class="pull-right">
+              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+            </div>
+            <!--<figure>-->
+              <!--<img [src]="contact.display.image">-->
+              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
+                  <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
+                <!--</span>-->
+            <!--</figure>-->
+            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
+          </a>
+        </li>
+      </ul>
+    </dd>
+  </dl>
+  <dl class="p-list-user-group">
+    <dt>Recent</dt>
+    <dd>
+      <ul class="p-list-user p-list-outside" *ngIf="recentContacts.value">
+        <li *ngFor="let contact of recentContacts.value" [routerLinkActive]="['active']">
+          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
+            <div class="pull-right">
+              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+            </div>
+            <!--<figure>-->
+              <!--<img [src]="contact.display.image">-->
+              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
+                <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
+              <!--</span>-->
+            <!--</figure>-->
+            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
+          </a>
+        </li>
+      </ul>
+    </dd>
+  </dl>
+  <div class="form-group">
+    <a href="javascript:;" class="btn btn-default" (click)="historyToggle()"><i class="fa fa-clock-o"></i> History</a>
+  </div>
+  <dl class="p-list-user-group" *ngIf="historyShow">
+    <dd>
+      <ul class="p-list-user p-list-outside" *ngIf="historyContacts.value">
+        <li *ngFor="let contact of historyContacts.value" [routerLinkActive]="['active']">
+          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
+            <div class="pull-right">
+              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+            </div>
+            <!--<figure>-->
+              <!--<img [src]="contact.display.image">-->
+              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
+                <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
+              <!--</span>-->
+            <!--</figure>-->
+            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
+          </a>
+        </li>
+      </ul>
+    </dd>
+  </dl>
+</aside>
+

@@ -1,0 +1,25 @@
+<div class="media-flex-item">
+  <div class="btn-group">
+    <button class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" type="button">
+      <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" *ngIf="!config.history">
+      <li><a [routerLink]="[conversationUrl, contact.id]" (click)="onSelect(contact)">Send Message</a></li>
+      <!--<li><a href="#">Send Contact</a></li>-->
+      <li><a href="javascript:;" (click)="addToConversation()">Add to Conversation</a></li>
+      <li class="divider" role="separator"></li>
+      <!--<li><a href="#">View Social Profile</a></li>-->
+      <!--<li><a href="#">Report Member</a></li>-->
+      <li><a href="javascript:;" (click)="addBlackList()">Blacklist</a></li>
+      <li><a href="javascript:;" (click)="deleteContact()">Delete Contact</a></li>
+      <li class="divider" role="separator"></li>
+      <li *ngIf="contact.notification"><a href="javascript:;" (click)="disableNotification()">Disable Notification</a></li>
+      <li *ngIf="!contact.notification"><a href="javascript:;" (click)="enableNotification()">Enable Notification</a></li>
+    </ul>
+
+    <ul class="dropdown-menu dropdown-menu-right" *ngIf="config.history">
+      <li><a [routerLink]="[conversationUrl, contact.id]" (click)="onSelect(contact)">Send Message</a></li>
+    </ul>
+  </div>
+</div>
+<z-chat-share-add-to-conversation #addConversation [contact]="contact"></z-chat-share-add-to-conversation>

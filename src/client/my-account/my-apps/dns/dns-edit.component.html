@@ -1,0 +1,61 @@
+<div class="main-content">
+  <div class="container">
+    <wth-breadcrumb [model]="breadcrumbs"></wth-breadcrumb>
+    <div class="page-app-detail">
+      <div class="row">
+        <div class="col-sm-10 col-md-9">
+          <div class="box-panel">
+            <div class="box-panel-top">
+              <h3>{{panelTitle}}</h3>
+            </div>
+            <div class="box-panel-body">
+              <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+
+                <div class="form-validation" *ngIf="host.touched && !host.valid"
+                     [ngClass]="{'has-error': (!host.valid && host.touched), 'has-success': (host.valid && host.touched)}">
+                  <span *ngIf="!host.valid && host.errors.required" class="help-block">A Hostname is required</span>
+                  <span *ngIf="!host.valid && host.errors.ipHostFormat" class="help-block">You entered an Invalid Hostname</span>
+                  <span *ngIf="!ip.valid && ip.errors.ipHostFormat"
+                        class="help-block">You entered an Invalid IP Address</span>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-8 col-sm-4">
+                    <div class="form-group"
+                         [ngClass]="{'has-error': (!host.valid && host.touched), 'has-success': (host.valid && host.touched)}">
+                      <label for="host">Hostname</label>
+                      <input [formControl]="host" type="text" class="form-control" id="host" placeholder="Host name">
+                    </div>
+                  </div>
+                  <div class="col-xs-4 col-sm-2">
+                    <div class="form-group has-select"
+                         [ngClass]="{'has-error': (!domain.valid && domain.touched), 'has-success': (domain.valid && domain.touched)}">
+                      <label for="domain">&nbsp;</label>
+                      <select class="form-control" id="domain" [formControl]="domain">
+                        <option value='0'>wthdns.com</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6">
+                    <div class="form-group"
+                         [ngClass]="{'has-error': (!ip.valid && ip.touched), 'has-success': (ip.valid && ip.touched)}">
+                      <label for="ip">IP Address (Optional)</label>
+                      <input [formControl]="ip" type="text" class="form-control" id="ip" placeholder="127.0.0.1">
+                    </div>
+                  </div>
+                </div>
+                <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">{{panelTitle}}
+                </button>
+                <a (click)="onBack($event)" class="btn btn-default btn-min">Cancel</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

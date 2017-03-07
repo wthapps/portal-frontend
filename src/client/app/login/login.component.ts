@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -7,14 +7,12 @@ import {
   AbstractControl
 } from '@angular/forms';
 
-import {
-  UserService,
-  ToastsService,
-  LoadingService,
-  CustomValidator,
-  AuthService
-}                           from '../shared/index';
-import { AppearancesChannelService } from '../shared/channels/appearances-channel.service';
+import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { LoadingService } from '../../core/partials/loading/loading.service';
+import { AppearancesChannelService } from '../../core/shared/channels/appearances-channel.service';
+import { UserService } from '../../core/shared/services/user.service';
+import { AuthService } from '../../core/shared/services/auth.service';
+import { CustomValidator } from '../../core/shared/validator/custom.validator';
 
 declare var $: any;
 
@@ -32,8 +30,11 @@ export class LoginComponent implements OnInit {
   password: AbstractControl;
   submitted: boolean = false;
 
+  private returnUrl: string;
+
   constructor(private fb: FormBuilder,
               private router: Router,
+              private route: ActivatedRoute,
               private userService: UserService,
               private toastsService: ToastsService,
               private loadingService: LoadingService,
@@ -69,36 +70,29 @@ export class LoginComponent implements OnInit {
 
       let email = values.email;
       let password = values.password;
-
       let body = JSON.stringify({user: {email, password}});
+
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
       this.userService.login('users/sign_in', body)
         .subscribe((result) => {
             if (result) {
               this.loadingService.stop();
 
-              // Get the redirect URL from our auth service
-              // If no redirect has been set, use the default
-              let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/account/my-apps';
-
-              // Set our navigation extras object
-              // that passes on our global query params and fragment
-              let navigationExtras: NavigationExtras = {
-                preserveQueryParams: true,
-                preserveFragment: true
-              };
+              // Initialize websocket
               this.appearancesChannelService.subscribe();
-              // Redirect the user
-              this.router.navigate([redirect], navigationExtras);
 
-              // Store payment info
+              // Redirect to previous url
+              if (this.returnUrl == undefined) {
+                this.returnUrl = '';
+              }
+              window.location.href = this.returnUrl;
 
-
+              // TODO Store payment info
             }
           },
           error => {
             // stop loading
             this.loadingService.stop();
-
             this.toastsService.danger('Invalid email or password');
             //console.log('login error:', error);
           }

@@ -5,9 +5,8 @@ import { Component } from '@angular/core';
  */
 @Component({
   moduleId: module.id,
-  selector: 'page-about',
+  selector: 'sd-about',
   templateUrl: 'about.component.html',
   styleUrls: ['about.component.css']
 })
-export class AboutComponent {
-}
+export class AboutComponent { }

@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-md-offset-2">
+      <div class="box-panel pt30-sm">
+        <h3 class="box-panel-title">{{pageTitle}}
+          <button class="btn btn-wth-default btn-sm pull-right" (click)="add()"><i class="fa fa-plus"></i> Add Apps</button>
+        </h3>
+        <div class="panel panel-default panel-striped">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let app of my_apps">
+              <div class="media media-app-card">
+                <div class="media-left">
+                  <figure>
+                    <img [src]="app.img_src" [alt]="app.display_name">
+                  </figure>
+                </div>
+                <div class="media-body">
+                  <p class="name">{{app.display_name}}</p>
+                  <p class="cat">{{app.category.name}}</p>
+                </div>
+                <div class="media-right">
+                  <button class="btn btn-default btn-sm btn-min" (click)="manage(app.id)"><i class="fa fa-cogs"></i> Manage</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

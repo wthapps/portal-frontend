@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
 
-import { SupportComponent } from './index';
+import { SupportComponent } from './support.component';
 import { SupportProductComponent } from './product/product.component';
 import { SupportBillingComponent } from './billing/billing.component';
 import { SupportLegalComponent } from './legal/legal.component';
 import { SupportSecurityComponent } from './security/security.component';
+import { SupportRoutingModule } from './support-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SupportRoutingModule
   ],
   declarations: [
     SupportComponent,

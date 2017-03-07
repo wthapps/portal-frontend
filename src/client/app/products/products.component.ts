@@ -5,10 +5,9 @@ import { Component } from '@angular/core';
  */
 @Component({
   moduleId: module.id,
-  selector: 'page-products',
+  selector: 'sd-products',
   templateUrl: 'products.component.html'
 })
 
 export class ProductsComponent {
-  pageTitle: string = 'Products';
 }

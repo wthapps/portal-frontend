@@ -1,0 +1,239 @@
+.intercom-container-body {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  z-index: 2009;
+  width: 370px;
+  padding-bottom: 60px;
+}
+
+.intercom-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  .btn {
+    height: 50px;
+    width: 50px;
+    -webkit-box-shadow: 0 5px 40px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 5px 40px rgba(0, 0, 0, .16);
+    box-shadow: 0 5px 40px rgba(0, 0, 0, .16);
+    background-color: $color-inverse;
+    color: #ffffff;
+    font-size: 16px;
+    border: 1px solid #ffffff;
+  }
+}
+
+.intercom-content {
+  background-color: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 5px 40px rgba(0, 0, 0, .16);
+  -moz-box-shadow: 0 5px 40px rgba(0, 0, 0, .16);
+  box-shadow: 0 5px 40px rgba(0, 0, 0, .16);
+}
+
+.intercom-content-header {
+  background-color: $color-inverse;
+  color: #ffffff;
+  padding: 15px 30px 5px;
+  position: relative;
+
+  @include border-top-radius(5px);
+  font-size: 12px;
+  h4 {
+    margin: 0 0 5px;
+    font-weight: normal;
+    font-size: 16px;
+  }
+
+  .intercom-content-header-back {
+    @include center(false, true);
+    left: 10px;
+    z-index: 2;
+    font-size: 25px;
+    line-height: 25px;
+    color: #ffffff;
+    border-width: 0;
+    height: 50px;
+    width: 50px;
+    background-color: transparent;
+    &:hover, &:focus {
+      background-color: rgba(#000, 0.2);
+    }
+  }
+  .media {
+    margin-left: 50px;
+    margin-top: 0;
+    .media-left {
+      padding-top: 5px;
+    }
+  }
+}
+
+.intercom-content-body {
+  max-height: 500px;
+  overflow: auto;
+
+  .intercom-conversation-btn-new {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(0deg, #fff, hsla(0, 0%, 100%, 0));
+  }
+
+  .intercom-conversation-summary {
+    cursor: pointer;
+    margin-top: 0;
+    padding: 30px 15px 30px 30px;
+    border-top: 1px solid #f3f4f5;
+    &:first-child {
+      border-top-width: 0;
+    }
+    &:last-child {
+      margin-bottom: 50px;
+    }
+    &:hover {
+      background-color: #f7f8fa;
+      border-top: 1px solid #ebedf1;
+    }
+
+    .intercom-conversation-summary-avatar {
+      float: left;
+      margin-right: 10px;
+      .media-object {
+        width: 30px;
+        height: auto;
+      }
+    }
+
+    .intercom-conversation-summary-body {
+      padding-right: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+    .media-heading {
+      font-weight: normal;
+      font-size: 12px;
+      margin: 0 0 2px;
+      span {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+    p {
+      font-size: 12px;
+      margin-bottom: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+    }
+    &.intercom-conversation-summary-unread {
+      .media-heading {
+        span {
+          color: $color-inverse;
+          &:before {
+            content: '';
+            display: inline-block;
+            height: 6px;
+            width: 6px;
+            background-color: $color-inverse;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  .intercom-conversation-part {
+    position: relative;
+    margin-bottom: 20px;
+    &:after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+  }
+}
+
+.intercom-comment-time {
+  font-size: 11px;
+  color: $text-color-fade;
+}
+
+.intercom-comment-container {
+  color: #606273;
+  background-color: #eff3f6;
+  padding: 20px 20px 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  max-width: 75%;
+  &.intercom-comment-container-email {
+    max-width: none;
+    background-color: #ffffff;
+    border: 1px solid $line;
+  }
+}
+
+.intercom-conversation-part-user {
+  .intercom-comment-container {
+    float: right;
+  }
+  .intercom-avatar {
+    display: none;
+  }
+}
+
+.intercom-conversation-part-admin {
+  padding-left: 40px;
+  .intercom-avatar {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    img {
+      width: 30px;
+      height: auto;
+    }
+  }
+}
+
+.intercom-content-footer {
+  position: relative;
+  background-color: #f0f3f5;
+  padding-right: 70px;
+
+  @include border-bottom-radius(5px);
+
+  .intercom-content-footer-action {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 13px 20px;
+  }
+  .chatbox-container-input {
+    color: #565867;
+    resize: none;
+    border: none;
+    background-color: transparent;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    padding: 20px 30px;
+    height: auto;
+    outline: 0 none !important;
+    box-shadow: none !important;
+  }
+}
+

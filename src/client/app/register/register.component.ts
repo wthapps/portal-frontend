@@ -1,20 +1,11 @@
-import { Component }          from '@angular/core';
-import {
-  Router
-}                           from '@angular/router';
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  Validators
-}                           from '@angular/forms';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
-import {
-  UserService,
-  ToastsService,
-  LoadingService,
-  CustomValidator
-}                           from '../shared/index';
+import { UserService } from '../../core/shared/services/user.service';
+import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { LoadingService } from '../../core/partials/loading/loading.service';
+import { CustomValidator } from '../../core/shared/validator/custom.validator';
 
 declare var $: any;
 
@@ -44,14 +35,13 @@ export class RegisterComponent {
   submitted: boolean = false;
 
   constructor(private fb: FormBuilder,
-              private _router: Router,
-              private _userService: UserService,
+              private router: Router,
+              private userService: UserService,
               private toastsService: ToastsService,
-              private _loadingService: LoadingService
-  ) {
+              private loadingService: LoadingService) {
 
-    /*if (this._userService.loggedIn) {
-     this._router.navigateByUrl('/account/setting/dashboard');
+    /*if (this.userService.loggedIn) {
+     this.router.navigateByUrl('/account/setting/dashboard');
      }*/
 
     this.form = fb.group({
@@ -84,7 +74,6 @@ export class RegisterComponent {
     this.birthday_day = this.form.controls['birthday_day'];
     this.birthday_month = this.form.controls['birthday_month'];
     this.birthday_year = this.form.controls['birthday_year'];
-    //this.sexInput = this.form.controls['sex'];
     this.accepted = this.form.controls['accepted'];
   }
 
@@ -92,7 +81,7 @@ export class RegisterComponent {
     this.submitted = true;
     if (this.form.valid) {
       // start loading
-      this._loadingService.start();
+      this.loadingService.start();
 
       values.sex = this.sex;
 
@@ -108,14 +97,14 @@ export class RegisterComponent {
         accepted_policies: values.accepted === true ? true : false
       });
 
-      this._userService.signup('users', body)
+      this.userService.signup('users', body)
         .subscribe((result) => {
-            this._loadingService.stop();
-            this._router.navigateByUrl('/welcome');
+            this.loadingService.stop();
+            this.router.navigateByUrl('/welcome');
           },
           error => {
             // stop loading
-            this._loadingService.stop();
+            this.loadingService.stop();
 
             console.log('error:', error);
             let err = error;

@@ -1,0 +1,19 @@
+<div class="wrapper">
+  <wth-header></wth-header>
+  <main class="main">
+    <div class="main-page-left">
+      <aside class="main-page-left-in aside-menu">
+        <z-shared-menu></z-shared-menu>
+      </aside>
+    </div>
+    <div class="main-page-body">
+      <div class="page-body-content gray-light" (scroll)="debounceOnScroll($event)">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
+  <wth-toast></wth-toast>
+  <wth-loading></wth-loading>
+  <p-confirmDialog header="Confirmation" width="670"></p-confirmDialog>
+  <social-post-photo-select #photoSelectModal22 ></social-post-photo-select>
+</div>

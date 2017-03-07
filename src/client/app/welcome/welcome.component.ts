@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 
-declare var Swiper: any;
+// declare var Swiper: any;
 
 @Component({
   moduleId: module.id,
@@ -12,12 +12,12 @@ export class WelcomeComponent implements AfterViewInit {
 
   ngAfterViewInit(): any {
     /* tslint:disable */
-    var swiper = new Swiper('.swiper-container', {
-      pagination: '.swiper-pagination',
-      paginationClickable: true,
-      nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev',
-    });
+    // var swiper = new Swiper('.swiper-container', {
+    //   pagination: '.swiper-pagination',
+    //   paginationClickable: true,
+    //   nextButton: '.swiper-button-next',
+    //   prevButton: '.swiper-button-prev',
+    // });
     /* tslint:enable */
   }
 }

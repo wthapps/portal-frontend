@@ -1,0 +1,30 @@
+<!--Create new post here-->
+<div class="z-social-box">
+  <div class="z-social-media">
+    <div class="z-social-media-left">
+      <!--<img src="assets/images/avatar/avatar.png" alt="">-->
+      <img [src]="currentUser?.profile_image" alt="Avatar Image">
+    </div>
+    <div class="z-social-media-body">
+      <div class="z-social-media-inputpost inputpost-new">
+        <input type="text" class="form-control" placeholder="Share your ideas" (click)="postEditModal.open()">
+        <span class="z-social-media-inputpost-icon">
+            <i (click)="postEditModal.open({addingPhotos: true, community: community})" class="fa fa-camera"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--List of post items-->
+<div class="z-social-box" *ngFor="let item of items">
+  <so-post [item]="item" (onDeleted)="deletedPost($event)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)"></so-post>
+</div>
+<div id="post-list-component"></div>
+
+<div class="view-all">
+  <a href="javascript:;" (click)="viewMorePosts()">View All</a>
+</div>
+<!--Edit post modal. This modal will handle add new, edit post and share-->
+<so-post-edit #postEditModal (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
+<!--<post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>-->

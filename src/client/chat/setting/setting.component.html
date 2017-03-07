@@ -1,0 +1,76 @@
+<div class="page-body-content has-page-body-sidebar" *ngIf="setting">
+  <div class="page-body-content-in">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Settings</h3>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <h3 class="list-group-item-heading">General Settings</h3>
+            <div class="checkbox checkbox-switch">
+              <p-inputSwitch [formControl]="import_information"></p-inputSwitch>
+              <label>
+                Import information from your Social and WTH Profile
+              </label>
+            </div>
+            <div class="checkbox checkbox-switch">
+              <p-inputSwitch [formControl]="online"></p-inputSwitch>
+              <label>
+                Online
+              </label>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <h3 class="list-group-item-heading">Private</h3>
+            <p class="bold">Who can send you message?</p>
+            <div class="radio">
+              <label>
+                <input type="radio" name="private"
+                       (click)="privacy = 'public'"
+                       [checked]="privacy == 'public'"
+                       value="1">
+                Anyone can search and contact me
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="private"
+                       (click)="privacy = 'friend'"
+                       [checked]="privacy == 'friend'"
+                       value="2">
+                Only friends and added contacts can contact me.
+              </label>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <h3 class="list-group-item-heading">Conversation</h3>
+            <p class="bold">Move read conversation to History after:</p>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-6">
+                  <select [formControl]="time_to_history" name="time_to_history" class="form-control">
+                    <option value="1"> 1 day</option>
+                    <option value="2"> 2 days</option>
+                    <option value="3"> 3 days</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <p class="bold">Chat History</p>
+            <p class="text-fade">Once you delete your chat history, all of your data will be gone. Please be certain.</p>
+            <button class="btn btn-default2" type="button" (click)="onDeleteChat()">Delete Chat History</button>
+            <br>
+          </li>
+          <li class="list-group-item">
+            <button type="submit" class="btn btn-wth-default mr10">UPDATE</button>
+            <button type="button" class="btn btn-primary" (click)="onCancel()">CANCEL</button>
+            <button type="button" class="btn btn-link" (click)="resetSettings()">Reset Default</button>
+          </li>
+        </ul>
+      </div>
+    </form>
+
+  </div>
+</div>

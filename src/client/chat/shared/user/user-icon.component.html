@@ -1,0 +1,6 @@
+<figure>
+  <img [src]="image">
+  <span *ngIf="groupType == 'couple'">
+    <span *ngIf="usersOnlineItem.value.indexOf(userId) != -1" class="p-list-user-status online"></span>
+  </span>
+</figure>

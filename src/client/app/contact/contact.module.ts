@@ -1,22 +1,26 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReCaptchaModule } from 'angular2-recaptcha';
+
+import { PartialsModule } from '../../core/partials/partials.module';
 
 import { ContactComponent } from './contact.component';
+import { ContactRoutingModule } from './contact-routing.module';
 import { ContactService } from './contact.service';
-import { ReCaptchaComponent } from '../shared/index';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
-    ReactiveFormsModule
+    ContactRoutingModule,
+    PartialsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ReCaptchaModule
   ],
   declarations: [
-    ContactComponent,
-    ReCaptchaComponent
+    ContactComponent
   ],
   exports: [
     ContactComponent
@@ -25,6 +29,5 @@ import { ReCaptchaComponent } from '../shared/index';
     ContactService
   ]
 })
-
 export class ContactModule {
 }

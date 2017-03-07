@@ -1,7 +1,0 @@
-
-<so-post-header [item]="itemDisplay" [type]="type"></so-post-header>
-<so-post-body [item]="itemDisplay" [type]="type"></so-post-body>
-<so-post-footer #postFooter [item]="itemDisplay" [type]="type" (eventEmitter)="onActions($event)"></so-post-footer>
-<post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>
-<post-activities #postActivities></post-activities>
-<post-likedislike #postLikeDislike [item]="dataLikeDislike" [type]="typeLikeDislike"></post-likedislike>

@@ -1,0 +1,51 @@
+<div class="page-body-control has-page-body-sidebar" *ngIf="item.value">
+  <div class="p-list-user-item">
+    <div class="pull-right">
+      <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default-inline" (click)="onAddMember()">
+        <i class="fa fa-user-plus"></i>
+      </button>
+      <button type="button" class="btn btn-default-inline" (click)="onFavorite()">
+        <i class="fa" [ngClass]="item.value.favourite? 'fa-star': 'fa-star-o'"></i>
+      </button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <!--<li><a href="#">View Photos</a></li>-->
+          <!--<li><a href="#">Mark as Unread</a></li>-->
+          <!--<li role="separator" class="divider"></li>-->
+
+          <!--show if current isn't one user-->
+          <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
+          <!--show if current isn't one user-->
+
+          <!--<li><a href="#">Leave Conversation</a></li>-->
+          <!--<li><a href="#">Delete Conversation</a></li>-->
+
+          <!--show if current is one user-->
+          <!--<li role="separator" class="divider"></li>-->
+          <!--<li><a href="#">View Social Profile</a></li>-->
+          <!--<li><a href="#">View in Contact</a></li>-->
+          <!--show if current is one user-->
+
+          <!--<li role="separator" class="divider"></li>-->
+          <li *ngIf="item.value.notification"><a href="javascript:;" (click)="disableNotification()">Disable Notification</a></li>
+          <li *ngIf="!item.value.notification"><a href="javascript:;" (click)="enableNotification()">Enable Notification</a></li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="item.value">
+      <z-chat-share-user-list [image]="item.value.display.image" [groupType]="item.value.group_json.group_type" [userId]="item.value.display.id"></z-chat-share-user-list>
+      <div class="p-list-user-namegroup">
+        <span *ngIf="item.value.group_json.group_type == 'couple'">{{item.value.display.name}}</span>
+        <span *ngIf="item.value.group_json.group_type == 'multiple'">{{item.value.group_json | chatGroupName:50}}</span>
+        <small *ngIf="item.value.group_json.member_count > 2">{{item.value.group_json.member_count}} people</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>
+<z-chat-share-add-contact #addContact></z-chat-share-add-contact>

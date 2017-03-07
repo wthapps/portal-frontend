@@ -1,30 +1,34 @@
-import { Component, OnInit }         from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import {
   FormGroup,
   AbstractControl,
   FormBuilder,
   Validators
-}                                  from '@angular/forms';
+} from '@angular/forms';
 
-import { Contact }                   from './contact';
-import { ContactService }            from './contact.service';
-import {
-  LoadingService,
-  ToastsService,
-  UserService,
-  CustomValidator
-}                                  from '../shared/index';
+import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
 
+import { LoadingService } from '../../core/partials/loading/loading.service';
+import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { CustomValidator } from '../../core/shared/validator/custom.validator';
+
+import { ContactService } from './contact.service';
+
+/**
+ * This class represents the lazy loaded AboutComponent.
+ */
 @Component({
   moduleId: module.id,
+  selector: 'sd-contact',
   templateUrl: 'contact.component.html',
   styleUrls: ['contact.component.css']
 })
-
 export class ContactComponent implements OnInit {
-  siteKey: string = '6LcuZiMTAAAAACtTNvG7j8FS5nS81R-HGN5OIo8B';
+  siteKey: string = '6LeZ0xIUAAAAABLfFeQpUGfK84j5aWgOnWbfJKM4';
   recaptchaState: boolean = false;
+
+  @ViewChild(ReCaptchaComponent) captcha: ReCaptchaComponent;
 
   form: FormGroup;
 
@@ -41,16 +45,15 @@ export class ContactComponent implements OnInit {
   _recaptchaResponse: any = '';
 
   constructor(private fb: FormBuilder,
-              private userService: UserService,
               private contactService: ContactService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private toastsService: ToastsService) {
 
-    if (this.userService.loggedIn) {
-      this.emailInput = this.userService.profile.email;
-      this.first_nameInput = this.userService.profile.first_name;
-      this.last_nameInput = this.userService.profile.last_name;
-    }
+    // if (this.userService.loggedIn) {
+    //   this.emailInput = this.userService.profile.email;
+    //   this.first_nameInput = this.userService.profile.first_name;
+    //   this.last_nameInput = this.userService.profile.last_name;
+    // }
 
     this.form = fb.group({
       'first_name': [this.first_nameInput],
@@ -59,10 +62,10 @@ export class ContactComponent implements OnInit {
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
       'subject': ['',
-        Validators.compose([Validators.required, Validators.minLength(10)])
+        Validators.compose([Validators.required, Validators.minLength(3)])
       ],
       'body': ['',
-        Validators.compose([Validators.required, Validators.minLength(20)])
+        Validators.compose([Validators.required, Validators.minLength(5)])
       ]
     });
 
@@ -78,12 +81,13 @@ export class ContactComponent implements OnInit {
     this.recaptchaState = false;
   }
 
-  handleCorrectCaptcha(event: any) {
-    this._recaptchaResponse = event;
+  handleCorrectCaptcha(e: any) {
+    console.log(e);
+    this._recaptchaResponse = e;
     this.recaptchaState = true;
   }
 
-  onSubmit(values: Contact): void {
+  onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
 
@@ -96,10 +100,8 @@ export class ContactComponent implements OnInit {
       let body = JSON.stringify(values);
       this.contactService.createFeedback(body)
         .subscribe((result: any) => {
-            if (result) {
-              this.loadingService.stop();
-              this.toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
-            }
+            this.loadingService.stop();
+            this.toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
           },
           (error: any) => {
             // stop loading
@@ -109,5 +111,7 @@ export class ContactComponent implements OnInit {
           }
         );
     }
+
+    this.captcha.reset();
   }
 }
