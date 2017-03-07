@@ -14,6 +14,11 @@ export class ProjectConfig extends SeedConfig {
   constructor() {
     super();
     this.APP_TITLE = 'WTHApps';
+
+    this.ENABLE_SCSS = true;
+    this.SCSS_SRC = `${this.APP_SRC}/scss`;
+
+
     // this.GOOGLE_ANALYTICS_ID = 'Your site's ID';
 
     /* Enable typeless compiler runs (faster) between typed compiler runs. */
@@ -22,16 +27,23 @@ export class ProjectConfig extends SeedConfig {
     // Add `NPM` third-party libraries to be injected/bundled.
     this.NPM_DEPENDENCIES = [
       ...this.NPM_DEPENDENCIES,
+      {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       {src: 'lodash/lodash.min.js', inject: 'libs'},
       {src: 'primeng/resources/primeng.min.css', inject: true},
       {src: 'primeng/resources/themes/bootstrap/theme.css', inject: true},
-      {src: 'actioncable/lib/assets/compiled/action_cable.js', inject: 'libs'}
-      // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
-      // {src: 'lodash/lodash.min.js', inject: 'libs'},
+      {src: 'actioncable/lib/assets/compiled/action_cable.js', inject: 'libs'},
+      {src: 'bootstrap/dist/js/bootstrap.min.js', inject: 'libs'},
+      {src: 'dropzone/dist/dropzone.js', inject: 'libs'},
+      {src: 'cropperjs/dist/cropper.min.js', inject: 'libs'},
+      {src: 'wheelevent.js/wheelevent.js', inject: 'libs'},
+      {src: 'wheelzoom.js/wheelzoom.min.js', inject: 'libs'},
+      {src: 'shave/dist/shave.min.js', inject: 'libs'},
+      {src: 'slick-carousel/slick/slick.min.js', inject: 'libs'}
     ];
 
     // Add `local` third-party libraries to be injected/bundled.
     this.APP_ASSETS = [
+      {src: `${this.APP_SRC}/core/js/common.js`, inject: true, vendor: false}
       // {src: `${this.APP_SRC}/your-path-to-lib/libs/jquery-ui.js`, inject: true, vendor: false}
       // {src: `${this.CSS_SRC}/path-to-lib/test-lib.css`, inject: true, vendor: false},
     ];

@@ -32,7 +32,6 @@
     "build.assets.prod",
     "build.html_css",
     "copy.prod",
-    "copy.prod.assets",
     "build.js.prod",
     "build.bundles",
     "build.bundles.app",
