@@ -75,7 +75,6 @@ export let Constants = {
   chatMenuItems: [
     {name: 'Conversation', link: '/conversation'},
     {name: 'Contact', link: '/contact'},
-    {name: 'History', link: '/history'},
     {name: 'Settings', link: '/setting'}
   ],
 

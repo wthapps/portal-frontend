@@ -12,12 +12,13 @@
             <div class="pull-right">
               <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
             </div>
-            <figure>
-              <img [src]="contact.display.image">
-              <span *ngIf="contact.group_json.group_type == 'couple'">
-                  <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
-                </span>
-            </figure>
+            <!--<figure>-->
+              <!--<img [src]="contact.display.image">-->
+              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
+                  <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
+                <!--</span>-->
+            <!--</figure>-->
+            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
             <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
             <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>
@@ -34,12 +35,13 @@
             <div class="pull-right">
               <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
             </div>
-            <figure>
-              <img [src]="contact.display.image">
-              <span *ngIf="contact.group_json.group_type == 'couple'">
-                <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
-              </span>
-            </figure>
+            <!--<figure>-->
+              <!--<img [src]="contact.display.image">-->
+              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
+                <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
+              <!--</span>-->
+            <!--</figure>-->
+            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
             <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
             <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>
@@ -58,12 +60,13 @@
             <div class="pull-right">
               <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
             </div>
-            <figure>
-              <img [src]="contact.display.image">
-              <span *ngIf="contact.group_json.group_type == 'couple'">
-                <span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>
-              </span>
-            </figure>
+            <!--<figure>-->
+              <!--<img [src]="contact.display.image">-->
+              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
+                <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
+              <!--</span>-->
+            <!--</figure>-->
+            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
             <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
             <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>

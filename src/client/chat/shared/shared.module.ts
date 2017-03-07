@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatChatboxComponent } from './chat-box/chat-box.component';
-import { ZChatShareUserListComponent } from './user-list/user-list.component';
+import { ZChatShareUserIconComponent } from './user/user-icon.component';
 import { ZChatShareListComponent } from './list/list.component';
 import { ZChatShareItemComponent } from './list/item/item.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
@@ -38,7 +38,7 @@ import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
     ZChatChatboxComponent,
     ZChatShareItemComponent,
     ZChatShareListComponent,
-    ZChatShareUserListComponent,
+    ZChatShareUserIconComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
@@ -57,7 +57,7 @@ import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
     ZChatChatboxComponent,
     ZChatShareItemComponent,
     ZChatShareListComponent,
-    ZChatShareUserListComponent,
+    ZChatShareUserIconComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,

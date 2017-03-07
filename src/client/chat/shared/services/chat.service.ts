@@ -140,7 +140,11 @@ export class ChatService {
     } else {
       let item = this.storage.find('contact_select');
       if (item && item.value && (message || file)) {
+        console.log(item.value);
         this.chanel.sendMessage(item.value.group_json.id, message, file);
+        if (item.value.history) {
+          this.updateHistory(item.value);
+        }
       }
     }
   }
@@ -261,7 +265,9 @@ export class ChatService {
         this.chatCommonService.setRecentContacts();
         this.chatCommonService.setFavouriteContacts();
         this.chatCommonService.setHistoryContacts();
-        callback(res);
+        if (callback) {
+          callback(res);
+        }
       }
     );
   }
