@@ -13,7 +13,6 @@ import { SharedModule } from '../../core/shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
-    BrowserModule,
     HttpModule,
     SocialSettingsRoutingModule,
     // ZSocialSharedModule,

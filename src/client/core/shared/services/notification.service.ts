@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
-import { NotificationChannelService } from './notification-channel.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NotificationChannelService } from '../channels/notification-channel.service';
 
 /**
  * Created by phat on 18/11/2016.
@@ -16,6 +16,8 @@ export class NotificationService {
   newNotifCount: number = 0 ;
   notifOffset: number = 0;
   currentNotifId: any;
+  loadingDone: boolean = false;
+  readonly notifLimit: number = Constants.notificationSetting.limit;
 
   turnOffNotification(notification: any) {
     // TODO
@@ -31,20 +33,20 @@ export class NotificationService {
     return this.api.get(`${Constants.urls.zoneSoNotifications}`);
   }
 
-  viewAllNotifications() {
-    this.api.get(`${Constants.urls.zoneSoNotifications}`)
-      .subscribe(
-        (result: any) => {
-          _.remove(this.notifications);
-          this.notifications = result.data;
-          this.newNotifCount = 0;
-          this.markAsSeen();
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
-
-  }
+  // viewAllNotifications() {
+  //   this.api.get(`${Constants.urls.zoneSoNotifications}`)
+  //     .subscribe(
+  //       (result: any) => {
+  //         _.remove(this.notifications);
+  //         this.notifications = result.data;
+  //         this.newNotifCount = 0;
+  //         this.markAsSeen();
+  //       },
+  //       (error: any) => {
+  //         console.log('error', error);
+  //       });
+  //
+  // }
 
   doAction(action: any, notif_id: string) {
     let link: string = action.link;
@@ -149,14 +151,36 @@ export class NotificationService {
   }
 
   getLatestNotifications() {
-    let notif_limit = Constants.notificationSetting.limit;
-    this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${notif_limit}`)
+    // let notif_limit = this.notifLimit;
+    this.notifOffset = 0; // Reset notification offset
+    this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)
       .subscribe(
         (result: any) => {
           _.remove(this.notifications); // Make sure this.notifications has no value before assigning
           this.notifications = result.data;
-          // this.countNewNotifications();
+          this.loadingDone = result.loading_done;
+          this.notifOffset += 1;
 
+        },
+        (error: any) => {
+          console.log('error', error);
+        });
+  }
+
+  getMoreNotifications() {
+    if(this.loadingDone) {
+      console.debug('All notifications are loaded !')
+      return;
+    }
+    this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)
+      .subscribe(
+        (result: any) => {
+          this.notifications.push(...result.data);
+          this.notifOffset += 1;
+          this.newNotifCount -= result.data.length;
+          this.newNotifCount = (this.newNotifCount < 0 ) ? 0 : this.newNotifCount ;
+          this.loadingDone = result.loading_done;
+          this.markAsSeen();
         },
         (error: any) => {
           console.log('error', error);

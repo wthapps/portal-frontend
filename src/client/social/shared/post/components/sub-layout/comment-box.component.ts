@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, OnDestroy } from '@angular/core';
 import {
   CommentCreateEvent,
   OpenPhotoModalEvent,
@@ -7,10 +7,13 @@ import {
   CancelReplyCommentEvent,
   ReplyCreateEvent,
   ReplyUpdateEvent,
-  CancelEditReplyCommentEvent
+  CancelEditReplyCommentEvent, DeleteCommentEvent, DeleteReplyEvent
 } from '../../../../events/social-events';
 import { SoPost } from '../../../../../core/shared/models/social_network/so-post.model';
 import { SoComment } from '../../../../../core/shared/models/social_network/so-comment.model';
+import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
+import { BaseZoneSocialItem } from '../../../../base/base-social-item';
+import { Subscription } from 'rxjs';
 
 export enum ZSocialCommentBoxType {
   Add,
@@ -35,6 +38,10 @@ export class ZSocialCommentBoxComponent implements OnInit {
   commentContent: string = '';
   commentBoxType = ZSocialCommentBoxType;
 
+  constructor() {
+
+  }
+
   ngOnInit() {
     if (this.type == this.commentBoxType.Edit) {
       this.commentContent = this.comment.content;
@@ -49,6 +56,7 @@ export class ZSocialCommentBoxComponent implements OnInit {
       this.style.height = (this.scrollHeight) + 'px';
     });
   }
+
 
   onKey(e: any) {
     // Create, Update, Reply
@@ -90,6 +98,7 @@ export class ZSocialCommentBoxComponent implements OnInit {
 
   onOpenPhotoSelect() {
     this.eventEmitter.emit(new OpenPhotoModalEvent(this));
+
   }
 
   cancel() {

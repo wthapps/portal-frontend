@@ -22,9 +22,10 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   private id: string = '';
 
+
   constructor(public apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
-              private location: Location,
+              public location: Location,
               private postService: PostService) {
     super();
   }
@@ -34,6 +35,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
       this.id = params['id'];
       this.loadPost(this.id);
     });
+
   }
 
   loadPost(uuid: string): void {
@@ -51,8 +53,13 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   save(options: any = {mode: 'edit', item: null, isShare: false}) {
     this.postService.update(options.item)
       .subscribe((response: any) => {
-          this.loadPost(options.item.uuid);
+          // // Update item
+          let updatedPost = new SoPost().from(response.data);
+          delete updatedPost.comments;
+          this.item = _.merge({}, this.item, updatedPost);
+
           this.postEditModal.close();
+          console.log('Post after save: ', this.item);
         },
         (error: any) => {
           console.log('error', error);
@@ -65,4 +72,5 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
 }
+
 

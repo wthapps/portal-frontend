@@ -25,6 +25,15 @@ export class OpenPhotoModalEvent implements BaseEvent {
   }
 }
 
+export class ViewMoreCommentsEvent implements BaseEvent {
+  description: string = 'View more comments';
+  data: any;
+
+  constructor(data?: any) {
+    this.data = data;
+  }
+}
+
 export class DeleteCommentEvent implements BaseEvent {
   description: string = 'Delete a comment';
   data: any;

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SocialService } from '../shared/services/social.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { Constants } from '../../core/shared/config/constants';
-import { NotificationService } from '../../core/shared/channels/notification.service';
+import { NotificationService } from '../../core/shared/services/notification.service';
+import { SocialDataService } from '../shared/services/social-data.service';
+import { Subscription } from 'rxjs';
 // import { SocialService } from '../services/social.service';
 // import { ApiBaseService } from '../../../shared/services/apibase.service';
 
@@ -14,30 +16,50 @@ declare var _: any;
   templateUrl: 'notifications.component.html'
 })
 
-export class ZSocialNotificationsComponent implements OnInit {
-  notifications: any = [];
-  newNotifications: any = [];
+export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
+  // notifications: any = [];
+  // newNotifications: any = [];
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   readonly profileUrl: string = '/'+Constants.urls.profile;
 
+  // Subscription loading
+  loadSubscription : Subscription;
 
   constructor(private socialService: SocialService,
+              private socialDataService : SocialDataService,
               private notificationService: NotificationService) {
   }
 
   ngOnInit() {
-    this.callNotifications();
+    // this.callNotifications();
+
+    this.socialDataService.resetLoading();
+    this.loadSubscription = this.socialDataService.itemObs$.subscribe( () => {
+        this.getMoreNotifications()
+      }
+    )
   }
 
-  callNotifications() {
-    this.socialService.user.getNotifications().subscribe(
-      (res: any) => {
-        console.log(res.data);
-        this.notifications = res.data;
-        this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
-      }
-    );
+  ngOnDestroy() {
+    this.loadSubscription.unsubscribe();
   }
+
+  // callNotifications() {
+  //   this.socialService.user.getNotifications().subscribe(
+  //     (res: any) => {
+  //       console.log(res.data);
+  //       this.notifications = res.data;
+  //       this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
+  //     }
+  //   );
+  // }
+
+  getMoreNotifications() {
+    this.notificationService.getMoreNotifications();
+  }
+
+  loadingDone() {
+    return this.notificationService.loadingDone;  }
 
   doAction(action: any, notif_id: string) {
     // let api: any = null;

@@ -6,7 +6,10 @@ import { Config } from '../core/shared/config/env.config';
 import { Subscription } from 'rxjs/Rx';
 import './operators';
 import 'rxjs/add/operator/filter';
+import { SocialDataService } from './shared/services/social-data.service';
 
+declare let $ : any;
+declare let _ : any;
 /**
  * This class represents the main application component.
  */
@@ -18,7 +21,8 @@ import 'rxjs/add/operator/filter';
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private socialDataService: SocialDataService) {
     console.log('Environment config', Config);
   }
 
@@ -32,5 +36,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+  }
+
+  private debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
+
+  onScroll(event: any) {
+    let elem = $('.page-body-content');
+
+    if ( !this.isLoadingDone() && elem[0].scrollHeight  - elem.scrollTop() - 10 <= elem.outerHeight() ) {
+      this.loadMoreItems();
+      console.log("Load more items");
+    }
+  }
+
+  isLoadingDone() {
+    return this.socialDataService.loadingDone;
+  }
+
+  loadMoreItems() {
+    this.socialDataService.loadItem();
   }
 }

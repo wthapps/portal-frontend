@@ -28,10 +28,6 @@ export class SoUserService {
     this.profile = user.profile;
   }
 
-  ngOnInit() {
-    return ;
-  }
-
   get(uuid: string = this.user.profile.uuid) {
     return this.apiBaseService.get(`${this.soUsersUrl}/${uuid}`);
   }

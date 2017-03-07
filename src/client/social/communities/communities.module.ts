@@ -17,7 +17,6 @@ import {ZSocialCommunityCoverComponent} from './cover/cover.component';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { LoadingModule } from '../../core/partials/loading/loading.module';
 import { LoadingService } from '../../core/partials/loading/loading.service';
-import { CommunitiesDataService } from './communities-data.service';
 
 @NgModule({
   imports: [
@@ -55,7 +54,7 @@ import { CommunitiesDataService } from './communities-data.service';
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormPreferenceComponent
   ],
-  providers: [LoadingService, CommunitiesDataService]
+  providers: [LoadingService]
 })
 export class ZSocialCommunityModule {
 }

@@ -14,7 +14,9 @@ export class ZChatSidebarComponent implements OnInit {
   item:any;
   usersOnlineItem:any;
   favouriteContacts:any;
+  historyContacts:any;
   recentContacts:any;
+  historyShow:any = false;
   @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
 
   constructor(private chatService: ChatService) {}
@@ -28,6 +30,7 @@ export class ZChatSidebarComponent implements OnInit {
     this.item = this.chatService.getContacts();
     this.recentContacts = this.chatService.getRecentContacts();
     this.favouriteContacts = this.chatService.getFavouriteContacts();
+    this.historyContacts = this.chatService.getHistoryContacts();
     this.usersOnlineItem = this.chatService.getUsersOnline();
   }
 
@@ -40,4 +43,7 @@ export class ZChatSidebarComponent implements OnInit {
     this.chatToolbar.onAddContact();
   }
 
+  historyToggle() {
+    this.historyShow = !this.historyShow;
+  }
 }

@@ -245,20 +245,23 @@ export class ChatService {
   }
 
   updateDisplay(contact:any, data:any) {
-    this.updateGroupUser(contact.id, data);
+    this.updateGroupUser(contact.id, data, (res:any) => {
+      this.notificationChannel.updateDisplayNotification(contact.group_json.id);
+    });
   }
 
   updateHistory(contact:any) {
     this.updateGroupUser(contact.id, {history: false});
   }
 
-  updateGroupUser(groupUserId:any, data:any) {
+  updateGroupUser(groupUserId:any, data:any, callback?:any) {
     this.apiBaseService.put('zone/chat/group_user/' + groupUserId, data).subscribe(
       (res:any) => {
         this.storage.save('chat_contacts', res);
         this.chatCommonService.setRecentContacts();
         this.chatCommonService.setFavouriteContacts();
         this.chatCommonService.setHistoryContacts();
+        callback(res);
       }
     );
   }

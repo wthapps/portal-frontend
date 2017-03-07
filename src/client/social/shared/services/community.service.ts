@@ -6,7 +6,7 @@ import { Constants } from '../../../core/shared/config/constants';
  *
  */
 @Injectable()
-export class SoCommunityService implements OnInit {
+export class SoCommunityService  {
   static readonly MEMBER_ROLE = { Admin: 'Admin' ,
     Member: 'Member'
   } ;
@@ -21,11 +21,6 @@ export class SoCommunityService implements OnInit {
 
   constructor(private apiBaseService: ApiBaseService  ) {
   }
-
-
-  ngOnInit() {
-  }
-
 
 
   getCommunitiesList() {

@@ -32,7 +32,7 @@ export class PostPrivacyCustomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+  //
   }
 
   open(options: any = {type: 'customer_friend', searchItems: [], selectedItems: []}) {
@@ -44,11 +44,11 @@ export class PostPrivacyCustomComponent implements OnInit {
 
 
   addItem(item: any) {
-
+  //
   }
 
   removeItem(item: any) {
-
+  //
   }
 
   onSelectedItems(items: any) {
@@ -92,6 +92,6 @@ export class PostPrivacyCustomComponent implements OnInit {
   }
 
   removeCommunity(e: any) {
-
+  //
   }
 }

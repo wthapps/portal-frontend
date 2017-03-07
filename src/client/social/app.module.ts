@@ -12,21 +12,24 @@ import { RouterModule } from '@angular/router';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ZSocialProfileComponent } from './profile/profile.component';
-import { SocialSettingsModule } from './setting/setting.module';
+// import { SocialSettingsModule } from './setting/setting.module';
 import { CoreModule } from '../core/core.module';
 import { ZSocialHomeComponent } from './home/home.component';
+import { SocialDataService } from './shared/services/social-data.service';
+import { SocialSettingsModule } from './setting/setting.module';
 
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
-    ZSocialHomeModule,
-    ZSocialCommunityModule,
-    SocialSettingsModule,
-    ZSocialSharedModule,
     CoreModule.forRoot(),
     SharedModule.forRoot(),
+    // SharedModule,
+    ZSocialSharedModule,
+    ZSocialHomeModule,
+    ZSocialCommunityModule,
+    // SocialSettingsModule,
     AppRoutingModule
   ],
 
@@ -54,10 +57,10 @@ import { ZSocialHomeComponent } from './home/home.component';
   providers: [
     // ZSocialCommunityService,
     // ZSocialProfileService,
+    SocialDataService,
     ZoneReportService
   ],
   bootstrap: [AppComponent]
-
 })
 export class AppModule {
 }

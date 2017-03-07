@@ -23,7 +23,6 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   ngOnInit() {
-  //
   //   console.log(this.config)
   }
 

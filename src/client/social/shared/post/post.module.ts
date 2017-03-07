@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //noinspection TypeScriptCheckImport
 import {
-  SoPhotoListComponent,
   FileSelectionComponent,
   PostEditComponent,
   PostPhotoSelectComponent,
@@ -14,29 +13,16 @@ import {
   PostLikeDislikeComponent,
   PostService
 } from './index';
-// import { TagInputModule } from 'ng2-tag-input';
 import { Ng2HdModule } from '../../shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';
 import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 import { TagInputModule } from 'ng2-tag-input';
-
-// import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
-
-// import {
-//   PostComponent,
-//   PostHeaderComponent,
-//   PostBodyComponent,
-//   PostFooterComponent
-// } from './index';
-// import { PostListComponent } from './post-list.component';
-// import { PostDetailComponent } from './post-detail.component';
-// import { PostDetailPhotoComponent } from './post-detail-photo.component';
 import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
 import { SharedModule } from '../../../core/shared/shared.module';
 import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
-import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
+import { ZSocialSharedModule } from '../shared.module';
 
 @NgModule({
   imports: [
@@ -59,7 +45,7 @@ import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    // PostPhotoSelectComponent,
+    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
@@ -74,6 +60,7 @@ import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
     ReactiveFormsModule,
     HdTagInputModule,
     Ng2HdModule,
+    SharedModule,
 
     // TagInputModule,
     PostNewComponent,
@@ -81,7 +68,7 @@ import { ZSocialProfilePostComponent } from '../../profile/post/post.component';
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    // PostPhotoSelectComponent,
+    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,

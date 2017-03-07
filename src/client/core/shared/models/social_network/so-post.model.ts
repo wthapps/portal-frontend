@@ -21,11 +21,21 @@ export class SoPost extends BaseInput implements FromData {
   disable_comment: boolean = false;
   disable_share: boolean = false;
   mute: boolean = false;
+  total_comments: number;
 
   from(fields: any) {
     if (fields) {
       Object.assign(this, fields);
     }
     return this;
+  }
+
+  excludeComments() {
+    delete this['comments'];
+    return this;
+  }
+
+  isEmpty() {
+    return !this.uuid;
   }
 }

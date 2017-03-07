@@ -24,14 +24,12 @@ import { HandlerService } from './services/handler.service';
 import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
 import { GroupByPipe } from './pipe/groupby.pipe';
 import { NewlinePipe } from './pipe/newline.pipe';
-import { TimeFormatPipe } from './pipe/time-format.pipe';
-import { TitleCase } from './pipe/titlecase.pipe';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
 import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
-import { NotificationService } from './channels/notification.service';
+import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './channels/notification-channel.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import { ReadMoreComponent } from '../partials/read-more/read-more.component';

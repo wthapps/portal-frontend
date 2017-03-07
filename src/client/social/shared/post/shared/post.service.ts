@@ -21,11 +21,11 @@ export class PostService {
   }
 
   get(item: any) {
-
+  //
   }
 
   search(query: any) {
-
+  //
   }
 
   add(item: any): any {
@@ -40,7 +40,7 @@ export class PostService {
   }
 
   delete(item: any) {
-
+  //
   }
 
   loadItem(url: string) {
@@ -49,6 +49,10 @@ export class PostService {
 
   createComment(body: any) {
     return this.api.post(`${this.api.urls.zoneSoComments}`, body);
+  }
+
+  loadComments(body: any) {
+    return this.api.get(`${this.api.urls.zoneSoComments}`, body);
   }
 
   updateComment(body: any) {

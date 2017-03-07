@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';
@@ -7,10 +7,10 @@ import { SocialService } from '../../shared/services/social.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { User } from '../../../core/shared/models/user.model';
-import { PostPhotoSelectComponent } from './post-photo-select.component';
 import { Constants } from '../../../core/shared/config/constants';
-import { InfiniteScrollEvent } from 'angular2-infinite-scroll';
-import { CommunitiesDataService } from '../../communities/communities-data.service';
+import { SocialDataService } from '../services/social-data.service';
+import { Subscription } from 'rxjs';
+import { PhotoModalDataService } from '../services/photo-modal-data.service';
 
 declare var _: any;
 declare var $: any;
@@ -21,7 +21,7 @@ declare var $: any;
   templateUrl: 'post-list.component.html'
 })
 
-export class PostListComponent implements OnInit {
+export class PostListComponent implements OnInit, OnDestroy {
   @ViewChild('postEditModal') postEditModal: PostEditComponent;
   // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
 
@@ -37,13 +37,20 @@ export class PostListComponent implements OnInit {
   readonly post_limit: number = Constants.soPostLimit;
   // type: string = 'user';
 
+  // Subscription
+  loadSubscription : Subscription;
+  nextPhotoSubscription : Subscription;
+
   constructor(public apiBaseService: ApiBaseService,
               public socialService: SocialService,
               private loadingService: LoadingService,
               private route: ActivatedRoute,
               private router: Router,
               private postService: PostService,
-              private comDataService: CommunitiesDataService) {
+              private photoSelectDataService : PhotoModalDataService,
+              private socialDataService: SocialDataService
+              // private comDataService: CommunitiesDataService
+  ) {
   }
 
   ngOnInit() {
@@ -54,10 +61,34 @@ export class PostListComponent implements OnInit {
     });
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
+
+    // Subscribe photo select events
+    this.photoSelectDataService.init();
+
+    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+      (photos: any) => {this.onSelectPhotoComment(photos);
+    });
+
+    this.loadSubscription = this.socialDataService.itemObs$.subscribe(() => {
+      this.loadPosts();
+      console.log('Loading more posts');
+    });
   }
 
-    mapPost(post: any) {
+  ngOnDestroy() {
+    if(this.loadSubscription)
+      this.loadSubscription.unsubscribe();
+
+    this.nextPhotoSubscription.unsubscribe();
+  }
+
+  mapPost(post: any) {
     return new SoPost().from(post);
+  }
+
+  mapPostNoComments(post: any) {
+    let mappedPost =  new SoPost().from(post).excludeComments();
+    return mappedPost;
   }
 
   loadPosts() {
@@ -66,12 +97,17 @@ export class PostListComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.loadingService.stop('#post-list-component');
-          if(this.items == undefined)
-            this.items = _.map(res.data, this.mapPost);
-          else
-            this.items.push(..._.map(res.data, this.mapPost));
+          // if(this.items === undefined)
+          //   this.items = _.map(res.data, this.mapPost);
+          // else {
+          //   // this.items.push(..._.map(res.data, this.mapPost));
+          //   this.items = _.extend(this.items, ..._.map(res.data, this.mapPost));
+          //   _.orderBy(this.items, ['created_at'], ['desc']);
+          //
+          // }
+          this.items = _.map(res.data, this.mapPost);
           this.loading_done = res.loading_done;
-          this.comDataService.loadingDone = this.loading_done;
+          this.socialDataService.loadingDone = this.loading_done;
           if(!this.loading_done)
             this.page_index += 1;
         },
@@ -84,7 +120,7 @@ export class PostListComponent implements OnInit {
   reloadPosts() {
     this.page_index = 0;
     this.loading_done = false;
-    this.comDataService.loadingDone = this.loading_done;
+    this.socialDataService.loadingDone = this.loading_done;
     this.loadPosts();
   }
 
@@ -111,11 +147,19 @@ export class PostListComponent implements OnInit {
           }
         );
     } else if (options.mode == 'edit') {
-      this.postService.update(options.item)
-        .subscribe((response: any) => {
-            this.loadPosts();
+            // Update post content only, not reload comments
             this.postEditModal.close();
-          },
+        this.postService.update(options.item)
+          .subscribe((response: any) => {
+            // this.loadPosts();
+            let editedItem = _.map([response.data], this.mapPostNoComments)[0];
+            let idx = _.findIndex(this.items, ( i:SoPost ) => { return  i.uuid == editedItem.uuid; });
+            if(idx >= 0) {
+              editedItem.comments = this.items[idx].comments;
+              this.items[idx] = editedItem;
+            }
+
+    },
           (error: any) => {
             console.log('error', error);
           }
@@ -168,6 +212,7 @@ export class PostListComponent implements OnInit {
   }
 
   dismiss(item: any) {
+    // this.postEditModal.dismiss(item);
     console.log('dismiss item...............', item);
   }
 
@@ -206,6 +251,7 @@ export class PostListComponent implements OnInit {
       this.commentBox.commentAction(photos);
     }
     // this.photoModal.close();
+    // this.photoSelectDataService.close();
   }
 
   viewMorePosts() {
