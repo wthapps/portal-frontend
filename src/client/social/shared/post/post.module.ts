@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //noinspection TypeScriptCheckImport
 import {
-  FileSelectionComponent,
   PostEditComponent,
   PostPhotoSelectComponent,
   PostNewComponent,
@@ -22,7 +21,7 @@ import { TagInputModule } from 'ng2-tag-input';
 import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
 import { SharedModule } from '../../../core/shared/shared.module';
 import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
-import { ZSocialSharedModule } from '../shared.module';
+// import { FileSelectionComponent } from '../../../core/partials/zone/photo/file-select/file-selection.component';
 
 @NgModule({
   imports: [
@@ -41,7 +40,7 @@ import { ZSocialSharedModule } from '../shared.module';
   ],
   declarations: [
     PostNewComponent,
-    FileSelectionComponent,
+    // FileSelectionComponent,
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
@@ -64,7 +63,7 @@ import { ZSocialSharedModule } from '../shared.module';
 
     // TagInputModule,
     PostNewComponent,
-    FileSelectionComponent,
+    // FileSelectionComponent,
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,

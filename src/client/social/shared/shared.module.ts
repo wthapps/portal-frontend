@@ -30,6 +30,7 @@ import { ZSocialNotificationsComponent } from '../notifications/notifications.co
 import { ZSocialMembersComponent } from '../members/members.component';
 import { ZSocialProfileService } from './profile/profile.service';
 import { PhotoModalDataService } from './services/photo-modal-data.service';
+import { SoPhotoListComponent } from './post/photo-list.component';
 
 
 /**
@@ -45,6 +46,7 @@ import { PhotoModalDataService } from './services/photo-modal-data.service';
   ],
   declarations: [
     ZSocialFavoritesComponent,
+    SoPhotoListComponent,
 
     ZSocialMembersComponent,
     // List Posts
@@ -79,6 +81,7 @@ import { PhotoModalDataService } from './services/photo-modal-data.service';
   ],
   exports: [
     ZSocialFavoritesComponent,
+    SoPhotoListComponent,
     PostListComponent,
     ZoneReportComponent,
     ZSocialNotificationsComponent,

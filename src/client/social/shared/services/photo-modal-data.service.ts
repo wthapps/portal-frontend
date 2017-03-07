@@ -52,7 +52,7 @@ export class PhotoModalDataService {
   }
 
   close() {
-    this.modalCloseSource.next("");
+    this.modalCloseSource.next('');
   }
 
 }

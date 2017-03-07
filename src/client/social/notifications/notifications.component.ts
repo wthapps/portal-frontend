@@ -27,7 +27,7 @@ export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
 
   constructor(private socialService: SocialService,
               private socialDataService : SocialDataService,
-              private notificationService: NotificationService) {
+              public notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -35,9 +35,9 @@ export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
 
     this.socialDataService.resetLoading();
     this.loadSubscription = this.socialDataService.itemObs$.subscribe( () => {
-        this.getMoreNotifications()
+        this.getMoreNotifications();
       }
-    )
+    );
   }
 
   ngOnDestroy() {

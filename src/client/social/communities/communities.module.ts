@@ -13,8 +13,7 @@ import { ZSocialCommunityFormEditComponent } from './shared/form/edit.component'
 import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferences.component';
 import { Ng2HdModule } from '../shared/ng2-hd/ng2-hd.module';
 import { PostModule } from '../shared/post/post.module';
-import {ZSocialCommunityCoverComponent} from './cover/cover.component';
-import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
+import { ZSocialCommunityCoverComponent } from './cover/cover.component';
 import { LoadingModule } from '../../core/partials/loading/loading.module';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 

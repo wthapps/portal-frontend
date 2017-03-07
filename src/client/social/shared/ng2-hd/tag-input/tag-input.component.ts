@@ -230,12 +230,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * - custom id assigned to the input
      * @name id
      */
-    // @Input() private inputId: string;
+    @Input() private inputId: string;
 
     /**
      * - custom class assigned to the input
      */
-    // @Input() private inputClass: string;
+    @Input() private inputClass: string;
 
     /**
      * @name tagElements
@@ -328,6 +328,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         // reset control
         this.setInputValue('');
         this.focus(true);
+    }
+
+    public escapeDropdown(event: any) {
+    //
     }
 
     /**
@@ -480,11 +484,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
       return this.template.nativeElement.children.length > 0;
     }
 
+
+    handleKeyPress() {
+    //
+    }
     /**
      * @name maxItemsReached
      * @returns {boolean}
      */
-    private get maxItemsReached(): boolean {
+    public  maxItemsReached(): boolean {
       return this.maxItems !== undefined && this.items.length >= this.maxItems;
     }
 

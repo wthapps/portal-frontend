@@ -20,7 +20,7 @@ export class HdModalHeaderComponent {
   @Input() closePosition: string = '';
   @Input() cssClass: string = '';
 
-  constructor(private modal: HdModalComponent) {
+  constructor(public modal: HdModalComponent) {
   }
 
   getCssClasses(): string {

@@ -16,7 +16,7 @@ import { SharedModule } from '../../core/shared/shared.module';
     HttpModule,
     SocialSettingsRoutingModule,
     // ZSocialSharedModule,
-    SharedModule,
+    SharedModule.forRoot(),
   ],
   declarations: [
     ZSocialSettingComponent

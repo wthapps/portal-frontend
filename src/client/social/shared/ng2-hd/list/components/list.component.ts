@@ -533,6 +533,10 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     this.onSelected.emit(this.items);
   }
 
+  public handleKeyPress() {
+  //
+  }
+
 
   /**
    * @name seyInputValue
@@ -561,7 +565,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name maxItemsReached
    * @returns {boolean}
    */
-  private get maxItemsReached(): boolean {
+  public maxItemsReached(): boolean {
     return this.maxItems !== undefined && this.items.length >= this.maxItems;
   }
 }

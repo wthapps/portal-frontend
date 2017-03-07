@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges } from '@angular/core';
-// import { SoPost } from '../../../../shared/models/social_network/so-post.model';
 import { PostComponent } from '../index';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../core/shared/services/user.service';
@@ -7,9 +6,6 @@ import { SocialService } from '../../../shared/services/social.service';
 import { ZoneReportService } from '../../../shared/form/report/report.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { User } from '../../../../core/shared/models/user.model';
-// import { SocialService } from '../../services/social.service';
-// import { ZoneReportService } from '../../../shared/form/report/report.service';
-// import { UserService } from '../../../../shared/services/user.service';
 
 declare var _: any;
 

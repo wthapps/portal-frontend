@@ -38,14 +38,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
   }
 
-  private debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
+  debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
 
   onScroll(event: any) {
     let elem = $('.page-body-content');
 
     if ( !this.isLoadingDone() && elem[0].scrollHeight  - elem.scrollTop() - 10 <= elem.outerHeight() ) {
       this.loadMoreItems();
-      console.log("Load more items");
+      console.log('Load more items');
     }
   }
 

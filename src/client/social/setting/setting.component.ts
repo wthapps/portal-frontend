@@ -14,6 +14,7 @@ export class ZSocialSettingComponent implements OnInit {
 
   constructor(private socialService: SocialService,
               private confirmationService: ConfirmationService) {
+  //
   }
 
   ngOnInit() {

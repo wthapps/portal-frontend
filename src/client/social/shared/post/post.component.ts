@@ -59,6 +59,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   typeLikeDislike: any;
   dataLikeDislike: any;
 
+  // Subscription list
+  closePhotoSubscription : Subscription;
+  nextPhotoSubscription: Subscription;
+  dismissPhotoSubscription: Subscription;
+  // uploadSubscription  ????
+
+
   constructor(public apiBaseService: ApiBaseService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
@@ -181,7 +188,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     console.log('attt ', attr);
     this.apiBaseService.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, attr)
       .subscribe((result: any) => {
-          this.item = result['data'];
+          // this.item = result['data'];
+          _.merge(this.item, new SoPost().from(result['data']).excludeComments());
           this.mapDisplay();
         },
         ( error : any ) => {
@@ -319,13 +327,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     return new SoComment().from(comment);
   }
 
-
-  closePhotoSubscription : Subscription;
-  nextPhotoSubscription: Subscription;
-  dismissPhotoSubscription: Subscription;
-  // uploadSubscription  ????
-
-  openPhotoModal(data: any){
+  openPhotoModal(data: any) {
     this.photoSelectDataService.open(data);
 
     this.subscribePhotoEvents();
@@ -374,8 +376,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   private unsubscribePhotoEvents() {
     [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
       if(sub && !sub.closed)
-        sub.unsubscribe();}
-    )
+        sub.unsubscribe();
+    });
   }
 
   onSelectPhotoComment(photos: any) {

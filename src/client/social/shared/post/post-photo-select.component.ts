@@ -94,11 +94,12 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
 
   chooseFiles(files: any) {
     this.files = files;
-    this.onUpload.emit(files);
-    // this.photoDataService.upload(files);
+    // this.onUpload.emit(files);
+    this.close();
+    this.photoDataService.upload(files);
   }
 
-  private unsubscribeAll(subs: Array<Subscription>){
+  private unsubscribeAll(subs: Array<Subscription>) {
     _.each(subs, (s: Subscription) => {if (s) s.unsubscribe();});
   }
 

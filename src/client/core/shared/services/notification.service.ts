@@ -169,7 +169,7 @@ export class NotificationService {
 
   getMoreNotifications() {
     if(this.loadingDone) {
-      console.debug('All notifications are loaded !')
+      console.debug('All notifications are loaded !');
       return;
     }
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)

@@ -16,6 +16,6 @@ export class HdModalFooterComponent {
   @Input() public dismissButtonLabel: string = 'Dismiss';
   @Input() public closeButtonLabel: string = 'Close';
 
-  constructor(private modal: HdModalComponent) {
+  constructor(public modal: HdModalComponent) {
   }
 }
