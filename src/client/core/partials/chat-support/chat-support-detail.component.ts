@@ -15,14 +15,13 @@ export class ChatSupportDetailComponent implements OnInit, ChatSupportBaseCompon
   @Input() data: any;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private chatSupportChanneService: ChatSupportChannelService) {
+  constructor(private chatSupportChannelService: ChatSupportChannelService) {
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-    this.chatSupportChanneService.subscribe();
 
     $('.js-intercom-content-header-list').slick({
       infinite: true,
@@ -30,6 +29,7 @@ export class ChatSupportDetailComponent implements OnInit, ChatSupportBaseCompon
       slidesToScroll: 3
     });
 
+    this.chatSupportChannelService.subscribe();
   }
 
   onBack() {

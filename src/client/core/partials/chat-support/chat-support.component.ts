@@ -13,6 +13,11 @@ import { ChatSupportDetailComponent } from './chat-support-detail.component';
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { ChatSupportDirective } from './chat-support.directive';
 import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
+import { ChatSupportChannelService } from './shared/channel/chat-support-channel.service';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { Constants } from '../../shared/config/constants';
+import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 
 const ChatSupportView = {
   list: 'list',
@@ -56,9 +61,15 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
 
   showChat: boolean = false;
   currentView: string;
+  csUserid: string;
 
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private chatSupportChannelService: ChatSupportChannelService,
+    private cookie: CookieService,
+    private api: ApiBaseService
+  ) {
   }
 
   ngOnInit() {
@@ -66,6 +77,17 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
 
+    // generate client id for chat support
+    this.csUserid = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
+    if (this.csUserid == undefined) {
+      this.api.post(`chat_support/init`, {user: null})
+        .subscribe(
+          (response: any) => {
+            this.csUserid = response.data.user.anonymous_uuid;
+            this.cookie.put(Constants.cookieKeys.chatSupportId, this.csUserid, <CookieOptionsArgs>Constants.cookieOptionsArgs);
+          }
+        );
+    }
   }
 
   onShow() {
@@ -82,6 +104,8 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
     viewContainerRef.clear();
     let componentRef = viewContainerRef.createComponent(componentFactory);
 
+
+    (<ChatSupportBaseComponent>componentRef.instance).data = this.csUserid;
     (<ChatSupportBaseComponent>componentRef.instance).actionEvent.subscribe((action: any) => {
       this.doAction(action);
     });

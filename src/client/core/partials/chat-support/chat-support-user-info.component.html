@@ -61,9 +61,13 @@
 
   </div>
   <div class="intercom-content-footer">
-    <div id="chat-message-text" class="chatbox-container-input form-control" contenteditable="true" spellcheck="false"
-         tabindex="1"
-         placeholder="Write a reply..." autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()"></div>
+    <textarea id="chat-message-text" class="chatbox-container-input form-control"
+              placeholder="Write a reply...">
+
+    </textarea>
+    <!--<div id="chat-message-text" class="chatbox-container-input form-control" contenteditable="true" spellcheck="false"-->
+         <!--tabindex="1"-->
+         <!--placeholder="Write a reply..." autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()"></div>-->
     <div class="intercom-content-footer-action">
       <button class="btn btn-default-inline">
         <i class="fa fa-link"></i>

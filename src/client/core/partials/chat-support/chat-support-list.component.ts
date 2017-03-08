@@ -2,6 +2,7 @@ import {
   Component, OnInit, EventEmitter, Output, Input, AfterViewInit
 } from '@angular/core';
 import { ChatSupportBaseComponent } from './chat-support-base.component';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 
 // moduleId: module.id,
 //   selector: 'wth-chat-support-list',
@@ -14,17 +15,25 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
   conversations: Array<any>;
 
-  constructor() {
+  constructor(private api: ApiBaseService) {
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-    this.conversations = new Array<any>();
-    this.conversations = [
 
-    ];
+    console.log('chatsupport list...........', this.data);
+    this.conversations = new Array<any>();
+    this.api.get(`chat_support/conversations`, {uId: this.data})
+      .subscribe(
+        (response: any) => {
+          this.conversations = response.data;
+        },
+        error => {
+
+        }
+      );
   }
 
   goToDetail() {
@@ -34,4 +43,6 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
   createConversation() {
     this.actionEvent.emit({name: 'createConversation'});
   }
+
+
 }

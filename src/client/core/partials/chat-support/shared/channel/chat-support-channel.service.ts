@@ -5,6 +5,10 @@ import { Observer } from 'rxjs/Observer';
 import { CableService } from '../../../../shared/channels/cable.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { ApiConfig } from '../../../../shared/config/api.config';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
+import { Constants } from '../../../../shared/config/constants';
+import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
 
 declare let App: any;
 
@@ -15,7 +19,7 @@ export class ChatSupportChannelService extends CableService {
   notificationUpdated: Observable<any>;
 
   private item: any;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private cookie: CookieService, private api: ApiBaseService) {
     super();
   }
 
@@ -53,7 +57,24 @@ export class ChatSupportChannelService extends CableService {
 
 
   subscribe() {
-    this.createConnectionInstance(null, 'support', '123456789');
+    //get unique client id
+
+    let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
+    console.log('cookie', cId);
+    if (cId == undefined) {
+      this.api.post(`chat_support/init`, {user: null})
+          .subscribe(
+            (response: any) => {
+              let cId = response.data.user.anonymous_uuid;
+              this.cookie.put(Constants.cookieKeys.chatSupportId, cId , <CookieOptionsArgs>Constants.cookieOptionsArgs);
+            }
+          );
+      return;
+    }
+
+
+
+    this.createConnectionInstance(null, 'cs', '123456789');
     let _this = this;
     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
       connected: function(){

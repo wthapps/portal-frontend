@@ -31,6 +31,12 @@ export let Constants = {
     domain: Config.DOMAIN,
     expires: new Date('2030-07-19')
   },
+  cookieKeys: {
+    chatSupportId: 'wthapps-cs-id',
+    clientToken: 'wthapps-ct',
+    profile: 'wthapps-pro',
+    payment: 'wthapps-pm'
+  },
   operations: {
     update: 'update',
     edit: 'edit',
