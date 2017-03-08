@@ -4,6 +4,8 @@ import {
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { ChatSupportChannelService } from './shared/channel/chat-support-channel.service';
 
+declare let $: any;
+
 @Component({
   moduleId: module.id,
   selector: 'wth-chat-support-detail',
@@ -21,6 +23,13 @@ export class ChatSupportDetailComponent implements OnInit, ChatSupportBaseCompon
 
   ngAfterViewInit() {
     this.chatSupportChanneService.subscribe();
+
+    $('.js-intercom-content-header-list').slick({
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 3
+    });
+
   }
 
   onBack() {
