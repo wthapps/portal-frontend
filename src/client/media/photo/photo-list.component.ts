@@ -5,6 +5,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { ZMediaPhotoService } from './photo.service';
 import { LoadingService } from '../../core/partials/loading/loading.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var $: any;
 declare var _: any;
@@ -39,15 +40,27 @@ export class ZMediaPhotoListComponent implements OnInit {
 
   constructor(private photoService: ZMediaPhotoService,
               private confirmationService: ConfirmationService,
+              private route: ActivatedRoute,
               private loadingService: LoadingService) {
+
+    this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        this.hasFavourite = queryParams['favorite'];
+        if (this.hasFavourite)
+          this.getPhotos({'favorite':true});
+        else
+          this.getPhotos();
+        // this.isMember = true; // testing
+      }
+    );
   }
 
   ngOnInit() {
-    this.getPhotos();
+    // this.getPhotos();
   }
 
-  getPhotos() {
-    this.photoService.listPhoto().subscribe((res: any)=> {
+  getPhotos(body: any = {}) {
+    this.photoService.listPhoto(body).subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
     });

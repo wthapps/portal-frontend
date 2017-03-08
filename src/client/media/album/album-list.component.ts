@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/components/common/api';
 
@@ -41,11 +41,26 @@ export class ZMediaAlbumListComponent implements OnInit {
   constructor(private router: Router,
               private albumService: ZMediaAlbumService,
               private confirmationService: ConfirmationService,
+              private route: ActivatedRoute,
               private loadingService: LoadingService) {
+
+    this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        this.hasFavourite = queryParams['favorite'];
+        if (this.hasFavourite)
+          this.getAlbums({'favorite':true});
+        else
+          this.getAlbums();
+      }
+    );
   }
 
   ngOnInit() {
-    this.albumService.listAlbum().subscribe((res: any)=> {
+    // this.getAlbums();
+  }
+
+  getAlbums(body: any = {}) {
+    this.albumService.listAlbum(body).subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
     });

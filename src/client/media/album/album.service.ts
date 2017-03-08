@@ -11,8 +11,8 @@ export class ZMediaAlbumService {
   constructor(private apiBaseService: ApiBaseService) {
   }
 
-  listAlbum(): any {
-    return this.apiBaseService.get(this.url);
+  listAlbum(body: any = {}): any {
+    return this.apiBaseService.get(this.url, body);
   }
 
   getAlbum(id: number): any {

@@ -35,11 +35,12 @@ export class ZMediaToolbarComponent {
 
 
   selectedEl: any;
-  items = Constants.pictureMenuItems;
+  readonly items = Constants.pictureMenuItems;
+  readonly urls = '/' + Constants.urls;
 
   constructor(private router: Router, private location: Location) {
     // Don't move it to onInit, it's not correct
-    this.selectedEl = {name: 'Photos', css: 'fa fa-picture-o', link: '/zone/media/photo'};
+    this.selectedEl = {name: 'Photos', css: 'fa fa-picture-o', link: this.urls.photo};
     this.router.events.subscribe((navigation: any) => {
       for (var item of this.items) {
         if (item.link == navigation.url) {

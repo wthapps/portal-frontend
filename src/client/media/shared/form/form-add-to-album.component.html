@@ -54,7 +54,7 @@
         <div class="media-body">
           <p>{{selectedPhotos.length}} item{{(selectedPhotos.length>1)?'s':''}} are added to {{selectedAlbum.name}}</p>
           <div class="text-right">
-            <a [routerLink]="['/zone/media/album', selectedAlbum.id]">View</a>
+            <a [routerLink]="['/' + urls.album, selectedAlbum.id]">View</a>
           </div>
         </div>
       </div>

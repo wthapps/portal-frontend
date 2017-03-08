@@ -114,10 +114,10 @@ export class ZMediaFavoriteListComponent implements OnInit {
   }
 
   private onOneFavourite(item: any) {
-    let findItemFavourite = _.findIndex(this.data, ['id', item.id]);
+    let findItemFavourite = _.findIndex(this.data.albums, ['id', item.id]);
     this.photoService.actionOneFavourite(item).subscribe((res: any)=> {
       if (res.message === 'success') {
-        this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
+        this.data.albums[findItemFavourite].favorite = (this.data.albums[findItemFavourite].favorite) ? false : true;
       }
     });
   }

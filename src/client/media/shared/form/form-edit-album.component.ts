@@ -4,6 +4,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { ZMediaAlbumService } from '../../album/album.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 
 declare var $: any;
@@ -25,6 +26,8 @@ export class ZMediaFormEditAlbumComponent implements AfterViewInit {
   form: FormGroup;
   name: AbstractControl;
   description: AbstractControl;
+
+  readonly urls = Constants.urls;
 
   constructor(private fb: FormBuilder,
               private albumService: ZMediaAlbumService) {

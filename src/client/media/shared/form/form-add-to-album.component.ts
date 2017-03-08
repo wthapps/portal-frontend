@@ -3,6 +3,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { ZMediaAlbumService } from '../../album/album.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -23,6 +24,8 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
   showToast: boolean = false;
 
   selectedAlbum: any;
+
+  readonly urls = Constants.urls;
 
   constructor(private albumService: ZMediaAlbumService) {
   }

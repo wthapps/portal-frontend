@@ -119,6 +119,8 @@ export let Constants = {
     zoneSoProfile: 'zone/social_network/profile',
     posts: 'posts',
     profile: 'profile',
+    album: 'album',
+    photo: 'photo',
     chatConversation: 'conversation'
   },
   sex: ['', 'Male', 'Female', 'Other'],

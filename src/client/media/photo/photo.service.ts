@@ -11,8 +11,8 @@ export class ZMediaPhotoService {
   constructor(private apiBaseService: ApiBaseService) {
   }
 
-  listPhoto(): any {
-    return this.apiBaseService.get(this.url);
+  listPhoto(body: any = {}): any {
+    return this.apiBaseService.get(this.url, body);
   }
 
   actionOneFavourite(item: any) {

@@ -11,7 +11,7 @@
   </modal-body>
   <modal-footer>
     <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>
-    <button type="button" (click)="save()" class="btn btn-primary-inline">Save</button>
+    <button type="button" (click)="save()" class="btn btn-primary-inline" data-dismiss="modal">Save</button>
     <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
   </modal-footer>
 </modal>

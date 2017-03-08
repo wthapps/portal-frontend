@@ -70,7 +70,7 @@ export class ZMediaFavoriteDetailComponent implements OnInit {
     switch (event.action) {
       case 'previewAll':
         console.log(event);
-        this.router.navigate(['/zone/media/album', event.data.id]);
+        this.router.navigate(['/album', event.data.id]);
         break;
       default:
         break;
