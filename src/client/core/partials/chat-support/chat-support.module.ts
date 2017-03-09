@@ -7,6 +7,8 @@ import { ChatSupportDetailComponent } from './chat-support-detail.component';
 import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
 import { ChatSupportDirective } from './chat-support.directive';
 import { ChatSupportChannelService } from './shared/channel/chat-support-channel.service';
+import { WthChatBoxDirective } from './shared/wth-chat-box.directive';
+import { MessageService } from './message.service';
 
 @NgModule({
   imports: [
@@ -17,16 +19,18 @@ import { ChatSupportChannelService } from './shared/channel/chat-support-channel
     ChatSupportListComponent,
     ChatSupportDetailComponent,
     ChatSupportUserInfoComponent,
-    ChatSupportDirective
+    ChatSupportDirective,
+    WthChatBoxDirective
   ],
   exports: [
     CoreChatSupportComponent,
     ChatSupportListComponent,
     ChatSupportDetailComponent,
     ChatSupportUserInfoComponent,
-    ChatSupportDirective
+    ChatSupportDirective,
+    WthChatBoxDirective
   ],
-  providers: [ChatSupportChannelService],
+  providers: [ChatSupportChannelService, MessageService],
   entryComponents:[ChatSupportListComponent, ChatSupportUserInfoComponent, ChatSupportDetailComponent]
 })
 

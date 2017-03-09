@@ -2,6 +2,7 @@ import {
   Component, OnInit, Output, Input, EventEmitter
 } from '@angular/core';
 import { ChatSupportBaseComponent } from './chat-support-base.component';
+import { MessageService } from './message.service';
 
 @Component({
   moduleId: module.id,
@@ -12,7 +13,7 @@ export class ChatSupportUserInfoComponent implements OnInit, ChatSupportBaseComp
   @Input() data: any;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() {
+  constructor(private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -30,4 +31,19 @@ export class ChatSupportUserInfoComponent implements OnInit, ChatSupportBaseComp
     this.actionEvent.emit({name: 'goToDetail'});
   }
 
+  onSendMessage(event: any) {
+
+    this.messageService.sendMessage({senderId: this.data, message: {type: event.type, body: event.body}})
+      .subscribe(
+        (response: any) => {
+          console.log('created message !!!!', response);
+        },
+        error => {
+
+        }
+      );
+
+
+    console.log('on send message triggered', event);
+  }
 }

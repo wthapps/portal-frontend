@@ -61,8 +61,8 @@
 
   </div>
   <div class="intercom-content-footer">
-    <textarea id="chat-message-text" class="chatbox-container-input form-control"
-              placeholder="Write a reply...">
+    <textarea #chatbox id="chat-message-text" class="chatbox-container-input form-control"
+              placeholder="Write a reply..." wth-chat-box (sendMessage)="onSendMessage($event)">
 
     </textarea>
     <!--<div id="chat-message-text" class="chatbox-container-input form-control" contenteditable="true" spellcheck="false"-->

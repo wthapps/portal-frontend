@@ -1,3 +1,7 @@
+/**
+ * Created by Thinh Huynh Doan February 25th, 2017
+ */
+
 import { Injectable }     from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -75,7 +79,7 @@ export class ChatSupportChannelService extends CableService {
 
 
     this.createConnectionInstance(null, 'cs', '123456789');
-    let _this = this;
+    let self = this;
     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
       connected: function(){
         console.log('connected');
