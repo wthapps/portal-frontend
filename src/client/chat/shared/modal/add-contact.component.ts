@@ -14,6 +14,7 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   @ViewChild('modal') modal: ModalComponent;
   friends:any = [];
+  contactsItem:any;
   type:string = "addContact";
 
   constructor(private chatService: ChatService ) {
@@ -25,6 +26,7 @@ export class ZChatShareAddContactComponent implements OnInit {
     (res:any) => {
       this.friends = res.data;
     });
+    this.contactsItem = this.chatService.getContacts();
   }
 
   add() {
@@ -36,20 +38,16 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   addContact() {
-    let friends = _.filter(this.friends, { checked: true });
-    let ids = _.map(friends, 'id');
+    let contacts = _.filter(this.contactsItem.value.data, { checked: true });
+    let ids = _.map(contacts, 'display.id');
     this.chatService.addContact(ids);
     this.modal.close();
   }
 
   addMember() {
-    let friends = _.filter(this.friends, { checked: true });
-    let ids = _.map(friends, 'id');
+    let contacts = _.filter(this.contactsItem.value.data, { checked: true });
+    let ids = _.map(contacts, 'display.id');
     this.chatService.addMembersGroup(ids);
     this.modal.close();
-  }
-
-  checkbox(e:any, friend:any) {
-    console.log(e, friend, this.friends );
   }
 }

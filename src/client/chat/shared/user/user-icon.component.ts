@@ -3,7 +3,7 @@ import { ChatService } from '../services/chat.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'z-chat-share-user-list',
+  selector: 'z-chat-share-user-icon',
   templateUrl: 'user-icon.component.html'
 })
 export class ZChatShareUserIconComponent implements OnInit{

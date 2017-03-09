@@ -5,23 +5,30 @@
     <!--</div>-->
   <!--</div>-->
 <!--</div>-->
-
-<div class="page-body-chat-content-in"
-     scrollToBottom
-     lock-y-offset="10"
-     observe-attributes="true"
-     infinite-scroll
-     [scrollWindow]="false"
-     (scrolledUp)="onLoadMore()">
-  <div class="chat-item-wrap">
-    <div *ngIf="item.value">
-      <div *ngFor="let message of item.value.data">
-        <div class="chat-date" *ngIf="message | groupByDayMonthYear:'created_at'">
-          <span>{{ message.created_at |date }}</span>
+<div  *ngIf="contactItem.value">
+  <div *ngIf="contactItem.value.active"
+       class="page-body-chat-content-in"
+       scrollToBottom
+       lock-y-offset="10"
+       observe-attributes="true"
+       infinite-scroll
+       [scrollWindow]="false"
+       (scrolledUp)="onLoadMore()">
+    <div class="chat-item-wrap">
+      <div *ngIf="item.value">
+        <div *ngFor="let message of item.value.data">
+          <div class="chat-date" *ngIf="message | groupByDayMonthYear:'created_at'">
+            <span>{{ message.created_at |date }}</span>
+          </div>
+          <z-chat-share-item [message]="message"></z-chat-share-item>
         </div>
-        <z-chat-share-item [message]="message"></z-chat-share-item>
       </div>
     </div>
   </div>
+  <div *ngIf="!contactItem.value.active">
+    <z-chat-share-item-request [message]="item.value.data[0]"></z-chat-share-item-request>
+  </div>
 </div>
+
+
 

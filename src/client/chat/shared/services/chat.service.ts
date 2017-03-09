@@ -73,7 +73,6 @@ export class ChatService {
   addContact(ids:number) {
     this.apiBaseService.post('zone/chat/create_contact', {user_id: ids}).subscribe(
       (res:any) => {
-        console.log(res);
         this.notificationChannel.addedContactNotification(res.data.group_json.id);
       }
     );
@@ -140,7 +139,6 @@ export class ChatService {
     } else {
       let item = this.storage.find('contact_select');
       if (item && item.value && (message || file)) {
-        console.log(item.value);
         this.chanel.sendMessage(item.value.group_json.id, message, file);
         if (item.value.history) {
           this.updateHistory(item.value);
@@ -182,13 +180,13 @@ export class ChatService {
 
   createUploadingFile() {
     let item:any = this.getContactSelect();
-    this.addMessage(item.value.group_json.id, {uploading: true});
+    this.addMessage(item.value.group_json.id, {message_type: 'file_tmp'});
   }
 
   removeUploadingFile(groupId:any) {
     let item = this.storage.find('chat_messages_group_' + groupId);
     let newValue = _.remove(item.value.data, (v:any) => {
-      return v.uploading != true;
+      return v.message_type != 'file_tmp';
     });
     item.value.data = newValue;
     let currentGroupId = this.storage.find('contact_select').value.group_json.id;
@@ -303,6 +301,12 @@ export class ChatService {
 
   restoreSetting() {
     return this.apiBaseService.post('zone/chat/restore_setting');
+  }
+
+  acceptRequest(contact:any) {
+    this.updateGroupUser(contact.id, {active: true}, (res:any) => {
+      contact.active = true;
+    });
   }
 }
 
