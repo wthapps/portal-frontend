@@ -36,7 +36,7 @@
       </div>
     </div>
     <div *ngIf="item.value">
-      <z-chat-share-user-list [image]="item.value.display.image" [groupType]="item.value.group_json.group_type" [userId]="item.value.display.id"></z-chat-share-user-list>
+      <z-chat-share-user-icon [image]="item.value.display.image" [groupType]="item.value.group_json.group_type" [userId]="item.value.display.id"></z-chat-share-user-icon>
       <div class="p-list-user-namegroup">
         <span *ngIf="item.value.group_json.group_type == 'couple'">{{item.value.display.name}}</span>
         <span *ngIf="item.value.group_json.group_type == 'multiple'">{{item.value.group_json | chatGroupName:50}}</span>

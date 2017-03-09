@@ -9,11 +9,13 @@ declare var _: any;
 })
 export class ZChatShareListComponent implements OnInit {
   item: any;
+  contactItem: any;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.item = this.chatService.getCurrentMessages();
+    this.contactItem = this.chatService.getContactSelect();
     this.chatService.subscribeChanel();
   }
 

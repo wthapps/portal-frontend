@@ -100,10 +100,10 @@ export class ChatNotificationChannelService extends CableService {
       this.storage.save('chat_recent_contacts', recentContacts);
     } else {
       item.value.data[index] = data.group_user;
-      this.storage.save('contact_select', data.group_user);
       this.storage.save('chat_contacts', item);
       this.updateAll();
     }
+    this.storage.save('contact_select', data.group_user);
   }
 
   updateAll() {

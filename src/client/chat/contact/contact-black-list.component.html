@@ -15,7 +15,7 @@
       <li *ngFor="let contact of contactItem.value.data | chatGroupBlackList" >
         <div class="media-flex">
           <div class="media-flex-item">
-            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
           </div>
           <div class="media-flex-item">
             <span class="text-overflow-name">{{contact.display.name}}</span>
