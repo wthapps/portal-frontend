@@ -43,6 +43,10 @@ export class ChatChannelService extends CableService {
     App["groupChat" + groupId].send({type: "send_message_chat", group: groupId, message: message, file: file});
   }
 
+  sendContactMessage(groupId:any, message:any, contact?:any) {
+    App["groupChat" + groupId].send({type: "send_message_chat", group: groupId, message: message, contact: contact});
+  }
+
   addMessage(groupId:any, data:any) {
     let item = this.storage.find('chat_messages_group_' + groupId);
     if (item && item.value) {

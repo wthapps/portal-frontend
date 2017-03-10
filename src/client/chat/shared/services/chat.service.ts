@@ -312,6 +312,19 @@ export class ChatService {
   searchUsers(name:any) {
     return this.apiBaseService.post('users/search', {text: name});
   }
+
+  shareContact(ids:any) {
+    console.log(ids);
+    for(let i=0; i < ids.length; i++) {
+      let item = this.storage.find('contact_select');
+      if (item && item.value) {
+        this.chanel.sendContactMessage(item.value.group_json.id, '', ids[i]);
+        if (item.value.history) {
+          this.updateHistory(item.value);
+        }
+      }
+    }
+  }
 }
 
 

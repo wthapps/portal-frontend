@@ -96,8 +96,7 @@ export class ChatNotificationChannelService extends CableService {
     let index = _.findIndex(item.value.data, { id: data.group_user.id });
     if(index == -1) {
       item.value.data.push(data.group_user);
-      let recentContacts = _.filter(item.value.data, { 'favourite': false, 'black_list': false, 'history': false });
-      this.storage.save('chat_recent_contacts', recentContacts);
+      this.updateAll();
     } else {
       item.value.data[index] = data.group_user;
       this.storage.save('chat_contacts', item);

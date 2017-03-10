@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
+import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 
 declare var _: any;
 @Component({
@@ -10,6 +11,7 @@ declare var _: any;
 export class ZChatShareListComponent implements OnInit {
   item: any;
   contactItem: any;
+  @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 
   constructor(private chatService: ChatService) {}
 
@@ -21,5 +23,11 @@ export class ZChatShareListComponent implements OnInit {
 
   onLoadMore() {
     this.chatService.loadMoreMessages();
+  }
+
+  onAddContact(contact:any) {
+    console.log(contact);
+    this.requestModal.contact = contact;
+    this.requestModal.modal.open();
   }
 }

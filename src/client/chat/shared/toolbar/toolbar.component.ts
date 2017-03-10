@@ -46,4 +46,9 @@ export class ZChatToolbarComponent implements OnInit {
   enableNotification() {
     this.chatService.updateNotification(this.item.value, {notification: true});
   }
+
+  sendContact()  {
+    this.addContact.type = 'shareContact';
+    this.addContact.modal.open();
+  }
 }

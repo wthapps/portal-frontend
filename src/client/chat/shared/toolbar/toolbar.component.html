@@ -32,6 +32,7 @@
           <!--<li role="separator" class="divider"></li>-->
           <li *ngIf="item.value.notification"><a href="javascript:;" (click)="disableNotification()">Disable Notification</a></li>
           <li *ngIf="!item.value.notification"><a href="javascript:;" (click)="enableNotification()">Enable Notification</a></li>
+          <li><a href="javascript:;" (click)="sendContact()">Send Contact</a></li>
         </ul>
       </div>
     </div>

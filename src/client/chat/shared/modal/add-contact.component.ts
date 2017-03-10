@@ -33,8 +33,12 @@ export class ZChatShareAddContactComponent implements OnInit {
   add() {
     if(this.type == "addContact") {
       this.addContact();
-    } else {
+    }
+    if(this.type == "addMember") {
       this.addMember();
+    }
+    if(this.type == "shareContact") {
+      this.shareContact();
     }
   }
 
@@ -49,6 +53,13 @@ export class ZChatShareAddContactComponent implements OnInit {
     let contacts = _.filter(this.contactsItem.value.data, { checked: true });
     let ids = _.map(contacts, 'display.id');
     this.chatService.addMembersGroup(ids);
+    this.modal.close();
+  }
+
+  shareContact() {
+    let contacts = _.filter(this.contactsItem.value.data, { checked: true });
+    let ids = _.map(contacts, 'display.id');
+    this.chatService.shareContact(ids);
     this.modal.close();
   }
 

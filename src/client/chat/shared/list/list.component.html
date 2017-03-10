@@ -20,7 +20,7 @@
           <div class="chat-date" *ngIf="message | groupByDayMonthYear:'created_at'">
             <span>{{ message.created_at |date }}</span>
           </div>
-          <z-chat-share-item [message]="message"></z-chat-share-item>
+          <z-chat-share-item [message]="message" (onAddContact)="onAddContact($event)"></z-chat-share-item>
         </div>
       </div>
     </div>
@@ -29,6 +29,8 @@
     <z-chat-share-item-request [message]="item.value.data"></z-chat-share-item-request>
   </div>
 </div>
+
+<z-chat-share-request-contact #request></z-chat-share-request-contact>
 
 
 
