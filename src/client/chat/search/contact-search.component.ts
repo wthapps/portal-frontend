@@ -5,7 +5,8 @@ import { ZChatShareRequestContactComponent } from '../shared/modal/request-conta
 @Component({
   moduleId: module.id,
   selector: 'z-chat-contact-search',
-  templateUrl: 'contact-search.component.html'
+  templateUrl: 'contact-search.component.html',
+  styleUrls: ['contact-search.component.css']
 })
 export class ZChatContactSearchComponent implements OnInit {
   contactItem:any;

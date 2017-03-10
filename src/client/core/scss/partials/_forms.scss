@@ -100,3 +100,34 @@
     }
   }
 }
+
+.navbar-searchTop {
+  position: relative;
+  .btn {
+    & {
+      position: absolute;
+      left: 2px;
+      padding-left: 8px;
+      padding-right: 8px;
+      background-color: transparent;
+      border-width: 0;
+      @include center(false, true);
+      font-size: 16px;
+    }
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: transparent;
+      @include box-shadow(none);
+    }
+  }
+  .form-control {
+    height: 38px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 36px;
+    @media (min-width: $screen-lg) {
+      min-width: 470px;
+    }
+  }
+}

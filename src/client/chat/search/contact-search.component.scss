@@ -1,0 +1,12 @@
+.page-body-control {
+  background-color: #F6F6F6 !important;
+  height: 120px !important;
+  h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+  }
+  & + .page-body-content {
+    top: 120px;
+  }
+}
