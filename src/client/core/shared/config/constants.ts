@@ -33,6 +33,8 @@ export let Constants = {
   },
   cookieKeys: {
     chatSupportId: 'wthapps-cs-id',
+    chatSupportMemId: 'wthapps-cs-mem-id',
+    chatSupportCurrentWindow: 'wthapps-cs-cw',
     clientToken: 'wthapps-ct',
     profile: 'wthapps-pro',
     payment: 'wthapps-pm'

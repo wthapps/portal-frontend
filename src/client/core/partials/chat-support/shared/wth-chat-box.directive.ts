@@ -14,6 +14,7 @@ export class WthChatBoxDirective {
       event.preventDefault();
       if (event.target.value != '') {
         this.sendMessage.emit({body: event.target.value, type: 'text'});
+        event.target.value = '';
       }
     }
 

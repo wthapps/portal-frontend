@@ -83,7 +83,7 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
       this.api.post(`chat_support/init`, {user: null})
         .subscribe(
           (response: any) => {
-            this.csUserid = response.data.user.anonymous_uuid;
+            this.csUserid = response.data.user.uuid;
             this.cookie.put(Constants.cookieKeys.chatSupportId, this.csUserid, <CookieOptionsArgs>Constants.cookieOptionsArgs);
           }
         );

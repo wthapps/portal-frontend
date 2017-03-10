@@ -69,7 +69,7 @@ export class ChatSupportChannelService extends CableService {
       this.api.post(`chat_support/init`, {user: null})
           .subscribe(
             (response: any) => {
-              let cId = response.data.user.anonymous_uuid;
+              let cId = response.data.user.uuid;
               this.cookie.put(Constants.cookieKeys.chatSupportId, cId , <CookieOptionsArgs>Constants.cookieOptionsArgs);
             }
           );
