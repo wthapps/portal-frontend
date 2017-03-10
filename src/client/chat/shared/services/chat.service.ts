@@ -70,8 +70,8 @@ export class ChatService {
     return this.storage.find('chat_history_contacts');
   }
 
-  addContact(ids:number) {
-    this.apiBaseService.post('zone/chat/create_contact', {user_id: ids}).subscribe(
+  addContact(ids:number, text?:any) {
+    this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text:text}).subscribe(
       (res:any) => {
         this.notificationChannel.addedContactNotification(res.data.group_json.id);
       }
@@ -307,6 +307,10 @@ export class ChatService {
     this.updateGroupUser(contact.id, {active: true}, (res:any) => {
       contact.active = true;
     });
+  }
+
+  searchUsers(name:any) {
+    return this.apiBaseService.post('users/search', {text: name});
   }
 }
 

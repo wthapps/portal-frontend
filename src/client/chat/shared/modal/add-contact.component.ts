@@ -16,6 +16,7 @@ export class ZChatShareAddContactComponent implements OnInit {
   friends:any = [];
   contactsItem:any;
   type:string = "addContact";
+  filter:any;
 
   constructor(private chatService: ChatService ) {
 
@@ -49,5 +50,9 @@ export class ZChatShareAddContactComponent implements OnInit {
     let ids = _.map(contacts, 'display.id');
     this.chatService.addMembersGroup(ids);
     this.modal.close();
+  }
+
+  search() {
+    this.chatService.router.navigate([`${this.chatService.constant.searchUrl}`]);
   }
 }

@@ -23,6 +23,8 @@ import { ZChatContactActionsComponent } from './contact-action/contact-actions.c
 import { ChatCommonService } from './services/chat.common.service';
 import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
 import { ZChatShareItemRequestComponent } from './list/item/item-request.component';
+import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
+import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -45,11 +47,13 @@ import { ZChatShareItemRequestComponent } from './list/item/item-request.compone
     ZChatShareAddToConversationComponent,
     ZChatContactActionsComponent,
     ZChatShareItemRequestComponent,
+    ZChatShareRequestContactComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
     ChatGroupNamePipe,
+    ChatUserNewPipe,
     ChatUserOnlinePipe
   ],
   exports: [
@@ -65,11 +69,13 @@ import { ZChatShareItemRequestComponent } from './list/item/item-request.compone
     ZChatShareAddToConversationComponent,
     ZChatContactActionsComponent,
     ZChatShareItemRequestComponent,
+    ZChatShareRequestContactComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
     ChatGroupNamePipe,
+    ChatUserNewPipe,
     ChatUserOnlinePipe
   ]
 })
