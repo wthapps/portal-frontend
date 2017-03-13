@@ -2,6 +2,7 @@ import { SoUser } from './so-user.model';
 import { BaseInput } from '../base/base-input.model';
 import { SoComment } from './so-comment.model';
 import { Constants } from '../../config/constants';
+import { FromData } from '../base/interfaces/from-data';
 
 export class SoPost extends BaseInput implements FromData {
   uuid: string;

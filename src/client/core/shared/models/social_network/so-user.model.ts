@@ -1,8 +1,10 @@
 import { BaseInput } from '../base/base-input.model';
+import { FromData } from '../base/interfaces/from-data';
 
 export class SoUser extends BaseInput implements FromData {
   uuid: string = '';
   nickname: string = '';
+  profile_image: string = '';
   settings: any;
 
   from(fields: any) {

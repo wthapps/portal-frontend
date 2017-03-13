@@ -537,6 +537,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   //
   }
 
+
   /**
    * @name maxItemsReached
    * @returns {boolean}
@@ -567,4 +568,5 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   private getControl(): FormControl {
     return <FormControl>this.inputForm.value;
   }
+
 }

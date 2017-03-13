@@ -22,6 +22,7 @@ import { HighlightPipe } from './pipes/highlight.pipe';
     HighlightPipe
   ],
   exports: [
+    Ng2DropdownModule,
     TagInputComponent,
     TagInputFormComponent,
     DeleteIconComponent,

@@ -16,10 +16,11 @@ import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';
 import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
+// import { TagInputModule } from 'ng2-tag-input';
 import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
 import { SharedModule } from '../../../core/shared/shared.module';
 import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
-// import { FileSelectionComponent } from '../../../core/partials/zone/photo/file-select/file-selection.component';
+// import { FileSelectionComponent } from '../../../core/partials/zone/photo/file-select/file-selection.component';vi
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     HdTagInputModule,
     Ng2HdModule,
     SharedModule,
+    // TagInputModule,
     InputTextareaModule
 
 

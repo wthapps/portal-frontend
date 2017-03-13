@@ -41,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
   }
 
+
   onScroll(event: any) {
     let elem = $('.page-body-content');
 

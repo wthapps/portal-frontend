@@ -27,6 +27,7 @@ import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
+import { BaseEvent } from '../../../core/shared/event/base-event';
 
 declare var $: any;
 declare var _: any;

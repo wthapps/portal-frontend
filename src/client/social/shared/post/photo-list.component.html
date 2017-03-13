@@ -9,9 +9,9 @@
     <file-selection #filesSelection (onFilesChanged)="changeFiles($event)"></file-selection>
   </div>
   <div *ngFor="let p of photos" class="photo-box-img item-selectable">
-    <!--<div class="photo-box-img-action" *ngIf="showFavourite">-->
-      <!--<i (click)="addFavourite($event, item)" class="fa" [ngClass]="item.favorite ? 'fa-star': 'fa-star-o'"></i>-->
-    <!--</div>-->
+    <div class="photo-box-img-action" *ngIf="showFavourite">
+      <i (click)="addFavourite($event, p)" class="fa" [ngClass]="p.favorite ? 'fa-star': 'fa-star-o'"></i>
+    </div>
     <figure (click)="toggleSelectedItem($event, p)" class="img-center-dv">
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
       <img class="img-center" [src]="p['thumbnail_url']" alt="">

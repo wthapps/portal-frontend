@@ -1,3 +1,5 @@
+import { BaseEvent } from '../../core/shared/event/base-event.d';
+
 export class CommentCreateEvent implements BaseEvent {
   description: string = 'Event create a comment for post';
   data: any;

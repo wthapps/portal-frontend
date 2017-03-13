@@ -92,7 +92,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-
   ngOnChanges() {
 
   }
@@ -390,7 +389,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.onUpdated.emit(attr);
     }
   }
-
 
   private subscribePhotoSelectEvents() {
     if (this.needInitSubscription(this.nextSubscription)) {
