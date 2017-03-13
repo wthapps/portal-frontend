@@ -24,6 +24,45 @@ export class ChatCommonService {
     let historyContacts = _.filter(contacts, { 'history': true, 'black_list': false });
     this.storage.save('chat_history_contacts', historyContacts);
   }
+
+  moveFristRecentList() {
+    let contactSelect:any = this.storage.find('contact_select').value;
+    let chatRecentContacts:any = this.storage.find('chat_recent_contacts').value;
+    chatRecentContacts.unshift(contactSelect);
+    chatRecentContacts = _.uniqBy(chatRecentContacts, 'id');
+    this.storage.save('chat_recent_contacts', chatRecentContacts);
+  }
+
+  addMessage(groupId:any, data:any) {
+    let item = this.storage.find('chat_messages_group_' + groupId);
+    if (item && item.value) {
+      item.value.data.push(data);
+      let contactSelect = this.storage.find('contact_select').value;
+      if(contactSelect.group_json.id == groupId) {
+        this.storage.save('current_chat_messages', item);
+      }
+      if (!contactSelect.favourite) {
+        this.moveFristRecentList();
+      }
+    }
+  }
+
+  updateContactSelect() {
+    let contactSelect = this.storage.find('contact_select').value;
+    let chatContacts = this.storage.find('chat_contacts').value.data;
+    for (let i = 0; i < chatContacts.length; i++) {
+      if (chatContacts[i].id == contactSelect.id) {
+        this.storage.save('contact_select', chatContacts[i]);
+      }
+    }
+  }
+
+  updateAll() {
+    this.setRecentContacts();
+    this.setFavouriteContacts();
+    this.setHistoryContacts();
+    this.updateContactSelect();
+  }
 }
 
 

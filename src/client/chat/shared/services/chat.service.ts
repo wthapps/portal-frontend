@@ -8,7 +8,6 @@ import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.
 import { ChatConstant } from '../constants/chat-constant';
 import { ChatChannelService } from '../channels/chat-channel.service';
 import { ChatNotificationChannelService } from '../channels/chat-notification-channel.service';
-import { AppearancesChannelService } from '../../../core/shared/channels/appearances-channel.service';
 import { ChatCommonService } from './chat.common.service';
 
 declare var _:any;
@@ -23,7 +22,6 @@ export class ChatService {
               public user: UserService,
               public chanel: ChatChannelService,
               public notificationChannel: ChatNotificationChannelService,
-              public appearancesChannelService: AppearancesChannelService,
               public chatCommonService: ChatCommonService,
               public router: Router,
               public handler: HandlerService) {
@@ -70,7 +68,7 @@ export class ChatService {
     return this.storage.find('chat_history_contacts');
   }
 
-  addContact(ids:number, text?:any) {
+  addContact(ids:any, text?:any) {
     this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text:text}).subscribe(
       (res:any) => {
         this.notificationChannel.addedContactNotification(res.data.group_json.id);
@@ -147,13 +145,6 @@ export class ChatService {
     }
   }
 
-  addMessage(groupId:any, res:any) {
-    let item = this.storage.find('chat_messages_group_' + groupId);
-    item.value.data.push(res);
-
-    this.storage.save('current_chat_messages', item);
-  }
-
   uploadFiles(files:any) {
     let groupId = this.storage.find('contact_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event:any, file:any) => {
@@ -180,7 +171,7 @@ export class ChatService {
 
   createUploadingFile() {
     let item:any = this.getContactSelect();
-    this.addMessage(item.value.group_json.id, {message_type: 'file_tmp'});
+    this.chatCommonService.addMessage(item.value.group_json.id, {message_type: 'file_tmp'});
   }
 
   removeUploadingFile(groupId:any) {
