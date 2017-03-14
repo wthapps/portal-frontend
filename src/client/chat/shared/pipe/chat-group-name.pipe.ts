@@ -9,7 +9,7 @@ export class ChatGroupNamePipe implements PipeTransform {
     }
     let name: string = item.users_json[0].name;
     for(let i:any=1; i < item.users_json.length; i++) {
-      name = name + ', ' + item.users_json[i].name
+      name = name + ', ' + item.users_json[i].name;
     }
     if (name.length > length) {
       name = name.substring(0, length) + ' ...';

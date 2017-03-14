@@ -14,8 +14,8 @@ declare var _:any;
 
 @Injectable()
 export class ChatService {
-  fileUploadHelper:any;
-  constant:any;
+  public fileUploadHelper:any;
+  public constant:any;
 
   constructor(public storage: StorageService,
               public apiBaseService: ApiBaseService,
@@ -186,7 +186,7 @@ export class ChatService {
   }
 
   getUsersOnline() {
-    return this.storage.find('users_online')
+    return this.storage.find('users_online');
   }
 
   loadMoreMessages() {

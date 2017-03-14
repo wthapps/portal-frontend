@@ -221,21 +221,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public selectedTag: string;
 
     /**
-     * @name onTextChangeDebounce
-     * @type {number}
+     * - custom class assigned to the input
      */
-    @Input() private onTextChangeDebounce: number = 250;
+    @Input() public inputClass: string;
 
     /**
      * - custom id assigned to the input
      * @name id
      */
-    @Input() private inputId: string;
+    @Input() public inputId: string;
 
     /**
-     * - custom class assigned to the input
+     * @name onTextChangeDebounce
+     * @type {number}
      */
-    @Input() private inputClass: string;
+    @Input() private onTextChangeDebounce: number = 250;
 
     /**
      * @name tagElements

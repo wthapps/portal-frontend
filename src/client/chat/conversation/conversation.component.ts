@@ -6,7 +6,7 @@ import { ChatService } from '../shared/services/chat.service';
   selector: 'z-chat-conversation',
   templateUrl: 'conversation.component.html'
 })
-export class ZChatConversationComponent implements OnInit{
+export class ZChatConversationComponent implements OnInit {
   item: any;
 
   constructor(private chatService: ChatService) {}

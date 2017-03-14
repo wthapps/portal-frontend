@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, EventEmitter, Output } from '@angular/core';
 
 @Directive({
-  selector: '[wth-chat-box]',
+  selector: '[wthChatBox]',
 })
 
 export class WthChatBoxDirective {

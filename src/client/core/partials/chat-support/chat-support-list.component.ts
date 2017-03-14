@@ -10,7 +10,7 @@ import { ApiBaseService } from '../../shared/services/apibase.service';
   moduleId: module.id,
   templateUrl: 'chat-support-list.component.html'
 })
-export class ChatSupportListComponent implements ChatSupportBaseComponent, OnInit, AfterViewInit{
+export class ChatSupportListComponent implements ChatSupportBaseComponent, OnInit, AfterViewInit {
   @Input() data: any;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
   conversations: Array<any>;

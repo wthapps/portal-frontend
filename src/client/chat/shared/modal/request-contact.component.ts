@@ -13,7 +13,7 @@ declare var _: any;
 export class ZChatShareRequestContactComponent implements OnInit {
 
   contact: any;
-  message: string = "Hello, please accept my request";
+  message: string = 'Hello, please accept my request';
   @ViewChild('modal') modal: ModalComponent;
 
   constructor(private chatService: ChatService) {

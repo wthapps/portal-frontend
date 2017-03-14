@@ -6,7 +6,7 @@
     <div class="form-group">
       <input type="text" class="form-control" [(ngModel)]="name" (keyup)="search()">
     </div>
-    <button class="btn btn-default"><i class="fa fa-search" aria-hidden="true" (click)="onSaveKey()"></i></button>
+    <button class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
   </div>
 </div>
 <div class="page-body-content has-page-body-sidebar">
@@ -17,7 +17,7 @@
       <li *ngFor="let contact of newContacts | chatUserNew:contactItem">
         <div *ngIf="contact" class="media-flex">
           <div class="media-flex-item">
-            <z-chat-share-user-icon [image]="contact.profile_image" [groupType]="couple" [userId]="contact.id">
+            <z-chat-share-user-icon [image]="contact.profile_image" [groupType]="'couple'" [userId]="contact.id">
             </z-chat-share-user-icon>
           </div>
           <div class="media-flex-item">

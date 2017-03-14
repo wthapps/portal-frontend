@@ -7,7 +7,7 @@ declare var _: any;
   name: 'wthEmojis'
 })
 export class ZChatEmojiPipe implements PipeTransform {
-  transform(value: string, args: any[]) {
+  transform(value: string) {
     value = value + ''; // make sure it's a string
     return value.replace(ZChatEmojiService.emojisRegex, (match, text)=> {
       let text_class = '';
@@ -25,7 +25,7 @@ export class ZChatEmojiPipe implements PipeTransform {
   name: 'wthEmojisClass'
 })
 export class ZChatEmojiClassPipe implements PipeTransform {
-  transform(value: string, args: any[]) {
+  transform(value: string) {
     value = value + ''; // make sure it's a string
     value = value.replace(/\\/gi, '');
     if (value.charAt(0) == ';' || value.charAt(0) == ':') {

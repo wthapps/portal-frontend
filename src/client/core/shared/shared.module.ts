@@ -34,7 +34,8 @@ import { NotificationChannelService } from './channels/notification-channel.serv
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import { ReadMoreComponent } from '../partials/read-more/read-more.component';
 import { SoSearchService } from '../partials/header/sub/social-search.service';
-import { FilterByPipe } from './pipe/filter-by.pipe';
+import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';
+import { ArrayLengthPipe } from './pipe/array-length.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -68,7 +69,8 @@ import { FilterByPipe } from './pipe/filter-by.pipe';
     UrlTransformPipe,
     ShowLengthTransformPipe,
     SafeHtmlPipe,
-    FilterByPipe,
+    WthFilterByPipe,
+    ArrayLengthPipe,
 
     //Directive
     ScrollToBottomDirective
@@ -93,7 +95,8 @@ import { FilterByPipe } from './pipe/filter-by.pipe';
 
     // Pipe
     GroupByMonthYearPipe,
-    FilterByPipe,
+    WthFilterByPipe,
+    ArrayLengthPipe,
     GroupByPipe,
     NewlinePipe,
     // TimeFormatPipe,

@@ -1,4 +1,4 @@
-import { Component, ViewChild, HostListener, ElementRef, HostBinding } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit, HostBinding } from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
@@ -12,11 +12,19 @@ declare var $: any;
   styleUrls: ['chat-box.component.css']
 })
 
-export class ZChatChatboxComponent {
+export class ZChatChatboxComponent implements OnInit {
   @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   @HostBinding('class') keyCtrlClass = '';
 
   emojiData: any = [];
+
+  constructor(private chatService: ChatService) {
+  }
+
+  ngOnInit() {
+    this.emojiData = ZChatEmojiService.emojis;
+    this.photoModal.action = 'UPLOAD';
+  }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -33,14 +41,6 @@ export class ZChatChatboxComponent {
     }
   }
 
-  constructor(private chatService: ChatService) {
-  }
-
-  ngOnInit() {
-    this.emojiData = ZChatEmojiService.emojis;
-    this.photoModal.action = 'UPLOAD';
-  }
-
   send() {
     this.chatService.sendMessage($('#chat-message-text').text());
     $('#chat-message-text').text('');
@@ -48,7 +48,7 @@ export class ZChatChatboxComponent {
 
   onEmojiClick(e: any) {
     $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
-    this.placeCaretAtEnd(document.getElementById("chat-message-text"));
+    this.placeCaretAtEnd(document.getElementById('chat-message-text'));
   }
 
   onOpenSelectPhotos() {
@@ -78,8 +78,8 @@ export class ZChatChatboxComponent {
 
   placeCaretAtEnd(el: any) {
     el.focus();
-    if (typeof window.getSelection != "undefined"
-      && typeof document.createRange != "undefined") {
+    if (typeof window.getSelection != 'undefined'
+      && typeof document.createRange != 'undefined') {
       let range: any = document.createRange();
       range.selectNodeContents(el);
       range.collapse(false);

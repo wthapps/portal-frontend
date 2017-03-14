@@ -29,7 +29,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
 
   constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,
-              private userService: UserService,
+              public userService: UserService,
               private loadingService: LoadingService,
               private zoneReportService: ZoneReportService,
               private route: ActivatedRoute) {

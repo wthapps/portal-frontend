@@ -92,47 +92,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  private subscribePhotoSelectEvents() {
-    if (this.needInitSubscription(this.nextSubscription)) {
-      this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
-        this.next(photos);
-      });
-    }
-
-    if (this.needInitSubscription(this.dismissSubscription)) {
-      this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
-        this.dismiss(photos);
-      });
-    }
-
-    if (this.needInitSubscription(this.closeSubscription)) {
-      this.closeSubscription = this.photoSelectDataService.closeObs$.subscribe((event: any) => {
-        this.closeSelectPhoto(event);
-      });
-    }
-
-    if (this.needInitSubscription(this.uploadSubscription)) {
-      this.uploadSubscription = this.photoSelectDataService.uploadObs$.subscribe((files: any) => {
-        this.upload(files);
-      });
-    }
-  }
-
-  private needInitSubscription(sub : Subscription) {
-    return !sub || sub.closed;
-  }
-
-  private unsubscribeAll() {
-    _.forEach([this.nextSubscription, this.dismissSubscription, this.closeSubscription, this.uploadSubscription], (sub: Subscription) => {
-      if (sub && !sub.closed)
-        sub.unsubscribe();
-    });
-    // this.nextSubscription.unsubscribe();
-    // this.dismissSubscription.unsubscribe();
-    // this.closeSubscription.unsubscribe();
-    // this.uploadSubscription.unsubscribe();
-  }
-
   ngOnChanges() {
 
   }
@@ -415,5 +374,46 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.onUpdated.emit(attr);
     }
+  }
+
+  private subscribePhotoSelectEvents() {
+    if (this.needInitSubscription(this.nextSubscription)) {
+      this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
+        this.next(photos);
+      });
+    }
+
+    if (this.needInitSubscription(this.dismissSubscription)) {
+      this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
+        this.dismiss(photos);
+      });
+    }
+
+    if (this.needInitSubscription(this.closeSubscription)) {
+      this.closeSubscription = this.photoSelectDataService.closeObs$.subscribe((event: any) => {
+        this.closeSelectPhoto(event);
+      });
+    }
+
+    if (this.needInitSubscription(this.uploadSubscription)) {
+      this.uploadSubscription = this.photoSelectDataService.uploadObs$.subscribe((files: any) => {
+        this.upload(files);
+      });
+    }
+  }
+
+  private needInitSubscription(sub : Subscription) {
+    return !sub || sub.closed;
+  }
+
+  private unsubscribeAll() {
+    _.forEach([this.nextSubscription, this.dismissSubscription, this.closeSubscription, this.uploadSubscription], (sub: Subscription) => {
+      if (sub && !sub.closed)
+        sub.unsubscribe();
+    });
+    // this.nextSubscription.unsubscribe();
+    // this.dismissSubscription.unsubscribe();
+    // this.closeSubscription.unsubscribe();
+    // this.uploadSubscription.unsubscribe();
   }
 }

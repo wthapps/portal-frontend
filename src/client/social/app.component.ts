@@ -20,6 +20,7 @@ declare let _ : any;
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
+  debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
 
   constructor(private router: Router,
               private socialDataService: SocialDataService) {
@@ -37,8 +38,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
   }
-
-  debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
 
   onScroll(event: any) {
     let elem = $('.page-body-content');

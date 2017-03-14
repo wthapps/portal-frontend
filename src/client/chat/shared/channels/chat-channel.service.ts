@@ -22,17 +22,17 @@ export class ChatChannelService extends CableService {
     let _this = this;
     if(this.userService.loggedIn) {
       this.createConnectionInstance(this.userService);
-      if(App["groupChat" + groupId] == undefined) {
-        App["groupChat" + groupId] = App.cable.subscriptions.create(
-          {channel: "ChatChannel", group_id: groupId},
+      if(App['groupChat' + groupId] == undefined) {
+        App['groupChat' + groupId] = App.cable.subscriptions.create(
+          {channel: 'ChatChannel', group_id: groupId},
           {
             connected: function(){
               console.log('connected');
             },
-            disconnected: function(){console.log('chat disconnected')},
+            disconnected: function(){console.log('chat disconnected');},
             received: function(data: any){
               console.log('chat received', data);
-              if (data.type == "send_message_chat") {
+              if (data.type == 'send_message_chat') {
                 _this.addMessage(data.group, data.message);
               }
             }
@@ -43,11 +43,11 @@ export class ChatChannelService extends CableService {
   }
 
   sendMessage(groupId:any, message:any, file?:any) {
-    App["groupChat" + groupId].send({type: "send_message_chat", group: groupId, message: message, file: file});
+    App['groupChat' + groupId].send({type: 'send_message_chat', group: groupId, message: message, file: file});
   }
 
   sendContactMessage(groupId:any, message:any, contact?:any) {
-    App["groupChat" + groupId].send({type: "send_message_chat", group: groupId, message: message, contact: contact});
+    App['groupChat' + groupId].send({type: 'send_message_chat', group: groupId, message: message, contact: contact});
   }
 
   addMessage(groupId:any, data:any) {
@@ -55,7 +55,7 @@ export class ChatChannelService extends CableService {
   }
 
   unsubscribe(groupId:any) {
-    App["groupChat" + groupId].unsubscribe();
+    App['groupChat' + groupId].unsubscribe();
   }
 }
 

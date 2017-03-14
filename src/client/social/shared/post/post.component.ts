@@ -333,53 +333,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.subscribePhotoEvents();
   }
 
-  private updateItemComments(data: any) {
-    let updatedComment = new SoComment().from(data);
-    _.forEach(this.item.comments, (comment: SoComment, index : any) => {
-      if (comment.uuid == updatedComment.uuid)
-        this.item.comments[index] = updatedComment;
-    });
-  }
-
-
-  private subscribePhotoEvents() {
-    // Subscribe actions corresponding with photo modal actions
-
-    if (!this.nextPhotoSubscription || this.nextPhotoSubscription.closed) {
-      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
-        (photos: any) => {
-          this.commentBox.commentAction(photos);
-        },
-        (error : any) => { console.error(error); }
-        );
-    }
-
-    if (!this.dismissPhotoSubscription || this.dismissPhotoSubscription.closed) {
-      this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
-        },
-        (error : any) => { console.error(error); }
-        );
-    }
-
-    if (!this.closePhotoSubscription || this.closePhotoSubscription.closed) {
-      this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
-        },
-        (error : any) => { console.error(error); }
-      );
-    }
-  }
-
-  private unsubscribePhotoEvents() {
-    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
-      if(sub && !sub.closed)
-        sub.unsubscribe();
-    });
-  }
-
   onSelectPhotoComment(photos: any) {
     if (this.commentBox) {
       this.commentBox.commentAction(photos);
@@ -430,6 +383,53 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         this.mapDisplay();
       }
     );
+  }
+
+  private unsubscribePhotoEvents() {
+    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
+      if(sub && !sub.closed)
+        sub.unsubscribe();
+    });
+  }
+
+  private updateItemComments(data: any) {
+    let updatedComment = new SoComment().from(data);
+    _.forEach(this.item.comments, (comment: SoComment, index : any) => {
+      if (comment.uuid == updatedComment.uuid)
+        this.item.comments[index] = updatedComment;
+    });
+  }
+
+
+  private subscribePhotoEvents() {
+    // Subscribe actions corresponding with photo modal actions
+
+    if (!this.nextPhotoSubscription || this.nextPhotoSubscription.closed) {
+      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+        (photos: any) => {
+          this.commentBox.commentAction(photos);
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+
+    if (!this.dismissPhotoSubscription || this.dismissPhotoSubscription.closed) {
+      this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
+        () => {
+          this.unsubscribePhotoEvents();
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+
+    if (!this.closePhotoSubscription || this.closePhotoSubscription.closed) {
+      this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
+        () => {
+          this.unsubscribePhotoEvents();
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
   }
 }
 

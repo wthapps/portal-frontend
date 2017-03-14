@@ -4,18 +4,17 @@ import { Directive, ElementRef, HostListener, AfterContentInit, Input, OnDestroy
   selector: '[scrollToBottom]'
 })
 export class ScrollToBottomDirective implements AfterContentInit, OnDestroy {
-  @Input('lock-y-offset') lockYOffset = 10;
-  @Input('observe-attributes') observeAttributes: string = 'false';
+  @Input() lockYOffset = 10;
+  @Input() observeAttributes: string = 'false';
+  nativeElement: HTMLElement;
+  private isLocked = false;
+  private mutationObserver: MutationObserver;
 
   @HostListener('scroll')
   scrollHandler() {
     const scrollFromBottom = this.nativeElement.scrollHeight - this.nativeElement.scrollTop - this.nativeElement.clientHeight;
     this.isLocked = scrollFromBottom > this.lockYOffset;
   }
-
-  nativeElement: HTMLElement;
-  private isLocked = false;
-  private mutationObserver: MutationObserver;
 
   constructor(element: ElementRef) {
     this.nativeElement = element.nativeElement;

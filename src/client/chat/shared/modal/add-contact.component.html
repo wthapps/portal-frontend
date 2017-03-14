@@ -9,7 +9,7 @@
       </div>
       <div class="content-overflow" style="max-height: 300px;">
         <ul class="p-list-user p-list-border">
-          <li *ngFor="let contact of contactsItem.value.data | chatGroupCouple | filterBy:'display.name': filter">
+          <li *ngFor="let contact of contactsItem.value.data | chatGroupCouple | wthFilterBy:'display.name':filter">
             <div class="pull-right">
               <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="contact.checked">
             </div>
@@ -17,7 +17,7 @@
             <span>{{contact.display.name}}</span>
           </li>
         </ul>
-        <div *ngIf="(contactsItem.value.data | chatGroupCouple | filterBy:'display.name': filter).length == 0" class="text-center">
+        <div *ngIf="(contactsItem.value.data | chatGroupCouple | wthFilterBy:'display.name':filter | arrayLength) == 0" class="text-center">
           <p>There is no contact</p>
           <p>You can find more people through search</p>
           <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="search()"> <i class="fa fa-plus"></i> Add New Contact</button>

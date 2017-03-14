@@ -537,6 +537,13 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   //
   }
 
+  /**
+   * @name maxItemsReached
+   * @returns {boolean}
+   */
+  public maxItemsReached(): boolean {
+    return this.maxItems !== undefined && this.items.length >= this.maxItems;
+  }
 
   /**
    * @name seyInputValue
@@ -559,13 +566,5 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    */
   private getControl(): FormControl {
     return <FormControl>this.inputForm.value;
-  }
-
-  /**
-   * @name maxItemsReached
-   * @returns {boolean}
-   */
-  public maxItemsReached(): boolean {
-    return this.maxItems !== undefined && this.items.length >= this.maxItems;
   }
 }

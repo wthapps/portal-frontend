@@ -9,8 +9,9 @@ import { Config } from '../../../../core/shared/config/env.config';
 })
 export class ZChatShareItemComponent implements OnInit {
   @Input() message: any;
-  constructor(private chatService: ChatService) {};
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
+  constructor(private chatService: ChatService) {};
+
 
   ngOnInit() {
     // ByMe

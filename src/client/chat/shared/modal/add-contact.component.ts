@@ -15,7 +15,7 @@ export class ZChatShareAddContactComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   friends:any = [];
   contactsItem:any;
-  type:string = "addContact";
+  type:string = 'addContact';
   filter:any;
 
   constructor(private chatService: ChatService ) {
@@ -31,13 +31,13 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   add() {
-    if(this.type == "addContact") {
+    if(this.type == 'addContact') {
       this.addContact();
     }
-    if(this.type == "addMember") {
+    if(this.type == 'addMember') {
       this.addMember();
     }
-    if(this.type == "shareContact") {
+    if(this.type == 'shareContact') {
       this.shareContact();
     }
   }

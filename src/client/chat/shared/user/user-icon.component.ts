@@ -6,7 +6,7 @@ import { ChatService } from '../services/chat.service';
   selector: 'z-chat-share-user-icon',
   templateUrl: 'user-icon.component.html'
 })
-export class ZChatShareUserIconComponent implements OnInit{
+export class ZChatShareUserIconComponent implements OnInit {
   @Input() image:any;
   @Input() groupType:any;
   @Input() userId:any;

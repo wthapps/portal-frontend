@@ -9,8 +9,8 @@
   <div *ngIf="contactItem.value.active"
        class="page-body-chat-content-in"
        scrollToBottom
-       lock-y-offset="10"
-       observe-attributes="true"
+       lockYOffset="10"
+       observeAttributes="true"
        infinite-scroll
        [scrollWindow]="false"
        (scrolledUp)="onLoadMore()">

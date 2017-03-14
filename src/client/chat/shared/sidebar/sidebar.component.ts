@@ -19,7 +19,7 @@ export class ZChatSidebarComponent implements OnInit {
   historyShow:any = false;
   @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
 
-  constructor(private chatService: ChatService) {}
+  constructor(public chatService: ChatService) {}
 
   ngOnInit() {
     this.chatService.handler.addListener('on_default_contact_select_side_bar', 'on_default_contact_select', (contact:any) => {
