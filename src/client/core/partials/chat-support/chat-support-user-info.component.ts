@@ -4,6 +4,7 @@ import {
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { MessageService } from './message.service';
 import { ChatSupportMessageListComponent } from './message/message-list.component';
+import { ChatSupportChannelService } from './shared/channel/chat-support-channel.service';
 
 declare var _: any;
 
@@ -22,7 +23,8 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
   componentRef: any;
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private messageService: MessageService) {
+    private messageService: MessageService,
+    private chatSupportChannelService: ChatSupportChannelService) {
   }
 
   ngOnInit() {
@@ -32,10 +34,12 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
 
   ngAfterViewInit() {
     //load message for current conversation here
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatSupportMessageListComponent);
-    this.componentRef = this.messageContainerRefs.createComponent(componentFactory);
-    this.messages = new Array<any>();
-    (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
+    // let componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatSupportMessageListComponent);
+    // this.componentRef = this.messageContainerRefs.createComponent(componentFactory);
+    // this.messages = new Array<any>();
+    // (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
+    this.chatSupportChannelService.subscribe();
+
   }
 
   onBack() {
@@ -53,9 +57,7 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
   onSendMessage(event: any) {
 
     this.messages = _.concat(this.messages, {type: event.type, body: event.body});
-    (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
-
-    console.log('message......', this.messages);
+    // (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
 
     //TODO process sending status here
 

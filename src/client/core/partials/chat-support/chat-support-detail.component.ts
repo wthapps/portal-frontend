@@ -22,7 +22,6 @@ export class ChatSupportDetailComponent implements OnInit, ChatSupportBaseCompon
   }
 
   ngAfterViewInit() {
-
     $('.js-intercom-content-header-list').slick({
       infinite: true,
       slidesToShow: 3,
