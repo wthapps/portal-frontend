@@ -11,10 +11,6 @@ import {
 } from '../../../../events/social-events';
 import { SoPost } from '../../../../../core/shared/models/social_network/so-post.model';
 import { SoComment } from '../../../../../core/shared/models/social_network/so-comment.model';
-import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
-import { BaseZoneSocialItem } from '../../../../base/base-social-item';
-import { Subscription } from 'rxjs';
-
 export enum ZSocialCommentBoxType {
   Add,
   Edit,

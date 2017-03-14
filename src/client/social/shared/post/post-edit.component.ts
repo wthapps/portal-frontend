@@ -4,7 +4,7 @@ import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, O
 // import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 // import { UserService } from '../../../shared/index';
-import { PostPhotoSelectComponent, PostPrivacyCustomComponent } from './index';
+import { PostPrivacyCustomComponent } from './index';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
@@ -13,8 +13,9 @@ import { SoPost } from '../../../core/shared/models/social_network/so-post.model
 import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialService } from '../services/social.service';
-import { PhotoModalDataService } from '../services/photo-modal-data.service';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 
 
 declare var _: any;
@@ -29,7 +30,6 @@ declare var _: any;
 export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('modal') modal: HdModalComponent;
-  // @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
 
   // For share
@@ -91,6 +91,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.currentUser = this.userService.profile;
 
   }
+
 
   ngOnChanges() {
 
@@ -232,27 +233,41 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     let fileName: string;
     // this.loading.start('.photo-item-uploading');
     do {
-      reader = new FileReader();
-      reader.onload = (data: any) => {
+        this.photoUploadService.upload(files[i])
+          .then(
+          (res: any) => {
+            console.log('Upload image successfully', res);
+            this.savePhotoInfo(res);
 
-        body = JSON.stringify({photo: {name: fileName, image: data.target['result']}});
-        this.apiService.post(`zone/social_network/photos/upload`, body)
-          .subscribe((result: any) => {
-              this.post.photos.unshift(result['data']);
-              this.uploadedPhotos.push(result['data']);
-              files.shift(); // remove file was uploaded
-            },
-            (error : any) => {
-
-            }
-          );
-      };
-      fileName = files[i].name;
-      reader.readAsDataURL(files[i]);
+          })
+          .catch((error: any) => {
+            console.error('Error when uploading files ', error);
+          })
+      ;
       i++;
-      // } while (files.length > 0);
     } while (i < files.length);
 
+  }
+
+
+  savePhotoInfo(data: any) {
+    this.photoUploadService.savePhotoInfo(data).subscribe(
+      (result: any) => {
+        console.log("post-edit photo saved successfully", result);
+
+        // Delay 4s waiting for image thumbnail to be created
+        setTimeout(() => {
+          this.files.shift(); // remove file was uploaded
+          this.post.photos.unshift(result['data']);
+          this.uploadedPhotos.push(result['data']);
+          // this.loading.stop('.photo-item-uploading');
+        }, 4000);
+
+      },
+      (error: any) => {
+        console.error('post-edit photo error', error);
+      }
+    );
   }
 
   cancelUploading(file: any) {
@@ -375,6 +390,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.onUpdated.emit(attr);
     }
   }
+
 
   private subscribePhotoSelectEvents() {
     if (this.needInitSubscription(this.nextSubscription)) {

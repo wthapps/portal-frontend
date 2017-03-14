@@ -125,6 +125,7 @@ export let Constants = {
     zoneSoNotifications: 'zone/social_network/notifications',
     zoneSoReportList: 'zone/social_network/report_list',
     zoneSoProfile: 'zone/social_network/profile',
+    zoneSoPhotos: 'zone/social_network/photos',
     posts: 'posts',
     profile: 'profile',
     album: 'album',

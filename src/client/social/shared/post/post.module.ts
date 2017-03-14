@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //noinspection TypeScriptCheckImport
 import {
   PostEditComponent,
-  PostPhotoSelectComponent,
   PostNewComponent,
   PostActivitiesComponent,
   PostPrivacyCustomComponent,
@@ -17,7 +16,6 @@ import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';
 import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
-import { TagInputModule } from 'ng2-tag-input';
 import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
 import { SharedModule } from '../../../core/shared/shared.module';
 import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
@@ -33,7 +31,6 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     HdTagInputModule,
     Ng2HdModule,
     SharedModule,
-    TagInputModule,
     InputTextareaModule
 
 
@@ -44,7 +41,6 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
@@ -67,7 +63,6 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,

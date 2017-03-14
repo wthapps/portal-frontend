@@ -10,7 +10,7 @@ import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
 import { Subscription } from 'rxjs';
-import { PhotoModalDataService } from '../services/photo-modal-data.service';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 
 declare var _: any;
 declare var $: any;

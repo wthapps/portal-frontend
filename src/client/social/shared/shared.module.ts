@@ -29,8 +29,9 @@ import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../members/members.component';
 import { ZSocialProfileService } from './profile/profile.service';
-import { PhotoModalDataService } from './services/photo-modal-data.service';
+import { PhotoModalDataService } from '../../core/shared/services/photo-modal-data.service';
 import { SoPhotoListComponent } from './post/photo-list.component';
+import { PhotoUploadService } from '../../core/shared/services/photo-upload.service';
 
 
 /**
@@ -95,7 +96,7 @@ export class ZSocialSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZSocialSharedModule,
-      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService, PhotoModalDataService]
+      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService]
     };
   }
 }

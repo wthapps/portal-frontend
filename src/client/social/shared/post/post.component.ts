@@ -9,7 +9,6 @@ import {
   EventEmitter
 } from '@angular/core';
 import {
-  PostPhotoSelectComponent,
   PostActivitiesComponent
 } from './index';
 import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
@@ -25,7 +24,7 @@ import {
   DeleteReplyEvent, OpenPhotoModalEvent, DeleteCommentEvent, ViewMoreCommentsEvent
 } from '../../events/social-events';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
-import { PhotoModalDataService } from '../services/photo-modal-data.service';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
 
@@ -333,6 +332,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.subscribePhotoEvents();
   }
 
+
   onSelectPhotoComment(photos: any) {
     if (this.commentBox) {
       this.commentBox.commentAction(photos);
@@ -385,13 +385,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     );
   }
 
-  private unsubscribePhotoEvents() {
-    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
-      if(sub && !sub.closed)
-        sub.unsubscribe();
-    });
-  }
-
   private updateItemComments(data: any) {
     let updatedComment = new SoComment().from(data);
     _.forEach(this.item.comments, (comment: SoComment, index : any) => {
@@ -430,6 +423,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         (error : any) => { console.error(error); }
       );
     }
+  }
+
+  private unsubscribePhotoEvents() {
+    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
+      if(sub && !sub.closed)
+        sub.unsubscribe();
+    });
   }
 }
 

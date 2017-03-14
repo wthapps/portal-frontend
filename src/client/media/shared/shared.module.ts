@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { SharedModule } from '../../core/shared/shared.module';
-import { TagInputModule } from 'ng2-tag-input';
+// import { TagInputModule } from 'ng2-tag-input';
 
 import { ZMediaShareItemComponent } from './list/item/item.component';
 import { ZMediaShareListComponent } from './list/list.component';
@@ -20,6 +20,7 @@ import { ZMediaAlbumService } from '../album/album.service';
 import { ZMediaSharingService } from './sharing/sharing.service';
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { ZMediaTaggingComponent } from './tagging/tagging.component';
+import { HdTagInputModule } from '../../social/shared/ng2-hd/tag-input/tag-input.module';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -27,7 +28,7 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
 @NgModule({
   imports: [
     SharedModule,
-    TagInputModule
+    HdTagInputModule
   ],
   declarations: [
     ZMediaShareItemComponent,
@@ -65,7 +66,7 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
 
 
     SharedModule,
-    TagInputModule
+    HdTagInputModule
   ]
 })
 export class ZMediaSharedModule {

@@ -170,6 +170,7 @@
     "slick-carousel": "^1.6.0",
     "systemjs": "0.19.41",
     "wheelzoom.js": "^1.0.1",
+    "angular2-uuid": "~1.1.1",
     "zone.js": "^0.7.2"
   }
 }

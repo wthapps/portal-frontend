@@ -2,8 +2,17 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-// This Data service is created for communitication between communities component and its child views
+// This Data service is created for communitication between photo select component and its containers
 export class PhotoModalDataService {
+  // Observable string sources
+  private modalOpenSource = new Subject<string>();
+  private modalNextSource = new Subject<string>();
+  private modalCloseSource = new Subject<string>();
+  private modalChooseFilesSource = new Subject<string>();
+  private modalUploadSource = new Subject<string>();
+  private modalSaveSource = new Subject<string>();
+  private modalDismissSource = new Subject<string>();
+  private modalInitSource = new Subject<string>();
 
   // Observable string streams
   openObs$ = this.modalOpenSource.asObservable();
@@ -14,16 +23,6 @@ export class PhotoModalDataService {
   saveObs$ = this.modalSaveSource.asObservable();
   dismissObs$ = this.modalDismissSource.asObservable();
   initObs$ = this.modalInitSource.asObservable();
-
-  // Observable string sources
-  private modalOpenSource = new Subject<string>();
-  private modalNextSource = new Subject<string>();
-  private modalCloseSource = new Subject<string>();
-  private modalChooseFilesSource = new Subject<string>();
-  private modalUploadSource = new Subject<string>();
-  private modalSaveSource = new Subject<string>();
-  private modalDismissSource = new Subject<string>();
-  private modalInitSource = new Subject<string>();
 
   init() {
     this.modalInitSource.next('');

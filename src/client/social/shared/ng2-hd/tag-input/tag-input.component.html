@@ -58,7 +58,7 @@
             (onKeyup)="fireEvents('keyup', $event)"
             [validators]="validators"
             [hidden]="readonly || maxItemsReached()"
-            [placeholder]="autocompleteItems.length ? placeholder : secondaryPlaceholder"
+            [placeholder]="autocompleteItems?.length ? placeholder : secondaryPlaceholder"
             [inputClass]="inputClass"
             [inputId]="inputId"
         ></tag-input-form>
