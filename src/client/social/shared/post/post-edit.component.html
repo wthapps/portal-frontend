@@ -79,16 +79,16 @@
           <textarea placeholder="Share your ideas" class="form-control"
                     [formControl]="descCtrl"></textarea>
           <div class="form-group">
-            <hd-tag-input [maxItems]='100'
-                       [(ngModel)]="post.tags"
-                       (onRemove)="removeTag($event)"
-                       (onAdd)="addTag($event)"
-                       [formControl]="tagsCtrl"
-            >
-              <!--TODO: -->
+            <!--<tag-input [maxItems]='100'-->
+                       <!--[(ngModel)]="post.tags"-->
+                       <!--(onRemove)="removeTag($event)"-->
+                       <!--(onAdd)="addTag($event)"-->
+                       <!--[formControl]="tagsCtrl"-->
+            <!--&gt;-->
+              <!--&lt;!&ndash;TODO: &ndash;&gt;-->
               <!--<tag-input-dropdown [autocompleteItems]="tags">-->
               <!--</tag-input-dropdown>-->
-            </hd-tag-input>
+            <!--</tag-input>-->
             <!--[autocompleteItems]="tags"-->
             <!--[autocomplete]="true"-->
             <!--[(ngModel)]="post.tags"-->

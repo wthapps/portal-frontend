@@ -75,6 +75,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
               private fb: FormBuilder,
               private socialService: SocialService,
               private photoSelectDataService : PhotoModalDataService,
+              private photoUploadService: PhotoUploadService,
               private userService: UserService) {
   }
 
@@ -235,9 +236,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         this.photoUploadService.upload(files[i])
           .then(
           (res: any) => {
-            console.log('Upload image successfully', res);
-            this.savePhotoInfo(res);
+            console.log('Upload image to s3 and save successfully', res);
+            // this.savePhotoInfo(res);
 
+            this.files.shift(); // remove file was uploaded
+            this.post.photos.unshift(res);
+            this.uploadedPhotos.push(res);
           })
           .catch((error: any) => {
             console.error('Error when uploading files ', error);
@@ -248,26 +252,25 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-
-  savePhotoInfo(data: any) {
-    this.photoUploadService.savePhotoInfo(data).subscribe(
-      (result: any) => {
-        console.log("post-edit photo saved successfully", result);
-
-        // Delay 4s waiting for image thumbnail to be created
-        setTimeout(() => {
-          this.files.shift(); // remove file was uploaded
-          this.post.photos.unshift(result['data']);
-          this.uploadedPhotos.push(result['data']);
-          // this.loading.stop('.photo-item-uploading');
-        }, 4000);
-
-      },
-      (error: any) => {
-        console.error('post-edit photo error', error);
-      }
-    );
-  }
+  // savePhotoInfo(data: any) {
+  //   this.photoUploadService.savePhotoInfo(data).subscribe(
+  //     (result: any) => {
+  //       console.log("post-edit photo saved successfully", result);
+  //
+  //       // Delay 4s waiting for image thumbnail to be created
+  //       setTimeout(() => {
+  //         this.files.shift(); // remove file was uploaded
+  //         this.post.photos.unshift(result['data']);
+  //         this.uploadedPhotos.push(result['data']);
+  //         // this.loading.stop('.photo-item-uploading');
+  //       }, 4000);
+  //
+  //     },
+  //     (error: any) => {
+  //       console.error('post-edit photo error', error);
+  //     }
+  //   );
+  // }
 
   cancelUploading(file: any) {
     _.pull(this.files, file);

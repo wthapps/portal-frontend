@@ -19,7 +19,7 @@ export class PhotoUploadService {
 
   albumBucketName: string;
   bucketRegion: string;
-  bucketSubFoler: string; // portal-frontend/photos
+  bucketSubFolder: string; // portal-frontend/photos
   identityPoolId: string;
   s3: any;
 
@@ -34,7 +34,7 @@ export class PhotoUploadService {
     this.apiService.post(`${this.soPhotoUrl}/get_aws_config`).subscribe((data: any) => {
       this.albumBucketName = data.bucket;
       this.bucketRegion = data.region;
-      this.bucketSubFoler = data.bucketSubFolder;
+      this.bucketSubFolder = data.bucketSubFolder;
       this.identityPoolId = data.identityPoolId;
 
       this.init();
@@ -58,16 +58,18 @@ export class PhotoUploadService {
     });
   }
 
+  // TODO: Convert this function to be a Observable
+  // Rename to uploadPhotos
   upload(file: any): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
-      var ext = file.name.split(".").reverse()[0];
+      var ext = file.name.split('.').reverse()[0];
       let fileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
       let imageUrl: string = '';
       let imageName: string = '';
       let imageUrlThumbnail: string = '';
       let body: any = {};
 
-      var photoKey = this.bucketSubFoler + "/" + fileName;
+      var photoKey = this.bucketSubFolder + '/' + fileName;
       var options = {partSize: 10 * 1024 * 1024, queueSize: 1};
       this.s3.upload({
           Key: photoKey,
@@ -87,12 +89,30 @@ export class PhotoUploadService {
               url: imageUrl,
               thumbnail_url: imageUrlThumbnail
             };
-            resolve(body);
+
+            // Delay 4s waiting for image thumbnail to be created
+            this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
+              .subscribe((result: any) => {
+                setTimeout(() => {
+                  resolve(result['data']);
+                }, 4000);
+              },
+                (err2: any) => { reject(err2); });
           }
         }
       );
     });
   }
+
+  uploadPhotos(photo: any) {
+    return this.upload(photo);
+  }
+
+  // TODO
+  uploadFiles(files: any) {
+
+  }
+
 
   // TODO:
   remove(file: any) {
@@ -107,9 +127,10 @@ export class PhotoUploadService {
     return _.replace(str, new RegExp('.([a-zA-Z]*)*$'),'-thumb.$1'); // small.cat.jpg => small.cat-thumb.jpg
   }
 
-  savePhotoInfo(body: any): any {
-    return this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body);
-  }
+  // savePhotoInfo(body: any): any {
+  //   return this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body);
+  // }
+
 
 
 }

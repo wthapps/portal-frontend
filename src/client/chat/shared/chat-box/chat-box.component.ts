@@ -2,6 +2,8 @@ import { Component, ViewChild, HostListener, OnInit, HostBinding } from '@angula
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 
@@ -13,17 +15,25 @@ declare var $: any;
 })
 
 export class ZChatChatboxComponent implements OnInit {
-  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   @HostBinding('class') keyCtrlClass = '';
 
   emojiData: any = [];
 
-  constructor(private chatService: ChatService) {
+  // Subscription list
+  closePhotoSubscription : Subscription;
+  nextPhotoSubscription: Subscription;
+  dismissPhotoSubscription: Subscription;
+  uploadPhotoSubscription: Subscription;
+
+  constructor(private chatService: ChatService,
+              private photoSelectDataService: PhotoModalDataService
+  ) {
   }
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
-    this.photoModal.action = 'UPLOAD';
+    // this.photoModal.action = 'UPLOAD';
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -52,11 +62,14 @@ export class ZChatChatboxComponent implements OnInit {
   }
 
   onOpenSelectPhotos() {
-    this.photoModal.open();
+    // this.photoModal.open();
+    this.photoSelectDataService.open('');
+
+    this.subscribePhotoEvents();
   }
 
   chooseDone(e: any) {
-    this.photoModal.close();
+    // this.photoModal.close();
     for (let photo of e) {
       photo.type = 'Photo';
       this.chatService.sendMessage('', photo);
@@ -71,7 +84,7 @@ export class ZChatChatboxComponent implements OnInit {
   }
 
   uploadPhoto(e: any) {
-    this.photoModal.close();
+    // this.photoModal.close();
     this.chatService.createUploadingFile();
     this.chatService.uploadPhotos(e);
   }
@@ -87,5 +100,57 @@ export class ZChatChatboxComponent implements OnInit {
       sel.removeAllRanges();
       sel.addRange(range);
     }
+  }
+
+  private subscribePhotoEvents() {
+    // Subscribe actions corresponding with photo modal actions
+
+    if(this.notAssignedSubscription(this.nextPhotoSubscription)) {
+      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+        (photos: any) => {
+          this.chooseDone(photos);
+          // this.uploadPhoto(photos);
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+
+    if(this.notAssignedSubscription(this.uploadPhotoSubscription)) {
+      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.subscribe(
+        (photos: any) => {
+          this.uploadPhoto(photos);
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+
+    if(this.notAssignedSubscription(this.dismissPhotoSubscription)) {
+      this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
+        () => {
+          this.unsubscribePhotoEvents();
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+
+    if(this.notAssignedSubscription(this.closePhotoSubscription)) {
+      this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
+        () => {
+          this.unsubscribePhotoEvents();
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+  }
+
+  private notAssignedSubscription(sub: Subscription) {
+    return !sub || sub.closed;
+  }
+
+  private unsubscribePhotoEvents() {
+    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription, this.uploadPhotoSubscription].forEach((sub : Subscription) => {
+      if(sub && !sub.closed)
+        sub.unsubscribe();
+    });
   }
 }

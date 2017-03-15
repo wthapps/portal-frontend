@@ -22,8 +22,6 @@ export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
   debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
 
-  debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
-
   constructor(private router: Router,
               private socialDataService: SocialDataService) {
     console.log('Environment config', Config);

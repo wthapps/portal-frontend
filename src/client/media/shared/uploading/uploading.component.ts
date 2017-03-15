@@ -13,6 +13,7 @@ import {
 
 import { Photo } from '../../../core/shared/models/photo.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 
 declare var $: any;
 
@@ -41,7 +42,9 @@ export class ZMediaUploadingComponent implements OnInit, OnChanges, AfterViewIni
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
 
-  constructor(private apiService: ApiBaseService, private renderer: Renderer) {
+  constructor(private apiService: ApiBaseService, private renderer: Renderer,
+              private photoUploadService: PhotoUploadService
+  ) {
     this.dragleave();
   }
 
@@ -88,9 +91,9 @@ export class ZMediaUploadingComponent implements OnInit, OnChanges, AfterViewIni
 
   uploadImages(files: any) {
     var i: number;
-    var file_name: string;
-    var reader: FileReader;
-    var body: string;
+    // var file_name: string;
+    // var reader: FileReader;
+    // var body: string;
 
     this.step = 1;
     this.uploaded_num = 0;
@@ -99,28 +102,43 @@ export class ZMediaUploadingComponent implements OnInit, OnChanges, AfterViewIni
     i = 0;
 
     do {
-      reader = new FileReader();
-      reader.onload = (data: any) => {
-        this.current_photo = data.target['result'];
-        body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
+      // reader = new FileReader();
+      // reader.onload = (data: any) => {
+      //   this.current_photo = data.target['result'];
+      //   body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
+      //
+      //   this.pending_request = this.apiService.post(`zone/photos`, body)
+      //     .subscribe((result: any) => {
+      //         this.uploaded_num++;
+      //         if (this.uploaded_num == this.files_num) {
+      //           this.step = 2;
+      //         }
+      //         this.photos.push(new Photo(result.data));
+      //       },
+      //       (error: any) => {
+      //         this.step = 3;
+      //       }
+      //     );
+      // };
+      // file_name = files[i].name;
+      // reader.readAsDataURL(files[i]);
 
-        this.pending_request = this.apiService.post(`zone/photos`, body)
-          .subscribe((result: any) => {
-              this.uploaded_num++;
-              if (this.uploaded_num == this.files_num) {
-                this.step = 2;
-              }
-              this.photos.push(new Photo(result.data));
-            },
-            (error: any) => {
-              this.step = 3;
+      this.photoUploadService.upload(files[i])
+        .then(
+          (res: any) => {
+            console.log('Upload image to s3 and save info successfully', res);
+            this.uploaded_num++;
+            if (this.uploaded_num == this.files_num) {
+              this.step = 2;
             }
-          );
-      };
-      file_name = files[i].name;
-      reader.readAsDataURL(files[i]);
-      i++;
+            this.photos.push(new Photo(res));
 
+          })
+        .catch((error: any) => {
+          this.step = 3;
+          console.error('Error when uploading files ', error);
+        });
+      i++;
     } while (i < files.length);
   }
 

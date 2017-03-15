@@ -63,7 +63,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   closePhotoSubscription : Subscription;
   nextPhotoSubscription: Subscription;
   dismissPhotoSubscription: Subscription;
-  // uploadSubscription  ????
 
 
   constructor(public apiBaseService: ApiBaseService,

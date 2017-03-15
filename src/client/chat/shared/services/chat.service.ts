@@ -9,6 +9,7 @@ import { ChatConstant } from '../constants/chat-constant';
 import { ChatChannelService } from '../channels/chat-channel.service';
 import { ChatNotificationChannelService } from '../channels/chat-notification-channel.service';
 import { ChatCommonService } from './chat.common.service';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 
 declare var _:any;
 
@@ -23,6 +24,7 @@ export class ChatService {
               public chanel: ChatChannelService,
               public notificationChannel: ChatNotificationChannelService,
               public chatCommonService: ChatCommonService,
+              public photoUploadService: PhotoUploadService,
               public router: Router,
               public handler: HandlerService) {
     // =============================
@@ -159,13 +161,25 @@ export class ChatService {
 
   uploadPhotos(files:any) {
     let groupId = this.storage.find('contact_select').value.group_json.id;
+    // this.fileUploadHelper.upload(files, (event:any, file:any) => {
+    //   let data = event.target['result'];
+    //   this.apiBaseService.post('zone/social_network/photos/upload', {photo: {name: file.name, image: data}}).subscribe((res:any) => {
+    //     res.data.type = 'Photo';
+    //     this.removeUploadingFile(groupId);
+    //     this.sendMessage('', res.data, {groupId: groupId});
+    //   });
+    // });
+
     this.fileUploadHelper.upload(files, (event:any, file:any) => {
-      let data = event.target['result'];
-      this.apiBaseService.post('zone/social_network/photos/upload', {photo: {name: file.name, image: data}}).subscribe((res:any) => {
-        res.data.type = 'Photo';
-        this.removeUploadingFile(groupId);
-        this.sendMessage('', res.data, {groupId: groupId});
-      });
+      this.photoUploadService.uploadPhotos(file)
+        .then((data: any) => {
+          data.type = 'Photo';
+          this.removeUploadingFile(groupId);
+          this.sendMessage('', data, {groupId: groupId});
+        })
+        .catch((error: any) => {
+          console.error('Error uploading photos in chat service', error);
+        })
     });
   }
 

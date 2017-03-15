@@ -20,17 +20,17 @@ export class ZMediaShareListComponent implements AfterViewInit {
   selectablesEnable: boolean = false;
 
   ngAfterViewInit() {
-    this.selectables = new Selectables({
-      zone: '#list-photo',
-      elements: 'z-media-share-item',
-      selectedClass: 'active',
-      onSelect: (element: any)=> {
-        console.log(element);
-      }
-    });
-
-    // //later
-    this.selectables.disable();
+    // this.selectables = new Selectables({
+    //   zone: '#list-photo',
+    //   elements: 'z-media-share-item',
+    //   selectedClass: 'active',
+    //   onSelect: (element: any)=> {
+    //     console.log(element);
+    //   }
+    // });
+    //
+    // // //later
+    // this.selectables.disable();
     //
     // // enable again
     // dr.enable();
