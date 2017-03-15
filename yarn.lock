@@ -327,6 +327,10 @@ angular2-recaptcha@^0.3.7:
   version "0.3.7"
   resolved "https://registry.yarnpkg.com/angular2-recaptcha/-/angular2-recaptcha-0.3.7.tgz#364f6e2da8e07a74eeccf9317df7253c0b49371d"
 
+angular2-uuid@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/angular2-uuid/-/angular2-uuid-1.1.1.tgz#72f03cd532b7f40032eb1ecfb9f8457384be956e"
+
 ansi-align@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-1.1.0.tgz#2f0c1658829739add5ebb15e6b0c6e3423f016ba"
@@ -1379,6 +1383,10 @@ create-error-class@^3.0.1:
   dependencies:
     capture-stack-trace "^1.0.0"
 
+cropperjs@^1.0.0-beta.2:
+  version "1.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.0.0-beta.2.tgz#fdc5e88047d7f89d52d445a3228133a2b57acbcf"
+
 cross-spawn@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-3.0.1.tgz#1256037ecb9f0c5f79e3d6ef135e30770184b982"
@@ -1768,6 +1776,10 @@ download@^4.0.0, download@^4.1.2:
     vinyl "^1.0.0"
     vinyl-fs "^2.2.0"
     ware "^1.2.0"
+
+dropzone@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-4.3.0.tgz#48b0b8f2ad092872e4b535b672a7c3f1a1d67c91"
 
 duplexer2@0.0.2:
   version "0.0.2"
@@ -2284,6 +2296,13 @@ findup-sync@^0.4.0, findup-sync@^0.4.2:
     micromatch "^2.3.7"
     resolve-dir "^0.1.0"
 
+findup-sync@~0.1.2:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/findup-sync/-/findup-sync-0.1.3.tgz#7f3e7a97b82392c653bf06589bd85190e93c3683"
+  dependencies:
+    glob "~3.2.9"
+    lodash "~2.4.1"
+
 findup-sync@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/findup-sync/-/findup-sync-0.3.0.tgz#37930aa5d816b777c03445e1966cc6790a4c0b16"
@@ -2599,7 +2618,7 @@ glob@5.0.x, glob@5.x, glob@^5.0.15, glob@^5.0.3, glob@~5.0.0:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^3.2.11:
+glob@^3.2.11, glob@~3.2.9:
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/glob/-/glob-3.2.11.tgz#4a973f635b9190f715d10987d5c00fd2815ebe3d"
   dependencies:
@@ -3129,6 +3148,12 @@ homedir-polyfill@^1.0.0:
 hosted-git-info@^2.1.4:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.1.5.tgz#0ba81d90da2e25ab34a332e6ec77936e1598118b"
+
+hover.css@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/hover.css/-/hover.css-2.0.2.tgz#1cfd74a16cef96c66ce812ce05783e9de2ff41b4"
+  dependencies:
+    load-grunt-tasks "~0.2.0"
 
 html-comment-regex@^1.1.0:
   version "1.1.1"
@@ -3699,6 +3724,10 @@ jpegtran-bin@^3.0.0:
     bin-wrapper "^3.0.0"
     logalot "^2.0.0"
 
+jquery@>=1.7.2, jquery@~1.11.3:
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-1.11.3.tgz#dd8b74278b27102d29df63eae28308a8cfa1b583"
+
 js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
@@ -3934,6 +3963,13 @@ live-server@^1.1.0:
     proxy-middleware latest
     send latest
     serve-index "^1.7.2"
+
+load-grunt-tasks@~0.2.0:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/load-grunt-tasks/-/load-grunt-tasks-0.2.1.tgz#19df82abb7fab7ec70ecc5222ce7a301a843dace"
+  dependencies:
+    findup-sync "~0.1.2"
+    globule "~0.1.0"
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -4182,6 +4218,10 @@ lodash@^3.10.1, lodash@^3.8.0:
 lodash@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-1.0.2.tgz#8f57560c83b59fc270bd3d561b690043430e2551"
+
+lodash@~2.4.1:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
 
 lodash@~4.16.4:
   version "4.16.6"
@@ -5919,6 +5959,10 @@ setprototypeof@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.0.2.tgz#81a552141ec104b88e89ce383103ad5c66564d08"
 
+shave@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/shave/-/shave-1.0.4.tgz#1503c84cf2fefbe40649fce1e8e228b3967d6f61"
+
 shelljs@^0.7.0, shelljs@^0.7.5:
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.6.tgz#379cccfb56b91c8601e4793356eb5382924de9ad"
@@ -5938,6 +5982,12 @@ signal-exit@^3.0.0:
 slash@^1.0.0, slash@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
+
+slick-carousel@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/slick-carousel/-/slick-carousel-1.6.0.tgz#780f378e470f4e6f6bec1aa2bae0475f4f9eb085"
+  dependencies:
+    jquery ">=1.7.2"
 
 slide@^1.1.5:
   version "1.1.6"
@@ -6964,6 +7014,16 @@ weinre@^2.0.0-pre-I0Z7U9OV:
     express "2.5.x"
     nopt "3.0.x"
     underscore "1.7.x"
+
+wheelevent.js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/wheelevent.js/-/wheelevent.js-1.0.0.tgz#f0289c91b14c563824dd40efa7a28886d95e14e6"
+
+wheelzoom.js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/wheelzoom.js/-/wheelzoom.js-1.0.1.tgz#f98d2945b14216b5de11b8e909cc9608ab66f5c7"
+  dependencies:
+    wheelevent.js "^1.0.0"
 
 when@^3.7.5:
   version "3.7.7"

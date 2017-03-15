@@ -26,6 +26,8 @@ export let Constants = {
     chat: Config.SUB_DOMAIN.CHAT
   },
 
+  flagsRelease: true,
+
   cookieOptionsArgs: {
     path: '/',
     domain: Config.DOMAIN,
@@ -111,6 +113,7 @@ export let Constants = {
     other: true,
   },
   urls: {
+    afterLogin: Config.SUB_DOMAIN.SOCIAL,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',

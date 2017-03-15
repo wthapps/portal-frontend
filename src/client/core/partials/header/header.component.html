@@ -170,7 +170,7 @@
         </template>
       </ul>
 
-      <ul *ngIf="headerOver" class="nav navbar-nav navbar-right">
+      <ul *ngIf="headerOver && !flagsRelease" class="nav navbar-nav navbar-right">
         <li><a [routerLink]="['/products']">Products</a></li>
         <li><a [routerLink]="['/pricing']">Pricing</a></li>
         <li><a [routerLink]="['/about']">About us</a></li>

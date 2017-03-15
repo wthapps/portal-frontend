@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiBaseService } from '../../shared/services/apibase.service';
 import { UserService } from '../../shared/services/user.service';
 import { Constants } from '../../shared/config/constants';
 
@@ -31,6 +30,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   navigationUrl: string = '/';
 
   imgLogo: string = Constants.img.logo;
+  flagsRelease: boolean = Constants.flagsRelease;
 
   showSearchBar: boolean = true;
 
@@ -43,8 +43,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
-  constructor(private apiBaseService: ApiBaseService,
-              public userService: UserService,
+  constructor(public userService: UserService,
               private router: Router,
               public notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {

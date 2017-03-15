@@ -13,6 +13,7 @@ import { AppearancesChannelService } from '../../core/shared/channels/appearance
 import { UserService } from '../../core/shared/services/user.service';
 import { AuthService } from '../../core/shared/services/auth.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
+import { Constants } from '../../core/shared/config/constants';
 
 declare var $: any;
 
@@ -30,6 +31,8 @@ export class LoginComponent implements OnInit {
   password: AbstractControl;
   submitted: boolean = false;
 
+  flagsRelease: boolean = Constants.flagsRelease;
+
   private returnUrl: string;
 
   constructor(private fb: FormBuilder,
@@ -43,6 +46,10 @@ export class LoginComponent implements OnInit {
     // if (this.userService.loggedIn) {
     //   this.router.navigate(['/account/setting/profile']);
     // }
+
+    if (this.userService.loggedIn && this.flagsRelease) {
+      window.location.href = Constants.urls.afterLogin;
+    }
 
     this.form = fb.group({
       'email': ['',
@@ -81,13 +88,19 @@ export class LoginComponent implements OnInit {
               // Initialize websocket
               this.appearancesChannelService.subscribe();
 
-              // Redirect to previous url
-              if (this.returnUrl == undefined) {
-                this.returnUrl = '';
-              }
-              window.location.href = this.returnUrl;
 
-              // TODO Store payment info
+              if (this.flagsRelease) {
+                window.location.href = Constants.urls.afterLogin;
+              } else {
+                // Redirect to previous url
+                if (this.returnUrl == undefined) {
+                  this.returnUrl = '';
+                }
+                window.location.href = this.returnUrl;
+
+                // TODO Store payment info
+              }
+
             }
           },
           error => {
