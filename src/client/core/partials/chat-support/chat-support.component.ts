@@ -13,7 +13,7 @@ import { ChatSupportDetailComponent } from './chat-support-detail.component';
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { ChatSupportDirective } from './chat-support.directive';
 import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
-import { ChatSupportChannelService } from './shared/channel/chat-support-channel.service';
+import { ChatSupportChannel } from './shared/channel/chat-support-channel';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Constants } from '../../shared/config/constants';
 import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
@@ -66,7 +66,7 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private chatSupportChannelService: ChatSupportChannelService,
+    private chatSupportChannelService: ChatSupportChannel,
     private cookie: CookieService,
     private api: ApiBaseService
   ) {

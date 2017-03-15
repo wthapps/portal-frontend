@@ -4,7 +4,7 @@ import {
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { MessageService } from './message.service';
 import { ChatSupportMessageListComponent } from './message/message-list.component';
-import { ChatSupportChannelService } from './shared/channel/chat-support-channel.service';
+import { ChatSupportChannel } from './shared/channel/chat-support-channel';
 
 declare var _: any;
 
@@ -24,7 +24,7 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private messageService: MessageService,
-    private chatSupportChannelService: ChatSupportChannelService) {
+    private chatSupportChannel: ChatSupportChannel) {
   }
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
     // this.componentRef = this.messageContainerRefs.createComponent(componentFactory);
     // this.messages = new Array<any>();
     // (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
-    this.chatSupportChannelService.subscribe();
+    this.chatSupportChannel.subscribe();
 
   }
 

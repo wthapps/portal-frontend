@@ -14,6 +14,7 @@ import { UserService } from '../../core/shared/services/user.service';
 import { AuthService } from '../../core/shared/services/auth.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
 import { Constants } from '../../core/shared/config/constants';
+import { ChatSupportUserStatusChannel } from '../../core/partials/chat-support/shared/channel/chat-support-user-status-channel';
 
 declare var $: any;
 
@@ -42,6 +43,7 @@ export class LoginComponent implements OnInit {
               private toastsService: ToastsService,
               private loadingService: LoadingService,
               private appearancesChannelService: AppearancesChannelService,
+              private chatSupportUserStatusChannel: ChatSupportUserStatusChannel,
               private authService: AuthService) {
     // if (this.userService.loggedIn) {
     //   this.router.navigate(['/account/setting/profile']);
@@ -87,6 +89,8 @@ export class LoginComponent implements OnInit {
 
               // Initialize websocket
               this.appearancesChannelService.subscribe();
+              this.chatSupportUserStatusChannel.subscribe();
+
 
 
               if (this.flagsRelease) {

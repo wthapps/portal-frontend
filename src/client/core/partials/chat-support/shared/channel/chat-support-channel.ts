@@ -17,7 +17,7 @@ import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.
 declare let App: any;
 
 @Injectable()
-export class ChatSupportChannelService extends CableService {
+export class ChatSupportChannel extends CableService {
 
   observer: Observer<any>;
   notificationUpdated: Observable<any>;
@@ -61,34 +61,18 @@ export class ChatSupportChannelService extends CableService {
 
 
   subscribe() {
-    //get unique client id
-
     let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
-    console.log('cookie', cId);
-    if (cId == undefined) {
-      this.api.post(`chat_support/init`, {user: null})
-          .subscribe(
-            (response: any) => {
-              let cId = response.data.user.uuid;
-              this.cookie.put(Constants.cookieKeys.chatSupportId, cId , <CookieOptionsArgs>Constants.cookieOptionsArgs);
-            }
-          );
-      return;
-    }
 
-
-
-    this.createConnectionInstance(null, 'cs', '123456789');
-    let self = this;
+    this.createConnectionInstance(null, 'cs', cId);
     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
       connected: function(){
-        console.log('connected');
+        console.log('cs connected');
       },
       disconnected: function(){
-        console.log('disconnected');
+        console.log('cs disconnected');
       },
       received: function(data:any){
-        console.log('received', data);
+        console.log('cs received', data);
 
       }
     });
