@@ -25,6 +25,7 @@ import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
 import { ZChatShareItemRequestComponent } from './list/item/item-request.component';
 import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
 import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
+import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -54,6 +55,7 @@ import { ZChatShareRequestContactComponent } from './modal/request-contact.compo
     ChatGroupBlackListPipe,
     ChatGroupNamePipe,
     ChatUserNewPipe,
+    ChatGroupMembersPipe,
     ChatUserOnlinePipe
   ],
   exports: [
@@ -76,6 +78,7 @@ import { ZChatShareRequestContactComponent } from './modal/request-contact.compo
     ChatGroupBlackListPipe,
     ChatGroupNamePipe,
     ChatUserNewPipe,
+    ChatGroupMembersPipe,
     ChatUserOnlinePipe
   ]
 })

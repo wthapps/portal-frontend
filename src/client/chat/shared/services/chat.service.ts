@@ -147,6 +147,20 @@ export class ChatService {
     }
   }
 
+  sendTextMessage(message:any, file?:any, option:any = {}) {
+    if (option.groupId) {
+      this.chanel.sendMessage(option.groupId, message, file);
+    } else {
+      let item = this.storage.find('contact_select');
+      if (item && item.value && (message || file)) {
+        this.chanel.sendMessage(item.value.group_json.id, message, file);
+        if (item.value.history) {
+          this.updateHistory(item.value);
+        }
+      }
+    }
+  }
+
   uploadFiles(files:any) {
     let groupId = this.storage.find('contact_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event:any, file:any) => {
@@ -259,6 +273,10 @@ export class ChatService {
 
   updateHistory(contact:any) {
     this.updateGroupUser(contact.id, {history: false});
+  }
+
+  leaveConversation(contact:any) {
+    this.updateGroupUser(contact.id, {leave: true});
   }
 
   updateGroupUser(groupUserId:any, data:any, callback?:any) {
