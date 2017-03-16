@@ -7,12 +7,13 @@ import { ChatSupportDetailComponent } from './chat-support-detail.component';
 import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
 import { ChatSupportDirective } from './chat-support.directive';
 import { ChatSupportChannel } from './shared/channel/chat-support-channel'
-import { ChatSupportUserStatusChannel } from './shared/channel/chat-support-user-status-channel';
+import { AppearanceChannel } from './shared/channel/appearance-channel';
 
 import { WthChatBoxDirective } from './shared/wth-chat-box.directive';
 import { MessageService } from './message.service';
 import { ChatSupportMessageComponent } from './message/message.component';
 import { ChatSupportMessageListComponent } from './message/message-list.component';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 @NgModule({
   imports: [
@@ -40,8 +41,10 @@ import { ChatSupportMessageListComponent } from './message/message-list.componen
   ],
   providers: [
     ChatSupportChannel,
-    ChatSupportUserStatusChannel,
-    MessageService],
+    AppearanceChannel,
+    MessageService,
+    CookieService
+  ],
   entryComponents:[
     ChatSupportListComponent,
     ChatSupportUserInfoComponent,

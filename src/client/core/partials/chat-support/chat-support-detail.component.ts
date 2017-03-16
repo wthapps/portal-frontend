@@ -13,6 +13,7 @@ declare let $: any;
 })
 export class ChatSupportDetailComponent implements OnInit, ChatSupportBaseComponent, AfterViewInit {
   @Input() data: any;
+  @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private chatSupportChannel: ChatSupportChannel) {

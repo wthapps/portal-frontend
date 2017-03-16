@@ -8,13 +8,15 @@ declare let App: any;
 @Injectable()
 export class CableService {
 
-  createConnectionInstance(userService: any, type?: string, clientId?: string) {
+  createConnectionInstance(userId: any, type?: string, clientId?: string) {
     if (App.cable == undefined) {
-      if(type == 'cs') {
-        App.cable = ActionCable.createConsumer(`${ApiConfig.url}cable?t=${type}&cId=${clientId}`);
-        return;
-      }
-      App.cable = ActionCable.createConsumer(`${ApiConfig.url}cable?user_id=${userService.profile.id}`);
+      // if(type == 'cs') {
+      //   App.cable = ActionCable.createConsumer(`${ApiConfig.url}cable?t=${type}&cId=${clientId}`);
+      //   return;
+      // }
+
+      //TODO refactor all places that call this method for creating Connection Instance
+      App.cable = ActionCable.createConsumer(`${ApiConfig.url}cable?user_id=${userId}&t=${type}`);
     }
   }
 }

@@ -63,7 +63,7 @@ export class ChatSupportChannel extends CableService {
   subscribe() {
     let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
 
-    this.createConnectionInstance(null, 'cs', cId);
+    this.createConnectionInstance(cId, 'cs');
     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
       connected: function(){
         console.log('cs connected');
@@ -73,7 +73,6 @@ export class ChatSupportChannel extends CableService {
       },
       received: function(data:any){
         console.log('cs received', data);
-
       }
     });
   }

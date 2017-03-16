@@ -26,7 +26,7 @@ export let Constants = {
     chat: Config.SUB_DOMAIN.CHAT
   },
 
-  flagsRelease: true,
+  flagsRelease: false,
 
   cookieOptionsArgs: {
     path: '/',

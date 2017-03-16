@@ -14,7 +14,8 @@ declare var _: any;
   templateUrl: 'chat-support-user-info.component.html'
 })
 export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, ChatSupportBaseComponent {
-  @Input() data: any;
+  @Input() data: any
+  @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild ('messageContainerRefs', {read: ViewContainerRef}) messageContainerRefs: ViewContainerRef;
 
@@ -28,7 +29,6 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
   }
 
   ngOnInit() {
-    console.log('user --- info');
 
   }
 
@@ -38,7 +38,8 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
     // this.componentRef = this.messageContainerRefs.createComponent(componentFactory);
     // this.messages = new Array<any>();
     // (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
-    this.chatSupportChannel.subscribe();
+
+    // this.chatSupportChannel.subscribe();
 
   }
 
