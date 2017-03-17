@@ -116,7 +116,7 @@ export class SoPostService {
 
   getList(uuid: string = this.user.profile.uuid, type?: string) {
     switch (this.router.url) {
-      case '/zone/social/home':
+      case '/home':
         return this.getListSocialPosts();
     }
     return this.getListOtherPosts(uuid, type);

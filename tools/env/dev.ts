@@ -14,7 +14,7 @@ const DevConfig: EnvConfig = {
     SOCIAL: 'http://localhost:3015',
     CHAT: 'http://localhost:3020'
   },
-  RES: 'https://s3-ap-southeast-1.amazonaws.com/env-staging'
+  RES: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon-oregon'
 };
 
 export = DevConfig;

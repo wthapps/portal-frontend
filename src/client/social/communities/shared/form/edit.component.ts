@@ -183,4 +183,10 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     }
     this.modal.close();
   }
+
+  resetFormInputs(): void {
+    this.community_name.reset('');
+    this.tag_line.reset('');
+    this.description.reset('');
+  }
 }

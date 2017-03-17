@@ -7,6 +7,7 @@ import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { Constants } from '../../../core/shared/config/constants';
 // import {
 //   ApiBaseService,
 //   ToastsService,
@@ -38,6 +39,9 @@ export class ComMemberListComponent implements OnInit {
   items: Array<any> = new Array<any>(); // this store member, invitations, join requests and blacklist
 
 
+  readonly soComUrl : string = Constants.urls.zoneSoCommunities;
+  readonly comUrl : string = '/' + Constants.urls.communities;
+
   constructor(private api: ApiBaseService,
               private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
@@ -52,12 +56,12 @@ export class ComMemberListComponent implements OnInit {
     // this.loadingService.start('.zone-social-cover');
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
-      this.apiBaseService.get(`zone/social_network/communities/${params['id']}`).subscribe(
+      this.apiBaseService.get(`${this.soComUrl}/${params['id']}`).subscribe(
         (res: any)=> {
           this.data = res.data;
           // this.loadingService.stop('.zone-social-cover');
         },
-        error => {
+        (error: any) => {
           // this.loadingService.stop('.zone-social-cover');
           this.errorMessage = <any>error;
         }
@@ -86,7 +90,7 @@ export class ComMemberListComponent implements OnInit {
   }
 
   inviteMembers(response: any) {
-    this.api.post(`zone/social_network/communities/invite`, JSON.stringify({
+    this.api.post(`${this.soComUrl}/invite`, JSON.stringify({
       uuid: this.uuid,
       user_ids: _.map(response.items, 'uuid')
     }))
@@ -99,13 +103,13 @@ export class ComMemberListComponent implements OnInit {
   }
 
   viewMember(data: any) {
-    this.router.navigate([`/zone/social/communities/${this.uuid}/members`], {queryParams: {tab: this.selectedTab}});
+    this.router.navigate([`${this.comUrl}/${this.uuid}/members`], {queryParams: {tab: this.selectedTab}});
     this.loadDataBySelectedTab();
   }
 
   loadDataBySelectedTab() {
     if (this.selectedTab == 'members') return;
-    this.apiBaseService.get(`zone/social_network/communities/${this.uuid}/${this.selectedTab}`).subscribe(
+    this.apiBaseService.get(`${this.soComUrl}/${this.uuid}/${this.selectedTab}`).subscribe(
       (res: any)=> {
         this.items = res.data;
         console.log('response ', res.data);
@@ -118,7 +122,7 @@ export class ComMemberListComponent implements OnInit {
   }
 
   acceptJoinRequest(item: any) {
-    this.apiBaseService.post(`zone/social_network/communities/accept_join_request/`,
+    this.apiBaseService.post(`${this.soComUrl}/accept_join_request/`,
       JSON.stringify({uuid: this.uuid, user_id: item.inviter.uuid})).subscribe(
       (res: any)=> {
         this.loadDataBySelectedTab();
@@ -131,7 +135,7 @@ export class ComMemberListComponent implements OnInit {
   }
 
   cancelInvitation(id: any) {
-    this.apiBaseService.delete(`zone/social_network/communities/cancel_invitation/${id}`).subscribe(
+    this.apiBaseService.delete(`${this.soComUrl}/cancel_invitation/${id}`).subscribe(
       (res: any)=> {
         this.loadDataBySelectedTab();
       },
@@ -147,7 +151,7 @@ export class ComMemberListComponent implements OnInit {
       message: `Are you sure to delete member ${user.name} from the community?`,
       header: 'Delete Member',
       accept: () => {
-        this.apiBaseService.delete(`zone/social_network/communities/${this.uuid}/members/${user.uuid}`).subscribe(
+        this.apiBaseService.delete(`${this.soComUrl}/${this.uuid}/members/${user.uuid}`).subscribe(
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
 

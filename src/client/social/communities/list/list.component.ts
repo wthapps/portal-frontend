@@ -76,6 +76,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   }
 
   onCreate() {
+    this.modalEdit.resetFormInputs();
     this.modalEdit.modal.open();
     this.action = 'create';
     return false;

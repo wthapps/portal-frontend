@@ -36,10 +36,10 @@
   <nav class="zone-social-cover-nav">
     <ul class="list-unstyled clearfix">
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/profile/', uuid]">Post</a>
+        <a [routerLink]="['/profile', uuid]">Post</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/profile/'+uuid+'/about']">About</a>
+        <a [routerLink]="['/profile',uuid,'about']">About</a>
       </li>
       <li class="pull-right dropdown">
         <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
@@ -49,7 +49,7 @@
         <ul class="dropdown-menu dropdown-custom">
           <li><a href="#">Edit Contact Profile</a></li>
           <li><a href="#">Privacy</a></li>
-          <li><a [routerLink]="['/zone/social/setting']">Settings</a></li>
+          <li><a [routerLink]="['/setting']">Settings</a></li>
           <li *ngIf="userInfo.uuid != userService.profile.uuid"><a href="#" (click)="onReport()">Report member</a></li>
         </ul>
       </li>

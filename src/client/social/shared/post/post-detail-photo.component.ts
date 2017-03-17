@@ -93,7 +93,7 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
   }
 
   onBack() {
-    this.router.navigate(['/zone/social/home']);
+    this.router.navigate(['/home']);
   }
 
   update(e: any) {

@@ -23,6 +23,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -48,6 +49,9 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   sentJoinRequest: boolean = false;
   invitation: any = undefined;
   is_close: boolean = true;
+
+  readonly soComUrl : string = Constants.urls.zoneSoCommunities;
+  readonly comUrl : string = '/' + Constants.urls.communities;
 
 
   constructor(private apiBaseService: ApiBaseService,
@@ -89,11 +93,11 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       header: 'Delete Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseService.delete(`zone/social_network/communities/${item.uuid}`)
+        this.apiBaseService.delete(`${this.soComUrl}/${item.uuid}`)
           .subscribe((response: any) => {
               // console.log(response);
               this.onUpdated(response.data);
-              this.router.navigateByUrl('/zone/social/communities');
+              this.router.navigateByUrl(this.comUrl);
               this.loadingService.stop();
             },
             error => {
@@ -117,10 +121,10 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
       header: 'Leave Community',
       accept: () => {
         this.loadingService.start();
-        this.apiBaseService.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
+        this.apiBaseService.post(`${this.soComUrl}/leave`, JSON.stringify({uuid: item.uuid}))
           .subscribe((response: any) => {
               this.loadingService.stop();
-              this.router.navigateByUrl('/zone/social/communities');
+              this.router.navigateByUrl(this.comUrl);
             },
             error => {
               this.toastsService.danger(error);
@@ -173,7 +177,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   askToJoin() {
-    this.apiBaseService.post(`zone/social_network/communities/join`, JSON.stringify({uuid: this.uuid}))
+    this.apiBaseService.post(`${this.soComUrl}/join`, JSON.stringify({uuid: this.uuid}))
       .subscribe((result: any) => {
           this.invitation = result.data;
         },
@@ -183,7 +187,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   cancelJoinRequest() {
-    this.apiBaseService.delete(`zone/social_network/communities/cancel_invitation/${this.invitation.id}`).subscribe(
+    this.apiBaseService.delete(`${this.soComUrl}/cancel_invitation/${this.invitation.id}`).subscribe(
       (res: any)=> {
         this.invitation = undefined;
       },
@@ -206,7 +210,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   checkJoinRequestStatus() {
-    this.apiBaseService.get(`zone/social_network/communities/${this.uuid}/join_request_status`)
+    this.apiBaseService.get(`${this.soComUrl}/${this.uuid}/join_request_status`)
       .subscribe((result: any) => {
           this.invitation = result.data;
         },
