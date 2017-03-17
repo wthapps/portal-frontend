@@ -28,6 +28,7 @@ import { PhotoModalDataService } from '../../../core/shared/services/photo-modal
 import { Subscription } from 'rxjs';
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
 import { BaseEvent } from '../../../core/shared/event/base-event';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 
 declare var $: any;
 declare var _: any;
@@ -70,6 +71,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private photoSelectDataService: PhotoModalDataService,
+              private photoUploadService: PhotoUploadService,
               private toast: ToastsService) {
     super();
   }
@@ -408,12 +410,24 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       );
     }
 
-    if(this.notAssignedSubscription(this.uploadPhotoSubscription)) {
+    if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
       this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.subscribe(
-        (photos: any) => {
-          // TODO: Upload photo and attach as a comment
-
-          this.commentBox.commentAction(photos);
+        (files: any) => {
+          // this.commentBox.commentAction(photos);
+          console.log(files);
+          let i = 0;
+          do {
+            this.photoUploadService.upload(files[i])
+              .then(
+                (res: any) => {
+                  console.log('Upload image to s3 and save successfully', res);
+                })
+              .catch((error: any) => {
+                console.error('Error when uploading files ', error);
+              })
+            ;
+            i++;
+          } while (i < files.length);
         },
         (error : any) => { console.error(error); }
       );
