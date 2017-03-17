@@ -5,6 +5,7 @@ import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { ApiBaseService } from '../../shared/services/apibase.service';
 import { ChatSupportChannel } from './shared/channel/chat-support-channel';
 import { AppearanceChannel } from './shared/channel/appearance-channel';
+import { UserService } from '../../shared/services/user.service';
 
 // moduleId: module.id,
 //   selector: 'wth-chat-support-list',
@@ -20,13 +21,20 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
   @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
   conversations: Array<any>;
+  accounts: Array<any> = new Array<any>();
+  anonymous: Array<any> = new Array<any>();
+
+  supporter: boolean;
 
   constructor(private api: ApiBaseService,
               private chatSupportChannel: ChatSupportChannel,
-              private appearanceChannel: AppearanceChannel) {
+              private appearanceChannel: AppearanceChannel,
+    private userService: UserService
+  ) {
   }
 
   ngOnInit() {
+    this.supporter = this.userService.profile.supporter == true ? true: false;
   }
 
   ngAfterViewInit() {
@@ -37,9 +45,21 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
       slidesToScroll: 3
     });
 
+    // subscribe chat support channel
     this.appearanceChannel.subscribe('cs');
     this.chatSupportChannel.subscribe();
 
+    // get all registered accounts that are different supporters
+    this.api.get(`users/list_account_type`)
+      .subscribe(
+        (response: any) => {
+          this.accounts = response.data.accounts;
+          this.anonymous = response.data.anonymous;
+        },
+        error => {
+
+        }
+      );
 
     this.conversations = new Array<any>();
     this.api.get(`chat_support/conversations`, {uId: this.data})

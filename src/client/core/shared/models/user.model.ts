@@ -26,6 +26,8 @@ export class User {
   subscribed: boolean;
   auto_update: boolean;
   use_diagnosis: boolean;
+  supporter: boolean;
+  online: boolean;
 
   constructor(fields: {
     id: number,
@@ -52,6 +54,8 @@ export class User {
     subscribed?: boolean,
     auto_update?: boolean,
     use_diagnosis?: boolean,
+    supporter: boolean,
+    online: boolean
   }) {
     if (fields) Object.assign(this, fields);
   }

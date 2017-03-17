@@ -6,7 +6,7 @@
     </div>
 
 
-    <div class="intercom-content-header-list js-intercom-content-header-list">
+    <div *ngIf="!supporter" class="intercom-content-header-list js-intercom-content-header-list">
       <div *ngFor="let supporter of supporters">
         <figure>
           <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
@@ -17,6 +17,26 @@
         </span>
       </div>
     </div>
+
+    <div *ngIf="supporter" class="intercom-content-header-list js-intercom-content-header-list">
+      <div> Account members
+        <figure>
+          <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
+        </figure>
+        <span>
+            {{accounts.length}}
+        </span>
+      </div>
+      <div>
+        <figure>
+          <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
+        </figure>
+        <span>
+            {{anonymous.length}}
+        </span>
+      </div>
+    </div>
+
   </div>
   <div class="intercom-content-body" style="position: relative; min-height: 40px">
     <div class="intercom-conversation-btn-new">

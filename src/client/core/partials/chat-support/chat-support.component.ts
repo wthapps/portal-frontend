@@ -108,7 +108,7 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
       // this.chatSupportChannel.subscribe();
 
       if (this.supporters == undefined) {
-        this.api.get(`users/supporters`, null)
+        this.api.get(`users/supporters`)
           .subscribe(
             (response: any) => {
               this.supporters = response.data;
