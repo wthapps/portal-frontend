@@ -18,6 +18,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Constants } from '../../shared/config/constants';
 import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
 import { ApiBaseService } from '../../shared/services/apibase.service';
+import { AppearanceChannel } from './shared/channel/appearance-channel';
 
 const ChatSupportView = {
   list: 'list',
@@ -62,13 +63,15 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
   showChat: boolean = false;
   currentView: string;
   csUserid: string;
+  supporters: Array<any>;
 
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private chatSupportChannelService: ChatSupportChannel,
     private cookie: CookieService,
-    private api: ApiBaseService
+    private api: ApiBaseService,
+    private chatSupportChannel: ChatSupportChannel,
+    private appearanceChannel: AppearanceChannel
   ) {
   }
 
@@ -88,13 +91,33 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
           }
         );
     }
+
+
+
+
+
   }
 
   onShow() {
     this.showChat = !this.showChat;
 
+    console.log('opening chatting...................');
+
     if(this.showChat) {
-      this.loadComponent(ChatSupportListComponent);
+      // this.appearanceChannel.subscribe('cs');
+      // this.chatSupportChannel.subscribe();
+
+      if (this.supporters == undefined) {
+        this.api.get(`users/supporters`, null)
+          .subscribe(
+            (response: any) => {
+              this.supporters = response.data;
+              this.loadComponent(ChatSupportListComponent);
+            }
+          );
+      } else {
+        this.loadComponent(ChatSupportListComponent);
+      }
     }
   }
 
@@ -104,8 +127,10 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
     viewContainerRef.clear();
     let componentRef = viewContainerRef.createComponent(componentFactory);
 
+    console.log('current component ref', componentRef);
 
     (<ChatSupportBaseComponent>componentRef.instance).data = this.csUserid;
+    (<ChatSupportBaseComponent>componentRef.instance).supporters = this.supporters;
     (<ChatSupportBaseComponent>componentRef.instance).actionEvent.subscribe((action: any) => {
       this.doAction(action);
     });

@@ -63,6 +63,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   closePhotoSubscription : Subscription;
   nextPhotoSubscription: Subscription;
   dismissPhotoSubscription: Subscription;
+  uploadPhotoSubscription: Subscription;
 
 
   constructor(public apiBaseService: ApiBaseService,
@@ -303,6 +304,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       // this.photoModalOpened.emit(this.commentBox);
       this.openPhotoModal(this.commentBox);
 
+      this.subscribePhotoEvents();
     }
 
     // View more comments
@@ -397,7 +399,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   private subscribePhotoEvents() {
     // Subscribe actions corresponding with photo modal actions
 
-    if (!this.nextPhotoSubscription || this.nextPhotoSubscription.closed) {
+    if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
       this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
         (photos: any) => {
           this.commentBox.commentAction(photos);
@@ -406,7 +408,18 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       );
     }
 
-    if (!this.dismissPhotoSubscription || this.dismissPhotoSubscription.closed) {
+    if(this.notAssignedSubscription(this.uploadPhotoSubscription)) {
+      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.subscribe(
+        (photos: any) => {
+          // TODO: Upload photo and attach as a comment
+
+          this.commentBox.commentAction(photos);
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+
+    if (this.notAssignedSubscription(this.dismissPhotoSubscription)) {
       this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
         () => {
           this.unsubscribePhotoEvents();
@@ -415,7 +428,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       );
     }
 
-    if (!this.closePhotoSubscription || this.closePhotoSubscription.closed) {
+    if (this.notAssignedSubscription(this.closePhotoSubscription)) {
       this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
         () => {
           this.unsubscribePhotoEvents();
@@ -423,6 +436,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         (error : any) => { console.error(error); }
       );
     }
+  }
+  private notAssignedSubscription(sub: Subscription) {
+    return !sub || sub.closed;
   }
 
   private unsubscribePhotoEvents() {

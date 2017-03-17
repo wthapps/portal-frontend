@@ -1,7 +1,22 @@
 <div class="intercom-content">
   <div class="intercom-content-header">
-    <h4>Conversations</h4>
-    <p>with Humi</p>
+    <div>
+      <h4>Conversations</h4>
+      <p>with WTHApps</p>
+    </div>
+
+
+    <div class="intercom-content-header-list js-intercom-content-header-list">
+      <div *ngFor="let supporter of supporters">
+        <figure>
+          <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
+          <i class="intercom-avatar-online"></i>
+        </figure>
+        <span>
+            {{supporter.name}}
+        </span>
+      </div>
+    </div>
   </div>
   <div class="intercom-content-body" style="position: relative; min-height: 40px">
     <div class="intercom-conversation-btn-new">

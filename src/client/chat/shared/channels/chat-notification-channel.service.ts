@@ -3,13 +3,14 @@ import { StorageService } from '../../../core/shared/services/storage.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { CableService } from '../../../core/shared/channels/cable.service';
 import { ChatCommonService } from '../services/chat.common.service';
+import { BaseChannelService } from '../../../core/shared/channels/base-channel.service';
 
 declare let App: any;
 declare let $: any;
 declare let _: any;
 
 @Injectable()
-export class ChatNotificationChannelService extends CableService {
+export class ChatNotificationChannelService extends BaseChannelService {
 
   constructor(private userService: UserService,
               private chatCommonService: ChatCommonService,

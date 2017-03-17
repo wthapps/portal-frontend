@@ -51,4 +51,8 @@ export class ZChatToolbarComponent implements OnInit {
     this.addContact.type = 'shareContact';
     this.addContact.modal.open();
   }
+
+  leaveConversation() {
+    this.chatService.leaveConversation(this.item.value);
+  }
 }

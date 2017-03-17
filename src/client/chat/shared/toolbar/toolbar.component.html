@@ -17,7 +17,9 @@
           <!--<li role="separator" class="divider"></li>-->
 
           <!--show if current isn't one user-->
+
           <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
+          <!--<li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a></li>-->
           <!--show if current isn't one user-->
 
           <!--<li><a href="#">Leave Conversation</a></li>-->
@@ -30,6 +32,7 @@
           <!--show if current is one user-->
 
           <!--<li role="separator" class="divider"></li>-->
+
           <li *ngIf="item.value.notification"><a href="javascript:;" (click)="disableNotification()">Disable Notification</a></li>
           <li *ngIf="!item.value.notification"><a href="javascript:;" (click)="enableNotification()">Enable Notification</a></li>
           <li><a href="javascript:;" (click)="sendContact()">Send Contact</a></li>
@@ -41,7 +44,7 @@
       <div class="p-list-user-namegroup">
         <span *ngIf="item.value.group_json.group_type == 'couple'">{{item.value.display.name}}</span>
         <span *ngIf="item.value.group_json.group_type == 'multiple'">{{item.value.group_json | chatGroupName:50}}</span>
-        <small *ngIf="item.value.group_json.member_count > 2">{{item.value.group_json.member_count}} people</small>
+        <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers">{{item.value.group_json.member_count}} people</small>
       </div>
     </div>
   </div>

@@ -111,4 +111,8 @@ export class SoPhotoListComponent implements OnInit {
   changeFiles(files: Array<any>) {
     this.onFilesChanged.emit(files);
   }
+
+  addFavourite(event: any, p: any) {
+
+  }
 }
