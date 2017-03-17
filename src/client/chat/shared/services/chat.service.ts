@@ -193,7 +193,7 @@ export class ChatService {
         })
         .catch((error: any) => {
           console.error('Error uploading photos in chat service', error);
-        })
+        });
     });
   }
 
