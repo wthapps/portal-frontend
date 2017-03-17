@@ -20,11 +20,13 @@ import { WelcomeModule } from './welcome/welcome.module';
 import { RegisterModule } from './register/register.module';
 import { LoginModule } from './login/login.module';
 import { MyAccountModule } from './my-account/my-account.module';
+import { RecoveryModule } from './recovery/recovery.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
+    RecoveryModule,
     AppRoutingModule,
     PageErrorsModule,
     MyAccountModule,
