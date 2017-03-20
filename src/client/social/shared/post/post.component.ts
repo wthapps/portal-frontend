@@ -246,11 +246,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof CommentUpdateEvent) {
       this.updateComment(event.data).subscribe(
         (res: any) => {
-          // let updatedComment = new SoComment().from(res.data);
-          // _.forEach(this.item.comments, (comment: SoComment, index : any) => {
-          //   if (comment.uuid == updatedComment.uuid)
-          //     this.item.comments[index] = updatedComment;
-          // });
           this.updateItemComments(res.data);
 
           this.mapDisplay();
@@ -417,6 +412,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           console.log(files);
           let i = 0;
           do {
+            // this.commentBox.commentAction(files[i]);
             this.photoUploadService.upload(files[i])
               .then(
                 (res: any) => {

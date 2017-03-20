@@ -24,7 +24,7 @@
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
           <p>{{comment.content}}</p>
-          <a *ngIf="comment.photo" [routerLink]="['/photos', item.uuid, {commentIndex: i}]"><img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px"></a>
+          <a *ngIf="comment.photo" ><img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px"></a>
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
               <i class="fa fa-pencil"></i>
@@ -50,8 +50,7 @@
                    (click)="onActions(actions.openLikeDislike, comment.dislikes, 'dislike')">{{comment.dislikes.length}}</a>
                 <a *ngIf="comment.dislikes.length==0" href="javascript:;">{{comment.dislikes.length}}</a>
               </li>
-              <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{comment.replies.length}}
-                Replies</a></li>
+              <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)" [innerHTML]="totalRepliesInWords(comment.replies)"> </a></li>
             </ul>
           </div>
         </div>
@@ -81,7 +80,7 @@
               </div>
             </h4>
             <p>{{reply.content}}</p>
-            <a *ngIf="comment.photo" [routerLink]="['/photos', item.uuid, {commentIndex: i, replyIndex: j}]"><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
+            <a *ngIf="comment.photo" ><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
             <div class="media-body-reply">
               <ul>
                 <li>
@@ -98,8 +97,7 @@
                      (click)="onActions(actions.openLikeDislike, reply.dislikes, 'dislike')">{{reply.dislikes.length}}</a>
                   <a *ngIf="reply.dislikes.length==0" href="javascript:;">{{reply.dislikes.length}}</a>
                 </li>
-                <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)">{{reply.replies.length}}
-                  Replies</a></li>
+                <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)" [innerHtml]="totalRepliesInWords(comment.replies)"></a></li>
               </ul>
             </div>
           </div>

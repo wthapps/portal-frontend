@@ -17,8 +17,8 @@
 </div>
 
 <!--List of post items-->
-<div class="z-social-box" *ngFor="let item of items">
-  <so-post [item]="item" (onDeleted)="deletedPost($event)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)"></so-post>
+<div class="z-social-box" *ngFor="let item of items; trackBy: trackItems">
+  <so-post [item]="item" (onDeleted)="deletedPost($event, item)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)"></so-post>
 </div>
 <div id="post-list-component"></div>
 

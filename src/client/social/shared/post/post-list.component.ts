@@ -11,6 +11,7 @@ import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
 import { Subscription } from 'rxjs';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { isNullOrUndefined } from 'util';
 
 declare var _: any;
 declare var $: any;
@@ -57,7 +58,8 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.currentUser = this.socialService.user.profile;
     this.route.params.subscribe(params => {
       this.uuid = params['id'];  // this can be user uuid or community uuid
-      this.reloadPosts();
+      if (this.uuid !== undefined)
+        this.reloadPosts();
     });
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
@@ -232,12 +234,19 @@ export class PostListComponent implements OnInit, OnDestroy {
     console.log('list deleting.................');
   }
 
-  updatedPost(event: any) {
-    this.loadPosts();
+  updatedPost(event: any, post: any) {
+    // this.loadPosts();
+    this.items = _.map(this.items, (item: any) => {
+      if (item.id == post.id)
+        return post;
+      else
+        return item;
+    })
   }
 
-  deletedPost(event: any) {
-    this.loadPosts();
+  deletedPost(event: any, post: any) {
+    // this.loadPosts();
+    _.remove(this.items, {id: post.id});
   }
 
 
@@ -256,6 +265,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   viewMorePosts() {
     this.loadPosts();
+  }
+
+  trackItems(index: any, item: any) {
+    return item ? item.id : undefined;
   }
 
 }

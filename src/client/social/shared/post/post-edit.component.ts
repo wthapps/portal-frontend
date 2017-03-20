@@ -1,4 +1,7 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy,
+  Renderer, ElementRef
+} from '@angular/core';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 // import { ApiBaseService, LoadingService } from '../../../shared/index';
 // import { SoPost } from '../../../shared/models/social_network/so-post.model';
@@ -7,7 +10,7 @@ import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/fo
 import { PostPrivacyCustomComponent } from './index';
 import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+// import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { User } from '../../../core/shared/models/user.model';
@@ -39,6 +42,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   isShare: boolean = false; // if we are creating a new share that means isShare's value is 'true'
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
+  @ViewChild('textarea') textarea: ElementRef;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
@@ -57,6 +61,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   descCtrl: AbstractControl;
   tagsCtrl: AbstractControl;
   photosCtrl: AbstractControl;
+
   backupPhotos: Array<any> = new Array<any>();
   uploadedPhotos: Array<any> = new Array<any>();
 
@@ -71,11 +76,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   uploadSubscription : Subscription;
 
   constructor(private apiService: ApiBaseService,
-              private loading: LoadingService,
+              // private loading: LoadingService,
               private fb: FormBuilder,
               private socialService: SocialService,
               private photoSelectDataService : PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
+              private renderer: Renderer,
               private userService: UserService) {
   }
 
@@ -101,6 +107,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribeAll();
   }
 
+
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
     // load tags
     this.apiService.get(`zone/tags`)
@@ -111,7 +118,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         error => {
           console.log('error', error);
         });
-
 
     this.post = new SoPost();
     if(this.socialService.community.currentCommunity) {
@@ -148,6 +154,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.modal.open();
     }
 
+    this.renderer.invokeElementMethod(this.textarea.nativeElement, 'focus', []);
     this.subscribePhotoSelectEvents();
   }
 
@@ -177,6 +184,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     };
     console.log('adding................', options);
     this.saved.emit(options);
+    this.unsubscribeAll();
 
 
     // let body: string;
@@ -307,6 +315,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   dismiss(photos: any) {
     // this.photos.length = 0;
     // this.dismissed.emit(photos);
+    this.unsubscribeAll();
   }
 
   upload(files: Array<any>) {
