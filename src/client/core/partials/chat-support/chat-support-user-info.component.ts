@@ -30,6 +30,18 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
 
   ngOnInit() {
 
+
+
+    if( this.chatSupportChannel.messageData) {
+      this.chatSupportChannel.messageData
+        .subscribe(
+          (message: any) => {
+
+            console.log('message changed', message);
+
+            this.messages.unshift(JSON.parse(message));
+          });
+    }
   }
 
   ngAfterViewInit() {

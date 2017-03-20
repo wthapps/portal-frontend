@@ -47,7 +47,7 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
 
     // subscribe chat support channel
     this.appearanceChannel.subscribe('cs');
-    this.chatSupportChannel.subscribe();
+    this.chatSupportChannel.subscribe('cs');
 
     // get all registered accounts that are different supporters
     this.api.get(`users/list_account_type`)
@@ -71,6 +71,12 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
 
         }
       );
+
+    this.appearanceChannel.appearanceDataChanged.subscribe((appearanceData: any) => {
+        console.log('appearance data changed', appearanceData);
+      }
+    );
+
   }
 
   goToDetail() {
