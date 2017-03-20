@@ -5,13 +5,18 @@
   @include align-items(flex-start);
   .zone-social-in {
     @include flex(1);
-    margin-right: 45px;
+    @media (min-width: $screen-md-min) {
+      margin-right: 45px;
+    }
   }
   .zone-social-sidebar {
     float: right;
     width: 300px;
     @media (max-width: $screen-md-max) {
       width: 200px;
+    }
+    @media (max-width: $screen-sm-max) {
+      display: none;
     }
   }
 }
@@ -716,6 +721,11 @@
           &:hover {
             color: $text-color;
           }
+          @media (max-width: $screen-md-max) and (min-width: $screen-sm-min) {
+            font-size: 12px;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
         }
         &.active {
           > a {
@@ -728,6 +738,9 @@
               right: 0;
               height: 5px;
               background-color: $color-inverse;
+              @media (max-width: $screen-md-max) and (min-width: $screen-sm-min) {
+                bottom: -5px;
+              }
             }
           }
         }

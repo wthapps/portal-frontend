@@ -84,13 +84,9 @@ export class LoginComponent implements OnInit {
       this.userService.login('users/sign_in', body)
         .subscribe((result) => {
             if (result) {
-              this.loadingService.stop();
-
               // Initialize websocket
               this.appearancesChannelService.subscribe();
               // this.chatSupportAppearanceChannel.subscribe();
-
-
 
               if (this.flagsRelease) {
                 window.location.href = Constants.urls.afterLogin;
@@ -103,6 +99,7 @@ export class LoginComponent implements OnInit {
 
                 // TODO Store payment info
               }
+              this.loadingService.stop();
 
             }
           },

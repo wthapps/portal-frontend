@@ -19,9 +19,11 @@
     position: relative;
 
   }
-  $main-page-left: 270px;
   .main-page-left {
-    width: $main-page-left;
+    width: $main-page-left-sm;
+    @media (min-width: $screen-md-min) {
+      width: $main-page-left;
+    }
     overflow: auto;
     position: absolute;
     top: 0;
@@ -41,15 +43,17 @@
   .main-page-body {
     position: absolute;
     top: 0;
-    left: $main-page-left;
+    left: $main-page-left-sm;
     right: 0;
     bottom: 0;
+    @media (min-width: $screen-md-min) {
+      left: $main-page-left;
+    }
 
     .main-page-left {
       z-index: 9;
     }
 
-    $page-body-control-height: 64px;
     .page-body-control {
       height: $page-body-control-height;
       background-color: #ffffff;
@@ -62,7 +66,10 @@
         top: $page-body-control-height;
       }
       &.has-page-body-sidebar {
-        margin-left: $main-page-left;
+        margin-left: $main-page-left-sm;
+        @media (min-width: $screen-md-min) {
+          margin-left: $main-page-left;
+        }
       }
     }
     .page-body-content {
@@ -76,7 +83,10 @@
         top: $page-body-control-height;
       }
       &.has-page-body-sidebar {
-        left: $main-page-left;
+        left: $main-page-left-sm;
+        @media (min-width: $screen-md-min) {
+          left: $main-page-left;
+        }
       }
       .page-body-content-in {
         padding: 30px;

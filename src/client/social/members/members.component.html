@@ -26,20 +26,12 @@
               </a>
             </li>
             <li [ngClass]="{'active': currentState == 'notification'}">
-              <a style="padding: 2px !important" (click)="getNotifications()" href="javascript:;">
-                NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right">{{newNotifications.length}}</span>
+              <a (click)="getNotifications()" href="javascript:;">
+                NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right pull-right">{{newNotifications.length}}</span>
               </a>
             </li>
           </ul>
         </nav>
-
-
-        <nav class="z-social-box-header-nav pull-left">
-          <ul>
-
-          </ul>
-        </nav>
-
       </div>
       <div class="z-social-box-body z-social-box-body-communities">
         <div *ngIf="list && list.length == 0" class="p40 text-center">

@@ -13,8 +13,8 @@ import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
 
-declare  let _: any;
-declare  let $: any;
+declare let _: any;
+declare let $: any;
 
 @Component({
   moduleId: module.id,
@@ -34,7 +34,36 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     joinRequests: 'join_requests',
     blacklist: 'blacklist'
   };
+
+  tabData: any = [
+    {
+      key: 'post',
+      value: 'Post'
+    },
+    {
+      key: 'about',
+      value: 'About'
+    },
+    {
+      key: 'members',
+      value: 'Members'
+    },
+    {
+      key: 'invitations',
+      value: 'Invitations'
+    },
+    {
+      key: 'join_requests',
+      value: 'Join Requests'
+    }/*,
+    {
+      key: 'blacklist',
+      value: 'Blacklist'
+    }*/
+  ];
+
   selectedTab: string = 'post';
+  selectedTabTitle: string = _.find(this.tabData, ['key', this.selectedTab]);
 
   item: any = null;
   community: any = null;
@@ -88,6 +117,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(
       (queryParams: any) => {
         this.selectedTab = queryParams['tab'];
+        this.selectedTabTitle = _.find(this.tabData, ['key', queryParams['tab']]);
         this.setTabVisibility();
         if (this.selectedTab !== undefined)
           this.getTabItems(this.uuid, this.selectedTab);
@@ -177,7 +207,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   cancelJoinRequest(joinRequestId: any) {
     // this.apiBaseService.delete(`${this.soCommunitiesUrl}/${this.uuid}/invitations/${joinRequestId}`).subscribe(
-    this.socialService.community.cancelJoinRequest(this.uuid,joinRequestId).subscribe(
+    this.socialService.community.cancelJoinRequest(this.uuid, joinRequestId).subscribe(
       (res: any)=> {
         // this.invitation = undefined;
         console.log('cancel join request: ' + joinRequestId);
@@ -194,7 +224,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     // this.apiBaseService.delete(`${this.soCommunitiesUrl}/${this.uuid}/invitations/${invitationId}`).subscribe(
     this.socialService.community.cancelInvitation(this.uuid, invitationId).subscribe(
       (res: any)=> {
-        $('#invitation_'+this.invitationId).remove();
+        $('#invitation_' + this.invitationId).remove();
         // this.invitation = undefined;
         console.log('after cancel invitation', this.invitationId);
       },
@@ -210,7 +240,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     // this.apiBaseService.post(`${this.soCommunitiesUrl}/accept_join_request/`,JSON.stringify({uuid: this.uuid, user_id: item.inviter.uuid})).subscribe(
     this.socialService.community.acceptJoinRequest(this.uuid, item.inviter.uuid).subscribe(
       (res: any)=> {
-        $('#invitation_'+this.invitationId).remove();
+        $('#invitation_' + this.invitationId).remove();
         console.log('after accept invitation', this.invitationId);
       },
       error => {
@@ -230,7 +260,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.socialService.community.deleteMember(this.uuid, user.uuid).subscribe(
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
-            $('#user_'+user.uuid).remove();
+            $('#user_' + user.uuid).remove();
             // this.loadDataBySelectedTab();
           },
           error => {
@@ -251,7 +281,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.apiBaseService.put(`${this.communitiesUrl}/${this.uuid}/make_admin/${user.uuid}`).subscribe(
           (res: any)=> {
             this.toastsService.success(`You have changed ${this.user ? this.user.name : ''} role to ADMIN successfully`);
-            $('#user_'+user.uuid).find('span.member-role').text('Admin');
+            $('#user_' + user.uuid).find('span.member-role').text('Admin');
             // this.loadDataBySelectedTab();
           },
           error => {
@@ -318,16 +348,15 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
 
-
   private checkCurrentUser(uuid: string) {
     // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/check_current_user/`).subscribe(
     this.socialService.community.checkCurrentUser(uuid).subscribe(
       (res: any)=> {
         this.isAdmin = res.data.is_admin;
         this.isMember = res.data.is_member;
-        if(res.data.invitationId)
+        if (res.data.invitationId)
           this.invitationId = res.data.invitationId;
-        if(res.data.joinRequestId)
+        if (res.data.joinRequestId)
           this.joinRequestId = res.data.joinRequestId;
         // this.invitation = res.data.has_invitation;
 
@@ -342,7 +371,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   private getTabItems(uuid: string, tabName: string) {
     this.tabItems = [];
-    if(tabName === undefined)
+    if (tabName === undefined)
       return;
     // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/${tabName}`).subscribe(
     this.socialService.community.getTabItems(uuid, tabName).subscribe(
