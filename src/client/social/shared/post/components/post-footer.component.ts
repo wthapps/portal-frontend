@@ -11,7 +11,7 @@ import {
   CancelEditCommentEvent,
   CancelReplyCommentEvent,
   DeleteReplyEvent,
-  CancelEditReplyCommentEvent, ViewMoreCommentsEvent
+  CancelEditReplyCommentEvent, ViewMoreCommentsEvent, ReplyCreateEvent
 } from '../../../events/social-events';
 import { ZSocialCommentBoxType } from './sub-layout/comment-box.component';
 import { PostComponent } from '../post.component';
@@ -80,12 +80,14 @@ export class PostFooterComponent implements OnChanges {
         break;
       case this.actions.onEditComment:
         $('#editComment-' + data.uuid).show();
+        // $('#editComment-' + data.uuid).text($('#comment-' + data.uuid).text());
         $('#comment-' + data.uuid).hide();
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
         break;
       case this.actions.onReply:
+        // this.eventEmitter.emit(new ReplyCreateEvent(data));
         $('#reply-' + data.uuid).show();
         break;
       case this.actions.openLikeDislike:
@@ -148,6 +150,11 @@ export class PostFooterComponent implements OnChanges {
           console.error('Cannot get more comments: ' + error);
         });
 
+  }
+
+  totalRepliesInWords(replies: any) {
+    let repCount = replies.length > 1 ? 'replies' : 'reply';
+    return `${replies.length} ${repCount}`;
   }
 
 }

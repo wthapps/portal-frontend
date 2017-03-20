@@ -43,7 +43,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.uuid = params['id'];
+      this.uuid = params['id'] ? params['id'] : this.userService.getProfileUuid();
 
       if (this.userService.profile.uuid != params['id']) {
         this.socialService.user.getRelationShips(params['id']).subscribe((res: any) => {
