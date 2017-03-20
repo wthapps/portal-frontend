@@ -46,10 +46,10 @@ export class NewPasswordComponent implements OnInit {
   }
 
   /**
-   * Get query parameters . Eg: password?u=4&c=91decb
+   * Get query parameters . Eg: ?u=4&c=91decb
    */
   ngOnInit(): void {
-    this.route.params.forEach((params: Params) => {
+    this.route.queryParams.subscribe((params: any) => {
       this.selectedId = params['u'];
       this.selectedReset_code = params['c'];
     });
