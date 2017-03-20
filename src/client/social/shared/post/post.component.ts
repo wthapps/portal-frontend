@@ -421,6 +421,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               .then(
                 (res: any) => {
                   console.log('Upload image to s3 and save successfully', res);
+                  this.commentBox.commentAction([res]);
                 })
               .catch((error: any) => {
                 console.error('Error when uploading files ', error);
