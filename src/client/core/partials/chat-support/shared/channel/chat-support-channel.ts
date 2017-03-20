@@ -20,7 +20,7 @@ declare let App: any;
 export class ChatSupportChannel extends CableService {
 
   observer: Observer<any>;
-  notificationUpdated: Observable<any>;
+  messageData: Observable<any>;
 
   private item: any;
   constructor(private userService: UserService, private cookie: CookieService, private api: ApiBaseService) {
@@ -28,51 +28,59 @@ export class ChatSupportChannel extends CableService {
   }
 
 
-  createSubscription() {
-    this.notificationUpdated = new Observable(
-      (observer: any) => {
-        this.observer = observer;
-      }
-    );
+  // createSubscription() {
+  //   this.messageData = new Observable(
+  //     (observer: any) => {
+  //       this.observer = observer;
+  //     }
+  //   );
+  //
+  //   var self = this;
+  //   (function () {
+  //
+  //     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
+  //       connected: function () {
+  //         console.log('connected');
+  //       },
+  //       disconnected: function () {
+  //         console.log('disconnected');
+  //       },
+  //       received: function (response: any) {
+  //         this.item = response;
+  //         self.observer.next(response);
+  //       },
+  //       sendMessage: function (chatroom_id: any, message: any) {
+  //         return this.perform('send_message', {
+  //           chatroom_id: chatroom_id,
+  //           body: message
+  //         });
+  //       }
+  //     });
+  //   }).call(this, self);
+  // }
 
+
+  subscribe(type?: string) {
     var self = this;
-    (function () {
-
-      App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
-        connected: function () {
-          console.log('connected');
-        },
-        disconnected: function () {
-          console.log('disconnected');
-        },
-        received: function (response: any) {
-          this.item = response;
-          self.observer.next(response);
-        },
-        sendMessage: function (chatroom_id: any, message: any) {
-          return this.perform('send_message', {
-            chatroom_id: chatroom_id,
-            body: message
-          });
-        }
-      });
-    }).call(this, self);
-  }
-
-
-  subscribe() {
     let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
 
-    this.createConnectionInstance(cId, 'cs');
+    this.createConnectionInstance(cId, type);
+
     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
       connected: function(){
         console.log('cs connected');
+
+        this.messageData = new Observable(
+            (observer: any) => {
+              this.observer = observer;
+            }
+          );
       },
       disconnected: function(){
         console.log('cs disconnected');
       },
-      received: function(data:any){
-        console.log('cs received', data);
+      received: function(data: any){
+        self.observer.next(data);
       }
     });
   }

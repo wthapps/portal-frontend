@@ -100,9 +100,6 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
 
   onShow() {
     this.showChat = !this.showChat;
-
-    console.log('opening chatting...................');
-
     if(this.showChat) {
       // this.appearanceChannel.subscribe('cs');
       // this.chatSupportChannel.subscribe();
@@ -126,9 +123,6 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
     let viewContainerRef = this.chatSupport.viewContainerRef;
     viewContainerRef.clear();
     let componentRef = viewContainerRef.createComponent(componentFactory);
-
-    console.log('current component ref', componentRef);
-
     (<ChatSupportBaseComponent>componentRef.instance).data = this.csUserid;
     (<ChatSupportBaseComponent>componentRef.instance).supporters = this.supporters;
     (<ChatSupportBaseComponent>componentRef.instance).actionEvent.subscribe((action: any) => {

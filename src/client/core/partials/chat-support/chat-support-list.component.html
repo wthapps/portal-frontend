@@ -10,7 +10,7 @@
       <div *ngFor="let supporter of supporters">
         <figure>
           <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
-          <i class="intercom-avatar-online"></i>
+          <i [ngClass]="{'intercom-avatar-online': supporter.online}"></i>
         </figure>
         <span>
             {{supporter.name}}

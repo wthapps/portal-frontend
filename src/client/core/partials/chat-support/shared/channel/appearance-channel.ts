@@ -19,10 +19,15 @@ declare let App: any;
 export class AppearanceChannel extends CableService {
 
   observer: Observer<any>;
-  notificationUpdated: Observable<any>;
+  appearanceDataChanged: Observable<any>;
 
   constructor(private userService: UserService, private cookie: CookieService) {
     super();
+    this.appearanceDataChanged = new Observable(
+      (observer: any) => {
+        this.observer = observer;
+      }
+    );
   }
 
   subscribe(type?: string) {
@@ -40,15 +45,13 @@ export class AppearanceChannel extends CableService {
       App.appearance = App.cable.subscriptions.create(ApiConfig.actionCable.appearanceChannel, {
       connected: function(){
         this.goOnline();
+
       },
       disconnected: function(){
         // process offlline in server
       },
       received: function(data: any){
-        console.log('online: ', data.name, data.online);
-
-
-        console.log('cs appearance received', data);
+        self.observer.next(data);
       },
       goOnline: function(){
         // broadcast online status for other user
