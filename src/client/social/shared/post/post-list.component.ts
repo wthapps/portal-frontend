@@ -58,8 +58,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.currentUser = this.socialService.user.profile;
     this.route.params.subscribe(params => {
       this.uuid = params['id'];  // this can be user uuid or community uuid
-      if (this.uuid !== undefined)
-        this.reloadPosts();
+      this.reloadPosts();
     });
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
@@ -241,7 +240,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         return post;
       else
         return item;
-    })
+    });
   }
 
   deletedPost(event: any, post: any) {

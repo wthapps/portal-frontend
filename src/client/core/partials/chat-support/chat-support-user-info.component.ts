@@ -14,7 +14,7 @@ declare var _: any;
   templateUrl: 'chat-support-user-info.component.html'
 })
 export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, ChatSupportBaseComponent {
-  @Input() data: any
+  @Input() data: any;
   @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild ('messageContainerRefs', {read: ViewContainerRef}) messageContainerRefs: ViewContainerRef;

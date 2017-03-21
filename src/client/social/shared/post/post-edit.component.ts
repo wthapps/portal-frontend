@@ -8,7 +8,7 @@ import {
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 // import { UserService } from '../../../shared/index';
 import { PostPrivacyCustomComponent } from './index';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 // import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { UserService } from '../../../core/shared/services/user.service';

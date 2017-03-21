@@ -5,7 +5,7 @@ import {
   Validators,
   FormArray
 } from '@angular/forms';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { CountryService } from '../../../core/partials/countries/countries.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';

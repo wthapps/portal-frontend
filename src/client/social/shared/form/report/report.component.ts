@@ -9,7 +9,7 @@ import {
 import { ZoneReportService } from './report.service';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
-import { HdModalComponent } from '../../ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../../core/shared/ng2-hd/modal/components/modal';
 
 declare var $: any;
 declare var _: any;

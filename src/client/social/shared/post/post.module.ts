@@ -11,7 +11,7 @@ import {
   PostLikeDislikeComponent,
   PostService
 } from './index';
-import { Ng2HdModule } from '../../shared/ng2-hd/index';
+import { Ng2HdModule } from '../../../core/shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';

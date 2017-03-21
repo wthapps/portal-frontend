@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 import { Subscription } from 'rxjs';
-import { HdModalComponent } from '../../../../../social/shared/ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../../shared/ng2-hd/modal/components/modal';
 import { SoPhotoListComponent } from '../photo-list/photo-list.component';
 import { PhotoModalDataService } from '../../../../shared/services/photo-modal-data.service';
 

@@ -366,6 +366,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   //   );
   // }
 
+
   createReaction(event: any, reaction: string, object: string, uuid: string) {
     if ($(event.target).hasClass('active')) {
       $(event.target).removeClass('active');
@@ -377,11 +378,46 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     let data = {reaction: reaction, reaction_object: object, uuid: uuid};
     this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).subscribe(
       (res: any) => {
-        // this.item = new SoPost().from(res.data);
-        _.merge(this.item, new SoPost().from(res.data).excludeComments());
+        // _.merge(this.item, new SoPost().from(res.data).excludeComments());
+        this.updateItemReactions(res.data);
         this.mapDisplay();
       }
     );
+  }
+
+  private updateItemReactions(data: any) {
+    // let temp_item: any = this.item;
+    if (data.post) {
+      this.updateReactionsSet(this.item, data);
+    } else if (data.comment) {
+      let done: boolean = false;
+      _.forEach(this.item.comments, (comment: SoComment, index: any) => {
+        if(comment.uuid ==  data.comment.uuid ) {
+          this.updateReactionsSet(this.item.comments[index], data);
+          return;
+        }
+        // TODO: Handle multi-level replies case
+        _.forEach(this.item.comments[index].replies, (reply: SoComment, i2: any) => {
+          if(reply.uuid ==  data.comment.uuid ) {
+            this.updateReactionsSet(this.item.comments[index].replies[i2], data);
+            done = true;
+            return;
+          }
+          if( done )
+            return;
+        })
+        ;
+      });
+    } else {
+      console.error('updateItemReactions: something goes wrong');
+    }
+  }
+
+  private updateReactionsSet(srcObj: any, data: any) {
+    srcObj.reactions = data.reactions;
+    srcObj.likes = data.likes;
+    srcObj.dislikes = data.dislikes;
+    srcObj.shares = data.shares;
   }
 
   private updateItemComments(data: any) {

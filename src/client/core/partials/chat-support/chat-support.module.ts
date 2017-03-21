@@ -6,7 +6,7 @@ import { ChatSupportListComponent } from './chat-support-list.component';
 import { ChatSupportDetailComponent } from './chat-support-detail.component';
 import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
 import { ChatSupportDirective } from './chat-support.directive';
-import { ChatSupportChannel } from './shared/channel/chat-support-channel'
+import { ChatSupportChannel } from './shared/channel/chat-support-channel';
 import { AppearanceChannel } from './shared/channel/appearance-channel';
 
 import { WthChatBoxDirective } from './shared/wth-chat-box.directive';

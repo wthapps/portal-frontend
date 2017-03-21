@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
 
 @Injectable()
 // This Data service is created for communitication between photo select component and its containers
 export class PhotoModalDataService {
 
   // Observable string streams
-  openObs$ : any;
-  closeObs$ : any;
-  nextObs$ : any;
-  chooseFilesObs$  : any;
-  uploadObs$  : any;
-  saveObs$  : any;
-  dismissObs$  : any;
-  initObs$  : any;
+  openObs$ : Observable<any>;
+  closeObs$ : Observable<any>;
+  nextObs$ : Observable<any>;
+  chooseFilesObs$  : Observable<any>;
+  uploadObs$  : Observable<any>;
+  saveObs$  : Observable<any>;
+  dismissObs$  : Observable<any>;
+  initObs$  : Observable<any>;
 
   // Observable string sources
   private modalOpenSource = new Subject<string>();

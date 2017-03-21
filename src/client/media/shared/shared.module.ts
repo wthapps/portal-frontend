@@ -20,7 +20,6 @@ import { ZMediaAlbumService } from '../album/album.service';
 import { ZMediaSharingService } from './sharing/sharing.service';
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { ZMediaTaggingComponent } from './tagging/tagging.component';
-// import { HdTagInputModule } from '../../social/shared/ng2-hd/tag-input/tag-input.module';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */

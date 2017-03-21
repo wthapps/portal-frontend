@@ -83,6 +83,10 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/ng2-tag-input/dist/ng2-tag-input.bundle.js'
       },
       {
+        name: 'rxjs',
+        path: 'node_modules/rxjs/Rx.js'
+      },
+      {
         name: 'angular2-uuid',
         path: 'node_modules/angular2-uuid/index.js'
       }

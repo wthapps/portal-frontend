@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, OnChanges } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 
 

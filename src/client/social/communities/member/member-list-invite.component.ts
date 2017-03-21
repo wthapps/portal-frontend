@@ -1,6 +1,6 @@
 import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
-import { ListComponent } from '../../shared/ng2-hd/list/components/list.component';
+import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
+import { ListComponent } from '../../../core/shared/ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
 // import { ApiBaseService, UserService } from '../../../../shared/index';

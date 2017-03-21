@@ -8,6 +8,10 @@ export class SoComment extends BaseInput implements FromData {
   content: string = '';
   replies: Array<SoComment> = new Array<SoComment>();
   reactions: Array<any> = [];
+  likes: Array<any> = [];
+  dislikes: Array<any> = [];
+  shares: Array<any> = [];
+  photos: Array<any> = [];
   owner: SoUser = new SoUser();
 
   from(fields: any) {
