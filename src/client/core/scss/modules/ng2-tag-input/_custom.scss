@@ -26,25 +26,27 @@ body {
       padding: 0;
     }
   }
-}
 
-.ng2-dropdown-menu {
-  .ng2-menu-item {
-    font: $font-base;
-    padding: 3px 5px;
-    background: #fff;
-    color: $text-color;
-    cursor: pointer;
-    font-size: inherit;
-    text-transform: none;
-    font-weight: normal;
-    -webkit-transition: background 0.2s;
-    transition: background 0.2s;
-    letter-spacing: 0.03em;
-    height: auto;
-    line-height: inherit;
-    overflow: hidden !important;
-    text-align: left;
+  .ng2-dropdown-menu {
+    z-index: 1050 !important;
+    .ng2-menu-item {
+      font: $font-base;
+      padding: 5px;
+      background: #fff;
+      color: $text-color;
+      cursor: pointer;
+      font-size: inherit;
+      text-transform: none;
+      font-weight: normal;
+      -webkit-transition: background 0.2s;
+      transition: background 0.2s;
+      letter-spacing: 0.03em;
+      height: auto;
+      line-height: inherit;
+      overflow: hidden !important;
+      text-align: left;
+    }
   }
 }
+
 

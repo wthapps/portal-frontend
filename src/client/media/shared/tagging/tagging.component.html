@@ -3,9 +3,11 @@
     <h4 class="modal-title"><i class="fa fa-tag"></i> Tagging</h4>
   </modal-header>
   <modal-body>
-    <tag-input [(ngModel)]="addedTags">
-      <tag-input-dropdown
-        [autocompleteItems]="dataTags">
+    <tag-input [ngModel]="addedTags">
+      <tag-input-dropdown [autocompleteItems]="dataTags">
+        <template let-item="item" let-index="index">
+          {{ item.display }}
+        </template>
       </tag-input-dropdown>
     </tag-input>
   </modal-body>

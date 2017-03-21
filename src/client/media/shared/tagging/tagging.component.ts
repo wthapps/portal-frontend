@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Response } from '@angular/http';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaTaggingService } from './tagging.service';
+
 
 declare var $: any;
 declare var _: any;
@@ -24,6 +27,7 @@ export class ZMediaTaggingComponent implements OnInit {
 
   hasDeletedItems: boolean = false;
 
+
   constructor(private taggingService: ZMediaTaggingService) {
   }
 
@@ -35,12 +39,20 @@ export class ZMediaTaggingComponent implements OnInit {
   getAllTags() {
     this.taggingService.getAll().subscribe(
       (res: any)=> {
+        console.log(res);
         this.dataTags = _.map(res.data, 'name');
       },
       (error: any) => {
         console.log('error', error);
       });
   }
+
+  // requestAutocompleteItems = (text: string): Observable<Response> => {
+  //   const url = `https://my.api.com/search?q=${text}`;
+  //   return this.http
+  //     .get(url)
+  //     .map(data => data.json());
+  // };
 
   getCurrentTags() {
     let body = JSON.stringify({objects: _.map(this.selectedItems, 'id'), type: this.getType()});
