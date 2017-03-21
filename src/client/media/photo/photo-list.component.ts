@@ -47,7 +47,7 @@ export class ZMediaPhotoListComponent implements OnInit {
       (queryParams: any) => {
         this.hasFavourite = queryParams['favorite'];
         if (this.hasFavourite)
-          this.getPhotos({'favorite':true});
+          this.getPhotos({'favorite': true});
         else
           this.getPhotos();
         // this.isMember = true; // testing
