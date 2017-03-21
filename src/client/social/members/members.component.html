@@ -3,8 +3,43 @@
     <div class="z-social-box">
       <div class="z-social-box-header">
         <nav class="z-social-box-header-nav pull-left nav-tabs-wrap">
+
+          <div class="pull-left btn-group hidden-md hidden-lg">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+              {{currentState}} <span class="text-fade">{{currentStateTitleNumber}}</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li [ngClass]="{'active': currentState == 'friends'}">
+                <a (click)="getDataList('friends'); currentStateTitleNumber = data.friends.length" href="javascript:;">
+                  FRIENDS <span *ngIf="data.friends" class="text-fade">{{data.friends.length}}</span>
+                </a>
+              </li>
+              <li [ngClass]="{'active': currentState == 'followers'}">
+                <a (click)="getDataList('followers'); currentStateTitleNumber = data.followers.length" href="javascript:;">
+                  FOLLOWERS <span *ngIf="data.followers" class="text-fade">{{data.followers.length}}</span>
+                </a>
+              </li>
+              <li [ngClass]="{'active': currentState == 'followings'}">
+                <a (click)="getDataList('followings'); currentStateTitleNumber = data.followings.length" href="javascript:;">
+                  FOLLOWING <span *ngIf="data.followings" class="text-fade">{{data.followings.length}}</span>
+                </a>
+              </li>
+              <li [ngClass]="{'active': currentState == 'blacklists'}">
+                <a (click)="getDataList('blacklists'); currentStateTitleNumber = data.blacklists.length" href="javascript:;">
+                  BLACKLIST <span *ngIf="data.blacklists" class="text-fade">{{data.blacklists.length}}</span>
+                </a>
+              </li>
+              <li [ngClass]="{'active': currentState == 'notification'}">
+                <a (click)="getNotifications(); currentStateTitleNumber = newNotifications.length" href="javascript:;">
+                  NOTIFICATIONS <span *ngIf="data.blacklists" class="text-fade">{{newNotifications.length}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
           <!-- Nav tabs -->
-          <ul class="nav nav-tabs">
+          <ul class="nav nav-tabs visible-md-block visible-lg-block">
             <li [ngClass]="{'active': currentState == 'friends'}">
               <a (click)="getDataList('friends')" href="#">
                 FRIENDS <span *ngIf="data.friends" class="text-fade">{{data.friends.length}}</span>

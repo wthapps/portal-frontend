@@ -1,7 +1,7 @@
 .form-control {
   @include box-shadow(0 0 0 transparent);
   &.has-loading {
-    background-image: url(../images/icons/loading.gif);
+    background-image: url('../assets/images/icons/loading.gif');
     background-repeat: no-repeat;
     background-position: right center;
     -webkit-background-size: 24px 24px;

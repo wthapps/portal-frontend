@@ -21,6 +21,8 @@ export class ZSocialMembersComponent implements OnInit {
   notifications: any = [];
   newNotifications: any = [];
   currentState: string = 'friends'; //followers, followings, blacklists
+  currentStateTitle: string = 'FRIENDS'; //followers, followings, blacklists
+  currentStateTitleNumber: number = 0; //followers, followings, blacklists
   favourite: any;
 
   constructor(private socialService: SocialService,
