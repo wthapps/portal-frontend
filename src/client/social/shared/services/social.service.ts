@@ -65,6 +65,9 @@ export class SoUserService {
   }
 
   getRelationShips(uuid?: string) {
+    if (!uuid) {
+      uuid = this.profile.uuid;
+    }
     return this.apiBaseService.get(`${this.soInvitationsUrl}/${uuid}`);
   }
 

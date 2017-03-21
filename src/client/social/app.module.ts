@@ -14,6 +14,7 @@ import { ZSocialProfileComponent } from './profile/profile.component';
 import { CoreModule } from '../core/core.module';
 import { SocialDataService } from './shared/services/social-data.service';
 import { SocialSettingsModule } from './setting/setting.module';
+import { ZSocialProfileModule } from './profile/profile.module';
 
 
 @NgModule({
@@ -26,12 +27,13 @@ import { SocialSettingsModule } from './setting/setting.module';
     ZSocialHomeModule,
     ZSocialCommunityModule,
     SocialSettingsModule,
+    ZSocialProfileModule,
     AppRoutingModule
   ],
 
   declarations: [AppComponent,
     // ZSocialSettingComponent,
-    ZSocialProfileComponent
+    // ZSocialProfileComponent
 
     // // Communities
     // ZSocialCommunityComponent,

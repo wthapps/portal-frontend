@@ -16,22 +16,15 @@ import {
 import { PostDetailComponent } from './post/post-detail.component';
 import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { PostListComponent } from './post/post-list.component';
-import { ZSocialProfileComponent } from './profile/profile.component';
-import { ZSocialProfileAboutComponent } from './profile/about/about.component';
-import { ZSocialProfileFormAboutComponent } from './profile/form/about.component';
-import { ZSocialProfileFormContactComponent } from './profile/form/contact.component';
-import { ZSocialProfileFormWorkEduComponent } from './profile/form/work-edu.component';
-import { ZSocialProfileFormInterestComponent } from './profile/form/interest.component';
-import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
-import { ZSocialPrivacyComponent } from './profile/about/components/privacy.component';
 import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../members/members.component';
-import { ZSocialProfileService } from './profile/profile.service';
 import { PhotoModalDataService } from '../../core/shared/services/photo-modal-data.service';
 import { SoPhotoListComponent } from './post/photo-list.component';
 import { PhotoUploadService } from '../../core/shared/services/photo-upload.service';
+import { ZSocialPrivacyComponent } from '../profile/about/components/privacy.component';
+import { ZSocialProfileService } from '../profile/profile.service';
 
 
 /**
@@ -59,16 +52,6 @@ import { PhotoUploadService } from '../../core/shared/services/photo-upload.serv
     PostDetailComponent,
     PostDetailPhotoComponent,
 
-    // Profile
-    ZSocialProfileComponent,
-    ZSocialProfileAboutComponent,
-    // ZSocialProfilePostComponent,
-    ZSocialProfileCoverComponent,
-    ZSocialProfileFormAboutComponent,
-    ZSocialProfileFormContactComponent,
-    ZSocialProfileFormWorkEduComponent,
-    ZSocialProfileFormInterestComponent,
-
     //Share
     ZoneReportComponent,
 
@@ -77,7 +60,6 @@ import { PhotoUploadService } from '../../core/shared/services/photo-upload.serv
 
     // Search
     // ZSocialSearchResultComponent,
-    ZSocialPrivacyComponent
 
   ],
   exports: [

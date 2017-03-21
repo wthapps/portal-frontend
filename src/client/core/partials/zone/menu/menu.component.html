@@ -16,9 +16,9 @@
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled">
         <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
-          <a *ngIf="social.link == '/zone/social/profile'" [routerLink]="['/zone/social/profile',uuid]">
+          <a *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
             {{social.name}}</a>
-          <a *ngIf="social.link != '/zone/social/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
+          <a *ngIf="social.link != '/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
         </li>
       </ul>
     </li>
