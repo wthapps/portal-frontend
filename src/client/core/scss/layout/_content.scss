@@ -461,6 +461,7 @@ body.drag-active {
 .img-center-dv {
   position: relative;
   overflow: hidden;
+  z-index: 1;
   .img-center {
     @include center();
     max-width: 100%;

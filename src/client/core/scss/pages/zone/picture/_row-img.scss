@@ -6,11 +6,14 @@
     margin-right: -5px;
     .row-img-item {
       float: left;
-      width: 20%;
+      width: 50%;
       padding: 5px;
-      //@media (min-width: $screen-md-min) {
-      //  width: 20%;
-      //}
+      @media (min-width: $screen-sm-min) {
+        width: percentage(1/3);
+      }
+      @media (min-width: $screen-md-min) {
+        width: 20%;
+      }
     }
     .photo-box-img {
       &.selected {
