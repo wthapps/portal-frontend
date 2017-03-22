@@ -11,7 +11,7 @@ const ProdConfig: EnvConfig = {
     SOCIAL: 'https://54.213.41.54:3015',
     CHAT: 'https://54.213.41.54:3020'
   },
-  RES: 'https://s3-ap-southeast-1.amazonaws.com/env-staging'
+  RES: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon-oregon'
 };
 
 export = ProdConfig;
