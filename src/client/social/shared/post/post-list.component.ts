@@ -32,15 +32,15 @@ export class PostListComponent implements OnInit, OnDestroy {
   items: Array<SoPost>;
   uuid: string;
   currentUser: User;
-  commentBox:any;
-  page_index:number = 0;
-  loading_done:boolean = false;
+  commentBox: any;
+  page_index: number = 0;
+  loading_done: boolean = false;
   readonly post_limit: number = Constants.soPostLimit;
   // type: string = 'user';
 
   // Subscription
-  loadSubscription : Subscription;
-  nextPhotoSubscription : Subscription;
+  loadSubscription: Subscription;
+  nextPhotoSubscription: Subscription;
 
   constructor(public apiBaseService: ApiBaseService,
               public socialService: SocialService,
@@ -48,7 +48,7 @@ export class PostListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private postService: PostService,
-              private photoSelectDataService : PhotoModalDataService,
+              private photoSelectDataService: PhotoModalDataService,
               private socialDataService: SocialDataService
               // private comDataService: CommunitiesDataService
   ) {
@@ -66,14 +66,15 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.photoSelectDataService.init();
 
     this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
-      (photos: any) => {this.onSelectPhotoComment(photos);
-    });
+      (photos: any) => {
+        this.onSelectPhotoComment(photos);
+      });
 
     this.loadPosts();
   }
 
   ngOnDestroy() {
-    if(this.loadSubscription)
+    if (this.loadSubscription)
       this.loadSubscription.unsubscribe();
 
     this.nextPhotoSubscription.unsubscribe();
@@ -84,7 +85,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   mapPostNoComments(post: any) {
-    let mappedPost =  new SoPost().from(post).excludeComments();
+    let mappedPost = new SoPost().from(post).excludeComments();
     return mappedPost;
   }
 
@@ -129,19 +130,21 @@ export class PostListComponent implements OnInit, OnDestroy {
           }
         );
     } else if (options.mode == 'edit') {
-            // Update post content only, not reload comments
-            this.postEditModal.close();
-        this.postService.update(options.item)
-          .subscribe((response: any) => {
+      // Update post content only, not reload comments
+      this.postEditModal.close();
+      this.postService.update(options.item)
+        .subscribe((response: any) => {
             // this.loadPosts();
             let editedItem = _.map([response.data], this.mapPostNoComments)[0];
-            let idx = _.findIndex(this.items, ( i:SoPost ) => { return  i.uuid == editedItem.uuid; });
-            if(idx >= 0) {
+            let idx = _.findIndex(this.items, (i: SoPost) => {
+              return i.uuid == editedItem.uuid;
+            });
+            if (idx >= 0) {
               editedItem.comments = this.items[idx].comments;
               this.items[idx] = editedItem;
             }
 
-    },
+          },
           (error: any) => {
             console.log('error', error);
           }
@@ -186,7 +189,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
 
-  openPhotoModal(e:any) {
+  openPhotoModal(e: any) {
     this.commentBox = e;
     // this.photoModal.open();
   }
@@ -200,16 +203,12 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   viewMorePosts() {
+    console.log('viewMorePosts in - <so-post-list>');
     this.loadPosts();
   }
 
   trackItems(index: any, item: any) {
     return item ? item.id : undefined;
   }
-
-  onLoadMore() {
-    console.log('onLoadMore')
-  }
-
 }
 

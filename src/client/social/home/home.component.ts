@@ -4,7 +4,6 @@ import { SocialService } from '../shared/services/social.service';
 import { Router, NavigationEnd } from '@angular/router';
 
 
-
 declare var $: any;
 declare var _: any;
 
@@ -20,10 +19,13 @@ export class ZSocialHomeComponent {
   // @ViewChild('postNew') postNew: PostNewComponent;
   @ViewChild('posts') posts: PostListComponent;
 
-  constructor(private socialService:SocialService,
-              private router: Router
-  ) {
+  constructor(private socialService: SocialService,
+              private router: Router) {
     this.socialService.community.currentCommunity = undefined;
 
+  }
+
+  onLoadMore() {
+    console.log(this.posts.viewMorePosts());
   }
 }

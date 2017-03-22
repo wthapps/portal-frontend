@@ -1,7 +1,15 @@
-<div class="page-body-content-in zone-social">
-  <div class="zone-social-in">
-    <so-post-list #posts [type]="'user_and_friend'"></so-post-list>
+<div class="page-body-content gray-light"
+     scrollToBottom
+     lockYOffset="20"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolled)="onLoadMore()">
+  <div class="page-body-content-in zone-social">
+    <div class="zone-social-in">
+      <so-post-list #posts [type]="'user_and_friend'"></so-post-list>
+    </div>
+    <z-social-favorites></z-social-favorites>
   </div>
-  <z-social-favorites></z-social-favorites>
+  <wth-zone-report></wth-zone-report>
 </div>
-<wth-zone-report></wth-zone-report>
