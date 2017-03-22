@@ -9,9 +9,11 @@
              [searchable]="true"
              [inputClass]="'hd-search-input'"
              [searchItems]="items"
+             [selectedItems]="selectedItems"
              (onRemove)="removeItem($event)"
              (onSelected)="onSelectedItems($event)"
              (onAdd)="addItem($event)"
+             (onTextChange)="searchMembers()"
     >
     </hd-list>
   </hd-modal-body>

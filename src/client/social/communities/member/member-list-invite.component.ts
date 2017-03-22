@@ -37,6 +37,9 @@ export class MemberListInviteComponent {
     if (options.url != undefined) {
       this.url = options.url;
     }
+
+    // Clear selected items
+    this.selectedItems.length = 0;
     this.modal.open();
     this.loadData();
   }
@@ -80,5 +83,18 @@ export class MemberListInviteComponent {
         error => {
           console.log('error', error);
         });
+  }
+
+  searchMembers(): void {
+    console.log('search keyword: ', this.list);
+
+    // this.apiService.get(this.url)
+    //   .subscribe((result: any) => {
+    //       this.items = result['data'];
+    //       this.itemNames = _.map(result['data'], 'name');
+    //     },
+    //     error => {
+    //       console.log('error', error);
+    //     });
   }
 }

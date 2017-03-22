@@ -63,7 +63,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   ];
 
   selectedTab: string = 'post';
-  selectedTabTitle: string = _.find(this.tabData, ['key', this.selectedTab]);
+  selectedTabTitle: string ;
 
   item: any = null;
   community: any = null;
@@ -106,6 +106,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
+
     // this.postList.type = 'community';
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
