@@ -1,15 +1,17 @@
-<div class="page-body-content-in zone-social">
-  <div class="zone-social-in">
-    <div class="mb20">
-      <a class="btn btn-default" (click)="location.back()">
-        <i class="fa fa-arrow-left"></i> Back
-      </a>
-    </div>
-    <div class="z-social-box">
-      <so-post [item]="item" [type]="'detail'" (modalOpened)="openEditModal($event)"></so-post>
+<div class="page-body-content gray-light">
+  <div class="page-body-content-in zone-social">
+    <div class="zone-social-in">
+      <div class="mb20">
+        <a class="btn btn-default" (click)="location.back()">
+          <i class="fa fa-arrow-left"></i> Back
+        </a>
+      </div>
+      <div class="z-social-box">
+        <so-post [item]="item" [type]="'detail'" (modalOpened)="openEditModal($event)"></so-post>
+      </div>
     </div>
   </div>
-</div>
 
-<so-post-edit #postEditModal (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
-<!--<so-post-edit #postEditModal></so-post-edit>-->
+  <so-post-edit #postEditModal (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
+  <!--<so-post-edit #postEditModal></so-post-edit>-->
+</div>
