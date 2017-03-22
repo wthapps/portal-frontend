@@ -58,7 +58,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.currentUser = this.socialService.user.profile;
     this.route.params.subscribe(params => {
       this.uuid = params['id'];  // this can be user uuid or community uuid
-      this.reloadPosts();
     });
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
@@ -70,10 +69,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       (photos: any) => {this.onSelectPhotoComment(photos);
     });
 
-    this.loadSubscription = this.socialDataService.itemObs$.subscribe(() => {
-      this.loadPosts();
-      console.log('Loading more posts');
-    });
+    this.loadPosts();
   }
 
   ngOnDestroy() {
@@ -94,35 +90,20 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   loadPosts() {
     this.loadingService.start('#post-list-component');
-    this.postService.list({uuid: this.uuid, type: this.type, page_index: this.page_index, limit: this.post_limit})
+    this.socialService.post.getList(this.uuid, this.type)
       .subscribe(
         (res: any) => {
           this.loadingService.stop('#post-list-component');
-          // if(this.items === undefined)
-          //   this.items = _.map(res.data, this.mapPost);
-          // else {
-          //   // this.items.push(..._.map(res.data, this.mapPost));
-          //   this.items = _.extend(this.items, ..._.map(res.data, this.mapPost));
-          //   _.orderBy(this.items, ['created_at'], ['desc']);
-          //
-          // }
           this.items = _.map(res.data, this.mapPost);
-          this.loading_done = res.loading_done;
-          this.socialDataService.loadingDone = this.loading_done;
-          if(!this.loading_done)
-            this.page_index += 1;
+          // this.loading_done = res.loading_done;
+          // this.socialDataService.loadingDone = this.loading_done;
+          // if(!this.loading_done)
+          //   this.page_index += 1;
         },
         (error: any) => {
           console.log('loading posts errors: ', error);
         }
       );
-  }
-
-  reloadPosts() {
-    this.page_index = 0;
-    this.loading_done = false;
-    this.socialDataService.loadingDone = this.loading_done;
-    this.loadPosts();
   }
 
   /**
@@ -166,50 +147,6 @@ export class PostListComponent implements OnInit, OnDestroy {
           }
         );
     }
-    // console.log('save item...............', item);
-    //
-    // let body: string;
-    // let url: string = 'zone/social_network/posts';
-    // body = JSON.stringify({
-    //   post: {
-    //     description: item.description,
-    //     photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
-    //     tags_json: this.post.tags,
-    //     privacy: this.post.privacy,
-    //     adult: this.post.adult,
-    //     disable_comment: this.post.disable_comment,
-    //     disable_share: this.post.disable_share,
-    //     mute: this.post.mute
-    //   },
-    //   parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-    //   custom_objects: this.custom_objects
-    // });
-    //
-    // if(this.mode == 'add') {
-    //   this.apiService.post(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    //
-    // } else if(this.mode == 'edit') {
-    //   url += `/${this.post.uuid}`;
-    //   this.apiService.put(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    // }
   }
 
   dismiss(item: any) {
@@ -268,6 +205,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   trackItems(index: any, item: any) {
     return item ? item.id : undefined;
+  }
+
+  onLoadMore() {
+    console.log('onLoadMore')
   }
 
 }

@@ -118,23 +118,20 @@ export class SoPostService {
   }
 
   getList(uuid: string = this.user.profile.uuid, type?: string) {
-    switch (this.router.url) {
-      case '/home':
-        return this.getListSocialPosts();
-    }
-    return this.getListOtherPosts(uuid, type);
+    // switch (this.router.url) {
+    //   case '/home':
+    //     return this.getListSocialPosts(uuid, type);
+    // }
+    return this.getListSocialPosts(uuid, type);
+    // return this.getListOtherPosts(uuid, type);
   }
 
   getSettings(uuid: string) {
     return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`);
   }
 
-  private getListSocialPosts() {
-    return this.apiBaseService.get(this.apiBaseService.urls.zoneSoPosts);
-  }
-
-  private getListOtherPosts(uuid: string, type: string) {
-    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoUserPosts}/${uuid}/`, {type: type});
+  private getListSocialPosts(uuid:any, type:string) {
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoUserPosts}/${uuid}`, {type: type});
   }
 }
 

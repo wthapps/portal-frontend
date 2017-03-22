@@ -17,10 +17,33 @@
 </div>
 
 <!--List of post items-->
-<div class="z-social-box" *ngFor="let item of items; trackBy: trackItems">
-  <so-post [item]="item" (onDeleted)="deletedPost($event, item)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)"></so-post>
+<div class="page-body-chat-content-in"
+     scrollToBottom
+     lockYOffset="20"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolled)="onLoadMore()">
+  <div
+    class="z-social-box"
+    *ngFor="let item of items; trackBy: trackItems">
+    <so-post [item]="item" (onDeleted)="deletedPost($event, item)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)"></so-post>
+  </div>
+
 </div>
-<div id="post-list-component"></div>
+<!--<div-->
+  <!--class="z-social-box"-->
+  <!--*ngFor="let item of items; trackBy: trackItems">-->
+  <!--<so-post [item]="item" (onDeleted)="deletedPost($event, item)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)"></so-post>-->
+<!--</div>-->
+<!--<div *ngIf="contactItem.value.active"-->
+     <!--class="page-body-chat-content-in"-->
+     <!--scrollToBottom-->
+     <!--lockYOffset="10"-->
+     <!--observeAttributes="true"-->
+     <!--infinite-scroll-->
+     <!--[scrollWindow]="false"-->
+     <!--(scrolled)="onLoadMore()">-->
 
 <div class="view-all">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>

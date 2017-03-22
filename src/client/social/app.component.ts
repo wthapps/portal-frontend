@@ -20,7 +20,7 @@ declare let _ : any;
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
-  debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
+  // debounceOnScroll = _.debounce((event:any) => this.onScroll(event), 500, {});
 
   constructor(private router: Router,
               private socialDataService: SocialDataService) {
@@ -40,20 +40,20 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  onScroll(event: any) {
-    let elem = $('.page-body-content');
-
-    if ( !this.isLoadingDone() && elem[0].scrollHeight  - elem.scrollTop() - 10 <= elem.outerHeight() ) {
-      this.loadMoreItems();
-      console.log('Load more items');
-    }
-  }
-
-  isLoadingDone() {
-    return this.socialDataService.loadingDone;
-  }
-
-  loadMoreItems() {
-    this.socialDataService.loadItem();
-  }
+  // onScroll(event: any) {
+  //   let elem = $('.page-body-content');
+  //
+  //   if ( !this.isLoadingDone() && elem[0].scrollHeight  - elem.scrollTop() - 10 <= elem.outerHeight() ) {
+  //     this.loadMoreItems();
+  //     console.log('Load more items');
+  //   }
+  // }
+  //
+  // isLoadingDone() {
+  //   return this.socialDataService.loadingDone;
+  // }
+  //
+  // loadMoreItems() {
+  //   this.socialDataService.loadItem();
+  // }
 }
