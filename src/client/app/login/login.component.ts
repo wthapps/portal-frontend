@@ -99,8 +99,6 @@ export class LoginComponent implements OnInit {
 
                 // TODO Store payment info
               }
-              this.loadingService.stop();
-
             }
           },
           error => {

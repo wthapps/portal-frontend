@@ -6,11 +6,14 @@ import {
   AbstractControl,
   FormBuilder,
   Validators
-}                           from '@angular/forms';
+} from '@angular/forms';
+
 import { ToastsService } from '../../core/partials/toast/toast-message.service';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
+
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -83,6 +86,18 @@ export class NewPasswordComponent implements OnInit {
             this.toastsService.danger(error);
             console.log('error:', error);
           });
+    }
+  }
+
+  hideShowPassword(event: any): void {
+    var target = event.target || event.srcElement || event.currentTarget;
+    let inputPass = $(target).prev();
+    if (inputPass.attr('type') == 'password') {
+      inputPass.attr('type', 'text');
+      $(target).addClass('active');
+    } else {
+      inputPass.attr('type', 'password');
+      $(target).removeClass('active');
     }
   }
 }
