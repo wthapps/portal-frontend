@@ -5,13 +5,13 @@ import {
   Validators,
   FormArray
 } from '@angular/forms';
-import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { CountryService } from '../../../core/partials/countries/countries.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 declare var $: any;
 declare var _: any;
@@ -24,7 +24,7 @@ declare var _: any;
 
 export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
 
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: ModalComponent;
   @Input() data: any;
   @Input() action: string;
   @Output() updated: EventEmitter<any> = new EventEmitter<any>();

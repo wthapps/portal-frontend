@@ -66,7 +66,7 @@
         <div class="pull-left btn-group hidden-md hidden-lg">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                   aria-expanded="false">
-            {{selectedTabTitle.value}} <span class="caret"></span>
+            {{selectedTabTitle?.value}} <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
             <template ngFor let-itab [ngForOf]="tabData" *ngIf="isAdmin">
