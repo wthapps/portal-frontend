@@ -35,6 +35,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   commentBox: any;
   page_index: number = 0;
   loading_done: boolean = false;
+  nextLink:any;
   readonly post_limit: number = Constants.soPostLimit;
   // type: string = 'user';
 
@@ -96,6 +97,8 @@ export class PostListComponent implements OnInit, OnDestroy {
         (res: any) => {
           this.loadingService.stop('#post-list-component');
           this.items = _.map(res.data, this.mapPost);
+          console.log(res);
+          this.nextLink = res.page_metadata.links.next;
           // this.loading_done = res.loading_done;
           // this.socialDataService.loadingDone = this.loading_done;
           // if(!this.loading_done)
@@ -203,8 +206,15 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   viewMorePosts() {
-    console.log('viewMorePosts in - <so-post-list>');
-    this.loadPosts();
+    if (this.nextLink) {
+      this.apiBaseService.get(this.nextLink).subscribe((res: any)=> {
+        let items = _.map(res.data, this.mapPost);
+        for(let i=0; i <items.length; i++) {
+          this.items.push(items[0]);
+        }
+        this.nextLink = res.page_metadata.links.next;
+      });
+    }
   }
 
   trackItems(index: any, item: any) {

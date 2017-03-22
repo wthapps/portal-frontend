@@ -39,4 +39,7 @@ export class ZSocialProfilePostComponent implements OnInit {
       );
     });
   }
+  onLoadMore() {
+    this.posts.viewMorePosts();
+  }
 }
