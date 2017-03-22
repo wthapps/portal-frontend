@@ -171,6 +171,7 @@
     "slick-carousel": "^1.6.0",
     "systemjs": "0.19.41",
     "wheelzoom.js": "^1.0.1",
+    "aws-sdk": "2.7.20",
     "zone.js": "^0.7.2"
   }
 }
