@@ -21,6 +21,7 @@ import { RegisterModule } from './register/register.module';
 import { LoginModule } from './login/login.module';
 import { MyAccountModule } from './my-account/my-account.module';
 import { RecoveryModule } from './recovery/recovery.module';
+import { SubscribeModule } from './sub_unsub/subscribe.module';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { RecoveryModule } from './recovery/recovery.module';
     ContactModule,
     AboutModule,
     HomeModule,
+    SubscribeModule,
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],
