@@ -1,4 +1,11 @@
-<div class="page-body-content gray-light">
+<div
+  class="page-body-content gray-light"
+  scrollToBottom
+  lockYOffset="20"
+  observeAttributes="true"
+  infinite-scroll
+  [scrollWindow]="false"
+  (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in">
       <!--<z-social-community-cover [selectedTab]="selectedTab"></z-social-community-cover>-->

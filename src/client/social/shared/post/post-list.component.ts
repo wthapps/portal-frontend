@@ -97,7 +97,6 @@ export class PostListComponent implements OnInit, OnDestroy {
         (res: any) => {
           this.loadingService.stop('#post-list-component');
           this.items = _.map(res.data, this.mapPost);
-          console.log(res);
           this.nextLink = res.page_metadata.links.next;
           // this.loading_done = res.loading_done;
           // this.socialDataService.loadingDone = this.loading_done;
@@ -208,10 +207,13 @@ export class PostListComponent implements OnInit, OnDestroy {
   viewMorePosts() {
     if (this.nextLink) {
       this.apiBaseService.get(this.nextLink).subscribe((res: any)=> {
-        let items = _.map(res.data, this.mapPost);
-        for(let i=0; i <items.length; i++) {
-          this.items.push(items[0]);
-        }
+        _.map(res.data, (v: any)=> {
+          this.items.push(this.mapPost(v));
+        });
+        // let items = _.map(res.data, this.mapPost);
+        // for(let i=0; i <items.length; i++) {
+        //   this.items.push(items[0]);
+        // }
         this.nextLink = res.page_metadata.links.next;
       });
     }
