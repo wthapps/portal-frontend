@@ -10,4 +10,8 @@ declare var _: any;
 
 export class ZSocialProfileComponent {
 
+  onLoadMore() {
+    console.log('aaaaaaaaa');
+  }
+
 }

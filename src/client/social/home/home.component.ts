@@ -26,6 +26,6 @@ export class ZSocialHomeComponent {
   }
 
   onLoadMore() {
-    console.log(this.posts.viewMorePosts());
+    this.posts.viewMorePosts();
   }
 }
