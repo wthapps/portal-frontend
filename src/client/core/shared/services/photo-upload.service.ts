@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../config/constants';
 import { UUID } from 'angular2-uuid';
+
+declare var AWS: any;
 declare  let _: any;
-declare  let AWS: any;
 declare  let Promise: any;
 /**
  * Created by phat on 18/11/2016.
@@ -13,10 +13,6 @@ declare  let Promise: any;
 
 @Injectable()
 export class PhotoUploadService {
-  // albumBucketName: string = 'wthapps-test';
-  // bucketRegion: string = 'us-west-2';
-  // identityPoolId: string = 'us-west-2:4443ef08-5aac-4824-b1e9-46a875b2c20d';
-
   albumTempBucketName: string;
   bucketRegion: string;
   bucketSubFolder: string; // portal-frontend/photos

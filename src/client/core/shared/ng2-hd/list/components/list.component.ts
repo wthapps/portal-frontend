@@ -498,15 +498,15 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     // this.itemsSearching = this.searchItems;
     if (this.searchable) {
 
-      addListener.call(this, KEYUP, autoSearchListener);
+      // addListener.call(this, KEYUP, autoSearchListener);
 
       // this.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(this));
       // this.dropdown.onHide.subscribe(() => this.itemsSearching = []);
     }
 
-    this.inputForm.onKeydown.subscribe((event: any) => {
-      this.fireEvents('keydown', event);
-    });
+    // this.inputForm.onKeydown.subscribe((event: any) => {
+    //   this.fireEvents('keydown', event);
+    // });
 
     // this.inputForm.form.valueChanges
     //     .debounceTime(this.onTextChangeDebounce)
@@ -537,6 +537,10 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   //
   }
 
+  public registerEvent(eventName: string, callback: any) {
+    addListener.call(this, eventName, callback);
+  }
+
 
   /**
    * @name maxItemsReached
@@ -551,7 +555,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @param value
    * @returns {string}
    */
-  private setInputValue(value: string): string {
+  public setInputValue(value: string): string {
     const item = value ? this.transform(value) : '';
     const control = this.getControl();
 
