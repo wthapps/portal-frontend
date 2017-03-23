@@ -466,4 +466,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
+  onLoadMore() {
+    this.posts.viewMorePosts();
+  }
 }
