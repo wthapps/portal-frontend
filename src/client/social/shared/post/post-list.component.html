@@ -2,7 +2,6 @@
 <div class="z-social-box">
   <div class="z-social-media">
     <div class="z-social-media-left">
-      <!--<img src="assets/images/avatar/avatar.png" alt="">-->
       <img [src]="currentUser?.profile_image" alt="Avatar Image">
     </div>
     <div class="z-social-media-body">
@@ -17,28 +16,16 @@
 </div>
 
 <!--List of post items-->
-<div class="z-social-box" *ngFor="let item of items; trackBy: trackItems">
-  <so-post [item]="item"
-           (onDeleted)="deletedPost($event, item)"
-           (onUpdated)="updatedPost($event)"
-           (modalOpened)="openEditModal($event)"
-           (photoModalOpened)="openPhotoModal($event)">
-  </so-post>
+<div id="post-list-component" class="pt20 pb20">
+  <div class="z-social-box" *ngFor="let item of items; trackBy: trackItems">
+    <so-post [item]="item"
+             (onDeleted)="deletedPost($event, item)"
+             (onUpdated)="updatedPost($event)"
+             (modalOpened)="openEditModal($event)"
+             (photoModalOpened)="openPhotoModal($event)">
+    </so-post>
+  </div>
 </div>
-
-<!--<div-->
-  <!--class="z-social-box"-->
-  <!--*ngFor="let item of items; trackBy: trackItems">-->
-  <!--<so-post [item]="item" (onDeleted)="deletedPost($event, item)" (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)"></so-post>-->
-<!--</div>-->
-<!--<div *ngIf="contactItem.value.active"-->
-     <!--class="page-body-chat-content-in"-->
-     <!--scrollToBottom-->
-     <!--lockYOffset="10"-->
-     <!--observeAttributes="true"-->
-     <!--infinite-scroll-->
-     <!--[scrollWindow]="false"-->
-     <!--(scrolled)="onLoadMore()">-->
 
 <div class="view-all">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
