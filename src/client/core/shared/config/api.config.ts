@@ -6,7 +6,8 @@ export let ApiConfig = {
     notificationChannel: 'NotificationChannel',
     chatChannel: 'ChatChannel',
     chatSupportChannel: 'ChatSupportChannel',
-    appearanceChannel: 'AppearanceChannel'
+    appearanceChannel: 'AppearanceChannel',
+    chatNotificationChannel: 'ChatNotificationChannel'
   },
 
   paramName: {

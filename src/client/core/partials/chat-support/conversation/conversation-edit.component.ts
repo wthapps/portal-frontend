@@ -1,17 +1,17 @@
 import {
   Component, OnInit, Output, Input, EventEmitter, AfterViewInit
 } from '@angular/core';
-import { ChatSupportBaseComponent } from './chat-support-base.component';
-import { ChatSupportChannel } from './shared/channel/chat-support.channel';
+import { ChatSupportBaseComponent } from '../chat-support-base.component';
+import { ChatSupportChannel } from '../shared/channel/chat-support.channel';
 
 declare let $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'wth-chat-support-detail',
-  templateUrl: 'chat-support-detail.component.html'
+  selector: 'cs-conversation-edit',
+  templateUrl: 'conversation-edit.component.html'
 })
-export class ChatSupportDetailComponent implements OnInit, ChatSupportBaseComponent, AfterViewInit {
+export class ConversationEditComponent implements OnInit, ChatSupportBaseComponent, AfterViewInit {
   @Input() data: any;
   @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();

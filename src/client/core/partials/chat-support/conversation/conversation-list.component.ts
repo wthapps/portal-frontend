@@ -1,22 +1,24 @@
 import {
   Component, OnInit, EventEmitter, Output, Input, AfterViewInit
 } from '@angular/core';
-import { ChatSupportBaseComponent } from './chat-support-base.component';
-import { ApiBaseService } from '../../shared/services/apibase.service';
-import { ChatSupportChannel } from './shared/channel/chat-support-channel';
-import { AppearanceChannel } from './shared/channel/appearance-channel';
-import { UserService } from '../../shared/services/user.service';
+import { ChatSupportBaseComponent } from '../chat-support-base.component';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { UserService } from '../../../shared/services/user.service';
 
-// moduleId: module.id,
-//   selector: 'wth-chat-support-list',
+import { ChatSupportChannel } from '../shared/channel/chat-support.channel';
+import { AppearanceChannel } from '../shared/channel/appearance.channel';
+
+
+
 
 declare var $: any;
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'chat-support-list.component.html'
+  selector: 'cs-conversation-list',
+  templateUrl: 'conversation-list.component.html'
 })
-export class ChatSupportListComponent implements ChatSupportBaseComponent, OnInit, AfterViewInit {
+export class ConversationListComponent implements ChatSupportBaseComponent, OnInit, AfterViewInit {
   @Input() data: any;
   @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
@@ -46,8 +48,9 @@ export class ChatSupportListComponent implements ChatSupportBaseComponent, OnIni
     });
 
     // subscribe chat support channel
-    this.appearanceChannel.subscribe('cs');
-    this.chatSupportChannel.subscribe('cs');
+    // this.appearanceChannel.subscribe('cs');
+
+    // this.chatSupportChannel.subscribe('cs');
 
     // get all registered accounts that are different supporters
     this.api.get(`users/list_account_type`)

@@ -22,7 +22,7 @@ export class ChatChannelService extends BaseChannelService {
   subscribe(groupId:any) {
     let _this = this;
     if(this.userService.loggedIn) {
-      this.createConnectionInstance(this.userService);
+      this.createConnectionInstance(this.userService.profile.uuid);
       if(App['groupChat' + groupId] == undefined) {
         App['groupChat' + groupId] = App.cable.subscriptions.create(
           {channel: 'ChatChannel', group_id: groupId},

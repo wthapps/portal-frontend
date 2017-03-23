@@ -23,8 +23,7 @@ export class AppearanceChannel extends CableService {
 
   constructor(private userService: UserService, private cookie: CookieService) {
     super();
-    this.appearanceDataChanged = new Observable(
-      (observer: any) => {
+    this.appearanceDataChanged = new Observable((observer: any) => {
         this.observer = observer;
       }
     );
@@ -51,6 +50,7 @@ export class AppearanceChannel extends CableService {
         // process offlline in server
       },
       received: function(data: any){
+        // console.log('observer object.............', self.observer);
         self.observer.next(data);
       },
       goOnline: function(){

@@ -6,19 +6,20 @@ import {
   transition,
   animate, ComponentFactoryResolver, ReflectiveInjector, AfterViewInit, ViewContainerRef, QueryList, ViewChildren
 } from '@angular/core';
-import { ChatSupportListComponent } from './chat-support-list.component';
-import { ChatSupportDetailComponent } from './chat-support-detail.component';
-// import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
-// import { ChatSupportDirective } from './chat-support.module';
+import { ConversationListComponent } from './conversation/conversation-list.component';
+import { ConversationEditComponent } from './conversation/conversation-edit.component';
+import { ConversationCreateComponent } from './conversation/conversation-create.component';
+
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { ChatSupportDirective } from './chat-support.directive';
-import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
-import { ChatSupportChannel } from './shared/channel/chat-support-channel';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Constants } from '../../shared/config/constants';
 import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
 import { ApiBaseService } from '../../shared/services/apibase.service';
-import { AppearanceChannel } from './shared/channel/appearance-channel';
+
+import { AppearanceChannel } from './shared/channel/appearance.channel';
+import { ChatSupportChannel } from './shared/channel/chat-support.channel';
+import { NotificationChannel } from './shared/channel/notification.channel';
 
 const ChatSupportView = {
   list: 'list',
@@ -61,9 +62,9 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
   @ViewChild(ChatSupportDirective) chatSupport: ChatSupportDirective;
 
   showChat: boolean = false;
-  currentView: string;
   csUserid: string;
   supporters: Array<any>;
+  currentWindow: string;
 
 
   constructor(
@@ -71,17 +72,22 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
     private cookie: CookieService,
     private api: ApiBaseService,
     private chatSupportChannel: ChatSupportChannel,
-    private appearanceChannel: AppearanceChannel
+    private appearanceChannel: AppearanceChannel,
+    private notificationChannel: NotificationChannel
   ) {
   }
 
   ngOnInit() {
+    this.notificationChannel.subscribe('cs');
   }
 
   ngAfterViewInit() {
 
     // generate client id for chat support
     this.csUserid = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
+    this.currentWindow = this.cookie.get(`${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`);
+    console.log('current windows: ', this.currentWindow);
+
     if (this.csUserid == undefined) {
       this.api.post(`chat_support/init`, {user: null})
         .subscribe(
@@ -91,10 +97,6 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
           }
         );
     }
-
-
-
-
 
   }
 
@@ -109,20 +111,28 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
           .subscribe(
             (response: any) => {
               this.supporters = response.data;
-              this.loadComponent(ChatSupportListComponent);
+              this.loadComponent(ConversationListComponent);
             }
           );
       } else {
-        this.loadComponent(ChatSupportListComponent);
+        this.loadComponent(ConversationListComponent);
       }
     }
   }
 
   loadComponent(component: any) {
+
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
     let viewContainerRef = this.chatSupport.viewContainerRef;
+    this.cookie.put(
+      `${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`,
+      component.name, <CookieOptionsArgs>Constants.cookieOptionsArgs
+    );
+
+
     viewContainerRef.clear();
     let componentRef = viewContainerRef.createComponent(componentFactory);
+
     (<ChatSupportBaseComponent>componentRef.instance).data = this.csUserid;
     (<ChatSupportBaseComponent>componentRef.instance).supporters = this.supporters;
     (<ChatSupportBaseComponent>componentRef.instance).actionEvent.subscribe((action: any) => {
@@ -133,18 +143,18 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
   doAction(action: any) {
     switch (action['name']) {
       case ChatSupportAction.createConversation:
-        this.loadComponent(ChatSupportUserInfoComponent);
+        this.loadComponent(ConversationCreateComponent);
         break;
 
       case ChatSupportAction.goToDetail:
-        this.loadComponent(ChatSupportDetailComponent);
+        this.loadComponent(ConversationEditComponent);
         break;
 
       case ChatSupportAction.goBack:
         if (action['previous'] == 'ChatSupportListComponent') {
-          this.loadComponent(ChatSupportListComponent);
+          this.loadComponent(ConversationListComponent);
         } else {
-          this.loadComponent(ChatSupportUserInfoComponent);
+          this.loadComponent(ConversationCreateComponent);
         }
         break;
     }

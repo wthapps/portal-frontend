@@ -25,6 +25,10 @@ export class ChatSupportChannel extends CableService {
   private item: any;
   constructor(private userService: UserService, private cookie: CookieService, private api: ApiBaseService) {
     super();
+    this.messageData = new Observable((observer: any) => {
+        this.observer = observer;
+      }
+    );
   }
 
 
@@ -60,29 +64,38 @@ export class ChatSupportChannel extends CableService {
   // }
 
 
-  subscribe(type?: string) {
-    var self = this;
+  subscribe(conversationId: any, type?: string) {
     let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
 
     this.createConnectionInstance(cId, type);
 
-    App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
-      connected: function(){
-        console.log('cs connected');
+    var self = this;
 
-        this.messageData = new Observable(
-            (observer: any) => {
-              this.observer = observer;
-            }
-          );
-      },
-      disconnected: function(){
-        console.log('cs disconnected');
-      },
-      received: function(data: any){
-        self.observer.next(data);
-      }
-    });
+    (function () {
+      App[`conversation:${conversationId}`] = App.cable.subscriptions.create(
+        {
+          channel: ApiConfig.actionCable.chatSupportChannel,
+          conversationId: conversationId
+        }, {
+        connected: function(){
+          console.log('cs connected');
+        },
+        disconnected: function(){
+          console.log('cs disconnected');
+        },
+        received: function(data: any){
+          console.log('received chat data', data);
+          self.observer.next(data);
+        },
+        sendMessage: function (conversationId: any, message: any) {
+          console.log('sending message.............');
+          return this.perform('send_message', {
+            conversationId: conversationId,
+            message: message
+          });
+        }
+      });
+    }).call(this, self);
   }
 
 }

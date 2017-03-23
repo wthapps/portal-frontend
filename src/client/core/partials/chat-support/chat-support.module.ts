@@ -2,18 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CoreChatSupportComponent } from './chat-support.component';
-import { ChatSupportListComponent } from './chat-support-list.component';
-import { ChatSupportDetailComponent } from './chat-support-detail.component';
-import { ChatSupportUserInfoComponent } from './chat-support-user-info.component';
+import { ConversationListComponent } from './conversation/conversation-list.component';
+import { ConversationCreateComponent } from './conversation/conversation-create.component';
+import { ConversationEditComponent } from './conversation/conversation-edit.component';
+
 import { ChatSupportDirective } from './chat-support.directive';
-import { ChatSupportChannel } from './shared/channel/chat-support-channel';
-import { AppearanceChannel } from './shared/channel/appearance-channel';
+import { ChatSupportChannel } from './shared/channel/chat-support.channel';
+import { AppearanceChannel } from './shared/channel/appearance.channel';
 
 import { WthChatBoxDirective } from './shared/wth-chat-box.directive';
-import { MessageService } from './message.service';
+import { MessageService } from './message/message.service';
+import { ConversationService } from './conversation/conversation.service';
+
 import { ChatSupportMessageComponent } from './message/message.component';
 import { ChatSupportMessageListComponent } from './message/message-list.component';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { NotificationChannel } from './shared/channel/notification.channel';
 
 @NgModule({
   imports: [
@@ -21,9 +25,9 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
   ],
   declarations: [
     CoreChatSupportComponent,
-    ChatSupportListComponent,
-    ChatSupportDetailComponent,
-    ChatSupportUserInfoComponent,
+    ConversationListComponent,
+    ConversationCreateComponent,
+    ConversationEditComponent,
     ChatSupportMessageListComponent,
     ChatSupportMessageComponent,
     ChatSupportDirective,
@@ -31,9 +35,9 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
   ],
   exports: [
     CoreChatSupportComponent,
-    ChatSupportListComponent,
-    ChatSupportDetailComponent,
-    ChatSupportUserInfoComponent,
+    ConversationListComponent,
+    ConversationCreateComponent,
+    ConversationEditComponent,
     ChatSupportMessageListComponent,
     ChatSupportMessageComponent,
     ChatSupportDirective,
@@ -42,13 +46,15 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
   providers: [
     ChatSupportChannel,
     AppearanceChannel,
+    NotificationChannel,
     MessageService,
+    ConversationService,
     CookieService
   ],
   entryComponents:[
-    ChatSupportListComponent,
-    ChatSupportUserInfoComponent,
-    ChatSupportDetailComponent,
+    ConversationListComponent,
+    ConversationCreateComponent,
+    ConversationEditComponent,
     ChatSupportMessageListComponent,
     ChatSupportMessageComponent
   ]

@@ -21,7 +21,7 @@ export class ChatNotificationChannelService extends BaseChannelService {
   subscribe() {
     let _this = this;
     if(this.userService.loggedIn) {
-      this.createConnectionInstance(this.userService);
+      this.createConnectionInstance(this.userService.profile.uuid);
       App.chatNotification = App.cable.subscriptions.create(
         {channel: 'ChatNotificationChannel'},
         {
