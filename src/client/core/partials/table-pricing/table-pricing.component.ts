@@ -94,4 +94,28 @@ export class TablePricingComponent implements OnInit {
       this.router.navigateByUrl('payment');
     }
   }
+
+
+  redirectTo(domain: string = '', path: string = '', event: any) {
+    event.preventDefault();
+
+    let url: string = '';
+    switch (domain) {
+      case 'home':
+      case 'my':
+        url = `${Constants.baseUrls.myAccount}`;
+        break;
+      case 'media':
+        url = `${Constants.baseUrls.media}`;
+        break;
+      case 'social':
+        url = `${Constants.baseUrls.social}`;
+        break;
+      case 'chat':
+        url = `${Constants.baseUrls.chat}`;
+        break;
+    }
+
+    window.location.href = url + '/' + path;
+  }
 }
