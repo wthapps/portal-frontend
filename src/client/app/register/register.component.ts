@@ -86,8 +86,8 @@ export class RegisterComponent {
       values.sex = this.sex;
 
       let body = JSON.stringify({
-        first_name: values.firstName,
-        last_name: values.lastName,
+        first_name: values.first_name,
+        last_name: values.last_name,
         email: values.email,
         password: values.password,
         birthday_day: values.birthday_day,
