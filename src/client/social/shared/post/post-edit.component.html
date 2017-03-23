@@ -76,8 +76,11 @@
     <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
       <div class="row">
         <div class="col-xs-6 col-sm-12">
-          <textarea #textarea id="textarea" placeholder="Share your ideas" class="form-control"
-                    [formControl]="descCtrl"></textarea>
+          <div class="form-group">
+            <textarea #textarea id="textarea" placeholder="Share your ideas" class="form-control"
+                      [formControl]="descCtrl"></textarea>
+          </div>
+
           <div class="form-group">
             <tag-input [maxItems]='100'
                        [(ngModel)]="post.tags"
