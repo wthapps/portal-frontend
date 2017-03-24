@@ -42,7 +42,7 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
 
 
 
-    if( this.chatSupportChannel.messageData) {
+    if (this.chatSupportChannel.messageData) {
       this.chatSupportChannel.messageData
         .subscribe(
           (response: any) => {
@@ -50,6 +50,9 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
             this.messages = _.concat(this.messages, response.data.message);
           });
     }
+
+
+
   }
 
   ngAfterViewInit() {
@@ -111,11 +114,11 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
           let message = response.data;
           this.chatSupportChannel.subscribe(message.conversation.uuid, 'cs');
 
-          App.csNotification.sendMessage(message.conversation.uuid, {type: event.type, body: event.body});
+          // App.csNotification.sendMessage(message.conversation.uuid, {type: event.type, body: event.body});
 
 
-          App[`conversation:${message.conversation.uuid}`].sendMessage(
-            message.conversation.uuid, {type: event.type, body: event.body});
+          // App[`conversation:${message.conversation.uuid}`].sendMessage(
+          //   message.conversation.uuid, {type: event.type, body: event.body});
 
         },
         error => {

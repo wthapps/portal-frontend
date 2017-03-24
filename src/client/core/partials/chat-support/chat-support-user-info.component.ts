@@ -39,27 +39,9 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
 
   ngOnInit() {
 
-
-
-    if( this.chatSupportChannel.messageData) {
-      this.chatSupportChannel.messageData
-        .subscribe(
-          (response: any) => {
-           // this.messages.unshift(JSON.parse(message))
-            this.messages = _.concat(this.messages, response.data.message);
-          });
-    }
   }
 
   ngAfterViewInit() {
-    //load message for current conversation here
-    // let componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatSupportMessageListComponent);
-    // this.componentRef = this.messageContainerRefs.createComponent(componentFactory);
-    // this.messages = new Array<any>();
-    // (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
-
-    // this.chatSupportChannel.subscribe();
-
   }
 
   onBack() {

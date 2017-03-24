@@ -22,7 +22,6 @@ export class NotificationChannel extends CableService {
   observer: Observer<any>;
   hasDataChanged: Observable<any>;
 
-  private item: any;
   constructor(private userService: UserService, private cookie: CookieService, private api: ApiBaseService) {
     super();
     this.hasDataChanged = new Observable((observer: any) => {
@@ -48,7 +47,6 @@ export class NotificationChannel extends CableService {
         },
         received: function(data: any){
           self.observer.next(data);
-          console.log('cs notification received.............', data);
         },
         sendMessage: function (conversationId: any, message: any) {
           console.log('cs notification message.............');

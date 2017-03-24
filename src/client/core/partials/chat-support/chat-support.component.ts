@@ -79,6 +79,13 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.notificationChannel.subscribe('cs');
+    if (this.notificationChannel.hasDataChanged) {
+      this.notificationChannel.hasDataChanged
+        .subscribe(
+          (response: any) => {
+            console.log('notification has data changed', response);
+          });
+    }
   }
 
   ngAfterViewInit() {
@@ -86,7 +93,12 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
     // generate client id for chat support
     this.csUserid = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
     this.currentWindow = this.cookie.get(`${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`);
-    console.log('current windows: ', this.currentWindow);
+    if(this.currentWindow === undefined) {
+      this.cookie.put(
+        `${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`,
+        'ConversationListComponent', <CookieOptionsArgs>Constants.cookieOptionsArgs
+      );
+    }
 
     if (this.csUserid == undefined) {
       this.api.post(`chat_support/init`, {user: null})

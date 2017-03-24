@@ -22,7 +22,6 @@ export class ChatSupportChannel extends CableService {
   observer: Observer<any>;
   messageData: Observable<any>;
 
-  private item: any;
   constructor(private userService: UserService, private cookie: CookieService, private api: ApiBaseService) {
     super();
     this.messageData = new Observable((observer: any) => {
@@ -30,39 +29,6 @@ export class ChatSupportChannel extends CableService {
       }
     );
   }
-
-
-  // createSubscription() {
-  //   this.messageData = new Observable(
-  //     (observer: any) => {
-  //       this.observer = observer;
-  //     }
-  //   );
-  //
-  //   var self = this;
-  //   (function () {
-  //
-  //     App.chatSupport = App.cable.subscriptions.create(ApiConfig.actionCable.chatSupportChannel, {
-  //       connected: function () {
-  //         console.log('connected');
-  //       },
-  //       disconnected: function () {
-  //         console.log('disconnected');
-  //       },
-  //       received: function (response: any) {
-  //         this.item = response;
-  //         self.observer.next(response);
-  //       },
-  //       sendMessage: function (chatroom_id: any, message: any) {
-  //         return this.perform('send_message', {
-  //           chatroom_id: chatroom_id,
-  //           body: message
-  //         });
-  //       }
-  //     });
-  //   }).call(this, self);
-  // }
-
 
   subscribe(conversationId: any, type?: string) {
     let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
@@ -88,7 +54,7 @@ export class ChatSupportChannel extends CableService {
           self.observer.next(data);
         },
         sendMessage: function (conversationId: any, message: any) {
-          console.log('sending message.............');
+          console.log('sending message.............', this.observer, self.observer);
           return this.perform('send_message', {
             conversationId: conversationId,
             message: message

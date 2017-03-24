@@ -42,25 +42,25 @@ export class AppearanceChannel extends CableService {
     (function () {
 
       App.appearance = App.cable.subscriptions.create(ApiConfig.actionCable.appearanceChannel, {
-      connected: function(){
-        this.goOnline();
+        connected: function(){
+          this.goOnline();
 
-      },
-      disconnected: function(){
-        // process offlline in server
-      },
-      received: function(data: any){
-        // console.log('observer object.............', self.observer);
-        self.observer.next(data);
-      },
-      goOnline: function(){
-        // broadcast online status for other user
-      },
-      goOffline: function(){
-        //disable this function
-      }
+        },
+        disconnected: function(){
+          // process offlline in server
+        },
+        received: function(data: any){
+          // console.log('observer object.............', self.observer);
+          self.observer.next(data);
+        },
+        goOnline: function(){
+          // broadcast online status for other user
+        },
+        goOffline: function(){
+          //disable this function
+        }
 
-    });
+      });
     }).call(this, self);
   }
 
