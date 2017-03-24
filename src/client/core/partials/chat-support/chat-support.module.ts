@@ -14,8 +14,8 @@ import { WthChatBoxDirective } from './shared/wth-chat-box.directive';
 import { MessageService } from './message/message.service';
 import { ConversationService } from './conversation/conversation.service';
 
-import { ChatSupportMessageComponent } from './message/message.component';
-import { ChatSupportMessageListComponent } from './message/message-list.component';
+import { MessageItemComponent } from './message/message-item.component';
+import { MessageListComponent } from './message/message-list.component';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { NotificationChannel } from './shared/channel/notification.channel';
 
@@ -28,8 +28,8 @@ import { NotificationChannel } from './shared/channel/notification.channel';
     ConversationListComponent,
     ConversationCreateComponent,
     ConversationEditComponent,
-    ChatSupportMessageListComponent,
-    ChatSupportMessageComponent,
+    MessageListComponent,
+    MessageItemComponent,
     ChatSupportDirective,
     WthChatBoxDirective
   ],
@@ -38,8 +38,8 @@ import { NotificationChannel } from './shared/channel/notification.channel';
     ConversationListComponent,
     ConversationCreateComponent,
     ConversationEditComponent,
-    ChatSupportMessageListComponent,
-    ChatSupportMessageComponent,
+    MessageListComponent,
+    MessageItemComponent,
     ChatSupportDirective,
     WthChatBoxDirective
   ],
@@ -55,8 +55,8 @@ import { NotificationChannel } from './shared/channel/notification.channel';
     ConversationListComponent,
     ConversationCreateComponent,
     ConversationEditComponent,
-    ChatSupportMessageListComponent,
-    ChatSupportMessageComponent
+    MessageListComponent,
+    MessageItemComponent
   ]
 })
 

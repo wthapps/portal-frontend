@@ -8,6 +8,7 @@ import { UserService } from '../../../shared/services/user.service';
 
 import { ChatSupportChannel } from '../shared/channel/chat-support.channel';
 import { NotificationChannel } from '../shared/channel/notification.channel';
+import { MessageListComponent } from '../message/message-list.component';
 
 declare var _: any;
 declare var App: any;
@@ -21,7 +22,8 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
   @Input() data: any;
   @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild ('messageContainerRefs', {read: ViewContainerRef}) messageContainerRefs: ViewContainerRef;
+
+  @ViewChild ('messageListConRef', {read: ViewContainerRef}) messageListConRef: ViewContainerRef;
 
 
   messages: Array<any> = new Array<any>();
@@ -51,11 +53,11 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
   }
 
   ngAfterViewInit() {
-    //load message for current conversation here
-    // let componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatSupportMessageListComponent);
-    // this.componentRef = this.messageContainerRefs.createComponent(componentFactory);
-    // this.messages = new Array<any>();
-    // (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
+    // load message for current conversation here
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MessageListComponent);
+    this.componentRef = this.messageListConRef.createComponent(componentFactory);
+
+    (<MessageListComponent>this.componentRef.instance).messages = this.messages;
 
     // this.chatSupportChannel.subscribe();
 
@@ -122,8 +124,9 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
       );
 
 
-    // this.messages = _.concat(this.messages, {type: event.type, body: event.body});
-    // (<ChatSupportMessageListComponent>this.componentRef.instance).messages = this.messages;
+    this.messages = _.concat(this.messages, {type: event.type, body: event.body});
+    (<MessageListComponent>this.componentRef.instance).messages = this.messages;
+
 
     //TODO process sending status here
 

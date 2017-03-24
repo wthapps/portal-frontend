@@ -103,6 +103,9 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
   onShow() {
     this.showChat = !this.showChat;
     if(this.showChat) {
+
+      console.log('current window', this.currentWindow);
+
       // this.appearanceChannel.subscribe('cs');
       // this.chatSupportChannel.subscribe();
 
@@ -111,16 +114,32 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
           .subscribe(
             (response: any) => {
               this.supporters = response.data;
-              this.loadComponent(ConversationListComponent);
+              this.loadComponent();
             }
           );
       } else {
-        this.loadComponent(ConversationListComponent);
+        this.loadComponent();
       }
     }
   }
 
-  loadComponent(component: any) {
+  loadComponent(component?: any) {
+
+    this.currentWindow = this.cookie.get(`${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`);
+
+    if(component === undefined) {
+      switch (this.currentWindow) {
+        case 'ConversationListComponent':
+          component = ConversationListComponent;
+          break;
+        case 'ConversationCreateComponent':
+          component = ConversationCreateComponent;
+          break;
+        case 'ConversationEditComponent':
+          component = ConversationEditComponent;
+          break;
+      }
+    }
 
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
     let viewContainerRef = this.chatSupport.viewContainerRef;
@@ -151,7 +170,7 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
         break;
 
       case ChatSupportAction.goBack:
-        if (action['previous'] == 'ChatSupportListComponent') {
+        if (action['previous'] == 'ConversationListComponent') {
           this.loadComponent(ConversationListComponent);
         } else {
           this.loadComponent(ConversationCreateComponent);

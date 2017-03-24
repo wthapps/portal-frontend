@@ -7,10 +7,10 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'cs-message',
-  templateUrl: 'message.component.html'
+  selector: 'cs-message-item',
+  templateUrl: 'message-item.component.html'
 })
-export class ChatSupportMessageComponent implements OnInit, AfterViewInit {
+export class MessageItemComponent implements OnInit, AfterViewInit {
 
   @Input() message: any;
 

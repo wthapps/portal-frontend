@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, EventEmitter, Output, Input, AfterViewInit
+  Component, OnInit, EventEmitter, Output, Input, AfterViewInit, ViewContainerRef
 } from '@angular/core';
 import { ChatSupportBaseComponent } from '../chat-support-base.component';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
@@ -19,6 +19,10 @@ declare var $: any;
   templateUrl: 'conversation-list.component.html'
 })
 export class ConversationListComponent implements ChatSupportBaseComponent, OnInit, AfterViewInit {
+
+
+
+
   @Input() data: any;
   @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();

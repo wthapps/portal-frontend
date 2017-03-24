@@ -2,7 +2,7 @@ import {
   Component, OnInit, Input, AfterViewInit, ViewChild, QueryList, ViewContainerRef, ViewChildren, OnChanges,
   SimpleChanges, ChangeDetectorRef
 } from '@angular/core';
-import { ChatSupportMessageComponent } from './message.component';
+import { MessageItemComponent } from './message-item.component';
 
 
 declare var _: any;
@@ -12,7 +12,7 @@ declare var _: any;
   selector: 'cs-message-list',
   templateUrl: 'message-list.component.html'
 })
-export class ChatSupportMessageListComponent implements OnInit, AfterViewInit, OnChanges {
+export class MessageListComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() messages: Array<any>;
   // @ViewChild('messageViewChild') messageViewChild: ChatSupportMessageComponent;
@@ -23,7 +23,10 @@ export class ChatSupportMessageListComponent implements OnInit, AfterViewInit, O
   }
 
   ngOnInit() {
-    this.messages = new Array<any>();
+
+    if (this.messages === undefined) {
+      this.messages = new Array<any>();
+    }
   }
 
   ngAfterViewInit() {
@@ -36,7 +39,7 @@ export class ChatSupportMessageListComponent implements OnInit, AfterViewInit, O
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes..........', changes);
+    console.log('changes..........', this.messages);
   }
 
 }
