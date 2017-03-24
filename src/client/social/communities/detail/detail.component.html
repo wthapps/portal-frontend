@@ -153,8 +153,8 @@
             {{item.description}}
           </div>
 
-          <ul *ngIf="item.additional_links" class="list-unstyled">
-            <li *ngFor="let link of item.additional_links">
+          <ul *ngIf="item?.additional_links" class="list-unstyled">
+            <li *ngFor="let link of item?.additional_links">
               <i class="fa fa-globe"></i>
               <a target="_blank" href="{{link.url|urlTransform}}">{{ link ? link.name : ""}}</a>
             </li>

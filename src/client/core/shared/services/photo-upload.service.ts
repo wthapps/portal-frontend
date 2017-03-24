@@ -4,11 +4,9 @@ import { Constants } from '../config/constants';
 import { UUID } from 'angular2-uuid';
 
 declare var AWS: any;
-declare  let _: any;
-declare  let Promise: any;
-/**
- * Created by phat on 18/11/2016.
- */
+declare let _: any;
+declare let Promise: any;
+
 
 
 @Injectable()

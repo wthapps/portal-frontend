@@ -23,7 +23,7 @@
             (onKeypress)="handleKeyPress()"
             [validators]="validators"
             [hidden]="readonly || maxItemsReached()"
-            [placeholder]="searchItems.length ? placeholder : secondaryPlaceholder"
+            [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder"
             [inputClass]="inputClass"
             [inputId]="inputId"
         ></search-form>
@@ -60,7 +60,7 @@
         (onKeyup)="fireEvents('keyup', $event)"
         [validators]="validators"
         [hidden]="readonly || maxItemsReached()"
-        [placeholder]="searchItems.length ? placeholder : secondaryPlaceholder"
+        [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder"
         [inputClass]="inputClass"
         [inputId]="inputId"
       ></search-form>
@@ -71,8 +71,9 @@
     <div *ngIf="searchable">
       <ul class="list-unstyled social-list-user wth-scrollable">
         <li *ngFor="let item of itemsSearching">
+        <!--<li *ngFor="let item of items">-->
             <span class="social-list-user-action">
-              <input type="checkbox" (click)="toggleSelectItem(item, $event)" [(ngModel)]="item.selected">
+              <input type="checkbox" (click)="toggleSelectItem(item, $event)" [(ngModel)]="item.selected" [checked]="item.selected">
             </span>
           <img alt="" [src]="item.profile_image" title="" width="30">
           <span>{{item.name}}</span>

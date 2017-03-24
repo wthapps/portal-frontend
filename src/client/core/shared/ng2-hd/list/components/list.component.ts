@@ -42,6 +42,7 @@ import { getAction } from './helpers/keypress-actions';
 import { SearchFormComponent } from './search-form/search-form.component';
 
 import 'rxjs/add/operator/debounceTime';
+import { ApiBaseService } from '../../../services/apibase.service';
 
 declare var _: any;
 
@@ -221,6 +222,13 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   @Output() public onTextChange = new EventEmitter<any>();
 
   /**
+   * @name onListUpdate
+   * @desc
+   * @type {EventEmitter<string>}
+   */
+  @Output() public onListUpdate = new EventEmitter<any>();
+
+  /**
    * @name onTextChange
    * @desc event emitted when the input value changes
    * @type {EventEmitter<string>}
@@ -252,7 +260,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name itemsSearching
    * @type {String[]}
    */
-  public itemsSearching: Array<any> = new Array<any>();
+  @Input() public itemsSearching: Array<any> = new Array<any>();
 
   /**
    * @name selectedTag
@@ -281,7 +289,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     change: <{(fun: any): any}[]>[]
   };
 
-  constructor(private element: ElementRef, private renderer: Renderer) {
+  constructor(private element: ElementRef, private renderer: Renderer, private apiService: ApiBaseService) {
     super();
   }
 
@@ -477,16 +485,16 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.itemsSearching = this.searchItems;
-    this.items = this.selectedItems;
-    _.forEach(this.itemsSearching, (item: any) => {
-      _.assign(item, {selected: false});
-      _.forEach(this.items, (selectedItem: any) => {
-        if (item.id === selectedItem.id) {
-          _.assign(item, {selected: true});
-        }
-      });
-    });
+    // this.itemsSearching = this.searchItems;
+    // this.items = this.selectedItems;
+    // _.forEach(this.itemsSearching, (item: any) => {
+    //   _.assign(item, {selected: false});
+    //   _.forEach(this.items, (selectedItem: any) => {
+    //     if (item.id === selectedItem.id) {
+    //       _.assign(item, {selected: true});
+    //     }
+    //   });
+    // });
   }
 
   ngAfterViewChecked() {
@@ -499,6 +507,9 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     if (this.searchable) {
 
       // addListener.call(this, KEYUP, autoSearchListener);
+      // addListener.call(this, KEYUP, _.debounce(this.querySuggestUserList, this.onTextChangeDebounce, {}));
+      addListener.call(this, KEYUP, _.debounce(this.textInputChange, this.onTextChangeDebounce, {}));
+
 
       // this.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(this));
       // this.dropdown.onHide.subscribe(() => this.itemsSearching = []);
@@ -526,9 +537,10 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   public toggleSelectItem(item: any, event: any): void {
     if (_.find(this.items, item) == undefined) {
       this.items.push(item);
+
     } else {
       // _.pullAllWith(this.items, item, (i) => {return (i.id == item.id); });
-      this.items = this.items.filter(_item => _item !== item);
+      this.items = this.items.filter(_item => { return _item !== item;} );
     }
     this.onSelected.emit(this.items);
   }
@@ -538,7 +550,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   }
 
   public registerEvent(eventName: string, callback: any) {
-    addListener.call(this, eventName, callback);
+    addListener.call(this, eventName, callback(this));
   }
 
 
@@ -565,6 +577,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     return item;
   }
 
+
   /**
    * @name getControl
    * @returns {FormControl}
@@ -573,4 +586,12 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     return <FormControl>this.inputForm.value;
   }
 
+  public textInputChange() {
+    var searchName: string = this.inputForm.value.value;
+
+    this.onTextChange.emit(searchName );
+  }
+
+
 }
+
