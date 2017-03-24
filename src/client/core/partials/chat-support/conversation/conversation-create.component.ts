@@ -112,7 +112,8 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
         (response: any) => {
           console.log('created message !!!!', response);
           let message = response.data;
-          this.chatSupportChannel.subscribe(message.conversation.uuid, 'cs');
+
+          // this.chatSupportChannel.subscribe(message.conversation.uuid, 'cs');
 
           // App.csNotification.sendMessage(message.conversation.uuid, {type: event.type, body: event.body});
 
