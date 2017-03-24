@@ -32,7 +32,7 @@
     <!-- tags [default] -->
   <div class="wth-scrollable mb20" style="max-height: 100px;">
     <div class="hd-list-container hd-list-container--default" *ngIf="hasCustomTemplate() === false">
-      <div *ngFor="let item of items"
+      <div *ngFor="let item of selectedItems"
            (click)="selectItem(item);$event.stopPropagation();"
            (keydown)="handleKeydown($event, item)"
            [attr.tabindex]="readonly ? -1 : 0"

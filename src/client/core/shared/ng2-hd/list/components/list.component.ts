@@ -535,14 +535,14 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   // }
 
   public toggleSelectItem(item: any, event: any): void {
-    if (_.find(this.items, item) == undefined) {
-      this.items.push(item);
+    if (_.find(this.selectedItems, item) == undefined) {
+      this.selectedItems.push(item);
 
     } else {
       // _.pullAllWith(this.items, item, (i) => {return (i.id == item.id); });
-      this.items = this.items.filter(_item => { return _item !== item;} );
+      this.selectedItems = this.selectedItems.filter(_item => { return _item !== item;} );
     }
-    this.onSelected.emit(this.items);
+    this.onSelected.emit(this.selectedItems);
   }
 
   public handleKeyPress() {

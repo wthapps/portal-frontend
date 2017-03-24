@@ -8,10 +8,11 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 import { SocialService } from '../../shared/services/social.service';
-import { MemberListInviteComponent } from '../member/member-list-invite.component';
+// import { MemberListInviteComponent } from '../member/member-list-invite.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
+import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 
 declare let _: any;
 declare let $: any;
@@ -90,7 +91,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
-  @ViewChild('users') users: MemberListInviteComponent;
+  @ViewChild('users') users: EntitySelectComponent;
+  // @ViewChild('users') users: MemberListInviteComponent;
   @ViewChild('posts') posts: PostListComponent;
 
 
@@ -296,7 +298,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   chooseMembers() {
-    this.users.open({url: `/zone/social_network/users/users_not_in_community/${this.uuid}`});
+    this.users.open({url: `zone/social_network/users_search/users_not_in_community/${this.uuid}`, mode: 'add'});
 
   }
 

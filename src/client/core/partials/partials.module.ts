@@ -18,6 +18,8 @@ import { UploadCropImageModule } from './upload-crop-image/upload-crop-image.mod
 import { TitleCase } from '../shared/pipe/titlecase.pipe';
 import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 import { CoreChatSupportModule } from './chat-support/chat-support.module';
+import { EntitySelectComponent } from './entity-select/entity-select.component';
+import { EntitySelectModule } from './entity-select/entity-select.module';
 
 
 
@@ -35,6 +37,7 @@ import { CoreChatSupportModule } from './chat-support/chat-support.module';
     CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
+    EntitySelectModule,
     PhotoModule
   ],
   declarations: [
@@ -60,6 +63,7 @@ import { CoreChatSupportModule } from './chat-support/chat-support.module';
     CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
+    EntitySelectModule,
     PhotoModule,
 
     // Pipe

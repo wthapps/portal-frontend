@@ -19,6 +19,7 @@ import { SocialService } from '../services/social.service';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 
 
 declare var _: any;
@@ -33,7 +34,9 @@ declare var _: any;
 export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('modal') modal: HdModalComponent;
-  @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
+  // @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
+  @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
+
 
   // For share
   // @Input() isShare: boolean = false;
@@ -185,51 +188,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     console.log('adding................', options);
     this.saved.emit(options);
     this.unsubscribeAll();
-
-
-    // let body: string;
-    // let url: string = 'zone/social_network/posts';
-    // body = JSON.stringify({
-    //   post: {
-    //     description: item.description,
-    //     photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
-    //     tags_json: this.post.tags,
-    //     privacy: this.post.privacy,
-    //     adult: this.post.adult,
-    //     disable_comment: this.post.disable_comment,
-    //     disable_share: this.post.disable_share,
-    //     mute: this.post.mute
-    //   },
-    //   parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-    //   custom_objects: this.custom_objects
-    // });
-    //
-    // if(this.mode == 'add') {
-    //   this.apiService.post(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    //
-    // } else if(this.mode == 'edit') {
-    //   url += `/${this.post.uuid}`;
-    //   this.apiService.put(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    // }
-
   }
 
   uploadFiles(files: Array<any>) {
@@ -314,7 +272,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   dismiss(photos: any) {
     // this.photos.length = 0;
-    // this.dismissed.emit(photos);
+    this.dismissed.emit(photos);
     this.unsubscribeAll();
   }
 
@@ -398,7 +356,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     if (this.mode == 'add') {
       this.post = _.assignIn(this.post, attr);
     } else {
-      this.onUpdated.emit(attr);
+      this.post = _.assignIn(this.post, attr);
+      // this.onUpdated.emit(attr);
     }
   }
 

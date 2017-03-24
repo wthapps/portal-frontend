@@ -139,6 +139,6 @@
                    <!--(onClose)="closeSelectPhoto($event)"-->
                    <!--(onUpload)="upload($event)"></post-photo-select>-->
 
-<post-privacy-custom #privacyCustomModal (onSelected)="selectedItems($event)"></post-privacy-custom>
-
+<!--<post-privacy-custom #privacyCustomModal (onSelected)="selectedItems($event)"></post-privacy-custom>-->
+<entity-select #privacyCustomModal type='custom_friend' (onSelected)="selectedItems($event)"></entity-select>
 

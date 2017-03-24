@@ -19,7 +19,7 @@ import { InputTextareaModule } from 'primeng/primeng';
 import { TagInputModule } from 'ng2-tag-input';
 import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
 import { SharedModule } from '../../../core/shared/shared.module';
-import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
+// import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
 // import { TagInputModule } from 'ng2-tag-input/dist/modules/ng2-tag-input.module';
 // import { FileSelectionComponent } from '../../../core/partials/zone/photo/file-select/file-selection.component';vi
 
@@ -47,7 +47,7 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
-    MemberListInviteComponent,
+    // MemberListInviteComponent,
     // Comments
     ZSocialCommentBoxComponent
 
@@ -69,7 +69,7 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
-    MemberListInviteComponent,
+    // MemberListInviteComponent,
 
 
 

@@ -4,7 +4,8 @@
 
       <!--<z-social-community-cover [data]="data"></z-social-community-cover>-->
 
-      <member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>
+      <!--<member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>-->
+      <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
       <div *ngIf="data" class="z-social-box">
 
 

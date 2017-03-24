@@ -26,11 +26,10 @@
     </so-post>
   </div>
 </div>
-<div id="post-list-component"></div>
 
 <div class="view-all">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
 </div>
 <!--Edit post modal. This modal will handle add new, edit post and share-->
-<so-post-edit #postEditModal (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
+<so-post-edit #postEditModal (saved)="save($event)" (onUpdated)="update($event)" (dismissed)="dismiss($event)"></so-post-edit>
 <!--<post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>-->

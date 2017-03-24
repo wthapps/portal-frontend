@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
-import { MemberListInviteComponent } from '../member/member-list-invite.component';
+// import { MemberListInviteComponent } from '../member/member-list-invite.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
@@ -24,6 +24,7 @@ import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
 import { Constants } from '../../../core/shared/config/constants';
+import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 
 declare var _: any;
 
@@ -37,7 +38,8 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
-  @ViewChild('users') users: MemberListInviteComponent;
+  @ViewChild('users') users: EntitySelectComponent;
+  // @ViewChild('users') users: MemberListInviteComponent;
 
   @Input() data: any;
   @Input() selectedTab: string;
