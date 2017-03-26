@@ -13,7 +13,7 @@
              (onRemove)="removeItem($event)"
              (onSelected)="onSelectedItems($event)"
              (onAdd)="addItem($event)"
-             (onTextChange)="loadData($event)"
+             (onTextChange)="term$.next($event)"
     >
     </hd-list>
   </hd-modal-body>

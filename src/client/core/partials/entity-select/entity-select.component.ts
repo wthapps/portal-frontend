@@ -1,7 +1,9 @@
-import { Component, ViewChild, Output, EventEmitter, OnInit, Input } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, OnInit, Input, OnDestroy } from '@angular/core';
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ListComponent } from '../../../core/shared/ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { Subject, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operator/switchMap';
 
 
 declare var _: any;
@@ -10,7 +12,7 @@ export const ENTITY_TYPE = {
   memberInvite: 'member_invite',
   customFriend: 'custom_friend',
   customCommunity: 'custom_community'
-}
+};
 
 
 export const ENTITY_ATTRS: any = [
@@ -24,6 +26,8 @@ export const MODE_TYPE: any = {
   edit: 'edit'
 };
 
+export const DEBOUNCE_TIME: any = 250;
+
 @Component({
   moduleId: module.id,
   selector: 'entity-select',
@@ -31,14 +35,14 @@ export const MODE_TYPE: any = {
   styleUrls: ['entity-select.component.css']
 })
 
-export class EntitySelectComponent implements OnInit {
+export class EntitySelectComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: HdModalComponent;
   @ViewChild('list') list: ListComponent;
 
   @Input() type: string;
   @Input() mode: string = MODE_TYPE.add;
   titleIcon: string;
-  title: string
+  title: string;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter<any>();
 
@@ -46,41 +50,73 @@ export class EntitySelectComponent implements OnInit {
   itemNames: Array<any> = new Array<any>();
   selectedItems: Array<any> = new Array<any>();
   url: string = undefined;
+  term$ = new Subject<string>();
+
+  termSubscription: Subscription;
 
   constructor(private apiService: ApiBaseService) {
+  }
 
+  resubscribe() {
+    // if (this.termSubscription && !this.termSubscription.closed)
+    //   this.term$.unsubscribe();
+    this.termSubscription = this.term$
+      .debounceTime(DEBOUNCE_TIME)
+      .distinctUntilChanged()
+      .switchMap(term => this.apiService.get(this.url,  {'search_name': (term == undefined ? '' : term)}) )
+      .subscribe( (res: any) => {
+          this.updateData(res['data']);
+        }, (error : any)=> {
+          console.log('error', error);
+        }
+      );
   }
 
   ngOnInit() {
     this.changeEntity();
   }
 
-  changeEntity(newType: string = ''){
-    if (newType) {
+  ngOnDestroy() {
+    this.termSubscription.unsubscribe();
+  }
+
+  changeEntity(newType: string = '') {
+    if (newType && (this.type !== newType) ) {
+      this.selectedItems.length = 0;
       this.type = newType;
     }
     let entity = _.filter(ENTITY_ATTRS, {type: this.type});
     this.title = entity[0].title;
     this.titleIcon = entity[0].titleIcon;
     this.url = entity[0].defaultUrl;
+
+    // if (this.url)
+    //   this.term$.next();
   }
 
-  open(options: any = {url: undefined, mode: 'add', type: ''}) {
-    if (options.type != undefined)
+  open(options: any = {url: undefined, type: ''},  mode: string = 'add') {
+    if (options.type != undefined && options.type != '')
       this.changeEntity(options.type);
 
-    if (options.url != undefined) {
+    this.items.length = 0;
+    this.resubscribe();
+
+    if (options.url != undefined && options.url != '') {
       this.url = options.url;
     }
 
     // Clear selected items
-    if (options.mode == MODE_TYPE.add) {
+    if (mode == MODE_TYPE.add) {
       this.selectedItems.length = 0;
     }
 
     this.list.setInputValue('');
-    this.modal.open();
-    this.loadData();
+    this.modal.open()
+      .then(() => {
+        this.term$.next();}
+      )
+      .catch((error: any) => console.error('Cannot open entity select modal', error));
+    // this.loadData();
   }
 
 
@@ -102,6 +138,7 @@ export class EntitySelectComponent implements OnInit {
       this.modal.dismiss();
       // this.list.resetSelectedItems();
     }
+    this.termSubscription.unsubscribe();
   }
 
   selectItems(event: any) {
@@ -111,75 +148,34 @@ export class EntitySelectComponent implements OnInit {
     });
 
     this.modal.close();
+    this.termSubscription.unsubscribe();
   }
 
-  filterData(search_name: string = ''): void {
+  private updateData(data: any) {
+    if (this.selectedItems.length === 0 ) {
+      this.items = data;
+    } else {
+      // TODO: shorten the syntax ???
+      this.items.length = 0;
+      this.items.push(...this.selectedItems);
 
-  }
+      for(let i = 0; i < this.items.length; i++ ) {
+        this.items[i].selected = true;
+      }
 
-
-  loadData(search_name: string = ''): void {
-    let body = {'search_name': search_name};
-    this.apiService.get(this.url, body)
-      .subscribe((res: any) => {
-          let data: any = res['data'];
-          // switch (this.type) {
-          //   case ENTITY_TYPE.memberInvite:
-          //     data = res['data'];
-          //     break;
-          //   case ENTITY_TYPE.customFriend:
-          //     data = res['data']['friends'];
-          //     break;
-          //   case ENTITY_TYPE.customCommunity:
-          //     data = res['data']['communities'];
-          //     break;
-          //
-          //   default: {
-          //     console.error('Uninitialize or unsupported type: ', this.type);
-          //     break;
-          //   }
-          // }
-
-
-
-
-          if (this.selectedItems.length === 0 ) {
-            this.items = data;
-            // this.items.unshift(...this.selectedItems);
-          } else {
-            // TODO: shorten the syntax ???
-            this.items.length = 0;
-            this.items.push(...this.selectedItems);
-
-            for(let i = 0; i < this.items.length; i++ ) {
-              this.items[i].selected = true;
-            }
-
-            for(let j = 0; j < data.length; j++) {
-              var match = false;
-              for(let i = 0; i < this.selectedItems.length; i++ ) {
-                if (this.items[i].uuid === data[j].uuid) {
-                  match = true;
-                  break;
-                }
-              }
-              if (!match)
-                this.items.push(data[j]);
-            }
+      for(let j = 0; j < data.length; j++) {
+        var match = false;
+        for(let i = 0; i < this.selectedItems.length; i++ ) {
+          if (this.items[i].uuid === data[j].uuid) {
+            match = true;
+            break;
           }
+        }
+        if (!match)
+          this.items.push(data[j]);
+      }
+    }
 
-          this.itemNames = _.map(data, 'name');
-        },
-        error => {
-          console.log('error', error);
-        });
+    this.itemNames = _.map(data, 'name');
   }
-
-  loadSuggestList(input: string): void {
-
-  }
-
-  // updateUserList(items: any): void {
-  //   this.items = items;
-  // }
 }

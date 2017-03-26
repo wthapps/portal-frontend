@@ -298,7 +298,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   chooseMembers() {
-    this.users.open({url: `zone/social_network/users_search/users_not_in_community/${this.uuid}`, mode: 'add'});
+    this.users.open({url: `zone/social_network/users_search/users_not_in_community/${this.uuid}`});
 
   }
 
@@ -327,6 +327,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   onDelete(item: any) {
 
+  }
+
+  onLoadMore() {
+    this.posts.viewMorePosts();
   }
 
   private getCommunity(uuid: string) {
@@ -469,7 +473,4 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onLoadMore() {
-    this.posts.viewMorePosts();
-  }
 }

@@ -508,7 +508,8 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
 
       // addListener.call(this, KEYUP, autoSearchListener);
       // addListener.call(this, KEYUP, _.debounce(this.querySuggestUserList, this.onTextChangeDebounce, {}));
-      addListener.call(this, KEYUP, _.debounce(this.textInputChange, this.onTextChangeDebounce, {}));
+      // addListener.call(this, KEYUP, _.debounce(this.textInputChange, this.onTextChangeDebounce, {}));
+      addListener.call(this, KEYUP, this.textInputChange);
 
 
       // this.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(this));
@@ -586,10 +587,12 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     return <FormControl>this.inputForm.value;
   }
 
-  public textInputChange() {
-    var searchName: string = this.inputForm.value.value;
+  private textInputChange() {
+    // var searchName: string = this.inputForm.value.value;
 
-    this.onTextChange.emit(searchName );
+    // this.onTextChange.emit(searchName );
+    // console.log(this.inputForm.value.value);
+    this.onTextChange.emit(this.inputForm.value.value );
   }
 
 
