@@ -77,7 +77,8 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.termSubscription.unsubscribe();
+    if( this.termSubscription && !this.termSubscription.closed)
+      this.termSubscription.unsubscribe();
   }
 
   changeEntity(newType: string = '') {
