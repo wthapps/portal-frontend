@@ -20,11 +20,11 @@ declare let App: any;
 export class ChatSupportChannel extends CableService {
 
   observer: Observer<any>;
-  messageData: Observable<any>;
+  hasDataChanged: Observable<any>;
 
   constructor(private userService: UserService, private cookie: CookieService, private api: ApiBaseService) {
     super();
-    this.messageData = new Observable((observer: any) => {
+    this.hasDataChanged = new Observable((observer: any) => {
         this.observer = observer;
       }
     );

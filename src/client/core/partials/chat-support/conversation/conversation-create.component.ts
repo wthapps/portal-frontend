@@ -33,23 +33,21 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
     private messageService: MessageService,
     private conversationService: ConversationService,
     private userService: UserService,
-    private chatSupportChannel: ChatSupportChannel,
-    private notificationChannel: NotificationChannel
+    private chatSupportChannel: ChatSupportChannel
   ) {
   }
 
   ngOnInit() {
 
-
-
-    if (this.chatSupportChannel.messageData) {
-      this.chatSupportChannel.messageData
-        .subscribe(
-          (response: any) => {
-           // this.messages.unshift(JSON.parse(message))
-            this.messages = _.concat(this.messages, response.data.message);
-          });
-    }
+    // if (this.chatSupportChannel.hasDataChanged) {
+    //   this.chatSupportChannel.hasDataChanged
+    //     .subscribe(
+    //       (response: any) => {
+    //         console.log('message sending.......', response);
+    //        // this.messages.unshift(JSON.parse(message))
+    //         this.messages = _.concat(this.messages, response.data.message);
+    //       });
+    // }
 
 
 
@@ -57,10 +55,10 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
 
   ngAfterViewInit() {
     // load message for current conversation here
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MessageListComponent);
-    this.componentRef = this.messageListConRef.createComponent(componentFactory);
+    // let componentFactory = this.componentFactoryResolver.resolveComponentFactory(MessageListComponent);
+    // this.componentRef = this.messageListConRef.createComponent(componentFactory);
 
-    (<MessageListComponent>this.componentRef.instance).messages = this.messages;
+    // (<MessageListComponent>this.componentRef.instance).messages = this.messages;
 
     // this.chatSupportChannel.subscribe();
 
@@ -110,7 +108,6 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
       })
       .subscribe(
         (response: any) => {
-          console.log('created message !!!!', response);
           let message = response.data;
 
           // this.chatSupportChannel.subscribe(message.conversation.uuid, 'cs');
@@ -128,8 +125,8 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
       );
 
 
-    this.messages = _.concat(this.messages, {type: event.type, body: event.body});
-    (<MessageListComponent>this.componentRef.instance).messages = this.messages;
+    // this.messages = _.concat(this.messages, {type: event.type, body: event.body});
+    // (<MessageListComponent>this.componentRef.instance).messages = this.messages;
 
 
     //TODO process sending status here

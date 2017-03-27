@@ -49,11 +49,11 @@ export class NotificationChannel extends CableService {
           self.observer.next(data);
         },
         sendMessage: function (conversationId: any, message: any) {
-          console.log('cs notification message.............');
-          return this.perform('send_message', {
-            conversationId: conversationId,
-            message: message
-          });
+          // console.log('cs notification message.............');
+          // return this.perform('send_message', {
+          //   conversationId: conversationId,
+          //   message: message
+          // });
         }
       });
     }).call(this, self);
