@@ -86,6 +86,7 @@ export class ChatNotificationChannelService extends BaseChannelService {
       let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.group_id) return contact;});
       if (contact && contact.notification) {
         contact.notification_count = data.count;
+        this.chatCommonService.updateAll();
       }
     }
   }

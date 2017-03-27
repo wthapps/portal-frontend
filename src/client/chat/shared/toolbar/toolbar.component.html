@@ -20,7 +20,7 @@
           <!--show if current isn't one user-->
 
           <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
-          <!--<li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a></li>-->
+          <li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a></li>
           <!--show if current isn't one user-->
 
           <!--<li><a href="#">Leave Conversation</a></li>-->
@@ -62,12 +62,12 @@
       <button (click)="showDropdownMenu($event)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown">
         <i class="online"></i> {{user_in_group.name}} <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu dropdown-menu-lg">
-        <li><a href="#">Send Message</a></li>
-        <li class="divider"></li>
-        <li><a href="#">View Social Profile</a></li>
-        <li><a href="#">Blacklist</a></li>
-      </ul>
+      <!--<ul class="dropdown-menu dropdown-menu-lg">-->
+        <!--<li><a href="#">Send Message</a></li>-->
+        <!--<li class="divider"></li>-->
+        <!--<li><a href="#">View Social Profile</a></li>-->
+        <!--<li><a href="#">Blacklist</a></li>-->
+      <!--</ul>-->
     </div>
   </div>
 </template>

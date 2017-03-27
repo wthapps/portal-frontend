@@ -5,7 +5,9 @@
       <li class="active"><a href="javascript:;">ALL</a></li>
       <li><a [routerLink]="['/contact/online']">ONLINE</a></li>
       <li><a [routerLink]="['/contact/blacklist']">BLACKLIST</a></li>
+      <a class="btn btn-default" style="float: right" href="javascript:;" (click)="newContact()">Add New Contact</a>
     </ul>
+
   </nav>
 </div>
 
@@ -29,3 +31,5 @@
     </ul>
   </div>
 </div>
+
+<z-chat-share-add-contact #addContact></z-chat-share-add-contact>
