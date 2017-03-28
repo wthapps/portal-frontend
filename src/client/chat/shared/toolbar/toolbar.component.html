@@ -50,7 +50,7 @@
         <span *ngIf="item.value.group_json.group_type == 'multiple'">{{item.value.group_json | chatGroupName:50}}</span>
         <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
-          {{item.value.group_json.member_count}} people
+          {{item.value.group_json.member_count}} people <i [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
         </small>
       </div>
     </div>
