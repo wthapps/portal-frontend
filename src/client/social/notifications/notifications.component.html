@@ -1,4 +1,9 @@
-<div class="page-body-content gray-light">
+<div class="page-body-content gray-light"
+     lockYOffset="20"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolled)="getMoreNotifications()">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-container">
       <div class="z-social-box">
@@ -7,7 +12,7 @@
         </div>
         <div class="z-social-box-body z-social-box-body-communities">
           <div class="row">
-            <div *ngFor="let notification of notificationService.notifications" class="col-xs-12 col-lg-6">
+            <div *ngFor="let notification of notificationService.notifications" [class]="notifClass(notification)">
               <div class="media-center">
                 <div class="media-center-left">
                   <figure>

@@ -8,7 +8,7 @@
       <div class="z-social-media-inputpost inputpost-new">
         <input type="text" class="form-control" placeholder="Share your ideas" readonly (click)="postEditModal.open()">
         <span class="z-social-media-inputpost-icon">
-            <i (click)="postEditModal.open({addingPhotos: true, community: community})" class="fa fa-camera"></i>
+            <i (click)="postEditModal.open({addingPhotos: true, community: community, mode: 'add', isShare: false})" class="fa fa-camera"></i>
         </span>
       </div>
     </div>

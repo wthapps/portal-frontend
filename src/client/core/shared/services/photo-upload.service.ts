@@ -121,7 +121,7 @@ export class PhotoUploadService {
   // => https://env-staging-oregon.s3-us-west-2.amazonaws.com/small.cat-thumb.jpg
   getThumbnailUrl(tempUrl: string) {
     let str = tempUrl.replace(this.SUFFIX, '');
-    return str.replace(new RegExp('.([a-zA-Z]*)*$'),'-compress.$1'); // small.cat.jpg => small.cat-thumb.jpg
+    return str.replace(new RegExp('.([a-zA-Z]*)*$'),'-thumb.$1'); // small.cat.jpg => small.cat-thumb.jpg
   }
 
 
