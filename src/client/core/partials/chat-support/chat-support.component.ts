@@ -83,8 +83,11 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
       this.notificationChannel.hasDataChanged
         .subscribe(
           (response: any) => {
-            console.log('notification has data changed', response.conversation);
-            this.chatSupportChannel.subscribe(response.conversation.uuid, 'cs');
+            if (response.object == 'conversation') {
+
+            }
+            console.log('notification has data changed', response);
+            // this.chatSupportChannel.subscribe(response.conversation.uuid, 'cs');
 
           });
     }

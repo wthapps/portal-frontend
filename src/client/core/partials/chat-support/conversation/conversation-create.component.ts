@@ -6,7 +6,6 @@ import { MessageService } from '../message/message.service';
 import { ConversationService } from '../conversation/conversation.service';
 import { UserService } from '../../../shared/services/user.service';
 
-import { ChatSupportChannel } from '../shared/channel/chat-support.channel';
 import { NotificationChannel } from '../shared/channel/notification.channel';
 import { MessageListComponent } from '../message/message-list.component';
 
@@ -25,32 +24,34 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
 
   @ViewChild ('messageListConRef', {read: ViewContainerRef}) messageListConRef: ViewContainerRef;
 
-
+  conversation: any = null;
+  currentUser: any;
   messages: Array<any> = new Array<any>();
   componentRef: any;
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private messageService: MessageService,
     private conversationService: ConversationService,
-    private userService: UserService,
-    private chatSupportChannel: ChatSupportChannel
+    private notificationChannel: NotificationChannel,
+    private userService: UserService
   ) {
+
   }
 
   ngOnInit() {
+    this.currentUser = this.userService.profile;
 
-    // if (this.chatSupportChannel.hasDataChanged) {
-    //   this.chatSupportChannel.hasDataChanged
-    //     .subscribe(
-    //       (response: any) => {
-    //         console.log('message sending.......', response);
-    //        // this.messages.unshift(JSON.parse(message))
-    //         this.messages = _.concat(this.messages, response.data.message);
-    //       });
-    // }
+    this.notificationChannel.hasDataChanged
+      .subscribe(
+        (response: any) => {
+          if (response.object == 'message') {
+            this.messages = _.concat(this.messages, response.data);
+          }
+          if (response.object == 'conversation') {
+            this.conversation = response.data.uuid;
+          }
 
-
-
+        });
   }
 
   ngAfterViewInit() {
@@ -79,28 +80,33 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
   onSendMessage(event: any) {
 
     // create new conversation
+
     // this.conversationService.create({users: this.userService.profile.uuid})
     //   .subscribe(
     //     (response: any) => {
     //       var conversation: any = response.data;
+    //       // this.chatSupportChannel.subscribe(conversation.uuid, 'cs');
     //
+    //       // console.log('app after', App);
     //
-    //
-    //
-    //       this.chatSupportChannel.subscribe(conversation.uuid, 'cs');
-    //       console.log('sending........msg');
-    //       App[`conversation:${conversation.uuid}`].sendMessage(conversation.uuid, {type: event.type, body: event.body});
+    //       this.messageService.sendMessage({senderId: this.data, conversation: conversation.uuid,
+    //         message: {
+    //           type: event.type,
+    //           body: event.body
+    //         }
+    //         })
+    //         .subscribe(
+    //           (response: any) => { },
+    //           error => { }
+    //         );
     //     },
-    //     error => {
-    //
-    //     }
+    //     error => { }
     //   );
-
 
 
     this.messageService.sendMessage({
         senderId: this.data,
-        conversation: null,
+        conversation: this.conversation,
         message: {
           type: event.type,
           body: event.body

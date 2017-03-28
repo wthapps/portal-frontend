@@ -16,14 +16,25 @@
 
   <div class="intercom-content-body">
     <div class="p30">
-      <div >
-        <div class="intercom-conversation-part intercom-conversation-part-user" *ngFor="let message of messages">
-        <div class="intercom-avatar">
-        <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      <div  *ngFor="let message of messages">
+        <div *ngIf="message.sender_id == currentUser.id" class="intercom-conversation-part intercom-conversation-part-user">
+
+          <div class="intercom-avatar">
+            <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
+          </div>
+          <div class="intercom-comment-container">
+            <p>{{message.body}}</p>
+          </div>
         </div>
-        <div class="intercom-comment-container">
-          <p>{{message.body}}</p>
-        </div>
+
+        <div *ngIf="message.sender_id != currentUser.id"  class="intercom-conversation-part intercom-conversation-part-admin">
+          <div class="intercom-avatar">
+            <img class="img-circle" src="/assets/images/avatar/avatar.png" alt="">
+          </div>
+          <div class="intercom-comment-container">
+            <p>{{message.body}}</p>
+          </div>
+          <span class="intercom-comment-time">1h ago</span>
         </div>
 
       </div>
