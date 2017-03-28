@@ -12,7 +12,6 @@ body {
   background-color: #f6f6f6;
 }
 
-
 .banner-wrap {
   margin-top: -20px;
   position: relative;
@@ -413,6 +412,11 @@ $footer-height: 222px;
         }
       }
     }
+  }
+  .page-body-control-sub {
+    margin: 0 -30px;
+    padding: 10px 30px;
+    @include clearfix;
   }
   .page-body-in-title {
     margin-top: 20px;
