@@ -88,3 +88,23 @@
     <img [src]="message.file_json.thumbnail_url" alt=""> Uploading ...
   </span>
 </div>
+
+<div *ngIf="message.message_type == 'notification'" class="chat-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
+  <div class="chat-item-message">
+    <div class="chat-item-card">
+      <div class="chat-item-action">
+        <small>{{message.created_at | timeFormat: "time_only"}}</small>
+        <div class="btn-group">
+          <i class="fa fa-pencil" data-toggle="dropdown"></i>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li *ngIf="!message.file_json"><a href="javascript:;">Copy</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Quote Message</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align: center">
+        <span style="font-weight: 700">{{message.display.name}}</span> <span>{{message.message}}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -35,9 +35,9 @@ export class ChatCommonService {
 
   addMessage(groupId:any, data:any) {
     let item = this.storage.find('chat_messages_group_' + groupId);
+    let contactSelect = this.storage.find('contact_select').value;
     if (item && item.value) {
       item.value.data.push(data);
-      let contactSelect = this.storage.find('contact_select').value;
       if(contactSelect.group_json.id == groupId) {
         this.storage.save('current_chat_messages', item);
       }

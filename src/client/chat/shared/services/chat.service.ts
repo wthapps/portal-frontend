@@ -133,31 +133,17 @@ export class ChatService {
     this.notificationChannel.subscribe();
   }
 
-  sendMessage(message:any, file?:any, option:any = {}) {
-    if (option.groupId) {
-      this.chanel.sendMessage(option.groupId, message, file);
-    } else {
-      let item = this.storage.find('contact_select');
-      if (item && item.value && (message || file)) {
-        this.chanel.sendMessage(item.value.group_json.id, message, file);
-        if (item.value.history) {
-          this.updateHistory(item.value);
-        }
-      }
-    }
+  sendMessage(groupId:any, data:any, option:any = {}, callback?:any) {
+    this.apiBaseService.post('zone/chat/message', {group_id: groupId, data: data}).subscribe((res:any) => {
+      console.log(res);
+    });
   }
 
-  sendTextMessage(message:any, file?:any, option:any = {}) {
-    if (option.groupId) {
-      this.chanel.sendMessage(option.groupId, message, file);
-    } else {
+  sendTextMessage(message:any, option:any = {}, callback?:any) {
+    let item = this.storage.find('contact_select');
+    if (item && item.value && message) {
       let item = this.storage.find('contact_select');
-      if (item && item.value && (message || file)) {
-        this.chanel.sendMessage(item.value.group_json.id, message, file);
-        if (item.value.history) {
-          this.updateHistory(item.value);
-        }
-      }
+      this.sendMessage(item.value.group_json.id, {message: message, type: "text"});
     }
   }
 
@@ -166,35 +152,29 @@ export class ChatService {
     this.fileUploadHelper.upload(files, (event:any, file:any) => {
       let data = event.target['result'];
       this.apiBaseService.post('zone/chat/upload', {file: data, file_name: file.name}).subscribe((res:any) => {
-        res.data.type = 'File';
         this.removeUploadingFile(groupId);
-        this.sendMessage('', res.data, {groupId: groupId});
+        this.sendMessage(groupId, {type: "file", id:res.data.id, object: "File"});
       });
     });
   }
 
   uploadPhotos(files:any) {
     let groupId = this.storage.find('contact_select').value.group_json.id;
-    // this.fileUploadHelper.upload(files, (event:any, file:any) => {
-    //   let data = event.target['result'];
-    //   this.apiBaseService.post('zone/social_network/photos/upload', {photo: {name: file.name, image: data}}).subscribe((res:any) => {
-    //     res.data.type = 'Photo';
-    //     this.removeUploadingFile(groupId);
-    //     this.sendMessage('', res.data, {groupId: groupId});
-    //   });
-    // });
-
     this.fileUploadHelper.upload(files, (event:any, file:any) => {
       this.photoUploadService.uploadPhotos(file)
         .then((data: any) => {
-          data.type = 'Photo';
           this.removeUploadingFile(groupId);
-          this.sendMessage('', data, {groupId: groupId});
+          this.sendMessage(groupId, {type: "file", id: data.id, object: "Photo"});
         })
         .catch((error: any) => {
           console.error('Error uploading photos in chat service', error);
         });
     });
+  }
+
+  uploadPhotoOnWeb(photo:any) {
+    let groupId = this.storage.find('contact_select').value.group_json.id;
+    this.sendMessage(groupId, {type: "file", id: photo.id, object: "Photo"});
   }
 
   createUploadingFile() {
@@ -283,9 +263,7 @@ export class ChatService {
     this.apiBaseService.put('zone/chat/group_user/' + groupUserId, data).subscribe(
       (res:any) => {
         this.storage.save('chat_contacts', res);
-        this.chatCommonService.setRecentContacts();
-        this.chatCommonService.setFavouriteContacts();
-        this.chatCommonService.setHistoryContacts();
+        this.chatCommonService.updateAll();
         if (callback) {
           callback(res);
         }
@@ -337,7 +315,6 @@ export class ChatService {
   }
 
   shareContact(ids:any) {
-    console.log(ids);
     for(let i=0; i < ids.length; i++) {
       let item = this.storage.find('contact_select');
       if (item && item.value) {

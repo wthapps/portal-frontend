@@ -52,7 +52,7 @@ export class ZChatChatboxComponent implements OnInit {
   }
 
   send() {
-    this.chatService.sendMessage($('#chat-message-text').text());
+    this.chatService.sendTextMessage($('#chat-message-text').text());
     $('#chat-message-text').text('');
   }
 
@@ -71,8 +71,7 @@ export class ZChatChatboxComponent implements OnInit {
   chooseDone(e: any) {
     // this.photoModal.close();
     for (let photo of e) {
-      photo.type = 'Photo';
-      this.chatService.sendMessage('', photo);
+      this.chatService.uploadPhotoOnWeb(photo);
     }
   }
 
