@@ -10,6 +10,7 @@ import { ChatChannelService } from '../channels/chat-channel.service';
 import { ChatNotificationChannelService } from '../channels/chat-notification-channel.service';
 import { ChatCommonService } from './chat.common.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { AppearancesChannelService } from '../../../core/shared/channels/appearances-channel.service';
 
 declare var _:any;
 
@@ -318,10 +319,11 @@ export class ChatService {
   }
 
   shareContact(ids:any) {
-    for(let i=0; i < ids.length; i++) {
+    for(let i = 0; i < ids.length; i++) {
       let item = this.storage.find('contact_select');
       if (item && item.value) {
-        this.chanel.sendContactMessage(item.value.group_json.id, '', ids[i]);
+        // this.chanel.sendContactMessage(item.value.group_json.id, '', ids[i]);
+        this.sendMessage(item.value.group_json.id, {message: '', type: 'contact', contact: ids[i]});
         if (item.value.history) {
           this.updateHistory(item.value);
         }

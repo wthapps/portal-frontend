@@ -60,7 +60,7 @@
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
       <button (click)="showDropdownMenu($event)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown">
-        <i class="online"></i> {{user_in_group.name}} <span class="caret"></span>
+        {{user_in_group.name}} <span class="caret"></span>
       </button>
       <!--<ul class="dropdown-menu dropdown-menu-lg">-->
         <!--<li><a href="#">Send Message</a></li>-->
