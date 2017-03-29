@@ -27,9 +27,11 @@ export class ZMediaPhotoListComponent implements OnInit {
   hasFavourite: boolean = false;
   currentView: string = 'grid';
 
+  photoIsEmpty: boolean = false;
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
-    console.log(ev);
+    // console.log(ev);
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
   }
 
@@ -63,6 +65,9 @@ export class ZMediaPhotoListComponent implements OnInit {
     this.photoService.listPhoto(body).subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
+      if (res.data.length == 0) {
+        this.photoIsEmpty = true;
+      }
     });
   }
 
