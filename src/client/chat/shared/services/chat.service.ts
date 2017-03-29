@@ -146,7 +146,7 @@ export class ChatService {
     let item = this.storage.find('contact_select');
     if (item && item.value && message) {
       let item = this.storage.find('contact_select');
-      this.sendMessage(item.value.group_json.id, {message: message, type: "text"});
+      this.sendMessage(item.value.group_json.id, {message: message, type: 'text'});
     }
   }
 
@@ -156,7 +156,7 @@ export class ChatService {
       let data = event.target['result'];
       this.apiBaseService.post('zone/chat/upload', {file: data, file_name: file.name}).subscribe((res:any) => {
         this.removeUploadingFile(groupId);
-        this.sendMessage(groupId, {type: "file", id:res.data.id, object: "File"});
+        this.sendMessage(groupId, {type: 'file', id:res.data.id, object: 'File'});
       });
     });
   }
@@ -167,7 +167,7 @@ export class ChatService {
       this.photoUploadService.uploadPhotos(file)
         .then((data: any) => {
           this.removeUploadingFile(groupId);
-          this.sendMessage(groupId, {type: "file", id: data.id, object: "Photo"});
+          this.sendMessage(groupId, {type: 'file', id: data.id, object: 'Photo'});
         })
         .catch((error: any) => {
           console.error('Error uploading photos in chat service', error);
@@ -177,7 +177,7 @@ export class ChatService {
 
   uploadPhotoOnWeb(photo:any) {
     let groupId = this.storage.find('contact_select').value.group_json.id;
-    this.sendMessage(groupId, {type: "file", id: photo.id, object: "Photo"});
+    this.sendMessage(groupId, {type: 'file', id: photo.id, object: 'Photo'});
   }
 
   createUploadingFile() {

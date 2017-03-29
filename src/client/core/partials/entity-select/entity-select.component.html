@@ -20,7 +20,7 @@
   <hd-modal-footer>
     <button type="button" class="btn btn-wth-default btn-min"
             [disabled]="selectedItems.length<=0"
-            (click)="selectItems(event)">Done
+            (click)="selectItems($event)">Done
     </button>
     <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (onDismiss)="cancel($event)">Cancel</button>
   </hd-modal-footer>

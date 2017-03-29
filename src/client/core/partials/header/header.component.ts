@@ -105,7 +105,9 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   onNavigation(event: any): void {
     event.preventDefault();
-    this.router.navigate([this.navigationUrl]);
+    if (window.location.origin != Constants.baseUrls.app) {
+      window.location.href = Constants.baseUrls.app;
+    }
   }
 
   logout() {
