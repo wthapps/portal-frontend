@@ -105,6 +105,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   onNavigation(event: any): void {
     event.preventDefault();
+    console.log('location', window.location);
     if (window.location.origin != Constants.baseUrls.app) {
       window.location.href = Constants.baseUrls.app;
     }
