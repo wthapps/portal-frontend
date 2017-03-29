@@ -1,1 +1,0 @@
-{"version":3,"file":"/home/hdthinh/wthapps/portal-frontend/tools/tasks/seed/noop.ts","sources":["/home/hdthinh/wthapps/portal-frontend/tools/tasks/seed/noop.ts"],"names":[],"mappings":";AAAA,iBAAS,UAAC,IAAS;IACjB,IAAI,EAAE,CAAC;AACT,CAAC,CAAC","sourcesContent":["export = (done: any) => {\n  done();\n};\n"]}
