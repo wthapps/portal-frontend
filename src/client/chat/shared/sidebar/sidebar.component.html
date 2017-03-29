@@ -49,10 +49,11 @@
       </ul>
     </dd>
   </dl>
-  <div class="form-group">
-    <a href="javascript:;" class="btn btn-default" (click)="historyToggle()"><i class="fa fa-clock-o"></i> History</a>
-  </div>
+  <!--<div class="form-group">-->
+    <!--<a href="javascript:;" class="btn btn-default"><i class="fa fa-clock-o"></i> History</a>-->
+  <!--</div>-->
   <dl class="p-list-user-group" *ngIf="historyShow">
+    <dt>History</dt>
     <dd>
       <ul class="p-list-user p-list-outside" *ngIf="historyContacts.value">
         <li *ngFor="let contact of historyContacts.value" [routerLinkActive]="['active']">

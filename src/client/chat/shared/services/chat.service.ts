@@ -116,6 +116,9 @@ export class ChatService {
   getCurrentMessages() {
     this.handler.addListener('get_messages_after_select', 'on_contact_select', (contact:any) => {
       this.getMessages(contact.group_json.id);
+      if(contact.history) {
+        this.updateHistory(contact);
+      }
     });
     return this.storage.find('current_chat_messages');
   }

@@ -16,7 +16,7 @@ export class ZChatSidebarComponent implements OnInit {
   favouriteContacts:any;
   historyContacts:any;
   recentContacts:any;
-  historyShow:any = false;
+  historyShow:any = true;
   @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
 
   constructor(public chatService: ChatService) {}
