@@ -2,9 +2,16 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaSharedWithMeService } from './shared-with-me.service';
 import { ZMediaPhotoDetailComponent } from '../photo/photo-detail.component';
 import { ZMediaPhotoService } from '../photo/photo.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 declare var $: any;
 declare var _: any;
+
+export const ActionItemType = {
+  select: 'select',
+  previewAll: 'previewAll',
+  favourite: 'favourite'
+};
 
 @Component({
   moduleId: module.id,
@@ -16,6 +23,7 @@ export class ZMediaSharedWithMeComponent implements OnInit {
 
   data: any = [];
   nextLink: string = null;
+  sharingUuid: string;
 
   selectedPhotos: any = [];
 
@@ -37,17 +45,32 @@ export class ZMediaSharedWithMeComponent implements OnInit {
   }
 
   constructor(private photoService: ZMediaPhotoService,
+              private route: ActivatedRoute,
+              private router: Router,
               private sharedWithMeService: ZMediaSharedWithMeService) {
+
+    this.route.queryParams
+      .switchMap((queryParams: any) => this.sharedWithMeService.list(queryParams['uuid']))
+      .subscribe((res: any) => {
+      // let event: any = {};
+      // event.action = params['action'];
+      // event.type = params['typee'];
+      // event.data = params['data'];
+      //
+      // this.actionItem(event);
+
+        this.data = res['data'];
+        if (res.data.albums.length == 0 && res.data.photos.length == 0) {
+          this.shareIsEmpty = true;
+        }
+    });
   }
 
   ngOnInit() {
-    this.sharedWithMeService.list().subscribe((res: any)=> {
-      this.data = res.data;
-      if (res.data.albums.length == 0 && res.data.photos.length == 0) {
-        this.shareIsEmpty = true;
-      }
-      // this.nextLink = res.page_metadata.links.next;
-    });
+    // this.sharedWithMeService.list().subscribe((res: any)=> {
+    //   this.data = res.data;
+    //   // this.nextLink = res.page_metadata.links.next;
+    // });
   }
 
   onLoadMore(event: any) {
@@ -67,7 +90,10 @@ export class ZMediaSharedWithMeComponent implements OnInit {
         this.onSelectedPhotos(event.data);
         break;
       case 'previewAll':
-        this.onPreviewAll(event.data);
+        if(event.type === 'photo')
+          this.onPreviewAll(event.data);
+        else
+          this.router.navigate([`sharedWithMe/album`, event.data.id], { queryParams: {'shareMode': true}} );
         break;
       case 'favourite':
         this.onOneFavourite(event.data);

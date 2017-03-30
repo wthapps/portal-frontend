@@ -6,8 +6,11 @@ export class ZMediaSharingService {
   constructor(private apiBaseService: ApiBaseService) {
   }
 
-  getContacts(): any {
-    return this.apiBaseService.get('zone/contacts');
+  getContacts(searchName: string = ''): any {
+    let body: any;
+    body = {'search_name': (searchName == undefined ? '' : searchName)};
+    console.log('getContacts: ', body);
+    return this.apiBaseService.get('zone/contacts', body);
   }
 
   getContactGroups(): any {

@@ -19,6 +19,7 @@ export class ZSharedMenuComponent {
   mediaMenu = Constants.pictureMenuItems;
   socialMenu = Constants.socialMenuItems;
   chatMenu = Constants.chatMenuItems;
+  baseUrl:any =  Constants.baseUrls;
 
   constructor(private userService: UserService) {
     this.uuid = this.userService.getProfileUuid();
@@ -27,19 +28,26 @@ export class ZSharedMenuComponent {
   onMenu(event: string) {
     switch (event) {
       case 'media':
-        window.location.href = Constants.baseUrls.media;
+        if(!this.inSameModule(Constants.baseUrls.media))
+          window.location.href = Constants.baseUrls.media;
         break;
       case 'social':
-        window.location.href = Constants.baseUrls.social;
+        if(!this.inSameModule(Constants.baseUrls.social))
+          window.location.href = Constants.baseUrls.social;
         break;
       case 'chat':
-        window.location.href = Constants.baseUrls.chat;
+        if(!this.inSameModule(Constants.baseUrls.chat))
+          window.location.href = Constants.baseUrls.chat;
         break;
       default:
         break;
     }
 
     // $(event.target.nextElementSibling).toggleClass('hidden');
+  }
+
+  inSameModule(moduleFullName: string) {
+    return window.location.origin === moduleFullName;
   }
 
 }

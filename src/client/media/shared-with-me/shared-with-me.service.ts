@@ -9,11 +9,13 @@ export class ZMediaSharedWithMeService {
   constructor(private apiBaseService: ApiBaseService) {
   }
 
-  list(): any {
-    return this.apiBaseService.get(this.url);
+  list(shareUuid?: any): any {
+    let body = shareUuid !== undefined ? {uuid: shareUuid} : {};
+    return this.apiBaseService.get(this.url, body);
   }
 
   loadMore(next: string): any {
     return this.apiBaseService.get(next);
   }
+
 }

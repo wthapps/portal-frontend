@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { ZMediaSharingService } from './sharing.service';
+import { Subscription, Subject } from 'rxjs';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -12,9 +14,10 @@ declare var _: any;
   selector: 'z-media-share-sharing',
   templateUrl: 'sharing.component.html'
 })
-export class ZMediaSharingComponent implements OnInit {
+export class ZMediaSharingComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
+  @Input() type: string;
 
   contacts: any = [];
   contactGroups: any = [];
@@ -35,12 +38,31 @@ export class ZMediaSharingComponent implements OnInit {
   removedContacts: any = [];
   removedContactGroups: any = [];
 
+  contactTerm$ = new Subject<string>();
+
+  readonly searchDebounceTime: number = Constants.searchDebounceTime;
+
   constructor(private mediaSharingService: ZMediaSharingService) {
+
+    this.contactTerm$
+      .debounceTime(Constants.searchDebounceTime)
+      .distinctUntilChanged()
+      .switchMap((term: any) => this.mediaSharingService.getContacts( term.query))
+      .subscribe( (res: any) => {
+          this.filteredContacts = res['data'];
+        }, (error : any)=> {
+          console.log('error', error);
+        }
+      );
   }
 
   ngOnInit() {
-    this.getContacts();
-    this.getContactGroups();
+    // this.getContacts();
+    // this.getContactGroups();
+  }
+
+  ngOnDestroy() {
+    this.contactTerm$.unsubscribe();
   }
 
   getShared() {
@@ -122,10 +144,13 @@ export class ZMediaSharingComponent implements OnInit {
         });
 
     } else { // save adding sharing
-      let body = JSON.stringify({
+      let body = this.type === 'photo' ? JSON.stringify({
         photos: _.map(this.selectedItems, 'id'), albums: [],
         contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
-      });
+      }) : JSON.stringify({
+          photos: [], albums: _.map(this.selectedItems, 'id'),
+          contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
+        }) ;
 
       this.mediaSharingService.add(body).subscribe((result: any) => {
           this.sharedContacts = result['data'].contacts;
@@ -137,6 +162,10 @@ export class ZMediaSharingComponent implements OnInit {
           console.log('error', error);
         });
     }
+
+    this.modal.close().then(() =>
+      console.log('Item shared')
+    );
     // console.log('save');
   }
 
@@ -195,11 +224,11 @@ export class ZMediaSharingComponent implements OnInit {
     && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
   }
 
-  private getContacts() {
-    this.mediaSharingService.getContacts().subscribe((res: any)=> {
-      this.contacts = res.data;
-    });
-  }
+  // private getContacts() {
+  //   this.mediaSharingService.getContacts().subscribe((res: any)=> {
+  //     this.contacts = res.data;
+  //   });
+  // }
 
   private getContactGroups() {
     this.mediaSharingService.getContactGroups().subscribe((res: any)=> {

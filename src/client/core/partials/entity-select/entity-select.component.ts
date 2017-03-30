@@ -3,7 +3,7 @@ import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/m
 import { ListComponent } from '../../../core/shared/ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Subject, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operator/switchMap';
+import 'rxjs/operator/switchMap';
 
 
 declare var _: any;
