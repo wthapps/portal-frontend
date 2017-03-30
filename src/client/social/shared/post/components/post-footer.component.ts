@@ -23,6 +23,7 @@ import { UserService } from '../../../../core/shared/services/user.service';
 import { PostService } from '../shared/post.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { SoComment } from '../../../../core/shared/models/social_network/so-comment.model';
+import { Router } from '@angular/router';
 
 declare var _: any;
 declare var $: any;
@@ -45,7 +46,8 @@ export class PostFooterComponent implements OnChanges {
     onEditComment: 2,
     onDeleteReply: 3,
     onReply: 4,
-    openLikeDislike: 6
+    openLikeDislike: 6,
+    onShowPhotoDetail: 7
   };
 
   hasLike: boolean = false;
@@ -61,6 +63,7 @@ export class PostFooterComponent implements OnChanges {
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private toast: ToastsService,
+              private router: Router,
               private postService: PostService,
               public userService: UserService,
               public postItem: PostComponent) {
@@ -93,8 +96,14 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.openLikeDislike:
         this.postItem.openLikeDislike(data, type);
         break;
+      case this.actions.onShowPhotoDetail:
+        // this.router.navigate(['/photos', this.item.uuid, {index: data}]);
+
+        this.router.navigate(['/comments',  data, 'photos', {idComment: data}]);
+        break;
     }
   }
+
 
   onCallBack(event: any) {
     if (event instanceof CancelEditCommentEvent || event instanceof CancelEditReplyCommentEvent) {

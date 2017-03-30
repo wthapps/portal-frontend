@@ -24,7 +24,9 @@
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
           <p>{{comment.content}}</p>
-          <a *ngIf="comment.photo" ><img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px"></a>
+          <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, comment.uuid)">
+            <img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px">
+          </a>
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
               <i class="fa fa-pencil"></i>
@@ -80,7 +82,7 @@
               </div>
             </h4>
             <p>{{reply.content}}</p>
-            <a *ngIf="reply.photo" ><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
+            <a *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, reply.uuid)"><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
             <div class="media-body-reply">
               <ul>
                 <li>

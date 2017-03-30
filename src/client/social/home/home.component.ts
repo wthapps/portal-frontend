@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, HostListener, OnInit } from '@angular/core';
 import { PostListComponent } from '../shared/post/post-list.component';
 import { SocialService } from '../shared/services/social.service';
 import { Router, NavigationEnd } from '@angular/router';

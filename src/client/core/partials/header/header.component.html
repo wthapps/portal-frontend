@@ -46,7 +46,7 @@
         </li>
         <li class="dropdown navbar-nav-notification">
           <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
-             data-toggle="dropdown" href="javascript:;" role="button" (click)="markAsSeen()">
+             data-toggle="dropdown" href="javascript:;" role="button" (click)="toggleViewNotifications()">
             <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="notificationService.newNotifCount > 0">{{ notificationService.newNotifCount }}</span>
           </a>
           <ul class="dropdown-menu" id="nav-notification-list">

@@ -63,7 +63,7 @@ export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
     return this.notificationService.loadingDone;  }
 
   notifClass(notif: any) {
-    return "col-xs-12 col-lg-6 " + (!notif.is_read ? "unread-notification" : "");
+    return 'col-xs-12 col-lg-6 ' + (!notif.is_read ? 'unread-notification' : '');
   }
 
   doAction(action: any, notif_id: string) {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { SoPost } from '../../core/shared/models/social_network/so-post.model';
 import { BaseZoneSocialItem } from '../base/base-social-item';
@@ -17,8 +18,12 @@ const KEY_ESC = 27;
   templateUrl: 'photo.component.html'
 })
 export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit {
-  item: SoPost;
+  // item: SoPost;
+  item: any;
   errorMessage: string = '';
+  idPost: string;
+  idComment: string;
+  idPhoto: any;
 
   selectedPhoto: any = {
     name: 'Photo no.4',
@@ -28,25 +33,51 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
 
   };
 
-  constructor(private router: Router, public apiBaseService: ApiBaseService) {
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              public location: Location,
+              public apiBaseService: ApiBaseService) {
     super();
   }
 
   ngOnInit() {
-    this.loadPost('363ce443-72a8-4d1d-9966-bebf886e3e05');
-  }
 
-  loadPost(uuid: string): void {
-    this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + uuid)
+    this.route.params
+      .map((params: any) => {
+            this.idPost = params['id'];
+            this.idPhoto = params['index'];
+            this.idComment = params['idComment'];})
+      .switchMap((data: any) => {
+          if (this.idComment)
+            return this.loadItem(this.apiBaseService.urls.zoneSoComments + '/' + this.idComment); // Load photos from comments
+          else
+            return this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + this.idPost); }) // Load photos from posts
       .subscribe((response: any) => {
           this.item = response.data;
-          console.log(this.item);
+          if(this.idComment) {
+            // TODO: Refractor this item to accept photo index of comment
+            this.selectedPhoto = this.item.photo;
+          } else {
+            this.selectedPhoto = this.item.photos[this.idPhoto];
+          }
+
         },
-        error => {
-          this.errorMessage = <any>error;
-        }
-      );
+        ( error: any) => {
+          console.error('Error when loading photo ', error);
+        });
+    // this.loadPost('363ce443-72a8-4d1d-9966-bebf886e3e05');
   }
+
+  // loadPost(uuid: string): void {
+  //   this.loadItem(this.apiBaseService.urls.zonePhotos + '/' + uuid)
+  //     .subscribe((response: any) => {
+  //         this.item = response.data;
+  //         console.log(this.item);
+  //       },
+  //       error => {
+  //       }
+  //     );
+  // }
 
   actionPhoto(e: string) {
     console.log(e);
@@ -57,7 +88,8 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
   }
 
   onBack() {
-    this.router.navigate(['/home']);
+    // this.router.navigate(['/home']);
+    this.location.back();
   }
 
 }
