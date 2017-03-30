@@ -13,18 +13,18 @@ export class ZMediaSortbarComponent {
   @Input() view: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  sortName: any = "Date";
-  sort: any = "desc";
+  sortName: any = 'Date';
+  sort: any = 'desc';
 
   setSortName(name:any) {
     this.sortName = name;
   }
 
   toggleSort() {
-    if (this.sort == "asc") {
-      this.sort = "desc"
+    if (this.sort == 'asc') {
+      this.sort = 'desc';
     } else {
-      this.sort = "asc"
+      this.sort = 'asc';
     }
   }
 

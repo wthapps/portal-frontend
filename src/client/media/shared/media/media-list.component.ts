@@ -21,8 +21,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
+  public viewOption: string = 'grid';
   private pressingCtrlKey: boolean = false;
-  private viewOption: string = 'grid';
+
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
@@ -99,6 +100,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   changeView(viewOption: string) {
    this.viewOption = viewOption;
+  }
+
+  actionSortbar() {
+
   }
 
   private selectObject(item: any): void {

@@ -1,6 +1,6 @@
 <z-media-share-toolbar
   #mediaToolbar
-  [type]="'favourites'"
+  type="shared-with-me"
   [selectedPhotos]="selectedPhotos"
   [hasFavourite]="hasFavourite"
   [currentView]="currentView"
@@ -13,7 +13,7 @@
       <h3>No files and folders others have shared with you.</h3>
     </div>
   </div>
-  <div *ngIf="shareIsEmpty" class="page-body-content-in">
+  <div *ngIf="!shareIsEmpty" class="page-body-content-in">
     <div class="page-body-in-title">
       Album
     </div>

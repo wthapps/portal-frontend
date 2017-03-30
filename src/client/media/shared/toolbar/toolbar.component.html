@@ -6,7 +6,7 @@
     </li>
     <li class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-        {{albumDetail.name}}
+        {{albumDetail?.name}}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
@@ -74,7 +74,7 @@
   </z-media-share-toolbar-photo>
 
   <z-media-share-toolbar-album #toolbarAlbum
-    *ngIf="type == 'album'"
+    *ngIf="['album', 'shared-with-me'].includes(type)"
     [selectedAlbums]="selectedAlbums"
     [currentView]="currentView"
     [hasFavourite]="hasFavourite"

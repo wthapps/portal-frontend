@@ -175,13 +175,6 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     this.markAsSeen();
   }
 
-  toggleViewNotifications() {
-    if (this.notificationService.notifications.length <= 0) {
-      this.getMoreNotifications();
-    }
-    this.markAsSeen();
-  }
-
   markAsSeen() {
     this.notificationService.markAsSeen();
   }
