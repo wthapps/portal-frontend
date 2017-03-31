@@ -8,7 +8,13 @@
 </z-media-share-toolbar>
 
 <div class="page-body-content has-page-body-control gray-light">
-  <div class="page-body-content-in">
+  <div *ngIf="favouriteIsEmpty" class="page-body-content-in">
+    <div class="p40 text-center">
+      <h3>No favourite files or folders.</h3>
+      <h5>Add stars to things that you want to easily find later.</h5>
+    </div>
+  </div>
+  <div *ngIf="!favouriteIsEmpty" class="page-body-content-in">
     <div class="page-body-in-title">
       Album
     </div>

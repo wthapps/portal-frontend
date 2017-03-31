@@ -14,6 +14,11 @@
      [scrollWindow]="false"
      (scrolled)="onLoadMore()">
   <div class="page-body-content-in">
+    <div *ngIf="albumIsEmpty" class="p40 text-center">
+      <h3>The albums you create are shown here</h3>
+      <button (click)="mediaToolbar.formEditAlbum.modal.open()" class="btn btn-wth-default" type="button">Create album</button>
+    </div>
+
     <z-media-share-list
       [type]="'album'"
       [data]="data"

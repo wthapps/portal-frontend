@@ -26,6 +26,8 @@ export class ZMediaAlbumListComponent implements OnInit {
   hasFavourite: boolean = false;
   currentView: string = 'grid';
 
+  albumIsEmpty: boolean = false;
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
     console.log(ev);
@@ -48,7 +50,7 @@ export class ZMediaAlbumListComponent implements OnInit {
       (queryParams: any) => {
         this.hasFavourite = queryParams['favorite'];
         if (this.hasFavourite)
-          this.getAlbums({'favorite':true});
+          this.getAlbums({'favorite': true});
         else
           this.getAlbums();
       }
@@ -63,6 +65,9 @@ export class ZMediaAlbumListComponent implements OnInit {
     this.albumService.listAlbum(body).subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
+      if (res.data.length == 0) {
+        this.albumIsEmpty = true;
+      }
     });
   }
 

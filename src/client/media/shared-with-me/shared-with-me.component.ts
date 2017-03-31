@@ -23,6 +23,8 @@ export class ZMediaSharedWithMeComponent implements OnInit {
   hasFavourite: boolean = false;
   currentView: string = 'grid';
 
+  shareIsEmpty:boolean = false;
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
     console.log(ev);
@@ -41,6 +43,9 @@ export class ZMediaSharedWithMeComponent implements OnInit {
   ngOnInit() {
     this.sharedWithMeService.list().subscribe((res: any)=> {
       this.data = res.data;
+      if (res.data.albums.length == 0 && res.data.photos.length == 0) {
+        this.shareIsEmpty = true;
+      }
       // this.nextLink = res.page_metadata.links.next;
     });
   }
