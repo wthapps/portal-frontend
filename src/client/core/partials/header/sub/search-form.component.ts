@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SoSearchService } from './social-search.service';
 import { Router } from '@angular/router';
 import { Constants } from '../../../shared/config/constants';
+import { Subject, Subscription } from 'rxjs';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { Constants } from '../../../shared/config/constants';
   templateUrl: 'search-form.component.html'
 })
 
-export class SearchFormComponent implements OnInit {
+export class SearchFormComponent implements OnInit, OnDestroy {
   show: boolean = false;
   type: string = '';
   searchService: SoSearchService;
@@ -18,6 +19,9 @@ export class SearchFormComponent implements OnInit {
   groups: any;
   showMore: any;
   text: any = '';
+  searchObs$: Subject<string> = new Subject<string>();
+
+  searchSubscription: Subscription;
 
   constructor(private socialSearchService: SoSearchService, private router: Router) {
     this.showSearchBar();
@@ -25,6 +29,21 @@ export class SearchFormComponent implements OnInit {
 
   ngOnInit() {
     this.init('social');
+
+    this.searchSubscription = this.searchObs$.debounceTime(Constants.searchDebounceTime)
+      .distinctUntilChanged()
+      .subscribe( (res: any) => {
+          this.searchWithoutSave(res);
+        }, (error : any)=> {
+          console.log('error', error);
+        }
+      );
+  }
+
+  ngOnDestroy() {
+    if(this.searchSubscription && !this.searchSubscription.closed) {
+      this.searchSubscription.unsubscribe();
+    }
   }
 
   init(type: string) {
@@ -36,10 +55,12 @@ export class SearchFormComponent implements OnInit {
 
   searchWithoutSave(e: any) {
     if (e.key == 'Enter') {
-      this.onSaveKey();
-      this.router.navigate([this.showMore.link, {text: this.text}]);
+      // this.onSaveKey();
+      // this.router.navigate([this.showMore.link, {text: this.text}]);
       return;
     }
+
+
     this.searchService.search(this.text, ['user', 'community']).subscribe(
       (res: any) => {
         this.result = res.data;

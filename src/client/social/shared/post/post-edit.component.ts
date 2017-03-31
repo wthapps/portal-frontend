@@ -151,10 +151,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
       // this.photoSelectModal.open();
-      this.photoSelectDataService.open();
+      this.photoSelectDataService.open({return: true});
 
     } else {
-      this.modal.open();
+      this.modal.open().then( () =>
+        console.log('Open modal from post edit')
+      );
     }
 
     this.renderer.invokeElementMethod(this.textarea.nativeElement, 'focus', []);
@@ -273,6 +275,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   dismiss(photos: any) {
     // this.photos.length = 0;
     this.dismissed.emit(photos);
+    this.modal.open();
     this.unsubscribeAll();
   }
 

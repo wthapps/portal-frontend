@@ -129,6 +129,7 @@ export let Constants = {
     zoneSoReportList: 'zone/social_network/report_list',
     zoneSoProfile: 'zone/social_network/profile',
     zoneSoPhotos: 'zone/social_network/photos',
+    zonePhotos: 'zone/photos',
     posts: 'posts',
     profile: 'profile',
     album: 'album',
@@ -157,6 +158,15 @@ export let Constants = {
     customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
     unknown: {css: '', text: '', data: ''}
   },
+  soPostListType: {
+    userOnly: 'user_only',
+    strangeUser: 'strange_user',
+    friend: 'friend',
+    community: 'community',
+    userAndFriend: 'user_and_friend',
+    randomUser: 'random_user',
+    public: 'public'
+  },
   soCommunityPrivacy: {
     open: {name: 'open'},
     close: {name: 'close'}
@@ -167,6 +177,8 @@ export let Constants = {
   },
   soPostLimit: 10,
   soCommentLimit: 20,
+
+  searchDebounceTime: 250,
 };
 
 export let MediaType = {

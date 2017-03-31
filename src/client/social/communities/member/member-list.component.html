@@ -11,7 +11,7 @@
 
         <div class="z-social-post">
           <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
-            <template ngFor let-user [ngForOf]="data.users" [ngForTrackBy]="trackByUsers">
+            <template ngFor let-user [ngForOf]="data.users" >
               <!--<li *ngIf="user.id == data.admin.id">-->
               <!--<div class="dropdown pull-right">-->
               <!--<span class="text-fade">Admin</span>-->

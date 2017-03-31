@@ -105,6 +105,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   onNavigation(event: any): void {
     event.preventDefault();
+    console.log('location', window.location);
     if (window.location.origin != Constants.baseUrls.app) {
       window.location.href = Constants.baseUrls.app;
     }
@@ -146,9 +147,9 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
 
-  getLatestNotifications() {
-    this.notificationService.getLatestNotifications();
-  }
+  // getLatestNotifications() {
+  //   this.notificationService.getLatestNotifications();
+  // }
 
   getNewNotificationsCount() {
     this.notificationService.getNewNotificationsCount();
@@ -225,6 +226,13 @@ export class HeaderComponent implements AfterViewInit, OnInit {
     //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     //     s4() + '-' + s4() + s4() + s4();
     // }
+  }
+
+  toggleViewNotifications() {
+    if (this.notificationService.notifications.length <= 0) {
+      this.getMoreNotifications();
+    }
+    this.markAsSeen();
   }
 
   markAsSeen() {

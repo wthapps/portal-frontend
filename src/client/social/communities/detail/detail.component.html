@@ -164,7 +164,9 @@
       <!--members-->
 
       <!--<member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>-->
-      <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
+      <div *ngIf="isMember">
+        <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
+      </div>
 
       <div *ngIf="isMember" class="z-social-box">
 
@@ -172,7 +174,7 @@
         <div class="z-social-post">
           <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
 
-            <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems" [ngForTrackBy]="trackByUsers">
+            <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems" >
               <li data-id="user_{{item.user ? item.user.uuid : ''}}">
                 <div class="dropdown pull-right">
                   <!--<span class="text-fade member-role">{{ item.user.uuid == item.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->

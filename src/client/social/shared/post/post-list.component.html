@@ -16,7 +16,7 @@
 </div>
 <!--List of post items-->
 <div id="post-list-component" class="pt20 pb20">
-  <div class="z-social-box" *ngFor="let item of items; trackBy: trackItems">
+  <div class="z-social-box" *ngFor="let item of items; ">
     <so-post [item]="item"
              (onDeleted)="deletedPost($event, item)"
              (onUpdated)="updatedPost($event)"

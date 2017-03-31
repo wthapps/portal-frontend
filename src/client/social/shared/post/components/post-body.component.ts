@@ -59,6 +59,7 @@ export class PostBodyComponent implements OnInit, OnChanges {
         break;
       case this.actions.onShowPhotoDetail:
         // this.router.navigate(['/photos', this.item.uuid, {index: data}]);
+        this.router.navigate(['/posts',  this.item.uuid, 'photos', {index: data}]);
         break;
     }
   }

@@ -21,7 +21,11 @@ export class PhotoUploadService {
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
 
   constructor(private apiService: ApiBaseService) {
-    if (!this.albumTempBucketName)
+    this.loadConfigOnce();
+  }
+
+  loadConfigOnce() {
+    if (!this.albumTempBucketName || !this.bucketRegion)
       this.loadConfig();
   }
 
@@ -56,6 +60,7 @@ export class PhotoUploadService {
   // TODO: Convert this function to be a Observable
   // Rename to uploadPhotos
   upload(file: any): Promise<any> {
+
     return new Promise((resolve: any, reject: any) => {
       var ext = file.name.split('.').reverse()[0];
       let fileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg

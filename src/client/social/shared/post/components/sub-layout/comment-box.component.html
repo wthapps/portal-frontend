@@ -1,7 +1,7 @@
 <div class="z-social-media">
   <div class="z-social-media-left">
-    <a [routerLink]="['/profile/', item.owner.uuid]" class="media-object">
-      <img [src]="item.owner.profile_image" alt="">
+    <a [routerLink]="['/profile/', item?.owner?.uuid]" class="media-object">
+      <img [src]="item?.owner?.profile_image" alt="">
     </a>
   </div>
   <div class="z-social-media-body">

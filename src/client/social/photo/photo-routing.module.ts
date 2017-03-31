@@ -6,6 +6,8 @@ import { ZSocialPhotoComponent } from './photo.component';
   imports: [
     RouterModule.forChild([
       {path: 'posts/:id/photos/:idPhoto', component: ZSocialPhotoComponent},
+      {path: 'posts/:id/photos', component: ZSocialPhotoComponent},
+      {path: 'comments/:commentUuid/photos', component: ZSocialPhotoComponent},
     ])
   ],
   exports: [RouterModule]

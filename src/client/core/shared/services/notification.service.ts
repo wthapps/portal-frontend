@@ -150,22 +150,22 @@ export class NotificationService {
         });
   }
 
-  getLatestNotifications() {
-    // let notif_limit = this.notifLimit;
-    this.notifOffset = 0; // Reset notification offset
-    this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)
-      .subscribe(
-        (result: any) => {
-          _.remove(this.notifications); // Make sure this.notifications has no value before assigning
-          this.notifications = result.data;
-          this.loadingDone = result.loading_done;
-          this.notifOffset += 1;
-
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
-  }
+  // getLatestNotifications() {
+  //   // let notif_limit = this.notifLimit;
+  //   this.notifOffset = 0; // Reset notification offset
+  //   this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)
+  //     .subscribe(
+  //       (result: any) => {
+  //         _.remove(this.notifications); // Make sure this.notifications has no value before assigning
+  //         this.notifications = result.data;
+  //         this.loadingDone = result.loading_done;
+  //         this.notifOffset += 1;
+  //
+  //       },
+  //       (error: any) => {
+  //         console.log('error', error);
+  //       });
+  // }
 
   getMoreNotifications() {
     if(this.loadingDone) {
@@ -223,7 +223,7 @@ export class NotificationService {
   startChannel() {
 
     this.getNewNotificationsCount();
-    this.getLatestNotifications();
+    // this.getLatestNotifications();
 
     this.notificationChannel.createSubscription();
 
