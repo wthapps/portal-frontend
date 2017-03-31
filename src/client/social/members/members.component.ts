@@ -5,6 +5,7 @@ import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { NotificationService } from '../../core/shared/services/notification.service';
 
 
+declare var $: any;
 declare var _: any;
 
 @Component({
@@ -149,5 +150,10 @@ export class ZSocialMembersComponent implements OnInit {
     //     this.getUser();
     //   }
     // );
+  }
+
+
+  focusSearchFriends() {
+    $('#searchTopHeader').focus();
   }
 }

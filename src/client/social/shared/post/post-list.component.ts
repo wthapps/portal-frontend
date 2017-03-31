@@ -35,13 +35,14 @@ export class PostListComponent implements OnInit, OnDestroy {
   commentBox: any;
   page_index: number = 0;
   loading_done: boolean = false;
-  nextLink:any;
+  nextLink: any;
   readonly post_limit: number = Constants.soPostLimit;
   // type: string = 'user';
 
   // Subscription
   loadSubscription: Subscription;
   nextPhotoSubscription: Subscription;
+  postIsEmpty: boolean = false;
 
   constructor(public apiBaseService: ApiBaseService,
               public socialService: SocialService,
@@ -98,6 +99,9 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.loadingService.stop('#post-list-component');
           this.items = _.map(res.data, this.mapPost);
           this.nextLink = res.page_metadata.links.next;
+          if (res.data.length == 0) {
+            this.postIsEmpty = true;
+          }
           // this.loading_done = res.loading_done;
           // this.socialDataService.loadingDone = this.loading_done;
           // if(!this.loading_done)
@@ -221,6 +225,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   trackItems(index: any, item: any) {
     return item ? item.id : undefined;
+  }
+
+  focusSearchFriends() {
+    $('#searchTopHeader').focus();
   }
 }
 

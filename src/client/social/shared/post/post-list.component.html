@@ -14,7 +14,6 @@
     </div>
   </div>
 </div>
-
 <!--List of post items-->
 <div id="post-list-component" class="pt20 pb20">
   <div class="z-social-box" *ngFor="let item of items; trackBy: trackItems">
@@ -24,6 +23,12 @@
              (modalOpened)="openEditModal($event)"
              (photoModalOpened)="openPhotoModal($event)">
     </so-post>
+  </div>
+
+  <div *ngIf="postIsEmpty" class="text-center text-fade">
+    <i class="fa fa-newspaper-o" style="font-size: 80px;"></i>
+    <h4>No posts to show</h4>
+    <p><a href="javascript:;" (click)="focusSearchFriends()" class="btn btn-default">Find Friends</a></p>
   </div>
 </div>
 

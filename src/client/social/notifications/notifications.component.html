@@ -40,6 +40,11 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="notificationService.notifications.length == 0" class="p40 text-center">
+              <h3 class="text-fade">
+                No new notifications
+              </h3>
+            </div>
           </div>
         </div>
       </div>
