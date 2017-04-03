@@ -3,7 +3,7 @@
     <h4 class="modal-title"><i class="fa fa-tag"></i> Tagging</h4>
   </modal-header>
   <modal-body>
-    <tag-input [ngModel]="addedTags">
+    <tag-input [(ngModel)]="addedTags" (keydown)="onKeyDown($event)">
       <tag-input-dropdown [autocompleteItems]="dataTags">
         <template let-item="item" let-index="index">
           {{ item.display }}

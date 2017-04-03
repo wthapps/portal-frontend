@@ -18,12 +18,14 @@ export class ZMediaTaggingComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
   @Input() mediaType: string = 'photo';
+  @Input() items: any;
   dataTags: any = [];
 
   newTags: any = [];
   addedTags: any = [];
   currentTags: any = [];
   removedTags: any = [];
+  keys: string = "";
 
   hasDeletedItems: boolean = false;
 
@@ -32,73 +34,59 @@ export class ZMediaTaggingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllTags();
-    this.getCurrentTags();
-  }
 
-  getAllTags() {
-    this.taggingService.getAll().subscribe(
-      (res: any)=> {
-        console.log(res);
-        this.dataTags = _.map(res.data, 'name');
-      },
-      (error: any) => {
-        console.log('error', error);
-      });
-  }
-
-  // requestAutocompleteItems = (text: string): Observable<Response> => {
-  //   const url = `https://my.api.com/search?q=${text}`;
-  //   return this.http
-  //     .get(url)
-  //     .map(data => data.json());
-  // };
-
-  getCurrentTags() {
-    let body = JSON.stringify({objects: _.map(this.selectedItems, 'id'), type: this.getType()});
-    this.taggingService.getByItem(body).subscribe(
-      (res: any)=> {
-        console.log(res);
-        this.addedTags = res.data;
-        this.currentTags = res.data;
-      },
-      (error: any) => {
-        console.log('error', error);
-      });
   }
 
   save() {
-    this.removedTags.length = 0;
-
-    this.newTags = _.difference(this.addedTags, this.dataTags);
-
-    let _this = this;
-    _.map(this.currentTags, (v: any)=> {
-      if (_this.addedTags.indexOf(v) == -1) {
-        _this.removedTags.push(v);
+    let tagsName:any = [];
+    for (let i = 0; i < this.addedTags.length; i++) {
+      if (typeof this.addedTags[i] == 'object') {
+        tagsName.push(this.addedTags[i].display);
+      } else {
+        tagsName.push(this.addedTags[i]);
       }
-    });
-
-    let body = JSON.stringify({
-      objects: _.map(this.selectedItems, 'id'),
-      type: this.getType(),
-      newTags: this.newTags,
-      addedTags: this.addedTags,
-      removedTags: this.removedTags
-    });
-    console.log(body);
+    }
+    for (let i = 0; i < this.selectedItems.length; i++) {
+      this.taggingService.save({tags_name: tagsName, object_id: this.selectedItems[i].id, object_type: this.mediaType}).subscribe(
+        (res:any) => {
+          for(let j = 0; j < this.items.length; j++) {
+            if (res.data.id == this.items[j].id) {
+              this.items[j] = res.data;
+            }
+          }
+        }
+      );
+    }
   }
 
-  private getType(): number {
-    if (this.mediaType == 'photo') {
-      return 1;
+  openModel() {
+    if (this.selectedItems.length == 1) {
+      this.addedTags = [];
+      for (let i = 0; i < this.selectedItems[0].json_tags.length; i++) {
+        this.addedTags.push(this.selectedItems[0].json_tags[i].name)
+      }
+    } else {
+      this.addedTags = [];
     }
-    if (this.mediaType == 'album') {
-      return 2;
+    this.modal.open();
+  }
+
+  onKeyDown(e:any) {
+    if (e.key == "Backspace") {
+      this.keys = this.keys.substring(0, this.keys.length - 1);
     }
-    if (this.mediaType == 'albumDetail') {
-      return 2;
+    if (e.key == "Enter") {
+      this.keys = ""
     }
-    return 1;
+    if (e.key.length == 1) {
+      this.keys += e.key;
+    }
+    if (this.keys.length > 0) {
+      this.taggingService.getTags(this.keys).subscribe(
+        (res: any)=> {
+          this.dataTags = _.map(res.data, 'name');
+        }
+      );
+    }
   }
 }

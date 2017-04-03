@@ -20,7 +20,7 @@ export class ZMediaAlbumListComponent implements OnInit {
   data: any = [];
   nextLink: string = null;
 
-  selectedPhotos: any = [];
+  selectedAlbums: any = [];
 
   keyCtrl: boolean = false;
   hasFavourite: boolean = false;
@@ -49,16 +49,15 @@ export class ZMediaAlbumListComponent implements OnInit {
     this.route.queryParams.subscribe(
       (queryParams: any) => {
         this.hasFavourite = queryParams['favorite'];
-        if (this.hasFavourite)
-          this.getAlbums({'favorite': true});
-        else
-          this.getAlbums();
       }
     );
   }
 
   ngOnInit() {
-    // this.getAlbums();
+    if (this.hasFavourite)
+      this.getAlbums({'favorite':true});
+    else
+      this.getAlbums();
   }
 
   getAlbums(body: any = {}) {
@@ -129,21 +128,20 @@ export class ZMediaAlbumListComponent implements OnInit {
   // --- Action for Item --- //
   private onSelectedPhotos(item: any) {
     if (this.keyCtrl) {
-      if (_.some(this.selectedPhotos, ['id', item.id])) {
+      if (_.some(this.selectedAlbums, ['id', item.id])) {
         $('#photo-box-img-' + item.id).removeClass('selected');
-        _.remove(this.selectedPhotos, ['id', item.id]);
+        _.remove(this.selectedAlbums, ['id', item.id]);
       } else {
         $('#photo-box-img-' + item.id).addClass('selected');
-        this.selectedPhotos.push(item);
+        this.selectedAlbums.push(item);
       }
     } else {
       $('.row-img .photo-box-img').removeClass('selected');
       $('#photo-box-img-' + item.id).addClass('selected');
-      this.selectedPhotos.length = 0;
-      this.selectedPhotos.push(item);
-      console.log(this.selectedPhotos);
+      this.selectedAlbums.length = 0;
+      this.selectedAlbums.push(item);
     }
-    this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
+    this.hasFavourite = _.some(this.selectedAlbums, ['favorite', false]);
   }
 
   private onOneFavourite(item: any) {
@@ -161,10 +159,10 @@ export class ZMediaAlbumListComponent implements OnInit {
   // --- Action for Toolbar --- //
   private onFavourite() {
     // if there was one item's favorite is false, all item will be add to favorite
-    let hasFavourite: boolean = _.some(this.selectedPhotos, ['favorite', false]);
-    this.albumService.actionAllFavourite(this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
+    let hasFavourite: boolean = _.some(this.selectedAlbums, ['favorite', false]);
+    this.albumService.actionAllFavourite(this.selectedAlbums, hasFavourite).subscribe((res: any)=> {
       if (res.message === 'success') {
-        _.map(this.selectedPhotos, (v: any)=> {
+        _.map(this.selectedAlbums, (v: any)=> {
           v.favorite = hasFavourite;
         });
       }
@@ -172,9 +170,9 @@ export class ZMediaAlbumListComponent implements OnInit {
   }
 
   private onDelete() {
-    let idPhotos = _.map(this.selectedPhotos, 'id'); // ['1','2'];
+    let idPhotos = _.map(this.selectedAlbums, 'id'); // ['1','2'];
     this.confirmationService.confirm({
-      message: 'Are you sure to delete ' + this.selectedPhotos.length + ' item' + (this.selectedPhotos.length > 1 ? 's' : '') + ' ?',
+      message: 'Are you sure to delete ' + this.selectedAlbums.length + ' item' + (this.selectedAlbums.length > 1 ? 's' : '') + ' ?',
       accept: () => {
         let body = JSON.stringify({ids: idPhotos});
         this.loadingService.start();

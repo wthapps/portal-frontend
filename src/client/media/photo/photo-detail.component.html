@@ -67,7 +67,7 @@
     <hr>
     <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="actionPhoto('tag')">Edit</a></h4>
     <div class="tags-text">
-      <span *ngFor="let tag of selectedPhotos[index].json_tags">{{tag}}</span>
+      <span *ngFor="let tag of selectedPhotos[index].json_tags">{{tag.name}}</span>
     </div>
     <hr>
     <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="actionPhoto('share')">Edit</a></h4>

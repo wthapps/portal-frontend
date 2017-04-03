@@ -65,7 +65,7 @@
     </li>
   </ul>
 
-  <z-media-share-toolbar-photo
+  <z-media-share-toolbar-photo #toolbarPhoto
     *ngIf="type == 'photo'"
     [selectedPhotos]="selectedPhotos"
     [currentView]="currentView"
@@ -73,21 +73,21 @@
     (outEvent)="onAction($event)">
   </z-media-share-toolbar-photo>
 
-  <z-media-share-toolbar-album
+  <z-media-share-toolbar-album #toolbarAlbum
     *ngIf="type == 'album'"
-    [selectedPhotos]="selectedPhotos"
+    [selectedAlbums]="selectedAlbums"
     [currentView]="currentView"
     [hasFavourite]="hasFavourite"
     (outEvent)="onAction($event)">
   </z-media-share-toolbar-album>
 
-  <z-media-share-toolbar-album-detail
-    *ngIf="type == 'album-detail'"
-    [selectedPhotos]="selectedPhotos"
-    [currentView]="currentView"
-    [hasFavourite]="hasFavourite"
-    (outEvent)="onAction($event)">
-  </z-media-share-toolbar-album-detail>
+  <!--<z-media-share-toolbar-album-detail-->
+    <!--*ngIf="type == 'album-detail'"-->
+    <!--[selectedAlbums]="selectedAlbums"-->
+    <!--[currentView]="currentView"-->
+    <!--[hasFavourite]="hasFavourite"-->
+    <!--(outEvent)="onAction($event)">-->
+  <!--</z-media-share-toolbar-album-detail>-->
 
 </div>
 
@@ -100,4 +100,4 @@
 
 
 <z-media-share-sharing #zoneSharing [selectedItems]="selectedPhotos"></z-media-share-sharing>
-<z-media-share-tagging #zoneTagging [selectedItems]="selectedPhotos" mediaType="type"></z-media-share-tagging>
+<z-media-share-tagging #zoneTagging></z-media-share-tagging>
