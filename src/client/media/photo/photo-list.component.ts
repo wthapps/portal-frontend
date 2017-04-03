@@ -200,6 +200,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   private onPreview() {
     if (this.selectedPhotos.length > 1) {
       this.photoDetail.selectedPhotos = this.selectedPhotos;
+      this.photoDetail.index = this.selectedPhotos.length - 1;
     } else {
       this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.selectedPhotos[0].id]);
       this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
