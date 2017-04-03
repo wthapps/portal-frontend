@@ -5,13 +5,12 @@
 
 
   <!--type == 'photo'-->
-  <div *ngIf="type == 'photo'" class="photo-box-img-figure" (click)="onAction('select')"
-       (dblclick)="onAction('previewAll')">
-    <figure class="img-center-dv">
+  <div *ngIf="type == 'photo'" class="photo-box-img-figure">
+    <figure class="img-center-dv" (click)="onAction('select')" (dblclick)="onAction('previewAll')">
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
       <img class="img-center" [src]="data.thumbnail_url" alt="">
     </figure>
-    <div class="photo-box-img-name">{{data.name}}</div>
+    <div class="photo-box-img-name"><span (dblclick)="onAction('editName')">{{data.name}}.{{data.extension}}</span></div>
     <div class="photo-box-img-owner">{{data.owner.name}}</div>
     <div class="photo-box-img-date">{{data.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
     <div class="photo-box-img-size">{{data.size}}</div>

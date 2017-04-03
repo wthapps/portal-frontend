@@ -6,6 +6,7 @@ import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { ZMediaPhotoService } from './photo.service';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ActivatedRoute } from '@angular/router';
+import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
 
 declare var $: any;
 declare var _: any;
@@ -17,6 +18,7 @@ declare var _: any;
 })
 export class ZMediaPhotoListComponent implements OnInit {
   @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  @ViewChild('mediaToolbar') mediaToolbar: ZMediaToolbarComponent;
 
   data: any = [];
   nextLink: string = null;
@@ -84,13 +86,15 @@ export class ZMediaPhotoListComponent implements OnInit {
 
 
   actionItem(event: any) {
-    //console.log(event);
     switch (event.action) {
       case 'select':
         this.onSelectedPhotos(event.data);
         break;
       case 'previewAll':
         this.onPreviewAll(event.data);
+        break;
+      case 'editName':
+        this.onOneEditName(event.data);
         break;
       case 'favourite':
         this.onOneFavourite(event.data);
@@ -191,6 +195,13 @@ export class ZMediaPhotoListComponent implements OnInit {
         this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
       }
     });
+  }
+
+  private onOneEditName(item: any) {
+    // console.log(item);
+    this.selectedPhotos.length = 0;
+    this.selectedPhotos.push(item);
+    this.mediaToolbar.formEditName.modal.open();
   }
 
   // --- End Action for Item --- //

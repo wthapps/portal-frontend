@@ -1,33 +1,25 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
-
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  Validators,
-  FormControl
-} from '@angular/forms';
+import { Component, Input, ViewChild, AfterViewInit, OnInit, OnChanges } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
+import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { Photo } from '../../../core/shared/models/photo.model';
+import { ZMediaPhotoService } from '../../photo/photo.service';
 
-import { ZMediaPhotoService } from '../photo.service';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-photo-form-edit',
-  templateUrl: 'form-edit-photo.component.html'
+  selector: 'z-media-share-form-edit-name',
+  templateUrl: 'form-edit-name.component.html',
 })
-export class ZMediaPhotoFormEditComponent implements OnChanges {
-  @Input() data: Photo = null;
+export class ZMediaFormEditNameComponent implements OnInit, OnChanges {
   @ViewChild('modal') modal: ModalComponent;
 
-  @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() updatePhoto: EventEmitter<Photo> = new EventEmitter<Photo>();
+  @Input() data: any = null;
 
   formValue: any;
   form: FormGroup;
@@ -39,9 +31,11 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
   createdDateMonth: AbstractControl;
   createdDateYear: AbstractControl;
 
+  private urls = Constants.urls;
+
   constructor(private fb: FormBuilder,
-              private photoService: ZMediaPhotoService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private photoService: ZMediaPhotoService) {
     this.form = fb.group({
       'name': ['',
         Validators.compose([Validators.required])
@@ -59,7 +53,11 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
     this.description = this.form.controls['description'];
   }
 
-  ngOnChanges() {
+  ngOnInit(): void {
+
+  }
+
+  ngOnChanges(): void {
     if (this.data) {
       // update form
       (<FormControl>this.name).setValue(this.data.name);
@@ -72,10 +70,6 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
         (<FormControl>this.createdDateYear).setValue(created_at.getUTCFullYear());
       }
     }
-  }
-
-  onShow() {
-    this.modal.open();
   }
 
   onSubmit(values: any): void {
@@ -94,7 +88,7 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
         description: values.description
       });
 
-      console.log(body);
+      // console.log(body);
 
       this.photoService.updateInfo(this.data.id, body)
         .subscribe((res: any) => {

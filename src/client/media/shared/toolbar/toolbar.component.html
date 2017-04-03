@@ -95,6 +95,8 @@
 <z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"
                                  [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
 <z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
+<z-media-share-form-edit-name #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>
+
 
 <z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>
 
