@@ -10,16 +10,11 @@ export class ZMediaTaggingService {
     return this.apiBaseService.get(`zone/tags`);
   }
 
-  getByItem(body: any) {
-    return this.apiBaseService.post(`zone/tags/get_tags`, body);
+  getTags(keys:any) {
+    return this.apiBaseService.get(`zone/tags`, {text: keys});
   }
 
   save(body: any) {
     return this.apiBaseService.put(`zone/tags/update`, body);
-  }
-
-  search(v: string) {
-    console.log(v);
-    // this.apiBaseService
   }
 }

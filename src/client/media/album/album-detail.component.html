@@ -2,7 +2,7 @@
   #mediaToolbar
   [type]="'album-detail'"
   [albumDetail]="albumDetail"
-  [selectedPhotos]="selectedPhotos"
+  [selectedAlbums]="selectedAlbums"
   [hasFavourite]="hasFavourite"
   [currentView]="currentView"
   (outEvent)="actionToolbar($event)">
@@ -32,4 +32,4 @@
   </div>
 </div>
 
-<z-media-photo-detail #photoDetail [selectedPhotos]="selectedPhotos" [allPhotos]="data"></z-media-photo-detail>
+<z-media-photo-detail #photoDetail [allPhotos]="data"></z-media-photo-detail>

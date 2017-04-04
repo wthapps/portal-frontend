@@ -25,7 +25,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   data: any = [];
   nextLink: string = null;
 
-  selectedPhotos: any = [];
+  selectedAlbums: any = [];
 
 
   keyCtrl: boolean = false;
@@ -67,6 +67,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   getPhotos(id: number) {
     this.albumService.getPhotosByAlbum(id).subscribe((res: any)=> {
+      console.log(res);
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
       // console.log(res);
@@ -77,12 +78,14 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   }
 
   onLoadMore() {
-    this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v: any)=> {
-        this.data.push(v);
+    if (this.nextLink) {
+      this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
+        _.map(res.data, (v: any)=> {
+          this.data.push(v);
+        });
+        this.nextLink = res.page_metadata.links.next;
       });
-      this.nextLink = res.page_metadata.links.next;
-    });
+    }
   }
 
 
@@ -91,9 +94,6 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     switch (event.action) {
       case 'select':
         this.onSelectedPhotos(event.data);
-        break;
-      case 'previewAll':
-        this.onPreviewAll(event.data);
         break;
       case 'favourite':
         this.onOneFavourite(event.data);
@@ -106,9 +106,6 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   actionToolbar(event: any) {
     // console.log(event);
     switch (event) {
-      case 'preview':
-        this.onPreview();
-        break;
       case 'oneFavourite':
         this.onFavourite();
         break;
@@ -167,27 +164,21 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   // --- Action for Item --- //
   private onSelectedPhotos(item: any) {
     if (this.keyCtrl) {
-      if (_.some(this.selectedPhotos, ['id', item.id])) {
+      if (_.some(this.selectedAlbums, ['id', item.id])) {
         $('#photo-box-img-' + item.id).removeClass('selected');
-        _.remove(this.selectedPhotos, ['id', item.id]);
+        _.remove(this.selectedAlbums, ['id', item.id]);
       } else {
         $('#photo-box-img-' + item.id).addClass('selected');
-        this.selectedPhotos.push(item);
+        this.selectedAlbums.push(item);
       }
     } else {
       $('.row-img .photo-box-img').removeClass('selected');
       $('#photo-box-img-' + item.id).addClass('selected');
-      this.selectedPhotos.length = 0;
-      this.selectedPhotos.push(item);
-      console.log(this.selectedPhotos);
+      this.selectedAlbums.length = 0;
+      this.selectedAlbums.push(item);
+      console.log(this.selectedAlbums);
     }
-    this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
-  }
-
-  private onPreviewAll(item: any) {
-    this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
-    this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
-    this.photoDetail.preview(true);
+    this.hasFavourite = _.some(this.selectedAlbums, ['favorite', false]);
   }
 
   private onOneFavourite(item: any) {
@@ -201,24 +192,12 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   // --- End Action for Item --- //
 
-
-  // --- Action for Toolbar --- //
-  private onPreview() {
-    if (this.selectedPhotos.length > 1) {
-      this.photoDetail.selectedPhotos = this.selectedPhotos;
-    } else {
-      this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.selectedPhotos[0].id]);
-      this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
-    }
-    this.photoDetail.preview(true);
-  }
-
   private onFavourite() {
     // if there was one item's favorite is false, all item will be add to favorite
-    let hasFavourite: boolean = _.some(this.selectedPhotos, ['favorite', false]);
-    this.photoService.actionAllFavourite(this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
+    let hasFavourite: boolean = _.some(this.selectedAlbums, ['favorite', false]);
+    this.photoService.actionAllFavourite(this.selectedAlbums, hasFavourite).subscribe((res: any)=> {
       if (res.message === 'success') {
-        _.map(this.selectedPhotos, (v: any)=> {
+        _.map(this.selectedAlbums, (v: any)=> {
           v.favorite = hasFavourite;
         });
       }
@@ -226,9 +205,9 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   }
 
   private onDelete() {
-    let idPhotos = _.map(this.selectedPhotos, 'id'); // ['1','2'];
+    let idPhotos = _.map(this.selectedAlbums, 'id'); // ['1','2'];
     this.confirmationService.confirm({
-      message: 'Are you sure to delete ' + this.selectedPhotos.length + ' item' + (this.selectedPhotos.length > 1 ? 's' : '') + ' ?',
+      message: 'Are you sure to delete ' + this.selectedAlbums.length + ' item' + (this.selectedAlbums.length > 1 ? 's' : '') + ' ?',
       accept: () => {
         let body = JSON.stringify({ids: idPhotos});
         this.loadingService.start();
@@ -245,13 +224,13 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   private onRemoveFromAlbum() {
     this.confirmationService.confirm({
         header: 'Remove photos from album',
-        message: this.selectedPhotos.length + ' selected Items will be remove from ' + this.albumDetail.name + '. Removed items from album still remain in your library',
+        message: this.selectedAlbums.length + ' selected Items will be remove from ' + this.albumDetail.name + '. Removed items from album still remain in your library',
         accept: () => {
           this.loadingService.start();
-          this.albumService.removeFromAlbum(this.albumDetail.id, this.selectedPhotos).subscribe(
+          this.albumService.removeFromAlbum(this.albumDetail.id, this.selectedAlbums).subscribe(
             (res: any)=> {
               if (res.success) {
-                _.map(this.selectedPhotos, (v: any)=> {
+                _.map(this.selectedAlbums, (v: any)=> {
                   _.remove(this.data, ['id', v.id]);
                 });
               }

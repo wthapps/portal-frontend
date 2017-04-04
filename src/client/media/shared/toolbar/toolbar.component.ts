@@ -9,7 +9,8 @@ import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component'
 import { ZMediaSharingComponent } from '../sharing/sharing.component';
 import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 import { ZMediaFormEditNameComponent } from '../form/form-edit-name.component';
-
+import { ZMediaToolbarPhotoComponent } from './photo/photo.component';
+import { ZMediaToolbarAlbumComponent } from './album/album.component';
 
 @Component({
   moduleId: module.id,
@@ -23,15 +24,19 @@ export class ZMediaToolbarComponent {
   @ViewChild('formEditName') formEditName: ZMediaFormEditNameComponent;
   @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
   @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
+  @ViewChild('toolbarPhoto') toolbarPhoto: ZMediaToolbarPhotoComponent;
+  @ViewChild('toolbarAlbum') toolbarAlbum: ZMediaToolbarAlbumComponent;
 
-
-  @Input() type: string = '';
 
   @Input() albumDetail: any = null;
+  @Input() type: any;
 
   @Input() selectedPhotos: any;
+  @Input() selectedAlbums: any;
   @Input() hasFavourite: any;
   @Input() currentView: any;
+  @Input() photos: any;
+  @Input() albums: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() outEventUploading: EventEmitter<any> = new EventEmitter<any>();
 
@@ -64,7 +69,17 @@ export class ZMediaToolbarComponent {
         break;
 
       case 'tag':
-        this.zoneTagging.modal.open();
+        if (this.type == 'photo') {
+          this.zoneTagging.selectedItems = this.selectedPhotos;
+          this.zoneTagging.items = this.photos;
+          this.zoneTagging.mediaType = this.type;
+          this.zoneTagging.openModel();
+        } else {
+          this.zoneTagging.selectedItems = this.selectedAlbums;
+          this.zoneTagging.items = this.albums;
+          this.zoneTagging.mediaType = this.type;
+          this.zoneTagging.openModel();
+        }
         break;
       default:
         this.outEvent.emit(action);

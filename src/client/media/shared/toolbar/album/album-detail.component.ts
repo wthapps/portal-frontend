@@ -7,7 +7,7 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 })
 
 export class ZMediaToolbarAlbumDetailComponent {
-  @Input() selectedPhotos: any;
+  @Input() selectedAlbums: any;
   @Input() hasFavourite: any;
   @Input() currentView: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();

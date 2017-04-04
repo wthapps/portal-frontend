@@ -65,7 +65,7 @@
     </li>
   </ul>
 
-  <z-media-share-toolbar-photo
+  <z-media-share-toolbar-photo #toolbarPhoto
     *ngIf="type == 'photo'"
     [selectedPhotos]="selectedPhotos"
     [currentView]="currentView"
@@ -73,21 +73,21 @@
     (outEvent)="onAction($event)">
   </z-media-share-toolbar-photo>
 
-  <z-media-share-toolbar-album
+  <z-media-share-toolbar-album #toolbarAlbum
     *ngIf="type == 'album'"
-    [selectedPhotos]="selectedPhotos"
+    [selectedAlbums]="selectedAlbums"
     [currentView]="currentView"
     [hasFavourite]="hasFavourite"
     (outEvent)="onAction($event)">
   </z-media-share-toolbar-album>
 
-  <z-media-share-toolbar-album-detail
-    *ngIf="type == 'album-detail'"
-    [selectedPhotos]="selectedPhotos"
-    [currentView]="currentView"
-    [hasFavourite]="hasFavourite"
-    (outEvent)="onAction($event)">
-  </z-media-share-toolbar-album-detail>
+  <!--<z-media-share-toolbar-album-detail-->
+    <!--*ngIf="type == 'album-detail'"-->
+    <!--[selectedAlbums]="selectedAlbums"-->
+    <!--[currentView]="currentView"-->
+    <!--[hasFavourite]="hasFavourite"-->
+    <!--(outEvent)="onAction($event)">-->
+  <!--</z-media-share-toolbar-album-detail>-->
 
 </div>
 
@@ -95,11 +95,13 @@
 <z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"
                                  [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
 <z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
-<z-media-share-form-edit-name #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>
+
+<z-media-share-form-edit-name *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>
+<z-media-share-form-edit-name *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></z-media-share-form-edit-name>
 
 
 <z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>
 
 
 <z-media-share-sharing #zoneSharing [selectedItems]="selectedPhotos"></z-media-share-sharing>
-<z-media-share-tagging #zoneTagging [selectedItems]="selectedPhotos" mediaType="type"></z-media-share-tagging>
+<z-media-share-tagging #zoneTagging></z-media-share-tagging>
