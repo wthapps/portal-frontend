@@ -119,6 +119,9 @@ export class ZMediaAlbumListComponent implements OnInit {
       case 'gridView':
         this.currentView = 'grid';
         break;
+      case 'timeView':
+        this.currentView = 'time';
+        break;
       default:
         break;
     }

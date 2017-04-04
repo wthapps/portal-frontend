@@ -8,6 +8,7 @@ import { Constants } from '../../core/shared/config/constants';
 
 import { ZMediaSharingComponent } from '../shared/sharing/sharing.component';
 import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
+import { ZMediaTaggingComponent } from '../shared/tagging/tagging.component';
 
 declare var $: any;
 declare var _: any;
@@ -28,6 +29,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
   @ViewChild('formEdit') formEdit: ZMediaPhotoFormEditComponent;
   @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
+  @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
 
   index: number = 0;
 
@@ -71,7 +73,10 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         this.mediaToolbar.zoneSharing.modal.open();
         break;
       case 'tag':
-
+        this.zoneTagging.selectedItems = [this.selectedPhotos[this.index]];
+        this.zoneTagging.items = this.allPhotos;
+        this.zoneTagging.mediaType = "photo";
+        this.zoneTagging.openModel();
         break;
       case 'delete':
         this.onDelete();
