@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/components/common/api';
@@ -6,6 +6,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 
 import { ZMediaAlbumService } from './album.service';
+import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
 
 declare var $: any;
 declare var _: any;
@@ -16,6 +17,7 @@ declare var _: any;
   templateUrl: 'album-list.component.html'
 })
 export class ZMediaAlbumListComponent implements OnInit {
+  @ViewChild('mediaToolbar') mediaToolbar: ZMediaToolbarComponent;
 
   data: any = [];
   nextLink: string = null;
@@ -88,6 +90,9 @@ export class ZMediaAlbumListComponent implements OnInit {
       case 'previewAll':
         this.router.navigate([`/album`, event.data.id]);
         break;
+      case 'editName':
+        this.onOneEditName(event.data);
+        break;
       case 'favourite':
         this.onOneFavourite(event.data);
         break;
@@ -153,6 +158,12 @@ export class ZMediaAlbumListComponent implements OnInit {
         this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
       }
     });
+  }
+
+  private onOneEditName(item: any) {
+    this.selectedPhotos.length = 0;
+    this.selectedPhotos.push(item);
+    this.mediaToolbar.formEditName.modal.open();
   }
 
   // --- End Action for Item --- //

@@ -59,10 +59,10 @@
     .photo-box-img {
       padding: 5px;
       &:hover {
-        background-color: rgba(#2996CC, 0.2);
+        background-color: rgba(#ededed, 1);
       }
       &.selected {
-        background-color: rgba(#2996CC, 0.5);
+        background-color: darken(rgba(#ededed, 1), 10%);
       }
       .photo-box-img-action {
         @include center(false, true);

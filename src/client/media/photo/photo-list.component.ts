@@ -198,7 +198,6 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   private onOneEditName(item: any) {
-    // console.log(item);
     this.selectedPhotos.length = 0;
     this.selectedPhotos.push(item);
     this.mediaToolbar.formEditName.modal.open();
