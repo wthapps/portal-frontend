@@ -96,6 +96,10 @@
                                  [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
 <z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
 
+<z-media-share-form-edit-name *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>
+<z-media-share-form-edit-name *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></z-media-share-form-edit-name>
+
+
 <z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>
 
 

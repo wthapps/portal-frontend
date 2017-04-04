@@ -1,24 +1,23 @@
-<modal #modal [keyboard]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
-    <h4 class="modal-title"><i class="fa fa-info-circle"></i> Information</h4>
-  </modal-header>
-  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+<form [formGroup]="form" novalidate>
+  <modal #modal>
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">Rename</h4>
+    </modal-header>
     <modal-body>
-      <div class="form-group"
-           [ngClass]="{'has-error': (!name.valid && name.touched),'has-success': (name.valid && name.touched)}">
-        <label for="edit-photo-name">Name</label>
-        <input [formControl]="name" type="text" class="form-control" id="edit-photo-name" placeholder="Name">
+      <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched)}">
+        <p>Please enter a new name for the item:</p>
+        <label for="edit-photo-album-name" class="sr-only">name</label>
+        <input [formControl]="name" value="selectedPhotos.name" type="text" id="edit-photo-album-name"
+               class="form-control" placeholder="">
         <div *ngIf="!name.valid && name.touched">
-          <span *ngIf="!name.valid && name.errors.required" class="help-block">
-            Name is required
-          </span>
+          <span *ngIf="!name.valid && name.errors.required" class="help-block">Name is required</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="hidden form-group">
         <label>Date Created</label>
         <div class="row">
           <div class="col-xs-4">
-            <select name="birthday_month" class="form-control" id="edit-photo-month" [formControl]="createdDateMonth">
+            <select name="birthday_month" class="form-control" id="birthday_month" [formControl]="createdDateMonth">
               <option value="1">Jan</option>
               <option value="2">Feb</option>
               <option value="3">Mar</option>
@@ -34,7 +33,7 @@
             </select>
           </div>
           <div class="col-xs-4">
-            <select name="birthday_day" class="form-control" id="edit-photo-day" [formControl]="createdDateDay">
+            <select name="birthday_day" class="form-control" id="birthday_day" [formControl]="createdDateDay">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -69,7 +68,7 @@
             </select>
           </div>
           <div class="col-xs-4">
-            <select name="birthday_year" class="form-control" id="edit-photo-year" [formControl]="createdDateYear">
+            <select name="birthday_year" class="form-control" id="birthday_year" [formControl]="createdDateYear">
               <option value="2016">2016</option>
               <option value="2015">2015</option>
               <option value="2014">2014</option>
@@ -186,15 +185,17 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="edit-photo-description">Description</label>
-        <textarea [formControl]="description" rows="3" class="form-control" id="edit-photo-description"
+      <div class="hidden form-group">
+        <label for="description">Description</label>
+        <textarea [formControl]="description" rows="3" class="form-control" id="description"
                   placeholder=""></textarea>
       </div>
     </modal-body>
     <modal-footer>
-      <button type="submit" class="btn btn-primary-inline">Save</button>
+      <button [disabled]="!form.valid" (click)="onSubmit(form.value)" type="submit" class="btn btn-primary-inline">
+        Save
+      </button>
       <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
     </modal-footer>
-  </form>
-</modal>
+  </modal>
+</form>

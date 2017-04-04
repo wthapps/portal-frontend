@@ -26,7 +26,7 @@
       [type]="'photo'"
       [data]="data"
       [view]="currentView"
-      [hasAction]="['favourite', 'select', 'previewAll']"
+      [hasAction]="['favourite', 'select', 'previewAll', 'editName']"
       (outEvent)="actionItem($event)">
     </z-media-share-list>
     <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>

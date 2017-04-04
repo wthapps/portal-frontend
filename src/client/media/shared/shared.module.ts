@@ -20,6 +20,7 @@ import { ZMediaAlbumService } from '../album/album.service';
 import { ZMediaSharingService } from './sharing/sharing.service';
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { ZMediaTaggingComponent } from './tagging/tagging.component';
+import { ZMediaFormEditNameComponent } from './form/form-edit-name.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -42,6 +43,7 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
+    ZMediaFormEditNameComponent,
 
     ZMediaUploadingComponent,
     ZMediaSharingComponent,
@@ -59,6 +61,7 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
     ZMediaSortbarComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
+    ZMediaFormEditNameComponent,
 
     ZMediaUploadingComponent,
     ZMediaSharingComponent,

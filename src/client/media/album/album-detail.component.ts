@@ -32,6 +32,8 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   hasFavourite: boolean = false;
   currentView: string = 'grid';
 
+  photoIsEmpty: boolean = false;
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
     console.log(ev);
@@ -68,6 +70,10 @@ export class ZMediaAlbumDetailComponent implements OnInit {
       console.log(res);
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
+      // console.log(res);
+      if (res.data.length == 0) {
+        this.photoIsEmpty = true;
+      }
     });
   }
 

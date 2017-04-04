@@ -8,9 +8,9 @@ import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.compone
 import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
 import { ZMediaSharingComponent } from '../sharing/sharing.component';
 import { ZMediaTaggingComponent } from '../tagging/tagging.component';
+import { ZMediaFormEditNameComponent } from '../form/form-edit-name.component';
 import { ZMediaToolbarPhotoComponent } from './photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './album/album.component';
-
 
 @Component({
   moduleId: module.id,
@@ -21,6 +21,7 @@ import { ZMediaToolbarAlbumComponent } from './album/album.component';
 export class ZMediaToolbarComponent {
   @ViewChild('formAddAlbum') formAddAlbum: ZMediaFormAddToAlbumComponent;
   @ViewChild('formEditAlbum') formEditAlbum: ZMediaFormEditAlbumComponent;
+  @ViewChild('formEditName') formEditName: ZMediaFormEditNameComponent;
   @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
   @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
   @ViewChild('toolbarPhoto') toolbarPhoto: ZMediaToolbarPhotoComponent;
