@@ -21,6 +21,10 @@ import { ZMediaSharingService } from './sharing/sharing.service';
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { ZMediaTaggingComponent } from './tagging/tagging.component';
 import { ZMediaFormEditNameComponent } from './form/form-edit-name.component';
+import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
+import { MediaListComponent } from './media/media-list.component';
+import { MediaViewContainerComponent } from './container/media-view-container.comoponent';
+import { MediaItemComponent } from './media/media-item.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -47,7 +51,12 @@ import { ZMediaFormEditNameComponent } from './form/form-edit-name.component';
 
     ZMediaUploadingComponent,
     ZMediaSharingComponent,
-    ZMediaTaggingComponent
+    ZMediaTaggingComponent,
+
+    MediaViewContainerComponent,
+    MediaToolbarListComponent,
+    MediaListComponent,
+    MediaItemComponent
   ],
   exports: [
     ZMediaShareItemComponent,
@@ -67,6 +76,10 @@ import { ZMediaFormEditNameComponent } from './form/form-edit-name.component';
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
 
+    MediaViewContainerComponent,
+    MediaToolbarListComponent,
+    MediaListComponent,
+    MediaItemComponent,
 
     SharedModule,
     // HdTagInputModule,
