@@ -39,12 +39,12 @@
     <li>
       <a href="#">Gadget</a>
     </li>
-    <li class="has-sub" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+    <li class="has-sub" [routerLinkActive]="['active']">
       <a href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let media of mediaMenu">
+        <li [routerLinkActive]="['active']" *ngFor="let media of mediaMenu">
           <a [routerLink]="[media.link]" [queryParams]="{}">
             {{media.name}}
           </a>

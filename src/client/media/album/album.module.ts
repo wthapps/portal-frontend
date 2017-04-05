@@ -4,6 +4,7 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 import { ZMediaPhotoModule } from '../photo/photo.module';
 
 import { ZMediaAlbumService } from './album.service';
+import { ZMediaAlbumComponent } from './album.component';
 import { ZMediaAlbumListComponent } from './album-list.component';
 import { ZMediaAlbumDetailComponent } from './album-detail.component';
 import { ZMediaAlbumRoutingModule } from './album-routing.module';
@@ -15,10 +16,12 @@ import { ZMediaAlbumRoutingModule } from './album-routing.module';
     ZMediaSharedModule.forRoot()
   ],
   declarations: [
+    ZMediaAlbumComponent,
     ZMediaAlbumListComponent,
     ZMediaAlbumDetailComponent
   ],
   exports: [
+    ZMediaAlbumComponent,
     ZMediaAlbumListComponent,
     ZMediaAlbumDetailComponent
   ],
