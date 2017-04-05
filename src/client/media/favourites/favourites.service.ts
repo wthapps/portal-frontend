@@ -12,8 +12,8 @@ export class ZMediaFavoriteService {
   constructor(private apiBaseService: ApiBaseService) {
   }
 
-  list(): any {
-    return this.apiBaseService.get(this.url);
+  list(body:any = {}): any {
+    return this.apiBaseService.get(this.url, body);
   }
 
   loadMore(next: string): any {

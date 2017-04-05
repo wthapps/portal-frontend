@@ -10,46 +10,29 @@ declare var _: any;
 
 export class ZMediaSortbarComponent {
   @Input() data: any;
+  @Input() view: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  sortName: any = false;
-  sortDate: any = false;
+  sortName: any = "Date";
+  sort: any = "desc";
 
-  onAction(action: string) {
-    switch (action) {
-      case 'sort-name':
-        this.onSortName();
-        break;
-      case 'sort-date':
-        this.onSortDate();
-        break;
-      default:
-        break;
-    }
-    return false;
+  setSortName(name:any) {
+    this.sortName = name;
   }
 
-  private onSortName() {
-    this.sortDate = false;
-    this.sortName = (this.sortName == 'desc') ? 'asc' : 'desc';
-
-    if (this.sortName == 'asc') {
-      this.outEvent.emit(_.sortBy(this.data, ['name']));
+  toggleSort() {
+    if (this.sort == "asc") {
+      this.sort = "desc"
     } else {
-      this.outEvent.emit(_.reverse(_.sortBy(this.data, ['name'])));
+      this.sort = "asc"
     }
-    // console.log('onSortName');
   }
 
-  private onSortDate() {
-    this.sortName = false;
-    this.sortDate = (this.sortDate == 'desc') ? 'asc' : 'desc';
+  doSort() {
+    this.outEvent.emit({action: 'sort', data: {sort: this.sort, sort_name: this.sortName}});
+  }
 
-    if (this.sortDate == 'asc') {
-      this.outEvent.emit(_.sortBy(this.data, ['created_at']));
-    } else {
-      this.outEvent.emit(_.reverse(_.sortBy(this.data, ['created_at'])));
-    }
-    // console.log('onSortDate', this);
+  group(groupBy:any) {
+    this.outEvent.emit({action: 'group', data: groupBy});
   }
 }

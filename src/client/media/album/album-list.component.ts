@@ -95,6 +95,9 @@ export class ZMediaAlbumListComponent implements OnInit {
       case 'favourite':
         this.onOneFavourite(event.data);
         break;
+      case 'sort':
+        this.sort(event.data);
+        break;
       default:
         break;
     }
@@ -198,6 +201,10 @@ export class ZMediaAlbumListComponent implements OnInit {
         });
       }
     });
+  }
+
+  private sort(data:any) {
+    this.getAlbums(data);
   }
 
   // --- End Action for Toolbar --- //
