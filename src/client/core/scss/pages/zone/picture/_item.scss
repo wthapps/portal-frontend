@@ -1,7 +1,7 @@
 .row-img {
   .img-center-dv {
     border: 1px solid $light-grey;
-    background-color: #ffffff;
+    //background-color: #D8D8D8;
     cursor: pointer;
     @include transition($transition-base);
     &:after {
