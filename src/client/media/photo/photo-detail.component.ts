@@ -32,6 +32,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
 
   index: number = 0;
+  loadingImg: boolean = true;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -51,16 +52,28 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     $('body').on('click', '#photo-box-detail figure, .photo-detail-img-control', function (e: any) {
       e.stopPropagation();
     });
+
+    $(".photo-detail-img img").load(function () {
+      if ($(this).height() > 100) {
+        $(this).addClass("bigImg");
+      }
+    });
+  }
+
+  showLoading() {
+    this.loadingImg = false;
   }
 
   imgPrev(): void {
     this.index = this.index - 1;
     if (this.index < 0) this.index = this.selectedPhotos.length - 1;
+    this.loadingImg = true;
   }
 
   imgNext(): void {
     this.index = this.index + 1;
     if (this.index == this.selectedPhotos.length) this.index = 0;
+    this.loadingImg = true;
   }
 
 
@@ -99,6 +112,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   }
 
   preview(show: boolean): void {
+    this.loadingImg = true;
     if (show) {
       $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
       $('#photo-box-detail').addClass('active');

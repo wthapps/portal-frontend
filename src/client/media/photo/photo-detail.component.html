@@ -34,8 +34,8 @@
   </div>
   <div *ngIf="selectedPhotos[index]" class="photo-detail-content">
     <div class="photo-detail-img">
-      <figure>
-        <img [src]="selectedPhotos[index].url" alt="">
+      <figure [ngClass]="{'img-loading': loadingImg}">
+        <img [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
       </figure>
       <span *ngIf="selectedPhotos.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
         <i class="fa fa-angle-left"></i>
