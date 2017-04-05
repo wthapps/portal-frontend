@@ -52,7 +52,7 @@
     </li>-->
   </ul>
 
-  <ul class="control-body-select control-body-btnview">
+  <ul class="control-body-select control-body-btnview" *ngIf="type != 'favourites'">
     <li class="dropdown">
       <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fa" [ngClass]="{'fa-th-large': (currentView == 'grid'), 'fa-th-list': (currentView == 'list'), 'fa-align-center': (currentView == 'time')}"></i>

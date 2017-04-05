@@ -41,7 +41,11 @@ export class ZMediaFavoriteListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.favoriteService.list().subscribe((res: any)=> {
+    this.getFavorite();
+  }
+
+  getFavorite(body:any = {}) {
+    this.favoriteService.list(body).subscribe((res: any)=> {
       this.data = res.data;
       if (res.data.albums.length == 0 && res.data.photos.length == 0) {
         this.favouriteIsEmpty = true;
@@ -72,6 +76,9 @@ export class ZMediaFavoriteListComponent implements OnInit {
         break;
       case 'favourite':
         this.onOneFavourite(event.data);
+        break;
+      case 'sort':
+        this.sort(event.data);
         break;
       default:
         break;
@@ -125,6 +132,10 @@ export class ZMediaFavoriteListComponent implements OnInit {
         this.data.albums[findItemFavourite].favorite = (this.data.albums[findItemFavourite].favorite) ? false : true;
       }
     });
+  }
+
+  private sort(data:any) {
+    this.getFavorite(data);
   }
 
   // --- End Action for Item --- //

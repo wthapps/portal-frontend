@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 declare var Selectables: any;
 
@@ -7,35 +7,19 @@ declare var Selectables: any;
   selector: 'z-media-share-list',
   templateUrl: 'list.component.html'
 })
-export class ZMediaShareListComponent implements AfterViewInit {
+export class ZMediaShareListComponent {
   @Input() type: string = '';
   @Input() data: any = [];
   @Input() view: string = 'grid';
+  @Input() showSortBar: boolean = true;
   @Input() hasAction: any = []; // favourite, select, preview, previewAll
 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
 
-  selectables: any;
+  groupBy: string;
+
   selectablesEnable: boolean = false;
-
-  ngAfterViewInit() {
-    // this.selectables = new Selectables({
-    //   zone: '#list-photo',
-    //   elements: 'z-media-share-item',
-    //   selectedClass: 'active',
-    //   onSelect: (element: any)=> {
-    //     console.log(element);
-    //   }
-    // });
-    //
-    // // //later
-    // this.selectables.disable();
-    //
-    // // enable again
-    // dr.enable();
-
-  }
 
   onDragenter(e: any) {
     e.preventDefault();
@@ -50,6 +34,10 @@ export class ZMediaShareListComponent implements AfterViewInit {
   }
 
   actionItem(ev: any) {
+    if (ev.action == 'group') {
+      this.groupBy = ev.
+      return;
+    }
     this.outEvent.emit(ev);
   }
 

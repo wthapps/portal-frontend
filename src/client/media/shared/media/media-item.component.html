@@ -1,0 +1,46 @@
+<div *ngIf="object" class="photo-box-img" id="photo-box-img-{{object.id}}">
+
+  <div class="photo-box-img-action">
+    <i (click)="onAction({action:'favourite'})" class="fa" [ngClass]="object.favorite ? 'fa-star': 'fa-star-o'"></i>
+  </div>
+
+
+  <!--type == 'photo'-->
+  <div *ngIf="type == 'photo'" class="photo-box-img-figure">
+    <figure class="img-center-dv" (click)="onAction({action:'select'})" (dblclick)="onAction({action:'previewAll'})">
+      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+      <img class="img-center" [src]="object.thumbnail_url" alt="">
+    </figure>
+    <div class="photo-box-img-name">
+      <span (dblclick)="onAction({action:'editName'})">{{object.name}}.{{object.extension}}</span>
+    </div>
+    <div class="photo-box-img-owner">{{object.owner.name}}</div>
+    <div class="photo-box-img-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
+    <div class="photo-box-img-size">{{object.size}}</div>
+  </div>
+
+  <!--type == 'album'-->
+  <div *ngIf="type == 'album'" class="photo-box-img-figure">
+    <figure class="img-center-dv" (click)="onAction({action:'select'})" (dblclick)="onAction({action:'previewAll'})">
+      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+      <img class="img-center" [src]="object.photo_default" alt="">
+      <div class="photo-box-img-info">
+        <!--{{object.name}} <br>-->
+        <span *ngIf="object.photo_number>1">
+          {{object.photo_number}} photos
+        </span>
+        <span *ngIf="object.photo_number<=1">
+          {{object.photo_number}} photo
+        </span>
+      </div>
+    </figure>
+    <div class="photo-box-img-name">
+      <span (dblclick)="onAction({action:'editName'})">{{object.name}}</span>
+    </div>
+    <div class="photo-box-img-owner">{{object.owner.name}}</div>
+    <div class="photo-box-img-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
+    <div class="photo-box-img-size">{{object.photo_number}}</div>
+  </div>
+
+
+</div>

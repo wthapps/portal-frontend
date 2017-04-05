@@ -86,6 +86,7 @@ export class ZMediaPhotoListComponent implements OnInit {
 
 
   actionItem(event: any) {
+    console.log(event);
     switch (event.action) {
       case 'select':
         this.onSelectedPhotos(event.data);
@@ -98,6 +99,9 @@ export class ZMediaPhotoListComponent implements OnInit {
         break;
       case 'favourite':
         this.onOneFavourite(event.data);
+        break;
+      case 'sort':
+        this.sort(event.data);
         break;
       default:
         break;
@@ -249,6 +253,12 @@ export class ZMediaPhotoListComponent implements OnInit {
       }
     });
   }
+
+  private sort(data:any) {
+    this.getPhotos(data);
+  }
+
+
 
   // --- End Action for Toolbar --- //
 }

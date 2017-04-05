@@ -1,38 +1,41 @@
-<z-media-share-toolbar
-  #mediaToolbar
-  [type]="'photo'"
-  [selectedPhotos]="selectedPhotos"
-  [photos]="data"
-  [hasFavourite]="hasFavourite"
-  [currentView]="currentView"
-  (outEvent)="actionToolbar($event)"
-  (outEventUploading)="actionUploading($event)">
-</z-media-share-toolbar>
+<!--<z-media-share-toolbar-->
+  <!--#mediaToolbar-->
+  <!--[type]="'photo'"-->
+  <!--[selectedPhotos]="selectedPhotos"-->
+  <!--[photos]="data"-->
+  <!--[hasFavourite]="hasFavourite"-->
+  <!--[currentView]="currentView"-->
+  <!--(outEvent)="actionToolbar($event)"-->
+  <!--(outEventUploading)="actionUploading($event)">-->
+<!--</z-media-share-toolbar>-->
 
-<div class="page-body-content has-page-body-control gray-light"
-     infinite-scroll
-     [infiniteScrollDistance]="2"
-     [infiniteScrollThrottle]="500"
-     [scrollWindow]="false"
-     (scrolled)="onLoadMore()">
-  <div class="page-body-content-in">
+<!--<div class="page-body-content has-page-body-control gray-light"-->
+     <!--infinite-scroll-->
+     <!--[infiniteScrollDistance]="2"-->
+     <!--[infiniteScrollThrottle]="500"-->
+     <!--[scrollWindow]="false"-->
+     <!--(scrolled)="onLoadMore()">-->
+  <!--<div class="page-body-content-in">-->
 
-    <div *ngIf="photoIsEmpty" class="zone-no-photo text-center">
-      <h3>Ready to add some photos?</h3>
-      <h5>Drag photos anywhere to upload</h5>
-    </div>
+    <!--<div *ngIf="photoIsEmpty" class="zone-no-photo text-center">-->
+      <!--<h3>Ready to add some photos?</h3>-->
+      <!--<h5>Drop photos anywhere to upload</h5>-->
+    <!--</div>-->
 
-    <z-media-share-list
-      [type]="'photo'"
-      [data]="data"
-      [view]="currentView"
-      [hasAction]="['favourite', 'select', 'previewAll', 'editName']"
-      (outEvent)="actionItem($event)">
-    </z-media-share-list>
-    <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
-  </div>
-</div>
+    <!--<z-media-share-list-->
+      <!--[type]="'photo'"-->
+      <!--[data]="data"-->
+      <!--[view]="currentView"-->
+      <!--[hasAction]="['favourite', 'select', 'previewAll', 'editName']"-->
+      <!--(outEvent)="actionItem($event)">-->
+    <!--</z-media-share-list>-->
+    <!--<div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>-->
+  <!--</div>-->
+<!--</div>-->
 
-<z-media-photo-detail [mediaToolbar]="mediaToolbar" #photoDetail [selectedPhotos]="selectedPhotos"
-                      [allPhotos]="data"></z-media-photo-detail>
+<!--<z-media-photo-detail [mediaToolbar]="mediaToolbar" #photoDetail [selectedPhotos]="selectedPhotos"-->
+                      <!--[allPhotos]="data"></z-media-photo-detail>-->
 
+<me-view-container>
+
+</me-view-container>

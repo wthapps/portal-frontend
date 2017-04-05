@@ -1,0 +1,135 @@
+<div class="page-body-control">
+  <!--album-detail-->
+  <!--<ul *ngIf="albumDetail && type == 'album-detail'" class="control-body-select">-->
+    <!--<li style="border-right: 1px solid #4A4A4A; padding-right: 10px">-->
+      <!--<a (click)="onBack()" class="btn btn-default btn-circle"><i class="fa fa-arrow-left"></i></a>-->
+    <!--</li>-->
+    <!--<li class="dropdown">-->
+      <!--<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">-->
+        <!--{{albumDetail.name}}-->
+        <!--<span class="caret"></span>-->
+      <!--</button>-->
+      <!--<ul class="dropdown-menu">-->
+        <!--<li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-upload"></i> Upload to album</a></li>-->
+        <!--<li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-edit"></i> Edit album</a></li>-->
+        <!--<li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-share-alt"></i> Share Album</a></li>-->
+        <!--<li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-tag"></i> Tag album</a></li>-->
+        <!--<li class="divider"></li>-->
+        <!--<li><a (click)="onAction('gridView')" href="javascript:;"><i class="fa fa-trash-o"></i> Delete album</a></li>-->
+      <!--</ul>-->
+    <!--</li>-->
+  <!--</ul>-->
+  <!--end album-detail-->
+
+
+  <ul class="control-body-select">
+    <li class="dropdown">
+      <a href="#" class="btn btn-default btn-circle" data-toggle="dropdown"><i class="fa fa-plus"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li class="active">
+          <a href="javascript:;" (click)="onAction({action: 'uploadPhoto', params: {}})"><i class="fa fa-picture-o"></i> Upload Photos</a>
+        </li>
+        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
+        <li role="separator" class="divider"></li>
+        <li><a href="javascript:;" (click)="onAction({action: 'createAlbum', params: {}})"><i class="fa fa-files-o"></i> Create Album</a>
+        </li>
+        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>-->
+      </ul>
+    </li>
+    <!--<li class="dropdown">-->
+      <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"-->
+              <!--aria-haspopup="true" aria-expanded="false">-->
+        <!--<i [ngClass]="selectedEl.css"></i> {{selectedEl.name}}-->
+        <!--<span class="caret"></span>-->
+      <!--</button>-->
+      <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">-->
+        <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">-->
+          <!--<a [routerLink]="[item.link]">-->
+            <!--{{item.name}}-->
+          <!--</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</li>-->
+  </ul>
+
+  <ul class="control-body-select control-body-btnview">
+    <li class="dropdown">
+      <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa" [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-center': (viewOption == timeline)}"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a (click)="onAction({action: 'changeView', params: {viewOption: grid}})" href="javascript:;">
+          <i class="fa fa-th-large"></i> Grid</a>
+        </li>
+        <li><a (click)="onAction({action: 'changeView', params: {viewOption: list}})" href="javascript:;">
+          <i class="fa fa-th-list"></i> List</a>
+        </li>
+        <li><a (click)="onAction({action: 'changeView', params: {viewOption: timeline}})" href="javascript:;"><i class="fa fa-align-center">
+
+        </i> Timeline</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+
+  <ul class="control-body-select control-body-btnview">
+    <li>
+      <a href="#" (click)="onAction({action: 'preview', params: {}})"><i class="fa fa-eye"></i></a>
+    </li>
+    <li>
+      <a href="#" (click)="onAction({action: 'share', params: {}})"><i class="fa fa-share-alt"></i></a>
+    </li>
+    <li>
+      <a href="#" (click)="onAction({action: 'favourite', params: {}})">
+        <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
+      </a>
+    </li>
+    <li >
+      <a href="#" (click)="onAction({action: 'tag', params: {}})"><i class="fa fa-tag"></i></a>
+    </li>
+    <li >
+      <a href="#" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
+    </li>
+    <li class="dropdown action" >
+      <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a (click)="onAction({action: 'addToAlbum', params: {}})" href="javascript:;"><i class="fa fa-plus-square"></i> Add to Album</a>
+        </li>
+        <li><a (click)="onAction({action: 'viewInfo', params: {}})" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
+        <li><a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download</a></li>
+        <li><a (click)="onAction({action: 'editInfo', params: {}})" href="javascript:;"><i class="fa fa-edit"></i> Edit</a></li>
+      </ul>
+    </li>
+  </ul>
+
+
+  <!--<z-media-share-toolbar-album #toolbarAlbum-->
+                               <!--*ngIf="type == 'album'"-->
+                               <!--[selectedAlbums]="selectedAlbums"-->
+                               <!--[currentView]="currentView"-->
+                               <!--[hasFavourite]="hasFavourite"-->
+                               <!--(outEvent)="onAction($event)">-->
+  <!--</z-media-share-toolbar-album>-->
+
+
+
+</div>
+
+
+<!--<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"-->
+                                 <!--[selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>-->
+<!--<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>-->
+
+<!--<z-media-share-form-edit-name *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>-->
+<!--<z-media-share-form-edit-name *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></z-media-share-form-edit-name>-->
+
+
+<!--<z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>-->
+
+
+<!--<z-media-share-sharing #zoneSharing [selectedItems]="selectedPhotos"></z-media-share-sharing>-->
+<!--<z-media-share-tagging #zoneTagging></z-media-share-tagging>-->
