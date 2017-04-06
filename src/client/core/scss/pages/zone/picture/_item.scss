@@ -1,7 +1,7 @@
 .row-img {
   .img-center-dv {
-    border: 1px solid $light-grey;
-    //background-color: #D8D8D8;
+    //border: 1px solid $light-grey;
+    background-color: #FFF;
     cursor: pointer;
     @include transition($transition-base);
     &:after {
@@ -30,6 +30,7 @@
 
   .photo-box-img {
     position: relative;
+    @include box-shadow(0px 2px 4px 0px rgba(163, 163, 163, 0.40));
     &:hover {
       .photo-box-img-action {
         @include opacity(1);

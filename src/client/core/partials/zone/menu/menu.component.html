@@ -46,7 +46,7 @@
       <ul [routerLinkActive]="['active']" class="list-unstyled">
         <li [routerLinkActive]="['active']" *ngFor="let media of mediaMenu">
           <a [routerLink]="[media.link]" [queryParams]="{}">
-            {{media.name}}
+            <i class="{{media.icon}}"></i> {{media.name}}
           </a>
         </li>
       </ul>

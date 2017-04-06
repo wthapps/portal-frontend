@@ -38,18 +38,19 @@
             display: none;
             &.active {
               display: block;
+              background-color: #f6f6f6;
             }
             li {
               a {
                 padding-left: 30px;
                 &:hover {
                   background-color: lighten(#d8d8d8, 5%);
-                  color: $color-inverse;
                 }
               }
               &.active {
                 a {
-                  background-color: #d8d8d8;
+                  background-color: transparent;
+                  color: $color-inverse;
                 }
               }
             }
