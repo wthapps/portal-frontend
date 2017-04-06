@@ -8,7 +8,7 @@ import { ZMediaAlbumDetailComponent } from './album-detail.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'album',
+        path: 'albums',
         component: ZMediaAlbumComponent,
         children: [
           {path: ':id', component: ZMediaAlbumDetailComponent},

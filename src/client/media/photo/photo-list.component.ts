@@ -33,12 +33,12 @@ export class ZMediaPhotoListComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
-    // console.log(ev);
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
   }
 
   @HostListener('document:keyup', ['$event'])
   onKeyUp(ev: KeyboardEvent) {
+    console.log(ev);
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
   }
 

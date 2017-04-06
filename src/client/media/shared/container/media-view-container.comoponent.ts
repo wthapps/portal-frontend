@@ -67,7 +67,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
           } else {
             this.pageType = 'detail'
           }
-          this.toolbar.data = { mediaObject: this.mediaObject, pageType: this.pageType };
+          // this.toolbar.data = { mediaObject: this.mediaObject, pageType: this.pageType };
         }
       );
     });
@@ -104,6 +104,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
       case 'preview':
       case 'previewAll':
         this.doPreview();
+        break;
+      case 'select':
+      case 'deselect':
+        this.selectedObjects = event.params.selectedObjects;
+        this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
         break;
     }
   }

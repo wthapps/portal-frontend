@@ -6,8 +6,8 @@ import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'photo', component: ZMediaPhotoListComponent},
-      {path: 'photo/:id', component: ZMediaPhotoDetailComponent}
+      {path: 'photos', component: ZMediaPhotoListComponent},
+      {path: 'photos/:id', component: ZMediaPhotoDetailComponent}
     ])
   ],
   exports: [RouterModule]

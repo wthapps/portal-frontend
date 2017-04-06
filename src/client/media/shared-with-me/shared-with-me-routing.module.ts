@@ -5,7 +5,7 @@ import { ZMediaSharedWithMeComponent } from './shared-with-me.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'sharedWithMe', component: ZMediaSharedWithMeComponent}
+      {path: 'shared-with-me', component: ZMediaSharedWithMeComponent}
     ])
   ],
   exports: [RouterModule]

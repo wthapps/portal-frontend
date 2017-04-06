@@ -7,7 +7,10 @@
 
   <!--type == 'photo'-->
   <div *ngIf="type == 'photo'" class="photo-box-img-figure">
-    <figure class="img-center-dv" (click)="onAction({action:'select'})" (dblclick)="onAction({action:'previewAll'})">
+    <figure class="img-center-dv"
+            (click)="onAction({action:'select', params: {selectedObject: object}})"
+            (dblclick)="onAction({action:'previewAll'})">
+
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
       <img class="img-center" [src]="object.thumbnail_url" alt="">
     </figure>

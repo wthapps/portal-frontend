@@ -55,7 +55,7 @@
   <ul class="control-body-select control-body-btnview">
     <li class="dropdown">
       <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa" [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-center': (viewOption == timeline)}"></i>
+        <i class="fa" [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
       </a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li><a (click)="onAction({action: 'changeView', params: {viewOption: grid}})" href="javascript:;">
@@ -74,24 +74,24 @@
 
 
   <ul class="control-body-select control-body-btnview">
-    <li>
-      <a href="#" (click)="onAction({action: 'preview', params: {}})"><i class="fa fa-eye"></i></a>
+    <li [ngClass]="{'action-disabled': noSelectedObjects}">
+      <a href="javascript:;" (click)="onAction({action: 'preview', params: {}})"><i class="fa fa-eye"></i></a>
     </li>
-    <li>
-      <a href="#" (click)="onAction({action: 'share', params: {}})"><i class="fa fa-share-alt"></i></a>
+    <li [ngClass]="{'action-disabled': noSelectedObjects}">
+      <a href="javascript:;" (click)="onAction({action: 'share', params: {}})"><i class="fa fa-share-alt"></i></a>
     </li>
-    <li>
-      <a href="#" (click)="onAction({action: 'favourite', params: {}})">
+    <li [ngClass]="{'action-disabled': noSelectedObjects}">
+      <a href="javascript:;" (click)="onAction({action: 'favourite', params: {}})">
         <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
       </a>
     </li>
-    <li >
-      <a href="#" (click)="onAction({action: 'tag', params: {}})"><i class="fa fa-tag"></i></a>
+    <li [ngClass]="{'action-disabled': noSelectedObjects}">
+      <a href="javascript:;" (click)="onAction({action: 'tag', params: {}})"><i class="fa fa-tag"></i></a>
     </li>
-    <li >
-      <a href="#" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
+    <li [ngClass]="{'action-disabled': noSelectedObjects}">
+      <a href="javascript:;" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
     </li>
-    <li class="dropdown action" >
+    <li class="dropdown action" [ngClass]="{'action-disabled': noSelectedObjects}">
       <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-ellipsis-v"></i>
       </a>
