@@ -27,7 +27,8 @@
       <a href="#" class="btn btn-wth" data-toggle="dropdown"><i class="fa fa-plus"></i> New</a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li class="active">
-          <a href="javascript:;" (click)="onAction({action: 'uploadPhoto', params: {}})"><i class="fa fa-picture-o"></i> Upload Photos</a>
+          <a href="javascript:;" (click)="uploader.browseFiles($event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
+          <!--<a href="javascript:;" (click)="onAction({action: 'uploadPhoto', params: {}})"><i class="fa fa-picture-o"></i> Upload Photos</a>-->
         </li>
         <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
         <li role="separator" class="divider"></li>
@@ -133,3 +134,4 @@
 
 <!--<z-media-share-sharing #zoneSharing [selectedItems]="selectedPhotos"></z-media-share-sharing>-->
 <!--<z-media-share-tagging #zoneTagging></z-media-share-tagging>-->
+<me-uploader #uploader (outEvent)="onActionUploading($event)"></me-uploader>

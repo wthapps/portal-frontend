@@ -19,11 +19,11 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-share-uploading',
-  templateUrl: 'uploading.component.html',
-  styleUrls: ['uploading.component.css'],
+  selector: 'me-uploader',
+  templateUrl: 'media-uploader.component.html',
+  styleUrls: ['media-uploader.component.css'],
 })
-export class ZMediaUploadingComponent implements OnInit, OnChanges, AfterViewInit {
+export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit {
   current_photo: any;
   step: number;
   files_num: number;

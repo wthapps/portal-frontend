@@ -59,7 +59,7 @@ export class ZMediaTaggingComponent implements OnInit {
     }
   }
 
-  openModel() {
+  open() {
     if (this.selectedItems.length == 1) {
       this.addedTags = [];
       for (let i = 0; i < this.selectedItems[0].json_tags.length; i++) {

@@ -14,7 +14,7 @@ import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.
 import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
 import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
-import { ZMediaUploadingComponent } from './uploading/uploading.component';
+import { MediaUploaderComponent } from './uploader/media-uploader.component';
 import { ZMediaSharingComponent } from './sharing/sharing.component';
 import { ZMediaAlbumService } from '../album/album.service';
 import { ZMediaSharingService } from './sharing/sharing.service';
@@ -49,14 +49,14 @@ import { MediaItemComponent } from './media/media-item.component';
     ZMediaFormEditAlbumComponent,
     ZMediaFormEditNameComponent,
 
-    ZMediaUploadingComponent,
+    MediaUploaderComponent,
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
 
     MediaViewContainerComponent,
     MediaToolbarListComponent,
     MediaListComponent,
-    MediaItemComponent
+    MediaItemComponent,
   ],
   exports: [
     ZMediaShareItemComponent,
@@ -72,7 +72,7 @@ import { MediaItemComponent } from './media/media-item.component';
     ZMediaFormEditAlbumComponent,
     ZMediaFormEditNameComponent,
 
-    ZMediaUploadingComponent,
+    MediaUploaderComponent,
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
 

@@ -6,7 +6,7 @@
   [infiniteScrollDistance]="2"
   [infiniteScrollThrottle]="500"
   [scrollWindow]="false"
-  (scrolled)="onLoadMore()">
+  (scrolled)="loadMoreObjects()">
   <div class="page-body-content-in">
 
     <div *ngIf="photoIsEmpty" class="zone-no-photo text-center">

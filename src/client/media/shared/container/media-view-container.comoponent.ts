@@ -9,6 +9,9 @@ import { MediaToolbarListComponent } from '../media/media-toolbar-list.component
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
 import { ZMediaPhotoDetailComponent } from '../../photo/photo-detail.component';
+import { ZMediaSharingComponent } from '../sharing/sharing.component';
+import { ZMediaTaggingComponent } from '../tagging/tagging.component';
+import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
 
 declare var $: any;
 declare var _: any;
@@ -21,7 +24,10 @@ declare var _: any;
   entryComponents: [
     MediaToolbarListComponent,
     MediaListComponent,
-    ZMediaPhotoDetailComponent
+    ZMediaPhotoDetailComponent,
+    ZMediaSharingComponent,
+    ZMediaTaggingComponent,
+    ZMediaFormAddToAlbumComponent
   ]
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit {
@@ -95,36 +101,123 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
 
   }
 
+  loadMoreObjects() {
+
+  }
+
   doAction(event: any) {
     console.log('toolbar event:', event);
     switch(event.action) {
+      case 'uploadPhoto':
+        this.doUpload();
+          break;
+      case 'share':
+        this.doShare();
+          break;
+      case 'favourite':
+        this.doFavourite();
+          break;
+      case 'tag':
+        this.doTag();
+          break;
+      case 'addToAlbum':
+        this.doAddToAlbum();
+            break;
+      case 'viewInfo':
+        this.doViewInfo();
+          break;
+      case 'download':
+        this.doDownload();
+          break;
+      case 'edit':
+        this.doEdit();
+          break;
+      case 'delete':
+        this.doDelete();
+          break;
+
       case 'changeView':
         this.list.changeView(event.params.viewOption);
-        break;
+          break;
       case 'preview':
       case 'previewAll':
+      case 'viewInfo':
         this.doPreview();
-        break;
+          break;
       case 'select':
       case 'deselect':
         this.selectedObjects = event.params.selectedObjects;
         this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
-        break;
+          break;
     }
+  }
+
+  doUpload() {
+    // this.loadModalComponent(MediaUloaderComponent);
+
   }
 
   doPreview() {
     // open modal
-    let localComponent = ZMediaPhotoDetailComponent;
-
-    let modalComponentFactory = this.resolver.resolveComponentFactory(localComponent);
-    this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
-    this.modal = <MediaToolbarListComponent>this.modalComponent.instance;
-
-    this.modal.preview(true);
+    this.loadModalComponent(ZMediaPhotoDetailComponent);
+    this.modal.open({show: true, selectedObjects: this.selectedObjects});
     // this.modal.events.subscribe((event: any) => {
     //   this.doAction(event);
     // });
+  }
+
+  doShare() {
+    this.loadModalComponent(ZMediaSharingComponent);
+    this.modal.open();
+  }
+
+  doFavourite() {
+
+  }
+
+  doTag() {
+    this.loadModalComponent(ZMediaTaggingComponent);
+    this.modal.open();
+  }
+
+  doAddToAlbum() {
+    this.loadModalComponent(ZMediaFormAddToAlbumComponent);
+    this.modal.open();
+  }
+
+  doViewInfo() {
+
+  }
+
+  doDownload() {
+
+  }
+
+  doEdit() {
+
+  }
+
+  doDelete() {
+    let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
+    this.confirmationService.confirm({
+      message: 'Are you sure to delete ' + this.selectedObjects.length + ' item' + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
+      accept: () => {
+        let body = JSON.stringify({ids: objIds});
+        // this.loadingService.start();
+        // this.photoService.deletePhoto(body).subscribe((response: any)=> {
+        //   _.map(idPhotos, (id: any)=> {
+        //     _.remove(this.data, ['id', id]);
+        //   });
+        //   this.loadingService.stop();
+        // });
+      }
+    });
+  }
+
+  private loadModalComponent(component: any) {
+    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    this.modalContainer.clear();
+    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modal = this.modalComponent.instance;
   }
 }

@@ -65,6 +65,10 @@ export class ZMediaSharingComponent implements OnInit, OnDestroy {
     this.contactTerm$.unsubscribe();
   }
 
+  open(options: any) {
+    this.modal.open();
+  }
+
   getShared() {
     let body = JSON.stringify({photos: _.map(this.selectedItems, 'id'), albums: []});
     this.mediaSharingService.getShared(body).subscribe((res: any)=> {

@@ -36,27 +36,27 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.pressingCtrlKey = this.pressedCtrlKey(ke);
   }
 
-  @HostListener('document:click', ['$event'])
-  clickout(event: any) {
-
-    // if clicking on menu
-    if ($(event.target).hasClass('fa')) return;
-
-    // if clicking outside item
-    if (this.elementRef.nativeElement.contains(event.target)) return;
-
-    if (this.selectedObjects.length > 0) {
-      _.forEach(this.selectedObjects, (item: any) => {
-        if (_.some(this.selectedObjects, ['id', item.id])) {
-          $('#photo-box-img-' + item.id).removeClass('selected');
-        }
-      });
-
-      // remove all selected objects
-      this.selectedObjects.length = 0;
-      this.onAction({action: 'deselect', params: {selectedObjects: this.selectedObjects}});
-    }
-  }
+  // @HostListener('document:click', ['$event'])
+  // clickout(event: any) {
+  //
+  //   // if clicking on menu
+  //   if ($(event.target).hasClass('fa')) return;
+  //
+  //   // if clicking outside item
+  //   if(this.elementRef.nativeElement.contains(event.target)) return;
+  //
+  //   if (this.selectedObjects.length > 0) {
+  //     _.forEach(this.selectedObjects, (item: any) => {
+  //       if (_.some(this.selectedObjects, ['id', item.id])) {
+  //         $('#photo-box-img-' + item.id).removeClass('selected');
+  //       }
+  //     });
+  //
+  //     // remove all selected objects
+  //     this.selectedObjects.length = 0;
+  //     this.onAction({action: 'deselect', params: {selectedObjects: this.selectedObjects}});
+  //   }
+  // }
 
 
   constructor(private mediaObjectService: MediaObjectService, private elementRef: ElementRef) {

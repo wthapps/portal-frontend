@@ -35,6 +35,10 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
     // this.getAlbum();
   }
 
+  open(options: any) {
+    this.modal.open();
+  }
+
   getAlbum() {
     this.albumService.listAlbum().subscribe(
       (res: any)=> {

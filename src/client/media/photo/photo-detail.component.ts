@@ -88,8 +88,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
       case 'tag':
         this.zoneTagging.selectedItems = [this.selectedPhotos[this.index]];
         this.zoneTagging.items = this.allPhotos;
-        this.zoneTagging.mediaType = 'photo';
-        this.zoneTagging.openModel();
+        this.zoneTagging.mediaType = "photo";
+        this.zoneTagging.open();
         break;
       case 'delete':
         this.onDelete();
@@ -101,7 +101,6 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         this.onEditInfo();
         break;
       case 'addToAlbum':
-        console.log(this.mediaToolbar.formAddAlbum);
         this.mediaToolbar.formAddAlbum.modal.open();
         break;
       default:
@@ -109,6 +108,12 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     }
 
     return false;
+  }
+
+
+  open(options: any) {
+    this.preview(options.show);
+    this.selectedPhotos = options.selectedObjects;
   }
 
   preview(show: boolean): void {
