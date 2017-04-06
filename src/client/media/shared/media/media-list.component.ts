@@ -21,6 +21,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
+  sliderViewNumber: number = 5;
+
   private pressingCtrlKey: boolean = false;
   private viewOption: string = 'grid';
 
@@ -41,7 +43,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     if ($(event.target).hasClass('fa')) return;
 
     // if clicking outside item
-    if(this.elementRef.nativeElement.contains(event.target)) return;
+    if (this.elementRef.nativeElement.contains(event.target)) return;
 
     if (this.selectedObjects.length > 0) {
       _.forEach(this.selectedObjects, (item: any) => {
@@ -98,7 +100,14 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   changeView(viewOption: string) {
-   this.viewOption = viewOption;
+    this.viewOption = viewOption;
+  }
+
+  actionSortbar(event: any) {
+    console.log(event);
+    if (event.action == 'slider') {
+      this.sliderViewNumber = event.number;
+    }
   }
 
   private selectObject(item: any): void {
@@ -120,7 +129,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
-    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true: false);
+    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
 }

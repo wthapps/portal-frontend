@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ConfirmDialogModule, ConfirmationService, ChipsModule } from 'primeng/primeng';
 import { InputSwitchModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
+import { SliderModule } from 'primeng/primeng';
 
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -55,7 +56,8 @@ import { ArrayLengthPipe } from './pipe/array-length.pipe';
     Ng2Bs3ModalModule,
     InputSwitchModule,
     AutoCompleteModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    SliderModule
   ],
   declarations: [
     ToolbarComponent,
@@ -89,6 +91,7 @@ import { ArrayLengthPipe } from './pipe/array-length.pipe';
     InputSwitchModule,
     AutoCompleteModule,
     InfiniteScrollModule,
+    SliderModule,
 
     // Component
     ToolbarComponent,

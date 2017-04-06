@@ -1,0 +1,21 @@
+.sortbar-slider {
+  padding: 7px 0;
+  margin-right: 30px;
+  .sortbar-slider-in {
+    display: inline-block;
+    width: 90px;
+    margin: 0 15px;
+    .ui-slider-handle {
+      background-color: #F6F6F6;
+      box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+      cursor: hand;
+      &:hover,
+      &:focus {
+        background-color: $color-inverse;
+        cursor: grabbing;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+      }
+    }
+  }
+}

@@ -1,15 +1,28 @@
-<div *ngIf="view == 'grid'" class="pull-right" style="margin-right: 50px">
-  <span class="dropdown">
-    <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"
-            data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">
+<div *ngIf="view == 'grid'" class="clearfix">
+  <span class="btn btn-text pull-right">
+    <i class="fa" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"
+       (click)="toggleSort(); doSort();"></i>
+  </span>
+  <div class="dropdown pull-right">
+    <span class="btn btn-text dropdown-toggle" type="button" data-toggle="dropdown">
       {{sortName}}
-    </button>
-    <ul class="dropdown-menu">
+    </span>
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
       <li><a (click)="setSortName('Date'); doSort();" href="javascript:;"> Date</a></li>
       <li><a (click)="setSortName('Name'); doSort();" href="javascript:;"> Name</a></li>
     </ul>
-  </span>
-  <i class="fa can-click" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}" (click)="toggleSort(); doSort();"></i>
+  </div>
+
+  <div class="pull-right">
+    <div class="sortbar-slider">
+      <i class="fa fa-picture-o fz10"></i>
+      <div class="sortbar-slider-in">
+        <p-slider [(ngModel)]="sliderVal" (onChange)="handleChangeSliderVal($event)" [step]="1" [min]="2" [max]="12"></p-slider>
+      </div>
+      <i class="fa fa-picture-o fz18"></i>
+    </div>
+
+  </div>
 </div>
 
 <div *ngIf="view == 'list'">
@@ -29,7 +42,7 @@
   </div>
 </div>
 
-<div *ngIf="view == 'time'" class="pull-right" style="margin-right: 50px">
+<div *ngIf="view == 'time'">
   <span class="dropdown">
     <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"
             data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">
@@ -41,7 +54,6 @@
       <li><a (click)="setSortName('Year'); group('year');" href="javascript:;"> Year</a></li>
     </ul>
   </span>
-  <i class="fa can-click" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}" (click)="setSortName('Date'); toggleSort(); doSort();"></i>
+  <i class="fa can-click" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"
+     (click)="setSortName('Date'); toggleSort(); doSort();"></i>
 </div>
-
-<div class="clearfix"></div>

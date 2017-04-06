@@ -1,4 +1,16 @@
 .row-img {
+  &.grid {
+    @for $i from 1 through 12 {
+      &.row-img-#{$i} {
+        .row-img-item {
+          width: percentage(1/$i);
+        }
+      }
+    }
+  }
+}
+
+.row-img {
   @include clearfix;
 
   &.grid {
@@ -19,7 +31,10 @@
       }
     }
     .photo-box-img {
+      @include box-shadow(0px 2px 4px 0px rgba(163, 163, 163, 0.40));
+      border: 1px solid transparent;
       &.selected {
+        border: 1px solid $color-inverse;
         .img-center-dv {
           border-color: #2996CC;
           background-color: #e6e6e6;
@@ -189,7 +204,6 @@
       display: none;
     }
   }
-
 
   &.timeline {
     margin-left: -5px;

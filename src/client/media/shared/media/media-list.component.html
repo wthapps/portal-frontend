@@ -1,6 +1,7 @@
-<div id="list-photo" class="row-img" *ngIf="data" [ngClass]="viewOption" (dragenter)="onDragenter($event)"
+<z-media-share-sortbar [data]="data" (outEvent)="actionSortbar($event)"></z-media-share-sortbar>
+
+<div id="list-photo" class="row-img row-img-{{sliderViewNumber}}" *ngIf="data" [ngClass]="viewOption" (dragenter)="onDragenter($event)"
      (dragleave)="onDragleave($event)">
-  <z-media-share-sortbar [data]="data" (outEvent)="actionSortbar($event)"></z-media-share-sortbar>
   <div *ngIf="viewOption != 'time'">
     <me-item *ngFor="let item of data;" [type]="type" [object]="item" (events)="onAction($event)"></me-item>
   </div>

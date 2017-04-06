@@ -10,13 +10,20 @@ declare var _: any;
 
 export class ZMediaSortbarComponent {
   @Input() data: any;
-  @Input() view: any;
+  @Input() view: any = 'grid';
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   sortName: any = "Date";
   sort: any = "desc";
 
-  setSortName(name:any) {
+  sliderVal: number = 5;
+
+  handleChangeSliderVal(event: any) {
+    this.sliderVal = event.value;
+    this.outEvent.emit({action: 'slider', data: this.data, number: event.value});
+  }
+
+  setSortName(name: any) {
     this.sortName = name;
   }
 
@@ -32,7 +39,7 @@ export class ZMediaSortbarComponent {
     this.outEvent.emit({action: 'sort', data: {sort: this.sort, sort_name: this.sortName}});
   }
 
-  group(groupBy:any) {
+  group(groupBy: any) {
     this.outEvent.emit({action: 'group', data: groupBy});
   }
 }
