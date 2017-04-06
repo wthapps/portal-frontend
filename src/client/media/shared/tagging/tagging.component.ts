@@ -25,7 +25,7 @@ export class ZMediaTaggingComponent implements OnInit {
   addedTags: any = [];
   currentTags: any = [];
   removedTags: any = [];
-  keys: string = "";
+  keys: string = '';
 
   hasDeletedItems: boolean = false;
 
@@ -63,7 +63,7 @@ export class ZMediaTaggingComponent implements OnInit {
     if (this.selectedItems.length == 1) {
       this.addedTags = [];
       for (let i = 0; i < this.selectedItems[0].json_tags.length; i++) {
-        this.addedTags.push(this.selectedItems[0].json_tags[i].name)
+        this.addedTags.push(this.selectedItems[0].json_tags[i].name);
       }
     } else {
       this.addedTags = [];
@@ -72,11 +72,11 @@ export class ZMediaTaggingComponent implements OnInit {
   }
 
   onKeyDown(e:any) {
-    if (e.key == "Backspace") {
+    if (e.key == 'Backspace') {
       this.keys = this.keys.substring(0, this.keys.length - 1);
     }
-    if (e.key == "Enter") {
-      this.keys = ""
+    if (e.key == 'Enter') {
+      this.keys = '';
     }
     if (e.key.length == 1) {
       this.keys += e.key;

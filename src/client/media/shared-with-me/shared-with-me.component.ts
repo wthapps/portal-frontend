@@ -93,7 +93,7 @@ export class ZMediaSharedWithMeComponent implements OnInit {
         if(event.type === 'photo')
           this.onPreviewAll(event.data);
         else
-          this.router.navigate([`sharedWithMe/album`, event.data.id], { queryParams: {'shareMode': true}} );
+          this.router.navigate([`shared-with-me/album`, event.data.id], { queryParams: {'shareMode': true}} );
         break;
       case 'favourite':
         this.onOneFavourite(event.data);

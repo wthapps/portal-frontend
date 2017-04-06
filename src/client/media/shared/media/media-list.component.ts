@@ -23,8 +23,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   sliderViewNumber: number = 5;
 
+  public viewOption: string = 'grid';
   private pressingCtrlKey: boolean = false;
-  private viewOption: string = 'grid';
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
@@ -104,7 +104,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   actionSortbar(event: any) {
-    console.log(event);
     if (event.action == 'slider') {
       this.sliderViewNumber = event.number;
     }

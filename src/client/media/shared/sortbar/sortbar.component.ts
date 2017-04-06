@@ -13,8 +13,8 @@ export class ZMediaSortbarComponent {
   @Input() view: any = 'grid';
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  sortName: any = "Date";
-  sort: any = "desc";
+  sortName: any = 'Date';
+  sort: any = 'desc';
 
   sliderVal: number = 5;
 
@@ -28,10 +28,10 @@ export class ZMediaSortbarComponent {
   }
 
   toggleSort() {
-    if (this.sort == "asc") {
-      this.sort = "desc"
+    if (this.sort == 'asc') {
+      this.sort = 'desc';
     } else {
-      this.sort = "asc"
+      this.sort = 'asc';
     }
   }
 

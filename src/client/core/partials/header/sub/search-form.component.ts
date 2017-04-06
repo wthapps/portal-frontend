@@ -21,16 +21,10 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   text: any = '';
   searchObs$: Subject<string> = new Subject<string>();
 
-  searchSubscription: Subscription;
-
   constructor(private socialSearchService: SoSearchService, private router: Router) {
     this.showSearchBar();
-  }
 
-  ngOnInit() {
-    this.init('social');
-
-    this.searchSubscription = this.searchObs$.debounceTime(Constants.searchDebounceTime)
+    this.searchObs$.debounceTime(Constants.searchDebounceTime)
       .distinctUntilChanged()
       .subscribe( (res: any) => {
           this.searchWithoutSave(res);
@@ -40,10 +34,13 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       );
   }
 
+  ngOnInit() {
+    this.init('social');
+
+  }
+
   ngOnDestroy() {
-    if(this.searchSubscription && !this.searchSubscription.closed) {
-      this.searchSubscription.unsubscribe();
-    }
+    this.searchObs$.unsubscribe();
   }
 
   init(type: string) {
@@ -56,7 +53,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   searchWithoutSave(e: any) {
     if (e.key == 'Enter') {
       // this.onSaveKey();
-      // this.router.navigate([this.showMore.link, {text: this.text}]);
+      // this.router.navigate([this.showMore.link], {queryParams: {text: this.text}});
+      return;
+    }
+
+    if (e.key == 'Escape') {
+      this.text = '';
+      this.result.length = 0;
+      this.groups.length = 0;
+      this.showMore = '';
       return;
     }
 
