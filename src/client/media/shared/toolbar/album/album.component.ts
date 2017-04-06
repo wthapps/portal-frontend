@@ -12,7 +12,7 @@ export class ZMediaToolbarAlbumComponent {
   @Input() currentView: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  onAction(action: string) {
+  onAction(action: string, hasFavourite?: boolean) {
     this.outEvent.emit(action);
     return false;
   }

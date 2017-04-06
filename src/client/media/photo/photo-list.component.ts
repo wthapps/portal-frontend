@@ -26,7 +26,9 @@ export class ZMediaPhotoListComponent implements OnInit {
   selectedPhotos: any = [];
 
   keyCtrl: boolean = false;
+
   hasFavourite: boolean = false;
+  filterOption: any;
   currentView: string = 'grid';
 
   photoIsEmpty: boolean = false;
@@ -49,18 +51,18 @@ export class ZMediaPhotoListComponent implements OnInit {
 
     this.route.queryParams.subscribe(
       (queryParams: any) => {
-        this.hasFavourite = queryParams['favorite'];
-        if (this.hasFavourite)
-          this.getPhotos({'favorite': true});
+        this.hasFavourite = queryParams['favourite'];
+        this.filterOption = queryParams;
+
+        if (this.filterOption)
+          this.getPhotos(this.filterOption);
         else
           this.getPhotos();
-        // this.isMember = true; // testing
       }
     );
   }
 
   ngOnInit() {
-    // this.getPhotos();
   }
 
   getPhotos(body: any = {}) {
@@ -160,7 +162,7 @@ export class ZMediaPhotoListComponent implements OnInit {
          });*/
 
         //reload data
-        this.getPhotos();
+        // this.getPhotos();
 
         break;
       default:
@@ -255,7 +257,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   private sort(data:any) {
-    this.getPhotos(data);
+    // this.getPhotos(data);
   }
 
 

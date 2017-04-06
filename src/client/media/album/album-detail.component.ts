@@ -59,7 +59,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((queryParams: any) => {
-      this.getPhotos(this.albumId, queryParams['shareMode']);
+      this.getPhotos(this.albumId, queryParams);
     });
   }
 
