@@ -27,7 +27,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   selectedAlbums: any = [];
 
-
+  albumId: number ;
   keyCtrl: boolean = false;
   hasFavourite: boolean = false;
   currentView: string = 'grid';
@@ -54,8 +54,12 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.getPhotos(+params['id']);
-      this.getAlbumDetail(+params['id']);
+      this.albumId = params['id'];
+      this.getAlbumDetail(this.albumId);
+    });
+
+    this.route.queryParams.subscribe((queryParams: any) => {
+      this.getPhotos(this.albumId, queryParams['shareMode']);
     });
   }
 
@@ -65,9 +69,8 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     });
   }
 
-  getPhotos(id: number) {
-    this.albumService.getPhotosByAlbum(id).subscribe((res: any)=> {
-      console.log(res);
+  getPhotos(id: number, shareMode?: any) {
+    this.albumService.getPhotosByAlbum(id, shareMode).subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
       // console.log(res);

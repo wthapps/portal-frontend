@@ -98,13 +98,13 @@
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
             </li>
             <li [ngClass]="selectedTab=='members'? 'active': ''">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members {{ ( isAdmin && community?.member_count ) ? '( ' + community?.member_count+ ' )' : '' }} </a>
             </li>
             <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations {{ ( isAdmin && community?.invitation_count ) ? '( ' + community?.invitation_count + ' )' : '' }}</a>
             </li>
             <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests {{ ( isAdmin && community?.join_request_count ) ? '( ' + community?.join_request_count + ' )' : '' }}</a>
             </li>
             <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
             <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
@@ -149,7 +149,7 @@
         </div>
         <div class="z-social-post">
           <div>
-            {{item.description}}
+            {{item?.description}}
           </div>
 
           <ul *ngIf="item?.additional_links" class="list-unstyled">

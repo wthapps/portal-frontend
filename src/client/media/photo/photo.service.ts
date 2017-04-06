@@ -16,19 +16,23 @@ export class ZMediaPhotoService {
   }
 
   actionOneFavourite(item: any) {
-    let body = JSON.stringify({
+    // let body = JSON.stringify({
+    //   ids: [item.id],
+    //   setFavourite: (item.favorite) ? false : true
+    // });
+    let body = {
       ids: [item.id],
       setFavourite: (item.favorite) ? false : true
-    });
+    };
     return this.apiBaseService.post(`${this.url}/favourite`, body);
   }
 
   actionAllFavourite(items: any, setFavourite: boolean) {
-    let body = JSON.stringify({
+    let body = {
       ids: _.map(items, 'id'),
       setFavourite: setFavourite
       // setFavourite: (setFavourite ? true : false) // if there was one item's favorite is false
-    });
+    };
     return this.apiBaseService.post(`${this.url}/favourite`, body);
   }
 

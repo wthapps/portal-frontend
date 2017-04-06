@@ -33,20 +33,6 @@ export class NotificationService {
     return this.api.get(`${Constants.urls.zoneSoNotifications}`);
   }
 
-  // viewAllNotifications() {
-  //   this.api.get(`${Constants.urls.zoneSoNotifications}`)
-  //     .subscribe(
-  //       (result: any) => {
-  //         _.remove(this.notifications);
-  //         this.notifications = result.data;
-  //         this.newNotifCount = 0;
-  //         this.markAsSeen();
-  //       },
-  //       (error: any) => {
-  //         console.log('error', error);
-  //       });
-  //
-  // }
 
   doAction(action: any, notif_id: string) {
     let link: string = action.link;
@@ -61,7 +47,7 @@ export class NotificationService {
 
     switch (method) {
       case 'navigate':
-        this.router.navigate(['/' + link ], { relativeTo: this.route });
+        this.router.navigate(['/' + link ], { queryParams: body });
 
         let currentNotif = _.find(this.notifications, {id: this.currentNotifId});
         this.markAsRead(currentNotif);

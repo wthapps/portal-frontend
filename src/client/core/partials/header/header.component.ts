@@ -166,66 +166,13 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   sendMessage(event: any) {
 
     App.notification.sendMessage(3, 'hello world');
+  }
 
-    // this.api.get('zone/social_network/notification/broadcast_message')
-    //     .subscribe(result => {
-    //         console.log('message broadcasted', result);
-    //
-    //       },
-    //       error => {
-    //
-    //       });
-    // console.log('cable', App, App.notifications);
-
-
-    //   // ActionCable callbacks
-    // connected: function() {
-    //   return this.perform('subscribed', {});
-    //   console.log('connected..................');
-    // },
-    // disconnected: function() {
-    //   console.log("disconnected", this.identifier);
-    // },
-    // rejected: function() {
-    //   console.log("rejected");
-    // },
-    // ,
-    //   // Custom methods
-    //   start: function() {
-    //     writeLog("starting clock");
-    //     this.perform("start");
-    //   },
-    //   stop: function() {
-    //     writeLog("stopping clock");
-    //     this.perform("stop");
-    //   },
-    //   tick: function(data: any) {
-    //     writeLog("tick received", data);
-    //     this.tock("ack");
-    //   },
-    //   tock: function(message: any) {
-    //     writeLog("tock sent", message);
-    //     return this.perform("tock", { message: message });
-    //   }
-    // });
-    //
-    // function writeLog(message: any, data: any = null) {
-    //   console.log(message, data);
-    // }
-    //
-    // function deserialize(data) {
-    //   return JSON.stringify(data);
-    // }
-    //
-    // function guid() {
-    //   function s4() {
-    //     return Math.floor((1 + Math.random()) * 0x10000)
-    //                .toString(16)
-    //                .substring(1);
-    //   }
-    //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    //     s4() + '-' + s4() + s4() + s4();
-    // }
+  toggleViewNotifications() {
+    if (this.notificationService.notifications.length <= 0) {
+      this.getMoreNotifications();
+    }
+    this.markAsSeen();
   }
 
   toggleViewNotifications() {

@@ -15,12 +15,14 @@ export class ZMediaAlbumService {
     return this.apiBaseService.get(this.url, body);
   }
 
-  getAlbum(id: number): any {
+  getAlbum(id: number, body?: any): any {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
-  getPhotosByAlbum(id: number): any {
-    return this.apiBaseService.get(`zone/photos?album=${id}`);
+  getPhotosByAlbum(id: number, shareMode?: any): any {
+    let body = { 'album': id};
+    (shareMode !== undefined) ? _.merge(body, { shareMode: shareMode}) : {};
+    return this.apiBaseService.get(`zone/photos`, body);
   }
 
   addToAlbum(id: number, selectedPhotos: any): any {
