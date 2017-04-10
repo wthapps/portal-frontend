@@ -115,7 +115,7 @@ export let Constants = {
 
   mediaSliderViewNumber: {
     min: 2,
-    default: 5,
+    default: 8,
     max: 12
   },
 

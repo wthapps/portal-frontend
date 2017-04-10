@@ -106,7 +106,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   actionSortbar(event: any) {
     if (event.action == 'slider') {
-      this.sliderViewNumber = Constants.mediaSliderViewNumber.max + Constants.mediaSliderViewNumber.min - event.number;
+      this.sliderViewNumber = event.number;
     }
   }
 

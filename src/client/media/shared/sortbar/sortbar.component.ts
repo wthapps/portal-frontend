@@ -18,6 +18,8 @@ export class ZMediaSortbarComponent {
   sort: any = 'desc';
 
   sliderVal: number = Constants.mediaSliderViewNumber.default;
+  sliderMin: number = Constants.mediaSliderViewNumber.min;
+  sliderMax: number = Constants.mediaSliderViewNumber.max;
 
   handleChangeSliderVal(event: any) {
     this.sliderVal = event.value;

@@ -17,7 +17,7 @@
     <div class="sortbar-slider">
       <i class="fa fa-picture-o fz10"></i>
       <div class="sortbar-slider-in">
-        <p-slider [(ngModel)]="sliderVal" (onChange)="handleChangeSliderVal($event)" [step]="1" [min]="2" [max]="12"></p-slider>
+        <p-slider [(ngModel)]="sliderVal" (onChange)="handleChangeSliderVal($event)" [step]="1" [min]="sliderMin" [max]="sliderMax"></p-slider>
       </div>
       <i class="fa fa-picture-o fz18"></i>
     </div>
