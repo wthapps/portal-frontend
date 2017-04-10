@@ -34,7 +34,7 @@ import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './channels/notification-channel.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import { ReadMoreComponent } from '../partials/read-more/read-more.component';
-import { SoSearchService } from '../partials/header/sub/social-search.service';
+import { SoSearchService } from '../partials/header/search/social-search.service';
 import { PhotoModalDataService } from './services/photo-modal-data.service';
 import { PhotoUploadService } from './services/photo-upload.service';
 import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';

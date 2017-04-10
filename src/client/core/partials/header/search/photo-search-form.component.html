@@ -1,0 +1,22 @@
+<div *ngIf="active" class="navbar-form navbar-left">
+  <div class="navbar-searchTop">
+    <div class="form-group">
+      <input id="searchTopHeader" type="text" class="form-control" placeholder="Search " [(ngModel)]="search"  (keyup)="searchObs$.next($event)">
+    </div>
+    <button class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+    <button class="btn search-right" data-toggle="dropdown" href="#" aria-expanded="false"><i class="fa fa-caret-down"></i></button>
+    <ul class="dropdown-menu">
+      <li class="active">
+        <a href="javascript:;"><i class="fa fa-picture-o"></i> Upload Photos</a>
+
+      </li>
+
+      <li class="divider" role="separator"></li>
+      <li><a href="javascript:;"><i class="fa fa-files-o"></i> Create Album</a>
+      </li>
+
+    </ul>
+  </div>
+
+</div>

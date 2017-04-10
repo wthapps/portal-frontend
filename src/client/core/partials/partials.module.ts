@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { SearchFormComponent } from './header/sub/search-form.component';
+import { SearchFormComponent } from './header/search/search-form.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterPromotionComponent, FooterComponent } from './footer/footer.component';
 import { LoadingModule } from './loading/loading.module';
@@ -20,6 +20,8 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 import { CoreChatSupportModule } from './chat-support/chat-support.module';
 import { EntitySelectComponent } from './entity-select/entity-select.component';
 import { EntitySelectModule } from './entity-select/entity-select.module';
+import { PhotoSearchFormComponent } from './header/search/photo-search-form.component';
+import { PhotoSearchResultComponent } from './header/search/photo-search-result.component';
 
 
 
@@ -42,6 +44,8 @@ import { EntitySelectModule } from './entity-select/entity-select.module';
   ],
   declarations: [
     SearchFormComponent,
+    PhotoSearchFormComponent,
+    PhotoSearchResultComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
@@ -52,6 +56,8 @@ import { EntitySelectModule } from './entity-select/entity-select.module';
   ],
   exports: [
     SearchFormComponent,
+    PhotoSearchFormComponent,
+    PhotoSearchResultComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,

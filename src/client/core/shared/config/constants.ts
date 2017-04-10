@@ -186,6 +186,13 @@ export let Constants = {
   soCommentLimit: 20,
 
   searchDebounceTime: 250,
+
+  search: {
+    config: {
+      globalActive: true,
+      photoActive: true
+    }
+  }
 };
 
 export let MediaType = {
