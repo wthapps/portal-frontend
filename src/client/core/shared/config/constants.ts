@@ -112,6 +112,13 @@ export let Constants = {
     delete: true,
     other: true,
   },
+
+  mediaSliderViewNumber: {
+    min: 2,
+    default: 5,
+    max: 12
+  },
+
   urls: {
     afterLogin: Config.SUB_DOMAIN.SOCIAL,
     zoneSoPosts: 'zone/social_network/posts',

@@ -1,4 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -16,7 +17,7 @@ export class ZMediaSortbarComponent {
   sortName: any = 'Date';
   sort: any = 'desc';
 
-  sliderVal: number = 5;
+  sliderVal: number = Constants.mediaSliderViewNumber.default;
 
   handleChangeSliderVal(event: any) {
     this.sliderVal = event.value;

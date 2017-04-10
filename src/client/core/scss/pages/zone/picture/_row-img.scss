@@ -4,6 +4,7 @@
       &.row-img-#{$i} {
         .row-img-item {
           width: percentage(1/$i);
+          //width: percentage(24/$i);
         }
       }
     }

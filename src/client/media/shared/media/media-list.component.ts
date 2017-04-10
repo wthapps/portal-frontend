@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef } from '@angular/core';
 import { MediaObjectService } from '../container/media-object.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 declare var $: any;
@@ -21,7 +22,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
-  sliderViewNumber: number = 5;
+  sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
 
   public viewOption: string = 'grid';
   private pressingCtrlKey: boolean = false;
@@ -105,7 +106,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   actionSortbar(event: any) {
     if (event.action == 'slider') {
-      this.sliderViewNumber = event.number;
+      this.sliderViewNumber = Constants.mediaSliderViewNumber.max + Constants.mediaSliderViewNumber.min - event.number;
     }
   }
 
