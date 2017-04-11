@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+
+import { CalendarModule } from 'primeng/primeng';
 
 import { SearchFormComponent } from './header/search/search-form.component';
 import { HeaderComponent } from './header/header.component';
@@ -30,6 +32,7 @@ import { PhotoSearchResultComponent } from './header/search/photo-search-result.
     CommonModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     // BrowserModule,
     LoadingModule,
     ToastsModule,
@@ -40,7 +43,8 @@ import { PhotoSearchResultComponent } from './header/search/photo-search-result.
     UploadCropImageModule,
     ZSharedModule,
     EntitySelectModule,
-    PhotoModule
+    PhotoModule,
+    CalendarModule
   ],
   declarations: [
     SearchFormComponent,
@@ -71,6 +75,7 @@ import { PhotoSearchResultComponent } from './header/search/photo-search-result.
     ZSharedModule,
     EntitySelectModule,
     PhotoModule,
+    CalendarModule,
 
     // Pipe
     // GroupByMonthYearPipe,

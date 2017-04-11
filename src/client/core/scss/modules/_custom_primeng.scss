@@ -176,13 +176,42 @@ body {
       }
     }
     &.ui-inputswitch-checked {
-      background-color: $color-success;;
+      background-color: $color-success;
       .ui-inputswitch-handle {
         &:after {
           right: 0;
           left: auto;
           border: 1px solid $color-success;
         }
+      }
+    }
+  }
+  .ui-calendar-w-btn {
+    position: relative;
+    .ui-inputtext {
+      display: block;
+      width: 100%;
+      -webkit-border-radius: $border-radius-base;
+      -moz-border-radius: $border-radius-base;
+      border-radius: $border-radius-base;
+    }
+    .ui-button {
+      background-color: transparent;
+      color: $text-color;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      margin: 0;
+      &,
+      &.ui-state-focus,
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        outline: none 0 !important;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
       }
     }
   }

@@ -9,6 +9,18 @@
   }
 }
 
+.form-control-block {
+  display: block;
+}
+
+.form-horizontal {
+  .control-label {
+    @media (min-width: 768px) {
+      text-align: left;
+    }
+  }
+}
+
 .help-block[hidden] {
   display: none;
 }
@@ -103,36 +115,63 @@
 
 .navbar-searchTop {
   position: relative;
-  .btn {
-    & {
-      position: absolute;
-      left: 2px;
-      padding-left: 8px;
-      padding-right: 8px;
-      background-color: transparent;
-      border-width: 0;
-      @include center(false, true);
-      font-size: 16px;
+  .input-group {
+    border: 1px solid $input-border;
+    border-radius: $border-radius-base;
+    .btn {
+      height: 34px;
+      padding-top: 0;
+      padding-bottom: 0;
+      line-height: 32px;
+      border-color: transparent !important;
+      &:hover,
+      &:focus,
+      &.focus {
+        background-color: transparent;
+        @include box-shadow(none);
+      }
     }
-    &:hover,
-    &:focus,
-    &.focus {
-      background-color: transparent;
-      @include box-shadow(none);
+    .form-control {
+      border-color: transparent !important;
+      padding-left: 0;
+      padding-right: 0;
+      @media (min-width: $screen-lg) {
+        min-width: 400px;
+      }
+      &:hover,
+      &:focus,
+      &.focus {
+        background-color: transparent;
+        @include box-shadow(none);
+      }
     }
   }
-  .form-control {
-    height: 34px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    padding-left: 36px;
-    @media (min-width: $screen-lg) {
-      min-width: 470px;
+
+  .navbar-searchTop-advanced {
+    position: absolute;
+    top: 34px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 15px;
+    border: 1px solid $input-border;
+    border-radius: $border-radius-base;
+    background-color: #ffffff;
+    @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.4));
+    .form-group {
+      display: block;
+      margin-bottom: 20px;
+      .form-control {
+        display: block;
+        width: 100%;
+      }
     }
-  }
-  .search-right {
-    position: relative;
-    top: 17px;
-    left: -40px;
+    .control-label {
+      font-weight: normal;
+      margin-right: -10px;
+    }
+    .ui-calendar {
+      display: block;
+    }
   }
 }
