@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 
 import { CalendarModule } from 'primeng/primeng';
 
@@ -20,10 +19,10 @@ import { UploadCropImageModule } from './upload-crop-image/upload-crop-image.mod
 import { TitleCase } from '../shared/pipe/titlecase.pipe';
 import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 import { CoreChatSupportModule } from './chat-support/chat-support.module';
-import { EntitySelectComponent } from './entity-select/entity-select.component';
 import { EntitySelectModule } from './entity-select/entity-select.module';
 import { PhotoSearchFormComponent } from './header/search/photo-search-form.component';
-import { PhotoSearchResultComponent } from './header/search/photo-search-result.component';
+import { TagInputModule } from 'ng2-tag-input';
+import {AutoCompleteModule} from 'primeng/primeng';
 
 
 
@@ -44,12 +43,13 @@ import { PhotoSearchResultComponent } from './header/search/photo-search-result.
     ZSharedModule,
     EntitySelectModule,
     PhotoModule,
+    TagInputModule,
+    AutoCompleteModule,
     CalendarModule
   ],
   declarations: [
     SearchFormComponent,
     PhotoSearchFormComponent,
-    PhotoSearchResultComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
@@ -61,7 +61,6 @@ import { PhotoSearchResultComponent } from './header/search/photo-search-result.
   exports: [
     SearchFormComponent,
     PhotoSearchFormComponent,
-    PhotoSearchResultComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SoSearchService } from '../../core/partials/header/search/social-search.service';
 
 declare var _: any;
 
@@ -19,21 +18,21 @@ export class ZSocialSearchResultComponent implements OnInit {
   showMore: boolean = false;
   text: any = '';
 
-  constructor(private route: ActivatedRoute, private socialSearchService: SoSearchService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-
-    this.route.params.subscribe((params: any) => {
-      this.socialSearchService.search(params.text, ['user', 'community', 'post']).subscribe(
-        (res:any) => {
-          this.result = res.data;
-          this.groups = Object.keys(res.data);
-          this.groups = _.pull(this.groups, 'posts');
-          console.log(res);
-        }
-      );
-      // this.urls.length = 0; //Fastest way to clear out array
-      // this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
-    });
+    //
+    // this.route.params.subscribe((params: any) => {
+    //   this.socialSearchService.search(params.text, ['user', 'community', 'post']).subscribe(
+    //     (res:any) => {
+    //       this.result = res.data;
+    //       this.groups = Object.keys(res.data);
+    //       this.groups = _.pull(this.groups, 'posts');
+    //       console.log(res);
+    //     }
+    //   );
+    //   // this.urls.length = 0; //Fastest way to clear out array
+    //   // this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+    // });
   }
 }

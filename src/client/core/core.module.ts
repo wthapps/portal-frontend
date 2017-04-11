@@ -8,13 +8,13 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { StorageService } from './shared/services/storage.service';
 import { HandlerService } from './shared/services/handler.service';
-import { SoSearchService } from './partials/header/search/social-search.service';
 import { NotificationService } from './shared/services/notification.service';
 import { NotificationChannelService } from './shared/channels/notification-channel.service';
 import { AppearancesChannelService } from './shared/channels/appearances-channel.service';
 import { AuthGuard } from './shared/services/auth-guard.service';
 import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
 import { AuthService } from './shared/services/auth.service';
+import { ServiceManager } from './shared/services/service-manager';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -26,6 +26,7 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
+        ServiceManager,
         ApiBaseService,
         UserService,
         AuthGuard,
@@ -36,7 +37,6 @@ export class CoreModule {
         CookieService,
         StorageService,
         HandlerService,
-        SoSearchService,
         NotificationService,
         NotificationChannelService,
         AppearancesChannelService

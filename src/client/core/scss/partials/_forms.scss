@@ -146,6 +146,11 @@
       }
     }
   }
+  p-autocomplete {
+    input {
+      border: none !important;
+    }
+  }
 
   .navbar-searchTop-advanced {
     position: absolute;

@@ -48,7 +48,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   objectType: string;
   currentPath: string; // photos, albums, share-with-me, favourite
   pageType: string = 'list';
-  selectedObjects: Array<any>;
+  selectedObjects: Array<any> = [];
   objects: Array<any>;
 
   viewOption: string = 'grid';
@@ -65,8 +65,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnInit() {
 
-    this.selectedObjects = new Array<any>();
-
     this.router.events.subscribe((router: any) => {
       let paths = router.url.toString().split('/');
       this.currentPath = paths[1];
@@ -79,31 +77,23 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.pageType = 'detail'
       }
 
-      // this.route.params.subscribe(
-      //   (params: any) => {
-      //     if(params['id'] == undefined) {
-      //       this.pageType = 'list'
-      //     } else {
-      //       this.pageType = 'detail'
-      //     }
-          this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
-          console.log('current page', this.currentPage);
+      this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
+      console.log('current page', this.currentPage);
 
-          this.list.initProperties({
-            currentPage: this.currentPage,
-            currentPath: this.currentPath,
-            objectType: this.objectType,
-            pageType: this.pageType
-          });
+      this.list.initProperties({
+        currentPage: this.currentPage,
+        currentPath: this.currentPath,
+        objectType: this.objectType,
+        pageType: this.pageType
+      });
 
-          this.toolbar.initProperties({
-            currentPage: this.currentPage,
-            currentPath: this.currentPath,
-            objectType: this.objectType,
-            pageType: this.pageType
-          });
-      //   }
-      // );
+      this.toolbar.initProperties({
+        currentPage: this.currentPage,
+        currentPath: this.currentPath,
+        objectType: this.objectType,
+        pageType: this.pageType
+      });
+
 
       this.route.queryParams.subscribe(
         (queryParams: any) => {

@@ -35,11 +35,11 @@ import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './channels/notification-channel.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import { ReadMoreComponent } from '../partials/read-more/read-more.component';
-import { SoSearchService } from '../partials/header/search/social-search.service';
 import { PhotoModalDataService } from './services/photo-modal-data.service';
 import { PhotoUploadService } from './services/photo-upload.service';
 import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';
 import { ArrayLengthPipe } from './pipe/array-length.pipe';
+import { ServiceManager } from './services/service-manager';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -123,13 +123,13 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         ApiBaseService,
+        ServiceManager,
         UserService,
         NameListService,
         ConfirmationService,
         CookieService,
         StorageService,
         HandlerService,
-        SoSearchService,
         NotificationService,
         NotificationChannelService,
         AppearancesChannelService,
