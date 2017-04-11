@@ -1,5 +1,5 @@
 <div id="photo-box-edit" class="photo-box-detail active">
-  <div *ngIf="data" class="photo-detail-top">
+  <div *ngIf="data" class="photo-detail-top photo-detail-top-edit">
     <ul class="action navbar-left">
       <li>
         <a href="javascript:;"><i class="fa fa-arrow-left"></i></a>
@@ -7,7 +7,27 @@
     </ul>
     <div class="name"><i class="fa fa-picture-o"></i> {{data.name}}</div>
     <ul class="action navbar-right">
-
+      <li>
+        <a href="#"><i class="fa fa-crop"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-search-plus"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-search-minus"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-rotate-left"></i></a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-rotate-right"></i></a>
+      </li>
+      <li>
+        <a href="#">Reset</a>
+      </li>
+      <li>
+        <a href="#">Done</a>
+      </li>
     </ul>
   </div>
   <div *ngIf="data" class="photo-detail-content">
