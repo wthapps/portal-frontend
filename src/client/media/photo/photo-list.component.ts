@@ -66,13 +66,13 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   getPhotos(body: any = {}) {
-    this.photoService.listPhoto(body).subscribe((res: any)=> {
-      this.data = res.data;
-      this.nextLink = res.page_metadata.links.next;
-      if (res.data.length == 0) {
-        this.photoIsEmpty = true;
-      }
-    });
+    // this.photoService.listPhoto(body).subscribe((res: any)=> {
+    //   this.data = res.data;
+    //   this.nextLink = res.page_metadata.links.next;
+    //   if (res.data.length == 0) {
+    //     this.photoIsEmpty = true;
+    //   }
+    // });
   }
 
   onLoadMore() {
@@ -133,8 +133,7 @@ export class ZMediaPhotoListComponent implements OnInit {
         break;
       case 'info':
         // call action from photoDetail
-        this.photoDetail.preview(true);
-        this.photoDetail.onShowInfo();
+        this.photoDetail.open({show: true, collapseInfo: false});
         break;
       case 'editInfo':
         // call action from photoDetail
@@ -194,7 +193,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   private onPreviewAll(item: any) {
     this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
     this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
-    this.photoDetail.preview(true);
+    this.photoDetail.open({show: true});
   }
 
   private onOneFavourite(item: any) {
@@ -224,7 +223,7 @@ export class ZMediaPhotoListComponent implements OnInit {
       this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.selectedPhotos[0].id]);
       this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
     }
-    this.photoDetail.preview(true);
+    this.photoDetail.open({show: true});
   }
 
   private onFavourite() {

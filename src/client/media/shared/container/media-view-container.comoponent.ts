@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit,
-  ComponentFactoryResolver
+  ComponentFactoryResolver, OnDestroy
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -30,7 +30,7 @@ declare var _: any;
     ZMediaFormAddToAlbumComponent
   ]
 })
-export class MediaViewContainerComponent implements OnInit, AfterViewInit {
+export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('toolbarContainer', { read: ViewContainerRef }) toolbarContainer: ViewContainerRef;
   @ViewChild('listContainer', { read: ViewContainerRef }) listContainer: ViewContainerRef;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -43,7 +43,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
   list: MediaListComponent;
   modal: any;
 
-  mediaObject: string;
+  objectType: string;
+  currentPath: string; // photos, albums, share-with-me, favourite
   pageType: string = 'list';
   selectedObjects: Array<any>;
   objects: Array<any>;
@@ -64,16 +65,26 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
     this.selectedObjects = new Array<any>();
 
     this.router.events.subscribe((router: any) => {
-      this.mediaObject = router.url.toString().substr(1);
+      this.currentPath = router.url.toString().substr(1);
+      console.log('current path', this.currentPath);
 
       this.route.params.subscribe(
         (params: any) => {
+          console.log('params: ', params);
           if(params['id'] == undefined) {
             this.pageType = 'list'
           } else {
             this.pageType = 'detail'
           }
+          this.list.data = {currentPath: this.currentPath, objectType: this.objectType, pageType: this.pageType};
+          this.list.updateArgs();
           // this.toolbar.data = { mediaObject: this.mediaObject, pageType: this.pageType };
+        }
+      );
+
+      this.route.queryParams.subscribe(
+        (queryParams: any) => {
+          console.log('query params: ', queryParams);
         }
       );
     });
@@ -99,6 +110,10 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
       this.doAction(event);
     });
 
+  }
+
+  ngOnDestroy() {
+    this.list.events.unsubscribe();
   }
 
   loadMoreObjects() {

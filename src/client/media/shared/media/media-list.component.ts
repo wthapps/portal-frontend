@@ -16,16 +16,22 @@ declare var $: any;
 })
 
 export class MediaListComponent implements OnInit, AfterViewInit {
-  @Input() selectedObjects: Array<any>;
+  @Input() selectedObjects: Array<any> = new Array<any>();
   @Input() type: string = 'photo';
-  @Input() data: Array<any> = new Array<any>();
+  @Input() data: any;
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
+
 
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
 
   public viewOption: string = 'grid';
+  private objects: Array<any> = new Array<any>();
   private pressingCtrlKey: boolean = false;
+
+  private currentPath:string; //photos, albums, videos, playlist, share-with-me, favourites
+  private objectType: string; //photo, album, video, playlist, all
+
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
@@ -70,15 +76,20 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.getObjects(null);
+    // this.getObjects(null);
   }
 
-  getObjects(options: any) {
-    this.mediaObjectService.listPhoto(options).subscribe((response: any)=> {
-      this.data = response.data;
+  getObjects(options?: any) {
+    this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
+      this.objects = response.data;
     });
   }
 
+  updateArgs() {
+    this.objectType = this.data.objectType;
+    this.currentPath = this.data.currentPath;
+    this.getObjects();
+  }
 
   onDragenter(e: any) {
     e.preventDefault();

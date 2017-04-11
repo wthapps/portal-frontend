@@ -128,9 +128,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
         this.onRemoveFromAlbum();
         break;
       case 'info':
-        // call action from photoDetail
-        this.photoDetail.preview(true);
-        this.photoDetail.onShowInfo();
+        this.photoDetail.open({show: true, collapseInfo: false});
         break;
       case 'editInfo':
         // call action from photoDetail
