@@ -48,7 +48,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
-    if (ev.which === KEY_ESC) this.preview(false);
+    if (ev.which === KEY_ESC) this.goBack();
   }
 
   constructor(
@@ -62,7 +62,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   ngAfterViewInit() {
     let _thisPhotoDetail = this;
     $('body').on('click', '#photo-box-detail .photo-detail-img', function () {
-      _thisPhotoDetail.preview(false);
+      _thisPhotoDetail.goBack();
     });
     $('body').on('click', '#photo-box-detail figure, .photo-detail-img-control', function (e: any) {
       e.stopPropagation();
@@ -153,7 +153,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   }
 
   preview(show: boolean): void {
-
+    // this.active = false;
+    // this.collapseInfo = true;
   }
 
   goBack() {

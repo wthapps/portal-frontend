@@ -67,13 +67,13 @@ export class ZMediaAlbumListComponent implements OnInit {
   }
 
   getAlbums(body: any = {}) {
-    this.albumService.listAlbum(body).subscribe((res: any)=> {
-      this.data = res.data;
-      this.nextLink = res.page_metadata.links.next;
-      if (res.data.length == 0) {
-        this.albumIsEmpty = true;
-      }
-    });
+    // this.albumService.listAlbum(body).subscribe((res: any)=> {
+    //   this.data = res.data;
+    //   this.nextLink = res.page_metadata.links.next;
+    //   if (res.data.length == 0) {
+    //     this.albumIsEmpty = true;
+    //   }
+    // });
   }
 
   onLoadMore() {
