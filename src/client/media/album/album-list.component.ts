@@ -77,12 +77,12 @@ export class ZMediaAlbumListComponent implements OnInit {
   }
 
   onLoadMore() {
-    this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v: any)=> {
-        this.data.push(v);
-      });
-      this.nextLink = res.page_metadata.links.next;
-    });
+    // this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
+    //   _.map(res.data, (v: any)=> {
+    //     this.data.push(v);
+    //   });
+    //   this.nextLink = res.page_metadata.links.next;
+    // });
   }
 
   actionItem(event: any) {

@@ -21,7 +21,7 @@ export class PhotoUploadService {
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
 
   constructor(private apiService: ApiBaseService) {
-    this.loadConfigOnce();
+    // this.loadConfigOnce();
   }
 
   loadConfigOnce() {

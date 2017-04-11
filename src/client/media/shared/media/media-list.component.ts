@@ -30,8 +30,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   private objects: Array<any> = new Array<any>();
   private pressingCtrlKey: boolean = false;
 
-  private currentPath:string; //photos, albums, videos, playlist, share-with-me, favourites
+  private currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
   private objectType: string; //photo, album, video, playlist, all
+  private nextLink: string;
 
 
   @HostListener('document:keydown', ['$event'])
@@ -89,13 +90,23 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
       this.loadingService.stop('#list-photo');
       this.objects = response.data;
+      this.nextLink = response.page_metadata.links.next;
+
+    });
+  }
+
+  getMoreObjects() {
+    // this.loadingService.start('#list-photo');
+    this.mediaObjectService.getObjects(this.currentPath, this.nextLink).subscribe((response: any)=> {
+      // this.loadingService.stop('#list-photo');
+      this.objects.push(response.data);
+      this.nextLink = response.page_metadata.links.next;
     });
   }
 
   updateArgs() {
     this.objectType = this.data.objectType;
     this.currentPath = this.data.currentPath;
-    // this.getObjects();
   }
 
   onDragenter(e: any) {

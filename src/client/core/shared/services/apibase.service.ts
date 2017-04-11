@@ -82,7 +82,6 @@ export class ApiBaseService {
   }
 
   paramsToString(params: any): string {
-    console.log('query string', params);
     let str: string = '';
     for (let param in params) {
       str += param + '=' + params[param] + '&';

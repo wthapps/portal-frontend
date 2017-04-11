@@ -6,7 +6,7 @@
 
 
   <!--type == 'photo'-->
-  <div *ngIf="type == 'photo'" class="photo-box-img-figure">
+  <div *ngIf="type == 'photos'" class="photo-box-img-figure">
     <figure class="img-center-dv"
             (click)="onAction({action:'select', params: {selectedObject: object}})"
             (dblclick)="onAction({action:'previewAll'})">
@@ -23,8 +23,10 @@
   </div>
 
   <!--type == 'album'-->
-  <div *ngIf="type == 'album'" class="photo-box-img-figure">
-    <figure class="img-center-dv" (click)="onAction({action:'select'})" (dblclick)="onAction({action:'previewAll'})">
+  <div *ngIf="type == 'albums'" class="photo-box-img-figure">
+    <figure class="img-center-dv"
+            (click)="onAction({action:'select', params: {selectedObject: object}})"
+            (dblclick)="onAction({action:'viewDetails'})">
       <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
       <img class="img-center" [src]="object.photo_default" alt="">
       <div class="photo-box-img-info">
