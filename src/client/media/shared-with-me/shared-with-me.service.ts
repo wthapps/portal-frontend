@@ -4,7 +4,7 @@ import { ApiBaseService } from '../../core/shared/services/apibase.service';
 @Injectable()
 export class ZMediaSharedWithMeService {
 
-  url = 'zone/share_with_me';
+  url = 'media/share_with_me';
 
   constructor(private apiBaseService: ApiBaseService) {
   }

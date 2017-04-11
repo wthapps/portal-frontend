@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef } from '@angular/core';
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
 
 declare var _: any;
 declare var $: any;
@@ -66,7 +67,11 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   // }
 
 
-  constructor(private mediaObjectService: MediaObjectService, private elementRef: ElementRef) {
+  constructor(
+    private mediaObjectService: MediaObjectService,
+    private elementRef: ElementRef,
+    private loadingService: LoadingService
+  ) {
 
   }
 
@@ -76,11 +81,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // this.getObjects(null);
+    this.getObjects();
   }
 
   getObjects(options?: any) {
+    this.loadingService.start('#list-photo');
     this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
+      this.loadingService.stop('#list-photo');
       this.objects = response.data;
     });
   }
@@ -88,7 +95,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   updateArgs() {
     this.objectType = this.data.objectType;
     this.currentPath = this.data.currentPath;
-    this.getObjects();
+    // this.getObjects();
   }
 
   onDragenter(e: any) {

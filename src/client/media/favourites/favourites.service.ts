@@ -7,7 +7,7 @@ declare var _: any;
 @Injectable()
 export class ZMediaFavoriteService {
 
-  url = 'zone/favorites';
+  url = 'media/favorites';
 
   constructor(private apiBaseService: ApiBaseService) {
   }
