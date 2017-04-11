@@ -315,7 +315,7 @@ export class ChatService {
   }
 
   searchUsers(name:any) {
-    return this.apiBaseService.post('users/search', {text: name});
+    return this.apiBaseService.post('users/search', {search: name, search_by: "name"});
   }
 
   shareContact(ids:any) {

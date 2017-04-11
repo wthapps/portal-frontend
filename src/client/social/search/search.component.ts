@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SoSearchService } from '../../core/partials/header/sub/social-search.service';
+import { SoSearchService } from '../../core/partials/header/search/social-search.service';
 
 declare var _: any;
 

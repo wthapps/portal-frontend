@@ -1,4 +1,7 @@
-import { Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild } from '@angular/core';
+import {
+  Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild,
+  ViewContainerRef, ComponentFactoryResolver
+} from '@angular/core';
 import { ZMediaPhotoService } from './photo.service';
 
 import { ZMediaPhotoFormEditComponent } from './form/form-edit-photo.component';
@@ -32,18 +35,28 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
   @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
 
+  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+
+  modalComponent: any;
+  modal: any;
+
   index: number = 0;
   loadingImg: boolean = true;
+
+  private collapseInfo: boolean = true;
+  private active: boolean = false;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
     if (ev.which === KEY_ESC) this.preview(false);
   }
 
-  constructor(private router: Router,
-              private photoService: ZMediaPhotoService,
-              private confirmationService: ConfirmationService,
-              private loadingService: LoadingService) {
+  constructor(
+    private router: Router,
+    private resolver: ComponentFactoryResolver,
+    private photoService: ZMediaPhotoService,
+    private confirmationService: ConfirmationService,
+    private loadingService: LoadingService) {
   }
 
   ngAfterViewInit() {
@@ -60,6 +73,9 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         $(this).addClass('bigImg');
       }
     });
+
+    console.log('after init view  photo details');
+
   }
 
   showLoading() {
@@ -79,13 +95,15 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   }
 
 
-  actionPhoto(event: any) {
+  doAction(event: any) {
     switch (event) {
       case 'favourite':
         this.onFavourite();
         break;
       case 'share':
-        this.mediaToolbar.zoneSharing.modal.open();
+        this.loadModalComponent(ZMediaSharingComponent);
+        this.modal.open();
+        // this.mediaToolbar.zoneSharing.modal.open();
         break;
       case 'tag':
         this.zoneTagging.selectedItems = [this.selectedPhotos[this.index]];
@@ -96,7 +114,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
       case 'delete':
         this.onDelete();
         break;
-      case 'info':
+      case 'viewInfo':
         this.onShowInfo();
         break;
       case 'editInfo':
@@ -114,23 +132,36 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
 
   open(options: any) {
-    this.preview(options.show);
-    this.selectedPhotos = options.selectedObjects;
-  }
 
-  preview(show: boolean): void {
+    //get options values
+    if (_.has(options, 'viewInfo')) {
+      this.collapseInfo = options.viewInfo;
+    }
+    if (_.has(options, 'show')) {
+      this.active = options.show;
+    }
+    if (_.has(options, 'selectedObjects')) {
+      this.selectedPhotos = options.selectedObjects;
+    }
+
     this.loadingImg = true;
-    if (show) {
+    if (this.active) {
       $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
-      $('#photo-box-detail').addClass('active');
     } else {
       $('body').removeClass('fixed-hidden').css('padding-right', 0);
-      $('#photo-box-detail').removeClass('active').removeClass('active-info');
     }
   }
 
+  preview(show: boolean): void {
+
+  }
+
+  goBack() {
+    this.active = false;
+    this.collapseInfo = true;
+  }
   onShowInfo() {
-    $('#photo-box-detail').toggleClass('active-info');
+    this.collapseInfo = !this.collapseInfo;
   }
 
   onEditInfo() {
@@ -138,7 +169,6 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   }
 
   onEditPhoto(id: any) {
-    console.log(id);
     this.router.navigate(['photos', id, 'edit']);
     // this.photoService.getPhoto(id).subscribe(
     //   (res: any)=> {
@@ -163,12 +193,19 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         let body = JSON.stringify({ids: [idPhoto]});
         this.loadingService.start();
         this.photoService.deletePhoto(body).subscribe((res: any)=> {
-          this.preview(false);
+          this.goBack();
           _.remove(this.allPhotos, ['id', idPhoto]);
           this.loadingService.stop();
         });
       }
     });
+  }
+
+  private loadModalComponent(component: any) {
+    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    this.modalContainer.clear();
+    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modal = this.modalComponent.instance;
   }
 
 }

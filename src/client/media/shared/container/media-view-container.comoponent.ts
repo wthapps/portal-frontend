@@ -123,9 +123,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
       case 'addToAlbum':
         this.doAddToAlbum();
             break;
-      case 'viewInfo':
-        this.doViewInfo();
-          break;
+      // case 'viewInfo':
+      //   this.doViewInfo();
+      //     break;
       case 'download':
         this.doDownload();
           break;
@@ -160,7 +160,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
   doPreview() {
     // open modal
     this.loadModalComponent(ZMediaPhotoDetailComponent);
-    this.modal.open({show: true, selectedObjects: this.selectedObjects});
+    this.modal.open({viewInfo: false, show: true, selectedObjects: this.selectedObjects});
     // this.modal.events.subscribe((event: any) => {
     //   this.doAction(event);
     // });
@@ -186,7 +186,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit {
   }
 
   doViewInfo() {
-
+    this.modal.open({viewInfo: true});
   }
 
   doDownload() {

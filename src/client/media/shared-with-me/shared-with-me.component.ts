@@ -26,6 +26,7 @@ export class ZMediaSharedWithMeComponent implements OnInit {
   sharingUuid: string;
 
   selectedPhotos: any = [];
+  selectedAlbums: any = [];
 
   keyCtrl: boolean = false;
   hasFavourite: boolean = false;
@@ -52,13 +53,6 @@ export class ZMediaSharedWithMeComponent implements OnInit {
     this.route.queryParams
       .switchMap((queryParams: any) => this.sharedWithMeService.list(queryParams['uuid']))
       .subscribe((res: any) => {
-      // let event: any = {};
-      // event.action = params['action'];
-      // event.type = params['typee'];
-      // event.data = params['data'];
-      //
-      // this.actionItem(event);
-
         this.data = res['data'];
         if (res.data.albums.length == 0 && res.data.photos.length == 0) {
           this.shareIsEmpty = true;
@@ -93,7 +87,7 @@ export class ZMediaSharedWithMeComponent implements OnInit {
         if(event.type === 'photo')
           this.onPreviewAll(event.data);
         else
-          this.router.navigate([`shared-with-me/album`, event.data.id], { queryParams: {'shareMode': true}} );
+          this.router.navigate([`shared-with-me/album`, event.data.id], { queryParams: {'sharedWithMe': true}} );
         break;
       case 'favourite':
         this.onOneFavourite(event.data);

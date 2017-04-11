@@ -1,33 +1,38 @@
-<div id="photo-box-detail" class="photo-box-detail">
+<div id="photo-box-detail" class="photo-box-detail" [ngClass]="{'active-info': !collapseInfo, 'active': active}">
   <div *ngIf="selectedPhotos[index]" class="photo-detail-top">
     <ul class="action navbar-left">
       <li>
-        <a href="javascript:;" (click)="preview(false)"><i class="fa fa-arrow-left"></i></a>
+        <a href="javascript:;" (click)="goBack()"><i class="fa fa-arrow-left"></i></a>
       </li>
     </ul>
     <div class="name"><i class="fa fa-picture-o"></i> {{selectedPhotos[index].name}}</div>
     <ul class="action navbar-right">
       <li>
-        <a href="javascript:;" (click)="actionPhoto('share')"><i class="fa fa-share-alt"></i></a>
+        <a href="javascript:;" (click)="doAction('share')"><i class="fa fa-share-alt"></i></a>
       </li>
       <li>
-        <a href="javascript:;" (click)="actionPhoto('favourite')">
+        <a href="javascript:;" (click)="doAction('favourite')">
           <i class="fa" [ngClass]="selectedPhotos[index].favorite ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
       <li>
-        <a href="javascript:;" (click)="actionPhoto('tag')"><i class="fa fa-tag"></i></a>
+        <a href="javascript:;" (click)="doAction('tag')"><i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a href="javascript:;" (click)="actionPhoto('delete')"><i class="fa fa-trash-o"></i></a>
+        <a href="javascript:;" (click)="onEditPhoto(selectedPhotos[index].id)"><i class="fa fa-edit"></i></a>
+      </li>
+
+      <li>
+        <a href="javascript:;" (click)="doAction('delete')"><i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown">
         <a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
         <ul class="dropdown-menu">
-          <li><a href="javascript:;" (click)="actionPhoto('addToAlbum')">Add to Album</a></li>
-          <li><a [href]="selectedPhotos[index].url" download>Download</a></li>
-          <li><a href="javascript:;" (click)="onEditPhoto(selectedPhotos[index].id)">Edit Photo</a></li>
-          <li><a href="javascript:;" (click)="actionPhoto('info')">Information</a></li>
+          <li><a href="javascript:;" (click)="doAction('addToAlbum')"><i class="fa fa-plus-square"></i> Add to Album</a></li>
+          <li><a [href]="selectedPhotos[index].url" download><i class="fa fa-download"></i> Download</a></li>
+          <li>
+            <a href="javascript:;" (click)="doAction('viewInfo')"><i class="fa fa-info-circle"></i> Information</a>
+          </li>
         </ul>
       </li>
     </ul>
@@ -46,9 +51,9 @@
     </div>
   </div>
   <div *ngIf="selectedPhotos[index]" class="photo-detail-info">
-    <h3>Detail <a href="javascript:;" (click)="actionPhoto('info')"><i class="fa fa-times"></i></a></h3>
+    <h3>Detail <a href="javascript:;" (click)="doAction('viewInfo')"><i class="fa fa-times"></i></a></h3>
     <h4><i class="fa fa-info-circle"></i> General Infomation
-      <a href="javascript:;" (click)="actionPhoto('editInfo')">Edit</a>
+      <a href="javascript:;" (click)="doAction('editInfo')">Edit</a>
     </h4>
     <dl class="dl-horizontal">
       <dt>Name</dt>
@@ -65,12 +70,12 @@
       <dd>{{selectedPhotos[index].created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
     </dl>
     <hr>
-    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="actionPhoto('tag')">Edit</a></h4>
+    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="doAction('tag')">Edit</a></h4>
     <div class="tags-text">
       <span *ngFor="let tag of selectedPhotos[index].json_tags">{{tag.name}}</span>
     </div>
     <hr>
-    <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="actionPhoto('share')">Edit</a></h4>
+    <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="doAction('share')">Edit</a></h4>
     <dl>
       <dt>Owner</dt>
       <dd>
@@ -102,3 +107,5 @@
 
 <z-media-photo-form-edit #formEdit [data]="selectedPhotos[index]"></z-media-photo-form-edit>
 <z-media-share-tagging #zoneTagging></z-media-share-tagging>
+
+<template #modalContainer></template>

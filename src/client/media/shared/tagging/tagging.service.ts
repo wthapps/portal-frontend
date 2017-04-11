@@ -11,7 +11,7 @@ export class ZMediaTaggingService {
   }
 
   getTags(keys:any) {
-    return this.apiBaseService.get(`zone/tags`, {text: keys});
+    return this.apiBaseService.get(`zone/tags`, {search_by: "name", search: keys});
   }
 
   save(body: any) {

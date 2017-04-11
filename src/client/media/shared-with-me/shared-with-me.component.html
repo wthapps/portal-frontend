@@ -2,6 +2,7 @@
   #mediaToolbar
   type="shared-with-me"
   [selectedPhotos]="selectedPhotos"
+  [selectedAlbums]="selectedAlbums"
   [hasFavourite]="hasFavourite"
   [currentView]="currentView"
   (outEvent)="actionToolbar($event)">
@@ -24,6 +25,11 @@
       [hasAction]="['favourite', 'select', 'previewAll']"
       (outEvent)="actionItem($event)">
     </z-media-share-list>
+    <div class="text-center p20">
+      <a [routerLink]="['/albums']" [queryParams]="{shareWithMe: true}" class="btn btn-primary-inline">
+        View all
+      </a>
+    </div>
 
     <hr>
 
@@ -37,6 +43,11 @@
       [hasAction]="['favourite', 'select', 'previewAll']"
       (outEvent)="actionItem($event)">
     </z-media-share-list>
+    <div class="text-center p20">
+      <a [routerLink]="['/photos']" [queryParams]="{sharedWithMe: true}" class="btn btn-primary-inline">
+        View all
+      </a>
+    </div>
 
     <div class="text-center p20">
       <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load

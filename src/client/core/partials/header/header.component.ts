@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { Constants } from '../../shared/config/constants';
 
-import { SearchFormComponent } from './sub/search-form.component';
+import { SearchFormComponent } from './search/search-form.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 
@@ -66,8 +66,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
       this.notificationService.startChannel();
     }
-
-
+    
     this.appearancesChannelService.subscribe();
   }
 

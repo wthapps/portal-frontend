@@ -26,6 +26,8 @@ export class ZMediaAlbumListComponent implements OnInit {
 
   keyCtrl: boolean = false;
   hasFavourite: boolean = false;
+  sharedWithMe: boolean = false;
+  filterOption: any;
   currentView: string = 'grid';
 
   albumIsEmpty: boolean = false;
@@ -50,14 +52,16 @@ export class ZMediaAlbumListComponent implements OnInit {
 
     this.route.queryParams.subscribe(
       (queryParams: any) => {
-        this.hasFavourite = queryParams['favorite'];
+        // this.hasFavourite = queryParams['favorite'];
+        // this.sharedWithMe = queryParams['shared-with-me'];
+        this.filterOption = queryParams;
       }
     );
   }
 
   ngOnInit() {
-    if (this.hasFavourite)
-      this.getAlbums({'favorite':true});
+    if (this.filterOption)
+      this.getAlbums(this.filterOption);
     else
       this.getAlbums();
   }
@@ -87,7 +91,7 @@ export class ZMediaAlbumListComponent implements OnInit {
         this.onSelectedPhotos(event.data);
         break;
       case 'previewAll':
-        this.router.navigate([`/album`, event.data.id]);
+        this.router.navigate([`/albums`, event.data.id]);
         break;
       case 'editName':
         this.onOneEditName(event.data);
