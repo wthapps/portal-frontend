@@ -9,6 +9,7 @@ import { Constants } from '../../core/shared/config/constants';
 import { ZMediaSharingComponent } from '../shared/sharing/sharing.component';
 import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
 import { ZMediaTaggingComponent } from '../shared/tagging/tagging.component';
+import { Router } from '@angular/router';
 
 declare var $: any;
 declare var _: any;
@@ -39,7 +40,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     if (ev.which === KEY_ESC) this.preview(false);
   }
 
-  constructor(private photoService: ZMediaPhotoService,
+  constructor(private router: Router,
+              private photoService: ZMediaPhotoService,
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService) {
   }
@@ -133,6 +135,16 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
   onEditInfo() {
     this.formEdit.onShow();
+  }
+
+  onEditPhoto(id: any) {
+    console.log(id);
+    this.router.navigate(['photos', id, 'edit']);
+    // this.photoService.getPhoto(id).subscribe(
+    //   (res: any)=> {
+    //     console.log(res);
+    //   }
+    // );
   }
 
   private onFavourite() {

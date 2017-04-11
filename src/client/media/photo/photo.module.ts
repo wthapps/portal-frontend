@@ -7,6 +7,7 @@ import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { ZMediaPhotoFormEditComponent } from './form/form-edit-photo.component';
 import { ZMediaPhotoService } from './photo.service';
 import { ZMediaPhotoRoutingModule } from './photo-routing.module';
+import { ZMediaPhotoEditComponent } from './edit/edit-photo.component';
 
 @NgModule({
   imports: [
@@ -16,11 +17,13 @@ import { ZMediaPhotoRoutingModule } from './photo-routing.module';
   declarations: [
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
+    ZMediaPhotoEditComponent,
     ZMediaPhotoFormEditComponent
   ],
   exports: [
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
+    ZMediaPhotoEditComponent,
     ZMediaPhotoFormEditComponent
   ],
   providers: [

@@ -15,6 +15,10 @@ export class ZMediaPhotoService {
     return this.apiBaseService.get(this.url, body);
   }
 
+  getPhoto(id: any): any {
+    return this.apiBaseService.get(`${this.url}/${id}`);
+  }
+
   actionOneFavourite(item: any) {
     // let body = JSON.stringify({
     //   ids: [item.id],

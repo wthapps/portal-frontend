@@ -26,7 +26,7 @@
         <ul class="dropdown-menu">
           <li><a href="javascript:;" (click)="actionPhoto('addToAlbum')">Add to Album</a></li>
           <li><a [href]="selectedPhotos[index].url" download>Download</a></li>
-          <!--<li><a class="text-disable" href="javascript:;">Edit Photo</a></li>-->
+          <li><a href="javascript:;" (click)="onEditPhoto(selectedPhotos[index].id)">Edit Photo</a></li>
           <li><a href="javascript:;" (click)="actionPhoto('info')">Information</a></li>
         </ul>
       </li>

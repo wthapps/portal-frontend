@@ -1,4 +1,4 @@
-<div *ngIf="view == 'grid'" class="clearfix">
+<div *ngIf="view == 'grid'" class="clearfix sortbar-wrap">
   <span class="btn btn-text pull-right">
     <i class="fa" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"
        (click)="toggleSort(); doSort();"></i>
