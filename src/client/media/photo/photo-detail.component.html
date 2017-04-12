@@ -1,4 +1,4 @@
-<div id="photo-box-detail" class="photo-box-detail" [ngClass]="{'active-info': !collapseInfo, 'active': active}">
+<div id="photo-box-detail" class="photo-box-detail" [ngClass]="{'active-info': showDetails, 'active': active}">
   <div *ngIf="selectedPhotos[index]" class="photo-detail-top">
     <ul class="action navbar-left">
       <li>

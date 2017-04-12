@@ -43,7 +43,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   index: number = 0;
   loadingImg: boolean = true;
 
-  private collapseInfo: boolean = true;
+  private showDetails: boolean = false;
   private active: boolean = false;
 
   @HostListener('document:keydown', ['$event'])
@@ -134,8 +134,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   open(options: any) {
 
     //get options values
-    if (_.has(options, 'viewInfo')) {
-      this.collapseInfo = options.viewInfo;
+    if (_.has(options, 'showDetails')) {
+      this.showDetails = options.showDetails;
     }
     if (_.has(options, 'show')) {
       this.active = options.show;
@@ -159,10 +159,10 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
   goBack() {
     this.active = false;
-    this.collapseInfo = true;
+    this.showDetails = false;
   }
   onShowInfo() {
-    this.collapseInfo = !this.collapseInfo;
+    this.showDetails = !this.showDetails;
   }
 
   onEditInfo() {

@@ -1,21 +1,21 @@
-<z-media-share-sortbar [data]="data" (outEvent)="actionSortbar($event)"></z-media-share-sortbar>
+<me-list-header [data]="objects" [viewOption]="viewOption" (outEvent)="actionSortbar($event)"></me-list-header>
 
 
-<!--<div class="page-body-content has-page-body-control gray-light"-->
-  <!--infinite-scroll-->
-  <!--[infiniteScrollDistance]="2"-->
-  <!--[infiniteScrollThrottle]="500"-->
-  <!--[scrollWindow]="false"-->
-  <!--(scrolled)="getMoreObjects()">-->
-  <!---->
-  <!--<div class="page-body-content-in">-->
+<div class="page-body-content has-page-body-control gray-light"
+  infinite-scroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="500"
+  [scrollWindow]="false"
+  (scrolled)="getMoreObjects()">
 
-    <!--<div *ngIf="photoIsEmpty" class="zone-no-photo text-center">-->
-      <!--<h3>Ready to add some photos?</h3>-->
-      <!--<h5>Drop photos anywhere to upload</h5>-->
-    <!--</div>-->
+  <div class="page-body-content-in">
 
-    <div id="list-photo" class="row-img row-img-{{sliderViewNumber}}" *ngIf="data" [ngClass]="viewOption" (dragenter)="onDragenter($event)"
+    <div *ngIf="!objects" class="zone-no-photo text-center">
+      <h3>Ready to add some photos?</h3>
+      <h5>Drop photos anywhere to upload</h5>
+    </div>
+
+    <div id="list-photo" class="row-img row-img-{{sliderViewNumber}}" *ngIf="objects" [ngClass]="viewOption" (dragenter)="onDragenter($event)"
          (dragleave)="onDragleave($event)">
       <div *ngIf="viewOption != 'timeline'">
         <me-item *ngFor="let item of objects;" [type]="currentPath" [object]="item" (events)="onAction($event)"></me-item>
@@ -32,8 +32,10 @@
         <!--</div>-->
       </div>
 
-    <!--</div>-->
-  <!--</div>-->
+      <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
+
+    </div>
+  </div>
 
 <!--<div *ngIf="data">
   <div *ngIf="data.length==0" class="text-center">

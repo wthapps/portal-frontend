@@ -25,11 +25,12 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
 
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
+  viewOption: string = 'grid';
 
-  public viewOption: string = 'grid';
   private objects: Array<any> = new Array<any>();
   private pressingCtrlKey: boolean = false;
 
+  private currentPage: string;
   private currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
   private objectType: string; //photo, album, video, playlist, all
   private nextLink: string;
@@ -83,6 +84,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getObjects();
+
   }
 
   getObjects(options?: any) {
@@ -97,17 +99,22 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   getMoreObjects() {
     // this.loadingService.start('#list-photo');
-    this.mediaObjectService.getObjects(this.currentPath, this.nextLink).subscribe((response: any)=> {
-      // this.loadingService.stop('#list-photo');
-      this.objects.push(response.data);
-      this.nextLink = response.page_metadata.links.next;
-    });
+    if (this.nextLink != null) { // if there are more objects
+      this.mediaObjectService.getObjects(this.nextLink).subscribe((response: any)=> {
+        // this.loadingService.stop('#list-photo');
+        this.objects.push(response.data);
+        this.nextLink = response.page_metadata.links.next;
+      });
+    }
+
   }
 
-  updateArgs() {
-    this.objectType = this.data.objectType;
-    this.currentPath = this.data.currentPath;
+  initProperties(properties: any) {
+    this.objectType = properties.objectType;
+    this.currentPath = properties.currentPath;
+    this.currentPage = properties.currentPage;
   }
+
 
   onDragenter(e: any) {
     e.preventDefault();

@@ -50,6 +50,9 @@ export class ZMediaFormEditAlbumComponent implements AfterViewInit {
     });
   }
 
+  open(options: any) {
+    this.modal.open();
+  }
 
   onSubmit(values: any): void {
     let body = JSON.stringify({

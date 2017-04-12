@@ -13,10 +13,10 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'page-zone-form-create-album',
-  templateUrl: 'form-create-album.component.html',
+  selector: 'album-create',
+  templateUrl: 'album-create.component.html',
 })
-export class ZPictureFormCreateAlbumComponent extends FormModalComponent {
+export class AlbumCreateComponent extends FormModalComponent {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Input() items: Array<any>;
   isChanged: boolean = false;

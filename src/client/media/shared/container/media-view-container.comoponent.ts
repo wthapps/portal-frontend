@@ -12,6 +12,7 @@ import { ZMediaPhotoDetailComponent } from '../../photo/photo-detail.component';
 import { ZMediaSharingComponent } from '../sharing/sharing.component';
 import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
+import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
 
 declare var $: any;
 declare var _: any;
@@ -27,7 +28,8 @@ declare var _: any;
     ZMediaPhotoDetailComponent,
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
-    ZMediaFormAddToAlbumComponent
+    ZMediaFormAddToAlbumComponent,
+    ZMediaFormEditAlbumComponent
   ]
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -50,6 +52,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   objects: Array<any>;
 
   viewOption: string = 'grid';
+  private currentPage: string;
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -65,29 +68,49 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.selectedObjects = new Array<any>();
 
     this.router.events.subscribe((router: any) => {
-      this.currentPath = router.url.toString().substr(1);
+      let paths = router.url.toString().split('/');
+      this.currentPath = paths[1];
       if(this.currentPath == '') { // to be redirected from media home page
         this.currentPath = 'photos';
       }
+      if (paths.length <= 2) {
+        this.pageType = 'list'
+      } else {
+        this.pageType = 'detail'
+      }
 
-      this.route.params.subscribe(
-        (params: any) => {
-          if(params['id'] == undefined) {
-            this.pageType = 'list'
-          } else {
-            this.pageType = 'detail'
-          }
-          this.list.data = {currentPath: this.currentPath, objectType: this.objectType, pageType: this.pageType};
-          this.list.updateArgs();
-          this.toolbar.data = { currentPath: this.currentPath, objectType: this.objectType, pageType: this.pageType};
-          this.toolbar.updateArgs();
-        }
-      );
+      // this.route.params.subscribe(
+      //   (params: any) => {
+      //     if(params['id'] == undefined) {
+      //       this.pageType = 'list'
+      //     } else {
+      //       this.pageType = 'detail'
+      //     }
+          this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
+          console.log('current page', this.currentPage);
+
+          this.list.initProperties({
+            currentPage: this.currentPage,
+            currentPath: this.currentPath,
+            objectType: this.objectType,
+            pageType: this.pageType
+          });
+
+          this.toolbar.initProperties({
+            currentPage: this.currentPage,
+            currentPath: this.currentPath,
+            objectType: this.objectType,
+            pageType: this.pageType
+          });
+      //   }
+      // );
 
       this.route.queryParams.subscribe(
         (queryParams: any) => {
+          // console.log('query params', queryParams);
         }
       );
+      return; // prevent doing multi times
     });
   }
 
@@ -125,43 +148,52 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     console.log('toolbar event:', event);
     switch(event.action) {
       case 'uploadPhoto':
-        this.doUpload();
+        this.upload();
           break;
       case 'share':
-        this.doShare();
+        this.share();
           break;
       case 'favourite':
-        this.doFavourite();
+        this.favourite();
           break;
       case 'tag':
-        this.doTag();
+        this.tag();
           break;
       case 'addToAlbum':
-        this.doAddToAlbum();
+        this.addToAlbum();
             break;
-      // case 'viewInfo':
-      //   this.doViewInfo();
-      //     break;
       case 'download':
-        this.doDownload();
+        this.download();
           break;
       case 'edit':
-        this.doEdit();
+        this.edit();
           break;
+      case 'editInfo':
+        this.editInfo();
+        break;
       case 'delete':
-        this.doDelete();
+        this.delete();
           break;
-
       case 'changeView':
-        this.list.changeView(event.params.viewOption);
-          break;
+        this.changeView(event.params.viewOption);
+        break;
       case 'preview':
       case 'previewAll':
-      case 'viewInfo':
-        this.doPreview();
+        this.preview();
           break;
+      case 'viewInfo':
       case 'viewDetails':
-        this.doViewDetails();
+        if (this.currentPath == 'albums') {
+          this.viewDetails();
+        } else {
+          this.viewInfo();
+        }
+        break;
+      case 'slideShow':
+        this.slideShow();
+        break;
+      case 'changeCoverImage':
+        this.changeCoverImage();
         break;
       case 'select':
       case 'deselect':
@@ -171,52 +203,69 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  doUpload() {
+  upload() {
     // this.loadModalComponent(MediaUloaderComponent);
 
   }
 
-  doPreview() {
+  preview() {
     // open modal
     this.loadModalComponent(ZMediaPhotoDetailComponent);
-    this.modal.open({viewInfo: false, show: true, selectedObjects: this.selectedObjects});
+    this.modal.open({show: true, showDetails: false, selectedObjects: this.selectedObjects});
     // this.modal.events.subscribe((event: any) => {
     //   this.doAction(event);
     // });
   }
 
-  doShare() {
+  share() {
     this.loadModalComponent(ZMediaSharingComponent);
     this.modal.open();
   }
 
-  doFavourite() {
+  favourite() {
 
   }
 
-  doTag() {
+  tag() {
     this.loadModalComponent(ZMediaTaggingComponent);
     this.modal.open();
   }
 
-  doAddToAlbum() {
+  addToAlbum() {
     this.loadModalComponent(ZMediaFormAddToAlbumComponent);
     this.modal.open();
   }
 
-  doViewInfo() {
-    this.modal.open({viewInfo: true});
+  viewInfo() {
+    this.loadModalComponent(ZMediaPhotoDetailComponent);
+    this.modal.open({show: true, showDetails: true, selectedObjects: this.selectedObjects});
   }
 
-  doDownload() {
-
-  }
-
-  doEdit() {
+  download() {
 
   }
 
-  doDelete() {
+  edit() {
+    if(this.currentPath == 'photos') {
+
+    } else if(this.currentPath == 'albums') {
+      this.loadModalComponent(ZMediaFormEditAlbumComponent);
+      this.modal.open();
+    }
+
+  }
+
+  editInfo() {
+    if(this.currentPath == 'photos') {
+
+    } else if(this.currentPath == 'albums') {
+      // this.loadModalComponent(ZMediaFormEditAlbumComponent);
+      // this.modal.open();
+    }
+
+  }
+
+  delete() {
     let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
     this.confirmationService.confirm({
       message: 'Are you sure to delete ' + this.selectedObjects.length + ' item' + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
@@ -233,14 +282,25 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     });
   }
 
+  changeView(viewOption: string) {
+    this.list.changeView(viewOption);
+  }
+
   //*
   // Album's functions
   //
   // *//
-  doViewDetails() {
-    this.router.navigate(['/albums', this.selectedObjects[0].id])
+  viewDetails() {
+    this.router.navigate(['/albums', this.selectedObjects[0].id]);
   }
 
+  slideShow() {
+
+  }
+
+  changeCoverImage() {
+
+  }
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);

@@ -9,14 +9,17 @@ import { Observable, Observer } from 'rxjs';
 @Component({
   moduleId: module.id,
   selector: 'me-toolbar-list',
-  templateUrl: 'media-toolbar-list.component.html'
+  templateUrl: 'media-toolbar-list.component.html',
+  styleUrls: ['media-toolbar-list.component.css']
 })
 
 export class MediaToolbarListComponent implements OnInit, AfterViewInit {
-  data: any;
+  @Input() currentPage: string; //photo_list, albumlist, object_list, photo_detail, album_detail, object_detail
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
   selectedObjects: Array<any> = new Array<any>();
+  data: any;
+
 
   private currentPath: string;
   private objectType: string;
@@ -43,10 +46,13 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
   }
 
-  updateArgs() {
-    this.currentPath = this.data.currentPath;
-    this.objectType = this.data.objectType;
+  initProperties(properties: any) {
+    this.objectType = properties.objectType;
+    this.currentPath = properties.currentPath;
+    this.currentPage = properties.currentPage;
+    console.log('current page: ', this.currentPage);
   }
+
 
   onAction(options: any) {
     if(options.action == 'changeView') {

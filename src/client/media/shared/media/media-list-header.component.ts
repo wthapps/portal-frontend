@@ -5,13 +5,13 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-share-sortbar',
-  templateUrl: 'sortbar.component.html'
+  selector: 'me-list-header',
+  templateUrl: 'media-list-header.component.html'
 })
 
-export class ZMediaSortbarComponent {
+export class MediaListHeaderComponent {
   @Input() data: any;
-  @Input() view: any = 'grid';
+  @Input() viewOption: string;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   sortName: any = 'Date';

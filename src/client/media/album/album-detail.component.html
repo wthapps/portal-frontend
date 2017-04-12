@@ -1,12 +1,14 @@
-<z-media-share-toolbar
-  #mediaToolbar
-  [type]="'album-detail'"
-  [albumDetail]="albumDetail"
-  [selectedAlbums]="selectedAlbums"
-  [hasFavourite]="hasFavourite"
-  [currentView]="currentView"
-  (outEvent)="actionToolbar($event)">
-</z-media-share-toolbar>
+<!--<z-media-share-toolbar-->
+  <!--#mediaToolbar-->
+  <!--[type]="'album-detail'"-->
+  <!--[albumDetail]="albumDetail"-->
+  <!--[selectedAlbums]="selectedAlbums"-->
+  <!--[hasFavourite]="hasFavourite"-->
+  <!--[currentView]="currentView"-->
+  <!--(outEvent)="actionToolbar($event)">-->
+<!--</z-media-share-toolbar>-->
+
+<me-toolbar-list [currentPage]="'album_detail'"></me-toolbar-list>
 
 <div class="page-body-content has-page-body-control gray-light"
      infinite-scroll

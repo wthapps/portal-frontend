@@ -11,7 +11,7 @@ import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
 import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.component';
 
-import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
+import { MediaListHeaderComponent } from './media/media-list-header.component';
 import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
 import { MediaUploaderComponent } from './uploader/media-uploader.component';
@@ -44,7 +44,7 @@ import { MediaItemComponent } from './media/media-item.component';
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
     //
-    ZMediaSortbarComponent,
+    MediaListHeaderComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
     ZMediaFormEditNameComponent,
@@ -67,7 +67,7 @@ import { MediaItemComponent } from './media/media-item.component';
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
     //
-    ZMediaSortbarComponent,
+    MediaListHeaderComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
     ZMediaFormEditNameComponent,

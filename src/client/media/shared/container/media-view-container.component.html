@@ -1,18 +1,18 @@
 <template #toolbarContainer></template>
 
 
-<div class="page-body-content has-page-body-control gray-light"
-  infinite-scroll
-  [infiniteScrollDistance]="2"
-  [infiniteScrollThrottle]="500"
-  [scrollWindow]="false"
-  (scrolled)="loadMoreObjects()">
-  <div class="page-body-content-in">
+<!--<div class="page-body-content has-page-body-control gray-light"-->
+  <!--infinite-scroll-->
+  <!--[infiniteScrollDistance]="2"-->
+  <!--[infiniteScrollThrottle]="500"-->
+  <!--[scrollWindow]="false"-->
+  <!--(scrolled)="loadMoreObjects()">-->
+  <!--<div class="page-body-content-in">-->
 
-    <div *ngIf="photoIsEmpty" class="zone-no-photo text-center">
-      <h3>Ready to add some photos?</h3>
-      <h5>Drop photos anywhere to upload</h5>
-    </div>
+    <!--<div *ngIf="photoIsEmpty" class="zone-no-photo text-center">-->
+      <!--<h3>Ready to add some photos?</h3>-->
+      <!--<h5>Drop photos anywhere to upload</h5>-->
+    <!--</div>-->
     <template #listContainer></template>
 
     <!--<me-list-->
@@ -22,9 +22,9 @@
       <!--(outEvent)="actionItem($event)">-->
     <!--</me-list>-->
 
-    <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
-  </div>
-</div>
+    <!--<div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>-->
+  <!--</div>-->
+<!--</div>-->
 
 <template #modalContainer></template>
 
