@@ -66,11 +66,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
     this.router.events.subscribe((router: any) => {
       this.currentPath = router.url.toString().substr(1);
-      console.log('current path', this.currentPath);
+      if(this.currentPath == '') { // to be redirected from media home page
+        this.currentPath = 'photos';
+      }
 
       this.route.params.subscribe(
         (params: any) => {
-          console.log('params: ', params);
           if(params['id'] == undefined) {
             this.pageType = 'list'
           } else {
@@ -78,13 +79,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
           }
           this.list.data = {currentPath: this.currentPath, objectType: this.objectType, pageType: this.pageType};
           this.list.updateArgs();
-          // this.toolbar.data = { mediaObject: this.mediaObject, pageType: this.pageType };
+          this.toolbar.data = { currentPath: this.currentPath, objectType: this.objectType, pageType: this.pageType};
+          this.toolbar.updateArgs();
         }
       );
 
       this.route.queryParams.subscribe(
         (queryParams: any) => {
-          console.log('query params: ', queryParams);
         }
       );
     });
@@ -159,6 +160,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'viewInfo':
         this.doPreview();
           break;
+      case 'viewDetails':
+        this.doViewDetails();
+        break;
       case 'select':
       case 'deselect':
         this.selectedObjects = event.params.selectedObjects;
@@ -228,6 +232,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       }
     });
   }
+
+  //*
+  // Album's functions
+  //
+  // *//
+  doViewDetails() {
+    this.router.navigate(['/albums', this.selectedObjects[0].id])
+  }
+
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);

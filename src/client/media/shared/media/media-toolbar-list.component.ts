@@ -13,14 +13,21 @@ import { Observable, Observer } from 'rxjs';
 })
 
 export class MediaToolbarListComponent implements OnInit, AfterViewInit {
+  data: any;
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
+
   selectedObjects: Array<any> = new Array<any>();
+
+  private currentPath: string;
+  private objectType: string;
 
   private noSelectedObjects: boolean = true;
   private viewOption: string = 'grid';
   private grid: string = 'grid';
   private list: string = 'list';
   private timeline: string = 'timeline';
+
+
 
   constructor() {
 
@@ -33,7 +40,12 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changing::', changes);
+
+  }
+
+  updateArgs() {
+    this.currentPath = this.data.currentPath;
+    this.objectType = this.data.objectType;
   }
 
   onAction(options: any) {

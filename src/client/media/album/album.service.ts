@@ -6,7 +6,7 @@ declare var _: any;
 @Injectable()
 export class ZMediaAlbumService {
 
-  url = 'zone/albums';
+  url = 'media/albums';
 
   constructor(private apiBaseService: ApiBaseService) {
   }
@@ -23,7 +23,7 @@ export class ZMediaAlbumService {
     let body = { 'album': id};
     if (shareMode !== undefined)
       _.merge(body, { shareMode: shareMode});
-    return this.apiBaseService.get(`zone/photos`, body);
+    return this.apiBaseService.get(`media/photos`, body);
   }
 
   addToAlbum(id: number, selectedPhotos: any): any {
