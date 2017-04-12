@@ -97,7 +97,9 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
     this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => { this.current_photo = res});
 
+    // Stop observable when finish uploading all files
     this.photoUploadService.uploadPhotos(files)
+      .takeWhile(() => this.step != 2)
       .subscribe((res: any) => {
         console.log('Upload image to s3 and save info successfully', res);
         this.uploaded_num++;

@@ -174,7 +174,9 @@ export class NotificationService {
   }
 
   getNewNotificationsCount() {
+    // Only loading 1 time when refreshing pages or navigating from login pages
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
+      .take(1)
       .subscribe(
         (result: any) => {
           this.newNotifCount = result.data;

@@ -18,6 +18,7 @@ export class PhotoUploadService {
   identityPoolId: string;
   s3: any;
   readonly SUFFIX: string = '-temp-upload';
+  readonly TIMEOUT : number =  4000;
 
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
 
@@ -31,7 +32,8 @@ export class PhotoUploadService {
   }
 
   loadConfig() {
-    this.apiService.post(`${this.soPhotoUrl}/get_aws_config`).subscribe((data: any) => {
+    // ONLY load config 1 time
+    this.apiService.post(`${this.soPhotoUrl}/get_aws_config`).take(1).subscribe((data: any) => {
       this.albumTempBucketName = data.tempBucket;
       this.bucketRegion = data.region;
       this.bucketSubFolder = data.bucketSubFolder;
@@ -59,53 +61,53 @@ export class PhotoUploadService {
   }
 
   // TODO: Convert this function to be a Observable
-  // Rename to uploadPhotos
-  upload(file: any): Promise<any> {
-
-    return new Promise((resolve: any, reject: any) => {
-      var ext = file.name.split('.').reverse()[0];
-      let fileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
-      let tempImageUrl : string = '';
-      let imageUrl: string = '';
-      let imageName: string = '';
-      let imageUrlThumbnail: string = '';
-      let body: any = {};
-
-      var photoKey = this.bucketSubFolder + '/' + fileName;
-      var options = {partSize: 10 * 1024 * 1024, queueSize: 1};
-      this.s3.upload({
-          Key: photoKey,
-          Body: file,
-          ACL: 'public-read'
-        }, options, (err: any, data: any) => {
-          if (err)
-            reject(err);
-          else {
-            console.log('Successfully uploaded photo.', data);
-
-            imageName = data.key;
-            tempImageUrl = data.Location;;
-            imageUrl = this.getCompressUrl(tempImageUrl);
-            imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
-            body = {
-              name: imageName,
-              url: imageUrl,
-              thumbnail_url: imageUrlThumbnail
-            };
-
-            // Delay 4s waiting for image thumbnail to be created
-            this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
-              .subscribe((result: any) => {
-                setTimeout(() => {
-                  resolve(result['data']);
-                }, 4000);
-              },
-                (err2: any) => { reject(err2); });
-          }
-        }
-      );
-    });
-  }
+  // Deprecated
+  // upload(file: any): Promise<any> {
+  //
+  //   return new Promise((resolve: any, reject: any) => {
+  //     var ext = file.name.split('.').reverse()[0];
+  //     let fileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
+  //     let tempImageUrl : string = '';
+  //     let imageUrl: string = '';
+  //     let imageName: string = '';
+  //     let imageUrlThumbnail: string = '';
+  //     let body: any = {};
+  //
+  //     var photoKey = this.bucketSubFolder + '/' + fileName;
+  //     var options = {partSize: 10 * 1024 * 1024, queueSize: 1};
+  //     this.s3.upload({
+  //         Key: photoKey,
+  //         Body: file,
+  //         ACL: 'public-read'
+  //       }, options, (err: any, data: any) => {
+  //         if (err)
+  //           reject(err);
+  //         else {
+  //           console.log('Successfully uploaded photo.', data);
+  //
+  //           imageName = data.key;
+  //           tempImageUrl = data.Location;;
+  //           imageUrl = this.getCompressUrl(tempImageUrl);
+  //           imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
+  //           body = {
+  //             name: imageName,
+  //             url: imageUrl,
+  //             thumbnail_url: imageUrlThumbnail
+  //           };
+  //
+  //           // Delay 4s waiting for image thumbnail to be created
+  //           this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
+  //             .subscribe((result: any) => {
+  //               setTimeout(() => {
+  //                 resolve(result['data']);
+  //               }, 4000);
+  //             },
+  //               (err2: any) => { reject(err2); });
+  //         }
+  //       }
+  //     );
+  //   });
+  // }
 
   getPhoto(photo: any): Observable<any> {
     return Observable.create((observer: any) => {
@@ -119,6 +121,11 @@ export class PhotoUploadService {
       });
   }
 
+  /**
+   * Upload multiple photos to s3 and convert output streams to Observable
+   * @param photos
+   * @returns {any}
+   */
   uploadPhotos(photos: Array<any>): Observable<any> {
     return Observable.create((observer: any) => {
       for (let i = 0; i < photos.length; i++) {
@@ -155,6 +162,7 @@ export class PhotoUploadService {
                 thumbnail_url: imageUrlThumbnail
               };
 
+              // TODO: Implement polling to reduce delay time
               // Delay 4s waiting for image thumbnail to be created
               this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
                 .subscribe((result: any) => {
@@ -162,7 +170,7 @@ export class PhotoUploadService {
                       let wrapperRes = { data: result['data'], current_photo: currentPhoto};
                       // observer.next(result['data']);
                       observer.next(wrapperRes);
-                    }, 4000);
+                    }, this.TIMEOUT);
                   },
                   (err2: any) => { observer.error(err2); });
             }
