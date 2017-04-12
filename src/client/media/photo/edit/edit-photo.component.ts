@@ -16,6 +16,8 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
   @Input() data: Photo = null;
 
   loadingImg: boolean = true;
+  imgUrl: string = 'assets/images/zone/media/photo-edit-default.png';
+  img: any = null;
 
   constructor(private photoService: ZMediaPhotoService,
               private route: ActivatedRoute) {
@@ -28,7 +30,6 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit');
     this.reInitPhoto();
   }
 
@@ -36,12 +37,39 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
     this.photoService.getPhoto(id).subscribe(
       (res: any)=> {
         this.data = res.data;
+        this.imgUrl = res.data.url;
+        // this.img.cropper('reset', true).cropper('replace', res.data.url);
+        this.img.cropper('destroy').attr('src', res.data.url).cropper();
       }
     );
   }
 
-  showLoading() {
+  showLoading(e: any) {
     this.loadingImg = false;
+  }
+
+  cropperRotateLeft() {
+    this.img.cropper('rotate', -90);
+  }
+
+  cropperRotateRigth() {
+    this.img.cropper('rotate', 90);
+  }
+
+  cropperCrop() {
+    this.img.cropper('setDragMode', 'crop');
+  }
+
+  cropperZoomIn() {
+    this.img.cropper('zoom', 0.1);
+  }
+
+  cropperZoomOut() {
+    this.img.cropper('zoom', -0.1);
+  }
+
+  cropperReset() {
+    this.img.cropper('reset');
   }
 
 
@@ -50,12 +78,6 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
     let _this = this;
 
     let elImage = $('#photo-detail-img');
-    let cropperRotateLeft = $('#photo-detail-rotate-left');
-    let cropperRotateRigth = $('#photo-detail-rotate-right');
-    let cropperCrop = $('#photo-detail-crop');
-    let cropperZoomIn = $('#photo-detail-zoom-in');
-    let cropperZoomOut = $('#photo-detail-zoom-out');
-    let cropperReset = $('#photo-detail-reset');
 
     // initialize cropper
     let myCropOptions = {
@@ -70,7 +92,7 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
       //, cropBoxMovable: true
       //, cropBoxResizable: true
       , autoCrop: false
-      , checkCrossOrigin: false
+      , checkCrossOrigin: true
       , built: function () {
         $(this).cropper('clear');
       }
@@ -78,24 +100,6 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
 
     elImage.cropper(myCropOptions);
 
-    // listener for 'action' button in modal
-    cropperRotateLeft.on('click', function () {
-      elImage.cropper('rotate', -90);
-    });
-    cropperRotateRigth.on('click', function () {
-      elImage.cropper('rotate', 90);
-    });
-    cropperCrop.on('click', function () {
-      elImage.cropper("setDragMode", "crop");
-    });
-    cropperZoomIn.on('click', function () {
-      elImage.cropper("zoom", 0.1);
-    });
-    cropperZoomOut.on('click', function () {
-      elImage.cropper("zoom", -0.1);
-    });
-    cropperReset.on('click', function () {
-      elImage.cropper("reset");
-    });
+    this.img = elImage;
   }
 }

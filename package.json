@@ -155,6 +155,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "~3.3.7",
     "core-js": "^2.4.1",
+    "cropper": "^3.0.0-rc",
     "cropperjs": "^1.0.0-rc",
     "dropzone": "^4.3.0",
     "font-awesome": "^4.7.0",

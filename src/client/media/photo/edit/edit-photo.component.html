@@ -16,28 +16,30 @@
     </ul>
     <ul class="action navbar-right">
       <li>
-        <a id="photo-detail-crop" href="javascript:;"><i class="fa fa-crop"></i></a>
+        <a (click)="cropperReset()" href="javascript:;"><i class="fa fa-crop"></i></a>
       </li>
       <li>
-        <a id="photo-detail-zoom-in" href="javascript:;"><i class="fa fa-search-plus"></i></a>
+        <a (click)="cropperZoomIn()" href="javascript:;"><i class="fa fa-search-plus"></i></a>
       </li>
       <li>
-        <a id="photo-detail-zoom-out" href="javascript:;"><i class="fa fa-search-minus"></i></a>
+        <a (click)="cropperZoomOut()" href="javascript:;"><i class="fa fa-search-minus"></i></a>
       </li>
       <li>
-        <a id="photo-detail-rotate-left" href="javascript:;"><i class="fa fa-rotate-left"></i></a>
+        <a (click)="cropperRotateLeft()" href="javascript:;"><i class="fa fa-rotate-left"></i></a>
       </li>
       <li>
-        <a id="photo-detail-rotate-right" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
+        <a (click)="cropperRotateRigth()" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
       </li>
     </ul>
 
     <div class="name"><i class="fa fa-picture-o"></i> {{data.name}}</div>
   </div>
-  <div *ngIf="data" class="photo-detail-content">
+
+  <div class="photo-detail-content">
+  <!--<div *ngIf="data" class="photo-detail-content">-->
     <div class="photo-detail-img">
       <figure [ngClass]="{'img-loading': loadingImg}" id="cropper-wrap">
-        <img id="photo-detail-img" [src]="data.url" alt="" (load)="showLoading()">
+        <img id="photo-detail-img" [src]="imgUrl" alt="" (load)="showLoading($event)">
       </figure>
     </div>
   </div>
