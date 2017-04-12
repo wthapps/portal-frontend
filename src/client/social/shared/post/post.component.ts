@@ -6,7 +6,7 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
-  EventEmitter
+  EventEmitter, OnDestroy
 } from '@angular/core';
 import {
   PostActivitiesComponent
@@ -29,6 +29,7 @@ import { Subscription } from 'rxjs';
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
 import { BaseEvent } from '../../../core/shared/event/base-event';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import 'rxjs/add/operator/takeUntil';
 
 declare var $: any;
 declare var _: any;
@@ -39,7 +40,7 @@ declare var _: any;
   templateUrl: 'post.component.html'
 })
 
-export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
+export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges, OnDestroy {
   @ViewChild('postActivities') postActivities: PostActivitiesComponent;
   @ViewChild('postLikeDislike') postLikeDislike: PostLikeDislikeComponent;
 
@@ -61,9 +62,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   dataLikeDislike: any;
 
   // Subscription list
-  closePhotoSubscription : Subscription;
   nextPhotoSubscription: Subscription;
-  dismissPhotoSubscription: Subscription;
   uploadPhotoSubscription: Subscription;
 
 
@@ -92,6 +91,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // if(changes['item'].currentValue.parent) {
     //   this.parentItem = changes['item'].currentValue.parent;
     // }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribePhotoEvents();
   }
 
   mapDisplay(): any {
@@ -432,8 +435,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   private subscribePhotoEvents() {
     // Subscribe actions corresponding with photo modal actions
 
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
+
     if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
-      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
           this.commentBox.commentAction(photos);
         },
@@ -442,43 +447,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
 
     if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
-      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.subscribe(
-        (files: any) => {
-          // this.commentBox.commentAction(photos);
-          console.log(files);
-          let i = 0;
-          do {
-            // this.commentBox.commentAction(files[i]);
-            this.photoUploadService.upload(files[i])
-              .then(
-                (res: any) => {
-                  console.log('Upload image to s3 and save successfully', res);
-                  this.commentBox.commentAction([res]);
-                })
-              .catch((error: any) => {
-                console.error('Error when uploading files ', error);
-              })
-            ;
-            i++;
-          } while (i < files.length);
-        },
-        (error : any) => { console.error(error); }
-      );
-    }
-
-    if (this.notAssignedSubscription(this.dismissPhotoSubscription)) {
-      this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
-        },
-        (error : any) => { console.error(error); }
-      );
-    }
-
-    if (this.notAssignedSubscription(this.closePhotoSubscription)) {
-      this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
+      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
+        .flatMap((files: any) => this.photoUploadService.uploadPhotos(files))
+        .subscribe(
+        (res: any) => {
+          // this.commentBox.commentAction([res['current_photo']]);
+          this.commentBox.commentAction([res['data']]);
         },
         (error : any) => { console.error(error); }
       );
@@ -489,7 +463,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   private unsubscribePhotoEvents() {
-    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
+    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub : Subscription) => {
       if(sub && !sub.closed)
         sub.unsubscribe();
     });

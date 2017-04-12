@@ -75,7 +75,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   // Subscription list
   nextSubscription : Subscription;
   dismissSubscription : Subscription;
-  closeSubscription : Subscription;
   uploadSubscription : Subscription;
 
   constructor(private apiService: ApiBaseService,
@@ -113,7 +112,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
     // load tags
-    this.apiService.get(`zone/tags`)
+    this.apiService.get(`media/tags`)
       .subscribe((result: any) => {
           this.objTags = result['data'];
           this.tags = _.map(result['data'], 'name');
@@ -193,52 +192,14 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   uploadFiles(files: Array<any>) {
-
-    // this.photos = event['data'];
-    let i = 0;
-    let reader: FileReader;
-    let body: string;
-    let fileName: string;
-    // this.loading.start('.photo-item-uploading');
-    do {
-        this.photoUploadService.upload(files[i])
-          .then(
-          (res: any) => {
-            console.log('Upload image to s3 and save successfully', res);
-            // this.savePhotoInfo(res);
-
-            this.files.shift(); // remove file was uploaded
-            this.post.photos.unshift(res);
-            this.uploadedPhotos.push(res);
-          })
-          .catch((error: any) => {
-            console.error('Error when uploading files ', error);
-          })
-      ;
-      i++;
-    } while (i < files.length);
-
+    this.photoUploadService.uploadPhotos(files)
+      .subscribe((res: any) => {
+          this.files.shift(); // remove file was uploaded
+          this.post.photos.unshift(res.data);
+          this.uploadedPhotos.push(res.data);}
+      , (err: any) => {
+          console.error('Error when uploading files ', err);})
   }
-
-  // savePhotoInfo(data: any) {
-  //   this.photoUploadService.savePhotoInfo(data).subscribe(
-  //     (result: any) => {
-  //       console.log("post-edit photo saved successfully", result);
-  //
-  //       // Delay 4s waiting for image thumbnail to be created
-  //       setTimeout(() => {
-  //         this.files.shift(); // remove file was uploaded
-  //         this.post.photos.unshift(result['data']);
-  //         this.uploadedPhotos.push(result['data']);
-  //         // this.loading.stop('.photo-item-uploading');
-  //       }, 4000);
-  //
-  //     },
-  //     (error: any) => {
-  //       console.error('post-edit photo error', error);
-  //     }
-  //   );
-  // }
 
   cancelUploading(file: any) {
     _.pull(this.files, file);
@@ -368,8 +329,10 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private subscribePhotoSelectEvents() {
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$);
+
     if (this.needInitSubscription(this.nextSubscription)) {
-      this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
+      this.nextSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
         this.next(photos);
       });
     }
@@ -380,14 +343,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (this.needInitSubscription(this.closeSubscription)) {
-      this.closeSubscription = this.photoSelectDataService.closeObs$.subscribe((event: any) => {
-        this.closeSelectPhoto(event);
-      });
-    }
-
     if (this.needInitSubscription(this.uploadSubscription)) {
-      this.uploadSubscription = this.photoSelectDataService.uploadObs$.subscribe((files: any) => {
+      this.uploadSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
         this.upload(files);
       });
     }
@@ -398,13 +355,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private unsubscribeAll() {
-    _.forEach([this.nextSubscription, this.dismissSubscription, this.closeSubscription, this.uploadSubscription], (sub: Subscription) => {
+    _.forEach([this.nextSubscription, this.dismissSubscription, this.uploadSubscription], (sub: Subscription) => {
       if (sub && !sub.closed)
         sub.unsubscribe();
     });
-    // this.nextSubscription.unsubscribe();
-    // this.dismissSubscription.unsubscribe();
-    // this.closeSubscription.unsubscribe();
-    // this.uploadSubscription.unsubscribe();
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../config/constants';
 import { UUID } from 'angular2-uuid';
+import { Observable } from 'rxjs';
 
 declare var AWS: any;
 declare let _: any;
@@ -21,7 +22,7 @@ export class PhotoUploadService {
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
 
   constructor(private apiService: ApiBaseService) {
-    // this.loadConfigOnce();
+    this.loadConfigOnce();
   }
 
   loadConfigOnce() {
@@ -106,14 +107,77 @@ export class PhotoUploadService {
     });
   }
 
-  uploadPhotos(photo: any) {
-    return this.upload(photo);
+  getPhoto(photo: any): Observable<any> {
+    return Observable.create((observer: any) => {
+        let reader: FileReader = new FileReader();
+
+        reader.onload = (data: any) => {
+          observer.next(data.target['result']);
+          observer.complete();
+        };
+        reader.readAsDataURL(photo);
+      });
   }
 
-  // TODO
-  uploadFiles(files: any) {
+  uploadPhotos(photos: Array<any>): Observable<any> {
+    return Observable.create((observer: any) => {
+      for (let i = 0; i < photos.length; i++) {
+        let file = photos[i];
+        let reader: FileReader = new FileReader();
 
+        reader.onload = (data: any) => {
+          let currentPhoto = data.target['result'];
+          console.log('photos data: ', data, ' file name: ', file.name);
+
+          let ext = file.name.split('.').reverse()[0];
+          let fileName = file.name;
+          let encodedFileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
+          let photoKey = this.bucketSubFolder + '/' + encodedFileName;
+          let options = {partSize: 10 * 1024 * 1024, queueSize: 1};
+          this.s3.upload({
+            Key: photoKey,
+            Body: file,
+            ACL: 'public-read'
+          }, options, (err: any, data: any) => {
+            if (err)
+              observer.error(err);
+            else {
+              console.log('Successfully uploaded photo.', data);
+
+              // let imageName = data.key;
+              let tempImageUrl = data.Location;;
+              let imageUrl = this.getCompressUrl(tempImageUrl);
+              let imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
+              let body = {
+                name: fileName,
+                image: currentPhoto,
+                url: imageUrl,
+                thumbnail_url: imageUrlThumbnail
+              };
+
+              // Delay 4s waiting for image thumbnail to be created
+              this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
+                .subscribe((result: any) => {
+                    setTimeout(() => {
+                      let wrapperRes = { data: result['data'], current_photo: currentPhoto};
+                      // observer.next(result['data']);
+                      observer.next(wrapperRes);
+                    }, 4000);
+                  },
+                  (err2: any) => { observer.error(err2); });
+            }
+          });
+        };
+        reader.readAsDataURL(file);
+      };
+    });
   }
+
+
+
+  // uploadPhotos(photo: any) {
+  //   return this.upload(photo);
+  // }
 
 
   // TODO:
