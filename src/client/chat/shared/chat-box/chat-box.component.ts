@@ -1,4 +1,4 @@
-import { Component, ViewChild, HostListener, OnInit, HostBinding } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit, HostBinding, OnDestroy } from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
@@ -14,16 +14,14 @@ declare var $: any;
   styleUrls: ['chat-box.component.css']
 })
 
-export class ZChatChatboxComponent implements OnInit {
+export class ZChatChatboxComponent implements OnInit, OnDestroy {
   // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   @HostBinding('class') keyCtrlClass = '';
 
   emojiData: any = [];
 
   // Subscription list
-  closePhotoSubscription : Subscription;
   nextPhotoSubscription: Subscription;
-  dismissPhotoSubscription: Subscription;
   uploadPhotoSubscription: Subscription;
 
   constructor(private chatService: ChatService,
@@ -34,6 +32,10 @@ export class ZChatChatboxComponent implements OnInit {
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
     // this.photoModal.action = 'UPLOAD';
+  }
+
+  ngOnDestroy() {
+    this.unsubscribePhotoEvents();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -102,10 +104,12 @@ export class ZChatChatboxComponent implements OnInit {
   }
 
   private subscribePhotoEvents() {
+
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
     // Subscribe actions corresponding with photo modal actions
 
     if(this.notAssignedSubscription(this.nextPhotoSubscription)) {
-      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
           this.chooseDone(photos);
           // this.uploadPhoto(photos);
@@ -115,27 +119,9 @@ export class ZChatChatboxComponent implements OnInit {
     }
 
     if(this.notAssignedSubscription(this.uploadPhotoSubscription)) {
-      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.subscribe(
+      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
           this.uploadPhoto(photos);
-        },
-        (error : any) => { console.error(error); }
-      );
-    }
-
-    if(this.notAssignedSubscription(this.dismissPhotoSubscription)) {
-      this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
-        },
-        (error : any) => { console.error(error); }
-      );
-    }
-
-    if(this.notAssignedSubscription(this.closePhotoSubscription)) {
-      this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
         },
         (error : any) => { console.error(error); }
       );
@@ -147,7 +133,7 @@ export class ZChatChatboxComponent implements OnInit {
   }
 
   private unsubscribePhotoEvents() {
-    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription, this.uploadPhotoSubscription].forEach((sub : Subscription) => {
+    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub : Subscription) => {
       if(sub && !sub.closed)
         sub.unsubscribe();
     });
