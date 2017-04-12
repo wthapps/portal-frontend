@@ -442,25 +442,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
 
     if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
-      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.subscribe(
-        (files: any) => {
-          // this.commentBox.commentAction(photos);
-          console.log(files);
-          let i = 0;
-          do {
-            // this.commentBox.commentAction(files[i]);
-            this.photoUploadService.upload(files[i])
-              .then(
-                (res: any) => {
-                  console.log('Upload image to s3 and save successfully', res);
-                  this.commentBox.commentAction([res]);
-                })
-              .catch((error: any) => {
-                console.error('Error when uploading files ', error);
-              })
-            ;
-            i++;
-          } while (i < files.length);
+      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
+        .flatMap((files: any) => this.photoUploadService.uploadPhotos(files))
+        .subscribe(
+        (res: any) => {
+          // this.commentBox.commentAction([res['current_photo']]);
+          this.commentBox.commentAction([res['data']]);
         },
         (error : any) => { console.error(error); }
       );

@@ -195,29 +195,36 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   uploadFiles(files: Array<any>) {
 
     // this.photos = event['data'];
-    let i = 0;
-    let reader: FileReader;
-    let body: string;
-    let fileName: string;
+    // let i = 0;
+    // let reader: FileReader;
+    // let body: string;
+    // let fileName: string;
     // this.loading.start('.photo-item-uploading');
-    do {
-        this.photoUploadService.upload(files[i])
-          .then(
-          (res: any) => {
-            console.log('Upload image to s3 and save successfully', res);
-            // this.savePhotoInfo(res);
+    // do {
+    //     this.photoUploadService.upload(files[i])
+    //       .then(
+    //       (res: any) => {
+    //         console.log('Upload image to s3 and save successfully', res);
+    //         // this.savePhotoInfo(res);
+    //
+    //         this.files.shift(); // remove file was uploaded
+    //         this.post.photos.unshift(res);
+    //         this.uploadedPhotos.push(res);
+    //       })
+    //       .catch((error: any) => {
+    //         console.error('Error when uploading files ', error);
+    //       })
+    //   ;
+    //   i++;
+    // } while (i < files.length);
 
-            this.files.shift(); // remove file was uploaded
-            this.post.photos.unshift(res);
-            this.uploadedPhotos.push(res);
-          })
-          .catch((error: any) => {
-            console.error('Error when uploading files ', error);
-          })
-      ;
-      i++;
-    } while (i < files.length);
-
+    this.photoUploadService.uploadPhotos(files)
+      .subscribe((res: any) => {
+          this.files.shift(); // remove file was uploaded
+          this.post.photos.unshift(res.data);
+          this.uploadedPhotos.push(res.data);}
+      , (err: any) => {
+          console.error('Error when uploading files ', err);})
   }
 
   // savePhotoInfo(data: any) {

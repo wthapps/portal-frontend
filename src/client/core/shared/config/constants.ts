@@ -136,7 +136,7 @@ export let Constants = {
     zoneSoReportList: 'zone/social_network/report_list',
     zoneSoProfile: 'zone/social_network/profile',
     zoneSoPhotos: 'zone/social_network/photos',
-    zonePhotos: 'zone/photos',
+    zonePhotos: 'media/photos',
     posts: 'posts',
     profile: 'profile',
     album: 'album',

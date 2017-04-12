@@ -118,7 +118,7 @@ export class ZPictureEditPhotoComponent implements OnInit, OnChanges, AfterViewI
         description: values.description
       });
 
-      this.apiBaseService.put(`zone/photos/${this.data.id}`, body)
+      this.apiBaseService.put(`media/photos/${this.data.id}`, body)
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();

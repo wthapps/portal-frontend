@@ -90,56 +90,28 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   uploadImages(files: any) {
-    var i: number;
-    // var file_name: string;
-    // var reader: FileReader;
-    // var body: string;
-
     this.step = 1;
     this.uploaded_num = 0;
     this.stopped_num = 0;
     this.files_num = this.files.length;
-    i = 0;
 
-    do {
-      // reader = new FileReader();
-      // reader.onload = (data: any) => {
-      //   this.current_photo = data.target['result'];
-      //   body = JSON.stringify({photo: {name: file_name, image: this.current_photo}});
-      //
-      //   this.pending_request = this.apiService.post(`zone/photos`, body)
-      //     .subscribe((result: any) => {
-      //         this.uploaded_num++;
-      //         if (this.uploaded_num == this.files_num) {
-      //           this.step = 2;
-      //         }
-      //         this.photos.push(new Photo(result.data));
-      //       },
-      //       (error: any) => {
-      //         this.step = 3;
-      //       }
-      //     );
-      // };
-      // file_name = files[i].name;
-      // reader.readAsDataURL(files[i]);
+    this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => { this.current_photo = res});
 
-      this.photoUploadService.upload(files[i])
-        .then(
-          (res: any) => {
-            console.log('Upload image to s3 and save info successfully', res);
-            this.uploaded_num++;
-            if (this.uploaded_num == this.files_num) {
-              this.step = 2;
-            }
-            this.photos.push(new Photo(res));
+    this.photoUploadService.uploadPhotos(files)
+      .subscribe((res: any) => {
+        console.log('Upload image to s3 and save info successfully', res);
+        this.uploaded_num++;
+        if (this.uploaded_num == this.files_num) {
+          this.step = 2;
+        }
+        this.current_photo = res['current_photo'];
+        this.photos.push(new Photo(res['data']));
+      }
+      ,(err: any) => {
+        this.step = 3;
+        console.error('Error when uploading files ', err);
+      });
 
-          })
-        .catch((error: any) => {
-          this.step = 3;
-          console.error('Error when uploading files ', error);
-        });
-      i++;
-    } while (i < files.length);
   }
 
   onAction(ev: string): void {

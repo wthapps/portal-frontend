@@ -165,14 +165,14 @@ export class ChatService {
   uploadPhotos(files:any) {
     let groupId = this.storage.find('contact_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event:any, file:any) => {
-      this.photoUploadService.uploadPhotos(file)
-        .then((data: any) => {
+      this.photoUploadService.uploadPhotos([file]).take(1)
+        .subscribe((res: any) => {
           this.removeUploadingFile(groupId);
-          this.sendMessage(groupId, {type: 'file', id: data.id, object: 'Photo'});
+          this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'Photo'});
         })
-        .catch((error: any) => {
+        ,(error: any) => {
           console.error('Error uploading photos in chat service', error);
-        });
+        };
     });
   }
 

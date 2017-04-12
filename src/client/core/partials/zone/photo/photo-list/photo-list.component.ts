@@ -58,7 +58,7 @@ export class SoPhotoListComponent implements OnInit {
 
   loadPhotos() {
     this.loading.start('.photo-grid-list');
-    this.apiService.get(`zone/photos`).subscribe(
+    this.apiService.get(`media/photos`).subscribe(
       (response: any) => {
         this.photos = response['data'];
         this.loading.stop('.photo-grid-list');
