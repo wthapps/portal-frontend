@@ -6,7 +6,7 @@ declare var _: any;
 @Injectable()
 export class ZMediaPhotoService {
 
-  url = 'zone/photos';
+  url = 'media/photos';
 
   constructor(private apiBaseService: ApiBaseService) {
   }

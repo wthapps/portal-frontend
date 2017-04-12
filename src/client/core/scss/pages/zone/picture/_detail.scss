@@ -20,8 +20,11 @@
     line-height: 34px;
     @include clearfix;
     .name {
-      float: left;
       margin-right: 300px;
+      white-space: nowrap;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .action {
       margin: 0;
@@ -61,6 +64,23 @@
           }
         }
       }
+      &.action-text {
+        > li {
+          > a {
+            width: auto;
+            font-size: 16px;
+            text-decoration: none;
+            &:hover {
+              background-color: transparent;
+              color: #ffffff;
+            }
+          }
+        }
+      }
+    }
+    &.photo-detail-top-edit {
+      background-color: #373737;
+      @include box-shadow(0px 2px 4px 0px rgba(0, 0, 0, 0.7));
     }
   }
   .photo-detail-content {

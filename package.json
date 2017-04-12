@@ -151,10 +151,11 @@
     "angular2-infinite-scroll": "^0.3.0",
     "angular2-recaptcha": "^0.3.7",
     "angular2-uuid": "~1.1.1",
+    "aws-sdk": "2.7.20",
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "~3.3.7",
     "core-js": "^2.4.1",
-    "cropperjs": "^1.0.0-beta.2",
+    "cropperjs": "^1.0.0-rc",
     "dropzone": "^4.3.0",
     "font-awesome": "^4.7.0",
     "hover.css": "^2.0.2",
@@ -171,7 +172,6 @@
     "slick-carousel": "^1.6.0",
     "systemjs": "0.19.41",
     "wheelzoom.js": "^1.0.1",
-    "aws-sdk": "2.7.20",
     "zone.js": "^0.7.2"
   }
 }
