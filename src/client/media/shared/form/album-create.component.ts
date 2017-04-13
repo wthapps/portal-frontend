@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormModalComponent } from '../../../core/shared/form/form-modal.component';
-import { Album } from '../../../core/shared/models/album.model';
-import { AlbumPhoto } from '../../../core/shared/models/album-photos.model';
-import { AlbumService } from '../../../core/shared/services/album.service';
+import { Album } from '../model/album.model';
+import { AlbumPhoto } from '../model/album-photos.model';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 // import { FormModalComponent } from '../../../shared/form/form-modal.component';
 // import { AlbumService } from '../../../shared/services/picture/album.service';
 // import { Album } from '../../../shared/models/album.model';
@@ -23,8 +23,10 @@ export class AlbumCreateComponent extends FormModalComponent {
   arrayItems: Array<number> = [];
   album: Album;
 
+  // TODO delete below url
+  private url = 'media/albums/';
 
-  constructor(private albumService: AlbumService) {
+  constructor(private api: ApiBaseService) {
     super('form-create-album-modal');
   }
 
@@ -45,13 +47,13 @@ export class AlbumCreateComponent extends FormModalComponent {
       albumName = 'Untitled Album';
     }
     let album = new Album({name: albumName, description: albumDes});
-    this.albumService.post(this.albumService.url, album)
+    this.api.post(this.url, album)
       .subscribe(
         (res: any) => {
           this.album = new Album(res.data);
           this.doneFormModal.emit(this.album);
           if (this.arrayItems.length > 0) {
-            this.albumService.post(this.albumService.url + res.data.id + '/photos', {photos: this.arrayItems})
+            this.api.post(this.url + res.data.id + '/photos', {photos: this.arrayItems})
               .subscribe(
                 (res: any) => {
                   let albumPhotos = new AlbumPhoto({album: this.album, photos: this.arrayItems});

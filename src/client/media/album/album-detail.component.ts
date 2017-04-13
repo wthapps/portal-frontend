@@ -16,7 +16,8 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'z-media-album-detail',
-  templateUrl: 'album-detail.component.html'
+  templateUrl: 'album-detail.component.html',
+  styleUrls: ['album-detail.component.css']
 })
 export class ZMediaAlbumDetailComponent implements OnInit {
   @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
