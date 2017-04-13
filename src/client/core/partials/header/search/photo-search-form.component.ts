@@ -58,7 +58,7 @@ export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
   }
 
   getSuggestions(e:any) {
-    this.serviceManager.getApi().post(`media/search/suggestions`, {search_by: "name", search: this.searchText}).subscribe(
+    this.serviceManager.getApi().post(`media/search/suggestions`, {q: "name", search: this.searchText}).subscribe(
       (res:any) => {
         this.suggestions = _.map(res.data, "name");
       }
@@ -66,7 +66,7 @@ export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
   }
 
   onEnter() {
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {is_search: true, search_by: "name", search: this.searchText}});
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {is_search: true, q: "name", search: this.searchText}});
   }
 
 }

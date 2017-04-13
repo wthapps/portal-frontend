@@ -4,7 +4,7 @@
   </modal-header>
   <modal-body>
     <tag-input [(ngModel)]="addedTags" (keydown)="onKeyDown($event)">
-      <tag-input-dropdown [autocompleteItems]="dataTags">
+      <tag-input-dropdown [autocompleteItems]="dataTags" [autocompleteObservable]="requestAutocompleteItems">
         <template let-item="item" let-index="index">
           {{ item.display }}
         </template>

@@ -19,7 +19,6 @@ export class ZMediaTaggingComponent implements OnInit {
   @Input() selectedItems: any = [];
   @Input() mediaType: string = 'photo';
   @Input() items: any;
-  dataTags: any = [];
 
   newTags: any = [];
   addedTags: any = [];
@@ -29,6 +28,9 @@ export class ZMediaTaggingComponent implements OnInit {
 
   hasDeletedItems: boolean = false;
 
+  public requestAutocompleteItems = (text: string): Observable<Response> => {
+    return this.taggingService.getTags(text).map((res:any) => _.map(res.data, 'name'));
+  };
 
   constructor(private taggingService: ZMediaTaggingService) {
   }
@@ -60,33 +62,12 @@ export class ZMediaTaggingComponent implements OnInit {
   }
 
   open() {
+    this.addedTags = [];
     if (this.selectedItems.length == 1) {
-      this.addedTags = [];
       for (let i = 0; i < this.selectedItems[0].json_tags.length; i++) {
         this.addedTags.push(this.selectedItems[0].json_tags[i].name);
       }
-    } else {
-      this.addedTags = [];
     }
     this.modal.open();
-  }
-
-  onKeyDown(e:any) {
-    if (e.key == 'Backspace') {
-      this.keys = this.keys.substring(0, this.keys.length - 1);
-    }
-    if (e.key == 'Enter') {
-      this.keys = '';
-    }
-    if (e.key.length == 1) {
-      this.keys += e.key;
-    }
-    if (this.keys.length > 0) {
-      this.taggingService.getTags(this.keys).subscribe(
-        (res: any)=> {
-          this.dataTags = _.map(res.data, 'name');
-        }
-      );
-    }
   }
 }

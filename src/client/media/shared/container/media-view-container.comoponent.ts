@@ -190,7 +190,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
           break;
       case 'viewInfo':
       case 'viewDetails':
-        if (this.currentPath == 'albums' || this.selectedObjects[0].object_type == 'album') {
+        if (this.selectedObjects[0].object_type == 'album') {
           this.viewDetails();
         } else {
           this.viewInfo();
