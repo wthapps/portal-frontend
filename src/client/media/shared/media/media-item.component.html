@@ -4,9 +4,8 @@
     <i (click)="onAction({action:'favourite'})" class="fa" [ngClass]="object.favorite ? 'fa-star': 'fa-star-o'"></i>
   </div>
 
-
   <!--type == 'photo'-->
-  <div *ngIf="type == 'photos'" class="photo-box-img-figure">
+  <div *ngIf="type == 'photo'" class="photo-box-img-figure">
     <div class="photo-box-img-input">
       <input type="checkbox" value="">
     </div>
@@ -31,7 +30,7 @@
   </div>
 
   <!--type == 'album'-->
-  <div *ngIf="type == 'albums'" class="photo-box-img-figure">
+  <div *ngIf="type == 'album'" class="photo-box-img-figure">
     <div class="photo-box-img-input">
       <input type="checkbox" value="">
     </div>
@@ -59,6 +58,4 @@
     <div class="photo-box-img-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
     <div class="photo-box-img-size">{{object.photo_number}}</div>
   </div>
-
-
 </div>

@@ -6,7 +6,7 @@
           <i class="fa fa-search" aria-hidden="true"></i>
         </button>
       </span>
-      <p-autoComplete [(ngModel)]="searchText" [suggestions]="suggestions" (completeMethod)="getSuggestions($event)" (keyup.enter)="onEnter()"></p-autoComplete>
+      <p-autoComplete [(ngModel)]="searchText" [suggestions]="suggestions" (completeMethod)="getSuggestions($event)" [delay]="500" (keyup.enter)="onEnter()"></p-autoComplete>
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" (click)="showSearchAdvanced()">
           <i class="fa fa-caret-down" [ngClass]="{'fa-caret-up': searchAdvanced, 'fa-caret-down': !searchAdvanced}"></i>
