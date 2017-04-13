@@ -20,12 +20,12 @@
     <div id="list-photo" class="row-img row-img-{{sliderViewNumber}}" *ngIf="objects" [ngClass]="viewOption" (dragenter)="onDragenter($event)"
          (dragleave)="onDragleave($event)">
       <div *ngIf="viewOption != 'timeline'">
-        <me-item *ngFor="let item of objects;" [type]="currentPath" [object]="item" (events)="onAction($event)"></me-item>
+        <me-item *ngFor="let item of objects;" [type]="item.object_type" [object]="item" (events)="onAction($event)"></me-item>
       </div>
       <div *ngIf="viewOption == 'timeline'">
         <div *ngFor="let group of objects | groupByMonthYear:'created_at'" class="clearfix">
           <div style="color: #4A4A4A; font-size: 15px">{{group.key}}</div>
-          <me-item *ngFor="let item of group.value" [type]="currentPath" [object]="item" (events)="onAction($event)"></me-item>
+          <me-item *ngFor="let item of group.value" [type]="item.object_type" [object]="item" (events)="onAction($event)"></me-item>
         </div>
       </div>
 

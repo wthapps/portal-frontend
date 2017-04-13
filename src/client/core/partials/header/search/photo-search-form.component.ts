@@ -1,19 +1,17 @@
-import { Component, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { ViewChild } from '@angular/core/src/metadata/di';
-import { Constants } from '../../../shared/config/constants';
-import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, AbstractControl} from '@angular/forms';
+import { BaseSearchForm } from './base-search-form';
+import { ServiceManager } from '../../../shared/services/service-manager';
+
+declare let _:any;
 
 @Component({
   moduleId: module.id,
   templateUrl: 'photo-search-form.component.html',
 })
 
-export class PhotoSearchFormComponent {
-  text: any;
-  active: any;
+export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
   constants: any;
-  searchAdvanced: boolean = false;
-
   form: FormGroup;
   searchFrom: AbstractControl;
   searchTo: AbstractControl;
@@ -23,11 +21,12 @@ export class PhotoSearchFormComponent {
   searchGroup: AbstractControl;
   searchContact: AbstractControl;
 
-  constructor(private fb: FormBuilder) {
-    this.constants = Constants;
+  constructor(public serviceManager: ServiceManager) {
+    super();
+    this.constants = this.serviceManager.getConstants();
     this.active = this.constants.search.config.photoActive;
 
-    this.form = fb.group({
+    this.form = this.serviceManager.getFormBuilder().group({
       'searchFrom': [''],
       'searchTo': [''],
       'searchFileType': [''],
@@ -53,4 +52,21 @@ export class PhotoSearchFormComponent {
   onSubmit(values: any) {
     console.log(values);
   }
+
+  ngOnInit() {
+
+  }
+
+  getSuggestions(e:any) {
+    this.serviceManager.getApi().post(`media/search/suggestions`, {search_by: "name", search: this.searchText}).subscribe(
+      (res:any) => {
+        this.suggestions = _.map(res.data, "name");
+      }
+    );
+  }
+
+  onEnter() {
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {is_search: true, search_by: "name", search: this.searchText}});
+  }
+
 }
