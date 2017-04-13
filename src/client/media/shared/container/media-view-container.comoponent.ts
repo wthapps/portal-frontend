@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit,
-  ComponentFactoryResolver, OnDestroy
+  ComponentFactoryResolver, OnDestroy, Input
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -33,9 +33,15 @@ declare var _: any;
   ]
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() objectType: string;
+  @Input() pageType: string = 'list';
+
+
   @ViewChild('toolbarContainer', { read: ViewContainerRef }) toolbarContainer: ViewContainerRef;
   @ViewChild('listContainer', { read: ViewContainerRef }) listContainer: ViewContainerRef;
+  @ViewChild('infoContainer', { read: ViewContainerRef }) infoContainer: ViewContainerRef;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+
 
   toolbarComponent: any;
   listComponent: any;
@@ -45,9 +51,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   list: MediaListComponent;
   modal: any;
 
-  objectType: string;
   currentPath: string; // photos, albums, share-with-me, favourite
-  pageType: string = 'list';
+  selectedObjects: Array<any>;
   selectedObjects: Array<any> = [];
   objects: Array<any>;
 

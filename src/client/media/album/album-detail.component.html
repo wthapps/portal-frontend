@@ -55,14 +55,18 @@
             <h5>Drop photos anywhere to upload</h5>
           </div>
 
-          <z-media-share-list
-            [type]="'photo'"
-            [data]="data"
-            [view]="currentView"
-            [hasAction]="['favourite', 'select', 'previewAll']"
-            (outEvent)="actionItem($event)">
-          </z-media-share-list>
+          <!--<z-media-share-list-->
+            <!--[type]="'photo'"-->
+            <!--[data]="data"-->
+            <!--[view]="currentView"-->
+            <!--[hasAction]="['favourite', 'select', 'previewAll']"-->
+            <!--(outEvent)="actionItem($event)">-->
+          <!--</z-media-share-list>-->
 
+
+          <me-view-container>
+
+          </me-view-container>
 
 
         </div>
@@ -94,6 +98,4 @@
 <z-media-photo-detail #photoDetail [allPhotos]="data"></z-media-photo-detail>
 
 
-<!--<me-view-container>-->
 
-<!--</me-view-container>-->
