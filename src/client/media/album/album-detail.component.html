@@ -1,99 +1,111 @@
-  <!--<z-media-share-toolbar-->
-    <!--#mediaToolbar-->
-    <!--[type]="'album-detail'"-->
-    <!--[albumDetail]="albumDetail"-->
-    <!--[selectedAlbums]="selectedAlbums"-->
-    <!--[hasFavourite]="hasFavourite"-->
-    <!--[currentView]="currentView"-->
-    <!--(outEvent)="actionToolbar($event)">-->
-  <!--</z-media-share-toolbar>-->
-<!--<div id="album-box-detail" class="two-layout-slip">-->
-  <!--<div class="main-layout min-height-max">-->
-
-    <!--<me-toolbar-list [currentPage]="'album_detail'"></me-toolbar-list>-->
-
-    <!--<div class="page-body-content has-page-body-control gray-light"-->
-         <!--infinite-scroll-->
-         <!--[infiniteScrollDistance]="2"-->
-         <!--[infiniteScrollThrottle]="500"-->
-         <!--[scrollWindow]="false"-->
-         <!--(scrolled)="onLoadMore()">-->
-      <!--<div class="page-body-content-in">-->
-
-
-      <!--</div>-->
-    <!--</div>-->
-
-    <!--<div class="right-layout shadow-arround fit-parrent">-->
-    <!--</div>-->
-
-  <!--</div>-->
-<!--</div>-->
-
-
-  <div id="photo-box-detail" class="photo-box-detail active active-info">
-    <div class="photo-detail-top">
-
-      <div class="name"><i class="fa fa-picture-o"></i> album name</div>
+<div class="media-page-detail" [ngClass]="{'has-media-page-detail-right': true}">
+  <div class="media-page-detail-left gray-light">
+    <div class="media-page-detail-topbar">
+      <!--container-->
+      <div class="media-page-detail-topbar-left">
+        <a class="back" href="#"><i class="fa fa-arrow-left"></i></a>
+        <span class="name">
+          <i class="fa fa-file-image-o"></i> This is a long Album’s title
+        </span>
+      </div>
+      <div class="media-page-detail-topbar-right">
+        <ul>
+          <li><a href="#"><i class="fa fa-share-alt"></i></a></li>
+          <li><a href="#"><i class="fa fa-plus-square-o"></i></a></li>
+          <li><a href="#"><i class="fa fa-ellipsis-v"></i></a></li>
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa" [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <li>
+                <a (click)="onAction({action: 'changeView', params: {viewOption: grid}})" href="javascript:;">
+                  <i class="fa fa-th-large"></i> Grid
+                </a>
+              </li>
+              <li>
+                <a (click)="onAction({action: 'changeView', params: {viewOption: list}})" href="javascript:;">
+                  <i class="fa fa-th-list"></i> List
+                </a>
+              </li>
+              <li><a (click)="onAction({action: 'changeView', params: {viewOption: timeline}})" href="javascript:;">
+                <i class="fa fa-align-left"></i> Timeline</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--end container-->
     </div>
-    <div class="photo-detail-content">
+    <div class="media-page-detail-content content-overflow-fixed">
+      <!--container-->
 
-
-
-      <!--<div class="page-body-content has-page-body-control gray-light"-->
-           <!--infinite-scroll-->
-           <!--[infiniteScrollDistance]="2"-->
-           <!--[infiniteScrollThrottle]="500"-->
-           <!--[scrollWindow]="false"-->
-           <!--(scrolled)="onLoadMore()">-->
-        <div class="page-body-content-in">
-
-          <me-toolbar-list [currentPage]="'album_detail'"></me-toolbar-list>
-
-          <div *ngIf="photoIsEmpty" class="zone-no-photo text-center">
-            <h3>Ready to add some photos?</h3>
-            <h5>Drop photos anywhere to upload</h5>
-          </div>
-
-          <z-media-share-list
-            [type]="'photo'"
-            [data]="data"
-            [view]="currentView"
-            [hasAction]="['favourite', 'select', 'previewAll']"
-            (outEvent)="actionItem($event)">
-          </z-media-share-list>
-
-
-
-        </div>
-        <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
-
-      <!--</div>-->
-
-
-    </div>
-
-    <div class="photo-detail-info">
-
-      <album-detail-info (closeInfo)="onCloseInfo()"
-                         [album]="album"
-                         (showFormEdit)="onEditAction()"
-                         (tagEvent)="toggleModal($event, 'tag')">
-
-      </album-detail-info>
-
-
-      <!--<h3>Detail <a href="javascript:;" (click)="doAction('viewInfo')"><i class="fa fa-times"></i></a></h3>-->
-      <!--<h4><i class="fa fa-info-circle"></i> General Infomation-->
-        <!--<a href="javascript:;" (click)="doAction('editInfo')">Edit</a>-->
-      <!--</h4>-->
-
+      <!--end container-->
     </div>
   </div>
-
-<z-media-photo-detail #photoDetail [allPhotos]="data"></z-media-photo-detail>
-
-
-<!--<me-view-container>-->
-
-<!--</me-view-container>-->
+  <div class="media-page-detail-right">
+    <!--container-->
+    <div class="media-page-detail-topbar">
+      <h3 class="m0">Information <a href="javascript:;" class="pull-right text-inherit"
+                                    (click)="doAction('viewInfo')"><i class="fa fa-times"></i></a></h3>
+    </div>
+    <div class="media-page-detail-info content-overflow-fixed">
+      <h4><i class="fa fa-info-circle"></i> Details
+        <a href="javascript:;" (click)="doAction('editInfo')">Edit</a>
+      </h4>
+      <dl class="dl-horizontal">
+        <dt>File Name</dt>
+        <dd>thisisthenameofthisphoto01</dd>
+        <dt>File type</dt>
+        <dd>jpg</dd>
+        <dt>Size</dt>
+        <dd>10 kb</dd>
+        <dt>Demension</dt>
+        <dd>860 x 580</dd>
+        <dt>Upload Date</dt>
+        <dd>Aug 01 2016</dd>
+      </dl>
+      <dl>
+        <dt>Description</dt>
+        <dd>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
+          dolore magna aliquam erat volutpat.
+          Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
+          commodo consequat.
+        </dd>
+      </dl>
+      <hr>
+      <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="doAction('tag')">Edit</a></h4>
+      <div class="tags-text">
+        <span>tag</span>
+      </div>
+      <hr>
+      <h4><i class="fa fa-share-alt"></i> Sharing <a href="javascript:;" (click)="doAction('tag')">Edit</a></h4>
+      <dl>
+        <dt>Owner</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li><img src="assets/images/zone/img-group.png" alt=""></li>
+          </ul>
+        </dd>
+        <dt>Group</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li>
+              <img src="assets/images/zone/img-group.png" title="">
+            </li>
+          </ul>
+        </dd>
+        <dt>Contact</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li>
+              <img src="assets/images/zone/img-group.png" title="">
+            </li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <!--end container-->
+  </div>
+</div>

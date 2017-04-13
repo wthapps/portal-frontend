@@ -46,6 +46,10 @@ body {
 .text-normal {
   font-weight: normal;
 }
+.text-inherit {
+  color: inherit;
+  text-align: center;
+}
 
 .content-overflow {
   overflow: auto;
@@ -62,6 +66,15 @@ body {
 .content-overflow-y {
   overflow-y: auto;
   margin-right: -10px;
+}
+
+.content-overflow-fixed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 h1, h2, h3, h4, h5, h6,
