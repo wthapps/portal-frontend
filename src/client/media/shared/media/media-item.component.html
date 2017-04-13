@@ -7,15 +7,23 @@
 
   <!--type == 'photo'-->
   <div *ngIf="type == 'photos'" class="photo-box-img-figure">
+    <div class="photo-box-img-input">
+      <input type="checkbox" value="">
+    </div>
     <figure class="img-center-dv"
             (click)="onAction({action:'select', params: {selectedObject: object}})"
             (dblclick)="onAction({action:'previewAll'})">
-
-      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="object.thumbnail_url" alt="">
+      <span class="photo-box-img-figure-in">
+        <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+        <img class="img-center" [src]="object.thumbnail_url" alt="">
+      </span>
     </figure>
     <div class="photo-box-img-name">
       <span (dblclick)="onAction({action:'editName'})">{{object.name}}.{{object.extension}}</span>
+      <div class="hidden">
+        <i class="fa fa-user-plus"></i>
+        <i class="fa fa-star"></i>
+      </div>
     </div>
     <div class="photo-box-img-owner">{{object.owner.name}}</div>
     <div class="photo-box-img-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
@@ -24,11 +32,16 @@
 
   <!--type == 'album'-->
   <div *ngIf="type == 'albums'" class="photo-box-img-figure">
+    <div class="photo-box-img-input">
+      <input type="checkbox" value="">
+    </div>
     <figure class="img-center-dv"
             (click)="onAction({action:'select', params: {selectedObject: object}})"
             (dblclick)="onAction({action:'viewDetails'})">
-      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="object.photo_default" alt="">
+      <span class="photo-box-img-figure-in">
+        <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
+        <img class="img-center" [src]="object.photo_default" alt="">
+      </span>
       <div class="photo-box-img-info">
         <!--{{object.name}} <br>-->
         <span *ngIf="object.photo_number>1">
