@@ -1,5 +1,3 @@
-<me-list-header [data]="objects" [viewOption]="viewOption" (outEvent)="actionSortbar($event)"></me-list-header>
-
 
 <div class="page-body-content has-page-body-control gray-light"
   infinite-scroll
@@ -9,6 +7,10 @@
   (scrolled)="getMoreObjects()">
 
   <div class="page-body-content-in">
+
+    <me-list-header [viewOption]="viewOption" (outEvent)="actionSortbar($event)"></me-list-header>
+
+
 
     <div *ngIf="!objects" class="zone-no-photo text-center">
       <h3>Ready to add some photos?</h3>
