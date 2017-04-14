@@ -8,8 +8,14 @@
   > li {
     > a {
       padding: 10px 15px;
-      min-width: 240px;
       position: relative;
+    }
+  }
+}
+.dropdown-menu-min-width {
+  > li {
+    > a {
+      min-width: 240px;
     }
   }
 }

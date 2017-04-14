@@ -6,7 +6,8 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'me-list-header',
-  templateUrl: 'media-list-header.component.html'
+  templateUrl: 'media-list-header.component.html',
+  styleUrls: ['media-list-header.component.css']
 })
 
 export class MediaListHeaderComponent {

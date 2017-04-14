@@ -21,7 +21,8 @@ const KEY_ESC = 27;
 @Component({
   moduleId: module.id,
   selector: 'z-media-photo-detail',
-  templateUrl: 'photo-detail.component.html'
+  templateUrl: 'photo-detail.component.html',
+  styleUrls: ['photo-detail.component.css']
 })
 export class ZMediaPhotoDetailComponent implements AfterViewInit {
   @Input() selectedPhotos: any = [];
@@ -35,7 +36,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
   @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
 
-  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
   modalComponent: any;
   modal: any;
@@ -51,12 +52,11 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     if (ev.which === KEY_ESC) this.goBack();
   }
 
-  constructor(
-    private router: Router,
-    private resolver: ComponentFactoryResolver,
-    private photoService: ZMediaPhotoService,
-    private confirmationService: ConfirmationService,
-    private loadingService: LoadingService) {
+  constructor(private router: Router,
+              private resolver: ComponentFactoryResolver,
+              private photoService: ZMediaPhotoService,
+              private confirmationService: ConfirmationService,
+              private loadingService: LoadingService) {
   }
 
   ngAfterViewInit() {
@@ -161,6 +161,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     this.active = false;
     this.showDetails = false;
   }
+
   onShowInfo() {
     this.showDetails = !this.showDetails;
   }

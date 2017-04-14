@@ -3,47 +3,47 @@
     <h4 class="modal-title"><i class="fa fa-share-alt"></i> Sharing</h4>
   </modal-header>
   <modal-body>
-    <!--<p>Group</p>-->
-    <!--<div class="form-group">-->
-      <!--<p-autoComplete-->
-        <!--[(ngModel)]="textContactGroups"-->
-        <!--[suggestions]="filteredContactGroups"-->
-        <!--[multiple]="true"-->
-        <!--[minLength]="1"-->
-        <!--field="name"-->
-        <!--(onSelect)="selectContactGroup($event)"-->
-        <!--(onUnselect)="unSelectContactGroup($event)"-->
-        <!--(completeMethod)="searchContactGroup($event)"-->
-      <!--&gt;</p-autoComplete>-->
+    <!--<p>Group</p>
+    <div class="form-group">
+      <p-autoComplete
+        [(ngModel)]="textContactGroups"
+        [suggestions]="filteredContactGroups"
+        [multiple]="true"
+        [minLength]="1"
+        field="name"
+        (onSelect)="selectContactGroup($event)"
+        (onUnselect)="unSelectContactGroup($event)"
+        (completeMethod)="searchContactGroup($event)"
+      ></p-autoComplete>
 
-    <!--</div>-->
-    <!--<div class="modal-body-collapse" *ngIf="sharedContactGroups">-->
-      <!--<a role="button" data-toggle="collapse" href="#collapseGroup" aria-expanded="false"-->
-         <!--aria-controls="collapseExample">-->
-        <!--Shared in {{sharedContactGroups?.length}} groups-->
-      <!--</a>-->
-      <!--<div class="collapse" id="collapseGroup">-->
-        <!--<div class="modal-body-collapse-in">-->
-          <!--<div class="media-list-item" *ngFor="let group of sharedContactGroups">-->
-            <!--<div class="media" [ngClass]="isDeletedItem(group.id, false) ? 'remove': ''">-->
-              <!--<div class="media-left">-->
-                <!--<figure>-->
-                  <!--<img src="assets/images/zone/img-group.png" alt="">-->
-                <!--</figure>-->
-              <!--</div>-->
-              <!--<div class="media-body">-->
-                <!--{{group.name}}-->
-              <!--</div>-->
-              <!--<div class="media-right">-->
-                <!--<a href="#" (click)="toggleRemoving($event, group.id, false)">{{isDeletedItem(group.id, false) ?-->
-                  <!--'Cancel': 'Remove'}}</a>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<hr>-->
+    </div>
+    <div class="modal-body-collapse" *ngIf="sharedContactGroups">
+      <a role="button" data-toggle="collapse" href="#collapseGroup" aria-expanded="false"
+         aria-controls="collapseExample">
+        Shared in {{sharedContactGroups?.length}} groups
+      </a>
+      <div class="collapse" id="collapseGroup">
+        <div class="modal-body-collapse-in">
+          <div class="media-list-item" *ngFor="let group of sharedContactGroups">
+            <div class="media" [ngClass]="isDeletedItem(group.id, false) ? 'remove': ''">
+              <div class="media-left">
+                <figure>
+                  <img src="assets/images/zone/img-group.png" alt="">
+                </figure>
+              </div>
+              <div class="media-body">
+                {{group.name}}
+              </div>
+              <div class="media-right">
+                <a href="#" (click)="toggleRemoving($event, group.id, false)">{{isDeletedItem(group.id, false) ?
+                  'Cancel': 'Remove'}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>-->
     <p>Contact</p>
     <div class="form-group">
       <p-autoComplete [(ngModel)]="textContacts"

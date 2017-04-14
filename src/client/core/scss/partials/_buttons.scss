@@ -149,6 +149,14 @@
   font-weight: bold;
 }
 
+[class^="btn-"], [class*=" btn-"] {
+  min-width: 80px;
+}
+
+.btn-default {
+  min-width: inherit;
+}
+
 .btn-circle {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -157,10 +165,12 @@
   padding-left: 0;
   padding-right: 0;
   text-align: center;
+  min-width: inherit;
 }
 
 .btn-text {
   @extend .btn-link;
   text-decoration: none !important;
   color: $text-color;
+  min-width: inherit;
 }
