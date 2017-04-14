@@ -92,7 +92,8 @@ export let Constants = {
     {name: 'Photos', link: '/photos', icon: 'fa fa-photo'},
     {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
     {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
-    {name: 'Shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'}
+    {name: 'Shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
+    {name: 'Search', link: '/search', icon: 'fa fa-search'},
   ],
 
   socialMenuItems: [

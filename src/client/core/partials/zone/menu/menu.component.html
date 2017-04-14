@@ -44,11 +44,14 @@
         Picture
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled">
-        <li [routerLinkActive]="['active']" *ngFor="let media of mediaMenu">
-          <a [routerLink]="[media.link]" [queryParams]="{}">
-            <i class="{{media.icon}}"></i> {{media.name}}
-          </a>
-        </li>
+        <template ngFor let-media [ngForOf]="mediaMenu" let-i="index" [ngForTrackBy]="trackByFn">
+          <li [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
+            <a [routerLink]="[media.link]" [queryParams]="{}">
+              <i class="{{media.icon}}"></i> {{media.name}}
+            </a>
+          </li>
+        </template>
+
       </ul>
     </li>
     <li>
