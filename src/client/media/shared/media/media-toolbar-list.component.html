@@ -1,21 +1,14 @@
 <div class="page-body-control">
   <ul class="control-body-select">
-    <li class="dropdown" *ngIf="currentPage != 'album_detail'">
-      <a href="#" class="btn btn-wth" data-toggle="dropdown"><i class="fa fa-plus"></i> New</a>
-
-
-
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <li class="active">
-          <a href="javascript:;" (click)="uploader.browseFiles($event)"><i class="fa fa-picture-o"></i> Upload Photos</a>
-          <!--<a href="javascript:;" (click)="onAction({action: 'uploadPhoto', params: {}})"><i class="fa fa-picture-o"></i> Upload Photos</a>-->
-        </li>
-        <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
-        <li role="separator" class="divider"></li>
-        <li><a href="javascript:;" (click)="onAction({action: 'createAlbum', params: {}})"><i class="fa fa-files-o"></i> Create Album</a>
-        </li>
-        <!--<li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>-->
-      </ul>
+    <li>
+      <button class="btn btn-wth-default" (click)="uploader.browseFiles($event)">
+        <i class="fa fa-cloud-upload"></i> Upload File
+      </button>
+    </li>
+    <li>
+      <button class="btn btn-default" (click)="onAction({action: 'createAlbum', params: {}})">
+        <i class="fa fa-plus-circle"></i> Create Album
+      </button>
     </li>
 
     <li style="border-right: 1px solid #4A4A4A; padding-right: 10px" *ngIf="currentPage == 'album_detail'">
