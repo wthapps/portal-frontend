@@ -5,7 +5,7 @@ body {
     list-style-type: none;
     margin: 0;
     overflow: hidden;
-    padding: 3px 12px !important;
+    padding: 5px 12px !important;
     min-height: 38px !important;
 
     background: #ffffff;
@@ -94,3 +94,53 @@ body {
   }
 }
 
+body {
+  .ng2-tags-container {
+    tag {
+      background-color: transparent !important;
+      color: #4A4A4A;
+      font-size: 14px;
+      padding: 0;
+      line-height: inherit;
+      height: auto;
+      border-radius: 0;
+      margin: 0 10px 0 0;
+      > div {
+        > div {
+          overflow: hidden;
+          background-color: #D8D8D8;
+          padding: 7px 10px;
+          height: 34px;
+          -webkit-border-radius: 0.25em;
+          -moz-border-radius: 0.25em;
+          border-radius: 0.25em;
+          > span {
+            font-size: 14px;
+            line-height: 20px;
+            float: left;
+            font-family: $font-base;
+          }
+          delete-icon {
+            width: auto;
+            height: auto;
+            margin-left: 10px;
+            &:hover {
+              @include transform(scale(1) translateY(0));
+            }
+            > span {
+              @extend .fa;
+              @extend .fa-close;
+              font-size: 22px;
+              color: #9B9B9B;
+              line-height: 20px;
+              float: left;
+            }
+            svg {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
