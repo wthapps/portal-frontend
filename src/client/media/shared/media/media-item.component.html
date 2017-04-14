@@ -18,7 +18,7 @@
       </span>
     </figure>
     <div class="photo-box-img-name">
-      <span (dblclick)="onAction({action:'editName'})">{{object.name}}.{{object.extension}}</span>
+      <span (dblclick)="onAction({action:'editName', params: {selectedObject: object}})">{{object.name}}.{{object.extension}}</span>
       <div class="hidden">
         <i class="fa fa-user-plus"></i>
         <i class="fa fa-star"></i>
@@ -52,7 +52,7 @@
       </div>
     </figure>
     <div class="photo-box-img-name">
-      <span (dblclick)="onAction({action:'editName'})">{{object.name}}</span>
+      <span (dblclick)="onAction({action:'editName', params: {selectedObject: object}})">{{object.name}}</span>
     </div>
     <div class="photo-box-img-owner">{{object.owner.name}}</div>
     <div class="photo-box-img-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
