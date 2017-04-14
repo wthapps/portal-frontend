@@ -197,8 +197,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
           this.files.shift(); // remove file was uploaded
           this.post.photos.unshift(res.data);
           this.uploadedPhotos.push(res.data);}
-      , (err: any) => {
-          console.error('Error when uploading files ', err);})
+      , (err: any) =>
+          console.error('Error when uploading files ', err))
   }
 
   cancelUploading(file: any) {

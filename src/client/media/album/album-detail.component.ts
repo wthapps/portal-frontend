@@ -70,8 +70,8 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     });
   }
 
-  getPhotos(id: number, shareMode?: any) {
-    this.albumService.getPhotosByAlbum(id, shareMode).subscribe((res: any)=> {
+  getPhotos(id: number, body?: any) {
+    this.albumService.getPhotosByAlbum(id, body).subscribe((res: any)=> {
       this.data = res.data;
       this.nextLink = res.page_metadata.links.next;
       // console.log(res);

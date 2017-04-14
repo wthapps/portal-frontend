@@ -192,6 +192,13 @@ export let Constants = {
       globalActive: true,
       photoActive: true
     }
+  },
+
+  mediaListDetailTypeMapping: {
+    'photos': 'photo',
+    'albums': 'album',
+    'favorites': 'mix',
+    'shared-with-me': 'mix'
   }
 };
 

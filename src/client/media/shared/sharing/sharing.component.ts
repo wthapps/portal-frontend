@@ -66,12 +66,16 @@ export class ZMediaSharingComponent implements OnInit, OnDestroy {
   }
 
   open(options: any) {
-    this.modal.open();
+    this.selectedItems = options['selectedItems'];
+    console.log('Sharing selectedItems: ', options['selectedItems']);
+    this.getShared();
+    this.modal.open(options)
+      .then((res:any) => console.log('Sharing modal opened!!!', res));
   }
 
   getShared() {
     let body = JSON.stringify({photos: _.map(this.selectedItems, 'id'), albums: []});
-    this.mediaSharingService.getShared(body).subscribe((res: any)=> {
+    this.mediaSharingService.getShared(body).take(1).subscribe((res: any)=> {
       this.sharedContacts = res.data['contacts'];
       this.sharedContactGroups = res.data['contactgroups'];
     });
@@ -148,13 +152,17 @@ export class ZMediaSharingComponent implements OnInit, OnDestroy {
         });
 
     } else { // save adding sharing
-      let body = this.type === 'photo' ? JSON.stringify({
-        photos: _.map(this.selectedItems, 'id'), albums: [],
-        contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
-      }) : JSON.stringify({
-          photos: [], albums: _.map(this.selectedItems, 'id'),
-          contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
-        }) ;
+      // let body = this.type === 'photo' ? JSON.stringify({
+      //   photos: _.map(this.selectedItems, 'id'), albums: [],
+      //   contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
+      // }) : JSON.stringify({
+      //     photos: [], albums: _.map(this.selectedItems, 'id'),
+      //     contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
+      //   }) ;
+
+      let body = { photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
+          albums:  _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
+          contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')};
 
       this.mediaSharingService.add(body).subscribe((result: any) => {
           this.sharedContacts = result['data'].contacts;

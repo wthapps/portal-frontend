@@ -13,6 +13,7 @@ import { ZMediaSharingComponent } from '../sharing/sharing.component';
 import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
+import { ZMediaAlbumCreateComponent } from '../form/album-create.component';
 
 declare var $: any;
 declare var _: any;
@@ -29,6 +30,7 @@ declare var _: any;
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
     ZMediaFormAddToAlbumComponent,
+    ZMediaAlbumCreateComponent,
     ZMediaFormEditAlbumComponent
   ]
 })
@@ -77,9 +79,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.currentPath = 'photos';
       }
       if (paths.length <= 2) {
-        this.pageType = 'list'
+        this.pageType = 'list';
       } else {
-        this.pageType = 'detail'
+        this.pageType = 'detail';
       }
 
       this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
@@ -154,6 +156,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'tag':
         this.tag();
           break;
+      case 'createAlbum':
+        // TODO: TBD
+        // this.createAlbum();
+        this.addToAlbum();
+        break;
       case 'addToAlbum':
         this.addToAlbum();
             break;
@@ -178,7 +185,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
           break;
       case 'viewInfo':
       case 'viewDetails':
-        if (this.currentPath == 'albums') {
+        if (this.currentPath == 'albums' || this.selectedObjects[0].object_type == 'album') {
           this.viewDetails();
         } else {
           this.viewInfo();
@@ -214,7 +221,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   share() {
     this.loadModalComponent(ZMediaSharingComponent);
-    this.modal.open();
+    this.modal.open({selectedItems: this.selectedObjects});
   }
 
   favourite() {
@@ -223,6 +230,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   tag() {
     this.loadModalComponent(ZMediaTaggingComponent);
+    this.modal.open();
+  }
+
+  createAlbum() {
+    this.loadModalComponent(ZMediaAlbumCreateComponent);
     this.modal.open();
   }
 

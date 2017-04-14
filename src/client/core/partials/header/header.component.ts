@@ -66,7 +66,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
       this.notificationService.startChannel();
     }
-    
+
     this.appearancesChannelService.subscribe();
   }
 

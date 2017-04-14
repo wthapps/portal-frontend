@@ -108,7 +108,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
       case 'tag':
         this.zoneTagging.selectedItems = [this.selectedPhotos[this.index]];
         this.zoneTagging.items = this.allPhotos;
-        this.zoneTagging.mediaType = "photo";
+        this.zoneTagging.mediaType = 'photo';
         this.zoneTagging.open();
         break;
       case 'delete':
