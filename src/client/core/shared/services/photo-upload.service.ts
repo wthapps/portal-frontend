@@ -168,7 +168,6 @@ export class PhotoUploadService {
                 .subscribe((result: any) => {
                     setTimeout(() => {
                       let wrapperRes = { data: result['data'], current_photo: currentPhoto};
-                      // observer.next(result['data']);
                       observer.next(wrapperRes);
                     }, this.TIMEOUT);
                   },
@@ -180,13 +179,6 @@ export class PhotoUploadService {
       };
     });
   }
-
-
-
-  // uploadPhotos(photo: any) {
-  //   return this.upload(photo);
-  // }
-
 
   // TODO:
   remove(file: any) {

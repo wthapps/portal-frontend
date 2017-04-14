@@ -23,17 +23,21 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
+  readonly LIST_TYPE = { photo: 'photo', album: 'album', mix: 'mix'};
+  readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
 
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
   viewOption: string = 'grid';
 
-  private objects: Array<any> = new Array<any>();
+  groupBy: string;
+  objects: Array<any> = new Array<any>();
+  currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
+  nextLink: string;
   private pressingCtrlKey: boolean = false;
 
   private currentPage: string;
-  private currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
   private objectType: string; //photo, album, video, playlist, all
-  private nextLink: string;
+
 
 
   @HostListener('document:keydown', ['$event'])
@@ -145,6 +149,15 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.sliderViewNumber = event.number;
     }
   }
+
+  actionItem(ev: any) {
+    if (ev.action == 'group') {
+      this.groupBy = ev.data;
+        return;
+    }
+    this.events.emit(ev);
+  }
+
 
   private selectObject(item: any): void {
 

@@ -39,6 +39,7 @@ import { PhotoModalDataService } from './services/photo-modal-data.service';
 import { PhotoUploadService } from './services/photo-upload.service';
 import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';
 import { ArrayLengthPipe } from './pipe/array-length.pipe';
+import { GroupByObjectTypePipe } from './pipe/groupby-object-type.pipe';
 import { ServiceManager } from './services/service-manager';
 
 /**
@@ -68,6 +69,7 @@ import { ServiceManager } from './services/service-manager';
 
     // Pipe
     GroupByMonthYearPipe,
+    GroupByObjectTypePipe,
     GroupByPipe,
     NewlinePipe,
     // TimeFormatPipe,
@@ -103,6 +105,7 @@ import { ServiceManager } from './services/service-manager';
 
     // Pipe
     GroupByMonthYearPipe,
+    GroupByObjectTypePipe,
     WthFilterByPipe,
     ArrayLengthPipe,
     GroupByPipe,

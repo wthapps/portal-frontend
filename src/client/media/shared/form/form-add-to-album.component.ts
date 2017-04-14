@@ -36,7 +36,7 @@ export class ZMediaFormAddToAlbumComponent implements OnInit {
   }
 
   open(options: any) {
-    this.modal.open();
+    this.modal.open(options).then((res: any) => console.log('form add to album: open modal ', res));
   }
 
   getAlbum() {

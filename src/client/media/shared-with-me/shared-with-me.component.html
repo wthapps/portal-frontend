@@ -1,61 +1,42 @@
-<z-media-share-toolbar
-  #mediaToolbar
-  type="shared-with-me"
-  [selectedPhotos]="selectedPhotos"
-  [selectedAlbums]="selectedAlbums"
-  [hasFavourite]="hasFavourite"
-  [currentView]="currentView"
-  (outEvent)="actionToolbar($event)">
-</z-media-share-toolbar>
+<!--<z-media-share-toolbar-->
+  <!--#mediaToolbar-->
+  <!--type="shared-with-me"-->
+  <!--[selectedPhotos]="selectedPhotos"-->
+  <!--[selectedAlbums]="selectedAlbums"-->
+  <!--[hasFavourite]="hasFavourite"-->
+  <!--[currentView]="currentView"-->
+  <!--(outEvent)="actionToolbar($event)">-->
+<!--</z-media-share-toolbar>-->
 
-<div class="page-body-content has-page-body-control gray-light">
-  <div *ngIf="shareIsEmpty" class="page-body-content-in">
-    <div class="p40 text-center">
-      <h3>No files and folders others have shared with you.</h3>
-    </div>
-  </div>
-  <div *ngIf="!shareIsEmpty" class="page-body-content-in">
-    <div class="page-body-in-title">
-      Album
-    </div>
-    <z-media-share-list
-      [type]="'album'"
-      [data]="data.albums"
-      [view]="currentView"
-      [hasAction]="['favourite', 'select', 'previewAll']"
-      (outEvent)="actionItem($event)">
-    </z-media-share-list>
-    <div class="text-center p20">
-      <a [routerLink]="['/albums']" [queryParams]="{shareWithMe: true}" class="btn btn-primary-inline">
-        View all
-      </a>
-    </div>
+<!--<div class="page-body-content has-page-body-control gray-light">-->
+  <!--<div *ngIf="shareIsEmpty" class="page-body-content-in">-->
+    <!--<div class="p40 text-center">-->
+      <!--<h3>No files and folders others have shared with you.</h3>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div *ngIf="!shareIsEmpty" class="page-body-content-in">-->
+    <!--<div class="page-body-in-title">-->
+      <!--Album-->
+    <!--</div>-->
+    <!--<me-list-->
+      <!--[type]="'shared-with-me'"-->
+      <!--[data]="data"-->
+      <!--[view]="currentView"-->
+      <!--[hasAction]="['favourite', 'select', 'previewAll']"-->
+      <!--(outEvent)="actionItem($event)">-->
+    <!--</me-list>-->
+    <!--<div class="text-center p20">-->
+      <!--<a [routerLink]="['/albums']" [queryParams]="{shareWithMe: true}" class="btn btn-primary-inline">-->
+        <!--View all-->
+      <!--</a>-->
+    <!--</div>-->
 
-    <hr>
+  <!--</div>-->
+<!--</div>-->
 
-    <div class="page-body-in-title">
-      Photo
-    </div>
-    <z-media-share-list
-      [type]="'photo'"
-      [data]="data.photos"
-      [view]="currentView"
-      [hasAction]="['favourite', 'select', 'previewAll']"
-      (outEvent)="actionItem($event)">
-    </z-media-share-list>
-    <div class="text-center p20">
-      <a [routerLink]="['/photos']" [queryParams]="{sharedWithMe: true}" class="btn btn-primary-inline">
-        View all
-      </a>
-    </div>
+<!--<z-media-photo-detail [mediaToolbar]="mediaToolbar" #photoDetail [selectedPhotos]="selectedPhotos"-->
+                      <!--[allPhotos]="data?.photos"></z-media-photo-detail>-->
 
-    <div class="text-center p20">
-      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
-        more
-      </button>
-    </div>
-  </div>
-</div>
+<me-view-container>
 
-<z-media-photo-detail [mediaToolbar]="mediaToolbar" #photoDetail [selectedPhotos]="selectedPhotos"
-                      [allPhotos]="data?.photos"></z-media-photo-detail>
+</me-view-container>

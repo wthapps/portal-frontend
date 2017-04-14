@@ -35,7 +35,7 @@ export class ZMediaShareListComponent {
 
   actionItem(ev: any) {
     if (ev.action == 'group') {
-      this.groupBy = ev.
+      this.groupBy = ev.data;
       return;
     }
     this.outEvent.emit(ev);

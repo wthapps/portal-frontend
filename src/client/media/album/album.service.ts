@@ -19,10 +19,8 @@ export class ZMediaAlbumService {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
-  getPhotosByAlbum(id: number, shareMode?: any): any {
-    let body = { 'album': id};
-    if (shareMode !== undefined)
-      _.merge(body, { shareMode: shareMode});
+  getPhotosByAlbum(id: number, options?: any): any {
+    let body = _.merge({ 'album': id}, options);
     return this.apiBaseService.get(`media/photos`, body);
   }
 
@@ -43,6 +41,10 @@ export class ZMediaAlbumService {
 
   create(body: any) {
     return this.apiBaseService.post(`${this.url}`, body);
+  }
+
+  post(url: string, body?: any) {
+    return this.apiBaseService.post(url, body);
   }
 
   actionOneFavourite(item: any) {

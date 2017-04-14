@@ -25,6 +25,7 @@ import { MediaToolbarListComponent } from './media/media-toolbar-list.component'
 import { MediaListComponent } from './media/media-list.component';
 import { MediaViewContainerComponent } from './container/media-view-container.comoponent';
 import { MediaItemComponent } from './media/media-item.component';
+import { ZMediaAlbumCreateComponent } from './form/album-create.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -45,6 +46,7 @@ import { MediaItemComponent } from './media/media-item.component';
     ZMediaToolbarAlbumDetailComponent,
     //
     MediaListHeaderComponent,
+    ZMediaAlbumCreateComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
     ZMediaFormEditNameComponent,
@@ -68,6 +70,7 @@ import { MediaItemComponent } from './media/media-item.component';
     ZMediaToolbarAlbumDetailComponent,
     //
     MediaListHeaderComponent,
+    ZMediaAlbumCreateComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
     ZMediaFormEditNameComponent,
