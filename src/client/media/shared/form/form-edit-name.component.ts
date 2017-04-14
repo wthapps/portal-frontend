@@ -13,10 +13,10 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-share-form-edit-name',
+  selector: 'me-edit-name-modal',
   templateUrl: 'form-edit-name.component.html',
 })
-export class ZMediaFormEditNameComponent implements OnInit, OnChanges {
+export class BaseObjectEditNameModalComponent implements OnInit, OnChanges {
   @ViewChild('modal') modal: ModalComponent;
 
   @Input() data: any = null;
@@ -70,6 +70,10 @@ export class ZMediaFormEditNameComponent implements OnInit, OnChanges {
         (<FormControl>this.createdDateYear).setValue(created_at.getUTCFullYear());
       }
     }
+  }
+
+  open(options?: any) {
+    this.modal.open();
   }
 
   onSubmit(values: any): void {
