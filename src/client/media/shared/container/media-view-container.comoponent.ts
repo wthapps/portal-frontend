@@ -13,7 +13,6 @@ import { ZMediaSharingComponent } from '../sharing/sharing.component';
 import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
-import { ZMediaAlbumCreateComponent } from '../form/album-create.component';
 
 declare var $: any;
 declare var _: any;
@@ -30,7 +29,6 @@ declare var _: any;
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
     ZMediaFormAddToAlbumComponent,
-    ZMediaAlbumCreateComponent,
     ZMediaFormEditAlbumComponent
   ]
 })
@@ -54,7 +52,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   modal: any;
 
   currentPath: string; // photos, albums, share-with-me, favourite
-  selectedObjects: Array<any>;
   selectedObjects: Array<any> = [];
   objects: Array<any>;
 
@@ -234,8 +231,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   createAlbum() {
-    this.loadModalComponent(ZMediaAlbumCreateComponent);
-    this.modal.open();
+    // this.loadModalComponent(ZMediaAlbumCreateComponent);
+    // this.modal.open();
   }
 
   addToAlbum() {
