@@ -74,6 +74,10 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
     }
   }
 
+  open(options?: any) {
+    this.modal.open();
+  }
+
   onShow() {
     this.modal.open();
   }
@@ -93,8 +97,6 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
         created_year: values.createdDateYear.toString(),
         description: values.description
       });
-
-      console.log(body);
 
       this.photoService.updateInfo(this.data.id, body)
         .subscribe((res: any) => {

@@ -6,7 +6,7 @@
 
 
   <!--type == 'photo'-->
-  <div *ngIf="type == 'photo'" class="photo-box-img-figure">
+  <div *ngIf="object.object_type == 'photo'" class="photo-box-img-figure">
     <div class="photo-box-img-input">
       <input type="checkbox" value="">
     </div>
@@ -31,7 +31,7 @@
   </div>
 
   <!--type == 'album'-->
-  <div *ngIf="type == 'album'" class="photo-box-img-figure">
+  <div *ngIf="object.object_type == 'album'" class="photo-box-img-figure">
     <div class="photo-box-img-input">
       <input type="checkbox" value="">
     </div>

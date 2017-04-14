@@ -20,11 +20,12 @@ import { ZMediaAlbumService } from '../album/album.service';
 import { ZMediaSharingService } from './sharing/sharing.service';
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { ZMediaTaggingComponent } from './tagging/tagging.component';
-import { ZMediaFormEditNameComponent } from './form/form-edit-name.component';
+import { BaseObjectEditNameModalComponent } from './form/form-edit-name.component';
 import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
 import { MediaListComponent } from './media/media-list.component';
 import { MediaViewContainerComponent } from './container/media-view-container.comoponent';
 import { MediaItemComponent } from './media/media-item.component';
+import { AlbumCreateComponent } from './form/album-create.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -47,7 +48,9 @@ import { MediaItemComponent } from './media/media-item.component';
     MediaListHeaderComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
-    ZMediaFormEditNameComponent,
+    BaseObjectEditNameModalComponent,
+    AlbumCreateComponent,
+
 
     MediaUploaderComponent,
     ZMediaSharingComponent,
@@ -70,7 +73,8 @@ import { MediaItemComponent } from './media/media-item.component';
     MediaListHeaderComponent,
     ZMediaFormAddToAlbumComponent,
     ZMediaFormEditAlbumComponent,
-    ZMediaFormEditNameComponent,
+    BaseObjectEditNameModalComponent,
+    AlbumCreateComponent,
 
     MediaUploaderComponent,
     ZMediaSharingComponent,

@@ -74,9 +74,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    private mediaObjectService: MediaObjectService,
-    private elementRef: ElementRef,
-    private loadingService: LoadingService
+    protected mediaObjectService: MediaObjectService,
+    protected elementRef: ElementRef,
+    protected loadingService: LoadingService
   ) {
 
   }

@@ -13,6 +13,9 @@ import { ZMediaSharingComponent } from '../sharing/sharing.component';
 import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
 import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
+import { AlbumCreateComponent } from '../form/album-create.component';
+import { ZMediaPhotoFormEditComponent } from '../../photo/form/form-edit-photo.component';
+import { BaseObjectEditNameModalComponent } from '../form/form-edit-name.component';
 
 declare var $: any;
 declare var _: any;
@@ -29,6 +32,10 @@ declare var _: any;
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
     ZMediaFormAddToAlbumComponent,
+    ZMediaFormEditAlbumComponent,
+    ZMediaPhotoFormEditComponent,
+    AlbumCreateComponent,
+    BaseObjectEditNameModalComponent,
     ZMediaFormEditAlbumComponent
   ]
 })
@@ -153,20 +160,21 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'tag':
         this.tag();
           break;
-      case 'createAlbum':
-        // TODO: TBD
-        // this.createAlbum();
-        this.addToAlbum();
-        break;
       case 'addToAlbum':
         this.addToAlbum();
             break;
+      case 'createAlbum':
+        this.createAlbum();
+        break;
       case 'download':
         this.download();
           break;
       case 'edit':
         this.edit();
           break;
+      case 'editName':
+        this.editName();
+            break;
       case 'editInfo':
         this.editInfo();
         break;
@@ -182,7 +190,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
           break;
       case 'viewInfo':
       case 'viewDetails':
-        if (this.currentPath == 'albums' || this.selectedObjects[0].object_type == 'album') {
+        if (this.selectedObjects[0].object_type == 'album') {
           this.viewDetails();
         } else {
           this.viewInfo();
@@ -230,11 +238,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.modal.open();
   }
 
-  createAlbum() {
-    // this.loadModalComponent(ZMediaAlbumCreateComponent);
-    // this.modal.open();
-  }
-
   addToAlbum() {
     this.loadModalComponent(ZMediaFormAddToAlbumComponent);
     this.modal.open();
@@ -259,9 +262,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   }
 
+  editName() {
+    this.loadModalComponent(BaseObjectEditNameModalComponent);
+    this.modal.open();
+  }
+
   editInfo() {
     if(this.currentPath == 'photos') {
-
+      this.loadModalComponent(ZMediaPhotoFormEditComponent);
+      this.modal.open();
     } else if(this.currentPath == 'albums') {
       // this.loadModalComponent(ZMediaFormEditAlbumComponent);
       // this.modal.open();
@@ -294,6 +303,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   // Album's functions
   //
   // *//
+
+  createAlbum(){
+    this.loadModalComponent(AlbumCreateComponent);
+    this.modal.open();
+  }
+
   viewDetails() {
     this.router.navigate(['/albums', this.selectedObjects[0].id]);
   }

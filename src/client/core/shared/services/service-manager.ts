@@ -3,18 +3,17 @@ import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Constants } from '../config/constants';
+import { Config } from '../config/env.config';
 
 @Injectable()
 export class ServiceManager {
-  constants:any;
 
   constructor(
     private apiBaseService: ApiBaseService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
-    this.constants = Constants;
   }
 
   getApi() {
@@ -30,10 +29,14 @@ export class ServiceManager {
   }
 
   getConstants() {
-    return this.constants;
+    return Constants;
   }
 
   getRouter() {
     return this.router;
+  }
+
+  getConfig() {
+    return Config;
   }
 }
