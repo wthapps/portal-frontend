@@ -13,7 +13,7 @@ export class MediaObjectService {
   constructor(private api: ApiBaseService) {
   }
 
-  getObjects(currentPath: string, body?: any): any {
+  getObjects(path: string, queryString?: any): any {
     // switch (currentPath) {
     //   case 'photos':
     //   case 'albums':
@@ -25,9 +25,9 @@ export class MediaObjectService {
     //     break;
     // }
 
-    console.log('this path', currentPath);
-    this.path = `${MEDIA_PATH}/${currentPath}`;
-    return this.api.get(this.path, body);
+    // console.log('this path', currentPath);
+    this.path = `${MEDIA_PATH}/${path}`;
+    return this.api.get(this.path, queryString);
   }
 
   listPhoto(body: any = {}): any {

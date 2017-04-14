@@ -36,7 +36,6 @@ export class ZPictureGridRemoveComponent {
 
 
   constructor() {
-    super();
   }
 
   onSelected(e: any, id: number) {

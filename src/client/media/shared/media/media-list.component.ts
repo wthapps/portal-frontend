@@ -37,7 +37,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   private currentPage: string;
   private objectType: string; //photo, album, video, playlist, all
-
+  private params: any;
 
 
   @HostListener('document:keydown', ['$event'])
@@ -88,10 +88,25 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getObjects();
-
   }
 
   getObjects(options?: any) {
+
+    let path = this.currentPath;
+    if(this.params) {
+      console.log('load object', this.currentPath, this.currentPage);
+      this.loadingService.start('#list-photo');
+      this.mediaObjectService.getObjects(`photos`, {album: this.params['id']}).subscribe((response: any)=> {
+        this.loadingService.stop('#list-photo');
+        this.objects = response.data;
+        this.nextLink = response.page_metadata.links.next;
+
+      });
+      return;
+    }
+
+
+
     this.loadingService.start('#list-photo');
     this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
       this.loadingService.stop('#list-photo');
@@ -117,6 +132,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.objectType = properties.objectType;
     this.currentPath = properties.currentPath;
     this.currentPage = properties.currentPage;
+    this.params = properties.params;
   }
 
 
@@ -138,6 +154,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       options = {action: 'select', params: {selectedObjects: this.selectedObjects}};
     }
     this.events.emit(options);
+
+
+    console.log('raise event:', options);
+
   }
 
   changeView(viewOption: string) {
@@ -155,6 +175,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.groupBy = ev.data;
         return;
     }
+
+    console.log('raise event:', ev);
+
     this.events.emit(ev);
   }
 

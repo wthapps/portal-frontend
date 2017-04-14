@@ -35,6 +35,8 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   photoIsEmpty: boolean = false;
 
+  private params: any;
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
     console.log(ev);
@@ -56,6 +58,10 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.albumId = params['id'];
+      console.log('params', params);
+
+      this.params = params;
+
       this.getAlbumDetail(this.albumId);
     });
 

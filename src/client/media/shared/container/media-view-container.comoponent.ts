@@ -40,9 +40,24 @@ declare var _: any;
   ]
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() objectType: string;
-  @Input() pageType: string = 'list';
+  /*
+  * Value of objectType:
+  * media: is base object
+  * photo
+  * album
+  * video
+  * playlist
+  * */
+  @Input() objectType: string = 'media';
 
+  /*
+  * pageType value:
+  * list
+  * detail
+  *
+  * */
+  @Input() pageType: string = 'list';
+  @Input() params: any;
 
   @ViewChild('toolbarContainer', { read: ViewContainerRef }) toolbarContainer: ViewContainerRef;
   @ViewChild('listContainer', { read: ViewContainerRef }) listContainer: ViewContainerRef;
@@ -76,43 +91,36 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnInit() {
 
-    this.router.events.subscribe((router: any) => {
-      let paths = router.url.toString().split('/');
-      this.currentPath = paths[1];
-      if(this.currentPath == '') { // to be redirected from media home page
-        this.currentPath = 'photos';
-      }
-      if (paths.length <= 2) {
-        this.pageType = 'list';
-      } else {
-        this.pageType = 'detail';
-      }
+    this.currentPath = `${this.objectType}s`;
+    this.currentPage = `${this.objectType}_${this.pageType}`;
 
-      this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
+    // this.router.events.subscribe((router: any) => {
+    //   let paths = router.url.toString().split('/');
+    //   this.currentPath = paths[1];
+    //   if(this.currentPath == '') { // to be redirected from media home page
+    //     this.currentPath = 'photos';
+    //   }
+      // if (paths.length <= 2) {
+      //   this.pageType = 'list';
+      // } else {
+      //   this.pageType = 'detail';
+      // }
+
+      // this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
       console.log('current page', this.currentPage);
 
-      this.list.initProperties({
-        currentPage: this.currentPage,
-        currentPath: this.currentPath,
-        objectType: this.objectType,
-        pageType: this.pageType
-      });
-
-      this.toolbar.initProperties({
-        currentPage: this.currentPage,
-        currentPath: this.currentPath,
-        objectType: this.objectType,
-        pageType: this.pageType
-      });
 
 
-      this.route.queryParams.subscribe(
-        (queryParams: any) => {
-          // console.log('query params', queryParams);
-        }
-      );
-      return; // prevent doing multi times
-    });
+
+      // this.route.queryParams.subscribe(
+      //   (queryParams: any) => {
+      //     // console.log('query params', queryParams);
+      //   }
+      // );
+      // return; // prevent doing multi times
+
+
+    // });
   }
 
   ngAfterViewInit(): void {
@@ -121,6 +129,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.toolbarComponent = this.toolbarContainer.createComponent(tbComponentFactory);
     this.toolbar = <MediaToolbarListComponent>this.toolbarComponent.instance;
 
+    // Init data
+    this.toolbar.initProperties({
+      currentPage: this.currentPage,
+      currentPath: this.currentPath,
+      objectType: this.objectType,
+      pageType: this.pageType
+    });
+
+    // subscribe event
     this.toolbar.events.subscribe((event: any) => {
       this.doAction(event);
     });
@@ -130,6 +147,14 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.listComponent = this.listContainer.createComponent(listComponentFactory);
     this.list = <MediaListComponent>this.listComponent.instance;
     this.list.selectedObjects = this.selectedObjects;
+
+    this.list.initProperties({
+      currentPage: this.currentPage,
+      currentPath: this.currentPath,
+      objectType: this.objectType,
+      pageType: this.pageType,
+      params: this.params
+    });
 
     this.list.events.subscribe((event: any) => {
       this.doAction(event);
@@ -206,6 +231,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'deselect':
         this.selectedObjects = event.params.selectedObjects;
         this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
+          break;
+      case 'goBack':
+        this.goBack();
           break;
     }
   }
@@ -297,6 +325,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   changeView(viewOption: string) {
     this.list.changeView(viewOption);
+  }
+
+  goBack() {
+    switch (this.objectType) {
+      case 'photo':
+      case 'album':
+        this.router.navigate([`/${this.objectType}s`]);
+        break;
+    }
   }
 
   //*

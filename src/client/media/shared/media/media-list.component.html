@@ -22,7 +22,7 @@
     <div id="list-photo" class="row-img " *ngIf="objects" (dragenter)="onDragenter($event)"
          (dragleave)="onDragleave($event)">
       <!--<me-list-header [data]="objects" (outEvent)="actionItem($event)" [viewOption]="viewOption" ></me-list-header>-->
-      <div *ngIf="viewOption != 'timeline'"  class="page-body-content-in">
+      <div *ngIf="viewOption != 'timeline'" >
         <div *ngFor="let group of objects | groupByObjectType" >
           <div class="page-body-in-title" *ngIf="!['albums', 'photos'].includes(currentPath)">{{group.key | titleCase}}</div>
 
@@ -56,7 +56,7 @@
 
     </div>
   </div>
-
+</div>
 <!--<div *ngIf="data">
   <div *ngIf="data.length==0" class="text-center">
     <div class="zone-no-photo">F
