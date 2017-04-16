@@ -11,7 +11,7 @@ import { CalendarModule } from 'primeng/primeng';
 
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { ApiBaseService } from './services/apibase.service';
 

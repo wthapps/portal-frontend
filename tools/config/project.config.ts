@@ -68,10 +68,6 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/ng2-bs3-modal/ng2-bs3-modal.js'
       },
       {
-        name: 'angular2-infinite-scroll',
-        path: 'node_modules/angular2-infinite-scroll/angular2-infinite-scroll.js'
-      },
-      {
         name: 'angular2-cookie',
         path: 'node_modules/angular2-cookie/core.js'
       },
