@@ -30,7 +30,7 @@ export class ZMediaTaggingComponent implements OnInit {
 
   public requestAutocompleteItems = (text: string): Observable<Response> => {
     return this.taggingService.getTags(text).map((res:any) => _.map(res.data, 'name'));
-  };
+  }
 
   constructor(private taggingService: ZMediaTaggingService) {
   }

@@ -148,7 +148,7 @@
     "@angular/router": "~3.4.1",
     "actioncable": "5.0.1",
     "angular2-cookie": "^1.2.6",
-    "angular2-infinite-scroll": "^0.3.0",
+    "ngx-infinite-scroll": "^0.4.1",
     "angular2-recaptcha": "^0.3.7",
     "angular2-uuid": "~1.1.1",
     "aws-sdk": "2.7.20",

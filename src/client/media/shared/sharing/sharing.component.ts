@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { ZMediaSharingService } from './sharing.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Constants } from '../../../core/shared/config/constants';
 
 declare var $: any;

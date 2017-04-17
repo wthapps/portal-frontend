@@ -11,7 +11,7 @@ import { CalendarModule } from 'primeng/primeng';
 
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { ApiBaseService } from './services/apibase.service';
 
@@ -41,6 +41,7 @@ import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';
 import { ArrayLengthPipe } from './pipe/array-length.pipe';
 import { GroupByObjectTypePipe } from './pipe/groupby-object-type.pipe';
 import { ServiceManager } from './services/service-manager';
+import { ConvertByPatternPipe } from './pipe/convert.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -72,6 +73,7 @@ import { ServiceManager } from './services/service-manager';
     GroupByObjectTypePipe,
     GroupByPipe,
     NewlinePipe,
+    ConvertByPatternPipe,
     // TimeFormatPipe,
     // TitleCase,
     UrlTransformPipe,
@@ -115,6 +117,7 @@ import { ServiceManager } from './services/service-manager';
     UrlTransformPipe,
     ShowLengthTransformPipe,
     SafeHtmlPipe,
+    ConvertByPatternPipe,
 
     //Directive
     ScrollToBottomDirective

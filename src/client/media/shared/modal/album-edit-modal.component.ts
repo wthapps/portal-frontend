@@ -18,6 +18,7 @@ declare var _: any;
 export class AlbumEditModalComponent implements AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
 
+
   @Input() selectedPhotos: any;
 
   showToast: boolean = false;

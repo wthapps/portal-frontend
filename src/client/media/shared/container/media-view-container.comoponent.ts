@@ -92,7 +92,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnInit() {
 
-    this.currentPath = `${this.objectType}s`;
+    // this.currentPath = `${this.objectType}s`;
+    this.currentPath = this.router.url.toString().split('/')[1]; // currentPath: photos, albums, shared-with-me
     this.currentPage = `${this.objectType}_${this.pageType}`;
 
     // this.router.events.subscribe((router: any) => {
@@ -125,10 +126,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngAfterViewInit(): void {
-    let tbComponentFactory = this.resolver.resolveComponentFactory(MediaToolbarListComponent);
-    this.toolbarContainer.clear();
-    this.toolbarComponent = this.toolbarContainer.createComponent(tbComponentFactory);
-    this.toolbar = <MediaToolbarListComponent>this.toolbarComponent.instance;
+    this.createToolbarComponent();
 
     // Init data
     this.toolbar.initProperties({
@@ -143,11 +141,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       this.list.doAction(event);
     });
 
-    let listComponentFactory = this.resolver.resolveComponentFactory(MediaListComponent);
-    this.listContainer.clear();
-    this.listComponent = this.listContainer.createComponent(listComponentFactory);
-    this.list = <MediaListComponent>this.listComponent.instance;
-    this.list.selectedObjects = this.selectedObjects;
+    this.createListComponent();
 
     this.list.initProperties({
       currentPage: this.currentPage,
@@ -161,6 +155,26 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       this.doAction(event);
     });
 
+    // this.mediaDataService.actionObs$.subscribe((event: any) => {
+    //   this.doAction(event);
+    // });
+
+
+  }
+
+  createToolbarComponent() {
+    let tbComponentFactory = this.resolver.resolveComponentFactory(MediaToolbarListComponent);
+    this.toolbarContainer.clear();
+    this.toolbarComponent = this.toolbarContainer.createComponent(tbComponentFactory);
+    this.toolbar = <MediaToolbarListComponent>this.toolbarComponent.instance;
+  }
+
+  createListComponent() {
+    let listComponentFactory = this.resolver.resolveComponentFactory(MediaListComponent);
+    this.listContainer.clear();
+    this.listComponent = this.listContainer.createComponent(listComponentFactory);
+    this.list = <MediaListComponent>this.listComponent.instance;
+    this.list.selectedObjects = this.selectedObjects;
   }
 
   ngOnDestroy() {
@@ -250,6 +264,26 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   }
 
+  showUploadedPhoto(photo: any) {
+    console.debug('Photo uploaded: ', photo);
+
+    // TODO: Handle album details
+    if( this.currentPath == 'photos') {
+      // Add objects to media list
+      this.list.objects.unshift(photo);
+    }
+  }
+
+  showNewAlbum(album: any) {
+    console.debug('New album: ', album);
+
+    if( this.currentPath == 'albums') {
+      // Add objects to media list
+      this.list.objects.unshift(album);
+    }
+    // TODO: Show toast
+  }
+
   preview() {
     // open modal
     this.loadModalComponent(ZMediaPhotoDetailComponent);
@@ -273,9 +307,10 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.modal.open();
   }
 
-  addToAlbum() {
+  addToAlbum(photos?: any) {
     this.loadModalComponent(AddToAlbumModalComponent);
-    this.modal.open();
+    let objects = (photos != undefined) ? photos : this.selectedObjects;
+    this.modal.open({selectedObjects: objects});
   }
 
   viewInfo() {
@@ -312,7 +347,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       // this.modal.open();
     }
 
-    console.log('call edit info method here');
   }
 
   // delete() {
@@ -336,6 +370,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.list.changeView(viewOption);
   }
 
+  // TODO: Go back using previous path
   goBack() {
     switch (this.objectType) {
       case 'photo':

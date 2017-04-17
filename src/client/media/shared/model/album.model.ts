@@ -7,6 +7,8 @@ export class Album {
   created_at: any;
   photo_default: any;
   favorite: boolean;
+  tags: Array<any> = [];
+  tags_json: Array<any> = [];
 
   constructor(fields: {
     id?: number,

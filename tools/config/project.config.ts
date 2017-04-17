@@ -68,8 +68,8 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/ng2-bs3-modal/ng2-bs3-modal.js'
       },
       {
-        name: 'angular2-infinite-scroll',
-        path: 'node_modules/angular2-infinite-scroll/angular2-infinite-scroll.js'
+        name: 'ngx-infinite-scroll',
+        path: 'node_modules/ngx-infinite-scroll/bundles/ngx-infinite-scroll.umd.js'
       },
       {
         name: 'angular2-cookie',
@@ -114,7 +114,7 @@ export class ProjectConfig extends SeedConfig {
     // ];
 
     /* Add to or override NPM module configurations: */
-    this.PLUGIN_CONFIGS['browser-sync'] = { ghostMode: false };
+    this.PLUGIN_CONFIGS['browser-sync'] = { ghostMode: true };
   }
 
 }

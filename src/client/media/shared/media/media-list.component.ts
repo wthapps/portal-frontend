@@ -1,13 +1,11 @@
 import {
-  Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef, ViewChild,
-  ViewContainerRef, ComponentFactoryResolver
+  Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
+  ViewContainerRef, ViewChild, ComponentFactoryResolver
 } from '@angular/core';
-import { Router } from '@angular/router';
-
-
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
 import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
 import { AlbumCreateModalComponent } from '../modal/album-create-modal.component';
@@ -59,11 +57,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
   viewOption: string = 'grid';
 
+  groupByTime: string;
+  currentGroupByTime: string = 'date';
   groupBy: string;
   objects: Array<any> = new Array<any>();
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
+  previousPath: any; // ['/albums'], ['/photos'], ['albums', id]
   nextLink: string;
-
   private pressingCtrlKey: boolean = false;
 
   private currentPage: string;
@@ -81,38 +81,23 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.pressingCtrlKey = this.pressedCtrlKey(ke);
   }
 
-  // @HostListener('document:click', ['$event'])
-  // clickout(event: any) {
-  //
-  //   // if clicking on menu
-  //   if ($(event.target).hasClass('fa')) return;
-  //
-  //   // if clicking outside item
-  //   if(this.elementRef.nativeElement.contains(event.target)) return;
-  //
-  //   if (this.selectedObjects.length > 0) {
-  //     _.forEach(this.selectedObjects, (item: any) => {
-  //       if (_.some(this.selectedObjects, ['id', item.id])) {
-  //         $('#photo-box-img-' + item.id).removeClass('selected');
-  //       }
-  //     });
-  //
-  //     // remove all selected objects
-  //     this.selectedObjects.length = 0;
-  //     this.onAction({action: 'deselect', params: {selectedObjects: this.selectedObjects}});
-  //   }
-  // }
-
-
   constructor(protected resolver: ComponentFactoryResolver,
               protected mediaObjectService: MediaObjectService,
               protected elementRef: ElementRef,
-              protected loadingService: LoadingService,
               protected router: Router,
               protected confirmationService: ConfirmationService,
+              protected loadingService: LoadingService,
+              private route: ActivatedRoute,
               private photoService: ZMediaPhotoService,
               private albumService: ZMediaAlbumService) {
 
+    this.route.queryParams
+      .filter(() => this.currentPath != undefined)
+      .subscribe(
+        (queryParams: any) => {
+          this.getObjects(queryParams);
+        }
+      );
   }
 
 
@@ -152,9 +137,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   getMoreObjects() {
     // this.loadingService.start('#list-photo');
     if (this.nextLink != null) { // if there are more objects
-      this.mediaObjectService.getObjects(this.nextLink).subscribe((response: any)=> {
+      // this.mediaObjectService.getObjects(this.nextLink).subscribe((response: any)=> {
+      this.mediaObjectService.loadMore(this.nextLink).subscribe((response: any)=> {
         // this.loadingService.stop('#list-photo');
-        this.objects.push(response.data);
+        this.objects.push(...response.data);
         this.nextLink = response.page_metadata.links.next;
       });
     }
@@ -198,33 +184,47 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   changeView(viewOption: string) {
+    console.log(viewOption);
     this.viewOption = viewOption;
+    if (this.viewOption == 'grid' || this.viewOption == 'list') {
+      this.groupByTime = '';
+      this.groupBy = '';
+    }
+    if (this.viewOption == 'timeline') {
+      this.groupByTime = this.currentGroupByTime;
+      this.groupBy = 'created_at_converted';
+    }
   }
 
   actionSortbar(event: any) {
+    console.log(event);
     if (event.action == 'slider') {
       this.sliderViewNumber = event.number;
+    }
+    if (event.action == 'sort') {
+      this.sort(event.data);
+    }
+    if (event.action == 'group') {
+      this.groupByTime = event.data;
+      this.currentGroupByTime = this.groupByTime;
     }
   }
 
   actionItem(ev: any) {
-    if (ev.action == 'group') {
-      this.groupBy = ev.data;
-      return;
-    }
-
     console.log('raise event:', ev);
-
     this.events.emit(ev);
   }
 
   // considering moving doAction into list-media
   doAction(event: any) {
 
-    console.log('event in list media:::', event);
+    console.log('event in list media::', event);
     switch (event.action) {
       case 'uploadPhoto':
         this.upload();
+        break;
+      case 'showUploadedPhotos':
+        this.showUploadedPhotos(event.data);
         break;
       case 'share':
         this.share();
@@ -236,10 +236,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.tag();
         break;
       case 'addToAlbum':
-        this.addToAlbum();
+        this.addToAlbum(event.data);
         break;
       case 'createAlbum':
-        this.createAlbum();
+        this.createAlbum(event.data);
+        break;
+      case 'showNewAlbum':
+        this.showNewAlbum(event.data);
         break;
       case 'download':
         this.download();
@@ -251,7 +254,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.editName(event.params.selectedObject);
         break;
       case 'editInfo':
-        console.log('editInfoeditInfoeditInfoeditInfoeditInfo');
         this.editInfo(event.params.selectedObject);
         break;
       case 'delete':
@@ -322,9 +324,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.modal.open();
   }
 
-  addToAlbum() {
+  addToAlbum(data?: any) {
     this.loadModalComponent(AddToAlbumModalComponent);
-    this.modal.open();
+    let objects = (data != undefined) ? data : this.selectedObjects;
+    this.modal.open({selectedObjects: objects});
   }
 
   viewInfo() {
@@ -347,7 +350,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   editName(selectedObject: any) {
-    console.log('call edit name method here:', selectedObject, this);
     this.loadingService.start();
     if (this.currentPath == 'photos') {
       let updated_at = new Date(selectedObject.created_at);
@@ -424,7 +426,12 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   // }
   //
   goBack() {
-
+    switch (this.objectType) {
+      case 'photo':
+      case 'album':
+        this.router.navigate([`/${this.objectType}s`]);
+        break;
+    }
   }
 
 
@@ -434,7 +441,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.loadModalComponent(BaseObjectEditNameModalComponent);
         break;
       case 'editInfoModal':
-        console.log('editInfoModal');
         this.loadModalComponent(PhotoEditModalComponent);
         break;
       case 'sharingModal':
@@ -453,9 +459,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   //
   // *//
 
-  createAlbum() {
+  createAlbum(data?: any) {
     this.loadModalComponent(AlbumCreateModalComponent);
-    this.modal.open();
+    let objects = data != undefined ? data : this.selectedObjects;
+    this.modal.open({selectedObjects: objects});
   }
 
   viewDetails() {
@@ -468,6 +475,14 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   changeCoverImage() {
 
+  }
+
+  showNewAlbum(data?: any) {
+    console.debug('show new album: ', data);
+  }
+
+  showUploadedPhotos(data?: any) {
+    console.debug('showUploadedPhotos: ', data);
   }
 
   private selectObject(item: any): void {

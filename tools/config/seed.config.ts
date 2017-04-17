@@ -481,6 +481,10 @@ export class SeedConfig {
         main: 'dist/ng2-dropdown.bundle.js',
         format: 'cjs',
       },
+      'ngx-infinite-scroll': {
+        main: 'bundles/ngx-infinite-scroll.umd.js',
+        defaultExtension: 'js'
+      },
       'ng2-tag-input/modules/components/tag-input.template.html': {
         defaultJSExtension: false
       }
