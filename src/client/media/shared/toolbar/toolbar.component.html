@@ -92,9 +92,9 @@
 </div>
 
 
-<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"
-                                 [selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>
-<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>
+<add-to-album-modal #formAddAlbum [editAlbum]="formEditAlbum"
+                                 [selectedPhotos]="selectedPhotos"></add-to-album-modal>
+<album-edit-modal #formEditAlbum [selectedPhotos]="selectedPhotos"></album-edit-modal>
 
 <me-edit-name-modal *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></me-edit-name-modal>
 <me-edit-name-modal *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></me-edit-name-modal>

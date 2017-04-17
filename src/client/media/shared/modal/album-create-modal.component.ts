@@ -14,10 +14,10 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'album-create',
-  templateUrl: 'album-create.component.html',
+  selector: 'album-create-modal',
+  templateUrl: 'album-create-modal.component.html',
 })
-export class AlbumCreateComponent extends FormModalComponent {
+export class AlbumCreateModalComponent extends FormModalComponent {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Input() items: Array<any>;
 

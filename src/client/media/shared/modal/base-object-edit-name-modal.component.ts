@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, AfterViewInit, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnInit, OnChanges } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -14,12 +14,13 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'me-edit-name-modal',
-  templateUrl: 'form-edit-name.component.html',
+  templateUrl: 'base-object-edit-name-modal.component.html',
 })
-export class BaseObjectEditNameModalComponent implements OnInit, OnChanges {
+export class BaseObjectEditNameModalComponent implements OnInit, OnChanges, BaseMediaModal {
   @ViewChild('modal') modal: ModalComponent;
 
   @Input() data: any = null;
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   formValue: any;
   form: FormGroup;
@@ -76,40 +77,50 @@ export class BaseObjectEditNameModalComponent implements OnInit, OnChanges {
     this.modal.open();
   }
 
+  close(options?: any) {
+    this.modal.close();
+  }
+
   onSubmit(values: any): void {
-    // Set value after updating form (checking user leave this page)
-    this.formValue = values;
 
-    if (this.form.valid) {
-      this.modal.close();
-      // start loading
-      this.loadingService.start();
-      let body = JSON.stringify({
-        name: values.name,
-        created_day: values.createdDateDay.toString(),
-        created_month: values.createdDateMonth.toString(),
-        created_year: values.createdDateYear.toString(),
-        description: values.description
-      });
+    this.event.emit({action: 'editName', params: {selectedObject: this.data}});
 
-      // console.log(body);
 
-      this.photoService.updateInfo(this.data.id, body)
-        .subscribe((res: any) => {
-            // stop loading
-            // console.log(res);
-            this.loadingService.stop();
-            this.data.name = values.name;
-            this.data.description = values.description;
-            let date_created_at = (values.createdDateYear + '-' + values.createdDateMonth + '-' + values.createdDateDay).toString();
-            this.data.created_at = new Date(date_created_at);
-          },
-          (error: any) => {
-            // stop loading
-            this.loadingService.stop();
-            console.log(error);
-          }
-        );
-    }
+    //TODO move this login into media container or list-media view
+
+    // // Set value after updating form (checking user leave this page)
+    // this.formValue = values;
+    //
+    // if (this.form.valid) {
+    //   this.modal.close();
+    //   // start loading
+    //   this.loadingService.start();
+    //   let body = JSON.stringify({
+    //     name: values.name,
+    //     created_day: values.createdDateDay.toString(),
+    //     created_month: values.createdDateMonth.toString(),
+    //     created_year: values.createdDateYear.toString(),
+    //     description: values.description
+    //   });
+    //
+    //   // console.log(body);
+    //
+    //   this.photoService.updateInfo(this.data.id, body)
+    //     .subscribe((res: any) => {
+    //         // stop loading
+    //         // console.log(res);
+    //         this.loadingService.stop();
+    //         this.data.name = values.name;
+    //         this.data.description = values.description;
+    //         let date_created_at = (values.createdDateYear + '-' + values.createdDateMonth + '-' + values.createdDateDay).toString();
+    //         this.data.created_at = new Date(date_created_at);
+    //       },
+    //       (error: any) => {
+    //         // stop loading
+    //         this.loadingService.stop();
+    //         console.log(error);
+    //       }
+    //     );
+    // }
   }
 }

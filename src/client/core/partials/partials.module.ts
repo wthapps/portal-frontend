@@ -22,7 +22,7 @@ import { CoreChatSupportModule } from './chat-support/chat-support.module';
 import { EntitySelectModule } from './entity-select/entity-select.module';
 import { PhotoSearchFormComponent } from './header/search/photo-search-form.component';
 import { TagInputModule } from 'ng2-tag-input';
-import {AutoCompleteModule} from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 
 

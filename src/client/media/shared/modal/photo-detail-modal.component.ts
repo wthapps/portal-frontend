@@ -2,17 +2,17 @@ import {
   Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild,
   ViewContainerRef, ComponentFactoryResolver
 } from '@angular/core';
-import { ZMediaPhotoService } from './photo.service';
 
-import { PhotoEditModalComponent } from './form/photo-edit-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { LoadingService } from '../../core/partials/loading/loading.service';
-import { Constants } from '../../core/shared/config/constants';
 
-import { ZMediaSharingComponent } from '../shared/sharing/sharing.component';
-import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
-import { ZMediaTaggingComponent } from '../shared/tagging/tagging.component';
 import { Router } from '@angular/router';
+import { ZMediaPhotoService } from '../../photo/photo.service';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ZMediaToolbarComponent } from '../toolbar/toolbar.component';
+import { ZMediaSharingComponent } from '../sharing/sharing.component';
+import { ZMediaTaggingComponent } from '../tagging/tagging.component';
+import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -20,17 +20,19 @@ const KEY_ESC = 27;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-photo-detail',
-  templateUrl: 'photo-detail.component.html',
-  styleUrls: ['photo-detail.component.css']
+  selector: 'photo-detail-modal',
+  templateUrl: 'photo-detail-modal.component.html',
+  styleUrls: ['photo-detail-modal.component.css']
 })
-export class ZMediaPhotoDetailComponent implements AfterViewInit {
+export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal {
   @Input() selectedPhotos: any = [];
   @Input() allPhotos: any = [];
 
   @Input() mediaToolbar: ZMediaToolbarComponent;
 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
+
 
   @ViewChild('formEdit') formEdit: PhotoEditModalComponent;
   @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
@@ -77,6 +79,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     console.log('after init view  photo details');
 
   }
+
+
 
   showLoading() {
     this.loadingImg = false;
@@ -150,6 +154,11 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
     } else {
       $('body').removeClass('fixed-hidden').css('padding-right', 0);
     }
+  }
+
+
+  close(options: any) {
+    this.modal.close();
   }
 
   preview(show: boolean): void {
