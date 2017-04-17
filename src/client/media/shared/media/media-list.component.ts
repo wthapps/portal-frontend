@@ -10,8 +10,8 @@ import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name
 import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
 import { AlbumCreateModalComponent } from '../modal/album-create-modal.component';
 import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
-import { ZMediaSharingComponent } from '../sharing/sharing.component';
-import { ZMediaTaggingComponent } from '../tagging/tagging.component';
+import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
@@ -32,7 +32,9 @@ declare var $: any;
     PhotoEditModalComponent,
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
-    PhotoDetailModalComponent
+    PhotoDetailModalComponent,
+    TaggingModalComponent,
+    SharingModalComponent
   ]
 })
 
@@ -310,7 +312,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   share() {
-    this.loadModalComponent(ZMediaSharingComponent);
+    // this.loadModalComponent(SharingModalComponent);
     this.modal.open({selectedItems: this.selectedObjects});
   }
 
@@ -319,7 +321,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   tag() {
-    this.loadModalComponent(ZMediaTaggingComponent);
+
     this.modal.open();
   }
 
@@ -399,6 +401,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
 
   openModal(modalName: string) {
+    let options: any;
     switch (modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
@@ -407,13 +410,37 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.loadModalComponent(PhotoEditModalComponent);
         break;
       case 'sharingModal':
-
+        this.loadModalComponent(SharingModalComponent);
+        options = {selectedItems: this.selectedObjects};
         break;
       case 'taggingModal':
-
+        this.loadModalComponent(TaggingModalComponent);
+        options = {selectedItems: this.selectedObjects};
+        break;
+      case 'addToAlbumModal':
+        this.loadModalComponent(AddToAlbumModalComponent);
+        options = {selectedItems: this.selectedObjects};
+        break;
+      case 'createAlbumModal':
+        this.loadModalComponent(AlbumCreateModalComponent);
+        options = {selectedItems: this.selectedObjects};
+        break;
+      case 'previewModal':
+        this.loadModalComponent(PhotoDetailModalComponent);
+        options = {show: true, showDetails: false, selectedObjects: this.selectedObjects};
+        // this.modal.event.subscribe((event: any) => {
+        //   this.doAction(event);
+        // });
+        break;
+      case 'previewDetailsModal':
+        this.loadModalComponent(PhotoDetailModalComponent);
+        options = {show: true, showDetails: true, selectedObjects: this.selectedObjects};
+        // this.modal.event.subscribe((event: any) => {
+        //   this.doAction(event);
+        // });
         break;
     }
-    this.modal.open();
+    this.modal.open(options);
 
   }
 

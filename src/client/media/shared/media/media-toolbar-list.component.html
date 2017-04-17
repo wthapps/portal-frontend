@@ -11,7 +11,7 @@
       </button>
     </li>
     <li>
-      <button class="btn btn-default" (click)="onAction({action: 'createAlbum', params: {}})">
+      <button class="btn btn-default" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">
         <i class="fa fa-plus-circle"></i> Create Album
       </button>
     </li>
@@ -25,11 +25,11 @@
       <ul class="control-body-select control-body-btnview" *ngSwitchCase="'photo_list'">
 
         <li [ngClass]="{'action-disabled': noSelectedObjects}" >
-          <a href="javascript:;" (click)="onAction({action: 'preview', params: {}})"><i class="fa fa-eye"></i></a>
+          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'previewModal'}})"><i class="fa fa-eye"></i></a>
         </li>
 
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" (click)="onAction({action: 'share', params: {}})"><i class="fa fa-share-alt"></i></a>
+          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'favourite', params: {}})">
@@ -37,7 +37,7 @@
           </a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" (click)="onAction({action: 'tag', params: {}})"><i class="fa fa-tag"></i></a>
+          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
@@ -47,11 +47,11 @@
             <i class="fa fa-ellipsis-v"></i>
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li><a (click)="onAction({action: 'addToAlbum', params: {}})" href="javascript:;"><i class="fa fa-plus-square"></i> Add to Album</a>
+            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal'}})" href="javascript:;"><i class="fa fa-plus-square"></i> Add to Album</a>
             </li>
             <li><a (click)="onAction({action: 'openModal', params: {modalName:'editInfoModal'}})" href="javascript:;"><i class="fa fa-edit"></i> Edit Information</a></li>
             <li><a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download</a></li>
-            <li><a (click)="onAction({action: 'viewInfo', params: {}})" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
+            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal', showDetails: true}})" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
           </ul>
         </li>
       </ul>
@@ -62,7 +62,7 @@
       <ul class="control-body-select control-body-btnview" *ngSwitchCase="'album_list'">
 
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" (click)="onAction({action: 'share', params: {}})"><i class="fa fa-share-alt"></i></a>
+          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'favourite', params: {}})">
@@ -70,7 +70,7 @@
           </a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" (click)="onAction({action: 'tag', params: {}})"><i class="fa fa-tag"></i></a>
+          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
@@ -89,7 +89,7 @@
             </li>
             <li><a (click)="onAction({action: 'edit', params: {}})" href="javascript:;"><i class="fa fa-edit"></i> Edit</a></li>
             <li><a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download</a></li>
-            <li><a (click)="onAction({action: 'viewInfo', params: {}})" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
+            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
           </ul>
         </li>
       </ul>
@@ -124,7 +124,7 @@
             </li>
             <li><a (click)="onAction({action: 'edit', params: {}})" href="javascript:;"><i class="fa fa-edit"></i> Edit</a></li>
             <li><a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download</a></li>
-            <li><a (click)="onAction({action: 'viewInfo', params: {}})" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
+            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})" href="javascript:;"><i class="fa fa-info-circle"></i> Information</a></li>
             <li [ngClass]="{'action-disabled': noSelectedObjects}">
               <a href="javascript:;" (click)="onAction({action: 'removeFromAlbum', params: {}})"><i class="fa fa-trash-o"></i></a>
             </li>

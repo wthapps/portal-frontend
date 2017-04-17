@@ -9,8 +9,8 @@ import { MediaToolbarListComponent } from '../media/media-toolbar-list.component
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
 import { ZMediaPhotoDetailComponent } from '../../photo/photo-detail.component';
-import { ZMediaSharingComponent } from '../sharing/sharing.component';
-import { ZMediaTaggingComponent } from '../tagging/tagging.component';
+import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
 import { AlbumCreateModalComponent } from '../modal/album-create-modal.component';
@@ -29,8 +29,8 @@ declare var _: any;
     MediaToolbarListComponent,
     MediaListComponent,
     ZMediaPhotoDetailComponent,
-    ZMediaSharingComponent,
-    ZMediaTaggingComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
     AddToAlbumModalComponent,
     AlbumEditModalComponent,
     PhotoEditModalComponent,
@@ -294,7 +294,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   share() {
-    this.loadModalComponent(ZMediaSharingComponent);
+    this.loadModalComponent(SharingModalComponent);
     this.modal.open({selectedItems: this.selectedObjects});
   }
 
@@ -303,7 +303,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   tag() {
-    this.loadModalComponent(ZMediaTaggingComponent);
+    this.loadModalComponent(TaggingModalComponent);
     this.modal.open();
   }
 

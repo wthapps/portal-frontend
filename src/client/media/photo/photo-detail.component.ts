@@ -9,9 +9,9 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { Constants } from '../../core/shared/config/constants';
 
-import { ZMediaSharingComponent } from '../shared/sharing/sharing.component';
+import { SharingModalComponent } from '../shared/modal/sharing/sharing-modal.component';
 import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
-import { ZMediaTaggingComponent } from '../shared/tagging/tagging.component';
+import { TaggingModalComponent } from '../shared/modal/tagging/tagging-modal.component';
 import { Router } from '@angular/router';
 
 declare var $: any;
@@ -33,8 +33,8 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('formEdit') formEdit: PhotoEditModalComponent;
-  @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
-  @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
+  @ViewChild('zoneSharing') zoneSharing: SharingModalComponent;
+  @ViewChild('zoneTagging') zoneTagging: TaggingModalComponent;
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
@@ -101,7 +101,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         this.onFavourite();
         break;
       case 'share':
-        this.loadModalComponent(ZMediaSharingComponent);
+        this.loadModalComponent(SharingModalComponent);
         this.modal.open();
         // this.mediaToolbar.zoneSharing.modal.open();
         break;

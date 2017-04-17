@@ -35,7 +35,8 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   photoIsEmpty: boolean = false;
 
-  params: any;
+  private params: any;
+  private hasDetails: boolean = true;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -171,6 +172,10 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     }
   }
 
+
+  toggleInfo() {
+    this.hasDetails = !this.hasDetails;
+  }
 
   // --- Action for Item --- //
   private onSelectedPhotos(item: any) {
