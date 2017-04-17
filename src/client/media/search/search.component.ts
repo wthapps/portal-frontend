@@ -25,7 +25,7 @@ export class ZMediaSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sub = this.serviceManager.getRouter().events.subscribe((router: any) => {
       let paths = router.url.toString().split('/')[1].split('?');
       let path = paths[0];
-      if (router.constructor.name == "NavigationEnd" && path == "search") {
+      if (router.constructor.name == 'NavigationEnd' && path == 'search') {
         if (!this.firtTime) {
           this.container.list.getObjects();
         }

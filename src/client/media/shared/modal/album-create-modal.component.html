@@ -3,6 +3,7 @@
     <h4 class="modal-title"> Create New Album</h4>
   </modal-header>
   <modal-body>
+    <form [formGroup]="form" novalidate>
     <div class="form-group">
       <label for="album-name">Name</label>
       <input id="album-name" type="text" class="form-control" placeholder="Untitled Album">
@@ -12,11 +13,40 @@
       <input id="album-description" type="text" class="form-control" placeholder="Description">
     </div>
 
-    <!--<page-zone-remove-gridview [items]="items" (addItems)="onAddItems($event)"></page-zone-remove-gridview>-->
+    <div class="form-group">
+      <tag-input
+        [maxItems]='100'
+        [(ngModel)]="tagItems"
+        [onTextChangeDebounce]="500"
+        [onlyFromAutocomplete]="true"
+        (onRemove)="removeTag($event)"
+        (onAdd)="addTag($event)"
+        [formControl]="tagsCtrl">
+        <tag-input-dropdown [identifyBy]="'id'" [displayBy]="'name'" [autocompleteObservable]="autoCompleteTags">
+          <template let-item="item" let-index="index">
+            {{ item.name }}
+          </template>
+        </tag-input-dropdown>
+      </tag-input>
 
+    </div>
+    <div class="form-group">
+      <ul class="modal-social-photo-grid" *ngIf="selectedPhotos != undefined">
+        <li *ngFor="let p of selectedPhotos">
+          <div class="social-photo-grid-item">
+            <i class="fa fa-remove wth-fa-remove" (click)="removePhoto(p,$event)"></i>
+            <figure class="img-center-dv">
+              <!--<img class="img-full" [src]="currentUser.profile_image" alt="">-->
+              <img class="img-center" [src]="p['thumbnail_url']" alt="">
+            </figure>
+          </div>
+        </li>
+      </ul>
+    </div>
+    </form>
   </modal-body>
   <modal-footer>
-    <button type="submit" class="btn btn-primary-inline">
+    <button type="submit" class="btn btn-primary-inline" (click)="createAlbum()">
       Done
     </button>
     <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>

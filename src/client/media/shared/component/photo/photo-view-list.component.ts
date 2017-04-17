@@ -8,6 +8,7 @@ import { LoadingService } from '../../../../core/partials/loading/loading.servic
 import { MediaListComponent } from '../../media/media-list.component';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/components/common/api';
+import { ActivatedRoute } from '@angular/router';
 
 declare var _: any;
 declare var $: any;

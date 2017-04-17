@@ -67,4 +67,6 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
     this.noSelectedObjects = this.selectedObjects.length > 0 ? false: true;
   }
+
+
 }

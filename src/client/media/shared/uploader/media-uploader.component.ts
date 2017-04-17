@@ -94,6 +94,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     this.uploaded_num = 0;
     this.stopped_num = 0;
     this.files_num = this.files.length;
+    this.photos.length = 0;
 
     this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => { this.current_photo = res});
 
@@ -107,7 +108,11 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
           this.step = 2;
         }
         this.current_photo = res['current_photo'];
-        this.photos.push(new Photo(res['data']));
+        let newPhoto = new Photo(res['data']);
+        this.photos.push(newPhoto);
+
+        newPhoto.thumbnail_url = this.current_photo;
+        // this.onAction('showUploadedPhoto', newPhoto);
       }
       ,(err: any) => {
         this.step = 3;
@@ -116,13 +121,14 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   }
 
-  onAction(ev: string): void {
+  onAction(ev: string, data?: any): void {
     // close uploading form
     this.step = -1;
+    let outData = (data != undefined) ? data : this.photos;
 
     this.outEvent.emit({
       action: ev,
-      data: this.photos
+      data: outData
     });
   }
 
