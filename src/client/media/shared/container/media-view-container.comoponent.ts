@@ -41,21 +41,21 @@ declare var _: any;
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
   /*
-  * Value of objectType:
-  * media: is base object
-  * photo
-  * album
-  * video
-  * playlist
-  * */
+   * Value of objectType:
+   * media: is base object
+   * photo
+   * album
+   * video
+   * playlist
+   * */
   @Input() objectType: string = 'media';
 
   /*
-  * pageType value:
-  * list
-  * detail
-  *
-  * */
+   * pageType value:
+   * list
+   * detail
+   *
+   * */
   @Input() pageType: string = 'list';
   @Input() params: any;
 
@@ -101,24 +101,24 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     //   if(this.currentPath == '') { // to be redirected from media home page
     //     this.currentPath = 'photos';
     //   }
-      // if (paths.length <= 2) {
-      //   this.pageType = 'list';
-      // } else {
-      //   this.pageType = 'detail';
-      // }
+    // if (paths.length <= 2) {
+    //   this.pageType = 'list';
+    // } else {
+    //   this.pageType = 'detail';
+    // }
 
-      // this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
-      console.log('current page', this.currentPage);
-
-
+    // this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
+    console.log('current page', this.currentPage);
 
 
-      // this.route.queryParams.subscribe(
-      //   (queryParams: any) => {
-      //     // console.log('query params', queryParams);
-      //   }
-      // );
-      // return; // prevent doing multi times
+
+
+    // this.route.queryParams.subscribe(
+    //   (queryParams: any) => {
+    //     // console.log('query params', queryParams);
+    //   }
+    // );
+    // return; // prevent doing multi times
 
 
     // });
@@ -233,10 +233,10 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'deselect':
         this.selectedObjects = event.params.selectedObjects;
         this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
-          break;
+        break;
       case 'goBack':
         this.goBack();
-          break;
+        break;
 
       // open all of modal
       // case 'openModal':
@@ -305,7 +305,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   editInfo(selectedObject: any) {
     if(this.currentPath == 'photos') {
-      this.loadModalComponent(ZMediaPhotoFormEditComponent);
+      this.loadModalComponent(PhotoEditModalComponent);
       this.modal.open({selectedObjects: this.selectedObjects});
     } else if(this.currentPath == 'albums') {
       // this.loadModalComponent(ZMediaFormEditAlbumComponent);

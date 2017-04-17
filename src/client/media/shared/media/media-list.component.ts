@@ -17,6 +17,8 @@ import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
+import { ZMediaPhotoService } from '../../photo/photo.service';
+import { ZMediaAlbumService } from '../../album/album.service';
 
 declare var _: any;
 declare var $: any;
@@ -45,10 +47,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
 
-  readonly LIST_TYPE = { photo: 'photo', album: 'album', mix: 'mix'};
+  readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
 
   modalComponent: any;
@@ -102,14 +104,14 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   // }
 
 
-  constructor(
-    protected resolver: ComponentFactoryResolver,
-    protected mediaObjectService: MediaObjectService,
-    protected elementRef: ElementRef,
-    protected loadingService: LoadingService,
-    protected router: Router,
-    protected confirmationService: ConfirmationService
-  ) {
+  constructor(protected resolver: ComponentFactoryResolver,
+              protected mediaObjectService: MediaObjectService,
+              protected elementRef: ElementRef,
+              protected loadingService: LoadingService,
+              protected router: Router,
+              protected confirmationService: ConfirmationService,
+              private photoService: ZMediaPhotoService,
+              private albumService: ZMediaAlbumService) {
 
   }
 
@@ -125,7 +127,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   getObjects(options?: any) {
 
     let path = this.currentPath;
-    if(this.params) {
+    if (this.params) {
       console.log('load object', this.currentPath, this.currentPage);
       this.loadingService.start('#list-photo');
       this.mediaObjectService.getObjects(`photos`, {album: this.params['id']}).subscribe((response: any)=> {
@@ -136,7 +138,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       });
       return;
     }
-
 
 
     this.loadingService.start('#list-photo');
@@ -187,7 +188,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     }
 
     this.doAction(options);
-    switch(options.action) {
+    switch (options.action) {
       case 'select':
       case 'deselect':
       case 'goBack':
@@ -209,7 +210,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   actionItem(ev: any) {
     if (ev.action == 'group') {
       this.groupBy = ev.data;
-        return;
+      return;
     }
 
     console.log('raise event:', ev);
@@ -220,8 +221,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   // considering moving doAction into list-media
   doAction(event: any) {
 
-    console.log('event in list media::', event);
-    switch(event.action) {
+    console.log('event in list media:::', event);
+    switch (event.action) {
       case 'uploadPhoto':
         this.upload();
         break;
@@ -250,6 +251,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.editName(event.params.selectedObject);
         break;
       case 'editInfo':
+        console.log('editInfoeditInfoeditInfoeditInfoeditInfo');
         this.editInfo(event.params.selectedObject);
         break;
       case 'delete':
@@ -335,9 +337,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   edit() {
-    if(this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
 
-    } else if(this.currentPath == 'albums') {
+    } else if (this.currentPath == 'albums') {
       this.loadModalComponent(AlbumEditModalComponent);
       this.modal.open();
     }
@@ -345,16 +347,53 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   editName(selectedObject: any) {
-    console.log('call edit name method here:');
-    // this.loadModalComponent(BaseObjectEditNameModalComponent);
-    // this.modal.open();
+    console.log('call edit name method here:', selectedObject, this);
+    this.loadingService.start();
+    if (this.currentPath == 'photos') {
+      let updated_at = new Date(selectedObject.created_at);
+      let body = JSON.stringify({
+        name: selectedObject.name,
+        created_day: updated_at.getDate(),
+        created_month: updated_at.getMonth() + 1,
+        created_year: updated_at.getUTCFullYear(),
+        description: selectedObject.description
+      });
+
+      this.photoService.updateInfo(selectedObject.id, body)
+        .subscribe((res: any) => {
+            // stop loading
+            this.loadingService.stop();
+          },
+          (error: any) => {
+            // stop loading
+            this.loadingService.stop();
+            console.log(error);
+          }
+        );
+    } else if (this.currentPath == 'albums') {
+      let body = JSON.stringify({
+        name: selectedObject.name
+      });
+
+      this.albumService.updateInfo(selectedObject.id, body)
+        .subscribe((res: any) => {
+            // stop loading
+            this.loadingService.stop();
+          },
+          (error: any) => {
+            // stop loading
+            this.loadingService.stop();
+            console.log(error);
+          }
+        );
+    }
   }
 
   editInfo(selectedObject: any) {
-    if(this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
 
 
-    } else if(this.currentPath == 'albums') {
+    } else if (this.currentPath == 'albums') {
       // this.loadModalComponent(AlbumEditModalComponent);
       // this.modal.open();
     }
@@ -395,6 +434,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.loadModalComponent(BaseObjectEditNameModalComponent);
         break;
       case 'editInfoModal':
+        console.log('editInfoModal');
         this.loadModalComponent(PhotoEditModalComponent);
         break;
       case 'sharingModal':
@@ -404,7 +444,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
         break;
     }
-    this.modal.open();
+    this.modal.open({selectedObjects: this.selectedObjects});
 
   }
 
@@ -413,7 +453,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   //
   // *//
 
-  createAlbum(){
+  createAlbum() {
     this.loadModalComponent(AlbumCreateModalComponent);
     this.modal.open();
   }
@@ -451,7 +491,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
-
 
 
   private loadModalComponent(component: any) {
