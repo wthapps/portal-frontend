@@ -41,6 +41,7 @@ import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';
 import { ArrayLengthPipe } from './pipe/array-length.pipe';
 import { GroupByObjectTypePipe } from './pipe/groupby-object-type.pipe';
 import { ServiceManager } from './services/service-manager';
+import { ConvertByPatternPipe } from './pipe/convert.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -72,6 +73,7 @@ import { ServiceManager } from './services/service-manager';
     GroupByObjectTypePipe,
     GroupByPipe,
     NewlinePipe,
+    ConvertByPatternPipe,
     // TimeFormatPipe,
     // TitleCase,
     UrlTransformPipe,
@@ -115,6 +117,7 @@ import { ServiceManager } from './services/service-manager';
     UrlTransformPipe,
     ShowLengthTransformPipe,
     SafeHtmlPipe,
+    ConvertByPatternPipe,
 
     //Directive
     ScrollToBottomDirective

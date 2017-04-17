@@ -19,52 +19,25 @@
       <h5>Drop photos anywhere to upload</h5>
     </div>
 
-    <div id="list-photo" class="row-img " *ngIf="objects" (dragenter)="onDragenter($event)"
-         (dragleave)="onDragleave($event)">
-      <!--<me-list-header [data]="objects" (outEvent)="actionItem($event)" [viewOption]="viewOption" ></me-list-header>-->
-      <div *ngIf="viewOption != 'timeline'" >
-        <div *ngFor="let group of objects | groupByObjectType" >
-          <div class="page-body-in-title" *ngIf="!['albums', 'photos'].includes(currentPath)">{{group.key | titleCase}}</div>
-
-          <div class="row-img" [ngClass]="viewOption">
-            <me-item [type]="item?.object_type" *ngFor="let item of group.value"  [object]="item" (events)="onAction($event)"></me-item></div>
-          <div class="text-center p20">
-            <!--<a [routerLink]="['album']" class="btn btn-primary-inline">-->
-            <a [routerLink]="['/albums']" [queryParams]="{currentPath: true}" class="btn btn-primary-inline" *ngIf="group.key == 'album'">
-              View all
-            </a>
-            <a [routerLink]="['/photos']" [queryParams]="{currentPath: true}" class="btn btn-primary-inline" *ngIf="group.key == 'photo'">
-              View all
-            </a>
-          </div>
-
-          <hr>
+    <div id="list-photo" class="row-img " *ngIf="objects" (dragenter)="onDragenter($event)" [ngClass]="viewOption" (dragleave)="onDragleave($event)">
+      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy">
+        <div *ngIf="group.key" style="color: #4A4A4A; font-size: 15px">{{group.key}}</div>
+        <div *ngIf="group.value" class="clearfix">
+          <me-item *ngFor="let item of group.value" [type]="item.object_type" [object]="item" (events)="onAction($event)"></me-item>
         </div>
-      <div *ngIf="viewOption == 'timeline'">
-        <div *ngFor="let group of objects | groupByMonthYear:'created_at'" class="clearfix">
-          <div style="color: #4A4A4A; font-size: 15px">{{group.key}}</div>
-          <me-item *ngFor="let item of group.value" [type]="item?.object_type" [object]="item" (events)="onAction($event)"></me-item>
-        </div>
+        <me-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group" (events)="onAction($event)"></me-item>
+        <a [routerLink]="['/albums']" [queryParams]="{currentPath: true}" class="btn btn-primary-inline" *ngIf="group.key == 'album'">
+          View all
+        </a>
+        <a [routerLink]="['/photos']" [queryParams]="{currentPath: true}" class="btn btn-primary-inline" *ngIf="group.key == 'photo'">
+          View all
+        </a>
       </div>
-
-        <!--<div *ngIf="view == 'time'" *ngFor="let group of data | groupByMonthYear:'created_at'">-->
-        <!--{{group|json}}-->
-        <!--</div>-->
-      </div>
-
-      <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
-
+        <hr>
     </div>
   </div>
+
+  <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
 </div>
-<!--<div *ngIf="data">
-  <div *ngIf="data.length==0" class="text-center">
-    <div class="zone-no-photo">F
-      <p>Drag photos anywhere to upload</p>
-    </div>
-  </div>
-</div>-->
-
 
 <template #modalContainer></template>
-

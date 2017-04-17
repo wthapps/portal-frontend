@@ -57,6 +57,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
   viewOption: string = 'grid';
 
+  groupByTime: string;
+  currentGroupByTime: string = 'date';
   groupBy: string;
   objects: Array<any> = new Array<any>();
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
@@ -78,29 +80,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   onKeyUp(ke: KeyboardEvent) {
     this.pressingCtrlKey = this.pressedCtrlKey(ke);
   }
-
-  // @HostListener('document:click', ['$event'])
-  // clickout(event: any) {
-  //
-  //   // if clicking on menu
-  //   if ($(event.target).hasClass('fa')) return;
-  //
-  //   // if clicking outside item
-  //   if(this.elementRef.nativeElement.contains(event.target)) return;
-  //
-  //   if (this.selectedObjects.length > 0) {
-  //     _.forEach(this.selectedObjects, (item: any) => {
-  //       if (_.some(this.selectedObjects, ['id', item.id])) {
-  //         $('#photo-box-img-' + item.id).removeClass('selected');
-  //       }
-  //     });
-  //
-  //     // remove all selected objects
-  //     this.selectedObjects.length = 0;
-  //     this.onAction({action: 'deselect', params: {selectedObjects: this.selectedObjects}});
-  //   }
-  // }
-
 
   constructor(
     protected resolver: ComponentFactoryResolver,
@@ -197,23 +176,34 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   changeView(viewOption: string) {
+    console.log(viewOption);
     this.viewOption = viewOption;
+    if (this.viewOption == 'grid' || this.viewOption == 'list') {
+      this.groupByTime = '';
+      this.groupBy = '';
+    }
+    if (this.viewOption == 'timeline') {
+      this.groupByTime = this.currentGroupByTime;
+      this.groupBy = 'created_at_converted';
+    }
   }
 
   actionSortbar(event: any) {
+    console.log(event);
     if (event.action == 'slider') {
       this.sliderViewNumber = event.number;
+    }
+    if (event.action == 'sort') {
+      this.sort(event.data);
+    }
+    if (event.action == 'group') {
+      this.groupByTime = event.data;
+      this.currentGroupByTime = this.groupByTime;
     }
   }
 
   actionItem(ev: any) {
-    if (ev.action == 'group') {
-      this.groupBy = ev.data;
-        return;
-    }
-
     console.log('raise event:', ev);
-
     this.events.emit(ev);
   }
 
