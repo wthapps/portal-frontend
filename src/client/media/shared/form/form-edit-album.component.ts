@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
@@ -52,6 +52,12 @@ export class ZMediaFormEditAlbumComponent implements AfterViewInit {
 
   open(options: any) {
     this.modal.open();
+    this.updateForm(options['selectedObjects'][0]);
+  }
+
+  updateForm(values: any) {
+    (<FormControl>this.name).setValue(values.name);
+    (<FormControl>this.description).setValue(values.description);
   }
 
   onSubmit(values: any): void {

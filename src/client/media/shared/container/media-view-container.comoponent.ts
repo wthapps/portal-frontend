@@ -35,8 +35,7 @@ declare var _: any;
     ZMediaFormEditAlbumComponent,
     ZMediaPhotoFormEditComponent,
     AlbumCreateComponent,
-    BaseObjectEditNameModalComponent,
-    ZMediaFormEditAlbumComponent
+    BaseObjectEditNameModalComponent
   ]
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -285,7 +284,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
     } else if(this.currentPath == 'albums') {
       this.loadModalComponent(ZMediaFormEditAlbumComponent);
-      this.modal.open();
+      this.modal.open({selectedObjects: this.selectedObjects});
     }
 
   }
@@ -298,7 +297,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   editInfo() {
     if(this.currentPath == 'photos') {
       this.loadModalComponent(ZMediaPhotoFormEditComponent);
-      this.modal.open();
+      this.modal.open({selectedObjects: this.selectedObjects});
     } else if(this.currentPath == 'albums') {
       // this.loadModalComponent(ZMediaFormEditAlbumComponent);
       // this.modal.open();
