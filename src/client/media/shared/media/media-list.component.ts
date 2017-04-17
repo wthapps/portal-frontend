@@ -202,7 +202,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.sliderViewNumber = event.number;
     }
     if (event.action == 'sort') {
-      this.sort(event.data);
+      // this.sort(event.data);
     }
     if (event.action == 'group') {
       this.groupByTime = event.data;
