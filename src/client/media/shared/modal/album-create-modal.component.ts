@@ -8,8 +8,8 @@ import { ZMediaAlbumService } from '../../album/album.service';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
-import { ZMediaTaggingService } from '../tagging/tagging.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ZMediaTaggingService } from './tagging/tagging.service';
 // import { FormModalComponent } from '../../../shared/form/form-modal.component';
 // import { AlbumService } from '../../../shared/services/picture/album.service';
 // import { Album } from '../../../shared/models/album.model';
@@ -24,7 +24,7 @@ declare var _: any;
   templateUrl: 'album-create-modal.component.html',
   styleUrls: ['album-create-modal.component.css']
 })
-export class AlbumCreateModalComponent extends FormModalComponent implements BaseMediaModal {
+export class AlbumCreateModalComponent implements BaseMediaModal {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 

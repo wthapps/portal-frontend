@@ -31,9 +31,10 @@ export class PhotoViewListComponent extends MediaListComponent{
     protected elementRef: ElementRef,
     protected loadingService: LoadingService,
     protected router: Router,
+    protected route: ActivatedRoute,
     protected confirmationService: ConfirmationService
   ) {
-    super(resolver, mediaObjectService, elementRef, loadingService, router, confirmationService);
+    super(resolver, mediaObjectService, elementRef, router, route, confirmationService, loadingService);
   }
 
 }

@@ -86,8 +86,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     protected mediaObjectService: MediaObjectService,
     protected elementRef: ElementRef,
     protected router: Router,
+    protected route: ActivatedRoute,
     protected confirmationService: ConfirmationService,
-    private route: ActivatedRoute,
     protected loadingService: LoadingService
   ) {
 
@@ -203,7 +203,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.sliderViewNumber = event.number;
     }
     if (event.action == 'sort') {
-      this.sort(event.data);
+      // TODO  check here
+      // this.sort(event.data);
     }
     if (event.action == 'group') {
       this.groupByTime = event.data;
