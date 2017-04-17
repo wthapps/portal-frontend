@@ -19,11 +19,12 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-photo-form-edit',
-  templateUrl: 'form-edit-photo.component.html'
+  selector: 'photo-edit-modal',
+  templateUrl: 'photo-edit-modal.component.html'
 })
-export class ZMediaPhotoFormEditComponent implements OnChanges {
+export class PhotoEditModalComponent implements OnChanges, BaseMediaModal {
   @Input() data: Photo = null;
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: ModalComponent;
 
   @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -78,11 +79,19 @@ export class ZMediaPhotoFormEditComponent implements OnChanges {
     this.modal.open();
   }
 
+  close(options?: any) {
+    this.modal.close();
+  }
+
   onShow() {
     this.modal.open();
   }
 
   onSubmit(values: any): void {
+
+    this.event.emit({action: 'editInfo', params: {selectedObject: values}});
+
+    //TODO move this logic into container or media list view
     // Set value after updating form (checking user leave this page)
     this.formValue = values;
 

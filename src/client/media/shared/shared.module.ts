@@ -12,20 +12,23 @@ import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
 import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.component';
 
 import { MediaListHeaderComponent } from './media/media-list-header.component';
-import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.component';
-import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
+
 import { MediaUploaderComponent } from './uploader/media-uploader.component';
 import { ZMediaSharingComponent } from './sharing/sharing.component';
 import { ZMediaAlbumService } from '../album/album.service';
 import { ZMediaSharingService } from './sharing/sharing.service';
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { ZMediaTaggingComponent } from './tagging/tagging.component';
-import { BaseObjectEditNameModalComponent } from './form/form-edit-name.component';
+import { BaseObjectEditNameModalComponent } from './modal/base-object-edit-name-modal.component';
 import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
 import { MediaListComponent } from './media/media-list.component';
 import { MediaViewContainerComponent } from './container/media-view-container.comoponent';
 import { MediaItemComponent } from './media/media-item.component';
-import { AlbumCreateComponent } from './form/album-create.component';
+
+import { AlbumCreateModalComponent } from './modal/album-create-modal.component';
+import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
+import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
+import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -46,10 +49,12 @@ import { AlbumCreateComponent } from './form/album-create.component';
     ZMediaToolbarAlbumDetailComponent,
     //
     MediaListHeaderComponent,
-    ZMediaFormAddToAlbumComponent,
-    ZMediaFormEditAlbumComponent,
+
     BaseObjectEditNameModalComponent,
-    AlbumCreateComponent,
+    AddToAlbumModalComponent,
+    AlbumEditModalComponent,
+    AlbumCreateModalComponent,
+    PhotoDetailModalComponent,
 
 
     MediaUploaderComponent,
@@ -71,10 +76,12 @@ import { AlbumCreateComponent } from './form/album-create.component';
     ZMediaToolbarAlbumDetailComponent,
     //
     MediaListHeaderComponent,
-    ZMediaFormAddToAlbumComponent,
-    ZMediaFormEditAlbumComponent,
+
     BaseObjectEditNameModalComponent,
-    AlbumCreateComponent,
+    AddToAlbumModalComponent,
+    AlbumEditModalComponent,
+    AlbumCreateModalComponent,
+    PhotoDetailModalComponent,
 
     MediaUploaderComponent,
     ZMediaSharingComponent,

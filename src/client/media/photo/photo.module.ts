@@ -4,7 +4,7 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 
 import { ZMediaPhotoListComponent } from './photo-list.component';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
-import { ZMediaPhotoFormEditComponent } from './form/form-edit-photo.component';
+import { PhotoEditModalComponent } from './form/photo-edit-modal.component';
 import { ZMediaPhotoService } from './photo.service';
 import { ZMediaPhotoRoutingModule } from './photo-routing.module';
 import { ZMediaPhotoEditComponent } from './edit/edit-photo.component';
@@ -18,13 +18,13 @@ import { ZMediaPhotoEditComponent } from './edit/edit-photo.component';
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
     ZMediaPhotoEditComponent,
-    ZMediaPhotoFormEditComponent
+    PhotoEditModalComponent
   ],
   exports: [
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
     ZMediaPhotoEditComponent,
-    ZMediaPhotoFormEditComponent
+    PhotoEditModalComponent
   ],
   providers: [
     ZMediaPhotoService

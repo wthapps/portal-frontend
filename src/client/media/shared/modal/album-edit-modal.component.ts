@@ -12,10 +12,10 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-share-form-edit-album',
-  templateUrl: 'form-edit-album.component.html',
+  selector: 'album-edit-modal',
+  templateUrl: 'album-edit-modal.component.html',
 })
-export class ZMediaFormEditAlbumComponent implements AfterViewInit {
+export class AlbumEditModalComponent implements AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
 
   @Input() selectedPhotos: any;

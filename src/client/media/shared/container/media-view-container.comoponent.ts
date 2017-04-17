@@ -11,11 +11,11 @@ import { MediaObjectService } from './media-object.service';
 import { ZMediaPhotoDetailComponent } from '../../photo/photo-detail.component';
 import { ZMediaSharingComponent } from '../sharing/sharing.component';
 import { ZMediaTaggingComponent } from '../tagging/tagging.component';
-import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
-import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
-import { AlbumCreateComponent } from '../form/album-create.component';
-import { ZMediaPhotoFormEditComponent } from '../../photo/form/form-edit-photo.component';
-import { BaseObjectEditNameModalComponent } from '../form/form-edit-name.component';
+import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
+import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
+import { AlbumCreateModalComponent } from '../modal/album-create-modal.component';
+import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
+import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -31,12 +31,12 @@ declare var _: any;
     ZMediaPhotoDetailComponent,
     ZMediaSharingComponent,
     ZMediaTaggingComponent,
-    ZMediaFormAddToAlbumComponent,
-    ZMediaFormEditAlbumComponent,
-    ZMediaPhotoFormEditComponent,
-    AlbumCreateComponent,
+    AddToAlbumModalComponent,
+    AlbumEditModalComponent,
+    PhotoEditModalComponent,
+    AlbumCreateModalComponent,
     BaseObjectEditNameModalComponent,
-    ZMediaFormEditAlbumComponent
+    AlbumEditModalComponent
   ]
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -80,6 +80,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   viewOption: string = 'grid';
   private currentPage: string;
 
+  // you are also able to inject PhotoService and AlbumService here for calling existing functions quickly
   constructor(
     private resolver: ComponentFactoryResolver,
     private router: Router,
@@ -139,7 +140,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
     // subscribe event
     this.toolbar.events.subscribe((event: any) => {
-      this.doAction(event);
+      this.list.doAction(event);
     });
 
     let listComponentFactory = this.resolver.resolveComponentFactory(MediaListComponent);
@@ -170,63 +171,64 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   }
 
+
+  // considering moving doAction into list-media
   doAction(event: any) {
-    console.log('toolbar event:', event);
     switch(event.action) {
-      case 'uploadPhoto':
-        this.upload();
-          break;
-      case 'share':
-        this.share();
-          break;
-      case 'favourite':
-        this.favourite();
-          break;
-      case 'tag':
-        this.tag();
-          break;
-      case 'addToAlbum':
-        this.addToAlbum();
-            break;
-      case 'createAlbum':
-        this.createAlbum();
-        break;
-      case 'download':
-        this.download();
-          break;
-      case 'edit':
-        this.edit();
-          break;
-      case 'editName':
-        this.editName();
-            break;
-      case 'editInfo':
-        this.editInfo();
-        break;
-      case 'delete':
-        this.delete();
-          break;
-      case 'changeView':
-        this.changeView(event.params.viewOption);
-        break;
-      case 'preview':
-      case 'previewAll':
-        this.preview();
-          break;
-      case 'viewInfo':
-      case 'viewDetails':
-        if (this.selectedObjects[0].object_type == 'album') {
-          this.viewDetails();
-        } else {
-          this.viewInfo();
-        }
-        break;
-      case 'slideShow':
-        this.slideShow();
-        break;
-      case 'changeCoverImage':
-        this.changeCoverImage();
-        break;
+      // case 'uploadPhoto':
+      //   this.upload();
+      //     break;
+      // case 'share':
+      //   this.share();
+      //     break;
+      // case 'favourite':
+      //   this.favourite();
+      //     break;
+      // case 'tag':
+      //   this.tag();
+      //     break;
+      // case 'addToAlbum':
+      //   this.addToAlbum();
+      //       break;
+      // case 'createAlbum':
+      //   this.createAlbum();
+      //     break;
+      // case 'download':
+      //   this.download();
+      //     break;
+      // case 'edit':
+      //   this.edit();
+      //     break;
+      // case 'editName':
+      //   this.editName(event.params.selectedObject);
+      //       break;
+      // case 'editInfo':
+      //   this.editInfo(event.params.selectedObject);
+      //     break;
+      // case 'delete':
+      //   this.delete();
+      //     break;
+      // case 'changeView':
+      //   this.changeView(event.params.viewOption);
+      //     break;
+      // case 'preview':
+      // case 'previewAll':
+      //   this.preview();
+      //     break;
+      // case 'viewInfo':
+      // case 'viewDetails':
+      //   if (this.selectedObjects[0].object_type == 'album') {
+      //     this.viewDetails();
+      //   } else {
+      //     this.viewInfo();
+      //   }
+      //   break;
+      // case 'slideShow':
+      //   this.slideShow();
+      //   break;
+      // case 'changeCoverImage':
+      //   this.changeCoverImage();
+      //     break;
       case 'select':
       case 'deselect':
         this.selectedObjects = event.params.selectedObjects;
@@ -235,6 +237,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'goBack':
         this.goBack();
           break;
+
+      // open all of modal
+      // case 'openModal':
+      //   this.openModal(event.params.modalName);
+      //     break;
     }
   }
 
@@ -267,7 +274,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   addToAlbum() {
-    this.loadModalComponent(ZMediaFormAddToAlbumComponent);
+    this.loadModalComponent(AddToAlbumModalComponent);
     this.modal.open();
   }
 
@@ -284,44 +291,46 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     if(this.currentPath == 'photos') {
 
     } else if(this.currentPath == 'albums') {
-      this.loadModalComponent(ZMediaFormEditAlbumComponent);
+      this.loadModalComponent(AlbumEditModalComponent);
       this.modal.open();
     }
 
   }
 
-  editName() {
-    this.loadModalComponent(BaseObjectEditNameModalComponent);
-    this.modal.open();
+  editName(selectedObject: any) {
+    console.log('call edit name method here:');
+    // this.loadModalComponent(BaseObjectEditNameModalComponent);
+    // this.modal.open();
   }
 
-  editInfo() {
+  editInfo(selectedObject: any) {
     if(this.currentPath == 'photos') {
-      this.loadModalComponent(ZMediaPhotoFormEditComponent);
-      this.modal.open();
+
+
     } else if(this.currentPath == 'albums') {
       // this.loadModalComponent(ZMediaFormEditAlbumComponent);
       // this.modal.open();
     }
 
+    console.log('call edit info method here');
   }
 
-  delete() {
-    let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
-    this.confirmationService.confirm({
-      message: 'Are you sure to delete ' + this.selectedObjects.length + ' item' + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
-      accept: () => {
-        let body = JSON.stringify({ids: objIds});
-        // this.loadingService.start();
-        // this.photoService.deletePhoto(body).subscribe((response: any)=> {
-        //   _.map(idPhotos, (id: any)=> {
-        //     _.remove(this.data, ['id', id]);
-        //   });
-        //   this.loadingService.stop();
-        // });
-      }
-    });
-  }
+  // delete() {
+  //   let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
+  //   this.confirmationService.confirm({
+  //     message: 'Are you sure to delete ' + this.selectedObjects.length + ' item' + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
+  //     accept: () => {
+  //       let body = JSON.stringify({ids: objIds});
+  //       // this.loadingService.start();
+  //       // this.photoService.deletePhoto(body).subscribe((response: any)=> {
+  //       //   _.map(idPhotos, (id: any)=> {
+  //       //     _.remove(this.data, ['id', id]);
+  //       //   });
+  //       //   this.loadingService.stop();
+  //       // });
+  //     }
+  //   });
+  // }
 
   changeView(viewOption: string) {
     this.list.changeView(viewOption);
@@ -336,13 +345,35 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
+
+  openModal(modalName: string) {
+    switch (modalName) {
+      case 'editNameModal':
+        this.loadModalComponent(BaseObjectEditNameModalComponent);
+        break;
+      case 'editInfoModal':
+        this.loadModalComponent(PhotoEditModalComponent);
+        break;
+      case 'sharingModal':
+
+        break;
+      case 'taggingModal':
+
+        break;
+
+    }
+
+    this.modal.open();
+
+  }
+
   //*
   // Album's functions
   //
   // *//
 
   createAlbum(){
-    this.loadModalComponent(AlbumCreateComponent);
+    this.loadModalComponent(AlbumCreateModalComponent);
     this.modal.open();
   }
 
@@ -363,5 +394,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.modalContainer.clear();
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;
+
+    // handle all of action from modal all
+    this.modal.event.subscribe((event: any) => {
+
+      // considering moving doAction into list-media
+      this.doAction(event);
+    });
   }
 }

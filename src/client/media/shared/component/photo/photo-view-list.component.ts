@@ -1,8 +1,13 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit, OnInit, ElementRef } from '@angular/core';
+import {
+  Component, Input, Output, EventEmitter, AfterViewInit, OnInit, ElementRef,
+  ComponentFactoryResolver
+} from '@angular/core';
 import { MediaObjectService } from '../../container/media-object.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
 import { MediaListComponent } from '../../media/media-list.component';
+import { Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/components/common/api';
 
 declare var _: any;
 declare var $: any;
@@ -20,11 +25,14 @@ declare var $: any;
 export class PhotoViewListComponent extends MediaListComponent{
 
   constructor(
+    protected resolver: ComponentFactoryResolver,
     protected mediaObjectService: MediaObjectService,
     protected elementRef: ElementRef,
-    protected loadingService: LoadingService
+    protected loadingService: LoadingService,
+    protected router: Router,
+    protected confirmationService: ConfirmationService
   ) {
-    super(mediaObjectService, elementRef, loadingService);
+    super(resolver, mediaObjectService, elementRef, loadingService, router, confirmationService);
   }
 
 }
