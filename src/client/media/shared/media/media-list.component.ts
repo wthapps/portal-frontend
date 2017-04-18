@@ -113,7 +113,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   getObjects(options?: any) {
-
     let path = this.currentPath;
     if(this.params) {
       console.log('load object', this.currentPath, this.currentPage);
@@ -462,7 +461,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedItems: this.selectedObjects, objects: this.objects};
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);

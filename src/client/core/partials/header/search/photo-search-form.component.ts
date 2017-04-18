@@ -66,7 +66,7 @@ export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
   }
 
   onEnter() {
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {is_search: true, q: "name", search: this.searchText}});
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: "name", search: this.searchText}});
   }
 
 }

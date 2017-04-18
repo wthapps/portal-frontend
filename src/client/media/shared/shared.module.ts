@@ -29,6 +29,7 @@ import { AlbumCreateModalComponent } from './modal/album-create-modal.component'
 import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
 import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
 import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component';
+import { TaggingElComponent } from './modal/tagging/tagging-el.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -65,6 +66,7 @@ import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component'
     MediaToolbarListComponent,
     MediaListComponent,
     MediaItemComponent,
+    TaggingElComponent,
   ],
   exports: [
     ZMediaShareItemComponent,
@@ -91,6 +93,7 @@ import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component'
     MediaToolbarListComponent,
     MediaListComponent,
     MediaItemComponent,
+    TaggingElComponent,
 
     SharedModule,
     // HdTagInputModule,
