@@ -98,7 +98,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   ngOnInit() {
 
     // this.currentPath = `${this.objectType}s`;
-    this.currentPath = this.router.url.toString().split('/')[1]; // currentPath: photos, albums, shared-with-me
+    this.currentPath = this.router.url.toString().split('/')[1].split('?')[0]; // currentPath: photos, albums, shared-with-me
     this.currentPage = `${this.objectType}_${this.pageType}`;
 
     // this.router.events.subscribe((router: any) => {

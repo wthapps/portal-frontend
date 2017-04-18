@@ -53,6 +53,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   readonly LIST_TYPE = { photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
+  readonly MIX_SCREEN = [ 'shared-with-me', 'favorites'];
 
   modalComponent: any;
   modal: any;
@@ -92,7 +93,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               protected confirmationService: ConfirmationService,
               protected loadingService: LoadingService,
               protected photoService: ZMediaPhotoService,
-              protected albumService: ZMediaAlbumService) {
+              protected albumService: ZMediaAlbumService,
+              private _location: Location
+  ) {
 
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
@@ -110,6 +113,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getObjects();
+
+    if(this.MIX_SCREEN.includes(this.currentPath))
+      this.changeView('grid'); // Default view should be grid
   }
 
   getObjects(options?: any) {
@@ -189,7 +195,11 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   changeView(viewOption: string) {
     console.log(viewOption);
     this.viewOption = viewOption;
-    if (this.viewOption == 'grid' || this.viewOption == 'list') {
+    if (this.viewOption == 'grid') {
+      this.groupByTime = '';
+      this.groupBy = 'object_type';
+    }
+    if (this.viewOption == 'list') {
       this.groupByTime = '';
       this.groupBy = '';
     }
@@ -434,12 +444,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   // }
   //
   goBack() {
-    // switch (this.objectType) {
-    //   case 'photo':
-    //   case 'album':
-    //     this.router.navigate([`/${this.objectType}s`]);
-    //     break;
-    // }
     this._location.back();
   }
 
@@ -449,27 +453,27 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     switch (modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'editInfoModal':
         this.loadModalComponent(PhotoEditModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedItems: this.selectedObjects, objects: this.objects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'createAlbumModal':
         this.loadModalComponent(AlbumCreateModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'previewModal':
         this.loadModalComponent(PhotoDetailModalComponent);

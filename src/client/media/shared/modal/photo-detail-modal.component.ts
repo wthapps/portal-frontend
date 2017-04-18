@@ -118,6 +118,9 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
       case 'viewInfo':
         this.onShowInfo();
         break;
+      case 'editInfo':
+        this.onEditInfo(event.data);
+        break;
       case 'addToAlbum':
         this.mediaToolbar.formAddAlbum.modal.open();
         break;
@@ -168,6 +171,10 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   onShowInfo() {
     console.log('show details', this.showDetails);
     this.showDetails = !this.showDetails;
+  }
+
+  onEditInfo(data?: any) {
+    this.formEdit.onShow();
   }
 
   onEditPhoto(id: any) {
