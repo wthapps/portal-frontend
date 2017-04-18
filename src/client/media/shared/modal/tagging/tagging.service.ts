@@ -12,7 +12,7 @@ export class ZMediaTaggingService {
   }
 
   getTags(keys:any) {
-    return this.apiBaseService.get(this.tagUrl, {q: "name", search: keys});
+    return this.apiBaseService.get(this.tagUrl, {q: 'name', search: keys});
   }
 
   save(body: any) {

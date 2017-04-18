@@ -62,7 +62,7 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   }
 
   open(options?: any) {
-    this.selectedItems = options.selectedItems;
+    this.selectedItems = options.selectedObjects;
     this.objects = options.objects;
     this.tag.addedTags = [];
     if (this.selectedItems.length == 1) {

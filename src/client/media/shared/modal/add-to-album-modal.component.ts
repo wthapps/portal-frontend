@@ -84,7 +84,8 @@ export class AddToAlbumModalComponent implements OnInit, BaseMediaModal {
   }
 
   onCreateNewAlbum() {
-    this.onAction({action: 'createAlbum', data: this.selectedPhotos})
+    // this.onAction({action: 'createAlbum', data: this.selectedPhotos})
+    this.onAction({action: 'openModal', params: {modalName: 'createAlbumModal', data: this.selectedPhotos}});
   }
   // onCreateNewAlbum() {
   //   this.modal.close();

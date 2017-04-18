@@ -2,7 +2,6 @@ import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
   ViewContainerRef, ViewChild, ComponentFactoryResolver
 } from '@angular/core';
-import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
@@ -13,7 +12,6 @@ import { AlbumCreateModalComponent } from '../modal/album-create-modal.component
 import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
 import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
-import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
 import { ZMediaPhotoService } from '../../photo/photo.service';
@@ -53,7 +51,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
-  readonly MIX_SCREEN = ['shared-with-me', 'favorites'];
+  readonly MIX_SCREEN: Array<string> = ['shared-with-me', 'favorites'];
 
   // modalComponent: any;
   // modal: any;
@@ -66,7 +64,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   groupBy: string;
   objects: Array<any> = new Array<any>();
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
-  previousPath: any; // ['/albums'], ['/photos'], ['albums', id]
   nextLink: string;
   private pressingCtrlKey: boolean = false;
 
@@ -113,16 +110,16 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               protected confirmationService: ConfirmationService,
               protected loadingService: LoadingService,
               protected photoService: ZMediaPhotoService,
-              protected albumService: ZMediaAlbumService,
-              private _location: Location) {
+              protected albumService: ZMediaAlbumService
+  ) {
 
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
       .subscribe(
-        (queryParams: any) => {
-          this.getObjects(queryParams);
-        }
-      );
+      (queryParams: any) => {
+        this.getObjects(queryParams);
+      }
+    );
   }
 
 
@@ -133,7 +130,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.getObjects();
 
-    if (this.MIX_SCREEN.includes(this.currentPath))
+    // if(this.MIX_SCREEN.includes(this.currentPath))
+    if(this.MIX_SCREEN.indexOf(this.currentPath) > -1)
       this.changeView('grid'); // Default view should be grid
   }
 
@@ -150,7 +148,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       });
       return;
     }
-
 
     this.loadingService.start('#list-photo');
     this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
@@ -255,8 +252,11 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'uploadPhoto':
         this.upload();
         break;
+      case 'photoSelectNext':
+        this.addPhotosToList(event.params.data);
+        break;
       case 'showUploadedPhotos':
-        this.showUploadedPhotos(event.data);
+        this.showUploadedPhotos(event.params.data);
         break;
       case 'share':
         this.share();
@@ -504,6 +504,16 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     console.debug('showUploadedPhotos: ', data);
   }
 
+  addPhotosToList(photos?: any) {
+    // Add data to album detail if possible
+    if (['album_detail', 'albums'].indexOf(this.currentPath) > -1 )
+      this.albumService.addToAlbum(this.params.id, photos).take(1)
+        .subscribe((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
+          (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
+
+    this.objects.unshift(...photos);
+  }
+
   private selectObject(item: any): void {
 
     if (this.pressingCtrlKey) {
@@ -540,7 +550,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
-
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
     // this.modalContainer.clear();
@@ -559,3 +568,4 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.getObjects(data);
   }
 }
+

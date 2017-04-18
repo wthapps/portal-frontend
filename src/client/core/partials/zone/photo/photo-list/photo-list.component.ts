@@ -43,30 +43,24 @@ export class SoPhotoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.loading.start('.photo-grid-list');
-    // this.apiService.get(`zone/photos`).subscribe(
-    //   (response: any) => {
-    //     this.photos = response['data'];
-    //     this.loading.stop('.photo-grid-list');
-    //   },
-    //   error => {
-    //     // this.errorMessage = <any>error;
-    //     this.loading.stop('.photo-grid-list');
-    //   }
-    // );
   }
 
   loadPhotos() {
-    this.loading.start('.photo-grid-list');
+    this.loading.start();
+    console.log('photo list loadPhotos: ');
     this.apiService.get(`media/photos`).subscribe(
       (response: any) => {
         this.photos = response['data'];
-        this.loading.stop('.photo-grid-list');
+        this.loading.stop();
       },
       (error: any) => {
-        // this.errorMessage = <any>error;
-        this.loading.stop('.photo-grid-list');
-      }
+        console.error('loadPhotos error: ', error);
+        // this.loading.stop('.photo-grid-list');
+      },
+      () => {
+        console.log('loadPhotos completed');
+        this.loading.stop();
+      }  // Complete the get observable
     );
   }
 

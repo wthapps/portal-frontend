@@ -21,19 +21,19 @@
 
     <div id="list-photo" class="row-img " *ngIf="objects" (dragenter)="onDragenter($event)" [ngClass]="viewOption" (dragleave)="onDragleave($event)">
       <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy">
-        <div *ngIf="group.key && MIX_SCREEN.includes(currentPath)" style="color: #4A4A4A; font-size: 15px">{{group.key | titleCase}}</div>
+        <div *ngIf="group.key && ( viewOption != 'grid' || MIX_SCREEN.indexOf(currentPath) > -1 )" style="color: #4A4A4A; font-size: 15px">{{group.key | titleCase}}</div>
         <div *ngIf="group.value" class="clearfix">
           <me-item *ngFor="let item of group.value" [type]="item.object_type" [object]="item" (events)="onAction($event)"></me-item>
         </div>
         <me-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group" (events)="onAction($event)"></me-item>
-        <div class="text-center p20" *ngIf="viewOption == 'grid' && MIX_SCREEN.includes(currentPath)">
+        <div class="text-center p20" *ngIf="viewOption == 'grid' && MIX_SCREEN.indexOf(currentPath) > -1">
           <a [routerLink]="['/albums']" [queryParams]="{currentPath: true}" class="btn btn-primary-inline" *ngIf="group.key == 'album'">
             View all
           </a>
           <a [routerLink]="['/photos']" [queryParams]="{currentPath: true}" class="btn btn-primary-inline" *ngIf="group.key == 'photo'">
             View all
           </a>
-          <hr *ngIf="MIX_SCREEN.includes(currentPath)">
+          <hr *ngIf="MIX_SCREEN.indexOf(currentPath) > -1">
         </div>
       </div>
     </div>

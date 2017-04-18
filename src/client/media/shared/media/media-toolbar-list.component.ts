@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { ViewOptions } from './view-options.constant';
 import { Observable, Observer } from 'rxjs';
 
+declare let _: any;
+
 @Component({
   moduleId: module.id,
   selector: 'me-toolbar-list',
@@ -21,14 +23,15 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   data: any;
 
 
+  noSelectedObjects: boolean = true;
+  viewOption: string = 'grid';
+  grid: string = 'grid';
+  list: string = 'list';
+  timeline: string = 'timeline';
+  hasFavourite: boolean = false;
   private currentPath: string;
   private objectType: string;
 
-  private noSelectedObjects: boolean = true;
-  private viewOption: string = 'grid';
-  private grid: string = 'grid';
-  private list: string = 'list';
-  private timeline: string = 'timeline';
 
 
 
@@ -42,9 +45,9 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-  }
+  // ngOnChanges(changes: SimpleChanges) {
+  //
+  // }
 
   initProperties(properties: any) {
     this.objectType = properties.objectType;
@@ -55,7 +58,7 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
 
   onAction(options: any) {
-    if(options.action == 'changeView') {
+    if(_.get(options, 'action', '') == 'changeView') {
       this.viewOption = options.params.viewOption;
     }
     this.events.emit(options);

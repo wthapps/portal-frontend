@@ -65,8 +65,8 @@
           <p>Uploaded to Photo</p>
           <p class="media-heading">{{uploaded_num}} of {{files_num}}</p>
           <div class="text-right">
-            <a href="javascript:;" (click)="onAction('createAlbum')">Create Album</a>
-            <a href="javascript:;" class="ml10" (click)="onAction('addToAlbum')">Add to Album</a>
+            <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal', data: photos}})">Create Album</a>
+            <a href="javascript:;" class="ml10" (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal', data: photos}})">Add to Album</a>
           </div>
         </div>
       </div>

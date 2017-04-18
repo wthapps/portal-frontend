@@ -42,10 +42,10 @@
       <figure [ngClass]="{'img-loading': loadingImg}">
         <img [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
       </figure>
-      <span *ngIf="selectedPhotos.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
+      <span *ngIf="selectedPhotos?.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
         <i class="fa fa-angle-left"></i>
       </span>
-      <span *ngIf="selectedPhotos.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
+      <span *ngIf="selectedPhotos?.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
         <i class="fa fa-angle-right"></i>
       </span>
     </div>
@@ -55,7 +55,7 @@
   <div *ngIf="selectedPhotos[index]" class="photo-detail-info">
     <h3>Detail <a href="javascript:;" (click)="doAction({action: 'viewInfo'})"><i class="fa fa-times"></i></a></h3>
     <h4><i class="fa fa-info-circle"></i> General Infomation
-      <a href="javascript:;" (click)="doAction({action: 'openModal', params: {modalName: 'editInfoModal'}})">Edit</a>
+      <a href="javascript:;" (click)="doAction({action: 'openModal', params: {modalName: 'editInfoModal'}, data: selectedPhotos[index]})">Edit</a>
     </h4>
     <dl class="dl-horizontal">
       <dt>Name</dt>
@@ -72,7 +72,7 @@
       <dd>{{selectedPhotos[index].created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
     </dl>
     <hr>
-    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="doAction({action: 'openModal', params: {modalName: 'sharingModal'}})">Edit</a></h4>
+    <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="doAction({action: 'openModal', params: {modalName: 'taggingModal'}})">Edit</a></h4>
     <div class="tags-text">
       <span *ngFor="let tag of selectedPhotos[index].json_tags">{{tag.name}}</span>
     </div>
@@ -91,7 +91,7 @@
       <dt>Shared with</dt>
       <dd>
         <ul class="list-unstyled">
-          <li *ngFor="let contact of contacts">
+          <li *ngFor="let contact of selectedPhotos[index]?.json_shares[0]?.contacts">
             <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
           </li>
         </ul>

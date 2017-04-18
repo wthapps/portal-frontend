@@ -96,7 +96,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     this.files_num = this.files.length;
     this.photos.length = 0;
 
-    this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => { this.current_photo = res});
+    this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => { this.current_photo = res;});
 
     // Stop observable when finish uploading all files
     this.photoUploadService.uploadPhotos(files)
@@ -104,15 +104,16 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
       .subscribe((res: any) => {
         console.log('Upload image to s3 and save info successfully', res);
         this.uploaded_num++;
-        if (this.uploaded_num == this.files_num) {
-          this.step = 2;
-        }
         this.current_photo = res['current_photo'];
         let newPhoto = new Photo(res['data']);
         this.photos.push(newPhoto);
 
         newPhoto.thumbnail_url = this.current_photo;
         // this.onAction('showUploadedPhoto', newPhoto);
+
+        if (this.uploaded_num == this.files_num) {
+          this.step = 2;
+        }
       }
       ,(err: any) => {
         this.step = 3;
@@ -121,15 +122,11 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   }
 
-  onAction(ev: string, data?: any): void {
+  onAction(options?: any): void {
     // close uploading form
     this.step = -1;
-    let outData = (data != undefined) ? data : this.photos;
 
-    this.outEvent.emit({
-      action: ev,
-      data: outData
-    });
+    this.outEvent.emit(options);
   }
 
   onCreateNewAlbum() {

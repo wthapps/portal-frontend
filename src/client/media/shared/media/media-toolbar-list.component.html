@@ -124,6 +124,8 @@
           </a>
 
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"><i class="fa fa-plus-circle"></i> Add Photos</a>
+            </li>
             <li><a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;"><i class="fa fa-toggle-right"></i> Slideshow</a>
             </li>
             <li><a (click)="onAction({action: 'setCoverImage', params: {}})" href="javascript:;"><i class="fa fa-image"></i> Set Album Cover</a>
