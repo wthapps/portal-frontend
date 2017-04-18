@@ -70,6 +70,7 @@ export class AlbumEditModalComponent implements BaseMediaModal, AfterViewInit {
 
   onSubmit(values: any): void {
     if (this.form.valid) {
+      this.modal.close();
       this.selectedAlbum.name = values.name;
       this.selectedAlbum.description = values.description;
       // console.log(this.selectedAlbum);

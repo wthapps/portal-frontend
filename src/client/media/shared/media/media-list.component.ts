@@ -480,11 +480,15 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     switch (modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedItem: this.selectedObjects[0]};
         break;
       case 'editInfoModal':
-        this.loadModalComponent(PhotoEditModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        if (this.currentPath == 'photos') {
+          this.loadModalComponent(PhotoEditModalComponent);
+        } else if (this.currentPath == 'albums') {
+          this.loadModalComponent(AlbumEditModalComponent);
+        }
+        options = {selectedItem: this.selectedObjects[0]};
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
