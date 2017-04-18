@@ -300,7 +300,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     switch (params.modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'editInfoModal':
         switch (this.objectType) {
@@ -311,23 +311,23 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
             this.loadModalComponent(AlbumEditModalComponent);
             break;
         }
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'createAlbumModal':
         this.loadModalComponent(AlbumCreateModalComponent);
-        options = {selectedItems: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects};
         break;
       case 'previewModal':
         this.loadModalComponent(PhotoDetailModalComponent);
