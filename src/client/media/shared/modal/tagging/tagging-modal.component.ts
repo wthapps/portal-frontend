@@ -40,7 +40,6 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   }
 
   save() {
-    console.log(this.tag.addedTags);
     let tagsName:any = [];
     for (let i = 0; i < this.tag.addedTags.length; i++) {
       if (typeof this.tag.addedTags[i] == 'object') {
