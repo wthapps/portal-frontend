@@ -48,10 +48,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
 
-  readonly LIST_TYPE = { photo: 'photo', album: 'album', mix: 'mix'};
+  readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
 
   modalComponent: any;
@@ -97,10 +97,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
       .subscribe(
-      (queryParams: any) => {
-        this.getObjects(queryParams);
-      }
-    );
+        (queryParams: any) => {
+          this.getObjects(queryParams);
+        }
+      );
   }
 
 
@@ -115,7 +115,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   getObjects(options?: any) {
 
     let path = this.currentPath;
-    if(this.params) {
+    if (this.params) {
       console.log('load object', this.currentPath, this.currentPage);
       this.loadingService.start('#list-photo');
       this.mediaObjectService.getObjects(`photos`, {album: this.params['id']}).subscribe((response: any)=> {
@@ -126,7 +126,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       });
       return;
     }
-
 
 
     this.loadingService.start('#list-photo');
@@ -178,7 +177,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     }
 
     this.doAction(options);
-    switch(options.action) {
+    switch (options.action) {
       case 'select':
       case 'deselect':
       case 'goBack':
@@ -228,7 +227,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   doAction(event: any) {
 
     console.log('event in list media::', event);
-    switch(event.action) {
+    switch (event.action) {
       case 'uploadPhoto':
         this.upload();
         break;
@@ -349,9 +348,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   edit() {
-    if(this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
 
-    } else if(this.currentPath == 'albums') {
+    } else if (this.currentPath == 'albums') {
       this.loadModalComponent(AlbumEditModalComponent);
       this.modal.open();
     }
@@ -360,7 +359,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   editName(selectedObject: any) {
     this.loadingService.start();
-    if (this.currentPath == 'photos') {
+    console.log('selectedObject:', selectedObject);
+    if (selectedObject.object_type == 'photo') {
       let updated_at = new Date(selectedObject.created_at);
       let body = JSON.stringify({
         name: selectedObject.name,
@@ -381,7 +381,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
             console.log(error);
           }
         );
-    } else if (this.currentPath == 'albums') {
+    } else if (selectedObject.object_type == 'album') {
       let body = JSON.stringify({
         name: selectedObject.name
       });
@@ -401,10 +401,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   editInfo(selectedObject: any) {
-    if(this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
 
 
-    } else if(this.currentPath == 'albums') {
+    } else if (this.currentPath == 'albums') {
       // this.loadModalComponent(AlbumEditModalComponent);
       // this.modal.open();
     }
@@ -496,7 +496,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   //
   // *//
 
-  createAlbum(data?: any){
+  createAlbum(data?: any) {
     this.loadModalComponent(AlbumCreateModalComponent);
     let objects = data != undefined ? data : this.selectedObjects;
     this.modal.open({selectedObjects: objects});
@@ -543,7 +543,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
-
 
 
   private loadModalComponent(component: any) {
