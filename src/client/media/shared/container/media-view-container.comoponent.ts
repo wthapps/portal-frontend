@@ -65,7 +65,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
    * */
   @Input() pageType: string = 'list';
   @Input() params: any;
-  @Input() objectData: any;
+  @Input() objectInput: any;
 
   @ViewChild('toolbarContainer', {read: ViewContainerRef}) toolbarContainer: ViewContainerRef;
   @ViewChild('listContainer', {read: ViewContainerRef}) listContainer: ViewContainerRef;
@@ -172,7 +172,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   // considering moving doAction into list-media
   doAction(event: any) {
-    switch(event.action) {
+    switch (event.action) {
       case 'select':
       case 'deselect':
         this.selectedObjects = event.params.selectedObjects;
@@ -188,15 +188,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       // Handle modal events
       case 'openModal':
         this.openModal(event.params);
-          break;
+        break;
       // Handle modal events
       case 'closeModal':
-        this.closeModal()
+        this.closeModal();
         break;
 
       default:
         this.list.doAction(event);
-          break;
+        break;
     }
   }
 
@@ -224,7 +224,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     }
     // TODO: Show toast
   }
-
 
 
   share() {
@@ -300,18 +299,19 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     switch (params.modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedObjects: this.selectedObjects};
+        options = {selectedObject: this.selectedObjects[0]};
         break;
       case 'editInfoModal':
         switch (this.objectType) {
           case 'photo':
             this.loadModalComponent(PhotoEditModalComponent);
+            options = {selectedObject: this.selectedObjects[0]};
             break;
           case 'album':
             this.loadModalComponent(AlbumEditModalComponent);
+            options = {selectedObject: this.objectInput};
             break;
         }
-        options = {selectedObjects: this.selectedObjects};
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);

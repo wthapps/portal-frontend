@@ -53,7 +53,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
-  readonly MIX_SCREEN = [ 'shared-with-me', 'favorites'];
+  readonly MIX_SCREEN = ['shared-with-me', 'favorites'];
 
   // modalComponent: any;
   // modal: any;
@@ -85,18 +85,16 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.pressingCtrlKey = this.pressedCtrlKey(ke);
   }
 
-  constructor(
-    protected resolver: ComponentFactoryResolver,
-    protected mediaObjectService: MediaObjectService,
-    protected elementRef: ElementRef,
-    protected router: Router,
-    protected route: ActivatedRoute,
-    protected confirmationService: ConfirmationService,
-    protected loadingService: LoadingService,
-    protected photoService: ZMediaPhotoService,
-    protected albumService: ZMediaAlbumService,
-    private _location: Location
-  ) {
+  constructor(protected resolver: ComponentFactoryResolver,
+              protected mediaObjectService: MediaObjectService,
+              protected elementRef: ElementRef,
+              protected router: Router,
+              protected route: ActivatedRoute,
+              protected confirmationService: ConfirmationService,
+              protected loadingService: LoadingService,
+              protected photoService: ZMediaPhotoService,
+              protected albumService: ZMediaAlbumService,
+              private _location: Location) {
 
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
@@ -115,7 +113,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.getObjects();
 
-    if(this.MIX_SCREEN.includes(this.currentPath))
+    if (this.MIX_SCREEN.includes(this.currentPath))
       this.changeView('grid'); // Default view should be grid
   }
 
@@ -351,9 +349,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   edit() {
-    if(this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
 
-    } else if(this.currentPath == 'albums') {
+    } else if (this.currentPath == 'albums') {
       this.loadModalComponent(AlbumEditModalComponent);
       // this.modal.open();
     }
@@ -430,14 +428,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       });
       this.albumService.updateInfo(selectedObject.id, body)
         .subscribe((res: any) => {
-            // stop loading
-            console.log(res);
             this.loadingService.stop();
           },
           (error: any) => {
-            // stop loading
             this.loadingService.stop();
-            console.log(error);
           }
         );
     }
@@ -462,8 +456,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
-
 
 
   //*

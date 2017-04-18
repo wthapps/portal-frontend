@@ -274,6 +274,9 @@ $footer-height: 222px;
         &.dropdown > .btn:not(.btn-circle) {
           border-color: transparent;
         }
+        .name {
+          line-height: 33px;
+        }
         .dropdown-menu {
           margin-top: 15px;
           > li {
