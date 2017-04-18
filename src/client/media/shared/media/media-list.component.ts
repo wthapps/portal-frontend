@@ -48,14 +48,15 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  // @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
 
   readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
+  readonly MIX_SCREEN = [ 'shared-with-me', 'favorites'];
 
-  modalComponent: any;
-  modal: any;
+  // modalComponent: any;
+  // modal: any;
 
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
   viewOption: string = 'grid';
@@ -84,15 +85,18 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.pressingCtrlKey = this.pressedCtrlKey(ke);
   }
 
-  constructor(protected resolver: ComponentFactoryResolver,
-              protected mediaObjectService: MediaObjectService,
-              protected elementRef: ElementRef,
-              protected router: Router,
-              protected route: ActivatedRoute,
-              protected confirmationService: ConfirmationService,
-              protected loadingService: LoadingService,
-              protected photoService: ZMediaPhotoService,
-              protected albumService: ZMediaAlbumService) {
+  constructor(
+    protected resolver: ComponentFactoryResolver,
+    protected mediaObjectService: MediaObjectService,
+    protected elementRef: ElementRef,
+    protected router: Router,
+    protected route: ActivatedRoute,
+    protected confirmationService: ConfirmationService,
+    protected loadingService: LoadingService,
+    protected photoService: ZMediaPhotoService,
+    protected albumService: ZMediaAlbumService,
+    private _location: Location
+  ) {
 
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
@@ -110,10 +114,12 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getObjects();
+
+    if(this.MIX_SCREEN.includes(this.currentPath))
+      this.changeView('grid'); // Default view should be grid
   }
 
   getObjects(options?: any) {
-
     let path = this.currentPath;
     if (this.params) {
       console.log('load object', this.currentPath, this.currentPage);
@@ -181,6 +187,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'select':
       case 'deselect':
       case 'goBack':
+      case 'openModal':
         this.events.emit(options);
         break;
     }
@@ -189,7 +196,11 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   changeView(viewOption: string) {
     console.log(viewOption);
     this.viewOption = viewOption;
-    if (this.viewOption == 'grid' || this.viewOption == 'list') {
+    if (this.viewOption == 'grid') {
+      this.groupByTime = '';
+      this.groupBy = 'object_type';
+    }
+    if (this.viewOption == 'list') {
       this.groupByTime = '';
       this.groupBy = '';
     }
@@ -293,14 +304,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.selectedObjects = event.params.selectedObjects;
         // this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
         break;
-      case 'goBack':
-        this.goBack();
-        break;
-
-      // open all of modal
-      case 'openModal':
-        this.openModal(event.params.modalName);
-        break;
     }
   }
 
@@ -311,16 +314,16 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   preview() {
     // open modal
-    this.loadModalComponent(PhotoDetailModalComponent);
-    this.modal.open({show: true, showDetails: false, selectedObjects: this.selectedObjects});
-    this.modal.event.subscribe((event: any) => {
-      this.doAction(event);
-    });
+    // this.loadModalComponent(PhotoDetailModalComponent);
+    // this.modal.open({show: true, showDetails: false, selectedObjects: this.selectedObjects});
+    // this.modal.event.subscribe((event: any) => {
+    //   this.doAction(event);
+    // });
   }
 
   share() {
     // this.loadModalComponent(SharingModalComponent);
-    this.modal.open({selectedItems: this.selectedObjects});
+    // this.modal.open({selectedItems: this.selectedObjects});
   }
 
   favourite() {
@@ -329,13 +332,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   tag() {
 
-    this.modal.open();
+    // this.modal.open();
   }
 
   addToAlbum(data?: any) {
-    this.loadModalComponent(AddToAlbumModalComponent);
-    let objects = (data != undefined) ? data : this.selectedObjects;
-    this.modal.open({selectedObjects: objects});
+    // this.loadModalComponent(AddToAlbumModalComponent);
+    // let objects = (data != undefined) ? data : this.selectedObjects;
+    // this.modal.open({selectedObjects: objects});
   }
 
   viewInfo() {
@@ -348,11 +351,11 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   edit() {
-    if (this.currentPath == 'photos') {
+    if(this.currentPath == 'photos') {
 
-    } else if (this.currentPath == 'albums') {
+    } else if(this.currentPath == 'albums') {
       this.loadModalComponent(AlbumEditModalComponent);
-      this.modal.open();
+      // this.modal.open();
     }
 
   }
@@ -460,70 +463,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // changeView(viewOption: string) {
-  //
-  // }
-  //
-  goBack() {
-    // switch (this.objectType) {
-    //   case 'photo':
-    //   case 'album':
-    //     this.router.navigate([`/${this.objectType}s`]);
-    //     break;
-    // }
-    this._location.back();
-  }
 
 
-  openModal(modalName: string) {
-    let options: any;
-    switch (modalName) {
-      case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedItem: this.selectedObjects[0]};
-        break;
-      case 'editInfoModal':
-        if (this.currentPath == 'photos') {
-          this.loadModalComponent(PhotoEditModalComponent);
-        } else if (this.currentPath == 'albums') {
-          this.loadModalComponent(AlbumEditModalComponent);
-        }
-        options = {selectedItem: this.selectedObjects[0]};
-        break;
-      case 'sharingModal':
-        this.loadModalComponent(SharingModalComponent);
-        options = {selectedItems: this.selectedObjects};
-        break;
-      case 'taggingModal':
-        this.loadModalComponent(TaggingModalComponent);
-        options = {selectedItems: this.selectedObjects};
-        break;
-      case 'addToAlbumModal':
-        this.loadModalComponent(AddToAlbumModalComponent);
-        options = {selectedItems: this.selectedObjects};
-        break;
-      case 'createAlbumModal':
-        this.loadModalComponent(AlbumCreateModalComponent);
-        options = {selectedItems: this.selectedObjects};
-        break;
-      case 'previewModal':
-        this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: false, selectedObjects: this.selectedObjects};
-        // this.modal.event.subscribe((event: any) => {
-        //   this.doAction(event);
-        // });
-        break;
-      case 'previewDetailsModal':
-        this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: true, selectedObjects: this.selectedObjects};
-        // this.modal.event.subscribe((event: any) => {
-        //   this.doAction(event);
-        // });
-        break;
-    }
-    this.modal.open(options);
-
-  }
 
   //*
   // Album's functions
@@ -533,7 +474,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   createAlbum(data?: any) {
     this.loadModalComponent(AlbumCreateModalComponent);
     let objects = data != undefined ? data : this.selectedObjects;
-    this.modal.open({selectedObjects: objects});
+    // this.modal.open({selectedObjects: objects});
   }
 
   viewDetails() {
@@ -581,15 +522,15 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
-    this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
-    this.modal = this.modalComponent.instance;
+    // this.modalContainer.clear();
+    // this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    // this.modal = this.modalComponent.instance;
 
     // handle all of action from modal all
-    this.modal.event.subscribe((event: any) => {
-
-      // considering moving doAction into list-media
-      this.doAction(event);
-    });
+    // this.modal.event.subscribe((event: any) => {
+    //
+    //   // considering moving doAction into list-media
+    //   this.doAction(event);
+    // });
   }
 }

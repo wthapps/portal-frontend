@@ -62,9 +62,7 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   }
 
   updateAttributes(attbutes: any) {
-    console.log('selectedd objectsss', attbutes.selectedObjects);
     this.selectedObjects = attbutes.selectedObjects;
-
     this.noSelectedObjects = this.selectedObjects.length > 0 ? false: true;
   }
 

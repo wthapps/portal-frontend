@@ -14,21 +14,7 @@
     </div>
 
     <div class="form-group">
-      <tag-input
-        [maxItems]='100'
-        [(ngModel)]="tagItems"
-        [onTextChangeDebounce]="500"
-        [onlyFromAutocomplete]="true"
-        (onRemove)="removeTag($event)"
-        (onAdd)="addTag($event)"
-        [formControl]="tagsCtrl">
-        <tag-input-dropdown [identifyBy]="'id'" [displayBy]="'name'" [autocompleteObservable]="autoCompleteTags">
-          <template let-item="item" let-index="index">
-            {{ item.name }}
-          </template>
-        </tag-input-dropdown>
-      </tag-input>
-
+      <tagging-el #tag></tagging-el>
     </div>
     <div class="form-group">
       <ul class="modal-social-photo-grid" *ngIf="selectedPhotos != undefined">

@@ -4,6 +4,7 @@ import { Response } from '@angular/http';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaTaggingService } from './tagging.service';
+import { TaggingElComponent } from './tagging-el.component';
 
 
 declare var $: any;
@@ -16,9 +17,11 @@ declare var _: any;
 })
 export class TaggingModalComponent implements OnInit, BaseMediaModal {
   @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('tag') tag: TaggingElComponent;
   @Input() selectedItems: any = [];
   @Input() mediaType: string = 'photo';
-  @Input() items: any;
+  @Input() items: any = [];
+  @Input() objects: any = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   newTags: any = [];
@@ -29,10 +32,6 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
 
   hasDeletedItems: boolean = false;
 
-  public requestAutocompleteItems = (text: string): Observable<Response> => {
-    return this.taggingService.getTags(text).map((res:any) => _.map(res.data, 'name'));
-  }
-
   constructor(private taggingService: ZMediaTaggingService) {
   }
 
@@ -42,19 +41,19 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
 
   save() {
     let tagsName:any = [];
-    for (let i = 0; i < this.addedTags.length; i++) {
-      if (typeof this.addedTags[i] == 'object') {
-        tagsName.push(this.addedTags[i].display);
+    for (let i = 0; i < this.tag.addedTags.length; i++) {
+      if (typeof this.tag.addedTags[i] == 'object') {
+        tagsName.push(this.tag.addedTags[i].display);
       } else {
-        tagsName.push(this.addedTags[i]);
+        tagsName.push(this.tag.addedTags[i]);
       }
     }
     for (let i = 0; i < this.selectedItems.length; i++) {
-      this.taggingService.save({tags_name: tagsName, object_id: this.selectedItems[i].id, object_type: this.mediaType}).subscribe(
+      this.taggingService.save({tags_name: tagsName, object_id: this.selectedItems[i].id, object_type: this.selectedItems[i].object_type}).subscribe(
         (res:any) => {
-          for(let j = 0; j < this.items.length; j++) {
-            if (res.data.id == this.items[j].id) {
-              this.items[j] = res.data;
+          for(let j = 0; j < this.objects.length; j++) {
+            if (res.data.id == this.objects[j].id) {
+              this.objects[j] = res.data;
             }
           }
         }
@@ -63,10 +62,12 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   }
 
   open(options?: any) {
-    this.addedTags = [];
+    this.selectedItems = options.selectedItems;
+    this.objects = options.objects;
+    this.tag.addedTags = [];
     if (this.selectedItems.length == 1) {
       for (let i = 0; i < this.selectedItems[0].json_tags.length; i++) {
-        this.addedTags.push(this.selectedItems[0].json_tags[i].name);
+        this.tag.addedTags.push(this.selectedItems[0].json_tags[i].name);
       }
     }
     this.modal.open();

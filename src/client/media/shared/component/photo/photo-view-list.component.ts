@@ -23,7 +23,7 @@ declare var $: any;
   ]
 })
 
-export class PhotoViewListComponent extends MediaListComponent{
+export class PhotoViewListComponent {
 
   constructor(
     protected resolver: ComponentFactoryResolver,
@@ -34,7 +34,7 @@ export class PhotoViewListComponent extends MediaListComponent{
     protected route: ActivatedRoute,
     protected confirmationService: ConfirmationService
   ) {
-    super(resolver, mediaObjectService, elementRef, router, route, confirmationService, loadingService);
+    // super(resolver, mediaObjectService, elementRef, router, route, confirmationService, loadingService);
   }
 
 }

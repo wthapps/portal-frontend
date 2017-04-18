@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ZMediaTaggingService } from './tagging/tagging.service';
+import { TaggingElComponent } from './tagging/tagging-el.component';
 // import { FormModalComponent } from '../../../shared/form/form-modal.component';
 // import { AlbumService } from '../../../shared/services/picture/album.service';
 // import { Album } from '../../../shared/models/album.model';
@@ -32,6 +33,7 @@ export class AlbumCreateModalComponent implements BaseMediaModal {
 
 
   @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('tag') tag: TaggingElComponent;
   form: FormGroup;
   descCtrl: AbstractControl;
   tagsCtrl: AbstractControl;
@@ -84,8 +86,16 @@ export class AlbumCreateModalComponent implements BaseMediaModal {
       albumName = 'Untitled Album';
     }
     let selectedPhotosId = _.map(this.selectedPhotos, 'id');
-    let album = new Album({name: albumName, description: albumDes, photos: selectedPhotosId});
 
+    let tagsName:any = [];
+    for (let i = 0; i < this.tag.addedTags.length; i++) {
+      if (typeof this.tag.addedTags[i] == 'object') {
+        tagsName.push(this.tag.addedTags[i].display);
+      } else {
+        tagsName.push(this.tag.addedTags[i]);
+      }
+    }
+    let album:any = {name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName};
     // Only subscribe to this observable once
     this.albumService.create(album)
       .take(1)
@@ -93,16 +103,16 @@ export class AlbumCreateModalComponent implements BaseMediaModal {
         this.album = new Album(res.data);
         this.doneFormModal.emit(this.album);
 
-        let retPhotos = _.get(res, 'data.photos', []);
-        if(retPhotos.length > 0) {
-          let albumPhotos = new AlbumPhoto({album: this.album, photos: retPhotos});
-          this.doneFormModal.emit(albumPhotos);
-        }
+        let retPhotos = _.get(res, 'data.photo_number', 0);
+        // if(retPhotos > 0) {
+          // let albumPhotos = new AlbumPhoto({album: this.album, photos: retPhotos});
+          // this.doneFormModal.emit(albumPhotos);
+        // }
         console.log('A new album is created: ', this.album);
 
         // this.onAction('showNewAlbum', this.album);
         // // Add album to album list if not empty
-        if(retPhotos.length > 0) {
+        if(retPhotos > 0) {
           this.viewAlbumDetail(this.album.id );
         }
         this.modal.close().then((res: any) => console.log('Album create modal should close now'));
