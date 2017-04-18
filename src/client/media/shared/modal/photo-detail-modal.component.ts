@@ -34,6 +34,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
+  @ViewChild('formEdit') formEdit: PhotoEditModalComponent;
   @ViewChild('zoneSharing') zoneSharing: SharingModalComponent;
   @ViewChild('zoneTagging') zoneTagging: TaggingModalComponent;
 

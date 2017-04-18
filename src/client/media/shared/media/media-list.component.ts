@@ -77,14 +77,34 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
-    this.pressingCtrlKey = this.pressedCtrlKey(ke);
+    if(this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = true;
+    }
   }
 
   @HostListener('document:keyup', ['$event'])
   onKeyUp(ke: KeyboardEvent) {
-    this.pressingCtrlKey = this.pressedCtrlKey(ke);
+    if(this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = false;
+    }
+
+    //if0 pressing ESC key
+    if (ke.keyCode == 27) {
+      this.deSelectObjects();
+    }
   }
 
+  // @HostListener('document:click', ['$event'])
+  // clickout(event: any) {
+  //
+  //   // if clicking on menu
+  //   if ($(event.target).hasClass('fa')) return;
+  //
+  //   // if clicking outside item
+  //   if(this.elementRef.nativeElement.contains(event.target)) return;
+  //
+  //      this.deSelectObjects();
+  // }
   constructor(protected resolver: ComponentFactoryResolver,
               protected mediaObjectService: MediaObjectService,
               protected elementRef: ElementRef,
@@ -504,6 +524,20 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       $('#photo-box-img-' + item.id).addClass('selected');
       this.selectedObjects.length = 0;
       this.selectedObjects.push(item);
+    }
+  }
+
+  private deSelectObjects() {
+    if (this.selectedObjects.length > 0) {
+      _.forEach(this.selectedObjects, (item: any) => {
+        if (_.some(this.selectedObjects, ['id', item.id])) {
+          $('#photo-box-img-' + item.id).removeClass('selected');
+        }
+      });
+
+      // remove all selected objects
+      this.selectedObjects.length = 0;
+      this.onAction({action: 'deselect', params: {selectedObjects: this.selectedObjects}});
     }
   }
 
