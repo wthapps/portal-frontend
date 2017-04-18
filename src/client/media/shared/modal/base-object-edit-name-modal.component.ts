@@ -48,7 +48,7 @@ export class BaseObjectEditNameModalComponent implements OnInit, OnChanges, Base
   }
 
   open(options?: any) {
-    this.data = options['selectedObjects'][0];
+    this.data = options['selectedItems'][0];
     (<FormControl>this.name).setValue(this.data.name);
     this.modal.open();
   }

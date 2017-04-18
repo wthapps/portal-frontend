@@ -9,10 +9,11 @@ import { Router } from '@angular/router';
 import { ZMediaPhotoService } from '../../photo/photo.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ZMediaToolbarComponent } from '../toolbar/toolbar.component';
-import { ZMediaSharingComponent } from '../sharing/sharing.component';
-import { ZMediaTaggingComponent } from '../tagging/tagging.component';
+import { SharingModalComponent } from './sharing/sharing-modal.component';
+import { TaggingModalComponent } from './tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
 import { Constants } from '../../../core/shared/config/constants';
+import { AddToAlbumModalComponent } from './add-to-album-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -33,10 +34,8 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-
-  @ViewChild('formEdit') formEdit: PhotoEditModalComponent;
-  @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
-  @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
+  @ViewChild('zoneSharing') zoneSharing: SharingModalComponent;
+  @ViewChild('zoneTagging') zoneTagging: TaggingModalComponent;
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
@@ -81,7 +80,6 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   }
 
 
-
   showLoading() {
     this.loadingImg = false;
   }
@@ -100,13 +98,12 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
 
   doAction(event: any) {
-    switch (event) {
+    switch (event.action) {
       case 'favourite':
         this.onFavourite();
         break;
-      case 'share':
-        this.loadModalComponent(ZMediaSharingComponent);
-        this.modal.open();
+      case 'openModal':
+        this.openModal(event.params.modalName);
         // this.mediaToolbar.zoneSharing.modal.open();
         break;
       case 'tag':
@@ -120,9 +117,6 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
         break;
       case 'viewInfo':
         this.onShowInfo();
-        break;
-      case 'editInfo':
-        this.onEditInfo();
         break;
       case 'addToAlbum':
         this.mediaToolbar.formAddAlbum.modal.open();
@@ -172,11 +166,8 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   }
 
   onShowInfo() {
+    console.log('show details', this.showDetails);
     this.showDetails = !this.showDetails;
-  }
-
-  onEditInfo() {
-    this.formEdit.onShow();
   }
 
   onEditPhoto(id: any) {
@@ -186,6 +177,30 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
     //     console.log(res);
     //   }
     // );
+  }
+
+  openModal(modalName: string) {
+    let options: any;
+    switch (modalName) {
+      case 'editInfoModal':
+        this.loadModalComponent(PhotoEditModalComponent);
+        options = {selectedItems: this.selectedPhotos};
+        break;
+      case 'sharingModal':
+        this.loadModalComponent(SharingModalComponent);
+        options = {selectedItems: this.selectedPhotos};
+        break;
+      case 'taggingModal':
+        this.loadModalComponent(TaggingModalComponent);
+        options = {selectedItems: this.selectedPhotos};
+        break;
+      case 'addToAlbumModal':
+        this.loadModalComponent(AddToAlbumModalComponent);
+        options = {selectedItems: this.selectedPhotos};
+        break;
+    }
+    this.modal.open(options);
+
   }
 
   private onFavourite() {

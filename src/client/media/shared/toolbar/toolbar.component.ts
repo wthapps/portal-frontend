@@ -6,8 +6,8 @@ import { Constants } from '../../../core/shared/config/constants';
 
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
-import { ZMediaSharingComponent } from '../sharing/sharing.component';
-import { ZMediaTaggingComponent } from '../tagging/tagging.component';
+import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
 import { ZMediaToolbarPhotoComponent } from './photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './album/album.component';
@@ -22,8 +22,8 @@ export class ZMediaToolbarComponent {
   @ViewChild('formAddAlbum') formAddAlbum: AddToAlbumModalComponent;
   @ViewChild('formEditAlbum') formEditAlbum: AlbumEditModalComponent;
   @ViewChild('formEditName') formEditName: BaseObjectEditNameModalComponent;
-  @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
-  @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
+  @ViewChild('zoneSharing') zoneSharing: SharingModalComponent;
+  @ViewChild('zoneTagging') zoneTagging: TaggingModalComponent;
   @ViewChild('toolbarPhoto') toolbarPhoto: ZMediaToolbarPhotoComponent;
   @ViewChild('toolbarAlbum') toolbarAlbum: ZMediaToolbarAlbumComponent;
 

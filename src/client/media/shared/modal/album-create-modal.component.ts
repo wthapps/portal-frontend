@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormModalComponent } from '../../../core/shared/form/form-modal.component';
 import { Album } from '../model/album.model';
 import { AlbumPhoto } from '../model/album-photos.model';
@@ -8,8 +8,8 @@ import { ZMediaAlbumService } from '../../album/album.service';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
-import { ZMediaTaggingService } from '../tagging/tagging.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ZMediaTaggingService } from './tagging/tagging.service';
 // import { FormModalComponent } from '../../../shared/form/form-modal.component';
 // import { AlbumService } from '../../../shared/services/picture/album.service';
 // import { Album } from '../../../shared/models/album.model';
@@ -20,14 +20,16 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'album-create',
+  selector: 'album-create-modal',
   templateUrl: 'album-create-modal.component.html',
   styleUrls: ['album-create-modal.component.css']
 })
-export class AlbumCreateModalComponent implements BaseMediaModal, OnInit {
+export class AlbumCreateModalComponent implements BaseMediaModal {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
-  @Input() items: Array<any>;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input() items: Array<any>;
+
 
   @ViewChild('modal') modal: ModalComponent;
   form: FormGroup;
@@ -71,8 +73,8 @@ export class AlbumCreateModalComponent implements BaseMediaModal, OnInit {
     this.modal.open().then((res: any) => console.log('Album create modal opened, options', res));
   }
 
-  close(){
-    console.log('Modal closed: ', this);
+  close(options?: any) {
+    this.modal.close();
   }
 
   createAlbum() {

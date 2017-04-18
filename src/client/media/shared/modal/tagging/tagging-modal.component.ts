@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 
@@ -11,14 +11,15 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-share-tagging',
-  templateUrl: 'tagging.component.html'
+  selector: 'tagging-modal',
+  templateUrl: 'tagging-modal.component.html'
 })
-export class ZMediaTaggingComponent implements OnInit {
+export class TaggingModalComponent implements OnInit, BaseMediaModal {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
   @Input() mediaType: string = 'photo';
   @Input() items: any;
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   newTags: any = [];
   addedTags: any = [];
@@ -61,7 +62,7 @@ export class ZMediaTaggingComponent implements OnInit {
     }
   }
 
-  open() {
+  open(options?: any) {
     this.addedTags = [];
     if (this.selectedItems.length == 1) {
       for (let i = 0; i < this.selectedItems[0].json_tags.length; i++) {
@@ -70,4 +71,9 @@ export class ZMediaTaggingComponent implements OnInit {
     }
     this.modal.open();
   }
+
+  close(options: any) {
+    this.modal.close();
+  }
+
 }

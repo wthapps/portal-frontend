@@ -62,8 +62,8 @@ export class PhotoEditModalComponent implements OnChanges, BaseMediaModal {
   }
 
   open(options?: any) {
-    this.data = options['selectedObjects'][0];
-    this.updateForm(options['selectedObjects'][0]);
+    this.data = options['selectedItems'][0];
+    this.updateForm(options['selectedItems'][0]);
 
     this.modal.open();
   }

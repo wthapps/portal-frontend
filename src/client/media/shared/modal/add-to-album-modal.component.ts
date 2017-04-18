@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
@@ -13,12 +13,13 @@ declare var _: any;
   selector: 'add-to-album-modal',
   templateUrl: 'add-to-album-modal.component.html',
 })
-export class AddToAlbumModalComponent implements BaseMediaModal, OnInit {
+export class AddToAlbumModalComponent implements OnInit, BaseMediaModal {
   @ViewChild('modal') modal: ModalComponent;
-  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() selectedPhotos: any;
   @Input() editAlbum: any;
+
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   dataAlbums: any = [];
   nextLink: string = null;
@@ -43,8 +44,8 @@ export class AddToAlbumModalComponent implements BaseMediaModal, OnInit {
     this.modal.open(options).then((res: any) => console.log('form add to album: open modal ', res));
   }
 
-  close() {
-
+  close(options?: any) {
+    this.modal.close();
   }
 
   getAlbum() {

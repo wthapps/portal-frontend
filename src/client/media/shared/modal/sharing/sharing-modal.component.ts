@@ -1,23 +1,24 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { ZMediaSharingService } from './sharing.service';
 import { Subject } from 'rxjs';
-import { Constants } from '../../../core/shared/config/constants';
+import { Constants } from '../../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-share-sharing',
-  templateUrl: 'sharing.component.html'
+  selector: 'sharing-modal',
+  templateUrl: 'sharing-modal.component.html'
 })
-export class ZMediaSharingComponent implements OnInit, OnDestroy {
+export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
   @Input() type: string;
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   contacts: any = [];
   contactGroups: any = [];
@@ -71,6 +72,10 @@ export class ZMediaSharingComponent implements OnInit, OnDestroy {
     this.getShared();
     this.modal.open(options)
       .then((res:any) => console.log('Sharing modal opened!!!', res));
+  }
+
+  close(options?: any) {
+    this.modal.close();
   }
 
   getShared() {

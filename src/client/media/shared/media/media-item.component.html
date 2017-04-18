@@ -7,12 +7,11 @@
 
   <!--type == 'photo'-->
   <div *ngIf="object.object_type == 'photo'" class="photo-box-img-figure"
-       (click)="onAction({action:'select', params: {selectedObject: object}})"
-  >
+       (click)="onAction({action:'select', params: {selectedObject: object}})">
     <div class="photo-box-img-input">
       <input type="checkbox" value="">
     </div>
-    <figure class="img-center-dv" (dblclick)="onAction({action:'previewAll'})">
+    <figure class="img-center-dv" (dblclick)="onAction({action:'openModal', params: {modalName: 'previewModal'}})">
       <span class="photo-box-img-figure-in">
         <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
         <img draggable="false" class="img-center" [src]="object.thumbnail_url" alt="">

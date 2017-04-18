@@ -14,11 +14,11 @@ import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.
 import { MediaListHeaderComponent } from './media/media-list-header.component';
 
 import { MediaUploaderComponent } from './uploader/media-uploader.component';
-import { ZMediaSharingComponent } from './sharing/sharing.component';
+import { SharingModalComponent } from './modal/sharing/sharing-modal.component';
 import { ZMediaAlbumService } from '../album/album.service';
-import { ZMediaSharingService } from './sharing/sharing.service';
-import { ZMediaTaggingService } from './tagging/tagging.service';
-import { ZMediaTaggingComponent } from './tagging/tagging.component';
+import { ZMediaSharingService } from './modal/sharing/sharing.service';
+import { ZMediaTaggingService } from './modal/tagging/tagging.service';
+import { TaggingModalComponent } from './modal/tagging/tagging-modal.component';
 import { BaseObjectEditNameModalComponent } from './modal/base-object-edit-name-modal.component';
 import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
 import { MediaListComponent } from './media/media-list.component';
@@ -58,8 +58,8 @@ import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component'
 
 
     MediaUploaderComponent,
-    ZMediaSharingComponent,
-    ZMediaTaggingComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
 
     MediaViewContainerComponent,
     MediaToolbarListComponent,
@@ -84,8 +84,8 @@ import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component'
     PhotoDetailModalComponent,
 
     MediaUploaderComponent,
-    ZMediaSharingComponent,
-    ZMediaTaggingComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
 
     MediaViewContainerComponent,
     MediaToolbarListComponent,

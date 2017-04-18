@@ -74,21 +74,26 @@ $media-page-top: 70px;
     top: 0;
     bottom: 0;
     z-index: 1;
+    @include transition($transition-base);
   }
   .media-page-detail-right {
+    right: -400px;
     position: absolute;
-    right: 0;
     top: 0;
     bottom: 0;
     width: 400px;
     background-color: #ffffff;
     z-index: 2;
     @include box-shadow(-2px 2px 4px 0 rgba(164, 164, 164, 0.40));
+    @include transition($transition-base);
   }
 
   &.has-media-page-detail-right {
     .media-page-detail-left {
       right: 400px;
+    }
+    .media-page-detail-right{
+      right: 0;
     }
   }
 
