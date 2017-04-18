@@ -100,10 +100,11 @@ export class AlbumCreateModalComponent implements BaseMediaModal {
         }
         console.log('A new album is created: ', this.album);
 
-        // Add album to album list if possible
-        this.onAction('showNewAlbum', this.album);
-
-        this.viewAlbumDetail(this.album.id );
+        // this.onAction('showNewAlbum', this.album);
+        // // Add album to album list if not empty
+        if(retPhotos.length > 0) {
+          this.viewAlbumDetail(this.album.id );
+        }
         this.modal.close().then((res: any) => console.log('Album create modal should close now'));
 
 

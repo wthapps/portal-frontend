@@ -2,6 +2,7 @@ import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
   ViewContainerRef, ViewChild, ComponentFactoryResolver
 } from '@angular/core';
+import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
@@ -219,6 +220,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.events.emit(ev);
   }
 
+  sort(data: any) {
+
+  }
+
   // considering moving doAction into list-media
   doAction(event: any) {
 
@@ -430,12 +435,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   // }
   //
   goBack() {
-    switch (this.objectType) {
-      case 'photo':
-      case 'album':
-        this.router.navigate([`/${this.objectType}s`]);
-        break;
-    }
+    // switch (this.objectType) {
+    //   case 'photo':
+    //   case 'album':
+    //     this.router.navigate([`/${this.objectType}s`]);
+    //     break;
+    // }
+    this._location.back();
   }
 
 
