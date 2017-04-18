@@ -22,7 +22,6 @@ export class AlbumEditModalComponent implements BaseMediaModal, AfterViewInit {
   @Input() selectedPhotos: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  showToast: boolean = false;
   selectedAlbum: any;
 
   form: FormGroup;
@@ -53,8 +52,11 @@ export class AlbumEditModalComponent implements BaseMediaModal, AfterViewInit {
   }
 
   open(options?: any) {
+
+    this.selectedAlbum = options['selectedItem'];
+
     this.modal.open();
-    this.updateForm(options['selectedObjects'][0]);
+    this.updateForm(options['selectedItem']);
   }
 
   updateForm(values: any) {
@@ -67,24 +69,26 @@ export class AlbumEditModalComponent implements BaseMediaModal, AfterViewInit {
   }
 
   onSubmit(values: any): void {
-    let body = JSON.stringify({
-      name: values.name,
-      description: values.description
-    });
-
-    this.albumService.create(body).subscribe(
-      (res: any)=> {
-        if (res.success) {
-          this.selectedAlbum = res.data;
-          this.albumService.addToAlbum(res.data.id, this.selectedPhotos).subscribe(
-            (res: any)=> {
-              this.modal.close();
-              this.showToast = true;
-            }
-          );
-        }
-
-      }
-    );
+    if (this.form.valid) {
+      this.selectedAlbum.name = values.name;
+      this.selectedAlbum.description = values.description;
+      // console.log(this.selectedAlbum);
+      this.event.emit({action: 'editInfo', params: {selectedObject: this.selectedAlbum}});
+    }
   }
+
+  // let body = JSON.stringify({
+  //   name: values.name,
+  //   description: values.description
+  // });
+  //
+  // this.albumService.updateInfo(this.selectedAlbum.id, body).subscribe(
+  //   (res: any)=> {
+  //     if (res.success) {
+  //       this.selectedAlbum = res.data;
+  //       console.log(res);
+  //     }
+  //
+  //   }
+  // );
 }

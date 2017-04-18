@@ -25,6 +25,7 @@ export class BaseObjectEditNameModalComponent implements OnInit, OnChanges, Base
   formValue: any;
   form: FormGroup;
   name: AbstractControl;
+  objectType: string = 'photo';
 
   constructor(private fb: FormBuilder) {
     this.form = fb.group({
@@ -49,6 +50,8 @@ export class BaseObjectEditNameModalComponent implements OnInit, OnChanges, Base
 
   open(options?: any) {
     this.data = options['selectedItems'][0];
+    console.log(options);
+    this.objectType = this.data.object_type;
     (<FormControl>this.name).setValue(this.data.name);
     this.modal.open();
   }

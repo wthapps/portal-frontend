@@ -27,24 +27,3 @@
     </form>
   </modal-body>
 </modal>
-
-
-<div class="toast-wrap-bottom toast-upload-wrap" *ngIf="showToast">
-  <div class="toast-wrap-bottom-item">
-    <div class="toast-wrap-bottom-header">
-      <button class="toast-wrap-bottom-close" type="button"><i class="fa fa-times" (click)="showToast = false"></i>
-      </button>
-      Added to Album
-    </div>
-    <div class="toast-wrap-bottom-content">
-      <div class="media">
-        <div class="media-body">
-          <p>{{selectedPhotos.length}} item{{(selectedPhotos.length>1)?'s':''}} are added to {{selectedAlbum.name}}</p>
-          <div class="text-right">
-            <a [routerLink]="['/' + urls.album, selectedAlbum.id]">View</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

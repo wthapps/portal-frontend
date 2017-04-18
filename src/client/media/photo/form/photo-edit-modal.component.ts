@@ -27,20 +27,13 @@ export class PhotoEditModalComponent implements OnChanges, BaseMediaModal {
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: ModalComponent;
 
-  @Output() modalHide: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() updatePhoto: EventEmitter<Photo> = new EventEmitter<Photo>();
-
-  formValue: any;
   form: FormGroup;
   name: AbstractControl;
   created_at: AbstractControl;
   description: AbstractControl;
-
   date: AbstractControl;
 
-  constructor(private fb: FormBuilder,
-              private photoService: ZMediaPhotoService,
-              private loadingService: LoadingService) {
+  constructor(private fb: FormBuilder) {
     this.form = fb.group({
       'name': ['',
         Validators.compose([Validators.required])
@@ -87,43 +80,13 @@ export class PhotoEditModalComponent implements OnChanges, BaseMediaModal {
   }
 
   onSubmit(values: any): void {
-
-    this.event.emit({action: 'editInfo', params: {selectedObject: values}});
-
-    //TODO move this logic into container or media list view
-    // Set value after updating form (checking user leave this page)
-    this.formValue = values;
-
     if (this.form.valid) {
       this.modal.close();
-      // start loading
-      this.loadingService.start();
+      this.data.name = values.name;
+      this.data.created_at = new Date(values.date);
+      this.data.description = values.description;
 
-      let updated_at = new Date(values.date);
-
-      let body = JSON.stringify({
-        name: values.name,
-        created_day: updated_at.getDate(),
-        created_month: updated_at.getMonth() + 1,
-        created_year: updated_at.getUTCFullYear(),
-        description: values.description
-      });
-
-      this.photoService.updateInfo(this.data.id, body)
-        .subscribe((res: any) => {
-            // stop loading
-            // console.log(res);
-            this.loadingService.stop();
-            this.data.name = values.name;
-            this.data.description = values.description;
-            this.data.created_at = new Date(values.date);
-          },
-          (error: any) => {
-            // stop loading
-            this.loadingService.stop();
-            console.log(error);
-          }
-        );
+      this.event.emit({action: 'editInfo', params: {selectedObject: this.data}});
     }
   }
 }

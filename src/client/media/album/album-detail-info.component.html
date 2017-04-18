@@ -1,6 +1,7 @@
 <div class="media-page-detail-topbar">
   <h3 class="m0">Information
-    <a href="javascript:;" class="pull-right text-inherit" (click)="onAction({action: 'toggleDetailInfo'})"><i class="fa fa-times"></i></a>
+    <a href="javascript:;" class="pull-right text-inherit" (click)="onAction({action: 'toggleDetailInfo'})"><i
+      class="fa fa-times"></i></a>
   </h3>
 </div>
 <div class="media-page-detail-info content-overflow-fixed">
@@ -27,13 +28,17 @@
     </dd>
   </dl>
   <hr>
-  <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})">Edit</a></h4>
+  <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;"
+                                       (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})">Edit</a>
+  </h4>
   <!--<div class="tags-text" *ngFor="let tag of album.json_tags">
   <span>{{tag}}</span>
   </div>-->
 
   <hr>
-  <h4><i class="fa fa-share"></i> Shared with <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">Edit</a></h4>
+  <h4><i class="fa fa-share"></i> Shared with <a href="javascript:;"
+                                                 (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">Edit</a>
+  </h4>
   <!--<div class="tags-text" *ngFor="let tag of album.json_tags">
   <span>{{tag}}</span>
   </div>-->

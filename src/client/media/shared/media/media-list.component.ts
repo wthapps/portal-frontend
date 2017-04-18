@@ -359,7 +359,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   editName(selectedObject: any) {
     this.loadingService.start();
-    console.log('selectedObject:', selectedObject);
     if (selectedObject.object_type == 'photo') {
       let updated_at = new Date(selectedObject.created_at);
       let body = JSON.stringify({
@@ -401,12 +400,43 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   editInfo(selectedObject: any) {
+    this.loadingService.start();
     if (this.currentPath == 'photos') {
-
+      let updated_at = new Date(selectedObject.created_at);
+      let body = JSON.stringify({
+        name: selectedObject.name,
+        created_day: updated_at.getDate(),
+        created_month: updated_at.getMonth() + 1,
+        created_year: updated_at.getUTCFullYear(),
+        description: selectedObject.description
+      });
+      this.photoService.updateInfo(selectedObject.id, body)
+        .subscribe(
+          (res: any) => {
+            this.loadingService.stop();
+          },
+          (error: any) => {
+            this.loadingService.stop();
+          }
+        );
 
     } else if (this.currentPath == 'albums') {
-      // this.loadModalComponent(AlbumEditModalComponent);
-      // this.modal.open();
+      let body = JSON.stringify({
+        name: selectedObject.name,
+        description: selectedObject.description,
+      });
+      this.albumService.updateInfo(selectedObject.id, body)
+        .subscribe((res: any) => {
+            // stop loading
+            console.log(res);
+            this.loadingService.stop();
+          },
+          (error: any) => {
+            // stop loading
+            this.loadingService.stop();
+            console.log(error);
+          }
+        );
     }
 
     console.log('call edit info method here');

@@ -60,11 +60,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
    * */
   @Input() pageType: string = 'list';
   @Input() params: any;
+  @Input() objectData: any;
 
-  @ViewChild('toolbarContainer', { read: ViewContainerRef }) toolbarContainer: ViewContainerRef;
-  @ViewChild('listContainer', { read: ViewContainerRef }) listContainer: ViewContainerRef;
-  @ViewChild('infoContainer', { read: ViewContainerRef }) infoContainer: ViewContainerRef;
-  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  @ViewChild('toolbarContainer', {read: ViewContainerRef}) toolbarContainer: ViewContainerRef;
+  @ViewChild('listContainer', {read: ViewContainerRef}) listContainer: ViewContainerRef;
+  @ViewChild('infoContainer', {read: ViewContainerRef}) infoContainer: ViewContainerRef;
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
 
   toolbarComponent: any;
@@ -79,19 +80,18 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   currentPath: string; // photos, albums, share-with-me, favourite
   selectedObjects: Array<any> = [];
-  objects: Array<any>;
+  objects: any;
 
   viewOption: string = 'grid';
   private currentPage: string;
   private showDetailInfo: boolean = true;
 
   // you are also able to inject PhotoService and AlbumService here for calling existing functions quickly
-  constructor(
-    private resolver: ComponentFactoryResolver,
-    private router: Router,
-    private route: ActivatedRoute,
-    private mediaObjectService: MediaObjectService,
-    private confirmationService: ConfirmationService) {
+  constructor(private resolver: ComponentFactoryResolver,
+              private router: Router,
+              private route: ActivatedRoute,
+              private mediaObjectService: MediaObjectService,
+              private confirmationService: ConfirmationService) {
 
   }
 
@@ -115,8 +115,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
     // this.currentPage = `${this.currentPath.slice(0,-1)}_${this.pageType}`;
     console.log('current page', this.currentPage);
-
-
 
 
     // this.route.queryParams.subscribe(
@@ -202,7 +200,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   // considering moving doAction into list-media
   doAction(event: any) {
-    switch(event.action) {
+    console.log(event);
+    switch (event.action) {
       // case 'uploadPhoto':
       //   this.upload();
       //     break;
@@ -269,10 +268,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       // open all of modals
       case 'openModal':
         this.openModal(event.params.modalName);
-          break;
+        break;
       case 'toggleDetailInfo':
         this.showDetailInfo = !this.showDetailInfo;
         break;
+      default:
+        this.list.doAction(event);
+          break;
     }
   }
 
@@ -285,7 +287,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     console.debug('Photo uploaded: ', photo);
 
     // TODO: Handle album details
-    if( this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
       // Add objects to media list
       this.list.objects.unshift(photo);
     }
@@ -294,7 +296,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   showNewAlbum(album: any) {
     console.debug('New album: ', album);
 
-    if( this.currentPath == 'albums') {
+    if (this.currentPath == 'albums') {
       // Add objects to media list
       this.list.objects.unshift(album);
     }
@@ -340,9 +342,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   edit() {
-    if(this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
 
-    } else if(this.currentPath == 'albums') {
+    } else if (this.currentPath == 'albums') {
       this.loadModalComponent(AlbumEditModalComponent);
       this.modal.open({selectedObjects: this.selectedObjects});
     }
@@ -356,10 +358,10 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   editInfo(selectedObject: any) {
-    if(this.currentPath == 'photos') {
+    if (this.currentPath == 'photos') {
       this.loadModalComponent(PhotoEditModalComponent);
       this.modal.open({selectedObjects: this.selectedObjects});
-    } else if(this.currentPath == 'albums') {
+    } else if (this.currentPath == 'albums') {
       // this.loadModalComponent(ZMediaFormEditAlbumComponent);
       // this.modal.open();
     }
@@ -411,6 +413,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
             break;
           case 'album':
             this.loadModalComponent(AlbumEditModalComponent);
+            options = {selectedItem: this.objectData};
             break;
         }
         break;
@@ -434,7 +437,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   //
   // *//
 
-  createAlbum(){
+  createAlbum() {
     this.loadModalComponent(AlbumCreateModalComponent);
     this.modal.open();
   }
