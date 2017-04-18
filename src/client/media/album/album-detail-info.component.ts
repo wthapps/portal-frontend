@@ -14,6 +14,7 @@ export class AlbumDetailInfoComponent implements OnInit, OnChanges {
   @Output() closeInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() tagEvent: EventEmitter<Album> = new EventEmitter<Album>();
   @Output() showFormEdit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   albumData: Album = null;
 
@@ -41,5 +42,9 @@ export class AlbumDetailInfoComponent implements OnInit, OnChanges {
 
   tag(album: Album) {
     this.tagEvent.emit(album);
+  }
+
+  onAction(options?: any) {
+    this.event.emit(options);
   }
 }

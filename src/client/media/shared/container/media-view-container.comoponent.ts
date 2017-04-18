@@ -16,6 +16,7 @@ import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
 import { AlbumCreateModalComponent } from '../modal/album-create-modal.component';
 import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
 import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
+import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
 
 declare var $: any;
 declare var _: any;
@@ -36,7 +37,8 @@ declare var _: any;
     PhotoEditModalComponent,
     AlbumCreateModalComponent,
     BaseObjectEditNameModalComponent,
-    AlbumEditModalComponent
+    AlbumEditModalComponent,
+    AlbumDetailInfoComponent
   ]
 })
 export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -67,10 +69,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   toolbarComponent: any;
   listComponent: any;
+  detailInfoComponent: any;
   modalComponent: any;
 
   toolbar: MediaToolbarListComponent;
   list: MediaListComponent;
+  detailInfo: any;
   modal: any;
 
   currentPath: string; // photos, albums, share-with-me, favourite
@@ -79,6 +83,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   viewOption: string = 'grid';
   private currentPage: string;
+  private showDetailInfo: boolean = true;
 
   // you are also able to inject PhotoService and AlbumService here for calling existing functions quickly
   constructor(
@@ -155,9 +160,10 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       this.doAction(event);
     });
 
-    // this.mediaDataService.actionObs$.subscribe((event: any) => {
-    //   this.doAction(event);
-    // });
+    this.createDetailInfoComponent();
+    this.detailInfo.event.subscribe((event: any) => {
+      this.doAction(event);
+    });
 
 
   }
@@ -175,6 +181,14 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.listComponent = this.listContainer.createComponent(listComponentFactory);
     this.list = <MediaListComponent>this.listComponent.instance;
     this.list.selectedObjects = this.selectedObjects;
+  }
+
+  createDetailInfoComponent() {
+    let detailInfoComponentFactory = this.resolver.resolveComponentFactory(AlbumDetailInfoComponent);
+    this.infoContainer.clear();
+    this.detailInfoComponent = this.infoContainer.createComponent(detailInfoComponentFactory);
+    this.detailInfo = <AlbumDetailInfoComponent>this.detailInfoComponent.instance;
+    this.detailInfo.selectedObjects = this.selectedObjects;
   }
 
   ngOnDestroy() {
@@ -252,10 +266,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.goBack();
         break;
 
-      // open all of modal
-      // case 'openModal':
-      //   this.openModal(event.params.modalName);
-      //     break;
+      // open all of modals
+      case 'openModal':
+        this.openModal(event.params.modalName);
+          break;
+      case 'toggleDetailInfo':
+        this.showDetailInfo = !this.showDetailInfo;
+        break;
     }
   }
 
@@ -382,23 +399,33 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
 
   openModal(modalName: string) {
+    let options: any;
     switch (modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
         break;
       case 'editInfoModal':
-        this.loadModalComponent(PhotoEditModalComponent);
+        switch (this.objectType) {
+          case 'photo':
+            this.loadModalComponent(PhotoEditModalComponent);
+            break;
+          case 'album':
+            this.loadModalComponent(AlbumEditModalComponent);
+            break;
+        }
         break;
       case 'sharingModal':
+        this.loadModalComponent(SharingModalComponent);
+        options = {selectedItems: this.selectedObjects};
 
         break;
       case 'taggingModal':
-
+        this.loadModalComponent(TaggingModalComponent);
+        options = {selectedItems: this.selectedObjects};
         break;
-
     }
 
-    this.modal.open();
+    this.modal.open(options);
 
   }
 
