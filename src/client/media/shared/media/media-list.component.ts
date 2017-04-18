@@ -48,15 +48,15 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  // @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
 
   readonly LIST_TYPE = { photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
   readonly MIX_SCREEN = [ 'shared-with-me', 'favorites'];
 
-  modalComponent: any;
-  modal: any;
+  // modalComponent: any;
+  // modal: any;
 
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
   viewOption: string = 'grid';
@@ -85,16 +85,17 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.pressingCtrlKey = this.pressedCtrlKey(ke);
   }
 
-  constructor(protected resolver: ComponentFactoryResolver,
-              protected mediaObjectService: MediaObjectService,
-              protected elementRef: ElementRef,
-              protected router: Router,
-              protected route: ActivatedRoute,
-              protected confirmationService: ConfirmationService,
-              protected loadingService: LoadingService,
-              protected photoService: ZMediaPhotoService,
-              protected albumService: ZMediaAlbumService,
-              private _location: Location
+  constructor(
+    protected resolver: ComponentFactoryResolver,
+    protected mediaObjectService: MediaObjectService,
+    protected elementRef: ElementRef,
+    protected router: Router,
+    protected route: ActivatedRoute,
+    protected confirmationService: ConfirmationService,
+    protected loadingService: LoadingService,
+    protected photoService: ZMediaPhotoService,
+    protected albumService: ZMediaAlbumService,
+    private _location: Location
   ) {
 
     this.route.queryParams
@@ -131,8 +132,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       });
       return;
     }
-
-
 
     this.loadingService.start('#list-photo');
     this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
@@ -187,6 +186,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'select':
       case 'deselect':
       case 'goBack':
+      case 'openModal':
         this.events.emit(options);
         break;
     }
@@ -303,14 +303,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.selectedObjects = event.params.selectedObjects;
         // this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
         break;
-      case 'goBack':
-        this.goBack();
-        break;
-
-      // open all of modal
-      case 'openModal':
-        this.openModal(event.params.modalName);
-        break;
     }
   }
 
@@ -321,16 +313,16 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   preview() {
     // open modal
-    this.loadModalComponent(PhotoDetailModalComponent);
-    this.modal.open({show: true, showDetails: false, selectedObjects: this.selectedObjects});
-    this.modal.event.subscribe((event: any) => {
-      this.doAction(event);
-    });
+    // this.loadModalComponent(PhotoDetailModalComponent);
+    // this.modal.open({show: true, showDetails: false, selectedObjects: this.selectedObjects});
+    // this.modal.event.subscribe((event: any) => {
+    //   this.doAction(event);
+    // });
   }
 
   share() {
     // this.loadModalComponent(SharingModalComponent);
-    this.modal.open({selectedItems: this.selectedObjects});
+    // this.modal.open({selectedItems: this.selectedObjects});
   }
 
   favourite() {
@@ -339,13 +331,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   tag() {
 
-    this.modal.open();
+    // this.modal.open();
   }
 
   addToAlbum(data?: any) {
-    this.loadModalComponent(AddToAlbumModalComponent);
-    let objects = (data != undefined) ? data : this.selectedObjects;
-    this.modal.open({selectedObjects: objects});
+    // this.loadModalComponent(AddToAlbumModalComponent);
+    // let objects = (data != undefined) ? data : this.selectedObjects;
+    // this.modal.open({selectedObjects: objects});
   }
 
   viewInfo() {
@@ -362,7 +354,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
     } else if(this.currentPath == 'albums') {
       this.loadModalComponent(AlbumEditModalComponent);
-      this.modal.open();
+      // this.modal.open();
     }
 
   }
@@ -439,60 +431,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // changeView(viewOption: string) {
-  //
-  // }
-  //
-  goBack() {
-    this._location.back();
-  }
 
 
-  openModal(modalName: string) {
-    let options: any;
-    switch (modalName) {
-      case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedObjects: this.selectedObjects};
-        break;
-      case 'editInfoModal':
-        this.loadModalComponent(PhotoEditModalComponent);
-        options = {selectedObjects: this.selectedObjects};
-        break;
-      case 'sharingModal':
-        this.loadModalComponent(SharingModalComponent);
-        options = {selectedObjects: this.selectedObjects};
-        break;
-      case 'taggingModal':
-        this.loadModalComponent(TaggingModalComponent);
-        options = {selectedObjects: this.selectedObjects};
-        break;
-      case 'addToAlbumModal':
-        this.loadModalComponent(AddToAlbumModalComponent);
-        options = {selectedObjects: this.selectedObjects};
-        break;
-      case 'createAlbumModal':
-        this.loadModalComponent(AlbumCreateModalComponent);
-        options = {selectedObjects: this.selectedObjects};
-        break;
-      case 'previewModal':
-        this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: false, selectedObjects: this.selectedObjects};
-        // this.modal.event.subscribe((event: any) => {
-        //   this.doAction(event);
-        // });
-        break;
-      case 'previewDetailsModal':
-        this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: true, selectedObjects: this.selectedObjects};
-        // this.modal.event.subscribe((event: any) => {
-        //   this.doAction(event);
-        // });
-        break;
-    }
-    this.modal.open(options);
-
-  }
 
   //*
   // Album's functions
@@ -502,7 +442,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   createAlbum(data?: any){
     this.loadModalComponent(AlbumCreateModalComponent);
     let objects = data != undefined ? data : this.selectedObjects;
-    this.modal.open({selectedObjects: objects});
+    // this.modal.open({selectedObjects: objects});
   }
 
   viewDetails() {
@@ -547,19 +487,17 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
-
-
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
-    this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
-    this.modal = this.modalComponent.instance;
+    // this.modalContainer.clear();
+    // this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    // this.modal = this.modalComponent.instance;
 
     // handle all of action from modal all
-    this.modal.event.subscribe((event: any) => {
-
-      // considering moving doAction into list-media
-      this.doAction(event);
-    });
+    // this.modal.event.subscribe((event: any) => {
+    //
+    //   // considering moving doAction into list-media
+    //   this.doAction(event);
+    // });
   }
 }
