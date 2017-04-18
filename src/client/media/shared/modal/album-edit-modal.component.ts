@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -15,11 +15,12 @@ declare var _: any;
   selector: 'album-edit-modal',
   templateUrl: 'album-edit-modal.component.html',
 })
-export class AlbumEditModalComponent implements AfterViewInit {
+export class AlbumEditModalComponent implements BaseMediaModal, AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
 
 
   @Input() selectedPhotos: any;
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   showToast: boolean = false;
   selectedAlbum: any;
@@ -51,7 +52,7 @@ export class AlbumEditModalComponent implements AfterViewInit {
     });
   }
 
-  open(options: any) {
+  open(options?: any) {
     this.modal.open();
     this.updateForm(options['selectedObjects'][0]);
   }
@@ -59,6 +60,10 @@ export class AlbumEditModalComponent implements AfterViewInit {
   updateForm(values: any) {
     (<FormControl>this.name).setValue(values.name);
     (<FormControl>this.description).setValue(values.description);
+  }
+
+  close(options?: any) {
+    this.modal.close();
   }
 
   onSubmit(values: any): void {

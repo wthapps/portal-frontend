@@ -1,8 +1,8 @@
-<template #toolbarContainer></template>
-
-<template #listContainer></template>
-<template #infoContainer></template>
-
+<div class="media-page-detail-left gray-light">
+  <template #toolbarContainer></template>
+  <template #listContainer></template>
+</div>
+<div *ngIf="showDetailInfo" class="media-page-detail-right">
+  <template #infoContainer></template>
+</div>
 <template #modalContainer></template>
-
-

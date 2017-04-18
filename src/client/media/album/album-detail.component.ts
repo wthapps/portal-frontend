@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/components/common/api';
@@ -9,6 +9,10 @@ import { ZMediaAlbumService } from './album.service';
 
 import { ZMediaPhotoDetailComponent } from '../photo/photo-detail.component';
 import { ZMediaPhotoService } from '../photo/photo.service';
+import { BaseObjectEditNameModalComponent } from '../shared/modal/base-object-edit-name-modal.component';
+import { PhotoEditModalComponent } from '../photo/form/photo-edit-modal.component';
+import { SharingModalComponent } from '../shared/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../shared/modal/tagging/tagging-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -21,10 +25,16 @@ declare var _: any;
 })
 export class ZMediaAlbumDetailComponent implements OnInit {
   @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+
   albumDetail: any = [];
 
   data: any = [];
   nextLink: string = null;
+
+  modalComponent: any;
+  modal: any;
+
 
   selectedAlbums: any = [];
 
@@ -49,11 +59,13 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
   }
 
-  constructor(private route: ActivatedRoute,
-              private albumService: ZMediaAlbumService,
-              private photoService: ZMediaPhotoService,
-              private confirmationService: ConfirmationService,
-              private loadingService: LoadingService) {
+  constructor(
+    protected resolver: ComponentFactoryResolver,
+    private route: ActivatedRoute,
+    private albumService: ZMediaAlbumService,
+    private photoService: ZMediaPhotoService,
+    private confirmationService: ConfirmationService,
+    private loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -98,6 +110,31 @@ export class ZMediaAlbumDetailComponent implements OnInit {
       });
     }
   }
+
+
+
+  openModal(modalName: string) {
+    let options: any;
+    switch (modalName) {
+      case 'editNameModal':
+        this.loadModalComponent(BaseObjectEditNameModalComponent);
+        break;
+      case 'editInfoModal':
+        this.loadModalComponent(PhotoEditModalComponent);
+        break;
+      case 'sharingModal':
+        this.loadModalComponent(SharingModalComponent);
+        options = {selectedItems: this.selectedAlbums};
+        break;
+      case 'taggingModal':
+        this.loadModalComponent(TaggingModalComponent);
+        options = {selectedItems: this.selectedAlbums};
+        break;
+    }
+    this.modal.open(options);
+
+  }
+
 
 
   actionItem(event: any) {
@@ -172,10 +209,29 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     }
   }
 
-
   toggleInfo() {
     this.hasDetails = !this.hasDetails;
   }
+
+  doAction(options: any) {
+
+  }
+
+
+  private loadModalComponent(component: any) {
+    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    this.modalContainer.clear();
+    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modal = this.modalComponent.instance;
+
+    // handle all of action from modal all
+    this.modal.event.subscribe((event: any) => {
+
+      // considering moving doAction into list-media
+      this.doAction(event);
+    });
+  }
+
 
   // --- Action for Item --- //
   private onSelectedPhotos(item: any) {
