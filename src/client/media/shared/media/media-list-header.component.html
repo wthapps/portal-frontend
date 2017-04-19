@@ -1,7 +1,7 @@
 <div *ngIf="viewOption == 'grid'" class="clearfix sortbar-wrap">
-  <span class="btn btn-text pull-right">
+  <span class="btn btn-text pull-right" (click)="toggleSort(); doSort();">
     <i class="fa" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"
-       (click)="toggleSort(); doSort();"></i>
+       ></i>
   </span>
   <div class="dropdown pull-right">
     <span class="btn btn-text dropdown-toggle" type="button" data-toggle="dropdown">
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-<div *ngIf="viewOption == 'timeline'">
+<div *ngIf="viewOption == 'timeline'" class="pull-right">
   <span class="dropdown">
     <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"
             data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">
@@ -55,5 +55,6 @@
     </ul>
   </span>
   <i class="fa can-click" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"
-     (click)="setSortName('Date'); toggleSort(); doSort();"></i>
+     (click)="toggleSort(); doSort();"></i>
 </div>
+<div class="clearfix"></div>

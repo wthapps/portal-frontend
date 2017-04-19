@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { FormModalComponent } from '../../../core/shared/form/form-modal.component';
 import { Album } from '../model/album.model';
 import { AlbumPhoto } from '../model/album-photos.model';
@@ -25,7 +25,7 @@ declare var _: any;
   templateUrl: 'album-create-modal.component.html',
   styleUrls: ['album-create-modal.component.css']
 })
-export class AlbumCreateModalComponent implements BaseMediaModal {
+export class AlbumCreateModalComponent implements BaseMediaModal, OnInit {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
@@ -69,8 +69,7 @@ export class AlbumCreateModalComponent implements BaseMediaModal {
 
   open(options?: any) {
     // Get selected photo object list
-    // this.selectedPhotos = _.filter(photos, {'object_type' : 'photo'});
-    this.selectedPhotos = options.selectedObjects;
+    this.selectedPhotos = _.filter(options.selectedObjects, {'object_type' : 'photo'});
     console.log('Photos loaded to album create component: ', this.selectedPhotos);
     this.modal.open().then((res: any) => console.log('Album create modal opened, options', res));
   }
@@ -111,10 +110,8 @@ export class AlbumCreateModalComponent implements BaseMediaModal {
         console.log('A new album is created: ', this.album);
 
         // this.onAction('showNewAlbum', this.album);
-        // // Add album to album list if not empty
-        if(retPhotos > 0) {
-          this.viewAlbumDetail(this.album.id );
-        }
+        this.viewAlbumDetail(this.album.id );
+
         this.modal.close().then((res: any) => console.log('Album create modal should close now'));
 
 
@@ -138,7 +135,7 @@ export class AlbumCreateModalComponent implements BaseMediaModal {
       // .map(result => result['data'])
       .do(console.log)
       ;
-  };
+  }
 
   removePhoto(photo: any, event: any): void {
     _.remove(this.selectedPhotos, (p: any) => p.id == photo.id);

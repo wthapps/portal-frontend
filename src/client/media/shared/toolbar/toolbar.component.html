@@ -100,7 +100,7 @@
 <me-edit-name-modal *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></me-edit-name-modal>
 
 
-<me-uploader #zoneUpload (outEvent)="onActionUploading($event)"></me-uploader>
+<me-uploader #zoneUpload (outEvent)="onAction($event)"></me-uploader>
 
 
 <sharing-modal #zoneSharing [selectedItems]="selectedPhotos"></sharing-modal>

@@ -45,8 +45,8 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   photoIsEmpty: boolean = false;
 
-  private params: any;
-  private hasDetails: boolean = true;
+  params: any;
+  hasDetails: boolean = true;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {

@@ -37,11 +37,18 @@
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
         </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" (click)="onAction({action: 'favourite', params: {}})">
-            <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
+        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="Add to favourite">
+          <a href="javascript:;" (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
+            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i>
           </a>
         </li>
+
+        <!--<li [ngClass]="{'action-disabled': noSelectedObjects}" title="Remove from favourite">-->
+          <!--<a href="javascript:;" (click)="onAction({action: 'removeFromFavourite', params: {}})">-->
+            <!--<i class="fa fa-star-o"></i>-->
+          <!--</a>-->
+        <!--</li>-->
+
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>
         </li>
@@ -124,6 +131,8 @@
           </a>
 
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"><i class="fa fa-plus-circle"></i> Add Photos</a>
+            </li>
             <li><a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;"><i class="fa fa-toggle-right"></i> Slideshow</a>
             </li>
             <li><a (click)="onAction({action: 'setCoverImage', params: {}})" href="javascript:;"><i class="fa fa-image"></i> Set Album Cover</a>

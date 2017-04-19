@@ -2,7 +2,6 @@ import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
   ViewContainerRef, ViewChild, ComponentFactoryResolver
 } from '@angular/core';
-import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
@@ -13,7 +12,6 @@ import { AlbumCreateModalComponent } from '../modal/album-create-modal.component
 import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
 import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
-import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
 import { ZMediaPhotoService } from '../../photo/photo.service';
@@ -53,7 +51,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
-  readonly MIX_SCREEN = ['shared-with-me', 'favorites'];
+  readonly MIX_SCREEN: Array<string> = ['shared-with-me', 'favorites'];
 
   // modalComponent: any;
   // modal: any;
@@ -64,9 +62,15 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   groupByTime: string;
   currentGroupByTime: string = 'date';
   groupBy: string;
+
+  //this is used in list pages
   objects: Array<any> = new Array<any>();
+
+  // this is used in detail pages
+  object: any;
+
+
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
-  previousPath: any; // ['/albums'], ['/photos'], ['albums', id]
   nextLink: string;
   private pressingCtrlKey: boolean = false;
 
@@ -106,23 +110,23 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   //      this.deSelectObjects();
   // }
   constructor(protected resolver: ComponentFactoryResolver,
-              protected mediaObjectService: MediaObjectService,
               protected elementRef: ElementRef,
               protected router: Router,
               protected route: ActivatedRoute,
               protected confirmationService: ConfirmationService,
               protected loadingService: LoadingService,
+              protected mediaObjectService: MediaObjectService,
               protected photoService: ZMediaPhotoService,
-              protected albumService: ZMediaAlbumService,
-              private _location: Location) {
+              protected albumService: ZMediaAlbumService
+  ) {
 
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
       .subscribe(
-        (queryParams: any) => {
-          this.getObjects(queryParams);
-        }
-      );
+      (queryParams: any) => {
+        this.getObjects(queryParams);
+      }
+    );
   }
 
 
@@ -133,7 +137,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.getObjects();
 
-    if (this.MIX_SCREEN.includes(this.currentPath))
+    // if(this.MIX_SCREEN.includes(this.currentPath))
+    if(this.MIX_SCREEN.indexOf(this.currentPath) > -1)
       this.changeView('grid'); // Default view should be grid
   }
 
@@ -150,7 +155,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       });
       return;
     }
-
 
     this.loadingService.start('#list-photo');
     this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
@@ -234,8 +238,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.sliderViewNumber = event.number;
     }
     if (event.action == 'sort') {
-      // TODO  check here
-      // this.sort(event.data);
+      this.sort(event.data);
     }
     if (event.action == 'group') {
       this.groupByTime = event.data;
@@ -248,27 +251,31 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.events.emit(ev);
   }
 
-  sort(data: any) {
-
-  }
-
   // considering moving doAction into list-media
   doAction(event: any) {
-
-    console.log('event in list media::', event);
+    // console.log('event in list media::', event);
     switch (event.action) {
       case 'uploadPhoto':
         this.upload();
         break;
+      case 'photoSelectNext':
+        this.addPhotosToList(event.params.data);
+        break;
       case 'showUploadedPhotos':
-        this.showUploadedPhotos(event.data);
+        this.showUploadedPhotos(event.params.data);
         break;
       case 'share':
         this.share();
         break;
       case 'favourite':
-        this.favourite();
+        this.favourite(event.params);
         break;
+      // case 'addToFavourite':
+      //   this.addToFavourite();
+      //   break;
+      // case 'removeFromFavourite':
+      //   this.removeFromFavourite();
+      //   break;
       case 'tag':
         this.tag();
         break;
@@ -344,8 +351,50 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     // this.modal.open({selectedItems: this.selectedObjects});
   }
 
-  favourite() {
+  favourite(params: any) {
+    let body: any;
+    let selectedIndex: number = -1;
+    let mode = params.mode;
 
+    // single favourite
+    if(params.hasOwnProperty('selectedObject')) {
+      body = {
+        objects: [_.pick(params.selectedObject, ['id', 'object_type'])],
+        mode: mode
+      };
+      selectedIndex = _.findIndex(this.objects, ['id', params.selectedObject.id]);
+
+    } else { // multi-favourite
+      body = {
+        objects: _.map(this.selectedObjects, (object: any) => {
+          return _.pick(object, ['id', 'object_type']);
+        }),
+        mode: mode
+      };
+    }
+
+    console.log('body data: ', body);
+
+
+    this.mediaObjectService.favourite(body).subscribe(
+      (response: any) => {
+        console.log(response.data);
+        // update favourite attribute
+        if (selectedIndex != -1) {
+          this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
+          // refresh objects if current page is favourite
+        }
+
+        _.map(this.selectedObjects, (object: any)=> {
+          object.favorite = (mode == 'add' ? true : false);
+
+          // refresh objects if current page is favourite
+        });
+      },
+      (error: any) => {
+        console.log('error: ', error);
+      }
+    );
   }
 
   tag() {
@@ -509,6 +558,16 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     console.debug('showUploadedPhotos: ', data);
   }
 
+  addPhotosToList(photos?: any) {
+    // Add data to album detail if possible
+    if (['album_detail', 'albums'].indexOf(this.currentPath) > -1 )
+      this.albumService.addToAlbum(this.params.id, photos).take(1)
+        .subscribe((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
+          (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
+
+    this.objects.unshift(...photos);
+  }
+
   private selectObject(item: any): void {
 
     if (this.pressingCtrlKey) {
@@ -545,7 +604,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
-
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
     // this.modalContainer.clear();
@@ -559,4 +617,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     //   this.doAction(event);
     // });
   }
+
+  private sort(data:any) {
+    this.getObjects(data);
+  }
 }
+

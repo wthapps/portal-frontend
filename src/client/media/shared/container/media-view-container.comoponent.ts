@@ -18,6 +18,9 @@ import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.compo
 import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
+import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
+import { PhotoSelectModalComponent } from '../../../core/partials/zone/photo/upload-photos/photo-select-modal.component';
+import { LoadingService } from '../../../core/partials/loading/loading.service';
 
 declare var $: any;
 declare var _: any;
@@ -40,6 +43,8 @@ declare var _: any;
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
     AlbumDetailInfoComponent,
+
+    PhotoSelectModalComponent,
 
     PhotoDetailModalComponent,
     PhotoEditModalComponent,
@@ -88,8 +93,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   objects: any;
 
   viewOption: string = 'grid';
+  showDetailInfo: boolean = true;
   private currentPage: string;
-  private showDetailInfo: boolean = true;
 
   // you are also able to inject PhotoService and AlbumService here for calling existing functions quickly
   constructor(private resolver: ComponentFactoryResolver,
@@ -323,11 +328,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
-        options = {selectedObjects: this.selectedObjects};
+        // Take selected photos from photo list screen OR uploaded photos from upload photo component
+        options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
         break;
       case 'createAlbumModal':
         this.loadModalComponent(AlbumCreateModalComponent);
-        options = {selectedObjects: this.selectedObjects};
+        // Take selected photos from photo list screen OR uploaded photos from upload photo component
+        options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
         break;
       case 'previewModal':
         this.loadModalComponent(PhotoDetailModalComponent);
@@ -342,6 +349,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         // this.modal.event.subscribe((event: any) => {
         //   this.doAction(event);
         // });
+        break;
+      //  Add uploaded photos to album detail
+      case 'photosSelectModal':
+        this.loadModalComponent(PhotoSelectModalComponent);
+        options = {};
         break;
     }
     this.modal.open(options);

@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { ViewOptions } from './view-options.constant';
 import { Observable, Observer } from 'rxjs';
 
+declare let _: any;
+
 @Component({
   moduleId: module.id,
   selector: 'me-toolbar-list',
@@ -21,15 +23,18 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   data: any;
 
 
-  private currentPath: string;
-  private objectType: string;
+  currentPath: string;
+  objectType: string;
 
-  private noSelectedObjects: boolean = true;
-  private viewOption: string = 'grid';
-  private grid: string = 'grid';
-  private list: string = 'list';
-  private timeline: string = 'timeline';
+  noSelectedObjects: boolean = true;
+  viewOption: string = 'grid';
+  grid: string = 'grid';
+  list: string = 'list';
+  timeline: string = 'timeline';
 
+  // if all of objects are favourite or not
+  isFavourited: boolean = false;
+  hasMultiObjects: boolean = false;
 
 
   constructor() {
@@ -42,10 +47,6 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-  }
-
   initProperties(properties: any) {
     this.objectType = properties.objectType;
     this.currentPath = properties.currentPath;
@@ -55,16 +56,21 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
 
   onAction(options: any) {
-    if(options.action == 'changeView') {
+    if(_.get(options, 'action', '') == 'changeView') {
       this.viewOption = options.params.viewOption;
+    }
+    // toggle favourite action
+    if (options.action == 'favourite') {
+      this.isFavourited = !this.isFavourited;
     }
     this.events.emit(options);
   }
 
-  updateAttributes(attbutes: any) {
-    this.selectedObjects = attbutes.selectedObjects;
+  updateAttributes(attributes: any) {
+    this.selectedObjects = attributes.selectedObjects;
     this.noSelectedObjects = this.selectedObjects.length > 0 ? false: true;
+
+    this.isFavourited = !_.some(this.selectedObjects, ['favorite', false]);
+    this.hasMultiObjects = this.selectedObjects.length > 1 ? true : false;
   }
-
-
 }

@@ -23,9 +23,9 @@ export class ConvertByPatternPipe implements PipeTransform {
         if (current[paths[i]] == undefined) {
           return undefined;
         } else {
-          if (path == "created_at") {
+          if (path == 'created_at') {
             let date = new Date(current[paths[i]]);
-            current[paths[i] + "_converted"] = this.formatDate(date, pattern);
+            current[paths[i] + '_converted'] = this.formatDate(date, pattern);
           }
         //  Write others code here
         //   .......
@@ -36,7 +36,7 @@ export class ConvertByPatternPipe implements PipeTransform {
   }
 
   private formatDate(date:any, pattern:string) {
-    let current = "";
+    let current = '';
     let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];

@@ -62,4 +62,9 @@ export class MediaObjectService {
   loadMore(next: string): any {
     return this.api.get(next);
   }
+
+  favourite(body: any): any {
+    return this.api.post('media/media/favourite', body);
+  }
+
 }
