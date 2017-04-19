@@ -342,7 +342,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedObjects: this.selectedObjects, objects: this.list.objects};
+        options = {selectedObjects: this.selectedObjects, updateListObjects: [this.list.objects]};
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
@@ -356,14 +356,14 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'previewModal':
         this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: false, selectedObjects: this.selectedObjects};
+        options = {show: true, showDetails: false, selectedObjects: this.selectedObjects, objects: this.list.objects};
         // this.modal.event.subscribe((event: any) => {
         //   this.doAction(event);
         // });
         break;
       case 'previewDetailsModal':
         this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: true, selectedObjects: this.selectedObjects};
+        options = {show: true, showDetails: true, selectedObjects: this.selectedObjects, objects: this.list.objects};
         // this.modal.event.subscribe((event: any) => {
         //   this.doAction(event);
         // });

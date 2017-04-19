@@ -152,7 +152,7 @@ export class PhotoUploadService {
               console.log('Successfully uploaded photo.', data);
 
               // let imageName = data.key;
-              let tempImageUrl = data.Location;;
+              let tempImageUrl = data.Location;
               let imageUrl = this.getCompressUrl(tempImageUrl);
               let imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
               let body = {

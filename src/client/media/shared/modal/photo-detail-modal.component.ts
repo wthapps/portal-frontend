@@ -45,6 +45,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
   index: number = 0;
   loadingImg: boolean = true;
+  objects:any;
 
   private showDetails: boolean = false;
   private active: boolean = false;
@@ -107,12 +108,6 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
         this.openModal(event.params.modalName);
         // this.mediaToolbar.zoneSharing.modal.open();
         break;
-      case 'tag':
-        this.zoneTagging.selectedItems = [this.selectedPhotos[this.index]];
-        this.zoneTagging.items = this.allPhotos;
-        this.zoneTagging.mediaType = 'photo';
-        this.zoneTagging.open();
-        break;
       case 'delete':
         this.onDelete();
         break;
@@ -144,6 +139,14 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
     }
     if (_.has(options, 'selectedObjects')) {
       this.selectedPhotos = options.selectedObjects;
+    }
+
+    if (_.has(options, 'selectedObjects')) {
+      this.selectedPhotos = options.selectedObjects;
+    }
+
+    if (_.has(options, 'objects')) {
+      this.objects = options.objects;
     }
 
     this.loadingImg = true;
@@ -200,7 +203,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedItems: this.selectedPhotos};
+        options = {selectedObjects: [this.selectedPhotos[this.index]], updateListObjects: [this.objects, this.selectedPhotos]};
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);

@@ -32,6 +32,14 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   pending_request: any;
   photos: Array<Photo> = [];
   files: Array<any>;
+  uploadSteps:any = {
+    closed: -1,
+    begin: 0,
+    init: 1,
+    uploaded: 2,
+    error: 3,
+    stop: 4,
+  }
 
   @ViewChild('inputfiles') inputFiles: ElementRef;
 
@@ -49,7 +57,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   ngOnInit() {
-    this.step = 0;
+    this.step = this.uploadSteps.begin;
     this.files = new Array<any>();
   }
 
@@ -68,13 +76,13 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   close() {
-    if (this.step == 2 || this.step == 4) {
+    if (this.step == this.uploadSteps.uploaded || this.step == this.uploadSteps.stop) {
       this.outEvent.emit({
         action: 'addPhoto',
         data: this.photos
       });
     }
-    this.step = -1;
+    this.step = this.uploadSteps.closed;
   }
 
   stop(event: any) {
@@ -83,14 +91,14 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
       this.pending_request.unsubscribe();
     }
     this.stopped_num = this.files_num - this.uploaded_num;
-    this.step = 4;
+    this.step = this.uploadSteps.stop;
     if (this.uploaded_num > 0) {
       this.needToReload.emit(true);
     }
   }
 
   uploadImages(files: any) {
-    this.step = 1;
+    this.step = this.uploadSteps.init;
     this.uploaded_num = 0;
     this.stopped_num = 0;
     this.files_num = this.files.length;
@@ -100,7 +108,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
     // Stop observable when finish uploading all files
     this.photoUploadService.uploadPhotos(files)
-      .takeWhile(() => this.step != 2)
+      .takeWhile(() => this.step != this.uploadSteps.uploaded)
       .subscribe((res: any) => {
         console.log('Upload image to s3 and save info successfully', res);
         this.uploaded_num++;
@@ -112,19 +120,18 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
         // this.onAction('showUploadedPhoto', newPhoto);
 
         if (this.uploaded_num == this.files_num) {
-          this.step = 2;
+          this.step = this.uploadSteps.uploaded;
         }
       }
       ,(err: any) => {
-        this.step = 3;
+        this.step = this.uploadSteps.error;
         console.error('Error when uploading files ', err);
       });
-
   }
 
   onAction(options?: any): void {
     // close uploading form
-    this.step = -1;
+    this.step = this.uploadSteps.closed;
 
     this.outEvent.emit(options);
   }
