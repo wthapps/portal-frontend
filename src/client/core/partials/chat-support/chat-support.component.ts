@@ -78,42 +78,45 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.notificationChannel.subscribe('cs');
-    if (this.notificationChannel.hasDataChanged) {
-      this.notificationChannel.hasDataChanged
-        .subscribe(
-          (response: any) => {
-            if (response.object == 'conversation') {
+    // TODO comment out here
 
-            }
-            console.log('notification has data changed', response);
-            // this.chatSupportChannel.subscribe(response.conversation.uuid, 'cs');
-
-          });
-    }
+    // this.notificationChannel.subscribe('cs');
+    // if (this.notificationChannel.hasDataChanged) {
+    //   this.notificationChannel.hasDataChanged
+    //     .subscribe(
+    //       (response: any) => {
+    //         if (response.object == 'conversation') {
+    //
+    //         }
+    //         console.log('notification has data changed', response);
+    //         // this.chatSupportChannel.subscribe(response.conversation.uuid, 'cs');
+    //
+    //       });
+    // }
   }
 
   ngAfterViewInit() {
 
-    // generate client id for chat support
-    this.csUserid = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
-    this.currentWindow = this.cookie.get(`${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`);
-    if(this.currentWindow === undefined) {
-      this.cookie.put(
-        `${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`,
-        'ConversationListComponent', <CookieOptionsArgs>Constants.cookieOptionsArgs
-      );
-    }
-
-    if (this.csUserid == undefined) {
-      this.api.post(`chat_support/init`, {user: null})
-        .subscribe(
-          (response: any) => {
-            this.csUserid = response.data.user.uuid;
-            this.cookie.put(Constants.cookieKeys.chatSupportId, this.csUserid, <CookieOptionsArgs>Constants.cookieOptionsArgs);
-          }
-        );
-    }
+    // TODO comment out here
+    // // generate client id for chat support
+    // this.csUserid = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
+    // this.currentWindow = this.cookie.get(`${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`);
+    // if(this.currentWindow === undefined) {
+    //   this.cookie.put(
+    //     `${Constants.cookieKeys.chatSupportCurrentWindow}:${this.csUserid}`,
+    //     'ConversationListComponent', <CookieOptionsArgs>Constants.cookieOptionsArgs
+    //   );
+    // }
+    //
+    // if (this.csUserid == undefined) {
+    //   this.api.post(`chat_support/init`, {user: null})
+    //     .subscribe(
+    //       (response: any) => {
+    //         this.csUserid = response.data.user.uuid;
+    //         this.cookie.put(Constants.cookieKeys.chatSupportId, this.csUserid, <CookieOptionsArgs>Constants.cookieOptionsArgs);
+    //       }
+    //     );
+    // }
 
   }
 
