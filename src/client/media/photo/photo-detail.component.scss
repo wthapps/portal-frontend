@@ -70,9 +70,10 @@ $photo-detail-info-width: 470px;
           > a {
             width: auto;
             font-size: 16px;
+            padding: 0 10px;
             text-decoration: none;
             &:hover {
-              background-color: transparent;
+              background-color: $light-slate;
               color: #ffffff;
             }
           }

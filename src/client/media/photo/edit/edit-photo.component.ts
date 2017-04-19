@@ -10,7 +10,8 @@ declare var Cropper: any;
 @Component({
   moduleId: module.id,
   selector: 'z-media-photo-edit',
-  templateUrl: 'edit-photo.component.html'
+  templateUrl: 'edit-photo.component.html',
+  styleUrls: ['edit-photo.component.css']
 })
 export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
   @Input() data: Photo = null;
@@ -18,6 +19,16 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
   loadingImg: boolean = true;
   imgUrl: string = 'assets/images/zone/media/photo-edit-default.png';
   img: any = null;
+  imgType: string = 'jpg';
+
+  hasSave: boolean = true;
+
+  myCropOptions: any = {
+    viewMode: 2,
+    dragMode: 'move',
+    autoCropArea: 1,
+    autoCrop: false
+  };
 
   constructor(private photoService: ZMediaPhotoService,
               private route: ActivatedRoute) {
@@ -38,8 +49,9 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
       (res: any)=> {
         this.data = res.data;
         this.imgUrl = res.data.url;
+        this.imgType = res.data.extension;
         // this.img.cropper('reset', true).cropper('replace', res.data.url);
-        this.img.cropper('destroy').attr('src', res.data.url).cropper();
+        this.img.cropper('destroy').attr('src', res.data.url).cropper(this.myCropOptions).cropper('clear');
       }
     );
   }
@@ -58,6 +70,7 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
 
   cropperCrop() {
     this.img.cropper('setDragMode', 'crop');
+    this.hasSave = false;
   }
 
   cropperZoomIn() {
@@ -69,37 +82,55 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
   }
 
   cropperReset() {
-    this.img.cropper('reset');
+    // this.img.cropper('reset');
+    this.img.cropper('destroy').attr('src', this.data.url).cropper(this.myCropOptions).cropper('clear');
+  }
+
+  cropperDone() {
+    let result = this.img.cropper('getCroppedCanvas').toDataURL();
+    this.img.cropper('destroy').attr('src', result).cropper(this.myCropOptions).cropper('clear');
+
+    this.hasSave = true;
+  }
+
+  cropperSave() {
+    let _this = this;
+
+    //http://codepen.io/anon/pen/PZxWez
+    //https://gist.github.com/maria-p/8633b51f629ea8dbd27e
+    // transform cropper dataURI output to a Blob which Dropzone accepts
+    function dataURItoBlob(dataURI: any) {
+      var byteString = atob(dataURI.split(',')[1]);
+      var ab = new ArrayBuffer(byteString.length);
+      var ia = new Uint8Array(ab);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      return new Blob([ab], {type: `image/${_this.imgType}`});
+    }
+
+    var cachedFilename = this.data.name;
+
+    // get cropped image data
+    var blob = this.img.cropper('getCroppedCanvas').toDataURL();
+
+    console.log(blob);
+
+    // transform it to Blob object
+    var newFile: any = dataURItoBlob(blob);
+    // set 'cropped to true' (so that we don't get to that listener again)
+    newFile.cropped = true;
+    // assign original filename
+    newFile.name = cachedFilename;
+
+    console.log(newFile);
   }
 
 
   private reInitPhoto(): void {
     // Define variables
-    let _this = this;
-
     let elImage = $('#photo-detail-img');
-
-    // initialize cropper
-    let myCropOptions = {
-      viewMode: 3
-      //, aspectRatio: 1 / 1
-      , dragMode: 'move'
-      //, autoCropArea: 0.8
-      //, restore: false
-      //, modal: false
-      , guides: false
-      , highlight: false
-      //, cropBoxMovable: true
-      //, cropBoxResizable: true
-      , autoCrop: false
-      , checkCrossOrigin: true
-      , built: function () {
-        $(this).cropper('clear');
-      }
-    };
-
-    elImage.cropper(myCropOptions);
-
+    elImage.cropper();
     this.img = elImage;
   }
 }

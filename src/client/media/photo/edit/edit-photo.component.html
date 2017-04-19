@@ -6,17 +6,20 @@
       </li>
     </ul>
 
-    <ul class="action action-text navbar-right">
+    <ul class="action action-text navbar-right ml10">
       <li>
-        <a id="photo-detail-reset" href="javascript:;" class="mr20">Reset</a>
+        <a (click)="cropperReset()" href="javascript:;" class="mr20">Reset</a>
       </li>
-      <li>
-        <a href="#">Done</a>
+      <li *ngIf="!hasSave">
+        <a (click)="cropperDone()" href="javascript:;">Done</a>
+      </li>
+      <li *ngIf="hasSave">
+        <a (click)="cropperSave()" href="javascript:;">Save</a>
       </li>
     </ul>
     <ul class="action navbar-right">
       <li>
-        <a (click)="cropperReset()" href="javascript:;"><i class="fa fa-crop"></i></a>
+        <a (click)="cropperCrop()" href="javascript:;"><i class="fa fa-crop"></i></a>
       </li>
       <li>
         <a (click)="cropperZoomIn()" href="javascript:;"><i class="fa fa-search-plus"></i></a>
@@ -38,9 +41,9 @@
   <div class="photo-detail-content">
   <!--<div *ngIf="data" class="photo-detail-content">-->
     <div class="photo-detail-img">
-      <figure [ngClass]="{'img-loading': loadingImg}" id="cropper-wrap">
-        <img id="photo-detail-img" [src]="imgUrl" alt="" (load)="showLoading($event)">
-      </figure>
+      <div [ngClass]="{'img-loading': loadingImg}" id="cropper-wrap">
+        <img *ngIf="imgUrl" id="photo-detail-img" [src]="imgUrl" alt="" (load)="showLoading($event)">
+      </div>
     </div>
   </div>
 </div>
