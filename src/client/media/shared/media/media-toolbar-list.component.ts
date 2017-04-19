@@ -22,6 +22,8 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   selectedObjects: Array<any> = new Array<any>();
   data: any;
 
+  object: any;
+
 
   currentPath: string;
   objectType: string;
@@ -66,8 +68,13 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
     this.events.emit(options);
   }
 
-  updateAttributes(attributes: any) {
-    this.selectedObjects = attributes.selectedObjects;
+  updateProperties(properties: any) {
+    if(properties.hasOwnProperty('selectedObjects')) {
+      this.selectedObjects = properties.selectedObjects;
+    }
+    if (properties.hasOwnProperty('object')) {
+      this.object = properties.object;
+    }
     this.noSelectedObjects = this.selectedObjects.length > 0 ? false: true;
 
     this.isFavourited = !_.some(this.selectedObjects, ['favorite', false]);

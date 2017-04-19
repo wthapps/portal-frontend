@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit,
-  ComponentFactoryResolver, OnDestroy, Input
+  ComponentFactoryResolver, OnDestroy, Input, OnChanges, SimpleChanges
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -51,7 +51,7 @@ declare var _: any;
     AddToAlbumModalComponent
   ]
 })
-export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   /*
    * Value of objectType:
    * media: is base object
@@ -70,7 +70,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
    * */
   @Input() pageType: string = 'list';
   @Input() params: any;
-  @Input() objectInput: any;
+  @Input() object: any; // object for detail pages
 
   @ViewChild('toolbarContainer', {read: ViewContainerRef}) toolbarContainer: ViewContainerRef;
   @ViewChild('listContainer', {read: ViewContainerRef}) listContainer: ViewContainerRef;
@@ -83,14 +83,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   detailInfoComponent: any;
   modalComponent: any;
 
-  toolbar: MediaToolbarListComponent;
-  list: MediaListComponent;
+  toolbar: any;
+  list: any;
   detailInfo: any;
   modal: any;
 
   currentPath: string; // photos, albums, share-with-me, favourite
   selectedObjects: Array<any> = [];
   objects: any;
+
 
   viewOption: string = 'grid';
   showDetailInfo: boolean = true;
@@ -109,9 +110,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     // this.currentPath = `${this.objectType}s`;
     this.currentPath = this.router.url.toString().split('/')[1].split('?')[0]; // currentPath: photos, albums, shared-with-me
     this.currentPage = `${this.objectType}_${this.pageType}`;
+    // console.log('this. INit:', this.object, this.params);
+
   }
 
   ngAfterViewInit(): void {
+
+
+    // console.log('this. object:', this.object, this.params);
+
     this.createToolbarComponent();
 
     // Init data
@@ -148,6 +155,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['object'] != undefined && changes['object'].currentValue != undefined) {
+      if (this.toolbar != undefined) {
+        this.toolbar.updateProperties({object: this.object});
+      }
+      if (this.detailInfo != undefined) {
+        this.detailInfo.updateProperties({object: this.object});
+      }
+    }
+  }
+
   createToolbarComponent() {
     let tbComponentFactory = this.resolver.resolveComponentFactory(MediaToolbarListComponent);
     this.toolbarContainer.clear();
@@ -181,7 +199,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'select':
       case 'deselect':
         this.selectedObjects = event.params.selectedObjects;
-        this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
+        this.toolbar.updateProperties({selectedObjects: this.selectedObjects});
         break;
       case 'goBack':
         this.goBack();
@@ -314,7 +332,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
             break;
           case 'album':
             this.loadModalComponent(AlbumEditModalComponent);
-            options = {selectedObject: this.objectInput};
+            options = {selectedObject: this.object};
             break;
         }
         break;
@@ -324,7 +342,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedObjects: this.selectedObjects};
+        options = {selectedObjects: this.selectedObjects, objects: this.list.objects};
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);

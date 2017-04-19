@@ -5,8 +5,8 @@
       <a (click)="onAction({action: 'goBack', params: {}})" class="btn btn-wth"><i class="fa fa-arrow-left"></i> Back</a>
     </li>
 
-    <li *ngIf="currentPage == 'album_detail'">
-      <div class="name"> Display Album Name Here</div>
+    <li *ngIf="currentPage == 'album_detail' && object">
+      <div class="name"> {{ object.name }}</div>
 
     </li>
 

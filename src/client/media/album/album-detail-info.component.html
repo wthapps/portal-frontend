@@ -4,7 +4,7 @@
       class="fa fa-times"></i></a>
   </h3>
 </div>
-<div class="media-page-detail-info content-overflow-fixed">
+<div class="media-page-detail-info content-overflow-fixed" *ngIf="object">
   <h4><i class="fa fa-info-circle"></i> Details
     <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal'}})">Edit</a>
   </h4>
@@ -21,10 +21,7 @@
   <dl>
     <dt>Description</dt>
     <dd>
-      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
-      dolore magna aliquam erat volutpat.
-      Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
-      commodo consequat.
+      {{object.description}}
     </dd>
   </dl>
   <hr>
