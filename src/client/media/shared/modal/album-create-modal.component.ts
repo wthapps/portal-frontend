@@ -69,8 +69,7 @@ export class AlbumCreateModalComponent implements BaseMediaModal, OnInit {
 
   open(options?: any) {
     // Get selected photo object list
-    // this.selectedPhotos = _.filter(photos, {'object_type' : 'photo'});
-    this.selectedPhotos = options.selectedObjects;
+    this.selectedPhotos = _.filter(options.selectedObjects, {'object_type' : 'photo'});
     console.log('Photos loaded to album create component: ', this.selectedPhotos);
     this.modal.open().then((res: any) => console.log('Album create modal opened, options', res));
   }
