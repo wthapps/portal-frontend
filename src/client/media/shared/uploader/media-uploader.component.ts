@@ -39,7 +39,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     uploaded: 2,
     error: 3,
     stop: 4,
-  }
+  };
 
   @ViewChild('inputfiles') inputFiles: ElementRef;
 

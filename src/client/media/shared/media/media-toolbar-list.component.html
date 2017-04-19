@@ -21,7 +21,7 @@
         </li>
         <li >
           <a href="javascript:;" (click)="onAction({action: 'favourite', params: {}})">
-            <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i> Add to favourite
+            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i> Add to favourite
           </a>
         </li>
         <li>
@@ -135,7 +135,7 @@
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'favourite', params: {}})">
-            <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
+            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i>
           </a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
@@ -172,7 +172,7 @@
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" (click)="onAction({action: 'favourite', params: {}})">
-            <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
+            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i>
           </a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">

@@ -165,14 +165,13 @@ export class ChatService {
   uploadPhotos(files:any) {
     let groupId = this.storage.find('contact_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event:any, file:any) => {
-      this.photoUploadService.uploadPhotos([file]).take(1)
+      let result = this.photoUploadService.uploadPhotos([file]).take(1)
         .subscribe((res: any) => {
           this.removeUploadingFile(groupId);
           this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'Photo'});
-        })
-        ,(error: any) => {
-          console.error('Error uploading photos in chat service', error);
-        };
+        }, (error: any) => {
+          console.log('Error uploading photos in chat service', error);
+        });
     });
   }
 
@@ -315,7 +314,7 @@ export class ChatService {
   }
 
   searchUsers(name:any) {
-    return this.apiBaseService.post('users/search', {search: name, search_by: "name"});
+    return this.apiBaseService.post('users/search', {search: name, search_by: 'name'});
   }
 
   shareContact(ids:any) {
