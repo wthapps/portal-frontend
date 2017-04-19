@@ -1,7 +1,8 @@
 <div *ngIf="object" class="photo-box-img" id="photo-box-img-{{object.id}}">
 
   <div class="photo-box-img-action">
-    <i (click)="onAction({action:'favourite'})" class="fa" [ngClass]="object.favorite ? 'fa-star': 'fa-star-o'"></i>
+    <i (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object}})" class="fa fa-star-o" *ngIf="!object.favorite"></i>
+    <i (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object}})" class="fa fa-star" *ngIf="object.favorite"></i>
   </div>
 
 

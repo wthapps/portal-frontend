@@ -62,7 +62,14 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   groupByTime: string;
   currentGroupByTime: string = 'date';
   groupBy: string;
+
+  //this is used in list pages
   objects: Array<any> = new Array<any>();
+
+  // this is used in detail pages
+  object: any;
+
+
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
   nextLink: string;
   private pressingCtrlKey: boolean = false;
@@ -103,12 +110,12 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   //      this.deSelectObjects();
   // }
   constructor(protected resolver: ComponentFactoryResolver,
-              protected mediaObjectService: MediaObjectService,
               protected elementRef: ElementRef,
               protected router: Router,
               protected route: ActivatedRoute,
               protected confirmationService: ConfirmationService,
               protected loadingService: LoadingService,
+              protected mediaObjectService: MediaObjectService,
               protected photoService: ZMediaPhotoService,
               protected albumService: ZMediaAlbumService
   ) {
@@ -246,8 +253,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   // considering moving doAction into list-media
   doAction(event: any) {
-
-    console.log('event in list media::', event);
+    // console.log('event in list media::', event);
     switch (event.action) {
       case 'uploadPhoto':
         this.upload();
@@ -262,8 +268,14 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.share();
         break;
       case 'favourite':
-        this.favourite();
+        this.favourite(event.params);
         break;
+      // case 'addToFavourite':
+      //   this.addToFavourite();
+      //   break;
+      // case 'removeFromFavourite':
+      //   this.removeFromFavourite();
+      //   break;
       case 'tag':
         this.tag();
         break;
@@ -339,8 +351,50 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     // this.modal.open({selectedItems: this.selectedObjects});
   }
 
-  favourite() {
+  favourite(params: any) {
+    let body: any;
+    let selectedIndex: number = -1;
+    let mode = params.mode;
 
+    // single favourite
+    if(params.hasOwnProperty('selectedObject')) {
+      body = {
+        objects: [_.pick(params.selectedObject, ['id', 'object_type'])],
+        mode: mode
+      };
+      selectedIndex = _.findIndex(this.objects, ['id', params.selectedObject.id]);
+
+    } else { // multi-favourite
+      body = {
+        objects: _.map(this.selectedObjects, (object: any) => {
+          return _.pick(object, ['id', 'object_type']);
+        }),
+        mode: mode
+      };
+    }
+
+    console.log('body data: ', body);
+
+
+    this.mediaObjectService.favourite(body).subscribe(
+      (response: any) => {
+        console.log(response.data);
+        // update favourite attribute
+        if (selectedIndex != -1) {
+          this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
+          // refresh objects if current page is favourite
+        }
+
+        _.map(this.selectedObjects, (object: any)=> {
+          object.favorite = (mode == 'add' ? true : false);
+
+          // refresh objects if current page is favourite
+        });
+      },
+      (error: any) => {
+        console.log('error: ', error);
+      }
+    );
   }
 
   tag() {

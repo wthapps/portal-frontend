@@ -23,16 +23,18 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   data: any;
 
 
+  currentPath: string;
+  objectType: string;
+
   noSelectedObjects: boolean = true;
   viewOption: string = 'grid';
   grid: string = 'grid';
   list: string = 'list';
   timeline: string = 'timeline';
-  hasFavourite: boolean = false;
-  private currentPath: string;
-  private objectType: string;
 
-
+  // if all of objects are favourite or not
+  isFavourited: boolean = false;
+  hasMultiObjects: boolean = false;
 
 
   constructor() {
@@ -44,10 +46,6 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //
-  // }
 
   initProperties(properties: any) {
     this.objectType = properties.objectType;
@@ -61,13 +59,18 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
     if(_.get(options, 'action', '') == 'changeView') {
       this.viewOption = options.params.viewOption;
     }
+    // toggle favourite action
+    if (options.action == 'favourite') {
+      this.isFavourited = !this.isFavourited;
+    }
     this.events.emit(options);
   }
 
-  updateAttributes(attbutes: any) {
-    this.selectedObjects = attbutes.selectedObjects;
+  updateAttributes(attributes: any) {
+    this.selectedObjects = attributes.selectedObjects;
     this.noSelectedObjects = this.selectedObjects.length > 0 ? false: true;
+
+    this.isFavourited = !_.some(this.selectedObjects, ['favorite', false]);
+    this.hasMultiObjects = this.selectedObjects.length > 1 ? true : false;
   }
-
-
 }
