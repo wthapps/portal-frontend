@@ -10,7 +10,7 @@ import { Album } from '../shared/model/album.model';
 
 export class AlbumDetailInfoComponent implements OnInit, OnChanges {
 
-  @Input() album: Album;
+  @Input() object: any;
   @Output() closeInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() tagEvent: EventEmitter<Album> = new EventEmitter<Album>();
   @Output() showFormEdit: EventEmitter<any> = new EventEmitter<any>();
@@ -20,6 +20,12 @@ export class AlbumDetailInfoComponent implements OnInit, OnChanges {
 
   constructor() {
 
+  }
+
+  updateProperties(properties: any) {
+    if (properties.hasOwnProperty('object')) {
+      this.object = properties.object;
+    }
   }
 
   onClose() {

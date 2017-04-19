@@ -52,7 +52,7 @@ export class AlbumEditModalComponent implements BaseMediaModal, AfterViewInit {
   }
 
   open(options?: any) {
-    // console.log(options);
+    console.log('current album: ', options);
     this.selectedAlbum = options['selectedObject'];
     this.updateForm(options['selectedObject']);
 
