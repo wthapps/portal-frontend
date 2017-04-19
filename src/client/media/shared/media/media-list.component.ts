@@ -234,8 +234,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.sliderViewNumber = event.number;
     }
     if (event.action == 'sort') {
-      // TODO  check here
-      // this.sort(event.data);
+      this.sort(event.data);
     }
     if (event.action == 'group') {
       this.groupByTime = event.data;
@@ -246,10 +245,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   actionItem(ev: any) {
     console.log('raise event:', ev);
     this.events.emit(ev);
-  }
-
-  sort(data: any) {
-
   }
 
   // considering moving doAction into list-media
@@ -558,5 +553,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     //   // considering moving doAction into list-media
     //   this.doAction(event);
     // });
+  }
+
+  private sort(data:any) {
+    this.getObjects(data);
   }
 }
