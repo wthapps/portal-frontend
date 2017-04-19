@@ -199,7 +199,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
-        options = {selectedItems: this.selectedPhotos};
+        options = {selectedObjects: [this.selectedPhotos[this.index]]};
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);

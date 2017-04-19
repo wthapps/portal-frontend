@@ -125,13 +125,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               protected photoService: ZMediaPhotoService,
               protected albumService: ZMediaAlbumService) {
 
-    this.route.queryParams
-      .filter(() => this.currentPath != undefined)
-      .subscribe(
-        (queryParams: any) => {
-          this.getObjects(queryParams);
-        }
-      );
   }
 
 
@@ -140,7 +133,14 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.getObjects();
+    // this.getObjects();
+    this.route.queryParams
+      .filter(() => this.currentPath != undefined)
+      .subscribe(
+        (queryParams: any) => {
+          this.getObjects(queryParams);
+        }
+      );
 
     // if(this.MIX_SCREEN.includes(this.currentPath))
     if (this.MIX_SCREEN.indexOf(this.currentPath) > -1)
@@ -148,6 +148,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   getObjects(options?: any) {
+    if (this.currentPath == undefined)
+
+    console.log('Current path: ', this.currentPath, options);
     let path = this.currentPath;
 
     if(this.page == 'favorites') {

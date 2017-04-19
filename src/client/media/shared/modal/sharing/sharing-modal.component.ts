@@ -67,8 +67,8 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
   }
 
   open(options: any) {
-    this.selectedItems = options['selectedItems'];
-    console.log('Sharing selectedItems: ', options['selectedItems']);
+    this.selectedItems = options['selectedObjects'];
+    console.log('Sharing selectedItems: ', options['selectedObjects']);
     this.getShared();
     this.modal.open(options)
       .then((res:any) => console.log('Sharing modal opened!!!', res));
@@ -79,10 +79,12 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
   }
 
   getShared() {
-    let body = JSON.stringify({photos: _.map(this.selectedItems, 'id'), albums: []});
+    let body = {photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id')
+      , albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id')};
     this.mediaSharingService.getShared(body).take(1).subscribe((res: any)=> {
-      this.sharedContacts = res.data['contacts'];
-      this.sharedContactGroups = res.data['contactgroups'];
+      // this.sharedContacts = res.data['contacts'];
+      this.sharedContacts = _.get(res, 'data.contacts', [] );
+      this.sharedContactGroups = _.get(res, 'data.contactgroups', [] );
     });
   }
 
@@ -126,18 +128,20 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
     //save removing items
 
     if (this.hasDeletedItems || this.hasUpdatedItems) {
-      let body = this.hasDeletedItems ? JSON.stringify({
-        photos: _.map(this.selectedItems, 'id'), albums: [],
+      let body = this.hasDeletedItems ? {
+        photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
+        albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
         contacts: _.xor(_.map(this.sharedContacts, 'id'), this.removedContacts),
         groups: _.xor(_.map(this.sharedContactGroups, 'id'), this.removedContactGroups)
-      })
-        : JSON.stringify({
-        photos: _.map(this.selectedItems, 'id'), albums: [],
+      }
+        : {
+        photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
+        albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
         contacts: _.map(_.concat(this.sharedContacts, this.selectedContacts), 'id'),
         groups: _.map(_.concat(this.sharedContactGroups, this.selectedContactGroups), 'id')
-      });
+      };
 
-      this.mediaSharingService.update(body).subscribe((res: any) => {
+      this.mediaSharingService.update(body).take(1).subscribe((res: any) => {
           console.log(res);
           this.sharedContacts = res.data['contacts'];
           this.sharedContactGroups = res.data['contactgroups'];
@@ -151,29 +155,27 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
             this.selectedContactGroups = [];
             this.hasUpdatedItems = false;
           }
+
+          this.updateSelectedItems({contacts: this.sharedContacts});
         },
         (error: any) => {
           console.log('error', error);
         });
 
     } else { // save adding sharing
-      // let body = this.type === 'photo' ? JSON.stringify({
-      //   photos: _.map(this.selectedItems, 'id'), albums: [],
-      //   contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
-      // }) : JSON.stringify({
-      //     photos: [], albums: _.map(this.selectedItems, 'id'),
-      //     contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
-      //   }) ;
-
       let body = { photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
           albums:  _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
           contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')};
 
-      this.mediaSharingService.add(body).subscribe((result: any) => {
-          this.sharedContacts = result['data'].contacts;
-          this.sharedContactGroups = result['data'].contactgroups;
+      // Only subscribe to this action once
+      this.mediaSharingService.add(body).take(1).subscribe((res: any) => {
+          this.sharedContacts = res['data']['contacts'];
+          this.sharedContactGroups = res['data']['contactgroups'];
           this.selectedContacts = [];
           this.selectedContactGroups = [];
+
+        //  TODO: Update sharing result to invoked component: Album detail, photo detail ...
+        this.updateSelectedItems({contacts: this.sharedContacts});
         },
         (error: any) => {
           console.log('error', error);
@@ -184,6 +186,17 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
       console.log('Item shared')
     );
     // console.log('save');
+  }
+
+  // Update sharing info for selected items
+  updateSelectedItems(properties: any) {
+    for (let i=0; i< this.selectedItems.length; i++) {
+      if (this.selectedItems[i].json_shares.length > 0)
+        _.extend(this.selectedItems[i].json_shares[0], properties);
+      else
+        this.selectedItems[i].json_shares = [ properties ];
+    };
+
   }
 
   cancel() {
