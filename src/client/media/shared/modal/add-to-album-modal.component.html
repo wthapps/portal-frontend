@@ -13,23 +13,25 @@
     </div>
     <hr>
     <div class="content-overflow" style="max-height: 300px;">
-      <div class="row-img list" *ngIf="dataAlbums">
-        <div *ngFor="let data of dataAlbums; let i = index;" class="photo-box-img" id="photo-box-img-{{data.id}}">
-          <div class="photo-box-img-figure" (click)="addToAlbum(data, i)">
-            <figure class="img-center-dv">
+      <div class="pl30 pr30">
+        <div class="row-img list" *ngIf="dataAlbums">
+          <div *ngFor="let data of dataAlbums; let i = index;" class="photo-box-img" id="photo-box-img-{{data.id}}">
+            <div class="photo-box-img-figure" (click)="addToAlbum(data, i)">
+              <figure class="img-center-dv">
               <span class="photo-box-img-figure-in">
                 <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
                 <img class="img-center" [src]="data.photo_default" alt="">
               </span>
-            </figure>
-            <div class="photo-box-img-name">{{data.name}}</div>
-            <div class="photo-box-img-size">
+              </figure>
+              <div class="photo-box-img-name">{{data.name}}</div>
+              <div class="photo-box-img-size">
             <span *ngIf="data.photo_number>1">
               {{data.photo_number}} photos
             </span>
-              <span *ngIf="data.photo_number<=1">
+                <span *ngIf="data.photo_number<=1">
               {{data.photo_number}} photo
             </span>
+              </div>
             </div>
           </div>
         </div>

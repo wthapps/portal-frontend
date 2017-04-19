@@ -39,13 +39,16 @@ body {
 }
 
 .text-disable {
-  cursor: not-allowed;
-  @include opacity(0.3);
+  &, * {
+    cursor: not-allowed;
+    @include opacity(0.3);
+  }
 }
 
 .text-normal {
   font-weight: normal;
 }
+
 .text-inherit {
   color: inherit;
   text-align: center;
