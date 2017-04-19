@@ -24,8 +24,8 @@ declare var _: any;
   styleUrls: ['album-detail.component.css']
 })
 export class ZMediaAlbumDetailComponent implements OnInit {
-  @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
-  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  // @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  // @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   albumDetail: any = [];
 
@@ -63,8 +63,8 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     protected resolver: ComponentFactoryResolver,
     private route: ActivatedRoute,
     private albumService: ZMediaAlbumService,
-    private photoService: ZMediaPhotoService,
-    private confirmationService: ConfirmationService,
+    // private photoService: ZMediaPhotoService,
+    // private confirmationService: ConfirmationService,
     private loadingService: LoadingService) {
   }
 
@@ -75,9 +75,9 @@ export class ZMediaAlbumDetailComponent implements OnInit {
       this.getAlbumDetail(this.albumId);
     });
 
-    this.route.queryParams.subscribe((queryParams: any) => {
-      this.getPhotos(this.albumId, queryParams);
-    });
+    // this.route.queryParams.subscribe((queryParams: any) => {
+    //   this.getPhotos(this.albumId, queryParams);
+    // });
   }
 
   getAlbumDetail(id: number) {
@@ -86,230 +86,230 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     });
   }
 
-  getPhotos(id: number, body?: any) {
-    this.albumService.getPhotosByAlbum(id, body).subscribe((res: any)=> {
-      this.data = res.data;
-      this.nextLink = res.page_metadata.links.next;
-      // console.log(res);
-      if (res.data.length == 0) {
-        this.photoIsEmpty = true;
-      }
-    });
-  }
+  // getPhotos(id: number, body?: any) {
+  //   this.albumService.getPhotosByAlbum(id, body).subscribe((res: any)=> {
+  //     this.data = res.data;
+  //     this.nextLink = res.page_metadata.links.next;
+  //     // console.log(res);
+  //     if (res.data.length == 0) {
+  //       this.photoIsEmpty = true;
+  //     }
+  //   });
+  // }
 
-  onLoadMore() {
-    if (this.nextLink) {
-      this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
-        _.map(res.data, (v: any)=> {
-          this.data.push(v);
-        });
-        this.nextLink = res.page_metadata.links.next;
-      });
-    }
-  }
-
-
-
-  openModal(modalName: string) {
-    let options: any;
-    switch (modalName) {
-      case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
-        break;
-      case 'editInfoModal':
-        this.loadModalComponent(PhotoEditModalComponent);
-        break;
-      case 'sharingModal':
-        this.loadModalComponent(SharingModalComponent);
-        options = {selectedItems: this.selectedAlbums};
-        break;
-      case 'taggingModal':
-        this.loadModalComponent(TaggingModalComponent);
-        options = {selectedItems: this.selectedAlbums};
-        break;
-    }
-    this.modal.open(options);
-
-  }
+  // onLoadMore() {
+  //   if (this.nextLink) {
+  //     this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
+  //       _.map(res.data, (v: any)=> {
+  //         this.data.push(v);
+  //       });
+  //       this.nextLink = res.page_metadata.links.next;
+  //     });
+  //   }
+  // }
 
 
 
-  actionItem(event: any) {
-    //console.log(event);
-    switch (event.action) {
-      case 'select':
-        this.onSelectedPhotos(event.data);
-        break;
-      case 'favourite':
-        this.onOneFavourite(event.data);
-        break;
-      default:
-        break;
-    }
-  }
-
-  actionToolbar(event: any) {
-    // console.log(event);
-    switch (event) {
-      case 'oneFavourite':
-        this.onFavourite();
-        break;
-      case 'favourite':
-        this.onFavourite();
-        break;
-      case 'share':
-
-        break;
-      case 'tag':
-
-        break;
-      case 'delete':
-        this.onDelete();
-        break;
-      case 'removeFromAlbum':
-        this.onRemoveFromAlbum();
-        break;
-      case 'info':
-        this.photoDetail.open({show: true, collapseInfo: false});
-        break;
-      case 'editInfo':
-        // call action from photoDetail
-        this.photoDetail.onEditInfo();
-        break;
-      case 'listView':
-        this.currentView = 'list';
-        break;
-      case 'gridView':
-        this.currentView = 'grid';
-        break;
-      case 'timeView':
-        this.currentView = 'time';
-        break;
-      default:
-        break;
-    }
-  }
-
-  actionUploading(event: any) {
-    switch (event.action) {
-      case 'addPhoto':
-        /*_.map(event.data, (v: any)=> {
-         this.data.unshift(v);
-         });*/
-
-        //reload data
-        // this.getPhotos();
-
-        break;
-      default:
-        break;
-    }
-  }
-
-  toggleInfo() {
-    this.hasDetails = !this.hasDetails;
-  }
-
-  doAction(options: any) {
-
-  }
+  // openModal(modalName: string) {
+  //   let options: any;
+  //   switch (modalName) {
+  //     case 'editNameModal':
+  //       this.loadModalComponent(BaseObjectEditNameModalComponent);
+  //       break;
+  //     case 'editInfoModal':
+  //       this.loadModalComponent(PhotoEditModalComponent);
+  //       break;
+  //     case 'sharingModal':
+  //       this.loadModalComponent(SharingModalComponent);
+  //       options = {selectedItems: this.selectedAlbums};
+  //       break;
+  //     case 'taggingModal':
+  //       this.loadModalComponent(TaggingModalComponent);
+  //       options = {selectedItems: this.selectedAlbums};
+  //       break;
+  //   }
+  //   this.modal.open(options);
+  //
+  // }
 
 
-  private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
-    this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
-    this.modal = this.modalComponent.instance;
 
-    // handle all of action from modal all
-    this.modal.event.subscribe((event: any) => {
+  // actionItem(event: any) {
+  //   //console.log(event);
+  //   switch (event.action) {
+  //     case 'select':
+  //       this.onSelectedPhotos(event.data);
+  //       break;
+  //     case 'favourite':
+  //       this.onOneFavourite(event.data);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
+  //
+  // actionToolbar(event: any) {
+  //   // console.log(event);
+  //   switch (event) {
+  //     case 'oneFavourite':
+  //       this.onFavourite();
+  //       break;
+  //     case 'favourite':
+  //       this.onFavourite();
+  //       break;
+  //     case 'share':
+  //
+  //       break;
+  //     case 'tag':
+  //
+  //       break;
+  //     case 'delete':
+  //       this.onDelete();
+  //       break;
+  //     case 'removeFromAlbum':
+  //       this.onRemoveFromAlbum();
+  //       break;
+  //     case 'info':
+  //       this.photoDetail.open({show: true, collapseInfo: false});
+  //       break;
+  //     case 'editInfo':
+  //       // call action from photoDetail
+  //       this.photoDetail.onEditInfo();
+  //       break;
+  //     case 'listView':
+  //       this.currentView = 'list';
+  //       break;
+  //     case 'gridView':
+  //       this.currentView = 'grid';
+  //       break;
+  //     case 'timeView':
+  //       this.currentView = 'time';
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
+  //
+  // actionUploading(event: any) {
+  //   switch (event.action) {
+  //     case 'addPhoto':
+  //       /*_.map(event.data, (v: any)=> {
+  //        this.data.unshift(v);
+  //        });*/
+  //
+  //       //reload data
+  //       // this.getPhotos();
+  //
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
-      // considering moving doAction into list-media
-      this.doAction(event);
-    });
-  }
+  // toggleInfo() {
+  //   this.hasDetails = !this.hasDetails;
+  // }
+  //
+  // doAction(options: any) {
+  //
+  // }
+
+
+  // private loadModalComponent(component: any) {
+  //   let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+  //   this.modalContainer.clear();
+  //   this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+  //   this.modal = this.modalComponent.instance;
+  //
+  //   // handle all of action from modal all
+  //   this.modal.event.subscribe((event: any) => {
+  //
+  //     // considering moving doAction into list-media
+  //     this.doAction(event);
+  //   });
+  // }
 
 
   // --- Action for Item --- //
-  private onSelectedPhotos(item: any) {
-    if (this.keyCtrl) {
-      if (_.some(this.selectedAlbums, ['id', item.id])) {
-        $('#photo-box-img-' + item.id).removeClass('selected');
-        _.remove(this.selectedAlbums, ['id', item.id]);
-      } else {
-        $('#photo-box-img-' + item.id).addClass('selected');
-        this.selectedAlbums.push(item);
-      }
-    } else {
-      $('.row-img .photo-box-img').removeClass('selected');
-      $('#photo-box-img-' + item.id).addClass('selected');
-      this.selectedAlbums.length = 0;
-      this.selectedAlbums.push(item);
-      console.log(this.selectedAlbums);
-    }
-    this.hasFavourite = _.some(this.selectedAlbums, ['favorite', false]);
-  }
-
-  private onOneFavourite(item: any) {
-    let findItemFavourite = _.findIndex(this.data, ['id', item.id]);
-    this.photoService.actionOneFavourite(item).subscribe((res: any)=> {
-      if (res.message === 'success') {
-        this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
-      }
-    });
-  }
-
-  // --- End Action for Item --- //
-
-  private onFavourite() {
-    // if there was one item's favorite is false, all item will be add to favorite
-    let hasFavourite: boolean = _.some(this.selectedAlbums, ['favorite', false]);
-    this.photoService.actionAllFavourite(this.selectedAlbums, hasFavourite).subscribe((res: any)=> {
-      if (res.message === 'success') {
-        _.map(this.selectedAlbums, (v: any)=> {
-          v.favorite = hasFavourite;
-        });
-      }
-    });
-  }
-
-  private onDelete() {
-    let idPhotos = _.map(this.selectedAlbums, 'id'); // ['1','2'];
-    this.confirmationService.confirm({
-      message: 'Are you sure to delete ' + this.selectedAlbums.length + ' item' + (this.selectedAlbums.length > 1 ? 's' : '') + ' ?',
-      accept: () => {
-        let body = JSON.stringify({ids: idPhotos});
-        this.loadingService.start();
-        this.photoService.deletePhoto(body).subscribe((res: any)=> {
-          _.map(idPhotos, (id: any)=> {
-            _.remove(this.data, ['id', id]);
-          });
-          this.loadingService.stop();
-        });
-      }
-    });
-  }
-
-  private onRemoveFromAlbum() {
-    this.confirmationService.confirm({
-        header: 'Remove photos from album',
-        message: this.selectedAlbums.length + ' selected Items will be remove from ' + this.albumDetail.name + '. Removed items from album still remain in your library',
-        accept: () => {
-          this.loadingService.start();
-          this.albumService.removeFromAlbum(this.albumDetail.id, this.selectedAlbums).subscribe(
-            (res: any)=> {
-              if (res.success) {
-                _.map(this.selectedAlbums, (v: any)=> {
-                  _.remove(this.data, ['id', v.id]);
-                });
-              }
-              this.loadingService.stop();
-            }
-          );
-        }
-      }
-    );
-  }
+  // private onSelectedPhotos(item: any) {
+  //   if (this.keyCtrl) {
+  //     if (_.some(this.selectedAlbums, ['id', item.id])) {
+  //       $('#photo-box-img-' + item.id).removeClass('selected');
+  //       _.remove(this.selectedAlbums, ['id', item.id]);
+  //     } else {
+  //       $('#photo-box-img-' + item.id).addClass('selected');
+  //       this.selectedAlbums.push(item);
+  //     }
+  //   } else {
+  //     $('.row-img .photo-box-img').removeClass('selected');
+  //     $('#photo-box-img-' + item.id).addClass('selected');
+  //     this.selectedAlbums.length = 0;
+  //     this.selectedAlbums.push(item);
+  //     console.log(this.selectedAlbums);
+  //   }
+  //   this.hasFavourite = _.some(this.selectedAlbums, ['favorite', false]);
+  // }
+  //
+  // private onOneFavourite(item: any) {
+  //   let findItemFavourite = _.findIndex(this.data, ['id', item.id]);
+  //   this.photoService.actionOneFavourite(item).subscribe((res: any)=> {
+  //     if (res.message === 'success') {
+  //       this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
+  //     }
+  //   });
+  // }
+  //
+  // // --- End Action for Item --- //
+  //
+  // private onFavourite() {
+  //   // if there was one item's favorite is false, all item will be add to favorite
+  //   let hasFavourite: boolean = _.some(this.selectedAlbums, ['favorite', false]);
+  //   this.photoService.actionAllFavourite(this.selectedAlbums, hasFavourite).subscribe((res: any)=> {
+  //     if (res.message === 'success') {
+  //       _.map(this.selectedAlbums, (v: any)=> {
+  //         v.favorite = hasFavourite;
+  //       });
+  //     }
+  //   });
+  // }
+  //
+  // private onDelete() {
+  //   let idPhotos = _.map(this.selectedAlbums, 'id'); // ['1','2'];
+  //   this.confirmationService.confirm({
+  //     message: 'Are you sure to delete ' + this.selectedAlbums.length + ' item' + (this.selectedAlbums.length > 1 ? 's' : '') + ' ?',
+  //     accept: () => {
+  //       let body = JSON.stringify({ids: idPhotos});
+  //       this.loadingService.start();
+  //       this.photoService.deletePhoto(body).subscribe((res: any)=> {
+  //         _.map(idPhotos, (id: any)=> {
+  //           _.remove(this.data, ['id', id]);
+  //         });
+  //         this.loadingService.stop();
+  //       });
+  //     }
+  //   });
+  // }
+  //
+  // private onRemoveFromAlbum() {
+  //   this.confirmationService.confirm({
+  //       header: 'Remove photos from album',
+  //       message: this.selectedAlbums.length + ' selected Items will be remove from ' + this.albumDetail.name + '. Removed items from album still remain in your library',
+  //       accept: () => {
+  //         this.loadingService.start();
+  //         this.albumService.removeFromAlbum(this.albumDetail.id, this.selectedAlbums).subscribe(
+  //           (res: any)=> {
+  //             if (res.success) {
+  //               _.map(this.selectedAlbums, (v: any)=> {
+  //                 _.remove(this.data, ['id', v.id]);
+  //               });
+  //             }
+  //             this.loadingService.stop();
+  //           }
+  //         );
+  //       }
+  //     }
+  //   );
+  // }
 
   // --- End Action for Toolbar --- //
 }

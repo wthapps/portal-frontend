@@ -149,9 +149,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   getObjects(options?: any) {
-    // if (this.currentPath == undefined)
-    //
-    // let path = this.currentPath;
+    let path = this.currentPath;
 
     if(this.page == 'favorites') {
 
