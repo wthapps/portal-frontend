@@ -81,14 +81,14 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
-    if(this.pressedCtrlKey(ke)) {
+    if (this.pressedCtrlKey(ke)) {
       this.pressingCtrlKey = true;
     }
   }
 
   @HostListener('document:keyup', ['$event'])
   onKeyUp(ke: KeyboardEvent) {
-    if(this.pressedCtrlKey(ke)) {
+    if (this.pressedCtrlKey(ke)) {
       this.pressingCtrlKey = false;
     }
 
@@ -117,16 +117,15 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               protected loadingService: LoadingService,
               protected mediaObjectService: MediaObjectService,
               protected photoService: ZMediaPhotoService,
-              protected albumService: ZMediaAlbumService
-  ) {
+              protected albumService: ZMediaAlbumService) {
 
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
       .subscribe(
-      (queryParams: any) => {
-        this.getObjects(queryParams);
-      }
-    );
+        (queryParams: any) => {
+          this.getObjects(queryParams);
+        }
+      );
   }
 
 
@@ -138,7 +137,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     this.getObjects();
 
     // if(this.MIX_SCREEN.includes(this.currentPath))
-    if(this.MIX_SCREEN.indexOf(this.currentPath) > -1)
+    if (this.MIX_SCREEN.indexOf(this.currentPath) > -1)
       this.changeView('grid'); // Default view should be grid
   }
 
@@ -357,7 +356,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     let mode = params.mode;
 
     // single favourite
-    if(params.hasOwnProperty('selectedObject')) {
+    if (params.hasOwnProperty('selectedObject')) {
       body = {
         objects: [_.pick(params.selectedObject, ['id', 'object_type'])],
         mode: mode
@@ -496,7 +495,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         description: selectedObject.description,
       });
       this.albumService.updateInfo(selectedObject.id, body)
-        .subscribe((res: any) => {
+        .subscribe(
+          (res: any) => {
             this.loadingService.stop();
           },
           (error: any) => {
@@ -510,18 +510,30 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   delete() {
     console.log('testing...... detete:', this.selectedObjects);
+    let objType = this.selectedObjects[0].object_type;
     let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
     this.confirmationService.confirm({
-      message: 'Are you sure to delete ' + this.selectedObjects.length + ' item' + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
+      message: 'Are you sure to delete ' + this.selectedObjects.length + ' ' + objType + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
       accept: () => {
         let body = JSON.stringify({ids: objIds});
-        // this.loadingService.start();
-        // this.photoService.deletePhoto(body).subscribe((response: any)=> {
-        //   _.map(idPhotos, (id: any)=> {
-        //     _.remove(this.data, ['id', id]);
-        //   });
-        //   this.loadingService.stop();
-        // });
+        this.loadingService.start();
+        if (objType == 'photo') {
+          this.photoService.deletePhoto(body).subscribe(
+            (res: any)=> {
+              _.map(objIds, (id: any)=> {
+                _.remove(this.objects, ['id', id]);
+              });
+              this.loadingService.stop();
+            });
+        } else if (objType == 'album') {
+          this.albumService.deleteAlbum(body).subscribe(
+            (res: any)=> {
+              _.map(objIds, (id: any)=> {
+                _.remove(this.objects, ['id', id]);
+              });
+              this.loadingService.stop();
+            });
+        }
       }
     });
   }
@@ -560,7 +572,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   addPhotosToList(photos?: any) {
     // Add data to album detail if possible
-    if (['album_detail', 'albums'].indexOf(this.currentPath) > -1 )
+    if (['album_detail', 'albums'].indexOf(this.currentPath) > -1)
       this.albumService.addToAlbum(this.params.id, photos).take(1)
         .subscribe((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
           (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
@@ -618,7 +630,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     // });
   }
 
-  private sort(data:any) {
+  private sort(data: any) {
     this.getObjects(data);
   }
 }

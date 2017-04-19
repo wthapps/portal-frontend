@@ -68,6 +68,10 @@ export class ZMediaAlbumService {
     return this.apiBaseService.put(`${this.url}/${id}`, body);
   }
 
+  deleteAlbum(body: any) {
+    return this.apiBaseService.post(`${this.url}/delete`, body);
+  }
+
   deletePhoto(body: any) {
     return this.apiBaseService.post(`${this.url}/delete`, body);
   }
