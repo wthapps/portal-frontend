@@ -29,6 +29,8 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   currentTags: any = [];
   removedTags: any = [];
   keys: string = '';
+  selectedObjects:any;
+  updateListObjects:any;
 
   hasDeletedItems: boolean = false;
 
