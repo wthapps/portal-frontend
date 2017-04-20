@@ -23,13 +23,12 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   @ViewChild('uploader') uploader: MediaUploaderComponent;
 
   selectedObjects: Array<any> = new Array<any>();
-  data: any;
-
   object: any;
 
 
   currentPath: string;
   objectType: string;
+  page: string;
 
   noSelectedObjects: boolean = true;
   viewOption: string = 'grid';
@@ -42,11 +41,17 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   hasMultiObjects: boolean = false;
   favouriteTooltip: string = 'Add to favourites';
 
+  displayCreateButtons: boolean = true;
+  displayBackButton: boolean = false;
+
+
   constructor() {
 
   }
 
   ngOnInit(): void {
+    this.displayCreateButtons = (this.page == 'search' || this.page == 'album_detail' ? false : true);
+    this.displayBackButton = (this.page == 'search' || this.page == 'album_detail' ? true : false);
   }
 
   ngAfterViewInit(): void {
@@ -56,7 +61,7 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
     this.objectType = properties.objectType;
     this.currentPath = properties.currentPath;
     this.currentPage = properties.currentPage;
-    console.log('current page: ', this.currentPage);
+    this.page = properties.page;
   }
 
 

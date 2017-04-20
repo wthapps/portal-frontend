@@ -78,6 +78,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
   nextLink: string;
+
   private pressingCtrlKey: boolean = false;
 
   private currentPage: string;
@@ -148,10 +149,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   getObjects(options?: any) {
-    if (this.currentPath == undefined)
-
-    console.log('Current path: ', this.currentPath, options);
-    let path = this.currentPath;
+    // if (this.currentPath == undefined)
+    //
+    // let path = this.currentPath;
 
     if(this.page == 'favorites') {
 
@@ -289,12 +289,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'favourite':
         this.favourite(event.params);
         break;
-      // case 'addToFavourite':
-      //   this.addToFavourite();
-      //   break;
-      // case 'removeFromFavourite':
-      //   this.removeFromFavourite();
-      //   break;
       case 'tag':
         this.tag();
         break;
@@ -327,6 +321,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         break;
       case 'deleteAlbumPhotos':
         this.deleteAlbumPhotos(event.params.selectedObject);
+        break;
+      case 'removeFromAlbum':
+        this.removeFromAlbum(event.params);
         break;
       case 'changeView':
         this.changeView(event.params.viewOption);
@@ -412,7 +409,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
         if(params.hasOwnProperty('page') && params.page == 'album_detail') {
           // this.object.favorite = (mode == 'add' ? true : false);
-          // console.log(' vaalsdfjal;sdfkjakl;: ', this.object);
           self.onAction({action: 'updateDetailObject', params: { properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}});
         }
 
@@ -619,6 +615,30 @@ export class MediaListComponent implements OnInit, AfterViewInit {
           }
         );
       });
+  }
+
+
+  removeFromAlbum(params: any) {
+
+    console.log('selected album & object', params.selectedObject, params.selectedObjects);
+    let ids = _.map(params.selectedObjects, 'id');
+    this.confirmationService.confirm({
+      message: 'Are you sure to remove all selected photos from this album',
+      accept: () => {
+        this.loadingService.start();
+
+        this.albumService.removeFromAlbum(params.selectedObject.id, params.selectedObjects).subscribe(
+          (response: any) => {
+            console.log('before', this.objects);
+              _.remove(this.objects, (object: any) => {
+                return (_.indexOf(ids,  object.id) !== -1);
+              });
+
+            console.log('after', this.objects);
+            this.loadingService.stop();
+          });
+      }
+    });
   }
 
   storagePhotos(id: number) {

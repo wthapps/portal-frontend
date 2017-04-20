@@ -137,7 +137,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       currentPage: this.currentPage,
       currentPath: this.currentPath,
       objectType: this.objectType,
-      pageType: this.pageType
+      pageType: this.pageType,
+      page: this.page
     });
 
     // subscribe event
@@ -182,6 +183,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.toolbarContainer.clear();
     this.toolbarComponent = this.toolbarContainer.createComponent(tbComponentFactory);
     this.toolbar = <MediaToolbarListComponent>this.toolbarComponent.instance;
+    this.toolbar.page = this.page;
     this.subscribeUploader();
   }
 
@@ -323,17 +325,16 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   // TODO: Go back using previous path
   goBack() {
-    switch (this.objectType) {
-      case 'photo':
-      case 'album':
+    // switch (this.objectType) {
+    //   case 'photo':
+    //   case 'album':
         this.location.back();
-        break;
-    }
+    //     break;
+    // }
   }
 
   openModal(params: any) {
     let options: any;
-    console.log('open modal: ', params);
     switch (params.modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
