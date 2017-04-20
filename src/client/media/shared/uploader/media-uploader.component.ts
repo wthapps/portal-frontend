@@ -14,6 +14,7 @@ import {
 import { Photo } from '../../../core/shared/models/photo.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { Subject } from 'rxjs/Subject';
 
 declare var $: any;
 
@@ -40,6 +41,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     error: 3,
     stop: 4,
   };
+  events: Subject<any>;
 
   @ViewChild('inputfiles') inputFiles: ElementRef;
 
@@ -54,6 +56,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
               private photoUploadService: PhotoUploadService
   ) {
     this.dragleave();
+    this.events = new Subject();
   }
 
   ngOnInit() {
@@ -117,7 +120,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
         this.photos.push(newPhoto);
 
         newPhoto.thumbnail_url = this.current_photo;
-        // this.onAction('showUploadedPhoto', newPhoto);
+        this.events.next(newPhoto);
 
         if (this.uploaded_num == this.files_num) {
           this.step = this.uploadSteps.uploaded;

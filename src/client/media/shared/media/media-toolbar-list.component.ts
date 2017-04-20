@@ -1,10 +1,11 @@
 import {
   Component, Input, EventEmitter, Output, ViewChild, OnInit, AfterViewInit, SimpleChanges,
-  OnChanges
+  OnChanges, ViewContainerRef
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { ViewOptions } from './view-options.constant';
 import { Observable, Observer } from 'rxjs';
+import { MediaUploaderComponent } from '../uploader/media-uploader.component';
 
 declare let _: any;
 
@@ -18,6 +19,8 @@ declare let _: any;
 export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   @Input() currentPage: string; //photo_list, albumlist, object_list, photo_detail, album_detail, object_detail
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('uploader') uploader: MediaUploaderComponent;
 
   selectedObjects: Array<any> = new Array<any>();
   data: any;
