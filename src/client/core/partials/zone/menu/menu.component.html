@@ -1,35 +1,35 @@
 <nav class="page-menuleft" draggable="false">
   <ul class="list-unstyled">
     <li>
-      <a href="#">Profile</a>
+      <a draggable="false" href="#">Profile</a>
     </li>
     <li>
-      <a href="#">Contact</a>
+      <a draggable="false" href="#">Contact</a>
     </li>
     <li>
-      <a href="#">Calendar</a>
+      <a draggable="false" href="#">Calendar</a>
     </li>
 
     <li class="has-sub" [routerLinkActive]="['active']">
-      <a href="javascript:;" (click)="onMenu('social')">
+      <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled">
         <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
-          <a *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
+          <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
             {{social.name}}</a>
-          <a *ngIf="social.link != '/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
+          <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
         </li>
       </ul>
     </li>
 
     <li class="has-sub" [routerLinkActive]="['active']">
-      <a [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
+      <a draggable="false" [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
         Chat
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled" id="zone_menu_chat">
         <li [routerLinkActive]="['active']" *ngFor="let chat of chatMenu">
-          <a [routerLink]="[chat.link]">
+          <a draggable="false" [routerLink]="[chat.link]">
             {{chat.name}}
           </a>
         </li>
@@ -37,16 +37,16 @@
     </li>
 
     <li>
-      <a href="#">Gadget</a>
+      <a draggable="false" href="#">Gadget</a>
     </li>
     <li class="has-sub" [routerLinkActive]="['active']">
-      <a href="javascript:;" (click)="onMenu('media')">
+      <a draggable="false" href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled">
         <template ngFor let-media [ngForOf]="mediaMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
-            <a [routerLink]="[media.link]" [queryParams]="{}">
+            <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">
               <i class="{{media.icon}}"></i> {{media.name}}
             </a>
           </li>
@@ -55,22 +55,22 @@
       </ul>
     </li>
     <li>
-      <a href="#">Bookmarks</a>
+      <a draggable="false" href="#">Bookmarks</a>
     </li>
     <li>
-      <a href="#">Documents</a>
+      <a draggable="false" href="#">Documents</a>
     </li>
     <li>
-      <a href="#">Networking</a>
+      <a draggable="false" href="#">Networking</a>
     </li>
     <li>
-      <a href="#">Games</a>
+      <a draggable="false" href="#">Games</a>
     </li>
     <li>
-      <a href="#">Dating</a>
+      <a draggable="false" href="#">Dating</a>
     </li>
     <li>
-      <a href="#">Project</a>
+      <a draggable="false" href="#">Project</a>
     </li>
   </ul>
 </nav>
