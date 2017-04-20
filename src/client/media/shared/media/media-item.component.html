@@ -1,15 +1,19 @@
 <div *ngIf="object" class="photo-box-img" id="photo-box-img-{{object.id}}">
 
   <div class="photo-box-img-action">
-    <i (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object}})" class="fa fa-star-o" *ngIf="!object.favorite"></i>
-    <i (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object}})" class="fa fa-star" *ngIf="object.favorite"></i>
+    <i (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object}})" class="fa fa-star-o"
+       *ngIf="!object.favorite"></i>
+    <i (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object}})" class="fa fa-star"
+       *ngIf="object.favorite"></i>
   </div>
 
 
   <!--type == 'photo'-->
   <div *ngIf="object.object_type == 'photo'" class="photo-box-img-figure"
        (click)="onAction({action:'select', params: {selectedObject: object}})">
-    <div class="photo-box-img-input"></div>
+    <div class="photo-box-img-input">
+      <i class="fa fa-check"></i>
+    </div>
     <figure class="img-center-dv" (dblclick)="onAction({action:'openModal', params: {modalName: 'previewModal'}})">
       <span class="photo-box-img-figure-in">
         <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
@@ -19,8 +23,8 @@
     <div class="photo-box-img-name">
       <span (dblclick)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: object}})">{{object.name}}.{{object.extension}}</span>
       <div class="hidden">
-        <i class="fa fa-user-plus"></i>
-        <i class="fa fa-star"></i>
+        <i *ngIf="object.json_shares.length>1" class="fa fa-user-plus"></i>
+        <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
     </div>
     <div class="photo-box-img-owner">{{object.owner.name}}</div>
@@ -49,6 +53,11 @@
     </figure>
     <div class="photo-box-img-name">
       <span (dblclick)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: object}})">{{object.name}}</span>
+      <div class="hidden">
+        <!--data return doesn't have json_shares-->
+        <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->
+        <i *ngIf="object.favorite" class="fa fa-star"></i>
+      </div>
     </div>
     <div class="photo-box-img-owner">{{object.owner.name}}</div>
     <div class="photo-box-img-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>

@@ -129,8 +129,14 @@ $photo-box-img-owner: 150px;
       &.selected {
         background-color: darken(rgba(#ededed, 1), 10%);
         .photo-box-img-input {
-          &:before {
-            background-color: $light-slate;
+          color: #ffffff;
+          .fa {
+            color: #FFF;
+            background-color: $color-inverse;
+            border-color: $color-inverse;
+            &:before {
+              visibility: visible;
+            }
           }
         }
       }
@@ -202,15 +208,19 @@ $photo-box-img-owner: 150px;
       .photo-box-img-input {
         width: $photo-box-img-input;
         padding-top: 5px;
-        &:before {
-          content: '';
+        .fa {
           width: 17px;
           height: 17px;
           -webkit-border-radius: 3px;
           -moz-border-radius: 3px;
           border-radius: 3px;
+          text-align: center;
+          line-height: 15px;
           border: 1px solid $light-slate;
           display: inline-block;
+          &:before {
+            visibility: hidden;
+          }
         }
       }
       .photo-box-img-size {
