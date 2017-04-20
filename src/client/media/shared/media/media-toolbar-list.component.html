@@ -20,10 +20,14 @@
           </a>
         </li>
         <li >
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'favourite', params: {}})">
-            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i> Add to favourite
+          <a href="javascript:;" draggable="false" (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object, page: 'album_detail'}})" *ngIf="!object.favorite">
+            <i class="fa fa-star-o"></i> Add to favourite
+          </a>
+          <a href="javascript:;" draggable="false" (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object, page: 'album_detail'}})" *ngIf="object.favorite">
+            <i class="fa fa-star"></i> Remove from favourite
           </a>
         </li>
+
         <li>
           <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})">
             <i class="fa fa-tag"></i> Tag

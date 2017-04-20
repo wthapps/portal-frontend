@@ -68,6 +68,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   // this is used in detail pages
   object: any;
+  page: string;
 
 
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
@@ -143,8 +144,19 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   getObjects(options?: any) {
     let path = this.currentPath;
+
+    if(this.page == 'favourites') {
+
+      this.loadingService.start('#list-photo');
+      this.mediaObjectService.getObjects(`favourites`).subscribe((response: any)=> {
+        this.loadingService.stop('#list-photo');
+        this.objects = response.data;
+        this.nextLink = response.page_metadata.links.next;
+      });
+      return;
+    }
+
     if (this.params) {
-      console.log('load object', this.currentPath, this.currentPage);
       this.loadingService.start('#list-photo');
       this.mediaObjectService.getObjects(`photos`, {album: this.params['id']}).subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
@@ -209,13 +221,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'deselect':
       case 'goBack':
       case 'openModal':
+      case 'updateDetailObject':
         this.events.emit(options);
         break;
     }
   }
 
   changeView(viewOption: string) {
-    console.log(viewOption);
     this.viewOption = viewOption;
     if (this.viewOption == 'grid') {
       this.groupByTime = '';
@@ -372,8 +384,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       };
     }
 
-    console.log('body data: ', body);
-
+    let self = this;
 
     this.mediaObjectService.favourite(body).subscribe(
       (response: any) => {
@@ -382,6 +393,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         if (selectedIndex != -1) {
           this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
           // refresh objects if current page is favourite
+        }
+        console.log('body data: ', self.object, params);
+
+        if(params.hasOwnProperty('page') && params.page == 'album_detail') {
+          // this.object.favorite = (mode == 'add' ? true : false);
+          // console.log(' vaalsdfjal;sdfkjakl;: ', this.object);
+          self.onAction({action: 'updateDetailObject', params: { properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}});
         }
 
         _.map(this.selectedObjects, (object: any)=> {
