@@ -1,4 +1,4 @@
-$photo-box-img-input: 20px;
+$photo-box-img-input: 25px;
 $photo-box-img-size: 100px;
 $photo-box-img-date: 150px;
 $photo-box-img-owner: 150px;
@@ -128,6 +128,11 @@ $photo-box-img-owner: 150px;
       }
       &.selected {
         background-color: darken(rgba(#ededed, 1), 10%);
+        .photo-box-img-input {
+          &:before {
+            background-color: $light-slate;
+          }
+        }
       }
       .photo-box-img-action {
         //@include center(false, true);
@@ -196,6 +201,17 @@ $photo-box-img-owner: 150px;
       }
       .photo-box-img-input {
         width: $photo-box-img-input;
+        padding-top: 5px;
+        &:before {
+          content: '';
+          width: 17px;
+          height: 17px;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px;
+          border: 1px solid $light-slate;
+          display: inline-block;
+        }
       }
       .photo-box-img-size {
         width: $photo-box-img-size;

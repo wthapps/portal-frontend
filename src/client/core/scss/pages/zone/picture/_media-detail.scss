@@ -88,12 +88,21 @@ $media-page-top: 70px;
     @include transition($transition-base);
   }
 
-  &.has-media-page-detail-right {
-    .media-page-detail-left {
+  //&.has-media-page-detail-right {
+  //  .media-page-detail-left {
+  //    right: 400px;
+  //  }
+  //  .media-page-detail-right{
+  //    right: 0;
+  //  }
+  //}
+
+  .media-page-detail-left {
+    &.has-media-page-detail-right {
       right: 400px;
-    }
-    .media-page-detail-right{
-      right: 0;
+      & + .media-page-detail-right {
+        right: 0;
+      }
     }
   }
 

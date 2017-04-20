@@ -9,9 +9,7 @@
   <!--type == 'photo'-->
   <div *ngIf="object.object_type == 'photo'" class="photo-box-img-figure"
        (click)="onAction({action:'select', params: {selectedObject: object}})">
-    <div class="photo-box-img-input">
-      <input type="checkbox" value="">
-    </div>
+    <div class="photo-box-img-input"></div>
     <figure class="img-center-dv" (dblclick)="onAction({action:'openModal', params: {modalName: 'previewModal'}})">
       <span class="photo-box-img-figure-in">
         <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
@@ -33,9 +31,7 @@
   <!--type == 'album'-->
   <div *ngIf="object.object_type == 'album'" class="photo-box-img-figure"
        (click)="onAction({action:'select', params: {selectedObject: object}})">
-    <div class="photo-box-img-input">
-      <input type="checkbox" value="">
-    </div>
+    <div class="photo-box-img-input"></div>
     <figure class="img-center-dv" (dblclick)="onAction({action:'viewDetails', params: {selectedObject: object}})">
       <span class="photo-box-img-figure-in">
         <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">

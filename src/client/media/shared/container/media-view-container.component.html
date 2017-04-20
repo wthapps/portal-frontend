@@ -1,8 +1,8 @@
-<div class="media-page-detail-left gray-light">
+<div class="media-page-detail-left gray-light" [ngClass]="{'has-media-page-detail-right': showDetailInfo}">
   <template #toolbarContainer></template>
   <template #listContainer></template>
 </div>
-<div *ngIf="showDetailInfo" class="media-page-detail-right">
+<div class="media-page-detail-right">
   <template #infoContainer></template>
 </div>
 <template #modalContainer></template>
