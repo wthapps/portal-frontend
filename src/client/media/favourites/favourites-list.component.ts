@@ -45,23 +45,23 @@ export class ZMediaFavoriteListComponent implements OnInit {
   }
 
   getFavorite(body:any = {}) {
-    this.favoriteService.list(body).subscribe((res: any)=> {
-      this.data = res.data;
-      if (res.data.albums.length == 0 && res.data.photos.length == 0) {
-        this.favouriteIsEmpty = true;
-      }
-      // this.nextLink = res.page_metadata.links.next;
-    });
+    // this.favoriteService.list(body).subscribe((res: any)=> {
+    //   this.data = res.data;
+    //   if (res.data.albums.length == 0 && res.data.photos.length == 0) {
+    //     this.favouriteIsEmpty = true;
+    //   }
+    //   // this.nextLink = res.page_metadata.links.next;
+    // });
   }
 
   onLoadMore(event: any) {
-    event.preventDefault();
-    this.favoriteService.loadMore(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v: any)=> {
-        this.data.push(v);
-      });
-      // this.nextLink = res.page_metadata.links.next;
-    });
+    // event.preventDefault();
+    // this.favoriteService.loadMore(this.nextLink).subscribe((res: any)=> {
+    //   _.map(res.data, (v: any)=> {
+    //     this.data.push(v);
+    //   });
+    //   // this.nextLink = res.page_metadata.links.next;
+    // });
   }
 
 

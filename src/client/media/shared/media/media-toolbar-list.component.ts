@@ -40,7 +40,7 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   // if all of objects are favourite or not
   isFavourited: boolean = false;
   hasMultiObjects: boolean = false;
-
+  favouriteTooltip: string = 'Add to favourites';
 
   constructor() {
 
@@ -67,6 +67,8 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
     // toggle favourite action
     if (options.action == 'favourite') {
       this.isFavourited = !this.isFavourited;
+      this.favouriteTooltip = this.isFavourited ? 'Remove from favourites' : 'Add to favourites';
+
     }
     this.events.emit(options);
   }
@@ -82,5 +84,6 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
     this.isFavourited = !_.some(this.selectedObjects, ['favorite', false]);
     this.hasMultiObjects = this.selectedObjects.length > 1 ? true : false;
+    this.favouriteTooltip = this.isFavourited ? 'Remove from favourites' : 'Add to favourites';
   }
 }
