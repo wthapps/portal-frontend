@@ -1,10 +1,11 @@
 import {
   Component, Input, EventEmitter, Output, ViewChild, OnInit, AfterViewInit, SimpleChanges,
-  OnChanges
+  OnChanges, ViewContainerRef
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { ViewOptions } from './view-options.constant';
 import { Observable, Observer } from 'rxjs';
+import { MediaUploaderComponent } from '../uploader/media-uploader.component';
 
 declare let _: any;
 
@@ -18,6 +19,8 @@ declare let _: any;
 export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   @Input() currentPage: string; //photo_list, albumlist, object_list, photo_detail, album_detail, object_detail
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('uploader') uploader: MediaUploaderComponent;
 
   selectedObjects: Array<any> = new Array<any>();
   data: any;
@@ -37,7 +40,7 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   // if all of objects are favourite or not
   isFavourited: boolean = false;
   hasMultiObjects: boolean = false;
-
+  favouriteTooltip: string = 'Add to favourites';
 
   constructor() {
 
@@ -64,6 +67,8 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
     // toggle favourite action
     if (options.action == 'favourite') {
       this.isFavourited = !this.isFavourited;
+      this.favouriteTooltip = this.isFavourited ? 'Remove from favourites' : 'Add to favourites';
+
     }
     this.events.emit(options);
   }
@@ -79,5 +84,6 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
     this.isFavourited = !_.some(this.selectedObjects, ['favorite', false]);
     this.hasMultiObjects = this.selectedObjects.length > 1 ? true : false;
+    this.favouriteTooltip = this.isFavourited ? 'Remove from favourites' : 'Add to favourites';
   }
 }

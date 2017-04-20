@@ -35,7 +35,9 @@
   <!--type == 'album'-->
   <div *ngIf="object.object_type == 'album'" class="photo-box-img-figure"
        (click)="onAction({action:'select', params: {selectedObject: object}})">
-    <div class="photo-box-img-input"></div>
+    <div class="photo-box-img-input">
+      <i class="fa fa-check"></i>
+    </div>
     <figure class="img-center-dv" (dblclick)="onAction({action:'viewDetails', params: {selectedObject: object}})">
       <span class="photo-box-img-figure-in">
         <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">

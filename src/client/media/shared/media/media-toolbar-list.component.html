@@ -2,7 +2,7 @@
   <ul class="control-body-select">
 
     <li style="border-right: 1px solid #d8d8d8; padding-right: 10px" *ngIf="currentPage == 'album_detail'">
-      <a (click)="onAction({action: 'goBack', params: {}})" class="btn btn-wth"><i class="fa fa-arrow-left"></i> Back</a>
+      <a (click)="onAction({action: 'goBack', params: {}})"><i class="fa fa-arrow-left"></i> </a>
     </li>
 
     <li class="name dropdown" *ngIf="currentPage == 'album_detail' && object">
@@ -21,15 +21,15 @@
         </li>
         <li >
           <a href="javascript:;" draggable="false" (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object, page: 'album_detail'}})" *ngIf="!object.favorite">
-            <i class="fa fa-star-o"></i> Add to favourite
+            <i class="fa fa-star-o"></i> Add to favourites
           </a>
           <a href="javascript:;" draggable="false" (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object, page: 'album_detail'}})" *ngIf="object.favorite">
-            <i class="fa fa-star"></i> Remove from favourite
+            <i class="fa fa-star"></i> Remove from favourites
           </a>
         </li>
 
         <li>
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})">
+          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal', object: object}})">
             <i class="fa fa-tag"></i> Tag
           </a>
         </li>
@@ -51,7 +51,7 @@
           </a>
         </li>
         <li>
-          <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})" href="javascript:;" draggable="false">
+          <a (click)="onAction({action: 'toggleDetailInfo', params: {}})" href="javascript:;" draggable="false">
             <i class="fa fa-info-circle"></i> View Information
           </a>
         </li>
@@ -87,6 +87,7 @@
 
   <div class="control-body-btnview-wrap">
     <div class="pull-left" [ngSwitch]="currentPage">
+
       <!--photo list-->
       <ul class="control-body-select control-body-btnview" *ngSwitchCase="'photo_list'">
 
@@ -97,17 +98,11 @@
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
         </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="Add to favourite">
+        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="{{favouriteTooltip}}">
           <a href="javascript:;" draggable="false" (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
-            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i>
+            <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
           </a>
         </li>
-
-        <!--<li [ngClass]="{'action-disabled': noSelectedObjects}" title="Remove from favourite">-->
-          <!--<a href="javascript:;" draggable="false" (click)="onAction({action: 'removeFromFavourite', params: {}})">-->
-            <!--<i class="fa fa-star-o"></i>-->
-          <!--</a>-->
-        <!--</li>-->
 
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>
@@ -137,9 +132,11 @@
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
         </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'favourite', params: {}})">
-            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i>
+
+        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="{{favouriteTooltip}}">
+          <a href="javascript:;" draggable="false"
+             (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
+            <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
           </a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
@@ -174,9 +171,10 @@
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
           <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
         </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'favourite', params: {}})">
-            <i class="fa" [ngClass]="isFavourited ? 'fa-star-o': 'fa-star'"></i>
+        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="{{favouriteTooltip}}">
+          <a href="javascript:;" draggable="false"
+             (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
+            <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
           </a>
         </li>
         <li [ngClass]="{'action-disabled': noSelectedObjects}">
@@ -242,11 +240,6 @@
       </li>
     </ul>
   </div>
-
-
-
-
-
 </div>
 
 

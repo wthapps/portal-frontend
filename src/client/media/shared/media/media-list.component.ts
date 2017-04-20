@@ -53,7 +53,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
-  readonly MIX_SCREEN: Array<string> = ['shared-with-me', 'favorites'];
+  readonly MIX_SCREEN: Array<string> = ['shared-with-me', 'favourites'];
 
   // modalComponent: any;
   // modal: any;
@@ -150,10 +150,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   getObjects(options?: any) {
     let path = this.currentPath;
 
-    if(this.page == 'favourites') {
+    if(this.page == 'favorites') {
 
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`favourites`).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`media?list_type=favorites`).subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -405,7 +405,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
           this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
           // refresh objects if current page is favourite
         }
-        console.log('body data: ', self.object, params);
+
 
         if(params.hasOwnProperty('page') && params.page == 'album_detail') {
           // this.object.favorite = (mode == 'add' ? true : false);
@@ -417,7 +417,12 @@ export class MediaListComponent implements OnInit, AfterViewInit {
           object.favorite = (mode == 'add' ? true : false);
 
           // refresh objects if current page is favourite
+
         });
+        if (mode == 'remove' && this.page == 'favorites') {
+          // here just handles un-favourite ONE object
+          this.objects.splice(selectedIndex, 1);
+        }
       },
       (error: any) => {
         console.log('error: ', error);

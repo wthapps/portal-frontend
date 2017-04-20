@@ -31,6 +31,8 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   keys: string = '';
   selectedObjects:any;
   updateListObjects:any;
+  updateObject:any;
+  toolbar:any;
 
   hasDeletedItems: boolean = false;
 
@@ -63,6 +65,14 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
               }
             }
           }
+          if (this.updateObject) {
+            if (res.data.id == this.updateObject.id) {
+              this.updateObject = res.data;
+            }
+          }
+          if (this.toolbar) {
+            this.toolbar.updateProperties({object: res.data});
+          }
         }
       );
     }
@@ -71,13 +81,15 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   open(options?: any) {
     this.selectedObjects = options.selectedObjects;
     this.updateListObjects = options.updateListObjects;
+    this.updateObject = options.updateObject;
+    this.toolbar = options.toolbar;
+
     this.tag.addedTags = [];
     if (this.selectedObjects.length == 1) {
       for (let i = 0; i < this.selectedObjects[0].json_tags.length; i++) {
         this.tag.addedTags.push(this.selectedObjects[0].json_tags[i].name);
       }
     }
-    console.log(this.selectedObjects, this.updateListObjects, this.tag.addedTags);
     this.modal.open();
   }
 

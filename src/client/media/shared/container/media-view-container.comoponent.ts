@@ -3,6 +3,8 @@ import {
   ComponentFactoryResolver, OnDestroy, Input, OnChanges, SimpleChanges
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 import { ConfirmationService } from 'primeng/components/common/api';
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
@@ -97,13 +99,14 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
 
   viewOption: string = 'grid';
-  showDetailInfo: boolean = true;
+  showDetailInfo: boolean = false;
   private currentPage: string;
 
   // you are also able to inject PhotoService and AlbumService here for calling existing functions quickly
   constructor(private resolver: ComponentFactoryResolver,
               private router: Router,
               private route: ActivatedRoute,
+              private location: Location,
               private mediaObjectService: MediaObjectService,
               private confirmationService: ConfirmationService) {
 
@@ -114,12 +117,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.currentPath = this.router.url.toString().split('/')[1].split('?')[0]; // currentPath: photos, albums, shared-with-me
     this.currentPage = `${this.objectType}_${this.pageType}`;
     // console.log('this. INit:', this.object, this.params);
+  }
 
+  subscribeUploader() {
+    this.toolbar.uploader.events.subscribe((res:any) => {
+      if (this.page == 'photos') {
+        this.list.objects.unshift(res);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
-
-
     // console.log('this. object:', this.object, this.params);
 
     this.createToolbarComponent();
@@ -174,6 +182,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.toolbarContainer.clear();
     this.toolbarComponent = this.toolbarContainer.createComponent(tbComponentFactory);
     this.toolbar = <MediaToolbarListComponent>this.toolbarComponent.instance;
+    this.subscribeUploader();
   }
 
   createListComponent() {
@@ -317,7 +326,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     switch (this.objectType) {
       case 'photo':
       case 'album':
-        this.router.navigate([`/${this.objectType}s`]);
+        this.location.back();
         break;
     }
   }
@@ -359,7 +368,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedObjects: this.selectedObjects, updateListObjects: [this.list.objects]};
+        if (params.object) {
+          options = {selectedObjects: [this.toolbar.object], toolbar: this.toolbar};
+        } else {
+          options = {selectedObjects: this.selectedObjects, updateListObjects: [this.list.objects]};
+        }
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
