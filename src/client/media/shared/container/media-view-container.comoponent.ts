@@ -73,6 +73,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   @Input() pageType: string = 'list';
   @Input() params: any;
   @Input() object: any; // object for detail pages
+  @Input() page: string;
 
   @ViewChild('toolbarContainer', {read: ViewContainerRef}) toolbarContainer: ViewContainerRef;
   @ViewChild('listContainer', {read: ViewContainerRef}) listContainer: ViewContainerRef;
@@ -181,6 +182,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.listComponent = this.listContainer.createComponent(listComponentFactory);
     this.list = <MediaListComponent>this.listComponent.instance;
     this.list.selectedObjects = this.selectedObjects;
+    this.list.page = this.page;
   }
 
   createDetailInfoComponent() {
@@ -218,7 +220,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'closeModal':
         this.closeModal();
         break;
-
+      case 'updateDetailObject':
+        this.updateDetailObject(event.params.properties);
+        break;
       default:
         this.list.doAction(event);
         break;
@@ -392,6 +396,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   closeModal() {
     this.modal.close();
+  }
+
+  updateDetailObject(properties: any){
+    console.log ('update property: ', properties);
+    _.forEach(properties, (property: any) => {
+      this.object[property.key] = property.value;
+    });
+
+    this.toolbar.updateProperties({object: this.object});
   }
 
   private loadModalComponent(component: any) {

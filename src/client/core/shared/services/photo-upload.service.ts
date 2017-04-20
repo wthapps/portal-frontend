@@ -167,7 +167,7 @@ export class PhotoUploadService {
               this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
                 .subscribe((result: any) => {
                     setTimeout(() => {
-                      let wrapperRes = { data: result['data'], current_photo: currentPhoto};
+                      let wrapperRes = { data: result['data'], current_photo: currentPhoto };
                       observer.next(wrapperRes);
                     }, this.TIMEOUT);
                   },

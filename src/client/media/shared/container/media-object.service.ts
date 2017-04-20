@@ -25,7 +25,7 @@ export class MediaObjectService {
     //     break;
     // }
 
-    // console.log('this path', currentPath);
+    console.log('this path', path, queryString);
     this.path = `${MEDIA_PATH}/${path}`;
     return this.api.get(this.path, queryString);
   }

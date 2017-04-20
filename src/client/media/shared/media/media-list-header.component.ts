@@ -40,7 +40,11 @@ export class MediaListHeaderComponent {
   }
 
   doSort() {
-    this.outEvent.emit({action: 'sort', data: {sort: this.sort, sort_name: this.sortName}});
+    if (this.sortName == 'Date' || this.sortName == 'Month' || this.sortName == 'Year') {
+      this.outEvent.emit({action: 'sort', data: {sort: this.sort, sort_name: 'created_at'}});
+    } else {
+      this.outEvent.emit({action: 'sort', data: {sort: this.sort, sort_name: this.sortName}});
+    }
   }
 
   group(groupBy: any) {
