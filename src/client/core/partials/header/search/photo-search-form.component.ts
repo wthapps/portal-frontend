@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, AbstractControl} from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { BaseSearchForm } from './base-search-form';
 import { ServiceManager } from '../../../shared/services/service-manager';
 
@@ -20,6 +20,10 @@ export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
   searchOwner: AbstractControl;
   searchGroup: AbstractControl;
   searchContact: AbstractControl;
+  searchText:any;
+  suggestions:any;
+  searchAdvanced:any;
+  active:any;
 
   constructor(public serviceManager: ServiceManager) {
     super();
@@ -57,7 +61,7 @@ export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
 
   }
 
-  getSuggestions(e: any) {
+  getSuggestions(e:any) {
     this.serviceManager.getApi().post(`media/search/suggestions`, {q: 'name', search: this.searchText}).subscribe(
       (res:any) => {
         this.suggestions = _.map(res.data, 'name');
