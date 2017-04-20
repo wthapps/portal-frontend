@@ -8,6 +8,7 @@ import { InputSwitchModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { SliderModule } from 'primeng/primeng';
 import { CalendarModule } from 'primeng/primeng';
+import { CheckboxModule } from 'primeng/primeng';
 
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -61,7 +62,8 @@ import { ConvertByPatternPipe } from './pipe/convert.pipe';
     AutoCompleteModule,
     InfiniteScrollModule,
     SliderModule,
-    CalendarModule
+    CalendarModule,
+    CheckboxModule
   ],
   declarations: [
     ToolbarComponent,
@@ -99,6 +101,7 @@ import { ConvertByPatternPipe } from './pipe/convert.pipe';
     InfiniteScrollModule,
     SliderModule,
     CalendarModule,
+    CheckboxModule,
 
     // Component
     ToolbarComponent,

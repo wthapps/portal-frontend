@@ -16,6 +16,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
 import { ZMediaPhotoService } from '../../photo/photo.service';
 import { ZMediaAlbumService } from '../../album/album.service';
+import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
 
 declare var _: any;
 declare var $: any;
@@ -33,6 +34,7 @@ declare var $: any;
     PhotoEditModalComponent,
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
+    AlbumDeleteModalComponent,
     PhotoDetailModalComponent,
     TaggingModalComponent,
     SharingModalComponent
@@ -68,6 +70,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   // this is used in detail pages
   object: any;
+
+  // this is used in album list pages
+  photos: any = [];
 
 
   currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
@@ -302,6 +307,12 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'delete':
         this.delete();
         break;
+      case 'deleteAlbum':
+        this.deleteAlbum(event.params.selectedObject);
+        break;
+      case 'deleteAlbumPhotos':
+        this.deleteAlbumPhotos(event.params.selectedObject);
+        break;
       case 'changeView':
         this.changeView(event.params.viewOption);
         break;
@@ -504,7 +515,6 @@ export class MediaListComponent implements OnInit, AfterViewInit {
           }
         );
     }
-
     console.log('call edit info method here');
   }
 
@@ -512,12 +522,13 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     console.log('testing...... detete:', this.selectedObjects);
     let objType = this.selectedObjects[0].object_type;
     let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
-    this.confirmationService.confirm({
-      message: 'Are you sure to delete ' + this.selectedObjects.length + ' ' + objType + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
-      accept: () => {
-        let body = JSON.stringify({ids: objIds});
-        this.loadingService.start();
-        if (objType == 'photo') {
+    if (objType == 'photo') {
+      this.confirmationService.confirm({
+        message: 'Are you sure to delete ' + this.selectedObjects.length + ' ' + objType + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
+        accept: () => {
+          let body = JSON.stringify({ids: objIds});
+          this.loadingService.start();
+
           this.photoService.deletePhoto(body).subscribe(
             (res: any)=> {
               _.map(objIds, (id: any)=> {
@@ -525,19 +536,68 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               });
               this.loadingService.stop();
             });
-        } else if (objType == 'album') {
-          this.albumService.deleteAlbum(body).subscribe(
-            (res: any)=> {
-              _.map(objIds, (id: any)=> {
-                _.remove(this.objects, ['id', id]);
-              });
-              this.loadingService.stop();
-            });
         }
-      }
-    });
+      });
+    } else if (objType == 'album') {
+      console.log('testing...... detete: album');
+      // this.albumService.deleteAlbum(body).subscribe(
+      //   (res: any)=> {
+      //     _.map(objIds, (id: any)=> {
+      //       _.remove(this.objects, ['id', id]);
+      //     });
+      //     this.loadingService.stop();
+      //   });
+    }
   }
 
+  deleteAlbum(selectedObject: any) {
+    this.loadingService.start();
+    let objIds = _.map(selectedObject, 'id'); // ['1','2'];
+    let body = JSON.stringify({ids: objIds});
+    this.albumService.deleteAlbum(body).subscribe(
+      (res: any)=> {
+        _.map(objIds, (id: any)=> {
+          _.remove(this.objects, ['id', id]);
+        });
+        this.loadingService.stop();
+      });
+
+  }
+
+  deleteAlbumPhotos(selectedObject: any) {
+    let _thisComponent = this;
+
+    this.loadingService.start();
+    let objIds = _.map(selectedObject, 'id'); // ['1','2'];
+    let body = JSON.stringify({ids: objIds});
+
+    _.map(selectedObject, (v: any) => {
+      _thisComponent.albumService.getPhotosByAlbum(v.id).subscribe(
+        (res: any) => {
+          _.map(res.data, (vk: any) => {
+            this.storagePhotos(vk.id);
+          });
+        }
+      );
+    });
+    this.albumService.deleteAlbum(body).subscribe(
+      (res: any)=> {
+        _.map(objIds, (id: any)=> {
+          _.remove(this.objects, ['id', id]);
+        });
+        // console.log('albumService after deleting: ', _.uniq(this.photos));
+        let objPhotoIds: any = _.uniq(this.photos);
+        this.photoService.deletePhoto({ids: objPhotoIds}).subscribe(
+          (res: any) => {
+            this.loadingService.stop();
+          }
+        );
+      });
+  }
+
+  storagePhotos(id: number) {
+    this.photos.push(id);
+  }
 
   //*
   // Album's functions

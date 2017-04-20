@@ -21,6 +21,7 @@ import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 import { PhotoSelectModalComponent } from '../../../core/partials/zone/photo/upload-photos/photo-select-modal.component';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -43,6 +44,7 @@ declare var _: any;
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
     AlbumDetailInfoComponent,
+    AlbumDeleteModalComponent,
 
     PhotoSelectModalComponent,
 
@@ -333,6 +335,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
           case 'album':
             this.loadModalComponent(AlbumEditModalComponent);
             options = {selectedObject: this.object};
+            break;
+        }
+        break;
+      case 'deleteModal':
+        switch (this.objectType) {
+          case 'album':
+            // this.loadModalComponent();
+            // options = {selectedObject: this.object};
+            this.loadModalComponent(AlbumDeleteModalComponent);
+            options = {selectedObjects: this.selectedObjects};
+            console.log('deleteModal album');
             break;
         }
         break;

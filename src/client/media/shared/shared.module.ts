@@ -30,6 +30,7 @@ import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
 import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
 import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component';
 import { TaggingElComponent } from './modal/tagging/tagging-el.component';
+import { AlbumDeleteModalComponent } from './modal/album-delete-modal.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -55,6 +56,7 @@ import { TaggingElComponent } from './modal/tagging/tagging-el.component';
     AddToAlbumModalComponent,
     AlbumEditModalComponent,
     AlbumCreateModalComponent,
+    AlbumDeleteModalComponent,
     PhotoDetailModalComponent,
 
 
@@ -83,6 +85,7 @@ import { TaggingElComponent } from './modal/tagging/tagging-el.component';
     AddToAlbumModalComponent,
     AlbumEditModalComponent,
     AlbumCreateModalComponent,
+    AlbumDeleteModalComponent,
     PhotoDetailModalComponent,
 
     MediaUploaderComponent,

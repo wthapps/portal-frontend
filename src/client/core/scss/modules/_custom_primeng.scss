@@ -192,3 +192,19 @@ body {
     }
   }
 }
+
+body {
+  .ui-chkbox {
+    .ui-chkbox-box {
+      &.ui-state-active,
+      &.ui-state-focus {
+        background-color: transparent;
+        color: $text-color;
+      }
+    }
+    & + .ui-chkbox-label {
+      margin: 0;
+      font-weight: normal;
+    }
+  }
+}
