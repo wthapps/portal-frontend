@@ -35,31 +35,31 @@ export class ZMediaSharedWithMeComponent implements OnInit {
 
   shareIsEmpty:boolean = false;
 
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
-    console.log(ev);
-    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
-  }
-
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
-  }
+  // @HostListener('document:keydown', ['$event'])
+  // onKeyDown(ev: KeyboardEvent) {
+  //   console.log(ev);
+  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
+  // }
+  //
+  // @HostListener('document:keyup', ['$event'])
+  // onKeyUp(ev: KeyboardEvent) {
+  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
+  // }
 
   constructor(private photoService: ZMediaPhotoService,
               private route: ActivatedRoute,
               private router: Router,
               private sharedWithMeService: ZMediaSharedWithMeService) {
 
-    this.route.queryParams
-      .switchMap((queryParams: any) => this.sharedWithMeService.list(queryParams['uuid']))
-      .subscribe((res: any) => {
-        this.data = res['data'];
-        // if (res.data.albums.length == 0 && res.data.photos.length == 0) {
-        if (res.data.length == 0) {
-          this.shareIsEmpty = true;
-        }
-    });
+    // this.route.queryParams
+    //   .switchMap((queryParams: any) => this.sharedWithMeService.list(queryParams['uuid']))
+    //   .subscribe((res: any) => {
+    //     this.data = res['data'];
+    //     // if (res.data.albums.length == 0 && res.data.photos.length == 0) {
+    //     if (res.data.length == 0) {
+    //       this.shareIsEmpty = true;
+    //     }
+    // });
   }
 
   ngOnInit() {

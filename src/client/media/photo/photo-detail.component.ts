@@ -102,7 +102,6 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
         break;
       case 'share':
         this.loadModalComponent(SharingModalComponent);
-        this.modal.open();
         // this.mediaToolbar.zoneSharing.modal.open();
         break;
       case 'tag':

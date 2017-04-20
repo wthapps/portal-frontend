@@ -333,7 +333,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   openModal(params: any) {
     let options: any;
-    console.log('open modal: ', params.modalName);
+    console.log('open modal: ', params);
     switch (params.modalName) {
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
@@ -364,7 +364,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
-        options = {selectedObjects: this.selectedObjects};
+        var objects = _.get(params, 'selectedObjects', []).concat(this.selectedObjects);
+        options = {selectedObjects: objects, updateListObjects: params.updateListObjects};
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
