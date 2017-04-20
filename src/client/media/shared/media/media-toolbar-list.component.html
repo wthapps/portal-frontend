@@ -1,240 +1,317 @@
 <div class="page-body-control">
-  <ul class="control-body-select">
+  <div class="page-body-control-nav" *ngIf="currentPage != 'album_detail'">
+    <ul class="page-body-control-menu">
+      <li>
+        <button class="btn btn-wth-default" (click)="uploader.browseFiles($event)">
+          <i class="fa fa-cloud-upload"></i> Upload File
+        </button>
+      </li>
+      <li>
+        <button class="btn btn-default"
+                (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">
+          <i class="fa fa-plus-circle"></i> Create Album
+        </button>
+      </li>
+    </ul>
+  </div>
 
-    <li style="border-right: 1px solid #d8d8d8; padding-right: 10px" *ngIf="currentPage == 'album_detail'">
-      <a (click)="onAction({action: 'goBack', params: {}})"><i class="fa fa-arrow-left"></i> </a>
-    </li>
-
-    <li class="name dropdown" *ngIf="currentPage == 'album_detail' && object">
-      <a href="#" data-toggle="dropdown" class="btn btn-inline ">
-        {{ object.name }}  <i class="fa fa-caret-down"></i>
-
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <li><a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;" draggable="false">
-          <i class="fa fa-plus-circle"></i> Add Photos</a>
-        </li>
-        <li>
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
-            <i class="fa fa-share-alt"></i> Share
-          </a>
-        </li>
-        <li >
-          <a href="javascript:;" draggable="false" (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object, page: 'album_detail'}})" *ngIf="!object.favorite">
-            <i class="fa fa-star-o"></i> Add to favourites
-          </a>
-          <a href="javascript:;" draggable="false" (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object, page: 'album_detail'}})" *ngIf="object.favorite">
-            <i class="fa fa-star"></i> Remove from favourites
-          </a>
-        </li>
-
-        <li>
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal', object: object}})">
-            <i class="fa fa-tag"></i> Tag
-          </a>
-        </li>
-
-        <li >
-          <a class="text-disable" (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;" draggable="false">
-            <i class="fa fa-toggle-right"></i> Slideshow
-          </a>
-        </li>
-        <li >
-          <a class="text-disable" (click)="onAction({action: 'setCoverImage', params: {}})" href="javascript:;" draggable="false">
-            <i class="fa fa-image"></i> Set cover image
-          </a>
-        </li>
-
-        <li>
-          <a class="text-disable" (click)="onAction({action: 'download', params: {}})">
-          <i class="fa fa-download"></i> Download Album
-          </a>
-        </li>
-        <li>
-          <a (click)="onAction({action: 'toggleDetailInfo', params: {}})" href="javascript:;" draggable="false">
-            <i class="fa fa-info-circle"></i> View Information
-          </a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-        </li>
-        <li>
-          <a (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal'}})" href="javascript:;" draggable="false">
-            <i class="fa fa-edit"></i> Edit Information
-          </a>
-        </li>
-        <li>
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})">
-            <i class="fa fa-trash-o"></i> Delete Album
-          </a>
-        </li>
-      </ul>
-    </li>
-
-
-    <li *ngIf="currentPage != 'album_detail'">
-      <button class="btn btn-wth-default" (click)="uploader.browseFiles($event)">
-        <i class="fa fa-cloud-upload"></i> Upload File
-      </button>
-    </li>
-    <li *ngIf="currentPage != 'album_detail'">
-      <button class="btn btn-default" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">
-        <i class="fa fa-plus-circle"></i> Create Album
-      </button>
-    </li>
-
-  </ul>
-
-
-  <div class="control-body-btnview-wrap">
-    <div class="pull-left" [ngSwitch]="currentPage">
-
-      <!--photo list-->
-      <ul class="control-body-select control-body-btnview" *ngSwitchCase="'photo_list'">
-
-        <li [ngClass]="{'action-disabled': noSelectedObjects}" >
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'previewModal'}})"><i class="fa fa-eye"></i></a>
-        </li>
-
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="{{favouriteTooltip}}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
-            <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
-          </a>
-        </li>
-
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
-        </li>
-        <li class="dropdown action" [ngClass]="{'action-disabled': noSelectedObjects}" >
-          <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-ellipsis-v"></i>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal'}})" href="javascript:;" draggable="false"><i class="fa fa-plus-square"></i> Add to Album</a>
-            </li>
-            <li><a (click)="onAction({action: 'openModal', params: {modalName:'editInfoModal'}})" href="javascript:;" draggable="false"><i class="fa fa-edit"></i> Edit Information</a></li>
-            <li><a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download</a></li>
-            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal', showDetails: true}})" href="javascript:;" draggable="false"><i class="fa fa-info-circle"></i> Information</a></li>
-          </ul>
-        </li>
-      </ul>
-
-
-      <!--album list-->
-
-      <ul class="control-body-select control-body-btnview" *ngSwitchCase="'album_list'">
-
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
-        </li>
-
-        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="{{favouriteTooltip}}">
-          <a href="javascript:;" draggable="false"
-             (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
-            <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
-          </a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
-        </li>
-        <li class="dropdown action" [ngClass]="{'action-disabled': noSelectedObjects}" >
-          <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-ellipsis-v"></i>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li>
-              <a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;" draggable="false">
-                <i class="fa fa-toggle-right"></i> Slideshow
-              </a>
-            </li>
-            <li><a (click)="onAction({action: 'setCoverImage', params: {}})" href="javascript:;" draggable="false"><i class="fa fa-image"></i> Set Album Cover</a>
-            </li>
-            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal'}})" href="javascript:;" draggable="false"><i class="fa fa-edit"></i> Edit Information</a></li>
-            <li><a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download</a></li>
-            <li><a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})" href="javascript:;" draggable="false"><i class="fa fa-info-circle"></i> Information</a></li>
-          </ul>
-        </li>
-      </ul>
-
-
-      <!--album details-->
-      <ul class="control-body-select control-body-btnview" *ngSwitchCase="'album_detail'">
-
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}" title="{{favouriteTooltip}}">
-          <a href="javascript:;" draggable="false"
-             (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
-            <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
-          </a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>
-        </li>
-        <li [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})"><i class="fa fa-trash-o"></i></a>
-        </li>
-        <li class="dropdown action" [ngClass]="{'action-disabled': noSelectedObjects}">
-          <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-ellipsis-v"></i>
-          </a>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li [ngClass]="{'action-disabled': noSelectedObjects}">
-              <a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;" draggable="false">
-                <i class="fa fa-toggle-right"></i> Preview
-              </a>
-            </li>
-            <li [ngClass]="{'action-disabled': noSelectedObjects}">
-              <a (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal'}})" href="javascript:;" draggable="false">
-                <i class="fa fa-edit"></i> Edit Information
-              </a>
-            </li>
-            <li [ngClass]="{'action-disabled': noSelectedObjects}">
-              <a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download
-              </a>
-            </li>
-            <li [ngClass]="{'action-disabled': noSelectedObjects}">
-              <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})" href="javascript:;" draggable="false">
-                <i class="fa fa-info-circle"></i> View Information
-              </a>
-            </li>
-            <li [ngClass]="{'action-disabled': noSelectedObjects}">
-              <a href="javascript:;" draggable="false" (click)="onAction({action: 'removeFromAlbum', params: {}})">
-                <i class="fa fa-minus-square"></i> Remove from Album
-              </a>
-            </li>
-          </ul>
-
-        </li>
-      </ul>
-
-    </div>
-    <!--view option-->
-    <ul class="control-body-select control-body-btnview">
-      <li class="dropdown">
-        <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa" [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
+  <div class="page-body-control-nav page-body-control-nav-action" *ngIf="currentPage == 'album_detail'">
+    <ul class="page-body-control-menu">
+      <li class="divider">
+        <a class="btn" href="javascript:;" (click)="onAction({action: 'goBack', params: {}})">
+          <i class="fa fa-arrow-left"></i>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <li><a (click)="onAction({action: 'changeView', params: {viewOption: grid}})" href="javascript:;" draggable="false">
-            <i class="fa fa-th-large"></i> Grid</a>
+      </li>
+      <li>
+      <li class="name dropdown" *ngIf="object">
+        <a class="btn btn-inline" href="javascript:;" data-toggle="dropdown">
+          {{ object.name }} <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenu2">
+          <li><a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"
+                 draggable="false">
+            <i class="fa fa-plus-circle"></i> Add Photos</a>
           </li>
-          <li><a (click)="onAction({action: 'changeView', params: {viewOption: list}})" href="javascript:;" draggable="false">
-            <i class="fa fa-th-list"></i> List</a>
+          <li>
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
+              <i class="fa fa-share-alt"></i> Share
+            </a>
           </li>
-          <li><a (click)="onAction({action: 'changeView', params: {viewOption: timeline}})" href="javascript:;" draggable="false"><i class="fa fa-align-left">
+          <li>
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object, page: 'album_detail'}})"
+               *ngIf="!object.favorite">
+              <i class="fa fa-star-o"></i> Add to favourites
+            </a>
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object, page: 'album_detail'}})"
+               *ngIf="object.favorite">
+              <i class="fa fa-star"></i> Remove from favourites
+            </a>
+          </li>
 
-          </i> Timeline</a>
+          <li>
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal', object: object}})">
+              <i class="fa fa-tag"></i> Tag
+            </a>
+          </li>
+
+          <li>
+            <a class="text-disable" (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-toggle-right"></i> Slideshow
+            </a>
+          </li>
+          <li>
+            <a class="text-disable" (click)="onAction({action: 'setCoverImage', params: {}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-image"></i> Set cover image
+            </a>
+          </li>
+
+          <li>
+            <a class="text-disable" (click)="onAction({action: 'download', params: {}})">
+              <i class="fa fa-download"></i> Download Album
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'toggleDetailInfo', params: {}})" href="javascript:;" draggable="false">
+              <i class="fa fa-info-circle"></i> View Information
+            </a>
+          </li>
+          <li>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal'}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-edit"></i> Edit Information
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})">
+              <i class="fa fa-trash-o"></i> Delete Album
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" [ngSwitch]="currentPage">
+    <!--photo list-->
+    <ul class="page-body-control-menu" *ngSwitchCase="'photo_list'" [ngClass]="{'text-disable': noSelectedObjects}">
+      <li>
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'previewModal'}})">
+          <i class="fa fa-eye"></i>
+        </a>
+      </li>
+
+      <li>
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li title="{{favouriteTooltip}}">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
+          <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
+        </a>
+      </li>
+
+      <li>
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})">
+          <i class="fa fa-tag"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </li>
+      <li class="dropdown action">
+        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal'}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-plus-square"></i> Add to Album
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName:'editInfoModal'}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-edit"></i> Edit Information</a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'download', params: {}})">
+              <i class="fa fa-download"></i> Download</a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal', showDetails: true}})"
+               href="javascript:;" draggable="false">
+              <i class="fa fa-info-circle"></i> Information
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+
+    <!--album list-->
+
+    <ul class="page-body-control-menu" *ngSwitchCase="'album_list'" [ngClass]="{'text-disable': noSelectedObjects}">
+      <li>
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+
+      <li title="{{favouriteTooltip}}">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
+          <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})">
+          <i class="fa fa-tag"></i></a>
+      </li>
+      <li>
+        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})">
+          <i class="fa fa-trash-o"></i></a>
+      </li>
+      <li class="dropdown action">
+        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+          <li>
+            <a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;" draggable="false">
+              <i class="fa fa-toggle-right"></i> Slideshow
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'setCoverImage', params: {}})" href="javascript:;" draggable="false">
+              <i class="fa fa-image"></i> Set Album Cover
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal'}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-edit"></i> Edit Information
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'download', params: {}})">
+              <i class="fa fa-download"></i> Download</a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})"
+               href="javascript:;" draggable="false">
+              <i class="fa fa-info-circle"></i> Information
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+
+    <!--album details-->
+    <ul class="page-body-control-menu" *ngSwitchCase="'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}">
+      <li>
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li title="{{favouriteTooltip}}">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
+          <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})">
+          <i class="fa fa-tag"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </li>
+      <li class="dropdown action">
+        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+          <li>
+            <a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;" draggable="false">
+              <i class="fa fa-toggle-right"></i> Preview
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal'}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-edit"></i> Edit Information
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})"
+               href="javascript:;" draggable="false">
+              <i class="fa fa-info-circle"></i> View Information
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;" draggable="false" (click)="onAction({action: 'removeFromAlbum', params: {}})">
+              <i class="fa fa-minus-square"></i> Remove from Album
+            </a>
+          </li>
+        </ul>
+
+      </li>
+    </ul>
+
+    <!--view option-->
+    <ul class="page-body-control-menu">
+      <li class="dropdown">
+        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa"
+             [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+          <li>
+            <a (click)="onAction({action: 'changeView', params: {viewOption: grid}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-th-large"></i> Grid
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'changeView', params: {viewOption: list}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-th-list"></i> List
+            </a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'changeView', params: {viewOption: timeline}})" href="javascript:;"
+               draggable="false">
+              <i class="fa fa-align-left"></i> Timeline
+            </a>
           </li>
         </ul>
       </li>
@@ -244,7 +321,7 @@
 
 
 <!--<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"-->
-                                 <!--[selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>-->
+<!--[selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>-->
 <!--<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>-->
 
 <!--<z-media-share-form-edit-name *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>-->

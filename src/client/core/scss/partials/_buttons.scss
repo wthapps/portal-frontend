@@ -119,14 +119,17 @@
   text-align: center;
 }
 
+.btn-inline {
+  min-width: initial;
+  color: inherit;
+}
+
 .btn-min-sm {
   min-width: 160px;
   text-align: center;
 }
 
 .btn {
-  min-width: 34px;
-
   &,
   &:active,
   &.active {
@@ -151,6 +154,9 @@
 
 [class^="btn-"], [class*=" btn-"] {
   min-width: 80px;
+  &.btn-inline {
+    min-width: initial;
+  }
 }
 
 .btn-default {
