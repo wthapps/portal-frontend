@@ -134,13 +134,19 @@ export class PhotoUploadService {
 
         reader.onload = (data: any) => {
           let currentPhoto = data.target['result'];
+          // this.apiService.post('media/photos', {name: file.name, file: currentPhoto})
+          // .subscribe((response: any) => {
+          //   console.log('photo:', response.data);
+          // });
 
           let ext = file.name.split('.').reverse()[0];
           let fileName = this.getFileName(file);
-          console.log('photos data: ', data, ' file name: ', fileName);
           let encodedFileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
           let photoKey = this.bucketSubFolder + '/' + encodedFileName;
           let options = {partSize: 10 * 1024 * 1024, queueSize: 1};
+
+          console.log('file name: ', fileName);
+          console.log('file: ', file);
           this.s3.upload({
             Key: photoKey,
             Body: file,
