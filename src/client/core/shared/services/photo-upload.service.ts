@@ -134,10 +134,10 @@ export class PhotoUploadService {
 
         reader.onload = (data: any) => {
           let currentPhoto = data.target['result'];
-          console.log('photos data: ', data, ' file name: ', file.name);
 
           let ext = file.name.split('.').reverse()[0];
           let fileName = this.getFileName(file);
+          console.log('photos data: ', data, ' file name: ', fileName);
           let encodedFileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
           let photoKey = this.bucketSubFolder + '/' + encodedFileName;
           let options = {partSize: 10 * 1024 * 1024, queueSize: 1};
@@ -190,8 +190,8 @@ export class PhotoUploadService {
    */
   getFileName(file: any) {
     let fullName = file.name.trim();
-    let pattern = EXT_LIST.reduce((total: string, s: string) => { return total + '|' + s }); // Pattern format: jpg|jpeg|gif
-    return fullName.replace(new RegExp('.' + pattern + '$', 'i'),'');
+    let pattern = '.' + EXT_LIST.join('|.'); // Pattern format: .jpg|.jpeg|.gif
+    return fullName.replace(new RegExp('' + pattern + '$', 'i'),'');
   }
 
   // Expected result:
