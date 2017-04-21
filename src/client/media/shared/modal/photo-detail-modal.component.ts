@@ -195,7 +195,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
     switch (modalName) {
       case 'editInfoModal':
         this.loadModalComponent(PhotoEditModalComponent);
-        options = {selectedItems: this.selectedPhotos};
+        options = {selectedObject: this.selectedPhotos[0]};
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
