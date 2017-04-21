@@ -67,6 +67,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   //this is used in list pages
   objects: Array<any> = new Array<any>();
+  hasObjects: boolean = true;
 
   // this is used in detail pages
   object: any;
@@ -151,13 +152,16 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   getObjects(options?: any) {
     let path = this.currentPath;
 
-    if(this.page == 'favorites') {
+    if (this.page == 'favorites') {
 
       this.loadingService.start('#list-photo');
       this.mediaObjectService.getObjects(`media?list_type=favorites`).subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
+        if (response.data.length==0) {
+          this.hasObjects = false;
+        }
       });
       return;
     }
@@ -168,7 +172,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
-
+        if (response.data.length==0) {
+          this.hasObjects = false;
+        }
       });
       return;
     }
@@ -178,7 +184,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.loadingService.stop('#list-photo');
       this.objects = response.data;
       this.nextLink = response.page_metadata.links.next;
-
+      if (response.data.length==0) {
+        this.hasObjects = false;
+      }
     });
   }
 
@@ -405,9 +413,12 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         }
 
 
-        if(params.hasOwnProperty('page') && params.page == 'album_detail') {
+        if (params.hasOwnProperty('page') && params.page == 'album_detail') {
           // this.object.favorite = (mode == 'add' ? true : false);
-          self.onAction({action: 'updateDetailObject', params: { properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}});
+          self.onAction({
+            action: 'updateDetailObject',
+            params: {properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}
+          });
         }
 
         _.map(this.selectedObjects, (object: any)=> {
@@ -628,9 +639,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.albumService.removeFromAlbum(params.selectedObject.id, params.selectedObjects).subscribe(
           (response: any) => {
             console.log('before', this.objects);
-              _.remove(this.objects, (object: any) => {
-                return (_.indexOf(ids,  object.id) !== -1);
-              });
+            _.remove(this.objects, (object: any) => {
+              return (_.indexOf(ids, object.id) !== -1);
+            });
 
             console.log('after', this.objects);
             this.loadingService.stop();
