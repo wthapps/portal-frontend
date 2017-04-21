@@ -8,7 +8,7 @@ declare var AWS: any;
 declare let _: any;
 declare let Promise: any;
 
-
+export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
 
 @Injectable()
 export class PhotoUploadService {
@@ -137,7 +137,7 @@ export class PhotoUploadService {
           console.log('photos data: ', data, ' file name: ', file.name);
 
           let ext = file.name.split('.').reverse()[0];
-          let fileName = file.name;
+          let fileName = this.getFileName(file);
           let encodedFileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
           let photoKey = this.bucketSubFolder + '/' + encodedFileName;
           let options = {partSize: 10 * 1024 * 1024, queueSize: 1};
@@ -183,6 +183,15 @@ export class PhotoUploadService {
   // TODO:
   remove(file: any) {
 
+  }
+
+  /*
+    Get filename, remove the extension if possible. Ex: small.dog.jpg => small.dog
+   */
+  getFileName(file: any) {
+    let fullName = file.name.trim();
+    let pattern = EXT_LIST.reduce((total: string, s: string) => { return total + '|' + s }); // Pattern format: jpg|jpeg|gif
+    return fullName.replace(new RegExp('.' + pattern + '$', 'i'),'');
   }
 
   // Expected result:
