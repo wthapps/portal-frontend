@@ -20,7 +20,7 @@
   <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
     <ul class="page-body-control-menu">
       <li class="divider">
-        <a class="btn" href="javascript:;" (click)="onAction({action: 'goBack', params: {}})">
+        <a class="btn" href="javascript:;" (click)="onAction({action: 'goBack', params: {}})" draggable="false">
           <i class="fa fa-arrow-left"></i>
         </a>
       </li>
@@ -34,7 +34,7 @@
       </li>
 
       <li class="name dropdown" *ngIf="object && page != 'search'">
-        <a class="btn btn-inline" href="javascript:;" data-toggle="dropdown">
+        <a class="btn btn-inline" href="javascript:;" data-toggle="dropdown" draggable="false">
           {{ object.name }} <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenu2">
@@ -267,7 +267,7 @@
         </a>
       </li>
       <li class="dropdown action">
-        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="btn" href="#" data-toggle="dropdown" draggable="false">
           <i class="fa fa-ellipsis-v"></i>
         </a>
 
