@@ -29,10 +29,10 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   currentTags: any = [];
   removedTags: any = [];
   keys: string = '';
-  selectedObjects:any;
-  updateListObjects:any;
-  updateObject:any;
-  toolbar:any;
+  selectedObjects: any;
+  updateListObjects: any;
+  updateObject: any;
+  toolbar: any;
 
   hasDeletedItems: boolean = false;
 
@@ -43,7 +43,7 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
 
   }
 
-  update(res:any) {
+  update(res: any) {
     if (res.data) {
       if (this.selectedObjects.length == 1) {
         res.data = [res.data];
@@ -74,7 +74,7 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
   }
 
   save() {
-    let tagsName:any = [];
+    let tagsName: any = [];
     for (let i = 0; i < this.tag.addedTags.length; i++) {
       if (typeof this.tag.addedTags[i] == 'object') {
         tagsName.push(this.tag.addedTags[i].display);
@@ -85,7 +85,7 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
 
     if (this.selectedObjects.length == 1) {
       this.taggingService.save({tags_name: tagsName, object: this.selectedObjects[0]}).subscribe(
-        (res:any) => {
+        (res: any) => {
           // Update objects
           this.update(res);
         }
@@ -94,7 +94,7 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
 
     if (this.selectedObjects.length > 1) {
       this.taggingService.saveMultiple({tags_name: tagsName, objects: this.selectedObjects}).subscribe(
-        (res:any) => {
+        (res: any) => {
           // Update objects
           this.update(res);
         }
