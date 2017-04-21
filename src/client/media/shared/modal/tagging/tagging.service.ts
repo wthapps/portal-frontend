@@ -18,4 +18,8 @@ export class ZMediaTaggingService {
   save(body: any) {
     return this.apiBaseService.put(`${this.tagUrl}/update`, body);
   }
+
+  saveMultiple(body: any) {
+    return this.apiBaseService.post(`${this.tagUrl}/update_multiple`, body);
+  }
 }

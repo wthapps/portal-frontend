@@ -43,6 +43,36 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
 
   }
 
+  update(res:any) {
+    if (res.data) {
+      if (this.selectedObjects.length == 1) {
+        res.data = [res.data];
+      }
+      for (let i = 0; i < this.selectedObjects.length; i++) {
+        if (res.data[i]) {
+          if (this.updateListObjects) {
+            for(let j = 0; j < this.updateListObjects.length; j++) {
+              for(let k = 0; k < this.updateListObjects[j].length; k++) {
+                if (res.data[i].id == this.updateListObjects[j][k].id) {
+                  this.updateListObjects[j][k] = res.data[i];
+                }
+              }
+            }
+          }
+          if (this.updateObject) {
+            if (res.data.id == this.updateObject.id) {
+              this.updateObject = res.data[i];
+            }
+          }
+          if (this.toolbar) {
+            this.toolbar.updateProperties({object: res.data[i]});
+          }
+        }
+      }
+    }
+
+  }
+
   save() {
     let tagsName:any = [];
     for (let i = 0; i < this.tag.addedTags.length; i++) {
@@ -52,27 +82,21 @@ export class TaggingModalComponent implements OnInit, BaseMediaModal {
         tagsName.push(this.tag.addedTags[i]);
       }
     }
-    for (let i = 0; i < this.selectedObjects.length; i++) {
-      this.taggingService.save({tags_name: tagsName, object_id: this.selectedObjects[i].id, object_type: this.selectedObjects[i].object_type}).subscribe(
+
+    if (this.selectedObjects.length == 1) {
+      this.taggingService.save({tags_name: tagsName, object: this.selectedObjects[0]}).subscribe(
         (res:any) => {
           // Update objects
-          if (this.updateListObjects) {
-            for(let j = 0; j < this.updateListObjects.length; j++) {
-              for(let k = 0; k < this.updateListObjects[j].length; k++) {
-                if (res.data.id == this.updateListObjects[j][k].id) {
-                  this.updateListObjects[j][k] = res.data;
-                }
-              }
-            }
-          }
-          if (this.updateObject) {
-            if (res.data.id == this.updateObject.id) {
-              this.updateObject = res.data;
-            }
-          }
-          if (this.toolbar) {
-            this.toolbar.updateProperties({object: res.data});
-          }
+          this.update(res);
+        }
+      );
+    }
+
+    if (this.selectedObjects.length > 1) {
+      this.taggingService.saveMultiple({tags_name: tagsName, objects: this.selectedObjects}).subscribe(
+        (res:any) => {
+          // Update objects
+          this.update(res);
         }
       );
     }
