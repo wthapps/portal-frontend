@@ -41,7 +41,7 @@ body {
 .text-disable {
   &, * {
     cursor: not-allowed;
-    @include opacity(0.3);
+    @include opacity(0.8);
   }
 }
 
