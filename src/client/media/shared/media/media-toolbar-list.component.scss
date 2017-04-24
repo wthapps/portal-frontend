@@ -19,6 +19,10 @@
         border-right: 1px solid $text-color;
       }
     }
+
+    &.text-disable, & .text-disable {
+      pointer-events: none;
+    }
   }
 
   &.page-body-control-nav-right {
