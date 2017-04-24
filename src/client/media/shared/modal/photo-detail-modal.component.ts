@@ -2,7 +2,7 @@ import {
   Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild,
   ViewContainerRef, ComponentFactoryResolver
 } from '@angular/core';
-
+import { Location } from '@angular/common';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Router } from '@angular/router';
@@ -59,6 +59,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
               private resolver: ComponentFactoryResolver,
               private photoService: ZMediaPhotoService,
               private confirmationService: ConfirmationService,
+              private location: Location,
               private loadingService: LoadingService) {
   }
 
@@ -94,8 +95,19 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
   imgNext(): void {
     this.index = this.index + 1;
-    if (this.index == this.selectedPhotos.length) this.index = 0;
+    if (this.index >= this.selectedPhotos.length) this.index = 0;
     this.loadingImg = true;
+  }
+
+  // Change image when delete current one: next, prev or go back to photo list
+  deleteAndChangeImg() {
+    console.log('Change image - current index: ', this.index, ' selectedPhotos: ', this.selectedPhotos);
+    // Remove images at index position
+    this.selectedPhotos.splice(this.index, 1);
+    if ( this.selectedPhotos.length == 0)
+      this.goBack();
+    else
+      this.imgNext();
   }
 
 
@@ -121,6 +133,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
         this.mediaToolbar.formAddAlbum.modal.open();
         break;
       default:
+        this.event.emit(event);
         break;
     }
 

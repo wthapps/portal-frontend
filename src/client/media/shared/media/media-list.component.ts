@@ -2,6 +2,7 @@ import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
   ViewContainerRef, ViewChild, ComponentFactoryResolver
 } from '@angular/core';
+import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
@@ -125,6 +126,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               protected loadingService: LoadingService,
               protected mediaObjectService: MediaObjectService,
               protected photoService: ZMediaPhotoService,
+              protected location: Location,
               protected albumService: ZMediaAlbumService) {
 
   }
@@ -336,11 +338,24 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'delete':
         this.delete();
         break;
-      case 'deleteAlbum':
-        this.deleteAlbum(event.params.selectedObject);
+      // case 'deleteAlbum':
+      //   this.deleteAlbum(event.params.selectedObject);
+      //   break;
+      // case 'deleteAlbumPhotos':
+      //   this.deleteAlbumPhotos(event.params.selectedObjects);
+      //   break;
+
+      // Delete albums and photos in list screen: photo list, album list, favorites list, album detail screen
+      case 'deleteMedia':
+        this.deleteMedia(event.params);
         break;
-      case 'deleteAlbumPhotos':
-        this.deleteAlbumPhotos(event.params.selectedObject);
+      // Hide photos / albums present in shared-with-me screen
+      case 'hideMedia':
+        this.hideMedia(event.params);
+        break;
+      //  Delete album itself in album detail screen
+      case 'deleteAlbumAndBack':
+        this.deleteAlbumAndBack(event.params);
         break;
       case 'removeFromAlbum':
         this.removeFromAlbum(event.params);
@@ -597,7 +612,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   deleteAlbum(selectedObject: any) {
     this.loadingService.start();
-    let objIds = _.map(selectedObject, 'id'); // ['1','2'];
+    let objIds = _.get(selectedObject, 'id'); // ['1','2'];
     let body = JSON.stringify({ids: objIds});
     this.albumService.deleteAlbum(body).subscribe(
       (res: any)=> {
@@ -640,6 +655,37 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       });
   }
 
+
+  // Delete multiple objects: photos, albums
+  // Allow delete photos in album (options)
+  // Params format:
+  // { objects: [{id: <value>, object_type: <value>}], child_destroy: <true/false> }
+  deleteMedia(params: any) {
+    this.loadingService.start();
+    let objs = _.map(params.selectedObjects, (o: any) => _.pick(o, ['id', 'object_type'])); // ['1','2'];
+
+    this.mediaObjectService.deleteObjects(objs, params.child_destroy).subscribe(
+      (res: any) => {
+        _.map(objs, (obj: any)=> {
+          _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
+        });
+        this.loadingService.stop();
+        if (params.callback)
+          params.callback(); // Return back to previous screen OR go to next / previous photos
+
+      });
+  }
+
+  // Hide media present in shared with me screen
+  hideMedia(params: any, callback?: any) {
+
+  }
+
+  // Delete album in album detail and go back to album list / favourite list
+  deleteAlbumAndBack(params: any) {
+    let newParams = Object.assign(params, {callback: this.location.back()});
+    return this.deleteMedia(newParams);
+  }
 
   removeFromAlbum(params: any) {
 

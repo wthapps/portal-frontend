@@ -46,10 +46,12 @@ export class AlbumDeleteModalComponent implements BaseMediaModal, AfterViewInit 
   onDelete(): void {
     this.modal.close();
     console.log('onDelete');
-    if (this.checked) {
-      this.event.emit({action: 'deleteAlbumPhotos', params: {selectedObject: this.selectedAlbums}});
-    } else {
-      this.event.emit({action: 'deleteAlbum', params: {selectedObject: this.selectedAlbums}});
-    }
+    // if (this.checked) {
+    //   this.event.emit({action: 'deleteAlbumPhotos', params: {selectedObject: this.selectedAlbums}});
+    // } else {
+    //   this.event.emit({action: 'deleteAlbum', params: {selectedObject: this.selectedAlbums}});
+    // }
+
+    this.event.emit({action: 'deleteMedia', params: {selectedObjects: this.selectedAlbums, child_destroy: this.checked }});
   }
 }

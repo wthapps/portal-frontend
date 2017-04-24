@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+ import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 declare var _: any;
@@ -27,7 +27,16 @@ export class MediaObjectService {
 
     console.log('this path', path, queryString);
     this.path = `${MEDIA_PATH}/${path}`;
-    return this.api.get(this.path, queryString);
+    return this.api.get(this.path, queryString).take(1); // This subscription should take 1 input ONLY
+  }
+
+  // Delete multiple objects: photos, albums
+  // Allow delete photos in album (options)
+  // Params format:
+  //  { objects: [{id: <value>, object_type: <value>}], child_destroy: <true/false> }
+  deleteObjects(objects: Array<any>, child_destroy: boolean = false) {
+    let body = {objects: objects, child_destroy: child_destroy};
+    return this.api.post(`${MEDIA_PATH}/media/delete`, body).take(1); // apiBaseService does not support DELETE methods with a body parameter, so a POST method should be used
   }
 
   listPhoto(body: any = {}): any {

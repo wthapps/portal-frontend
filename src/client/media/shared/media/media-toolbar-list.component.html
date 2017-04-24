@@ -100,7 +100,7 @@
             </a>
           </li>
           <li>
-            <a href="javascript:;" draggable="false" (click)="onAction({action: 'deleteAlbum', params: {selectedObject: object}})">
+            <a href="javascript:;" draggable="false" (click)="onAction({action: 'deleteAlbumAndBack', params: {selectedObjects: [object]}})">
               <i class="fa fa-trash-o"></i> Delete Album
             </a>
           </li>
@@ -117,7 +117,8 @@
     <!--photo list-->
     <ul class="page-body-control-menu"
         *ngIf=" page == 'photos' || page == 'search' || page == 'shared-with-me' || page == 'favorites'"
-        [ngClass]="{'text-disable': noSelectedObjects}">
+        [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'previewModal'}})">
@@ -144,8 +145,9 @@
           <i class="fa fa-tag"></i>
         </a>
       </li>
-      <li>
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})">
+      <!-- Shared with me screen DOES NOT support delete objects action -->
+      <li *ngIf="page != 'shared-with-me'">
+        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'deleteMedia', params: {selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
@@ -182,7 +184,7 @@
 
     <!--album list-->
 
-    <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}">
+    <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
@@ -202,7 +204,7 @@
           <i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName:'deleteModal'}})">
+        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown action">
@@ -242,7 +244,7 @@
 
 
     <!--album details-->
-    <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}">
+    <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
       <li *ngIf="!hasMultiObjects">
         <a class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal', selectedObjects: [object]}})">
@@ -262,7 +264,7 @@
         </a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: {}})">
+        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: { selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
