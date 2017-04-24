@@ -13,8 +13,9 @@
       <i (click)="addFavourite($event, p)" class="fa" [ngClass]="p.favorite ? 'fa-star': 'fa-star-o'"></i>
     </div>
     <figure (click)="toggleSelectedItem($event, p)" class="img-center-dv">
-      <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-      <img class="img-center" [src]="p['thumbnail_url']" alt="">
+      <span class="photo-box-img-figure-in">
+        <img draggable="false" class="img-center" [src]="p['thumbnail_url']" alt="">
+      </span>
     </figure>
   </div>
 </div>

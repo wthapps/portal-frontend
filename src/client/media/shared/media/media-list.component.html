@@ -2,19 +2,19 @@
 
 
 <div class="page-body-content has-page-body-control gray-light"
-  infinite-scroll
-  [infiniteScrollDistance]="2"
-  [infiniteScrollThrottle]="500"
-  [scrollWindow]="false"
-  (scrolled)="getMoreObjects()">
+     infinite-scroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="500"
+     [scrollWindow]="false"
+     (scrolled)="getMoreObjects()">
 
   <div class="page-body-content-in">
 
-    <me-list-header *ngIf="objects.length > 0" [data]="objects" [viewOption]="viewOption" (outEvent)="actionSortbar($event)"></me-list-header>
+    <me-list-header *ngIf="objects.length > 0" [data]="objects" [viewOption]="viewOption"
+                    (outEvent)="actionSortbar($event)"></me-list-header>
 
 
-
-    <div *ngIf="!hasObjects" class="zone-no-photo text-center">
+    <div *ngIf="!hasObjects && objects.length == 0" class="zone-no-photo text-center">
       <div *ngIf="page == 'search' ">
         <h3>Data not matched</h3>
         <h5>Please change your search criteria!</h5>
@@ -23,7 +23,8 @@
       <div *ngIf="page == 'albums'">
         <h3>There is no Album!</h3>
         <h5>
-          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">Create album</a>
+          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">Create
+            album</a>
         </h5>
       </div>
 
@@ -41,18 +42,25 @@
       </div>
     </div>
 
-    <div id="list-photo" class="row-img row-img-{{sliderViewNumber}}" *ngIf="objects" (dragenter)="onDragenter($event)" [ngClass]="viewOption" (dragleave)="onDragleave($event)">
+    <div id="list-photo" class="row-img row-img-{{sliderViewNumber}}" *ngIf="objects" (dragenter)="onDragenter($event)"
+         [ngClass]="viewOption" (dragleave)="onDragleave($event)">
       <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects.length">
-        <div *ngIf="group.key && ( viewOption != 'grid' || MIX_SCREEN.indexOf(currentPath) > -1 )" style="color: #4A4A4A; font-size: 15px">{{group.key | titleCase}}</div>
-        <div *ngIf="group.value" class="clearfix">
-          <me-item *ngFor="let item of group.value" [type]="item.object_type" [object]="item" (events)="onAction($event)"></me-item>
+        <div *ngIf="group.key && ( viewOption != 'grid' || MIX_SCREEN.indexOf(currentPath) > -1 )"
+             style="color: #4A4A4A; font-size: 15px">{{group.key | titleCase}}
         </div>
-        <me-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group" (events)="onAction($event)"></me-item>
+        <div *ngIf="group.value" class="clearfix">
+          <me-item *ngFor="let item of group.value" [type]="item.object_type" [object]="item"
+                   (events)="onAction($event)"></me-item>
+        </div>
+        <me-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"
+                 (events)="onAction($event)"></me-item>
         <div class="text-center p20" *ngIf="viewOption == 'grid' && MIX_SCREEN.indexOf(currentPath) > -1">
-          <a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-primary-inline" *ngIf="group.key == 'album'">
+          <a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-primary-inline"
+             *ngIf="group.key == 'album'">
             View all
           </a>
-          <a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-primary-inline" *ngIf="group.key == 'photo'">
+          <a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-primary-inline"
+             *ngIf="group.key == 'photo'">
             View all
           </a>
           <hr *ngIf="MIX_SCREEN.indexOf(currentPath) > -1">

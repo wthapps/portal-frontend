@@ -16,7 +16,6 @@
     </div>
     <figure class="img-center-dv" (dblclick)="onAction({action:'openModal', params: {modalName: 'previewModal'}})">
       <span class="photo-box-img-figure-in">
-        <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
         <img draggable="false" class="img-center" [src]="object.thumbnail_url" alt="">
       </span>
     </figure>
@@ -40,7 +39,6 @@
     </div>
     <figure class="img-center-dv" (dblclick)="onAction({action:'viewDetails', params: {selectedObject: object}})">
       <span class="photo-box-img-figure-in">
-        <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
         <img draggable="false" class="img-center" [src]="object.photo_default" alt="">
       </span>
       <div class="photo-box-img-info">
