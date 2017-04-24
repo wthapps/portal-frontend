@@ -166,6 +166,20 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    if (this.page == 'album_detail' && this.params && options && Object.keys(options).length > 0) {
+      options.album = this.params['id'];
+      this.loadingService.start('#list-photo');
+      this.mediaObjectService.getObjects(`photos`, options).subscribe((response: any)=> {
+        this.loadingService.stop('#list-photo');
+        this.objects = response.data;
+        this.nextLink = response.page_metadata.links.next;
+        if (response.data.length==0) {
+          this.hasObjects = false;
+        }
+      });
+      return;
+    }
+
     if (this.params) {
       this.loadingService.start('#list-photo');
       this.mediaObjectService.getObjects(`photos`, {album: this.params['id']}).subscribe((response: any)=> {
@@ -746,6 +760,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   private sort(data: any) {
+    console.log(data);
     this.getObjects(data);
   }
 }
