@@ -24,6 +24,7 @@ import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post
 import { PhotoSelectModalComponent } from '../../../core/partials/zone/photo/upload-photos/photo-select-modal.component';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
+import { ZMediaAlbumService } from '../../album/album.service';
 
 declare var $: any;
 declare var _: any;
@@ -108,6 +109,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private route: ActivatedRoute,
               private location: Location,
               private mediaObjectService: MediaObjectService,
+              private zMediaAlbumService: ZMediaAlbumService,
               private confirmationService: ConfirmationService) {
 
   }
@@ -123,6 +125,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.toolbar.uploader.events.subscribe((res:any) => {
       if (this.page == 'photos') {
         this.list.objects.unshift(res);
+      }
+      if (this.page == 'album_detail') {
+        this.zMediaAlbumService.addToAlbum(this.params['id'], [res]).subscribe((res:any) => {
+          this.list.objects = res.data;
+        });
       }
     });
   }
