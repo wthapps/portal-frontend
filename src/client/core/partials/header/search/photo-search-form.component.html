@@ -1,15 +1,15 @@
 <div *ngIf="active" class="navbar-form navbar-left" >
   <div class="navbar-searchTop">
     <div class="input-group">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button">
-          <i class="fa fa-search" aria-hidden="true"></i>
-        </button>
-      </span>
       <p-autoComplete [(ngModel)]="searchText" [suggestions]="suggestions" (completeMethod)="getSuggestions($event)" [delay]="500" (keyup.enter)="onEnter()"></p-autoComplete>
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" (click)="showSearchAdvanced()">
           <i class="fa fa-caret-down" [ngClass]="{'fa-caret-up': searchAdvanced, 'fa-caret-down': !searchAdvanced}"></i>
+        </button>
+      </span>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">
+          <i class="fa fa-search" aria-hidden="true"></i>
         </button>
       </span>
     </div>
