@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { Photo } from '../../../core/shared/models/photo.model';
 import { ZMediaPhotoService } from '../photo.service';
@@ -31,7 +32,8 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
   };
 
   constructor(private photoService: ZMediaPhotoService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private location: Location) {
   }
 
   ngOnInit() {
@@ -42,6 +44,10 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.reInitPhoto();
+  }
+
+  onBack() {
+    this.location.back();
   }
 
   getPhoto(id: any) {
