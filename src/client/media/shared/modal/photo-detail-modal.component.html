@@ -21,7 +21,7 @@
         <a href="javascript:;" draggable="false" (click)="onEditPhoto(selectedPhotos[index].id)"><i class="fa fa-edit"></i></a>
       </li>
 
-      <li>
+      <li *ngIf="canDelete">
         <a href="javascript:;" (click)="doAction({action: 'deleteMedia', params: {selectedObjects: [selectedPhotos[index]], callback: deleteAndChangeImg()} })"><i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown">
@@ -83,7 +83,7 @@
       <dd>
         <ul class="list-unstyled">
           <li><img src="assets/images/zone/img-group.png" alt="{{selectedPhotos[index].owner.name}}"
-                   title="{{selectedPhotos[index].owner.name}}">
+                   title="{{selectedPhotos[index].owner.name}}"> {{selectedPhotos[index].owner.name}}
           </li>
         </ul>
       </dd>
@@ -93,6 +93,7 @@
         <ul class="list-unstyled">
           <li *ngFor="let contact of selectedPhotos[index]?.json_shares[0]?.contacts">
             <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
+            {{contact.name}}
           </li>
         </ul>
       </dd>
