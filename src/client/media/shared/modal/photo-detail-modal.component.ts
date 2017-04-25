@@ -45,7 +45,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
   index: number = 0;
   loadingImg: boolean = true;
-  objects:any;
+  objects: any;
 
   private showDetails: boolean = false;
   private active: boolean = false;
@@ -91,12 +91,14 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
     this.index = this.index - 1;
     if (this.index < 0) this.index = this.selectedPhotos.length - 1;
     this.loadingImg = true;
+    // console.log(this.objects);
   }
 
   imgNext(): void {
     this.index = this.index + 1;
     if (this.index >= this.selectedPhotos.length) this.index = 0;
     this.loadingImg = true;
+    // console.log(this.index, this.selectedPhotos, this.allPhotos);
   }
 
   // Change image when delete current one: next, prev or go back to photo list
@@ -104,7 +106,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
     console.log('Change image - current index: ', this.index, ' selectedPhotos: ', this.selectedPhotos);
     // Remove images at index position
     this.selectedPhotos.splice(this.index, 1);
-    if ( this.selectedPhotos.length == 0)
+    if (this.selectedPhotos.length == 0)
       this.goBack();
     else
       this.imgNext();
@@ -162,12 +164,15 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
       this.objects = options.objects;
     }
 
-    this.loadingImg = true;
-    if (this.active) {
-      $('body').addClass('fixed-hidden').css('padding-right', Constants.windows.scrollBarWidth);
+    if (this.selectedPhotos.length == 1) {
+      this.selectedPhotos = this.objects;
+      this.index = _.findIndex(this.objects, {'id': options.selectedObjects[options.selectedObjects.length - 1].id});
     } else {
-      $('body').removeClass('fixed-hidden').css('padding-right', 0);
+      this.index = options.selectedObjects.length - 1;
     }
+
+    this.loadingImg = true;
+
   }
 
 
@@ -216,7 +221,10 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedObjects: [this.selectedPhotos[this.index]], updateListObjects: [this.objects, this.selectedPhotos]};
+        options = {
+          selectedObjects: [this.selectedPhotos[this.index]],
+          updateListObjects: [this.objects, this.selectedPhotos]
+        };
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
