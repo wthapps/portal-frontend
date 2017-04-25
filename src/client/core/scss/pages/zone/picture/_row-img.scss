@@ -14,6 +14,31 @@ $photo-box-img-owner: 150px;
     padding: 20px 30px;
     .img-center-dv, div[class^="photo-box-img-"] {
       display: table-cell;
+      &.photo-box-img-input {
+        width: $photo-box-img-input;
+        .fa {
+          width: 17px;
+          height: 17px;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px;
+          text-align: center;
+          line-height: 15px;
+          border: 1px solid $light-slate;
+          display: inline-block;
+          &:before {
+            visibility: hidden;
+          }
+          &.active {
+            color: #FFF;
+            background-color: $color-inverse;
+            border-color: $color-inverse;
+            &:before {
+              visibility: visible;
+            }
+          }
+        }
+      }
       &.photo-box-img-size {
         width: $photo-box-img-size;
       }
