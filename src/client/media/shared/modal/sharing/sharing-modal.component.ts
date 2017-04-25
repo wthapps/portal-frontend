@@ -39,6 +39,8 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
   removedContacts: any = [];
   removedContactGroups: any = [];
 
+  noSelectedContacts: boolean = true;
+
   contactTerm$ = new Subject<string>();
 
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
@@ -112,6 +114,9 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
     } else {
       this.hasDeletedItems = false;
     }
+
+    // Check if there is no contacts selected
+    this.setNoSelectedContacts();
   }
 
   isDeletedItem(id: number, isContact: boolean = true) {
@@ -213,6 +218,7 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
     console.log('contacts', this.selectedContacts, contact);
     this.selectedContacts.push(contact);
     console.log('contacts after', this.selectedContacts, contact);
+    this.noSelectedContacts = false;
     this.setUpdatedItemsStatus();
   }
 
@@ -221,6 +227,7 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
       return c['id'] == contact['id'];
     });
     this.setUpdatedItemsStatus();
+    this.setNoSelectedContacts();
   }
 
   searchContact(event: any) {
@@ -250,8 +257,15 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
   }
 
   private setUpdatedItemsStatus() {
-    this.hasUpdatedItems = ((this.selectedContacts.length > 0 || this.selectedContactGroups.length > 0)
+    // this.hasUpdatedItems = ((this.selectedContacts.length > 0 || this.selectedContactGroups.length > 0)
+    // && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
+
+    this.hasUpdatedItems = ((this.selectedContacts.length > 0 )
     && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
+  }
+
+  private setNoSelectedContacts() {
+    this.noSelectedContacts = (this.selectedContacts.length > 0 || this.selectedContactGroups.length > 0) ? false : true;
   }
 
   // private getContacts() {

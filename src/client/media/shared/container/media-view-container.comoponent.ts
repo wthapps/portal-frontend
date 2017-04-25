@@ -20,7 +20,6 @@ import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.compo
 import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
-import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 import { PhotoSelectModalComponent } from '../../../core/partials/zone/photo/upload-photos/photo-select-modal.component';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
