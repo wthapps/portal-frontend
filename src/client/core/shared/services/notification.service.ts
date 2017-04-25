@@ -183,7 +183,7 @@ export class NotificationService {
         });
   }
 
-  getNewNotificationsCount() {
+  getNewNotificationsCount(callback?: any) {
     // Only loading 1 time when refreshing pages or navigating from login pages
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
       .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
@@ -192,6 +192,8 @@ export class NotificationService {
         (result: any) => {
           this.newNotifCount = result.data;
 
+          if(callback)
+            callback();
         },
         (error: any) => {
           console.log('error', error);
@@ -226,12 +228,14 @@ export class NotificationService {
     this.newNotifCount = (this.newNotifCount < 0 ? 0 : this.newNotifCount);
   }
 
+
   startChannel(callback?: any) {
 
     // Work-around to fix loading performance issue by delaying following actions in 2s. Should be updated later
     setTimeout(() => {
-      this.getNewNotificationsCount();
-      this.getLatestNotifications();
+      this.getNewNotificationsCount(
+        this.getLatestNotifications()
+      );
 
       this.notificationChannel.createSubscription();
 

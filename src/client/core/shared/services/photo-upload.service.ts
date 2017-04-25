@@ -33,7 +33,9 @@ export class PhotoUploadService {
 
   loadConfig() {
     // ONLY load config 1 time
-    this.apiService.post(`${this.soPhotoUrl}/get_aws_config`).take(1).subscribe((data: any) => {
+    this.apiService.post(`${this.soPhotoUrl}/get_aws_config`)
+      .delay(3000) // Delay this action 3s to prevent slow loading at initial time
+      .take(1).subscribe((data: any) => {
       this.albumTempBucketName = data.tempBucket;
       this.bucketRegion = data.region;
       this.bucketSubFolder = data.bucketSubFolder;
