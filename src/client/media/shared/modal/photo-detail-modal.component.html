@@ -40,12 +40,12 @@
   <div *ngIf="selectedPhotos[index]" class="photo-detail-content">
     <div class="photo-detail-img">
       <figure [ngClass]="{'img-loading': loadingImg}">
-        <img [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
+        <img draggable="false" [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
       </figure>
-      <span *ngIf="selectedPhotos?.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
+      <span draggable="false" *ngIf="selectedPhotos?.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
         <i class="fa fa-angle-left"></i>
       </span>
-      <span *ngIf="selectedPhotos?.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
+      <span draggable="false" *ngIf="selectedPhotos?.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
         <i class="fa fa-angle-right"></i>
       </span>
     </div>

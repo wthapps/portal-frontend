@@ -17,28 +17,45 @@
     <div *ngIf="!hasObjects && objects.length == 0" class="zone-no-photo text-center">
       <div *ngIf="page == 'search' ">
         <h3>Data not matched</h3>
-        <h5>Please change your search criteria!</h5>
+        <h4>Please change your search criteria!</h4>
       </div>
 
       <div *ngIf="page == 'albums'">
-        <h3>There is no Album!</h3>
-        <h5>
-          <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">Create
-            album</a>
-        </h5>
+        <h2><i class="icon-album"></i></h2>
+        <h3>There is no album!</h3>
+        <h4>Try to create an album.</h4>
+        <p>
+          <button class="btn btn-wth-default" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">
+            <i class="fa fa-plus-circle"></i> Create album
+          </button>
+        </p>
       </div>
 
       <div *ngIf="page == 'photos' || page == 'album_detail'">
-        <h3>There is no Photo</h3>
-        <h5>Drag photos anywhere to upload</h5>
+        <h2><i class="fa fa-picture-o"></i></h2>
+        <h3>There is no photo!</h3>
+        <h4>There is no photo. Try to upload a file.</h4>
+        <p>
+          <button class="btn btn-wth-default" (click)="uploader.browseFiles($event)">
+            <i class="fa fa-cloud-upload"></i> Upload File
+          </button>
+        </p>
+        <me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>
       </div>
       <div *ngIf="page == 'favorites'">
-        <h3>No favourite photos and albums</h3>
-        <h5>Add favourites to things that you want to easily find later!</h5>
+        <h2><i class="fa fa-star"></i></h2>
+        <h3>There is no favourited photo or album.</h3>
+        <h4>Add star to a photo or album to find easier.</h4>
       </div>
       <div *ngIf="page == 'shared-with-me'">
-        <h3>No photos and albums others haved shared with you!</h3>
-        <h5><a href="javascript:;">Learn more</a></h5>
+        <h2><i class="fa fa-share-alt"></i></h2>
+        <h3>There is no shared photo or album!</h3>
+        <h4>Photo and album are shared by your connected contact.</h4>
+        <p>
+          <button class="btn btn-default" (click)="uploader.browseFiles($event)">
+            Learn More
+          </button>
+        </p>
       </div>
     </div>
 
