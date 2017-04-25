@@ -24,6 +24,7 @@ import { PhotoSelectModalComponent } from '../../../core/partials/zone/photo/upl
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
 import { ZMediaAlbumService } from '../../album/album.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -395,6 +396,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'previewModal':
         this.loadModalComponent(PhotoDetailModalComponent);
         options = {show: true, showDetails: false, selectedObjects: this.selectedObjects, objects: this.list.objects};
+
+        // Delete button should not be listed in shared with me screen
+        if (this.page == Constants.mediaPageType.sharedWithMe) {
+          Object.assign(options, {'canDelete': false});
+        }
+
         // this.modal.event.subscribe((event: any) => {
         //   this.doAction(event);
         // });
@@ -402,6 +409,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'previewDetailsModal':
         this.loadModalComponent(PhotoDetailModalComponent);
         options = {show: true, showDetails: true, selectedObjects: this.selectedObjects, objects: this.list.objects};
+
+        // Delete button should not be listed in shared with me screen
+        if (this.page == Constants.mediaPageType.sharedWithMe) {
+          Object.assign(options, {'canDelete': false});
+        }
         // this.modal.event.subscribe((event: any) => {
         //   this.doAction(event);
         // });

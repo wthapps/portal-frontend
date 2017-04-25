@@ -120,8 +120,13 @@
         [ngClass]="{'text-disable': noSelectedObjects}"
         [class.disabled]="noSelectedObjects">
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a *ngIf="page != 'shared-with-me' " class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'previewModal'}})">
+          <i class="fa fa-eye"></i>
+        </a>
+        <!-- Not allow delete objects in preview modal in shared-with-me screen -->
+        <a *ngIf="page == 'shared-with-me' " class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName: 'previewModal', canDelete: false}})">
           <i class="fa fa-eye"></i>
         </a>
       </li>

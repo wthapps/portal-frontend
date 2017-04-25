@@ -15,6 +15,7 @@ export class AppearancesChannelService extends CableService {
   }
 
   subscribe() {
+    console.debug('Start channel appearance');
     if(this.userService.loggedIn) {
       this.createConnectionInstance(this.userService.profile.uuid);
       let _this = this;

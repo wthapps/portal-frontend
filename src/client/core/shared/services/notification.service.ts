@@ -3,6 +3,8 @@ import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationChannelService } from '../channels/notification-channel.service';
+import { UserService } from './user.service';
+import { Observable } from 'rxjs';
 
 /**
  * Created by phat on 18/11/2016.
@@ -26,11 +28,14 @@ export class NotificationService {
   constructor(private api: ApiBaseService,
               private router: Router,
               private route: ActivatedRoute,
+              private userService: UserService,
               private notificationChannel: NotificationChannelService) {
   }
 
   get() {
-    return this.api.get(`${Constants.urls.zoneSoNotifications}`);
+    return this.api.get(`${Constants.urls.zoneSoNotifications}`)
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
+    ;
   }
 
 
@@ -89,6 +94,7 @@ export class NotificationService {
 
     // TODO: Convert this method to put
     return this.api.post(`${Constants.urls.zoneSoNotifications}/mark_as_seen`, body)
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
         (result: any) => {
           this.countNewNotifications();
@@ -107,6 +113,7 @@ export class NotificationService {
     this.currentNotifId = notification.id;
     let body = {'ids' : this.currentNotifId};
     return this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_read_status`, body)
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
         (result: any) => {
           _.each(this.notifications, (n: any) => { if(n.id == this.currentNotifId) n.is_read = !n.is_read;});
@@ -125,6 +132,7 @@ export class NotificationService {
 
   toggleAllReadStatus() {
     this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_all_read_status`, [])
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
         (result: any) => {
           let overallReadStatus = result.data;
@@ -136,22 +144,23 @@ export class NotificationService {
         });
   }
 
-  // getLatestNotifications() {
-  //   // let notif_limit = this.notifLimit;
-  //   this.notifOffset = 0; // Reset notification offset
-  //   this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)
-  //     .subscribe(
-  //       (result: any) => {
-  //         _.remove(this.notifications); // Make sure this.notifications has no value before assigning
-  //         this.notifications = result.data;
-  //         this.loadingDone = result.loading_done;
-  //         this.notifOffset += 1;
-  //
-  //       },
-  //       (error: any) => {
-  //         console.log('error', error);
-  //       });
-  // }
+  getLatestNotifications() {
+    // let notif_limit = this.notifLimit;
+    this.notifOffset = 0; // Reset notification offset
+    this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
+      .subscribe(
+        (result: any) => {
+          _.remove(this.notifications); // Make sure this.notifications has no value before assigning
+          this.notifications = result.data;
+          this.loadingDone = result.loading_done;
+          this.notifOffset += 1;
+
+        },
+        (error: any) => {
+          console.log('error', error);
+        });
+  }
 
   getMoreNotifications() {
     if(this.loadingDone) {
@@ -159,6 +168,7 @@ export class NotificationService {
       return;
     }
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest/${this.notifOffset}/${this.notifLimit}`)
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
         (result: any) => {
           this.notifications.push(...result.data);
@@ -173,18 +183,28 @@ export class NotificationService {
         });
   }
 
-  getNewNotificationsCount() {
+  getNewNotificationsCount(callback?: any) {
     // Only loading 1 time when refreshing pages or navigating from login pages
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
       .take(1)
       .subscribe(
         (result: any) => {
           this.newNotifCount = result.data;
 
+          if(callback)
+            callback();
         },
         (error: any) => {
           console.log('error', error);
         });
+  }
+
+  getNewNotificationsCountObs(): Observable<any> {
+    // Only loading 1 time when refreshing pages or navigating from login pages
+    return this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
+      .filter(() => !this.userService.loggedIn) // Do not call this API if user is not logged in
+      .take(1);
   }
 
   hideNotification(notification: any) {
@@ -208,21 +228,44 @@ export class NotificationService {
     this.newNotifCount = (this.newNotifCount < 0 ? 0 : this.newNotifCount);
   }
 
-  startChannel() {
 
-    this.getNewNotificationsCount();
-    // this.getLatestNotifications();
+  startChannel(callback?: any) {
 
-    this.notificationChannel.createSubscription();
+    // Work-around to fix loading performance issue by delaying following actions in 2s. Should be updated later
+    setTimeout(() => {
+      this.getNewNotificationsCount(
+        this.getLatestNotifications()
+      );
 
-    if( this.notificationChannel.notificationUpdated) {
-      this.notificationChannel.notificationUpdated
-        .subscribe(
-          (notification: any) => {
-            this.notifications.unshift(JSON.parse(notification));
-            this.newNotifCount++;
-          });
-    }
+      this.notificationChannel.createSubscription();
+
+      if( this.notificationChannel.notificationUpdated) {
+        this.notificationChannel.notificationUpdated
+          .subscribe(
+            (notification: any) => {
+              this.notifications.unshift(JSON.parse(notification));
+              this.newNotifCount++;
+
+              if(callback)
+                callback();
+            });
+      }}, 2000);
+
+    // // Chaining requests in following order: get news notif count -> create subscription to notification channel -> update notification
+    // this.getNewNotificationsCountObs()
+    //   .flatMap((result: any) => {
+    //     this.newNotifCount = result.data;
+    //
+    //     // TODO: Double check me
+    //     this.notificationChannel.createSubscription();
+    //     return this.notificationChannel.notificationUpdated;
+    //           })
+    //   .subscribe(
+    //     (notification: any) => {
+    //       this.notifications.unshift(JSON.parse(notification));
+    //       this.newNotifCount++;
+    //     });
+    // ;
   }
 }
 

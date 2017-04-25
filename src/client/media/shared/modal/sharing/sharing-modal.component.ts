@@ -136,28 +136,30 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
       let body = this.hasDeletedItems ? {
         photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
         albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
-        contacts: _.xor(_.map(this.sharedContacts, 'id'), this.removedContacts),
-        groups: _.xor(_.map(this.sharedContactGroups, 'id'), this.removedContactGroups)
+        contacts: _.xor(_.concat(_.map(this.sharedContacts, 'id'), _.map(this.selectedContacts, 'id')), this.removedContacts),
+
+
+        // groups: _.xor(_.map(this.sharedContactGroups, 'id'), this.removedContactGroups)
       }
         : {
         photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
         albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
         contacts: _.map(_.concat(this.sharedContacts, this.selectedContacts), 'id'),
-        groups: _.map(_.concat(this.sharedContactGroups, this.selectedContactGroups), 'id')
+        // groups: _.map(_.concat(this.sharedContactGroups, this.selectedContactGroups), 'id')
       };
 
       this.mediaSharingService.update(body).take(1).subscribe((res: any) => {
           console.log(res);
           this.sharedContacts = res.data['contacts'];
-          this.sharedContactGroups = res.data['contactgroups'];
+          // this.sharedContactGroups = res.data['contactgroups'];
 
           if (this.hasDeletedItems) {
             this.removedContacts = [];
-            this.removedContactGroups = [];
+            // this.removedContactGroups = [];
             this.hasDeletedItems = false;
           } else {
             this.selectedContacts = [];
-            this.selectedContactGroups = [];
+            // this.selectedContactGroups = [];
             this.hasUpdatedItems = false;
           }
 
@@ -261,11 +263,11 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
     // && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
 
     this.hasUpdatedItems = ((this.selectedContacts.length > 0 )
-    && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
+    && (this.sharedContacts.length > 0 )) ? true : false;
   }
 
   private setNoSelectedContacts() {
-    this.noSelectedContacts = (this.selectedContacts.length > 0 || this.selectedContactGroups.length > 0) ? false : true;
+    this.noSelectedContacts = (this.selectedContacts.length > 0 ) ? false : true;
   }
 
   // private getContacts() {

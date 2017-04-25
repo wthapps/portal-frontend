@@ -200,6 +200,14 @@ export let Constants = {
     'albums': 'album',
     'favorites': 'mix',
     'shared-with-me': 'mix'
+  },
+  mediaPageType: {
+    photos: 'photos',
+    search: 'search',
+    sharedWithMe: 'shared-with-me',
+    favorites: 'favorites',
+    albums: 'albums',
+    album_detail: 'album_detail'
   }
 };
 
@@ -212,5 +220,4 @@ export let MediaType = {
   favourites: 'favourites',
   sharedWithMe: 'sharedWithMe'
 };
-
 

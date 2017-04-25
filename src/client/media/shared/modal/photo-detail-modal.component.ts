@@ -49,6 +49,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
   private showDetails: boolean = false;
   private active: boolean = false;
+  private canDelete: boolean = true;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -162,6 +163,9 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
     if (_.has(options, 'objects')) {
       this.objects = options.objects;
+    }
+    if (_.has(options, 'canDelete')) {
+      this.canDelete = options.canDelete;
     }
 
     if (this.selectedPhotos.length == 1) {

@@ -64,10 +64,10 @@ export class HeaderComponent implements AfterViewInit, OnInit {
         this.userService.profile.profile_image = Constants.img.avatar;
       }
 
-      this.notificationService.startChannel();
+      // Start the appearance channel after notification channel is connected
+      console.debug('start channel notification');
+      this.notificationService.startChannel(this.appearancesChannelService.subscribe());
     }
-
-    this.appearancesChannelService.subscribe();
   }
 
 
@@ -113,6 +113,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   logout() {
 
     this.userService.logout('users/sign_out')
+      .take(1)
       .subscribe(
         response => {
           window.location.href = `${Constants.baseUrls.app}/login`;
