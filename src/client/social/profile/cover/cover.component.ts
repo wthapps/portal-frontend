@@ -25,6 +25,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   userInfo: any;
 
   relationships: any;
+  showFriends:boolean = true;
 
 
   constructor(private apiBaseService: ApiBaseService,
@@ -37,7 +38,11 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.data) {
+
       this.userInfo = this.data;
+    }
+    if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
+      this.showFriends = this.userInfo.settings.show_friends.value;
     }
   }
 
@@ -51,7 +56,6 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
           },
         );
       }
-
     });
   }
 

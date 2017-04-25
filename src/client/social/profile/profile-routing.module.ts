@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { ZSocialProfileComponent } from './profile.component';
 import { ZSocialProfileAboutComponent } from './about/about.component';
 import { ZSocialProfilePostComponent } from './post/post.component';
+import { ZSocialProfileFriendComponent } from './friend/friend.component';
 
 
 @NgModule({
@@ -10,6 +11,7 @@ import { ZSocialProfilePostComponent } from './post/post.component';
     RouterModule.forChild([
       {path: 'profile/:id/about', component: ZSocialProfileAboutComponent},
       {path: 'profile/:id/post', component: ZSocialProfilePostComponent},
+      {path: 'profile/:id/friends', component: ZSocialProfileFriendComponent},
       {path: 'profile/:id', component: ZSocialProfilePostComponent},
     ])
   ],
