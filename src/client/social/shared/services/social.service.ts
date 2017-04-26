@@ -21,6 +21,7 @@ export class SoUserService {
   readonly soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
   readonly soReportUrl: string = Constants.urls.zoneSoReportList;
   readonly soReportEntity: any = Constants.soCommunityReportEntity;
+  readonly soFriendUrl: any = Constants.urls.soFriendUrl;
   profile: User = null;
 
 
@@ -108,6 +109,10 @@ export class SoUserService {
     return this.apiBaseService.get(`${this.soReportUrl}`, body);
   }
 
+  // ================= Friend ======================
+  getFriends(uuid: string = this.user.profile.uuid) {
+    return this.apiBaseService.get(`${this.soFriendUrl}/${uuid}`);
+  }
 }
 
 @Injectable()

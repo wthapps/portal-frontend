@@ -14,6 +14,7 @@ import { ZSocialProfileFormContactComponent } from './form/contact.component';
 import { ZSocialProfileFormWorkEduComponent } from './form/work-edu.component';
 import { ZSocialProfileFormInterestComponent } from './form/interest.component';
 import { ZSocialProfilePostComponent } from './post/post.component';
+import { ZSocialProfileFriendComponent } from './friend/friend.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { ZSocialProfilePostComponent } from './post/post.component';
     ZSocialProfileFormInterestComponent,
     ZSocialProfileFormWorkEduComponent,
     ZSocialProfilePostComponent,
+    ZSocialProfileFriendComponent,
     ZSocialProfileAboutComponent
   ],
   exports: [
@@ -42,6 +44,7 @@ import { ZSocialProfilePostComponent } from './post/post.component';
     ZSocialProfileFormWorkEduComponent,
     ZSocialProfileFormInterestComponent,
     ZSocialProfilePostComponent,
+    ZSocialProfileFriendComponent,
     ZSocialProfileAboutComponent
   ],
   providers: []

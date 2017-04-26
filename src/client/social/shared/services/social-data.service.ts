@@ -5,7 +5,6 @@ import { Subject } from 'rxjs/Subject';
 // This Data service is created for communitication between social components: communities, notification, friends and its child views
 export class SocialDataService {
   itemObs$ : any;
-  loadingDone = false;
   private itemSource = new Subject<string>();
 
   constructor() {
@@ -15,9 +14,4 @@ export class SocialDataService {
   loadItem(data: string = '') {
     this.itemSource.next(data);
   }
-
-  resetLoading() {
-    this.loadingDone = false;
-  }
-
 }

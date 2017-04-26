@@ -48,7 +48,6 @@ export class ZSocialMembersComponent implements OnInit {
 
   getDataList(type: string) {
     this.currentState = type;
-    this.list.length = 0;
     this.list = this.data[type];
     return false;
   }

@@ -41,6 +41,9 @@
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a [routerLink]="['/profile/'+uuid+'/about']">About</a>
       </li>
+      <li *ngIf="showFriends" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/profile/'+uuid+'/friends']">Friends</a>
+      </li>
       <li class="pull-right dropdown">
         <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="true">

@@ -1,0 +1,32 @@
+<div class="page-body-content gray-light">
+  <div class="page-body-content-in zone-social">
+    <div class="zone-social-in">
+      <z-social-profile-cover [data]="userInfo"></z-social-profile-cover>
+
+      <div class="zone-social-container">
+        <div class="z-social-box clearfix">
+          <div *ngFor="let item of list" class="z-social-box-body-communities col-xs-12 col-lg-6">
+            <div class="media-center">
+              <div class="media-center-left">
+                <figure>
+                  <a [routerLink]="['/profile', item?.uuid]">
+                    <img [src]="item?.profile_image" width="70" alt="">
+                  </a>
+                </figure>
+              </div>
+              <div class="media-center-body">
+                <h4 class="media-center-heading">
+                  <a [routerLink]="['/profile', item?.uuid]">
+                    {{item.name}}
+                  </a>
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <wth-zone-report></wth-zone-report>
+</div>
