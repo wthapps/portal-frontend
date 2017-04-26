@@ -136,9 +136,10 @@ export class PhotoUploadService {
 
         reader.onload = (data: any) => {
           let currentPhoto = data.target['result'];
-          // this.apiService.post('media/photos', {name: file.name, file: currentPhoto})
+          // this.apiService.post('media/photos', {name: file.name, type: file.type, file: currentPhoto})
           // .subscribe((response: any) => {
           //   console.log('photo:', response.data);
+          //   observer.next(response);
           // });
 
           let ext = file.name.split('.').reverse()[0];

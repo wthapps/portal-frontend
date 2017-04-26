@@ -31,7 +31,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   uploaded_num: number;
   stopped_num: number;
   pending_request: any;
-  photos: Array<Photo> = [];
+  photos: Array<any> = [];
   files: Array<any>;
   uploadSteps:any = {
     closed: -1,
