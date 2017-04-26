@@ -13,6 +13,20 @@ body {
   background-position: center center;
 }
 
+.img-box {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  .img-box-item {
+    @include center();
+    width: 100%;
+    height: auto;
+  }
+}
+
 .bold {
   font-weight: bold;
 }
@@ -36,6 +50,17 @@ body {
 
 .text-fade {
   @include opacity(0.8);
+}
+
+.text-link {
+  color: $link-color;
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  &:hover, &:focus {
+    text-decoration: none;
+    outline: none;
+  }
 }
 
 .text-disable {

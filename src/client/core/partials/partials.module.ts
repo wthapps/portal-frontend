@@ -23,6 +23,7 @@ import { EntitySelectModule } from './entity-select/entity-select.module';
 import { PhotoSearchFormComponent } from './header/search/photo-search-form.component';
 import { TagInputModule } from 'ng2-tag-input';
 import { AutoCompleteModule } from 'primeng/primeng';
+import { ModalDockModule } from './modal/dock.module';
 
 
 
@@ -45,7 +46,9 @@ import { AutoCompleteModule } from 'primeng/primeng';
     PhotoModule,
     TagInputModule,
     AutoCompleteModule,
-    CalendarModule
+    CalendarModule,
+
+    ModalDockModule
   ],
   declarations: [
     SearchFormComponent,
@@ -75,6 +78,8 @@ import { AutoCompleteModule } from 'primeng/primeng';
     EntitySelectModule,
     PhotoModule,
     CalendarModule,
+
+    ModalDockModule,
 
     // Pipe
     // GroupByMonthYearPipe,

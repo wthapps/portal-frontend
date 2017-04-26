@@ -40,78 +40,78 @@
       bottom: 0;
     }
   }
-  .main-page-body {
+}
+.main-page-body {
+  position: absolute;
+  top: 0;
+  left: $main-page-left-sm;
+  right: 0;
+  bottom: 0;
+  @media (min-width: $screen-md-min) {
+    left: $main-page-left;
+  }
+
+  .main-page-left {
+    z-index: 9;
+  }
+
+  .page-body-control {
+    height: $page-body-control-height;
+    background-color: #ffffff;
+    padding: 15px 30px;
+    position: relative;
+    z-index: 3;
+    @include clearfix;
+    @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.4));
+    & + .page-body-content {
+      top: $page-body-control-height;
+    }
+    &.has-page-body-sidebar {
+      margin-left: $main-page-left-sm;
+      @media (min-width: $screen-md-min) {
+        margin-left: $main-page-left;
+      }
+    }
+
+    a {
+      -moz-user-select: -moz-none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+
+      /*
+        Introduced in IE 10.
+        See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+      */
+      -ms-user-select: none;
+      user-select: none;
+    }
+  }
+  .page-body-control-sub {
+    @extend .page-body-control;
+    z-index: 2;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    height: $page-body-control-sub-height;
+  }
+  .page-body-content {
     position: absolute;
     top: 0;
-    left: $main-page-left-sm;
+    left: 0;
     right: 0;
     bottom: 0;
-    @media (min-width: $screen-md-min) {
-      left: $main-page-left;
+    overflow: auto;
+    z-index: 1;
+    &.has-page-body-control {
+      top: $page-body-control-height;
     }
-
-    .main-page-left {
-      z-index: 9;
-    }
-
-    .page-body-control {
-      height: $page-body-control-height;
-      background-color: #ffffff;
-      padding: 15px 30px;
-      position: relative;
-      z-index: 3;
-      @include clearfix;
-      @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.4));
-      & + .page-body-content {
-        top: $page-body-control-height;
-      }
-      &.has-page-body-sidebar {
-        margin-left: $main-page-left-sm;
-        @media (min-width: $screen-md-min) {
-          margin-left: $main-page-left;
-        }
-      }
-
-      a {
-        -moz-user-select: -moz-none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-
-        /*
-          Introduced in IE 10.
-          See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-        */
-        -ms-user-select: none;
-        user-select: none;
+    &.has-page-body-sidebar {
+      left: $main-page-left-sm;
+      @media (min-width: $screen-md-min) {
+        left: $main-page-left;
       }
     }
-    .page-body-control-sub {
-      @extend .page-body-control;
-      z-index: 2;
-      padding-top: 12px;
-      padding-bottom: 12px;
-      height: $page-body-control-sub-height;
-    }
-    .page-body-content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      overflow: auto;
-      z-index: 1;
-      &.has-page-body-control {
-        top: $page-body-control-height;
-      }
-      &.has-page-body-sidebar {
-        left: $main-page-left-sm;
-        @media (min-width: $screen-md-min) {
-          left: $main-page-left;
-        }
-      }
-      .page-body-content-in {
-        padding: 30px;
-      }
-    }
+  }
+  .page-body-content-in {
+    padding: 30px;
   }
 }

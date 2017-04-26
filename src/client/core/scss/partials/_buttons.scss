@@ -157,6 +157,18 @@
   &.btn-inline {
     min-width: initial;
   }
+
+  &.btn-text-link {
+    color: $link-color;
+    padding: 0;
+    border-width: 0;
+    background-color: transparent;
+    min-width: initial;
+    &:hover, &:focus {
+      text-decoration: none;
+      outline: none;
+    }
+  }
 }
 
 .btn-default {
@@ -179,4 +191,12 @@
   text-decoration: none !important;
   color: $text-color;
   min-width: inherit;
+}
+
+.btn-link-inline {
+  text-decoration: none;
+  min-width: inherit;
+  &:hover, &:focus {
+    text-decoration: none;
+  }
 }

@@ -1,22 +1,25 @@
-.zone-social {
-  padding: 30px 45px 0;
-  @include clearfix;
-  @include flexbox;
-  @include align-items(flex-start);
-  .zone-social-in {
-    @include flex(1);
-    @media (min-width: $screen-md-min) {
-      margin-right: 45px;
+.main-page-body {
+
+  .zone-social {
+    padding: 30px 45px 0;
+    @include clearfix;
+    @include flexbox;
+    @include align-items(flex-start);
+    .zone-social-in {
+      @include flex(1);
+      @media (min-width: $screen-md-min) {
+        margin-right: 45px;
+      }
     }
-  }
-  .zone-social-sidebar {
-    float: right;
-    width: 300px;
-    @media (max-width: $screen-md-max) {
-      width: 200px;
-    }
-    @media (max-width: $screen-sm-max) {
-      display: none;
+    .zone-social-sidebar {
+      float: right;
+      width: 300px;
+      @media (max-width: $screen-md-max) {
+        width: 200px;
+      }
+      @media (max-width: $screen-sm-max) {
+        display: none;
+      }
     }
   }
 }
