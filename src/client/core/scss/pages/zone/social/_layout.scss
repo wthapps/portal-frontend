@@ -151,6 +151,9 @@
 
 .z-social-media-inputpost {
   position: relative;
+  input[readonly] {
+    background-color: white;
+  }
 
   &.inputpost-new {
     .z-social-media-inputpost-icon {
