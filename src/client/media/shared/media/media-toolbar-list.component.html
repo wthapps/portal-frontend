@@ -250,9 +250,9 @@
 
     <!--album details-->
     <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
-      <li *ngIf="!hasMultiObjects">
+      <li>
         <a class="btn" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal', selectedObjects: [object]}})">
+           (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
           <i class="fa fa-share-alt"></i>
         </a>
       </li>
@@ -294,7 +294,7 @@
             <a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download
             </a>
           </li>
-          <li *ngIf="!hasMultiObjects">
+          <li>
             <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})"
                href="javascript:;" draggable="false">
               <i class="fa fa-info-circle"></i> View Information

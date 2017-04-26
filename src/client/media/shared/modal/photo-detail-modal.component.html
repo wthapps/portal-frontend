@@ -91,7 +91,7 @@
       <dt>Shared with</dt>
       <dd>
         <ul class="list-unstyled">
-          <li *ngFor="let contact of selectedPhotos[index]?.json_shares[0]?.contacts">
+          <li *ngFor="let contact of selectedPhotos[index]?.json_shares?.contacts">
             <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
             {{contact.name}}
           </li>

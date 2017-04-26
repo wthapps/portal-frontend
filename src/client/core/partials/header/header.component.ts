@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { Constants } from '../../shared/config/constants';
@@ -19,7 +19,7 @@ declare let App: any; //This App stands for ActionCable
   selector: 'wth-header',
   templateUrl: 'header.component.html'
 })
-export class HeaderComponent implements AfterViewInit, OnInit {
+export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input('headerOver') headerOver: boolean = false;
   @HostBinding('class') headerClass = 'header';
 
@@ -68,6 +68,10 @@ export class HeaderComponent implements AfterViewInit, OnInit {
       console.debug('start channel notification');
       this.notificationService.startChannel(this.appearancesChannelService.subscribe());
     }
+  }
+
+  ngOnDestroy() {
+  //  TODO: Unsubscribe all cable services when destroyed
   }
 
 

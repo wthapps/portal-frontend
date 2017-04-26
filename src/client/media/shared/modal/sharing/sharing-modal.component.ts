@@ -198,10 +198,10 @@ export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal 
   // Update sharing info for selected items
   updateSelectedItems(properties: any) {
     for (let i=0; i< this.selectedItems.length; i++) {
-      if (this.selectedItems[i].json_shares.length > 0)
-        _.extend(this.selectedItems[i].json_shares[0], properties);
+      if (!_.isEmpty(this.selectedItems[i].json_shares))
+        _.extend(this.selectedItems[i].json_shares, properties);
       else
-        this.selectedItems[i].json_shares = [ properties ];
+        this.selectedItems[i].json_shares = properties;
     };
 
   }

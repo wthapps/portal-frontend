@@ -22,7 +22,7 @@
     <div class="photo-box-img-name">
       <span (dblclick)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: object}})">{{object.name}}.{{object.extension}}</span>
       <div class="hidden">
-        <i *ngIf="object.json_shares.length>1" class="fa fa-user-plus"></i>
+        <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
         <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
     </div>
