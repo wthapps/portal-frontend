@@ -2,13 +2,18 @@
   <!--Add new comment-->
   <comment-box (eventEmitter)="onCallBack($event)" [item]="item" [type]="commentBoxType.Add"></comment-box>
 
-  <div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">{{item.comments?.length}} of {{item.total_comments}} Comment</div>
-  <div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{item.comments?.length}} of {{item.total_comments}} Comments </div><input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
-  <ul class="z-social-comment-list media-list read-more-wrap"  >
+  <div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">
+    {{item.comments?.length}} of {{item.total_comments}} Comment
+  </div>
+  <div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{item.comments?.length}} of {{item.total_comments}}
+    Comments
+  </div>
+  <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
+  <ul class="z-social-comment-list media-list read-more-wrap">
 
 
     <!--<li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">-->
-    <li class="media" *ngFor="let comment of item.comments; let i = index" >
+    <li class="media" *ngFor="let comment of item.comments; let i = index">
       <!--Edit comment-->
       <comment-box id="editComment-{{comment?.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
                    [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
@@ -20,12 +25,12 @@
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading"> <a [routerLink]="['/profile', comment.owner.uuid]">{{comment.owner.name}}</a>
+          <h4 class="media-heading"><a [routerLink]="['/profile', comment.owner.uuid]">{{comment.owner.name}}</a>
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
           <p>{{comment.content}}</p>
           <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, comment.uuid)">
-            <img *ngIf="comment.photo" [src]="comment.photo.url" style="max-width: 200px">
+            <img *ngIf="comment.photo" [src]="comment.photo.url">
           </a>
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
@@ -52,7 +57,8 @@
                    (click)="onActions(actions.openLikeDislike, comment.dislikes, 'dislike')">{{comment.dislikes.length}}</a>
                 <a *ngIf="comment.dislikes.length==0" href="javascript:;">{{comment.dislikes.length}}</a>
               </li>
-              <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)" [innerHTML]="totalRepliesInWords(comment.replies)"> </a></li>
+              <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)"
+                     [innerHTML]="totalRepliesInWords(comment.replies)"> </a></li>
             </ul>
           </div>
         </div>
@@ -65,7 +71,8 @@
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
-              <img alt="64x64" class="media-object" [src]="reply.owner.profile_image" style="width: 34px; border-radius: 3px">
+              <img alt="64x64" class="media-object" [src]="reply.owner.profile_image"
+                   style="width: 34px; border-radius: 3px">
             </a>
           </div>
           <div class="media-body">
@@ -82,7 +89,9 @@
               </div>
             </h4>
             <p>{{reply.content}}</p>
-            <a *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, reply.uuid)"><img *ngIf="reply.photo" [src]="reply.photo.url" style="max-width: 200px" ></a>
+            <a *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, reply.uuid)">
+              <img *ngIf="reply.photo" [src]="reply.photo.url">
+            </a>
             <div class="media-body-reply">
               <ul>
                 <li>
@@ -99,7 +108,8 @@
                      (click)="onActions(actions.openLikeDislike, reply.dislikes, 'dislike')">{{reply.dislikes.length}}</a>
                   <a *ngIf="reply.dislikes.length==0" href="javascript:;">{{reply.dislikes.length}}</a>
                 </li>
-                <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)" [innerHtml]="totalRepliesInWords(comment.replies)"></a></li>
+                <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)"
+                       [innerHtml]="totalRepliesInWords(comment.replies)"></a></li>
               </ul>
             </div>
           </div>
@@ -111,6 +121,7 @@
   </ul>
   <div *ngIf="notAllCommentsLoaded()" class="z-social-comment-more">
     <!--<label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="viewAllComments()">View all comments</label>-->
-    <label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="getMoreComments()">View more comments</label>
+    <label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="getMoreComments()">View more
+      comments</label>
   </div>
 </div>
