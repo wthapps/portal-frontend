@@ -1,4 +1,4 @@
-<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <modal-body>
     <div class="z-social-media mb15">
       <div class="z-social-media-left">
@@ -77,7 +77,7 @@
       <div class="row">
         <div class="col-xs-6 col-sm-12">
           <div class="form-group">
-            <textarea #textarea id="textarea" placeholder="Share your ideas" class="form-control"
+            <textarea #textarea autofocus id="textarea-new-post" placeholder="Share your ideas" class="form-control"
                       [formControl]="descCtrl"></textarea>
           </div>
 

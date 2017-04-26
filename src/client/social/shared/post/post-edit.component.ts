@@ -158,7 +158,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       );
     }
 
-    this.renderer.invokeElementMethod(this.textarea.nativeElement, 'focus', []);
     this.subscribePhotoSelectEvents();
   }
 
