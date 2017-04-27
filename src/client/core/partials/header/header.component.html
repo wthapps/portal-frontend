@@ -60,7 +60,7 @@
             <li>
               <ul class="list-unstyled" id="notification-items">
                 <li class="navbar-nav-notification-item" *ngFor="let notification of notificationService.notifications"
-                    data-id="notification_{{notification.id}}">
+                    data-id="notification_{{notification.id}}" [ngClass]="{'unread-notification': !notification?.is_read }">
                   <div class="media-center">
                     <div class="media-center-left">
                       <figure>
@@ -70,14 +70,18 @@
                       </figure>
                     </div>
                     <div class="media-body notification-content">
-                      <!--<p class="media-heading">{{notification.text}}</p>-->
-                      <p class="media-heading" [innerHTML]="notification.text"></p>
-                      <small>{{ notification.created_at | timeFormat }}</small>
+
+                        <p class="media-heading">
+                          <a [routerLink]="['/profile', notification.actor.uuid]">
+                            {{notification.actor.name}}</a>
+                            <span class="media-heading" [innerHTML]="notification.text">></span>
+                        </p>
+                        <small>{{ notification.created_at | timeFormat }}</small>
                       <div style="white-space: nowrap" class="media-center-right">
                         <button *ngFor="let action of notification.actions"
                                 class="btn btn-xs btn-default mr5" type="button"
                                 (click)="doAction(action, notification.id)">
-                          {{action.name}}
+                          {{action.name.toUpperCase()}}
                         </button>
                       </div>
                     </div>

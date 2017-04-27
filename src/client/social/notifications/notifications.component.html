@@ -5,14 +5,14 @@
      [scrollWindow]="false"
      (scrolled)="getMoreNotifications()">
   <div class="page-body-content-in zone-social">
-    <div class="zone-social-container" *ngIf="notifications">
+    <div class="zone-social-container">
       <div class="z-social-box">
         <div class="z-social-box-header">
-          <h3 class="h4">Notifications</h3><span class="badge badge-rounded badge-wth badge-right">{{newNotifications.length}}</span>
+          <h3 class="h4">Notifications</h3><span class="badge badge-rounded badge-wth badge-right">{{notificationService.newNotifCount}}</span>
         </div>
         <div class="z-social-box-body z-social-box-body-communities">
           <div class="row">
-            <div *ngFor="let notification of notifications">
+            <div *ngFor="let notification of notificationService.notifications" class="col-xs-12 col-lg-6" [ngClass]="{'unread-notification': !notification.is_read }">
               <div class="media-center">
                 <div class="media-center-left">
                   <figure>
@@ -23,23 +23,24 @@
                 </div>
                 <div class="media-center-body">
                   <h4 class="media-center-heading">
-                    <a [routerLink]="['/zone/social/profile', notification.actor.uuid]">
-                      {{notification.actor.name}}
+                    <a [routerLink]="['/profile', notification.actor.uuid]">
+                    {{notification.actor.name}}
                     </a>
                     <span style="font-weight:normal" [innerHTML]="notification.text">
                     <a *ngIf="notification.community" [routerLink]="[communitiesUrl, notification.community.uuid]"> {{notification.community.name}}</a>
                   </span>
                   </h4>
+
                 </div>
                 <div style="white-space: nowrap" class="media-center-right">
                   <button *ngFor="let action of notification.actions" class="btn btn-default ml5" type="button"
                           (click)="doAction(action, notification.id)">
-                    {{action.name}}
+                    {{action.name.toUpperCase()}}
                   </button>
                 </div>
               </div>
             </div>
-            <div *ngIf="notifications.length == 0" class="p40 text-center">
+            <div *ngIf="notificationService.notifications.length == 0" class="p40 text-center">
               <h3 class="text-fade">
                 No new notifications
               </h3>

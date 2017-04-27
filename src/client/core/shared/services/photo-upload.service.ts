@@ -3,6 +3,7 @@ import { ApiBaseService } from './apibase.service';
 import { Constants } from '../config/constants';
 import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
+import { UserService } from './user.service';
 
 declare var AWS: any;
 declare let _: any;
@@ -22,7 +23,8 @@ export class PhotoUploadService {
 
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
 
-  constructor(private apiService: ApiBaseService) {
+  constructor(private apiService: ApiBaseService,
+              private userService: UserService) {
     this.loadConfigOnce();
   }
 
@@ -34,6 +36,7 @@ export class PhotoUploadService {
   loadConfig() {
     // ONLY load config 1 time
     this.apiService.post(`${this.soPhotoUrl}/get_aws_config`)
+      .filter(() => this.userService.loggedIn)
       .delay(3000) // Delay this action 3s to prevent slow loading at initial time
       .take(1).subscribe((data: any) => {
       this.albumTempBucketName = data.tempBucket;
@@ -129,6 +132,7 @@ export class PhotoUploadService {
    * @returns {any}
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
+    this.loadConfigOnce(); // Reload config if mandatory config variables is not ready
     return Observable.create((observer: any) => {
       for (let i = 0; i < photos.length; i++) {
         let file = photos[i];
