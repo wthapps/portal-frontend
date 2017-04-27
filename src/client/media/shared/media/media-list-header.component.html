@@ -15,11 +15,11 @@
 
   <div class="pull-right">
     <div class="sortbar-slider">
-      <i class="fa fa-picture-o fz10"></i>
+      <i draggable="false" class="fa fa-picture-o fz10"></i>
       <div class="sortbar-slider-in">
-        <p-slider [(ngModel)]="sliderVal" (onChange)="handleChangeSliderVal($event)" [step]="1" [min]="sliderMin" [max]="sliderMax"></p-slider>
+        <p-slider draggable="false" [(ngModel)]="sliderVal" (onChange)="handleChangeSliderVal($event)" [step]="1" [min]="sliderMin" [max]="sliderMax"></p-slider>
       </div>
-      <i class="fa fa-picture-o fz18"></i>
+      <i draggable="false" class="fa fa-picture-o fz18"></i>
     </div>
 
   </div>
