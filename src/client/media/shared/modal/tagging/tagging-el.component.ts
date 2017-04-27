@@ -14,10 +14,11 @@ declare var _: any;
 })
 export class TaggingElComponent {
   addedTags: any = [];
-  public requestAutocompleteItems = (text: string): Observable<Response> => {
-    return this.taggingService.getTags(text).map((res:any) => _.map(res.data, 'name'));
-  }
 
   constructor(private taggingService: ZMediaTaggingService) {
+  }
+
+  requestAutocompleteItems = (text: string): Observable<Response> => {
+    return this.taggingService.getTags(text).map((res:any) => _.map(res.data, 'name'));
   }
 }

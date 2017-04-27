@@ -431,8 +431,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.modal.close();
   }
 
-  updateDetailObject(properties: any){
-    console.log ('update property: ', properties);
+  updateDetailObject(properties: any) {
     _.forEach(properties, (property: any) => {
       this.object[property.key] = property.value;
     });

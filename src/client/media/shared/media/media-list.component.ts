@@ -434,28 +434,26 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
     this.mediaObjectService.favourite(body).subscribe(
       (response: any) => {
-        console.log(response.data);
         // update favourite attribute
         if (selectedIndex != -1) {
           this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
           // refresh objects if current page is favourite
-        }
 
-
-        if (params.hasOwnProperty('page') && params.page == 'album_detail') {
-          // this.object.favorite = (mode == 'add' ? true : false);
-          self.onAction({
-            action: 'updateDetailObject',
-            params: {properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}
-          });
+          // update for album detail page
+          if (params.hasOwnProperty('page') && params.page == 'album_detail') {
+            // this.object.favorite = (mode == 'add' ? true : false);
+            self.onAction({
+              action: 'updateDetailObject',
+              params: {properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}
+            });
+          }
+          return;
         }
 
         _.map(this.selectedObjects, (object: any)=> {
           object.favorite = (mode == 'add' ? true : false);
-
-          // refresh objects if current page is favourite
-
         });
+
         if (mode == 'remove' && this.page == 'favorites') {
           // here just handles un-favourite ONE object
           this.objects.splice(selectedIndex, 1);

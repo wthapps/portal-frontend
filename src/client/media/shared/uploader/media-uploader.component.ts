@@ -115,12 +115,13 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
       .subscribe((res: any) => {
         console.log('Upload image to s3 and save info successfully', res);
         this.uploaded_num++;
-        this.current_photo = res['current_photo'];
-        let newPhoto = new Photo(res['data']);
-        this.photos.push(newPhoto);
+        // this.current_photo = res['current_photo'];
+        // let newPhoto = new Photo(res['data']);
+        this.current_photo = res.data.thumbnail_url;
+        this.photos.push(res.data);
 
-        newPhoto.thumbnail_url = this.current_photo;
-        this.events.next(newPhoto);
+        // newPhoto.thumbnail_url = this.current_photo;
+        this.events.next(res.data);
 
         if (this.uploaded_num == this.files_num) {
           this.step = this.uploadSteps.uploaded;

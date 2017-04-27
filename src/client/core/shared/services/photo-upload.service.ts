@@ -140,53 +140,53 @@ export class PhotoUploadService {
 
         reader.onload = (data: any) => {
           let currentPhoto = data.target['result'];
-          // this.apiService.post('media/photos', {name: file.name, type: file.type, file: currentPhoto})
-          // .subscribe((response: any) => {
-          //   console.log('photo:', response.data);
-          //   observer.next(response);
-          // });
-
-          let ext = file.name.split('.').reverse()[0];
-          let fileName = this.getFileName(file);
-          let encodedFileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
-          let photoKey = this.bucketSubFolder + '/' + encodedFileName;
-          let options = {partSize: 10 * 1024 * 1024, queueSize: 1};
-
-          console.log('file name: ', fileName);
-          console.log('file: ', file);
-          this.s3.upload({
-            Key: photoKey,
-            Body: file,
-            ACL: 'public-read'
-          }, options, (err: any, data: any) => {
-            if (err)
-              observer.error(err);
-            else {
-              console.log('Successfully uploaded photo.', data);
-
-              // let imageName = data.key;
-              let tempImageUrl = data.Location;
-              let imageUrl = this.getCompressUrl(tempImageUrl);
-              let imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
-              let body = {
-                name: fileName,
-                image: currentPhoto,
-                url: imageUrl,
-                thumbnail_url: imageUrlThumbnail
-              };
-
-              // TODO: Implement polling to reduce delay time
-              // Delay 4s waiting for image thumbnail to be created
-              this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
-                .subscribe((result: any) => {
-                    setTimeout(() => {
-                      let wrapperRes = { data: result['data'], current_photo: currentPhoto };
-                      observer.next(wrapperRes);
-                    }, this.TIMEOUT);
-                  },
-                  (err2: any) => { observer.error(err2); });
-            }
+          this.apiService.post('media/photos', {name: file.name, type: file.type, file: currentPhoto})
+          .subscribe((response: any) => {
+            console.log('photo:', response.data);
+            observer.next(response);
           });
+
+          // let ext = file.name.split('.').reverse()[0];
+          // let fileName = this.getFileName(file);
+          // let encodedFileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
+          // let photoKey = this.bucketSubFolder + '/' + encodedFileName;
+          // let options = {partSize: 10 * 1024 * 1024, queueSize: 1};
+          //
+          // console.log('file name: ', fileName);
+          // console.log('file: ', file);
+          // this.s3.upload({
+          //   Key: photoKey,
+          //   Body: file,
+          //   ACL: 'public-read'
+          // }, options, (err: any, data: any) => {
+          //   if (err)
+          //     observer.error(err);
+          //   else {
+          //     console.log('Successfully uploaded photo.', data);
+          //
+          //     // let imageName = data.key;
+          //     let tempImageUrl = data.Location;
+          //     let imageUrl = this.getCompressUrl(tempImageUrl);
+          //     let imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
+          //     let body = {
+          //       name: fileName,
+          //       image: currentPhoto,
+          //       url: imageUrl,
+          //       thumbnail_url: imageUrlThumbnail
+          //     };
+          //
+          //     // TODO: Implement polling to reduce delay time
+          //     // Delay 4s waiting for image thumbnail to be created
+          //     this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
+          //       .subscribe((result: any) => {
+          //           setTimeout(() => {
+          //             let wrapperRes = { data: result['data'], current_photo: currentPhoto };
+          //             observer.next(wrapperRes);
+          //           }, this.TIMEOUT);
+          //         },
+          //         (err2: any) => { observer.error(err2); });
+          //   }
+          // });
         };
         reader.readAsDataURL(file);
       };
