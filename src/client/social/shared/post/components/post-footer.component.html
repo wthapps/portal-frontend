@@ -30,7 +30,7 @@
           </h4>
           <p>{{comment.content}}</p>
           <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, comment.uuid)">
-            <img *ngIf="comment.photo" [src]="comment.photo.url">
+            <img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
           </a>
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
@@ -90,7 +90,7 @@
             </h4>
             <p>{{reply.content}}</p>
             <a *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, reply.uuid)">
-              <img *ngIf="reply.photo" [src]="reply.photo.url">
+              <img *ngIf="reply.photo" [src]="reply.photo.thumbnail_url">
             </a>
             <div class="media-body-reply">
               <ul>
@@ -108,8 +108,8 @@
                      (click)="onActions(actions.openLikeDislike, reply.dislikes, 'dislike')">{{reply.dislikes.length}}</a>
                   <a *ngIf="reply.dislikes.length==0" href="javascript:;">{{reply.dislikes.length}}</a>
                 </li>
-                <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)"
-                       [innerHtml]="totalRepliesInWords(comment.replies)"></a></li>
+                <!--<li><a href="javascript:;" (click)="onActions(actions.onReply, comment)"-->
+                       <!--[innerHtml]="totalRepliesInWords(comment.replies)"></a></li>-->
               </ul>
             </div>
           </div>

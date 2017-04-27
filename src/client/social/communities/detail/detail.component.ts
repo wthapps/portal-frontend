@@ -215,6 +215,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       (res: any)=> {
         // this.invitation = undefined;
         console.log('cancel join request: ' + joinRequestId);
+
+        // Update join request count
+        this.community.join_request_count -= 1;
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
@@ -229,7 +232,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.socialService.community.cancelInvitation(this.uuid, invitationId).subscribe(
       (res: any)=> {
         $('#invitation_' + this.invitationId).remove();
-        // this.invitation = undefined;
+
+        // Update invitation count
+        this.community.invitation_count -= 1;
         console.log('after cancel invitation', this.invitationId);
       },
       error => {
@@ -245,6 +250,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.socialService.community.acceptJoinRequest(this.uuid, item.inviter.uuid).subscribe(
       (res: any)=> {
         $('#invitation_' + this.invitationId).remove();
+
+        // Update join request count
+        this.community.join_request_count -= 1;
         console.log('after accept invitation', this.invitationId);
       },
       error => {
@@ -265,6 +273,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
             $('#user_' + user.uuid).remove();
+
+            // Update community member count
+            this.community.member_count -= 1;
             // this.loadDataBySelectedTab();
           },
           error => {
@@ -386,13 +397,20 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       (res: any)=> {
         this.tabItems = res.data;
 
+        // Update member_count, invitation_count, join_request_count
+        switch(this.selectedTab) {
+          case this.tab.members:
+            _.set(this.community, 'member_count', this.tabItems.length );
+            break;
+          case this.tab.invitations:
+            _.set(this.community, 'invitation_count', this.tabItems.length);
+            break;
+          case this.tab.joinRequests:
+            _.set(this.community, 'join_request_count', this.tabItems.length);
+            break;
+        }
 
-        // console.log(this.tabItems);
-        // users = _.map(this.tabItems, "user");
-        // console.log(users);
 
-        // this.item = res.data;
-        // this.isAdmin = this.userService.profile.uuid == this.item.admin.uuid ? true : false;
       },
       error => {
         this.errorMessage = <any>error;

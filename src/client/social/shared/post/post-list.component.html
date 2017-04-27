@@ -32,7 +32,7 @@
   </div>
 </div>
 
-<div class="view-all">
+<div class="view-all" *ngIf="nextLink != undefined">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
 </div>
 <!--Edit post modal. This modal will handle add new, edit post and share-->

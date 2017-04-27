@@ -34,6 +34,8 @@ export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
     //     this.getMoreNotifications();
     //   }
     // );
+
+    this.notificationService.getLatestNotifications();
   }
 
   ngOnDestroy() {

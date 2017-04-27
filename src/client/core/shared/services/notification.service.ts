@@ -142,7 +142,7 @@ export class NotificationService {
 
   getLatestNotifications() {
     if (!_.isEmpty(this.nextLink))
-      return; // Only load once
+      return; // Only load once at first time
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest`, {sort_name: 'created_at'})
       .filter((x: any) => this.userService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
@@ -231,10 +231,8 @@ export class NotificationService {
   startChannel(callback?: any) {
 
     // Work-around to fix loading performance issue by delaying following actions in 2s. Should be updated later
-    setTimeout(() => {
-      this.getNewNotificationsCount(
-        // this.getLatestNotifications()
-      );
+    let timeoutId = setTimeout(() => {
+      this.getNewNotificationsCount();
 
       this.notificationChannel.createSubscription();
 
@@ -245,8 +243,13 @@ export class NotificationService {
               this.notifications.unshift(JSON.parse(notification));
               this.newNotifCount++;
 
-              if(callback)
-                callback();
+              if(callback) {
+                let to2 = setTimeout(callback(), 1000); // Delay 1s before subscribing to appearance channel
+
+                // clearTimeout(to2);
+                // clearTimeout(timeoutId);
+              }
+
             });
       }}, 2000);
 

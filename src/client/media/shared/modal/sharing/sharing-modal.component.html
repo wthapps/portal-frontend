@@ -62,7 +62,7 @@
          aria-controls="collapseExample">
         Shared with {{sharedContacts?.length}} Contacts
       </a>
-      <div class="collapse" id="collapseContact">
+      <div class="collapse in pre-scrollable" id="collapseContact">
         <div class="modal-body-collapse-in">
           <div class="media-list-item" *ngFor="let contact of sharedContacts">
             <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
