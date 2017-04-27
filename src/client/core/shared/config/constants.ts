@@ -192,7 +192,8 @@ export let Constants = {
   search: {
     config: {
       globalActive: true,
-      photoActive: true
+      photoActive: true,
+      socialActive: true,
     }
   },
 
