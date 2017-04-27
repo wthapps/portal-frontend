@@ -1,6 +1,6 @@
 @import "../../../core/scss/_global.scss";
-$photo-detail-info-width: 470px;
 
+$photo-detail-info-width: 470px;
 
 .photo-box-detail {
   position: fixed;
@@ -19,6 +19,8 @@ $photo-detail-info-width: 470px;
     padding: 15px;
     color: #ffffff;
     line-height: 34px;
+    position: relative;
+    z-index: 10;
     @include clearfix;
     .name {
       margin-right: 300px;
@@ -85,21 +87,37 @@ $photo-detail-info-width: 470px;
     }
   }
   .photo-detail-content {
+    position: relative;
+    z-index: 1;
     @include flexbox;
     @include align-items(flex-start);
     .photo-detail-img {
       @include flex(1);
-      height: calc(100vh - 65px);
-      position: relative;
-      padding: 10%;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       figure {
-        @include center();
-        max-width: 100%;
-        max-height: 100%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        @include flexbox;
+        @include align-items(center);
       }
       img {
-        width: 100%;
-        height: auto;
+        display: block;
+        margin: auto;
+        &.img-full-width {
+          max-width: 100%;
+          height: auto;
+        }
+        &.img-full-height {
+          width: auto;
+          max-height: 100%;
+        }
       }
       .photo-detail-img-control {
         @include center(false, true);

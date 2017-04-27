@@ -66,10 +66,12 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
   ngAfterViewInit() {
     let _thisPhotoDetail = this;
-    $('body').on('click', '#photo-box-detail .photo-detail-img', function () {
+    $('body').on('click', '#photo-box-detail figure', function () {
+      console.log('asdfasdf');
       _thisPhotoDetail.goBack();
     });
-    $('body').on('click', '#photo-box-detail figure, .photo-detail-img-control', function (e: any) {
+    $('body').on('click', '#photo-box-detail figure .bigImg, .photo-detail-img-control', function (e: any) {
+      console.log('asdfasdf');
       e.stopPropagation();
     });
 
@@ -84,7 +86,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   }
 
 
-  showLoading() {
+  showLoading(e: any) {
     this.loadingImg = false;
   }
 
