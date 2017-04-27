@@ -3,7 +3,7 @@ import { Directive, ElementRef, Renderer, OnInit, AfterViewInit, } from '@angula
 @Directive({
   selector: '[autofocus]'
 })
-export class Autofocus implements OnInit, AfterViewInit {
+export class AutofocusDirective implements OnInit, AfterViewInit {
   constructor(private el: ElementRef, private renderer: Renderer) {
   }
 

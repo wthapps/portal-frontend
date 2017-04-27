@@ -43,7 +43,7 @@ import { ArrayLengthPipe } from './pipe/array-length.pipe';
 import { GroupByObjectTypePipe } from './pipe/groupby-object-type.pipe';
 import { ServiceManager } from './services/service-manager';
 import { ConvertByPatternPipe } from './pipe/convert.pipe';
-import { Autofocus } from './directive/autofocus.directive';
+import { AutofocusDirective } from './directive/autofocus.directive';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -87,7 +87,7 @@ import { Autofocus } from './directive/autofocus.directive';
 
     //Directive
     ScrollToBottomDirective,
-    Autofocus
+    AutofocusDirective
   ],
   exports: [
     CommonModule,
@@ -126,7 +126,7 @@ import { Autofocus } from './directive/autofocus.directive';
 
     //Directive
     ScrollToBottomDirective,
-    Autofocus
+    AutofocusDirective
   ]
 })
 export class SharedModule {

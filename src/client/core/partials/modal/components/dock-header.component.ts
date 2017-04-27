@@ -8,7 +8,8 @@ import { ModalDockComponent } from '../dock.component';
   template: `
         <div class="modal-dock-header">
           <div class="modal-dock-header-title" (click)="modalDock.toggleCollapse()">
-            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i> <ng-content></ng-content>
+            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i> 
+            <ng-content></ng-content>
           </div>
           <div class="modal-dock-header-action">
             <i class="fa fa-times" (click)="modalDock.close()"></i>
@@ -21,6 +22,6 @@ import { ModalDockComponent } from '../dock.component';
 export class ModalDockHeaderComponent {
   @Input() loading: boolean = false;
 
-  constructor(private modalDock: ModalDockComponent) {
+  constructor(modalDock: ModalDockComponent) {
   }
 }

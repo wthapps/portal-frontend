@@ -14,6 +14,6 @@ import { ModalDockComponent } from '../dock.component';
 })
 
 export class ModalDockBodyComponent {
-  constructor(private modalDock: ModalDockComponent) {
+  constructor(modalDock: ModalDockComponent) {
   }
 }
