@@ -66,11 +66,11 @@
                   BLACKLIST <span *ngIf="data.blacklists" class="text-fade">{{data.blacklists.length}}</span>
                 </a>
               </li>
-              <li [ngClass]="{'active': currentState == 'notification'}">
-                <a (click)="getNotifications()" href="javascript:;">
-                  NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right pull-right">{{newNotifications.length}}</span>
-                </a>
-              </li>
+              <!--<li [ngClass]="{'active': currentState == 'notification'}">-->
+                <!--<a (click)="getNotifications()" href="javascript:;">-->
+                  <!--NOTIFICATIONS <span class="badge badge-rounded badge-wth badge-right pull-right">{{newNotifications.length}}</span>-->
+                <!--</a>-->
+              <!--</li>-->
             </ul>
           </nav>
         </div>
@@ -149,30 +149,30 @@
                   </div>
                 </div>
               </div>
-              <div class="media-center" *ngIf="currentState == 'notification'">
-                <div class="media-center-left">
-                  <figure>
-                    <a [routerLink]="['/profile', item?.uuid]">
-                      <img [src]="item?.actor?.profile_image" width="70" alt="">
-                    </a>
-                  </figure>
-                </div>
-                <div class="media-center-body">
-                  <h4 class="media-center-heading">
-                    <!--<a [routerLink]="['/profile', item.uuid]">-->
-                    <!--{{item.actor.name}}-->
+              <!--<div class="media-center" *ngIf="currentState == 'notification'">-->
+                <!--<div class="media-center-left">-->
+                  <!--<figure>-->
+                    <!--<a [routerLink]="['/profile', item?.uuid]">-->
+                      <!--<img [src]="item?.actor?.profile_image" width="70" alt="">-->
                     <!--</a>-->
-                    <span style="font-weight:normal" [innerHtml]="item?.text"></span>
-                  </h4>
+                  <!--</figure>-->
+                <!--</div>-->
+                <!--<div class="media-center-body">-->
+                  <!--<h4 class="media-center-heading">-->
+                    <!--&lt;!&ndash;<a [routerLink]="['/profile', item.uuid]">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{item.actor.name}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                    <!--<span style="font-weight:normal" [innerHtml]="item?.text"></span>-->
+                  <!--</h4>-->
 
-                </div>
-                <div style="white-space: nowrap" class="media-center-right">
-                  <button *ngFor="let action of item?.actions" class="btn btn-default ml5" type="button"
-                          (click)="doAction(action, item?.id)">
-                    {{action.name}}
-                  </button>
-                </div>
-              </div>
+                <!--</div>-->
+                <!--<div style="white-space: nowrap" class="media-center-right">-->
+                  <!--<button *ngFor="let action of item?.actions" class="btn btn-default ml5" type="button"-->
+                          <!--(click)="doAction(action, item?.id)">-->
+                    <!--{{action.name}}-->
+                  <!--</button>-->
+                <!--</div>-->
+              <!--</div>-->
             </div>
           </div>
         </div>

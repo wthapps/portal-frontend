@@ -38,8 +38,8 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // notifications: Array<any> = new Array<any>();
   // newNotifCount: number = 0 ;
-  currentNotifId: any;
-  notifOffset: number = 0;
+  // currentNotifId: any;
+  // notifOffset: number = 0;
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
@@ -173,6 +173,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   toggleViewNotifications() {
+    this.notificationService.getLatestNotifications(); // Load latest notifications in the first click
     if (this.notificationService.notifications.length <= 0) {
       this.getMoreNotifications();
     }
