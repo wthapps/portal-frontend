@@ -153,7 +153,7 @@
 }
 
 [class^="btn-"], [class*=" btn-"] {
-  min-width: 80px;
+  min-width: 34px;
   &.btn-inline {
     min-width: initial;
   }
@@ -168,6 +168,12 @@
       text-decoration: none;
       outline: none;
     }
+  }
+}
+
+.modal {
+  [class^="btn-"], [class*=" btn-"] {
+    min-width: 80px;
   }
 }
 
