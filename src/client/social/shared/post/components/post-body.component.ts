@@ -58,8 +58,9 @@ export class PostBodyComponent implements OnInit, OnChanges {
         this.postItem.openLikeDislike(data, type);
         break;
       case this.actions.onShowPhotoDetail:
-        // this.router.navigate(['/photos', this.item.uuid, {index: data}]);
-        this.router.navigate(['/posts',  this.item.uuid, 'photos', {index: data}]);
+        console.log('photo data:', data);
+        let photoIds = _.map(this.item.photos, 'uuid');
+        this.router.navigate(['/posts',  this.item.uuid, 'photos', data.uuid, {index: data, pIds: photoIds}]);
         break;
     }
   }

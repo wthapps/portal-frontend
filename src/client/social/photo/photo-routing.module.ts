@@ -5,7 +5,7 @@ import { ZSocialPhotoComponent } from './photo.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'posts/:id/photos/:idPhoto', component: ZSocialPhotoComponent},
+      {path: 'posts/:id/photos/:photoId', component: ZSocialPhotoComponent},
       {path: 'posts/:id/photos', component: ZSocialPhotoComponent},
       {path: 'comments/:commentUuid/photos', component: ZSocialPhotoComponent},
     ])

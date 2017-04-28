@@ -19,7 +19,7 @@ import { PostListComponent } from './post/post-list.component';
 import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
-import { ZSocialMembersComponent } from '../members/members.component';
+import { ZSocialMembersComponent } from '../friends/members.component';
 import { PhotoModalDataService } from '../../core/shared/services/photo-modal-data.service';
 import { SoPhotoListComponent } from './post/photo-list.component';
 import { PhotoUploadService } from '../../core/shared/services/photo-upload.service';

@@ -25,6 +25,7 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
   idPost: string;
   idComment: string;
   idPhoto: any;
+  photoIds: any;
 
   loadingImg: boolean = true;
 
@@ -41,9 +42,11 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
 
     this.route.params
       .map((params: any) => {
-            this.idPost = params['id'];
-            this.idPhoto = params['index'];
-            this.idComment = params['idComment'];})
+        this.idPost = params['id'];
+        this.idPhoto = params['index'];
+        this.photoIds = params['pIds'].split(',');
+        console.log('photo ids: ', this.photoIds);
+        this.idComment = params['idComment'];})
       .switchMap((data: any) => {
           if (this.idComment)
             return this.loadItem(this.apiBaseService.urls.zoneSoComments + '/' + this.idComment); // Load photos from comments
@@ -89,7 +92,6 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
   }
 
   onBack() {
-    // this.router.navigate(['/home']);
     this.location.back();
   }
 

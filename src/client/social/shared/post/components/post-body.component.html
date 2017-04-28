@@ -9,13 +9,13 @@
   <div class="z-social-carousel">
     <ul class="{{item.displayCss}}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
-        <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, i)">
+        <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, photo)">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
-        <figure *ngIf="i == 5 && item.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, i)">
+        <figure *ngIf="i == 5 && item.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, photo)">
           <img class="img-full" [src]="photo.url" alt="">
         </figure>
-        <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, i)"
+        <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, photo)"
            *ngIf="i == 5 && item.remainPhotos != 0">
                 <span>
                   + {{item.remainPhotos}}
