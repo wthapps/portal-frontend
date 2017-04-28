@@ -26,6 +26,8 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
   idComment: string;
   idPhoto: any;
 
+  loadingImg: boolean = true;
+
   selectedPhoto: any = {
     name: 'Photo no.4',
     thumbnail_url: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fishing1.jpg',
@@ -86,6 +88,10 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
 
   onShowInfo() {
     $('#social-photo-detail').toggleClass('active-info');
+  }
+
+  showLoading(e: any) {
+    this.loadingImg = false;
   }
 
   onBack() {
