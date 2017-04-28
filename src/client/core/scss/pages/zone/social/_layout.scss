@@ -9,6 +9,7 @@
       @include flex(1);
       @media (min-width: $screen-md-min) {
         margin-right: 45px;
+        max-width: 720px;
       }
     }
     .zone-social-sidebar {
@@ -168,6 +169,12 @@
     bottom: 10px;
     right: 10px;
     z-index: 2;
+    .fa {
+      cursor: pointer;
+      & + .fa {
+        margin-left: 10px;
+      }
+    }
   }
 }
 
@@ -205,14 +212,21 @@
         border-radius: 50%;
         line-height: 32px;
         cursor: pointer;
+        font-size: 20px;
         &:hover {
           background-color: $light-slate;
           color: #ffffff;
         }
         &.active {
-          background-color: $color-inverse;
-          border-color: $color-inverse;
+          background-color: $button-dislike-color;
+          border-color: $button-dislike-color;
           color: #ffffff;
+        }
+        &.fa-thumbs-o-up {
+          &.active {
+            background-color: $button-like-color;
+            border-color: $button-like-color;
+          }
         }
       }
 
@@ -583,7 +597,6 @@
     }
   }
 }
-
 
 .zone-social-container {
   width: 100%;
