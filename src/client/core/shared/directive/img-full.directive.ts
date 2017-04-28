@@ -10,8 +10,8 @@ export class ImgFullDirective implements OnInit, AfterViewInit {
 
 
   @HostListener('window:resize', ['$event']) onResize(event: any) {
-    console.log(event.target.innerWidth);
-    console.log(event.target.innerHeight);
+    // console.log(event.target.innerWidth);
+    // console.log(event.target.innerHeight);
 
     this.aspectRatioWindow = this.getAspectRatio(window.innerWidth, window.innerHeight);
     this.setClass(this.aspectRatioWindow, this.aspectRatioImg);
