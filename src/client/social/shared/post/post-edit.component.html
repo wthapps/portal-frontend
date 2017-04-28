@@ -123,8 +123,8 @@
         Shared from <a [routerLink]="['/profile/', parent.owner.uuid, 'about']" >{{parent.owner.name}}</a>
       </div>
       <div class="clearfix text-right">
-        <button type="button" class="btn btn-default pull-left btn-min" *ngIf="parent == null" (click)="addMorePhoto($event)">
-          <i class="fa fa-camera"></i>
+        <button type="button" class="btn btn-default pull-left" *ngIf="parent == null" (click)="addMorePhoto($event)">
+          <i class="fa fa-camera"></i> Add Photo
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"
                 [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0))">Done</button>

@@ -28,13 +28,7 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
 
   loadingImg: boolean = true;
 
-  selectedPhoto: any = {
-    name: 'Photo no.4',
-    thumbnail_url: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fishing1.jpg',
-    url: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fishing1.jpg',
-    uuid: '0b1b0761-121e-43bf-8e68-4e981397f3ad'
-
-  };
+  selectedPhoto: any = null;
 
   constructor(private router: Router,
               private route: ActivatedRoute,

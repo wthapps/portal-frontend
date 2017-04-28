@@ -6,10 +6,12 @@
     </div>
     <div class="z-social-media-body">
       <div class="z-social-media-inputpost inputpost-new">
-        <input type="text" class="form-control" placeholder="Share your ideas" readonly (click)="postEditModal.open()">
-        <span class="z-social-media-inputpost-icon">
-            <i (click)="postEditModal.open({addingPhotos: true, community: community, mode: 'add', isShare: false})" class="fa fa-camera"></i>
-        </span>
+        <div class="mb10">
+          <textarea class="form-control" rows="3" placeholder="Share your ideas" (focus)="postEditModal.open()"></textarea>
+        </div>
+        <button class="btn btn-default" type="button" (click)="postEditModal.open({addingPhotos: true, community: community, mode: 'add', isShare: false})">
+          <i class="fa fa-camera"></i> Add Photo
+        </button>
       </div>
     </div>
   </div>
