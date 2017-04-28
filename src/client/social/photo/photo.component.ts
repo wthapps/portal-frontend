@@ -15,7 +15,8 @@ const KEY_ESC = 27;
 @Component({
   moduleId: module.id,
   selector: 'z-social-photo-detail',
-  templateUrl: 'photo.component.html'
+  templateUrl: 'photo.component.html',
+  styleUrls: ['photo.component.css']
 })
 export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit {
   // item: SoPost;

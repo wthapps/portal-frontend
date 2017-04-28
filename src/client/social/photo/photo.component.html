@@ -1,4 +1,4 @@
-<div id="social-photo-detail" class="photo-box-detail zone-social-photo-detail active">
+<div id="photo-box-detail" class="photo-box-detail active">
   <div *ngIf="selectedPhoto" class="photo-detail-top">
     <ul class="action navbar-left">
       <li>
@@ -37,7 +37,8 @@
       </figure>
     </div>
   </div>
-  <div class="photo-detail-info">
-    <!--<so-post [item]="item" [type]="'info'"></so-post>-->
+
+
+  <div *ngIf="selectedPhoto" class="photo-detail-info">
   </div>
 </div>
