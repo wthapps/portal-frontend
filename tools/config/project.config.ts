@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { argv } from 'yargs';
 
 import { SeedConfig } from './seed.config';
 import { ExtendPackages } from './seed.config.interfaces';
@@ -14,6 +15,8 @@ export class ProjectConfig extends SeedConfig {
   constructor() {
     super();
     this.APP_TITLE = 'WTHApps';
+    this.BOOTSTRAP_DIR = argv['app'] || 'portal';
+    this.BOOTSTRAP_MODULE = `../${this.BOOTSTRAP_DIR}/main`;
 
     this.ENABLE_SCSS = true;
     this.SCSS_SRC = `${this.APP_SRC}/scss`;
