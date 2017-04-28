@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd } from '@angular/router';
+import { ServiceManager } from '../../core/shared/services/service-manager';
 
 declare var _: any;
 
@@ -12,27 +13,32 @@ declare var _: any;
 export class ZSocialSearchResultComponent implements OnInit {
   show: boolean = false;
   type: string = '';
-  searchService: any;
   result: any;
   groups: any;
   showMore: boolean = false;
-  text: any = '';
+  sub: any;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, public serviceManager: ServiceManager) {}
 
   ngOnInit() {
-    //
-    // this.route.params.subscribe((params: any) => {
-    //   this.socialSearchService.search(params.text, ['user', 'community', 'post']).subscribe(
-    //     (res:any) => {
-    //       this.result = res.data;
-    //       this.groups = Object.keys(res.data);
-    //       this.groups = _.pull(this.groups, 'posts');
-    //       console.log(res);
-    //     }
-    //   );
-    //   // this.urls.length = 0; //Fastest way to clear out array
-    //   // this.getNavTitle(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
-    // });
+    this.route.params.subscribe((params: any) => {
+      console.log(params);
+    });
+    this.serviceManager.getRouter().events.forEach((event: any) => {
+      if(event instanceof NavigationEnd) {
+        let paths = event.url.toString().split('/')[1].split('?');
+        if (paths[1]) {
+          let q = paths[1].substring(2, paths[1].length);
+          this.serviceManager.getApi().post(`zone/social_network/search`, {q: q, types: ['user', 'community', 'post']}).subscribe(
+            (res:any) => {
+              this.result = res.data;
+              this.groups = Object.keys(res.data);
+              // this.groups = _.pull(this.groups, 'posts');
+              console.log(this.result, this.groups);
+            }
+          );
+        }
+      }
+    });
   }
 }

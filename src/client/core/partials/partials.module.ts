@@ -24,6 +24,7 @@ import { PhotoSearchFormComponent } from './header/search/photo-search-form.comp
 import { TagInputModule } from 'ng2-tag-input';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { ModalDockModule } from './modal/dock.module';
+import { SocialSearchFormComponent } from './header/search/social-search-form.component';
 
 
 
@@ -53,6 +54,7 @@ import { ModalDockModule } from './modal/dock.module';
   declarations: [
     SearchFormComponent,
     PhotoSearchFormComponent,
+    SocialSearchFormComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
@@ -64,6 +66,7 @@ import { ModalDockModule } from './modal/dock.module';
   exports: [
     SearchFormComponent,
     PhotoSearchFormComponent,
+    SocialSearchFormComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
