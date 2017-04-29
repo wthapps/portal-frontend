@@ -68,7 +68,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     // Subscribe photo select events
     this.photoSelectDataService.init();
 
-    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$);
+
+    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
+      .takeUntil(closeObs$).subscribe(
       (photos: any) => {
         this.onSelectPhotoComment(photos);
       });
@@ -78,7 +81,8 @@ export class PostListComponent implements OnInit, OnDestroy {
     if (this.loadSubscription)
       this.loadSubscription.unsubscribe();
 
-    this.nextPhotoSubscription.unsubscribe();
+    if (this.nextPhotoSubscription)
+      this.nextPhotoSubscription.unsubscribe();
   }
 
   mapPost(post: any) {
@@ -133,6 +137,7 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.items.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
             // this.loadPosts();
             this.postEditModal.close();
+            this.postIsEmpty = false;
           },
           (error: any) => {
             console.log('error', error);

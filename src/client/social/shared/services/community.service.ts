@@ -59,7 +59,7 @@ export class SoCommunityService  {
   }
 
   makeAdmin(communityUuid: string, userUuid: string) {
-    return this.apiBaseService.put(`${this.soCommunitiesUrl}/${communityUuid}/make_admin/${userUuid}`);
+    return this.apiBaseService.post(`${this.soCommunitiesUrl}/${communityUuid}/make_admin/${userUuid}`);
   }
 
   inviteMembers(communityUuid: string, user_ids: any) {

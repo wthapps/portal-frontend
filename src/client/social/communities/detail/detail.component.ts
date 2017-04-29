@@ -13,6 +13,8 @@ import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { Subscription, Observable } from 'rxjs';
 
 declare let _: any;
 declare let $: any;
@@ -95,6 +97,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   // @ViewChild('users') users: MemberListInviteComponent;
   @ViewChild('posts') posts: PostListComponent;
 
+  closeObs$: Observable<any>;
+
+  // Subscription for photo select in modal
+  nextPhotoSubscription: Subscription;
 
   constructor(private apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
@@ -103,8 +109,12 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
+              private photoSelectDataService: PhotoModalDataService,
               private zoneReportService: ZoneReportService,
               private socialService: SocialService) {
+
+
+    this.closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$);
   }
 
   ngOnInit() {
@@ -133,6 +143,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // this.loadSubscription.unsubscribe();
+    if (this.nextPhotoSubscription)
+      this.nextPhotoSubscription.unsubscribe();
   }
 
   onPreference() {
@@ -173,28 +185,95 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onLeave() {
+    // Check if there are other admins beside current user in community
+    // If not, he must pick another one before leaving
+    let enoughAdmins = this.community.admin_count > 1 ? true : false;
+    let pickAnotherAdmin = this.userService.profile.uuid == this.item.admin.uuid && !enoughAdmins;
 
     this.confirmationService.confirm({
-      message: this.userService.profile.uuid == this.item.admin.uuid ?
-        `You are managing the community ${this.item.name}. This community would be deleted permanently. Are you sure to leave?` :
+      message: pickAnotherAdmin ?
+        `Hi there, you need to pick another admin for the community ${this.item.name} before leaving.` :
         `Are you sure to leave the community ${this.item.name}?`,
       header: 'Leave Community',
       accept: () => {
-        this.loadingService.start();
-        this.socialService.community.leaveCommunity(this.uuid)
-          .subscribe((response: any) => {
-              this.loadingService.stop();
-              this.router.navigateByUrl(this.communitiesUrl);
-            },
-            error => {
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
+        if (pickAnotherAdmin) {
+          // Navigate to member tab
+          this.router.navigate([this.communitiesUrl, this.uuid], { queryParams: {tab: 'members', skipLocationChange: true }});
+        } else {
+          this.leaveCommunity();
+        }
       }
     });
 
     return false;
+  }
+
+  leaveCommunity() {
+    this.loadingService.start();
+    this.socialService.community.leaveCommunity(this.uuid)
+      .subscribe((response: any) => {
+          this.loadingService.stop();
+          this.router.navigateByUrl(this.communitiesUrl);
+        },
+        error => {
+          this.toastsService.danger(error);
+          this.loadingService.stop();
+        }
+      );
+  }
+
+  selectPhoto(callback?: any) {
+    this.photoSelectDataService.open();
+    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
+      .take(1) // User can only select 1 photo to change profile avatar / cover image
+      .takeUntil(this.closeObs$).subscribe(
+        (photo: any) => {
+          callback(photo);
+        });
+  }
+
+  uploadPhoto(callback?: any) {
+  //  For later support
+  }
+
+  changeProfileImage(event: any) {
+    console.log('chnage Avatar image');
+    this.selectPhoto((photos: any) => {
+      // Update avatar image
+      let img_url = photos[0].url;
+      this.item.profile_image = img_url;
+      this.updateCommunity({'profile_image': img_url}, this.item.profile_image);
+      })
+  }
+
+  changeCoverImage(event: any) {
+    console.log('changeCoverImage');
+    this.selectPhoto((photos: any) => {
+      // Update covert image
+      let img_url = photos[0].url;
+      this.item.cover_image = img_url;
+      this.updateCommunity({'cover_image': img_url}, this.item.cover_image);
+    })
+  }
+
+
+  updateCommunity(body: any, updateItem?: any): void {
+    // this.loadingService.start();
+    this.socialService.community.updateCommunity(this.community.uuid, body)
+      .subscribe((result: any) => {
+          // stop loading
+          // updateItem = result.data.img;
+          // this.loadingService.stop();
+          console.log('update community sucess: ', result);
+          this.toastsService.success(result.message);
+        },
+        error => {
+          // stop loading
+          // this.loadingService.stop();
+          this.toastsService.danger(this.errorMessage);
+          console.log(error);
+        }
+      );
   }
 
   askToJoin() {
@@ -293,11 +372,11 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       message: `Are you sure to change role of member ${this.user ? this.user.name : ''} to admin?`,
       header: 'Make admin',
       accept: () => {
-        this.apiBaseService.put(`${this.communitiesUrl}/${this.uuid}/make_admin/${user.uuid}`).subscribe(
+        this.socialService.community.makeAdmin(this.uuid, user.uuid).subscribe(
           (res: any)=> {
             this.toastsService.success(`You have changed ${this.user ? this.user.name : ''} role to ADMIN successfully`);
             $('#user_' + user.uuid).find('span.member-role').text('Admin');
-            // this.loadDataBySelectedTab();
+            this.community.admin_count += 1;
           },
           error => {
             this.toastsService.danger(error);
@@ -319,6 +398,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
           console.log('invited friends');
           this.getTabItems(this.uuid, this.selectedTab);
+          this.community.invitation_count += user_ids.length;
           console.log('get tab items for: ' + this.selectedTab);
         },
         error => {
@@ -409,8 +489,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
             _.set(this.community, 'join_request_count', this.tabItems.length);
             break;
         }
-
-
       },
       error => {
         this.errorMessage = <any>error;

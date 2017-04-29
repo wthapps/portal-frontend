@@ -30,7 +30,7 @@
   <div *ngIf="postIsEmpty" class="text-center text-fade">
     <i class="fa fa-newspaper-o" style="font-size: 80px;"></i>
     <h4>No posts to show</h4>
-    <p><a href="javascript:;" (click)="focusSearchFriends()" class="btn btn-default">Find Friends</a></p>
+    <p><a href="javascript:;"  (click)="postEditModal.open()" class="btn btn-default">Create new post</a></p>
   </div>
 </div>
 
