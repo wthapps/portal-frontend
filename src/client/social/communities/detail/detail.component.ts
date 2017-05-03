@@ -15,6 +15,7 @@ import { PostListComponent } from '../../shared/post/post-list.component';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription, Observable } from 'rxjs';
+import { ZSocialFavoritesComponent } from '../../shared/favorites/social-favorites.component';
 
 declare let _: any;
 declare let $: any;
@@ -94,6 +95,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @ViewChild('users') users: EntitySelectComponent;
+  @ViewChild('favorites') favorites: ZSocialFavoritesComponent;
   // @ViewChild('users') users: MemberListInviteComponent;
   @ViewChild('posts') posts: PostListComponent;
 
@@ -171,6 +173,15 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   addFavourite(uuid: any) {
     this.socialService.user.addFavourites(uuid, 'community').subscribe(
       (res: any) => {
+        if(!_.isEmpty(this.favourite)) {
+          _.remove( this.favorites.favourites, (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
+          this.favourite = undefined;
+        }
+        else {
+          this.favorites.favourites.push(res.data); // Update favorite list at the sidebar
+          this.favourite = res.data;
+        }
+
 
       }
     );
@@ -257,23 +268,32 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
 
+  // this.loadingService.start();
   updateCommunity(body: any, updateItem?: any): void {
-    // this.loadingService.start();
+
     this.socialService.community.updateCommunity(this.community.uuid, body)
       .subscribe((result: any) => {
-          // stop loading
-          // updateItem = result.data.img;
-          // this.loadingService.stop();
-          console.log('update community sucess: ', result);
-          this.toastsService.success(result.message);
-        },
-        error => {
-          // stop loading
-          // this.loadingService.stop();
-          this.toastsService.danger(this.errorMessage);
-          console.log(error);
-        }
-      );
+        // stop loading
+        // updateItem = result.data.img;
+        // this.loadingService.stop();
+        console.log('update community sucess: ', result);
+        let toastMsg = '';
+        if (_.has(body, 'profile_image') )
+          toastMsg = 'You have updated profile image successfully';
+        else if (_.has(body, 'cover_image') )
+          toastMsg = 'You have updated cover image of this community successfully';
+        else
+          toastMsg = result.message;
+
+      this.toastsService.success(toastMsg);
+    },
+    error => {
+      // stop loading
+      // this.loadingService.stop();
+      this.toastsService.danger(this.errorMessage);
+      console.log(error);
+    }
+    );
   }
 
   askToJoin() {

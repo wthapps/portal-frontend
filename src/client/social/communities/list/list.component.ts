@@ -15,6 +15,7 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { Constants } from '../../../core/shared/config/constants';
+import { Router } from '@angular/router';
 
 declare var _: any;
 
@@ -44,6 +45,7 @@ export class ZSocialCommunityListComponent implements OnInit {
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
               private socialService: SocialService,
+              private router: Router,
               // private communityService: SoCommunityService,
               private userService: UserService) {
   }
@@ -118,29 +120,65 @@ export class ZSocialCommunityListComponent implements OnInit {
 
   onLeave(item: any) {
 
+    // this.confirmationService.confirm({
+    //   message: this.userService.profile.uuid == item.admin.uuid ?
+    //     `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
+    //     `Are you sure to leave the community ${item.name}?`,
+    //   header: 'Leave Community',
+    //   accept: () => {
+    //     this.loadingService.start();
+    //     // this.apiBaseService.post(`${this.soCommunitiesUrl}/leave`, JSON.stringify({uuid: item.uuid}))
+    //     this.socialService.community.leaveCommunity(item.uuid)
+    //       .subscribe((response: any) => {
+    //           this.getList();
+    //           this.toastsService.success(`You left the community ${item.name} successfully`);
+    //           this.loadingService.stop();
+    //         },
+    //         error => {
+    //           this.toastsService.danger(error);
+    //           this.loadingService.stop();
+    //         }
+    //       );
+    //   }
+    // });
+    //
+    // return false;
+
+    let enoughAdmins = item['admin_count'] > 1 ? true : false;
+    let pickAnotherAdmin = this.userService.profile.uuid == item.admin.uuid && !enoughAdmins;
+
     this.confirmationService.confirm({
-      message: this.userService.profile.uuid == item.admin.uuid ?
-        `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
+      message: pickAnotherAdmin ?
+        `Hi there, you need to pick another admin for the community ${item.name} before leaving.` :
         `Are you sure to leave the community ${item.name}?`,
       header: 'Leave Community',
       accept: () => {
-        this.loadingService.start();
-        // this.apiBaseService.post(`${this.soCommunitiesUrl}/leave`, JSON.stringify({uuid: item.uuid}))
-        this.socialService.community.leaveCommunity(item.uuid)
-          .subscribe((response: any) => {
-              this.getList();
-              this.toastsService.success(`You left the community ${item.name} successfully`);
-              this.loadingService.stop();
-            },
-            error => {
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
+        if (pickAnotherAdmin) {
+          // Navigate to member tabteryParams: {tab: 'members', skipLocationChange: true }});
+          this.router.navigate([this.communitiesUrl, item.uuid], { queryParams: {tab: 'members', skipLocationChange: true }});
+        } else {
+          this.leaveCommunity(item);
+        }
       }
     });
 
     return false;
+  }
+
+
+  leaveCommunity(item: any) {
+    this.loadingService.start();
+    this.socialService.community.leaveCommunity(item.uuid)
+      .subscribe((response: any) => {
+          this.loadingService.stop();
+          // this.router.navigateByUrl(this.communitiesUrl);
+          _.remove(this.list, (c: any) => c.uuid == item.uuid);
+        },
+        error => {
+          this.toastsService.danger(error);
+          this.loadingService.stop();
+        }
+      );
   }
 
   onPreference(item: any): any {

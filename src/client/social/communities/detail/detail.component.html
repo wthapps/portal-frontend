@@ -49,7 +49,7 @@
                   <i class="fa fa-user-plus"></i> Invite Member
                 </button>
 
-                <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="!isMember">
+                <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="!isMember && joinRequestId == undefined">
                   <i class="fa fa-user-plus"></i> Ask to join
                 </button>
 
@@ -125,7 +125,7 @@
           <ul class="pull-right list-unstyled clearfix">
             <li class=" dropdown">
               <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true">
+                      aria-haspopup="true" aria-expanded="true" (click)="getFavourite(community?.uuid)">
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-custom">
@@ -139,7 +139,7 @@
                 </li>
                 <li><a href="#" (click)="onLeave()">Leave community</a></li>
                 <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-                <li *ngIf="isAdmin"><a (click)="onDelete(data)" href="#">Delete community</a></li>
+                <!--<li *ngIf="isAdmin"><a (click)="onDelete(data)" href="#">Delete community</a></li>-->
               </ul>
             </li>
           </ul>
@@ -180,7 +180,7 @@
         <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
       </div>
 
-      <div *ngIf="isMember" class="z-social-box">
+      <div *ngIf="isMember && !isAboutTab && !isPostTab" class="z-social-box">
 
 
         <div class="z-social-post">
@@ -251,7 +251,7 @@
 
 
     </div>
-    <z-social-favorites></z-social-favorites>
+    <z-social-favorites #favorites ></z-social-favorites>
   </div>
 
   <template [ngIf]="item">
