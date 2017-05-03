@@ -132,7 +132,7 @@ export class PhotoUploadService {
    * @returns {any}
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
-    this.loadConfigOnce(); // Reload config if mandatory config variables is not ready
+    // this.loadConfigOnce(); // Reload config if mandatory config variables is not ready
     return Observable.create((observer: any) => {
       for (let i = 0; i < photos.length; i++) {
         let file = photos[i];

@@ -16,6 +16,7 @@ import { EntitySelectComponent } from '../../../core/partials/entity-select/enti
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription, Observable } from 'rxjs';
 import { ZSocialFavoritesComponent } from '../../shared/favorites/social-favorites.component';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 
 declare let _: any;
 declare let $: any;
@@ -103,6 +104,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   // Subscription for photo select in modal
   nextPhotoSubscription: Subscription;
+  uploadPhotoSubscription: Subscription;
 
   constructor(private apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
@@ -112,11 +114,12 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private photoSelectDataService: PhotoModalDataService,
+              private photoUploadService: PhotoUploadService,
               private zoneReportService: ZoneReportService,
               private socialService: SocialService) {
 
-
-    this.closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$);
+    // All subscriptions to photo select modal should be closed when 1 of following events are emitted
+    this.closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
   }
 
   ngOnInit() {
@@ -147,6 +150,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     // this.loadSubscription.unsubscribe();
     if (this.nextPhotoSubscription)
       this.nextPhotoSubscription.unsubscribe();
+
+    if (this.uploadPhotoSubscription)
+      this.uploadPhotoSubscription.unsubscribe();
   }
 
   onPreference() {
@@ -233,13 +239,23 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       );
   }
 
-  selectPhoto(callback?: any) {
-    this.photoSelectDataService.open();
+  selectPhoto(callback: any, loadingId?: string) {
+    this.photoSelectDataService.open({'multipleSelect': false});
     this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
       .take(1) // User can only select 1 photo to change profile avatar / cover image
       .takeUntil(this.closeObs$).subscribe(
         (photo: any) => {
           callback(photo);
+        });
+
+    this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
+      .take(1)
+      .takeUntil(this.closeObs$)
+      // .flatMap((photos: any) => this.photoUploadService.uploadPhotos(photos))
+      .flatMap((photos: any) => { this.loadingService.start(loadingId); return this.photoUploadService.uploadPhotos(photos); })
+      .subscribe(
+        (res: any) => {
+          callback([res.data]);
         });
   }
 
@@ -249,22 +265,31 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   changeProfileImage(event: any) {
     console.log('chnage Avatar image');
+    // this.loadingService.start('#profile_image');
+    let loadingId: string = '#profile_image';
     this.selectPhoto((photos: any) => {
       // Update avatar image
       let img_url = photos[0].url;
       this.item.profile_image = img_url;
       this.updateCommunity({'profile_image': img_url}, this.item.profile_image);
-      })
+      this.loadingService.stop(loadingId);
+      }, loadingId);
   }
 
   changeCoverImage(event: any) {
     console.log('changeCoverImage');
-    this.selectPhoto((photos: any) => {
+    // this.loadingService.start('#cover_image');
+
+    let loadingId: string  = '#cover_image';
+    this.selectPhoto((photos: Array<any>) => {
       // Update covert image
+      let photo: any;
+
       let img_url = photos[0].url;
       this.item.cover_image = img_url;
       this.updateCommunity({'cover_image': img_url}, this.item.cover_image);
-    })
+      this.loadingService.stop(loadingId);
+    }, loadingId)
   }
 
 
@@ -436,8 +461,30 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         });
   }
 
-  onDelete(item: any) {
+  onDelete() {
+    this.confirmationService.confirm({
+      message: `Are you sure to delete the community ${this.community.name}`,
+      header: 'Delete Community',
+      accept: () => {
+        this.loadingService.start();
+        // this.apiBaseService.delete(`$this.communitiesUrl}/${item.uuid}`)
+        this.socialService.community.deleteCommunity(`${this.community.uuid}`)
+          .subscribe((response: any) => {
+              // console.log(response);
+              this.router.navigateByUrl(this.communitiesUrl);
+              this.toastsService.success(`Your community - ${this.community.name} - has been deleted successfully`);
+              this.loadingService.stop();
+            },
+            error => {
+              // console.log(error);
+              this.toastsService.danger(error);
+              this.loadingService.stop();
+            }
+          );
+      }
+    });
 
+    return false;
   }
 
   onLoadMore() {
