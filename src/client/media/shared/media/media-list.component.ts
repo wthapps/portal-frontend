@@ -153,6 +153,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
   getObjects(options?: any) {
     let path = this.currentPath;
+    let moreOptions = {};
 
     if (this.page == 'favorites') {
 
@@ -169,9 +170,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     }
 
     if (this.page == 'album_detail' && this.params && options && Object.keys(options).length > 0) {
-      options.album = this.params['id'];
+      // options['album'] = this.params['id'];
+      moreOptions = Object.assign({}, options, {'album': this.params['id']});
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`photos`, options).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`photos`, moreOptions).subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -724,7 +726,10 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   }
 
   viewDetails() {
-    this.router.navigate(['/albums', this.selectedObjects[0].id]);
+    if (this.page != 'shared-with-me')
+      this.router.navigate(['/albums', this.selectedObjects[0].id]);
+    else
+      this.router.navigate(['/albums', this.selectedObjects[0].id], {queryParams: {'shared-with-me': true}});
   }
 
   slideShow() {
