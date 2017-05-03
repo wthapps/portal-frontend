@@ -71,16 +71,7 @@
   @include flexbox;
   @include align-items(flex-start);
   .z-social-media-left {
-    width: 34px;
-    height: 34px;
     margin-right: 10px;
-    img {
-      width: 100%;
-      height: auto;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
-    }
   }
   .z-social-media-body {
     @include flex(1);
@@ -140,16 +131,11 @@
     margin-top: 5px;
   }
   &.z-social-media-md {
-    .z-social-media-left {
-      width: 100px;
-      height: 100px;
-    }
     .z-heading {
       .z-name {
         font-size: 24px;
       }
     }
-
   }
 }
 

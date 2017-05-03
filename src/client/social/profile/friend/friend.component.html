@@ -10,7 +10,9 @@
               <div class="media-center-left">
                 <figure>
                   <a [routerLink]="['/profile', item?.uuid]">
-                    <img [src]="item?.profile_image" width="70" alt="">
+                    <span class="avatar-sm">
+                      <img [src]="item?.profile_image" alt="">
+                    </span>
                   </a>
                 </figure>
               </div>

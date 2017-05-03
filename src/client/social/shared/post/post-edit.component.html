@@ -2,8 +2,9 @@
   <modal-body>
     <div class="z-social-media mb15">
       <div class="z-social-media-left">
-        <!--<img src="assets/images/avatar/avatar.png" alt="">-->
-        <img src="{{currentUser?.profile_image}}" alt="">
+        <div class="avatar-xs">
+          <img src="{{currentUser?.profile_image}}" alt="">
+        </div>
       </div>
       <div class="z-social-media-body">
         <div class="z-heading">
@@ -120,24 +121,26 @@
         </div>
       </div>
       <div class="form-group" *ngIf="parent != null">
-        Shared from <a [routerLink]="['/profile/', parent.owner.uuid, 'about']" >{{parent.owner.name}}</a>
+        Shared from <a [routerLink]="['/profile/', parent.owner.uuid, 'about']">{{parent.owner.name}}</a>
       </div>
       <div class="clearfix text-right">
         <button type="button" class="btn btn-default pull-left" *ngIf="parent == null" (click)="addMorePhoto($event)">
           <i class="fa fa-camera"></i> Add Photo
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"
-                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0))">Done</button>
-        <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel</button>
+                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0))">Done
+        </button>
+        <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel
+        </button>
       </div>
     </form>
   </modal-body>
 </hd-modal>
 <!--<post-photo-select #photoSelectModal-->
-                   <!--(onNext)="next($event)"-->
-                   <!--(onDismiss)="dismiss($event)"-->
-                   <!--(onClose)="closeSelectPhoto($event)"-->
-                   <!--(onUpload)="upload($event)"></post-photo-select>-->
+<!--(onNext)="next($event)"-->
+<!--(onDismiss)="dismiss($event)"-->
+<!--(onClose)="closeSelectPhoto($event)"-->
+<!--(onUpload)="upload($event)"></post-photo-select>-->
 
 <!--<post-privacy-custom #privacyCustomModal (onSelected)="selectedItems($event)"></post-privacy-custom>-->
 <entity-select #privacyCustomModal type='custom_friend' (onSelected)="selectedItems($event)"></entity-select>

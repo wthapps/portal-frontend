@@ -17,7 +17,9 @@
                 <div class="media-center-left">
                   <figure>
                     <a [routerLink]="[profileUrl, notification.actor.uuid]">
-                      <img [src]="notification.actor.profile_image" width="70" alt="">
+                      <span class="avatar-sm">
+                        <img [src]="notification.actor.profile_image" alt="">
+                      </span>
                     </a>
                   </figure>
                 </div>

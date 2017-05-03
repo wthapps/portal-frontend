@@ -16,16 +16,18 @@
             </button>
           </div>
           <div class="zone-social-cover-img">
-            <img class="img-bg img-full" [src]="item?.cover_image" alt="">
+            <img class="img-bg img-full no-user-selected" [src]="item?.cover_image" alt="">
           </div>
           <div class="zone-social-cover-info">
             <div class="z-social-media z-social-media-md">
-              <div class="z-social-media-left">
-                <img [src]="item.profile_image" class="img-responsive" width="100">
+              <div class="z-social-media-left" (click)="changeProfileImage($event)">
+                <div class="avatar-md">
+                  <img [src]="item.profile_image" class="no-user-selected">
+                  <div class="zone-social-cover-info-profile can-click">
+                    <i class="fa fa-camera"></i> Update Profile Picture
+                  </div>
+                </div>
               </div>
-              <button (click)="changeProfileImage($event)" type="button" class="btn btn-default btn-min">
-                <i class="fa fa-pencil"></i> Edit
-              </button>
 
               <div class="z-social-media-body">
                 <div class="z-heading">

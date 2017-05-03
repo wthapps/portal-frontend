@@ -20,8 +20,10 @@
       <div id="comment-{{comment?.uuid}}">
         <div class="media-left">
           <a [routerLink]="['/profile/', comment.owner.uuid]">
-            <img alt="64x64" class="media-object" [src]="comment.owner.profile_image"
-                 style="width: 34px; border-radius: 3px">
+            <span class="avatar-xs">
+              <img [src]="comment.owner.profile_image" alt="">
+            </span>
+
           </a>
         </div>
         <div class="media-body">
@@ -71,8 +73,9 @@
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
-              <img alt="64x64" class="media-object" [src]="reply.owner.profile_image"
-                   style="width: 34px; border-radius: 3px">
+              <span class="avatar-xs">
+                <img [src]="reply.owner.profile_image" alt="">
+              </span>
             </a>
           </div>
           <div class="media-body">

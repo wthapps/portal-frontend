@@ -22,7 +22,9 @@
                 <div class="media-center-left">
                   <figure>
                     <a [routerLink]="[communitiesUrl, my.uuid]">
-                      <img width="70" [src]="my.profile_image" alt="">
+                      <span class="avatar-sm">
+                        <img [src]="my.profile_image" alt="">
+                      </span>
                     </a>
                   </figure>
                 </div>
@@ -67,7 +69,9 @@
                 <div class="media-center-left">
                   <figure>
                     <a [routerLink]="[communitiesUrl, item.uuid]">
-                      <img width="70" [src]="item.profile_image" alt="">
+                      <span class="avatar-sm">
+                        <img [src]="item.profile_image" alt="">
+                      </span>
                     </a>
                   </figure>
                 </div>
