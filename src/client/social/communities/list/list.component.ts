@@ -103,7 +103,7 @@ export class ZSocialCommunityListComponent implements OnInit {
           .subscribe((response: any) => {
               // console.log(response);
               this.onUpdated(response.data);
-              this.toastsService.success('Your community has been deleted successfully');
+              this.toastsService.success(`Your community - ${item.name} - has been deleted successfully`);
               this.loadingService.stop();
             },
             error => {

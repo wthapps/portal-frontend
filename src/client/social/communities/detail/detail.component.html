@@ -15,12 +15,12 @@
               <i class="fa fa-pencil" (click)="changeCoverImage($event)"></i>
             </button>
           </div>
-          <div class="zone-social-cover-img">
+          <div class="zone-social-cover-img" id="cover_image">
             <img class="img-bg img-full no-user-selected" [src]="item?.cover_image" alt="">
           </div>
           <div class="zone-social-cover-info">
             <div class="z-social-media z-social-media-md">
-              <div class="z-social-media-left" (click)="changeProfileImage($event)">
+              <div class="z-social-media-left" (click)="changeProfileImage($event)" id="profile_image">
                 <div class="avatar-md">
                   <img [src]="item.profile_image" class="no-user-selected">
                   <div class="zone-social-cover-info-profile can-click">
@@ -141,7 +141,7 @@
                 </li>
                 <li><a href="#" (click)="onLeave()">Leave community</a></li>
                 <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-                <!--<li *ngIf="isAdmin"><a (click)="onDelete(data)" href="#">Delete community</a></li>-->
+                <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
               </ul>
             </li>
           </ul>
