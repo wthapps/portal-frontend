@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
-import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationChannelService } from '../channels/notification-channel.service';
 import { UserService } from './user.service';
 import { Observable } from 'rxjs';
+import { WTHNavigateService } from './wth-navigate.service';
 
 /**
  * Created by phat on 18/11/2016.
@@ -26,8 +26,7 @@ export class NotificationService {
   }
 
   constructor(private api: ApiBaseService,
-              private router: Router,
-              private route: ActivatedRoute,
+              private navigateService: WTHNavigateService,
               private userService: UserService,
               private notificationChannel: NotificationChannelService) {
   }
@@ -38,12 +37,13 @@ export class NotificationService {
     ;
   }
 
-
+  // TODO: Navigate to page of another module. Ex: From social to to media module
   doAction(action: any, notif_id: string) {
     let link: string = action.link;
     let method = action.method;
     let params = action.params;
     let method_name = action.name;
+    let module = action.module; // media, social, chat ...
     let body = { url: link,
       // method: method
     };
@@ -52,7 +52,8 @@ export class NotificationService {
 
     switch (method) {
       case 'navigate':
-        this.router.navigate(['/' + link ], { queryParams: body });
+        // this.router.navigate(['/' + link ], { queryParams: body });
+        this.navigateService.navigateOrRedirect(link, module, body);
 
         let currentNotif = _.find(this.notifications, {id: this.currentNotifId});
         this.markAsRead(currentNotif);

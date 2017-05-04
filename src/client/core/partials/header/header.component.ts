@@ -6,6 +6,7 @@ import { Constants } from '../../shared/config/constants';
 import { SearchFormComponent } from './search/search-form.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
+import { WTHNavigateService } from '../../shared/services/wth-navigate.service';
 
 declare var $: any;
 declare var _: any;

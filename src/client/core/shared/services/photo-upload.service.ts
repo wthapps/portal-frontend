@@ -29,8 +29,8 @@ export class PhotoUploadService {
   }
 
   loadConfigOnce() {
-    if (!this.albumTempBucketName || !this.bucketRegion)
-      this.loadConfig();
+    // if (!this.albumTempBucketName || !this.bucketRegion)
+    //   this.loadConfig();
   }
 
   loadConfig() {

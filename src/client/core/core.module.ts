@@ -15,6 +15,7 @@ import { AuthGuard } from './shared/services/auth-guard.service';
 import { CanDeactivateGuard } from './shared/services/can-deactivate-guard.service';
 import { AuthService } from './shared/services/auth.service';
 import { ServiceManager } from './shared/services/service-manager';
+import { WTHNavigateService } from './shared/services/wth-navigate.service';
 
 @NgModule({
   imports:      [ CommonModule ],
@@ -37,6 +38,7 @@ export class CoreModule {
         CookieService,
         StorageService,
         HandlerService,
+        // WTHNavigateService,
         NotificationService,
         NotificationChannelService,
         AppearancesChannelService

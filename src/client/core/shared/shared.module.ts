@@ -46,6 +46,7 @@ import { ServiceManager } from './services/service-manager';
 import { ConvertByPatternPipe } from './pipe/convert.pipe';
 import { AutofocusDirective } from './directive/autofocus.directive';
 import { ImgFullDirective } from './directive/img-full.directive';
+import { WTHNavigateService } from './services/wth-navigate.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -148,6 +149,7 @@ export class SharedModule {
         CookieService,
         StorageService,
         HandlerService,
+        WTHNavigateService,
         NotificationService,
         NotificationChannelService,
         AppearancesChannelService,

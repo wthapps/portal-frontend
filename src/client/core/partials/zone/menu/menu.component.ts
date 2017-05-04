@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../../../shared/services/user.service';
 import { Constants } from '../../../shared/config/constants';
+import { WTHNavigateService } from '../../../shared/services/wth-navigate.service';
 
 declare var $: any;
 
@@ -19,35 +20,17 @@ export class ZSharedMenuComponent {
   mediaMenu = Constants.pictureMenuItems;
   socialMenu = Constants.socialMenuItems;
   chatMenu = Constants.chatMenuItems;
-  baseUrl:any =  Constants.baseUrls;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private navigateService: WTHNavigateService) {
     this.uuid = this.userService.getProfileUuid();
   }
 
   onMenu(event: string) {
-    switch (event) {
-      case 'media':
-        if(!this.inSameModule(Constants.baseUrls.media))
-          window.location.href = Constants.baseUrls.media;
-        break;
-      case 'social':
-        if(!this.inSameModule(Constants.baseUrls.social))
-          window.location.href = Constants.baseUrls.social;
-        break;
-      case 'chat':
-        if(!this.inSameModule(Constants.baseUrls.chat))
-          window.location.href = Constants.baseUrls.chat;
-        break;
-      default:
-        break;
-    }
 
+    this.navigateService.navigateOrRedirect('', event);
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
-  inSameModule(moduleFullName: string) {
-    return window.location.origin === moduleFullName;
-  }
 
 }
