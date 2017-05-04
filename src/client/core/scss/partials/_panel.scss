@@ -1,15 +1,23 @@
 .panel {
+  margin-bottom: 30px;
+  @include box-shadow(0 0 0 transparent);
+
   .panel-heading {
     padding-top: 18px;
     padding-bottom: 18px;
   }
+
+  .panel-footer {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
   .panel-title {
     font-size: 18px;
   }
-  margin-bottom: 30px;
-  @include box-shadow(0 0 0 transparent);
+
   .list-group {
-    ul {
+    ul:not(.dropdown-menu) {
       padding-left: 20px;
       list-style-type: disc;
       ul {
@@ -17,6 +25,7 @@
       }
     }
     .list-group-item {
+      margin-bottom: -1px;
       .list-group-item-heading:first-child {
         margin-top: 0;
       }
@@ -40,6 +49,9 @@
 
 .panel-default {
   > .panel-heading {
+    background-color: transparent;
+  }
+  > .panel-footer {
     background-color: transparent;
   }
 }

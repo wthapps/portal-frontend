@@ -9,6 +9,7 @@ import { AutoCompleteModule } from 'primeng/primeng';
 import { SliderModule } from 'primeng/primeng';
 import { CalendarModule } from 'primeng/primeng';
 import { CheckboxModule } from 'primeng/primeng';
+import { RadioButtonModule } from 'primeng/primeng';
 
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -65,7 +66,8 @@ import { ImgFullDirective } from './directive/img-full.directive';
     InfiniteScrollModule,
     SliderModule,
     CalendarModule,
-    CheckboxModule
+    CheckboxModule,
+    RadioButtonModule
   ],
   declarations: [
     ToolbarComponent,
@@ -106,6 +108,7 @@ import { ImgFullDirective } from './directive/img-full.directive';
     SliderModule,
     CalendarModule,
     CheckboxModule,
+    RadioButtonModule,
 
     // Component
     ToolbarComponent,

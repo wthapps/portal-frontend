@@ -63,6 +63,17 @@ body {
   }
 }
 
+.link-text {
+  color: $text-color;
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  &:hover, &:focus {
+    text-decoration: none;
+    outline: none;
+  }
+}
+
 .text-disable {
   &, * {
     cursor: not-allowed;
@@ -75,6 +86,10 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 
 .text-normal {
@@ -139,4 +154,8 @@ h1, h2, h3, h4, h5, h6,
 
 .wth-scrollable {
   overflow: auto;
+}
+
+.hr-darken {
+  border-color: #cdcdcd;
 }

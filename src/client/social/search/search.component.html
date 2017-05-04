@@ -1,43 +1,122 @@
-<style>
-  .last li {
-    border-bottom: none
-  }
-</style>
 <div class="page-body-content gray-light">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in" *ngIf="result && groups">
-      <div class="z-social-box" *ngFor="let group of groups">
-        <div class="z-social-box-header">
-          <h4>
-            {{group | titleCase}}
-          </h4>
+
+      <div class="panel panel-default" *ngFor="let group of groups">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{group | titleCase}}</h3>
         </div>
-        <h3 *ngIf="result[group] && result[group].length == 0" class="text-fade">
-          There is no result
-        </h3>
-        <div class="z-social-post" *ngFor="let item of result[group]; let last = last" [class.last]="last">
-          <ul class="list-unstyled social-list-user">
-            <li>
-              <div class="media-center">
-                <div class="media-center-left">
-                  <figure>
-                    <a [routerLink]="[item.link]">
+        <div class="panel-body" *ngIf="result[group] && result[group].length == 0">
+          <h3 class="text-fade">
+            There is no result
+          </h3>
+        </div>
+        <ul class="list-group" *ngFor="let item of result[group]; let last = last" [class.last]="last">
+          <li class="list-group-item">
+            <div class="media-center">
+              <div class="media-center-left">
+                <figure>
+                  <a [routerLink]="[item.link]">
                       <span class="avatar-xs">
                         <img [src]="item.profile_image">
                       </span>
-                    </a>
-                  </figure>
+                  </a>
+                </figure>
+              </div>
+              <div class="media-center-body">
+                <h4 class="media-center-heading">
+                  <a [routerLink]="[item.link]" class="link-text">{{item.name}}</a>
+                </h4>
+              </div>
+              <div class="media-center-right">
+                <div class="no-wrap">
+                  <button class="btn btn-default mr5">
+                    <i class="fa fa-user-plus"></i> Add Friend
+                  </button>
+
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" (click)="getFavourite(item.uuid)">
+                      <i class="fa fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a href="javascript:;" (click)="onEdit(item)">Edit Information</a></li>
+                      <li><a href="#" (click)="onPreference(item)">Preferences</a></li>
+                      <li>
+                        <a [routerLink]="[communitiesUrl,item.uuid]" [queryParams]="{tab: 'members'}">Manage members</a>
+                      </li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="javascript:;" (click)="addFavourite(item.uuid)"> Favourites <i class="fa pull-right"
+                                                                                                  [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a>
+                      </li>
+                      <li><a href="javascript:;" (click)="onLeave(item)">Leave community</a></li>
+                      <li><a href="javascript:;" (click)="onDelete(item)" href="javascript:;">Delete community</a></li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="media-center-body">
-                  <h4 class="media-center-heading">
-                    <a [routerLink]="[item.link]">{{item.name}}</a>
-                  </h4>
-                </div>
+
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="panel-footer">
+          <a href="#">See More Results</a>
+        </div>
+      </div>
+
+      <h2 class="h4">Post from your friends</h2>
+      <hr class="hr-darken">
+
+      <!--Posts-->
+
+      <!--End Posts-->
+
+    </div>
+    <div class="zone-social-sidebar">
+      <dl>
+        <dt>Posted by</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li>
+              <p-radioButton name="searchPostedBy" value="anyone" label="Anyone" [(ngModel)]="searchPostedBy"></p-radioButton>
+            </li>
+            <li>
+              <p-radioButton name="searchPostedBy" value="you" label="You" [(ngModel)]="searchPostedBy"></p-radioButton>
+            </li>
+            <li>
+              <p-radioButton name="searchPostedBy" value="yourFriends" label="Your friends"
+                          [(ngModel)]="searchPostedBy"></p-radioButton>
+            </li>
+            <li>
+              <p-radioButton name="searchPostedBy" value="frinedOfFriend" label="Friend of friends and communites"
+                          [(ngModel)]="searchPostedBy"></p-radioButton>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+      <dl>
+        <dt>Date</dt>
+        <dd>
+          <ul class="list-unstyled">
+            <li>
+              <p-radioButton name="searchDate" value="anytime" label="Anytime" [(ngModel)]="searchDate"></p-radioButton>
+            </li>
+            <li>
+              <p-radioButton name="searchDate" value="2017" label="2017" [(ngModel)]="searchDate"></p-radioButton>
+            </li>
+            <li>
+              <p-radioButton name="searchDate" value="2016" label="2016" [(ngModel)]="searchDate"></p-radioButton>
+            </li>
+            <li>
+            <li>
+              <p-radioButton name="searchDate" value="custom" label="Custom date" [(ngModel)]="searchDate"></p-radioButton>
+              <div class="mt5">
+                <p-calendar [showIcon]="true" class="form-control-block" [(ngModel)]="searchDateValue" ></p-calendar>
               </div>
             </li>
           </ul>
-        </div>
-      </div>
+        </dd>
+      </dl>
     </div>
   </div>
 </div>

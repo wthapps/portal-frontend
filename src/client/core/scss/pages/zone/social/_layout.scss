@@ -54,7 +54,12 @@
     }
   }
   .z-social-box-body {
+    padding-top: 15px;
     hr {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+    .z-social-box-body-out {
       margin-left: -15px;
       margin-right: -15px;
     }
@@ -718,9 +723,10 @@
 
 //communities
 .z-social-box-body-communities {
+  margin-bottom: -15px;
   .media-center {
     padding-bottom: 15px;
-    margin-top: 15px;
+    margin-bottom: 15px;
     border-bottom: 1px solid $line;
   }
   .media-center-heading {
