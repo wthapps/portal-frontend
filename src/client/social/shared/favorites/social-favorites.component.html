@@ -2,24 +2,40 @@
   <dl>
     <dt>Favourites</dt>
     <dd>
-      <ul class="list-unstyled">
-        <li *ngFor="let	favourite of favourites">
-          <div *ngIf="favourite.friend">
+        <div class="media-center" *ngFor="let	favourite of favourites">
+          <div *ngIf="favourite.friend" class="media-center-left">
             <a [routerLink]="[profileUrl, favourite.friend.uuid]" [skipLocationChange]="true">
               <img width="30" [src]=favourite.friend.profile_image alt="" title="">
               <span> {{favourite.friend.name}} </span>
             </a>
           </div>
-          <div *ngIf="favourite.community">
+          <div *ngIf="favourite.community" class="media-center-body">
             <a [routerLink]="[communitiesUrl, favourite.community.uuid]" [skipLocationChange]="true">
               <img width="30" [src]=favourite.community.profile_image alt="" title="">
               <span> {{favourite.community.name}} </span>
             </a>
           </div>
-
-        </li>
-      </ul>
+          <div class="media-center-right">
+            <div class="pull-right dropdown">
+              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-custom">
+                <li><a href="javascript:;" (click)="unfavourite(favourite)">Remove From Favourites</a></li>
+                <li><a href="javascript:;" (click)="rearrange()">Rearrange</a></li>
+                <li role="separator" class="divider"></li>
+                <li *ngIf="favourite?.community"><a href="javascript:;" (click)="leaveCommunity(favourite?.community)">Leave Community</a></li>
+                <li *ngIf="favourite?.friend"><a href="javascript:;" (click)="unfriend(favourite?.friend)">Unfriend</a></li>
+                <li><a href="javascript:;" (click)="onReport(favourite)">Report member</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
     </dd>
   </dl>
+
+
+  <wth-zone-report></wth-zone-report>
   </div>
 

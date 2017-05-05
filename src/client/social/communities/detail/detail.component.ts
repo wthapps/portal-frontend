@@ -177,7 +177,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, 'community').subscribe(
+    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
       (res: any) => {
         if(!_.isEmpty(this.favourite)) {
           _.remove( this.favorites.favourites, (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar

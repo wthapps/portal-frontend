@@ -184,10 +184,27 @@ export let Constants = {
     user: 1,
     community: 2
   },
+  soCommunityUserStatus: {
+    member: 1,
+    joinRequestSent: 2,
+    stranger: 3
+  },
+
+  friendStatus: {
+    pending: 1,
+    accepted: 2,
+    rejected: 3,
+    unfriend: 4,
+    blocked: 5,
+    stranger: 99
+  },
+
   soPostLimit: 10,
   soCommentLimit: 20,
 
   searchDebounceTime: 250,
+
+
 
   search: {
     config: {

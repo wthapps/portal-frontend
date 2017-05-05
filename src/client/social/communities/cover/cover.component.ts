@@ -163,7 +163,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, 'community').subscribe(
+    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
       (res: any) => {
 
       }
