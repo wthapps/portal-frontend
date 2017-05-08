@@ -10,11 +10,11 @@
       <a draggable="false" href="#">Calendar</a>
     </li>
 
-    <li class="has-sub" [routerLinkActive]="['active']">
+    <li class="has-sub" [ngClass]="{'active': urls.social == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
-      <ul [routerLinkActive]="['active']" class="list-unstyled">
+      <ul [ngClass]="{'active': urls.social == hostname}" class="list-unstyled">
         <template ngFor let-social [ngForOf]="socialMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li [routerLinkActive]="['active']" [ngClass]="{'hidden': social.link == '/search'}">
             <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
@@ -25,11 +25,11 @@
       </ul>
     </li>
 
-    <li class="has-sub" [routerLinkActive]="['active']">
+    <li class="has-sub" [ngClass]="{'active': urls.chat == hostname}">
       <a draggable="false" [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
         Chat
       </a>
-      <ul [routerLinkActive]="['active']" class="list-unstyled" id="zone_menu_chat">
+      <ul [ngClass]="{'active': urls.chat == hostname}" class="list-unstyled" id="zone_menu_chat">
         <li [routerLinkActive]="['active']" *ngFor="let chat of chatMenu">
           <a draggable="false" [routerLink]="[chat.link]">
             {{chat.name}}
@@ -41,11 +41,11 @@
     <li>
       <a draggable="false" href="#">Gadget</a>
     </li>
-    <li class="has-sub" [routerLinkActive]="['active']">
+    <li class="has-sub" [ngClass]="{'active': urls.media == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>
-      <ul [routerLinkActive]="['active']" class="list-unstyled">
+      <ul [ngClass]="{'active': urls.media == hostname}" class="list-unstyled">
         <template ngFor let-media [ngForOf]="mediaMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
             <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">

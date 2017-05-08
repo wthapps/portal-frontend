@@ -93,7 +93,7 @@ export let Constants = {
     {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
     {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
     {name: 'Shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
-    {name: 'Search', link: '/search', icon: 'fa fa-search'},
+    {name: 'Search', link: '/search', icon: 'fa fa-search'}
   ],
 
   socialMenuItems: [
@@ -103,6 +103,7 @@ export let Constants = {
     {name: 'Friends', link: '/members'},
     {name: 'My Page', link: '/profile'},
     {name: 'Settings', link: '/settings'},
+    {name: 'Search', link: '/search'}
   ],
 
   pictureMenuActions: {
