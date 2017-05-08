@@ -15,11 +15,13 @@
         Social Network
       </a>
       <ul [routerLinkActive]="['active']" class="list-unstyled">
-        <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
-          <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
-            {{social.name}}</a>
-          <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
-        </li>
+        <template ngFor let-social [ngForOf]="socialMenu" let-i="index" [ngForTrackBy]="trackByFn">
+          <li [routerLinkActive]="['active']" [ngClass]="{'hidden': social.link == '/search'}">
+            <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
+              {{social.name}}</a>
+            <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
+          </li>
+        </template>
       </ul>
     </li>
 
