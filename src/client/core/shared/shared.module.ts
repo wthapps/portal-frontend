@@ -10,6 +10,7 @@ import { SliderModule } from 'primeng/primeng';
 import { CalendarModule } from 'primeng/primeng';
 import { CheckboxModule } from 'primeng/primeng';
 import { RadioButtonModule } from 'primeng/primeng';
+import { InputTextareaModule } from 'primeng/primeng';
 
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -68,7 +69,8 @@ import { WTHNavigateService } from './services/wth-navigate.service';
     SliderModule,
     CalendarModule,
     CheckboxModule,
-    RadioButtonModule
+    RadioButtonModule,
+    InputTextareaModule
   ],
   declarations: [
     ToolbarComponent,
@@ -110,6 +112,7 @@ import { WTHNavigateService } from './services/wth-navigate.service';
     CalendarModule,
     CheckboxModule,
     RadioButtonModule,
+    InputTextareaModule,
 
     // Component
     ToolbarComponent,
