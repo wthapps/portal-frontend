@@ -1,8 +1,8 @@
 @mixin button-variant-inline($color, $background, $border) {
 
-  @if $background == transparent {
-    $background: #FFF;
-  }
+  //@if $background == transparent {
+  //  $background: #FFF;
+  //}
 
   color: $color;
   background-color: $background;
@@ -81,7 +81,7 @@
 }
 
 .btn-primary-inline {
-  @include button-variant-inline(#F54A59, transparent, transparent);
+  @include button-variant-inline(#F54A59, #FFF, transparent);
 }
 
 .btn-default-inline {
