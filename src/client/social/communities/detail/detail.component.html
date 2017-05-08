@@ -20,10 +20,10 @@
           </div>
           <div class="zone-social-cover-info">
             <div class="z-social-media z-social-media-md">
-              <div class="z-social-media-left" (click)="changeProfileImage($event)" id="profile_image">
-                <div class="avatar-md">
+              <div class="z-social-media-left" id="profile_image">
+                <div class="avatar-md can-click" (click)="changeProfileImage($event)">
                   <img [src]="item.profile_image" class="no-user-selected">
-                  <div class="zone-social-cover-info-profile can-click">
+                  <div class="zone-social-cover-info-profile">
                     <i class="fa fa-camera"></i> Update Profile Picture
                   </div>
                 </div>
@@ -51,7 +51,8 @@
                   <i class="fa fa-user-plus"></i> Invite Member
                 </button>
 
-                <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="!isMember && joinRequestId == undefined">
+                <button class="btn btn-default" type="button" (click)="askToJoin()"
+                        *ngIf="!isMember && joinRequestId == undefined">
                   <i class="fa fa-user-plus"></i> Ask to join
                 </button>
 
@@ -112,13 +113,16 @@
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
             </li>
             <li [ngClass]="selectedTab=='members'? 'active': ''">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members {{ ( community?.member_count ) ? '( ' + community?.member_count+ ' )' : '' }} </a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members {{ (
+                community?.member_count ) ? '( ' + community?.member_count+ ' )' : '' }} </a>
             </li>
             <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations {{ ( isAdmin && community?.invitation_count ) ? '( ' + community?.invitation_count + ' )' : '' }}</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations {{ ( isAdmin &&
+                community?.invitation_count ) ? '( ' + community?.invitation_count + ' )' : '' }}</a>
             </li>
             <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests {{ ( isAdmin && community?.join_request_count ) ? '( ' + community?.join_request_count + ' )' : '' }}</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests {{ ( isAdmin
+                && community?.join_request_count ) ? '( ' + community?.join_request_count + ' )' : '' }}</a>
             </li>
             <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
             <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
@@ -188,7 +192,7 @@
         <div class="z-social-post">
           <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
 
-            <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems" >
+            <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
               <li data-id="user_{{item.user ? item.user.uuid : ''}}">
                 <div class="dropdown pull-right">
                   <!--<span class="text-fade member-role">{{ item.user.uuid == item.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
@@ -253,7 +257,7 @@
 
 
     </div>
-    <z-social-favorites #favorites ></z-social-favorites>
+    <z-social-favorites #favorites></z-social-favorites>
   </div>
 
   <template [ngIf]="item">

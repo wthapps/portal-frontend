@@ -674,6 +674,28 @@
     }
   }
 
+  .zone-social-cover-info-profile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    font-size: 11px;
+    padding: 5px 5px 5px 22px;
+    @include transition($transition-base);
+    i {
+      position: absolute;
+      left: 5px;
+      top: 8px;
+    }
+  }
+  .z-social-media-left:hover {
+    .zone-social-cover-info-profile {
+      bottom: 0;
+    }
+  }
+
   .zone-social-cover-nav {
     border-top: 1px solid $line;
     padding: 15px;
