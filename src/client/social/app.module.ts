@@ -16,6 +16,7 @@ import { SocialSettingsModule } from './settings/setting.module';
 import { ZSocialProfileModule } from './profile/profile.module';
 import { ZSocialPhotoModule } from './photo/photo.module';
 import { ZSocialSearchModule } from './search/search.module';
+import { PhotoService } from '../core/shared/services/photo.service';
 import { CoverProfileModule } from '../core/partials/cover-profile/cover-profile.module';
 
 
@@ -58,7 +59,8 @@ import { CoverProfileModule } from '../core/partials/cover-profile/cover-profile
   // }],
   providers: [
     SocialDataService,
-    ZoneReportService
+    ZoneReportService,
+    PhotoService
   ],
   bootstrap: [AppComponent]
 })

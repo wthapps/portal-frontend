@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ZMediaSharedWithMeService } from './shared-with-me.service';
-import { ZMediaPhotoService } from '../photo/photo.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 

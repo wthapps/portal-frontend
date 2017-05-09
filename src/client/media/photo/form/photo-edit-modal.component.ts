@@ -13,7 +13,6 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { Photo } from '../../../core/shared/models/photo.model';
 
-import { ZMediaPhotoService } from '../photo.service';
 
 declare var $: any;
 

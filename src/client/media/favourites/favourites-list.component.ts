@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaFavoriteService } from './favourites.service';
 import { ZMediaPhotoDetailComponent } from '../photo/photo-detail.component';
-import { ZMediaPhotoService } from '../photo/photo.service';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -36,7 +36,7 @@ export class ZMediaFavoriteListComponent implements OnInit {
   //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
   // }
 
-  constructor(private photoService: ZMediaPhotoService,
+  constructor(private photoService: PhotoService,
               private favoriteService: ZMediaFavoriteService) {
   }
 

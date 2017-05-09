@@ -5,9 +5,9 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 import { ZMediaPhotoListComponent } from './photo-list.component';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { PhotoEditModalComponent } from './form/photo-edit-modal.component';
-import { ZMediaPhotoService } from './photo.service';
 import { ZMediaPhotoRoutingModule } from './photo-routing.module';
 import { ZMediaPhotoEditComponent } from './edit/edit-photo.component';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 @NgModule({
   imports: [
@@ -27,7 +27,7 @@ import { ZMediaPhotoEditComponent } from './edit/edit-photo.component';
     PhotoEditModalComponent
   ],
   providers: [
-    ZMediaPhotoService
+    PhotoService
   ]
 })
 

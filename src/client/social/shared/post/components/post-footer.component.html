@@ -2,12 +2,12 @@
   <!--Add new comment-->
   <comment-box (eventEmitter)="onCallBack($event)" [item]="item" [type]="commentBoxType.Add"></comment-box>
 
-  <div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">
-    {{item.comments?.length}} of {{item.total_comments}} Comment
-  </div>
-  <div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{item.comments?.length}} of {{item.total_comments}}
-    Comments
-  </div>
+  <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">-->
+    <!--{{item.comments?.length}} of {{item.total_comments}} Comment-->
+  <!--</div>-->
+  <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{item.comments?.length}} of {{item.total_comments}}-->
+    <!--Comments-->
+  <!--</div>-->
   <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
   <ul class="z-social-comment-list media-list read-more-wrap">
 
@@ -31,7 +31,7 @@
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
           <p>{{comment.content}}</p>
-          <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, comment.uuid)">
+          <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, comment.uuid, comment.photo.id)">
             <img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
           </a>
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
@@ -92,7 +92,7 @@
               </div>
             </h4>
             <p>{{reply.content}}</p>
-            <a *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, reply.uuid)">
+            <a *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, reply.uuid, reply.photo.id)">
               <img *ngIf="reply.photo" [src]="reply.photo.thumbnail_url">
             </a>
             <div class="media-body-reply">

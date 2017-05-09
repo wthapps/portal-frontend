@@ -8,15 +8,15 @@
     <ul class="action navbar-right">
       <li>
         <i (click)="actionPhoto('like')" class="fa fa-thumbs-o-up"></i>
-        1
+        0
       </li>
       <li>
         <i (click)="actionPhoto('dislike')" class="fa fa-thumbs-o-down"></i>
-        2
+        0
       </li>
       <li>
         <i (click)="actionPhoto('share')" class="fa fa-share-alt"></i>
-        3
+        0
       </li>
       <li>
         <a href="javascript:;" (click)="onShowInfo()"><i class="fa fa-comments"></i></a>
@@ -35,8 +35,18 @@
       <figure [ngClass]="{'img-loading': loadingImg}">
         <img imgFull draggable="false" [src]="selectedPhoto.url" alt="" (load)="showLoading()">
       </figure>
+
+      <!--direction-->
+      <span *ngIf="hasMultiItems" (click)="movePrevious()" class="photo-detail-img-control img-control-prev">
+        <i class="fa fa-angle-left"></i>
+      </span>
+      <span *ngIf="hasMultiItems" (click)="moveNext()" class="photo-detail-img-control img-control-next">
+        <i class="fa fa-angle-right"></i>
+      </span>
+
     </div>
   </div>
+
 
 
   <div *ngIf="selectedPhoto" class="photo-detail-info">

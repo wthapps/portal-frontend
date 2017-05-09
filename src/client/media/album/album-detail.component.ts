@@ -8,7 +8,6 @@ import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ZMediaAlbumService } from './album.service';
 
 import { ZMediaPhotoDetailComponent } from '../photo/photo-detail.component';
-import { ZMediaPhotoService } from '../photo/photo.service';
 import { BaseObjectEditNameModalComponent } from '../shared/modal/base-object-edit-name-modal.component';
 import { PhotoEditModalComponent } from '../photo/form/photo-edit-modal.component';
 import { SharingModalComponent } from '../shared/modal/sharing/sharing-modal.component';
@@ -63,7 +62,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     protected resolver: ComponentFactoryResolver,
     private route: ActivatedRoute,
     private albumService: ZMediaAlbumService,
-    // private photoService: ZMediaPhotoService,
+    // private photoService: PhotoService,
     // private confirmationService: ConfirmationService,
     private loadingService: LoadingService) {
   }

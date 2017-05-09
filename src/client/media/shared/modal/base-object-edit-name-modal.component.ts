@@ -5,7 +5,6 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { ZMediaPhotoService } from '../../photo/photo.service';
 
 
 declare var $: any;

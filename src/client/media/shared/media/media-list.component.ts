@@ -15,9 +15,9 @@ import { SharingModalComponent } from '../modal/sharing/sharing-modal.component'
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
-import { ZMediaPhotoService } from '../../photo/photo.service';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
+import { PhotoService } from '../../../core/shared/services/photo.service';
 
 declare var _: any;
 declare var $: any;
@@ -125,7 +125,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               protected confirmationService: ConfirmationService,
               protected loadingService: LoadingService,
               protected mediaObjectService: MediaObjectService,
-              protected photoService: ZMediaPhotoService,
+              protected photoService: PhotoService,
               protected location: Location,
               protected albumService: ZMediaAlbumService) {
 

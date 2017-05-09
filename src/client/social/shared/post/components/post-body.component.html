@@ -94,6 +94,10 @@
       <li *ngIf="!item.disable_share">
         <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{item.shared_count}}
       </li>
+
+      <li>
+        <i class="fa fa-comments" (click)="onActions(actions.toggleComments)"></i> {{item.comments?.length}}
+      </li>
     </ul>
 
     <ul class="pull-right" *ngIf="item.shared_count > 0">

@@ -99,7 +99,7 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.onShowPhotoDetail:
         // this.router.navigate(['/photos', this.item.uuid, {index: data}]);
 
-        this.router.navigate(['/comments',  data, 'photos', {idComment: data}]);
+        this.router.navigate(['/comments',  data, 'photos', type, {ids: [type]}]);
         break;
     }
   }

@@ -2,7 +2,6 @@ import {
   Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild,
   ViewContainerRef, ComponentFactoryResolver
 } from '@angular/core';
-import { ZMediaPhotoService } from './photo.service';
 
 import { PhotoEditModalComponent } from './form/photo-edit-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
@@ -13,6 +12,7 @@ import { SharingModalComponent } from '../shared/modal/sharing/sharing-modal.com
 import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
 import { TaggingModalComponent } from '../shared/modal/tagging/tagging-modal.component';
 import { Router } from '@angular/router';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -54,7 +54,7 @@ export class ZMediaPhotoDetailComponent implements AfterViewInit {
 
   constructor(private router: Router,
               private resolver: ComponentFactoryResolver,
-              private photoService: ZMediaPhotoService,
+              private photoService: PhotoService,
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService) {
   }

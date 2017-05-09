@@ -48,6 +48,8 @@ import { ConvertByPatternPipe } from './pipe/convert.pipe';
 import { AutofocusDirective } from './directive/autofocus.directive';
 import { ImgFullDirective } from './directive/img-full.directive';
 import { WTHNavigateService } from './services/wth-navigate.service';
+import { PhotoService } from './services/photo.service';
+
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -157,7 +159,8 @@ export class SharedModule {
         NotificationChannelService,
         AppearancesChannelService,
         PhotoModalDataService,
-        PhotoUploadService
+        PhotoUploadService,
+        PhotoService
       ]
     };
   }
