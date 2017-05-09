@@ -15,13 +15,15 @@ import { ZSocialProfileFormWorkEduComponent } from './form/work-edu.component';
 import { ZSocialProfileFormInterestComponent } from './form/interest.component';
 import { ZSocialProfilePostComponent } from './post/post.component';
 import { ZSocialProfileFriendComponent } from './friend/friend.component';
+import { ZSocialProfileDataService } from './profile-data.service';
+import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ZSocialProfileRoutingModule,
     SharedModule.forRoot(),
-    ZSocialSharedModule.forRoot()
+    ZSocialSharedModule.forRoot(),
   ],
   declarations: [
     ZSocialProfileComponent,
@@ -47,7 +49,7 @@ import { ZSocialProfileFriendComponent } from './friend/friend.component';
     ZSocialProfileFriendComponent,
     ZSocialProfileAboutComponent
   ],
-  providers: []
+  providers: [ZSocialProfileDataService]
 })
 export class ZSocialProfileModule {
 }

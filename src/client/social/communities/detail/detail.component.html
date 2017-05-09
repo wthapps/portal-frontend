@@ -6,84 +6,70 @@
   [scrollWindow]="false"
   (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
+
     <div class="zone-social-in">
-      <!--<z-social-community-cover [selectedTab]="selectedTab"></z-social-community-cover>-->
       <div class="zone-social-cover">
-        <div *ngIf="item" class="zone-social-cover-in user">
-          <div class="zone-social-cover-action">
-            <button class="btn btn-wth-default">
-              <i class="fa fa-pencil" (click)="changeCoverImage($event)"></i>
-            </button>
-          </div>
-          <div class="zone-social-cover-img" id="cover_image">
-            <img class="img-bg img-full no-user-selected" [src]="item?.cover_image" alt="">
-          </div>
-          <div class="zone-social-cover-info">
-            <div class="z-social-media z-social-media-md">
-              <div class="z-social-media-left" id="profile_image">
-                <div class="avatar-md can-click" (click)="changeProfileImage($event)">
-                  <img [src]="item.profile_image" class="no-user-selected">
-                  <div class="zone-social-cover-info-profile">
-                    <i class="fa fa-camera"></i> Update Profile Picture
-                  </div>
-                </div>
+        <cover-profile [item]="community" (outEvent)="onCoverAction($event)">
+          <information>
+            <div class="z-social-media-body">
+              <div class="z-heading">
+                <div class="z-name"> {{ community?.name }}</div>
+              </div>
+              <div class="z-shared-info">
+                <ul>
+                  <li>{{community?.users?.length }} {{ (community?.users && community?.users.length >= 2) ? 'members' : 'member' }}</li>
+                  <li *ngIf="is_close">
+                    Private
+                  </li>
+                </ul>
+              </div>
+              <div class="z-shared-description">{{community?.tag_line}}</div>
+            </div>
+            <div class="z-social-media-right mb5">
+              <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)"
+                      data-toggle="modal"
+                      data-target="#modal-social-share-com" *ngIf="isMember">
+                <i class="fa fa-user-plus"></i> Invite Member
+              </button>
+
+              <button class="btn btn-default" type="button" (click)="askToJoin()"
+                      *ngIf="!isMember && !joinRequestId">
+                <i class="fa fa-user-plus"></i> Ask to join
+              </button>
+
+
+              <div class="btn-group pull-right" *ngIf="!isMember && joinRequestId != undefined">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                  Asked to join <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-custom">
+                  <li>
+                    <a href="javascript:;" (click)="cancelJoinRequest(joinRequestId)">Cancel Join Request</a>
+                  </li>
+                </ul>
               </div>
 
-              <div class="z-social-media-body">
-                <div class="z-heading">
-                  <div class="z-name"> {{item ? item.name : ""}}</div>
-                </div>
-                <div class="z-shared-info">
-                  <ul>
-                    <li *ngIf="item.users && item.users.length>2">{{item.users.length}} members</li>
-                    <li *ngIf="item.users && item.users.length<2">{{item.users.length}} member</li>
-                    <li *ngIf="is_close">
-                      Private
-                    </li>
-                  </ul>
-                </div>
-                <div class="z-shared-description">{{item.tag_line}}</div>
-              </div>
-              <div class="z-social-media-right mb5">
-                <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)"
-                        data-toggle="modal"
-                        data-target="#modal-social-share-com" *ngIf="isMember">
-                  <i class="fa fa-user-plus"></i> Invite Member
+              <div class="btn-group pull-right" *ngIf="!isMember && invitationId != undefined">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                  Invited to join <span class="caret"></span>
                 </button>
-
-                <button class="btn btn-default" type="button" (click)="askToJoin()"
-                        *ngIf="!isMember && joinRequestId == undefined">
-                  <i class="fa fa-user-plus"></i> Ask to join
-                </button>
-
-
-                <div class="btn-group pull-right" *ngIf="!isMember && joinRequestId != undefined">
-                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                    Asked to join <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-custom">
-                    <li>
-                      <a href="javascript:;" (click)="cancelJoinRequest(joinRequestId)">Cancel Join Request</a>
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="btn-group pull-right" *ngIf="!isMember && invitationId != undefined">
-                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                    Invited to join <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-custom">
-                    <li>
-                      <a href="javascript:;" (click)="cancelInvitation(invitationId)">Cancel Invitation</a>
-                    </li>
-                  </ul>
-                </div>
+                <ul class="dropdown-menu dropdown-custom">
+                  <li>
+                    <a href="javascript:;" (click)="cancelInvitation(invitationId)">Cancel Invitation</a>
+                  </li>
+                </ul>
               </div>
             </div>
-          </div>
-        </div>
+
+          </information>
+
+        </cover-profile>
+
+
+
+
         <nav class="zone-social-cover-nav clearfix">
           <div class="pull-left btn-group hidden-md hidden-lg">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -113,16 +99,13 @@
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
             </li>
             <li [ngClass]="selectedTab=='members'? 'active': ''">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members {{ (
-                community?.member_count ) ? '( ' + community?.member_count+ ' )' : '' }} </a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members {{ ( community?.member_count ) ? '( ' + community?.member_count+ ' )' : '' }} </a>
             </li>
             <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations {{ ( isAdmin &&
-                community?.invitation_count ) ? '( ' + community?.invitation_count + ' )' : '' }}</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations {{ ( isAdmin && community?.invitation_count ) ? '( ' + community?.invitation_count + ' )' : '' }}</a>
             </li>
             <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests {{ ( isAdmin
-                && community?.join_request_count ) ? '( ' + community?.join_request_count + ' )' : '' }}</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests {{ ( isAdmin && community?.join_request_count ) ? '( ' + community?.join_request_count + ' )' : '' }}</a>
             </li>
             <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
             <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
@@ -167,11 +150,11 @@
         </div>
         <div class="z-social-post">
           <div>
-            {{item?.description}}
+            {{community?.description}}
           </div>
 
-          <ul *ngIf="item?.additional_links" class="list-unstyled">
-            <li *ngFor="let link of item?.additional_links">
+          <ul *ngIf="community?.additional_links" class="list-unstyled">
+            <li *ngFor="let link of community?.additional_links">
               <i class="fa fa-globe"></i>
               <a target="_blank" href="{{link.url|urlTransform}}">{{ link ? link.name : ""}}</a>
             </li>
@@ -192,26 +175,26 @@
         <div class="z-social-post">
           <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
 
-            <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
-              <li data-id="user_{{item.user ? item.user.uuid : ''}}">
+            <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems" >
+              <li data-id="user_{{item?.user?.uuid}}">
                 <div class="dropdown pull-right">
-                  <!--<span class="text-fade member-role">{{ item.user.uuid == item.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
+                  <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
                   <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
                   <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true" (click)="getFavourite(community.uuid)">
+                          aria-haspopup="true" aria-expanded="true" (click)="getFavourite(item.uuid)">
                     <i class="fa fa-ellipsis-v"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-custom">
                     <li><a href="javascript:;" (click)="makeAdmin(item.user)" *ngIf="isAdmin">Make Admin</a></li>
                     <li><a href="javascript:;" (click)="deleteMember(item.user)" *ngIf="isAdmin">Remove</a></li>
-                    <li><a href="javascript:;" (click)="onReportMember(item.user ? item.user.uuid : '')">Report
+                    <li><a href="javascript:;" (click)="onReportMember(item?.user?.uuid)">Report
                       Member</a>
                     </li>
                     <li><a href="#" *ngIf="isAdmin">Blacklist</a></li>
                   </ul>
                 </div>
-                <img [alt]="item.user.name" [src]="item.user.profile_image" title="" width="30">
-                <span>{{item.user ? item.user.name : ''}}</span>
+                <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
+                <span>{{item.user?.name}}</span>
               </li>
             </template>
           </ul>
@@ -227,8 +210,8 @@
                   <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
                 </div>
                 <a href="#">
-                  <!--<img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">-->
-                  <span>{{item['accepter']['name']}}</span>
+                  <!--<img [alt]="community.accepter.name" [src]="community.accepter.profile_image" title="" width="30">-->
+                  <span>{{item?.accepter?.name }}</span>
                 </a>
               </li>
             </template>
@@ -247,7 +230,7 @@
                 </div>
                 <a href="#">
                   <img [alt]="item.inviter.name" [src]="item.inviter.profile_image" title="" width="30">
-                  <span>{{item['inviter']['name']}}</span>
+                  <span>{{item?.inviter?.name}}</span>
                 </a>
               </li>
             </template>
@@ -260,24 +243,24 @@
     <z-social-favorites #favorites></z-social-favorites>
   </div>
 
-  <template [ngIf]="item">
+  <template [ngIf]="community">
     <z-social-community-form-edit
       #modalEdit
-      [data]="item"
+      [data]="community"
       [action]="'edit'"
       (updated)="onUpdated($event)">
     </z-social-community-form-edit>
 
     <z-social-community-form-preference
       #modalPreference
-      [data]="item"
+      [data]="community"
       (updated)="onUpdated($event)">
     </z-social-community-form-preference>
   </template>
 
   <z-social-community-form-edit
     #modalEdit
-    [data]="item"
+    [data]="community"
     [action]="'edit'"
     (updated)="onUpdated($event)">
   </z-social-community-form-edit>

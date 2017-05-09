@@ -5,6 +5,7 @@ import { PostNewComponent } from '../../shared/post/post-new.component';
 import { SocialService } from '../../shared/services/social.service';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
+import { ZSocialProfileDataService } from '../profile-data.service';
 
 
 
@@ -25,20 +26,16 @@ export class ZSocialProfilePostComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private apiBaseService: ApiBaseService,
+              private profileDataService: ZSocialProfileDataService,
               private userService: UserService) {
   }
 
   ngOnInit() {
-    // this.loadingService.start('.zone-social-cover');
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'];
-      this.socialService.user.get(this.uuid).subscribe(
-        (res: any) => {
-          this.userInfo = res.data;
-        }
-      );
-    });
+    this.profileDataService.profileData$.take(1).subscribe((res: any) => {
+      this.userInfo = res.data;
+    })
   }
+
   onLoadMore() {
     this.posts.viewMorePosts();
   }

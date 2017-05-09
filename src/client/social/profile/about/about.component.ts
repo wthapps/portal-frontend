@@ -10,6 +10,8 @@ import { Constants } from '../../../core/shared/config/constants';
 import { SocialService } from '../../shared/services/social.service';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
+import { ZSocialProfileDataService } from '../profile-data.service';
+declare let _ : any;
 
 @Component({
   moduleId: module.id,
@@ -31,32 +33,15 @@ export class ZSocialProfileAboutComponent implements OnInit {
   constants = Constants;
   actions:any;
 
-  constructor(private socialService: SocialService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private apiBaseService: ApiBaseService,
-              private socialProfileService: ZSocialProfileService,
-              private userService: UserService) {
+  constructor(private profileDataService: ZSocialProfileDataService
+              ) {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'];
-      this.socialService.user.get(this.uuid).subscribe(
-        (res: any) => {
-          console.log(res);
-          this.userInfo = res.data;
-          this.actions = res.actions;
-        }
-      );
-      // this.socialProfileService.getInfo().subscribe(
-      //  (res: any) => {
-      //  console.log(res);
-      //  this.userInfo = res;
-      //  }
-      //  )
-    });
-
+    this.profileDataService.profileData$.take(1).subscribe((res: any) => {
+      this.userInfo = _.get(res, 'userInfo', '');
+      this.actions = _.get(res, 'actions', []);
+    })
   }
 
   onUpdated(userInfo:any) {
