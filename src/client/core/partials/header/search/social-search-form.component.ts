@@ -34,7 +34,7 @@ export class SocialSearchFormComponent extends BaseSearchForm implements OnInit 
   }
 
   getSuggestions(e:any) {
-    this.serviceManager.getApi().post(`zone/social_network/search`, {q: `name:${this.searchText}`, types: ['user', 'community']}).subscribe(
+    this.serviceManager.getApi().post(`zone/social_network/search`, {q: `${this.searchText}`, types: ['user', 'community']}).subscribe(
       (res:any) => {
         this.suggestions = [];
         this.groups = Object.keys(res.data);
@@ -55,6 +55,10 @@ export class SocialSearchFormComponent extends BaseSearchForm implements OnInit 
   }
 
   onEnter() {
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: `name:${this.searchText}`}});
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: `${this.searchText}`}});
+    // close suggestions
+    if (this.suggestions) {
+      this.suggestions.length = 0;
+    }
   }
 }

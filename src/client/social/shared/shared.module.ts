@@ -66,6 +66,7 @@ import { ZSocialProfileService } from '../profile/profile.service';
     ZSocialFavoritesComponent,
     SoPhotoListComponent,
     PostListComponent,
+    PostComponent,
     ZoneReportComponent,
     ZSocialNotificationsComponent,
 
