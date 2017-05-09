@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ServiceManager } from '../../core/shared/services/service-manager';
 import { Constants } from '../../core/shared/config/constants';
 import { SocialService } from '../shared/services/social.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../core/partials/loading/loading.service';
+import { subscribeOn } from 'rxjs/operator/subscribeOn';
 
 declare var _: any;
 
@@ -14,7 +15,7 @@ declare var _: any;
   templateUrl: 'search.component.html'
 })
 
-export class ZSocialSearchResultComponent implements OnInit {
+export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   show: boolean = false;
   type: string = '';
   result: any;
@@ -26,11 +27,12 @@ export class ZSocialSearchResultComponent implements OnInit {
   searchPostedBy: string = '';
   searchDate: string = '';
   searchDateValue: Date;
+  events:any;
 
   readonly comUserStatus = Constants.soCommunityUserStatus;
   readonly friendStatus = Constants.friendStatus;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private router: Router,
               public serviceManager: ServiceManager,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
@@ -39,11 +41,9 @@ export class ZSocialSearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params: any) => {
-      console.log(params);
-    });
-    this.serviceManager.getRouter().events.forEach((event: any) => {
-      if (event instanceof NavigationEnd) {
+    this.events = this.router.events
+      .filter((event:any) => event instanceof NavigationEnd)
+      .subscribe((event:NavigationEnd) => {
         let paths = event.url.toString().split('/')[1].split('?');
         if (paths[1]) {
           let q = paths[1].substring(2, paths[1].length);
@@ -59,8 +59,11 @@ export class ZSocialSearchResultComponent implements OnInit {
             }
           );
         }
-      }
-    });
+      });
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe();
   }
 
   toggleFavourite(item: any, group: string) {

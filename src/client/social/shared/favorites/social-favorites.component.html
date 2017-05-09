@@ -14,7 +14,7 @@
           </figure>
 
           <figure *ngIf="favourite.community">
-            <a [routerLink]="[communitiesUrl, favourite.community.uuid]" [skipLocationChange]="true">
+            <a [routerLink]="[communitiesUrl, favourite.community.uuid]">
               <span class="avatar-xs">
                 <img [src]=favourite.community.profile_image alt="">
               </span>
@@ -23,9 +23,9 @@
 
         </div>
         <div class="media-center-body">
-          <a class="link-text" *ngIf="favourite.friend" [routerLink]="[profileUrl, favourite.friend.uuid]" [skipLocationChange]="true">
+          <a class="link-text" *ngIf="favourite.friend" [routerLink]="[profileUrl, favourite.friend.uuid]">
             {{favourite.friend.name}} </a>
-          <a class="link-text" *ngIf="favourite.community" [routerLink]="[communitiesUrl, favourite.community.uuid]" [skipLocationChange]="true">
+          <a class="link-text" *ngIf="favourite.community" [routerLink]="[communitiesUrl, favourite.community.uuid]">
             {{favourite.community.name}} </a>
         </div>
         <div class="media-center-right">
@@ -38,7 +38,7 @@
               <li><a href="javascript:;" (click)="unfavourite(favourite)">Remove From Favourites</a></li>
               <li><a href="javascript:;" (click)="rearrange()">Rearrange</a></li>
               <li role="separator" class="divider"></li>
-              <li *ngIf="favourite?.community"><a href="javascript:;" (click)="leaveCommunity(favourite?.community)">Leave
+              <li *ngIf="favourite?.community"><a href="javascript:;" (click)="onLeave(favourite?.community)">Leave
                 Community</a></li>
               <li *ngIf="favourite?.friend"><a href="javascript:;" (click)="unfriend(favourite?.friend)">Unfriend</a>
               </li>

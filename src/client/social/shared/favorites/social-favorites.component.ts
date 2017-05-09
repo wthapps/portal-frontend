@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../services/social.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZoneReportService } from '../form/report/report.service';
+import { Router } from '@angular/router';
+import { UserService } from '../../../core/shared/services/user.service';
+import { ConfirmationService } from 'primeng/components/common/api';
 
 declare let _ : any;
 
@@ -19,6 +22,9 @@ export class ZSocialFavoritesComponent implements OnInit {
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
   constructor(private socialService: SocialService,
+              private router: Router,
+              private userService: UserService,
+              private confirmationService: ConfirmationService,
               private zoneReportService: ZoneReportService
   ) {
   }
@@ -40,6 +46,30 @@ export class ZSocialFavoritesComponent implements OnInit {
       .subscribe((response: any) => {
         _.remove(this.favourites, (f: any) => f.uuid == favourite.uuid);
     })
+  }
+
+  onLeave(community: any) {
+    // Check if there are other admins beside current user in community
+    // If not, he must pick another one before leaving
+    let enoughAdmins = community.admin_count > 1 ? true : false;
+    let pickAnotherAdmin = _.indexOf(community.admins, (a: any) => a.uuid == this.userService.profile.uuid) > -1  && !enoughAdmins;
+
+    this.confirmationService.confirm({
+      message: pickAnotherAdmin ?
+        `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
+        `Are you sure to leave the community ${community.name}?`,
+      header: 'Leave Community',
+      accept: () => {
+        if (pickAnotherAdmin) {
+          // Navigate to member tab
+          this.router.navigate([this.communitiesUrl, community.uuid], { queryParams: {tab: 'members', skipLocationChange: true }});
+        } else {
+          this.leaveCommunity(community);
+        }
+      }
+    });
+
+    return false;
   }
 
   leaveCommunity(community: any) {

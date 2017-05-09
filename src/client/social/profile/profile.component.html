@@ -1,26 +1,9 @@
-<!--<div class="page-body-content gray-light">-->
-  <!--<div class="page-body-content-in zone-social">-->
-    <!--<div class="zone-social-in">-->
-      <!--<router-outlet></router-outlet>-->
-    <!--</div>-->
-    <!--<z-social-favorites></z-social-favorites>-->
-
-    <!--&lt;!&ndash;<wth-to-top></wth-to-top>&ndash;&gt;-->
-
-  <!--</div>-->
-
-  <!--<wth-zone-report></wth-zone-report>-->
-<!--</div>-->
-
 <div class="page-body-content gray-light"
-     lockYOffset="20"
-     observeAttributes="true"
-     infinite-scroll
-     [scrollWindow]="false"
-     (scrolled)="onLoadMore()">
+     >
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in">
-      <so-post-list #posts [type]="'user_only'"></so-post-list>
+      <z-social-profile-cover [data]="userInfo" ></z-social-profile-cover>
+      <router-outlet></router-outlet>
     </div>
     <z-social-favorites></z-social-favorites>
   </div>

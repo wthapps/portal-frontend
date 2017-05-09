@@ -25,6 +25,7 @@ import { TagInputModule } from 'ng2-tag-input';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { ModalDockModule } from './modal/dock.module';
 import { SocialSearchFormComponent } from './header/search/social-search-form.component';
+import { CoverProfileModule } from './cover-profile/cover-profile.module';
 
 
 
@@ -48,6 +49,7 @@ import { SocialSearchFormComponent } from './header/search/social-search-form.co
     TagInputModule,
     AutoCompleteModule,
     CalendarModule,
+    CoverProfileModule,
 
     ModalDockModule
   ],
@@ -81,6 +83,7 @@ import { SocialSearchFormComponent } from './header/search/social-search-form.co
     EntitySelectModule,
     PhotoModule,
     CalendarModule,
+    CoverProfileModule,
 
     ModalDockModule,
 

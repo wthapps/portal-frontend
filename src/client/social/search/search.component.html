@@ -12,7 +12,7 @@
           </h3>
         </div>
         <ul class="list-group" *ngFor="let item of result[group]; let last = last" [class.last]="last">
-          <li class="list-group-item">
+          <li *ngIf="group != 'posts'" class="list-group-item">
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
@@ -83,17 +83,11 @@
               </div>
           </li>
         </ul>
+        <so-post-list *ngIf="group == 'posts'" #posts [items]="result[group]" [type]="'search'"></so-post-list>
         <div class="panel-footer">
           <a href="#">See More Results</a>
         </div>
       </div>
-
-      <h2 class="h4">Post from your friends</h2>
-      <hr class="hr-darken">
-
-      <!--Posts-->
-
-      <!--End Posts-->
 
     </div>
     <div class="zone-social-sidebar">

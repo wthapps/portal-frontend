@@ -38,7 +38,7 @@ export class SoUserService {
   // }
 
   update(body: any) {
-    return this.apiBaseService.put(`${soUsersUrl}/update`, body);
+    return this.apiBaseService.put(`${soUsersUrl}/update`, body).take(1);
   }
 
   reset_setting() {

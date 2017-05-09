@@ -5,6 +5,7 @@ import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 
 
 declare var _: any;
@@ -31,8 +32,8 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,
               public userService: UserService,
-              private loadingService: LoadingService,
               private zoneReportService: ZoneReportService,
+              private toastsService: ToastsService,
               private route: ActivatedRoute) {
   }
 
@@ -40,6 +41,10 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
     if (this.data) {
 
       this.userInfo = this.data;
+
+      // Only user can change his own profile / cover image
+      if (this.userService.profile.uuid == this.userInfo.uuid)
+        this.userInfo.canEdit = true;
     }
     if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
       this.showFriends = this.userInfo.settings.show_friends.value;
@@ -57,6 +62,25 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
         );
       }
     });
+  }
+
+  onCoverAction(event: any) {
+    if(event.action == 'updateItem') {
+      // Update profile via API call
+      this.socialService.user.update(event.body)
+        .subscribe((result: any) => {
+          console.log('update profile sucess: ', result);
+          let toastMsg = '';
+          if (_.has(event.body, 'profile_image') )
+            toastMsg = 'You have updated profile image successfully';
+          else if (_.has(event.body, 'cover_image') )
+            toastMsg = 'You have updated cover image of this community successfully';
+          else
+            toastMsg = result.message;
+
+          this.toastsService.success(toastMsg);
+        });
+    }
   }
 
   onUpdated(item: any) {

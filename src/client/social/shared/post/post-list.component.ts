@@ -29,7 +29,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   @Input() type: string = undefined;
   @Input() community: any = undefined;
 
-  items: Array<SoPost>;
+  @Input() items: Array<SoPost>;
   uuid: string;
   currentUser: User;
   commentBox: any;
@@ -60,7 +60,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.currentUser = this.socialService.user.profile;
     this.route.params.subscribe(params => {
       this.uuid = params['id'];  // this can be user uuid or community uuid
-      this.loadPosts();
+      // Load if items empty
+      if (this.type != 'search') {
+        this.loadPosts();
+      }
     });
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;

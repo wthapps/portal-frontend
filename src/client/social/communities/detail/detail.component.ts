@@ -70,7 +70,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   selectedTab: string = 'post';
   selectedTabTitle: string ;
 
-  item: any = null;
+  // item: any = null;
   community: any = null;
   uuid: string;
   // community_id: string;
@@ -205,12 +205,13 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     // Check if there are other admins beside current user in community
     // If not, he must pick another one before leaving
     let enoughAdmins = this.community.admin_count > 1 ? true : false;
-    let pickAnotherAdmin = this.userService.profile.uuid == this.item.admin.uuid && !enoughAdmins;
+    // let pickAnotherAdmin = this.userService.profile.uuid == this.item.admin.uuid && !enoughAdmins;
+    let pickAnotherAdmin = _.indexOf(this.community.admins, (a: any) => a.uuid == this.userService.profile.uuid) > -1  && !enoughAdmins;
 
     this.confirmationService.confirm({
       message: pickAnotherAdmin ?
-        `Hi there, you need to pick another admin for the community ${this.item.name} before leaving.` :
-        `Are you sure to leave the community ${this.item.name}?`,
+        `Hi there, you need to pick another admin for the community ${this.community.name} before leaving.` :
+        `Are you sure to leave the community ${this.community.name}?`,
       header: 'Leave Community',
       accept: () => {
         if (pickAnotherAdmin) {
@@ -239,68 +240,17 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       );
   }
 
-  selectPhoto(callback: any, loadingId?: string) {
-    this.photoSelectDataService.open({'multipleSelect': false});
-    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
-      .take(1) // User can only select 1 photo to change profile avatar / cover image
-      .takeUntil(this.closeObs$).subscribe(
-        (photo: any) => {
-          callback(photo);
-        });
-
-    this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
-      .take(1)
-      .takeUntil(this.closeObs$)
-      // .flatMap((photos: any) => this.photoUploadService.uploadPhotos(photos))
-      .flatMap((photos: any) => { this.loadingService.start(loadingId); return this.photoUploadService.uploadPhotos(photos); })
-      .subscribe(
-        (res: any) => {
-          callback([res.data]);
-        });
+  onCoverAction(event: any) {
+    if(event.action == 'updateItem') {
+      this.updateCommunity(event.body);
+    }
   }
-
-  uploadPhoto(callback?: any) {
-  //  For later support
-  }
-
-  changeProfileImage(event: any) {
-    console.log('chnage Avatar image');
-    // this.loadingService.start('#profile_image');
-    let loadingId: string = '#profile_image';
-    this.selectPhoto((photos: any) => {
-      // Update avatar image
-      let img_url = photos[0].url;
-      this.item.profile_image = img_url;
-      this.updateCommunity({'profile_image': img_url}, this.item.profile_image);
-      this.loadingService.stop(loadingId);
-      }, loadingId);
-  }
-
-  changeCoverImage(event: any) {
-    console.log('changeCoverImage');
-    // this.loadingService.start('#cover_image');
-
-    let loadingId: string  = '#cover_image';
-    this.selectPhoto((photos: Array<any>) => {
-      // Update covert image
-      let photo: any;
-
-      let img_url = photos[0].url;
-      this.item.cover_image = img_url;
-      this.updateCommunity({'cover_image': img_url}, this.item.cover_image);
-      this.loadingService.stop(loadingId);
-    }, loadingId)
-  }
-
 
   // this.loadingService.start();
-  updateCommunity(body: any, updateItem?: any): void {
+  updateCommunity(body: any): void {
 
     this.socialService.community.updateCommunity(this.community.uuid, body)
       .subscribe((result: any) => {
-        // stop loading
-        // updateItem = result.data.img;
-        // this.loadingService.stop();
         console.log('update community sucess: ', result);
         let toastMsg = '';
         if (_.has(body, 'profile_image') )
@@ -313,8 +263,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       this.toastsService.success(toastMsg);
     },
     error => {
-      // stop loading
-      // this.loadingService.stop();
       this.toastsService.danger(this.errorMessage);
       console.log(error);
     }
@@ -326,7 +274,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.socialService.community.askToJoin(this.uuid)
       .subscribe((result: any) => {
           // this.invitation = result.data;
-          this.invitationId = result.data.id;
+          this.joinRequestId = result.data.id;
         },
         (error: any) => {
           console.log('error', error);
@@ -338,6 +286,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.socialService.community.cancelJoinRequest(this.uuid, joinRequestId).subscribe(
       (res: any)=> {
         // this.invitation = undefined;
+        this.joinRequestId = undefined;
         console.log('cancel join request: ' + joinRequestId);
 
         // Update join request count
@@ -351,15 +300,12 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   cancelInvitation(invitationId: any) {
-    this.invitationId = invitationId;
-    // this.apiBaseService.delete(`${this.soCommunitiesUrl}/${this.uuid}/invitations/${invitationId}`).subscribe(
-    this.socialService.community.cancelInvitation(this.uuid, invitationId).subscribe(
+    $('#invitation_' + invitationId).remove();
+    this.socialService.community.cancelInvitation(this.uuid, invitationId)
+      .subscribe(
       (res: any)=> {
-        $('#invitation_' + this.invitationId).remove();
-
         // Update invitation count
         this.community.invitation_count -= 1;
-        console.log('after cancel invitation', this.invitationId);
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
@@ -369,15 +315,11 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   acceptJoinRequest(item: any) {
-    this.invitationId = item.id;
-    // this.apiBaseService.post(`${this.soCommunitiesUrl}/accept_join_request/`,JSON.stringify({uuid: this.uuid, user_id: item.inviter.uuid})).subscribe(
+    $('#invitation_' + item.id).remove();
     this.socialService.community.acceptJoinRequest(this.uuid, item.inviter.uuid).subscribe(
       (res: any)=> {
-        $('#invitation_' + this.invitationId).remove();
-
         // Update join request count
         this.community.join_request_count -= 1;
-        console.log('after accept invitation', this.invitationId);
       },
       error => {
         // this.loadingService.stop('.zone-social-cover');
@@ -495,16 +437,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).subscribe(
     this.socialService.community.getCommunity(uuid).subscribe(
       (res: any)=> {
-        this.item = res.data;
+        // this.item = res.data;
         this.community = res.data;
         this.socialService.community.currentCommunity = this.community;
-        // Check if this user is a community member
-
-        // if (this.item.community_users ) {
-        //   let users = _.map(this.item.community_users, (c: any) => { return c.user.uuid });
-        //   this.isMember = _.indexOf(users, this.userService.profile.uuid ) > -1 ? true : false;
-        // }
-        // this.isAdmin = this.userService.profile.uuid == this.item.admin.uuid ? true : false;
 
       },
       error => {
@@ -518,15 +453,18 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/check_current_user/`).subscribe(
     this.socialService.community.checkCurrentUser(uuid).subscribe(
       (res: any)=> {
-        this.isAdmin = res.data.is_admin;
-        this.isMember = res.data.is_member;
-        if (res.data.invitationId)
-          this.invitationId = res.data.invitationId;
-        if (res.data.joinRequestId)
-          this.joinRequestId = res.data.joinRequestId;
-        // this.invitation = res.data.has_invitation;
+        this.isAdmin = _.get(res, 'data.is_admin');
+        this.isMember = _.get(res, 'data.is_member');
+        this.invitationId = _.get(res, 'data.invitationId');
+        this.joinRequestId = _.get(res, 'data.joinRequestId');
 
-        // this.isAdmin = this.userService.profile.uuid == this.item.admin.uuid ? true : false;
+        // if (res.data.invitationId)
+        //   this.invitationId = res.data.invitationId;
+        // if (res.data.joinRequestId)
+        //   this.joinRequestId = res.data.joinRequestId;
+
+        //  Grant edit profile / cover image privilege to community admins
+        this.community.canEdit = this.isAdmin;
 
       },
       error => {
@@ -563,17 +501,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  // private checkJoinRequestStatus(uuid: string) {
-  //   // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/join_request_status`).subscribe(
-  //   this.socialService.community.checkJoinRequestStatus(uuid).subscribe(
-  //     (result: any) => {
-  //       // this.invitation = result.data;
-  //       this.invitationId = result.data.id;
-  //     },
-  //     error => {
-  //       console.log('error', error);
-  //     });
-  // }
   private setTabVisibility() {
     switch (this.selectedTab) {
       case this.tab.post:

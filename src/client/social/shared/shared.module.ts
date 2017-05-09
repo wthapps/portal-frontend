@@ -20,11 +20,9 @@ import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../friends/members.component';
-import { PhotoModalDataService } from '../../core/shared/services/photo-modal-data.service';
 import { SoPhotoListComponent } from './post/photo-list.component';
-import { PhotoUploadService } from '../../core/shared/services/photo-upload.service';
-import { ZSocialPrivacyComponent } from '../profile/about/components/privacy.component';
 import { ZSocialProfileService } from '../profile/profile.service';
+import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
 
 
 /**
@@ -36,6 +34,7 @@ import { ZSocialProfileService } from '../profile/profile.service';
     SharedModule,
     // HdModalModule,
     Ng2HdModule,
+    CoverProfileModule,
     PostModule
   ],
   declarations: [
@@ -66,10 +65,12 @@ import { ZSocialProfileService } from '../profile/profile.service';
     ZSocialFavoritesComponent,
     SoPhotoListComponent,
     PostListComponent,
+    PostComponent,
     ZoneReportComponent,
     ZSocialNotificationsComponent,
 
     Ng2HdModule,
+    CoverProfileModule,
     SharedModule,
     PostModule
   ]
