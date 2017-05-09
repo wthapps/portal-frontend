@@ -60,6 +60,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   itemDisplay: any;
   typeLikeDislike: any;
   dataLikeDislike: any;
+  showComments: boolean = false;
 
   // Subscription list
   nextPhotoSubscription: Subscription;
@@ -356,9 +357,16 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.postLikeDislike.modal.open();
   }
 
+  toggleComments() {
+    console.log('comments');
+    this.showComments = !this.showComments;
+  }
+
   save(post: any) {
     this.item = post;
   }
+
+
 
   // createReaction(data:any) {
   //   this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(

@@ -32,7 +32,10 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
   ngOnInit() {
+    console.log('post details........');
     this.route.params.forEach((params: Params) => {
+      console.log('post details........', params);
+
       this.id = params['id'];
       this.loadPost(this.id);
     });

@@ -44,6 +44,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
 
     this.openSubscription = this.photoDataService.openObs$.subscribe(
       (options: any ) => {
+        console.log('open: options: ', options);
         this.open(options);
       }
     );
@@ -63,7 +64,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
   };
 
   open(options: any = {return: false}) {
-    console.log('Post Photo Select Component OPENED');
+    console.log('Post Photo Select Component OPENED', options);
 
     if (options.return == true) {
       this.hasBack = true;
@@ -78,12 +79,14 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
   }
 
   next(event: any) {
+    console.log('Post Photo Select Component CLOSED', this.photoList.selectedItems);
     // this.onNext.emit(_.reverse(this.photoList.selectedItems));
     this.photoDataService.next(_.reverse(this.photoList.selectedItems));
     this.close();
   }
 
   dismiss(event: any): void {
+    console.log('Post Photo Select Component DISMISSED', this.hasBack);
     if (this.hasBack) {
       // this.onDismiss.emit(null);
       this.photoDataService.dismiss(null);

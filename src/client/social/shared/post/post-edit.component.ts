@@ -111,6 +111,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
 
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
+
+  console.log('opening............:');
     // load tags
     this.apiService.get(`media/tags`)
       .subscribe((result: any) => {
@@ -149,13 +151,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
-      // this.photoSelectModal.open();
-      this.photoSelectDataService.open({return: true});
-
+      this.photoSelectDataService.open({return: false});
     } else {
-      this.modal.open().then( () =>
-        console.log('Open modal from post edit')
-      );
+      this.modal.open();
     }
 
     this.subscribePhotoSelectEvents();
@@ -219,6 +217,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   next(selectedPhotos: any) {
+    console.log('on next ...........:', selectedPhotos);
     this.post.photos = _.concat(this.post.photos, selectedPhotos);
     // this.photoSelectModal.close();
     this.photoSelectDataService.close();
@@ -226,11 +225,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addMorePhoto(event: any) {
-    this.modal.close();
     this.onMoreAdded.emit(true);
-    // this.photoSelectModal.open({return: true});
-    this.photoSelectDataService.open({return: true});
-
+    this.photoSelectDataService.open({return: true, selectingPhotos: this.post.photos});
+    this.subscribePhotoSelectEvents();
   }
 
   dismiss(photos: any) {
@@ -329,7 +326,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private subscribePhotoSelectEvents() {
-    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$);
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$).do(() =>{
+      console.log('next sub: ', this.nextSubscription);
+    });
 
     if (this.needInitSubscription(this.nextSubscription)) {
       this.nextSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
@@ -337,7 +336,15 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
+    // if (this.needInitSubscription(this.nextSubscription)) {
+    //
+    //   this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
+    //     this.next(photos);
+    //   });
+    // }
+
     if (this.needInitSubscription(this.dismissSubscription)) {
+
       this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
         this.dismiss(photos);
       });

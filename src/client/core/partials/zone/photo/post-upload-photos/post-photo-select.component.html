@@ -1,4 +1,4 @@
-<modal #modal [keyboard]="false" [backdrop]="'static'">
+<modal #modal [keyboard]="false" [backdrop]="'static'" (onDismiss)="dismiss($event)" style="z-index: 1111;">
   <modal-header class="modal-header-action" [show-close]="true">
     <button type="button" class="btn btn-wth-default btn-min"
             (click)="next($event)" [disabled]="photoList.selectedItems.length <= 0">{{action}}

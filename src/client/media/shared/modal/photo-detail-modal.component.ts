@@ -6,7 +6,6 @@ import { Location } from '@angular/common';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Router } from '@angular/router';
-import { ZMediaPhotoService } from '../../photo/photo.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ZMediaToolbarComponent } from '../toolbar/toolbar.component';
 import { SharingModalComponent } from './sharing/sharing-modal.component';
@@ -14,6 +13,7 @@ import { TaggingModalComponent } from './tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { AddToAlbumModalComponent } from './add-to-album-modal.component';
+import { PhotoService } from '../../../core/shared/services/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -58,7 +58,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
   constructor(private router: Router,
               private resolver: ComponentFactoryResolver,
-              private photoService: ZMediaPhotoService,
+              private photoService: PhotoService,
               private confirmationService: ConfirmationService,
               private location: Location,
               private loadingService: LoadingService) {

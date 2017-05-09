@@ -22,7 +22,8 @@ export class PostBodyComponent implements OnInit, OnChanges {
     openShare: 3,
     openActivities: 4,
     onShowPhotoDetail: 5,
-    openLikeDislike: 6
+    openLikeDislike: 6,
+    toggleComments: 7
   };
 
   constructor(private route: ActivatedRoute,
@@ -46,6 +47,10 @@ export class PostBodyComponent implements OnInit, OnChanges {
     }
   }
 
+  toggleComments() {
+
+  }
+
   onActions(action: any, data?: any, type?: any) {
     switch (action) {
       case this.actions.openShare:
@@ -57,10 +62,13 @@ export class PostBodyComponent implements OnInit, OnChanges {
       case this.actions.openLikeDislike:
         this.postItem.openLikeDislike(data, type);
         break;
+      case this.actions.toggleComments:
+        this.postItem.toggleComments();
+        break;
       case this.actions.onShowPhotoDetail:
-        console.log('photo data:', data);
-        let photoIds = _.map(this.item.photos, 'uuid');
-        this.router.navigate(['/posts',  this.item.uuid, 'photos', data.uuid, {index: data, pIds: photoIds}]);
+        let photoIds = _.map(this.item.photos, 'id');
+        console.log('this. item', this.item.photos, data);
+        this.router.navigate(['/posts',  this.item.uuid, 'photos', data.id, {ids: photoIds, prevUrl: this.router.url}]);
         break;
     }
   }

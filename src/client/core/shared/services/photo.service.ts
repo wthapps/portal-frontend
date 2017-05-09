@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '../../core/shared/services/apibase.service';
+import { ApiBaseService } from './apibase.service';
 
 declare var _: any;
 
 @Injectable()
-export class ZMediaPhotoService {
+export class PhotoService {
 
   url = 'media/photos';
 

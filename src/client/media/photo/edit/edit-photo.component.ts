@@ -2,8 +2,8 @@ import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { Photo } from '../../../core/shared/models/photo.model';
-import { ZMediaPhotoService } from '../photo.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { PhotoService } from '../../../core/shared/services/photo.service';
 
 declare var $: any;
 declare var Cropper: any;
@@ -31,7 +31,7 @@ export class ZMediaPhotoEditComponent implements OnInit, AfterViewInit {
     autoCrop: false
   };
 
-  constructor(private photoService: ZMediaPhotoService,
+  constructor(private photoService: PhotoService,
               private route: ActivatedRoute,
               private location: Location) {
   }

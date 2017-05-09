@@ -3,10 +3,10 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
-import { ZMediaPhotoService } from './photo.service';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ActivatedRoute } from '@angular/router';
 import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -43,7 +43,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
   // }
 
-  constructor(private photoService: ZMediaPhotoService,
+  constructor(private photoService: PhotoService,
               private confirmationService: ConfirmationService,
               private route: ActivatedRoute,
               private loadingService: LoadingService) {
