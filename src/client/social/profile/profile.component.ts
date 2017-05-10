@@ -53,7 +53,7 @@ export class ZSocialProfileComponent implements OnInit {
   ngOnInit() {
 
     // // this.loadingService.start('.zone-social-cover');
-    this.route.params.flatMap((params: any) =>
+    this.route.params.switchMap((params: any) =>
       this.socialService.user.get(params['id'])
     )
       .subscribe((res: any) => {

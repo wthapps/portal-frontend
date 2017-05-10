@@ -456,7 +456,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
       this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
-        .flatMap((files: any) => this.photoUploadService.uploadPhotos(files))
+        .switchMap((files: any) => this.photoUploadService.uploadPhotos(files))
         .subscribe(
         (res: any) => {
           // this.commentBox.commentAction([res['current_photo']]);
