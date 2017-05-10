@@ -29,6 +29,7 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
   events:any;
   show_more_posts:any;
   params:any;
+  nextLink:any;
 
   readonly comUserStatus = Constants.soCommunityUserStatus;
   readonly friendStatus = Constants.friendStatus;
@@ -49,12 +50,12 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
         this.group = paths[0];
         this.params = paths[1].substring(2, paths[1].length);
         if (this.params) {
-          this.serviceManager.getApi().post(`zone/social_network/search/${this.group}`, {
+          this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, {
             q: this.params,
           }).subscribe(
             (res: any) => {
-              console.log(res);
               this.result = res.data;
+              this.nextLink = res.page_metadata.links.next;
             }
           );
         }
@@ -179,5 +180,18 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
         friend.is_following = true;
       },
     );
+  }
+
+  onLoadMore() {
+    if (this.nextLink) {
+      this.serviceManager.getApi().get(this.nextLink).subscribe(
+        (res: any) => {
+          _.map(res.data, (v: any)=> {
+            this.result.push(v);
+          });
+          this.nextLink = res.page_metadata.links.next;
+        }
+      );
+    }
   }
 }

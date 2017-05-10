@@ -89,8 +89,8 @@
         <div *ngIf="group == 'communities' && show_more_communities" class="panel-footer">
           <a [routerLink]="[show_more_communities.link]" [queryParams]="{q:params}">{{show_more_communities.text}}</a>
         </div>
-        <div *ngIf="group == 'posts' && show_more_posts" class="panel-footer">
-          <a [routerLink]="[show_more_posts.link]" [queryParams]="{q:params}">{{show_more_posts.text}}</a>
+        <div *ngIf="group == 'members' && show_more_members" class="panel-footer">
+          <a [routerLink]="[show_more_members.link]" [queryParams]="{q:params}">{{show_more_members.text}}</a>
         </div>
       </div>
 

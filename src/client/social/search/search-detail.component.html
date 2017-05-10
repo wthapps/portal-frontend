@@ -1,4 +1,10 @@
-<div class="page-body-content gray-light">
+<div
+  class="page-body-content gray-light"
+  lockYOffset="10"
+  observeAttributes="true"
+  infinite-scroll
+  [scrollWindow]="false"
+  (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in" *ngIf="result">
       <div class="panel panel-default">
