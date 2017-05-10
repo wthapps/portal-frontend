@@ -34,7 +34,7 @@ export class SocialSearchFormComponent extends BaseSearchForm implements OnInit 
   }
 
   getSuggestions(e:any) {
-    this.serviceManager.getApi().post(`zone/social_network/search`, {q: `${this.searchText}`, types: ['user', 'community']}).subscribe(
+    this.serviceManager.getApi().post(`zone/social_network/search`, {q: `${this.searchText}`, types: ['member', 'community']}).subscribe(
       (res:any) => {
         this.suggestions = [];
         this.groups = Object.keys(res.data);

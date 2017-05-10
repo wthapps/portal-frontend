@@ -11,26 +11,23 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-social-search',
-  templateUrl: 'search.component.html'
+  selector: 'z-social-search-detail',
+  templateUrl: 'search-detail.component.html'
 })
 
-export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
+export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
   show: boolean = false;
   type: string = '';
   result: any;
-  groups: any;
+  group: any;
   showMore: boolean = false;
   sub: any;
   favourite: any; // toggle favourites status for members, communities
 
   searchPostedBy: string = '';
   searchDate: string = '';
-  searchDateValue: Date;
   events:any;
   show_more_posts:any;
-  show_more_communities:any;
-  show_more_members:any;
   params:any;
 
   readonly comUserStatus = Constants.soCommunityUserStatus;
@@ -48,26 +45,16 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
     this.events = this.router.events
       .filter((event:any) => event instanceof NavigationEnd)
       .subscribe((event:NavigationEnd) => {
-        let paths = event.url.toString().split('/')[1].split('?');
-        if (paths[1]) {
-          this.params = paths[1].substring(2, paths[1].length);
-          this.serviceManager.getApi().post(`zone/social_network/search`, {
+        let paths = event.url.toString().split('/')[2].split('?');
+        this.group = paths[0];
+        this.params = paths[1].substring(2, paths[1].length);
+        if (this.params) {
+          this.serviceManager.getApi().post(`zone/social_network/search/${this.group}`, {
             q: this.params,
-            types: ['member', 'community', 'post']
           }).subscribe(
             (res: any) => {
+              console.log(res);
               this.result = res.data;
-              this.groups = Object.keys(res.data);
-              if (res.show_more_posts) {
-                this.show_more_posts = res.show_more_posts;
-              }
-              if (res.show_more_communities) {
-                this.show_more_communities = res.show_more_communities;
-              }
-              if (res.show_more_members) {
-                this.show_more_members = res.show_more_members;
-              }
-              console.log(this.result, this.groups);
             }
           );
         }

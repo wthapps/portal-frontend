@@ -5,6 +5,7 @@ import { SharedModule } from '../../core/shared/shared.module';
 import { ZSocialSearchResultComponent } from './search.component';
 import { ZSocialSearchRoutingModule } from './search-routing.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
+import { ZSocialSearchDetailComponent } from './search-detail.component';
 
 
 @NgModule({
@@ -14,8 +15,14 @@ import { ZSocialSharedModule } from '../shared/shared.module';
     ZSocialSharedModule.forRoot(),
     ZSocialSearchRoutingModule
   ],
-  declarations: [ZSocialSearchResultComponent],
-  exports: [ZSocialSearchResultComponent],
+  declarations: [
+    ZSocialSearchResultComponent,
+    ZSocialSearchDetailComponent
+  ],
+  exports: [
+    ZSocialSearchResultComponent,
+    ZSocialSearchDetailComponent
+  ],
   providers: []
 })
 export class ZSocialSearchModule {
