@@ -9,7 +9,7 @@ import { AuthGuard } from '../core/shared/services/auth-guard.service';
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full', canActivate: [AuthGuard] },
   { path: 'home', component: ZSocialHomeComponent, canActivate: [AuthGuard] },
-  { path: 'members', component: ZSocialMembersComponent  },
+  { path: 'friends', component: ZSocialMembersComponent  },
   { path: 'notifications', component: ZSocialNotificationsComponent },
   { path: 'posts/:id', component: PostDetailComponent },
 ];
