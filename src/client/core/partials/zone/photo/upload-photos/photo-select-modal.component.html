@@ -3,7 +3,7 @@
     <button type="button" class="btn btn-wth-default btn-min"
             (click)="next($event)" [disabled]="photoList.selectedItems.length <= 0">{{action}}
     </button>
-    <span class="modal-title">{{photoList.selectedItems.length}} photo selected</span>
+    <span class="modal-title">{{photoList.selectedItems.length}} photo<span *ngIf="photoList.selectedItems.length > 1">s</span> selected</span>
   </modal-header>
   <modal-body>
     <so-photo-list #photoList [showUpload]="false" (onFilesChanged)="chooseFiles($event)"></so-photo-list>

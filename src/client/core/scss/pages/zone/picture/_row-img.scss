@@ -78,8 +78,8 @@ $photo-box-img-owner: 150px;
   @include clearfix;
 
   &.grid {
-    margin-left: -5px;
-    margin-right: -5px;
+    margin-left: -10px;
+    margin-right: -10px;
     .row-img-item {
       float: left;
       width: 50%;

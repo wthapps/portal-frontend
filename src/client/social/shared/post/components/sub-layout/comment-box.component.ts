@@ -51,6 +51,8 @@ export class ZSocialCommentBoxComponent implements OnInit {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
     });
+
+    console.log(this);
   }
 
 

@@ -107,24 +107,32 @@
 
           </div>
           <div class="form-group">
-            <ul class="modal-social-photo-grid">
-              <li *ngFor="let f of files">
-                <div class="social-photo-grid-item">
-                  <i class="fa fa-remove wth-fa-remove" (click)="cancelUploading(f)"></i>
-                  <figure class="img-center-dv photo-item-uploading loading">
-                  </figure>
+            <div class="row-img row-img-10 grid">
+              <div class="row-img-item" *ngFor="let f of files">
+                <div class="photo-box-img">
+                  <div class="photo-box-img-action photo-box-img-action-left">
+                    <i class="fa fa-remove" (click)="cancelUploading(f)"></i>
+                  </div>
+                  <div class="photo-box-img-figure">
+                    <figure class="img-center-dv photo-item-uploading loading"></figure>
+                  </div>
                 </div>
-              </li>
-              <li *ngFor="let p of post.photos">
-                <div class="social-photo-grid-item">
-                  <i class="fa fa-remove wth-fa-remove" (click)="removePhoto(p,$event)"></i>
-                  <figure class="img-center-dv">
-                    <img class="img-full" [src]="currentUser.profile_image" alt="">
-                    <img class="img-center" [src]="p['thumbnail_url']" alt="currentUser.profile_image">
-                  </figure>
+              </div>
+              <div class="row-img-item" *ngFor="let p of post.photos">
+                <div class="photo-box-img">
+                  <div class="photo-box-img-action photo-box-img-action-left">
+                    <i class="fa fa-remove" (click)="removePhoto(p,$event)"></i>
+                  </div>
+                  <div class="photo-box-img-figure">
+                    <figure class="img-center-dv">
+                      <span class="photo-box-img-figure-in">
+                        <img class="img-center" draggable="false" [src]="p['thumbnail_url']" alt="currentUser.profile_image">
+                      </span>
+                    </figure>
+                  </div>
                 </div>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -2,7 +2,6 @@
   .img-center-dv {
     //border: 1px solid $light-grey;
     background-color: #FFF;
-    cursor: pointer;
     @include transition($transition-base);
     &:after {
       @extend .fa;
@@ -54,6 +53,23 @@
         cursor: pointer;
         color: $color-inverse;
         //color: #2996CC;
+        &.fa-remove {
+          font-size: 14px;
+          width: 24px;
+          height: 24px;
+          text-align: center;
+          background-color: #2996cc;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+          border: 1px solid #FFF;
+          color: #ffffff;
+          line-height: 22px;
+        }
+      }
+      &.photo-box-img-action-left {
+        right: auto;
+        left: 10px;
       }
     }
   }

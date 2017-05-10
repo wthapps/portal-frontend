@@ -14,7 +14,7 @@
     <div class="photo-box-img-input">
       <i class="fa fa-check"></i>
     </div>
-    <figure class="img-center-dv" (dblclick)="onAction({action:'openModal', params: {modalName: 'previewModal'}})">
+    <figure class="img-center-dv can-click" (dblclick)="onAction({action:'openModal', params: {modalName: 'previewModal'}})">
       <span class="photo-box-img-figure-in">
         <img draggable="false" class="img-center" [src]="object.thumbnail_url" alt="">
       </span>
@@ -37,7 +37,7 @@
     <div class="photo-box-img-input">
       <i class="fa fa-check"></i>
     </div>
-    <figure class="img-center-dv" (dblclick)="onAction({action:'viewDetails', params: {selectedObject: object}})">
+    <figure class="img-center-dv can-click" (dblclick)="onAction({action:'viewDetails', params: {selectedObject: object}})">
       <span class="photo-box-img-figure-in">
         <img draggable="false" class="img-center" [src]="object.photo_default" alt="">
       </span>
