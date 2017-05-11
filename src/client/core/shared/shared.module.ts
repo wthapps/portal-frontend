@@ -49,6 +49,7 @@ import { AutofocusDirective } from './directive/autofocus.directive';
 import { ImgFullDirective } from './directive/img-full.directive';
 import { WTHNavigateService } from './services/wth-navigate.service';
 import { PhotoService } from './services/photo.service';
+import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.directive';
 
 
 /**
@@ -96,7 +97,8 @@ import { PhotoService } from './services/photo.service';
     //Directive
     ScrollToBottomDirective,
     AutofocusDirective,
-    ImgFullDirective
+    ImgFullDirective,
+    TextAreaAutoHeightDirective
   ],
   exports: [
     CommonModule,
@@ -138,7 +140,8 @@ import { PhotoService } from './services/photo.service';
     //Directive
     ScrollToBottomDirective,
     AutofocusDirective,
-    ImgFullDirective
+    ImgFullDirective,
+    TextAreaAutoHeightDirective
   ]
 })
 export class SharedModule {
