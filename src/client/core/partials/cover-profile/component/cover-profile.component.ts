@@ -46,7 +46,7 @@ export class CoverProfileComponent {
         (res: any) => {
           callback([res.data]);
           this.loadingService.stop(loadingId);
-        }, (err: any) => {this.loadingService.stop(loadingId) });
+        }, (err: any) => this.loadingService.stop(loadingId));
   }
 
 
@@ -72,7 +72,7 @@ export class CoverProfileComponent {
       let img_url = photos[0].url;
       this.item.cover_image = img_url;
       this.updateItem({'cover_image': img_url}, 'cover_image');
-    }, loadingId)
+    }, loadingId);
   }
 
   // this.loadingService.start();

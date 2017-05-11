@@ -40,7 +40,7 @@ export class ZSocialMembersComponent implements OnInit {
 
   constructor(private socialService: SocialService,
               private zoneReportService: ZoneReportService,
-              private loadingService: LoadingService){
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -59,15 +59,15 @@ export class ZSocialMembersComponent implements OnInit {
     switch(tab) {
       case FRIEND_TABS.friends:
         this.socialService.user.getFriends().take(1)
-          .subscribe((res: any) => {this.list = res.data;})
+          .subscribe((res: any) => {this.list = res.data;});
         break;
       case FRIEND_TABS.followers:
         this.socialService.user.getFollowerList().take(1)
-          .subscribe((res: any) => {this.list = res.data;})
+          .subscribe((res: any) => {this.list = res.data;});
         break;
       case FRIEND_TABS.followings:
         this.socialService.user.getFollowingList().take(1)
-          .subscribe((res: any) => {this.list = res.data;})
+          .subscribe((res: any) => {this.list = res.data;});
         break;
       case FRIEND_TABS.blacklists:
         this.list = [];

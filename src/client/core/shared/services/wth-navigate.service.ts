@@ -53,7 +53,7 @@ export class WTHNavigateService {
   }
 
   private buildUrl(url: string, path: string, body?: any) {
-    let fullUrl = url
+    let fullUrl = url;
 
     // Not support redirect to root path
     if (!_.isEmpty(path) )

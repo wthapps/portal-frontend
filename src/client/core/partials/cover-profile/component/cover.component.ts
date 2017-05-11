@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'cover',
+  selector: 'so-cover',
   template: `
     <div class="zone-social-cover-action">
     <button class="btn btn-wth-default" *ngIf="item?.canEdit">

@@ -1,6 +1,6 @@
 <div *ngIf="!item.disable_comment" class="z-social-comment">
   <!--Add new comment-->
-  <comment-box (eventEmitter)="onCallBack($event)" [item]="item" [type]="commentBoxType.Add"></comment-box>
+  <comment-item-editor (eventEmitter)="onCallBack($event)" [item]="item" [type]="commentBoxType.Add"></comment-item-editor>
 
   <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">-->
     <!--{{item.comments?.length}} of {{item.total_comments}} Comment-->
@@ -14,9 +14,14 @@
 
     <!--<li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">-->
     <li class="media" *ngFor="let comment of item.comments; let i = index">
+
+      <div id="container-comment-{{comment?.uuid}}-edit"></div>
+
       <!--Edit comment-->
-      <comment-box id="editComment-{{comment?.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
-                   [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-box>
+      <comment-item-editor id="editComment-{{comment?.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
+                   [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-item-editor>
+
+
       <div id="comment-{{comment?.uuid}}">
         <div class="media-left">
           <a [routerLink]="['/profile/', comment.owner.uuid]">
@@ -39,8 +44,11 @@
               <i class="fa fa-pencil"></i>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="javascript:;" (click)="onActions(actions.onEditComment, comment)">Edit Comment</a></li>
-              <li><a href="javascript:;" (click)="onActions(actions.onDeleteComment, comment)">Delete</a></li>
+              <li><a href="javascript:;"
+                     (click)="onActions(actions.onEditComment, {data: comment, commentType: 'comment'})">Edit Comment</a></li>
+
+              <li><a href="javascript:;"
+                     (click)="onActions(actions.onDeleteComment, {data: comment, commentType: 'comment'})">Delete</a></li>
             </ul>
           </div>
           <div class="media-body-reply">
@@ -65,11 +73,15 @@
           </div>
         </div>
       </div>
+
+
+
+
       <div class="media" *ngFor="let reply of comment.replies; let j = index">
         <!--Edit reply-->
-        <comment-box id="editComment-{{reply.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
+        <comment-item-editor id="editComment-{{reply.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
                      [comment]="comment" [reply]="reply" style="display: none"
-                     [type]="commentBoxType.EditReply"></comment-box>
+                     [type]="commentBoxType.EditReply"></comment-item-editor>
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
@@ -118,8 +130,8 @@
           </div>
         </div>
       </div>
-      <comment-box id="reply-{{comment.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item" [comment]="comment"
-                   style="display: none;" [type]="commentBoxType.Reply"></comment-box>
+      <comment-item-editor id="reply-{{comment.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item" [comment]="comment"
+                   style="display: none;" [type]="commentBoxType.Reply"></comment-item-editor>
     </li>
   </ul>
   <div *ngIf="notAllCommentsLoaded()" class="z-social-comment-more">

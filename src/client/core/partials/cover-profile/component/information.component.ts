@@ -5,7 +5,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'information',
+  selector: 'so-information',
   template: `
     <ng-content></ng-content>
     `

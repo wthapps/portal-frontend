@@ -2,5 +2,6 @@
 <so-post-header [item]="itemDisplay" [type]="type"></so-post-header>
 <so-post-body [item]="itemDisplay" [type]="type"></so-post-body>
 <so-post-footer *ngIf="showComments == true" #postFooter [item]="itemDisplay" [type]="type" (eventEmitter)="onActions($event)"></so-post-footer>
-<post-activities #postActivities></post-activities>
-<post-likedislike #postLikeDislike [item]="dataLikeDislike" [type]="typeLikeDislike"></post-likedislike>
+<template #modalContainer></template>
+<!--<post-activities #postActivities></post-activities>-->
+<!--<post-likedislike #postLikeDislike [item]="dataLikeDislike" [type]="typeLikeDislike"></post-likedislike>-->

@@ -49,6 +49,7 @@ import { AutofocusDirective } from './directive/autofocus.directive';
 import { ImgFullDirective } from './directive/img-full.directive';
 import { WTHNavigateService } from './services/wth-navigate.service';
 import { PhotoService } from './services/photo.service';
+import { PhotoItemPreviewComponent } from './components/photo/photo-item-preview.component';
 import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.directive';
 
 
@@ -79,6 +80,7 @@ import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.dir
     ToolbarComponent,
     NavbarComponent,
     ReadMoreComponent,
+    PhotoItemPreviewComponent,
 
     // Pipe
     GroupByMonthYearPipe,
@@ -122,6 +124,8 @@ import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.dir
     ToolbarComponent,
     NavbarComponent,
     ReadMoreComponent,
+    PhotoItemPreviewComponent,
+
 
     // Pipe
     GroupByMonthYearPipe,

@@ -182,8 +182,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         if(!_.isEmpty(this.favourite)) {
           _.remove( this.favorites.favourites, (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
           this.favourite = undefined;
-        }
-        else {
+        } else {
           this.favorites.favourites.push(res.data); // Update favorite list at the sidebar
           this.favourite = res.data;
         }

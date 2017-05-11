@@ -312,9 +312,9 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     }
 
     // remove selected item from search input
-    this.items = this.items.filter(_item => _item !== item);
-
-    this.onSelected.emit(this.items);
+    // this.items = this.items.filter(_item => _item !== item);
+    //
+    // this.onSelected.emit(this.itemsSearching);
 
     // if the removed tag was selected, set it as undefined
     if (this.selectedTag === item) {

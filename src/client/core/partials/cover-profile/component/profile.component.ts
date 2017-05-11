@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'profile',
+  selector: 'so-profile',
   template: `
     <div class="z-social-media-left" (click)="changeProfileImage($event)" id="profile_image">
       <div class="avatar-md">
