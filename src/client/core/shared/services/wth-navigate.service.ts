@@ -20,16 +20,16 @@ export class WTHNavigateService {
     if(!_.isEmpty(module)) {
       switch (module) {
         case 'media':
-          this.redirectIfNeed(Constants.baseUrls.media, path, queryParams);
+          this.redirectIfNeed(path, Constants.baseUrls.media, queryParams);
           break;
         case 'social':
-          this.redirectIfNeed(Constants.baseUrls.social, path, queryParams);
+          this.redirectIfNeed(path, Constants.baseUrls.social, queryParams);
           break;
         case 'chat':
-          this.redirectIfNeed(Constants.baseUrls.chat, path, queryParams);
+          this.redirectIfNeed(path, Constants.baseUrls.chat, queryParams);
           break;
         case 'my':
-          this.redirectIfNeed(Constants.baseUrls.myAccount, path, queryParams);
+          this.redirectIfNeed(path, Constants.baseUrls.myAccount, queryParams);
           break;
         default:
           break;
@@ -38,18 +38,18 @@ export class WTHNavigateService {
 
     // Do not allow redirect to root path
     if (!_.isEmpty(path))
-      this.router.navigate(['/', path], {queryParams: queryParams});
+      this.router.navigate(['/' + path], {queryParams: queryParams});
 
 
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
   // Redirect if page is in another module
-  private redirectIfNeed(baseUrl: string, path: string, queryParams: any) {
+  private redirectIfNeed( path: string, baseUrl: string, queryParams: any) {
     if(!this.inSameModule(baseUrl)) {
       window.location.href = this.buildUrl(baseUrl, path, queryParams);
       return;
-    }
+    };
   }
 
   private buildUrl(url: string, path: string, body?: any) {
