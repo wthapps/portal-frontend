@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener, AfterContentInit, Input, OnDestroy
   selector: '[scrollToBottom]'
 })
 export class ScrollToBottomDirective implements AfterContentInit, OnDestroy {
-  @Input() lockYOffset = 10;
+  @Input() lockYOffset: number = 10;
   @Input() observeAttributes: string = 'false';
   nativeElement: HTMLElement;
   private isLocked = false;

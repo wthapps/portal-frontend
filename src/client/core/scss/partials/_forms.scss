@@ -183,10 +183,17 @@
       display: block;
     }
   }
-  .social-list-user{
+  .social-list-user {
     li {
       margin-bottom: 0px;
     }
 
   }
+}
+
+.textarea-autoheight {
+  overflow: hidden;
+  word-wrap: break-word;
+  resize: none !important;
+  padding-right: 50px;
 }
