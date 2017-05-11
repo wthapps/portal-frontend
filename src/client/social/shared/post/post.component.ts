@@ -11,7 +11,7 @@ import {
 import {
   PostActivitiesComponent
 } from './index';
-import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
+import { ZSocialCommentBoxType, CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
@@ -25,11 +25,12 @@ import {
 } from '../../events/social-events';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
 import { BaseEvent } from '../../../core/shared/event/base-event';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/observable/from';
 
 declare var $: any;
 declare var _: any;
@@ -53,14 +54,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() modalOpened: EventEmitter<any> = new EventEmitter<any>();
   @Output() photoModalOpened: EventEmitter<any> = new EventEmitter<any>();
 
-  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
-  commentBox: ZSocialCommentBoxComponent;
+  commentEditor: CommentItemEditorComponent;
   commentBoxType = ZSocialCommentBoxType;
 
   itemDisplay: any;
   typeLikeDislike: any;
   dataLikeDislike: any;
-  showComments: boolean = false;
+  showComments: boolean = true;
 
   // Subscription list
   nextPhotoSubscription: Subscription;
@@ -301,9 +301,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     // Open photo modal
     if (event instanceof OpenPhotoModalEvent) {
-      this.commentBox = event.data;
-      // this.photoModalOpened.emit(this.commentBox);
-      this.openPhotoModal(this.commentBox);
+      this.commentEditor = event.data;
+      // this.photoModalOpened.emit(this.commentEditor);
+      this.openPhotoModal(this.commentEditor);
 
       this.subscribePhotoEvents();
     }
@@ -337,8 +337,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
 
   onSelectPhotoComment(photos: any) {
-    if (this.commentBox) {
-      this.commentBox.commentAction(photos);
+    if (this.commentEditor) {
+      this.commentEditor.commentAction(photos);
     }
     // this.photoModal.close();
   }
@@ -358,7 +358,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   toggleComments() {
-    console.log('comments');
     this.showComments = !this.showComments;
   }
 
@@ -448,7 +447,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
       this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
-          this.commentBox.commentAction(photos);
+          this.commentEditor.createComment({photo: photos[0], content: ''});
+          // this.commentEditor.commentAction(photos);
         },
         (error : any) => { console.error(error); }
       );
@@ -456,11 +456,17 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
       this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
-        .switchMap((files: any) => this.photoUploadService.uploadPhotos(files))
-        .subscribe(
-        (res: any) => {
-          // this.commentBox.commentAction([res['current_photo']]);
-          this.commentBox.commentAction([res['data']]);
+        .switchMap((files: any) => {
+          this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
+          return this.photoUploadService.uploadPhotos(files);
+          // return Observable.from(['']);
+        }).subscribe(
+        (response: any) => {
+          console.log('response data: ', response.data);
+          // this.commentEditor.commentAction([res['current_photo']]);
+          this.commentEditor.createComment({photo: response.data, content: ''});
+          this.commentEditor.updateAttributes({hasUploadingPhoto: false});
+          // this.commentEditor.commentAction([res['data']]);
         },
         (error : any) => { console.error(error); }
       );

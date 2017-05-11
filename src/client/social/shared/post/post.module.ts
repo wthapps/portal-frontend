@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
 import { InputTextareaModule } from 'primeng/primeng';
 // import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 import { TagInputModule } from 'ng2-tag-input';
-import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
+import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { SharedModule } from '../../../core/shared/shared.module';
 // import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
 // import { TagInputModule } from 'ng2-tag-input/dist/modules/ng2-tag-input.module';
@@ -49,7 +49,7 @@ import { SharedModule } from '../../../core/shared/shared.module';
     PostPrivacyCustomComponent,
     // MemberListInviteComponent,
     // Comments
-    ZSocialCommentBoxComponent
+    CommentItemEditorComponent
 
   ],
   exports: [
@@ -74,7 +74,7 @@ import { SharedModule } from '../../../core/shared/shared.module';
 
 
     // Comments
-    ZSocialCommentBoxComponent
+    CommentItemEditorComponent
   ],
   providers: [
     PostService

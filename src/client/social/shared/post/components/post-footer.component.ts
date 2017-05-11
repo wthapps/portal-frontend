@@ -13,7 +13,7 @@ import {
   DeleteReplyEvent,
   CancelEditReplyCommentEvent, ViewMoreCommentsEvent, ReplyCreateEvent
 } from '../../../events/social-events';
-import { ZSocialCommentBoxType } from './sub-layout/comment-box.component';
+import { ZSocialCommentBoxType } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
@@ -76,15 +76,22 @@ export class PostFooterComponent implements OnChanges {
     this.totalComment = this.item.total_comments;
   }
 
-  onActions(action: any, data: any, type?: any) {
+  onActions(action: any, params?: any) {
+    let type = params.commentType;
+    let data = params.data;
     switch (action) {
       case this.actions.onDeleteComment:
         this.eventEmitter.emit(new DeleteCommentEvent(data));
         break;
       case this.actions.onEditComment:
-        $('#editComment-' + data.uuid).show();
-        // $('#editComment-' + data.uuid).text($('#comment-' + data.uuid).text());
-        $('#comment-' + data.uuid).hide();
+        let currentComment = data;
+        let commentType = type;
+
+        // show edit comment form
+        $('#editComment-' + currentComment.uuid).show();
+
+        // hide current comment content
+        $('#comment-' + currentComment.uuid).hide();
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));

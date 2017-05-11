@@ -21,11 +21,11 @@ export enum ZSocialCommentBoxType {
 declare var $: any;
 @Component({
   moduleId: module.id,
-  selector: 'comment-box',
-  templateUrl: 'comment-box.component.html',
+  selector: 'comment-item-editor',
+  templateUrl: 'comment-item-editor.component.html',
 })
 
-export class ZSocialCommentBoxComponent implements OnInit {
+export class CommentItemEditorComponent implements OnInit {
   @Input() item: SoPost;
   @Input() comment: SoComment;
   @Input() reply: SoComment;
@@ -33,6 +33,10 @@ export class ZSocialCommentBoxComponent implements OnInit {
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   commentContent: string = '';
   commentBoxType = ZSocialCommentBoxType;
+  hasUploadingPhoto: boolean = false;
+  files: any;
+  mode: string = 'add'; // 'add' or 'edit'
+
 
   constructor() {
 
@@ -51,8 +55,6 @@ export class ZSocialCommentBoxComponent implements OnInit {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
     });
-
-    console.log(this);
   }
 
 
@@ -64,6 +66,35 @@ export class ZSocialCommentBoxComponent implements OnInit {
     // Cancel comment
     if (e.keyCode == 27) {
       this.cancel();
+    }
+  }
+  /*
+  * Now we just support ONE photo
+  * */
+  addPhoto(photo: any) {
+    this.comment.photos.push(photo);
+  }
+
+  createComment(params: any) {
+
+    let comment: any = {};
+    if ('photo' in params) {
+      comment.photo = params.photo;
+    }
+    if ('content' in params) {
+      comment.content = params.content || '';
+    }
+    console.log('comment:: before:::', this.comment, comment);
+    this.comment = comment;
+    console.log('comment:: after:::', this.comment, comment);
+  }
+
+  updateAttributes(options: any) {
+    if('hasUploadingPhoto' in options) {
+      this.hasUploadingPhoto = options.hasUploadingPhoto;
+    }
+    if('files' in options) {
+      this.files = options.files;
     }
   }
 
@@ -100,15 +131,38 @@ export class ZSocialCommentBoxComponent implements OnInit {
   }
 
   cancel() {
-    if (this.type == this.commentBoxType.Edit) {
-      this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
-      this.commentContent = this.comment.content;
+    // if (this.type == this.commentBoxType.Edit) {
+    //   this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
+    //   this.commentContent = this.comment.content;
+    // }
+    // if (this.type == this.commentBoxType.Reply) {
+    //   this.eventEmitter.emit(new CancelReplyCommentEvent(this.comment));
+    // }
+    // if (this.type == this.commentBoxType.EditReply) {
+    //   this.eventEmitter.emit(new CancelEditReplyCommentEvent(this.reply));
+    // }
+    if (this.mode == 'add') {
+      // add new comment/reply to post
+      console.log('canceling add...........');
+
+    } else if(this.mode == 'edit') {
+      // update current comment/reply
+      console.log('canceling edit...........');
+
     }
-    if (this.type == this.commentBoxType.Reply) {
-      this.eventEmitter.emit(new CancelReplyCommentEvent(this.comment));
-    }
-    if (this.type == this.commentBoxType.EditReply) {
-      this.eventEmitter.emit(new CancelEditReplyCommentEvent(this.reply));
+
+  }
+
+  post() {
+    if (this.mode == 'add') {
+      // add new comment/reply to post
+      console.log('adding add...........');
+
+
+    } else if(this.mode == 'edit') {
+      // update current comment/reply
+      console.log('canceling edit...........');
+
     }
   }
 }
