@@ -18,7 +18,8 @@ declare let App: any; //This App stands for ActionCable
 @Component({
   moduleId: module.id,
   selector: 'wth-header',
-  templateUrl: 'header.component.html'
+  templateUrl: 'header.component.html',
+  styleUrls: ['header.component.css']
 })
 export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input('headerOver') headerOver: boolean = false;
@@ -72,7 +73,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  //  TODO: Unsubscribe all cable services when destroyed
+    //  TODO: Unsubscribe all cable services when destroyed
   }
 
 
@@ -191,6 +192,10 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
   toggleAllReadStatus() {
     this.notificationService.toggleAllReadStatus();
+  }
+
+  showSetting() {
+
   }
 
   redirectTo(domain: string = '', path: string = '', event: any) {

@@ -26,6 +26,10 @@
   @include avatar-mixin(70px);
 }
 
+.avatar-xsm {
+  @include avatar-mixin(40px);
+}
+
 .avatar-xs {
   @include avatar-mixin(34px);
 }
