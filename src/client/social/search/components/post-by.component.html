@@ -1,0 +1,27 @@
+<dl>
+  <dt>Posted by</dt>
+  <dd>
+    <ul class="list-unstyled">
+      <li>
+        <p-radioButton name="searchPostedBy" value="anyone" label="Anyone" [(ngModel)]="searchPostedBy" (click)="filter('id:*'); disable(true);"></p-radioButton>
+      </li>
+      <li>
+        <p-radioButton name="searchPostedBy" value="you" label="You" [(ngModel)]="searchPostedBy" (click)="filter('owner_id:' + userService.profile.id); disable(true);"></p-radioButton>
+      </li>
+      <li>
+        <p-radioButton name="searchPostedBy" value="yourFriends" label="Your friends"
+                       [(ngModel)]="searchPostedBy" (click)="filter('owner_id:!' + userService.profile.id); disable(true);"></p-radioButton>
+      </li>
+      <li>
+        <p-radioButton name="searchPostedBy" value="frinedOfFriend" label="Communites"
+                       [(ngModel)]="searchPostedBy" (click)="filter('community_id:*'); disable(true);"></p-radioButton>
+      </li>
+      <li>
+        <p-radioButton name="searchPostedBy" value="custom" label="Custom friend" (click)="disable(false);"></p-radioButton>
+        <div class="mt5">
+          <p-autoComplete [(ngModel)]="searchText" [suggestions]="suggestions" (completeMethod)="getSuggestions($event)" [delay]="500" (onSelect)="onSelect($event); filter('owner_id:' + ownerId );" [disabled]="disableCustom" field="name"></p-autoComplete>
+        </div>
+      </li>
+    </ul>
+  </dd>
+</dl>

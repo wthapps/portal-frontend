@@ -53,6 +53,8 @@ import { WTHNavigateService } from './services/wth-navigate.service';
 import { PhotoService } from './services/photo.service';
 import { PhotoItemPreviewComponent } from './components/photo/photo-item-preview.component';
 import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.directive';
+import { UrlService } from './services/url.service';
+import { DateService } from './services/date.service';
 
 
 /**
@@ -169,6 +171,8 @@ export class SharedModule {
         AppearancesChannelService,
         PhotoModalDataService,
         PhotoUploadService,
+        UrlService,
+        DateService,
         PhotoService
       ]
     };

@@ -6,6 +6,7 @@ import { SocialService } from '../shared/services/social.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { subscribeOn } from 'rxjs/operator/subscribeOn';
+import { UrlService } from '../../core/shared/services/url.service';
 
 declare var _: any;
 
@@ -28,7 +29,9 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
   searchDate: string = '';
   events:any;
   show_more_posts:any;
-  params:any;
+  q:any;
+  filter:any;
+  filterDate:any;
   nextLink:any;
 
   readonly comUserStatus = Constants.soCommunityUserStatus;
@@ -38,6 +41,7 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
               public serviceManager: ServiceManager,
               private loadingService: LoadingService,
               private confirmationService: ConfirmationService,
+              private urlService: UrlService,
               private socialService: SocialService) {
 
   }
@@ -46,13 +50,19 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
     this.events = this.router.events
       .filter((event:any) => event instanceof NavigationEnd)
       .subscribe((event:NavigationEnd) => {
-        let paths = event.url.toString().split('/')[2].split('?');
-        this.group = paths[0];
-        this.params = paths[1].substring(2, paths[1].length);
-        if (this.params) {
-          this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, {
-            q: this.params,
-          }).subscribe(
+        this.group = this.urlService.getId();
+        this.q = this.urlService.getQuery()["q"];
+        this.filter = this.urlService.getQuery()["filter_post"];
+        this.filterDate = this.urlService.getQuery()["filter_date"];
+        if (this.q) {
+          let query:any = {q : this.q};
+          if (this.filter) {
+            query.filter = this.filter;
+          }
+          if (this.filterDate) {
+            query.filter_date = this.filterDate;
+          }
+          this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, query).subscribe(
             (res: any) => {
               this.result = res.data;
               this.nextLink = res.page_metadata.links.next;
