@@ -42,8 +42,9 @@ declare var _: any;
 })
 
 export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('postActivities') postActivities: PostActivitiesComponent;
-  @ViewChild('postLikeDislike') postLikeDislike: PostLikeDislikeComponent;
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  modalComponent: any;
+
 
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
