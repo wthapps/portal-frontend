@@ -2,15 +2,9 @@ import {
   Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy,
   Renderer, ElementRef
 } from '@angular/core';
-// import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
-// import { ApiBaseService, LoadingService } from '../../../shared/index';
-// import { SoPost } from '../../../shared/models/social_network/so-post.model';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-// import { UserService } from '../../../shared/index';
-import { PostPrivacyCustomComponent } from './index';
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-// import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { User } from '../../../core/shared/models/user.model';
@@ -114,14 +108,14 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   console.log('opening............:');
     // load tags
-    this.apiService.get(`media/tags`)
-      .subscribe((result: any) => {
-          this.objTags = result['data'];
-          this.tags = _.map(result['data'], 'name');
-        },
-        error => {
-          console.log('error', error);
-        });
+    // this.apiService.get(`media/tags`)
+    //   .subscribe((result: any) => {
+    //       this.objTags = result['data'];
+    //       this.tags = _.map(result['data'], 'name');
+    //     },
+    //     error => {
+    //       console.log('error', error);
+    //     });
 
     this.post = new SoPost();
     if(this.socialService.community.currentCommunity) {

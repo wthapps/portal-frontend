@@ -1,8 +1,8 @@
 import { Component, ViewChild, Output, EventEmitter, OnInit, Input, OnDestroy } from '@angular/core';
-import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ListComponent } from '../../../core/shared/ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Subject, Subscription } from 'rxjs';
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import 'rxjs/operator/switchMap';
 
 
@@ -36,7 +36,7 @@ export const DEBOUNCE_TIME: any = 250;
 })
 
 export class EntitySelectComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: ModalComponent;
   @ViewChild('list') list: ListComponent;
 
   @Input() type: string;
@@ -126,7 +126,7 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   }
 
   removeItem(item: any) {
-
+    _.remove(this.selectedItems, (i: any) => i.uuid === item.uuid);
   }
 
   onSelectedItems(items: any) {
