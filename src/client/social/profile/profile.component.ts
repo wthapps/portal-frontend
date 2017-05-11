@@ -18,7 +18,7 @@ export let PROFILE_TAB = {
   posts: 'posts',
   about: 'about',
   friend: 'friends'
-}
+};
 
 @Component({
   moduleId: module.id,
@@ -27,16 +27,6 @@ export let PROFILE_TAB = {
 })
 
 export class ZSocialProfileComponent implements OnInit {
-  // @ViewChild('posts') posts: PostListComponent;
-  // @ViewChild('postNew') postNew: PostNewComponent;
-
-
-  // @ViewChild('modalAbout') modalAbout: ZSocialProfileFormAboutComponent;
-  // @ViewChild('modalContact') modalContact: ZSocialProfileFormContactComponent;
-  // @ViewChild('modalWorkEdu') modalWorkEdu: ZSocialProfileFormWorkEduComponent;
-  // @ViewChild('modalInterest') modalInterest: ZSocialProfileFormInterestComponent;
-  //
-  // @ViewChild('privacyUser') privacyUser: ZSocialPrivacyComponent;
 
   uuid: any;
   userInfo: any;

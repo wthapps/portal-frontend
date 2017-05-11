@@ -45,7 +45,7 @@ export class ZSocialFavoritesComponent implements OnInit {
     this.socialService.unfavourite(favourite.uuid).take(1)
       .subscribe((response: any) => {
         _.remove(this.favourites, (f: any) => f.uuid == favourite.uuid);
-    })
+    });
   }
 
   onLeave(community: any) {

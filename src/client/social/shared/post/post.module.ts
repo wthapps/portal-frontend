@@ -52,6 +52,7 @@ import { SharedModule } from '../../../core/shared/shared.module';
     CommentItemEditorComponent
 
   ],
+  entryComponents: [PostLikeDislikeComponent, PostActivitiesComponent],
   exports: [
     CommonModule,
     FormsModule,

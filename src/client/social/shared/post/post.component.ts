@@ -6,7 +6,7 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
-  EventEmitter, OnDestroy
+  EventEmitter, OnDestroy, ViewContainerRef, ComponentFactoryResolver, Type
 } from '@angular/core';
 import {
   PostActivitiesComponent
@@ -61,6 +61,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   typeLikeDislike: any;
   dataLikeDislike: any;
   showComments: boolean = true;
+  modal: any;
 
   // Subscription list
   nextPhotoSubscription: Subscription;
@@ -72,6 +73,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               private confirmation: ConfirmationService,
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
+              private componentFactoryResolver: ComponentFactoryResolver,
               private toast: ToastsService) {
     super();
   }
@@ -348,13 +350,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   openActivities() {
-    this.postActivities.open({item: this.item});
+    this.createModalComponent(PostActivitiesComponent);
+    this.modal.open({item: this.item});
   }
 
   openLikeDislike(data: any, type: any) {
-    this.typeLikeDislike = type;
-    this.dataLikeDislike = data;
-    this.postLikeDislike.modal.open();
+    this.createModalComponent(PostLikeDislikeComponent);
+    this.modal.open({item: data, type: type});
   }
 
   toggleComments() {
@@ -365,16 +367,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.item = post;
   }
 
-
-
-  // createReaction(data:any) {
-  //   this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
-  //     (res:any) => {
-  //       this.item = new SoPost().from(res.data);
-  //       this.mapDisplay();
-  //     }
-  //   );
-  // }
+  createModalComponent(component: any) {
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    this.modalContainer.clear();
+    this.modalComponent = this.modalContainer.createComponent(componentFactory);
+    this.modal = this.modalComponent.instance;
+  }
 
 
   createReaction(event: any, reaction: string, object: string, uuid: string) {
@@ -442,7 +440,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   private subscribePhotoEvents() {
     // Subscribe actions corresponding with photo modal actions
 
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$);
 
     if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
       this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(

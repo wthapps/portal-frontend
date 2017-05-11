@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { BaseSocialModal } from './shared/modal/base-social-modal';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 // import { ApiBaseService } from '../../../shared/index';
 
@@ -12,11 +13,12 @@ declare var _: any;
   templateUrl: 'post-activities.component.html'
 })
 
-export class PostActivitiesComponent {
+export class PostActivitiesComponent implements BaseSocialModal {
   @ViewChild('modal') modal: HdModalComponent;
 
   shares: Array<any> = new Array<any>();
   item: any = undefined;
+  type: any;
 
   constructor(private api: ApiBaseService) {
   }
@@ -39,5 +41,9 @@ export class PostActivitiesComponent {
         error => {
           console.log('error', error);
         });
+  }
+
+  close(body?: any) {
+
   }
 }

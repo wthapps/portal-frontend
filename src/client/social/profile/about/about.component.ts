@@ -41,7 +41,7 @@ export class ZSocialProfileAboutComponent implements OnInit {
     this.profileDataService.profileData$.take(1).subscribe((res: any) => {
       this.userInfo = _.get(res, 'userInfo', '');
       this.actions = _.get(res, 'actions', []);
-    })
+    });
   }
 
   onUpdated(userInfo:any) {
