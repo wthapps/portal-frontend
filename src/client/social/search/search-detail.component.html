@@ -1,17 +1,18 @@
-<div class="page-body-content gray-light">
+<div
+  class="page-body-content gray-light"
+  lockYOffset="10"
+  observeAttributes="true"
+  infinite-scroll
+  [scrollWindow]="false"
+  (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
-    <div class="zone-social-in" *ngIf="result && groups">
-      <div class="panel panel-default" *ngFor="let group of groups">
+    <div class="zone-social-in" *ngIf="result">
+      <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">{{group | titleCase}}</h3>
         </div>
-        <div class="panel-body" *ngIf="result[group] && result[group].length == 0">
-          <h3 class="text-fade">
-            There is no result
-          </h3>
-        </div>
-        <ul class="list-group" *ngFor="let item of result[group]; let last = last" [class.last]="last">
-          <li *ngIf="group != 'posts'" class="list-group-item">
+        <ul class="list-group" *ngFor="let item of result; let last = last" [class.last]="last">
+          <li *ngIf="group != 'post'" class="list-group-item">
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
@@ -51,7 +52,6 @@
                       <li role="separator" class="divider"></li>
                       <li *ngIf="item.friend_status == friendStatus.accepted"><a href="javascript:;" (click)="unfriend(item)">Unfriend</a></li>
                     </ul>
-
                   </div>
 
 
@@ -78,24 +78,13 @@
                   </ul>
                 </div>
                 </div>
-
               </div>
           </li>
         </ul>
-        <so-post-list *ngIf="group == 'posts'" #posts [items]="result[group]" [type]="'search'"></so-post-list>
-        <div *ngIf="group == 'posts' && show_more_posts" class="panel-footer">
-          <a [routerLink]="[show_more_posts.link]" [queryParams]="{q:params}">{{show_more_posts.text}}</a>
-        </div>
-        <div *ngIf="group == 'communities' && show_more_communities" class="panel-footer">
-          <a [routerLink]="[show_more_communities.link]" [queryParams]="{q:params}">{{show_more_communities.text}}</a>
-        </div>
-        <div *ngIf="group == 'members' && show_more_members" class="panel-footer">
-          <a [routerLink]="[show_more_members.link]" [queryParams]="{q:params}">{{show_more_members.text}}</a>
-        </div>
+        <so-post-list *ngIf="group == 'post'" #posts [items]="result" [type]="'search'"></so-post-list>
       </div>
-
     </div>
-    <div class="zone-social-sidebar">
+    <div *ngIf="group == 'post'" class="zone-social-sidebar">
       <dl>
         <dt>Posted by</dt>
         <dd>

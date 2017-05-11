@@ -100,7 +100,7 @@ export let Constants = {
     {name: 'Home', link: '/home'},
     {name: 'Communities', link: '/communities'},
     {name: 'Notifications', link: '/notifications'},
-    {name: 'Friends', link: '/members'},
+    {name: 'Friends', link: '/friends'},
     {name: 'My Page', link: '/profile'},
     {name: 'Settings', link: '/settings'},
     {name: 'Search', link: '/search'}

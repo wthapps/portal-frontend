@@ -33,6 +33,7 @@ export class SoUserService {
     return this.apiBaseService.get(`${soUsersUrl}/${uuid}`);
   }
 
+
   // update(body: any) {
   //   return this.apiBaseService.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
   // }
@@ -112,6 +113,16 @@ export class SoUserService {
   // ================= Friend ======================
   getFriends(uuid: string = this.user.profile.uuid) {
     return this.apiBaseService.get(`${soFriendUrl}/${uuid}`);
+  }
+
+  // ================= Follower ======================
+  getFollowerList(uuid: string = this.user.profile.uuid ) {
+    return this.apiBaseService.get(`${soUsersUrl}/followers/${uuid}`);
+  }
+
+  // ================= Following ======================
+  getFollowingList(uuid: string = this.user.profile.uuid ) {
+    return this.apiBaseService.get(`${soUsersUrl}/followings/${uuid}`);
   }
 }
 

@@ -31,6 +31,7 @@ export class ZoneReportService {
     this.set('post', uuid);
   }
 
+  // Use for common items - such as favourites
   show(item: any) {
     if (item.post)
       this.post(item.post.uuid);

@@ -41,7 +41,7 @@ export class CoverProfileComponent {
     this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
       .take(1)
       .takeUntil(this.closeObs$)
-      .flatMap((photos: any) => { this.loadingService.start(loadingId); return this.photoUploadService.uploadPhotos(photos); })
+      .switchMap((photos: any) => { this.loadingService.start(loadingId); return this.photoUploadService.uploadPhotos(photos); })
       .subscribe(
         (res: any) => {
           callback([res.data]);
