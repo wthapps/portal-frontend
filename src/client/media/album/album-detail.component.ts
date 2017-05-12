@@ -68,22 +68,26 @@ export class ZMediaAlbumDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
-      this.albumId = params['id'];
-      this.params = params;
-      this.getAlbumDetail(this.albumId);
-    });
-
-    // this.route.queryParams.subscribe((queryParams: any) => {
-    //   this.getPhotos(this.albumId, queryParams);
+    // this.route.params.subscribe((params: Params) => {
+    //   this.albumId = params['id'];
+    //   this.params = params;
+    //   this.getAlbumDetail(this.albumId);
     // });
+
+    this.route.params
+      .switchMap((params: Params) => { this.params = params; return this.albumService.getAlbum(params['id']); })
+      .take(1)
+      .subscribe((res: any)=> {
+        this.albumDetail = res.data;
+      });
+
   }
 
-  getAlbumDetail(id: number) {
-    this.albumService.getAlbum(id).subscribe((res: any)=> {
-      this.albumDetail = res.data;
-    });
-  }
+  // getAlbumDetail(id: number) {
+  //   this.albumService.getAlbum(id).subscribe((res: any)=> {
+  //     this.albumDetail = res.data;
+  //   });
+  // }
 
   // getPhotos(id: number, body?: any) {
   //   this.albumService.getPhotosByAlbum(id, body).subscribe((res: any)=> {

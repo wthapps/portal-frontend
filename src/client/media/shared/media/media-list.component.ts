@@ -351,6 +351,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       case 'deleteMedia':
         this.deleteMedia(event.params);
         break;
+      case 'confirmDeleteMedia':
+        this.confirmDeleteMedia(event.params);
+        break;
       // Hide photos / albums present in shared-with-me screen
       case 'hideMedia':
         this.hideMedia(event.params);
@@ -661,9 +664,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   // Params format:
   // { objects: [{id: <value>, object_type: <value>}], child_destroy: <true/false> }
   deleteMedia(params: any) {
-    this.loadingService.start();
     let objs = _.map(params.selectedObjects, (o: any) => _.pick(o, ['id', 'object_type'])); // ['1','2'];
 
+    this.loadingService.start();
     this.mediaObjectService.deleteObjects(objs, params.child_destroy).subscribe(
       (res: any) => {
         _.map(objs, (obj: any)=> {
@@ -672,8 +675,50 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.loadingService.stop();
         if (params.callback)
           params.callback(); // Return back to previous screen OR go to next / previous photos
+      },
+      (error: any) => this.loadingService.stop());
 
+  }
+
+  confirmDeleteMedia(params: any) {
+    // Ask for user confirmation before delete media items
+    let photos = _.filter(params.selectedObjects, (o: any) => o.object_type == 'photo');
+    let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
+    let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
+
+
+    if( photos.length > 0 ) {
+      // Ask for user confirmation before deleting selected PHOTOS
+      this.confirmationService.confirm({
+        message: 'Are you sure to delete ' + photos_count,
+        accept: () => {
+
+          this.loadingService.start();
+          this.mediaObjectService.deleteObjects(photos, params.child_destroy).subscribe(
+            (res: any) => {
+              _.map(photos, (obj: any)=> {
+                _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
+              });
+              this.loadingService.stop();
+
+              // Ask for user confirmation before deleting selected ALBUMS
+              if (albums.length > 0)
+                this.onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: albums}});
+            },
+            (error: any) => this.loadingService.stop());
+
+        },
+        reject: () => {
+          // Ask for user confirmation before deleting selected ALBUMS
+          if (albums.length > 0)
+            this.onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: albums}});
+        }
       });
+    } else {
+      // Ask for user confirmation before deleting selected ALBUMS
+      this.onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: albums}});
+    }
+
   }
 
   // Hide media present in shared with me screen
