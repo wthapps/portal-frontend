@@ -82,7 +82,7 @@
                         <span class="media-heading" [innerHTML]="notification.text"></span>
                       </p>
                       <p *ngIf="notification.actions[0].name == 'view'">
-                        <span (click)="doAction(notification.actions[0].action, notification.id)" class="notification-item-time text-fade can-click">{{ notification.created_at | timeFormat }}</span>
+                        <span (click)="doAction(notification.actions[0], notification.id)" class="notification-item-time text-fade can-click">{{ notification.created_at | timeFormat }}</span>
                       </p>
                       <div *ngIf="notification.actions[0].name != 'view'" class="no-wrap mt5">
                         <button *ngFor="let action of notification.actions"

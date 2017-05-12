@@ -19,6 +19,7 @@ export class SoPost extends BaseInput implements FromData {
   adult: boolean = false;
   // privacy: string = 'public';
   privacy: string = Constants.soPostPrivacy.public.data;
+  custom_objects: Array<any> = [];
   disable_comment: boolean = false;
   disable_share: boolean = false;
   mute: boolean = false;
