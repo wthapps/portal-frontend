@@ -18,6 +18,6 @@ import { ModalDockComponent } from '../dock.component';
 export class ModalDockFooterComponent {
   @Input() inline: any = false;
 
-  constructor(modalDock: ModalDockComponent) {
+  constructor(public modalDock: ModalDockComponent) {
   }
 }

@@ -15,6 +15,7 @@ import { Photo } from '../../../core/shared/models/photo.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
+import { ModalDockComponent } from '../../../core/partials/modal/dock.component';
 
 declare var $: any;
 
@@ -33,7 +34,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   pending_request: any;
   photos: Array<any> = [];
   files: Array<any>;
-  uploadSteps:any = {
+  uploadSteps: any = {
     closed: -1,
     begin: 0,
     init: 1,
@@ -52,9 +53,10 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
 
+  @ViewChild('modalDock') modalDock: ModalDockComponent;
+
   constructor(private apiService: ApiBaseService, private renderer: Renderer,
-              private photoUploadService: PhotoUploadService
-  ) {
+              private photoUploadService: PhotoUploadService) {
     this.dragleave();
     this.events = new Subject();
   }
@@ -102,40 +104,45 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   uploadImages(files: any) {
     this.step = this.uploadSteps.init;
+    this.modalDock.open();
+
     this.uploaded_num = 0;
     this.stopped_num = 0;
     this.files_num = this.files.length;
     this.photos.length = 0;
 
-    this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => { this.current_photo = res;});
+    this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => {
+      this.current_photo = res;
+    });
 
     // Stop observable when finish uploading all files
     this.photoUploadService.uploadPhotos(files)
       .takeWhile(() => this.step != this.uploadSteps.uploaded)
       .subscribe((res: any) => {
-        console.log('Upload image to s3 and save info successfully', res);
-        this.uploaded_num++;
-        // this.current_photo = res['current_photo'];
-        // let newPhoto = new Photo(res['data']);
-        this.current_photo = res.data.thumbnail_url;
-        this.photos.push(res.data);
+          console.log('Upload image to s3 and save info successfully', res);
+          this.uploaded_num++;
+          // this.current_photo = res['current_photo'];
+          // let newPhoto = new Photo(res['data']);
+          this.current_photo = res.data.thumbnail_url;
+          this.photos.push(res.data);
 
-        // newPhoto.thumbnail_url = this.current_photo;
-        this.events.next(res.data);
+          // newPhoto.thumbnail_url = this.current_photo;
+          this.events.next(res.data);
 
-        if (this.uploaded_num == this.files_num) {
-          this.step = this.uploadSteps.uploaded;
+          if (this.uploaded_num == this.files_num) {
+            this.step = this.uploadSteps.uploaded;
+          }
         }
-      }
-      ,(err: any) => {
-        this.step = this.uploadSteps.error;
-        console.error('Error when uploading files ', err);
-      });
+        , (err: any) => {
+          this.step = this.uploadSteps.error;
+          console.error('Error when uploading files ', err);
+        });
   }
 
   onAction(options?: any): void {
     // close uploading form
     this.step = this.uploadSteps.closed;
+    this.modalDock.close();
 
     this.outEvent.emit(options);
   }

@@ -6,6 +6,7 @@ import { ModalDockComponent } from '../dock.component';
   moduleId: module.id,
   selector: 'wth-modal-dock-body',
   template: `
+        <!--<div class="modal-dock-body" *ngIf="!modalDock.collapse">-->
         <div class="modal-dock-body" *ngIf="!modalDock.collapse">
             <ng-content></ng-content>
         </div>
@@ -14,6 +15,6 @@ import { ModalDockComponent } from '../dock.component';
 })
 
 export class ModalDockBodyComponent {
-  constructor(modalDock: ModalDockComponent) {
+  constructor(public modalDock: ModalDockComponent) {
   }
 }

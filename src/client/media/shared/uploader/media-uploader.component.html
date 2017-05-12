@@ -10,93 +10,55 @@
   </div>
 </div>
 
-<div class="toast-upload-wrap">
-
-  <input #inputfiles type="file" id="inputfiles" multiple="multiple" accept="image/*" style="display: none;"
-         autofocus="true" (change)="chooseFiles($event)"/>
-
-  <!-- uploading status -->
-  <div class="toast-upload-item" *ngIf="step==1">
-    <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button" (click)="close()"><i class="fa fa-times"></i></button>
-      Uploading
-    </div>
-    <div class="toast-upload-content">
-      <div class="media">
-        <div class="media-left">
-          <div class="photo-box-img">
-            <figure class="img-center-dv">
-              <img draggable="false" class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-              <img draggable="false" class="img-center img-uploading" [src]="current_photo"  alt="">
-            </figure>
-          </div>
-        </div>
-        <div class="media-body">
-          <p>Uploading to Photo library</p>
-          <p class="media-heading">{{uploaded_num}} of  {{files_num}}</p>
-          <div class="text-right">
-            <a href="javscript();" (click)="stop($event)">Stop</a>
-          </div>
+<wth-modal-dock #modalDock>
+  <wth-modal-dock-header [loading]="(step==1)">
+    <span *ngIf="step==1">Uploading</span>
+    <span *ngIf="step==2"><i class="fa fa-check"></i> Uploaded</span>
+    <span *ngIf="step==3"><i class="fa fa-exclamation-triangle"></i> Can not be uploaded</span>
+    <span *ngIf="step==4"><i class="fa fa-exclamation-triangle"></i> Upload canceled</span>
+  </wth-modal-dock-header>
+  <wth-modal-dock-body>
+    <div class="media" *ngIf="step==1 || step==2 || step==4">
+      <div class="media-left">
+        <div class="img-box" style="width: 100px;">
+          <img draggable="false" class="img-box-item" [src]="current_photo" alt="">
         </div>
       </div>
-    </div>
-  </div>
+      <div class="media-body">
+        <div *ngIf="step==1">Uploading to Photo</div>
+        <div *ngIf="step==2">Photo uploaded</div>
+        <div *ngIf="step==4">{{uploaded_num}} photo<span *ngIf="uploaded_num>1">s</span> uploaded</div>
 
-
-  <!-- finish uploading  -->
-  <div class="toast-upload-item" *ngIf="step==2">
-    <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button" (click)="close()"><i class="fa fa-times"></i></button>
-      Uploaded
-    </div>
-    <div class="toast-upload-content">
-      <div class="media">
-        <div class="media-left">
-          <div class="photo-box-img">
-            <figure class="img-center-dv">
-              <img draggable="false" class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-              <img draggable="false" class="img-center"
-                   [src]="current_photo"
-                   alt="">
-            </figure>
-          </div>
-        </div>
-        <div class="media-body">
-          <p>Uploaded to Photo</p>
-          <p class="media-heading">{{uploaded_num}} of {{files_num}}</p>
-          <div class="text-right">
-            <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal', data: photos}})">Create Album</a>
-            <a href="javascript:;" class="ml10" (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal', data: photos}})">Add to Album</a>
-          </div>
-        </div>
+        <p *ngIf="step!=4" class="h3 m0 text-normal">{{uploaded_num}} of {{files_num}}</p>
+        <p *ngIf="step==4" class="h3 m0 text-normal">{{stopped_num}} cancelled</p>
       </div>
     </div>
-  </div>
 
-
-  <!-- uploading haas error(s) -->
-  <div class="toast-upload-item" *ngIf="step==3">
-    <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button" (click)="close()"><i class="fa fa-times"></i></button>
-      <i class="fa fa-exclamation-triangle"></i> Can not be uploaded
+    <div class="media" *ngIf="step==3">
+      <div class="media-body">
+        <p class="h3 m0 text-normal">Files can not be uploaded</p>
+      </div>
     </div>
-    <div class="toast-upload-content">
-      Files can not be uploaded
+
+    <input #inputfiles type="file" id="inputfiles" multiple="multiple" accept="image/*" style="display: none;"
+           autofocus="true" (change)="chooseFiles($event)"/>
+
+  </wth-modal-dock-body>
+  <wth-modal-dock-footer [inline]="true">
+    <div *ngIf="step==1">
+      <a href="javascript:;" (click)="stop($event)">
+        Stop
+      </a>
     </div>
-  </div>
-
-
-  <!-- uploading stopped-->
-  <div class="toast-upload-item" *ngIf="step==4">
-    <div class="toast-upload-header">
-      <button class="toast-upload-close" type="button" (click)="close()"><i class="fa fa-times"></i></button>
-      <i class="fa fa-exclamation-triangle"></i> Upload stopped
+    <div *ngIf="step==2 || step==4">
+      <a class="mr20" href="javascript:;"
+         (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal', data: photos}})">
+        Create Album
+      </a>
+      <a href="javascript:;"
+         (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal', data: photos}})">
+        Add to Album
+      </a>
     </div>
-    <div class="toast-upload-content">
-      {{stopped_num}} upload stopped
-    </div>
-  </div>
-
-</div>
-
-
+  </wth-modal-dock-footer>
+</wth-modal-dock>
