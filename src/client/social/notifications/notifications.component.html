@@ -5,52 +5,83 @@
      [scrollWindow]="false"
      (scrolled)="getMoreNotifications()">
   <div class="page-body-content-in zone-social">
-    <div class="zone-social-container">
-      <div class="z-social-box">
-        <div class="z-social-box-header">
-          <h3 class="h4">Notifications</h3><span class="badge badge-rounded badge-wth badge-right">{{notificationService.newNotifCount}}</span>
-        </div>
-        <div class="z-social-box-body z-social-box-body-communities">
-          <div class="row">
-            <div *ngFor="let notification of notificationService.notifications" class="col-xs-12 col-lg-6" [ngClass]="{'unread-notification': !notification.is_read }">
-              <div class="media-center">
-                <div class="media-center-left">
-                  <figure>
-                    <a [routerLink]="[profileUrl, notification.actor.uuid]">
-                      <span class="avatar-sm">
-                        <img [src]="notification.actor.profile_image" alt="">
-                      </span>
-                    </a>
-                  </figure>
-                </div>
-                <div class="media-center-body">
-                  <h4 class="media-center-heading">
-                    <a [routerLink]="['/profile', notification.actor.uuid]">
-                    {{notification.actor.name}}
-                    </a>
-                    <span style="font-weight:normal" [innerHTML]="notification.text">
-                    <a *ngIf="notification.community" [routerLink]="[communitiesUrl, notification.community.uuid]"> {{notification.community.name}}</a>
-                  </span>
-                  </h4>
 
-                </div>
-                <div style="white-space: nowrap" class="media-center-right">
-                  <button *ngFor="let action of notification.actions" class="btn btn-default ml5" type="button"
+    <div class="zone-social-in">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title pull-left">Notifications</h3>
+          <div class="pull-right">
+            <button type="button" class="btn btn-default"><i class="fa fa-cog"></i> Settings</button>
+          </div>
+        </div>
+        <ul class="list-group list-notifications">
+          <li class="list-group-item" *ngFor="let notification of notificationService.notifications"
+              data-id="notification_{{notification.id}}"
+              [ngClass]="{'unread-notification': !notification?.is_read}">
+            <div class="media">
+              <div class="media-left">
+                <a [routerLink]="[communitiesUrl]">
+                  <span class="avatar-xsm">
+                    <img [src]="notification.actor.profile_image" alt="{{notification.actor.name}}">
+                  </span>
+                </a>
+              </div>
+              <div class="media-body">
+                <p class="media-heading">
+                  <a class="link-text bold" [routerLink]="['/profile', notification.actor.uuid]">
+                    {{notification.actor.name}}</a>
+                  <span [innerHTML]="notification.text"></span>
+                </p>
+                <p *ngIf="notification.actions[0].name == 'view'">
+                  <small (click)="doAction(notification.actions[0].action, notification.id)"
+                         class="notifications-item-time text-fade can-click">
+                    {{ notification.created_at | timeFormat }}
+                  </small>
+                </p>
+                <div *ngIf="notification.actions[0].name != 'view'" class="notifications-item-button">
+                  <button *ngFor="let action of notification.actions"
+                          class="btn btn-sm mr5 text-capitalize" type="button"
+                          [ngClass]="{'btn-wth-default': action.name == 'accept', 'btn-default': action.name == 'cancel'}"
                           (click)="doAction(action, notification.id)">
-                    {{action.name.toUpperCase()}}
+                    <i class="fa"
+                       [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': action.name == 'cancel'}"></i>
+                    {{action.name}}
                   </button>
                 </div>
               </div>
+              <div class="media-right">
+                <div class="btn-group pull-right clearfix">
+                  <button type="button" class="btn btn-sm btn-default-inline-border dropdown-toggle"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="javascript:;" class="text-disable">Disable Notification for this post</a>
+                    <li><a href="javascript:;" (click)="hideNotification(notification)">Hide this notification</a>
+                    </li>
+                    <!--<li><a href="javascript:;" (click)="turnOffNotificaion(notification)">Turn off all notifications relate to this</a>
+                    </li>-->
+                  </ul>
+                </div>
+                <div class="pull-right">
+                  <button class="btn btn-sm btn-default-inline-border" type="button"
+                          (click)="toggleReadStatus(notification)">
+                    <i class="fa"
+                       [ngClass]="{'fa-circle': notification.is_read, 'fa-circle-o': !notification.is_read}"></i>
+                  </button>
+                </div>
+
+              </div>
             </div>
-            <div *ngIf="notificationService.notifications.length == 0" class="p40 text-center">
-              <h3 class="text-fade">
-                No new notifications
-              </h3>
-            </div>
-          </div>
+          </li>
+        </ul>
+        <div class="panel-footer text-center">
+          <a href="#" class="bold text-bigger">View more</a>
         </div>
       </div>
+
+
     </div>
   </div>
-
 </div>
+

@@ -56,6 +56,60 @@
   }
 }
 
+@mixin button-variant-style($color, $background, $border, $color_hover, $background_hover, $border_hover) {
+
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+
+  &:focus,
+  &.focus {
+    color: $color_hover;
+    background-color: darken($background_hover, 0%);
+    border-color: darken($border_hover, 12%);
+  }
+  &:hover {
+    color: $color;
+    background-color: $background_hover;
+    border-color: $border_hover;
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    color: $color;
+    background-color: darken($background_hover, 0%);
+    border-color: darken($border_hover, 2%);
+
+    &:hover,
+    &:focus,
+    &.focus {
+      color: $color;
+      background-color: darken($background_hover, 7%);
+      border-color: darken($border_hover, 15%);
+    }
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    background-image: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: $background;
+      border-color: $border;
+    }
+  }
+
+  .badge {
+    color: $background;
+    background-color: $color;
+  }
+}
+
 @import "hover/hover";
 
 .btn-detail {
@@ -112,6 +166,16 @@
       border-color: $line;
     }
   }
+}
+
+.btn-default-inline-border {
+  @include button-variant-style(
+      $btn-default-color,
+      transparent,
+      transparent,
+      $btn-default-color,
+      transparent,
+      $btn-default-border);
 }
 
 .btn-min {

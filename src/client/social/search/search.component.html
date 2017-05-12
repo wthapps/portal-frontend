@@ -10,8 +10,8 @@
             There is no result
           </h3>
         </div>
-        <ul class="list-group" *ngFor="let item of result[group]; let last = last" [class.last]="last">
-          <li *ngIf="group != 'posts'" class="list-group-item">
+        <ul class="list-group" *ngIf="group != 'posts'" >
+          <li *ngFor="let item of result[group]; let last = last" [class.last]="last" class="list-group-item">
             <div class="media-center">
               <div class="media-center-left">
                 <figure>

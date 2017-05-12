@@ -63,6 +63,14 @@ body {
   }
 }
 
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-bigger {
+  font-size: 120%;
+}
+
 .link-text {
   color: $text-color;
   padding: 0;

@@ -3,8 +3,9 @@
   @include box-shadow(0 0 0 transparent);
 
   .panel-heading {
-    padding-top: 18px;
-    padding-bottom: 18px;
+    padding-top: 16px;
+    padding-bottom: 15px;
+    @include clearfix;
   }
 
   .panel-footer {
@@ -14,6 +15,7 @@
 
   .panel-title {
     font-size: 18px;
+    line-height: 33px;
   }
 
   .list-group {
@@ -25,7 +27,6 @@
       }
     }
     .list-group-item {
-      margin-bottom: -1px;
       .list-group-item-heading:first-child {
         margin-top: 0;
       }
