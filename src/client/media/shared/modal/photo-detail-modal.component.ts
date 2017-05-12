@@ -244,7 +244,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   private onFavourite() {
     this.photoService.actionOneFavourite(this.selectedPhotos[this.index]).subscribe((res: any)=> {
       if (res.message === 'success') {
-        this.selectedPhotos[this.index].favorite = (this.selectedPhotos[this.index].favorite) ? false : true;
+        this.selectedPhotos[this.index].favorite = !this.selectedPhotos[this.index].favorite;
       }
     });
   }

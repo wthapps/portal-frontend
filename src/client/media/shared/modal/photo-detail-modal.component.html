@@ -10,7 +10,7 @@
         <a href="javascript:;" draggable="false" (click)="doAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i class="fa fa-share-alt"></i></a>
       </li>
       <li>
-        <a href="javascript:;" draggable="false" (click)="doAction('favourite')">
+        <a href="javascript:;" draggable="false" (click)="doAction({action: 'favourite'})">
           <i class="fa" [ngClass]="selectedPhotos[index].favorite ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>

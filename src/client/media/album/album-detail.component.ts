@@ -83,11 +83,11 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   }
 
-  getAlbumDetail(id: number) {
-    this.albumService.getAlbum(id).subscribe((res: any)=> {
-      this.albumDetail = res.data;
-    });
-  }
+  // getAlbumDetail(id: number) {
+  //   this.albumService.getAlbum(id).subscribe((res: any)=> {
+  //     this.albumDetail = res.data;
+  //   });
+  // }
 
   // getPhotos(id: number, body?: any) {
   //   this.albumService.getPhotosByAlbum(id, body).subscribe((res: any)=> {

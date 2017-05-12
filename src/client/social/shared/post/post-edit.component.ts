@@ -250,6 +250,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     let mode: string = 'edit';
     if (this.post.privacy !== type)
       mode = 'add';
+
     this.privacyCustomModal.open({type: type}, mode);
   }
 
