@@ -26,12 +26,15 @@ import { UserService } from './services/user.service';
 import { StorageService } from './services/storage.service';
 import { HandlerService } from './services/handler.service';
 
+//Pipe
 import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
 import { GroupByPipe } from './pipe/groupby.pipe';
 import { NewlinePipe } from './pipe/newline.pipe';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
+import { ConvertByPatternPipe } from './pipe/convert.pipe';
+
 import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
 import { NotificationService } from './services/notification.service';
@@ -44,7 +47,6 @@ import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';
 import { ArrayLengthPipe } from './pipe/array-length.pipe';
 import { GroupByObjectTypePipe } from './pipe/groupby-object-type.pipe';
 import { ServiceManager } from './services/service-manager';
-import { ConvertByPatternPipe } from './pipe/convert.pipe';
 import { AutofocusDirective } from './directive/autofocus.directive';
 import { ImgFullDirective } from './directive/img-full.directive';
 import { WTHNavigateService } from './services/wth-navigate.service';

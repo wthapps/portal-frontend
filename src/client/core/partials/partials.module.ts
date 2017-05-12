@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CalendarModule } from 'primeng/primeng';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { CheckboxModule } from 'primeng/primeng';
 
 import { SearchFormComponent } from './header/search/search-form.component';
 import { HeaderComponent } from './header/header.component';
@@ -17,7 +19,6 @@ import { ZSharedModule } from './zone/zone.module';
 import { PhotoModule } from './zone/photo/photo.module';
 import { UploadCropImageModule } from './upload-crop-image/upload-crop-image.module';
 import { TitleCase } from '../shared/pipe/titlecase.pipe';
-import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 import { CoreChatSupportModule } from './chat-support/chat-support.module';
 import { EntitySelectModule } from './entity-select/entity-select.module';
 import { PhotoSearchFormComponent } from './header/search/photo-search-form.component';
@@ -26,7 +27,8 @@ import { AutoCompleteModule } from 'primeng/primeng';
 import { ModalDockModule } from './modal/dock.module';
 import { SocialSearchFormComponent } from './header/search/social-search-form.component';
 import { CoverProfileModule } from './cover-profile/cover-profile.module';
-
+import { PartialsNotificationsComponent } from './notifications/notifications.component';
+import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 
 
 @NgModule({
@@ -51,7 +53,9 @@ import { CoverProfileModule } from './cover-profile/cover-profile.module';
     CalendarModule,
     CoverProfileModule,
 
-    ModalDockModule
+    ModalDockModule,
+    Ng2Bs3ModalModule,
+    CheckboxModule
   ],
   declarations: [
     SearchFormComponent,
@@ -60,6 +64,7 @@ import { CoverProfileModule } from './cover-profile/cover-profile.module';
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
+    PartialsNotificationsComponent,
 
     // Pipe
     TitleCase,
@@ -72,6 +77,7 @@ import { CoverProfileModule } from './cover-profile/cover-profile.module';
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
+    PartialsNotificationsComponent,
     LoadingModule,
     ToastsModule,
     TablePricingModule,
@@ -91,8 +97,8 @@ import { CoverProfileModule } from './cover-profile/cover-profile.module';
     // GroupByMonthYearPipe,
     // GroupByPipe,
     // NewlinePipe,
-    TimeFormatPipe,
-    TitleCase
+    TitleCase,
+    TimeFormatPipe
     // UrlTransformPipe,
     // ShowLengthTransformPipe,
     // SafeHtmlPipe,

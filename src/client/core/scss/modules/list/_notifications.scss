@@ -1,5 +1,5 @@
 .list-notifications {
-  > li {
+  > .list-group-item {
     position: relative;
     &:hover {
       background-color: rgba($color-inverse, 0.1);
@@ -39,4 +39,20 @@
     position: relative;
     z-index: 2;
   }
+}
+
+.navbar-nav-notification {
+  .list-notifications {
+    max-height: 400px;
+    overflow: auto;
+    margin: 0;
+    .list-group-item {
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+      border-left-width: 0;
+      border-right-width: 0;
+    }
+  }
+
 }
