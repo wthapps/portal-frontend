@@ -152,7 +152,7 @@
       </li>
       <!-- Shared with me screen DOES NOT support delete objects action -->
       <li *ngIf="page != 'shared-with-me'">
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'deleteMedia', params: {selectedObjects: selectedObjects}})">
+        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
