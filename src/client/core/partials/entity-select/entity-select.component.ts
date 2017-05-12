@@ -84,7 +84,7 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   changeEntity(newType: string = '') {
     if (newType && (this.type !== newType) ) {
       this.selectedItems.length = 0;
-      this.type = newType;
+      this.type = _.clone(newType); // Make sure newType value immutable when modal close
     }
     let entity = _.filter(ENTITY_ATTRS, {type: this.type});
     this.title = entity[0].title;
@@ -95,7 +95,7 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
     //   this.term$.next();
   }
 
-  open(options: any = {url: undefined, type: ''},  mode: string = 'add') {
+  open(options: any = {url: undefined, type: '', data: []},  mode: string = 'add') {
     if (options.type != undefined && options.type != '')
       this.changeEntity(options.type);
 
@@ -109,6 +109,10 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
     // Clear selected items
     if (mode == MODE_TYPE.add) {
       this.selectedItems.length = 0;
+    }
+
+    if (mode == MODE_TYPE.edit) {
+      this.selectedItems = _.get(options, 'data', []).slice();
     }
 
     this.list.setInputValue('');
@@ -135,7 +139,7 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
 
   cancel($event: any) {
     if (this.selectedItems.length > 0) {
-      this.selectedItems = [];
+      this.selectedItems.length = 0;
       this.modal.dismiss();
       // this.list.resetSelectedItems();
     }

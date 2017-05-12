@@ -95,51 +95,6 @@
       </div>
 
     </div>
-    <div class="zone-social-sidebar">
-      <dl>
-        <dt>Posted by</dt>
-        <dd>
-          <ul class="list-unstyled">
-            <li>
-              <p-radioButton name="searchPostedBy" value="anyone" label="Anyone" [(ngModel)]="searchPostedBy"></p-radioButton>
-            </li>
-            <li>
-              <p-radioButton name="searchPostedBy" value="you" label="You" [(ngModel)]="searchPostedBy"></p-radioButton>
-            </li>
-            <li>
-              <p-radioButton name="searchPostedBy" value="yourFriends" label="Your friends"
-                          [(ngModel)]="searchPostedBy"></p-radioButton>
-            </li>
-            <li>
-              <p-radioButton name="searchPostedBy" value="frinedOfFriend" label="Friend of friends and communites"
-                          [(ngModel)]="searchPostedBy"></p-radioButton>
-            </li>
-          </ul>
-        </dd>
-      </dl>
-      <dl>
-        <dt>Date</dt>
-        <dd>
-          <ul class="list-unstyled">
-            <li>
-              <p-radioButton name="searchDate" value="anytime" label="Anytime" [(ngModel)]="searchDate"></p-radioButton>
-            </li>
-            <li>
-              <p-radioButton name="searchDate" value="2017" label="2017" [(ngModel)]="searchDate"></p-radioButton>
-            </li>
-            <li>
-              <p-radioButton name="searchDate" value="2016" label="2016" [(ngModel)]="searchDate"></p-radioButton>
-            </li>
-            <li>
-            <li>
-              <p-radioButton name="searchDate" value="custom" label="Custom date" [(ngModel)]="searchDate"></p-radioButton>
-              <div class="mt5">
-                <p-calendar [showIcon]="true" class="form-control-block" [(ngModel)]="searchDateValue" ></p-calendar>
-              </div>
-            </li>
-          </ul>
-        </dd>
-      </dl>
-    </div>
+
   </div>
 </div>

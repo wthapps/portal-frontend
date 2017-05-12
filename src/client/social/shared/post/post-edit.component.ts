@@ -173,7 +173,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         disable_share: this.post.disable_share,
         mute: this.post.mute,
         parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-        custom_objects: this.custom_objects
+        custom_objects: this.post.custom_objects
       },
       isShare: this.isShare
     };
@@ -251,12 +251,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     if (this.post.privacy !== type)
       mode = 'add';
 
-    this.privacyCustomModal.open({type: type}, mode);
+    this.privacyCustomModal.open({type: type, data: this.post.custom_objects}, mode);
   }
 
   selectedItems(response: any) {
-    this.update({privacy: response.type}, null);
-    this.custom_objects = response.items;
+    this.update({privacy: response.type, custom_objects: response.items}, null);
+    // this.custom_objects = response.items;
   }
 
   privacyName(post: any): string {
