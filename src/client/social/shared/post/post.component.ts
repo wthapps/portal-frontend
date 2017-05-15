@@ -11,7 +11,7 @@ import {
 import {
   PostActivitiesComponent
 } from './index';
-import { ZSocialCommentBoxType, CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
+import { CommentEditorMode, CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
@@ -56,7 +56,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() photoModalOpened: EventEmitter<any> = new EventEmitter<any>();
 
   commentEditor: CommentItemEditorComponent;
-  commentBoxType = ZSocialCommentBoxType;
+  commentBoxType = CommentEditorMode;
 
   itemDisplay: any;
   typeLikeDislike: any;
@@ -237,14 +237,20 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   onActions(event: BaseEvent) {
     // Create a comment
+    // console.log('create post', event);
+    // return;
+
+
     if (event instanceof CommentCreateEvent) {
       this.createComment(event.data).subscribe(
         (res: any) => {
+          console.log('response data', res.data);
+
           // this.item = new SoPost().from(res.data);
           // this.mapDisplay();
           let comment = new SoComment().from(res.data);
           _.uniqBy(this.item.comments.unshift(comment),'uuid');
-          this.item.total_comments += 1;
+          this.item.comment_count += 1;
           this.mapDisplay();
         }
       );
@@ -406,9 +412,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           return;
         }
         // TODO: Handle multi-level replies case
-        _.forEach(this.item.comments[index].replies, (reply: SoComment, i2: any) => {
+        _.forEach(this.item.comments[index].comments, (reply: SoComment, i2: any) => {
           if(reply.uuid ==  data.comment.uuid ) {
-            this.updateReactionsSet(this.item.comments[index].replies[i2], data);
+            this.updateReactionsSet(this.item.comments[index].comments[i2], data);
             done = true;
             return;
           }
@@ -446,7 +452,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
       this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
-          this.commentEditor.createComment({photo: photos[0], content: ''});
+          this.commentEditor.setCommentAttributes({photo: photos[0]});
           // this.commentEditor.commentAction(photos);
         },
         (error : any) => { console.error(error); }
@@ -463,7 +469,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         (response: any) => {
           console.log('response data: ', response.data);
           // this.commentEditor.commentAction([res['current_photo']]);
-          this.commentEditor.createComment({photo: response.data, content: ''});
+          this.commentEditor.setCommentAttributes({photo: response.data});
           this.commentEditor.updateAttributes({hasUploadingPhoto: false});
           // this.commentEditor.commentAction([res['data']]);
         },

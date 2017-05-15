@@ -1,6 +1,6 @@
 <div *ngIf="!item.disable_comment" class="z-social-comment">
   <!--Add new comment-->
-  <comment-item-editor (eventEmitter)="onCallBack($event)" [item]="item" [type]="commentBoxType.Add"></comment-item-editor>
+  <comment-item-editor (eventEmitter)="onCallBack($event)" [parent]="item" [mode]="commentEditorMode.Add"></comment-item-editor>
 
   <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">-->
     <!--{{item.comments?.length}} of {{item.total_comments}} Comment-->
@@ -15,11 +15,14 @@
     <!--<li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">-->
     <li class="media" *ngFor="let comment of item.comments; let i = index">
 
-      <div id="container-comment-{{comment?.uuid}}-edit"></div>
+      <!--<div id="container-comment-{{comment?.uuid}}-edit"></div>-->
 
       <!--Edit comment-->
-      <comment-item-editor id="editComment-{{comment?.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
-                   [comment]="comment" style="display: none" [type]="commentBoxType.Edit"></comment-item-editor>
+      <comment-item-editor id="editComment-{{comment?.uuid}}" style="display: none"
+                           (eventEmitter)="onCallBack($event)"
+                           [parent]="item"
+                           [comment]="comment"
+                           [mode]="commentEditorMode.Edit"></comment-item-editor>
 
 
       <div id="comment-{{comment?.uuid}}">
@@ -45,7 +48,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a href="javascript:;"
-                     (click)="onActions(actions.onEditComment, {data: comment, commentType: 'comment'})">Edit Comment</a></li>
+                     (click)="onActions(actions.onEditComment, {data: comment, commentType: 'comment'})">Edit</a></li>
 
               <li><a href="javascript:;"
                      (click)="onActions(actions.onDeleteComment, {data: comment, commentType: 'comment'})">Delete</a></li>
@@ -67,8 +70,8 @@
                    (click)="onActions(actions.openLikeDislike, comment.dislikes, 'dislike')">{{comment.dislikes.length}}</a>
                 <a *ngIf="comment.dislikes.length==0" href="javascript:;">{{comment.dislikes.length}}</a>
               </li>
-              <li><a href="javascript:;" (click)="onActions(actions.onReply, comment)"
-                     [innerHTML]="totalRepliesInWords(comment.replies)"> </a></li>
+              <li><a href="javascript:;" (click)="onActions(actions.onCreateComment, {parent: comment, parentType: 'SocialNetwork::Comment'})"
+                     [innerHTML]="totalRepliesInWords(comment?.comments)"> </a></li>
             </ul>
           </div>
         </div>
@@ -77,11 +80,14 @@
 
 
 
-      <div class="media" *ngFor="let reply of comment.replies; let j = index">
+      <div class="media" *ngFor="let reply of comment.comments; let j = index">
         <!--Edit reply-->
-        <comment-item-editor id="editComment-{{reply.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item"
-                     [comment]="comment" [reply]="reply" style="display: none"
-                     [type]="commentBoxType.EditReply"></comment-item-editor>
+        <comment-item-editor id="editComment-{{reply.uuid}}" style="display: none"
+                             (eventEmitter)="onCallBack($event)"
+                             [parent]="comment"
+                             [parentType]="'SocialNetwork::Comment'"
+                             [comment]="reply"
+                             [mode]="commentEditorMode.Edit"></comment-item-editor>
         <div id="comment-{{reply.uuid}}">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
@@ -98,8 +104,8 @@
                   <i class="fa fa-pencil"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="javascript:;" (click)="onActions(actions.onEditComment, reply)">Edit Comment</a></li>
-                  <li><a href="javascript:;" (click)="onActions(actions.onDeleteReply, reply)">Delete</a></li>
+                  <li><a href="javascript:;" (click)="onActions(actions.onEditComment, {data: reply, commentType: 'comment'})">Edit</a></li>
+                  <li><a href="javascript:;" (click)="onActions(actions.onDeleteReply, {data: reply, commentType: 'comment'})">Delete</a></li>
                 </ul>
               </div>
             </h4>
@@ -130,8 +136,11 @@
           </div>
         </div>
       </div>
-      <comment-item-editor id="reply-{{comment.uuid}}" (eventEmitter)="onCallBack($event)" [item]="item" [comment]="comment"
-                   style="display: none;" [type]="commentBoxType.Reply"></comment-item-editor>
+      <comment-item-editor id="reply-{{comment.uuid}}" style="display: none;"
+                           (eventEmitter)="onCallBack($event)"
+                           [parent]="comment"
+                           [parentType]="'SocialNetwork::Comment'"
+                           [mode]="commentEditorMode.Add"></comment-item-editor>
     </li>
   </ul>
   <div *ngIf="notAllCommentsLoaded()" class="z-social-comment-more">

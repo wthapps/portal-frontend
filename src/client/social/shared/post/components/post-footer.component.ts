@@ -13,7 +13,7 @@ import {
   DeleteReplyEvent,
   CancelEditReplyCommentEvent, ViewMoreCommentsEvent, ReplyCreateEvent
 } from '../../../events/social-events';
-import { ZSocialCommentBoxType } from './comment/comment-item-editor.component';
+import { CommentEditorMode } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
@@ -39,13 +39,13 @@ export class PostFooterComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
-  commentBoxType = ZSocialCommentBoxType;
+  commentEditorMode = CommentEditorMode;
 
   actions = {
     onDeleteComment: 1,
     onEditComment: 2,
     onDeleteReply: 3,
-    onReply: 4,
+    onCreateComment: 4,
     openLikeDislike: 6,
     onShowPhotoDetail: 7
   };
@@ -73,7 +73,7 @@ export class PostFooterComponent implements OnChanges {
     if (this.type == 'info') {
       this.showInfo = true;
     }
-    this.totalComment = this.item.total_comments;
+    this.totalComment = this.item.comment_count;
   }
 
   onActions(action: any, params?: any) {
@@ -87,6 +87,7 @@ export class PostFooterComponent implements OnChanges {
         let currentComment = data;
         let commentType = type;
 
+        console.log('editing..........:', data);
         // show edit comment form
         $('#editComment-' + currentComment.uuid).show();
 
@@ -96,9 +97,14 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
         break;
-      case this.actions.onReply:
+      case this.actions.onCreateComment:
+        let parent = params.parent;
+        let parentType = params.parentType;
+
+        console.log('replying..........:', parent);
+
         // this.eventEmitter.emit(new ReplyCreateEvent(data));
-        $('#reply-' + data.uuid).show();
+        $('#reply-' + parent.uuid).show();
         break;
       case this.actions.openLikeDislike:
         this.postItem.openLikeDislike(data, type);
@@ -113,7 +119,8 @@ export class PostFooterComponent implements OnChanges {
 
 
   onCallBack(event: any) {
-    if (event instanceof CancelEditCommentEvent || event instanceof CancelEditReplyCommentEvent) {
+    // console.log('data:::::::', event);
+    if (event instanceof CancelEditCommentEvent) {
       $('#editComment-' + event.data.uuid).hide();
       $('#comment-' + event.data.uuid).show();
       return;

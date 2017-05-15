@@ -49,7 +49,7 @@
     <div class="photo-detail-img">
       <figure>
         <img *ngIf="replyIndex == null" [src]="item.comments[commentIndex].photo.url" alt="">
-        <img *ngIf="replyIndex != null" [src]="item.comments[commentIndex].replies[replyIndex].photo.url" alt="">
+        <img *ngIf="replyIndex != null" [src]="item.comments[commentIndex].comments[replyIndex].photo.url" alt="">
       </figure>
     </div>
   </div>
