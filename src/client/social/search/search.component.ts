@@ -83,8 +83,7 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
       (res: any) => {
         if(!_.isEmpty(this.favourite)) {
           this.favourite = undefined;
-        }
-        else {
+        } else {
           this.favourite = res.data;
         }
       }

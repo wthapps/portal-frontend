@@ -41,6 +41,7 @@ export class ZSocialMembersComponent implements OnInit {
   totalFollowings: number;
   totalBlacklist: number;
   readonly friendTabs = FRIEND_TABS;
+  totalBlacklists: number;
 
   constructor(private socialService: SocialService,
               private zoneReportService: ZoneReportService,

@@ -16,6 +16,7 @@ export class PartialsNotificationsComponent {
   @ViewChild('modal') modal: ModalComponent;
 
   selectedNotifications: string[] = ['social'];
+  communitiesUrl: string;
 
   constructor(public notificationService: NotificationService) {
   }

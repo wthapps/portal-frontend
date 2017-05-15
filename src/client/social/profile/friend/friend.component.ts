@@ -42,7 +42,6 @@ export class ZSocialProfileFriendComponent implements OnInit {
   }
 
   onLoadMore() {
-
+  //
   }
-
 }

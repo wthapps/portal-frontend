@@ -36,16 +36,16 @@ export class ZSocialPostByFilterComponent implements OnInit {
   disable(disableCustom:boolean) {
     this.disableCustom = disableCustom;
     if (disableCustom) {
-      this.searchText = "";
+      this.searchText = '';
     }
   }
 
   filter(filter:any) {
-    let filterDate = "";
-    if (this.urlService.getQuery()["filter_date"]) {
-      filterDate = decodeURIComponent(this.urlService.getQuery()["filter_date"]);
+    let filterDate = '';
+    if (this.urlService.getQuery()['filter_date']) {
+      filterDate = decodeURIComponent(this.urlService.getQuery()['filter_date']);
     }
-    let q = this.urlService.getQuery()["q"];
+    let q = this.urlService.getQuery()['q'];
     let body:any = {};
     if (q) {
       body.q = q;

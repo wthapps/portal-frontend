@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
 export class DateService {
 
   getTimeString(date:Date) {
-    let s = "";
+    let s = '';
     if (date) {
-      s = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+      s = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
     }
     return s;
   }

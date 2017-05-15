@@ -14,6 +14,9 @@ export class SocialSearchFormComponent extends BaseSearchForm implements OnInit 
   result:any;
   groups:any;
   constants:any;
+  searchText:any;
+  suggestions:any;
+  active:boolean;
 
   constructor(public serviceManager: ServiceManager) {
     super();

@@ -51,9 +51,9 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
       .filter((event:any) => event instanceof NavigationEnd)
       .subscribe((event:NavigationEnd) => {
         this.group = this.urlService.getId();
-        this.q = this.urlService.getQuery()["q"];
-        this.filter = this.urlService.getQuery()["filter_post"];
-        this.filterDate = this.urlService.getQuery()["filter_date"];
+        this.q = this.urlService.getQuery()['q'];
+        this.filter = this.urlService.getQuery()['filter_post'];
+        this.filterDate = this.urlService.getQuery()['filter_date'];
         if (this.q) {
           let query:any = {q : this.q};
           if (this.filter) {
@@ -81,8 +81,7 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
       (res: any) => {
         if(!_.isEmpty(this.favourite)) {
           this.favourite = undefined;
-        }
-        else {
+        } else {
           this.favourite = res.data;
         }
       }

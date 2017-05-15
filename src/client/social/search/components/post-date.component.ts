@@ -15,7 +15,7 @@ export class ZSocialPostDateFilterComponent {
   searchDate: string = '';
   searchDateValue: any;
   disableCustom:boolean = true;
-  customDate:any = "*";
+  customDate:any = '*';
 
   constructor(
     private urlService: UrlService,
@@ -30,11 +30,11 @@ export class ZSocialPostDateFilterComponent {
   }
 
   filter(filter:any) {
-    let filterPost:any = "";
-    if (this.urlService.getQuery()["filter_post"]) {
-      filterPost = decodeURIComponent(this.urlService.getQuery()["filter_post"]);
+    let filterPost:any = '';
+    if (this.urlService.getQuery()['filter_post']) {
+      filterPost = decodeURIComponent(this.urlService.getQuery()['filter_post']);
     }
-    let q = this.urlService.getQuery()["q"];
+    let q = this.urlService.getQuery()['q'];
     let body:any = {};
     if (q) {
       body.q = q;
