@@ -81,7 +81,7 @@ export class CommentItemEditorComponent implements OnInit {
 
       this.comment.content = this.commentEditorForm.value.content;
       this.comment.photo = this.commentEditorForm.value.photo;
-      this.post(this.comment)
+      this.post(this.comment);
     }
     // Cancel comment
     if (e.keyCode == 27) {
@@ -184,7 +184,7 @@ export class CommentItemEditorComponent implements OnInit {
       this.comment.parentId = this.parent.uuid;
       this.comment.parentType = this.parentType;
 
-      event = new CommentCreateEvent(this.comment)
+      event = new CommentCreateEvent(this.comment);
 
     } else if(this.mode == CommentEditorMode.Edit) {
       // update current comment/reply
@@ -209,9 +209,9 @@ export class CommentItemEditorComponent implements OnInit {
 
   checkValidForm(): boolean {
     if (this.mode == CommentEditorMode.Add) {
-      return (this.comment.content.length > 0 || this.comment.photo != null)
+      return (this.comment.content.length > 0 || this.comment.photo != null);
     } else if (this.mode == CommentEditorMode.Edit) {
-      return (this.commentEditorForm.dirty || this.comment.photo != null)
+      return (this.commentEditorForm.dirty || this.comment.photo != null);
     }
     return false;
   }
