@@ -10,7 +10,7 @@
             There is no result
           </h3>
         </div>
-        <ul class="list-group" *ngIf="group != 'posts'" >
+        <ul class="list-group" *ngIf="group != 'posts'">
           <li *ngFor="let item of result[group]; let last = last" [class.last]="last" class="list-group-item">
             <div class="media-center">
               <div class="media-center-left">
@@ -28,68 +28,92 @@
                 </h4>
               </div>
               <div class="media-center-right">
-                  <div *ngIf="group == 'members' ">
-                    <div class="no-wrap dropdown pull-right">
-                      <button class="btn btn-default" type="button" (click)="addFriend(item)" *ngIf="item.friend_status == friendStatus.stranger">
-                        Add Friend
-                      </button>
-                      <button class="btn btn-default" type="button" *ngIf="item.friend_status == friendStatus.pending">
-                        <i class="fa fa-check"></i> Friend Request Sent
-                      </button>
-                      <button class="btn btn-default dropdown-toggle" type="button" *ngIf="item.friend_status == friendStatus.accepted"
-                              (click)="getFavourite(item, 'friend')">
+
+                <div *ngIf="group == 'members' ">
+                  <div class="pull-right no-wrap">
+                    <button class="btn btn-default" type="button" (click)="addFriend(item)"
+                            *ngIf="item.friend_status == friendStatus.stranger">
+                      Add Friend
+                    </button>
+                    <button class="btn btn-default" type="button" *ngIf="item.friend_status == friendStatus.pending">
+                      <i class="fa fa-check"></i> Friend Request Sent
+                    </button>
+
+                    <div class="btn-group" *ngIf="item.friend_status == friendStatus.accepted">
+                      <button (click)="getFavourite(item, 'friend')" class="btn btn-default dropdown-toggle"
+                              type="button" data-toggle="dropdown">
                         <i class="fa fa-check"></i> Friend <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu dropdown-custom">
-                        <li><a href="javascript:;" (click)="toggleFavourite(item, 'friend')">Favorite <i class="fa pull-right"
-                                                                                                         [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a>
-                        </li>
-
-                        <li *ngIf="item.is_following"><a href="javascript:;" (click)="unfollow(item)"><i class="fa fa-check"></i> Unfollow</a></li>
-                        <li *ngIf="!item.is_following"><a href="javascript:;" (click)="follow(item)"> Follow</a></li>
-                        <li><a href="javascript:;" (click)="importToContacts(item)">Import to Contacts</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li *ngIf="item.friend_status == friendStatus.accepted"><a href="javascript:;" (click)="unfriend(item)">Unfriend</a></li>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li *ngIf="item.is_following"><a href="javascript:;" (click)="unfollow(item)">Unfollow</a></li>
+                        <li *ngIf="!item.is_following"><a href="javascript:;" (click)="follow(item)">Follow</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:;" (click)="unfriend(item)">Unfriend</a></li>
                       </ul>
                     </div>
 
-                    <div class="no-wrap dropdown pull-right">
-                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+
+                    <div class="btn-group" *ngIf="item.friend_status == friendStatus.accepted">
+                      <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                              data-toggle="dropdown">
                         <i class="fa fa-ellipsis-v"></i>
                       </button>
-                      <ul class="dropdown-menu dropdown-custom">
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li>
+                          <a href="javascript:;" (click)="toggleFavourite(item, 'friend')">
+                            <span *ngIf="!favourite && !favourite?.uuid">Add to Favorites</span>
+                            <span *ngIf="favourite && favourite?.uuid">Remove from Favorites</span>
+                          </a>
+                        </li>
+                        <li><a href="javascript:;" (click)="importToContacts(item)">Import to Contacts</a></li>
+                        <!--<li class="divider"></li>-->
+                        <!--<li><a href="javascript:;" (click)="reportFriend(item)">Report Member</a></li>-->
+                        <!--<li><a href="javascript:;" (click)="addToBlackList(item?.uuid)">Add to blacklist</a></li>-->
+                      </ul>
+                    </div>
 
-                        <li *ngIf="item.is_following"><a href="javascript:;" (click)="unfollow(item)"><i class="fa fa-check"></i> Unfollow</a></li>
+                    <div class="btn-group" *ngIf="item.friend_status == !friendStatus.accepted">
+                      <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                              data-toggle="dropdown">
+                        <i class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li *ngIf="item.is_following"><a href="javascript:;" (click)="unfollow(item)"><i
+                          class="fa fa-check"></i> Unfollow</a></li>
                         <li *ngIf="!item.is_following"><a href="javascript:;" (click)="follow(item)"> Follow</a></li>
                       </ul>
                     </div>
                   </div>
-
-                  </div>
-
-
-                  <!-- Community Actions -->
-                  <div *ngIf="group == 'community' ">
-
-                  <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)" *ngIf="item.user_status == comUserStatus.stranger">
-                    Join
-                  </button>
-                  <button class="btn btn-default" type="button" *ngIf="item.user_status == comUserStatus.joinRequestSent">
-                    Asked To Join
-                  </button>
-
-                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="item?.user_status == comUserStatus.member"
-                          (click)="getFavourite(item, 'community')">
-                    <i class="fa fa-check"></i> Joined <span class="caret"></span>
-                  </button>
-
-                  <ul class="dropdown-menu dropdown-custom">
-                    <li><a href="javascript:;" (click)="toggleFavourite(item, 'community')"> Favourite <i class="fa pull-right"
-                                                                                                          [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
-                    <li><a href="javascript:;" (click)="confirmLeaveCommunity(item)">Leave community</a></li>
-                  </ul>
                 </div>
+
               </div>
+
+
+              <!-- Community Actions -->
+              <div *ngIf="group == 'community' ">
+
+                <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)"
+                        *ngIf="item.user_status == comUserStatus.stranger">
+                  Join
+                </button>
+                <button class="btn btn-default" type="button" *ngIf="item.user_status == comUserStatus.joinRequestSent">
+                  Asked To Join
+                </button>
+
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                        *ngIf="item?.user_status == comUserStatus.member"
+                        (click)="getFavourite(item, 'community')">
+                  <i class="fa fa-check"></i> Joined <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-custom">
+                  <li><a href="javascript:;" (click)="toggleFavourite(item, 'community')"> Favourite <i
+                    class="fa pull-right"
+                    [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
+                  <li><a href="javascript:;" (click)="confirmLeaveCommunity(item)">Leave community</a></li>
+                </ul>
+              </div>
+            </div>
           </li>
         </ul>
         <so-post-list *ngIf="group == 'posts'" #posts [items]="result[group]" [type]="'search'"></so-post-list>
