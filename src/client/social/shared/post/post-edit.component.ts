@@ -120,8 +120,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.post = new SoPost();
     if(this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
-      this.custom_objects.length = 0; //
-      this.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
+      this.post.custom_objects.length = 0;
+      this.post.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
     }
 
     this.mode = options.mode;
