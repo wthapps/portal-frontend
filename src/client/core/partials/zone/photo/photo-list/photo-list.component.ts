@@ -22,20 +22,25 @@ export class SoPhotoListComponent implements OnInit {
 
   photos: Array<any> = new Array<any>();
   selectedItems: Array<any> = new Array<any>();
-  pressingCtrl: boolean = false;
+  pressingCtrlKey: boolean = false;
 
 
   @HostListener('document:keydown', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
-    if (ev.keyCode == 17 && this.multipleSelect) {
-      this.pressingCtrl = true;
+  onKeyDown(ke: KeyboardEvent) {
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = true;
     }
   }
 
   @HostListener('document:keyup', ['$event'])
-  onKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 17) {
-      this.pressingCtrl = false;
+  onKeyUp(ke: KeyboardEvent) {
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = false;
+    }
+
+    //if0 pressing ESC key
+    if (ke.keyCode == 27) {
+      // this.deSelectObjects();
     }
   }
 
@@ -71,7 +76,7 @@ export class SoPhotoListComponent implements OnInit {
 
     e.stopPropagation();  // stop events on parent element
 
-    if (this.pressingCtrl) {
+    if (this.pressingCtrlKey) {
       el.toggleClass(selectedClass);
       if (_.find(this.selectedItems, _.matchesProperty('id', item['id'])) == undefined) {
         this.selectedItems.push(item); // add
@@ -107,5 +112,9 @@ export class SoPhotoListComponent implements OnInit {
 
   changeFiles(files: Array<any>) {
     this.onFilesChanged.emit(files);
+  }
+
+  private pressedCtrlKey(ke: KeyboardEvent): boolean {
+    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 }
