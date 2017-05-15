@@ -39,7 +39,9 @@
     border-bottom: 1px solid $line;
     @include clearfix;
     .badge-wth {
-      top: 2px;
+      top: -2px;
+      background-color: #d8d8d8;
+      color: $text-color;
     }
     .h4 {
       margin: 0;

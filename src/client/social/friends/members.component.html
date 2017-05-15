@@ -43,22 +43,22 @@
             <ul class="nav nav-tabs visible-md-block visible-lg-block">
               <li [ngClass]="{'active': currentState == friendTabs.friends}">
                 <a (click)="getDataList('friends')" href="javascript:;">
-                  FRIENDS <span *ngIf="data.friends" class="text-fade">{{data.friends.length}}</span>
+                  FRIENDS <span *ngIf="data.friends" class="badge badge-rounded badge-wth badge-right">{{data.friends.length}}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.followers}">
                 <a (click)="getDataList('followers')" href="javascript:;">
-                  FOLLOWERS <span *ngIf="data.followers" class="text-fade">{{data.followers.length}}</span>
+                  FOLLOWERS <span *ngIf="data.followers" class="badge badge-rounded badge-wth badge-right">{{data.followers.length}}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.followings}">
                 <a (click)="getDataList('followings')" href="javascript:;">
-                  FOLLOWING <span *ngIf="data.followings" class="text-fade">{{data.followings.length}}</span>
+                  FOLLOWING <span *ngIf="data.followings" class="badge badge-rounded badge-wth badge-right">{{data.followings.length}}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.blacklists}">
                 <a (click)="getDataList('blacklists')" href="javascript:;">
-                  BLACKLIST <span *ngIf="data.blacklists" class="text-fade">{{data.blacklists.length}}</span>
+                  BLACKLIST <span *ngIf="data.blacklists" class="badge badge-rounded badge-wth badge-right">{{data.blacklists.length}}</span>
                 </a>
               </li>
             </ul>
@@ -112,21 +112,35 @@
                   <!--<p *ngIf="nickname" class="media-center-p">{{item.nickname}}</p>-->
                 </div>
                 <div class="media-center-right">
-                  <div *ngIf="currentState == friendTabs.friends" class="pull-right">
+                  <div *ngIf="currentState == friendTabs.friends" class="pull-right no-wrap">
                     <!-- Friend button -->
                     <div class="btn-group">
-                      <button (click)="getFavourite(item?.uuid)" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button (click)="getFavourite(item?.uuid)" type="button" class="btn btn-default dropdown-toggle"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-check"></i> Friend <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                      <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="javascript:;" (click)="unfriend(item?.uuid)">Unfollow</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:;" (click)="unfriend(item?.uuid)">Unfriend</a></li>
+                      </ul>
+                    </div>
+
+                    <!-- Friend button -->
+                    <div class="btn-group">
+                      <button (click)="getFavourite(item?.uuid)" type="button" class="btn btn-default-inline-border dropdown-toggle"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right">
                         <li>
                           <a href="javascript:;" (click)="addFavourite(item?.uuid)">
-                            Favorite
-                            <i class="fa pull-right" [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i>
+                            <span *ngIf="favourite && favourite?.uuid">Remove from Favorites</span>
+                            <span *ngIf="!favourite && !favourite?.uuid">Add to Favorites</span>
                           </a>
                         </li>
-                        <li><a href="javascript:;" (click)="unfriend(item?.uuid)">Unfriend</a></li>
                         <li><a href="javascript:;" (click)="addToContacts(item?.uuid)">Import to contacts</a></li>
+                        <li class="divider"></li>
                         <li><a href="javascript:;" (click)="reportFriend(item)">Report Member</a></li>
                         <li><a href="javascript:;" (click)="addToBlackList(item?.uuid)">Add to blacklist</a></li>
                       </ul>
@@ -139,10 +153,11 @@
 
                     <!-- ellipsis button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-default-inline-border dropdown-toggle" data-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-ellipsis-v"></i>
                       </button>
-                      <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                      <ul class="dropdown-menu dropdown-menu-right">
                         <li><a href="javascript:;" (click)="reportFriend(item)">Report Member</a></li>
                         <li><a href="javascript:;" (click)="addToBlackList(item?.uuid)">Add to blacklist</a></li>
                       </ul>
@@ -157,10 +172,11 @@
 
                     <!-- Unfollow button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-default-inline-border dropdown-toggle" data-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-ellipsis-v"></i>
                       </button>
-                      <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                      <ul class="dropdown-menu dropdown-menu-right">
                         <!--<li><a href="javascript:;" (click)="addFavourite(item?.uuid)">Favorite <i class="fa pull-right"-->
                         <!--[ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a>-->
                         <!--</li>-->
