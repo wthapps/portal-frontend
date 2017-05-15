@@ -9,8 +9,6 @@ import { ZChatToolbarComponent } from './toolbar/toolbar.component';
 import { ChatService } from './services/chat.service';
 import { SharedModule } from '../../core/shared/shared.module';
 import { ZChatEmojiModule } from './emoji/emoji.module';
-import { ChatChannelService } from './channels/chat-channel.service';
-import { ChatNotificationChannelService } from './channels/chat-notification-channel.service';
 import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from './modal/add-contact.component';
 import { ChatMonthDayYearPipe } from './pipe/chat-month-day-year.pipe';
@@ -86,7 +84,7 @@ export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService, ChatChannelService, ChatNotificationChannelService, ChatCommonService]
+      providers: [ChatService, ChatCommonService]
     };
   }
 }

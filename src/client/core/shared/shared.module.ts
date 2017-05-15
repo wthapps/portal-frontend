@@ -55,6 +55,7 @@ import { PhotoItemPreviewComponent } from './components/photo/photo-item-preview
 import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.directive';
 import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
+import { ChannelService } from './channels/channel.service';
 
 
 /**
@@ -169,6 +170,7 @@ export class SharedModule {
         NotificationService,
         NotificationChannelService,
         AppearancesChannelService,
+        ChannelService,
         PhotoModalDataService,
         PhotoUploadService,
         UrlService,

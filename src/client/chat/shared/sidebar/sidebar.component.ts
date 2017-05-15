@@ -25,7 +25,6 @@ export class ZChatSidebarComponent implements OnInit {
     this.chatService.handler.addListener('on_default_contact_select_side_bar', 'on_default_contact_select', (contact:any) => {
       this.chatService.router.navigate([`${this.chatService.constant.conversationUrl}/${contact.id}`]);
       this.chatService.getMessages(contact.group_json.id);
-      this.chatService.chanel.subscribe(contact.group_json.id);
     });
     this.item = this.chatService.getContacts();
     this.recentContacts = this.chatService.getRecentContacts();

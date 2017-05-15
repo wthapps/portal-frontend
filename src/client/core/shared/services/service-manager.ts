@@ -4,6 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Constants } from '../config/constants';
 import { Config } from '../config/env.config';
+import { StorageService } from './storage.service';
+import { ChatCommonService } from '../../../chat/shared/services/chat.common.service';
 
 @Injectable()
 export class ServiceManager {
@@ -12,7 +14,9 @@ export class ServiceManager {
     private apiBaseService: ApiBaseService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private storageService: StorageService,
     private router: Router,
+    private chatCommonService: ChatCommonService,
   ) {
   }
 
@@ -38,5 +42,13 @@ export class ServiceManager {
 
   getConfig() {
     return Config;
+  }
+
+  getStorageService() {
+    return this.storageService;
+  }
+
+  getChatCommonService() {
+    return this.chatCommonService;
   }
 }

@@ -7,6 +7,7 @@ import { SearchFormComponent } from './search/search-form.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 import { WTHNavigateService } from '../../shared/services/wth-navigate.service';
+import { ChannelService } from '../../shared/channels/channel.service';
 
 declare var $: any;
 declare var _: any;
@@ -48,6 +49,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(public userService: UserService,
               // private router: Router,
               private navigateService: WTHNavigateService,
+              private channelService: ChannelService,
               public notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {
   }
@@ -73,6 +75,9 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
       // TODO comment this line for release 1.0.14. It should be uncommented after the release
       // this.appearancesChannelService.subscribe()
+      // this.notificationService.startChannel(this.appearancesChannelService.subscribe());
+
+      this.channelService.subscribe();
     }
   }
 

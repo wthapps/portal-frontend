@@ -18,7 +18,7 @@ export class ZChatShareListComponent implements OnInit {
   ngOnInit() {
     this.item = this.chatService.getCurrentMessages();
     this.contactItem = this.chatService.getContactSelect();
-    this.chatService.subscribeChanel();
+    // this.chatService.subscribeChanel();
   }
 
   onLoadMore() {
