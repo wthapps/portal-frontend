@@ -16,7 +16,7 @@
         <div class="photo-box-img">
           <div class="photo-box-img-action photo-box-img-action-left">
             <i class="fa fa-remove"
-               (click)="onAction({action: 'cancelUpload', params: {file: 'value of current file'}})"
+               (click)="onAction({action: 'cancelUpload', data: 'value of current file'})"
                title="Cancel uploading">
             </i>
           </div>
@@ -29,7 +29,7 @@
       <div *ngIf="!hasUploadingPhoto">
         <div class="photo-box-img-action photo-box-img-action-left">
           <i class="fa fa-remove"
-             (click)="onAction({action: 'remove', params: {photo: photo}})"
+             (click)="onAction({action: 'remove', data: photo})"
               title="Remove this photo">
           </i>
         </div>

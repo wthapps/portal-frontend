@@ -54,6 +54,15 @@ export class CancelEditCommentEvent implements BaseEvent {
   }
 }
 
+export class CancelAddCommentEvent implements BaseEvent {
+  description: string = 'Cancel a edit comment';
+  data: any;
+
+  constructor(data: any) {
+    this.data = data;
+  }
+}
+
 export class CancelReplyCommentEvent implements BaseEvent {
   description: string = 'Cancel a reply comment';
   data: any;
