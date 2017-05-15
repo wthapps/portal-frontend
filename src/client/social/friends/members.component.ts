@@ -36,6 +36,10 @@ export class ZSocialMembersComponent implements OnInit {
   currentStateTitleNumber: number = 0; //followers, followings, blacklists
   favourite: any;
   nextLink: string;
+  totalFriends: number;
+  totalFollowers: number;
+  totalFollowings: number;
+  totalBlacklist: number;
   readonly friendTabs = FRIEND_TABS;
 
   constructor(private socialService: SocialService,
@@ -54,7 +58,9 @@ export class ZSocialMembersComponent implements OnInit {
   //   return false;
   // }
 
-  getDataList(tab: string) {
+  getDataList(tab: string, forceOption: boolean = false) {
+    if ( this.currentState === tab && !forceOption)
+      return;
     this.currentState = tab;
     switch(tab) {
       case FRIEND_TABS.friends:
@@ -77,11 +83,17 @@ export class ZSocialMembersComponent implements OnInit {
     }
   }
 
-  unfriend(uuid: any) {
-    this.socialService.user.unfriend(uuid).subscribe(
+  unfriend(user: any) {
+    this.socialService.user.unfriend(user.uuid).subscribe(
       (res: any) => {
         // this.getUser();
-        _.remove(this.list, (i: any) => i.uuid == uuid);
+        _.remove(this.list, (i: any) => i.uuid == user.uuid);
+
+        // User should unfollow this user as well
+        if (user.is_following)
+          this.totalFollowings -= 1;
+
+        this.totalFollowers -= 1;
       },
     );
   }
@@ -102,18 +114,27 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
 
-  unfollow(uuid: any) {
-    this.socialService.user.unfollow(uuid).subscribe(
+  unfollow(item: any) {
+    this.socialService.user.unfollow(item.uuid).subscribe(
       (res: any) => {
         // this.getUser();
-        _.remove(this.list, (i: any) => i.uuid == uuid );
+        if (_.get(res, 'success', false) == true)
+          this.totalFollowings -= 1;
+        if (this.currentState == this.friendTabs.followings)
+          _.remove(this.list, (i: any) => i.uuid == item.uuid );
+
+        if (this.currentState == this.friendTabs.friends)
+          item.is_following = false;
       },
     );
   }
 
-  follow(uuid: any) {
-    this.socialService.user.follow(uuid).subscribe(
+  follow(item: any) {
+    this.socialService.user.follow(item.uuid).subscribe(
       (res: any) => {
+        if (_.get(res, 'success', false) == true)
+          this.totalFollowings += 1;
+        item.is_following = true;
         console.log('Follow success: ', res.data);
       },
     );
@@ -125,9 +146,14 @@ export class ZSocialMembersComponent implements OnInit {
     this.loadingService.start('#users-list');
     this.socialService.user.get().subscribe(
       (res: any) => {
-        this.data = res.data;
+        // this.data = res.data;
         // this.addFollowingIntoFollower();
-        this.list = res.data[this.currentState];
+        this.totalFriends = _.get(res, 'data.total_friends', 0);
+        this.totalFollowers = _.get(res, 'data.total_followers', 0);
+        this.totalFollowings = _.get(res, 'data.total_followings', 0);
+        this.totalBlacklist = _.get(res, 'data.total_blacklists', 0);
+        // this.list = res.data[this.currentState];
+        this.getDataList(this.currentState, true);
         this.loadingService.stop('#users-list');
       },
       error => this.errorMessage = <any>error
