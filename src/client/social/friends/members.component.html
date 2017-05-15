@@ -28,7 +28,7 @@
                   </a>
                 </li>
                 <li [ngClass]="{'active': currentState == friendTabs.blacklists}">
-                  <a href="javascript:;" (click)="getDataList('blacklists'); currentStateTitleNumber = totalBlacklist">
+                  <a href="javascript:;" (click)="getDataList('blacklists'); currentStateTitleNumber = totalBlacklist;">
                     BLACKLIST <span *ngIf="totalBlacklist" class="text-fade">{{totalBlacklist}}</span>
                   </a>
                 </li>
@@ -54,7 +54,7 @@
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.blacklists}">
                 <a (click)="getDataList('blacklists')" href="javascript:;">
-                  BLACKLIST <span *ngIf="totalBlacklists" class="badge badge-rounded badge-wth badge-right">{{totalBlacklists}}</span>
+                  BLACKLIST <span *ngIf="totalBlacklist" class="badge badge-rounded badge-wth badge-right">{{totalBlacklist}}</span>
                 </a>
               </li>
             </ul>

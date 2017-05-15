@@ -3,7 +3,7 @@
     [ngClass]="{'unread-notification': !notification?.is_read}">
   <div class="media">
     <div class="media-left">
-      <a [routerLink]="[communitiesUrl]">
+      <a>
           <span class="avatar-xsm">
             <img [src]="notification.actor.profile_image" alt="{{notification.actor.name}}">
           </span>
@@ -16,7 +16,7 @@
         <span [innerHTML]="notification.text"></span>
       </p>
       <p *ngIf="notification.actions[0].name == 'view'">
-        <small (click)="doAction(notification.actions[0].action, notification.id)"
+        <small (click)="doAction(notification.actions[0], notification.id)"
                class="notifications-item-time text-fade can-click">
           {{ notification.created_at | timeFormat }}
         </small>

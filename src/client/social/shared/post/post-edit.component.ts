@@ -321,7 +321,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private subscribePhotoSelectEvents() {
-    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$).do(() =>{
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$).do(() => {
       console.log('next sub: ', this.nextSubscription);
     });
 
