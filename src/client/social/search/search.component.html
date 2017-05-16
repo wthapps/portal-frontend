@@ -86,33 +86,49 @@
                   </div>
                 </div>
 
+                <!-- Community Actions -->
+                <div *ngIf="group == 'communities' ">
+                  <div class="pull-right no-wrap">
+                    <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)"
+                            *ngIf="item.user_status == comUserStatus.stranger">
+                      Join
+                    </button>
+                    <button class="btn btn-default" type="button" *ngIf="item.user_status == comUserStatus.joinRequestSent">
+                      Asked To Join
+                    </button>
+
+                    <div class="btn-group">
+                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                              *ngIf="item?.user_status == comUserStatus.member"
+                              (click)="getFavourite(item, 'community')">
+                        <i class="fa fa-check"></i> Joined <span class="caret"></span>
+                      </button>
+
+                      <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                        <li><a href="javascript:;" (click)="toggleFavourite(item, 'community')"> Favourite <i
+                          class="fa pull-right"
+                          [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
+                        <li><a href="javascript:;" (click)="confirmLeaveCommunity(item)">Leave community</a></li>
+                      </ul>
+                    </div>
+
+                    <div class="btn-group" *ngIf="item?.user_status == comUserStatus.member">
+                      <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                              data-toggle="dropdown">
+                        <i class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="javascript:;" >Report community</a></li>
+                      </ul>
+                    </div>
+
+                  </div>
+
+                </div>
               </div>
 
 
-              <!-- Community Actions -->
-              <div *ngIf="group == 'communities' ">
 
-                <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)"
-                        *ngIf="item.user_status == comUserStatus.stranger">
-                  Join
-                </button>
-                <button class="btn btn-default" type="button" *ngIf="item.user_status == comUserStatus.joinRequestSent">
-                  Asked To Join
-                </button>
-
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        *ngIf="item?.user_status == comUserStatus.member"
-                        (click)="getFavourite(item, 'community')">
-                  <i class="fa fa-check"></i> Joined <span class="caret"></span>
-                </button>
-
-                <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="javascript:;" (click)="toggleFavourite(item, 'community')"> Favourite <i
-                    class="fa pull-right"
-                    [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
-                  <li><a href="javascript:;" (click)="confirmLeaveCommunity(item)">Leave community</a></li>
-                </ul>
-              </div>
             </div>
           </li>
         </ul>
