@@ -15,7 +15,7 @@ export class ChannelActionFactoryService {
   action:any;
   data:any;
 
-  create(data:any, service:any){
+  create(data:any, service:any) {
     this.action = data.action;
     this.data = data.data;
     let action:any;

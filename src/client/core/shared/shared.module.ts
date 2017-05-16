@@ -56,8 +56,7 @@ import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.dir
 import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
 import { ChannelService } from './channels/channel.service';
-import { ChatCommonService } from '../../chat/shared/services/chat.common.service';
-
+import { ChatCommonService } from './services/chat.common.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.

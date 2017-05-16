@@ -6,9 +6,8 @@ import { StorageService } from '../../../core/shared/services/storage.service';
 import { HandlerService } from '../../../core/shared/services/handler.service';
 import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.helper';
 import { ChatConstant } from '../constants/chat-constant';
-import { ChatCommonService } from './chat.common.service';
+import { ChatCommonService } from '../../../core/shared/services/chat.common.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
-import { AppearancesChannelService } from '../../../core/shared/channels/appearances-channel.service';
 
 declare var _:any;
 

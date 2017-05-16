@@ -418,7 +418,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   private updateItemReactions(object: string, data: any) {
 
     // // update reactions for comment
-    if (object == 'post'){
+    if (object == 'post') {
       this.updateReactionsSet(this.item, data);
     } else if (object == 'comment') {
       // update reaction for reply
