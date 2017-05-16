@@ -72,7 +72,7 @@
                       </ul>
                     </div>
 
-                    <div class="btn-group" *ngIf="item.friend_status == !friendStatus.accepted">
+                    <div class="btn-group" *ngIf="item.friend_status !== friendStatus.accepted">
                       <button class="btn btn-default-inline-border dropdown-toggle" type="button"
                               data-toggle="dropdown">
                         <i class="fa fa-ellipsis-v"></i>
@@ -90,7 +90,7 @@
 
 
               <!-- Community Actions -->
-              <div *ngIf="group == 'community' ">
+              <div *ngIf="group == 'communities' ">
 
                 <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)"
                         *ngIf="item.user_status == comUserStatus.stranger">

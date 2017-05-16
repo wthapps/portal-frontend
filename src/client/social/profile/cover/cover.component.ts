@@ -43,8 +43,11 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
       this.userInfo = this.data;
 
       // Only user can change his own profile / cover image
-      if (this.userService.profile.uuid == this.userInfo.uuid)
+      if (this.userService.profile.uuid == this.userInfo.uuid) {
         this.userInfo.canEdit = true;
+        // this.userInfo = Object.assign({}, this.userInfo, {canEdit: true});
+      }
+
     }
     if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
       this.showFriends = this.userInfo.settings.show_friends.value;

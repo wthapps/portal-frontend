@@ -35,6 +35,7 @@ export class ZSocialProfileComponent implements OnInit {
   items: any;
 
   constructor(private socialService: SocialService,
+              private userService: UserService,
               private route: ActivatedRoute,
               private profileDataService: ZSocialProfileDataService) {
     // this.selectedTab = PROFILE_TAB.posts;
@@ -48,6 +49,8 @@ export class ZSocialProfileComponent implements OnInit {
     )
       .subscribe((res: any) => {
         this.userInfo = res.data;
+        this.userInfo.canEdit = (this.userInfo.uuid === this.userService.profile.uuid);
+
         this.actions = _.get(res, 'actions', []);
 
         this.profileDataService.addData({'userInfo': this.userInfo, 'actions' : this.actions} ); // Update userInfo to children in router-outlet
