@@ -69,7 +69,10 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
       // Start the appearance channel after notification channel is connected
       console.debug('start channel notification');
-      this.notificationService.startChannel(this.appearancesChannelService.subscribe());
+      this.notificationService.startChannel();
+
+      // TODO comment this line for release 1.0.14. It should be uncommented after the release
+      // this.appearancesChannelService.subscribe()
     }
   }
 

@@ -32,7 +32,10 @@
         Name <i *ngIf="sortName" class="fa"
                 [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
       </div>
-      <div class="photo-box-img-owner">Owner</div>
+      <div (click)="setSortName('owner'); toggleSort(); doSort()" class="photo-box-img-owner can-click">Owner
+        <i *ngIf="sort" class="fa"
+           [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
+      </div>
       <div (click)="setSortName('Date'); toggleSort(); doSort()" class="photo-box-img-date can-click">
         Create Date <i *ngIf="sort" class="fa"
                        [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>

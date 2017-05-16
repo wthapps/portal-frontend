@@ -452,17 +452,22 @@ export class MediaListComponent implements OnInit, AfterViewInit {
               params: {properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}
             });
           }
-          return;
+          if (mode == 'remove' && this.page == 'favorites') {
+            // here just handles un-favourite ONE object
+            this.objects.splice(selectedIndex, 1);
+          }
+         return;
         }
 
         _.map(this.selectedObjects, (object: any)=> {
           object.favorite = (mode == 'add' ? true : false);
         });
-
         if (mode == 'remove' && this.page == 'favorites') {
-          // here just handles un-favourite ONE object
-          this.objects.splice(selectedIndex, 1);
+          _.remove(this.objects, (object: any) => {
+            return false == object.favorite;
+          });
         }
+
       },
       (error: any) => {
         console.log('error: ', error);
