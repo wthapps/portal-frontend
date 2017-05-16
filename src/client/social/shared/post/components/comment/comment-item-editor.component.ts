@@ -67,7 +67,7 @@ export class CommentItemEditorComponent implements OnInit {
     this.photosCtrl = this.commentEditorForm.controls['photo'];
 
     $('.js-textarea-autoheight').each(function () {
-      this.setAttribute('style', 'height: 40px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
+      this.setAttribute('style', 'height: 34px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
     }).on('input', function () {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
@@ -181,17 +181,21 @@ export class CommentItemEditorComponent implements OnInit {
 
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
+      this.comment.parent = this.parent;
       this.comment.parentId = this.parent.uuid;
       this.comment.parentType = this.parentType;
 
       event = new CommentCreateEvent(this.comment);
 
     } else if(this.mode == CommentEditorMode.Edit) {
+
       // update current comment/reply
       this.comment.content = this.commentEditorForm.value.content;
       event = new CommentUpdateEvent(this.comment);
     }
     this.eventEmitter.emit(event);
+    this.comment.content = '';
+    this.comment.photo = null;
   }
 
   doEvents(response: any) {
@@ -208,11 +212,12 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   checkValidForm(): boolean {
-    if (this.mode == CommentEditorMode.Add) {
-      return (this.comment.content.length > 0 || this.comment.photo != null);
-    } else if (this.mode == CommentEditorMode.Edit) {
-      return (this.commentEditorForm.dirty || this.comment.photo != null);
-    }
-    return false;
+    return true;
+    // if (this.mode == CommentEditorMode.Add) {
+    //   return (this.comment.content.length > 0 || this.comment.photo != null);
+    // } else if (this.mode == CommentEditorMode.Edit) {
+    //   return (this.commentEditorForm.dirty || this.comment.photo != null);
+    // }
+    // return false;
   }
 }

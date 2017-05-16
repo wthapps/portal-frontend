@@ -242,15 +242,25 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
 
     if (event instanceof CommentCreateEvent) {
+      let self: any = this;
       this.createComment(event.data).subscribe(
         (res: any) => {
           console.log('response data', res.data);
 
-          // this.item = new SoPost().from(res.data);
-          // this.mapDisplay();
-          let comment = new SoComment().from(res.data);
-          _.uniqBy(this.item.comments.unshift(comment),'uuid');
-          this.item.comment_count += 1;
+          if (res.data.parent_type == 'SocialNetwork::Post') {
+            let comment = new SoComment().from(res.data);
+            _.uniqBy(this.item.comments.unshift(comment),'uuid');
+            this.item.comment_count += 1;
+
+          } else if (res.data.parent_type == 'SocialNetwork::Comment') {
+            // this.updateItemComments(res.data);
+            let newReply: any = res.data;
+            let commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
+              return newReply.parent.uuid == comment.uuid;
+            });
+            this.item.comments[commentIndex].comments.push(newReply);
+          }
+
           this.mapDisplay();
         }
       );
@@ -301,9 +311,14 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof DeleteReplyEvent) {
       this.deleteReply(event.data).subscribe(
         (res: any) => {
-          // this.item = new SoPost().from(res.data);
-          this.updateItemComments(res.data);
+          let deletedReply: any = res.data;
+          let commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
+            return deletedReply.parent.uuid == comment.uuid;
+          });
+
+          _.remove(this.item.comments[commentIndex].comments, {uuid: deletedReply.uuid});
           this.mapDisplay();
+
         }
       );
     }
@@ -394,37 +409,37 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).subscribe(
       (res: any) => {
         // _.merge(this.item, new SoPost().from(res.data).excludeComments());
-        this.updateItemReactions(res.data);
+        this.updateItemReactions(object, res.data);
         this.mapDisplay();
       }
     );
   }
 
-  private updateItemReactions(data: any) {
-    // let temp_item: any = this.item;
-    if (data.post) {
+  private updateItemReactions(object: string, data: any) {
+
+    // // update reactions for comment
+    if (object == 'post'){
       this.updateReactionsSet(this.item, data);
-    } else if (data.comment) {
+    } else if (object == 'comment') {
+      // update reaction for reply
       let done: boolean = false;
       _.forEach(this.item.comments, (comment: SoComment, index: any) => {
-        if(comment.uuid ==  data.comment.uuid ) {
+        if(comment.uuid ==  data.self.uuid ) {
           this.updateReactionsSet(this.item.comments[index], data);
           return;
         }
         // TODO: Handle multi-level replies case
         _.forEach(this.item.comments[index].comments, (reply: SoComment, i2: any) => {
-          if(reply.uuid ==  data.comment.uuid ) {
+          if(reply.uuid ==  data.self.uuid ) {
             this.updateReactionsSet(this.item.comments[index].comments[i2], data);
             done = true;
             return;
           }
-          if( done )
+          if(done)
             return;
         })
         ;
       });
-    } else {
-      console.error('updateItemReactions: something goes wrong');
     }
   }
 
