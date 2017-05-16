@@ -79,12 +79,12 @@
             <ul class="dropdown-menu">
               <template ngFor let-itab [ngForOf]="tabData" *ngIf="isAdmin">
                 <li>
-                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:itab.key}">{{itab.value}}</a>
+                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{itab.value}}</a>
                 </li>
               </template>
               <template ngFor let-itab [ngForOf]="tabData" *ngIf="!isAdmin">
                 <li *ngIf="itab.key != 'invitations' && itab.key != 'join_requests'">
-                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:itab.key}">{{itab.value}}</a>
+                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{itab.value}}</a>
                 </li>
               </template>
             </ul>

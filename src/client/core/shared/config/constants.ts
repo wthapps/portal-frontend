@@ -83,9 +83,10 @@ export let Constants = {
   },
 
   chatMenuItems: [
-    {name: 'Conversation', link: '/conversation'},
-    {name: 'Contact', link: '/contact'},
-    {name: 'Settings', link: '/setting'}
+    {name: 'Conversation', link: '/conversation', icon: ''},
+    {name: 'Contact', link: '/contact', icon: 'fa fa-address-book-o'},
+    {name: '', link: '', icon: ''},
+    {name: 'Settings', link: '/setting', icon: 'fa fa-cog'}
   ],
 
   pictureMenuItems: [

@@ -41,6 +41,9 @@
               background-color: #f6f6f6;
             }
             li {
+              &.divider {
+                border-bottom: 1px solid $line;
+              }
               a {
                 padding-left: 30px;
                 &:hover {

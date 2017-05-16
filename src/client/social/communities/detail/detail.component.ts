@@ -129,7 +129,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.uuid = params['id'];
       this.getCommunity(this.uuid);
-      this.checkCurrentUser(this.uuid);
+      // this.checkCurrentUser(this.uuid);
 
     });
 
@@ -440,37 +440,44 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.community = res.data;
         this.socialService.community.currentCommunity = this.community;
 
-      },
-      error => {
-        this.errorMessage = <any>error;
-      }
-    );
-  }
-
-
-  private checkCurrentUser(uuid: string) {
-    // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/check_current_user/`).subscribe(
-    this.socialService.community.checkCurrentUser(uuid).subscribe(
-      (res: any)=> {
-        this.isAdmin = _.get(res, 'data.is_admin');
-        this.isMember = _.get(res, 'data.is_member');
-        this.invitationId = _.get(res, 'data.invitationId');
-        this.joinRequestId = _.get(res, 'data.joinRequestId');
-
-        // if (res.data.invitationId)
-        //   this.invitationId = res.data.invitationId;
-        // if (res.data.joinRequestId)
-        //   this.joinRequestId = res.data.joinRequestId;
+        this.isAdmin = _.get(res, 'check_user.is_admin');
+        this.isMember = _.get(res, 'check_user.is_member');
+        this.invitationId = _.get(res, 'check_user.invitationId');
+        this.joinRequestId = _.get(res, 'check_user.joinRequestId');
 
         //  Grant edit profile / cover image privilege to community admins
         this.community.canEdit = this.isAdmin;
-
       },
       error => {
         this.errorMessage = <any>error;
       }
     );
   }
+
+
+  // private checkCurrentUser(uuid: string) {
+  //   // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/check_current_user/`).subscribe(
+  //   this.socialService.community.checkCurrentUser(uuid).subscribe(
+  //     (res: any)=> {
+  //       this.isAdmin = _.get(res, 'data.is_admin');
+  //       this.isMember = _.get(res, 'data.is_member');
+  //       this.invitationId = _.get(res, 'data.invitationId');
+  //       this.joinRequestId = _.get(res, 'data.joinRequestId');
+  //
+  //       // if (res.data.invitationId)
+  //       //   this.invitationId = res.data.invitationId;
+  //       // if (res.data.joinRequestId)
+  //       //   this.joinRequestId = res.data.joinRequestId;
+  //
+  //       //  Grant edit profile / cover image privilege to community admins
+  //       this.community.canEdit = this.isAdmin;
+  //
+  //     },
+  //     error => {
+  //       this.errorMessage = <any>error;
+  //     }
+  //   );
+  // }
 
   private getTabItems(uuid: string, tabName: string) {
     this.tabItems = [];

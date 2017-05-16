@@ -16,10 +16,13 @@
       </a>
       <ul [ngClass]="{'active': urls.social == hostname}" class="list-unstyled">
         <template ngFor let-social [ngForOf]="socialMenu" let-i="index" [ngForTrackBy]="trackByFn">
-          <li [routerLinkActive]="['active']" [ngClass]="{'hidden': social.link == '/search'}" *ngIf="social.name != ''">
-            <i class="{{media.icon}}"></i> <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
-              {{social.name}}</a>
-            <i class="{{media.icon}}"></i> <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
+          <li *ngIf="social.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': social.link == '/search'}">
+            <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
+              <i class="{{social.icon}}"></i> {{social.name}}
+            </a>
+            <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]">
+              <i class="{{social.icon}}"></i> {{social.name}}
+            </a>
           </li>
           <li class="divider" *ngIf="social.name == ''"></li>
         </template>
@@ -31,11 +34,14 @@
         Chat
       </a>
       <ul [ngClass]="{'active': urls.chat == hostname}" class="list-unstyled" id="zone_menu_chat">
-        <li [routerLinkActive]="['active']" *ngFor="let chat of chatMenu">
-          <a draggable="false" [routerLink]="[chat.link]">
-            {{chat.name}}
-          </a>
-        </li>
+        <template ngFor let-chat [ngForOf]="chatMenu" let-i="index" [ngForTrackBy]="trackByFn">
+          <li *ngIf="chat.name != ''" [routerLinkActive]="['active']">
+            <a draggable="false" [routerLink]="[chat.link]">
+              <i class="{{chat.icon}}"></i> {{chat.name}}
+            </a>
+          </li>
+          <li class="divider" *ngIf="chat.name == ''"></li>
+        </template>
       </ul>
     </li>
 
@@ -48,11 +54,12 @@
       </a>
       <ul [ngClass]="{'active': urls.media == hostname}" class="list-unstyled">
         <template ngFor let-media [ngForOf]="mediaMenu" let-i="index" [ngForTrackBy]="trackByFn">
-          <li [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
+          <li *ngIf="media.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
             <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">
               <i class="{{media.icon}}"></i> {{media.name}}
             </a>
           </li>
+          <li class="divider" *ngIf="media.name == ''"></li>
         </template>
 
       </ul>
