@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Input, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
@@ -11,7 +11,7 @@ import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
 import { Subscription } from 'rxjs';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { isNullOrUndefined } from 'util';
+import { UserService } from '../../../core/shared/services/user.service';
 
 declare var _: any;
 declare var $: any;
@@ -51,6 +51,7 @@ export class PostListComponent implements OnInit, OnDestroy {
               private router: Router,
               private postService: PostService,
               private photoSelectDataService: PhotoModalDataService,
+              private userService: UserService,
               private socialDataService: SocialDataService
               // private comDataService: CommunitiesDataService
   ) {
@@ -58,8 +59,15 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.socialService.user.profile;
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'];  // this can be user uuid or community uuid
+    // Support get route params from parent route as well as current route. Ex: Profile post page
+    let parentRouteParams = this.route.parent.params;
+
+    this.route.params
+      .combineLatest(parentRouteParams)
+      .map((paramsPair: any) => _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined))
+      .subscribe((params: any) => {
+      console.debug('params Id testing: ', params);
+      this.uuid = _.get(params, 'id');  // this can be user uuid or community uuid
       // Load if items empty
       if (this.type != 'search') {
         this.loadPosts();

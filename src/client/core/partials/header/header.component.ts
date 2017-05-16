@@ -46,7 +46,8 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('search') searchForm: SearchFormComponent;
 
   constructor(public userService: UserService,
-              private router: Router,
+              // private router: Router,
+              private navigateService: WTHNavigateService,
               public notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {
   }
@@ -156,6 +157,14 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   // getLatestNotifications() {
   //   this.notificationService.getLatestNotifications();
   // }
+
+  viewAllNotifications() {
+    // Close mini notification dropdown box in the header
+    $('.navbar-nav-notification').removeClass('open');
+
+    // Navigate to notification page of social module
+    this.navigateService.navigateOrRedirect('notifications', 'social');
+  }
 
   getNewNotificationsCount() {
     this.notificationService.getNewNotificationsCount();
