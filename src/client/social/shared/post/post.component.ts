@@ -201,7 +201,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           _.merge(this.item, new SoPost().from(result['data']).excludeComments());
           this.mapDisplay();
         },
-        ( error : any ) => {
+        (error: any) => {
 
         }
       );
@@ -249,7 +249,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
           if (res.data.parent_type == 'SocialNetwork::Post') {
             let comment = new SoComment().from(res.data);
-            _.uniqBy(this.item.comments.unshift(comment),'uuid');
+            _.uniqBy(this.item.comments.unshift(comment), 'uuid');
             this.item.comment_count += 1;
 
           } else if (res.data.parent_type == 'SocialNetwork::Comment') {
@@ -418,24 +418,24 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   private updateItemReactions(object: string, data: any) {
 
     // // update reactions for comment
-    if (object == 'post'){
+    if (object == 'post') {
       this.updateReactionsSet(this.item, data);
     } else if (object == 'comment') {
       // update reaction for reply
       let done: boolean = false;
       _.forEach(this.item.comments, (comment: SoComment, index: any) => {
-        if(comment.uuid ==  data.self.uuid ) {
+        if (comment.uuid == data.self.uuid) {
           this.updateReactionsSet(this.item.comments[index], data);
           return;
         }
         // TODO: Handle multi-level replies case
         _.forEach(this.item.comments[index].comments, (reply: SoComment, i2: any) => {
-          if(reply.uuid ==  data.self.uuid ) {
+          if (reply.uuid == data.self.uuid) {
             this.updateReactionsSet(this.item.comments[index].comments[i2], data);
             done = true;
             return;
           }
-          if(done)
+          if (done)
             return;
         })
         ;
@@ -452,7 +452,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   private updateItemComments(data: any) {
     let updatedComment = new SoComment().from(data);
-    _.forEach(this.item.comments, (comment: SoComment, index : any) => {
+    _.forEach(this.item.comments, (comment: SoComment, index: any) => {
       if (comment.uuid == updatedComment.uuid)
         this.item.comments[index] = updatedComment;
     });
@@ -470,7 +470,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           this.commentEditor.setCommentAttributes({photo: photos[0]});
           // this.commentEditor.commentAction(photos);
         },
-        (error : any) => { console.error(error); }
+        (error: any) => {
+          console.error(error);
+        }
       );
     }
 
@@ -481,24 +483,27 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           return this.photoUploadService.uploadPhotos(files);
           // return Observable.from(['']);
         }).subscribe(
-        (response: any) => {
-          console.log('response data: ', response.data);
-          // this.commentEditor.commentAction([res['current_photo']]);
-          this.commentEditor.setCommentAttributes({photo: response.data});
-          this.commentEditor.updateAttributes({hasUploadingPhoto: false});
-          // this.commentEditor.commentAction([res['data']]);
-        },
-        (error : any) => { console.error(error); }
-      );
+          (response: any) => {
+            console.log('response data: ', response.data);
+            // this.commentEditor.commentAction([res['current_photo']]);
+            this.commentEditor.setCommentAttributes({photo: response.data});
+            this.commentEditor.updateAttributes({hasUploadingPhoto: false});
+            // this.commentEditor.commentAction([res['data']]);
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        );
     }
   }
+
   private notAssignedSubscription(sub: Subscription) {
     return !sub || sub.closed;
   }
 
   private unsubscribePhotoEvents() {
-    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub : Subscription) => {
-      if(sub && !sub.closed)
+    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
+      if (sub && !sub.closed)
         sub.unsubscribe();
     });
   }

@@ -7,19 +7,19 @@ import { ChatNotification } from '../actions/chat_notification';
 
 @Injectable()
 export class ChannelActionFactoryService {
-  appearance_new_user_online:string = 'appearance_new_user_online';
-  appearance_all_users_online:string = 'appearance_all_users_online';
-  appearance_new_user_offline:string = 'appearance_new_user_offline';
-  chat_send_message:string = 'chat_send_message';
-  chat_notification:string = 'chat_notification';
-  action:any;
-  data:any;
+  appearance_new_user_online: string = 'appearance_new_user_online';
+  appearance_all_users_online: string = 'appearance_all_users_online';
+  appearance_new_user_offline: string = 'appearance_new_user_offline';
+  chat_send_message: string = 'chat_send_message';
+  chat_notification: string = 'chat_notification';
+  action: any;
+  data: any;
 
-  create(data:any, service:any){
+  create(data: any, service: any) {
     this.action = data.action;
     this.data = data.data;
-    let action:any;
-    switch(this.action) {
+    let action: any;
+    switch (this.action) {
       case this.appearance_all_users_online:
         action = new AppearanceAllUsersOnline(this.data, service);
         break;

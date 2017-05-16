@@ -10,7 +10,7 @@ declare var _: any;
   selector: '[textAreaAutoHeight]'
 })
 export class TextAreaAutoHeightDirective implements AfterContentChecked {
-  @HostListener('input',['$event.target'])
+  @HostListener('input', ['$event.target'])
   onInput(textArea: HTMLTextAreaElement): void {
     this.adjust();
   }
@@ -21,7 +21,7 @@ export class TextAreaAutoHeightDirective implements AfterContentChecked {
   ngAfterContentChecked(): void {
     this.adjust();
   }
-  
+
   adjust(): void {
     this.element.nativeElement.style.overflow = 'hidden';
     this.element.nativeElement.style.height = 'auto';
