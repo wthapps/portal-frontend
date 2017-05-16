@@ -97,13 +97,14 @@ export let Constants = {
   ],
 
   socialMenuItems: [
-    {name: 'Home', link: '/home'},
-    {name: 'Communities', link: '/communities'},
-    {name: 'Notifications', link: '/notifications'},
-    {name: 'Friends', link: '/friends'},
-    {name: 'My Page', link: '/profile'},
-    {name: 'Settings', link: '/settings'},
-    {name: 'Search', link: '/search'}
+    {name: 'Home', link: '/home', icon: 'fa fa-home'},
+    {name: 'Communities', link: '/communities', icon: 'fa fa-users'},
+    {name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o'},
+    {name: 'Friends', link: '/friends', icon: 'fa fa-user-plus'},
+    {name: 'My Page', link: '/profile', icon: 'fa fa-user-circle'},
+    {name: '', link: '', icon: ''},
+    {name: 'Settings', link: '/settings', icon: 'fa fa-cog'},
+    {name: 'Search', link: '/search', icon: 'fa fa-search'}
   ],
 
   pictureMenuActions: {
