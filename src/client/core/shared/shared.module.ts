@@ -56,6 +56,7 @@ import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.dir
 import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
 import { ChannelService } from './channels/channel.service';
+import { ChatCommonService } from '../../chat/shared/services/chat.common.service';
 
 
 /**
@@ -175,6 +176,7 @@ export class SharedModule {
         PhotoUploadService,
         UrlService,
         DateService,
+        ChatCommonService,
         PhotoService
       ]
     };
