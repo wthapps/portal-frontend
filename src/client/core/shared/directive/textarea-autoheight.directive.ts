@@ -28,3 +28,4 @@ export class TextAreaAutoHeightDirective implements AfterContentChecked {
     this.element.nativeElement.style.height = this.element.nativeElement.scrollHeight + 'px';
   }
 }
+

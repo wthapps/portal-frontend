@@ -1,5 +1,5 @@
 import { Injectable }     from '@angular/core';
-import { StorageService } from '../../../core/shared/services/storage.service';
+import { StorageService } from './storage.service';
 
 declare var _:any;
 

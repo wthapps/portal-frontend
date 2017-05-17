@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Constants } from '../config/constants';
 import { Config } from '../config/env.config';
 import { StorageService } from './storage.service';
-import { ChatCommonService } from '../../../chat/shared/services/chat.common.service';
+import { ChatCommonService } from './chat.common.service';
 
 @Injectable()
 export class ServiceManager {
