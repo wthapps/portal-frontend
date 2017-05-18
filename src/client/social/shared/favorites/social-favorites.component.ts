@@ -48,36 +48,9 @@ export class ZSocialFavoritesComponent implements OnInit {
     });
   }
 
-  onLeave(community: any) {
-    // Check if there are other admins beside current user in community
-    // If not, he must pick another one before leaving
-    let enoughAdmins = community.admin_count > 1 ? true : false;
-    let pickAnotherAdmin = _.indexOf(community.admins, (a: any) => a.uuid == this.userService.profile.uuid) > -1  && !enoughAdmins;
-
-    this.confirmationService.confirm({
-      message: pickAnotherAdmin ?
-        `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
-        `Are you sure to leave the community ${community.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        if (pickAnotherAdmin) {
-          // Navigate to member tab
-          this.router.navigate([this.communitiesUrl, community.uuid], { queryParams: {tab: 'members', skipLocationChange: true }});
-        } else {
-          this.leaveCommunity(community);
-        }
-      }
-    });
-
-    return false;
-  }
-
-  leaveCommunity(community: any) {
-    this.socialService.community.leaveCommunity(community.uuid)
-      .subscribe((response: any) => {
-          _.remove(this.favourites, (f: any) => _.get(f, 'community.uuid', '') == community.uuid);
-        }
-      );
+  confirmLeaveCommunity(community: any) {
+    this.socialService.community.confirmLeaveCommunity(community)
+      .then((community: any) => _.remove(this.favourites, (f: any) => _.get(f, 'community.uuid', '') == community.uuid));
   }
 
   unfriend(friend: any) {

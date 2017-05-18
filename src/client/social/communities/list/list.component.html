@@ -49,7 +49,7 @@
                       <li><a href="javascript:;" (click)="addFavourite(my.uuid)"> Favourites <i class="fa pull-right"
                                                                                                 [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a>
                       </li>
-                      <li><a href="javascript:;" (click)="onLeave(my)">Leave community</a></li>
+                      <li><a href="javascript:;" (click)="confirmLeaveCommunity(my)">Leave community</a></li>
                       <li><a href="javascript:;" (click)="onDelete(my)" href="javascript:;">Delete community</a></li>
                     </ul>
                   </div>
@@ -93,7 +93,7 @@
                     </button>
                     <ul class="dropdown-menu dropdown-custom">
                       <li><a href="javascript:;" (click)="addFavourite(item.uuid)"> Favourites</a></li>
-                      <li><a href="javascript:;" (click)="onLeave(item)">Leave community</a></li>
+                      <li><a href="javascript:;" (click)="confirmLeaveCommunity(item)">Leave community</a></li>
                       <li><a href="javascript:;" (click)="onReport(item.uuid)">Report community</a></li>
                     </ul>
                   </div>

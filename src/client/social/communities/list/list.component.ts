@@ -92,93 +92,18 @@ export class ZSocialCommunityListComponent implements OnInit {
   }
 
   onDelete(item: any) {
-    console.log(item);
-    this.confirmationService.confirm({
-      message: `Are you sure to delete the community ${item.name}`,
-      header: 'Delete Community',
-      accept: () => {
-        this.loadingService.start();
-        // this.apiBaseService.delete(`$this.communitiesUrl}/${item.uuid}`)
-        this.socialService.community.deleteCommunity(`${item.uuid}`)
-          .subscribe((response: any) => {
-              // console.log(response);
-              this.onUpdated(response.data);
-              this.toastsService.success(`Your community - ${item.name} - has been deleted successfully`);
-              this.loadingService.stop();
-            },
-            error => {
-              // console.log(error);
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
-
-    return false;
+    this.socialService.community.confirmDeleteCommunity(item)
+      .then((community: any) => _.remove(this.myList, (c: any) => c.uuid == community.uuid));
   }
 
-  onLeave(item: any) {
-
-    // this.confirmationService.confirm({
-    //   message: this.userService.profile.uuid == item.admin.uuid ?
-    //     `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
-    //     `Are you sure to leave the community ${item.name}?`,
-    //   header: 'Leave Community',
-    //   accept: () => {
-    //     this.loadingService.start();
-    //     // this.apiBaseService.post(`${this.soCommunitiesUrl}/leave`, JSON.stringify({uuid: item.uuid}))
-    //     this.socialService.community.leaveCommunity(item.uuid)
-    //       .subscribe((response: any) => {
-    //           this.getList();
-    //           this.toastsService.success(`You left the community ${item.name} successfully`);
-    //           this.loadingService.stop();
-    //         },
-    //         error => {
-    //           this.toastsService.danger(error);
-    //           this.loadingService.stop();
-    //         }
-    //       );
-    //   }
-    // });
-    //
-    // return false;
-
-    let enoughAdmins = item['admin_count'] > 1 ? true : false;
-    let pickAnotherAdmin = this.userService.profile.uuid == item.admin.uuid && !enoughAdmins;
-
-    this.confirmationService.confirm({
-      message: pickAnotherAdmin ?
-        `Hi there, you need to pick another admin for the community ${item.name} before leaving.` :
-        `Are you sure to leave the community ${item.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        if (pickAnotherAdmin) {
-          // Navigate to member tabteryParams: {tab: 'members', skipLocationChange: true }});
-          this.router.navigate([this.communitiesUrl, item.uuid], { queryParams: {tab: 'members', skipLocationChange: true }});
-        } else {
-          this.leaveCommunity(item);
-        }
-      }
-    });
-
-    return false;
-  }
-
-
-  leaveCommunity(item: any) {
-    this.loadingService.start();
-    this.socialService.community.leaveCommunity(item.uuid)
-      .subscribe((response: any) => {
-          this.loadingService.stop();
-          // this.router.navigateByUrl(this.communitiesUrl);
-          _.remove(this.list, (c: any) => c.uuid == item.uuid);
-        },
-        error => {
-          this.toastsService.danger(error);
-          this.loadingService.stop();
-        }
-      );
+  confirmLeaveCommunity(community: any) {
+    this.socialService.community.confirmLeaveCommunity(community)
+      .then((community: any) => {
+        // Remove leaved community in both myList and list just to make sure
+        _.remove(this.list, (c: any) => c.uuid === community.uuid);
+        _.remove(this.myList, (c: any) => c.uuid === community.uuid);
+      })
+      .catch((error: any) => console.error('confirm leave community error: ', error))
   }
 
   onPreference(item: any): any {
