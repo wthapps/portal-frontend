@@ -38,9 +38,9 @@
   <div *ngIf="!item.is_post">
     <hr/>
     <div class="form-group">
-      Shared from <a [routerLink]="['/profile/', parentItem.owner.uuid, 'about']" >{{parentItem.owner.name}}</a>
+      Shared from <a [routerLink]="['/profile/', parentItem.owner.uuid, 'about']">{{parentItem.owner.name}}</a>
     </div>
-    <div class="z-social-post-content" >
+    <div class="z-social-post-content">
       <div class="z-social-post-txt">
         <read-more [limit]="120" [content]="parentItem.description">
         </read-more>
@@ -80,16 +80,16 @@
       <li>
         <i class="fa fa-thumbs-o-up" [ngClass]="{'active' : (item.reactions.indexOf('like') >= 0)}"
            (click)="postItem.createReaction($event, 'like', 'post', item.uuid)"></i>
-        <a *ngIf="item.likes.length>0" data-toggle="modal" href="#"
-           (click)="onActions(actions.openLikeDislike, item.likes, 'like')">{{item.likes.length}}</a>
-        <a *ngIf="item.likes.length==0" href="javascript:;">{{item.likes.length}}</a>
+        <span class="can-click" *ngIf="item.likes.length>0" data-toggle="modal"
+              (click)="onActions(actions.openLikeDislike, item.likes, 'like')">{{item.likes.length}}</span>
+        <span *ngIf="item.likes.length==0" href="javascript:;">{{item.likes.length}}</span>
       </li>
       <li>
         <i class="fa fa-thumbs-o-down" [ngClass]="{'active' : (item.reactions.indexOf('dislike') >= 0)}"
            (click)="postItem.createReaction($event, 'dislike', 'post', item.uuid)"></i>
-        <a *ngIf="item.dislikes.length>0" data-toggle="modal" href="#"
-           (click)="onActions(actions.openLikeDislike, item.dislikes, 'dislike')">{{item.dislikes.length}}</a>
-        <a *ngIf="item.dislikes.length==0" href="javascript:;">{{item.dislikes.length}}</a>
+        <span class="can-click" *ngIf="item.dislikes.length>0" data-toggle="modal"
+              (click)="onActions(actions.openLikeDislike, item.dislikes, 'dislike')">{{item.dislikes.length}}</span>
+        <span *ngIf="item.dislikes.length==0" href="javascript:;">{{item.dislikes.length}}</span>
       </li>
       <li *ngIf="!item.disable_share">
         <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{item.shared_count}}
@@ -102,7 +102,7 @@
 
     <ul class="pull-right" *ngIf="item.shared_count > 0">
       <li>
-        <a data-toggle="modal" href="#" (click)="onActions(actions.openActivities)">Share Activities</a>
+        <a data-toggle="modal" href="javascript:;" (click)="onActions(actions.openActivities)">Share Activities</a>
       </li>
     </ul>
 

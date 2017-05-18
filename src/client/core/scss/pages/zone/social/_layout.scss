@@ -96,6 +96,10 @@
       font-weight: bold;
       float: left;
       margin-right: 5px;
+      color: $text-color;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     .z-shared-with {
       float: left;
@@ -191,9 +195,9 @@
     > li {
       float: left;
       margin-right: 15px;
-      a {
-        color: $light-slate;
-      }
+      //a {
+      //  color: $light-slate;
+      //}
       > i {
         margin-right: 5px;
         width: 34px;
@@ -280,6 +284,13 @@
     .media-heading {
       font-size: 14px;
       margin-bottom: 0;
+
+      a {
+        color: $text-color;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
       span {
         font-weight: normal;
         display: inline-block;
