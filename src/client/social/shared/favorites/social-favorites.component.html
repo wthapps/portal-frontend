@@ -38,7 +38,7 @@
               <li><a href="javascript:;" (click)="unfavourite(favourite)">Remove From Favourites</a></li>
               <li><a href="javascript:;" (click)="rearrange()">Rearrange</a></li>
               <li role="separator" class="divider"></li>
-              <li *ngIf="favourite?.community"><a href="javascript:;" (click)="onLeave(favourite?.community)">Leave
+              <li *ngIf="favourite?.community"><a href="javascript:;" (click)="confirmLeaveCommunity(favourite?.community)">Leave
                 Community</a></li>
               <li *ngIf="favourite?.friend"><a href="javascript:;" (click)="unfriend(favourite?.friend)">Unfriend</a>
               </li>

@@ -88,56 +88,56 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
     console.log('changiing.........route');
   }
 
-  onDelete(item: any) {
-    console.log(item);
-    this.confirmationService.confirm({
-      message: `Are you sure to delete the community ${item.name}`,
-      header: 'Delete Community',
-      accept: () => {
-        this.loadingService.start();
-        this.apiBaseService.delete(`${this.soComUrl}/${item.uuid}`)
-          .subscribe((response: any) => {
-              // console.log(response);
-              this.onUpdated(response.data);
-              this.router.navigateByUrl(this.comUrl);
-              this.loadingService.stop();
-            },
-            error => {
-              // console.log(error);
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
+  // onDelete(item: any) {
+  //   console.log(item);
+  //   this.confirmationService.confirm({
+  //     message: `Are you sure to delete the community ${item.name}`,
+  //     header: 'Delete Community',
+  //     accept: () => {
+  //       this.loadingService.start();
+  //       this.apiBaseService.delete(`${this.soComUrl}/${item.uuid}`)
+  //         .subscribe((response: any) => {
+  //             // console.log(response);
+  //             this.onUpdated(response.data);
+  //             this.router.navigateByUrl(this.comUrl);
+  //             this.loadingService.stop();
+  //           },
+  //           error => {
+  //             // console.log(error);
+  //             this.toastsService.danger(error);
+  //             this.loadingService.stop();
+  //           }
+  //         );
+  //     }
+  //   });
+  //
+  //   return false;
+  // }
 
-    return false;
-  }
-
-  onLeave(item: any) {
-
-    this.confirmationService.confirm({
-      message: this.userService.profile.uuid == item.admin.uuid ?
-        `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
-        `Are you sure to leave the community ${item.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        this.loadingService.start();
-        this.apiBaseService.post(`${this.soComUrl}/leave`, JSON.stringify({uuid: item.uuid}))
-          .subscribe((response: any) => {
-              this.loadingService.stop();
-              this.router.navigateByUrl(this.comUrl);
-            },
-            error => {
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
-
-    return false;
-  }
+  // onLeave(item: any) {
+  //
+  //   this.confirmationService.confirm({
+  //     message: this.userService.profile.uuid == item.admin.uuid ?
+  //       `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
+  //       `Are you sure to leave the community ${item.name}?`,
+  //     header: 'Leave Community',
+  //     accept: () => {
+  //       this.loadingService.start();
+  //       this.apiBaseService.post(`${this.soComUrl}/leave`, JSON.stringify({uuid: item.uuid}))
+  //         .subscribe((response: any) => {
+  //             this.loadingService.stop();
+  //             this.router.navigateByUrl(this.comUrl);
+  //           },
+  //           error => {
+  //             this.toastsService.danger(error);
+  //             this.loadingService.stop();
+  //           }
+  //         );
+  //     }
+  //   });
+  //
+  //   return false;
+  // }
 
   onEdit(item: any) {
     this.modalEdit.modal.open();

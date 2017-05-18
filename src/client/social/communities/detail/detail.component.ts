@@ -200,43 +200,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  onLeave() {
-    // Check if there are other admins beside current user in community
-    // If not, he must pick another one before leaving
-    let enoughAdmins = this.community.admin_count > 1 ? true : false;
-    // let pickAnotherAdmin = this.userService.profile.uuid == this.item.admin.uuid && !enoughAdmins;
-    let pickAnotherAdmin = _.indexOf(this.community.admins, (a: any) => a.uuid == this.userService.profile.uuid) > -1  && !enoughAdmins;
-
-    this.confirmationService.confirm({
-      message: pickAnotherAdmin ?
-        `Hi there, you need to pick another admin for the community ${this.community.name} before leaving.` :
-        `Are you sure to leave the community ${this.community.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        if (pickAnotherAdmin) {
-          // Navigate to member tab
-          this.router.navigate([this.communitiesUrl, this.uuid], { queryParams: {tab: 'members', skipLocationChange: true }});
-        } else {
-          this.leaveCommunity();
-        }
-      }
-    });
-
-    return false;
-  }
-
-  leaveCommunity() {
-    this.loadingService.start();
-    this.socialService.community.leaveCommunity(this.uuid)
-      .subscribe((response: any) => {
-          this.loadingService.stop();
-          this.router.navigateByUrl(this.communitiesUrl);
-        },
-        error => {
-          this.toastsService.danger(error);
-          this.loadingService.stop();
-        }
-      );
+  confirmLeaveCommunity() {
+    this.socialService.community.confirmLeaveCommunity(this.community)
+      .then((community: any) =>
+        this.router.navigateByUrl(this.communitiesUrl));
   }
 
   onCoverAction(event: any) {
@@ -403,29 +370,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    this.confirmationService.confirm({
-      message: `Are you sure to delete the community ${this.community.name}`,
-      header: 'Delete Community',
-      accept: () => {
-        this.loadingService.start();
-        // this.apiBaseService.delete(`$this.communitiesUrl}/${item.uuid}`)
-        this.socialService.community.deleteCommunity(`${this.community.uuid}`)
-          .subscribe((response: any) => {
-              // console.log(response);
-              this.router.navigateByUrl(this.communitiesUrl);
-              this.toastsService.success(`Your community - ${this.community.name} - has been deleted successfully`);
-              this.loadingService.stop();
-            },
-            error => {
-              // console.log(error);
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
-
-    return false;
+    this.socialService.community.confirmDeleteCommunity(this.community)
+      .then((community: any)  => this.router.navigateByUrl(this.communitiesUrl));
   }
 
   onLoadMore() {
@@ -454,30 +400,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-
-  // private checkCurrentUser(uuid: string) {
-  //   // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/check_current_user/`).subscribe(
-  //   this.socialService.community.checkCurrentUser(uuid).subscribe(
-  //     (res: any)=> {
-  //       this.isAdmin = _.get(res, 'data.is_admin');
-  //       this.isMember = _.get(res, 'data.is_member');
-  //       this.invitationId = _.get(res, 'data.invitationId');
-  //       this.joinRequestId = _.get(res, 'data.joinRequestId');
-  //
-  //       // if (res.data.invitationId)
-  //       //   this.invitationId = res.data.invitationId;
-  //       // if (res.data.joinRequestId)
-  //       //   this.joinRequestId = res.data.joinRequestId;
-  //
-  //       //  Grant edit profile / cover image privilege to community admins
-  //       this.community.canEdit = this.isAdmin;
-  //
-  //     },
-  //     error => {
-  //       this.errorMessage = <any>error;
-  //     }
-  //   );
-  // }
 
   private getTabItems(uuid: string, tabName: string) {
     this.tabItems = [];
