@@ -159,7 +159,9 @@
           border-top: 6px solid transparent;
           border-bottom: 6px solid transparent;
         }
-
+        &.contact {
+          max-width: 250px;
+        }
       }
       &:first-child {
         .chat-item-content {

@@ -1,4 +1,5 @@
-<div *ngIf="message.message_type == 'text'" class="chat-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
+<div *ngIf="message.message_type == 'text'" class="chat-item"
+     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
   <figure class="chat-item-avatar">
     <img [src]="message.display.image" alt="">
   </figure>
@@ -22,7 +23,8 @@
   </div>
 </div>
 
-<div *ngIf="message.message_type == 'file'" class="chat-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
+<div *ngIf="message.message_type == 'file'" class="chat-item"
+     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
   <figure class="chat-item-avatar">
     <img [src]="message.display.image" alt="">
   </figure>
@@ -41,14 +43,16 @@
       <!--{{message | json}}-->
       <div class="chat-item-content">
         <span *ngIf="message.file_json">
-          <img  *ngIf="message.file_type == 'Photo'" [src]="message.file_json.url" alt="" style="width: 200px">
-          <a *ngIf="message.file_type == 'FileMedium'" [href]="message.file_json.url" target="_blank" style="color: #4A4A4A" download>
+          <img *ngIf="message.file_type == 'Photo'" [src]="message.file_json.url" alt="" style="width: 200px">
+          <a *ngIf="message.file_type == 'FileMedium'" [href]="message.file_json.url" target="_blank"
+             style="color: #4A4A4A" download>
             <div style="float: left">
               <img [src]="message.file_json.thumbnail_url" alt="">
             </div>
             <div *ngIf="message.file_type == 'FileMedium'" style="position: relative; left: 10px; float: right">
               <span *ngIf="message.file_json.name">{{message.file_json.name}}</span>
-              <div *ngIf="message.file_json.size" style="position: relative; top: -5px;">{{message.file_json.size}} B</div>
+              <div *ngIf="message.file_json.size"
+                   style="position: relative; top: -5px;">{{message.file_json.size}} B</div>
             </div>
           </a>
         </span>
@@ -57,7 +61,8 @@
   </div>
 </div>
 
-<div *ngIf="message.message_type == 'share_contact_message'" class="chat-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
+<div *ngIf="message.message_type == 'share_contact_message'" class="chat-item"
+     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
   <figure class="chat-item-avatar">
     <img [src]="message.display.image" alt="">
   </figure>
@@ -74,22 +79,35 @@
           </ul>
         </div>
       </div>
-      <div class="chat-item-content" *ngIf="message.display.share_contact">
-        <img [src]="message.display.share_contact.profile_image" alt="" style="width: 34px">
-        <span>{{message.display.share_contact.name}}</span>
-        <button *ngIf="!message.byMe" (click)="onAdd(message.display.share_contact)">Add to Contact</button>
+      <div class="chat-item-content" *ngIf="message.display.share_contact"
+           [ngClass]="{'contact': message.display.share_contact}">
+        <div class="media">
+          <div class="media-left">
+            <span class="avatar-xsm">
+              <img [src]="message.display.share_contact.profile_image" alt="">
+            </span>
+          </div>
+          <div class="media-body">
+            <p class="media-heading bold">{{message.display.share_contact.name}}</p>
+            <button class="btn btn-default" *ngIf="!message.byMe" (click)="onAdd(message.display.share_contact)">
+              <i class="fa fa-user-plus"></i> Add to Contact
+            </button>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div *ngIf="message.message_type == 'file_tmp'" class="chat-item chat-item-right" style="opacity: 0.3">
-  <span *ngIf="message.file_json" >
+  <span *ngIf="message.file_json">
     <img [src]="message.file_json.thumbnail_url" alt=""> Uploading ...
   </span>
 </div>
 
-<div *ngIf="message.message_type == 'notification'" class="chat-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
+<div *ngIf="message.message_type == 'notification'" class="chat-item"
+     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
   <div class="chat-item-message">
     <div class="chat-item-card">
       <div class="chat-item-action">
