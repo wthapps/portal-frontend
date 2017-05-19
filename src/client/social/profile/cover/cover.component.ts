@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ZoneReportService } from '../../shared/form/report/report.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ZoneReportService } from '../../../core/shared/form/report/report.service';
 
 
 declare var _: any;

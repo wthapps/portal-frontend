@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversation.component';
+import { ConfirmationService } from 'primeng/components/common/api';
+import { ZoneReportService } from '../../../core/shared/form/report/report.service';
 
 declare let $:any;
 
@@ -12,14 +14,18 @@ declare let $:any;
 export class ZChatContactActionsComponent implements OnInit {
   @Input() contact:any;
   conversationUrl:any;
+  profileUrl:any;
   @ViewChild('addConversation') addConversation: ZChatShareAddToConversationComponent;
   // Config component
   @Input() config:any = {
     history: false
   };
 
-  constructor(private chatService: ChatService) {
+  constructor(private chatService: ChatService,
+              private zoneReportService: ZoneReportService,
+              private confirmationService: ConfirmationService) {
     this.conversationUrl = this.chatService.constant.conversationUrl;
+    this.profileUrl = this.chatService.constant.profileUrl;
   }
 
   ngOnInit() {
@@ -39,8 +45,13 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   addBlackList() {
-    // console.log(this.contact);
-    this.chatService.addGroupUserBlackList(this.contact);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to add this contact to black list ?',
+      header: 'Add To Black List',
+      accept: () => {
+        this.chatService.addGroupUserBlackList(this.contact);
+      }
+    });
   }
 
   disableNotification() {
@@ -52,6 +63,16 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   deleteContact() {
-    this.chatService.deleteContact(this.contact);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this contact ?',
+      header: 'Delete Contact',
+      accept: () => {
+        this.chatService.deleteContact(this.contact);
+      }
+    });
+  }
+
+  report(uuid:any) {
+    this.zoneReportService.friend(uuid);
   }
 }

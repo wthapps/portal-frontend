@@ -1,14 +1,5 @@
 <div class="page-body-control has-page-body-sidebar">
-  <nav class="nav-tabs-wrap">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="javascript:;">ALL</a></li>
-      <li><a [routerLink]="['/contact/online']">ONLINE</a></li>
-      <li><a [routerLink]="['/contact/blacklist']">BLACKLIST</a></li>
-      <a class="btn btn-default" style="float: right" href="javascript:;" (click)="newContact()">Add New Contact</a>
-    </ul>
-
-  </nav>
+  <z-chat-contact-navigation [tab]="'all'"></z-chat-contact-navigation>
 </div>
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
@@ -32,4 +23,4 @@
   </div>
 </div>
 
-<z-chat-share-add-contact #addContact></z-chat-share-add-contact>
+<!--<z-chat-share-add-contact #addContact></z-chat-share-add-contact>-->

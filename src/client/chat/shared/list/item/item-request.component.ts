@@ -19,4 +19,9 @@ export class ZChatShareItemRequestComponent implements OnInit {
     let contact = this.chatService.getContactSelect().value;
     this.chatService.acceptRequest(contact);
   }
+
+  onDecline() {
+    let contact = this.chatService.getContactSelect().value;
+    this.chatService.declineRequest(contact);
+  }
 }

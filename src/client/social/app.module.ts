@@ -7,7 +7,6 @@ import { SharedModule } from '../core/shared/shared.module';
 
 import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialCommunityModule } from './communities/communities.module';
-import { ZoneReportService } from './shared/form/report/report.service';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from '../core/core.module';
@@ -18,6 +17,7 @@ import { ZSocialPhotoModule } from './photo/photo.module';
 import { ZSocialSearchModule } from './search/search.module';
 import { PhotoService } from '../core/shared/services/photo.service';
 import { CoverProfileModule } from '../core/partials/cover-profile/cover-profile.module';
+import { ZoneReportService } from '../core/shared/form/report/report.service';
 
 
 @NgModule({

@@ -6,10 +6,9 @@ import {
   FormBuilder,
   FormControl
 } from '@angular/forms';
+import { LoadingService } from '../../../partials/loading/loading.service';
 import { ZoneReportService } from './report.service';
-import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../../core/partials/loading/loading.service';
-import { HdModalComponent } from '../../../../core/shared/ng2-hd/modal/components/modal';
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 declare var $: any;
 declare var _: any;
@@ -20,7 +19,7 @@ declare var _: any;
   templateUrl: 'report.component.html'
 })
 export class ZoneReportComponent implements OnInit {
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: ModalComponent;
 
   REASONS: Array<any> = [
     {id: 1, description: 'Spam or Scam', entity: 'post;community'},

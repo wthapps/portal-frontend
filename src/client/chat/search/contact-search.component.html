@@ -4,15 +4,13 @@
 
   <div #form class="navbar-searchTop">
     <div class="form-group">
-      <input type="text" class="form-control" [(ngModel)]="name" (keyup)="search()">
+      <input type="text" class="form-control" [(ngModel)]="name" (keyup)="search()" style="width: 90%; float: left;">
+      <button class="btn btn-default" style="position: relative; left: -5px"><i class="fa fa-search" aria-hidden="true"></i></button>
     </div>
-    <button class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
   </div>
 </div>
 <div class="page-body-content has-page-body-sidebar">
   <div class="page-body-content-in">
-
-
     <ul class="p-list-user p-list-border" *ngIf="newContacts">
       <li *ngFor="let contact of newContacts | chatUserNew:contactItem">
         <div *ngIf="contact" class="media-flex">

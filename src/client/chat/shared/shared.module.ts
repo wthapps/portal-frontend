@@ -25,6 +25,8 @@ import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
 import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
 import { ZChatChatboxService } from './chat-box/chat-box.service';
+import { ChatGroupSentRequestPipe } from './pipe/chat-group-sent-request.pipe';
+import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -55,6 +57,8 @@ import { ZChatChatboxService } from './chat-box/chat-box.service';
     ChatGroupNamePipe,
     ChatUserNewPipe,
     ChatGroupMembersPipe,
+    ChatGroupSentRequestPipe,
+    ChatGroupPendingPipe,
     ChatUserOnlinePipe
   ],
   exports: [
@@ -77,6 +81,8 @@ import { ZChatChatboxService } from './chat-box/chat-box.service';
     ChatGroupBlackListPipe,
     ChatGroupNamePipe,
     ChatUserNewPipe,
+    ChatGroupSentRequestPipe,
+    ChatGroupPendingPipe,
     ChatGroupMembersPipe,
     ChatUserOnlinePipe
   ]

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { SocialService } from '../services/social.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { ZoneReportService } from '../form/report/report.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ConfirmationService } from 'primeng/components/common/api';
+import { ZoneReportService } from '../../../core/shared/form/report/report.service';
 
 declare let _ : any;
 

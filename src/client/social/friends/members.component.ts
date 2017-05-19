@@ -4,8 +4,8 @@ import { SocialService } from '../shared/services/social.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { NotificationService } from '../../core/shared/services/notification.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ZoneReportService } from '../shared/form/report/report.service';
 import { LoadingService } from '../../core/partials/loading/loading.service';
+import { ZoneReportService } from '../../core/shared/form/report/report.service';
 
 
 declare var $: any;

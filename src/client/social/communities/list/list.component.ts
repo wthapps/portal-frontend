@@ -12,10 +12,10 @@ import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component
 import { SocialService } from '../../shared/services/social.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { Router } from '@angular/router';
+import { ZoneReportService } from '../../../core/shared/form/report/report.service';
 
 declare var _: any;
 

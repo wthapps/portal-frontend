@@ -302,13 +302,19 @@ export class ChatService {
   }
 
   acceptRequest(contact:any) {
-    this.updateGroupUser(contact.id, {active: true}, (res:any) => {
+    this.updateGroupUser(contact.id, {accept_friend: true}, (res:any) => {
       contact.active = true;
     });
   }
 
+  declineRequest(contact:any) {
+    this.updateGroupUser(contact.id, {status: "decline"}, (res:any) => {
+      this.setDefaultSelectContact();
+    });
+  }
+
   searchUsers(name:any) {
-    return this.apiBaseService.post('users/search', {search: name, search_by: 'name'});
+    return this.apiBaseService.post('users/search', {q:`name:${name}`});
   }
 
   shareContact(ids:any) {
@@ -346,6 +352,10 @@ export class ChatService {
     this.apiBaseService.post('zone/chat/notification/broadcard_contact', {group_id: groupId}).subscribe((res:any) => {
       // console.log(res);
     });
+  }
+
+  getOwnUserProfile() {
+    return this.user.profile;
   }
 }
 

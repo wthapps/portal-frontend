@@ -57,6 +57,9 @@ import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
 import { ChannelService } from './channels/channel.service';
 import { ChatCommonService } from './services/chat.common.service';
+import { ZoneReportService } from './form/report/report.service';
+import { ZoneReportComponent } from './form/report/report.component';
+import { HdModalComponent } from './ng2-hd/modal/components/modal';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -86,6 +89,7 @@ import { ChatCommonService } from './services/chat.common.service';
     NavbarComponent,
     ReadMoreComponent,
     PhotoItemPreviewComponent,
+    ZoneReportComponent,
 
     // Pipe
     GroupByMonthYearPipe,
@@ -130,6 +134,7 @@ import { ChatCommonService } from './services/chat.common.service';
     NavbarComponent,
     ReadMoreComponent,
     PhotoItemPreviewComponent,
+    ZoneReportComponent,
 
 
     // Pipe
@@ -175,6 +180,7 @@ export class SharedModule {
         PhotoUploadService,
         UrlService,
         DateService,
+        ZoneReportService,
         ChatCommonService,
         PhotoService
       ]

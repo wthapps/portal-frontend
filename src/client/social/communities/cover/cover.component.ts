@@ -22,9 +22,9 @@ import { ToastsService } from '../../../core/partials/toast/toast-message.servic
 import { ConfirmationService } from 'primeng/components/common/api';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ZoneReportService } from '../../shared/form/report/report.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
+import { ZoneReportService } from '../../../core/shared/form/report/report.service';
 
 declare var _: any;
 

@@ -3,9 +3,9 @@ import { PostComponent } from '../index';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';
-import { ZoneReportService } from '../../../shared/form/report/report.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { User } from '../../../../core/shared/models/user.model';
+import { ZoneReportService } from '../../../../core/shared/form/report/report.service';
 
 declare var _: any;
 

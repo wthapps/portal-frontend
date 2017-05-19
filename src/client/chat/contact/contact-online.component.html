@@ -1,12 +1,5 @@
 <div class="page-body-control has-page-body-sidebar">
-  <nav class="nav-tabs-wrap">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs">
-      <li><a [routerLink]="['/contact']">ALL</a></li>
-      <li class="active"><a href="javascript:;">ONLINE</a></li>
-      <li><a [routerLink]="['/contact/blacklist']">BLACKLIST</a></li>
-    </ul>
-  </nav>
+  <z-chat-contact-navigation [tab]="'online'"></z-chat-contact-navigation>
 </div>
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">

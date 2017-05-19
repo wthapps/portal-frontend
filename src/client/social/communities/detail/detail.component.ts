@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
@@ -17,6 +16,7 @@ import { PhotoModalDataService } from '../../../core/shared/services/photo-modal
 import { Subscription, Observable } from 'rxjs';
 import { ZSocialFavoritesComponent } from '../../shared/favorites/social-favorites.component';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { ZoneReportService } from '../../../core/shared/form/report/report.service';
 
 declare let _: any;
 declare let $: any;

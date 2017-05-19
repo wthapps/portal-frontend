@@ -16,7 +16,6 @@ import {
 import { PostDetailComponent } from './post/post-detail.component';
 import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { PostListComponent } from './post/post-list.component';
-import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../friends/members.component';
@@ -51,9 +50,6 @@ import { CoverProfileModule } from '../../core/partials/cover-profile/cover-prof
     PostDetailComponent,
     PostDetailPhotoComponent,
 
-    //Share
-    ZoneReportComponent,
-
     // Notifications
     ZSocialNotificationsComponent,
 
@@ -66,7 +62,6 @@ import { CoverProfileModule } from '../../core/partials/cover-profile/cover-prof
     SoPhotoListComponent,
     PostListComponent,
     PostComponent,
-    ZoneReportComponent,
     ZSocialNotificationsComponent,
 
     Ng2HdModule,
