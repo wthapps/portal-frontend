@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Input, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
@@ -10,7 +10,8 @@ import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
 import { Subscription } from 'rxjs';
-import { PhotoModalDataService } from '../services/photo-modal-data.service';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { UserService } from '../../../core/shared/services/user.service';
 
 declare var _: any;
 declare var $: any;
@@ -28,18 +29,20 @@ export class PostListComponent implements OnInit, OnDestroy {
   @Input() type: string = undefined;
   @Input() community: any = undefined;
 
-  items: Array<SoPost>;
+  @Input() items: Array<SoPost>;
   uuid: string;
   currentUser: User;
-  commentBox:any;
-  page_index:number = 0;
-  loading_done:boolean = false;
+  commentBox: any;
+  page_index: number = 0;
+  loading_done: boolean = false;
+  nextLink: any;
   readonly post_limit: number = Constants.soPostLimit;
   // type: string = 'user';
 
   // Subscription
-  loadSubscription : Subscription;
-  nextPhotoSubscription : Subscription;
+  loadSubscription: Subscription;
+  nextPhotoSubscription: Subscription;
+  postIsEmpty: boolean = false;
 
   constructor(public apiBaseService: ApiBaseService,
               public socialService: SocialService,
@@ -47,7 +50,8 @@ export class PostListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private postService: PostService,
-              private photoSelectDataService : PhotoModalDataService,
+              private photoSelectDataService: PhotoModalDataService,
+              private userService: UserService,
               private socialDataService: SocialDataService
               // private comDataService: CommunitiesDataService
   ) {
@@ -55,9 +59,19 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.socialService.user.profile;
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'];  // this can be user uuid or community uuid
-      this.reloadPosts();
+    // Support get route params from parent route as well as current route. Ex: Profile post page
+    let parentRouteParams = this.route.parent.params;
+
+    this.route.params
+      .combineLatest(parentRouteParams)
+      .map((paramsPair: any) => _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined))
+      .subscribe((params: any) => {
+      console.debug('params Id testing: ', params);
+      this.uuid = _.get(params, 'id');  // this can be user uuid or community uuid
+      // Load if items empty
+      if (this.type != 'search') {
+        this.loadPosts();
+      }
     });
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
@@ -65,21 +79,21 @@ export class PostListComponent implements OnInit, OnDestroy {
     // Subscribe photo select events
     this.photoSelectDataService.init();
 
-    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
-      (photos: any) => {this.onSelectPhotoComment(photos);
-    });
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$);
 
-    this.loadSubscription = this.socialDataService.itemObs$.subscribe(() => {
-      this.loadPosts();
-      console.log('Loading more posts');
-    });
+    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
+      .takeUntil(closeObs$).subscribe(
+      (photos: any) => {
+        this.onSelectPhotoComment(photos);
+      });
   }
 
   ngOnDestroy() {
-    if(this.loadSubscription)
+    if (this.loadSubscription)
       this.loadSubscription.unsubscribe();
 
-    this.nextPhotoSubscription.unsubscribe();
+    if (this.nextPhotoSubscription)
+      this.nextPhotoSubscription.unsubscribe();
   }
 
   mapPost(post: any) {
@@ -87,41 +101,34 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   mapPostNoComments(post: any) {
-    let mappedPost =  new SoPost().from(post).excludeComments();
+    let mappedPost = new SoPost().from(post).excludeComments();
     return mappedPost;
   }
 
   loadPosts() {
+    if (!this.type) {
+      console.error('type params should be assigned: ', this.type);
+      return;
+    }
     this.loadingService.start('#post-list-component');
-    this.postService.list({uuid: this.uuid, type: this.type, page_index: this.page_index, limit: this.post_limit})
+    this.socialService.post.getList(this.uuid, this.type)
       .subscribe(
         (res: any) => {
           this.loadingService.stop('#post-list-component');
-          // if(this.items === undefined)
-          //   this.items = _.map(res.data, this.mapPost);
-          // else {
-          //   // this.items.push(..._.map(res.data, this.mapPost));
-          //   this.items = _.extend(this.items, ..._.map(res.data, this.mapPost));
-          //   _.orderBy(this.items, ['created_at'], ['desc']);
-          //
-          // }
           this.items = _.map(res.data, this.mapPost);
-          this.loading_done = res.loading_done;
-          this.socialDataService.loadingDone = this.loading_done;
-          if(!this.loading_done)
-            this.page_index += 1;
+          this.nextLink = res.page_metadata.links.next;
+          if (res.data.length == 0) {
+            this.postIsEmpty = true;
+          }
+          // this.loading_done = res.loading_done;
+          // this.socialDataService.loadingDone = this.loading_done;
+          // if(!this.loading_done)
+          //   this.page_index += 1;
         },
         (error: any) => {
           console.log('loading posts errors: ', error);
         }
       );
-  }
-
-  reloadPosts() {
-    this.page_index = 0;
-    this.loading_done = false;
-    this.socialDataService.loadingDone = this.loading_done;
-    this.loadPosts();
   }
 
   /**
@@ -141,74 +148,33 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.items.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
             // this.loadPosts();
             this.postEditModal.close();
+            this.postIsEmpty = false;
           },
           (error: any) => {
             console.log('error', error);
           }
         );
     } else if (options.mode == 'edit') {
-            // Update post content only, not reload comments
-            this.postEditModal.close();
-        this.postService.update(options.item)
-          .subscribe((response: any) => {
+      // Update post content only, not reload comments
+      this.postEditModal.close();
+      this.postService.update(options.item)
+        .subscribe((response: any) => {
             // this.loadPosts();
             let editedItem = _.map([response.data], this.mapPostNoComments)[0];
-            let idx = _.findIndex(this.items, ( i:SoPost ) => { return  i.uuid == editedItem.uuid; });
-            if(idx >= 0) {
+            let idx = _.findIndex(this.items, (i: SoPost) => {
+              return i.uuid == editedItem.uuid;
+            });
+            if (idx >= 0) {
               editedItem.comments = this.items[idx].comments;
               this.items[idx] = editedItem;
             }
 
-    },
+          },
           (error: any) => {
             console.log('error', error);
           }
         );
     }
-    // console.log('save item...............', item);
-    //
-    // let body: string;
-    // let url: string = 'zone/social_network/posts';
-    // body = JSON.stringify({
-    //   post: {
-    //     description: item.description,
-    //     photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
-    //     tags_json: this.post.tags,
-    //     privacy: this.post.privacy,
-    //     adult: this.post.adult,
-    //     disable_comment: this.post.disable_comment,
-    //     disable_share: this.post.disable_share,
-    //     mute: this.post.mute
-    //   },
-    //   parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-    //   custom_objects: this.custom_objects
-    // });
-    //
-    // if(this.mode == 'add') {
-    //   this.apiService.post(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    //
-    // } else if(this.mode == 'edit') {
-    //   url += `/${this.post.uuid}`;
-    //   this.apiService.put(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    // }
   }
 
   dismiss(item: any) {
@@ -232,16 +198,23 @@ export class PostListComponent implements OnInit, OnDestroy {
     console.log('list deleting.................');
   }
 
-  updatedPost(event: any) {
-    this.loadPosts();
+  updatedPost(event: any, post: any) {
+    // this.loadPosts();
+    this.items = _.map(this.items, (item: any) => {
+      if (item.id == post.id)
+        return post;
+      else
+        return item;
+    });
   }
 
-  deletedPost(event: any) {
-    this.loadPosts();
+  deletedPost(event: any, post: any) {
+    // this.loadPosts();
+    _.remove(this.items, {id: post.id});
   }
 
 
-  openPhotoModal(e:any) {
+  openPhotoModal(e: any) {
     this.commentBox = e;
     // this.photoModal.open();
   }
@@ -255,8 +228,26 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   viewMorePosts() {
-    this.loadPosts();
+    if (this.nextLink) {
+      this.apiBaseService.get(this.nextLink).subscribe((res: any)=> {
+        _.map(res.data, (v: any)=> {
+          this.items.push(this.mapPost(v));
+        });
+        // let items = _.map(res.data, this.mapPost);
+        // for(let i=0; i <items.length; i++) {
+        //   this.items.push(items[0]);
+        // }
+        this.nextLink = res.page_metadata.links.next;
+      });
+    }
   }
 
+  trackItems(index: any, item: any) {
+    return item ? item.id : undefined;
+  }
+
+  focusSearchFriends() {
+    $('#searchTopHeader').focus();
+  }
 }
 

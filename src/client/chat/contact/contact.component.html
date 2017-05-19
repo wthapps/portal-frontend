@@ -5,7 +5,9 @@
       <li class="active"><a href="javascript:;">ALL</a></li>
       <li><a [routerLink]="['/contact/online']">ONLINE</a></li>
       <li><a [routerLink]="['/contact/blacklist']">BLACKLIST</a></li>
+      <a class="btn btn-default" style="float: right" href="javascript:;" (click)="newContact()">Add New Contact</a>
     </ul>
+
   </nav>
 </div>
 
@@ -15,7 +17,7 @@
       <li *ngFor="let contact of contactItem.value.data | chatGroupCouple" >
         <div class="media-flex">
           <div class="media-flex-item">
-            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
           </div>
           <div class="media-flex-item">
             <span class="text-overflow-name">{{contact.display.name}}</span>
@@ -29,3 +31,5 @@
     </ul>
   </div>
 </div>
+
+<z-chat-share-add-contact #addContact></z-chat-share-add-contact>

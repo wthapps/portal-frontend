@@ -1,16 +1,25 @@
-<hd-modal #modal cssClass="modal-social modal-custom modal-long" [keyboard]="false" [backdrop]="'static'">
+<!--<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>-->
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> About</h4>
+    </modal-header>
+    <modal-body>
+      <p>
+        This section will atomatically update from your WTHApps contact profile.
+      </p>
 
-  <modal-header [showClose]="true">
-    <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> About</h4>
-  </modal-header>
-
-  <modal-body>
-    <p>
-      This section will atomatically update from your WTHApps contact profile.
-    </p>
-
-    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-      last_name
+      <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched),
+        'has-success': (first_name.valid && first_name.touched)}">
+        <label for="first_name">Last name <span class="text-danger">*</span></label>
+        <input [formControl]="first_name" type="text" class="form-control" id="first_name"
+               placeholder="First name">
+        <div *ngIf="!first_name.valid && first_name.touched">
+              <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">
+                First name is required
+              </span>
+        </div>
+      </div>
 
       <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched),
         'has-success': (last_name.valid && last_name.touched)}">
@@ -352,12 +361,10 @@
           </button>
         </div>
       </div>
-      <div class="clearfix text-right">
-        <!--@TODO ignore Additional Link function-->
-        <!--<button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>-->
-        <button [disabled]="!first_name.valid" type="submit" class="btn btn-wth-default btn-min mr10">Done</button>
-        <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
-      </div>
-    </form>
-  </modal-body>
-</hd-modal>
+    </modal-body>
+    <modal-footer>
+      <button [disabled]="!first_name.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
+      <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

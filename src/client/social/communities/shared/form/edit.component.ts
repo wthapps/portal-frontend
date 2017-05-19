@@ -15,7 +15,7 @@ import { CustomValidator } from '../../../../core/shared/validator/custom.valida
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
 import { UserService } from '../../../../core/shared/services/user.service';
-import { HdModalComponent } from '../../../shared/ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../../core/shared/ng2-hd/modal/components/modal';
 import { Constants } from '../../../../core/shared/config/constants';
 
 declare var $: any;
@@ -182,5 +182,11 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
         );
     }
     this.modal.close();
+  }
+
+  resetFormInputs(): void {
+    this.community_name.reset('');
+    this.tag_line.reset('');
+    this.description.reset('');
   }
 }

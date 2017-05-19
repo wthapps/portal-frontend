@@ -1,7 +1,9 @@
-import { Component, ViewChild, HostListener, ElementRef, HostBinding } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit, HostBinding, OnDestroy } from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 
@@ -12,11 +14,29 @@ declare var $: any;
   styleUrls: ['chat-box.component.css']
 })
 
-export class ZChatChatboxComponent {
-  @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+export class ZChatChatboxComponent implements OnInit, OnDestroy {
+  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
   @HostBinding('class') keyCtrlClass = '';
 
   emojiData: any = [];
+
+  // Subscription list
+  nextPhotoSubscription: Subscription;
+  uploadPhotoSubscription: Subscription;
+
+  constructor(private chatService: ChatService,
+              private photoSelectDataService: PhotoModalDataService
+  ) {
+  }
+
+  ngOnInit() {
+    this.emojiData = ZChatEmojiService.emojis;
+    // this.photoModal.action = 'UPLOAD';
+  }
+
+  ngOnDestroy() {
+    this.unsubscribePhotoEvents();
+  }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -33,33 +53,27 @@ export class ZChatChatboxComponent {
     }
   }
 
-  constructor(private chatService: ChatService) {
-  }
-
-  ngOnInit() {
-    this.emojiData = ZChatEmojiService.emojis;
-    this.photoModal.action = 'UPLOAD';
-  }
-
   send() {
-    this.chatService.sendMessage($('#chat-message-text').text());
+    this.chatService.sendTextMessage($('#chat-message-text').text());
     $('#chat-message-text').text('');
   }
 
   onEmojiClick(e: any) {
     $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
-    this.placeCaretAtEnd(document.getElementById("chat-message-text"));
+    this.placeCaretAtEnd(document.getElementById('chat-message-text'));
   }
 
   onOpenSelectPhotos() {
-    this.photoModal.open();
+    // this.photoModal.open();
+    this.photoSelectDataService.open('');
+
+    this.subscribePhotoEvents();
   }
 
   chooseDone(e: any) {
-    this.photoModal.close();
+    // this.photoModal.close();
     for (let photo of e) {
-      photo.type = 'Photo';
-      this.chatService.sendMessage('', photo);
+      this.chatService.uploadPhotoOnWeb(photo);
     }
   }
 
@@ -71,15 +85,15 @@ export class ZChatChatboxComponent {
   }
 
   uploadPhoto(e: any) {
-    this.photoModal.close();
+    // this.photoModal.close();
     this.chatService.createUploadingFile();
     this.chatService.uploadPhotos(e);
   }
 
   placeCaretAtEnd(el: any) {
     el.focus();
-    if (typeof window.getSelection != "undefined"
-      && typeof document.createRange != "undefined") {
+    if (typeof window.getSelection != 'undefined'
+      && typeof document.createRange != 'undefined') {
       let range: any = document.createRange();
       range.selectNodeContents(el);
       range.collapse(false);
@@ -87,5 +101,41 @@ export class ZChatChatboxComponent {
       sel.removeAllRanges();
       sel.addRange(range);
     }
+  }
+
+  private subscribePhotoEvents() {
+
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
+    // Subscribe actions corresponding with photo modal actions
+
+    if(this.notAssignedSubscription(this.nextPhotoSubscription)) {
+      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
+        (photos: any) => {
+          this.chooseDone(photos);
+          // this.uploadPhoto(photos);
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+
+    if(this.notAssignedSubscription(this.uploadPhotoSubscription)) {
+      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe(
+        (photos: any) => {
+          this.uploadPhoto(photos);
+        },
+        (error : any) => { console.error(error); }
+      );
+    }
+  }
+
+  private notAssignedSubscription(sub: Subscription) {
+    return !sub || sub.closed;
+  }
+
+  private unsubscribePhotoEvents() {
+    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub : Subscription) => {
+      if(sub && !sub.closed)
+        sub.unsubscribe();
+    });
   }
 }

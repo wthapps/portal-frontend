@@ -18,7 +18,7 @@
                   <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
                 <!--</span>-->
             <!--</figure>-->
-            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
             <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
             <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>
@@ -41,7 +41,7 @@
                 <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
               <!--</span>-->
             <!--</figure>-->
-            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
             <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
             <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>
@@ -49,10 +49,11 @@
       </ul>
     </dd>
   </dl>
-  <div class="form-group">
-    <a href="javascript:;" class="btn btn-default" (click)="historyToggle()"><i class="fa fa-clock-o"></i> History</a>
-  </div>
+  <!--<div class="form-group">-->
+    <!--<a href="javascript:;" class="btn btn-default"><i class="fa fa-clock-o"></i> History</a>-->
+  <!--</div>-->
   <dl class="p-list-user-group" *ngIf="historyShow">
+    <dt>History</dt>
     <dd>
       <ul class="p-list-user p-list-outside" *ngIf="historyContacts.value">
         <li *ngFor="let contact of historyContacts.value" [routerLinkActive]="['active']">
@@ -66,7 +67,7 @@
                 <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
               <!--</span>-->
             <!--</figure>-->
-            <z-chat-share-user-list [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-list>
+            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
             <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
             <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
           </a>

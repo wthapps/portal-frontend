@@ -8,18 +8,21 @@ import { PostComponent } from '../shared/post/post.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {
-        path: 'communities',
-        component: ZSocialCommunityComponent,
-        children: [
-          // {path: ':id/about', component: ZSocialCommunityDetailAboutComponent},
-          // {path: ':id/members', component: ComMemberListComponent},
-          // {path: ':id/notification', component: ZSocialCommunityDetailNotificationComponent},
-          {path: ':id/post', component: PostComponent},
-          {path: ':id', component: ZSocialCommunityDetailComponent},
-          {path: '', component: ZSocialCommunityListComponent}
-        ]
-      }
+      // {
+      //   path: 'communities',
+      //   component: ZSocialCommunityComponent,
+      //   children: [
+      //     // {path: ':id/about', component: ZSocialCommunityDetailAboutComponent},
+      //     // {path: ':id/members', component: ComMemberListComponent},
+      //     // {path: ':id/notification', component: ZSocialCommunityDetailNotificationComponent},
+      //     {path: ':id/post', component: PostComponent},
+      //     {path: ':id', component: ZSocialCommunityDetailComponent},
+      //     {path: '', component: ZSocialCommunityListComponent}
+      //   ]
+      // },
+      // {path: 'communities/:id/post', component: PostComponent},
+      {path: 'communities/:id', component: ZSocialCommunityDetailComponent},
+      {path: 'communities', component: ZSocialCommunityListComponent}
     ])
   ],
   exports: [RouterModule]

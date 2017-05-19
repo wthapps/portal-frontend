@@ -4,9 +4,10 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 
 import { ZMediaPhotoListComponent } from './photo-list.component';
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
-import { ZMediaPhotoFormEditComponent } from './form/form-edit-photo.component';
-import { ZMediaPhotoService } from './photo.service';
+import { PhotoEditModalComponent } from './form/photo-edit-modal.component';
 import { ZMediaPhotoRoutingModule } from './photo-routing.module';
+import { ZMediaPhotoEditComponent } from './edit/edit-photo.component';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 @NgModule({
   imports: [
@@ -16,15 +17,17 @@ import { ZMediaPhotoRoutingModule } from './photo-routing.module';
   declarations: [
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
-    ZMediaPhotoFormEditComponent
+    ZMediaPhotoEditComponent,
+    PhotoEditModalComponent
   ],
   exports: [
     ZMediaPhotoListComponent,
     ZMediaPhotoDetailComponent,
-    ZMediaPhotoFormEditComponent
+    ZMediaPhotoEditComponent,
+    PhotoEditModalComponent
   ],
   providers: [
-    ZMediaPhotoService
+    PhotoService
   ]
 })
 

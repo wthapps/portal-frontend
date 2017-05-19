@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Config } from '../../../../core/shared/config/env.config';
 
@@ -9,7 +9,9 @@ import { Config } from '../../../../core/shared/config/env.config';
 })
 export class ZChatShareItemComponent implements OnInit {
   @Input() message: any;
+  @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   constructor(private chatService: ChatService) {};
+
 
   ngOnInit() {
     // ByMe
@@ -19,5 +21,9 @@ export class ZChatShareItemComponent implements OnInit {
       this.message.file_json = {};
       this.message.file_json.thumbnail_url = Config.RES + '/portal-frontend/common-images/file/file_upload/filethumb.png';
     }
+  }
+
+  onAdd(contact:any) {
+    this.onAddContact.emit(contact);
   }
 }

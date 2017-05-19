@@ -6,21 +6,22 @@ declare var _: any;
 @Injectable()
 export class ZMediaAlbumService {
 
-  url = 'zone/albums';
+  url = 'media/albums';
 
   constructor(private apiBaseService: ApiBaseService) {
   }
 
-  listAlbum(): any {
-    return this.apiBaseService.get(this.url);
+  listAlbum(body: any = {}): any {
+    return this.apiBaseService.get(this.url, body);
   }
 
   getAlbum(id: number): any {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
-  getPhotosByAlbum(id: number): any {
-    return this.apiBaseService.get(`zone/photos?album=${id}`);
+  getPhotosByAlbum(id: number, options?: any): any {
+    let body = _.merge({ 'album': id}, options);
+    return this.apiBaseService.get(`media/photos`, body);
   }
 
   addToAlbum(id: number, selectedPhotos: any): any {
@@ -42,6 +43,10 @@ export class ZMediaAlbumService {
     return this.apiBaseService.post(`${this.url}`, body);
   }
 
+  post(url: string, body?: any) {
+    return this.apiBaseService.post(url, body);
+  }
+
   actionOneFavourite(item: any) {
     let body = JSON.stringify({
       ids: [item.id],
@@ -61,6 +66,10 @@ export class ZMediaAlbumService {
 
   updateInfo(id: number, body: any) {
     return this.apiBaseService.put(`${this.url}/${id}`, body);
+  }
+
+  deleteAlbum(body: any) {
+    return this.apiBaseService.post(`${this.url}/delete`, body);
   }
 
   deletePhoto(body: any) {

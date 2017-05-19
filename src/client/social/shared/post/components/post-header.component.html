@@ -1,7 +1,9 @@
 <div *ngIf="!showInfo" class="z-social-media">
   <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
     <div class="z-social-media-left">
-      <img [src]="item.owner.profile_image" alt="">
+      <div class="avatar-xs">
+        <img [src]="item.owner.profile_image" alt="">
+      </div>
     </div>
   </a>
 
@@ -14,10 +16,10 @@
       </a>
       <div class="z-shared-with dropdown">
         <a class="text-capitalize" href="#" (click)="viewPrivacyCustom(item, modal)" data-toggle="dropdown">
-          <i class="fa {{privacyClassIcon(item)}}">
-          </i> {{privacyName(item)}}</a>
+          <i class="fa {{ privacyClassIcon(item)}}">
+          </i> {{ privacyName(item) }}</a>
 
-        <hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+        <hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
           <hd-modal-header cssClass="modal-social-head" [showClose]="true">
             <h4 class="modal-title text-left text-capitalize"> {{privacyName(item)}}</h4>
             <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
@@ -121,7 +123,7 @@
     </div>
 
     <div *ngIf="!showDetail" class="dropdown pull-right">
-      <a [routerLink]="['/'+ postUrl, item.uuid]" class="btn btn-default">
+      <a [routerLink]="['/'+ postUrl, item.uuid]"  class="btn btn-default">
         <i class="fa fa-external-link"></i>
       </a>
     </div>

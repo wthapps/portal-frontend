@@ -5,23 +5,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //noinspection TypeScriptCheckImport
 import {
   PostEditComponent,
-  PostPhotoSelectComponent,
   PostNewComponent,
   PostActivitiesComponent,
   PostPrivacyCustomComponent,
   PostLikeDislikeComponent,
   PostService
 } from './index';
-import { Ng2HdModule } from '../../shared/ng2-hd/index';
+import { Ng2HdModule } from '../../../core/shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/primeng';
-import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
+// import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 import { TagInputModule } from 'ng2-tag-input';
-import { ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
+import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { SharedModule } from '../../../core/shared/shared.module';
-import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
-// import { FileSelectionComponent } from '../../../core/partials/zone/photo/file-select/file-selection.component';
+// import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
+// import { TagInputModule } from 'ng2-tag-input/dist/modules/ng2-tag-input.module';
+// import { FileSelectionComponent } from '../../../core/partials/zone/photo/file-select/file-selection.component';vi
 
 @NgModule({
   imports: [
@@ -30,7 +30,7 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     FormsModule,
     ReactiveFormsModule,
     // Ng2HdModule,
-    HdTagInputModule,
+    // HdTagInputModule,
     Ng2HdModule,
     SharedModule,
     TagInputModule,
@@ -44,39 +44,38 @@ import { MemberListInviteComponent } from '../../communities/member/member-list-
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
-    MemberListInviteComponent,
+    // MemberListInviteComponent,
     // Comments
-    ZSocialCommentBoxComponent
+    CommentItemEditorComponent
 
   ],
+  entryComponents: [PostLikeDislikeComponent, PostActivitiesComponent],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HdTagInputModule,
+    // HdTagInputModule,
     Ng2HdModule,
     SharedModule,
 
-    // TagInputModule,
+    TagInputModule,
     PostNewComponent,
     // FileSelectionComponent,
     // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
-    PostPhotoSelectComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
-    MemberListInviteComponent,
+    // MemberListInviteComponent,
 
 
 
     // Comments
-    ZSocialCommentBoxComponent
+    CommentItemEditorComponent
   ],
   providers: [
     PostService

@@ -1,16 +1,16 @@
 <ul class="control-body-select control-body-btnview">
-  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+  <li [ngClass]="{'action-disabled': selectedAlbums?.length == 0}">
     <a href="#" (click)="onAction('share')"><i class="fa fa-share-alt"></i></a>
   </li>
-  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+  <li [ngClass]="{'action-disabled': selectedAlbums?.length == 0}">
     <a href="#" (click)="onAction('favourite', hasFavourite = (hasFavourite ? false : true))">
       <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
     </a>
   </li>
-  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
-    <a href="#" (click)="onAction('tag')"><i class="fa fa-tag"></i></a>
+  <li [ngClass]="{'action-disabled': selectedAlbums?.length == 0}">
+    <a href="javascript:;" (click)="onAction('tag')"><i class="fa fa-tag"></i></a>
   </li>
-  <li [ngClass]="{'action-disabled': selectedPhotos.length == 0}">
+  <li [ngClass]="{'action-disabled': selectedAlbums?.length == 0}">
     <a href="#" (click)="onAction('delete')"><i class="fa fa-trash-o"></i></a>
   </li>
 </ul>

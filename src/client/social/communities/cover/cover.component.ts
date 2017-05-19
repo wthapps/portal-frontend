@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
-import { MemberListInviteComponent } from '../member/member-list-invite.component';
+// import { MemberListInviteComponent } from '../member/member-list-invite.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
@@ -23,6 +23,8 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
+import { Constants } from '../../../core/shared/config/constants';
+import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 
 declare var _: any;
 
@@ -36,7 +38,8 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
-  @ViewChild('users') users: MemberListInviteComponent;
+  @ViewChild('users') users: EntitySelectComponent;
+  // @ViewChild('users') users: MemberListInviteComponent;
 
   @Input() data: any;
   @Input() selectedTab: string;
@@ -48,6 +51,9 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   sentJoinRequest: boolean = false;
   invitation: any = undefined;
   is_close: boolean = true;
+
+  readonly soComUrl : string = Constants.urls.zoneSoCommunities;
+  readonly comUrl : string = '/' + Constants.urls.communities;
 
 
   constructor(private apiBaseService: ApiBaseService,
@@ -82,56 +88,56 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
     console.log('changiing.........route');
   }
 
-  onDelete(item: any) {
-    console.log(item);
-    this.confirmationService.confirm({
-      message: `Are you sure to delete the community ${item.name}`,
-      header: 'Delete Community',
-      accept: () => {
-        this.loadingService.start();
-        this.apiBaseService.delete(`zone/social_network/communities/${item.uuid}`)
-          .subscribe((response: any) => {
-              // console.log(response);
-              this.onUpdated(response.data);
-              this.router.navigateByUrl('/zone/social/communities');
-              this.loadingService.stop();
-            },
-            error => {
-              // console.log(error);
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
+  // onDelete(item: any) {
+  //   console.log(item);
+  //   this.confirmationService.confirm({
+  //     message: `Are you sure to delete the community ${item.name}`,
+  //     header: 'Delete Community',
+  //     accept: () => {
+  //       this.loadingService.start();
+  //       this.apiBaseService.delete(`${this.soComUrl}/${item.uuid}`)
+  //         .subscribe((response: any) => {
+  //             // console.log(response);
+  //             this.onUpdated(response.data);
+  //             this.router.navigateByUrl(this.comUrl);
+  //             this.loadingService.stop();
+  //           },
+  //           error => {
+  //             // console.log(error);
+  //             this.toastsService.danger(error);
+  //             this.loadingService.stop();
+  //           }
+  //         );
+  //     }
+  //   });
+  //
+  //   return false;
+  // }
 
-    return false;
-  }
-
-  onLeave(item: any) {
-
-    this.confirmationService.confirm({
-      message: this.userService.profile.uuid == item.admin.uuid ?
-        `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
-        `Are you sure to leave the community ${item.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        this.loadingService.start();
-        this.apiBaseService.post(`zone/social_network/communities/leave`, JSON.stringify({uuid: item.uuid}))
-          .subscribe((response: any) => {
-              this.loadingService.stop();
-              this.router.navigateByUrl('/zone/social/communities');
-            },
-            error => {
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
-
-    return false;
-  }
+  // onLeave(item: any) {
+  //
+  //   this.confirmationService.confirm({
+  //     message: this.userService.profile.uuid == item.admin.uuid ?
+  //       `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
+  //       `Are you sure to leave the community ${item.name}?`,
+  //     header: 'Leave Community',
+  //     accept: () => {
+  //       this.loadingService.start();
+  //       this.apiBaseService.post(`${this.soComUrl}/leave`, JSON.stringify({uuid: item.uuid}))
+  //         .subscribe((response: any) => {
+  //             this.loadingService.stop();
+  //             this.router.navigateByUrl(this.comUrl);
+  //           },
+  //           error => {
+  //             this.toastsService.danger(error);
+  //             this.loadingService.stop();
+  //           }
+  //         );
+  //     }
+  //   });
+  //
+  //   return false;
+  // }
 
   onEdit(item: any) {
     this.modalEdit.modal.open();
@@ -157,7 +163,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, 'community').subscribe(
+    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
       (res: any) => {
 
       }
@@ -173,7 +179,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   askToJoin() {
-    this.apiBaseService.post(`zone/social_network/communities/join`, JSON.stringify({uuid: this.uuid}))
+    this.apiBaseService.post(`${this.soComUrl}/join`, JSON.stringify({uuid: this.uuid}))
       .subscribe((result: any) => {
           this.invitation = result.data;
         },
@@ -183,7 +189,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   cancelJoinRequest() {
-    this.apiBaseService.delete(`zone/social_network/communities/cancel_invitation/${this.invitation.id}`).subscribe(
+    this.apiBaseService.delete(`${this.soComUrl}/cancel_invitation/${this.invitation.id}`).subscribe(
       (res: any)=> {
         this.invitation = undefined;
       },
@@ -206,7 +212,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   checkJoinRequestStatus() {
-    this.apiBaseService.get(`zone/social_network/communities/${this.uuid}/join_request_status`)
+    this.apiBaseService.get(`${this.soComUrl}/${this.uuid}/join_request_status`)
       .subscribe((result: any) => {
           this.invitation = result.data;
         },

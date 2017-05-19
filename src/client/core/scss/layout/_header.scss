@@ -89,6 +89,11 @@ Header
         }
       }
       &.navbar-nav-notification {
+
+        #nav-notification-list {
+          width: 400px;
+        }
+
         .notification-num {
           color: #FFF;
           background-color: $color-inverse;
@@ -121,36 +126,7 @@ Header
       margin-left: 250px;
     }
   }
-  .navbar-searchTop {
-    position: relative;
-    .btn {
-      & {
-        position: absolute;
-        left: 2px;
-        padding-left: 8px;
-        padding-right: 8px;
-        background-color: transparent;
-        border-width: 0;
-        @include center(false, true);
-        font-size: 16px;
-      }
-      &:hover,
-      &:focus,
-      &.focus {
-        background-color: transparent;
-        @include box-shadow(none);
-      }
-    }
-    .form-control {
-      height: 38px;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      padding-left: 36px;
-      @media (min-width: $screen-lg) {
-        min-width: 470px;
-      }
-    }
-  }
+
   .navbar-form-list {
     position: absolute;
     top: 38px;
@@ -235,16 +211,19 @@ Header
 }
 
 .navbar-nav-notification {
-  .dropdown-menu-bar {
+  #nav-notification-list {
     font-size: 12px;
-    padding: 5px;
+  }
+  .dropdown-menu-bar {
+    padding: 10px;
     overflow: hidden;
+    font-size: 14px;
     a {
-      color: inherit;
       &:after {
         display: inline-block;
-        margin: 0 3px;
+        margin: 0 3px 0 5px;
         content: '\2022';
+        color: #9B9B9B;
       }
       &:last-child:after {
         display: none;
@@ -255,11 +234,15 @@ Header
     padding: 0;
     margin-bottom: -5px;
     a {
-      padding: 10px;
+      padding: 15px 10px;
+      font-weight: bold;
       font-size: 16px;
       text-align: center;
       color: $link-color;
       @include border-bottom-radius(4px);
+      &:hover {
+        color: $color-inverse;
+      }
     }
   }
   #notification-items {
@@ -268,26 +251,61 @@ Header
     border-top: 1px solid $line;
     border-bottom: 1px solid $line;
     .navbar-nav-notification-item {
-      padding: 5px;
+      padding: 10px;
       border-bottom: 1px solid $line;
+      position: relative;
+      .media-right {
+        .dropdown-submenu {
+          position: inherit;
+        }
+      }
+      .media-heading a, .media-right .btn {
+        position: relative;
+        z-index: 2;
+      }
       &:last-child {
         border-bottom-width: 0;
       }
-      img {
-        height: 52px;
+      .avatar-xsm {
+        width: 42px;
+        height: 42px;
+      }
+      .btn-default-inline {
+        padding: 0;
+        width: 20px;
+        min-width: inherit;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+      }
+      .btn {
+        text-transform: capitalize;
       }
       p {
-        line-height: 1;
+        line-height: 14px;
         margin-bottom: 0;
+      }
+      .notification-item-time {
+        &:after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 1;
+        }
+      }
+      &:hover {
+        background-color: rgba($color-inverse, 0.1);
       }
     }
     .sub-menu {
       width: auto !important;
-      margin: 0;
-      top: 0;
+      margin: 0 5px 0 0;
+      top: auto;
       a {
-        font-size: 10px;
-        padding: 2px 5px;
+        padding: 10px;
       }
     }
   }

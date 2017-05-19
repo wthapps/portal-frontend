@@ -13,6 +13,20 @@ body {
   background-position: center center;
 }
 
+.img-box {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  padding-bottom: 75%;
+  .img-box-item {
+    @include center();
+    width: 100%;
+    height: auto;
+  }
+}
+
 .bold {
   font-weight: bold;
 }
@@ -38,13 +52,61 @@ body {
   @include opacity(0.8);
 }
 
+.text-link {
+  color: $link-color;
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  &:hover, &:focus {
+    text-decoration: none;
+    outline: none;
+  }
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-bigger {
+  font-size: 120%;
+}
+
+.link-text {
+  color: $text-color;
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  &:hover, &:focus {
+    text-decoration: none;
+    outline: none;
+  }
+}
+
 .text-disable {
-  cursor: not-allowed;
-  @include opacity(0.3);
+  &, * {
+    cursor: not-allowed;
+    @include opacity(0.8);
+  }
+}
+
+.no-user-selected {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 
 .text-normal {
   font-weight: normal;
+}
+
+.text-inherit {
+  color: inherit;
+  text-align: center;
 }
 
 .content-overflow {
@@ -62,6 +124,15 @@ body {
 .content-overflow-y {
   overflow-y: auto;
   margin-right: -10px;
+}
+
+.content-overflow-fixed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -89,4 +160,10 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
+.wth-scrollable {
+  overflow: auto;
+}
 
+.hr-darken {
+  border-color: #cdcdcd;
+}

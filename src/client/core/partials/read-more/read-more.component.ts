@@ -1,46 +1,51 @@
 /**
- * <read-more maxHeight="120">
- *  <div [innerHtml]="item.description | newline"></div>
- * </read-more>
+ <read-more [limit]="120" [content]="item.description" [readmore]="' See More'" [readless]="' See Less'">
+ </read-more>
  */
 
-import { Component, AfterViewInit, Input } from '@angular/core';
+import { Component, AfterViewInit, Input, OnChanges } from '@angular/core';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
+  moduleId: module.id,
   selector: 'read-more',
-  template: `
-    <div class="wth-read-more-wrap word-break">
-      <!-- TODO refactor this line for build AOT. I removed |inline value on [innerHTML] attribue-->
-      <div class="wth-read-more-in" [innerHtml]="content">
-      </div>
-      <a href="javascript;" class="wth-read-more-btn" (click)="onClick($event)">{{isCollapsedText}}</a>
-    </div>
-`,
-  styles: [`
-        .wth-read-more-btn{display:none};
-    `]
+  templateUrl: 'read-more.component.html',
+  styleUrls: ['read-more.component.css']
 })
 
-export class ReadMoreComponent implements AfterViewInit {
-  @Input() maxHeight: number = 120;
+export class ReadMoreComponent implements OnChanges {
+  @Input() limit: number = 120;
   @Input() content: string = '';
+  @Input() readmore: string = ' VIEW MORE';
+  @Input() readless: string = ' VIEW LESS';
 
-  isCollapsedText: string = 'READ MORE';
+  shaveContent: string = '';
+  showMore: boolean = false;
 
-  ngAfterViewInit(): void {
-    let maxheight = this.maxHeight;
-    $('.js-shave-char').parents('.wth-read-more-wrap').find('.wth-read-more-btn').show();
+  ngOnChanges(): void {
+    this.content = this.content.replace(/(\r\n|\n\r|\r|\n)/g, ' <br> ');
+    let value = this.content;
+    let limit = this.limit;
+    // let trail = this.readmore;
+    let words = value.split(/\s+/);
+    if (words.length > Math.abs(limit)) {
+      if (limit < 0) {
+        limit *= -1;
+        // this.shaveContent = trail + words.slice(words.length - limit, words.length).join(' ');
+        this.shaveContent = words.slice(words.length - limit, words.length).join(' ');
+      } else {
+        // this.shaveContent = words.slice(0, limit).join(' ') + trail;
+        this.shaveContent = words.slice(0, limit).join(' ');
+      }
+    } else {
+      this.showMore = true;
+    }
   }
 
-  onClick(e: any): void {
-    console.log(e.target.parentNode);
-    $(e.target.parentNode).toggleClass('collapsed');
-    $(e.target.parentNode).find('.js-shave-char').toggle();
-    $(e.target.parentNode).find('.js-shave').toggle();
-
-    e.target.textContent = (e.target.textContent == 'READ MORE' ? 'READ LESS' : 'READ MORE');
+  onShowMore(e: any): void {
+    this.showMore = !this.showMore;
   }
 
 }

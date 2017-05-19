@@ -20,64 +20,25 @@ export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
   // notifications: any = [];
   // newNotifications: any = [];
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
-  readonly profileUrl: string = '/'+Constants.urls.profile;
-
-  // Subscription loading
-  loadSubscription : Subscription;
+  readonly profileUrl: string = '/' + Constants.urls.profile;
 
   constructor(private socialService: SocialService,
-              private socialDataService : SocialDataService,
               public notificationService: NotificationService) {
   }
 
   ngOnInit() {
-    // this.callNotifications();
-
-    this.socialDataService.resetLoading();
-    this.loadSubscription = this.socialDataService.itemObs$.subscribe( () => {
-        this.getMoreNotifications();
-      }
-    );
+    this.notificationService.getLatestNotifications();
   }
 
   ngOnDestroy() {
-    this.loadSubscription.unsubscribe();
   }
-
-  // callNotifications() {
-  //   this.socialService.user.getNotifications().subscribe(
-  //     (res: any) => {
-  //       console.log(res.data);
-  //       this.notifications = res.data;
-  //       this.newNotifications = _.filter(this.notifications, {'seen_state': 'new'});
-  //     }
-  //   );
-  // }
 
   getMoreNotifications() {
     this.notificationService.getMoreNotifications();
   }
 
-  loadingDone() {
-    return this.notificationService.loadingDone;  }
-
-  doAction(action: any, notif_id: string) {
-    // let api: any = null;
-    // switch (action.method) {
-    //   case 'post':
-    //     api = this.apiBaseService.post(action.link, action.params);
-    //     break;
-    //   case 'delete':
-    //     api = this.apiBaseService.delete(action.link);
-    //     break;
-    // }
-    //
-    // api.subscribe(
-    //   (res: any) => {
-    //     this.callNotifications();
-    //   }
-    // );
-
-    this.notificationService.doAction(action, notif_id);
+  notifClass(notif: any) {
+    return 'col-xs-12 col-lg-6 ' + (!notif.is_read ? 'unread-notification' : '');
   }
+
 }

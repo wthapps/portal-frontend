@@ -1,7 +1,7 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[chat-support]',
+  selector: '[chatSupport]',
 })
 
 export class ChatSupportDirective {

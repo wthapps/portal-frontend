@@ -1,73 +1,86 @@
-<nav class="page-menuleft">
+<nav class="page-menuleft" draggable="false">
   <ul class="list-unstyled">
     <li>
-      <a href="#">Profile</a>
+      <a draggable="false" href="#">Profile</a>
     </li>
     <li>
-      <a href="#">Contact</a>
+      <a draggable="false" href="#">Contact</a>
     </li>
     <li>
-      <a href="#">Calendar</a>
+      <a draggable="false" href="#">Calendar</a>
     </li>
 
-    <li class="has-sub" [routerLinkActive]="['active']">
-      <a href="javascript:;" (click)="onMenu('social')">
+    <li class="has-sub" [ngClass]="{'active': urls.social == hostname}">
+      <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
-      <ul [routerLinkActive]="['active']" class="list-unstyled">
-        <li [routerLinkActive]="['active']" *ngFor="let social of socialMenu">
-          <a *ngIf="social.link == '/zone/social/profile'" [routerLink]="['/zone/social/profile',uuid]">
-            {{social.name}}</a>
-          <a *ngIf="social.link != '/zone/social/profile'" [routerLink]="[social.link]"> {{social.name}}</a>
-        </li>
+      <ul [ngClass]="{'active': urls.social == hostname}" class="list-unstyled">
+        <template ngFor let-social [ngForOf]="socialMenu" let-i="index" [ngForTrackBy]="trackByFn">
+          <li *ngIf="social.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': social.link == '/search'}">
+            <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
+              <i class="{{social.icon}}"></i> {{social.name}}
+            </a>
+            <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]">
+              <i class="{{social.icon}}"></i> {{social.name}}
+            </a>
+          </li>
+          <li class="divider" *ngIf="social.name == ''"></li>
+        </template>
       </ul>
     </li>
 
-    <li class="has-sub" [routerLinkActive]="['active']">
-      <a [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
+    <li class="has-sub" [ngClass]="{'active': urls.chat == hostname}">
+      <a draggable="false" [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
         Chat
       </a>
-      <ul [routerLinkActive]="['active']" class="list-unstyled" id="zone_menu_chat">
-        <li [routerLinkActive]="['active']" *ngFor="let chat of chatMenu">
-          <a [routerLink]="[chat.link]">
-            {{chat.name}}
-          </a>
-        </li>
+      <ul [ngClass]="{'active': urls.chat == hostname}" class="list-unstyled" id="zone_menu_chat">
+        <template ngFor let-chat [ngForOf]="chatMenu" let-i="index" [ngForTrackBy]="trackByFn">
+          <li *ngIf="chat.name != ''" [routerLinkActive]="['active']">
+            <a draggable="false" [routerLink]="[chat.link]">
+              <i class="{{chat.icon}}"></i> {{chat.name}}
+            </a>
+          </li>
+          <li class="divider" *ngIf="chat.name == ''"></li>
+        </template>
       </ul>
     </li>
 
     <li>
-      <a href="#">Gadget</a>
+      <a draggable="false" href="#">Gadget</a>
     </li>
-    <li class="has-sub" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;" (click)="onMenu('media')">
+    <li class="has-sub" [ngClass]="{'active': urls.media == hostname}">
+      <a draggable="false" href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>
-      <ul [routerLinkActive]="['active']" class="list-unstyled">
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let media of mediaMenu">
-          <a [routerLink]="[media.link]">
-            {{media.name}}
-          </a>
-        </li>
+      <ul [ngClass]="{'active': urls.media == hostname}" class="list-unstyled">
+        <template ngFor let-media [ngForOf]="mediaMenu" let-i="index" [ngForTrackBy]="trackByFn">
+          <li *ngIf="media.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
+            <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">
+              <i class="{{media.icon}}"></i> {{media.name}}
+            </a>
+          </li>
+          <li class="divider" *ngIf="media.name == ''"></li>
+        </template>
+
       </ul>
     </li>
     <li>
-      <a href="#">Bookmarks</a>
+      <a draggable="false" href="#">Bookmarks</a>
     </li>
     <li>
-      <a href="#">Documents</a>
+      <a draggable="false" href="#">Documents</a>
     </li>
     <li>
-      <a href="#">Networking</a>
+      <a draggable="false" href="#">Networking</a>
     </li>
     <li>
-      <a href="#">Games</a>
+      <a draggable="false" href="#">Games</a>
     </li>
     <li>
-      <a href="#">Dating</a>
+      <a draggable="false" href="#">Dating</a>
     </li>
     <li>
-      <a href="#">Project</a>
+      <a draggable="false" href="#">Project</a>
     </li>
   </ul>
 </nav>

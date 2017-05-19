@@ -1,5 +1,7 @@
-<z-social-profile-cover [data]="userInfo"></z-social-profile-cover>
-
-<!--<post-new #postNew (onPostAdded)="reloadPosts($event)"></post-new>-->
-
-<so-post-list #posts [type]="'user'"></so-post-list>
+<div lockYOffset="20"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolled)="onLoadMore()">
+<so-post-list #posts [type]="'random_user'"></so-post-list>
+</div>

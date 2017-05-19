@@ -1,3 +1,3 @@
-interface BaseEvent {
-  description:string;
+export interface BaseEvent {
+  description: string;
 }

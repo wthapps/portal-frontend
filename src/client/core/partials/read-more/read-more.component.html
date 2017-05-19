@@ -1,0 +1,6 @@
+<div class="shaved-content" *ngIf="!showMore">
+  <span [innerHtml]="shaveContent"></span>... <a href="javascript:;" (click)="onShowMore()">{{readmore}}</a>
+</div>
+<div class="origin-content" *ngIf="showMore">
+  <span [innerHtml]="content"></span> <a *ngIf="shaveContent.length>0" href="javascript:;" (click)="onShowMore()">{{readless}}</a>
+</div>

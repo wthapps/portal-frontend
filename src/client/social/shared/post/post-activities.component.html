@@ -1,13 +1,15 @@
-<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
-  <hd-modal-header [showClose]="true">
+<modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'" [animation]="false">
+  <modal-header [show-close]="true">
     <h4 class="modal-title text-left"><i class="fa fa-share-alt"></i> Share Activities</h4>
-  </hd-modal-header>
-  <hd-modal-body>
+  </modal-header>
+  <modal-body>
     <ul class="list-unstyled social-list-user">
       <li *ngFor="let item of shares">
         <div class="z-social-media">
           <div class="z-social-media-left">
-            <img alt="" [src]="item.owner.profile_image">
+            <div class="avatar-xs">
+              <img alt="" [src]="item.owner.profile_image">
+            </div>
           </div>
           <div class="z-social-media-body">
             <div class="z-heading">
@@ -95,11 +97,11 @@
         </div>
       </li>
     </ul>
-  </hd-modal-body>
-  <hd-modal-footer>
+  </modal-body>
+  <modal-footer>
     <button type="button" class="btn btn-wth-default btn-min">Done</button>
     <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
-  </hd-modal-footer>
-</hd-modal>
+  </modal-footer>
+</modal>
 
 

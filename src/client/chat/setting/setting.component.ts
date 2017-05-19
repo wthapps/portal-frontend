@@ -14,7 +14,7 @@ import { ChatService } from '../shared/services/chat.service';
   selector: 'z-chat-setting',
   templateUrl: 'setting.component.html'
 })
-export class ZChatSettingComponent implements OnInit{
+export class ZChatSettingComponent implements OnInit {
 
   form: FormGroup;
   import_information: AbstractControl;

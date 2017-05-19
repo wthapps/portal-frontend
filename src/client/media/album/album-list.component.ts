@@ -1,11 +1,12 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { LoadingService } from '../../core/partials/loading/loading.service';
 
 import { ZMediaAlbumService } from './album.service';
+import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
 
 declare var $: any;
 declare var _: any;
@@ -16,15 +17,20 @@ declare var _: any;
   templateUrl: 'album-list.component.html'
 })
 export class ZMediaAlbumListComponent implements OnInit {
+  @ViewChild('mediaToolbar') mediaToolbar: ZMediaToolbarComponent;
 
   data: any = [];
   nextLink: string = null;
 
-  selectedPhotos: any = [];
+  selectedAlbums: any = [];
 
   keyCtrl: boolean = false;
   hasFavourite: boolean = false;
+  sharedWithMe: boolean = false;
+  filterOption: any;
   currentView: string = 'grid';
+
+  albumIsEmpty: boolean = false;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
@@ -41,23 +47,42 @@ export class ZMediaAlbumListComponent implements OnInit {
   constructor(private router: Router,
               private albumService: ZMediaAlbumService,
               private confirmationService: ConfirmationService,
+              private route: ActivatedRoute,
               private loadingService: LoadingService) {
+
+    this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        // this.hasFavourite = queryParams['favorite'];
+        // this.sharedWithMe = queryParams['shared-with-me'];
+        this.filterOption = queryParams;
+      }
+    );
   }
 
   ngOnInit() {
-    this.albumService.listAlbum().subscribe((res: any)=> {
-      this.data = res.data;
-      this.nextLink = res.page_metadata.links.next;
-    });
+    if (this.filterOption)
+      this.getAlbums(this.filterOption);
+    else
+      this.getAlbums();
+  }
+
+  getAlbums(body: any = {}) {
+    // this.albumService.listAlbum(body).subscribe((res: any)=> {
+    //   this.data = res.data;
+    //   this.nextLink = res.page_metadata.links.next;
+    //   if (res.data.length == 0) {
+    //     this.albumIsEmpty = true;
+    //   }
+    // });
   }
 
   onLoadMore() {
-    this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v: any)=> {
-        this.data.push(v);
-      });
-      this.nextLink = res.page_metadata.links.next;
-    });
+    // this.albumService.loadMore(this.nextLink).subscribe((res: any)=> {
+    //   _.map(res.data, (v: any)=> {
+    //     this.data.push(v);
+    //   });
+    //   this.nextLink = res.page_metadata.links.next;
+    // });
   }
 
   actionItem(event: any) {
@@ -66,10 +91,16 @@ export class ZMediaAlbumListComponent implements OnInit {
         this.onSelectedPhotos(event.data);
         break;
       case 'previewAll':
-        this.router.navigate([`/media/album`, event.data.id]);
+        this.router.navigate([`/albums`, event.data.id]);
+        break;
+      case 'editName':
+        this.onOneEditName(event.data);
         break;
       case 'favourite':
         this.onOneFavourite(event.data);
+        break;
+      case 'sort':
+        this.sort(event.data);
         break;
       default:
         break;
@@ -100,6 +131,9 @@ export class ZMediaAlbumListComponent implements OnInit {
       case 'gridView':
         this.currentView = 'grid';
         break;
+      case 'timeView':
+        this.currentView = 'time';
+        break;
       default:
         break;
     }
@@ -109,21 +143,20 @@ export class ZMediaAlbumListComponent implements OnInit {
   // --- Action for Item --- //
   private onSelectedPhotos(item: any) {
     if (this.keyCtrl) {
-      if (_.some(this.selectedPhotos, ['id', item.id])) {
+      if (_.some(this.selectedAlbums, ['id', item.id])) {
         $('#photo-box-img-' + item.id).removeClass('selected');
-        _.remove(this.selectedPhotos, ['id', item.id]);
+        _.remove(this.selectedAlbums, ['id', item.id]);
       } else {
         $('#photo-box-img-' + item.id).addClass('selected');
-        this.selectedPhotos.push(item);
+        this.selectedAlbums.push(item);
       }
     } else {
       $('.row-img .photo-box-img').removeClass('selected');
       $('#photo-box-img-' + item.id).addClass('selected');
-      this.selectedPhotos.length = 0;
-      this.selectedPhotos.push(item);
-      console.log(this.selectedPhotos);
+      this.selectedAlbums.length = 0;
+      this.selectedAlbums.push(item);
     }
-    this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
+    this.hasFavourite = _.some(this.selectedAlbums, ['favorite', false]);
   }
 
   private onOneFavourite(item: any) {
@@ -135,16 +168,22 @@ export class ZMediaAlbumListComponent implements OnInit {
     });
   }
 
+  private onOneEditName(item: any) {
+    this.selectedAlbums.length = 0;
+    this.selectedAlbums.push(item);
+    this.mediaToolbar.formEditName.modal.open();
+  }
+
   // --- End Action for Item --- //
 
 
   // --- Action for Toolbar --- //
   private onFavourite() {
     // if there was one item's favorite is false, all item will be add to favorite
-    let hasFavourite: boolean = _.some(this.selectedPhotos, ['favorite', false]);
-    this.albumService.actionAllFavourite(this.selectedPhotos, hasFavourite).subscribe((res: any)=> {
+    let hasFavourite: boolean = _.some(this.selectedAlbums, ['favorite', false]);
+    this.albumService.actionAllFavourite(this.selectedAlbums, hasFavourite).subscribe((res: any)=> {
       if (res.message === 'success') {
-        _.map(this.selectedPhotos, (v: any)=> {
+        _.map(this.selectedAlbums, (v: any)=> {
           v.favorite = hasFavourite;
         });
       }
@@ -152,9 +191,9 @@ export class ZMediaAlbumListComponent implements OnInit {
   }
 
   private onDelete() {
-    let idPhotos = _.map(this.selectedPhotos, 'id'); // ['1','2'];
+    let idPhotos = _.map(this.selectedAlbums, 'id'); // ['1','2'];
     this.confirmationService.confirm({
-      message: 'Are you sure to delete ' + this.selectedPhotos.length + ' item' + (this.selectedPhotos.length > 1 ? 's' : '') + ' ?',
+      message: 'Are you sure to delete ' + this.selectedAlbums.length + ' item' + (this.selectedAlbums.length > 1 ? 's' : '') + ' ?',
       accept: () => {
         let body = JSON.stringify({ids: idPhotos});
         this.loadingService.start();
@@ -166,6 +205,10 @@ export class ZMediaAlbumListComponent implements OnInit {
         });
       }
     });
+  }
+
+  private sort(data:any) {
+    this.getAlbums(data);
   }
 
   // --- End Action for Toolbar --- //

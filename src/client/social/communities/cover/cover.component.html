@@ -3,7 +3,9 @@
     <div class="zone-social-cover-info">
       <div class="z-social-media z-social-media-md">
         <div class="z-social-media-left">
-          <img [src]="item.profile_image" width="100">
+          <div class="avatar-md">
+            <img [src]="item.profile_image">
+          </div>
         </div>
         <div class="z-social-media-body">
           <div class="z-heading">
@@ -53,22 +55,22 @@
   <nav class="zone-social-cover-nav">
     <ul class="list-unstyled clearfix">
       <li [ngClass]="selectedTab==undefined? 'active': ''">
-        <a [routerLink]="['/zone/social/communities/', uuid]">Post</a>
+        <a [routerLink]="[comUrl, uuid]">Post</a>
       </li>
       <li [ngClass]="selectedTab=='about'? 'active': ''">
-        <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'about'}" (click)="changeRoute()">About</a>
+        <a [routerLink]="[comUrl, uuid]" [queryParams]="{tab:'about'}" (click)="changeRoute()">About</a>
       </li>
       <li [ngClass]="selectedTab=='members'? 'active': ''">
-        <a [routerLink]="['/zone/social/communities/'+uuid]" [queryParams]="{tab:'members'}">Members</a>
+        <a [routerLink]="[comUrl, uuid]" [queryParams]="{tab:'members'}">Members</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+uuid+'/invitations']">Invitations</a>
+        <a [routerLink]="[comUrl,uuid,'invitations']">Invitations</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+uuid+'/join_requests']">Join Requests</a>
+        <a [routerLink]="[comUrl, uuid, 'join_requests']">Join Requests</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/zone/social/communities/'+uuid+'/blacklist']">Blacklist</a>
+        <a [routerLink]="[comUrl, uuid, 'blacklist']">Blacklist</a>
       </li>
       <!--<li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">-->
         <!--<a [routerLink]="['/zone/social/communities/'+uuid+'/notification']">Notification <span-->
@@ -82,7 +84,7 @@
         <!--<ul class="dropdown-menu dropdown-custom">-->
           <!--<li><a href="javascript:;" (click)="onEdit(data)">Edit Information</a></li>-->
           <!--<li><a href="#" (click)="onPreference(data)">Preferences</a></li>-->
-          <!--<li><a [routerLink]="['/zone/social/communities/'+data.uuid+'/members']">Manage members</a></li>-->
+          <!--<li><a [routerLink]="['/zone/social/communities/'+data.uuid+'/friends']">Manage friends</a></li>-->
           <!--<li role="separator" class="divider"></li>-->
           <!--<li><a href="javascript:;" (click)="addFavourite(data.uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>-->
           <!--<li><a href="#" (click)="onLeave(data)">Leave community</a></li>-->

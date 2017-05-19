@@ -2,24 +2,56 @@
   <dl>
     <dt>Favourites</dt>
     <dd>
-      <ul class="list-unstyled">
-        <li *ngFor="let	favourite of favourites">
-          <div *ngIf="favourite.friend">
-            <a [routerLink]="[profileUrl, favourite.friend.uuid]">
-              <img width="30" [src]=favourite.friend.profile_image alt="" title="">
-              <span> {{favourite.friend.name}} </span>
-            </a>
-          </div>
-          <div *ngIf="favourite.community">
-            <a [routerLink]="[communitiesUrl, favourite.community.uuid]">
-              <img width="30" [src]=favourite.community.profile_image alt="" title="">
-              <span> {{favourite.community.name}} </span>
-            </a>
-          </div>
 
-        </li>
-      </ul>
+      <div class="media-center mb10" *ngFor="let	favourite of favourites">
+        <div class="media-center-left">
+          <figure *ngIf="favourite.friend">
+            <a [routerLink]="[profileUrl, favourite.friend.uuid]" [skipLocationChange]="true">
+              <span class="avatar-xs">
+                <img [src]=favourite.friend.profile_image alt="">
+              </span>
+            </a>
+          </figure>
+
+          <figure *ngIf="favourite.community">
+            <a [routerLink]="[communitiesUrl, favourite.community.uuid]">
+              <span class="avatar-xs">
+                <img [src]=favourite.community.profile_image alt="">
+              </span>
+            </a>
+          </figure>
+
+        </div>
+        <div class="media-center-body">
+          <a class="link-text" *ngIf="favourite.friend" [routerLink]="[profileUrl, favourite.friend.uuid]">
+            {{favourite.friend.name}} </a>
+          <a class="link-text" *ngIf="favourite.community" [routerLink]="[communitiesUrl, favourite.community.uuid]">
+            {{favourite.community.name}} </a>
+        </div>
+        <div class="media-center-right">
+          <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+              <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="javascript:;" (click)="unfavourite(favourite)">Remove From Favourites</a></li>
+              <li><a href="javascript:;" (click)="rearrange()">Rearrange</a></li>
+              <li role="separator" class="divider"></li>
+              <li *ngIf="favourite?.community"><a href="javascript:;" (click)="confirmLeaveCommunity(favourite?.community)">Leave
+                Community</a></li>
+              <li *ngIf="favourite?.friend"><a href="javascript:;" (click)="unfriend(favourite?.friend)">Unfriend</a>
+              </li>
+              <li><a href="javascript:;" (click)="onReport(favourite)">Report member</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </dd>
   </dl>
-  </div>
+
+
+  <wth-zone-report></wth-zone-report>
+</div>
 

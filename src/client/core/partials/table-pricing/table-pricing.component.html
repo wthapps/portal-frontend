@@ -56,7 +56,7 @@
           </template>
 
           <template [ngIf]="!userService.profile">
-            <a [routerLink]="['/signup']" class="btn btn-default btn-min">Sign up</a>
+            <a (click)="redirectTo('home', 'signup', $event)" class="btn btn-default btn-min">Sign up</a>
           </template>
         </td>
       </tr>
@@ -66,5 +66,5 @@
 </div>
 <p>*Monthly fee will be charged automatically <br>
   **After one month trial, without any upgrade, your account will be set as basic account.</p>
-<p>If you have any questions that come in mind, please check our <a [routerLink]="['/policies/terms']">Term of
-  Service</a> or <a [routerLink]="['/contact']">drop us a message</a></p>
+<p>If you have any questions that come in mind, please check our <a href="javascript:;" (click)="redirectTo('home', 'policies/terms', $event)">Term of
+  Service</a> or <a href="javascript:;" (click)="redirectTo('home', 'contact', $event)">drop us a message</a></p>

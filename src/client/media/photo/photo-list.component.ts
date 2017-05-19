@@ -3,8 +3,10 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { ZMediaPhotoDetailComponent } from './photo-detail.component';
-import { ZMediaPhotoService } from './photo.service';
 import { LoadingService } from '../../core/partials/loading/loading.service';
+import { ActivatedRoute } from '@angular/router';
+import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -16,6 +18,7 @@ declare var _: any;
 })
 export class ZMediaPhotoListComponent implements OnInit {
   @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  @ViewChild('mediaToolbar') mediaToolbar: ZMediaToolbarComponent;
 
   data: any = [];
   nextLink: string = null;
@@ -23,34 +26,52 @@ export class ZMediaPhotoListComponent implements OnInit {
   selectedPhotos: any = [];
 
   keyCtrl: boolean = false;
+
   hasFavourite: boolean = false;
+  filterOption: any;
   currentView: string = 'grid';
 
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
-    console.log(ev);
-    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
-  }
+  photoIsEmpty: boolean = false;
 
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
-  }
+  // @HostListener('document:keydown', ['$event'])
+  // onKeyDown(ev: KeyboardEvent) {
+  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
+  // }
+  //
+  // @HostListener('document:keyup', ['$event'])
+  // onKeyUp(ev: KeyboardEvent) {
+  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
+  // }
 
-  constructor(private photoService: ZMediaPhotoService,
+  constructor(private photoService: PhotoService,
               private confirmationService: ConfirmationService,
+              private route: ActivatedRoute,
               private loadingService: LoadingService) {
+
+    this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        this.hasFavourite = queryParams['favourite'];
+        this.filterOption = queryParams;
+
+        if (this.filterOption)
+          this.getPhotos(this.filterOption);
+        else
+          this.getPhotos();
+      }
+    );
   }
 
   ngOnInit() {
-    this.getPhotos();
   }
 
-  getPhotos() {
-    this.photoService.listPhoto().subscribe((res: any)=> {
-      this.data = res.data;
-      this.nextLink = res.page_metadata.links.next;
-    });
+  getPhotos(body: any = {}) {
+    // this.photoService.listPhoto(body).subscribe((res: any)=> {
+    //   this.data = res.data;
+    //   this.nextLink = res.page_metadata.links.next;
+    //   if (res.data.length == 0) {
+    //     this.photoIsEmpty = true;
+    //   }
+    // });
   }
 
   onLoadMore() {
@@ -66,7 +87,7 @@ export class ZMediaPhotoListComponent implements OnInit {
 
 
   actionItem(event: any) {
-    //console.log(event);
+    console.log(event);
     switch (event.action) {
       case 'select':
         this.onSelectedPhotos(event.data);
@@ -74,8 +95,14 @@ export class ZMediaPhotoListComponent implements OnInit {
       case 'previewAll':
         this.onPreviewAll(event.data);
         break;
+      case 'editName':
+        this.onOneEditName(event.data);
+        break;
       case 'favourite':
         this.onOneFavourite(event.data);
+        break;
+      case 'sort':
+        this.sort(event.data);
         break;
       default:
         break;
@@ -105,8 +132,7 @@ export class ZMediaPhotoListComponent implements OnInit {
         break;
       case 'info':
         // call action from photoDetail
-        this.photoDetail.preview(true);
-        this.photoDetail.onShowInfo();
+        this.photoDetail.open({show: true, collapseInfo: false});
         break;
       case 'editInfo':
         // call action from photoDetail
@@ -117,6 +143,9 @@ export class ZMediaPhotoListComponent implements OnInit {
         break;
       case 'gridView':
         this.currentView = 'grid';
+        break;
+      case 'timeView':
+        this.currentView = 'time';
         break;
       default:
         break;
@@ -131,7 +160,7 @@ export class ZMediaPhotoListComponent implements OnInit {
          });*/
 
         //reload data
-        this.getPhotos();
+        // this.getPhotos();
 
         break;
       default:
@@ -163,7 +192,7 @@ export class ZMediaPhotoListComponent implements OnInit {
   private onPreviewAll(item: any) {
     this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
     this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
-    this.photoDetail.preview(true);
+    this.photoDetail.open({show: true});
   }
 
   private onOneFavourite(item: any) {
@@ -175,6 +204,12 @@ export class ZMediaPhotoListComponent implements OnInit {
     });
   }
 
+  private onOneEditName(item: any) {
+    this.selectedPhotos.length = 0;
+    this.selectedPhotos.push(item);
+    this.mediaToolbar.formEditName.modal.open();
+  }
+
   // --- End Action for Item --- //
 
 
@@ -182,11 +217,12 @@ export class ZMediaPhotoListComponent implements OnInit {
   private onPreview() {
     if (this.selectedPhotos.length > 1) {
       this.photoDetail.selectedPhotos = this.selectedPhotos;
+      this.photoDetail.index = this.selectedPhotos.length - 1;
     } else {
       this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', this.selectedPhotos[0].id]);
       this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
     }
-    this.photoDetail.preview(true);
+    this.photoDetail.open({show: true});
   }
 
   private onFavourite() {
@@ -217,6 +253,12 @@ export class ZMediaPhotoListComponent implements OnInit {
       }
     });
   }
+
+  private sort(data:any) {
+    // this.getPhotos(data);
+  }
+
+
 
   // --- End Action for Toolbar --- //
 }

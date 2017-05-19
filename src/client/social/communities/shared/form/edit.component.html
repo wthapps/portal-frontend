@@ -1,4 +1,4 @@
-<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <hd-modal-body>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
       <div class="form-group" [ngClass]="{'has-error': (!community_name.valid && community_name.touched),

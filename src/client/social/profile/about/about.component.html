@@ -1,4 +1,3 @@
-<z-social-profile-cover [data]="userInfo"></z-social-profile-cover>
 <div *ngIf="userInfo">
   <div class="z-social-box" *ngIf="userInfo.basic_info">
     <div class="z-social-box-header">
@@ -15,9 +14,11 @@
       </h4>
     </div>
     <div class="z-social-post">
-      <div>
-        {{userInfo.basic_info.about}}
-      </div>
+      <dl>
+        <dt></dt>
+        <dd>
+          {{userInfo.basic_info.about}}</dd>
+      </dl>
       <dl>
         <dt>Gender</dt>
         <dd>{{constants.sex[userInfo.basic_info.sex]}}</dd>

@@ -20,7 +20,7 @@ export class NotificationChannelService extends CableService {
   constructor(private userService: UserService) {
     super();
     if (this.userService.loggedIn) {
-      this.createConnectionInstance(this.userService);
+      this.createConnectionInstance(this.userService.profile.uuid);
 
       // this.createSubscription();
     }

@@ -6,13 +6,12 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
-  EventEmitter
+  EventEmitter, OnDestroy, ViewContainerRef, ComponentFactoryResolver, Type
 } from '@angular/core';
 import {
-  PostPhotoSelectComponent,
   PostActivitiesComponent
 } from './index';
-import { ZSocialCommentBoxType, ZSocialCommentBoxComponent } from './components/sub-layout/comment-box.component';
+import { CommentEditorMode, CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
@@ -25,9 +24,13 @@ import {
   DeleteReplyEvent, OpenPhotoModalEvent, DeleteCommentEvent, ViewMoreCommentsEvent
 } from '../../events/social-events';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
-import { PhotoModalDataService } from '../services/photo-modal-data.service';
-import { Subscription } from 'rxjs';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { Subscription, Observable } from 'rxjs';
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
+import { BaseEvent } from '../../../core/shared/event/base-event';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/observable/from';
 
 declare var $: any;
 declare var _: any;
@@ -38,9 +41,10 @@ declare var _: any;
   templateUrl: 'post.component.html'
 })
 
-export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges {
-  @ViewChild('postActivities') postActivities: PostActivitiesComponent;
-  @ViewChild('postLikeDislike') postLikeDislike: PostLikeDislikeComponent;
+export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges, OnDestroy {
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  modalComponent: any;
+
 
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
@@ -51,25 +55,26 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() modalOpened: EventEmitter<any> = new EventEmitter<any>();
   @Output() photoModalOpened: EventEmitter<any> = new EventEmitter<any>();
 
-  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
-  commentBox: ZSocialCommentBoxComponent;
-  commentBoxType = ZSocialCommentBoxType;
+  commentEditor: CommentItemEditorComponent;
+  commentBoxType = CommentEditorMode;
 
   itemDisplay: any;
   typeLikeDislike: any;
   dataLikeDislike: any;
+  showComments: boolean = true;
+  modal: any;
 
   // Subscription list
-  closePhotoSubscription : Subscription;
   nextPhotoSubscription: Subscription;
-  dismissPhotoSubscription: Subscription;
-  // uploadSubscription  ????
+  uploadPhotoSubscription: Subscription;
 
 
   constructor(public apiBaseService: ApiBaseService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private photoSelectDataService: PhotoModalDataService,
+              private photoUploadService: PhotoUploadService,
+              private componentFactoryResolver: ComponentFactoryResolver,
               private toast: ToastsService) {
     super();
   }
@@ -90,6 +95,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // if(changes['item'].currentValue.parent) {
     //   this.parentItem = changes['item'].currentValue.parent;
     // }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribePhotoEvents();
   }
 
   mapDisplay(): any {
@@ -192,7 +201,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           _.merge(this.item, new SoPost().from(result['data']).excludeComments());
           this.mapDisplay();
         },
-        ( error : any ) => {
+        (error: any) => {
 
         }
       );
@@ -228,14 +237,30 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   onActions(event: BaseEvent) {
     // Create a comment
+    // console.log('create post', event);
+    // return;
+
+
     if (event instanceof CommentCreateEvent) {
+      let self: any = this;
       this.createComment(event.data).subscribe(
         (res: any) => {
-          // this.item = new SoPost().from(res.data);
-          // this.mapDisplay();
-          let comment = new SoComment().from(res.data);
-          _.uniqBy(this.item.comments.unshift(comment),'uuid');
-          this.item.total_comments += 1;
+          console.log('response data', res.data);
+
+          if (res.data.parent_type == 'SocialNetwork::Post') {
+            let comment = new SoComment().from(res.data);
+            _.uniqBy(this.item.comments.unshift(comment), 'uuid');
+            this.item.comment_count += 1;
+
+          } else if (res.data.parent_type == 'SocialNetwork::Comment') {
+            // this.updateItemComments(res.data);
+            let newReply: any = res.data;
+            let commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
+              return newReply.parent.uuid == comment.uuid;
+            });
+            this.item.comments[commentIndex].comments.push(newReply);
+          }
+
           this.mapDisplay();
         }
       );
@@ -244,11 +269,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof CommentUpdateEvent) {
       this.updateComment(event.data).subscribe(
         (res: any) => {
-          // let updatedComment = new SoComment().from(res.data);
-          // _.forEach(this.item.comments, (comment: SoComment, index : any) => {
-          //   if (comment.uuid == updatedComment.uuid)
-          //     this.item.comments[index] = updatedComment;
-          // });
           this.updateItemComments(res.data);
 
           this.mapDisplay();
@@ -291,19 +311,25 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof DeleteReplyEvent) {
       this.deleteReply(event.data).subscribe(
         (res: any) => {
-          // this.item = new SoPost().from(res.data);
-          this.updateItemComments(res.data);
+          let deletedReply: any = res.data;
+          let commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
+            return deletedReply.parent.uuid == comment.uuid;
+          });
+
+          _.remove(this.item.comments[commentIndex].comments, {uuid: deletedReply.uuid});
           this.mapDisplay();
+
         }
       );
     }
 
     // Open photo modal
     if (event instanceof OpenPhotoModalEvent) {
-      this.commentBox = event.data;
-      // this.photoModalOpened.emit(this.commentBox);
-      this.openPhotoModal(this.commentBox);
+      this.commentEditor = event.data;
+      // this.photoModalOpened.emit(this.commentEditor);
+      this.openPhotoModal(this.commentEditor);
 
+      this.subscribePhotoEvents();
     }
 
     // View more comments
@@ -333,56 +359,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.subscribePhotoEvents();
   }
 
-  private updateItemComments(data: any) {
-    let updatedComment = new SoComment().from(data);
-    _.forEach(this.item.comments, (comment: SoComment, index : any) => {
-      if (comment.uuid == updatedComment.uuid)
-        this.item.comments[index] = updatedComment;
-    });
-  }
-
-
-  private subscribePhotoEvents() {
-    // Subscribe actions corresponding with photo modal actions
-
-    if (!this.nextPhotoSubscription || this.nextPhotoSubscription.closed) {
-      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.subscribe(
-        (photos: any) => {
-          this.commentBox.commentAction(photos);
-        },
-        (error : any) => { console.error(error); }
-        );
-    }
-
-    if (!this.dismissPhotoSubscription || this.dismissPhotoSubscription.closed) {
-      this.dismissPhotoSubscription = this.photoSelectDataService.dismissObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
-        },
-        (error : any) => { console.error(error); }
-        );
-    }
-
-    if (!this.closePhotoSubscription || this.closePhotoSubscription.closed) {
-      this.closePhotoSubscription = this.photoSelectDataService.closeObs$.subscribe(
-        () => {
-          this.unsubscribePhotoEvents();
-        },
-        (error : any) => { console.error(error); }
-      );
-    }
-  }
-
-  private unsubscribePhotoEvents() {
-    [this.closePhotoSubscription, this.nextPhotoSubscription, this.dismissPhotoSubscription].forEach((sub : Subscription) => {
-      if(sub && !sub.closed)
-        sub.unsubscribe();
-    });
-  }
 
   onSelectPhotoComment(photos: any) {
-    if (this.commentBox) {
-      this.commentBox.commentAction(photos);
+    if (this.commentEditor) {
+      this.commentEditor.commentAction(photos);
     }
     // this.photoModal.close();
   }
@@ -392,27 +372,30 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   openActivities() {
-    this.postActivities.open({item: this.item});
+    this.createModalComponent(PostActivitiesComponent);
+    this.modal.open({item: this.item});
   }
 
   openLikeDislike(data: any, type: any) {
-    this.typeLikeDislike = type;
-    this.dataLikeDislike = data;
-    this.postLikeDislike.modal.open();
+    this.createModalComponent(PostLikeDislikeComponent);
+    this.modal.open({item: data, type: type});
+  }
+
+  toggleComments() {
+    this.showComments = !this.showComments;
   }
 
   save(post: any) {
     this.item = post;
   }
 
-  // createReaction(data:any) {
-  //   this.apiBaseServiceV2.post(this.apiBaseServiceV2.urls.zoneSoReactions, data).subscribe(
-  //     (res:any) => {
-  //       this.item = new SoPost().from(res.data);
-  //       this.mapDisplay();
-  //     }
-  //   );
-  // }
+  createModalComponent(component: any) {
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    this.modalContainer.clear();
+    this.modalComponent = this.modalContainer.createComponent(componentFactory);
+    this.modal = this.modalComponent.instance;
+  }
+
 
   createReaction(event: any, reaction: string, object: string, uuid: string) {
     if ($(event.target).hasClass('active')) {
@@ -425,11 +408,104 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     let data = {reaction: reaction, reaction_object: object, uuid: uuid};
     this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).subscribe(
       (res: any) => {
-        // this.item = new SoPost().from(res.data);
-        _.merge(this.item, new SoPost().from(res.data).excludeComments());
+        // _.merge(this.item, new SoPost().from(res.data).excludeComments());
+        this.updateItemReactions(object, res.data);
         this.mapDisplay();
       }
     );
+  }
+
+  private updateItemReactions(object: string, data: any) {
+
+    // // update reactions for comment
+    if (object == 'post') {
+      this.updateReactionsSet(this.item, data);
+    } else if (object == 'comment') {
+      // update reaction for reply
+      let done: boolean = false;
+      _.forEach(this.item.comments, (comment: SoComment, index: any) => {
+        if (comment.uuid == data.self.uuid) {
+          this.updateReactionsSet(this.item.comments[index], data);
+          return;
+        }
+        // TODO: Handle multi-level replies case
+        _.forEach(this.item.comments[index].comments, (reply: SoComment, i2: any) => {
+          if (reply.uuid == data.self.uuid) {
+            this.updateReactionsSet(this.item.comments[index].comments[i2], data);
+            done = true;
+            return;
+          }
+          if (done)
+            return;
+        })
+        ;
+      });
+    }
+  }
+
+  private updateReactionsSet(srcObj: any, data: any) {
+    srcObj.reactions = data.reactions;
+    srcObj.likes = data.likes;
+    srcObj.dislikes = data.dislikes;
+    srcObj.shares = data.shares;
+  }
+
+  private updateItemComments(data: any) {
+    let updatedComment = new SoComment().from(data);
+    _.forEach(this.item.comments, (comment: SoComment, index: any) => {
+      if (comment.uuid == updatedComment.uuid)
+        this.item.comments[index] = updatedComment;
+    });
+  }
+
+
+  private subscribePhotoEvents() {
+    // Subscribe actions corresponding with photo modal actions
+
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$);
+
+    if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
+      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
+        (photos: any) => {
+          this.commentEditor.setCommentAttributes({photo: photos[0]});
+          // this.commentEditor.commentAction(photos);
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
+    }
+
+    if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
+      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
+        .switchMap((files: any) => {
+          this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
+          return this.photoUploadService.uploadPhotos(files);
+          // return Observable.from(['']);
+        }).subscribe(
+          (response: any) => {
+            console.log('response data: ', response.data);
+            // this.commentEditor.commentAction([res['current_photo']]);
+            this.commentEditor.setCommentAttributes({photo: response.data});
+            this.commentEditor.updateAttributes({hasUploadingPhoto: false});
+            // this.commentEditor.commentAction([res['data']]);
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        );
+    }
+  }
+
+  private notAssignedSubscription(sub: Subscription) {
+    return !sub || sub.closed;
+  }
+
+  private unsubscribePhotoEvents() {
+    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
+      if (sub && !sub.closed)
+        sub.unsubscribe();
+    });
   }
 }
 

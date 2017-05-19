@@ -1,8 +1,10 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../../shared/services/user.service';
 import { Constants } from '../../../shared/config/constants';
+import { WTHNavigateService } from '../../../shared/services/wth-navigate.service';
 
 declare var $: any;
 
@@ -12,34 +14,35 @@ declare var $: any;
   templateUrl: 'menu.component.html'
 })
 
-export class ZSharedMenuComponent {
+export class ZSharedMenuComponent implements OnInit {
 
   uuid: string;
-  urls: any = [];
+  urls: any;
   mediaMenu = Constants.pictureMenuItems;
   socialMenu = Constants.socialMenuItems;
   chatMenu = Constants.chatMenuItems;
+  hostname: string = '';
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private navigateService: WTHNavigateService,
+              private location: Location) {
     this.uuid = this.userService.getProfileUuid();
+    this.urls = Constants.baseUrls;
+  }
+
+  ngOnInit() {
+    let currentUrl = this.router.url; /// this will give you current url
+    this.hostname = window.location.origin;
+    // your logic to know if its my home page.
   }
 
   onMenu(event: string) {
-    switch (event) {
-      case 'media':
-        window.location.href = Constants.baseUrls.media;
-        break;
-      case 'social':
-        window.location.href = Constants.baseUrls.social;
-        break;
-      case 'chat':
-        window.location.href = Constants.baseUrls.chat;
-        break;
-      default:
-        break;
-    }
 
+    this.navigateService.navigateOrRedirect('', event);
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
+
 
 }

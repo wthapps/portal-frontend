@@ -12,6 +12,7 @@ import { ZMediaPhotoModule } from './photo/photo.module';
 import { ZMediaAlbumModule } from './album/album.module';
 import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
+import { ZMediaSearchModule } from './search/search.module';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module
     ZMediaPhotoModule,
     ZMediaAlbumModule,
     ZMediaFavoriteModule,
+    ZMediaSearchModule,
     ZMediaSharedWithMeModule,
   ],
   declarations: [AppComponent],

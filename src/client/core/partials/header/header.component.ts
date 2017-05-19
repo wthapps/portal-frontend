@@ -1,12 +1,13 @@
-import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiBaseService } from '../../shared/services/apibase.service';
 import { UserService } from '../../shared/services/user.service';
 import { Constants } from '../../shared/config/constants';
 
-import { SearchFormComponent } from './sub/search-form.component';
+import { SearchFormComponent } from './search/search-form.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
+import { WTHNavigateService } from '../../shared/services/wth-navigate.service';
+import { ChannelService } from '../../shared/channels/channel.service';
 
 declare var $: any;
 declare var _: any;
@@ -18,9 +19,10 @@ declare let App: any; //This App stands for ActionCable
 @Component({
   moduleId: module.id,
   selector: 'wth-header',
-  templateUrl: 'header.component.html'
+  templateUrl: 'header.component.html',
+  styleUrls: ['header.component.css']
 })
-export class HeaderComponent implements AfterViewInit, OnInit {
+export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input('headerOver') headerOver: boolean = false;
   @HostBinding('class') headerClass = 'header';
 
@@ -31,6 +33,7 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   navigationUrl: string = '/';
 
   imgLogo: string = Constants.img.logo;
+  flagsRelease: boolean = Constants.flagsRelease;
 
   showSearchBar: boolean = true;
 
@@ -38,14 +41,15 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   // notifications: Array<any> = new Array<any>();
   // newNotifCount: number = 0 ;
-  currentNotifId: any;
-  notifOffset: number = 0;
+  // currentNotifId: any;
+  // notifOffset: number = 0;
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
-  constructor(private apiBaseService: ApiBaseService,
-              public userService: UserService,
-              private router: Router,
+  constructor(public userService: UserService,
+              // private router: Router,
+              private navigateService: WTHNavigateService,
+              private channelService: ChannelService,
               public notificationService: NotificationService,
               private appearancesChannelService: AppearancesChannelService) {
   }
@@ -65,11 +69,20 @@ export class HeaderComponent implements AfterViewInit, OnInit {
         this.userService.profile.profile_image = Constants.img.avatar;
       }
 
+      // Start the appearance channel after notification channel is connected
+      console.debug('start channel notification');
       this.notificationService.startChannel();
+
+      // TODO comment this line for release 1.0.14. It should be uncommented after the release
+      // this.appearancesChannelService.subscribe()
+      // this.notificationService.startChannel(this.appearancesChannelService.subscribe());
+
+      this.channelService.subscribe();
     }
+  }
 
-
-    this.appearancesChannelService.subscribe();
+  ngOnDestroy() {
+    //  TODO: Unsubscribe all cable services when destroyed
   }
 
 
@@ -106,12 +119,16 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   onNavigation(event: any): void {
     event.preventDefault();
-    this.router.navigate([this.navigationUrl]);
+    console.log('location', window.location);
+    if (window.location.origin != Constants.baseUrls.app) {
+      window.location.href = Constants.baseUrls.app;
+    }
   }
 
   logout() {
 
     this.userService.logout('users/sign_out')
+      .take(1)
       .subscribe(
         response => {
           window.location.href = `${Constants.baseUrls.app}/login`;
@@ -145,8 +162,16 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   }
 
 
-  getLatestNotifications() {
-    this.notificationService.getLatestNotifications();
+  // getLatestNotifications() {
+  //   this.notificationService.getLatestNotifications();
+  // }
+
+  viewAllNotifications() {
+    // Close mini notification dropdown box in the header
+    $('.navbar-nav-notification').removeClass('open');
+
+    // Navigate to notification page of social module
+    this.navigateService.navigateOrRedirect('notifications', 'social');
   }
 
   getNewNotificationsCount() {
@@ -164,66 +189,14 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   sendMessage(event: any) {
 
     App.notification.sendMessage(3, 'hello world');
+  }
 
-    // this.api.get('zone/social_network/notification/broadcast_message')
-    //     .subscribe(result => {
-    //         console.log('message broadcasted', result);
-    //
-    //       },
-    //       error => {
-    //
-    //       });
-    // console.log('cable', App, App.notifications);
-
-
-    //   // ActionCable callbacks
-    // connected: function() {
-    //   return this.perform('subscribed', {});
-    //   console.log('connected..................');
-    // },
-    // disconnected: function() {
-    //   console.log("disconnected", this.identifier);
-    // },
-    // rejected: function() {
-    //   console.log("rejected");
-    // },
-    // ,
-    //   // Custom methods
-    //   start: function() {
-    //     writeLog("starting clock");
-    //     this.perform("start");
-    //   },
-    //   stop: function() {
-    //     writeLog("stopping clock");
-    //     this.perform("stop");
-    //   },
-    //   tick: function(data: any) {
-    //     writeLog("tick received", data);
-    //     this.tock("ack");
-    //   },
-    //   tock: function(message: any) {
-    //     writeLog("tock sent", message);
-    //     return this.perform("tock", { message: message });
-    //   }
-    // });
-    //
-    // function writeLog(message: any, data: any = null) {
-    //   console.log(message, data);
-    // }
-    //
-    // function deserialize(data) {
-    //   return JSON.stringify(data);
-    // }
-    //
-    // function guid() {
-    //   function s4() {
-    //     return Math.floor((1 + Math.random()) * 0x10000)
-    //                .toString(16)
-    //                .substring(1);
-    //   }
-    //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    //     s4() + '-' + s4() + s4() + s4();
-    // }
+  toggleViewNotifications() {
+    this.notificationService.getLatestNotifications(); // Load latest notifications in the first click
+    if (this.notificationService.notifications.length <= 0) {
+      this.getMoreNotifications();
+    }
+    this.markAsSeen();
   }
 
   markAsSeen() {
@@ -236,6 +209,10 @@ export class HeaderComponent implements AfterViewInit, OnInit {
 
   toggleAllReadStatus() {
     this.notificationService.toggleAllReadStatus();
+  }
+
+  showSetting() {
+
   }
 
   redirectTo(domain: string = '', path: string = '', event: any) {

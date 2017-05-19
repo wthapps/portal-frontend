@@ -5,7 +5,7 @@ body {
     list-style-type: none;
     margin: 0;
     overflow: hidden;
-    padding: 1px 3px !important;
+    padding: 5px 12px !important;
     min-height: 38px !important;
 
     background: #ffffff;
@@ -13,6 +13,8 @@ body {
     -moz-border-radius: $border-radius-base;
     -webkit-border-radius: $border-radius-base;
     border-radius: $border-radius-base;
+    @include transition(none);
+    @include transform(none);
     font-size: 1em;
     color: #55595c;
     line-height: 1.25;
@@ -24,27 +26,126 @@ body {
       height: 34px;
       line-height: 34px;
       padding: 0;
+      margin: 3px 0;
+    }
+  }
+
+  .ng2-dropdown-menu {
+    z-index: 1050 !important;
+    .ng2-menu-item {
+      font: $font-base;
+      padding: 5px;
+      background: #fff;
+      color: $text-color;
+      cursor: pointer;
+      font-size: inherit;
+      text-transform: none;
+      font-weight: normal;
+      -webkit-transition: background 0.2s;
+      transition: background 0.2s;
+      letter-spacing: 0.03em;
+      height: auto;
+      line-height: inherit;
+      overflow: hidden !important;
+      text-align: left;
     }
   }
 }
 
-.ng2-dropdown-menu {
-  .ng2-menu-item {
-    font: $font-base;
-    padding: 3px 5px;
-    background: #fff;
-    color: $text-color;
-    cursor: pointer;
-    font-size: inherit;
-    text-transform: none;
-    font-weight: normal;
-    -webkit-transition: background 0.2s;
-    transition: background 0.2s;
-    letter-spacing: 0.03em;
-    height: auto;
-    line-height: inherit;
-    overflow: hidden !important;
-    text-align: left;
+.hd-list {
+  outline: none 0 !important;
+}
+
+.hd-list-container {
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+
+  .hd-list-selected-item {
+    margin: 0 5px 5px 0;
+    padding: 6px 12px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    background-color: #efefef;
+    outline: none 0 !important;
+    img {
+      width: 20px;
+    }
+    .hd-list__remove-button {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      background-color: #cdcdcd;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 5px;
+      svg {
+        vertical-align: middle;
+        position: relative;
+        top: -1px;
+      }
+    }
+  }
+  .hd-list__text-input {
+    @include box-shadow(none);
   }
 }
 
+body {
+  .ng2-tags-container {
+    tag {
+      background-color: transparent !important;
+      color: #4A4A4A;
+      font-size: 14px;
+      padding: 0;
+      line-height: inherit;
+      height: auto;
+      border-radius: 0;
+      margin: 3px 10px 3px 0;
+      @include transition(initial !important);
+      @include transform(initial !important);
+      > div {
+        > div {
+          overflow: hidden;
+          background-color: #D8D8D8;
+          padding: 7px 10px;
+          height: 34px;
+          -webkit-border-radius: 0.25em;
+          -moz-border-radius: 0.25em;
+          border-radius: 0.25em;
+          > span {
+            font-size: 14px;
+            line-height: 20px;
+            float: left;
+            font-family: $font-base;
+          }
+          delete-icon {
+            width: auto;
+            height: auto;
+            margin-left: 10px;
+            &:hover {
+              @include transform(scale(1) translateY(0));
+            }
+            > span {
+              @extend .fa;
+              @extend .fa-close;
+              font-size: 22px;
+              color: #9B9B9B;
+              line-height: 20px;
+              float: left;
+            }
+            svg {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}

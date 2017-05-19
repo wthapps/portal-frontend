@@ -168,6 +168,7 @@ export class UserService extends ApiBaseService {
     this.cookieService.put('jwt', response.token, this.cookieOptionsArgs);
     this.cookieService.put('profile', JSON.stringify(response.data), this.cookieOptionsArgs);
     this.cookieService.put('logged_in', 'true', this.cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.chatSupportId,  response.data.uuid, this.cookieOptionsArgs);
 
     this.loggedIn = true;
     this.profile = response.data;

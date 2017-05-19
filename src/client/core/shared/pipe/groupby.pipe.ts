@@ -2,12 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({name: 'groupBy'})
 export class GroupByPipe implements PipeTransform {
-  // transform(value: Array<any>, field: string): Array<any> {
-  //   console.log(value, field);
-  //   return [];
-  // }
   transform(collection: Object[], term: string) {
-
+    if (!term || term == '') {
+      return collection;
+    }
     let newValue = Array<any>();
 
     for (let i = 0; i < collection.length; i++) {
@@ -20,7 +18,6 @@ export class GroupByPipe implements PipeTransform {
       }
     }
     return newValue;
-
   }
 
   private deepFind(obj: any, path: any) {

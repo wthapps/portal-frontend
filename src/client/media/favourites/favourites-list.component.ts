@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaFavoriteService } from './favourites.service';
 import { ZMediaPhotoDetailComponent } from '../photo/photo-detail.component';
-import { ZMediaPhotoService } from '../photo/photo.service';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 declare var $: any;
 declare var _: any;
@@ -23,36 +23,45 @@ export class ZMediaFavoriteListComponent implements OnInit {
   hasFavourite: boolean = false;
   currentView: string = 'grid';
 
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
-    console.log(ev);
-    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
-  }
+  favouriteIsEmpty: boolean = false;
 
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
-  }
+  // @HostListener('document:keydown', ['$event'])
+  // onKeyDown(ev: KeyboardEvent) {
+  //   console.log(ev);
+  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
+  // }
+  //
+  // @HostListener('document:keyup', ['$event'])
+  // onKeyUp(ev: KeyboardEvent) {
+  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
+  // }
 
-  constructor(private photoService: ZMediaPhotoService,
+  constructor(private photoService: PhotoService,
               private favoriteService: ZMediaFavoriteService) {
   }
 
   ngOnInit() {
-    this.favoriteService.list().subscribe((res: any)=> {
-      this.data = res.data;
-      // this.nextLink = res.page_metadata.links.next;
-    });
+    // this.getFavorite();
+  }
+
+  getFavorite(body:any = {}) {
+    // this.favoriteService.list(body).subscribe((res: any)=> {
+    //   this.data = res.data;
+    //   if (res.data.albums.length == 0 && res.data.photos.length == 0) {
+    //     this.favouriteIsEmpty = true;
+    //   }
+    //   // this.nextLink = res.page_metadata.links.next;
+    // });
   }
 
   onLoadMore(event: any) {
-    event.preventDefault();
-    this.favoriteService.loadMore(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v: any)=> {
-        this.data.push(v);
-      });
-      // this.nextLink = res.page_metadata.links.next;
-    });
+    // event.preventDefault();
+    // this.favoriteService.loadMore(this.nextLink).subscribe((res: any)=> {
+    //   _.map(res.data, (v: any)=> {
+    //     this.data.push(v);
+    //   });
+    //   // this.nextLink = res.page_metadata.links.next;
+    // });
   }
 
 
@@ -67,6 +76,9 @@ export class ZMediaFavoriteListComponent implements OnInit {
         break;
       case 'favourite':
         this.onOneFavourite(event.data);
+        break;
+      case 'sort':
+        this.sort(event.data);
         break;
       default:
         break;
@@ -110,16 +122,20 @@ export class ZMediaFavoriteListComponent implements OnInit {
   private onPreviewAll(item: any) {
     this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
     this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
-    this.photoDetail.preview(true);
+    this.photoDetail.open({show: true});
   }
 
   private onOneFavourite(item: any) {
-    let findItemFavourite = _.findIndex(this.data, ['id', item.id]);
+    let findItemFavourite = _.findIndex(this.data.albums, ['id', item.id]);
     this.photoService.actionOneFavourite(item).subscribe((res: any)=> {
       if (res.message === 'success') {
-        this.data[findItemFavourite].favorite = (this.data[findItemFavourite].favorite) ? false : true;
+        this.data.albums[findItemFavourite].favorite = (this.data.albums[findItemFavourite].favorite) ? false : true;
       }
     });
+  }
+
+  private sort(data:any) {
+    this.getFavorite(data);
   }
 
   // --- End Action for Item --- //

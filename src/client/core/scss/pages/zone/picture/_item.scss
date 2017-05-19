@@ -1,8 +1,7 @@
 .row-img {
   .img-center-dv {
-    border: 1px solid $light-grey;
-    background-color: #ffffff;
-    cursor: pointer;
+    //border: 1px solid $light-grey;
+    background-color: #FFF;
     @include transition($transition-base);
     &:after {
       @extend .fa;
@@ -11,7 +10,7 @@
       top: 10px;
       left: 10px;
       font-size: 24px;
-      color: #2996cc;
+      color: $color-inverse;
       @include transition($transition-base);
       @include opacity(0);
       z-index: 2;
@@ -22,10 +21,17 @@
       left: 0;
       right: 0;
       padding: 10px;
-      color: #9b9b9b;
+      color: #FFF;
       z-index: 1;
       line-height: 1.2;
+      background-color: rgba(#000, 0.6);
     }
+
+    .photo-box-img-figure-in {
+      display: block;
+      padding-bottom: 75%;
+    }
+
   }
 
   .photo-box-img {
@@ -40,12 +46,30 @@
       top: 10px;
       right: 10px;
       z-index: 20;
-      @include opacity(0);
+      //@include opacity(0);
       @include transition($transition-base);
       i {
         font-size: 24px;
         cursor: pointer;
-        color: #2996CC;
+        color: $color-inverse;
+        //color: #2996CC;
+        &.fa-remove {
+          font-size: 14px;
+          width: 24px;
+          height: 24px;
+          text-align: center;
+          background-color: #2996cc;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+          border: 1px solid #FFF;
+          color: #ffffff;
+          line-height: 22px;
+        }
+      }
+      &.photo-box-img-action-left {
+        right: auto;
+        left: 10px;
       }
     }
   }

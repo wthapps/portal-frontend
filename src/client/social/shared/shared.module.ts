@@ -16,21 +16,13 @@ import {
 import { PostDetailComponent } from './post/post-detail.component';
 import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { PostListComponent } from './post/post-list.component';
-import { ZSocialProfileComponent } from './profile/profile.component';
-import { ZSocialProfileAboutComponent } from './profile/about/about.component';
-import { ZSocialProfileFormAboutComponent } from './profile/form/about.component';
-import { ZSocialProfileFormContactComponent } from './profile/form/contact.component';
-import { ZSocialProfileFormWorkEduComponent } from './profile/form/work-edu.component';
-import { ZSocialProfileFormInterestComponent } from './profile/form/interest.component';
-import { ZSocialProfileCoverComponent } from './profile/cover/cover.component';
-import { ZSocialPrivacyComponent } from './profile/about/components/privacy.component';
 import { ZoneReportComponent } from './form/report/report.component';
-import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
+import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
-import { ZSocialMembersComponent } from '../members/members.component';
-import { ZSocialProfileService } from './profile/profile.service';
-import { PhotoModalDataService } from './services/photo-modal-data.service';
+import { ZSocialMembersComponent } from '../friends/members.component';
 import { SoPhotoListComponent } from './post/photo-list.component';
+import { ZSocialProfileService } from '../profile/profile.service';
+import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
 
 
 /**
@@ -42,6 +34,7 @@ import { SoPhotoListComponent } from './post/photo-list.component';
     SharedModule,
     // HdModalModule,
     Ng2HdModule,
+    CoverProfileModule,
     PostModule
   ],
   declarations: [
@@ -58,16 +51,6 @@ import { SoPhotoListComponent } from './post/photo-list.component';
     PostDetailComponent,
     PostDetailPhotoComponent,
 
-    // Profile
-    ZSocialProfileComponent,
-    ZSocialProfileAboutComponent,
-    // ZSocialProfilePostComponent,
-    ZSocialProfileCoverComponent,
-    ZSocialProfileFormAboutComponent,
-    ZSocialProfileFormContactComponent,
-    ZSocialProfileFormWorkEduComponent,
-    ZSocialProfileFormInterestComponent,
-
     //Share
     ZoneReportComponent,
 
@@ -76,17 +59,18 @@ import { SoPhotoListComponent } from './post/photo-list.component';
 
     // Search
     // ZSocialSearchResultComponent,
-    ZSocialPrivacyComponent
 
   ],
   exports: [
     ZSocialFavoritesComponent,
     SoPhotoListComponent,
     PostListComponent,
+    PostComponent,
     ZoneReportComponent,
     ZSocialNotificationsComponent,
 
     Ng2HdModule,
+    CoverProfileModule,
     SharedModule,
     PostModule
   ]
@@ -95,7 +79,7 @@ export class ZSocialSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZSocialSharedModule,
-      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService, PhotoModalDataService]
+      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService]
     };
   }
 }

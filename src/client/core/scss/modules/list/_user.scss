@@ -54,9 +54,9 @@
       -moz-border-radius: 50%;
       border-radius: 50%;
       border: 3px solid #FFF;
-      background-color: #d8d8d8;
+      background-color: $user-offline;
       &.online {
-        background-color: #6DD9AC;
+        background-color: $user-online;
       }
     }
   }

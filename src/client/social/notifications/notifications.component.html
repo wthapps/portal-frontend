@@ -1,40 +1,28 @@
-<div class="page-body-content-in zone-social">
-  <div class="zone-social-container">
-    <div class="z-social-box">
-      <div class="z-social-box-header">
-        <h3 class="h4">Notifications</h3><span class="badge badge-rounded badge-wth badge-right">{{notificationService.newNotifCount}}</span>
-      </div>
-      <div class="z-social-box-body z-social-box-body-communities">
-        <div class="row">
-          <div *ngFor="let notification of notificationService.notifications" class="col-xs-12 col-lg-6">
-            <div class="media-center">
-              <div class="media-center-left">
-                <figure>
-                  <a [routerLink]="[profileUrl, notification.actor.uuid]">
-                    <img [src]="notification.actor.profile_image" width="70" alt="">
-                  </a>
-                </figure>
-              </div>
-              <div class="media-center-body">
-                <h4 class="media-center-heading">
-                  <!--<a [routerLink]="['/zone/social/profile', notification.actor.uuid]">-->
-                    <!--{{notification.actor.name}}-->
-                  <!--</a>-->
-                  <span style="font-weight:normal" [innerHTML]="notification.text">
-                    <a *ngIf="notification.community" [routerLink]="[communitiesUrl, notification.community.uuid]"> {{notification.community.name}}</a>
-                  </span>
-                </h4>
+<div class="page-body-content gray-light"
+     lockYOffset="20"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolled)="getMoreNotifications()">
+  <div class="page-body-content-in zone-social">
 
-              </div>
-              <div style="white-space: nowrap" class="media-center-right">
-                <button  *ngFor="let action of notification.actions" class="btn btn-default ml5" type="button" (click)="doAction(action, notification.id)">
-                  {{action.name}}
-                </button>
-              </div>
-            </div>
+    <div class="zone-social-in">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title pull-left">Notifications</h3>
+          <div class="pull-right">
+            <button type="button" class="btn btn-default" (click)="notifications.open()"><i class="fa fa-cog"></i> Settings</button>
           </div>
         </div>
+
+        <partials-notifications #notifications></partials-notifications>
+
+        <div class="panel-footer text-center">
+          <a href="#" class="bold text-bigger">View more</a>
+        </div>
       </div>
+
+
     </div>
   </div>
 </div>

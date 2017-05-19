@@ -26,10 +26,20 @@ export let Constants = {
     chat: Config.SUB_DOMAIN.CHAT
   },
 
+  flagsRelease: false,
+
   cookieOptionsArgs: {
     path: '/',
     domain: Config.DOMAIN,
     expires: new Date('2030-07-19')
+  },
+  cookieKeys: {
+    chatSupportId: 'wthapps-cs-id',
+    chatSupportMemId: 'wthapps-cs-mem-id',
+    chatSupportCurrentWindow: 'wthapps-cs-cw',
+    clientToken: 'wthapps-ct',
+    profile: 'wthapps-pro',
+    payment: 'wthapps-pm'
   },
   operations: {
     update: 'update',
@@ -73,25 +83,29 @@ export let Constants = {
   },
 
   chatMenuItems: [
-    {name: 'Conversation', link: '/conversation'},
-    {name: 'Contact', link: '/contact'},
-    {name: 'Settings', link: '/setting'}
+    {name: 'Conversation', link: '/conversation', icon: ''},
+    {name: 'Contact', link: '/contact', icon: 'fa fa-address-book-o'},
+    {name: '', link: '', icon: ''},
+    {name: 'Settings', link: '/setting', icon: 'fa fa-cog'}
   ],
 
   pictureMenuItems: [
-    {name: 'Photos', link: '/photo'},
-    {name: 'Albums', link: '/album'},
-    {name: 'Favourites', link: '/favourites'},
-    {name: 'Shared with me', link: '/sharedWithMe'}
+    {name: 'Photos', link: '/photos', icon: 'fa fa-photo'},
+    {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
+    {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
+    {name: 'Shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
+    {name: 'Search', link: '/search', icon: 'fa fa-search'}
   ],
 
   socialMenuItems: [
-    {name: 'Home', link: '/home'},
-    {name: 'Communities', link: '/communities'},
-    {name: 'Notifications', link: '/notifications'},
-    {name: 'Members', link: '/members'},
-    {name: 'My Page', link: '/profile'},
-    {name: 'Settings', link: '/settings'},
+    {name: 'Home', link: '/home', icon: 'fa fa-home'},
+    {name: 'Communities', link: '/communities', icon: 'fa fa-users'},
+    {name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o'},
+    {name: 'Friends', link: '/friends', icon: 'fa fa-user-plus'},
+    {name: 'My Page', link: '/profile', icon: 'fa fa-user-circle'},
+    {name: '', link: '', icon: ''},
+    {name: 'Settings', link: '/settings', icon: 'fa fa-cog'},
+    {name: 'Search', link: '/search', icon: 'fa fa-search'}
   ],
 
   pictureMenuActions: {
@@ -102,7 +116,15 @@ export let Constants = {
     delete: true,
     other: true,
   },
+
+  mediaSliderViewNumber: {
+    min: 2,
+    default: 8,
+    max: 12
+  },
+
   urls: {
+    afterLogin: Config.SUB_DOMAIN.SOCIAL,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',
@@ -117,11 +139,16 @@ export let Constants = {
     zoneSoNotifications: 'zone/social_network/notifications',
     zoneSoReportList: 'zone/social_network/report_list',
     zoneSoProfile: 'zone/social_network/profile',
+    zoneSoPhotos: 'zone/social_network/photos',
+    soFriendUrl: 'zone/social_network/friends',
+    zonePhotos: 'media/photos',
     posts: 'posts',
     profile: 'profile',
+    album: 'album',
+    photo: 'photo',
     chatConversation: 'conversation'
   },
-  sex: ['', 'Male', 'Female', 'Other'],
+  sex: ['Male', 'Female', 'Other'],
   communityRole: {
     admin: [1, 'Admin'],
     member: [2, 'Member']
@@ -143,6 +170,15 @@ export let Constants = {
     customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
     unknown: {css: '', text: '', data: ''}
   },
+  soPostListType: {
+    userOnly: 'user_only',
+    strangeUser: 'strange_user',
+    friend: 'friend',
+    community: 'community',
+    userAndFriend: 'user_and_friend',
+    randomUser: 'random_user',
+    public: 'public'
+  },
   soCommunityPrivacy: {
     open: {name: 'open'},
     close: {name: 'close'}
@@ -151,8 +187,50 @@ export let Constants = {
     user: 1,
     community: 2
   },
+  soCommunityUserStatus: {
+    member: 1,
+    joinRequestSent: 2,
+    stranger: 3
+  },
+
+  friendStatus: {
+    pending: 1,
+    accepted: 2,
+    rejected: 3,
+    unfriend: 4,
+    blocked: 5,
+    stranger: 99
+  },
+
   soPostLimit: 10,
   soCommentLimit: 20,
+
+  searchDebounceTime: 250,
+
+
+
+  search: {
+    config: {
+      globalActive: true,
+      photoActive: true,
+      socialActive: true,
+    }
+  },
+
+  mediaListDetailTypeMapping: {
+    'photos': 'photo',
+    'albums': 'album',
+    'favorites': 'mix',
+    'shared-with-me': 'mix'
+  },
+  mediaPageType: {
+    photos: 'photos',
+    search: 'search',
+    sharedWithMe: 'shared-with-me',
+    favorites: 'favorites',
+    albums: 'albums',
+    album_detail: 'album_detail'
+  }
 };
 
 export let MediaType = {
@@ -164,5 +242,4 @@ export let MediaType = {
   favourites: 'favourites',
   sharedWithMe: 'sharedWithMe'
 };
-
 

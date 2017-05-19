@@ -11,9 +11,9 @@ import {
   CancelEditCommentEvent,
   CancelReplyCommentEvent,
   DeleteReplyEvent,
-  CancelEditReplyCommentEvent, ViewMoreCommentsEvent
+  CancelEditReplyCommentEvent, ViewMoreCommentsEvent, ReplyCreateEvent
 } from '../../../events/social-events';
-import { ZSocialCommentBoxType } from './sub-layout/comment-box.component';
+import { CommentEditorMode } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
@@ -23,6 +23,7 @@ import { UserService } from '../../../../core/shared/services/user.service';
 import { PostService } from '../shared/post.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { SoComment } from '../../../../core/shared/models/social_network/so-comment.model';
+import { Router } from '@angular/router';
 
 declare var _: any;
 declare var $: any;
@@ -38,14 +39,15 @@ export class PostFooterComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
-  commentBoxType = ZSocialCommentBoxType;
+  commentEditorMode = CommentEditorMode;
 
   actions = {
     onDeleteComment: 1,
     onEditComment: 2,
     onDeleteReply: 3,
-    onReply: 4,
-    openLikeDislike: 6
+    onCreateComment: 4,
+    openLikeDislike: 6,
+    onShowPhotoDetail: 7
   };
 
   hasLike: boolean = false;
@@ -61,6 +63,7 @@ export class PostFooterComponent implements OnChanges {
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private toast: ToastsService,
+              private router: Router,
               private postService: PostService,
               public userService: UserService,
               public postItem: PostComponent) {
@@ -70,32 +73,54 @@ export class PostFooterComponent implements OnChanges {
     if (this.type == 'info') {
       this.showInfo = true;
     }
-    this.totalComment = this.item.total_comments;
+    this.totalComment = this.item.comment_count;
   }
 
-  onActions(action: any, data: any, type?: any) {
+  onActions(action: any, params?: any) {
+    let type = params.commentType;
+    let data = params.data;
     switch (action) {
       case this.actions.onDeleteComment:
         this.eventEmitter.emit(new DeleteCommentEvent(data));
         break;
       case this.actions.onEditComment:
-        $('#editComment-' + data.uuid).show();
-        $('#comment-' + data.uuid).hide();
+        let currentComment = data;
+        let commentType = type;
+
+        console.log('editing..........:', data);
+        // show edit comment form
+        $('#editComment-' + currentComment.uuid).show();
+
+        // hide current comment content
+        $('#comment-' + currentComment.uuid).hide();
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
         break;
-      case this.actions.onReply:
-        $('#reply-' + data.uuid).show();
+      case this.actions.onCreateComment:
+        let parent = params.parent;
+        let parentType = params.parentType;
+
+        console.log('replying..........:', parent);
+
+        // this.eventEmitter.emit(new ReplyCreateEvent(data));
+        $('#reply-' + parent.uuid).show();
         break;
       case this.actions.openLikeDislike:
         this.postItem.openLikeDislike(data, type);
         break;
+      case this.actions.onShowPhotoDetail:
+        // this.router.navigate(['/photos', this.item.uuid, {index: data}]);
+
+        this.router.navigate(['/comments',  data, 'photos', type, {ids: [type]}]);
+        break;
     }
   }
 
+
   onCallBack(event: any) {
-    if (event instanceof CancelEditCommentEvent || event instanceof CancelEditReplyCommentEvent) {
+    // console.log('data:::::::', event);
+    if (event instanceof CancelEditCommentEvent) {
       $('#editComment-' + event.data.uuid).hide();
       $('#comment-' + event.data.uuid).show();
       return;
@@ -148,6 +173,11 @@ export class PostFooterComponent implements OnChanges {
           console.error('Cannot get more comments: ' + error);
         });
 
+  }
+
+  totalRepliesInWords(replies: any) {
+    let repCount = replies.length > 1 ? 'replies' : 'reply';
+    return `${replies.length} ${repCount}`;
   }
 
 }

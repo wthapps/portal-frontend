@@ -12,7 +12,6 @@ body {
   background-color: #f6f6f6;
 }
 
-
 .banner-wrap {
   margin-top: -20px;
   position: relative;
@@ -259,7 +258,7 @@ $footer-height: 222px;
   }
 }
 
-.main-page-body {
+/*.main-page-body {
   .page-body-control {
     ul {
       margin: 0;
@@ -275,6 +274,9 @@ $footer-height: 222px;
         &.dropdown > .btn:not(.btn-circle) {
           border-color: transparent;
         }
+        .name {
+          line-height: 33px;
+        }
         .dropdown-menu {
           margin-top: 15px;
           > li {
@@ -284,7 +286,6 @@ $footer-height: 222px;
             }
             > a {
               padding: 10px 15px;
-              min-width: 240px;
             }
           }
           > .active > a,
@@ -296,7 +297,6 @@ $footer-height: 222px;
         }
       }
       &.control-body-btnview {
-        float: right;
         margin-right: 0;
         > li {
           float: left;
@@ -317,6 +317,7 @@ $footer-height: 222px;
             font-size: 20px;
             padding-left: 10px;
             padding-right: 10px;
+            color: $text-color;
           }
           &.dropdown {
             padding-left: 15px;
@@ -414,11 +415,16 @@ $footer-height: 222px;
       }
     }
   }
+  .page-body-control-sub {
+    margin: 0 -30px;
+    padding: 10px 30px;
+    @include clearfix;
+  }
   .page-body-in-title {
     margin-top: 20px;
     margin-bottom: 20px;
   }
-}
+}*/
 
 .dropzone-overlap {
   display: none;
@@ -461,9 +467,10 @@ body.drag-active {
 .img-center-dv {
   position: relative;
   overflow: hidden;
+  z-index: 1;
   .img-center {
     @include center();
-    max-width: 100%;
+    width: 100%;
   }
 }
 

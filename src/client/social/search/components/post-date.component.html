@@ -1,0 +1,24 @@
+<dl>
+  <dt>Date</dt>
+  <dd>
+    <ul class="list-unstyled">
+      <li>
+        <p-radioButton name="searchDate" value="anytime" label="Anytime" [(ngModel)]="searchDate" (click)="filter('created_at:*'); disable(true)"></p-radioButton>
+      </li>
+      <li>
+        <p-radioButton name="searchDate" value="2017" label="2017" [(ngModel)]="searchDate" (click)="filter('from:2017-01-01;to:2017-12-31'); disable(true)"></p-radioButton>
+      </li>
+      <li>
+        <p-radioButton name="searchDate" value="2016" label="2016" [(ngModel)]="searchDate" (click)="filter('from:2016-01-01;to:2016-12-31'); disable(true)"></p-radioButton>
+      </li>
+      <li>
+      <li>
+        <p-radioButton name="searchDate" value="custom" label="Custom date" [(ngModel)]="searchDate" (click)="convert(); disable(false); filter('created_at:' + customDate);"></p-radioButton>
+        <div class="mt5">
+          <p-calendar [showIcon]="true" class="form-control-block" [(ngModel)]="searchDateValue" [disabled]="disableCustom" (onSelect)="convert(); filter('created_at:' + customDate);"></p-calendar>
+        </div>
+      </li>
+    </ul>
+  </dd>
+</dl>
+<!--(onSelect)="convert(); filter('created_at:'customDate);"-->

@@ -27,7 +27,8 @@ export class ZMediaShareItemComponent implements OnChanges {
     if (this.hasAction.indexOf(ev) != -1) {
       this.outEvent.emit({
         action: ev,
-        data: this.data
+        data: this.data,
+        type: this.type
       });
     }
   }

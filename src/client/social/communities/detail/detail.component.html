@@ -1,35 +1,39 @@
-<div class="page-body-content-in zone-social">
-  <div class="zone-social-in">
-    <!--<z-social-community-cover [selectedTab]="selectedTab"></z-social-community-cover>-->
-    <div class="zone-social-cover">
-      <div *ngIf="item" class="zone-social-cover-in group">
-        <div class="zone-social-cover-info">
-          <div class="z-social-media z-social-media-md">
-            <div class="z-social-media-left">
-              <img [src]="item.profile_image" width="100">
-            </div>
+<div
+  class="page-body-content gray-light"
+  lockYOffset="20"
+  observeAttributes="true"
+  infinite-scroll
+  [scrollWindow]="false"
+  (scrolled)="onLoadMore()">
+  <div class="page-body-content-in zone-social">
+
+    <div class="zone-social-in">
+      <div class="zone-social-cover">
+        <cover-profile [item]="community" (outEvent)="onCoverAction($event)">
+          <so-information>
             <div class="z-social-media-body">
               <div class="z-heading">
-                <div class="z-name"> {{item ? item.name : ""}} </div>
+                <div class="z-name"> {{ community?.name }}</div>
               </div>
               <div class="z-shared-info">
                 <ul>
-                  <li *ngIf="item.users && item.users.length>2">{{item.users.length}} members</li>
-                  <li *ngIf="item.users && item.users.length<2">{{item.users.length}} member</li>
+                  <li>{{community?.users?.length }} {{ (community?.users && community?.users.length >= 2) ? 'members' : 'member' }}</li>
                   <li *ngIf="is_close">
                     Private
                   </li>
                 </ul>
               </div>
-              <div class="z-shared-description">{{item.tag_line}}</div>
+              <div class="z-shared-description">{{community?.tag_line}}</div>
             </div>
             <div class="z-social-media-right mb5">
-              <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)" data-toggle="modal"
+              <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)"
+                      data-toggle="modal"
                       data-target="#modal-social-share-com" *ngIf="isMember">
                 <i class="fa fa-user-plus"></i> Invite Member
               </button>
 
-              <button class="btn btn-default" type="button" (click)="askToJoin()" *ngIf="!isMember">
+              <button class="btn btn-default" type="button" (click)="askToJoin()"
+                      *ngIf="!isMember && !joinRequestId">
                 <i class="fa fa-user-plus"></i> Ask to join
               </button>
 
@@ -58,163 +62,208 @@
                 </ul>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <nav class="zone-social-cover-nav">
-        <ul class="list-unstyled clearfix">
-          <li [ngClass]="selectedTab==undefined || selectedTab == 'post' ? 'active': ''">
-            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{}">Post</a>
-          </li>
-          <li [ngClass]="selectedTab=='about'? 'active': ''">
-            <!--<a [routerLink]="['/'+ communitiesUrl+ '/'+ uuid]" [queryParams]="{tab:'about'}">About</a>-->
-            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
-          </li>
-          <li [ngClass]="selectedTab=='members'? 'active': ''">
-            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members</a>
-          </li>
-          <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
-            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations</a>
-          </li>
-          <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
-            <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests</a>
-          </li>
-          <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
-            <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
-          <!--</li>-->
 
-          <li class="pull-right dropdown">
-            <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="true">
-              <i class="fa fa-ellipsis-v"></i>
+          </so-information>
+
+        </cover-profile>
+
+
+
+
+        <nav class="zone-social-cover-nav clearfix">
+          <div class="pull-left btn-group hidden-md hidden-lg">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+              {{selectedTabTitle?.value}} <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu dropdown-custom">
-              <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
-              <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
-              <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
-              <li><a href="#" (click)="onLeave()">Leave community</a></li>
-              <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-              <li *ngIf="isAdmin"><a (click)="onDelete(data)" href="#">Delete community</a></li>
+            <ul class="dropdown-menu">
+              <template ngFor let-itab [ngForOf]="tabData" *ngIf="isAdmin">
+                <li>
+                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{itab.value}}</a>
+                </li>
+              </template>
+              <template ngFor let-itab [ngForOf]="tabData" *ngIf="!isAdmin">
+                <li *ngIf="itab.key != 'invitations' && itab.key != 'join_requests'">
+                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{itab.value}}</a>
+                </li>
+              </template>
             </ul>
-          </li>
-        </ul>
-      </nav>
-    </div>
+          </div>
 
-    <!--post list-->
-    <so-post-list *ngIf="isPostTab" #posts [type]="'community'" [community]="community"></so-post-list>
-
-    <!--about-->
-    <div class="z-social-box" *ngIf="isAboutTab">
-      <div class="z-social-box-header">
-        <a href="javascript:;" (click)="onEdit()" class="btn btn-default-inline pull-right" *ngIf="isAdmin">
-          <i class="fa fa-pencil"></i>
-        </a>
-        <h4 class="h4">
-          About Us
-        </h4>
+          <ul class="pull-left list-unstyled clearfix visible-md-block visible-lg-block">
+            <li [ngClass]="selectedTab==undefined || selectedTab == 'post' ? 'active': ''">
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{}">Post</a>
+            </li>
+            <li [ngClass]="selectedTab=='about'? 'active': ''">
+              <!--<a [routerLink]="['/'+ communitiesUrl+ '/'+ uuid]" [queryParams]="{tab:'about'}">About</a>-->
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
+            </li>
+            <li [ngClass]="selectedTab=='members'? 'active': ''">
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members {{ ( community?.member_count ) ? '( ' + community?.member_count+ ' )' : '' }} </a>
+            </li>
+            <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations {{ ( isAdmin && community?.invitation_count ) ? '( ' + community?.invitation_count + ' )' : '' }}</a>
+            </li>
+            <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests {{ ( isAdmin && community?.join_request_count ) ? '( ' + community?.join_request_count + ' )' : '' }}</a>
+            </li>
+            <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
+            <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
+            <!--</li>-->
+          </ul>
+          <ul class="pull-right list-unstyled clearfix">
+            <li class=" dropdown">
+              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true" (click)="getFavourite(community?.uuid)">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-custom">
+                <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
+                <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
+                <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage
+                  members</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right"
+                                                                                       [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a>
+                </li>
+                <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
+                <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
+                <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <div class="z-social-post">
-        <div>
-          {{item.description}}
+
+      <!--post list-->
+      <so-post-list *ngIf="isPostTab" #posts [type]="'community'" [community]="community"></so-post-list>
+
+      <!--about-->
+      <div class="z-social-box" *ngIf="isAboutTab">
+        <div class="z-social-box-header">
+          <a href="javascript:;" (click)="onEdit()" class="btn btn-default-inline pull-right" *ngIf="isAdmin">
+            <i class="fa fa-pencil"></i>
+          </a>
+          <h4 class="h4">
+            About Us
+          </h4>
         </div>
+        <div class="z-social-post">
+          <div>
+            {{community?.description}}
+          </div>
 
-        <ul *ngIf="item.additional_links" class="list-unstyled">
-          <li *ngFor="let link of item.additional_links">
-            <i class="fa fa-globe"></i> <a target="_blank" href="{{link.url|urlTransform}}">{{ link ? link.name : ""}}</a>
-          </li>
-        </ul>
+          <ul *ngIf="community?.additional_links" class="list-unstyled">
+            <li *ngFor="let link of community?.additional_links">
+              <i class="fa fa-globe"></i>
+              <a target="_blank" href="{{link.url|urlTransform}}">{{ link ? link.name : ""}}</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
 
-    <!--members-->
+      <!--members-->
 
-    <member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>
-
-    <div *ngIf="isMember" class="z-social-box">
-
-
-      <div class="z-social-post">
-        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
-
-          <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems"  [ngForTrackBy]="trackByUsers">
-            <li  data-id="user_{{item.user ? item.user.uuid : ''}}" >
-              <div class="dropdown pull-right">
-                <!--<span class="text-fade member-role">{{ item.user.uuid == item.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
-                <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
-                <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                  <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="javascript:;" (click)="makeAdmin(item.user)" *ngIf="isAdmin">Make Admin</a></li>
-                  <li><a href="javascript:;" (click)="deleteMember(item.user)" *ngIf="isAdmin">Remove</a></li>
-                  <li><a href="javascript:;" (click)="onReportMember(item.user ? item.user.uuid : '')">Report Member</a></li>
-                  <li><a href="#" *ngIf="isAdmin">Blacklist</a></li>
-                </ul>
-              </div>
-              <img [alt]="item.user.name" [src]="item.user.profile_image" title="" width="30">
-              <span>{{item.user ? item.user.name : ''}}</span>
-            </li>
-          </template>
-        </ul>
-
-        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'invitations'">
-          <template ngFor let-item [ngForOf]="tabItems">
-
-            <li data-id="invitation_{{item.id}}">
-              <div class="dropdown pull-right">
-                <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
-                <!--<a href="#" class="btn btn-link">DENY</a>-->
-                <!--<a href="#" class="btn btn-link">INVITED</a>-->
-                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
-              </div>
-              <a href="#">
-                <!--<img [alt]="item.accepter.name" [src]="item.accepter.profile_image" title="" width="30">-->
-                <span>{{item['accepter']['name']}}</span>
-              </a>
-            </li>
-          </template>
-        </ul>
-
-        <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'join_requests'">
-          <template ngFor let-item [ngForOf]="tabItems">
-
-            <li data-id="invitation_{{item.id}}">
-              <div class="dropdown pull-right" >
-                <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
-                <!--<a href="#" class="btn btn-link">DENY</a>-->
-                <!--<a href="#" class="btn btn-link">REQUESTED</a>-->
-                <a href="javascript:;" class="btn btn-link" (click)="acceptJoinRequest(item)">ACCEPT</a>
-                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">REJECT</a>
-              </div>
-              <a href="#">
-                <img [alt]="item.inviter.name" [src]="item.inviter.profile_image" title="" width="30">
-                <span>{{item['inviter']['name']}}</span>
-              </a>
-            </li>
-          </template>
-        </ul>
+      <!--<member-list-invite #users (onSelected)="inviteMembers($event)"></member-list-invite>-->
+      <div *ngIf="isMember">
+        <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
       </div>
+
+      <div *ngIf="isMember && !isAboutTab && !isPostTab" class="z-social-box">
+
+
+        <div class="z-social-post">
+          <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'members'">
+
+            <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems" >
+              <li data-id="user_{{item?.user?.uuid}}">
+                <div class="dropdown pull-right">
+                  <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
+                  <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
+                  <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="true" (click)="getFavourite(item.uuid)">
+                    <i class="fa fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-custom">
+                    <li><a href="javascript:;" (click)="makeAdmin(item.user)" *ngIf="isAdmin">Make Admin</a></li>
+                    <li><a href="javascript:;" (click)="deleteMember(item.user)" *ngIf="isAdmin">Remove</a></li>
+                    <li><a href="javascript:;" (click)="onReportMember(item?.user?.uuid)">Report
+                      Member</a>
+                    </li>
+                    <li><a href="#" *ngIf="isAdmin">Blacklist</a></li>
+                  </ul>
+                </div>
+                <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
+                <span>{{item.user?.name}}</span>
+              </li>
+            </template>
+          </ul>
+
+          <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'invitations'">
+            <template ngFor let-item [ngForOf]="tabItems">
+
+              <li data-id="invitation_{{item.id}}">
+                <div class="dropdown pull-right">
+                  <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
+                  <!--<a href="#" class="btn btn-link">DENY</a>-->
+                  <!--<a href="#" class="btn btn-link">INVITED</a>-->
+                  <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
+                </div>
+                <a href="#">
+                  <!--<img [alt]="community.accepter.name" [src]="community.accepter.profile_image" title="" width="30">-->
+                  <span>{{item?.accepter?.name }}</span>
+                </a>
+              </li>
+            </template>
+          </ul>
+
+          <ul class="list-unstyled social-list-user" *ngIf="selectedTab == 'join_requests'">
+            <template ngFor let-item [ngForOf]="tabItems">
+
+              <li data-id="invitation_{{item.id}}">
+                <div class="dropdown pull-right">
+                  <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
+                  <!--<a href="#" class="btn btn-link">DENY</a>-->
+                  <!--<a href="#" class="btn btn-link">REQUESTED</a>-->
+                  <a href="javascript:;" class="btn btn-link" (click)="acceptJoinRequest(item)">ACCEPT</a>
+                  <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">REJECT</a>
+                </div>
+                <a href="#">
+                  <img [alt]="item.inviter.name" [src]="item.inviter.profile_image" title="" width="30">
+                  <span>{{item?.inviter?.name}}</span>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+
+
     </div>
-
-
+    <z-social-favorites #favorites></z-social-favorites>
   </div>
-  <z-social-favorites></z-social-favorites>
+
+  <template [ngIf]="community">
+    <z-social-community-form-edit
+      #modalEdit
+      [data]="community"
+      [action]="'edit'"
+      (updated)="onUpdated($event)">
+    </z-social-community-form-edit>
+
+    <z-social-community-form-preference
+      #modalPreference
+      [data]="community"
+      (updated)="onUpdated($event)">
+    </z-social-community-form-preference>
+  </template>
+
+  <z-social-community-form-edit
+    #modalEdit
+    [data]="community"
+    [action]="'edit'"
+    (updated)="onUpdated($event)">
+  </z-social-community-form-edit>
+
+  <wth-zone-report></wth-zone-report>
 </div>
-
-<template [ngIf]="item">
-  <z-social-community-form-edit #modalEdit [data]="item" [action]="'edit'"
-                                (updated)="onUpdated($event)"></z-social-community-form-edit>
-  <z-social-community-form-preference #modalPreference [data]="item"
-                                      (updated)="onUpdated($event)"></z-social-community-form-preference>
-</template>
-
-
-<wth-zone-report></wth-zone-report>
-
-
-<z-social-community-form-edit #modalEdit [data]="item" [action]="'edit'" (updated)="onUpdated($event)"></z-social-community-form-edit>
-

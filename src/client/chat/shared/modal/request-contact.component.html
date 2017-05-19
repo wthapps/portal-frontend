@@ -1,0 +1,27 @@
+<form>
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> Contact Request</h4>
+    </modal-header>
+    <modal-body *ngIf="contact">
+      <div class="media-center mb20">
+        <div class="media-center-left">
+          <figure>
+            <z-chat-share-user-icon [image]="contact.profile_image" [groupType]="'couple'" [userId]="contact.id"></z-chat-share-user-icon>
+          </figure>
+        </div>
+        <div class="media-center-body">
+          <h4 class="media-center-heading">{{contact.name}}</h4>
+          <!--<p class="media-center-p">member</p>-->
+        </div>
+      </div>
+      <p>Send contact message request to {{contact.name}}</p>
+      <textarea class="form-control" rows="2" [(ngModel)]="message" [ngModelOptions]="{standalone: true}">
+      </textarea>
+    </modal-body>
+    <modal-footer>
+      <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="send()">Send</button>
+      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

@@ -1,20 +1,19 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy } from '@angular/core';
-// import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
-// import { ApiBaseService, LoadingService } from '../../../shared/index';
-// import { SoPost } from '../../../shared/models/social_network/so-post.model';
+import {
+  Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy,
+  Renderer, ElementRef
+} from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-// import { UserService } from '../../../shared/index';
-import { PostPhotoSelectComponent, PostPrivacyCustomComponent } from './index';
-import { HdModalComponent } from '../../shared/ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialService } from '../services/social.service';
-import { PhotoModalDataService } from '../services/photo-modal-data.service';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 
 
 declare var _: any;
@@ -29,8 +28,9 @@ declare var _: any;
 export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('modal') modal: HdModalComponent;
-  // @ViewChild('photoSelectModal') photoSelectModal: PostPhotoSelectComponent;
-  @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
+  // @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
+  @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
+
 
   // For share
   // @Input() isShare: boolean = false;
@@ -39,6 +39,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   isShare: boolean = false; // if we are creating a new share that means isShare's value is 'true'
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
+  @ViewChild('textarea') textarea: ElementRef;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
@@ -57,6 +58,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   descCtrl: AbstractControl;
   tagsCtrl: AbstractControl;
   photosCtrl: AbstractControl;
+
   backupPhotos: Array<any> = new Array<any>();
   uploadedPhotos: Array<any> = new Array<any>();
 
@@ -67,14 +69,15 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   // Subscription list
   nextSubscription : Subscription;
   dismissSubscription : Subscription;
-  closeSubscription : Subscription;
   uploadSubscription : Subscription;
 
   constructor(private apiService: ApiBaseService,
-              private loading: LoadingService,
+              // private loading: LoadingService,
               private fb: FormBuilder,
               private socialService: SocialService,
               private photoSelectDataService : PhotoModalDataService,
+              private photoUploadService: PhotoUploadService,
+              private renderer: Renderer,
               private userService: UserService) {
   }
 
@@ -92,47 +95,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  private subscribePhotoSelectEvents() {
-    if (this.needInitSubscription(this.nextSubscription)) {
-      this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
-        this.next(photos);
-      });
-    }
-
-    if (this.needInitSubscription(this.dismissSubscription)) {
-      this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
-        this.dismiss(photos);
-      });
-    }
-
-    if (this.needInitSubscription(this.closeSubscription)) {
-      this.closeSubscription = this.photoSelectDataService.closeObs$.subscribe((event: any) => {
-        this.closeSelectPhoto(event);
-      });
-    }
-
-    if (this.needInitSubscription(this.uploadSubscription)) {
-      this.uploadSubscription = this.photoSelectDataService.uploadObs$.subscribe((files: any) => {
-        this.upload(files);
-      });
-    }
-  }
-
-  private needInitSubscription(sub : Subscription) {
-    return !sub || sub.closed;
-  }
-
-  private unsubscribeAll() {
-    _.forEach([this.nextSubscription, this.dismissSubscription, this.closeSubscription, this.uploadSubscription], (sub: Subscription) => {
-      if (sub && !sub.closed)
-        sub.unsubscribe();
-    });
-    // this.nextSubscription.unsubscribe();
-    // this.dismissSubscription.unsubscribe();
-    // this.closeSubscription.unsubscribe();
-    // this.uploadSubscription.unsubscribe();
-  }
-
   ngOnChanges() {
 
   }
@@ -141,23 +103,25 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribeAll();
   }
 
-  open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
-    // load tags
-    this.apiService.get(`zone/tags`)
-      .subscribe((result: any) => {
-          this.objTags = result['data'];
-          this.tags = _.map(result['data'], 'name');
-        },
-        error => {
-          console.log('error', error);
-        });
 
+  open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
+
+  console.log('opening............:');
+    // load tags
+    // this.apiService.get(`media/tags`)
+    //   .subscribe((result: any) => {
+    //       this.objTags = result['data'];
+    //       this.tags = _.map(result['data'], 'name');
+    //     },
+    //     error => {
+    //       console.log('error', error);
+    //     });
 
     this.post = new SoPost();
     if(this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
-      this.custom_objects.length = 0; //
-      this.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
+      this.post.custom_objects.length = 0;
+      this.post.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
     }
 
     this.mode = options.mode;
@@ -181,9 +145,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
-      // this.photoSelectModal.open();
-      this.photoSelectDataService.open();
-
+      this.photoSelectDataService.open({return: false});
     } else {
       this.modal.open();
     }
@@ -211,89 +173,24 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         disable_share: this.post.disable_share,
         mute: this.post.mute,
         parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-        custom_objects: this.custom_objects
+        custom_objects: this.post.custom_objects
       },
       isShare: this.isShare
     };
     console.log('adding................', options);
     this.saved.emit(options);
-
-
-    // let body: string;
-    // let url: string = 'zone/social_network/posts';
-    // body = JSON.stringify({
-    //   post: {
-    //     description: item.description,
-    //     photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
-    //     tags_json: this.post.tags,
-    //     privacy: this.post.privacy,
-    //     adult: this.post.adult,
-    //     disable_comment: this.post.disable_comment,
-    //     disable_share: this.post.disable_share,
-    //     mute: this.post.mute
-    //   },
-    //   parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-    //   custom_objects: this.custom_objects
-    // });
-    //
-    // if(this.mode == 'add') {
-    //   this.apiService.post(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    //
-    // } else if(this.mode == 'edit') {
-    //   url += `/${this.post.uuid}`;
-    //   this.apiService.put(url, body)
-    //       .map(res => res.json())
-    //       .subscribe((result: any) => {
-    //           this.onEdited.emit(result['data']);
-    //           this.modal.close();
-    //         },
-    //         error => {
-    //           console.log('error', error);
-    //         }
-    //       );
-    // }
-
+    this.unsubscribeAll();
   }
 
   uploadFiles(files: Array<any>) {
-
-    // this.photos = event['data'];
-    let i = 0;
-    let reader: FileReader;
-    let body: string;
-    let fileName: string;
-    // this.loading.start('.photo-item-uploading');
-    do {
-      reader = new FileReader();
-      reader.onload = (data: any) => {
-
-        body = JSON.stringify({photo: {name: fileName, image: data.target['result']}});
-        this.apiService.post(`zone/social_network/photos/upload`, body)
-          .subscribe((result: any) => {
-              this.post.photos.unshift(result['data']);
-              this.uploadedPhotos.push(result['data']);
-              files.shift(); // remove file was uploaded
-            },
-            (error : any) => {
-
-            }
-          );
-      };
-      fileName = files[i].name;
-      reader.readAsDataURL(files[i]);
-      i++;
-      // } while (files.length > 0);
-    } while (i < files.length);
-
+    this.photoUploadService.uploadPhotos(files)
+      .subscribe((res: any) => {
+          this.files.shift(); // remove file was uploaded
+          this.post.photos.unshift(res.data);
+          this.uploadedPhotos.push(res.data);
+    }, (err: any) => {
+        console.log('Error when uploading files ', err);
+    });
   }
 
   cancelUploading(file: any) {
@@ -314,6 +211,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   next(selectedPhotos: any) {
+    console.log('on next ...........:', selectedPhotos);
     this.post.photos = _.concat(this.post.photos, selectedPhotos);
     // this.photoSelectModal.close();
     this.photoSelectDataService.close();
@@ -321,16 +219,16 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addMorePhoto(event: any) {
-    this.modal.close();
     this.onMoreAdded.emit(true);
-    // this.photoSelectModal.open({return: true});
-    this.photoSelectDataService.open({return: true});
-
+    this.photoSelectDataService.open({return: true, selectingPhotos: this.post.photos});
+    this.subscribePhotoSelectEvents();
   }
 
   dismiss(photos: any) {
     // this.photos.length = 0;
-    // this.dismissed.emit(photos);
+    this.dismissed.emit(photos);
+    this.modal.open();
+    this.unsubscribeAll();
   }
 
   upload(files: Array<any>) {
@@ -349,12 +247,16 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   customPrivacy(type: string, event: any) {
     event.preventDefault();
-    this.privacyCustomModal.open({type: type});
+    let mode: string = 'edit';
+    if (this.post.privacy !== type)
+      mode = 'add';
+
+    this.privacyCustomModal.open({type: type, data: this.post.custom_objects}, mode);
   }
 
   selectedItems(response: any) {
-    this.update({privacy: response.type}, null);
-    this.custom_objects = response.items;
+    this.update({privacy: response.type, custom_objects: response.items}, null);
+    // this.custom_objects = response.items;
   }
 
   privacyName(post: any): string {
@@ -413,7 +315,51 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     if (this.mode == 'add') {
       this.post = _.assignIn(this.post, attr);
     } else {
-      this.onUpdated.emit(attr);
+      this.post = _.assignIn(this.post, attr);
+      // this.onUpdated.emit(attr);
     }
+  }
+
+  private subscribePhotoSelectEvents() {
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$).do(() => {
+      console.log('next sub: ', this.nextSubscription);
+    });
+
+    if (this.needInitSubscription(this.nextSubscription)) {
+      this.nextSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
+        this.next(photos);
+      });
+    }
+
+    // if (this.needInitSubscription(this.nextSubscription)) {
+    //
+    //   this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
+    //     this.next(photos);
+    //   });
+    // }
+
+    if (this.needInitSubscription(this.dismissSubscription)) {
+
+      this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
+        this.dismiss(photos);
+      });
+    }
+
+    if (this.needInitSubscription(this.uploadSubscription)) {
+      this.uploadSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
+        this.upload(files);
+      });
+    }
+  }
+
+  private needInitSubscription(sub : Subscription) {
+    return !sub || sub.closed;
+  }
+
+  private unsubscribeAll() {
+    _.forEach([this.nextSubscription, this.dismissSubscription, this.uploadSubscription], (sub: Subscription) => {
+      if (sub && !sub.closed)
+        sub.unsubscribe();
+    });
   }
 }

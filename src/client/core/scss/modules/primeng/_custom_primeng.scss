@@ -1,0 +1,217 @@
+@import "theme";
+
+body {
+  .input-block {
+    .ui-calendar {
+      &, .ui-inputtext {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.ui-autocomplete {
+  &.ui-widget {
+    display: block;
+    .ui-inputtext {
+      display: block;
+    }
+  }
+  //.ui-autocomplete-input-token {
+  //  float: none;
+  //  .ui-inputtext {
+  //    display: inline-block;
+  //    -webkit-box-shadow: none !important;
+  //    -moz-box-shadow: none !important;
+  //    box-shadow: none !important;
+  //  }
+  //}
+}
+
+body {
+  .ui-widget-overlay {
+    background-color: #000000;
+    @include opacity(0.5);
+  }
+}
+
+.ui-widget-overlay {
+  z-index: 2000 !important;
+}
+
+.ui-dialog.ui-widget-content {
+  z-index: 2001 !important;
+  top: 30px !important;
+}
+
+body {
+  .checkbox-switch {
+    @include clearfix;
+    margin-bottom: 15px;
+    .ui-inputswitch {
+      float: left;
+    }
+    label {
+      display: block;
+      margin-left: 80px;
+      padding-left: 0;
+      cursor: text;
+    }
+  }
+
+  .ui-inputswitch.ui-widget {
+    overflow: visible;
+    background-color: #F6F6F6;
+    border: 1px solid #D8D8D8;
+
+    &.ui-corner-all {
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      border-radius: 12px;
+    }
+
+    [class^="ui-inputswitch-"] span {
+      visibility: hidden;
+    }
+    .ui-inputswitch-handle {
+      &.ui-state-default {
+        background-color: transparent;
+        background-image: none;
+        border-width: 0;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        &,
+        &.ui-state-focus,
+        &:hover,
+        &:focus {
+          outline: none 0 !important;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+          box-shadow: none;
+        }
+        &:after {
+          content: "";
+          width: 26px;
+          height: 26px;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+          border: 1px solid #D8D8D8;
+          @include center(false, true);
+          left: -2px;
+          margin-top: -1px;
+
+          background: #F6F6F6;
+          -webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+          -moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+
+        }
+      }
+    }
+    &.ui-inputswitch-checked {
+      background-color: $color-success;
+      .ui-inputswitch-handle {
+        &:after {
+          right: 0;
+          left: auto;
+          border: 1px solid $color-success;
+        }
+      }
+    }
+  }
+  .ui-calendar-w-btn {
+    position: relative;
+    .ui-inputtext {
+      display: block;
+      width: 100%;
+      -webkit-border-radius: $border-radius-base;
+      -moz-border-radius: $border-radius-base;
+      border-radius: $border-radius-base;
+    }
+    .ui-button {
+      background-color: transparent;
+      color: $text-color;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      margin: 0;
+      &,
+      &.ui-state-focus,
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        outline: none 0 !important;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+body {
+  .ui-autocomplete {
+    &.ui-autocomplete-multiple {
+      .ui-autocomplete-multiple-container {
+        padding: 5px 10px;
+      }
+    }
+  }
+
+  .ui-autocomplete-input-token, .ui-autocomplete-token {
+    font-size: 14px;
+    padding: 7px 10px;
+    line-height: 20px;
+    height: 34px;
+    margin: 3px 10px 3px 0;
+  }
+  .ui-state-highlight {
+    background-color: #D8D8D8;
+    color: #4A4A4A;
+    .fa-close {
+      font-size: 22px;
+      color: #9B9B9B;
+    }
+  }
+}
+
+body {
+  .ui-slider {
+    .ui-slider-handle {
+      background-color: #F6F6F6;
+      @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.50));
+      cursor: hand;
+      &:hover,
+      &:focus {
+        background-color: $color-inverse;
+        cursor: grabbing;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+      }
+    }
+  }
+}
+
+body {
+  .ui-chkbox {
+    .ui-chkbox-box {
+      &.ui-state-active,
+      &.ui-state-focus {
+        background-color: transparent;
+        color: $text-color;
+      }
+    }
+    & + .ui-chkbox-label {
+      margin: 0;
+      font-weight: normal;
+    }
+  }
+  .ui-radiobutton-label {
+    margin: 0;
+    font-weight: normal;
+  }
+}

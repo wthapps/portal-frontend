@@ -3,16 +3,21 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 
+declare var $: any;
+declare var window: any;
+
 @Component({
   moduleId: module.id,
   selector: 'z-chat-share-toolbar',
-  templateUrl: 'toolbar.component.html'
+  templateUrl: 'toolbar.component.html',
+  styleUrls: ['toolbar.component.css']
 })
 
 export class ZChatToolbarComponent implements OnInit {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   item: any;
+  showMemberBar: boolean = false;
 
   constructor(private chatService: ChatService) {
 
@@ -35,6 +40,7 @@ export class ZChatToolbarComponent implements OnInit {
     this.addContact.type = 'addMember';
     this.addContact.modal.open();
   }
+
   onFavorite() {
     this.chatService.addGroupUserFavorite();
   }
@@ -45,5 +51,26 @@ export class ZChatToolbarComponent implements OnInit {
 
   enableNotification() {
     this.chatService.updateNotification(this.item.value, {notification: true});
+  }
+
+  sendContact() {
+    this.addContact.type = 'shareContact';
+    this.addContact.modal.open();
+  }
+
+  leaveConversation() {
+    this.chatService.leaveConversation(this.item.value);
+  }
+
+  onShowMemberBar() {
+    this.showMemberBar = !this.showMemberBar;
+  }
+
+  showDropdownMenu(e: any) {
+    let showDropdownMenu_ul = e.target.nextElementSibling;
+    if (e.screenX + 240 > window.innerWidth) {
+      showDropdownMenu_ul.style.right = 0;
+      showDropdownMenu_ul.style.left = 'auto';
+    }
   }
 }

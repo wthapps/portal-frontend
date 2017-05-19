@@ -12,15 +12,43 @@
 //}
 
 //@TODO move to component chat
+.wth-emoji-dropdown {
+  width: 370px;
+  height: 240px;
+}
 
 .wth-emoji {
   vertical-align: middle;
   display: inline-block;
-  width: 22px;
-  height: 22px;
-  background-image: url('../images/zone/chat/sprite.png');
-  background-repeat: no-repeat;
-  background-position: -5px 0;
+  padding: 4px 7px;
+  margin: 1px;
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background-image: url('../assets/images/zone/chat/sprite.png');
+    background-repeat: no-repeat;
+    background-position: -5px 0;
+  }
+  &:hover {
+    &:before {
+      background-color: #dbdbdb;
+    }
+  }
 }
 
 $wth-emojis: "bowtie", "smile", "laughing", "blush", "smiley", "relaxed",
@@ -188,7 +216,9 @@ $wth-emojis: "bowtie", "smile", "laughing", "blush", "smiley", "relaxed",
 @each $wth-emoji in $wth-emojis {
   $i: index($wth-emojis, $wth-emoji);
   .wth-emoji-#{$wth-emoji} {
-    background-position: (-32px * $i - 5px) 0;
+    &:after {
+      background-position: (-32px * $i - 5px) 0;
+    }
   }
 }
 
@@ -200,67 +230,89 @@ $wth-emojis: "bowtie", "smile", "laughing", "blush", "smiley", "relaxed",
 
 .wth-emoji {
   &.wth-emoji-D, &.wth-emoji-\-D, &.wth-emoji-\=D, &.wth-emoji-d, &.wth-emoji-\-d, &.wth-emoji-\=d, &.wth-emoji-laugh {
-    @extend .wth-emoji-smiley;
+    &:after {
+      @extend .wth-emoji-smiley;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-\), &.wth-emoji-\-\), &.wth-emoji-\=\) {
-    @extend .wth-emoji-smile;
+    &:after {
+      @extend .wth-emoji-smile;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-\(, &.wth-emoji-\-\(, &.wth-emoji-\=\( {
-    @extend .wth-emoji-disappointed;
+    &:after {
+      @extend .wth-emoji-disappointed;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-\;\), &.wth-emoji-\;\-\), &.wth-emoji-\;\=\) {
-    @extend .wth-emoji-wink;
+    &:after {
+      @extend .wth-emoji-wink;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-\*, &.wth-emoji-\-\*, &.wth-emoji-\=\* {
-    @extend .wth-emoji-kissing_heart;
+    &:after {
+      @extend .wth-emoji-kissing_heart;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-8\-\), &.wth-emoji-8\=\), &.wth-emoji-B\-\), &.wth-emoji-B\=\) {
-    @extend .wth-emoji-sunglasses;
+    &:after {
+      @extend .wth-emoji-sunglasses;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-\|, &.wth-emoji-\-\|, &.wth-emoji-\=\| {
-    @extend .wth-emoji-sunglasses;
+    &:after {
+      @extend .wth-emoji-sunglasses;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-y, &.wth-emoji-Y, &.wth-emoji-ok {
-    @extend .wth-emoji-thumbsup;
+    &:after {
+      @extend .wth-emoji-thumbsup;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-n, &.wth-emoji-N {
-    @extend .wth-emoji-thumbsdown;
+    &:after {
+      @extend .wth-emoji-thumbsdown;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-h, &.wth-emoji-H, &.wth-emoji-l, &.wth-emoji-L {
-    @extend .wth-emoji-heart;
+    &:after {
+      @extend .wth-emoji-heart;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }
   }
   &.wth-emoji-u, &.wth-emoji-U {
-    @extend .wth-emoji-broken_heart;
+    &:after {
+      @extend .wth-emoji-broken_heart;
+    }
     .wth-emoji-dropdown & {
       display: none;
     }

@@ -11,15 +11,26 @@ import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
 import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.component';
 
-import { ZMediaSortbarComponent } from './sortbar/sortbar.component';
-import { ZMediaFormAddToAlbumComponent } from './form/form-add-to-album.component';
-import { ZMediaFormEditAlbumComponent } from './form/form-edit-album.component';
-import { ZMediaUploadingComponent } from './uploading/uploading.component';
-import { ZMediaSharingComponent } from './sharing/sharing.component';
+import { MediaListHeaderComponent } from './media/media-list-header.component';
+
+import { MediaUploaderComponent } from './uploader/media-uploader.component';
+import { SharingModalComponent } from './modal/sharing/sharing-modal.component';
 import { ZMediaAlbumService } from '../album/album.service';
-import { ZMediaSharingService } from './sharing/sharing.service';
-import { ZMediaTaggingService } from './tagging/tagging.service';
-import { ZMediaTaggingComponent } from './tagging/tagging.component';
+import { ZMediaSharingService } from './modal/sharing/sharing.service';
+import { ZMediaTaggingService } from './modal/tagging/tagging.service';
+import { TaggingModalComponent } from './modal/tagging/tagging-modal.component';
+import { BaseObjectEditNameModalComponent } from './modal/base-object-edit-name-modal.component';
+import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
+import { MediaListComponent } from './media/media-list.component';
+import { MediaViewContainerComponent } from './container/media-view-container.comoponent';
+import { MediaItemComponent } from './media/media-item.component';
+
+import { AlbumCreateModalComponent } from './modal/album-create-modal.component';
+import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
+import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
+import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component';
+import { TaggingElComponent } from './modal/tagging/tagging-el.component';
+import { AlbumDeleteModalComponent } from './modal/album-delete-modal.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -28,6 +39,7 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
   imports: [
     SharedModule,
     TagInputModule
+    // HdTagInputModule
   ],
   declarations: [
     ZMediaShareItemComponent,
@@ -38,13 +50,25 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
     //
-    ZMediaSortbarComponent,
-    ZMediaFormAddToAlbumComponent,
-    ZMediaFormEditAlbumComponent,
+    MediaListHeaderComponent,
 
-    ZMediaUploadingComponent,
-    ZMediaSharingComponent,
-    ZMediaTaggingComponent
+    BaseObjectEditNameModalComponent,
+    AddToAlbumModalComponent,
+    AlbumEditModalComponent,
+    AlbumCreateModalComponent,
+    AlbumDeleteModalComponent,
+    PhotoDetailModalComponent,
+
+
+    MediaUploaderComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
+
+    MediaViewContainerComponent,
+    MediaToolbarListComponent,
+    MediaListComponent,
+    MediaItemComponent,
+    TaggingElComponent,
   ],
   exports: [
     ZMediaShareItemComponent,
@@ -55,16 +79,27 @@ import { ZMediaTaggingComponent } from './tagging/tagging.component';
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
     //
-    ZMediaSortbarComponent,
-    ZMediaFormAddToAlbumComponent,
-    ZMediaFormEditAlbumComponent,
+    MediaListHeaderComponent,
 
-    ZMediaUploadingComponent,
-    ZMediaSharingComponent,
-    ZMediaTaggingComponent,
+    BaseObjectEditNameModalComponent,
+    AddToAlbumModalComponent,
+    AlbumEditModalComponent,
+    AlbumCreateModalComponent,
+    AlbumDeleteModalComponent,
+    PhotoDetailModalComponent,
 
+    MediaUploaderComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
+
+    MediaViewContainerComponent,
+    MediaToolbarListComponent,
+    MediaListComponent,
+    MediaItemComponent,
+    TaggingElComponent,
 
     SharedModule,
+    // HdTagInputModule,
     TagInputModule
   ]
 })

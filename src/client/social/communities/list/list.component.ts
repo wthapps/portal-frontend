@@ -15,6 +15,7 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { Constants } from '../../../core/shared/config/constants';
+import { Router } from '@angular/router';
 
 declare var _: any;
 
@@ -44,6 +45,7 @@ export class ZSocialCommunityListComponent implements OnInit {
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
               private socialService: SocialService,
+              private router: Router,
               // private communityService: SoCommunityService,
               private userService: UserService) {
   }
@@ -76,6 +78,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   }
 
   onCreate() {
+    this.modalEdit.resetFormInputs();
     this.modalEdit.modal.open();
     this.action = 'create';
     return false;
@@ -89,57 +92,18 @@ export class ZSocialCommunityListComponent implements OnInit {
   }
 
   onDelete(item: any) {
-    console.log(item);
-    this.confirmationService.confirm({
-      message: `Are you sure to delete the community ${item.name}`,
-      header: 'Delete Community',
-      accept: () => {
-        this.loadingService.start();
-        // this.apiBaseService.delete(`$this.communitiesUrl}/${item.uuid}`)
-        this.socialService.community.deleteCommunity(`${item.uuid}`)
-          .subscribe((response: any) => {
-              // console.log(response);
-              this.onUpdated(response.data);
-              this.toastsService.success('Your community has been deleted successfully');
-              this.loadingService.stop();
-            },
-            error => {
-              // console.log(error);
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
-
-    return false;
+    this.socialService.community.confirmDeleteCommunity(item)
+      .then((community: any) => _.remove(this.myList, (c: any) => c.uuid == community.uuid));
   }
 
-  onLeave(item: any) {
-
-    this.confirmationService.confirm({
-      message: this.userService.profile.uuid == item.admin.uuid ?
-        `You are managing the community ${item.name}. This community would be deleted permanently. Are you sure to leave?` :
-        `Are you sure to leave the community ${item.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        this.loadingService.start();
-        // this.apiBaseService.post(`${this.soCommunitiesUrl}/leave`, JSON.stringify({uuid: item.uuid}))
-        this.socialService.community.leaveCommunity(item.uuid)
-          .subscribe((response: any) => {
-              this.getList();
-              this.toastsService.success(`You left the community ${item.name} successfully`);
-              this.loadingService.stop();
-            },
-            error => {
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            }
-          );
-      }
-    });
-
-    return false;
+  confirmLeaveCommunity(community: any) {
+    this.socialService.community.confirmLeaveCommunity(community)
+      .then((community: any) => {
+        // Remove leaved community in both myList and list just to make sure
+        _.remove(this.list, (c: any) => c.uuid === community.uuid);
+        _.remove(this.myList, (c: any) => c.uuid === community.uuid);
+      })
+      .catch((error: any) => console.error('confirm leave community error: ', error))
   }
 
   onPreference(item: any): any {
@@ -161,7 +125,7 @@ export class ZSocialCommunityListComponent implements OnInit {
 
 
   addFavourite(uuid: any) {
-    this.socialService.user.addFavourites(uuid, 'community').subscribe(
+    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
       (res: any) => {
 
       }

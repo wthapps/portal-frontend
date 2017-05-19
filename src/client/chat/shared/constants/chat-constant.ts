@@ -1,3 +1,4 @@
 export class ChatConstant {
-  static conversationUrl = '/conversation'
+  public static conversationUrl = '/conversation';
+  public static searchUrl = '/search';
 }

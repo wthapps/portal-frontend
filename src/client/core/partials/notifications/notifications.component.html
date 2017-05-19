@@ -1,0 +1,78 @@
+<div class="list-group-item" *ngFor="let notification of notificationService.notifications"
+    data-id="notification_{{notification.id}}"
+    [ngClass]="{'unread-notification': !notification?.is_read}">
+  <div class="media">
+    <div class="media-left">
+      <a>
+          <span class="avatar-xsm">
+            <img [src]="notification.actor.profile_image" alt="{{notification.actor.name}}">
+          </span>
+      </a>
+    </div>
+    <div class="media-body">
+      <p class="media-heading">
+        <a class="link-text bold" [routerLink]="['/profile', notification.actor.uuid]">
+          {{notification.actor.name}}</a>
+        <span [innerHTML]="notification.text"></span>
+      </p>
+      <p *ngIf="notification.actions[0].name == 'view'">
+        <small (click)="doAction(notification.actions[0], notification.id)"
+               class="notifications-item-time text-fade can-click">
+          {{ notification.created_at | timeFormat }}
+        </small>
+      </p>
+      <div *ngIf="notification.actions[0].name != 'view'" class="notifications-item-button">
+        <button *ngFor="let action of notification.actions"
+                class="btn btn-sm mr5 text-capitalize" type="button"
+                [ngClass]="{'btn-wth-default': action.name == 'accept', 'btn-default': action.name == 'cancel'}"
+                (click)="doAction(action, notification.id)">
+          <i class="fa"
+             [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': action.name == 'cancel'}"></i>
+          {{action.name}}
+        </button>
+      </div>
+    </div>
+    <div class="media-right">
+      <div class="btn-group pull-right clearfix">
+        <button type="button" class="btn btn-sm btn-default-inline-border dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-lg">
+          <li><a href="javascript:;" class="text-disable">Disable Notification for this post</a>
+          <li><a href="javascript:;" (click)="hideNotification(notification)">Hide this notification</a>
+          </li>
+          <!--<li><a href="javascript:;" (click)="turnOffNotificaion(notification)">Turn off all notifications relate to this</a>
+          </li>-->
+        </ul>
+      </div>
+      <div class="pull-right">
+        <button class="btn btn-sm btn-default-inline-border" type="button"
+                (click)="toggleReadStatus(notification)">
+          <i class="fa"
+             [ngClass]="{'fa-circle': notification.is_read, 'fa-circle-o': !notification.is_read}"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+  </modal-header>
+  <modal-body>
+    <p>Allow notifications from</p>
+    <div>
+      <div><p-checkbox name="group1" value="social" label="Social Network" [(ngModel)]="selectedNotifications"></p-checkbox></div>
+      <div><p-checkbox name="group1" value="chat" label="Chat" [(ngModel)]="selectedNotifications"></p-checkbox></div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" (click)="save()" class="btn btn-wth-default" data-dismiss="modal">Done</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  </modal-footer>
+</modal>
+

@@ -1,50 +1,150 @@
-<style>
-  .last li {
-    border-bottom: none
-  }
-</style>
-<div class="page-body-content-in zone-social">
-  <div class="zone-social-in" *ngIf="result && groups">
-    <div class="z-social-box" *ngFor="let group of groups">
-      <div class="z-social-box-header">
-        <h4>
-          {{group | titleCase}}
-        </h4>
-      </div>
-      <h3 *ngIf="result[group] && result[group].length == 0" class="text-fade">
-        There is no result
-      </h3>
-      <div class="z-social-post" *ngFor="let item of result[group]; let last = last" [class.last]="last">
-        <ul class="list-unstyled social-list-user">
-          <li>
+<div class="page-body-content gray-light">
+  <div class="page-body-content-in zone-social">
+    <div class="zone-social-in" *ngIf="result && groups">
+      <div class="panel panel-default" *ngFor="let group of groups">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{group | titleCase}}</h3>
+        </div>
+        <div class="panel-body" *ngIf="result[group] && result[group].length == 0">
+          <h3 class="text-fade">
+            There is no result
+          </h3>
+        </div>
+        <ul class="list-group" *ngIf="group != 'posts'">
+          <li *ngFor="let item of result[group]; let last = last" [class.last]="last" class="list-group-item">
             <div class="media-center">
               <div class="media-center-left">
                 <figure>
                   <a [routerLink]="[item.link]">
-                    <img [src]="item.profile_image" style="width: 33px">
+                      <span class="avatar-xs">
+                        <img [src]="item.profile_image">
+                      </span>
                   </a>
                 </figure>
               </div>
               <div class="media-center-body">
                 <h4 class="media-center-heading">
-                  <a [routerLink]="[item.link]">{{item.name}}</a>
+                  <a [routerLink]="[item.link]" class="link-text">{{item.name}}</a>
                 </h4>
               </div>
+              <div class="media-center-right">
+
+                <div *ngIf="group == 'members' ">
+                  <div class="pull-right no-wrap">
+                    <button class="btn btn-default" type="button" (click)="addFriend(item)"
+                            *ngIf="item.friend_status == friendStatus.stranger">
+                      Add Friend
+                    </button>
+                    <button class="btn btn-default" type="button" *ngIf="item.friend_status == friendStatus.pending">
+                      <i class="fa fa-check"></i> Friend Request Sent
+                    </button>
+
+                    <div class="btn-group" *ngIf="item.friend_status == friendStatus.accepted">
+                      <button (click)="getFavourite(item, 'friend')" class="btn btn-default dropdown-toggle"
+                              type="button" data-toggle="dropdown">
+                        <i class="fa fa-check"></i> Friend <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li *ngIf="item.is_following"><a href="javascript:;" (click)="unfollow(item)">Unfollow</a></li>
+                        <li *ngIf="!item.is_following"><a href="javascript:;" (click)="follow(item)">Follow</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:;" (click)="unfriend(item)">Unfriend</a></li>
+                      </ul>
+                    </div>
+
+
+                    <div class="btn-group" *ngIf="item.friend_status == friendStatus.accepted">
+                      <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                              data-toggle="dropdown">
+                        <i class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li>
+                          <a href="javascript:;" (click)="toggleFavourite(item, 'friend')">
+                            <span *ngIf="!favourite && !favourite?.uuid">Add to Favorites</span>
+                            <span *ngIf="favourite && favourite?.uuid">Remove from Favorites</span>
+                          </a>
+                        </li>
+                        <li><a href="javascript:;" (click)="importToContacts(item)">Import to Contacts</a></li>
+                        <!--<li class="divider"></li>-->
+                        <!--<li><a href="javascript:;" (click)="reportFriend(item)">Report Member</a></li>-->
+                        <!--<li><a href="javascript:;" (click)="addToBlackList(item?.uuid)">Add to blacklist</a></li>-->
+                      </ul>
+                    </div>
+
+                    <div class="btn-group" *ngIf="item.friend_status !== friendStatus.accepted">
+                      <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                              data-toggle="dropdown">
+                        <i class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li *ngIf="item.is_following"><a href="javascript:;" (click)="unfollow(item)"><i
+                          class="fa fa-check"></i> Unfollow</a></li>
+                        <li *ngIf="!item.is_following"><a href="javascript:;" (click)="follow(item)"> Follow</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Community Actions -->
+                <div *ngIf="group == 'communities' ">
+                  <div class="pull-right no-wrap">
+                    <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)"
+                            *ngIf="item.user_status == comUserStatus.stranger">
+                      Join
+                    </button>
+                    <button class="btn btn-default" type="button" *ngIf="item.user_status == comUserStatus.joinRequestSent">
+                      Asked To Join
+                    </button>
+
+                    <div class="btn-group">
+                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                              *ngIf="item?.user_status == comUserStatus.member"
+                              (click)="getFavourite(item, 'community')">
+                        <i class="fa fa-check"></i> Joined <span class="caret"></span>
+                      </button>
+
+                      <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                        <li><a href="javascript:;" (click)="toggleFavourite(item, 'community')"> Favourite <i
+                          class="fa pull-right"
+                          [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i></a></li>
+                        <li><a href="javascript:;" (click)="confirmLeaveCommunity(item)">Leave community</a></li>
+                      </ul>
+                    </div>
+
+                    <div class="btn-group" *ngIf="item?.user_status == comUserStatus.member">
+                      <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                              data-toggle="dropdown">
+                        <i class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="javascript:;" >Report community</a></li>
+                      </ul>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+
             </div>
           </li>
         </ul>
+        <so-post-list *ngIf="group == 'posts'" #posts [items]="result[group]" [type]="'search'"></so-post-list>
+        <div *ngIf="group == 'posts' && show_more_posts" class="panel-footer">
+          <a [routerLink]="[show_more_posts.link]" [queryParams]="{q:params}">{{show_more_posts.text}}</a>
+        </div>
+        <div *ngIf="group == 'communities' && show_more_communities" class="panel-footer">
+          <a [routerLink]="[show_more_communities.link]" [queryParams]="{q:params}">{{show_more_communities.text}}</a>
+        </div>
+        <div *ngIf="group == 'members' && show_more_members" class="panel-footer">
+          <a [routerLink]="[show_more_members.link]" [queryParams]="{q:params}">{{show_more_members.text}}</a>
+        </div>
       </div>
+
     </div>
 
-
-    <br class="mt40">
-    <h4 class="h4">
-      Post from your friends
-    </h4>
-    <hr>
-    <div class="z-social-box" *ngFor="let item of result['posts']">
-      <so-post [item]="item"></so-post>
-    </div>
   </div>
-  <z-social-favorites></z-social-favorites>
 </div>

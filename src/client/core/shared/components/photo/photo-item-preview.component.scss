@@ -1,0 +1,21 @@
+.img-center-dv {
+  position: relative;
+  height: 108px;
+  .img-center {
+    height:100%;
+  }
+}
+
+.img-center-dv.loading:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  background-image: url('assets/images/icons/loading.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+
+}

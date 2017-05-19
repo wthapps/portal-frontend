@@ -1,11 +1,26 @@
 .form-control {
   @include box-shadow(0 0 0 transparent);
   &.has-loading {
-    background-image: url(../images/icons/loading.gif);
+    background-image: url('../assets/images/icons/loading.gif');
     background-repeat: no-repeat;
     background-position: right center;
     -webkit-background-size: 24px 24px;
     background-size: 24px 24px;
+  }
+}
+
+.form-control-block {
+  display: block;
+}
+.form-control-full {
+  width: 100%;
+}
+
+.form-horizontal {
+  .control-label {
+    @media (min-width: 768px) {
+      text-align: left;
+    }
   }
 }
 
@@ -99,4 +114,86 @@
       color: $brand-danger;
     }
   }
+}
+
+.navbar-searchTop {
+  position: relative;
+  .input-group {
+    border: 1px solid $input-border;
+    border-radius: $border-radius-base;
+    .btn {
+      height: 34px;
+      padding-top: 0;
+      padding-bottom: 0;
+      line-height: 32px;
+      border-color: transparent !important;
+      &:hover,
+      &:focus,
+      &.focus {
+        background-color: transparent;
+        @include box-shadow(none);
+      }
+    }
+    .form-control {
+      border-color: transparent !important;
+      padding-left: 0;
+      padding-right: 0;
+      @media (min-width: $screen-lg) {
+        min-width: 400px;
+      }
+      &:hover,
+      &:focus,
+      &.focus {
+        background-color: transparent;
+        @include box-shadow(none);
+      }
+    }
+  }
+  p-autocomplete {
+    input {
+      border: none !important;
+      width: 350px;
+    }
+  }
+
+  .navbar-searchTop-advanced {
+    position: absolute;
+    top: 34px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 15px;
+    border: 1px solid $input-border;
+    border-radius: $border-radius-base;
+    background-color: #ffffff;
+    @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.4));
+    .form-group {
+      display: block;
+      margin-bottom: 20px;
+      .form-control {
+        display: block;
+        width: 100%;
+      }
+    }
+    .control-label {
+      font-weight: normal;
+      margin-right: -10px;
+    }
+    .ui-calendar {
+      display: block;
+    }
+  }
+  .social-list-user {
+    li {
+      margin-bottom: 0px;
+    }
+
+  }
+}
+
+.textarea-autoheight {
+  overflow: hidden;
+  word-wrap: break-word;
+  resize: none !important;
+  padding-right: 50px;
 }

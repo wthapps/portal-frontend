@@ -1,0 +1,28 @@
+<div class="zone-social-container" lockYOffset="20"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolled)="onLoadMore()">
+  <div class="z-social-box clearfix">
+    <div *ngFor="let item of list" class="z-social-box-body-communities col-xs-12 col-lg-6">
+      <div class="media-center">
+        <div class="media-center-left">
+          <figure>
+            <a [routerLink]="['/profile', item?.uuid]">
+              <span class="avatar-sm">
+                <img [src]="item?.profile_image" alt="">
+              </span>
+            </a>
+          </figure>
+        </div>
+        <div class="media-center-body">
+          <h4 class="media-center-heading">
+            <a [routerLink]="['/profile', item?.uuid]">
+              {{item.name}}
+            </a>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,14 +1,18 @@
 <div class="z-social-box">
   <div class="z-social-media">
     <div class="z-social-media-left">
-      <img [src]="user.profile_image" alt="">
+      <div class="avatar-xs">
+        <img [src]="user.profile_image" alt="">
+      </div>
     </div>
     <div class="z-social-media-body">
       <div class="z-social-media-inputpost inputpost-new">
-        <input type="text" class="form-control" placeholder="Share your ideas" (click)="postAddModal.open()">
-        <span class="z-social-media-inputpost-icon">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Share your ideas" (click)="postAddModal.open()">
+          <span class="z-social-media-inputpost-icon">
           <i (click)="postAddModal.open({addingPhotos: true})" class="fa fa-camera"></i>
         </span>
+        </div>
       </div>
     </div>
   </div>

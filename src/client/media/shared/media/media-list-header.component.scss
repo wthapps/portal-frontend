@@ -1,0 +1,20 @@
+@import "../../../core/scss/global";
+
+.sortbar-wrap {
+  margin-top: -15px;
+}
+
+.sortbar-slider {
+  padding: 7px 0;
+  margin-right: 30px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  .sortbar-slider-in {
+    display: inline-block;
+    width: 90px;
+    margin: 0 15px;
+
+  }
+}

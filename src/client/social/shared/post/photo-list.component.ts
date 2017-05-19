@@ -59,7 +59,7 @@ export class SoPhotoListComponent implements OnInit {
 
   loadPhotos() {
     this.loading.start('.photo-grid-list');
-    this.apiService.get(`zone/photos`).subscribe(
+    this.apiService.get(`media/photos`).subscribe(
       (response: any) => {
         this.photos = response['data'];
         this.loading.stop('.photo-grid-list');
@@ -102,10 +102,6 @@ export class SoPhotoListComponent implements OnInit {
 
   }
 
-  addFavourite(e: any, i: any) {
-
-  }
-
   clearSelection() {
     // TODO refactor jquery
     $('div.photo-box-img').removeClass('selected');
@@ -114,5 +110,9 @@ export class SoPhotoListComponent implements OnInit {
 
   changeFiles(files: Array<any>) {
     this.onFilesChanged.emit(files);
+  }
+
+  addFavourite(event: any, p: any) {
+
   }
 }

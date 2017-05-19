@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 
 import { Constants } from '../../../core/shared/config/constants';
 
-import { ZMediaFormAddToAlbumComponent } from '../form/form-add-to-album.component';
-import { ZMediaFormEditAlbumComponent } from '../form/form-edit-album.component';
-import { ZMediaSharingComponent } from '../sharing/sharing.component';
-import { ZMediaTaggingComponent } from '../tagging/tagging.component';
-
+import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
+import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
+import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
+import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
+import { ZMediaToolbarPhotoComponent } from './photo/photo.component';
+import { ZMediaToolbarAlbumComponent } from './album/album.component';
 
 @Component({
   moduleId: module.id,
@@ -17,29 +19,35 @@ import { ZMediaTaggingComponent } from '../tagging/tagging.component';
 })
 
 export class ZMediaToolbarComponent {
-  @ViewChild('formAddAlbum') formAddAlbum: ZMediaFormAddToAlbumComponent;
-  @ViewChild('formEditAlbum') formEditAlbum: ZMediaFormEditAlbumComponent;
-  @ViewChild('zoneSharing') zoneSharing: ZMediaSharingComponent;
-  @ViewChild('zoneTagging') zoneTagging: ZMediaTaggingComponent;
+  @ViewChild('formAddAlbum') formAddAlbum: AddToAlbumModalComponent;
+  @ViewChild('formEditAlbum') formEditAlbum: AlbumEditModalComponent;
+  @ViewChild('formEditName') formEditName: BaseObjectEditNameModalComponent;
+  @ViewChild('zoneSharing') zoneSharing: SharingModalComponent;
+  @ViewChild('zoneTagging') zoneTagging: TaggingModalComponent;
+  @ViewChild('toolbarPhoto') toolbarPhoto: ZMediaToolbarPhotoComponent;
+  @ViewChild('toolbarAlbum') toolbarAlbum: ZMediaToolbarAlbumComponent;
 
-
-  @Input() type: string = '';
 
   @Input() albumDetail: any = null;
+  @Input() type: any;
 
   @Input() selectedPhotos: any;
+  @Input() selectedAlbums: any;
   @Input() hasFavourite: any;
   @Input() currentView: any;
+  @Input() photos: any;
+  @Input() albums: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() outEventUploading: EventEmitter<any> = new EventEmitter<any>();
 
 
   selectedEl: any;
-  items = Constants.pictureMenuItems;
+  readonly items = Constants.pictureMenuItems;
+  readonly urls = Constants.urls;
 
   constructor(private router: Router, private location: Location) {
     // Don't move it to onInit, it's not correct
-    this.selectedEl = {name: 'Photos', css: 'fa fa-picture-o', link: '/zone/media/photo'};
+    this.selectedEl = {name: 'Photos', css: 'fa fa-picture-o', link: `/${this.urls.photo}`};
     this.router.events.subscribe((navigation: any) => {
       for (var item of this.items) {
         if (item.link == navigation.url) {
@@ -61,7 +69,17 @@ export class ZMediaToolbarComponent {
         break;
 
       case 'tag':
-        this.zoneTagging.modal.open();
+        if (this.type == 'photo') {
+          this.zoneTagging.selectedItems = this.selectedPhotos;
+          this.zoneTagging.items = this.photos;
+          this.zoneTagging.mediaType = this.type;
+          this.zoneTagging.open();
+        } else {
+          this.zoneTagging.selectedItems = this.selectedAlbums;
+          this.zoneTagging.items = this.albums;
+          this.zoneTagging.mediaType = this.type;
+          this.zoneTagging.open();
+        }
         break;
       default:
         this.outEvent.emit(action);

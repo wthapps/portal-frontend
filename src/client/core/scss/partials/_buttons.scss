@@ -1,8 +1,8 @@
 @mixin button-variant-inline($color, $background, $border) {
 
-  @if $background == transparent {
-    $background: #FFF;
-  }
+  //@if $background == transparent {
+  //  $background: #FFF;
+  //}
 
   color: $color;
   background-color: $background;
@@ -56,6 +56,60 @@
   }
 }
 
+@mixin button-variant-style($color, $background, $border, $color_hover, $background_hover, $border_hover) {
+
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+
+  &:focus,
+  &.focus {
+    color: $color_hover;
+    background-color: darken($background_hover, 0%);
+    border-color: darken($border_hover, 12%);
+  }
+  &:hover {
+    color: $color;
+    background-color: $background_hover;
+    border-color: $border_hover;
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    color: $color;
+    background-color: darken($background_hover, 0%);
+    border-color: darken($border_hover, 2%);
+
+    &:hover,
+    &:focus,
+    &.focus {
+      color: $color;
+      background-color: darken($background_hover, 7%);
+      border-color: darken($border_hover, 15%);
+    }
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    background-image: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: $background;
+      border-color: $border;
+    }
+  }
+
+  .badge {
+    color: $background;
+    background-color: $color;
+  }
+}
+
 @import "hover/hover";
 
 .btn-detail {
@@ -81,7 +135,7 @@
 }
 
 .btn-primary-inline {
-  @include button-variant-inline(#F54A59, transparent, transparent);
+  @include button-variant-inline(#F54A59, #FFF, transparent);
 }
 
 .btn-default-inline {
@@ -114,9 +168,24 @@
   }
 }
 
+.btn-default-inline-border {
+  @include button-variant-style(
+      $btn-default-color,
+      transparent,
+      transparent,
+      $btn-default-color,
+      transparent,
+      $btn-default-border);
+}
+
 .btn-min {
   min-width: 106px;
   text-align: center;
+}
+
+.btn-inline {
+  min-width: initial;
+  color: inherit;
 }
 
 .btn-min-sm {
@@ -125,10 +194,6 @@
 }
 
 .btn {
-
-  text-transform: uppercase;
-  min-width: 34px;
-
   &,
   &:active,
   &.active {
@@ -151,6 +216,31 @@
   font-weight: bold;
 }
 
+[class^="btn-"], [class*=" btn-"] {
+  min-width: 34px;
+  &.btn-inline {
+    min-width: initial;
+  }
+
+  &.btn-text-link {
+    color: $link-color;
+    padding: 0;
+    border-width: 0;
+    background-color: transparent;
+    min-width: initial;
+    &:hover, &:focus {
+      text-decoration: none;
+      outline: none;
+    }
+  }
+}
+
+.modal {
+  [class^="btn-"], [class*=" btn-"] {
+    min-width: 80px;
+  }
+}
+
 .btn-circle {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -159,4 +249,20 @@
   padding-left: 0;
   padding-right: 0;
   text-align: center;
+  min-width: inherit;
+}
+
+.btn-text {
+  @extend .btn-link;
+  text-decoration: none !important;
+  color: $text-color;
+  min-width: inherit;
+}
+
+.btn-link-inline {
+  text-decoration: none;
+  min-width: inherit;
+  &:hover, &:focus {
+    text-decoration: none;
+  }
 }

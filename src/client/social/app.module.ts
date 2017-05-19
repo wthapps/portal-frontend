@@ -10,10 +10,14 @@ import { ZSocialCommunityModule } from './communities/communities.module';
 import { ZoneReportService } from './shared/form/report/report.service';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { ZSocialProfileComponent } from './profile/profile.component';
 import { CoreModule } from '../core/core.module';
 import { SocialDataService } from './shared/services/social-data.service';
-import { SocialSettingsModule } from './setting/setting.module';
+import { SocialSettingsModule } from './settings/setting.module';
+import { ZSocialProfileModule } from './profile/profile.module';
+import { ZSocialPhotoModule } from './photo/photo.module';
+import { ZSocialSearchModule } from './search/search.module';
+import { PhotoService } from '../core/shared/services/photo.service';
+import { CoverProfileModule } from '../core/partials/cover-profile/cover-profile.module';
 
 
 @NgModule({
@@ -26,12 +30,15 @@ import { SocialSettingsModule } from './setting/setting.module';
     ZSocialHomeModule,
     ZSocialCommunityModule,
     SocialSettingsModule,
+    ZSocialProfileModule,
+    ZSocialPhotoModule,
+    ZSocialSearchModule,
     AppRoutingModule
   ],
 
   declarations: [AppComponent,
     // ZSocialSettingComponent,
-    ZSocialProfileComponent
+    // ZSocialProfileComponent
 
     // // Communities
     // ZSocialCommunityComponent,
@@ -52,7 +59,8 @@ import { SocialSettingsModule } from './setting/setting.module';
   // }],
   providers: [
     SocialDataService,
-    ZoneReportService
+    ZoneReportService,
+    PhotoService
   ],
   bootstrap: [AppComponent]
 })

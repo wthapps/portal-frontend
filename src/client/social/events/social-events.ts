@@ -1,3 +1,5 @@
+import { BaseEvent } from '../../core/shared/event/base-event.d';
+
 export class CommentCreateEvent implements BaseEvent {
   description: string = 'Event create a comment for post';
   data: any;
@@ -44,6 +46,15 @@ export class DeleteCommentEvent implements BaseEvent {
 }
 
 export class CancelEditCommentEvent implements BaseEvent {
+  description: string = 'Cancel a edit comment';
+  data: any;
+
+  constructor(data: any) {
+    this.data = data;
+  }
+}
+
+export class CancelAddCommentEvent implements BaseEvent {
   description: string = 'Cancel a edit comment';
   data: any;
 

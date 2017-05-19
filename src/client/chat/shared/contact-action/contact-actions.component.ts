@@ -19,7 +19,7 @@ export class ZChatContactActionsComponent implements OnInit {
   };
 
   constructor(private chatService: ChatService) {
-    this.conversationUrl = this.chatService.constant.conversationUrl
+    this.conversationUrl = this.chatService.constant.conversationUrl;
   }
 
   ngOnInit() {

@@ -9,7 +9,7 @@ import {
 import { ZoneReportService } from './report.service';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../../core/partials/loading/loading.service';
-import { HdModalComponent } from '../../ng2-hd/modal/components/modal';
+import { HdModalComponent } from '../../../../core/shared/ng2-hd/modal/components/modal';
 
 declare var $: any;
 declare var _: any;
@@ -24,12 +24,12 @@ export class ZoneReportComponent implements OnInit {
 
   REASONS: Array<any> = [
     {id: 1, description: 'Spam or Scam', entity: 'post;community'},
-    {id: 2, description: 'Hate Speech or Personal Harassment', entity: 'post;community;member'},
+    {id: 2, description: 'Hate Speech or Personal Harassment', entity: 'post;community;member;friend'},
     {id: 3, description: 'Inappropriate content or Fail Information', entity: 'post;member;community'},
     {id: 4, description: 'Adult content without marked “Adult content”', entity: 'post'},
     {id: 4, description: 'Duplicate, fake or misleading', entity: 'community'},
-    {id: 1, description: 'Fake Account or Impersonating', entity: 'member'},
-    {id: 99, description: 'Other', entity: 'member;post;community'}
+    {id: 1, description: 'Fake Account or Impersonating', entity: 'member;friend'},
+    {id: 99, description: 'Other', entity: 'member;post;community;friend'}
   ];
 
   reasons: Array<any> = [];
@@ -43,7 +43,7 @@ export class ZoneReportComponent implements OnInit {
 
   constructor(private zoneReportService: ZoneReportService,
               private fb: FormBuilder,
-              private apiBaseService: ApiBaseService,
+              private reportService: ZoneReportService,
               private loadingService: LoadingService) {
 
     this.form = fb.group({
@@ -76,7 +76,8 @@ export class ZoneReportComponent implements OnInit {
       entity: this.entityType == 'post' ? 1 : this.entityType == 'member' ? 2 : 3,
       reports: [{id: this.reason.id, description: this.reason.id == 99 ? values.other : this.reason.description}]
     });
-    this.apiBaseService.post(`zone/social_network/userreports`, body)
+    // this.apiBaseService.post(`zone/social_network/userreports`, body)
+    this.reportService.report(body)
       .subscribe((result: any) => {
           console.log(result);
         },
