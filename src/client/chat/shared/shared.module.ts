@@ -24,6 +24,7 @@ import { ZChatShareItemRequestComponent } from './list/item/item-request.compone
 import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
 import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
+import { ZChatChatboxService } from './chat-box/chat-box.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -84,7 +85,7 @@ export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService, ChatCommonService]
+      providers: [ChatService, ChatCommonService, ZChatChatboxService]
     };
   }
 }

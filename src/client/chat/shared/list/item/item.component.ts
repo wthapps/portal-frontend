@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Config } from '../../../../core/shared/config/env.config';
+import { ZChatChatboxService } from '../../chat-box/chat-box.service';
 
 @Component({
   moduleId: module.id,
@@ -11,7 +12,8 @@ export class ZChatShareItemComponent implements OnInit {
   @Input() message: any;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private chatService: ChatService) {
+  constructor(private chatService: ChatService,
+              private chatboxService: ZChatChatboxService) {
   };
 
 
@@ -29,7 +31,8 @@ export class ZChatShareItemComponent implements OnInit {
     this.onAddContact.emit(contact);
   }
 
-  onQuote(message:string) {
+  onQuote(message: any) {
     console.log(message);
+    this.chatboxService.itemSay(message);
   }
 }

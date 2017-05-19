@@ -1,9 +1,10 @@
-import { Component, ViewChild, HostListener, OnInit, HostBinding, OnDestroy } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit, HostBinding, OnDestroy, ElementRef } from '@angular/core';
 import { ZChatEmojiService } from '../emoji/emoji.service';
 import { ChatService } from '../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
+import { ZChatChatboxService } from './chat-box.service';
 
 declare var $: any;
 
@@ -15,47 +16,39 @@ declare var $: any;
 })
 
 export class ZChatChatboxComponent implements OnInit, OnDestroy {
-  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
-  @HostBinding('class') keyCtrlClass = '';
-
   emojiData: any = [];
 
   // Subscription list
   nextPhotoSubscription: Subscription;
   uploadPhotoSubscription: Subscription;
 
+  quoteSubscription: Subscription;
+  quoteMess: any = [];
+
   constructor(private chatService: ChatService,
-              private photoSelectDataService: PhotoModalDataService
-  ) {
+              private photoSelectDataService: PhotoModalDataService,
+              private chatboxService: ZChatChatboxService) {
   }
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
     // this.photoModal.action = 'UPLOAD';
+
+    this.quoteSubscription = this.chatboxService.listeningFromItem$.subscribe((mess: any) => {
+      this.quoteMess.length = 0;
+      this.quoteMess.push(mess);
+    });
   }
 
   ngOnDestroy() {
     this.unsubscribePhotoEvents();
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
-    // console.log(ev);
-    if (ev.keyCode == 16) {
-      this.keyCtrlClass = 'active';
-    }
-  }
-
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 16) {
-      this.keyCtrlClass = 'active';
-    }
+    this.quoteSubscription.unsubscribe();
   }
 
   send() {
-    this.chatService.sendTextMessage($('#chat-message-text').text());
-    $('#chat-message-text').text('');
+    this.chatService.sendTextMessage($('#chat-message-text').html());
+    $('#chat-message-text').html('');
+    this.quoteMess.length = 0;
   }
 
   onEmojiClick(e: any) {
@@ -108,22 +101,26 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
     let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
     // Subscribe actions corresponding with photo modal actions
 
-    if(this.notAssignedSubscription(this.nextPhotoSubscription)) {
+    if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
       this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
           this.chooseDone(photos);
           // this.uploadPhoto(photos);
         },
-        (error : any) => { console.error(error); }
+        (error: any) => {
+          console.error(error);
+        }
       );
     }
 
-    if(this.notAssignedSubscription(this.uploadPhotoSubscription)) {
+    if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
       this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
           this.uploadPhoto(photos);
         },
-        (error : any) => { console.error(error); }
+        (error: any) => {
+          console.error(error);
+        }
       );
     }
   }
@@ -133,8 +130,8 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
   }
 
   private unsubscribePhotoEvents() {
-    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub : Subscription) => {
-      if(sub && !sub.closed)
+    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
+      if (sub && !sub.closed)
         sub.unsubscribe();
     });
   }
