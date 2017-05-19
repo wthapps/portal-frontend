@@ -10,7 +10,9 @@ import { Config } from '../../../../core/shared/config/env.config';
 export class ZChatShareItemComponent implements OnInit {
   @Input() message: any;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
-  constructor(private chatService: ChatService) {};
+
+  constructor(private chatService: ChatService) {
+  };
 
 
   ngOnInit() {
@@ -23,7 +25,11 @@ export class ZChatShareItemComponent implements OnInit {
     }
   }
 
-  onAdd(contact:any) {
+  onAdd(contact: any) {
     this.onAddContact.emit(contact);
+  }
+
+  onQuote(message:string) {
+    console.log(message);
   }
 }

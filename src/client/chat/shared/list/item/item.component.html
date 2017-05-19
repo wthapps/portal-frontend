@@ -12,7 +12,7 @@
           <i class="fa fa-pencil" data-toggle="dropdown"></i>
           <ul class="dropdown-menu dropdown-menu-right">
             <li *ngIf="!message.file_json"><a href="javascript:;">Copy</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Quote Message</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;" (click)="onQuote(message)">Quote Message</a></li>
           </ul>
         </div>
       </div>
@@ -71,13 +71,13 @@
     <div class="chat-item-card">
       <div class="chat-item-action">
         <small>{{message.created_at | timeFormat: "time_only"}}</small>
-        <div class="btn-group">
+        <!--<div class="btn-group">
           <i class="fa fa-pencil" data-toggle="dropdown"></i>
           <ul class="dropdown-menu dropdown-menu-right">
             <li *ngIf="!message.file_json"><a href="javascript:;">Copy</a></li>
             <li *ngIf="!message.file_json"><a href="javascript:;">Quote Message</a></li>
           </ul>
-        </div>
+        </div>-->
       </div>
       <div class="chat-item-content" *ngIf="message.display.share_contact"
            [ngClass]="{'contact': message.display.share_contact}">
@@ -87,11 +87,14 @@
               <img [src]="message.display.share_contact.profile_image" alt="">
             </span>
           </div>
-          <div class="media-body">
+          <div class="media-body text-left">
             <p class="media-heading bold">{{message.display.share_contact.name}}</p>
             <button class="btn btn-default" *ngIf="!message.byMe" (click)="onAdd(message.display.share_contact)">
               <i class="fa fa-user-plus"></i> Add to Contact
             </button>
+            <p *ngIf="message.byMe" class="text-fade">
+              Contact send
+            </p>
           </div>
 
         </div>
