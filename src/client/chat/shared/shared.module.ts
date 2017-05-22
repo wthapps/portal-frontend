@@ -1,10 +1,10 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
-import { ZChatChatboxComponent } from './chat-box/chat-box.component';
+import { ZChatChatboxComponent } from './chat-editor/chat-editor.component';
 import { ZChatShareUserIconComponent } from './user/user-icon.component';
-import { ZChatShareListComponent } from './list/list.component';
-import { ZChatShareItemComponent } from './list/item/item.component';
+import { MessageListComponent } from './message/message-list.component';
+import { MessageItemComponent } from './message/message-item.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
 import { ChatService } from './services/chat.service';
 import { SharedModule } from '../../core/shared/shared.module';
@@ -20,7 +20,7 @@ import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
 import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
 import { ChatCommonService } from '../../core/shared/services/chat.common.service';
 import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
-import { ZChatShareItemRequestComponent } from './list/item/item-request.component';
+import { ZChatShareItemRequestComponent } from './message/item-request.component';
 import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
 import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
@@ -41,8 +41,8 @@ import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
     ZChatSidebarComponent,
     ZChatToolbarComponent,
     ZChatChatboxComponent,
-    ZChatShareItemComponent,
-    ZChatShareListComponent,
+    MessageItemComponent,
+    MessageListComponent,
     ZChatShareUserIconComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
@@ -66,8 +66,8 @@ import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
     ZChatSidebarComponent,
     ZChatToolbarComponent,
     ZChatChatboxComponent,
-    ZChatShareItemComponent,
-    ZChatShareListComponent,
+    MessageItemComponent,
+    MessageListComponent,
     ZChatShareUserIconComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,

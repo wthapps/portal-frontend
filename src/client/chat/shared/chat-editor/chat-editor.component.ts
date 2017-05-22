@@ -10,9 +10,9 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-chat-share-chatbox',
-  templateUrl: 'chat-box.component.html',
-  styleUrls: ['chat-box.component.css']
+  selector: 'chat-editor',
+  templateUrl: 'chat-editor.component.html',
+  styleUrls: ['chat-editor.component.css']
 })
 
 export class ZChatChatboxComponent implements OnInit, OnDestroy {
@@ -21,6 +21,8 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
   // Subscription list
   nextPhotoSubscription: Subscription;
   uploadPhotoSubscription: Subscription;
+
+  private pressingShiftKey: boolean = false;
 
   quoteSubscription: Subscription;
   quoteMess: any = [];
@@ -42,13 +44,50 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubscribePhotoEvents();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
+
+    // if pressing Shift key
+    if (ev.keyCode == 16) {
+      this.pressingShiftKey = true;
+      // this.keyCtrlClass = 'active';
+    }
+
+    if (ev.keyCode == 13) {
+      if (!this.pressingShiftKey) {
+        ev.preventDefault();
+      }
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(ev: KeyboardEvent) {
+    if (ev.keyCode == 16) {
+      this.keyCtrlClass = 'active';
+      this.pressingShiftKey = false;
+    }
+    // pressing Enter Key
+    if (ev.keyCode == 13) {
+      if (!this.pressingShiftKey) {
+        this.send(true);
+      }
+    }
     this.quoteSubscription.unsubscribe();
   }
 
-  send() {
-    this.chatService.sendTextMessage($('#chat-message-text').html());
+  send(enter?: boolean) {
+
+    let message: string = $('#chat-message-text').html();
+    if (enter) {
+      message = message.replace('<div><br></div>', '');
+    }
+
+    this.chatService.sendTextMessage(message);
     $('#chat-message-text').html('');
     this.quoteMess.length = 0;
+
   }
 
   onEmojiClick(e: any) {

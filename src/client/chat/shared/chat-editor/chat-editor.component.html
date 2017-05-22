@@ -1,7 +1,7 @@
 <div class="page-body-chat-message">
   <div class="chat-message-container">
     <div id="chat-message-text" class="chatbox-container-input" contenteditable="true" spellcheck="false" tabindex="1"
-         placeholder="Type message here" autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send()">
+         placeholder="Type message here" autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send(true)">
       <template [ngIf]="quoteMess.length>0">
         <blockquote *ngFor="let quote of quoteMess" contenteditable="false">
           <strong>{{quote.display.name}}</strong>

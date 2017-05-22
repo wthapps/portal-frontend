@@ -14,13 +14,10 @@
        infinite-scroll
        [scrollWindow]="false"
        (scrolledUp)="onLoadMore()">
-    <div class="chat-item-wrap">
+    <div class="message-item-wrapper">
       <div *ngIf="item.value">
         <div *ngFor="let message of item.value.data">
-          <div class="chat-date" *ngIf="message | groupByDayMonthYear:'created_at'">
-            <span>{{ message.created_at |date }}</span>
-          </div>
-          <z-chat-share-item [message]="message" (onAddContact)="onAddContact($event)"></z-chat-share-item>
+          <message-item [message]="message" [prevMessage]="getPrevMessage(message)" (onAddContact)="onAddContact($event)"></message-item>
         </div>
       </div>
     </div>

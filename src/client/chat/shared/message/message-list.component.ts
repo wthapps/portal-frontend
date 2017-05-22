@@ -3,20 +3,26 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 
 declare var _: any;
+
 @Component({
   moduleId: module.id,
-  selector: 'z-chat-share-list',
-  templateUrl: 'list.component.html'
+  selector: 'message-list',
+  templateUrl: 'message-list.component.html',
+  styleUrls: ['message-list.component.css']
 })
-export class ZChatShareListComponent implements OnInit {
+
+export class MessageListComponent implements OnInit {
+  @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
+
   item: any;
   contactItem: any;
-  @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
+  prevMessage: any;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.item = this.chatService.getCurrentMessages();
+
     this.contactItem = this.chatService.getContactSelect();
     // this.chatService.subscribeChanel();
   }
@@ -30,4 +36,10 @@ export class ZChatShareListComponent implements OnInit {
     this.requestModal.contact = contact;
     this.requestModal.modal.open();
   }
+
+  getPrevMessage(currentMessage: any) {
+    let curMsgIndex = _.findIndex(this.item.value.data, {id: currentMessage.id});
+    return (curMsgIndex <= 0) ? null: this.item.value.data[curMsgIndex-1];
+  }
+
 }

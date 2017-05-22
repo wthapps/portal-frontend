@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ChatService } from '../../services/chat.service';
-import { Config } from '../../../../core/shared/config/env.config';
+import { ChatService } from '../services/chat.service';
+
 
 @Component({
   moduleId: module.id,
@@ -9,6 +9,7 @@ import { Config } from '../../../../core/shared/config/env.config';
 })
 export class ZChatShareItemRequestComponent implements OnInit {
   @Input() message: any;
+
   constructor(private chatService: ChatService) {};
 
   ngOnInit() {

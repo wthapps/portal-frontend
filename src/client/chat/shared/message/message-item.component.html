@@ -1,24 +1,90 @@
-<div *ngIf="message.message_type == 'text'" class="chat-item"
-     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
-  <figure class="chat-item-avatar">
-    <img [src]="message.display.image" alt="">
-  </figure>
-  <h4 class="chat-item-name">{{message.display.name}}</h4>
-  <div class="chat-item-message">
-    <div class="chat-item-card">
-      <div class="chat-item-action">
-        <small>{{message.created_at | timeFormat: "time_only"}}</small>
-        <div class="btn-group">
+<div class="message-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
+
+  <div class="message-item-content">
+
+    <div class="message-item-date" *ngIf="hasShowDate()">
+      <span>{{ message.created_at | date }}</span>
+    </div>
+
+    <div class="message-item-owner" *ngIf="hasShowOwner()">
+      <h4 class="message-item-owner-name">
+        <a href="#"> {{message.display.name}} </a>
+      </h4>
+      <figure class="message-item-owner-avatar">
+        <img [src]="message.display.image" alt="">
+      </figure>
+    </div>
+
+    <div class="message-item-content-card">
+
+      <div class="message-item-content-main">
+        <!--text type-->
+        <div class="message-item-content-text" *ngIf="message.message_type == 'text'">
+          <span [innerHtml]="message.message | wthEmojis | safeHtml"></span>
+        </div>
+
+        <!--photo type-->
+        <div class="message-item-content-photo">
+
+        </div>
+
+        <!--other file types-->
+        <div class="message-item-content-other-files">
+
+        </div>
+
+        <!--hyperlink tpe-->
+        <div class="message-item-content-hyperlink">
+
+        </div>
+
+        <!--quote message type-->
+        <div class="message-item-content-quote-text">
+
+        </div>
+
+        <!--share contact type-->
+        <div class="message-item-content-contact-sharing">
+
+        </div>
+
+        <!--leave conversation-->
+        <div class="message-item-content-conversation-leave">
+
+        </div>
+
+        <!--add new contact-->
+        <div class="message-item-content-conversation-add-new-contact">
+
+        </div>
+
+      </div>
+
+      <div class="message-item-action">
+        <div class="message-item-menu">
           <i class="fa fa-pencil" data-toggle="dropdown"></i>
+
+          <!--text message menu-->
           <ul class="dropdown-menu dropdown-menu-right">
             <li *ngIf="!message.file_json"><a href="javascript:;">Copy</a></li>
             <li *ngIf="!message.file_json"><a href="javascript:;" (click)="onQuote(message)">Quote Message</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Quote Message</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Edit</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Delete</a></li>
           </ul>
+
+          <!--photos menu-->
+
+
+          <!--other menu menu menu-->
+
+        </div>
+        <div class="message-item-time">
+          <small>{{message.created_at | timeFormat: "time_only"}}</small>
         </div>
       </div>
-      <div class="chat-item-content">
-        <span [innerHtml]="message.message | wthEmojis | safeHtml"></span>
-      </div>
+
+
     </div>
   </div>
 </div>
