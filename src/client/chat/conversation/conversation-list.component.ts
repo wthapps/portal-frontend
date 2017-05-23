@@ -3,7 +3,7 @@ import { ChatService } from '../shared/services/chat.service';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'conversation-global.component.html'
+  templateUrl: 'conversation-list.component.html'
 })
 export class ConversationListComponent implements OnInit {
   selectContact: any;
