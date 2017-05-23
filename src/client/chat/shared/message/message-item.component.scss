@@ -133,6 +133,8 @@
 }
 */
 
+$message-item-content-card-right: 85px;
+
 .message-item-date {
   position: relative;
   padding: 10px 0 20px 0;
@@ -159,12 +161,27 @@
 .message-item-content {
   position: relative;
   padding-left: 50px;
+  &:hover {
+    .message-item-action {
+      .message-item-menu {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.message-item-content-main {
+  &:before {
+    content: '';
+    position: absolute;
+    top: 10px;
+  }
 }
 
 .message-item-owner-avatar {
   position: absolute;
   left: 0;
-  top: 20px;
+  top: 25px;
   width: 50px;
 }
 
@@ -178,7 +195,7 @@
 }
 
 .message-item-content-card {
-  padding-right: 85px;
+  padding-right: $message-item-content-card-right;
   position: relative;
   .message-item-action {
 
@@ -210,11 +227,20 @@
       text-align: center;
     }
   }
+  .message-item-menu {
+    visibility: hidden;
+  }
+}
+
+.message-item-status {
+  position: absolute;
+  bottom: -5px;
+  font-size: 11px;
+  left: 0;
+  @include opacity(0.7);
 }
 
 .message-item-content-contact-sharing {
-  overflow: hidden;
-  display: inline-block;
 }
 
 .message-item-content-photo {
@@ -244,6 +270,15 @@
   }
 }
 
+.message-item-left {
+  .message-item-content-main {
+    &:before {
+      @include make-arrow(left, #eff1f2, 6px, 6px);
+      left: -6px;
+    }
+  }
+}
+
 .message-item-right {
   .message-item-owner {
     display: none;
@@ -254,5 +289,13 @@
   .message-item-content-main {
     text-align: left;
     background-color: #E0F5FF;
+    &:before {
+      @include make-arrow(right, #E0F5FF, 6px, 6px);
+      right: -6px;
+    }
+  }
+  .message-item-status {
+    left: auto;
+    right: $message-item-content-card-right;
   }
 }

@@ -211,11 +211,44 @@
       top: -5px;
       height: 14px;
     }
+    .message-item-status {
+      display: none;
+    }
     &:last-child {
       .dropdown-menu {
         top: auto;
         bottom: 20px;
       }
+      .message-item-status {
+        display: block;
+      }
+    }
+  }
+}
+
+.chat-message-container, .message-item-wrapper {
+
+  blockquote {
+    font-size: $font-size-base;
+    padding: 0 10px;
+    border-left: 3px solid $line;
+    strong {
+      &:after {
+        content: '';
+        margin: 0 10px 0 12px;
+        display: inline-block;
+        vertical-align: middle;
+        width: 5px;
+        height: 5px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        background-color: $text-color;
+        @include opacity(0.5);
+      }
+    }
+    span {
+      @include opacity(0.8);
     }
   }
 }

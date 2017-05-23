@@ -1,4 +1,5 @@
-<div class="message-item" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+<div *ngIf="message.message_type != 'notification'" class="message-item"
+     [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
   <div class="message-item-date" *ngIf="hasShowDate()">
     <span>{{ message.created_at | date }}</span>
   </div>
@@ -54,8 +55,14 @@
         </div>
 
         <!--quote message type-->
-        <div class="message-item-content-quote-text">
-
+        <div class="message-item-content-quote-text" *ngIf="message.message_type == 'quote'">
+          <blockquote>
+            <strong>David Nguyen</strong>
+            <span>4:37 PM</span>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aut cupiditate doloremque, ea esse
+              eveniet illum incidunt itaque molestias nisi non quae recusandae, sequi sint sunt suscipit tenetur ullam
+              voluptatibus?</p>
+          </blockquote>
         </div>
 
         <!--share contact type-->
@@ -89,28 +96,53 @@
         </div>
 
       </div>
-      <div class="message-item-action">
+      <div class="message-item-action"
+           *ngIf="(message.message_type == 'text' || message.message_type == 'Photo' || message.message_type == 'FileMedium')">
         <div class="message-item-menu dropdown">
           <i class="fa fa-pencil" data-toggle="dropdown"></i>
 
           <!--text message menu-->
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li *ngIf="!message.file_json"><a href="javascript:;">Copy</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;" (click)="onQuote(message)">Quote Message</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Edit</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Delete</a></li>
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
+            <li><a href="javascript:;">Copy</a></li>
+            <li><a href="javascript:;" (click)="onQuote(message)">Quote Message</a></li>
+            <li *ngIf="message.byMe"><a href="javascript:;">Edit</a></li>
+            <li *ngIf="message.byMe"><a href="javascript:;">Delete</a></li>
           </ul>
 
           <!--photos menu-->
-
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Photo'">
+            <li *ngIf="!message.file_json">
+              <a [href]="message.file_json.url" target="_blank" download>
+                Download
+              </a>
+            </li>
+          </ul>
 
           <!--other menu menu menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
+            <li *ngIf="!message.file_json">
+              <a [href]="message.file_json.url" target="_blank" download>
+                Download
+              </a>
+            </li>
+          </ul>
 
         </div>
         <div class="message-item-time">
           <small>{{message.created_at | timeFormat: "time_only"}}</small>
         </div>
       </div>
+      <div class="message-item-status">
+        <span>Sent <i class="fa fa-check-circle-o"></i></span>
+      </div>
     </div>
+  </div>
+</div>
+
+
+<div *ngIf="message.message_type == 'notification'" class="p20 text-center">
+  <div><span class="text-bold">{{message.display.name}}</span> {{message.message}}</div>
+  <div class="text-fade">
+    <small>{{message.created_at | timeFormat: "time_only"}}</small>
   </div>
 </div>
