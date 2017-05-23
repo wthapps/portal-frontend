@@ -203,3 +203,19 @@
     }
   }
 }
+
+.message-item-wrapper {
+  .message-item-dv {
+    .wth-emoji {
+      padding: 0;
+      top: -5px;
+      height: 14px;
+    }
+    &:last-child {
+      .dropdown-menu {
+        top: auto;
+        bottom: 20px;
+      }
+    }
+  }
+}

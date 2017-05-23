@@ -1,37 +1,52 @@
-<div class="message-item" [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
-
+<div class="message-item" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+  <div class="message-item-date" *ngIf="hasShowDate()">
+    <span>{{ message.created_at | date }}</span>
+  </div>
   <div class="message-item-content">
-
-    <div class="message-item-date" *ngIf="hasShowDate()">
-      <span>{{ message.created_at | date }}</span>
-    </div>
-
     <div class="message-item-owner" *ngIf="hasShowOwner()">
       <h4 class="message-item-owner-name">
         <a href="#"> {{message.display.name}} </a>
       </h4>
       <figure class="message-item-owner-avatar">
-        <img [src]="message.display.image" alt="">
+        <span class="avatar-xs">
+          <img [src]="message.display.image" alt="">
+        </span>
       </figure>
     </div>
-
     <div class="message-item-content-card">
-
       <div class="message-item-content-main">
         <!--text type-->
         <div class="message-item-content-text" *ngIf="message.message_type == 'text'">
           <span [innerHtml]="message.message | wthEmojis | safeHtml"></span>
         </div>
 
-        <!--photo type-->
-        <div class="message-item-content-photo">
+        <template [ngIf]="message.message_type == 'file'">
+          <!--photo type-->
+          <div class="message-item-content-photo" *ngIf="message.file_type == 'Photo'">
+            <img [src]="message.file_json.url" alt="">
+          </div>
+          <div class="message-item-content-other-files" *ngIf="message.file_type == 'FileMedium'">
+            <a class="media-div link-text" [href]="message.file_json.url" target="_blank" download>
+              <div class="pull-left">
+                <i class="fa fa-file-o"></i>
+              </div>
+              <div class="media-div-body">
+                <div class="media-div-heading">{{message.file_json.name}}</div>
+                <div class="text-fade">{{message.file_json.size}}B</div>
+              </div>
+            </a>
+          </div>
+        </template>
 
-        </div>
 
-        <!--other file types-->
-        <div class="message-item-content-other-files">
+        <template [ngIf]="message.message_type == 'file_tmp'">
+          <!--other file types-->
+          <div class="message-item-content-other-files">
+            <i class="fa fa-spinner fa-spin fa-fw"></i> Sending ...
+          </div>
 
-        </div>
+        </template>
+
 
         <!--hyperlink tpe-->
         <div class="message-item-content-hyperlink">
@@ -44,8 +59,23 @@
         </div>
 
         <!--share contact type-->
-        <div class="message-item-content-contact-sharing">
-
+        <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'share_contact_message'">
+          <div class="media-div">
+            <div class="pull-left">
+              <span class="avatar-xsm">
+                <img [src]="message.display.share_contact.profile_image" alt="">
+              </span>
+            </div>
+            <div class="media-div-body">
+              <p class="media-heading bold">{{message.display.share_contact.name}}</p>
+              <button class="btn btn-default" *ngIf="!message.byMe" (click)="onAdd(message.display.share_contact)">
+                <i class="fa fa-user-plus"></i> Add to Contact
+              </button>
+              <p *ngIf="message.byMe" class="text-fade">
+                Contact send
+              </p>
+            </div>
+          </div>
         </div>
 
         <!--leave conversation-->
@@ -59,9 +89,8 @@
         </div>
 
       </div>
-
       <div class="message-item-action">
-        <div class="message-item-menu">
+        <div class="message-item-menu dropdown">
           <i class="fa fa-pencil" data-toggle="dropdown"></i>
 
           <!--text message menu-->
@@ -81,115 +110,6 @@
         <div class="message-item-time">
           <small>{{message.created_at | timeFormat: "time_only"}}</small>
         </div>
-      </div>
-
-
-    </div>
-  </div>
-</div>
-
-<div *ngIf="message.message_type == 'file'" class="chat-item"
-     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
-  <figure class="chat-item-avatar">
-    <img [src]="message.display.image" alt="">
-  </figure>
-  <h4 class="chat-item-name">{{message.display.name}}</h4>
-  <div class="chat-item-message">
-    <div class="chat-item-card">
-      <div class="chat-item-action">
-        <small>{{message.created_at | timeFormat: "time_only"}}</small>
-        <div class="btn-group">
-          <i class="fa fa-pencil" data-toggle="dropdown"></i>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li *ngIf="message.file_json"><a [href]="message.file_json.url" download>Download</a></li>
-          </ul>
-        </div>
-      </div>
-      <!--{{message | json}}-->
-      <div class="chat-item-content">
-        <span *ngIf="message.file_json">
-          <img *ngIf="message.file_type == 'Photo'" [src]="message.file_json.url" alt="" style="width: 200px">
-          <a *ngIf="message.file_type == 'FileMedium'" [href]="message.file_json.url" target="_blank"
-             style="color: #4A4A4A" download>
-            <div style="float: left">
-              <img [src]="message.file_json.thumbnail_url" alt="">
-            </div>
-            <div *ngIf="message.file_type == 'FileMedium'" style="position: relative; left: 10px; float: right">
-              <span *ngIf="message.file_json.name">{{message.file_json.name}}</span>
-              <div *ngIf="message.file_json.size"
-                   style="position: relative; top: -5px;">{{message.file_json.size}} B</div>
-            </div>
-          </a>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="message.message_type == 'share_contact_message'" class="chat-item"
-     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
-  <figure class="chat-item-avatar">
-    <img [src]="message.display.image" alt="">
-  </figure>
-  <h4 class="chat-item-name">{{message.display.name}}</h4>
-  <div class="chat-item-message">
-    <div class="chat-item-card">
-      <div class="chat-item-action">
-        <small>{{message.created_at | timeFormat: "time_only"}}</small>
-        <!--<div class="btn-group">
-          <i class="fa fa-pencil" data-toggle="dropdown"></i>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li *ngIf="!message.file_json"><a href="javascript:;">Copy</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Quote Message</a></li>
-          </ul>
-        </div>-->
-      </div>
-      <div class="chat-item-content" *ngIf="message.display.share_contact"
-           [ngClass]="{'contact': message.display.share_contact}">
-        <div class="media">
-          <div class="media-left">
-            <span class="avatar-xsm">
-              <img [src]="message.display.share_contact.profile_image" alt="">
-            </span>
-          </div>
-          <div class="media-body text-left">
-            <p class="media-heading bold">{{message.display.share_contact.name}}</p>
-            <button class="btn btn-default" *ngIf="!message.byMe" (click)="onAdd(message.display.share_contact)">
-              <i class="fa fa-user-plus"></i> Add to Contact
-            </button>
-            <p *ngIf="message.byMe" class="text-fade">
-              Contact send
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="message.message_type == 'file_tmp'" class="chat-item chat-item-right" style="opacity: 0.3">
-  <span *ngIf="message.file_json">
-    <img [src]="message.file_json.thumbnail_url" alt=""> Uploading ...
-  </span>
-</div>
-
-<div *ngIf="message.message_type == 'notification'" class="chat-item"
-     [ngClass]="{'chat-item-left': !message.byMe, 'chat-item-right': message.byMe}">
-  <div class="chat-item-message">
-    <div class="chat-item-card">
-      <div class="chat-item-action">
-        <small>{{message.created_at | timeFormat: "time_only"}}</small>
-        <div class="btn-group">
-          <i class="fa fa-pencil" data-toggle="dropdown"></i>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li *ngIf="!message.file_json"><a href="javascript:;">Copy</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Quote Message</a></li>
-          </ul>
-        </div>
-      </div>
-      <div style="text-align: center">
-        <span style="font-weight: 700">{{message.display.name}}</span> <span>{{message.message}}</span>
       </div>
     </div>
   </div>

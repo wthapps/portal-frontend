@@ -43,3 +43,16 @@
     overflow: visible;
   }
 }
+
+.media-div {
+  .pull-left {
+    float: left;
+    margin-right: 10px;
+  }
+  .media-div-body {
+    overflow: hidden;
+  }
+  .media-div-heading {
+    margin: 0;
+  }
+}

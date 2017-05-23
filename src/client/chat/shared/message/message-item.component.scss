@@ -1,5 +1,6 @@
-@import "../../../core/scss/partials/colors";
+@import "../../../core/scss/global";
 
+/*
 
 .message-item {
   display: table;
@@ -130,4 +131,128 @@
     }
   }
 }
+*/
 
+.message-item-date {
+  position: relative;
+  padding: 10px 0 20px 0;
+  text-align: center;
+  &:after {
+    content: "";
+    height: 1px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    background-color: $line;
+  }
+  span {
+    position: relative;
+    z-index: 1;
+    bottom: -5px;
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    background-color: #ffffff;
+  }
+}
+
+.message-item-content {
+  position: relative;
+  padding-left: 50px;
+}
+
+.message-item-owner-avatar {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  width: 50px;
+}
+
+.message-item-owner-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  a {
+    color: inherit;
+  }
+}
+
+.message-item-content-card {
+  padding-right: 85px;
+  position: relative;
+  .message-item-action {
+
+  }
+}
+
+.message-item-content-main {
+  border-radius: 4px;
+  padding: 10px;
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  word-break: break-all;
+  background-color: #eff1f2;
+  margin-bottom: 10px;
+}
+
+.message-item-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  .message-item-menu, .message-item-time {
+    display: inline-block;
+    margin-left: 5px;
+    .fa {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+    }
+  }
+}
+
+.message-item-content-contact-sharing {
+  overflow: hidden;
+  display: inline-block;
+}
+
+.message-item-content-photo {
+  img {
+    max-width: 300px;
+  }
+}
+
+.message-item-content-other-files {
+  a {
+    display: block;
+    color: inherit;
+  }
+  .fa-file-o {
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding: 0;
+    line-height: 38px;
+    background-color: #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: $text-color;
+    border: 1px solid $line;
+  }
+}
+
+.message-item-right {
+  .message-item-owner {
+    display: none;
+  }
+  .message-item-content-card {
+    text-align: right;
+  }
+  .message-item-content-main {
+    text-align: left;
+    background-color: #E0F5FF;
+  }
+}

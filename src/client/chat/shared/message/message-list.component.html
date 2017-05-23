@@ -1,11 +1,11 @@
 <!--<div class="page-body-chat-content-in" scrollToBottom lock-y-offset="10" observe-attributes="true">-->
-  <!--<div class="chat-item-wrap">-->
-    <!--<div *ngIf="item.value">-->
-      <!--<z-chat-share-item *ngFor="let message of item.value.data" [message]="message"></z-chat-share-item>-->
-    <!--</div>-->
-  <!--</div>-->
+<!--<div class="chat-item-wrap">-->
+<!--<div *ngIf="item.value">-->
+<!--<z-chat-share-item *ngFor="let message of item.value.data" [message]="message"></z-chat-share-item>-->
 <!--</div>-->
-<div  *ngIf="contactItem.value">
+<!--</div>-->
+<!--</div>-->
+<div *ngIf="contactItem.value">
   <div *ngIf="contactItem.value.active"
        class="page-body-chat-content-in"
        scrollToBottom
@@ -14,11 +14,10 @@
        infinite-scroll
        [scrollWindow]="false"
        (scrolledUp)="onLoadMore()">
-    <div class="message-item-wrapper">
-      <div *ngIf="item.value">
-        <div *ngFor="let message of item.value.data">
-          <message-item [message]="message" [prevMessage]="getPrevMessage(message)" (onAddContact)="onAddContact($event)"></message-item>
-        </div>
+    <div class="message-item-wrapper" *ngIf="item.value">
+      <div class="message-item-dv" *ngFor="let message of item.value.data">
+        <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
+                      (onAddContact)="onAddContact($event)"></message-item>
       </div>
     </div>
   </div>
