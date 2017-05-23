@@ -60,6 +60,7 @@ import { ChatCommonService } from './services/chat.common.service';
 import { ZoneReportService } from './form/report/report.service';
 import { ZoneReportComponent } from './form/report/report.component';
 import { HdModalComponent } from './ng2-hd/modal/components/modal';
+import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -182,7 +183,8 @@ export class SharedModule {
         DateService,
         ZoneReportService,
         ChatCommonService,
-        PhotoService
+        PhotoService,
+        PubSubEventService
       ]
     };
   }

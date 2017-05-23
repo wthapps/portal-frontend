@@ -103,10 +103,14 @@
 
           <!--text message menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
-            <li><a href="javascript:;">Copy</a></li>
-            <li><a href="javascript:;" (click)="onQuote(message)">Quote Message</a></li>
-            <li *ngIf="message.byMe"><a href="javascript:;">Edit</a></li>
-            <li *ngIf="message.byMe"><a href="javascript:;">Delete</a></li>
+            <li *ngIf="!message.file_json">
+              <a href="javascript:;"
+                 (click)="doAction({type: actions.MESSAGE_COPY, payload: message})">Copy</a></li>
+            <li *ngIf="!message.file_json">
+              <a href="javascript:;"
+                 (click)="doAction({type: actions.MESSAGE_QUOTE, payload: message})">Quote Message</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Edit</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Delete</a></li>
           </ul>
 
           <!--photos menu-->

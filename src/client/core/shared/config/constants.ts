@@ -83,8 +83,8 @@ export let Constants = {
   },
 
   chatMenuItems: [
-    {name: 'Conversation', link: '/conversation', icon: ''},
-    {name: 'Contact', link: '/contact', icon: 'fa fa-address-book-o'},
+    {name: 'Conversations', link: '/conversations', icon: 'fa fa-comments-o'},
+    {name: 'Contacts', link: '/contacts', icon: 'fa fa-address-book-o'},
     {name: '', link: '', icon: ''},
     {name: 'Settings', link: '/setting', icon: 'fa fa-cog'}
   ],
@@ -146,7 +146,7 @@ export let Constants = {
     profile: 'profile',
     album: 'album',
     photo: 'photo',
-    chatConversation: 'conversation'
+    chatConversation: 'conversations'
   },
   sex: ['Male', 'Female', 'Other'],
   communityRole: {

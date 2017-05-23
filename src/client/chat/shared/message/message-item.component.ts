@@ -1,7 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { Config } from '../../../core/shared/config/env.config';
-import { ChatEditorService } from '../chat-editor/chat-editor.service';
+import { PubSubEventService } from '../../../core/shared/services/pub-sub/pub-sub-event.service';
+import { PubSubEvent } from '../../../core/shared/services/pub-sub/pub-sub-event';
+import { CHAT_ACTIONS } from '../constants/chat-constant';
 
 
 @Component({
@@ -15,8 +17,13 @@ export class MessageItemComponent implements OnInit {
   @Input() prevMessage: any = null;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private chatService: ChatService,
-              private chatboxService: ChatEditorService) {};
+  actions = CHAT_ACTIONS;
+
+  constructor(
+    private chatService: ChatService,
+    private pubSubEventService: PubSubEventService) {
+
+  }
 
 
   ngOnInit() {
@@ -30,13 +37,14 @@ export class MessageItemComponent implements OnInit {
 
   }
 
-  onAdd(contact:any) {
-    this.onAddContact.emit(contact);
+  doAction(event: PubSubEvent) {
+    this.pubSubEventService.addEvent(event);
   }
 
-  onQuote(message: any) {
-    console.log(message);
-    this.chatboxService.itemSay(message);
+
+
+  onAdd(contact:any) {
+    this.onAddContact.emit(contact);
   }
 
   hasShowOwner(): boolean {

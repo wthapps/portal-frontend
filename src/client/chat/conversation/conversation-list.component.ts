@@ -5,7 +5,7 @@ import { ChatService } from '../shared/services/chat.service';
   moduleId: module.id,
   templateUrl: 'conversation-global.component.html'
 })
-export class ZChatConversationGlobalComponent implements OnInit {
+export class ConversationListComponent implements OnInit {
   selectContact: any;
 
   constructor(private chatService: ChatService) {

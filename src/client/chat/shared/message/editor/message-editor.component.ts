@@ -1,21 +1,22 @@
 import { Component, ViewChild, HostListener, OnInit, HostBinding, OnDestroy, ElementRef } from '@angular/core';
-import { ZChatEmojiService } from '../emoji/emoji.service';
-import { ChatService } from '../services/chat.service';
-import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
-import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { ZChatEmojiService } from '../../emoji/emoji.service';
+import { ChatService } from '../../services/chat.service';
+import { PostPhotoSelectComponent } from '../../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
+import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
-import { ChatEditorService } from './chat-editor.service';
+import { PubSubEventService } from '../../../../core/shared/services/pub-sub/pub-sub-event.service';
+
 
 declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'chat-editor',
-  templateUrl: 'chat-editor.component.html',
-  styleUrls: ['chat-editor.component.css']
+  selector: 'message-editor',
+  templateUrl: 'message-editor.component.html',
+  styleUrls: ['message-editor.component.css']
 })
 
-export class ZChatChatboxComponent implements OnInit, OnDestroy {
+export class MessageEditorComponent implements OnInit, OnDestroy {
   emojiData: any = [];
 
   // Subscription list
@@ -27,23 +28,18 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
   quoteSubscription: Subscription;
   quoteMess: any = [];
 
-  constructor(private chatService: ChatService,
-              private photoSelectDataService: PhotoModalDataService,
-              private chatboxService: ChatEditorService) {
+  constructor(
+    private chatService: ChatService,
+    private photoSelectDataService: PhotoModalDataService,
+    private pubSubEventService: PubSubEventService
+  ) {
   }
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
     // this.photoModal.action = 'UPLOAD';
 
-    this.quoteSubscription = this.chatboxService.listeningFromItem$.subscribe((mess: any) => {
-      this.quoteMess.length = 0;
-      this.quoteMess.push(mess);
-    });
-  }
 
-  ngOnDestroy() {
-    this.unsubscribePhotoEvents();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -132,6 +128,11 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
       sel.removeAllRanges();
       sel.addRange(range);
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribePhotoEvents();
+    this.pubSubEventService.unsubscribe();
   }
 
   private subscribePhotoEvents() {

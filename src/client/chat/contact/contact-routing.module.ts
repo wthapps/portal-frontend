@@ -10,23 +10,23 @@ import { ZChatContactPendingComponent } from './contact-pending.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'contact',
+        path: 'contacts',
         component: ZChatContactComponent
       },
       {
-        path: 'contact/online',
+        path: 'contacts/online',
         component: ZChatContactOnlineComponent
       },
       {
-        path: 'contact/blacklist',
+        path: 'contacts/blacklist',
         component: ZChatContactBlackListComponent
       },
       {
-        path: 'contact/sent_request',
+        path: 'contacts/sent_request',
         component: ZChatContactSentRequestComponent
       },
       {
-        path: 'contact/pending',
+        path: 'contacts/pending',
         component: ZChatContactPendingComponent
       },
     ])

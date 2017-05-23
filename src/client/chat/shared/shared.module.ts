@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
-import { ZChatChatboxComponent } from './chat-editor/chat-editor.component';
+import { MessageEditorComponent } from './message/editor/message-editor.component';
 import { ZChatShareUserIconComponent } from './user/user-icon.component';
 import { MessageListComponent } from './message/message-list.component';
 import { MessageItemComponent } from './message/message-item.component';
@@ -24,9 +24,9 @@ import { ZChatShareItemRequestComponent } from './message/item-request.component
 import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
 import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
-import { ChatEditorService } from './chat-editor/chat-editor.service';
 import { ChatGroupSentRequestPipe } from './pipe/chat-group-sent-request.pipe';
 import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
+import { PubSubEventService } from '../../core/shared/services/pub-sub/pub-sub-event.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -40,7 +40,7 @@ import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    ZChatChatboxComponent,
+    MessageEditorComponent,
     MessageItemComponent,
     MessageListComponent,
     ZChatShareUserIconComponent,
@@ -65,7 +65,7 @@ import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
     CommonModule,
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    ZChatChatboxComponent,
+    MessageEditorComponent,
     MessageItemComponent,
     MessageListComponent,
     ZChatShareUserIconComponent,
@@ -91,7 +91,7 @@ export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService, ChatCommonService, ChatEditorService]
+      providers: [ChatService, ChatCommonService]
     };
   }
 }
