@@ -24,7 +24,7 @@ import { ZChatShareItemRequestComponent } from './message/item-request.component
 import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
 import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
-import { ZChatChatboxService } from './chat-box/chat-box.service';
+import { ChatEditorService } from './chat-editor/chat-editor.service';
 import { ChatGroupSentRequestPipe } from './pipe/chat-group-sent-request.pipe';
 import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
 
@@ -91,7 +91,7 @@ export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService, ChatCommonService, ZChatChatboxService]
+      providers: [ChatService, ChatCommonService, ChatEditorService]
     };
   }
 }

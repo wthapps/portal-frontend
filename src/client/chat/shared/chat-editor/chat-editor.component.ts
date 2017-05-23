@@ -4,7 +4,7 @@ import { ChatService } from '../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
-import { ZChatChatboxService } from './chat-box.service';
+import { ChatEditorService } from './chat-editor.service';
 
 declare var $: any;
 
@@ -29,7 +29,7 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
 
   constructor(private chatService: ChatService,
               private photoSelectDataService: PhotoModalDataService,
-              private chatboxService: ZChatChatboxService) {
+              private chatboxService: ChatEditorService) {
   }
 
   ngOnInit() {
@@ -65,7 +65,6 @@ export class ZChatChatboxComponent implements OnInit, OnDestroy {
   @HostListener('document:keyup', ['$event'])
   onKeyUp(ev: KeyboardEvent) {
     if (ev.keyCode == 16) {
-      this.keyCtrlClass = 'active';
       this.pressingShiftKey = false;
     }
     // pressing Enter Key

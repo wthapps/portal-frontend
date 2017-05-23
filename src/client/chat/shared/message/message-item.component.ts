@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { Config } from '../../../core/shared/config/env.config';
+import { ChatEditorService } from '../chat-editor/chat-editor.service';
+
 
 @Component({
   moduleId: module.id,
@@ -13,7 +15,8 @@ export class MessageItemComponent implements OnInit {
   @Input() prevMessage: any = null;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private chatService: ChatService) {};
+  constructor(private chatService: ChatService,
+              private chatboxService: ChatEditorService) {};
 
 
   ngOnInit() {
@@ -29,6 +32,11 @@ export class MessageItemComponent implements OnInit {
 
   onAdd(contact:any) {
     this.onAddContact.emit(contact);
+  }
+
+  onQuote(message: any) {
+    console.log(message);
+    this.chatboxService.itemSay(message);
   }
 
   hasShowOwner(): boolean {
