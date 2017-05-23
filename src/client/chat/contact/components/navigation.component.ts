@@ -15,6 +15,7 @@ export class ZChatContactMenuComponent implements OnInit {
     {tab: "all", text: "ALL", link: '/contacts'},
     {tab: "online", text: "ONLINE", link: '/contacts/online'},
     {tab: "blacklist", text: "BLACKLIST", link: '/contacts/blacklist'},
+    {tab: "receive", text: "RECEIVE", link: '/contacts/receive'},
     {tab: "sent_request", text: "SENT REQUEST", link: '/contacts/sent_request'},
     {tab: "pending", text: "PENDING", link: '/contacts/pending'},
   ];

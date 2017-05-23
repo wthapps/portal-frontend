@@ -15,4 +15,8 @@ export class ZChatContactSentRequestComponent implements OnInit {
   ngOnInit() {
     this.contactItem = this.chatService.getContacts();
   }
+
+  onResend(contact:any) {
+    this.chatService.addContact([contact.display.id]);
+  }
 }

@@ -9,6 +9,7 @@ import { ZChatContactBlackListComponent } from './contact-black-list.component';
 import { ZChatContactMenuComponent } from './components/navigation.component';
 import { ZChatContactSentRequestComponent } from './contact-sent-request.component';
 import { ZChatContactPendingComponent } from './contact-pending.component';
+import { ZChatContactReceiveComponent } from './contact-receive.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ZChatContactPendingComponent } from './contact-pending.component';
     ZChatContactMenuComponent,
     ZChatContactPendingComponent,
     ZChatContactSentRequestComponent,
+    ZChatContactReceiveComponent,
     ZChatContactOnlineComponent
   ],
   exports: [
@@ -32,6 +34,7 @@ import { ZChatContactPendingComponent } from './contact-pending.component';
     ZChatContactMenuComponent,
     ZChatContactPendingComponent,
     ZChatContactSentRequestComponent,
+    ZChatContactReceiveComponent,
     ZChatContactOnlineComponent
   ],
   providers: []
