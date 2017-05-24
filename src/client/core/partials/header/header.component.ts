@@ -77,7 +77,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
       // this.appearancesChannelService.subscribe()
       // this.notificationService.startChannel(this.appearancesChannelService.subscribe());
 
-      this.channelService.subscribe();
+      // this.channelService.subscribe();
     }
   }
 

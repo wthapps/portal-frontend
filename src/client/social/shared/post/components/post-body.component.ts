@@ -42,8 +42,8 @@ export class PostBodyComponent implements OnInit, OnChanges {
       this.showInfo = true;
     }
 
-    if (changes['item'].currentValue.parent) {
-      this.parentItem = changes['item'].currentValue.parent;
+    if (changes['item'].currentValue.parent_post) {
+      this.parentItem = changes['item'].currentValue.parent_post;
     }
   }
 
