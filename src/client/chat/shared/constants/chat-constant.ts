@@ -4,6 +4,10 @@ export class ChatConstant {
   public static profileUrl = '/profile';
 }
 
+export declare const FORM_MODE: {
+  CREATE: 'CREATE',
+  EDIT: 'EDIT'
+};
 
 export let CHAT_ACTIONS: any = {
   TEXT_MESSAGE_CREATE: 'TEXT_MESSAGE_CREATE',
@@ -15,3 +19,4 @@ export let CHAT_ACTIONS: any = {
   MESSAGE_DOWNLOAD: 'MESSAGE_DOWNLOAD',
   MESSAGE_SEND: 'MESSAGE_SEND'
 };
+

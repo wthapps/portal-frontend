@@ -26,7 +26,7 @@ import { ZChatShareRequestContactComponent } from './modal/request-contact.compo
 import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
 import { ChatGroupSentRequestPipe } from './pipe/chat-group-sent-request.pipe';
 import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
-import { PubSubEventService } from '../../core/shared/services/pub-sub/pub-sub-event.service';
+import { ConversationService } from '../conversation/conversation.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -91,7 +91,7 @@ export class ChatSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ChatSharedModule,
-      providers: [ChatService, ChatCommonService]
+      providers: [ConversationService, ChatService, ChatCommonService]
     };
   }
 }
