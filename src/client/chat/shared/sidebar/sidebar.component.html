@@ -19,8 +19,8 @@
                 <!--</span>-->
             <!--</figure>-->
             <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
-            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
-            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
+            <span *ngIf="contact.group_json.group_type == 'couple'" class="text-overflow-name">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'" class="text-overflow-name">{{contact.group_json | chatGroupName}}</span>
           </a>
         </li>
       </ul>
@@ -42,8 +42,8 @@
               <!--</span>-->
             <!--</figure>-->
             <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
-            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
-            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
+            <span *ngIf="contact.group_json.group_type == 'couple'" class="text-overflow-name">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'" class="text-overflow-name">{{contact.group_json | chatGroupName}}</span>
           </a>
         </li>
       </ul>
@@ -68,8 +68,8 @@
               <!--</span>-->
             <!--</figure>-->
             <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
-            <span *ngIf="contact.group_json.group_type == 'couple'">{{contact.display.name}}</span>
-            <span *ngIf="contact.group_json.group_type == 'multiple'">{{contact.group_json | chatGroupName:20}}</span>
+            <span *ngIf="contact.group_json.group_type == 'couple'" class="text-overflow-name">{{contact.display.name}}</span>
+            <span *ngIf="contact.group_json.group_type == 'multiple'" class="text-overflow-name">{{contact.group_json | chatGroupName}}</span>
           </a>
         </li>
       </ul>

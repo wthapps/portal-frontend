@@ -23,12 +23,11 @@
           <li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a></li>
           <!--show if current isn't one user-->
 
-          <!--<li><a href="#">Leave Conversation</a></li>-->
-          <!--<li><a href="#">Delete Conversation</a></li>-->
+          <li><a href="javascript:;" (click)="onDeleteConversation()">Delete Conversation</a></li>
 
           <!--show if current is one user-->
           <!--<li role="separator" class="divider"></li>-->
-          <!--<li><a href="#">View Social Profile</a></li>-->
+          <li *ngIf="item.value.group_json.group_type == 'couple'"><a [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
           <!--<li><a href="#">View in Contact</a></li>-->
           <!--show if current is one user-->
 
@@ -46,8 +45,8 @@
       <z-chat-share-user-icon [image]="item.value.display.image" [groupType]="item.value.group_json.group_type"
                               [userId]="item.value.display.id"></z-chat-share-user-icon>
       <div class="p-list-user-namegroup">
-        <span *ngIf="item.value.group_json.group_type == 'couple'">{{item.value.display.name}}</span>
-        <span *ngIf="item.value.group_json.group_type == 'multiple'">{{item.value.group_json | chatGroupName:50}}</span>
+        <span *ngIf="item.value.group_json.group_type == 'couple'" class="text-overflow-name">{{item.value.display.name}}</span>
+        <span *ngIf="item.value.group_json.group_type == 'multiple'" class="text-overflow-name" style="width: 400px">{{item.value.group_json | chatGroupName}}</span>
         <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
           {{item.value.group_json.member_count}} people <i [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
@@ -60,14 +59,14 @@
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
       <button (click)="showDropdownMenu($event)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown">
-        {{user_in_group.name}} <span class="caret"></span>
+        <span *ngIf="usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span> {{user_in_group.name}} <span class="caret"></span>
       </button>
-      <!--<ul class="dropdown-menu dropdown-menu-lg">-->
-        <!--<li><a href="#">Send Message</a></li>-->
-        <!--<li class="divider"></li>-->
-        <!--<li><a href="#">View Social Profile</a></li>-->
-        <!--<li><a href="#">Blacklist</a></li>-->
-      <!--</ul>-->
+      <ul class="dropdown-menu dropdown-menu-lg">
+        <li><a href="javascript:;" (click)="onSelect(item.value)">Send Message</a></li>
+        <li class="divider"></li>
+        <li><a [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
+        <li><a href="javascript:;">Blacklist</a></li>
+      </ul>
     </div>
   </div>
 </template>

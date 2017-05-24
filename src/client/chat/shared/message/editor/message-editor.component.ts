@@ -88,6 +88,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     }
 
     this.chatService.sendTextMessage(message);
+    // this.chatService.getContacts(true);
     $('#chat-message-text').html('');
     // this.quoteMess.length = 0;
 

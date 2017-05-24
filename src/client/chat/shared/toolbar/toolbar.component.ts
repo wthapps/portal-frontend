@@ -18,13 +18,16 @@ export class ZChatToolbarComponent implements OnInit {
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   item: any;
   showMemberBar: boolean = false;
+  usersOnlineItem:any;
+  profileUrl:any;
 
   constructor(private chatService: ChatService) {
-
+    this.profileUrl = this.chatService.constant.profileUrl;
   }
 
   ngOnInit() {
     this.item = this.chatService.getContactSelect();
+    this.usersOnlineItem = this.chatService.getUsersOnline();
   }
 
   onAddContact() {
@@ -72,5 +75,14 @@ export class ZChatToolbarComponent implements OnInit {
       showDropdownMenu_ul.style.right = 0;
       showDropdownMenu_ul.style.left = 'auto';
     }
+  }
+
+  onDeleteConversation() {
+    this.chatService.deleteContact(this.item.value);
+  }
+
+  onSelect(contact:any) {
+    console.log(contact);
+    this.chatService.selectContact(contact);
   }
 }
