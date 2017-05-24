@@ -5,7 +5,7 @@
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
   <div class="page-body-content-in">
     <ul class="p-list-user p-list-border">
-      <li *ngFor="let contact of contactItem.value.data | chatGroupCouple | chatGroupPending" >
+      <li *ngFor="let contact of contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupPending:contactItem.value.data.length" >
         <div class="media-flex">
           <div class="media-flex-item">
             <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
@@ -16,7 +16,17 @@
           <div class="media-flex-body text-fade">
             <!--Nickname-->
           </div>
-          <!--<z-chat-contact-actions [contact]="contact"></z-chat-contact-actions>-->
+          <div class="media-flex-item">
+            <div class="btn-group">
+              <button class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" type="button">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="javascript:;" (click)="onAccept(contact)">Accept</a></li>
+                <li><a href="javascript:;" (click)="onDecline(contact)">Decline</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </li>
     </ul>

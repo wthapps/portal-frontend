@@ -307,9 +307,11 @@ export class ChatService {
     });
   }
 
-  declineRequest(contact:any) {
+  declineRequest(contact:any, setDefaultOnSelect:boolean = true) {
     this.updateGroupUser(contact.id, {status: "decline"}, (res:any) => {
-      this.setDefaultSelectContact();
+      if (setDefaultOnSelect) {
+        this.setDefaultSelectContact();
+      }
     });
   }
 
@@ -318,8 +320,11 @@ export class ChatService {
   }
 
   shareContact(ids:any) {
+    let item = this.storage.find('contact_select');
+    this.apiBaseService.post('zone/chat/contact/share', {group_id: item.value.group_json.id, share_user_ids: ids}).subscribe((res:any) => {
+
+    });
     for(let i = 0; i < ids.length; i++) {
-      let item = this.storage.find('contact_select');
       if (item && item.value) {
         // this.chanel.sendContactMessage(item.value.group_json.id, '', ids[i]);
         this.sendMessage(item.value.group_json.id, {message: '', type: 'contact', contact: ids[i]});

@@ -5,7 +5,7 @@
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
   <div class="page-body-content-in">
     <ul class="p-list-user p-list-border">
-      <li *ngFor="let contact of contactItem.value.data | chatGroupBlackList" >
+      <li *ngFor="let contact of contactItem.value.data | chatGroupBlackList:contactItem.value.data.length" >
         <div class="media-flex">
           <div class="media-flex-item">
             <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
