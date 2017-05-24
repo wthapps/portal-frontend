@@ -28,7 +28,7 @@
     </div>
     <div class="photo-box-img-owner">{{object.owner.name}}</div>
     <div class="photo-box-img-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
-    <div class="photo-box-img-size">{{object.size}}</div>
+    <div class="photo-box-img-size">{{object.size | bytes}}</div>
   </div>
 
   <!--type == 'album'-->

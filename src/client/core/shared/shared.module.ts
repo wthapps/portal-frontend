@@ -61,6 +61,7 @@ import { ZoneReportService } from './form/report/report.service';
 import { ZoneReportComponent } from './form/report/report.component';
 import { HdModalComponent } from './ng2-hd/modal/components/modal';
 import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
+import { BytesPipe } from './pipe/bytes.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -105,6 +106,7 @@ import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
     SafeHtmlPipe,
     WthFilterByPipe,
     ArrayLengthPipe,
+    BytesPipe,
 
     //Directive
     ScrollToBottomDirective,
@@ -151,6 +153,7 @@ import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
     ShowLengthTransformPipe,
     SafeHtmlPipe,
     ConvertByPatternPipe,
+    BytesPipe,
 
     //Directive
     ScrollToBottomDirective,
