@@ -36,9 +36,9 @@ export class ChatService {
     this.constant = ChatConstant;
   }
 
-  getContacts() {
+  getContacts(forceFromApi:boolean = false) {
     let res:any = this.storage.find('chat_contacts');
-    if(res && res.value) {
+    if(res && res.value && !forceFromApi) {
       return res;
     } else {
       this.apiBaseService.get('zone/chat/contacts').subscribe(
