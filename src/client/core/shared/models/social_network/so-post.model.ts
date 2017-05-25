@@ -9,6 +9,7 @@ export class SoPost extends BaseInput implements FromData {
   description: string = '';
   owner: SoUser = new SoUser();
   comments: Array<SoComment> = new Array<SoComment>();
+  parent_post: any ;
   photos: Array<any> = [];
   tags: Array<any> = [];
   tags_json: Array<any> = [];

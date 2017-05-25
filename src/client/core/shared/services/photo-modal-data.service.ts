@@ -12,7 +12,7 @@ export class PhotoModalDataService {
   nextObs$ : Observable<any>;
   chooseFilesObs$  : Observable<any>;
   uploadObs$  : Observable<any>;
-  saveObs$  : Observable<any>;
+  // saveObs$  : Observable<any>;
   dismissObs$  : Observable<any>;
   initObs$  : Observable<any>;
 
@@ -32,7 +32,7 @@ export class PhotoModalDataService {
     this.nextObs$ = this.modalNextSource.asObservable();
     this.chooseFilesObs$ = this.modalChooseFilesSource.asObservable();
     this.uploadObs$ = this.modalUploadSource.asObservable();
-    this.saveObs$ = this.modalSaveSource.asObservable();
+    // this.saveObs$ = this.modalSaveSource.asObservable();
     this.dismissObs$ = this.modalDismissSource.asObservable();
     this.initObs$ = this.modalInitSource.asObservable();
   }

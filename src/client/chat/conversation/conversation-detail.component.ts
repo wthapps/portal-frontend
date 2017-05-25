@@ -7,6 +7,7 @@ import { PubSubEventService } from '../../core/shared/services/pub-sub/pub-sub-e
 import { CHAT_ACTIONS } from '../shared/constants/chat-constant';
 import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
+import { ConversationService } from './conversation.service';
 
 @Component({
   moduleId: module.id,
@@ -20,7 +21,11 @@ export class ConversationDetailComponent implements PubSubAction, OnInit, OnDest
 
   subscriptionPubSub: Subscription;
 
-  constructor(private chatService: ChatService, private pubSubEvent: PubSubEventService) {}
+  constructor(
+    private chatService: ChatService,
+    private pubSubEvent: PubSubEventService,
+    private conversationService: ConversationService
+  ) {}
 
   ngOnInit() {
 
@@ -37,12 +42,20 @@ export class ConversationDetailComponent implements PubSubAction, OnInit, OnDest
     console.log('actioning....................');
     switch (event.type) {
       case CHAT_ACTIONS.MESSAGE_COPY:
+
         break;
       case CHAT_ACTIONS.MESSAGE_QUOTE:
         break;
       case CHAT_ACTIONS.MESSAGE_EDIT:
         break;
       case CHAT_ACTIONS.MESSAGE_DELETE:
+        this.conversationService.deleteMessage(this.item.id, event.payload.id)
+          .subscribe((response: any) => {
+            console.log('delete ok!!!!');
+          }, error => {
+
+          });
+
         break;
     }
   }

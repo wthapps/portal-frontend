@@ -12,7 +12,12 @@
   </main>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
-  <p-confirmDialog header="Confirmation" width="670"></p-confirmDialog>
+  <p-confirmDialog header="Confirmation" width="670" #cd>
+    <p-footer>
+      <button class="btn btn-default-inline" type="button" (click)="cd.reject()">Cancel</button>
+      <button class="btn btn-primary-inline" type="button" (click)="cd.accept()">Delete</button>
+    </p-footer>
+  </p-confirmDialog>
 
 
   <!--<wth-modal-dock #modalDock>

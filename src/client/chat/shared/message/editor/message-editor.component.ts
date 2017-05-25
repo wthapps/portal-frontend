@@ -5,6 +5,7 @@ import { PostPhotoSelectComponent } from '../../../../core/partials/zone/photo/p
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
 import { PubSubEventService } from '../../../../core/shared/services/pub-sub/pub-sub-event.service';
+import { FORM_MODE } from '../../constants/chat-constant';
 
 
 declare var $: any;
@@ -19,19 +20,16 @@ declare var $: any;
 export class MessageEditorComponent implements OnInit, OnDestroy {
   emojiData: any = [];
 
+  mode: string;
   // Subscription list
   nextPhotoSubscription: Subscription;
   uploadPhotoSubscription: Subscription;
 
   private pressingShiftKey: boolean = false;
 
-  quoteSubscription: Subscription;
-  quoteMess: any = [];
-
   constructor(
     private chatService: ChatService,
-    private photoSelectDataService: PhotoModalDataService,
-    private pubSubEventService: PubSubEventService
+    private photoSelectDataService: PhotoModalDataService
   ) {
   }
 
@@ -69,8 +67,18 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
         this.send(true);
       }
     }
-    this.quoteSubscription.unsubscribe();
   }
+
+
+  create(message: any) {
+    this.mode = FORM_MODE.CREATE;
+  }
+
+
+  edit(message: any) {
+    this.mode = FORM_MODE.EDIT;
+  }
+
 
   send(enter?: boolean) {
 
@@ -81,7 +89,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
     this.chatService.sendTextMessage(message);
     $('#chat-message-text').html('');
-    this.quoteMess.length = 0;
+    // this.quoteMess.length = 0;
 
   }
 
@@ -132,7 +140,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubscribePhotoEvents();
-    this.pubSubEventService.unsubscribe();
   }
 
   private subscribePhotoEvents() {
