@@ -87,7 +87,6 @@
     .btn {
       min-width: 34px;
       text-align: center;
-      border-width: 0;
     }
   }
   .z-heading {
@@ -97,10 +96,13 @@
       float: left;
       margin-right: 5px;
       color: $text-color;
+    }
+    a.z-name {
       &:hover {
         text-decoration: underline;
       }
     }
+
     .z-shared-with {
       float: left;
       color: $light-slate;
@@ -660,6 +662,20 @@
     .z-name {
       color: $text-color;
     }
+    .zone-social-cover-info {
+      position: relative;
+      .z-social-media-body {
+        position: absolute;
+        top: 0;
+        left: 110px;
+        right: 150px;
+      }
+      .z-social-media-right {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
     &.user {
       .zone-social-cover-info {
         position: absolute;
@@ -672,10 +688,16 @@
           color: #ffffff;
         }
       }
+      .z-social-media-right {
+        .btn {
+          border-width: 0;
+        }
+      }
     }
     &.group {
       .zone-social-cover-info {
-        padding: 15px;
+        padding: 0;
+        margin: 15px;
         color: $light-slate;
         .z-shared-info {
           ul {
