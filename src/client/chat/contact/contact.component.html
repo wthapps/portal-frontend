@@ -24,3 +24,17 @@
 </div>
 
 <!--<z-chat-share-add-contact #addContact></z-chat-share-add-contact>-->
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!contactItem.value">
+  <div class="page-body-content-in">
+    <div class="inside-loading">
+      <div class="pt20 pb20"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length).length == 0 ">
+  <div class="page-body-content-in">
+    No data
+  </div>
+</div>

@@ -33,3 +33,17 @@
 </div>
 
 <z-chat-share-request-contact #request></z-chat-share-request-contact>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!users">
+  <div class="page-body-content-in">
+    <div class="inside-loading">
+      <div class="pt20 pb20"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="users && users.length == 0">
+  <div class="page-body-content-in">
+    No data
+  </div>
+</div>

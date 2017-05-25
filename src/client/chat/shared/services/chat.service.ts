@@ -74,6 +74,15 @@ export class ChatService {
     );
   }
 
+  cancelContact(contact:any) {
+    console.log(contact);
+    this.apiBaseService.post('zone/chat/contact/cancel', {group_id: contact.group_id}).subscribe(
+      (res:any) => {
+        // this.addedContactNotification(res.data.group_json.id);
+      }
+    );
+  }
+
   setDefaultSelectContact() {
     let res:any = this.storage.find('chat_contacts');
     if(res && res.value && res.value.data[0]) {

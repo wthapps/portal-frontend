@@ -19,4 +19,8 @@ export class ZChatContactSentRequestComponent implements OnInit {
   onResend(contact:any) {
     this.chatService.addContact([contact.display.id]);
   }
+
+  onCancel(contact:any) {
+    this.chatService.cancelContact(contact);
+  }
 }
