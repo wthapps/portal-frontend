@@ -36,18 +36,18 @@ export class ChatService {
     this.constant = ChatConstant;
   }
 
-  getContacts(forceFromApi:boolean = false) {
+  getContacts(option:any = {}) {
     let res:any = this.storage.find('chat_contacts');
-    if(res && res.value && !forceFromApi) {
+    if(res && res.value && !option.forceFromApi) {
       return res;
     } else {
       this.apiBaseService.get('zone/chat/contacts').subscribe(
         (res:any) => {
           this.storage.save('chat_contacts', res);
-          this.setDefaultSelectContact();
           this.chatCommonService.setRecentContacts();
           this.chatCommonService.setFavouriteContacts();
           this.chatCommonService.setHistoryContacts();
+          this.setDefaultSelectContact();
         }
       );
       return res;
@@ -94,6 +94,15 @@ export class ChatService {
   selectContact(contact:any) {
     this.storage.save('contact_select', contact);
     this.handler.triggerEvent('on_contact_select', contact);
+  }
+
+  selectContactByPartnerId(id:any) {
+    let conversations:any = this.storage.find('chat_contacts').value;
+    let contact:any = _.find(conversations.data, { 'partner_id': id});
+    if (contact) {
+      this.selectContact(contact);
+      this.router.navigate([`${this.constant.conversationUrl}/${contact.id}`]);
+    }
   }
 
   getContactSelect() {
@@ -166,7 +175,9 @@ export class ChatService {
 
   sendMessage(groupId:any, data:any, option:any = {}, callback?:any) {
     this.apiBaseService.post('zone/chat/message', {group_id: groupId, data: data}).subscribe((res:any) => {
-      console.log(res);
+      if (callback) {
+        callback(res);
+      }
     });
   }
 
@@ -174,7 +185,7 @@ export class ChatService {
     let item = this.storage.find('contact_select');
     if (item && item.value && message) {
       let item = this.storage.find('contact_select');
-      this.sendMessage(item.value.group_json.id, {message: message, type: 'text'});
+      this.sendMessage(item.value.group_json.id, {message: message, type: 'text'}, option, callback);
     }
   }
 
@@ -247,50 +258,48 @@ export class ChatService {
   }
 
   addGroupUserFavorite() {
-    let groupUserId:any = this.storage.find('contact_select').value.id;
+    let groupId:any = this.storage.find('contact_select').value.group_id;
     let favourite:any = !this.storage.find('contact_select').value.favourite;
     let body:any = {favourite: favourite};
-    this.updateGroupUser(groupUserId, body);
+    this.updateGroupUser(groupId, body);
     this.storage.find('contact_select').value.favourite = !this.storage.find('contact_select').value.favourite;
   }
 
-  addGroupUserBlackList(contact:any) {
-    let groupUserId:any = contact.id;
-    let body:any = {black_list: true};
-    this.updateGroupUser(groupUserId, body);
-  }
-
-  removeBlackList(contact:any) {
-    let groupUserId:any = contact.id;
-    let body:any = {black_list: false};
-    this.updateGroupUser(groupUserId, body);
+  addGroupUserBlackList(userId:any) {
+    this.apiBaseService.post('users/users_blacklist', {user_id: userId, module_name: "chat"}).subscribe((res:any) => {
+    //
+    });
   }
 
   updateNotification(contact:any, data:any) {
     this.storage.find('contact_select').value.notification = !this.storage.find('contact_select').value.notification;
-    this.updateGroupUser(contact.id, data);
+    this.updateGroupUser(contact.group_id, data);
   }
 
   deleteContact(contact:any) {
-    this.updateGroupUser(contact.id, {deleted: true});
+    this.updateGroupUser(contact.group_id, {deleted: true});
   }
 
   updateDisplay(contact:any, data:any) {
-    this.updateGroupUser(contact.id, data, (res:any) => {
+    this.updateGroupUser(contact.group_id, data, (res:any) => {
       this.updateDisplayNotification(contact.group_json.id);
     });
   }
 
   updateHistory(contact:any) {
-    this.updateGroupUser(contact.id, {history: false});
+    this.updateGroupUser(contact.group_id, {history: false});
   }
 
   leaveConversation(contact:any) {
-    this.updateGroupUser(contact.id, {leave: true});
+    this.updateGroupUser(contact.group_id, {leave: true});
   }
 
-  updateGroupUser(groupUserId:any, data:any, callback?:any) {
-    this.apiBaseService.put('zone/chat/group_user/' + groupUserId, data).subscribe(
+  removeFromConversation(contact:any, userId:any) {
+    this.updateGroupUser(contact.group_id, {leave: true, user_id: userId});
+  }
+
+  updateGroupUser(groupId:any, data:any, callback?:any) {
+    this.apiBaseService.put('zone/chat/group_user/' + groupId, data).subscribe(
       (res:any) => {
         this.storage.save('chat_contacts', res);
         this.chatCommonService.updateAll();
@@ -335,13 +344,13 @@ export class ChatService {
   }
 
   acceptRequest(contact:any) {
-    this.updateGroupUser(contact.id, {accept_friend: true}, (res:any) => {
+    this.updateGroupUser(contact.group_id, {accept_friend: true}, (res:any) => {
       contact.active = true;
     });
   }
 
   declineRequest(contact:any, setDefaultOnSelect:boolean = true) {
-    this.updateGroupUser(contact.id, {status: "decline"}, (res:any) => {
+    this.updateGroupUser(contact.group_id, {status: "decline"}, (res:any) => {
       if (setDefaultOnSelect) {
         this.setDefaultSelectContact();
       }

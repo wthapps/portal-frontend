@@ -56,7 +56,7 @@ export class ZChatContactActionsComponent implements OnInit {
       message: 'Are you sure you want to add this contact to black list ?',
       header: 'Add To Black List',
       accept: () => {
-        this.chatService.addGroupUserBlackList(this.contact);
+        this.chatService.addGroupUserBlackList(this.contact.partner_id);
       }
     });
   }

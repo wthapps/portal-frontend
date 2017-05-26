@@ -31,8 +31,7 @@
 
           <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
           <li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;"
-                                                                        (click)="leaveConversation()">Leave
-            Conversation</a></li>
+                                                                        (click)="leaveConversation()">Leave Conversation</a></li>
           <!--show if current isn't one user-->
 
           <li><a href="javascript:;" (click)="onDeleteConversation()">Delete Conversation</a></li>
@@ -59,16 +58,17 @@
 <template [ngIf]="item.value && showMemberBar">
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
-      <button (click)="showDropdownMenu($event)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
+      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
               data-toggle="dropdown">
         <span *ngIf="usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span>
         {{user_in_group.name}} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-lg">
-        <li><a href="javascript:;" (click)="onSelect(item.value)">Send Message</a></li>
-        <li class="divider"></li>
+        <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
+        <!--<li class="divider"></li>-->
         <li><a [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
-        <li><a href="javascript:;">Blacklist</a></li>
+        <li><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
+        <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove From Conversation</a></li>
       </ul>
     </div>
   </div>
