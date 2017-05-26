@@ -28,3 +28,12 @@ dl.media-user-list-group {
     margin-bottom: 15px;
   }
 }
+
+.page-body-control {
+  .media-user-list {
+    overflow: visible;
+    &:hover, &.active {
+      background-color: transparent;
+    }
+  }
+}

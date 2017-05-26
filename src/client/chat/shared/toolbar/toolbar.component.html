@@ -4,7 +4,8 @@
       <z-chat-share-user [data]="item.value">
         <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
-          {{item.value.group_json.member_count}} people <i [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
+          {{item.value.group_json.member_count}} people <i
+          [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
         </small>
       </z-chat-share-user>
     </div>
@@ -20,32 +21,35 @@
         <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown">
           <i class="fa fa-ellipsis-v"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
           <!--<li><a href="#">View Photos</a></li>-->
           <!--<li><a href="#">Mark as Unread</a></li>-->
-          <!--<li role="separator" class="divider"></li>-->
+          <li><a href="javascript:;" (click)="sendContact()">Send Contact</a></li>
+          <li role="separator" class="divider"></li>
 
           <!--show if current isn't one user-->
 
           <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
-          <li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a></li>
+          <li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;"
+                                                                        (click)="leaveConversation()">Leave
+            Conversation</a></li>
           <!--show if current isn't one user-->
 
           <li><a href="javascript:;" (click)="onDeleteConversation()">Delete Conversation</a></li>
 
           <!--show if current is one user-->
           <!--<li role="separator" class="divider"></li>-->
-          <li *ngIf="item.value.group_json.group_type == 'couple'"><a [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
+          <li *ngIf="item.value.group_json.group_type == 'couple'"><a
+            [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
           <!--<li><a href="#">View in Contact</a></li>-->
           <!--show if current is one user-->
 
-          <!--<li role="separator" class="divider"></li>-->
 
+          <li role="separator" class="divider"></li>
           <li *ngIf="item.value.notification"><a href="javascript:;" (click)="disableNotification()">Disable
             Notification</a></li>
           <li *ngIf="!item.value.notification"><a href="javascript:;" (click)="enableNotification()">Enable
             Notification</a></li>
-          <li><a href="javascript:;" (click)="sendContact()">Send Contact</a></li>
         </ul>
       </div>
     </div>
@@ -55,8 +59,10 @@
 <template [ngIf]="item.value && showMemberBar">
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
-      <button (click)="showDropdownMenu($event)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown">
-        <span *ngIf="usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span> {{user_in_group.name}} <span class="caret"></span>
+      <button (click)="showDropdownMenu($event)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
+              data-toggle="dropdown">
+        <span *ngIf="usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span>
+        {{user_in_group.name}} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-lg">
         <li><a href="javascript:;" (click)="onSelect(item.value)">Send Message</a></li>
