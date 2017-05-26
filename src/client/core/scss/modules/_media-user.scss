@@ -1,4 +1,6 @@
 .media-user-list {
+  overflow: visible;
+
   a {
     color: inherit;
   }
@@ -8,24 +10,43 @@
   .media-right {
     white-space: nowrap;
     position: relative;
-    vertical-align: middle;
+    vertical-align: top;
   }
+
+  &.media-middle, &.media-middle, &.media-user-list-middle {
+    .media-left, .media-body, .media-right {
+      vertical-align: middle;
+    }
+  }
+
   & + .media-user-list {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid $line;
   }
-  &:hover {
-    background: rgba(#ECECEC, 0.8);
-  }
   &.active {
     background: rgba(#ECECEC, 1);
+  }
+  &.media-user-list-hover {
+    &:hover {
+      background: rgba(#ECECEC, 0.5);
+    }
   }
 }
 
 dl.media-user-list-group {
   dt {
     margin-bottom: 15px;
+  }
+}
+
+.media-user-list-group {
+  &.row {
+    .media-user-list {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid $line;;
+    }
   }
 }
 

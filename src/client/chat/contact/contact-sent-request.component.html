@@ -4,33 +4,26 @@
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem && contactItem.value">
   <div class="page-body-content-in">
-    <ul class="p-list-user p-list-border">
-      <li *ngFor="let contact of contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupSentRquest:contactItem.value.data.length" >
-        <div class="media-flex">
-          <div class="media-flex-item">
-            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
+    <div class="row media-user-list-group">
+      <div class="col-sm-6"
+           *ngFor="let contact of contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupSentRquest:contactItem.value.data.length">
+        <div class="media media-user-list">
+          <div class="media-body">
+            <z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>
           </div>
-          <div class="media-flex-item">
-            <span class="text-overflow-name">{{contact.display.name}}</span>
-          </div>
-          <div class="media-flex-body text-fade">
-            <!--Nickname-->
-          </div>
-          <div class="media-flex-item">
-            <div class="btn-group">
-              <button class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" type="button">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li><a href="javascript:;" (click)="onResend(contact)">ReSend</a></li>
-                <li><a href="javascript:;" (click)="onCancel(contact)">Cancel</a></li>
-              </ul>
-            </div>
+          <div class="media-right no-wrap">
+            <button class="btn btn-wth-inline-border" type="button" (click)="onResend(contact)">
+              ReSend
+            </button>
+            <button type="button" class="btn btn-default" (click)="onCancel(contact)">
+              Cancel
+            </button>
           </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
+
 </div>
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!contactItem.value">
@@ -41,7 +34,8 @@
   </div>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupSentRquest:contactItem.value.data.length).length == 0">
+<div class="page-body-content has-page-body-control has-page-body-sidebar"
+     *ngIf="contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupSentRquest:contactItem.value.data.length).length == 0">
   <div class="page-body-content-in">
     No data
   </div>

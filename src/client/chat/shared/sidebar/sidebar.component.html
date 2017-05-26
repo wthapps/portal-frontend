@@ -6,7 +6,7 @@
   <dl class="media-user-list-group">
     <dt>Favourites</dt>
     <dd *ngIf="favouriteContacts.value">
-      <div class="media media-user-list" *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
+      <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
         <div class="media-body">
           <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
             <z-chat-share-user [data]="contact"></z-chat-share-user>
@@ -21,7 +21,7 @@
   <dl class="media-user-list-group">
     <dt>Recent</dt>
     <dd *ngIf="recentContacts.value">
-      <div class="media media-user-list" *ngFor="let contact of recentContacts.value" [routerLinkActive]="['active']">
+      <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of recentContacts.value" [routerLinkActive]="['active']">
         <div class="media-body">
           <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
             <z-chat-share-user [data]="contact"></z-chat-share-user>

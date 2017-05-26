@@ -1,27 +1,31 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { ChatService } from '../services/chat.service';
 import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversation.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
 
-declare let $:any;
+declare let $: any;
 
 @Component({
   moduleId: module.id,
   selector: 'z-chat-contact-actions',
-  templateUrl: 'contact-actions.component.html'
+  templateUrl: 'contact-actions.component.html',
+  styles: [':host{display: inline-block;}']
 })
 export class ZChatContactActionsComponent implements OnInit {
-  @Input() contact:any;
-  conversationUrl:any;
-  profileUrl:any;
+  @Input() contact: any;
+  conversationUrl: any;
+  profileUrl: any;
   @ViewChild('addConversation') addConversation: ZChatShareAddToConversationComponent;
   // Config component
-  @Input() config:any = {
+  @Input() config: any = {
     history: false
   };
 
-  constructor(private chatService: ChatService,
+  constructor(private router: Router,
+              private chatService: ChatService,
               private zoneReportService: ZoneReportService,
               private confirmationService: ConfirmationService) {
     this.conversationUrl = this.chatService.constant.conversationUrl;
@@ -29,15 +33,18 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   ngOnInit() {
-  //   console.log(this.config)
+    //   console.log(this.config)
   }
 
-  onSelect(contact:any) {
-    if(this.config.history) {
+  onSelect(contact: any) {
+    console.log(contact);
+    if (this.config.history) {
       this.chatService.updateHistory(contact);
     }
     $('#chat-message-text').focus();
     this.chatService.selectContact(contact);
+
+    this.router.navigate([this.conversationUrl, contact.id]);
   }
 
   addToConversation() {
@@ -72,7 +79,11 @@ export class ZChatContactActionsComponent implements OnInit {
     });
   }
 
-  report(uuid:any) {
+  onFavorite() {
+    this.chatService.addGroupUserFavorite();
+  }
+
+  report(uuid: any) {
     this.zoneReportService.friend(uuid);
   }
 }

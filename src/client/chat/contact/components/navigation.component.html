@@ -1,12 +1,16 @@
-<nav class="nav-tabs-wrap">
+<nav class="nav-tabs-wrap clearfix">
   <!-- Nav tabs -->
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs pull-left">
     <li *ngFor="let t of menu" [ngClass]="{'active': (t.tab == tab)}">
       <a *ngIf="t.tab == tab" href="javascript:;">{{t.text}}</a>
       <a *ngIf="t.tab != tab" [routerLink]="[t.link]">{{t.text}}</a>
     </li>
-    <a class="btn btn-default" style="float: right" href="javascript:;" (click)="newContact()">Add New Contact</a>
   </ul>
+  <div class="pull-right">
+    <a class="btn btn-wth-inline-border" href="javascript:;" (click)="newContact()">
+      <i class="fa fa-user-plus"></i> Add Contact
+    </a>
+  </div>
 </nav>
 
 <z-chat-share-add-contact #addContact></z-chat-share-add-contact>

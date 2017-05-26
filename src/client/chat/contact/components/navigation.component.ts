@@ -12,12 +12,12 @@ export class ZChatContactMenuComponent implements OnInit {
   contactItem:any;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   menu:any = [
-    {tab: "all", text: "ALL", link: '/contacts'},
-    {tab: "online", text: "ONLINE", link: '/contacts/online'},
-    {tab: "blacklist", text: "BLACKLIST", link: '/contacts/blacklist'},
-    {tab: "receive", text: "RECEIVE", link: '/contacts/receive'},
-    {tab: "sent_request", text: "SENT REQUEST", link: '/contacts/sent_request'},
-    {tab: "pending", text: "PENDING", link: '/contacts/pending'},
+    {tab: "all", text: "All Contacts", link: '/contacts'},
+    {tab: "online", text: "Online", link: '/contacts/online'},
+    {tab: "receive", text: "Received", link: '/contacts/receive'},
+    {tab: "pending", text: "Pending", link: '/contacts/pending'},
+    {tab: "sent_request", text: "Requested", link: '/contacts/sent_request'},
+    {tab: "blacklist", text: "Blacklist", link: '/contacts/blacklist'}
   ];
 
   constructor(private chatService: ChatService) {
