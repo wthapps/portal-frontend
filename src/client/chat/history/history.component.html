@@ -1,22 +1,49 @@
-<!--<div class="page-body-content has-page-body-sidebar" *ngIf="contactItem.value">-->
-  <!--<div class="page-body-content-in">-->
-    <!--<ul class="p-list-user p-list-border">-->
-      <!--<li *ngFor="let contact of contactItem.value" >-->
-        <!--<div class="media-flex">-->
-          <!--<div class="media-flex-item">-->
-            <!--<figure>-->
-              <!--<img [src]="contact.display.image">-->
-            <!--</figure>-->
-          <!--</div>-->
-          <!--<div class="media-flex-item">-->
-            <!--<span class="text-overflow-name">{{contact.display.name}}</span>-->
-          <!--</div>-->
-          <!--<div class="media-flex-body text-fade">-->
-            <!--&lt;!&ndash;Nickname&ndash;&gt;-->
-          <!--</div>-->
-          <!--<z-chat-contact-actions [contact]="contact" [config]="configActions"></z-chat-contact-actions>-->
-        <!--</div>-->
-      <!--</li>-->
-    <!--</ul>-->
-  <!--</div>-->
-<!--</div>-->
+<div class="page-body-content has-page-body-sidebar" *ngIf="contactItem.value">
+  <div class="page-body-content-in">
+    <ul class="p-list-user p-list-border">
+      <li *ngFor="let contact of contactItem.value" >
+        <div class="media-flex">
+          <div class="media-flex-item">
+            <figure>
+              <img [src]="contact.display.image">
+            </figure>
+          </div>
+          <div class="media-flex-item">
+            <span class="text-overflow-name">{{contact.display.name}}</span>
+          </div>
+          <div class="media-flex-body text-fade">
+            <!--Nickname-->
+          </div>
+          <z-chat-contact-actions [contact]="contact" [config]="configActions"></z-chat-contact-actions>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+<!--
+<dl class="p-list-user-group" *ngIf="historyShow">
+  <dt>History</dt>
+  <dd>
+    <ul class="p-list-user p-list-outside" *ngIf="historyContacts.value">
+      <li *ngFor="let contact of historyContacts.value" [routerLinkActive]="['active']">
+        <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
+          <div class="pull-right">
+            <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+          </div>
+          &lt;!&ndash;<figure>&ndash;&gt;
+          &lt;!&ndash;<img [src]="contact.display.image">&ndash;&gt;
+          &lt;!&ndash;<span *ngIf="contact.group_json.group_type == 'couple'">&ndash;&gt;
+          &lt;!&ndash;<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>&ndash;&gt;
+          &lt;!&ndash;</span>&ndash;&gt;
+          &lt;!&ndash;</figure>&ndash;&gt;
+          <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
+          <span *ngIf="contact.group_json.group_type == 'couple'" class="text-overflow-name">{{contact.display.name}}</span>
+          <span *ngIf="contact.group_json.group_type == 'multiple'" class="text-overflow-name">{{contact.group_json | chatGroupName}}</span>
+        </a>
+      </li>
+    </ul>
+  </dd>
+</dl>-->

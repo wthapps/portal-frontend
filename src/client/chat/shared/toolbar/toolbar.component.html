@@ -1,6 +1,14 @@
 <div class="page-body-control has-page-body-sidebar" *ngIf="item.value">
-  <div class="p-list-user-item">
-    <div class="pull-right">
+  <div class="media media-user-list">
+    <div class="media-body" *ngIf="item.value">
+      <z-chat-share-user [data]="item.value">
+        <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
+               class="can-click" (click)="onShowMemberBar()">
+          {{item.value.group_json.member_count}} people <i [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
+        </small>
+      </z-chat-share-user>
+    </div>
+    <div class="media-right">
       <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default-inline"
               (click)="onAddMember()">
         <i class="fa fa-user-plus"></i>
@@ -41,19 +49,8 @@
         </ul>
       </div>
     </div>
-    <div *ngIf="item.value">
-      <z-chat-share-user-icon [image]="item.value.display.image" [groupType]="item.value.group_json.group_type"
-                              [userId]="item.value.display.id"></z-chat-share-user-icon>
-      <div class="p-list-user-namegroup">
-        <span *ngIf="item.value.group_json.group_type == 'couple'" class="text-overflow-name">{{item.value.display.name}}</span>
-        <span *ngIf="item.value.group_json.group_type == 'multiple'" class="text-overflow-name" style="width: 400px">{{item.value.group_json | chatGroupName}}</span>
-        <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
-               class="can-click" (click)="onShowMemberBar()">
-          {{item.value.group_json.member_count}} people <i [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
-        </small>
-      </div>
-    </div>
   </div>
+
 </div>
 <template [ngIf]="item.value && showMemberBar">
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">

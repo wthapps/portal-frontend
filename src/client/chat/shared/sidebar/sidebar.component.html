@@ -1,79 +1,43 @@
 <z-chat-share-toolbar #chatToolbar style="display: none"></z-chat-share-toolbar>
 <aside class="main-page-left-in page-body-sidebar aside-chat">
   <div class="form-group">
-    <a href="javascript:;" class="btn btn-default" (click)="onAddContact()"><i class="fa fa-plus"></i> New Message</a>
+    <a href="javascript:;" class="btn btn-wth-inline-border" (click)="onAddContact()"><i class="fa fa-plus"></i> New Message</a>
   </div>
-  <dl class="p-list-user-group">
+  <dl class="media-user-list-group">
     <dt>Favourites</dt>
-    <dd>
-      <ul class="p-list-user p-list-outside" *ngIf="favouriteContacts.value">
-        <li *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
+    <dd *ngIf="favouriteContacts.value">
+      <div class="media media-user-list" *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
+        <div class="media-body">
           <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
-            <div class="pull-right">
-              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
-            </div>
-            <!--<figure>-->
-              <!--<img [src]="contact.display.image">-->
-              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
-                  <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
-                <!--</span>-->
-            <!--</figure>-->
-            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
-            <span *ngIf="contact.group_json.group_type == 'couple'" class="text-overflow-name">{{contact.display.name}}</span>
-            <span *ngIf="contact.group_json.group_type == 'multiple'" class="text-overflow-name">{{contact.group_json | chatGroupName}}</span>
+            <z-chat-share-user [data]="contact"></z-chat-share-user>
           </a>
-        </li>
-      </ul>
+        </div>
+        <div class="media-right">
+          <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+        </div>
+      </div>
     </dd>
   </dl>
-  <dl class="p-list-user-group">
+  <dl class="media-user-list-group">
     <dt>Recent</dt>
-    <dd>
-      <ul class="p-list-user p-list-outside" *ngIf="recentContacts.value">
-        <li *ngFor="let contact of recentContacts.value" [routerLinkActive]="['active']">
+    <dd *ngIf="recentContacts.value">
+      <div class="media media-user-list" *ngFor="let contact of recentContacts.value" [routerLinkActive]="['active']">
+        <div class="media-body">
           <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
-            <div class="pull-right">
-              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
-            </div>
-            <!--<figure>-->
-              <!--<img [src]="contact.display.image">-->
-              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
-                <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
-              <!--</span>-->
-            <!--</figure>-->
-            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
-            <span *ngIf="contact.group_json.group_type == 'couple'" class="text-overflow-name">{{contact.display.name}}</span>
-            <span *ngIf="contact.group_json.group_type == 'multiple'" class="text-overflow-name">{{contact.group_json | chatGroupName}}</span>
+            <z-chat-share-user [data]="contact"></z-chat-share-user>
           </a>
-        </li>
-      </ul>
+        </div>
+        <div class="media-right">
+          <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+        </div>
+      </div>
     </dd>
   </dl>
-  <!--<div class="form-group">-->
-    <!--<a href="javascript:;" class="btn btn-default"><i class="fa fa-clock-o"></i> History</a>-->
-  <!--</div>-->
-  <dl class="p-list-user-group" *ngIf="historyShow">
-    <dt>History</dt>
+  <dl class="media-user-list-group">
     <dd>
-      <ul class="p-list-user p-list-outside" *ngIf="historyContacts.value">
-        <li *ngFor="let contact of historyContacts.value" [routerLinkActive]="['active']">
-          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
-            <div class="pull-right">
-              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
-            </div>
-            <!--<figure>-->
-              <!--<img [src]="contact.display.image">-->
-              <!--<span *ngIf="contact.group_json.group_type == 'couple'">-->
-                <!--<span *ngIf="usersOnlineItem.value.indexOf(contact.display.id) != -1" class="p-list-user-status online"></span>-->
-              <!--</span>-->
-            <!--</figure>-->
-            <z-chat-share-user-icon [image]="contact.display.image" [groupType]="contact.group_json.group_type" [userId]="contact.display.id"></z-chat-share-user-icon>
-            <span *ngIf="contact.group_json.group_type == 'couple'" class="text-overflow-name">{{contact.display.name}}</span>
-            <span *ngIf="contact.group_json.group_type == 'multiple'" class="text-overflow-name">{{contact.group_json | chatGroupName}}</span>
-          </a>
-        </li>
-      </ul>
+      <a [routerLink]="['/history']" href="#" class="btn btn-default"><i class="fa fa-clock-o"></i> History</a>
     </dd>
   </dl>
+
 </aside>
 

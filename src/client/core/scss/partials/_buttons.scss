@@ -1,3 +1,8 @@
+$brand-wth: #F54A59;
+$brand-wth-color: #fff !default;
+$brand-wth-bg: $brand-wth !default;
+$brand-wth-border: darken($brand-wth, 5%) !default;
+
 @mixin button-variant-inline($color, $background, $border) {
 
   //@if $background == transparent {
@@ -69,21 +74,21 @@
     border-color: darken($border_hover, 12%);
   }
   &:hover {
-    color: $color;
+    color: $color_hover;
     background-color: $background_hover;
     border-color: $border_hover;
   }
   &:active,
   &.active,
   .open > &.dropdown-toggle {
-    color: $color;
+    color: $color_hover;
     background-color: darken($background_hover, 0%);
     border-color: darken($border_hover, 2%);
 
     &:hover,
     &:focus,
     &.focus {
-      color: $color;
+      color: $color_hover;
       background-color: darken($background_hover, 7%);
       border-color: darken($border_hover, 15%);
     }
@@ -127,15 +132,15 @@
 }
 
 .btn-wth {
-  @include button-variant(#FFF, #F54A59, darken(#F54A59, 10%));
+  @include button-variant(#FFF, $brand-wth, darken($brand-wth, 10%));
 }
 
 .btn-wth-default {
-  @include button-variant(#F54A59, #FFF, $btn-default-border);
+  @include button-variant($brand-wth, #FFF, $btn-default-border);
 }
 
 .btn-primary-inline {
-  @include button-variant-inline(#F54A59, #FFF, transparent);
+  @include button-variant-inline($brand-wth, #FFF, transparent);
 }
 
 .btn-default-inline {
@@ -176,6 +181,16 @@
       $btn-default-color,
       transparent,
       $btn-default-border);
+}
+
+.btn-wth-inline-border {
+  @include button-variant-style(
+      $brand-wth,
+      transparent,
+      $brand-wth-border,
+      $brand-wth-color,
+      $brand-wth-bg,
+      $brand-wth-border);
 }
 
 .btn-min {

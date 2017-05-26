@@ -11,6 +11,7 @@ import { ZChatSettingModule } from './setting/setting.module';
 import { ZChatConversationModule } from './conversation/conversation.module';
 import { ZChatContactModule } from './contact/contact.module';
 import { ZChatContactSearchModule } from './search/contact-search.module';
+import { ZChatHistoryModule } from './history/history.module';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ZChatContactSearchModule } from './search/contact-search.module';
     ZChatSettingModule,
     ZChatConversationModule,
     ZChatContactModule,
-    ZChatContactSearchModule
+    ZChatContactSearchModule,
+    ZChatHistoryModule
   ],
   declarations: [
     AppComponent

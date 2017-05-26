@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { MessageEditorComponent } from './message/editor/message-editor.component';
-import { ZChatShareUserIconComponent } from './user/user-icon.component';
 import { MessageListComponent } from './message/message-list.component';
 import { MessageItemComponent } from './message/message-item.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
@@ -11,6 +10,9 @@ import { SharedModule } from '../../core/shared/shared.module';
 import { ZChatEmojiModule } from './emoji/emoji.module';
 import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from './modal/add-contact.component';
+import { ZChatShareUserIconComponent } from './user/user-icon.component';
+import { ZChatShareUserComponent } from './user/user.component';
+
 import { ChatMonthDayYearPipe } from './pipe/chat-month-day-year.pipe';
 import { ChatGroupCouplePipe } from './pipe/chat-group-couple.pipe';
 import { ChatUserOnlinePipe } from './pipe/chat-user-online.pipe';
@@ -44,6 +46,7 @@ import { ConversationService } from '../conversation/conversation.service';
     MessageItemComponent,
     MessageListComponent,
     ZChatShareUserIconComponent,
+    ZChatShareUserComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
@@ -69,6 +72,7 @@ import { ConversationService } from '../conversation/conversation.service';
     MessageItemComponent,
     MessageListComponent,
     ZChatShareUserIconComponent,
+    ZChatShareUserComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
