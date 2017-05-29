@@ -1,138 +1,5 @@
 @import "../../../core/scss/global";
 
-/*
-
-.message-item {
-  display: table;
-  width: 100%;
-  margin-top: 5px;
-  position: relative;
-  .message-item-date {
-    position: relative;
-    padding: 10px 0 20px 0;
-    text-align: center;
-    &:after {
-      content: "";
-      height: 1px;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      background-color: $line;
-    }
-    span {
-      position: relative;
-      z-index: 1;
-      display: inline-block;
-      padding: 5px 10px 5px 10px;
-      background-color: #ffffff;
-    }
-  }
-
-  .message-item-owner {
-    display: table-cell;
-    .message-item-owner-name {
-      font-size: 14px;
-      font-weight: bold;
-      position: absolute;
-      top: -30px;
-      left: 40px;
-    }
-    .message-item-owner-avatar {
-      //display: table-cell;
-      width: 20px;
-      img {
-        width: 34px;
-      }
-    }
-  }
-
-  .message-item-content {
-    display: table-cell;
-    vertical-align: top;
-    position: relative;
-  }
-  .message-item-content-card {
-    position: relative;
-    padding: 0 0 0 44px;
-    .message-item-action {
-      position: absolute;
-      top: 0;
-      right: 0;
-      color: $text-color-fade;
-      .message-item-menu {
-        display: block;
-        .fa {
-          cursor: pointer;
-        }
-      }
-    }
-    &:hover {
-      }
-      .btn-group {
-        //display: auto;
-      }
-    }
-    .message-item-content-main {
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      border-radius: 4px;
-      padding: 10px 15px 10px 15px;
-      position: relative;
-      display: inline-block;
-      max-width: 100%;
-      word-break: break-all;
-      &:before {
-        display: none;
-        content: "";
-        position: absolute;
-        top: 5px;
-        width: 0;
-        height: 0;
-        border-top: 6px solid transparent;
-        border-bottom: 6px solid transparent;
-      }
-
-    }
-    &:first-child {
-      //.message-item-content {
-      //  &:before {
-      //    display: block;
-      //  }
-      //}
-    }
-  //}
-
-
-  &.chat-item-left {
-    .message-item-content-main {
-      background-color: #b3e7fb;
-      &:before {
-        left: -8px;
-        border-right: 8px solid #b3e7fb;
-      }
-    }
-  }
-  &.chat-item-right {
-    text-align: right;
-    .message-item-owner-avatar, .message-item-owner-name {
-      display: none;
-    }
-    .message-item-content-card {
-      padding-right: 60px;
-      padding-left: 100px;
-    }
-    .message-item-content-main {
-      background-color: #E0F5FF;
-      &:before {
-        right: -8px;
-        border-left: 8px solid #E0F5FF;
-      }
-    }
-  }
-}
-*/
-
 $message-item-content-card-right: 85px;
 
 .message-item-date {
@@ -161,13 +28,6 @@ $message-item-content-card-right: 85px;
 .message-item-content {
   position: relative;
   padding-left: 50px;
-  &:hover {
-    .message-item-action {
-      .message-item-menu {
-        visibility: visible;
-      }
-    }
-  }
 }
 
 .message-item-content-main {
@@ -197,9 +57,6 @@ $message-item-content-card-right: 85px;
 .message-item-content-card {
   padding-right: $message-item-content-card-right;
   position: relative;
-  .message-item-action {
-
-  }
 }
 
 .message-item-content-main {
@@ -211,25 +68,36 @@ $message-item-content-card-right: 85px;
   word-break: break-all;
   background-color: #eff1f2;
   margin-bottom: 10px;
+  .message-item-menu {
+    position: absolute;
+    top: 0;
+    right: -25px;
+    i {
+      width: 20px;
+      height: 20px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      background-color: #D8D8D8;
+      color: #ffffff;
+      cursor: pointer;
+    }
+  }
 }
 
 .message-item-action {
   position: absolute;
   top: 0;
   right: 0;
-  .message-item-menu, .message-item-time {
+  .message-item-time {
     display: inline-block;
     margin-left: 5px;
-    .fa {
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-      text-align: center;
-    }
+    font-size: 12px;
+    @include opacity(0.7);
   }
-  .message-item-menu {
-    visibility: hidden;
-  }
+
 }
 
 .message-item-status {
@@ -237,7 +105,7 @@ $message-item-content-card-right: 85px;
   bottom: -5px;
   font-size: 11px;
   left: 0;
-  @include opacity(0.7);
+  color: #6EC8F5;
 }
 
 .message-item-content-contact-sharing {
@@ -292,6 +160,9 @@ $message-item-content-card-right: 85px;
     &:before {
       @include make-arrow(right, #E0F5FF, 6px, 6px);
       right: -6px;
+    }
+    .message-item-menu {
+      right: -30px;
     }
   }
   .message-item-status {

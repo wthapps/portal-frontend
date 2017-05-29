@@ -4,18 +4,8 @@
       <h4 class="modal-title"> Contact Request</h4>
     </modal-header>
     <modal-body *ngIf="contact">
-      <div class="media-center mb20">
-        <div class="media-center-left">
-          <figure>
-            <z-chat-share-user-icon [image]="contact.profile_image" [groupType]="'couple'" [userId]="contact.id"></z-chat-share-user-icon>
-          </figure>
-        </div>
-        <div class="media-center-body">
-          <h4 class="media-center-heading">{{contact.name}}</h4>
-          <!--<p class="media-center-p">member</p>-->
-        </div>
-      </div>
-      <p>Send contact message request to {{contact.name}}</p>
+      <z-chat-share-user-icon [image]="contact.profile_image" [size]="'xs'" [name]="contact.name" [groupType]="'couple'" [userId]="contact.id"></z-chat-share-user-icon>
+      <p class="mt10">Send contact message request to {{contact.name}}</p>
       <textarea class="form-control" rows="2" [(ngModel)]="message" [ngModelOptions]="{standalone: true}">
       </textarea>
     </modal-body>

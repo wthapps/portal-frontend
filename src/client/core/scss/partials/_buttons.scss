@@ -81,14 +81,14 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
   &:active,
   &.active,
   .open > &.dropdown-toggle {
-    color: $color;
+    color: $color_hover;
     background-color: darken($background_hover, 0%);
     border-color: darken($border_hover, 2%);
 
     &:hover,
     &:focus,
     &.focus {
-      color: $color;
+      color: $color_hover;
       background-color: darken($background_hover, 7%);
       border-color: darken($border_hover, 15%);
     }

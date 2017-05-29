@@ -5,24 +5,19 @@
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="users">
   <div class="page-body-content-in">
     <div class="row media-user-list-group">
-      <div class="col-sm-6"
-           *ngFor="let user of users">
+      <div class="col-sm-6" *ngFor="let user of users">
         <div class="media media-user-list">
           <div class="media-body">
-            <div *ngIf="user" class="media-user media-user-sm">
-              <div class="media-user-avatar avatar-sm">
-                <img [src]="user.profile_image" alt="">
-              </div>
-              <div class="media-user-name">
-                <p>{{user.name}}</p>
-                <ng-content></ng-content>
-              </div>
-              <span *ngIf="user.id" class="media-user-status"
-                    [ngClass]="{'online': usersOnlineItem.value.indexOf(user.id) != -1}"></span>
-            </div>
+            <z-chat-share-user-icon
+              [image]="user.profile_image"
+              [name]="user.name"
+              [size]="'sm'"
+              [groupType]="'couple'"
+              [userId]="user.id">
+            </z-chat-share-user-icon>
           </div>
           <div class="media-right no-wrap">
-            <button type="button" class="btn btn-wth-inline-border" (click)="onAddToContact(user)">
+            <button class="btn btn-wth-inline-border" type="button" (click)="onAddToContact(user)">
               <i class="fa fa-user-plus"></i>
             </button>
 
@@ -30,17 +25,18 @@
               <button class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" type="button">
                 <i class="fa fa-ellipsis-v"></i>
               </button>
-              <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+              <ul class="dropdown-menu dropdown-menu-right">
                 <li><a href="javascript:;">Remove</a></li>
-                <li><a href="javascript:;">Blacklist</a></li>
+                <li class="divider" role="separator"></li>
+                <li><a href="javascript:;" (click)="addBlackList(user)">Blacklist</a></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
+  </div>
 </div>
 
 <z-chat-share-request-contact #request></z-chat-share-request-contact>

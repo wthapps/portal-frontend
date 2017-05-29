@@ -1,6 +1,11 @@
-<figure>
-  <img [src]="image" style="max-width: 34px">
-  <span *ngIf="groupType == 'couple'">
-    <span *ngIf="usersOnlineItem.value.indexOf(userId) != -1" class="p-list-user-status online"></span>
-  </span>
-</figure>
+<div class="media-user media-user-{{size}}">
+  <div class="media-user-avatar avatar-{{size}}">
+    <img [src]="image" alt="">
+  </div>
+  <div class="media-user-name">
+    <p>{{name}}</p>
+    <ng-content></ng-content>
+  </div>
+  <span *ngIf="groupType == 'couple'" class="media-user-status"
+        [ngClass]="{'online': usersOnlineItem.value.indexOf(userId) != -1}"></span>
+</div>

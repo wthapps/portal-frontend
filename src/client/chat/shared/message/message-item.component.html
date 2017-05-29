@@ -16,6 +16,43 @@
     </div>
     <div class="message-item-content-card">
       <div class="message-item-content-main">
+        <div class="message-item-menu dropdown"
+             *ngIf="(message.message_type == 'text' || message.file_type == 'Photo' || message.file_type == 'FileMedium')">
+          <i class="fa fa-sort-down" data-toggle="dropdown"></i>
+
+          <!--text message menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
+            <li *ngIf="!message.file_json">
+              <a href="javascript:;"
+                 (click)="doAction({type: actions.MESSAGE_COPY, payload: message})">Copy</a></li>
+            <li *ngIf="!message.file_json">
+              <a href="javascript:;"
+                 (click)="doAction({type: actions.MESSAGE_QUOTE, payload: message})">Quote Message</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Edit</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;">Delete</a></li>
+          </ul>
+
+          <!--photos menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Photo'">
+            <li *ngIf="!message.file_json">
+              <a [href]="message.file_json.url" target="_blank" download>
+                Download
+              </a>
+            </li>
+          </ul>
+
+          <!--other menu menu menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
+            <li *ngIf="!message.file_json">
+              <a [href]="message.file_json.url" target="_blank" download>
+                Download
+              </a>
+            </li>
+          </ul>
+
+        </div>
+
+
         <!--text type-->
         <div class="message-item-content-text" *ngIf="message.message_type == 'text'">
           <span [innerHtml]="message.message | wthEmojis | safeHtml"></span>
@@ -98,40 +135,6 @@
       </div>
       <div class="message-item-action"
            *ngIf="(message.message_type == 'text' || message.message_type == 'Photo' || message.message_type == 'FileMedium')">
-        <div class="message-item-menu dropdown">
-          <i class="fa fa-pencil" data-toggle="dropdown"></i>
-
-          <!--text message menu-->
-          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
-            <li *ngIf="!message.file_json">
-              <a href="javascript:;"
-                 (click)="doAction({type: actions.MESSAGE_COPY, payload: message})">Copy</a></li>
-            <li *ngIf="!message.file_json">
-              <a href="javascript:;"
-                 (click)="doAction({type: actions.MESSAGE_QUOTE, payload: message})">Quote Message</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Edit</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Delete</a></li>
-          </ul>
-
-          <!--photos menu-->
-          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Photo'">
-            <li *ngIf="!message.file_json">
-              <a [href]="message.file_json.url" target="_blank" download>
-                Download
-              </a>
-            </li>
-          </ul>
-
-          <!--other menu menu menu-->
-          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
-            <li *ngIf="!message.file_json">
-              <a [href]="message.file_json.url" target="_blank" download>
-                Download
-              </a>
-            </li>
-          </ul>
-
-        </div>
         <div class="message-item-time">
           <small>{{message.created_at | timeFormat: "time_only"}}</small>
         </div>
