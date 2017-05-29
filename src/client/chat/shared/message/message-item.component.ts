@@ -10,7 +10,7 @@ import { CHAT_ACTIONS } from '../constants/chat-constant';
   moduleId: module.id,
   selector: 'message-item',
   templateUrl: 'message-item.component.html',
-  styleUrls:['message-item.component.css']
+  styleUrls: ['message-item.component.css']
 })
 export class MessageItemComponent implements OnInit {
   @Input() message: any;
@@ -19,10 +19,11 @@ export class MessageItemComponent implements OnInit {
 
   actions = CHAT_ACTIONS;
 
-  constructor(
-    private chatService: ChatService,
-    private pubSubEventService: PubSubEventService) {
+  profileUrl: any = '';
 
+  constructor(private chatService: ChatService,
+              private pubSubEventService: PubSubEventService) {
+    this.profileUrl = this.chatService.constant.profileUrl;
   }
 
 
@@ -42,13 +43,12 @@ export class MessageItemComponent implements OnInit {
   }
 
 
-
-  onAdd(contact:any) {
+  onAdd(contact: any) {
     this.onAddContact.emit(contact);
   }
 
   hasShowOwner(): boolean {
-    if(this.prevMessage == null) {
+    if (this.prevMessage == null) {
       return true;
     }
     if (this.message.display.id === this.prevMessage.display.id) {
@@ -59,10 +59,10 @@ export class MessageItemComponent implements OnInit {
 
   hasShowDate(): boolean {
 
-    if(this.prevMessage == null) {
+    if (this.prevMessage == null) {
       return true;
     }
-    if (this.message.created_at.slice(0,10) === this.prevMessage.created_at.slice(0,10)) {
+    if (this.message.created_at.slice(0, 10) === this.prevMessage.created_at.slice(0, 10)) {
       return false;
     }
     return true;
