@@ -4,7 +4,7 @@ import { PubSubEvent } from '../../core/shared/services/pub-sub/pub-sub-event';
 import { PubSubAction } from '../../core/shared/services/pub-sub/pub-sub-action';
 import { Subscription } from 'rxjs';
 import { PubSubEventService } from '../../core/shared/services/pub-sub/pub-sub-event.service';
-import { CHAT_ACTIONS } from '../shared/constants/chat-constant';
+import { CHAT_ACTIONS, FORM_MODE } from '../shared/constants/chat-constant';
 import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
 import { ConversationService } from './conversation.service';
@@ -40,16 +40,21 @@ export class ConversationDetailComponent implements PubSubAction, OnInit, OnDest
 
   doAction(event: PubSubEvent) {
     console.log('actioning....................');
-    switch (event.type) {
-      case CHAT_ACTIONS.MESSAGE_COPY:
+    switch (event.action) {
+      case CHAT_ACTIONS.CHAT_MESSAGE_COPY:
 
         break;
-      case CHAT_ACTIONS.MESSAGE_QUOTE:
+      case CHAT_ACTIONS.CHAT_MESSAGE_QUOTE:
         break;
-      case CHAT_ACTIONS.MESSAGE_EDIT:
+      case CHAT_ACTIONS.CHAT_MESSAGE_EDIT:
+        this.messageEditor.updateAttributes({message: event.payload, mode: FORM_MODE.EDIT});
+        this.messageEditor.focus();
+
         break;
-      case CHAT_ACTIONS.MESSAGE_DELETE:
-        this.conversationService.deleteMessage(this.item.id, event.payload.id)
+      case CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD:
+        break;
+      case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
+        this.conversationService.deleteMessage(event.payload.group_id, event.payload.id)
           .subscribe((response: any) => {
             console.log('delete ok!!!!');
           }, error => {

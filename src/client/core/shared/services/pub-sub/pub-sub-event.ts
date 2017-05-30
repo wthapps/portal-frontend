@@ -1,4 +1,4 @@
 export interface PubSubEvent {
-  type: string;
+  action: string;
   payload?: any;
 }

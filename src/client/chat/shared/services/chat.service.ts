@@ -104,7 +104,7 @@ export class ChatService {
     return this.apiBaseService.get('zone/chat/friends');
   }
 
-  getMessages(groupId:number) {
+  getMessages(groupId: number) {
     let item:any = this.storage.find('chat_messages_group_' + groupId);
     if(item && item.value) {
       this.storage.save('current_chat_messages', item.value);
@@ -127,6 +127,30 @@ export class ChatService {
     });
     return this.storage.find('current_chat_messages');
   }
+
+  isExistingData(key: string) {
+    let data = this.storage.find(key);
+    if (data == null) return false;
+    return true;
+  }
+
+  setValue(key: string, data: any) {
+    this.storage.save(key, data);
+  }
+
+  getValue(key: string) {
+    return this.storage.find(key);
+  }
+
+  getLatestGroupId(): any {
+    let recentContacts =  this.storage.find('chat_recent_contacts');
+    return _.map(recentContacts.value, 'group_id')[0];
+  }
+
+  getLatestConversation(groupId: number) {
+    return this.apiBaseService.get('zone/chat/messages/' + groupId);
+  }
+
 
   subscribeChanel() {
     this.handler.addListener('subscribe_chanel_after_select', 'on_contact_select', (contact:any) => {
@@ -188,7 +212,7 @@ export class ChatService {
     this.chatCommonService.addMessage(item.value.group_json.id, {message_type: 'file_tmp'});
   }
 
-  removeUploadingFile(groupId:any) {
+  removeUploadingFile(groupId: any) {
     let item = this.storage.find('chat_messages_group_' + groupId);
     let newValue = _.remove(item.value.data, (v:any) => {
       return v.message_type != 'file_tmp';

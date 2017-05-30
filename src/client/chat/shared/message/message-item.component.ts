@@ -21,11 +21,11 @@ export class MessageItemComponent implements OnInit {
 
   profileUrl: any = '';
 
-  constructor(private chatService: ChatService,
-              private pubSubEventService: PubSubEventService) {
+  constructor(
+    private chatService: ChatService,
+    private pubSubEventService: PubSubEventService) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }
-
 
   ngOnInit() {
     // ByMe
@@ -42,6 +42,25 @@ export class MessageItemComponent implements OnInit {
     this.pubSubEventService.addEvent(event);
   }
 
+  copy() {
+    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_COPY, payload: this.message});
+  }
+
+  quote() {
+    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE, payload: this.message});
+  }
+
+  edit() {
+    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT, payload: this.message});
+  }
+
+  delete() {
+    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE, payload: this.message});
+  }
+
+  download() {
+    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD, payload: this.message});
+  }
 
   onAdd(contact: any) {
     this.onAddContact.emit(contact);

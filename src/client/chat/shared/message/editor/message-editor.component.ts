@@ -6,6 +6,8 @@ import { PhotoModalDataService } from '../../../../core/shared/services/photo-mo
 import { Subscription } from 'rxjs';
 import { PubSubEventService } from '../../../../core/shared/services/pub-sub/pub-sub-event.service';
 import { FORM_MODE } from '../../constants/chat-constant';
+import { FormGroup, AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Message } from '../../models/message.model';
 
 
 declare var $: any;
@@ -25,19 +27,32 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   nextPhotoSubscription: Subscription;
   uploadPhotoSubscription: Subscription;
 
+  message: Message = new Message();
+  messageEditorForm: FormGroup;
+  messageCtrl: FormControl;
+
   private pressingShiftKey: boolean = false;
 
   constructor(
     private chatService: ChatService,
-    private photoSelectDataService: PhotoModalDataService
+    private photoSelectDataService: PhotoModalDataService,
+    private fb: FormBuilder
   ) {
+    this.createForm();
   }
 
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
     // this.photoModal.action = 'UPLOAD';
+  }
 
-
+  createForm() {
+    // Form controls
+    // this.message.message = '';
+    this.messageEditorForm = new FormGroup({
+      messageCtrl: new FormControl()// [this.message.message, null]
+    });
+    this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -79,6 +94,19 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     this.mode = FORM_MODE.EDIT;
   }
 
+
+  updateAttributes(attributes: any) {
+    if('message' in attributes) {
+      this.message = attributes.message;
+    }
+    if('mode' in attributes) {
+      this.mode = attributes.mode;
+    }
+  }
+
+  focus() {
+
+  }
 
   send(enter?: boolean) {
 

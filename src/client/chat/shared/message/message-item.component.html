@@ -16,6 +16,8 @@
     </div>
     <div class="message-item-content-card">
       <div class="message-item-content-main">
+
+
         <div class="message-item-menu dropdown"
              *ngIf="(message.message_type == 'text' || message.file_type == 'Photo' || message.file_type == 'FileMedium')">
           <i class="fa fa-sort-down" data-toggle="dropdown"></i>
@@ -130,6 +132,11 @@
         <!--add new contact-->
         <div class="message-item-content-conversation-add-new-contact">
 
+        </div>
+
+        <!--text type-->
+        <div class="message-item-content-text" *ngIf="message.message_type == 'message_deleted'">
+          <span>This message has been deleted</span>
         </div>
 
       </div>
