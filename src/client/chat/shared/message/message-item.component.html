@@ -30,8 +30,8 @@
             <li *ngIf="!message.file_json">
               <a href="javascript:;"
                  (click)="doAction({type: actions.MESSAGE_QUOTE, payload: message})">Quote Message</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Edit</a></li>
-            <li *ngIf="!message.file_json"><a href="javascript:;">Delete</a></li>
+            <li *ngIf="(!message.file_json && message.byMe)"><a href="javascript:;">Edit</a></li>
+            <li *ngIf="(!message.file_json && message.byMe)"><a href="javascript:;">Delete</a></li>
           </ul>
 
           <!--photos menu-->
@@ -108,15 +108,18 @@
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'share_contact_message'">
           <div class="media-div">
             <div class="pull-left">
-              <span class="avatar-xsm">
+              <span class="avatar-sm">
                 <img [src]="message.display.share_contact.profile_image" alt="">
               </span>
             </div>
             <div class="media-div-body">
               <p class="media-heading bold">{{message.display.share_contact.name}}</p>
-              <button class="btn btn-default" *ngIf="!message.byMe" (click)="onAdd(message.display.share_contact)">
-                <i class="fa fa-user-plus"></i> Add to Contact
-              </button>
+              <div class="mt15" *ngIf="!message.byMe">
+                <button class="btn btn-wth-inline-border" (click)="onAdd(message.display.share_contact)">
+                  <i class="fa fa-user-plus"></i> Add to Contact
+                </button>
+              </div>
+
               <p *ngIf="message.byMe" class="text-fade">
                 Contact send
               </p>

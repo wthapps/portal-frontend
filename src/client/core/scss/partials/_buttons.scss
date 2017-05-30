@@ -186,7 +186,7 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
 .btn-wth-inline-border {
   @include button-variant-style(
       $brand-wth,
-      transparent,
+      $brand-wth-color,
       $brand-wth-border,
       $brand-wth-color,
       $brand-wth-bg,
