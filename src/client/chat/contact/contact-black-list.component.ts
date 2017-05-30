@@ -7,16 +7,20 @@ import { ChatService } from '../shared/services/chat.service';
   templateUrl: 'contact-black-list.component.html'
 })
 export class ZChatContactBlackListComponent implements OnInit {
-  contactItem:any;
+  blacklist:any;
 
   constructor(private chatService: ChatService) {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
+    this.chatService.apiBaseService.post('users/users_blacklist/get_users_blacklist', {module_name: 'chat'}).subscribe((res:any) => {
+      this.blacklist = res.data;
+    });
   }
 
-  removeBlackList(contact:any) {
-    this.chatService.removeBlackList(contact);
+  removeBlackList(user:any) {
+    this.chatService.apiBaseService.post('users/users_blacklist/remove_users_blacklist', {user_id: user.id, module_name: 'chat'}).subscribe((res:any) => {
+      this.blacklist = res.data;
+    });
   }
 }

@@ -27,10 +27,10 @@ export class ChatCommonService {
 
   moveFristRecentList() {
     let contactSelect:any = this.storage.find('contact_select').value;
-    let chatRecentContacts:any = this.storage.find('chat_recent_contacts').value;
-    chatRecentContacts.unshift(contactSelect);
-    chatRecentContacts = _.uniqBy(chatRecentContacts, 'id');
-    this.storage.save('chat_recent_contacts', chatRecentContacts);
+    let conversations:any = this.storage.find('chat_contacts').value.data;
+    _.pullAllBy(conversations, [{ 'group_id': contactSelect.group_id }], 'group_id');
+    conversations.unshift(contactSelect);
+    _.uniqBy(conversations, 'id');
   }
 
   addMessage(groupId:any, data:any) {

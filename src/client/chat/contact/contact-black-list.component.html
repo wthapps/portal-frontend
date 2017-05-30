@@ -2,17 +2,24 @@
   <z-chat-contact-navigation [tab]="'blacklist'"></z-chat-contact-navigation>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="blacklist">
   <div class="page-body-content-in">
     <div class="row media-user-list-group">
       <div class="col-sm-6"
-           *ngFor="let contact of contactItem.value.data | chatGroupBlackList:contactItem.value.data.length">
+           *ngFor="let user of blacklist">
         <div class="media media-user-list">
           <div class="media-body">
-            <z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>
+            <!--<z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>-->
+            <z-chat-share-user-icon
+              [image]="user.profile_image"
+              [name]="user.name"
+              [size]="'sm'"
+              [groupType]="'couple'"
+              [userId]="user.id">
+            </z-chat-share-user-icon>
           </div>
           <div class="media-right no-wrap">
-            <button type="button" class="btn btn-default" (click)="removeBlackList(contact)">
+            <button type="button" class="btn btn-default" (click)="removeBlackList(user)">
               <i class="fa fa-times"></i> Remove
             </button>
           </div>
@@ -23,7 +30,7 @@
 
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!contactItem.value">
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!blacklist">
   <div class="page-body-content-in">
     <div class="inside-loading">
       <div class="pt20 pb20"></div>
@@ -31,7 +38,7 @@
   </div>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value && (contactItem.value.data | chatGroupBlackList:contactItem.value.data.length).length == 0 ">
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="blacklist && blacklist.length == 0 ">
   <div class="page-body-content-in">
     No data
   </div>
