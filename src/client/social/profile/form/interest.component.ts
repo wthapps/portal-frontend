@@ -46,10 +46,15 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.removeAll();
+    this.addAll();
   }
 
   ngOnChanges() {
     this.removeAll();
+    this.addAll();
+  }
+
+  addAll() {
     let _this = this;
     if (this.data && this.data.hobby) {
       this.removeAll();

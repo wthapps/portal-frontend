@@ -38,7 +38,7 @@ export class ZSocialProfileAboutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.profileDataService.profileData$.take(1).subscribe((res: any) => {
+    this.profileDataService.profileData$.take(2).subscribe((res: any) => {
       this.userInfo = _.get(res, 'userInfo', '');
       this.actions = _.get(res, 'actions', []);
     });
@@ -46,6 +46,7 @@ export class ZSocialProfileAboutComponent implements OnInit {
 
   onUpdated(userInfo:any) {
     this.userInfo = userInfo;
+    this.profileDataService.addData({'userInfo': userInfo, 'actions' : this.actions} );
   }
 
   onEditAbout() {
