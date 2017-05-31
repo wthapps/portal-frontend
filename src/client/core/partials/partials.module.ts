@@ -29,6 +29,7 @@ import { SocialSearchFormComponent } from './header/search/social-search-form.co
 import { CoverProfileModule } from './cover-profile/cover-profile.module';
 import { PartialsNotificationsComponent } from './notifications/notifications.component';
 import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
+import { PartialsProfileModule } from './profile/profile.module';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     AutoCompleteModule,
     CalendarModule,
     CoverProfileModule,
+    PartialsProfileModule,
 
     ModalDockModule,
     Ng2Bs3ModalModule,
@@ -90,6 +92,7 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     PhotoModule,
     CalendarModule,
     CoverProfileModule,
+    PartialsProfileModule,
 
     ModalDockModule,
 

@@ -1,0 +1,82 @@
+<div class="field-group">
+  <div class="field-group-title">
+    <h3 class="pull-left">Email</h3>
+    <div class="pull-right">
+      <button class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+  </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal">
+      <template ngFor let-item [ngForOf]="data" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{item.type | keyToValue:emailType:'type':'name'}}</dt>
+        <dd><p><a class="link-text" href="mailto:{{item.email}}">{{item.email}}</a></p></dd>
+      </template>
+    </dl>
+  </div>
+</div>
+
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"><i class="fa fa-pencil"></i> Email</h4>
+    </modal-header>
+    <modal-body>
+      <div formArrayName="emails">
+        <div *ngFor="let add_email of form.controls.emails.controls; let i=index" class="media mt0">
+          <div class="media-body" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-4">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.emails.controls[i].controls.type.valid
+                  && form.controls.emails.controls[i].controls.type.touched),
+                  'has-success': (form.controls.emails.controls[i].controls.type.valid
+                  && form.controls.emails.controls[i].controls.type.touched
+                  && form.value.emails[i].type.length>1)}">
+                  <select class="form-control" name="name" formControlName="type">
+                    <option value=""> -- Select One --</option>
+                    <option *ngFor="let et of emailType" value="{{et.type}}">{{et.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.emails.controls[i].controls.email.valid
+                  && form.controls.emails.controls[i].controls.email.touched),
+                  'has-success': (form.controls.emails.controls[i].controls.email.valid
+                  && form.controls.emails.controls[i].controls.email.touched
+                  && form.value.emails[i].email.length>1)}">
+                  <input type="text" class="form-control" formControlName="email" placeholder="">
+                  <div
+                    *ngIf="!form.controls.emails.controls[i].controls.email.valid && form.controls.emails.controls[i].controls.email.touched">
+                    <span
+                      *ngIf="!form.controls.emails.controls[i].controls.email.valid && form.controls.emails.controls[i].controls.email.errors.emailFormat"
+                      class="help-block text-danger">
+                      Email is not valid
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <button type="button" class="btn btn-default" (click)="removeItem(i)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-default" (click)="addItem()">
+        <i class="fa fa-plus"></i> Add more
+      </button>
+    </modal-body>
+    <modal-footer>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10"
+              (click)="onSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

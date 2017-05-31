@@ -8,6 +8,10 @@
     @include clearfix;
   }
 
+  .panel-heading-action {
+    float: right;
+  }
+
   .panel-footer {
     padding-top: 18px;
     padding-bottom: 18px;

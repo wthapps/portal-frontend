@@ -12,6 +12,7 @@
 .form-control-block {
   display: block;
 }
+
 .form-control-full {
   width: 100%;
 }
@@ -196,4 +197,8 @@
   word-wrap: break-word;
   resize: none !important;
   padding-right: 50px;
+}
+
+textarea {
+  resize: vertical;
 }

@@ -1,0 +1,30 @@
+/*
+<div class="field-group">
+  <div class="field-group-title">
+    <h3 class="pull-left">Email</h3>
+    <div class="pull-right"><button class="btn btn-default"><i class="fa fa-pencil"></i></button></div>
+  </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal">
+      <dt>Name:</dt>
+      <dd>John Doe</dd>
+    </dl>
+  </div>
+</div>
+*/
+
+.field-group {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid $line;
+  .field-group-title {
+    margin-bottom: 15px;
+    @include clearfix;
+    h3 {
+      margin: 0;
+    }
+  }
+  dl:last-child {
+    margin-bottom: 0;
+  }
+}

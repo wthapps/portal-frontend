@@ -23,52 +23,13 @@
           <img [src]="profile.profile_image" alt="">
         </span>
       </div>
-      <div class="chat-profile-content">
-        <h3>Phone</h3>
-        <dl class="dl-horizontal">
-          <dt>Mobile</dt>
-          <dd><img src="../../assets/images/flags/canada.png" alt=""> +1 01234567890</dd>
-          <dt>Fax</dt>
-          <dd><img src="../../assets/images/flags/canada.png" alt=""> +1 01234567890</dd>
-        </dl>
-        <h3>Email</h3>
-        <dl class="dl-horizontal">
-          <dt>Work</dt>
-          <dd>cersei.lannister@lannister.com</dd>
-          <dt>Personal</dt>
-          <dd>drinkingproblem@lannister.com</dd>
-        </dl>
-        <h3>Address</h3>
-        <dl class="dl-horizontal">
-          <dt>Home</dt>
-          <dd>
-            14216 Kinton Parkway <br>
-            P.O. Box 18970 <br>
-            Irvine California 92618 <br>
-            United State
-          </dd>
-          <dt>Work</dt>
-          <dd>
-            16215 Alton Parkway <br>
-            P.O. Box 17960 <br>
-            Irvine California 92618 <br>
-            United State
-          </dd>
-        </dl>
-        <h3>Media</h3>
-        <dl class="dl-horizontal">
-          <dt>Facebook</dt>
-          <dd><a href="#">External link</a></dd>
-          <dt>Facebook</dt>
-          <dd><a href="#">External link</a></dd>
-        </dl>
-        <h3>Note</h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
-          dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-          suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-        </p>
-      </div>
+
+      <partials-profile-email [data]="profileEmail"></partials-profile-email>
+      <partials-profile-phone [data]="profilePhone"></partials-profile-phone>
+      <partials-profile-address [data]="profileAddress"></partials-profile-address>
+      <partials-profile-media [data]="profileMedia"></partials-profile-media>
+      <partials-profile-note [data]="profileNote"></partials-profile-note>
+
     </div>
   </div>
 </div>

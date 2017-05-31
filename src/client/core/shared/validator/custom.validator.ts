@@ -23,6 +23,11 @@ export class CustomValidator {
     return REGEXP.test(c.value) ? null : {'url': true};
   }
 
+  public static phoneFormat(c: AbstractControl) {
+    let REGEXP = /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i;
+    return REGEXP.test(c.value) ? null : {'phoneFormat': true};
+  }
+
   public static url(control: AbstractControl) {
     let obj: any = Validators.required(control);
     if (obj !== undefined && obj !== null) return null;
