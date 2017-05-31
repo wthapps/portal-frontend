@@ -69,7 +69,7 @@ export class ChatService {
   addContact(ids:any, text?:any) {
     this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text:text}).subscribe(
       (res:any) => {
-        this.addedContactNotification(res.data.group_json.id);
+        this.updateConversationBroadcast(res.data.group_id);
       }
     );
   }
@@ -78,7 +78,7 @@ export class ChatService {
     console.log(contact);
     this.apiBaseService.post('zone/chat/contact/cancel', {group_id: contact.group_id}).subscribe(
       (res:any) => {
-        // this.addedContactNotification(res.data.group_json.id);
+
       }
     );
   }
@@ -291,11 +291,15 @@ export class ChatService {
   }
 
   leaveConversation(contact:any) {
-    this.updateGroupUser(contact.group_id, {leave: true});
+    this.updateGroupUser(contact.group_id, {leave: true}, (res:any) => {
+      this.updateConversationBroadcast(contact.group_id);
+    });
   }
 
   removeFromConversation(contact:any, userId:any) {
-    this.updateGroupUser(contact.group_id, {leave: true, user_id: userId});
+    this.updateGroupUser(contact.group_id, {leave: true, user_id: userId}, (res:any) => {
+      this.updateConversationBroadcast(contact.group_id);
+    });
   }
 
   updateGroupUser(groupId:any, data:any, callback?:any) {
@@ -320,7 +324,7 @@ export class ChatService {
     let body = {friends: friends};
     this.apiBaseService.put('zone/chat/group/' + groupId, body).subscribe(
       (res:any) => {
-        this.addedContactNotification(groupId);
+        this.updateConversationBroadcast(groupId);
       }
     );
   }
@@ -395,7 +399,7 @@ export class ChatService {
     });
   }
 
-  addedContactNotification(groupId:any) {
+  updateConversationBroadcast(groupId:any) {
     this.apiBaseService.post('zone/chat/notification/broadcard_contact', {group_id: groupId}).subscribe((res:any) => {
       // console.log(res);
     });
