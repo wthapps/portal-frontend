@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 import { UserService } from '../../../shared/services/user.service';
 import { Constants } from '../../../shared/config/constants';
@@ -22,6 +22,7 @@ export class ZSharedMenuComponent implements OnInit {
   socialMenu = Constants.socialMenuItems;
   chatMenu = Constants.chatMenuItems;
   hostname: string = '';
+  isProfileTab: boolean;
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
@@ -35,6 +36,15 @@ export class ZSharedMenuComponent implements OnInit {
   ngOnInit() {
     let currentUrl = this.router.url; /// this will give you current url
     this.hostname = window.location.origin;
+    this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe((event: any) => {
+        if (event.url.indexOf("profile") !== -1) {
+          this.isProfileTab = true;
+        } else {
+          this.isProfileTab = false;
+        }
+      });
     // your logic to know if its my home page.
   }
 
