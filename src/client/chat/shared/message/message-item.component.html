@@ -1,5 +1,5 @@
 <div *ngIf="message.message_type != 'notification'" class="message-item"
-     [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+     [ngClass]="{'message-item-left': (!message.byMe && message.message_type != 'file_tmp'), 'message-item-right': (message.byMe || message.message_type == 'file_tmp')}">
   <div class="message-item-date" *ngIf="hasShowDate()">
     <span>{{ message.created_at | date }}</span>
   </div>
@@ -16,7 +16,6 @@
     </div>
     <div class="message-item-content-card">
       <div class="message-item-content-main">
-
 
         <div class="message-item-menu dropdown"
              *ngIf="(message.message_type == 'text' || message.file_type == 'Photo' || message.file_type == 'FileMedium')">
@@ -36,7 +35,7 @@
 
           <!--photos menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Photo'">
-            <li *ngIf="!message.file_json">
+            <li *ngIf="message.file_json">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
               </a>
@@ -45,7 +44,7 @@
 
           <!--other menu menu menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
-            <li *ngIf="!message.file_json">
+            <li *ngIf="message.file_json">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
               </a>
