@@ -1,5 +1,9 @@
 @import "../../../core/scss/global";
 
+:host {
+  display: block;
+}
+
 .media-user {
   overflow: visible;
   position: relative;

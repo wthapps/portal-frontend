@@ -29,6 +29,7 @@ import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
 import { ChatGroupSentRequestPipe } from './pipe/chat-group-sent-request.pipe';
 import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
 import { ConversationService } from '../conversation/conversation.service';
+import { ChatGroupHistoryPipe } from './pipe/chat-group-history.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -62,7 +63,8 @@ import { ConversationService } from '../conversation/conversation.service';
     ChatGroupMembersPipe,
     ChatGroupSentRequestPipe,
     ChatGroupPendingPipe,
-    ChatUserOnlinePipe
+    ChatUserOnlinePipe,
+    ChatGroupHistoryPipe
   ],
   exports: [
     CommonModule,
@@ -88,7 +90,8 @@ import { ConversationService } from '../conversation/conversation.service';
     ChatGroupSentRequestPipe,
     ChatGroupPendingPipe,
     ChatGroupMembersPipe,
-    ChatUserOnlinePipe
+    ChatUserOnlinePipe,
+    ChatGroupHistoryPipe
   ]
 })
 export class ChatSharedModule {
