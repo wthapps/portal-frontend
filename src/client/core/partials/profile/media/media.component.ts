@@ -8,6 +8,7 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 
@@ -20,33 +21,34 @@ declare var _: any;
 export class PartialsProfileMediaComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   form: FormGroup;
 
   mediaType: any = [
     {
-      type: 'facebook',
+      kind_of: 'facebook',
       name: 'Facebook'
     },
     {
-      type: 'google_plus',
+      kind_of: 'google_plus',
       name: 'Google Plus'
     },
     {
-      type: 'twitter',
+      kind_of: 'twitter',
       name: 'Twitter'
     },
     {
-      type: 'linkedin',
+      kind_of: 'linkedin',
       name: 'LinkedIn'
     },
     {
-      type: 'other',
+      kind_of: 'other',
       name: 'Other'
     },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
       'medias': fb.array([
         this.initItem(),
@@ -66,13 +68,13 @@ export class PartialsProfileMediaComponent {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        type: [item.type, Validators.compose([Validators.required])],
-        media: [item.media, Validators.compose([Validators.required, CustomValidator.urlFormat])]
+        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        value: [item.value, Validators.compose([Validators.required, CustomValidator.urlFormat])]
       });
     } else {
       return this.fb.group({
-        type: ['', Validators.compose([Validators.required])],
-        media: ['', Validators.compose([Validators.required, CustomValidator.urlFormat])]
+        kind_of: ['', Validators.compose([Validators.required])],
+        value: ['', Validators.compose([Validators.required, CustomValidator.urlFormat])]
       });
     }
   }
@@ -97,13 +99,20 @@ export class PartialsProfileMediaComponent {
 
     _this.removeAll();
 
-    _.map(this.data, (v: any)=> {
+    _.map(this.data.media, (v: any)=> {
       _this.addItem(v);
     });
   }
 
 
   onSubmit(values: any): void {
-    console.log(values);
+    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
+      this.removeAll();
+      this.data = res.data;
+      _.map(this.data.media, (v: any)=> {
+        this.addItem(v);
+      });
+      this.modal.close();
+    });
   }
 }

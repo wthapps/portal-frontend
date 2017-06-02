@@ -80,7 +80,7 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   onFavorite() {
-    this.chatService.addGroupUserFavorite();
+    this.chatService.addGroupUserFavorite(this.contact);
   }
 
   report(uuid: any) {

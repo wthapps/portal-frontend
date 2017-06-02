@@ -106,6 +106,11 @@ export class ChatService {
     }
   }
 
+  getContactByPartnerId(id: any) {
+    let conversations: any = this.storage.find('chat_contacts').value;
+    return _.find(conversations.data, {'partner_id': id});
+  }
+
   getContactSelect() {
     return this.storage.find('contact_select');
   }
@@ -258,12 +263,10 @@ export class ChatService {
     );
   }
 
-  addGroupUserFavorite() {
-    let groupId: any = this.storage.find('contact_select').value.group_id;
-    let favourite: any = !this.storage.find('contact_select').value.favourite;
-    let body: any = {favourite: favourite};
-    this.updateGroupUser(groupId, body);
-    this.storage.find('contact_select').value.favourite = !this.storage.find('contact_select').value.favourite;
+  addGroupUserFavorite(contact:any) {
+    let body: any = {favourite: !contact.favourite};
+    this.updateGroupUser(contact.group_id, body);
+    contact.favourite = !contact.favourite;
   }
 
   addGroupUserBlackList(userId: any) {

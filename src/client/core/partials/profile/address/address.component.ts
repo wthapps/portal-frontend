@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 
@@ -19,21 +20,22 @@ declare var _: any;
 export class PartialsProfileAddressComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   form: FormGroup;
 
   addressType: any = [
     {
-      type: 'home',
+      kind_of: 'home',
       name: 'Home'
     },
     {
-      type: 'work',
+      kind_of: 'work',
       name: 'Work'
     }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
       'addresses': fb.array([
         this.initItem(),
@@ -53,13 +55,13 @@ export class PartialsProfileAddressComponent {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        type: [item.type, Validators.compose([Validators.required])],
-        address: [item.address, Validators.compose([Validators.required])]
+        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        address_line1: [item.address_line1, Validators.compose([Validators.required])]
       });
     } else {
       return this.fb.group({
-        type: ['', Validators.compose([Validators.required])],
-        address: ['', Validators.compose([Validators.required])]
+        kind_of: ['', Validators.compose([Validators.required])],
+        address_line1: ['', Validators.compose([Validators.required])]
       });
     }
   }
@@ -84,13 +86,20 @@ export class PartialsProfileAddressComponent {
 
     _this.removeAll();
 
-    _.map(this.data, (v: any)=> {
+    _.map(this.data.addresses, (v: any)=> {
       _this.addItem(v);
     });
   }
 
 
   onSubmit(values: any): void {
-    console.log(values);
+    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
+      this.removeAll();
+      this.data = res.data;
+      _.map(this.data.addresses, (v: any)=> {
+        this.addItem(v);
+      });
+      this.modal.close();
+    });
   }
 }

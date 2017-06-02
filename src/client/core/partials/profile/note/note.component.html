@@ -2,13 +2,13 @@
   <div class="field-group-title">
     <h3 class="pull-left">Note</h3>
     <div class="pull-right">
-      <button class="btn btn-default" (click)="onOpenModal()">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
         <i class="fa fa-pencil"></i>
       </button>
     </div>
   </div>
   <div class="field-group-content">
-    <p>{{data}}</p>
+    <p>{{data.contact_note}}</p>
   </div>
 </div>
 
@@ -20,7 +20,7 @@
     </modal-header>
     <modal-body>
       <div class="form-group no-label">
-        <textarea rows="3" [formControl]="note" type="text" class="form-control no-resize" id="body"
+        <textarea rows="3" [formControl]="contact_note" type="text" class="form-control no-resize" id="body"
                   placeholder="Your note"></textarea>
       </div>
     </modal-body>

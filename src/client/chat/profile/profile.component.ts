@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChatService } from '../shared/services/chat.service';
+import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
 
 @Component({
   moduleId: module.id,
@@ -10,64 +11,42 @@ import { ChatService } from '../shared/services/chat.service';
 })
 export class ZChatProfileComponent implements OnInit {
   profile: any;
+  actions: any;
+  contact: any;
+  @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 
   constructor(private route: ActivatedRoute,
               private chatService: ChatService) {
   }
 
-  profileEmail: any = [
-    {
-      type: 'work',
-      email: 'cersei.lannister@lannister.com'
-    },
-    {
-      type: 'personal',
-      email: 'drinkingproblem@lannister.com'
-    }
-  ];
-
-  profilePhone: any = [
-    {
-      type: 'mobile',
-      phone_prefix: 'CA',
-      phone: '01234567890'
-    },
-    {
-      type: 'fax',
-      phone_prefix: 'VN',
-      phone: '01234567890'
-    }
-  ];
-
-  profileAddress: any = [
-    {
-      type: 'home',
-      address: '14216 Kinton Parkway P.O. Box 18970 Irvine California 92618 United State'
-    },
-    {
-      type: 'work',
-      address: '14216 Kinton Parkway P.O. Box 18970 Irvine California 92618 United State'
-    }
-  ];
-
-  profileMedia: any = [
-    {
-      type: 'facebook',
-      media: 'https://www.facebook.com/'
-    },
-    {
-      type: 'google_plus',
-      media: 'https://plus.google.com/114320497877326601798'
-    }
-  ];
-
-  profileNote: string = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.';
-
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      console.log(params);
+      this.chatService.apiBaseService.get('zone/social_network/users/'+ params['id'], {module_name: 'chat'}).subscribe((res:any) => {
+        this.profile = res.data;
+        this.actions = res.actions;
+        this.contact = this.chatService.getContactByPartnerId(this.profile.id);
+      });
     });
-    this.profile = this.chatService.getOwnUserProfile();
-    console.log(this.chatService.getOwnUserProfile())
+  }
+
+  onFavorite() {
+    this.chatService.addGroupUserFavorite(this.contact);
+  }
+
+  onSelect(user:any) {
+    this.chatService.selectContactByPartnerId(user.id);
+  }
+
+  onRequest(user:any) {
+    this.requestModal.contact = user;
+    this.requestModal.modal.open();
+  }
+
+  onClose() {
+    setTimeout(()=>{ this.chatService.apiBaseService.get('zone/social_network/users/'+ this.profile.uuid, {module_name: 'chat'}).subscribe((res:any) => {
+      this.profile = res.data;
+      this.actions = res.actions;
+      this.contact = this.chatService.getContactByPartnerId(this.profile.id);
+    })}, 500);
   }
 }

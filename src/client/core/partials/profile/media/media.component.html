@@ -2,16 +2,16 @@
   <div class="field-group-title">
     <h3 class="pull-left">Media</h3>
     <div class="pull-right">
-      <button class="btn btn-default" (click)="onOpenModal()">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
         <i class="fa fa-pencil"></i>
       </button>
     </div>
   </div>
   <div class="field-group-content">
     <dl class="dl-horizontal">
-      <template ngFor let-item [ngForOf]="data" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.type | keyToValue:mediaType:'type':'name'}}</dt>
-        <dd><p><a href="{{item.media}}" target="_blank">{{item.media}}</a></p></dd>
+      <template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{item.kind_of | keyToValue:mediaType:'kind_of':'name'}}</dt>
+        <dd><p><a href="{{item.value}}" target="_blank">{{item.value}}</a></p></dd>
       </template>
     </dl>
   </div>
@@ -30,29 +30,29 @@
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.medias.controls[i].controls.type.valid
-                  && form.controls.medias.controls[i].controls.type.touched),
-                  'has-success': (form.controls.medias.controls[i].controls.type.valid
-                  && form.controls.medias.controls[i].controls.type.touched
-                  && form.value.medias[i].type.length>1)}">
-                  <select class="form-control" name="name" formControlName="type">
+                  'has-error': (!form.controls.medias.controls[i].controls.kind_of.valid
+                  && form.controls.medias.controls[i].controls.kind_of.touched),
+                  'has-success': (form.controls.medias.controls[i].controls.kind_of.valid
+                  && form.controls.medias.controls[i].controls.kind_of.touched
+                  && form.value.medias[i].kind_of.length>1)}">
+                  <select class="form-control" name="name" formControlName="kind_of">
                     <option value=""> -- Select One -- </option>
-                    <option *ngFor="let et of mediaType" value="{{et.type}}">{{et.name}}</option>
+                    <option *ngFor="let et of mediaType" value="{{et.kind_of}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.medias.controls[i].controls.media.valid
-                  && form.controls.medias.controls[i].controls.media.touched),
-                  'has-success': (form.controls.medias.controls[i].controls.media.valid
-                  && form.controls.medias.controls[i].controls.media.touched
-                  && form.value.medias[i].media.length>1)}">
-                  <input type="text" class="form-control" formControlName="media" placeholder="">
+                  'has-error': (!form.controls.medias.controls[i].controls.value.valid
+                  && form.controls.medias.controls[i].controls.value.touched),
+                  'has-success': (form.controls.medias.controls[i].controls.value.valid
+                  && form.controls.medias.controls[i].controls.value.touched
+                  && form.value.medias[i].value.length>1)}">
+                  <input type="text" class="form-control" formControlName="value" placeholder="">
                   <div
-                    *ngIf="!form.controls.medias.controls[i].controls.media.valid && form.controls.medias.controls[i].controls.media.touched">
+                    *ngIf="!form.controls.medias.controls[i].controls.value.valid && form.controls.medias.controls[i].controls.value.touched">
                     <span
-                      *ngIf="!form.controls.medias.controls[i].controls.media.valid && form.controls.medias.controls[i].controls.media.errors.urlFormat"
+                      *ngIf="!form.controls.medias.controls[i].controls.value.valid && form.controls.medias.controls[i].controls.value.errors.urlFormat"
                       class="help-block text-danger">
                       Link is not valid
                     </span>

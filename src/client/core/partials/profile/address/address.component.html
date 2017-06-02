@@ -2,16 +2,16 @@
   <div class="field-group-title">
     <h3 class="pull-left">Address</h3>
     <div class="pull-right">
-      <button class="btn btn-default" (click)="onOpenModal()">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
         <i class="fa fa-pencil"></i>
       </button>
     </div>
   </div>
   <div class="field-group-content">
     <dl class="dl-horizontal">
-      <template ngFor let-item [ngForOf]="data" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.type | keyToValue:addressType:'type':'name'}}</dt>
-        <dd><p>{{item.address}}</p></dd>
+      <template ngFor let-item [ngForOf]="data.addresses" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{item.kind_of | keyToValue:addressType:'kind_of':'name'}}</dt>
+        <dd><p>{{item.address_line1}}</p></dd>
       </template>
     </dl>
   </div>
@@ -30,29 +30,29 @@
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.addresses.controls[i].controls.type.valid
-                  && form.controls.addresses.controls[i].controls.type.touched),
-                  'has-success': (form.controls.addresses.controls[i].controls.type.valid
-                  && form.controls.addresses.controls[i].controls.type.touched
-                  && form.value.addresses[i].type.length>1)}">
-                  <select class="form-control" name="name" formControlName="type">
+                  'has-error': (!form.controls.addresses.controls[i].controls.kind_of.valid
+                  && form.controls.addresses.controls[i].controls.kind_of.touched),
+                  'has-success': (form.controls.addresses.controls[i].controls.kind_of.valid
+                  && form.controls.addresses.controls[i].controls.kind_of.touched
+                  && form.value.addresses[i].kind_of.length>1)}">
+                  <select class="form-control" name="name" formControlName="kind_of">
                     <option value=""> -- Select One -- </option>
-                    <option *ngFor="let et of addressType" value="{{et.type}}">{{et.name}}</option>
+                    <option *ngFor="let et of addressType" value="{{et.kind_of}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.addresses.controls[i].controls.address.valid
-                  && form.controls.addresses.controls[i].controls.address.touched),
-                  'has-success': (form.controls.addresses.controls[i].controls.address.valid
-                  && form.controls.addresses.controls[i].controls.address.touched
-                  && form.value.addresses[i].address.length>1)}">
-                  <input type="text" class="form-control" formControlName="address" placeholder="">
+                  'has-error': (!form.controls.addresses.controls[i].controls.address_line1.valid
+                  && form.controls.addresses.controls[i].controls.address_line1.touched),
+                  'has-success': (form.controls.addresses.controls[i].controls.address_line1.valid
+                  && form.controls.addresses.controls[i].controls.address_line1.touched
+                  && form.value.addresses[i].address_line1.length>1)}">
+                  <input type="text" class="form-control" formControlName="address_line1" placeholder="">
                   <div
-                    *ngIf="!form.controls.addresses.controls[i].controls.address.valid && form.controls.addresses.controls[i].controls.address.touched">
+                    *ngIf="!form.controls.addresses.controls[i].controls.address_line1.valid && form.controls.addresses.controls[i].controls.address_line1.touched">
                     <span
-                      *ngIf="!form.controls.addresses.controls[i].controls.address.valid && form.controls.addresses.controls[i].controls.address.errors.url"
+                      *ngIf="!form.controls.addresses.controls[i].controls.address_line1.valid && form.controls.addresses.controls[i].controls.address_line1.errors.url"
                       class="help-block text-danger">
                       Address is not valid
                     </span>

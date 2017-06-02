@@ -39,7 +39,7 @@
           <!--show if current is one user-->
           <!--<li role="separator" class="divider"></li>-->
           <li *ngIf="item.value.group_json.group_type == 'couple'"><a
-            [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
+            [routerLink]="[profileUrl, item.value.display.uuid]">View Profile</a></li>
           <!--<li><a href="#">View in Contact</a></li>-->
           <!--show if current is one user-->
 
@@ -66,7 +66,7 @@
       <ul class="dropdown-menu dropdown-menu-lg">
         <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
         <!--<li class="divider"></li>-->
-        <li><a [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
+        <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>
         <li><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
         <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove From Conversation</a></li>
       </ul>

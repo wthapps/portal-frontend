@@ -2,16 +2,16 @@
   <div class="field-group-title">
     <h3 class="pull-left">Email</h3>
     <div class="pull-right">
-      <button class="btn btn-default" (click)="onOpenModal()">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
         <i class="fa fa-pencil"></i>
       </button>
     </div>
   </div>
   <div class="field-group-content">
     <dl class="dl-horizontal">
-      <template ngFor let-item [ngForOf]="data" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.type | keyToValue:emailType:'type':'name'}}</dt>
-        <dd><p><a class="link-text" href="mailto:{{item.email}}">{{item.email}}</a></p></dd>
+      <template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{item.kind_of | keyToValue:emailType:'kind_of':'name'}}</dt>
+        <dd><p><a class="link-text" href="mailto:{{item.value}}">{{item.value}}</a></p></dd>
       </template>
     </dl>
   </div>
@@ -30,29 +30,29 @@
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.type.valid
-                  && form.controls.emails.controls[i].controls.type.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.type.valid
-                  && form.controls.emails.controls[i].controls.type.touched
-                  && form.value.emails[i].type.length>1)}">
-                  <select class="form-control" name="name" formControlName="type">
+                  'has-error': (!form.controls.emails.controls[i].controls.kind_of.valid
+                  && form.controls.emails.controls[i].controls.kind_of.touched),
+                  'has-success': (form.controls.emails.controls[i].controls.kind_of.valid
+                  && form.controls.emails.controls[i].controls.kind_of.touched
+                  && form.value.emails[i].kind_of.length > 1)}">
+                  <select class="form-control" name="name" formControlName="kind_of">
                     <option value=""> -- Select One --</option>
-                    <option *ngFor="let et of emailType" value="{{et.type}}">{{et.name}}</option>
+                    <option *ngFor="let et of emailType" value="{{et.kind_of}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.email.valid
-                  && form.controls.emails.controls[i].controls.email.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.email.valid
-                  && form.controls.emails.controls[i].controls.email.touched
-                  && form.value.emails[i].email.length>1)}">
-                  <input type="text" class="form-control" formControlName="email" placeholder="">
+                  'has-error': (!form.controls.emails.controls[i].controls.value.valid
+                  && form.controls.emails.controls[i].controls.value.touched),
+                  'has-success': (form.controls.emails.controls[i].controls.value.valid
+                  && form.controls.emails.controls[i].controls.value.touched
+                  && form.value.emails[i].value.length > 1)}">
+                  <input type="text" class="form-control" formControlName="value" placeholder="">
                   <div
-                    *ngIf="!form.controls.emails.controls[i].controls.email.valid && form.controls.emails.controls[i].controls.email.touched">
+                    *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.touched">
                     <span
-                      *ngIf="!form.controls.emails.controls[i].controls.email.valid && form.controls.emails.controls[i].controls.email.errors.emailFormat"
+                      *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.errors.emailFormat"
                       class="help-block text-danger">
                       Email is not valid
                     </span>

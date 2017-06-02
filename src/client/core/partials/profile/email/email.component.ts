@@ -8,6 +8,7 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 
@@ -20,25 +21,26 @@ declare var _: any;
 export class PartialsProfileEmailComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   form: FormGroup;
 
   emailType: any = [
     {
-      type: 'work',
+      kind_of: 'work',
       name: 'Work'
     },
     {
-      type: 'personal',
+      kind_of: 'personal',
       name: 'Personal'
     },
     {
-      type: 'other',
+      kind_of: 'other',
       name: 'Other'
     },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
       'emails': fb.array([
         this.initItem(),
@@ -58,13 +60,13 @@ export class PartialsProfileEmailComponent {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        type: [item.type, Validators.compose([Validators.required])],
-        email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])]
+        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     } else {
       return this.fb.group({
-        type: ['', Validators.compose([Validators.required])],
-        email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])]
+        kind_of: ['', Validators.compose([Validators.required])],
+        value: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     }
   }
@@ -89,13 +91,20 @@ export class PartialsProfileEmailComponent {
 
     _this.removeAll();
 
-    _.map(this.data, (v: any)=> {
+    _.map(this.data.emails, (v: any)=> {
       _this.addItem(v);
     });
   }
 
 
   onSubmit(values: any): void {
-    console.log(values);
+    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
+      this.removeAll();
+      this.data = res.data;
+      _.map(this.data.emails, (v: any)=> {
+        this.addItem(v);
+      });
+      this.modal.close();
+    });
   }
 }

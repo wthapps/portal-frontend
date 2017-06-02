@@ -48,7 +48,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onFavorite() {
-    this.chatService.addGroupUserFavorite();
+    this.chatService.addGroupUserFavorite(this.item.value);
   }
 
   disableNotification() {

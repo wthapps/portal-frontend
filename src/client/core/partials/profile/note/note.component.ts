@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 
@@ -19,26 +20,31 @@ declare var _: any;
 export class PartialsProfileNoteComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   form: FormGroup;
-  note: AbstractControl;
+  contact_note: AbstractControl;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
-      'note': ['']
+      'contact_note': ['']
     });
-
-    this.note = this.form.controls['note'];
+    //
+    this.contact_note = this.form.controls['contact_note'];
   }
 
   onOpenModal() {
-    (<FormControl>this.note).setValue(this.data);
+    (<FormControl>this.contact_note).setValue(this.data.contact_note);
 
     this.modal.open();
   }
 
 
   onSubmit(values: any): void {
-    console.log(values);
+    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
+      this.data = res.data;
+      (<FormControl>this.contact_note).setValue(this.data.contact_note);
+      this.modal.close();
+    });
   }
 }
