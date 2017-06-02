@@ -171,6 +171,7 @@
     "rxjs": "~5.1.1",
     "shave": "^1.0.4",
     "slick-carousel": "^1.6.0",
+    "svg-country-flags": "^1.0.0",
     "systemjs": "0.19.41",
     "wheelzoom.js": "^1.0.1",
     "zone.js": "^0.7.2"
