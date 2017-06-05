@@ -11,7 +11,14 @@
     <dl class="dl-horizontal">
       <template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{item.kind_of | keyToValue:phoneType:'kind_of':'name'}}</dt>
-        <dd><p><img width="30" src="assets/images/flags/{{item.country_alpha_code.toLowerCase()}}.svg" alt=""> {{item.value}}</p></dd>
+        <dd>
+          <p>
+            <img *ngIf="countriesCode"
+                 src="assets/images/flags/{{item.country_alpha_code | phoneCodeFlag:countriesCode}}.svg"
+                 width="30" alt="">
+            {{item.value}}
+          </p>
+        </dd>
       </template>
     </dl>
   </div>
@@ -24,10 +31,10 @@
     </modal-header>
     <modal-body>
       <div formArrayName="phones">
-        <div *ngFor="let add_phone of form.controls.phones.controls; let i=index" class="media mt0">
+        <div *ngFor="let add_phone of form.controls.phones.controls; let i=index" class="media media-no-hidden mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
-              <div class="col-sm-3">
+              <div class="col-sm-2">
                 <div class="form-group no-label" [ngClass]="{
                   'has-error': (!form.controls.phones.controls[i].controls.kind_of.valid
                   && form.controls.phones.controls[i].controls.kind_of.touched),
@@ -40,17 +47,28 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-5">
                 <div class="form-group no-label" [ngClass]="{
                   'has-error': (!form.controls.phones.controls[i].controls.country_alpha_code.valid
                   && form.controls.phones.controls[i].controls.country_alpha_code.touched),
                   'has-success': (form.controls.phones.controls[i].controls.country_alpha_code.valid
                   && form.controls.phones.controls[i].controls.country_alpha_code.touched
                   && form.value.phones[i].country_alpha_code.length>1)}">
-                  <select class="form-control" name="name" formControlName="country_alpha_code">
+
+                  <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
+                                  [suggestions]="filteredBrands"
+                                  (completeMethod)="filterBrands($event)" [size]="30"
+                                  [minLength]="1" placeholder="Select your country" [dropdown]="true"
+                                  (onDropdownClick)="handleDropdownClick($event)">
+                    <template ngFor let-code let-i="index" pTemplate="item">
+                      <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
+                    </template>
+                  </p-autoComplete>
+
+                  <!--<select class="form-control" name="name" formControlName="country_alpha_code">
                     <option value=""> Select your country</option>
                     <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}} ({{c.dial_code}})</option>
-                  </select>
+                  </select>-->
                 </div>
               </div>
               <div class="col-sm-5">

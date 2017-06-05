@@ -26,7 +26,14 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   form: FormGroup;
 
+  countriesName: any;
+  countriesDialCode: any;
   countriesCode: any;
+  countriesNameCode: any;
+
+
+  filteredBrands: any[];
+  brand: string;
 
   phoneType: any = [
     {
@@ -49,14 +56,17 @@ export class PartialsProfilePhoneComponent implements OnInit {
         this.initItem(),
       ])
     });
-
-    console.log(this.form);
   }
 
   ngOnInit() {
     this.countryService.getCountries().subscribe(
       (res: any) => {
         this.countriesCode = res;
+        this.countriesNameCode = _.map(res,
+          (v: any) => {
+            return v.name + ' (' + v.dial_code + ')';
+          }
+        );
       });
 
   }
@@ -111,7 +121,7 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
 
   onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
+    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res: any) => {
       this.removeAll();
       this.data = res.data;
       _.map(this.data.emails, (v: any)=> {
@@ -119,5 +129,25 @@ export class PartialsProfilePhoneComponent implements OnInit {
       });
       this.modal.close();
     });
+  }
+
+
+  filterBrands(event: any) {
+    this.filteredBrands = [];
+    for (let i = 0; i < this.countriesNameCode.length; i++) {
+      let brand = this.countriesNameCode[i];
+      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+        this.filteredBrands.push(brand);
+      }
+    }
+  }
+
+  handleDropdownClick() {
+    this.filteredBrands = [];
+
+    //mimic remote call
+    setTimeout(() => {
+      this.filteredBrands = this.countriesNameCode;
+    }, 100)
   }
 }

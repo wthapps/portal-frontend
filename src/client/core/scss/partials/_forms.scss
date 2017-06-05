@@ -202,3 +202,49 @@
 textarea {
   resize: vertical;
 }
+
+.form-control-phone-country {
+  background-color: red;
+  .ui-autocomplete {
+    &.ui-widget {
+      .ui-inputtext {
+        width: 100%;
+        min-width: initial;
+        border-radius: $border-radius-base;
+        line-height: 18px;
+        border-color: $input-border;
+        &.ng-invalid {
+          border-color: $state-danger-text;
+        }
+      }
+      .ui-autocomplete-dropdown {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: transparent;
+        color: $text-color;
+        min-width: 34px;
+        z-index: 10;
+      }
+    }
+  }
+  .ui-autocomplete-panel {
+    min-width: 390px;
+    font-size: 12px;
+    img {
+      margin-right: 5px;
+    }
+    span {
+      line-height: 20px;
+    }
+  }
+  &.ng-invalid {
+    .ui-autocomplete {
+      &.ui-widget {
+        .ui-inputtext {
+          border-color: $state-danger-text;
+        }
+      }
+    }
+  }
+}
