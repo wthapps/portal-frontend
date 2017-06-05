@@ -11,7 +11,7 @@
     <dl class="dl-horizontal">
       <template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{item.kind_of | keyToValue:phoneType:'kind_of':'name'}}</dt>
-        <dd><p><img width="30" src="assets/images/flags/{{item.country_alpha_code.toLowerCase()}}.png" alt=""> {{item.value}}</p></dd>
+        <dd><p><img width="30" src="assets/images/flags/{{item.country_alpha_code.toLowerCase()}}.svg" alt=""> {{item.value}}</p></dd>
       </template>
     </dl>
   </div>
