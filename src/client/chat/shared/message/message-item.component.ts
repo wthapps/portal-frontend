@@ -5,6 +5,7 @@ import { PubSubEventService } from '../../../core/shared/services/pub-sub/pub-su
 import { PubSubEvent } from '../../../core/shared/services/pub-sub/pub-sub-event';
 import { CHAT_ACTIONS } from '../constants/chat-constant';
 
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -20,6 +21,8 @@ export class MessageItemComponent implements OnInit {
   actions = CHAT_ACTIONS;
 
   profileUrl: any = '';
+
+  private modifiedMessage: any;
 
   constructor(
     private chatService: ChatService,
@@ -39,7 +42,9 @@ export class MessageItemComponent implements OnInit {
   }
 
   doAction(event: PubSubEvent) {
-    this.pubSubEventService.addEvent(event);
+    var editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
+
+    this.pubSubEventService.addEvent(editingEvent);
   }
 
   copy() {

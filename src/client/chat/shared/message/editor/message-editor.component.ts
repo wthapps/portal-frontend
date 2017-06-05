@@ -28,10 +28,12 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   uploadPhotoSubscription: Subscription;
 
   message: Message = new Message();
+  appendedMessages: Array<Message> = new Array<Message>();
   messageEditorForm: FormGroup;
   messageCtrl: FormControl;
 
   private pressingShiftKey: boolean = false;
+  private messageEditorId = '#chat-message-text';
 
   constructor(
     private chatService: ChatService,
@@ -50,7 +52,9 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     // Form controls
     // this.message.message = '';
     this.messageEditorForm = new FormGroup({
-      messageCtrl: new FormControl()// [this.message.message, null]
+      message: new FormControl(this.message.message, Validators.required)//[this.message.message, null]
+      // message: [this.message.message, Validators.required]//[this.message.message, null]
+
     });
     this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
   }
@@ -76,11 +80,18 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     if (ev.keyCode == 16) {
       this.pressingShiftKey = false;
     }
-    // pressing Enter Key
+    // pressed Enter Key
     if (ev.keyCode == 13) {
       if (!this.pressingShiftKey) {
-        this.send(true);
+        // if (!this.pressingShiftKey && this.messageEditorForm.valid) {
+
+          this.send(true);
       }
+    }
+
+    // pressed ESC
+    if (ev.keyCode == 27) {
+      this.cancelEditingMessage();
     }
   }
 
@@ -98,6 +109,16 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   updateAttributes(attributes: any) {
     if('message' in attributes) {
       this.message = attributes.message;
+      if(this.message.message_type == 'text') {
+        this.setEditor(this.message);
+      }
+    }
+    if('appendedMessage' in attributes) {
+      this.appendedMessages.push(attributes.appendedMessage);
+      this.message = attributes.appendedMessage;
+      // this.message.message += this.buildQuoteMessage(attributes.appendedMessage);
+
+      console.log('testing:::::::::', this.appendedMessages[0]);
     }
     if('mode' in attributes) {
       this.mode = attributes.mode;
@@ -105,26 +126,49 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   focus() {
+      //set background color #ffd when editing
+  }
 
+  cancelEditingMessage() {
+    if (this.mode == FORM_MODE.EDIT) {
+      this.mode = FORM_MODE.CREATE;
+    } else {
+
+    }
+    this.resetEditor();
   }
 
   send(enter?: boolean) {
 
-    let message: string = $('#chat-message-text').html();
+    let message: string = $(this.messageEditorId).html();
+
     if (enter) {
-      message = message.replace('<div><br></div>', '');
+      // message = message.replace('<div><br></div>', '');
     }
+    this.message.message = message;
 
-    this.chatService.sendTextMessage(message, {toTop: true});
+    if (this.mode == FORM_MODE.EDIT) {
+      this.chatService.updateMessage(this.message.group_id, this.message).subscribe(
+        (response: any) => {
+          this.mode = FORM_MODE.CREATE;
+          this.resetEditor();
+      },
+      error => {
+      });
 
-    $('#chat-message-text').html('');
-    // this.quoteMess.length = 0;
-
+    } else {
+      this.chatService.sendTextMessage(this.message.message, {toTop: true});
+      this.resetEditor();
+    }
   }
 
   onEmojiClick(e: any) {
     $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
     this.placeCaretAtEnd(document.getElementById('chat-message-text'));
+  }
+
+  onChangeValue(event: any) {
+    console.log('changing.............', event.target.innerHtml);
   }
 
   onOpenSelectPhotos() {
@@ -200,6 +244,15 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  private buildQuoteMessage(message: any): string {
+    return `<blockquote contenteditable="false">      
+    <strong *ngIf="message.is_quote">${message.display.name}</strong>
+    <span *ngIf="message.is_quote">${message.created_at}</span>
+    <p [innerHtml]="#{message.message}"></p>
+      </blockquote>
+      <br>`;
+  }
+
   private notAssignedSubscription(sub: Subscription) {
     return !sub || sub.closed;
   }
@@ -209,5 +262,14 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
       if (sub && !sub.closed)
         sub.unsubscribe();
     });
+  }
+
+  private resetEditor() {
+    this.message = new Message();
+    this.setEditor(this.message);
+  }
+
+  private setEditor(message: Message) {
+    // $(this.messageEditorId).html(message.message)
   }
 }

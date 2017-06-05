@@ -1,18 +1,31 @@
 <div class="page-body-chat-message">
   <div class="chat-message-container">
     <form [formGroup]="messageEditorForm" novalidate>
-      <div id="chat-message-text" class="chatbox-container-input" contenteditable="true" spellcheck="false" tabindex="1"
-           placeholder="Type message here" autocomplete="off" autocorrect="off" alt="" (keyup.enter)="send(true)"
+
+      <div id="chat-message-text" class="chatbox-container-input message-editor-input" contenteditable="true"
+           spellcheck="true" tabindex="0" placeholder="Type message here" alt=""
+           [ngClass]="{'message-editing': mode=='EDIT'}"
            [innerHtml]="message.message" (input)="message.message=$event.target.innerHtml">
-           >
-       <!--<template [ngIf]="quoteMess.length>0">-->
-          <!--<blockquote *ngFor="let quote of quoteMess" contenteditable="false">-->
-            <!--<strong>{{quote.display.name}}</strong>-->
-            <!--<span>{{quote.created_at | timeFormat: "time_only"}}</span>-->
-            <!--<p>{{quote.message}}</p>-->
-          <!--</blockquote>-->
-          <!--<br>-->
-        <!--</template>-->
+
+            <!--<template contenteditable="false">-->
+              <!--<p [innerHtml]="message.message"></p>-->
+            <!--</template>-->
+
+            <!--<template contenteditable="false">-->
+              <!--<blockquote contenteditable="false">-->
+                <!--<strong >{{message.display.name}}</strong>-->
+                <!--<span >{{message.created_at | timeFormat: "time_only"}}</span>-->
+                <!--<p [innerHtml]="message.message"></p>-->
+              <!--</blockquote>-->
+            <!--</template>-->
+
+      <!--<textarea id="chat-message-text" class="message-editor-input" spellcheck="false" tabindex="1"-->
+                <!--[ngClass]="{'message-editing': mode=='EDIT'}" autocomplete="off" autocorrect="off"-->
+                <!--placeholder="Type message here" alt=""-->
+                <!--[formControl]="messageCtrl"-->
+                <!--[(ngModel)]="message.message">-->
+
+      <!--</textarea>-->
       </div>
       <div class="row">
         <div class="col-sm-6">
@@ -39,7 +52,7 @@
         </div>
         <div class="col-sm-6 text-right">
           <span class="text-line-btn text-fade">Press enter to send message</span>
-          <div class="btn btn-wth-default ml10" (click)="send()">Send</div>
+          <button class="btn btn-wth-default ml10" [disabled]="!messageEditorForm.valid" (click)="send()">Send</button>
         </div>
       </div>
     </form>

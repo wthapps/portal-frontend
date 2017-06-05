@@ -62,6 +62,7 @@ import { ZoneReportComponent } from './form/report/report.component';
 import { HdModalComponent } from './ng2-hd/modal/components/modal';
 import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
 import { BytesPipe } from './pipe/bytes.pipe';
+import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -112,7 +113,8 @@ import { BytesPipe } from './pipe/bytes.pipe';
     ScrollToBottomDirective,
     AutofocusDirective,
     ImgFullDirective,
-    TextAreaAutoHeightDirective
+    TextAreaAutoHeightDirective,
+    DisplayAsHtmlDirective
   ],
   exports: [
     CommonModule,
@@ -159,7 +161,8 @@ import { BytesPipe } from './pipe/bytes.pipe';
     ScrollToBottomDirective,
     AutofocusDirective,
     ImgFullDirective,
-    TextAreaAutoHeightDirective
+    TextAreaAutoHeightDirective,
+    DisplayAsHtmlDirective
   ]
 })
 export class SharedModule {

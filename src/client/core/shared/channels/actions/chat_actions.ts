@@ -9,6 +9,7 @@ export class ChatActions {
   update(response: any) {
     switch (response.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
+      case CHAT_ACTIONS.CHAT_MESSAGE_UPDATE:
         console.log('data;;;;;;;;;;;;;;', response.data);
         this.serviceManager.getChatCommonService().updateItemInList(response.data.group_id, response.data);
         break;

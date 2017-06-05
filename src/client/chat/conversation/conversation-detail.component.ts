@@ -9,6 +9,8 @@ import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
 import { ConversationService } from './conversation.service';
 
+declare  var _: any;
+
 @Component({
   moduleId: module.id,
   selector: 'conversation-detail',
@@ -39,17 +41,19 @@ export class ConversationDetailComponent implements PubSubAction, OnInit, OnDest
   }
 
   doAction(event: PubSubEvent) {
-    console.log('actioning....................');
     switch (event.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_COPY:
-
+        this.messageEditor.updateAttributes({message: event.payload, mode: FORM_MODE.CREATE});
+        this.messageEditor.focus();
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_QUOTE:
+        _.assign(event.payload, {is_quote: true});
+        this.messageEditor.updateAttributes({message: event.payload, mode: FORM_MODE.CREATE});
+        this.messageEditor.focus();
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_EDIT:
         this.messageEditor.updateAttributes({message: event.payload, mode: FORM_MODE.EDIT});
         this.messageEditor.focus();
-
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD:
         break;

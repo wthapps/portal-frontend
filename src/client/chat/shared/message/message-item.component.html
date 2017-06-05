@@ -1,5 +1,5 @@
 <div *ngIf="message.message_type != 'notification'" class="message-item"
-     [ngClass]="{'message-item-left': (!message.byMe && message.message_type != 'file_tmp'), 'message-item-right': (message.byMe || message.message_type == 'file_tmp')}">
+     [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
   <div class="message-item-date" *ngIf="hasShowDate()">
     <span>{{ message.created_at | date }}</span>
   </div>
@@ -17,20 +17,18 @@
     <div class="message-item-content-card">
       <div class="message-item-content-main">
 
+        <!--mesasge menu-->
         <div class="message-item-menu dropdown"
              *ngIf="(message.message_type == 'text' || message.file_type == 'Photo' || message.file_type == 'FileMedium')">
           <i class="fa fa-sort-down" data-toggle="dropdown"></i>
 
           <!--text message menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
-            <li *ngIf="!message.file_json">
-              <a href="javascript:;"
-                 (click)="doAction({type: actions.MESSAGE_COPY, payload: message})">Copy</a></li>
-            <li *ngIf="!message.file_json">
-              <a href="javascript:;"
-                 (click)="doAction({type: actions.MESSAGE_QUOTE, payload: message})">Quote Message</a></li>
-            <li *ngIf="(!message.file_json && message.byMe)"><a href="javascript:;">Edit</a></li>
-            <li *ngIf="(!message.file_json && message.byMe)"><a href="javascript:;">Delete</a></li>
+            <li *ngIf="!message.file_json"><a href="javascript:;" (click)="copy()">Copy</a></li>
+            <!--comment out this menu because this function is not working now-->
+            <!--<li *ngIf="!message.file_json"><a href="javascript:;" (click)="quote()">Quote Message</a></li>-->
+            <li *ngIf="!message.file_json && message.byMe"><a href="javascript:;" (click)="edit()">Edit</a></li>
+            <li *ngIf="!message.file_json && message.byMe"><a href="javascript:;" (click)="delete()">Delete</a></li>
           </ul>
 
           <!--photos menu-->

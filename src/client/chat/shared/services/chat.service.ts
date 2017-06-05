@@ -8,6 +8,7 @@ import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.
 import { ChatConstant } from '../constants/chat-constant';
 import { ChatCommonService } from '../../../core/shared/services/chat.common.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { Observable } from 'rxjs';
 
 declare var _: any;
 
@@ -193,6 +194,10 @@ export class ChatService {
       let item = this.storage.find('contact_select');
       this.sendMessage(item.value.group_json.id, {message: message, type: 'text'}, option, callback);
     }
+  }
+
+  updateMessage(conversationId: any, message: any): Observable<any> {
+    return this.apiBaseService.put(`zone/chat/conversations/${conversationId}/messages`, {message: message});
   }
 
   uploadFiles(files: any) {
