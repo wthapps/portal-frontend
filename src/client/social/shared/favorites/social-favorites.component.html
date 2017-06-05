@@ -1,9 +1,9 @@
 <div class="zone-social-sidebar">
   <dl>
     <dt>Favourites</dt>
-    <dd>
+    <dd >
 
-      <div class="media-center mb10" *ngFor="let	favourite of favourites">
+      <div class="media-center mb10" *ngFor="let	favourite of favoriteService.favorites">
         <div class="media-center-left">
           <figure *ngIf="favourite.friend">
             <a [routerLink]="[profileUrl, favourite.friend.uuid]" [skipLocationChange]="true">

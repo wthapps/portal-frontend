@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { SocialService } from '../services/social.service';
 import { Constants } from '../../../core/shared/config/constants';
@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { SocialFavoriteService } from '../services/social-favorites.service';
 
 declare let _ : any;
 
@@ -17,48 +19,54 @@ declare let _ : any;
 
 export class ZSocialFavoritesComponent implements OnInit {
 
-  favourites: any = [];
+  favorites$: Observable<any> = Observable.empty();
   readonly profileUrl: string = '/' + Constants.urls.profile;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
   constructor(private socialService: SocialService,
-              private router: Router,
-              private userService: UserService,
-              private confirmationService: ConfirmationService,
+              private favoriteService: SocialFavoriteService,
               private zoneReportService: ZoneReportService
   ) {
+    // this.favorites$ = this.favoriteService.favoritesObs;
   }
 
   ngOnInit() {
-    this.getFavourites();
+    // this.getFavourites();
   }
 
-  getFavourites() {
-    this.socialService.user.getFavourites().take(1).subscribe(
-      (res: any) => {
-        this.favourites = res.data;
-      }
-    );
-  }
+  // getFavourites() {
+  //   this.socialService.user.getFavourites().take(1).subscribe(
+  //     // (res: any) => {
+  //     //   this.favourites = res.data;
+  //     // }
+  //     this.favourites
+  //   );
+  // }
 
   unfavourite(favourite: any) {
-    this.socialService.unfavourite(favourite.uuid).take(1)
-      .subscribe((response: any) => {
-        _.remove(this.favourites, (f: any) => f.uuid == favourite.uuid);
-    });
+    // this.socialService.unfavourite(favourite.uuid).take(1)
+    //   .subscribe((response: any) => {
+    //     _.remove(this.favourites.getValue(), (f: any) => f.uuid == favourite.uuid);
+    // });
+
+    this.favoriteService.unfavourite(favourite);
   }
 
   confirmLeaveCommunity(community: any) {
-    this.socialService.community.confirmLeaveCommunity(community)
-      .then((community: any) => _.remove(this.favourites, (f: any) => _.get(f, 'community.uuid', '') == community.uuid));
+    // this.socialService.community.confirmLeaveCommunity(community)
+    //   .then((community: any) => _.remove(this.favourites.getValue(), (f: any) => _.get(f, 'community.uuid', '') == community.uuid));
+
+    this.confirmLeaveCommunity(community);
   }
 
   unfriend(friend: any) {
-    this.socialService.user.unfriend(friend.uuid).subscribe(
-      (res: any) => {
-        _.remove(this.favourites, (f: any) => _.get(f, 'friend.uuid', '') == friend.uuid);
-      },
-    );
+    // this.socialService.user.unfriend(friend.uuid).subscribe(
+    //   (res: any) => {
+    //     _.remove(this.favourites.getValue(), (f: any) => _.get(f, 'friend.uuid', '') == friend.uuid);
+    //   },
+    // );
+
+    this.unfriend(friend);
   }
 
   // TODO:

@@ -9,6 +9,7 @@ import { ToastsService } from '../../../core/partials/toast/toast-message.servic
 import { Constants } from '../../../core/shared/config/constants';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 // import {
 //   ApiBaseService,
 //   ToastsService,
@@ -51,6 +52,7 @@ export class ComMemberListComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private confirmationService: ConfirmationService,
+              public favoriteService: SocialFavoriteService,
               private toastsService: ToastsService) {
   }
 

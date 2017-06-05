@@ -22,6 +22,7 @@ import { ZSocialMembersComponent } from '../friends/members.component';
 import { SoPhotoListComponent } from './post/photo-list.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
+import { SocialFavoriteService } from './services/social-favorites.service';
 
 
 /**
@@ -74,7 +75,7 @@ export class ZSocialSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZSocialSharedModule,
-      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService]
+      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService, SocialFavoriteService]
     };
   }
 }

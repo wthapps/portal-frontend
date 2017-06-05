@@ -5,9 +5,8 @@ import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ToastsService } from '../../../core/partials/upload-crop-image/toast/toast-message.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 import { SocialService } from '../../shared/services/social.service';
-// import { MemberListInviteComponent } from '../member/member-list-invite.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
@@ -17,6 +16,7 @@ import { Subscription, Observable } from 'rxjs';
 import { ZSocialFavoritesComponent } from '../../shared/favorites/social-favorites.component';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 
 declare let _: any;
 declare let $: any;
@@ -96,7 +96,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @ViewChild('users') users: EntitySelectComponent;
-  @ViewChild('favorites') favorites: ZSocialFavoritesComponent;
+  // @ViewChild('favorites') favorites: ZSocialFavoritesComponent;
   // @ViewChild('users') users: MemberListInviteComponent;
   @ViewChild('posts') posts: PostListComponent;
 
@@ -116,6 +116,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
               private zoneReportService: ZoneReportService,
+              public favoriteService: SocialFavoriteService,
               private socialService: SocialService) {
 
     // All subscriptions to photo select modal should be closed when 1 of following events are emitted
@@ -180,11 +181,12 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
       (res: any) => {
         if(!_.isEmpty(this.favourite)) {
-          _.remove( this.favorites.favourites.getValue(), (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
+          // _.remove( this.favorites.favourites.getValue(), (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
+          this.favoriteService.removeFavorite(res.data);
           this.favourite = undefined;
         } else {
           // this.favorites.favourites.push(res.data); // Update favorite list at the sidebar
-          this.favorites.favourites.getValue().push(res.data);
+          this.favoriteService.addFavorite(res.data);
           this.favourite = res.data;
         }
 
