@@ -3,7 +3,7 @@
     <dt>Favourites</dt>
     <dd>
 
-      <div class="media-center mb10" *ngFor="let	favourite of favourites">
+      <div class="media-center mb10" *ngFor="let	favourite of (favourites | async)">
         <div class="media-center-left">
           <figure *ngIf="favourite.friend">
             <a [routerLink]="[profileUrl, favourite.friend.uuid]" [skipLocationChange]="true">

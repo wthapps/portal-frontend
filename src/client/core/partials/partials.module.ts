@@ -30,6 +30,9 @@ import { CoverProfileModule } from './cover-profile/cover-profile.module';
 import { PartialsNotificationsComponent } from './notifications/notifications.component';
 import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 import { PartialsProfileModule } from './profile/profile.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { UndoNotificationComponent } from './header/notification/undo-notification.component';
+import { NotificationItemComponent } from './notifications/item/notification-item.component';
 
 
 @NgModule({
@@ -47,6 +50,7 @@ import { PartialsProfileModule } from './profile/profile.module';
     CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
+    InfiniteScrollModule,
     EntitySelectModule,
     PhotoModule,
     TagInputModule,
@@ -67,6 +71,8 @@ import { PartialsProfileModule } from './profile/profile.module';
     FooterComponent,
     FooterPromotionComponent,
     PartialsNotificationsComponent,
+    NotificationItemComponent,
+    UndoNotificationComponent,
 
     // Pipe
     TitleCase,
@@ -88,10 +94,13 @@ import { PartialsProfileModule } from './profile/profile.module';
     CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
+    InfiniteScrollModule,
     EntitySelectModule,
     PhotoModule,
     CalendarModule,
     CoverProfileModule,
+    NotificationItemComponent,
+    UndoNotificationComponent,
     PartialsProfileModule,
 
     ModalDockModule,

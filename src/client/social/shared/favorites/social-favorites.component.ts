@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 declare let _ : any;
 
@@ -17,7 +18,8 @@ declare let _ : any;
 
 export class ZSocialFavoritesComponent implements OnInit {
 
-  favourites: any = [];
+  // favourites: any = [];
+  favourites: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   readonly profileUrl: string = '/' + Constants.urls.profile;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
@@ -34,11 +36,15 @@ export class ZSocialFavoritesComponent implements OnInit {
   }
 
   getFavourites() {
-    this.socialService.user.getFavourites().take(1).subscribe(
-      (res: any) => {
-        this.favourites = res.data;
-      }
+    this.socialService.user.getFavourites().take(1)
+      .map((res: any) => res.data)
+      .subscribe(
+      // (res: any) => {
+      //   this.favourites = res.data;
+      // }
+      this.favourites
     );
+    ;
   }
 
   unfavourite(favourite: any) {

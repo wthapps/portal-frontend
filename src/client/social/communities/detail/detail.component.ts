@@ -5,7 +5,7 @@ import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ToastsService } from '../../../core/partials/upload-crop-image/toast/toast-message.service';
 import { SocialService } from '../../shared/services/social.service';
 // import { MemberListInviteComponent } from '../member/member-list-invite.component';
 import { Constants } from '../../../core/shared/config/constants';
@@ -180,10 +180,11 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
       (res: any) => {
         if(!_.isEmpty(this.favourite)) {
-          _.remove( this.favorites.favourites, (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
+          _.remove( this.favorites.favourites.getValue(), (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
           this.favourite = undefined;
         } else {
-          this.favorites.favourites.push(res.data); // Update favorite list at the sidebar
+          // this.favorites.favourites.push(res.data); // Update favorite list at the sidebar
+          this.favorites.favourites.getValue().push(res.data);
           this.favourite = res.data;
         }
 
