@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { SocialService } from '../../../shared/services/social.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { SocialService } from '../../../shared/services/social.service';
 export class ZSocialPrivacyComponent implements OnInit {
   @Input() url: string;
   @Input() params: any = null;
+  @Output() onUpdatePrivacy: EventEmitter<any> = new EventEmitter<any>();
 
   privacy: string = '';
 

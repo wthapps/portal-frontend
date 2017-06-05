@@ -15,6 +15,8 @@ declare var _: any;
 @Injectable()
 export class NotificationService {
   notifications: Array<any> = new Array<any>();
+  trashNotifications: Array<any> = new Array<any>();
+  latestNotifId: number = 0;
   newNotifCount: number = 0 ;
   currentNotifId: any;
   readonly notifLimit: number = Constants.notificationSetting.limit;
@@ -107,6 +109,17 @@ export class NotificationService {
         });
   }
 
+  addNewNofification(notification: any) {
+    // Detect if this notification is new or an Undo notification
+    console.log('addnewNotification: ', notification);
+    if (parseInt(_.get(JSON.parse(notification), 'id')) > this.latestNotifId) {
+      this.notifications.unshift(JSON.parse(notification));
+      this.newNotifCount++;
+    }
+  }
+
+
+
   toggleReadStatus(notification: any) {
     this.currentNotifId = notification.id;
     let body = {'ids' : this.currentNotifId};
@@ -151,6 +164,11 @@ export class NotificationService {
           _.remove(this.notifications); // Make sure this.notifications has no value before assigning
           this.notifications = result.data;
           this.nextLink = result.page_metadata.links.next;
+
+          // Get latest notification id
+          this.latestNotifId = Math.max(..._.map(this.notifications, (n: any) => n.id));
+
+          console.log('latest Notif Id: ', this.latestNotifId);
           if (result.data.length==0) {
             this.hasObjects = false;
           }
@@ -213,7 +231,7 @@ export class NotificationService {
     this.currentNotifId = notification.id;
     this.api.delete(`${Constants.urls.zoneSoNotifications}/${this.currentNotifId}`)
       .subscribe((result: any) => {
-          _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
+          // _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
           console.log('result: ', result);
         },
         (error: any) => {
@@ -221,11 +239,26 @@ export class NotificationService {
         });
   }
 
+  moveToTrash(notification: any) {
+    this.trashNotifications.push(notification);
+  }
+
+  // Remove notification that exists in TrashNotifications
+  removeNotifications() {
+    _.pullAll(this.notifications, this.trashNotifications);
+    this.trashNotifications.length = 0 ;
+  }
+
   countNewNotifications() {
     let temp_notif_count = _.filter(this.notifications, (n: any) => n.seen_state == Constants.seenStatus.new).length;
     if (temp_notif_count > 0)
       this.newNotifCount -= temp_notif_count;
     this.newNotifCount = (this.newNotifCount < 0 ? 0 : this.newNotifCount);
+  }
+
+  undoNotification(notification: any) {
+    // _.remove(this.trashNotifications, (n:any) => n.id == notification.id);
+    return this.api.post(`${Constants.urls.zoneSoNotifications}`, notification).take(1);
   }
 
 
@@ -241,14 +274,13 @@ export class NotificationService {
         this.notificationChannel.notificationUpdated
           .subscribe(
             (notification: any) => {
-              this.notifications.unshift(JSON.parse(notification));
-              this.newNotifCount++;
+              // this.notifications.unshift(JSON.parse(notification));
+              // this.newNotifCount++;
+              this.addNewNofification(notification);
 
               if(callback) {
                 let to2 = setTimeout(callback(), 1000); // Delay 1s before subscribing to appearance channel
 
-                // clearTimeout(to2);
-                // clearTimeout(timeoutId);
               }
 
             });
