@@ -6,6 +6,7 @@ import { Constants } from '../config/constants';
 import { Config } from '../config/env.config';
 import { StorageService } from './storage.service';
 import { ChatCommonService } from './chat.common.service';
+import { NotificationService } from './notification.service';
 
 @Injectable()
 export class ServiceManager {
@@ -17,6 +18,7 @@ export class ServiceManager {
     private storageService: StorageService,
     private router: Router,
     private chatCommonService: ChatCommonService,
+    private notificationService: NotificationService
   ) {
   }
 
@@ -50,5 +52,9 @@ export class ServiceManager {
 
   getChatCommonService() {
     return this.chatCommonService;
+  }
+
+  getCommonNotificationService() {
+    return this.notificationService;
   }
 }

@@ -29,6 +29,12 @@ export class PartialsNotificationsComponent {
     this.notificationService.hideNotification(notification);
   }
 
+  confirmHideNotification(notification:any) {
+    console.debug('inside partials-notifications: confirmHideNotification !!!');
+    notification.isHidden = true;
+    this.hideNotification(notification);
+  }
+
   toggleViewNotifications() {
     this.notificationService.getLatestNotifications(); // Load latest notifications in the first click
     if (this.notificationService.notifications.length <= 0) {
