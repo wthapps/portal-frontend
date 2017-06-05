@@ -42,39 +42,22 @@
   <div class="z-social-box" *ngIf="userInfo.contact">
     <div class="z-social-box-header">
 
-      <div *ngIf="actions.update">
-        <a href="#" (click)="onEditContact()" class="btn btn-default-inline pull-right" data-toggle="modal">
-          <i class="fa fa-pencil"></i>
-        </a>
-        <z-social-privacy [params]="{name: 'contact_privacy', value: userInfo.contact_privacy}"></z-social-privacy>
-      </div>
+      <!--<div *ngIf="actions.update">-->
+        <!--<a href="#" (click)="onEditContact()" class="btn btn-default-inline pull-right" data-toggle="modal">-->
+          <!--<i class="fa fa-pencil"></i>-->
+        <!--</a>-->
+        <!--<z-social-privacy [params]="{name: 'contact_privacy', value: userInfo.contact_privacy}"></z-social-privacy>-->
+      <!--</div>-->
 
       <h4 class="h4">
         Contact Information
       </h4>
     </div>
     <div class="z-social-post">
-      <dl *ngIf="userInfo.contact.emails">
-        <dt>Email</dt>
-        <dd *ngFor="let email of userInfo.contact.emails">
-          {{email}}
-        </dd>
-      </dl>
-
-      <dl *ngIf="userInfo.contact.phones">
-        <dt>Phone</dt>
-        <dd *ngFor="let phone of userInfo.contact.phones">
-          {{phone}}
-        </dd>
-      </dl>
-
-
-      <dl *ngIf="userInfo.contact.addresses">
-        <dt>Address</dt>
-        <dd *ngFor="let address of userInfo.contact.addresses">
-          {{address.street}}, {{address.city}}, {{address.country}}
-        </dd>
-      </dl>
+      <partials-profile-email [data]="userInfo" [editable]="actions.update"></partials-profile-email>
+      <partials-profile-phone [data]="userInfo" [editable]="actions.update"></partials-profile-phone>
+      <partials-profile-address [data]="userInfo" [editable]="actions.update"></partials-profile-address>
+      <partials-profile-media [data]="userInfo" [editable]="actions.update"></partials-profile-media>
     </div>
   </div>
 

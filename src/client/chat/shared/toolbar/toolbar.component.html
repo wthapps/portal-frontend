@@ -58,16 +58,18 @@
 <template [ngIf]="item.value && showMemberBar">
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
-      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
+      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)" class="btn btn-default-inline dropdown-toggle" type="button"
               data-toggle="dropdown">
-        <span *ngIf="usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span>
+        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span>
+        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1" class="p-list-user-status offline"></span>
+        <i *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true" style="margin-right: 3px;"></i>
         {{user_in_group.name}} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-lg">
         <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
         <!--<li class="divider"></li>-->
         <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>
-        <li><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
+        <li *ngIf="showBlacklist"><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
         <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove From Conversation</a></li>
       </ul>
     </div>

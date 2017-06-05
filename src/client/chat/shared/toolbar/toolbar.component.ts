@@ -23,6 +23,7 @@ export class ZChatToolbarComponent implements OnInit {
   usersOnlineItem:any;
   profileUrl:any;
   showSendMessage:boolean = false;
+  showBlacklist:boolean = false;
 
   constructor(private chatService: ChatService, private confirmationService: ConfirmationService) {
     this.profileUrl = this.chatService.constant.profileUrl;
@@ -102,6 +103,19 @@ export class ZChatToolbarComponent implements OnInit {
     }
   }
 
+  inContact(user:any) {
+    let conversations:any = this.chatService.storage.find('chat_contacts').value;
+    let contact:any = _.find(conversations.data, { 'partner_id': user.id});
+    if (contact) {
+      return true;
+    } else {
+      if (this.chatService.user.profile.id == user.id) {
+        return true;
+      }
+      return false;
+    }
+  }
+
   onAddToBlackList(user:any) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to add this contact to black list ?',
@@ -110,5 +124,13 @@ export class ZChatToolbarComponent implements OnInit {
         this.chatService.addGroupUserBlackList(user.id);
       }
     });
+  }
+
+  checkBlacklist(user:any) {
+    if (this.chatService.user.profile.id == user.id) {
+      this.showBlacklist = false;
+    } else {
+      this.showBlacklist = true;
+    }
   }
 }

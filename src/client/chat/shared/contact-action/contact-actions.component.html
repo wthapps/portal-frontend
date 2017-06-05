@@ -8,7 +8,7 @@
       <!--<li><a href="#">Send Contact</a></li>-->
       <li><a href="javascript:;" (click)="addToConversation()">Add to Conversation</a></li>
       <li class="divider" role="separator"></li>
-      <li><a [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]">View Profile</a></li>
+      <li><a [routerLink]="[profileUrl, contact.display.uuid]">View Profile</a></li>
       <li><a href="javascript:;" (click)="report(contact.display.uuid)">Report Member</a></li>
       <li><a href="javascript:;" (click)="addBlackList()">Blacklist</a></li>
       <li><a href="javascript:;" (click)="deleteContact()">Delete Contact</a></li>
