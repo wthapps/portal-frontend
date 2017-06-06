@@ -3,7 +3,7 @@ import { ChatService } from '../services/chat.service';
 import { Config } from '../../../core/shared/config/env.config';
 import { PubSubEventService } from '../../../core/shared/services/pub-sub/pub-sub-event.service';
 import { PubSubEvent } from '../../../core/shared/services/pub-sub/pub-sub-event';
-import { CHAT_ACTIONS } from '../constants/chat-constant';
+import { CHAT_ACTIONS } from '../../../core/shared/constant/chat-constant';
 
 declare var _: any;
 
@@ -40,9 +40,6 @@ export class MessageItemComponent implements OnInit {
       this.message.file_json = {};
       this.message.file_json.thumbnail_url = Config.RES + '/portal-frontend/common-images/file/file_upload/filethumb.png';
     }
-
-
-    console.log('message:::::::::::', this.message);
 
   }
 

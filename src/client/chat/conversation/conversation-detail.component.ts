@@ -4,7 +4,7 @@ import { PubSubEvent } from '../../core/shared/services/pub-sub/pub-sub-event';
 import { PubSubAction } from '../../core/shared/services/pub-sub/pub-sub-action';
 import { Subscription } from 'rxjs';
 import { PubSubEventService } from '../../core/shared/services/pub-sub/pub-sub-event.service';
-import { CHAT_ACTIONS, FORM_MODE } from '../shared/constants/chat-constant';
+import { CHAT_ACTIONS, FORM_MODE } from '../../core/shared/constant/chat-constant';
 import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
 import { ConversationService } from './conversation.service';

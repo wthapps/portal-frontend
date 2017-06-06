@@ -5,7 +5,7 @@ import { PostPhotoSelectComponent } from '../../../../core/partials/zone/photo/p
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs';
 import { PubSubEventService } from '../../../../core/shared/services/pub-sub/pub-sub-event.service';
-import { FORM_MODE } from '../../constants/chat-constant';
+import { FORM_MODE } from '../../../../core/shared/constant/chat-constant';
 import { FormGroup, AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Message } from '../../models/message.model';
 
