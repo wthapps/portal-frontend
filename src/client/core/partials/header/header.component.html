@@ -80,6 +80,9 @@
                 </ul>
               </div>
             </li>
+            <li *ngIf="notificationService.notifications.length == 0">
+              Currently you have no notifications
+            </li>
             <li class="view-all">
               <a href="javascript:;" (click)="viewAllNotifications()">View All</a>
             </li>

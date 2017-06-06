@@ -58,6 +58,8 @@
   </div>
   <undo-notification [notification]="notification" *ngIf="!!notification.isHidden"></undo-notification>
 </div>
+<div *ngIf="notificationService.notifications.length == 0">
+  Currently you have no notifications</div>
 
 
 <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">

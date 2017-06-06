@@ -166,7 +166,10 @@ export class NotificationService {
           this.nextLink = result.page_metadata.links.next;
 
           // Get latest notification id
-          this.latestNotifId = Math.max(..._.map(this.notifications, (n: any) => n.id));
+          if (this.notifications.length != 0)
+            this.latestNotifId = Math.max(..._.map(this.notifications, (n: any) => n.id));
+          else
+            this.latestNotifId = -99;
 
           console.log('latest Notif Id: ', this.latestNotifId);
           if (result.data.length==0) {
