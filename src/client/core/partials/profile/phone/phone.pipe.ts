@@ -18,6 +18,10 @@ export class phoneCodeCountriesPipe implements PipeTransform {
   }
 }
 
+/**
+ * <img *ngIf="countriesCode" src="assets/images/flags/{{item.country_alpha_code | phoneCodeFlag:countriesCode}}.svg">
+ */
+
 @Pipe({
   name: 'phoneCodeFlag'
 })

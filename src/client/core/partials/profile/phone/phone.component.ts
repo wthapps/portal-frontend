@@ -26,8 +26,6 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   form: FormGroup;
 
-  countriesName: any;
-  countriesDialCode: any;
   countriesCode: any;
   countriesNameCode: any;
 
