@@ -12,7 +12,7 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'undo-notification',
-  template: `<div *ngIf="notification.isHidden"> Unhide this notification <button (click)="undoHideNotification()">Undo</button></div>`
+  template: `<div class="p10" *ngIf="notification.isHidden">This notification is now hidden. <a href="javascript:;" (click)="undoHideNotification()">Undo</a></div>`
 })
 export class UndoNotificationComponent  {
   @Input() notification: any;

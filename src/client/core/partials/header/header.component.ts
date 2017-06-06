@@ -111,20 +111,29 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
       lastScrollTop = currentScrollTop;
     });
 
-    documentElem.on('click', '.navbar-nav-notification .dropdown-menu', function (e: any) {
+    documentElem.on('click', '#nav-notification-list', function (e: any) {
       e.stopPropagation();
-      $(this).find('.dropdown-menu').hide();
     });
-    documentElem.on('click', '.navbar-nav-notification .dropdown-submenu .dropdown-toggle', function (e: any) {
+
+    documentElem.on('click', '#nav-notification-list .dropdown-toggle', function (e: any) {
       e.stopPropagation();
-      e.preventDefault();
       $(this).next('ul').toggle();
     });
-    documentElem.on('click', function (e: any) {
-      if (!$('.navbar-nav-notification').hasClass('open')) {
-        $('.navbar-nav-notification .dropdown-submenu').find('.dropdown-menu').hide();
-      }
-    });
+
+    /*documentElem.on('click', '.navbar-nav-notification .dropdown-menu', function (e: any) {
+     e.stopPropagation();
+     $(this).find('.dropdown-menu').hide();
+     });
+     documentElem.on('click', '.navbar-nav-notification .dropdown-submenu .dropdown-toggle', function (e: any) {
+     e.stopPropagation();
+     e.preventDefault();
+     $(this).next('ul').toggle();
+     });
+     documentElem.on('click', function (e: any) {
+     if (!$('.navbar-nav-notification').hasClass('open')) {
+     $('.navbar-nav-notification .dropdown-submenu').find('.dropdown-menu').hide();
+     }
+     });*/
   }
 
   onNavigation(event: any): void {
