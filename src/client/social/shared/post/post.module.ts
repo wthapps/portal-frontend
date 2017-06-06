@@ -31,7 +31,6 @@ import { SharedModule } from '../../../core/shared/shared.module';
     ReactiveFormsModule,
     // Ng2HdModule,
     // HdTagInputModule,
-    Ng2HdModule,
     SharedModule,
     TagInputModule,
     InputTextareaModule

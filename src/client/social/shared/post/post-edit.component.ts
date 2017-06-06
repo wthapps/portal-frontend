@@ -17,6 +17,7 @@ import { EntitySelectComponent } from '../../../core/partials/entity-select/enti
 
 
 declare var _: any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -179,6 +180,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     };
     console.log('adding................', options);
     this.saved.emit(options);
+    $('.modal-backdrop').remove();
     this.unsubscribeAll();
   }
 
