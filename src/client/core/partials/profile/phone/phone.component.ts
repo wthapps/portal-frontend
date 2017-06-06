@@ -30,8 +30,7 @@ export class PartialsProfilePhoneComponent implements OnInit {
   countriesNameCode: any;
 
 
-  filteredBrands: any[];
-  brand: string;
+  filteredCountriesCode: any[];
 
   phoneType: any = [
     {
@@ -130,22 +129,22 @@ export class PartialsProfilePhoneComponent implements OnInit {
   }
 
 
-  filterBrands(event: any) {
-    this.filteredBrands = [];
+  filterCountriesCode(event: any) {
+    this.filteredCountriesCode = [];
     for (let i = 0; i < this.countriesNameCode.length; i++) {
       let brand = this.countriesNameCode[i];
       if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
-        this.filteredBrands.push(brand);
+        this.filteredCountriesCode.push(brand);
       }
     }
   }
 
   handleDropdownClick() {
-    this.filteredBrands = [];
+    this.filteredCountriesCode = [];
 
     //mimic remote call
     setTimeout(() => {
-      this.filteredBrands = this.countriesNameCode;
+      this.filteredCountriesCode = this.countriesNameCode;
     }, 100)
   }
 }

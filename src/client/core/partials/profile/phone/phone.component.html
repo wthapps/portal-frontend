@@ -56,8 +56,8 @@
                   && form.value.phones[i].country_alpha_code.length>1)}">
 
                   <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
-                                  [suggestions]="filteredBrands"
-                                  (completeMethod)="filterBrands($event)" [size]="30"
+                                  [suggestions]="filteredCountriesCode"
+                                  (completeMethod)="filterCountriesCode($event)" [size]="30"
                                   [minLength]="1" placeholder="Select your country" [dropdown]="true"
                                   (onDropdownClick)="handleDropdownClick($event)">
                     <template ngFor let-code let-i="index" pTemplate="item">
