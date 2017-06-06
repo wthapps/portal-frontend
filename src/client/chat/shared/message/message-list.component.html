@@ -17,7 +17,7 @@
     <div class="message-item-wrapper" *ngIf="item.value">
       <div class="message-item-dv" *ngFor="let message of item.value.data">
         <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
-                      (onAddContact)="onAddContact($event)"></message-item>
+                      (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
       </div>
     </div>
   </div>

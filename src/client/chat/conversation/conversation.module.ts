@@ -5,6 +5,7 @@ import { SharedModule } from '../../core/shared/shared.module';
 import { ConversationListComponent } from './conversation-list.component';
 import { ZChatConversationRoutingModule } from './conversation-routing.module';
 import { ConversationDetailComponent } from './conversation-detail.component';
+import { ChatPhotoDetailComponent } from './photo-detail.component';
 
 
 @NgModule({
@@ -16,11 +17,13 @@ import { ConversationDetailComponent } from './conversation-detail.component';
   ],
   declarations: [
     ConversationListComponent,
-    ConversationDetailComponent
+    ConversationDetailComponent,
+    ChatPhotoDetailComponent
   ],
   exports: [
     ConversationListComponent,
-    ConversationDetailComponent
+    ConversationDetailComponent,
+    ChatPhotoDetailComponent
   ],
   providers: []
 })

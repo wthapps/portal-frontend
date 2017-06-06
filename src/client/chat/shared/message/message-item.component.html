@@ -60,7 +60,12 @@
         <template [ngIf]="message.message_type == 'file'">
           <!--photo type-->
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Photo'">
-            <img [src]="message.file_json.url" alt="">
+            <figure>
+              <a [routerLink]="['photos', message.file_json.uuid]">
+                <img [src]="message.file_json.url" alt="">
+
+              </a>
+            </figure>
           </div>
           <div class="message-item-content-other-files" *ngIf="message.file_type == 'FileMedium'">
             <a class="media-div link-text" [href]="message.file_json.url" target="_blank" download>
@@ -110,17 +115,56 @@
               </span>
             </div>
             <div class="media-div-body">
-              <p class="media-heading bold">{{message.display.share_contact.name}}</p>
+              <a href="profile/{{message.display.share_contact.uuid}}" class="media-heading bold">{{message.display.share_contact.name}}</a>
               <div class="mt15" *ngIf="!message.byMe">
                 <button class="btn btn-wth-inline-border" (click)="onAdd(message.display.share_contact)">
                   <i class="fa fa-user-plus"></i> Add to Contact
                 </button>
               </div>
 
-              <p *ngIf="message.byMe" class="text-fade">
-                Contact send
-              </p>
+              <div class="mt15" *ngIf="message.byMe">
+                <button class="btn btn-wth-inline-border" (click)="resend(message.display.share_contact)">
+                  Resent
+                </button>
+                <button class="btn btn-default" (click)="cancel(message.display.share_contact)">
+                  Cancel
+                </button>
+                <!--<p *ngIf="message.byMe" class="text-fade">-->
+                  <!--Contact send-->
+                <!--</p>-->
+              </div>
             </div>
+          </div>
+        </div>
+
+
+        <!--share contact type-->
+        <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
+          <div class="media-div" *ngIf="message.byMe">
+            <div class="pull-left">
+              <span class="avatar-sm">
+                <img [src]="message.receiver.profile_image" alt="">
+              </span>
+            </div>
+            <div class="media-div-body">
+              <a href="profile/{{message.receiver.uuid}}" class="media-heading bold">{{message.receiver.name}}</a>
+              <div class="mt15" *ngIf="message.byMe">
+                <button class="btn btn-wth-inline-border"
+                        (click)="doEvent({action: 'CONTACT_REQUEST_CREATE', data: message.receiver})">
+                  Resend
+                </button>
+
+                <!--TODO consider  cancel contact in api-->
+                <!--add notification or status change after canceling-->
+                <button class="btn btn-default"
+                        (click)="doEvent({action: 'CONTACT_REQUEST_CANCEL', data: message})">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="media-div" *ngIf="!message.byMe">
+            Hello! You are now connected on Chat.
           </div>
         </div>
 

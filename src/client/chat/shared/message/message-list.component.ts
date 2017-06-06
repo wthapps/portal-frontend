@@ -37,6 +37,18 @@ export class MessageListComponent implements OnInit {
     this.requestModal.modal.open();
   }
 
+  doEvent(event: any) {
+    switch(event.action) {
+      case 'CONTACT_REQUEST_CREATE':
+        this.requestModal.contact = event.data;
+        this.requestModal.modal.open();
+        break;
+      case 'CONTACT_REQUEST_CANCEL':
+        this.chatService.cancelContact(event.data);
+        break;
+    }
+  }
+
   getPrevMessage(currentMessage: any) {
     let curMsgIndex = _.findIndex(this.item.value.data, {id: currentMessage.id});
     return (curMsgIndex <= 0) ? null: this.item.value.data[curMsgIndex-1];

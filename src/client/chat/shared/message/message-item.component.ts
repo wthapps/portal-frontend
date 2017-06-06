@@ -17,6 +17,8 @@ export class MessageItemComponent implements OnInit {
   @Input() message: any;
   @Input() prevMessage: any = null;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
+
 
   actions = CHAT_ACTIONS;
 
@@ -38,6 +40,9 @@ export class MessageItemComponent implements OnInit {
       this.message.file_json = {};
       this.message.file_json.thumbnail_url = Config.RES + '/portal-frontend/common-images/file/file_upload/filethumb.png';
     }
+
+
+    console.log('message:::::::::::', this.message);
 
   }
 
@@ -67,8 +72,16 @@ export class MessageItemComponent implements OnInit {
     this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD, payload: this.message});
   }
 
+  doEvent(event: any) {
+    this.event.emit(event);
+  }
+
   onAdd(contact: any) {
     this.onAddContact.emit(contact);
+  }
+
+  cancelContact(contact: any) {
+
   }
 
   hasShowOwner(): boolean {
