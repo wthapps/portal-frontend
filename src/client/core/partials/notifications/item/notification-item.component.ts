@@ -18,7 +18,6 @@ export class NotificationItemComponent {
 
   selectedNotifications: string[] = ['social'];
   communitiesUrl: string;
-  // isHidden: boolean = false;
 
 
   constructor( public notificationService: NotificationService) {
@@ -27,19 +26,10 @@ export class NotificationItemComponent {
 
   confirmHideNotification(notification:any) {
     console.debug('inside notification-item: confirmHideNotification !!!');
-    this.notification.isHidden = true;
+    // this.notification.isHidden = true;
     this.hideNotification(notification);
     // this.createUndoNotificationForm(notification);
   }
-
-  // createUndoNotificationForm(notification: any) {
-  //   let componentFactory = this.componentFactoryResolver.resolveComponentFactory(UndoNotificationComponent);
-  //   this.undoNotificationRef.clear();
-  //   let undoNotifRef = this.undoNotificationRef.createComponent(componentFactory);
-  //
-  //   (undoNotifRef.instance).notification = notification;
-  // }
-
 
   getMoreNotifications() {
     this.notificationService.getMoreNotifications();

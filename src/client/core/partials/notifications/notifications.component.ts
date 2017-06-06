@@ -31,7 +31,7 @@ export class PartialsNotificationsComponent {
 
   confirmHideNotification(notification:any) {
     console.debug('inside partials-notifications: confirmHideNotification !!!');
-    notification.isHidden = true;
+    // notification.isHidden = true;
     this.hideNotification(notification);
   }
 

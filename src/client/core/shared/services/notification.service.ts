@@ -21,6 +21,7 @@ export class NotificationService {
   currentNotifId: any;
   readonly notifLimit: number = Constants.notificationSetting.limit;
   nextLink: string;
+  loadingDone: boolean = false;
   hasObjects: boolean;
 
   turnOffNotification(notification: any) {
@@ -77,6 +78,7 @@ export class NotificationService {
         this.api.delete(action.link)
           .subscribe((result: any) => {
             console.log('Notification service deleted');
+            _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
           },
           (error: any) => {
             console.log('error', error);
@@ -111,7 +113,6 @@ export class NotificationService {
 
   addNewNofification(notification: any) {
     // Detect if this notification is new or an Undo notification
-    console.log('addnewNotification: ', notification);
     if (parseInt(_.get(JSON.parse(notification), 'id')) > this.latestNotifId) {
       this.notifications.unshift(JSON.parse(notification));
       this.newNotifCount++;
@@ -155,7 +156,7 @@ export class NotificationService {
   }
 
   getLatestNotifications() {
-    if (!_.isEmpty(this.nextLink))
+    if (this.loadingDone)
       return; // Only load once at first time
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest`, {sort_name: 'created_at'})
       .filter((x: any) => this.userService.loggedIn) // Do not call this API if user is not logged in
@@ -164,6 +165,8 @@ export class NotificationService {
           _.remove(this.notifications); // Make sure this.notifications has no value before assigning
           this.notifications = result.data;
           this.nextLink = result.page_metadata.links.next;
+          if (_.isEmpty(this.nextLink))
+            this.loadingDone = true;
 
           // Get latest notification id
           if (this.notifications.length != 0)
@@ -234,8 +237,10 @@ export class NotificationService {
     this.currentNotifId = notification.id;
     this.api.delete(`${Constants.urls.zoneSoNotifications}/${this.currentNotifId}`)
       .subscribe((result: any) => {
-          // _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
-          console.log('result: ', result);
+          let idx = _.findIndex(this.notifications, ['id', notification.id]);
+          console.log(`hideNotification: ${idx} `, notification);
+          if (idx > -1)
+            this.notifications[idx].isHidden = true;
         },
         (error: any) => {
           console.log('error', error);
@@ -261,7 +266,10 @@ export class NotificationService {
 
   undoNotification(notification: any) {
     // _.remove(this.trashNotifications, (n:any) => n.id == notification.id);
-    return this.api.post(`${Constants.urls.zoneSoNotifications}`, notification).take(1);
+    let idx = _.findIndex(this.notifications, ['id', notification.id]);
+    if (idx > -1)
+      this.notifications[idx].isHidden = false;
+    return this.api.post(`${Constants.urls.zoneSoNotifications}/restore`, notification).take(1);
   }
 
 

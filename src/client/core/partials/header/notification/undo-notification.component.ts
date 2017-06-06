@@ -12,7 +12,7 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'undo-notification',
-  template: `<div *ngIf="notification.isHidden"> Unhide this notification <button (click)="undoHideNotification()">Undo</button></div>`
+  template: `<div *ngIf="!!notification?.isHidden"> Unhide this notification <button (click)="undoHideNotification()">Undo</button></div>`
 })
 export class UndoNotificationComponent  {
   @Input() notification: any;
@@ -25,7 +25,10 @@ export class UndoNotificationComponent  {
     console.log('undoHideNotification', this.notification);
     this.notificationService.undoNotification(this.notification)
       .subscribe(
-        () =>  this.notification.isHidden = false
+        () =>  {
+
+          // this.notification.isHidden = false;
+        }
       );
   }
 
