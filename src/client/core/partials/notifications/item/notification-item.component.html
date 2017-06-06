@@ -1,4 +1,4 @@
-<div class="media" *ngIf="!notification.isHidden">
+<div class="media" *ngIf="!notification?.isHidden">
   <div class="media-left">
     <span class="avatar-xsm">
       <img [src]="notification.actor.profile_image" alt="{{notification.actor.name}}">
@@ -50,5 +50,5 @@
 
   </div>
 </div>
-<undo-notification [notification]="notification" *ngIf="!!notification.isHidden"></undo-notification>
+<undo-notification ([notification])="notification" *ngIf="!!notification?.isHidden"></undo-notification>
 <!--<template #undo_notification ></template>-->

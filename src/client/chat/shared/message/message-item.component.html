@@ -6,7 +6,7 @@
   <div class="message-item-content">
     <div class="message-item-owner" *ngIf="hasShowOwner()">
       <h4 class="message-item-owner-name">
-        <a [routerLink]="[profileUrl, chatService.getOwnUserProfile().uuid]"> {{message.display.name}} </a>
+        <a [routerLink]="[profileUrl, message.display.uuid]"> {{message.display.name}} </a>
       </h4>
       <figure class="message-item-owner-avatar">
         <span class="avatar-xs">
