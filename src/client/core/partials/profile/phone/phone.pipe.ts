@@ -5,10 +5,10 @@ declare var _: any;
 @Pipe({
   name: 'phoneCodeCountries'
 })
-export class phoneCodeCountriesPipe implements PipeTransform {
+export class PhoneCodeCountriesPipe implements PipeTransform {
 
   transform(key: any, data: any): any {
-    let phoneName = key.split(" (+");
+    let phoneName = key.split(' (+');
     let phoneCode = _.find(data, ['name', phoneName[0]]);
     return '<div class="clearfix">' +
       '<img class="pull-left" width=\'30\' src=\'assets/images/flags/' + phoneCode.code.toLowerCase() + '.svg\' alt=\'\'>' +
@@ -25,7 +25,7 @@ export class phoneCodeCountriesPipe implements PipeTransform {
 @Pipe({
   name: 'phoneCodeFlag'
 })
-export class phoneCodeFlagPipe implements PipeTransform {
+export class PhoneCodeFlagPipe implements PipeTransform {
 
   transform(key: any, data: any): any {
     if (data) {

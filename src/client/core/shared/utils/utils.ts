@@ -143,8 +143,7 @@ export function pad(str: string, len: number = 0, ch: any = ' '): string {
 
     if (left) {
       str = leftPad(str, l, ch);
-    }
-    else {
+    } else {
       str = rightPad(str, l, ch);
     }
 

@@ -20,7 +20,7 @@ declare var _: any;
 @Pipe({
   name: 'keyToValue'
 })
-export class keyToValuePipe implements PipeTransform {
+export class KeyToValuePipe implements PipeTransform {
 
   transform(key: any, obj: any, objKey: any, objValue: any): any {
     // console.log(key, obj, objKey, objValue);

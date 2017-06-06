@@ -8,7 +8,7 @@ export class ChatGroupHistoryPipe implements PipeTransform {
     // return items.filter(item => item.history == true);
     // console.log(items);
     // console.log(_.filter(items['data'], ['history', true]));
-    return _.filter(items['data'], ['history', true])
+    return _.filter(items['data'], ['history', true]);
   }
 }
 

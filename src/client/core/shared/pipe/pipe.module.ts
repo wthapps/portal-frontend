@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { keyToValuePipe } from './keyToValue.pipe';
+import { KeyToValuePipe } from './keyToValue.pipe';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    keyToValuePipe
+    KeyToValuePipe
   ],
   exports: [
-    keyToValuePipe
+    KeyToValuePipe
   ],
   providers: []
 })

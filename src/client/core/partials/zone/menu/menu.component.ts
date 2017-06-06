@@ -39,7 +39,7 @@ export class ZSharedMenuComponent implements OnInit {
     this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {
-        if (event.url.indexOf("profile") !== -1) {
+        if (event.url.indexOf('profile') !== -1) {
           this.isProfileTab = true;
         } else {
           this.isProfileTab = false;

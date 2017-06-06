@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
@@ -21,7 +21,7 @@ export class ZChatProfileComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      this.chatService.apiBaseService.get('zone/social_network/users/'+ params['id'], {module_name: 'chat'}).subscribe((res:any) => {
+      this.chatService.apiBaseService.get('zone/social_network/users/' + params['id'], {module_name: 'chat'}).subscribe((res: any) => {
         this.profile = res.data;
         this.actions = res.actions;
         this.contact = this.chatService.getContactByPartnerId(this.profile.id);
@@ -33,20 +33,22 @@ export class ZChatProfileComponent implements OnInit {
     this.chatService.addGroupUserFavorite(this.contact);
   }
 
-  onSelect(user:any) {
+  onSelect(user: any) {
     this.chatService.selectContactByPartnerId(user.id);
   }
 
-  onRequest(user:any) {
+  onRequest(user: any) {
     this.requestModal.contact = user;
     this.requestModal.modal.open();
   }
 
   onClose() {
-    setTimeout(()=>{ this.chatService.apiBaseService.get('zone/social_network/users/'+ this.profile.uuid, {module_name: 'chat'}).subscribe((res:any) => {
-      this.profile = res.data;
-      this.actions = res.actions;
-      this.contact = this.chatService.getContactByPartnerId(this.profile.id);
-    })}, 500);
+    setTimeout(()=> {
+      this.chatService.apiBaseService.get('zone/social_network/users/' + this.profile.uuid, {module_name: 'chat'}).subscribe((res: any) => {
+        this.profile = res.data;
+        this.actions = res.actions;
+        this.contact = this.chatService.getContactByPartnerId(this.profile.id);
+      });
+    }, 500);
   }
 }

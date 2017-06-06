@@ -15,7 +15,7 @@ export class CableService {
       //   return;
       // }
 
-      App || (App = {}) ;
+      App || (App = {});
       //TODO refactor all places that call this method for creating Connection Instance
       App.cable = ActionCable.createConsumer(`${ApiConfig.url}cable?user_id=${userId}&t=${type}`);
     }

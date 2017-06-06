@@ -103,7 +103,7 @@ export class ZSocialCommunityListComponent implements OnInit {
         _.remove(this.list, (c: any) => c.uuid === community.uuid);
         _.remove(this.myList, (c: any) => c.uuid === community.uuid);
       })
-      .catch((error: any) => console.error('confirm leave community error: ', error))
+      .catch((error: any) => console.error('confirm leave community error: ', error));
   }
 
   onPreference(item: any): any {

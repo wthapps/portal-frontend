@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ChatGroupPendingPipe implements PipeTransform {
 
   transform(items: any[], detectChange:any) {
-    return items.filter(item => item.status == "pending");
+    return items.filter(item => item.status == 'pending');
   }
 }
 

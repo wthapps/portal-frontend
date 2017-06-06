@@ -10,7 +10,7 @@ import { PartialsProfileAddressComponent } from './address/address.component';
 import { PartialsProfileMediaComponent } from './media/media.component';
 import { PartialsProfileNoteComponent } from './note/note.component';
 import { PipeModule } from '../../shared/pipe/pipe.module';
-import { phoneCodeCountriesPipe, phoneCodeFlagPipe } from './phone/phone.pipe';
+import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone/phone.pipe';
 
 @NgModule({
   imports: [
@@ -27,8 +27,8 @@ import { phoneCodeCountriesPipe, phoneCodeFlagPipe } from './phone/phone.pipe';
     PartialsProfileAddressComponent,
     PartialsProfileMediaComponent,
     PartialsProfileNoteComponent,
-    phoneCodeCountriesPipe,
-    phoneCodeFlagPipe
+    PhoneCodeCountriesPipe,
+    PhoneCodeFlagPipe
   ],
   exports: [
     PartialsProfileEmailComponent,
@@ -36,8 +36,8 @@ import { phoneCodeCountriesPipe, phoneCodeFlagPipe } from './phone/phone.pipe';
     PartialsProfileAddressComponent,
     PartialsProfileMediaComponent,
     PartialsProfileNoteComponent,
-    phoneCodeCountriesPipe,
-    phoneCodeFlagPipe
+    PhoneCodeCountriesPipe,
+    PhoneCodeFlagPipe
   ],
   providers: []
 })

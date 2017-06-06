@@ -47,7 +47,7 @@ export class DisplayAsHtmlDirective implements AfterViewInit {
 
 
       // .replace(/<(?!\/?i(?=>|\s.*>))\/?.*?>/g, '&nbsp;')
-      .replace(/<[^<>]*>|( )/g, '&nbsp;')
+      .replace(/<[^<>]*>|( )/g, '&nbsp;');
 
       // .replace(/\n/g,'<br />');
       // replace single newline symbols with the <br /> entity

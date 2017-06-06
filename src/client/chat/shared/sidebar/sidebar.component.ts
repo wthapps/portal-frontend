@@ -28,7 +28,7 @@ export class ZChatSidebarComponent implements OnInit {
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {
         // URL "/" and "/conversations"
-        if (event.url.indexOf("conversations") !== -1 || event.url.length == 1) {
+        if (event.url.indexOf('conversations') !== -1 || event.url.length == 1) {
           this.isRedirect = true;
         } else {
           this.isRedirect = false;

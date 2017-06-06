@@ -145,6 +145,6 @@ export class PartialsProfilePhoneComponent implements OnInit {
     //mimic remote call
     setTimeout(() => {
       this.filteredCountriesCode = this.countriesNameCode;
-    }, 100)
+    }, 100);
   }
 }

@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ChatGroupSentRequestPipe implements PipeTransform {
 
   transform(items: any[], detectChange:any) {
-    return items.filter(item => item.status == "sent_request");
+    return items.filter(item => item.status == 'sent_request');
   }
 }
 

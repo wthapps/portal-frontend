@@ -275,7 +275,7 @@ export class ChatService {
   }
 
   addGroupUserBlackList(userId: any) {
-    this.apiBaseService.post('users/users_blacklist', {user_id: userId, module_name: "chat"}).subscribe((res: any) => {
+    this.apiBaseService.post('users/users_blacklist', {user_id: userId, module_name: 'chat'}).subscribe((res: any) => {
       //
     });
   }
@@ -363,7 +363,7 @@ export class ChatService {
   }
 
   declineRequest(contact: any, setDefaultOnSelect: boolean = true) {
-    this.updateGroupUser(contact.group_id, {status: "decline"}, (res: any) => {
+    this.updateGroupUser(contact.group_id, {status: 'decline'}, (res: any) => {
       if (setDefaultOnSelect) {
         this.setDefaultSelectContact();
       }
