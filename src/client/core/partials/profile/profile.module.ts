@@ -11,6 +11,12 @@ import { PartialsProfileMediaComponent } from './media/media.component';
 import { PartialsProfileNoteComponent } from './note/note.component';
 import { PipeModule } from '../../shared/pipe/pipe.module';
 import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone/phone.pipe';
+import { PartialsProfileAvatarInfoComponent } from './avatar-info/avatar-info.component';
+import { PartialsProfileAboutComponent } from './about/about.component';
+import { PartialsProfileContactComponent } from './contact/contact.component';
+import { PartialsProfileWorkEduComponent } from './work-edu/work-edu.component';
+import { PartialsProfileHobbyComponent } from './hobby/hobby.component';
+import { PartialsProfileComponent } from './profile.component';
 
 @NgModule({
   imports: [
@@ -22,20 +28,32 @@ import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone/phone.pipe';
     PipeModule
   ],
   declarations: [
+    PartialsProfileComponent,
+    PartialsProfileAvatarInfoComponent,
+    PartialsProfileAboutComponent,
     PartialsProfileEmailComponent,
     PartialsProfilePhoneComponent,
     PartialsProfileAddressComponent,
     PartialsProfileMediaComponent,
     PartialsProfileNoteComponent,
+    PartialsProfileContactComponent,
+    PartialsProfileWorkEduComponent,
+    PartialsProfileHobbyComponent,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe
   ],
   exports: [
+    PartialsProfileComponent,
+    PartialsProfileAvatarInfoComponent,
+    PartialsProfileAboutComponent,
     PartialsProfileEmailComponent,
     PartialsProfilePhoneComponent,
     PartialsProfileAddressComponent,
     PartialsProfileMediaComponent,
     PartialsProfileNoteComponent,
+    PartialsProfileContactComponent,
+    PartialsProfileWorkEduComponent,
+    PartialsProfileHobbyComponent,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe
   ],

@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <button class="btn btn-default pull-right">
+      <i class="fa fa-pencil"></i>
+    </button>
+    <h3 class="panel-title">About</h3>
+  </div>
+  <div class="panel-body">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis consequuntur dicta dolor dolore dolorum est
+      exercitationem fugit hic laborum, molestiae natus obcaecati officia optio sapiente sint velit voluptate! Voluptas,
+      voluptatibus.
+    </p>
+    <dl>
+      <dt>Gender</dt>
+      <dd><p>Male</p></dd>
+      <dt>Date of Birth</dt>
+      <dd><p>June 23 2012</p></dd>
+      <dt>Nationality</dt>
+      <dd>Denmark</dd>
+    </dl>
+  </div>
+</div>
+
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"><i class="fa fa-pencil"></i> media</h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group no-label">
+        <textarea rows="3" [formControl]="contact_note" type="text" class="form-control no-resize" id="body"
+                  placeholder="Your note"></textarea>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10"
+              (click)="onSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>
