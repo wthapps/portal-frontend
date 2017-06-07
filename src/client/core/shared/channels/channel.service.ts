@@ -18,7 +18,7 @@ export class ChannelService extends CableService {
   subscribe() {
     if(this.userService.loggedIn) {
       this.createConnectionInstance(this.userService.profile.uuid);
-      let _this = this;
+      let thisCopy = this;
       App.channel = App.cable.subscriptions.create(
         {channel: 'Channel'},
         {
@@ -31,7 +31,7 @@ export class ChannelService extends CableService {
           received: function(data: any) {
             console.log('received', data);
             let factory = new ChannelActionFactoryService();
-            let action = factory.create(data, _this.serviceManager);
+            let action = factory.create(data, thisCopy.serviceManager);
             if (action) {
               if(action.process) {
                 action.process();
