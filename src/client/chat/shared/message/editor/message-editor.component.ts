@@ -267,6 +267,9 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   private resetEditor() {
     this.message = new Message();
     this.setEditor(this.message);
+    // Remove emoji and auto focus
+    $('#chat-message-text').html('');
+    $('#chat-message-text').focus();
   }
 
   private setEditor(message: Message) {

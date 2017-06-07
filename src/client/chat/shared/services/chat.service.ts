@@ -306,7 +306,7 @@ export class ChatService {
   }
 
   removeFromConversation(contact: any, userId: any) {
-    this.updateGroupUser(contact.group_id, {leave: true, user_id: userId}, (res: any) => {
+    this.updateGroupUser(contact.group_id, {remove_from_conversation: true, user_id: userId}, (res: any) => {
       this.updateConversationBroadcast(contact.group_id);
     });
   }
