@@ -55,8 +55,8 @@ export class NotificationItemComponent {
     this.notificationService.toggleReadStatus(notification);
   }
 
-  toggleAllReadStatus() {
-    this.notificationService.toggleAllReadStatus();
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
   }
 
   doAction(action: any, notif_id: string) {

@@ -141,13 +141,26 @@ export class NotificationService {
       this.toggleReadStatus(notification);
   }
 
-  toggleAllReadStatus() {
-    this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_all_read_status`, [])
+  // toggleAllReadStatus() {
+  //   this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_all_read_status`, [])
+  //     .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
+  //     .subscribe(
+  //       (result: any) => {
+  //         let overallReadStatus = result.data;
+  //         _.each(this.notifications, (n: any) => {n.is_read = overallReadStatus ;});
+  //
+  //       },
+  //       (error: any) => {
+  //         console.log('error', error);
+  //       });
+  // }
+
+  markAllAsRead() {
+    this.api.post(`${Constants.urls.zoneSoNotifications}/mark_all_as_read`, [])
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
         (result: any) => {
-          let overallReadStatus = result.data;
-          _.each(this.notifications, (n: any) => {n.is_read = overallReadStatus ;});
+          _.each(this.notifications, (n: any) => {n.is_read = true ;});
 
         },
         (error: any) => {
@@ -265,16 +278,16 @@ export class NotificationService {
   }
 
   undoNotification(notification: any) {
-    // _.remove(this.trashNotifications, (n:any) => n.id == notification.id);
-    let idx = _.findIndex(this.notifications, ['id', notification.id]);
-    if (idx > -1)
-      this.notifications[idx].isHidden = false;
-    return this.api.post(`${Constants.urls.zoneSoNotifications}/restore`, notification).take(1);
+    this.api.post(`${Constants.urls.zoneSoNotifications}/restore`, notification).toPromise()
+      .then(() => {
+      let idx = _.findIndex(this.notifications, ['id', notification.id]);
+      if (idx > -1)
+        this.notifications[idx].isHidden = false;
+    });
   }
 
 
   startChannel(callback?: any) {
-
     // Work-around to fix loading performance issue by delaying following actions in 2s. Should be updated later
     let timeoutId = setTimeout(() => {
       this.getNewNotificationsCount();

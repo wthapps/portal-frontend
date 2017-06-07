@@ -6,6 +6,7 @@ import { NotificationService } from '../../core/shared/services/notification.ser
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ZoneReportService } from '../../core/shared/form/report/report.service';
+import { SocialFavoriteService } from '../shared/services/social-favorites.service';
 
 
 declare var $: any;
@@ -45,6 +46,7 @@ export class ZSocialMembersComponent implements OnInit {
 
   constructor(private socialService: SocialService,
               private zoneReportService: ZoneReportService,
+              private favoriteService: SocialFavoriteService,
               private loadingService: LoadingService) {
   }
 
@@ -182,11 +184,7 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.toggleFavourites(uuid, 'friend').subscribe(
-      (res: any) => {
-        this.favourite = res.data;
-      }
-    );
+    this.favoriteService.addFavourite(uuid, 'friend', this.favourite);
   }
 
 
