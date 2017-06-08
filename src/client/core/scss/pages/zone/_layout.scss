@@ -147,6 +147,7 @@ $photo-detail-info-width: 470px;
     padding-right: $photo-detail-info-width;
     .photo-detail-info {
       right: 0;
+      z-index: 100;
     }
   }
   .photo-detail-info {

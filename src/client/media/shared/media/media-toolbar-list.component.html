@@ -16,7 +16,6 @@
   </div>
 
 
-
   <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
     <ul class="page-body-control-menu">
       <li class="divider">
@@ -100,7 +99,8 @@
             </a>
           </li>
           <li>
-            <a href="javascript:;" draggable="false" (click)="onAction({action: 'deleteAlbumAndBack', params: {selectedObjects: [object]}})">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'deleteAlbumAndBack', params: {selectedObjects: [object]}})">
               <i class="fa fa-trash-o"></i> Delete Album
             </a>
           </li>
@@ -152,7 +152,8 @@
       </li>
       <!-- Shared with me screen DOES NOT support delete objects action -->
       <li *ngIf="page != 'shared-with-me'">
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
@@ -172,8 +173,13 @@
                draggable="false">
               <i class="fa fa-edit"></i> Edit Information</a>
           </li>
-          <li>
+
+          <!--<li>
             <a (click)="onAction({action: 'download', params: {}})">
+              <i class="fa fa-download"></i> Download</a>
+          </li>-->
+          <li *ngIf="selectedObjects.length == 1">
+            <a [href]="selectedObjects[0].url" download>
               <i class="fa fa-download"></i> Download</a>
           </li>
           <li>
@@ -189,7 +195,8 @@
 
     <!--album list-->
 
-    <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
+    <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
@@ -209,7 +216,8 @@
           <i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: selectedObjects}})">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown action">
@@ -249,7 +257,8 @@
 
 
     <!--album details-->
-    <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
+    <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
@@ -269,7 +278,8 @@
         </a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: { selectedObjects: selectedObjects}})">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'delete', params: { selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
@@ -301,7 +311,8 @@
             </a>
           </li>
           <li>
-            <a href="javascript:;" draggable="false" (click)="onAction({action: 'removeFromAlbum', params: {selectedObject: object, selectedObjects: selectedObjects}})">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'removeFromAlbum', params: {selectedObject: object, selectedObjects: selectedObjects}})">
               <i class="fa fa-minus-square"></i> Remove from Album
             </a>
           </li>
@@ -313,7 +324,7 @@
     <!--view option-->
     <ul class="page-body-control-menu">
       <li class="dropdown">
-        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" draggable="false" >
+        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" draggable="false">
           <i class="fa"
              [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
         </a>
