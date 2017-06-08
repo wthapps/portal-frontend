@@ -16,6 +16,7 @@ import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferen
 import { Constants } from '../../../core/shared/config/constants';
 import { Router } from '@angular/router';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 
 declare var _: any;
 
@@ -45,8 +46,8 @@ export class ZSocialCommunityListComponent implements OnInit {
               private toastsService: ToastsService,
               private zoneReportService: ZoneReportService,
               private socialService: SocialService,
-              private router: Router,
               // private communityService: SoCommunityService,
+              private favoriteService: SocialFavoriteService,
               private userService: UserService) {
   }
 
@@ -125,11 +126,7 @@ export class ZSocialCommunityListComponent implements OnInit {
 
 
   addFavourite(uuid: any) {
-    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
-      (res: any) => {
-
-      }
-    );
+    this.favoriteService.addFavourite(uuid, 'community', this.favourite);
   }
 
   getFavourite(uuid: any) {

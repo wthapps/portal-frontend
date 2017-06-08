@@ -23,13 +23,7 @@ export class UndoNotificationComponent  {
 
   undoHideNotification() {
     console.log('undoHideNotification', this.notification);
-    this.notificationService.undoNotification(this.notification)
-      .subscribe(
-        () =>  {
-
-          // this.notification.isHidden = false;
-        }
-      );
+    this.notificationService.undoNotification(this.notification);
   }
 
 }

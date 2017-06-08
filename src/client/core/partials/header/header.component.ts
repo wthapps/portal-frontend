@@ -47,10 +47,6 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
   communitiesUrl: string = '';
 
-  // notifications: Array<any> = new Array<any>();
-  // newNotifCount: number = 0 ;
-  // currentNotifId: any;
-  // notifOffset: number = 0;
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
@@ -226,8 +222,8 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
     this.notificationService.toggleReadStatus(notification);
   }
 
-  toggleAllReadStatus() {
-    this.notificationService.toggleAllReadStatus();
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
   }
 
   showSetting() {

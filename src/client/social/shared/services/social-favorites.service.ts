@@ -30,9 +30,26 @@ export class SocialFavoriteService {
 
   }
 
-  addFavorite(favorite: any) {
-    this.favorites.push(favorite);
+
+  addFavourite(uuid: any, type: any, localFavorite?: any) {
+    this.socialService.user.toggleFavourites(uuid, type)
+      .toPromise()
+      .then((res: any) => {
+        if(_.find(this.favorites, (f: any) => f.uuid == _.get(res, 'data.uuid'))) {
+          this.removeFavorite(res.data);
+          if (localFavorite != undefined)
+            localFavorite = undefined;
+        } else {
+          this.addFavorite(res.data);
+          if (localFavorite != undefined)
+            localFavorite = res.data;
+        }})
+        .catch((err: any) => console.error(`Error in addFavourite: ${err}`))
+      ;
   }
+
+
+
 
   removeFavorite(favorite: any) {
     _.remove(this.favorites, (f: any) => f.uuid == favorite.uuid);
@@ -59,6 +76,10 @@ export class SocialFavoriteService {
     );
   }
 
+
+  private addFavorite(favorite: any) {
+    this.favorites.push(favorite);
+  }
 
 
 }

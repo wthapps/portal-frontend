@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { PhotoService } from '../../core/shared/services/photo.service';
-import { BaseZoneSocialItem } from '../../social/base/base-social-item';
+// import { BaseZoneSocialItem } from '../../social/base/base-social-item';
 
 declare var $: any;
 declare var _: any;
@@ -18,7 +18,7 @@ const KEY_ESC = 27;
   templateUrl: 'photo-detail.component.html',
   styleUrls: ['photo-detail.component.css']
 })
-export class ChatPhotoDetailComponent extends BaseZoneSocialItem implements OnInit {
+export class ChatPhotoDetailComponent  implements OnInit {
   // item: SoPost;
   item: any;
   errorMessage: string = '';
@@ -40,7 +40,7 @@ export class ChatPhotoDetailComponent extends BaseZoneSocialItem implements OnIn
     public apiBaseService: ApiBaseService,
     private photoService: PhotoService
   ) {
-    super();
+    // super();
   }
 
   ngOnInit() {

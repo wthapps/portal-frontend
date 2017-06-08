@@ -53,10 +53,7 @@ export class ZSocialFavoritesComponent implements OnInit {
   }
 
   confirmLeaveCommunity(community: any) {
-    // this.socialService.community.confirmLeaveCommunity(community)
-    //   .then((community: any) => _.remove(this.favourites.getValue(), (f: any) => _.get(f, 'community.uuid', '') == community.uuid));
-
-    this.confirmLeaveCommunity(community);
+    this.favoriteService.confirmLeaveCommunity(community);
   }
 
   unfriend(friend: any) {
@@ -66,7 +63,7 @@ export class ZSocialFavoritesComponent implements OnInit {
     //   },
     // );
 
-    this.unfriend(friend);
+    this.favoriteService.unfriend(friend);
   }
 
   // TODO:

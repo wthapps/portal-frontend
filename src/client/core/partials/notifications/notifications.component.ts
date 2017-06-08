@@ -51,8 +51,12 @@ export class PartialsNotificationsComponent {
     this.notificationService.toggleReadStatus(notification);
   }
 
-  toggleAllReadStatus() {
-    this.notificationService.toggleAllReadStatus();
+  // toggleAllReadStatus() {
+  //   this.notificationService.toggleAllReadStatus();
+  // }
+
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
   }
 
   doAction(action: any, notif_id: string) {

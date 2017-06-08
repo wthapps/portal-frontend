@@ -10,6 +10,7 @@ import { MessageEditorComponent } from '../shared/message/editor/message-editor.
 import { ConversationService } from './conversation.service';
 
 declare  var _: any;
+declare  var $: any;
 
 @Component({
   moduleId: module.id,
@@ -45,6 +46,12 @@ export class ConversationDetailComponent implements PubSubAction, OnInit, OnDest
       case CHAT_ACTIONS.CHAT_MESSAGE_COPY:
         this.messageEditor.updateAttributes({message: event.payload, mode: FORM_MODE.CREATE});
         this.messageEditor.focus();
+        // Real copy
+        let temp = $("<input>");
+        $("body").append(temp);
+        temp.val(event.payload.message).select();
+        document.execCommand("copy");
+        temp.remove();
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_QUOTE:
         _.assign(event.payload, {is_quote: true});

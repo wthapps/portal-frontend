@@ -178,21 +178,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
-      (res: any) => {
-        if(!_.isEmpty(this.favourite)) {
-          // _.remove( this.favorites.favourites.getValue(), (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
-          this.favoriteService.removeFavorite(res.data);
-          this.favourite = undefined;
-        } else {
-          // this.favorites.favourites.push(res.data); // Update favorite list at the sidebar
-          this.favoriteService.addFavorite(res.data);
-          this.favourite = res.data;
-        }
-
-
-      }
-    );
+    this.favoriteService.addFavourite(uuid, 'community', this.favourite);
   }
 
   getFavourite(uuid: any) {

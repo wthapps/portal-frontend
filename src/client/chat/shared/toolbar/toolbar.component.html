@@ -62,7 +62,7 @@
               data-toggle="dropdown">
         <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span>
         <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1" class="p-list-user-status offline"></span>
-        <i *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true" style="margin-right: 3px;"></i>
+        <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
         {{user_in_group.name}} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-lg">

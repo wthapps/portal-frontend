@@ -4,7 +4,7 @@
     <span>{{ message.created_at | date }}</span>
   </div>
   <div class="message-item-content">
-    <div class="message-item-owner" *ngIf="hasShowOwner()">
+    <div class="message-item-owner" *ngIf="hasShowOwner() && message.display">
       <h4 class="message-item-owner-name">
         <a [routerLink]="[profileUrl, message.display.uuid]"> {{message.display.name}} </a>
       </h4>

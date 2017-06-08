@@ -25,6 +25,7 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 
 declare var _: any;
 
@@ -64,6 +65,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
               private socialService: SocialService,
               private route: ActivatedRoute,
               private router: Router,
+              private favoriteService: SocialFavoriteService,
               private userService: UserService) {
   }
 
@@ -163,11 +165,7 @@ export class ZSocialCommunityCoverComponent implements OnInit, OnChanges {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
-      (res: any) => {
-
-      }
-    );
+    this.favoriteService.addFavourite(uuid, 'community', this.favourite);
   }
 
   getFavourite(uuid: any) {
