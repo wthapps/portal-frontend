@@ -85,7 +85,7 @@ export class MessageItemComponent implements OnInit {
     if (this.prevMessage == null) {
       return true;
     }
-    if (this.message.display.id === this.prevMessage.display.id) {
+    if (this.message.display && this.prevMessage.display && this.message.display.id === this.prevMessage.display.id) {
       return false;
     }
     return true;
@@ -96,7 +96,7 @@ export class MessageItemComponent implements OnInit {
     if (this.prevMessage == null) {
       return true;
     }
-    if (this.message.created_at.slice(0, 10) === this.prevMessage.created_at.slice(0, 10)) {
+    if (this.message.created_at && this.prevMessage.created_at && this.message.created_at.slice(0, 10) === this.prevMessage.created_at.slice(0, 10)) {
       return false;
     }
     return true;
