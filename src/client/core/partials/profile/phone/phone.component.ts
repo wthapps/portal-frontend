@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, HostBinding } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -23,6 +23,8 @@ export class PartialsProfilePhoneComponent implements OnInit {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+
+  @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
 

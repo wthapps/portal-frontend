@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { PartialsProfileService } from '../profile.service';
 
 declare var _: any;
 
@@ -20,30 +20,36 @@ declare var _: any;
 export class PartialsProfileAvatarInfoComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
-  @Input() editable: boolean;
 
   form: FormGroup;
-  contact_note: AbstractControl;
+  first_name: AbstractControl;
+  last_name: AbstractControl;
+  nickname: AbstractControl;
 
-  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
+  constructor(private fb: FormBuilder, private profileService: PartialsProfileService) {
     this.form = fb.group({
-      'contact_note': ['']
+      'first_name': ['', Validators.compose([Validators.required])],
+      'last_name': ['', Validators.compose([Validators.required])],
+      'nickname': ['', Validators.compose([Validators.required])]
     });
-    //
-    this.contact_note = this.form.controls['contact_note'];
+
+    this.first_name = this.form.controls['first_name'];
+    this.last_name = this.form.controls['last_name'];
+    this.nickname = this.form.controls['nickname'];
   }
 
   onOpenModal() {
-    (<FormControl>this.contact_note).setValue(this.data.contact_note);
+    (<FormControl>this.first_name).setValue(this.data.first_name);
+    (<FormControl>this.last_name).setValue(this.data.last_name);
+    (<FormControl>this.nickname).setValue(this.data.nickname);
 
     this.modal.open();
   }
 
 
   onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
+    this.profileService.updateMyProfile(values).subscribe((res: any) => {
       this.data = res.data;
-      (<FormControl>this.contact_note).setValue(this.data.contact_note);
       this.modal.close();
     });
   }

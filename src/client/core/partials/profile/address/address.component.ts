@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, HostBinding } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -21,6 +21,8 @@ export class PartialsProfileAddressComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+
+  @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
 

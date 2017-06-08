@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { AutoCompleteModule } from 'primeng/primeng';
+import { RadioButtonModule } from 'primeng/primeng';
 
 import { PartialsProfileEmailComponent } from './email/email.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,12 +18,14 @@ import { PartialsProfileContactComponent } from './contact/contact.component';
 import { PartialsProfileWorkEduComponent } from './work-edu/work-edu.component';
 import { PartialsProfileHobbyComponent } from './hobby/hobby.component';
 import { PartialsProfileComponent } from './profile.component';
+import { PartialsProfileService } from './profile.service';
 
 @NgModule({
   imports: [
     CommonModule,
     Ng2Bs3ModalModule,
     AutoCompleteModule,
+    RadioButtonModule,
     FormsModule,
     ReactiveFormsModule,
     PipeModule
@@ -57,7 +60,9 @@ import { PartialsProfileComponent } from './profile.component';
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe
   ],
-  providers: []
+  providers: [
+    PartialsProfileService
+  ]
 })
 
 export class PartialsProfileModule {

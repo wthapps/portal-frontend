@@ -26,7 +26,6 @@ declare var _: any;
 })
 
 export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
-
   @ViewChild('modal') modal: ModalComponent;
   @Input() data: any;
   @Input() action: string;

@@ -1,14 +1,11 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <button class="btn btn-default pull-right">
-      <i class="fa fa-pencil"></i>
-    </button>
     <h3 class="panel-title">Contact Information</h3>
   </div>
   <div class="panel-body">
-    <partials-profile-email></partials-profile-email>
-    <partials-profile-phone></partials-profile-phone>
-    <partials-profile-address></partials-profile-address>
-    <partials-profile-media></partials-profile-media>
+    <partials-profile-email [data]="data" [editable]="true"></partials-profile-email>
+    <partials-profile-phone [data]="data" [editable]="true"></partials-profile-phone>
+    <partials-profile-address [data]="data" [editable]="true"></partials-profile-address>
+    <partials-profile-media [data]="data" [editable]="true"></partials-profile-media>
   </div>
 </div>

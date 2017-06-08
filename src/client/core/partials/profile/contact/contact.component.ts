@@ -1,15 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormArray, AbstractControl, FormControl
-} from '@angular/forms';
-
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { ApiBaseService } from '../../../shared/services/apibase.service';
-
-declare var _: any;
+import { Component, Input } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -18,5 +7,5 @@ declare var _: any;
 })
 
 export class PartialsProfileContactComponent {
-
+  @Input('data') data: any;
 }

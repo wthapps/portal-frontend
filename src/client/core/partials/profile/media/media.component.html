@@ -1,4 +1,4 @@
-<div class="field-group">
+<div *ngIf="data">
   <div class="field-group-title">
     <h3 class="pull-left">Media</h3>
     <div class="pull-right">
@@ -8,12 +8,22 @@
     </div>
   </div>
   <div class="field-group-content">
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal" *ngIf="data.media.length > 0">
       <template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{item.kind_of | keyToValue:mediaType:'kind_of':'name'}}</dt>
         <dd><p><a href="{{item.value}}" target="_blank">{{item.value}}</a></p></dd>
       </template>
     </dl>
+
+    <div *ngIf="data.media.length == 0">
+      <p class="text-fade">
+        Tell us more about your media
+      </p>
+      <button type="button" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-plus"></i> Add detail
+      </button>
+    </div>
+
   </div>
 </div>
 

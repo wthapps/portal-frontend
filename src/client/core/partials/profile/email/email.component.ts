@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, HostBinding } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -23,6 +23,8 @@ export class PartialsProfileEmailComponent {
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
 
+  @HostBinding('class') class = 'field-group';
+
   form: FormGroup;
 
   emailType: any = [
@@ -46,8 +48,6 @@ export class PartialsProfileEmailComponent {
         this.initItem(),
       ])
     });
-
-    console.log(this.form);
   }
 
   removeAll() {
