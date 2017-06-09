@@ -729,9 +729,11 @@
       top: 8px;
     }
   }
-  .z-social-media-left:hover {
-    .zone-social-cover-info-profile {
-      bottom: 0;
+  .z-social-media-left {
+    &:hover, &:focus {
+      .zone-social-cover-info-profile {
+        bottom: 0;
+      }
     }
   }
 
