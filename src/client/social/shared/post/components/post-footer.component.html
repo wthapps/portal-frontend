@@ -18,14 +18,16 @@
       <!--<div id="container-comment-{{comment?.uuid}}-edit"></div>-->
 
       <!--Edit comment-->
-      <comment-item-editor id="editComment-{{comment?.uuid}}" style="display: none"
-                           (eventEmitter)="onCallBack($event)"
-                           [parent]="item"
-                           [comment]="comment"
-                           [mode]="commentEditorMode.Edit"></comment-item-editor>
 
+      <template [ngIf]="comment?.isEditting">
+       <comment-item-editor style="display: block"
+                             (eventEmitter)="onCallBack($event)"
+                             [parent]="item"
+                             [originComment]="comment"
+                             [mode]="commentEditorMode.Edit" ></comment-item-editor>
+      </template>
 
-      <div id="comment-{{comment?.uuid}}">
+      <div *ngIf="!comment?.isEditting">
         <div class="media-left">
           <a [routerLink]="['/profile/', comment.owner.uuid]">
             <span class="avatar-xs">
@@ -82,13 +84,15 @@
 
       <div class="media" *ngFor="let reply of comment.comments; let j = index">
         <!--Edit reply-->
-        <comment-item-editor id="editComment-{{reply.uuid}}" style="display: none"
+        <template [ngIf]="reply?.isEditting">
+        <comment-item-editor style="display: block"
                              (eventEmitter)="onCallBack($event)"
                              [parent]="comment"
                              [parentType]="'SocialNetwork::Comment'"
-                             [comment]="reply"
+                             [originComment]="reply"
                              [mode]="commentEditorMode.Edit"></comment-item-editor>
-        <div id="comment-{{reply.uuid}}">
+        </template>
+        <div *ngIf="!reply?.isEditting">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
               <span class="avatar-xs">
@@ -137,11 +141,13 @@
           </div>
         </div>
       </div>
-      <comment-item-editor id="reply-{{comment.uuid}}" style="display: none;"
+      <template [ngIf]="comment?.isCreatingNewReply">
+      <comment-item-editor style="display: block;"
                            (eventEmitter)="onCallBack($event)"
                            [parent]="comment"
                            [parentType]="'SocialNetwork::Comment'"
                            [mode]="commentEditorMode.Add"></comment-item-editor>
+      </template>
     </li>
   </ul>
   <div *ngIf="!loadingDone" class="z-social-comment-more">
