@@ -74,6 +74,8 @@ export class PostFooterComponent implements OnChanges {
       this.showInfo = true;
     }
     this.totalComment = this.item.comment_count;
+    if(this.totalComment === 0 || this.totalComment <= this.item.comments.length)
+      this.loadingDone = true;
   }
 
   onActions(action: any, params?: any) {

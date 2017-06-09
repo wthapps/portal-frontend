@@ -144,7 +144,7 @@
                            [mode]="commentEditorMode.Add"></comment-item-editor>
     </li>
   </ul>
-  <div *ngIf="notAllCommentsLoaded()" class="z-social-comment-more">
+  <div *ngIf="!loadingDone" class="z-social-comment-more">
     <!--<label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="viewAllComments()">View all comments</label>-->
     <label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="getMoreComments()">View more
       comments</label>
