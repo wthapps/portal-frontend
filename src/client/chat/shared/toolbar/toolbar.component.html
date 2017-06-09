@@ -58,10 +58,10 @@
 <template [ngIf]="item.value && showMemberBar">
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
-      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)" class="btn btn-default-inline dropdown-toggle" type="button"
+      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
               data-toggle="dropdown">
-        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="p-list-user-status online"></span>
-        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1" class="p-list-user-status offline"></span>
+        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="fa fa-circle online"></span>
+        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1" class="fa fa-circle offline"></span>
         <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
         {{user_in_group.name}} <span class="caret"></span>
       </button>

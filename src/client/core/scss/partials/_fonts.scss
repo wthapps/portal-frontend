@@ -12,18 +12,15 @@
 @include font-face("Lato", Lato/Lato-Bold, bold, normal, ttf);
 @include font-face("Lato", Lato/Lato-BoldItalic, bold, italic, ttf);
 
-
-
 $font-style: 'Source Sans Pro', sans-serif;
 $font-base: 'Lato', sans-serif;
 
 @import "../../../assets/fonts/font-awesome/scss/_font-awesome.scss";
 
-
 @font-face {
   font-family: 'wthapps';
-  src:    url('../fonts/wthapps/fonts/wthapps.eot?p1u3s5');
-  src:    url('../fonts/wthapps/fonts/wthapps.eot?p1u3s5#iefix') format('embedded-opentype'),
+  src: url('../fonts/wthapps/fonts/wthapps.eot?p1u3s5');
+  src: url('../fonts/wthapps/fonts/wthapps.eot?p1u3s5#iefix') format('embedded-opentype'),
   url('../fonts/wthapps/fonts/wthapps.ttf?p1u3s5') format('truetype'),
   url('../fonts/wthapps/fonts/wthapps.woff?p1u3s5') format('woff'),
   url('../fonts/wthapps/fonts/wthapps.svg?p1u3s5#wthapps') format('svg');
@@ -49,55 +46,71 @@ $font-base: 'Lato', sans-serif;
 .wthico-user:before {
   content: "\f007";
 }
+
 .wthico-arrow-circle-o-down:before {
   content: "\f01a";
 }
+
 .wthico-arrow-circle-o-up:before {
   content: "\f01b";
 }
+
 .wthico-phone:before {
   content: "\f095";
 }
+
 .wthico-twitter:before {
   content: "\f099";
 }
+
 .wthico-facebook:before {
   content: "\f09a";
 }
+
 .wthico-facebook-f:before {
   content: "\f09a";
 }
+
 .wthico-arrow-circle-left:before {
   content: "\f0a8";
 }
+
 .wthico-arrow-circle-right:before {
   content: "\f0a9";
 }
+
 .wthico-arrow-circle-up:before {
   content: "\f0aa";
 }
+
 .wthico-arrow-circle-down:before {
   content: "\f0ab";
 }
+
 .wthico-google-plus:before {
   content: "\f0d5";
 }
+
 .wthico-linkedin:before {
   content: "\f0e1";
 }
+
 .wthico-location-arrow:before {
   content: "\f124";
 }
+
 .wthico-youtube:before {
   content: "\f167";
 }
+
 .wthico-arrow-circle-o-right:before {
   content: "\f18e";
 }
+
 .wthico-arrow-circle-o-left:before {
   content: "\f190";
 }
+
 .wthico-pinterest-p:before {
   content: "\f231";
 }
-

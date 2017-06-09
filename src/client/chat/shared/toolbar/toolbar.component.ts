@@ -20,10 +20,10 @@ export class ZChatToolbarComponent implements OnInit {
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   item: any;
   showMemberBar: boolean = false;
-  usersOnlineItem:any;
-  profileUrl:any;
-  showSendMessage:boolean = false;
-  showBlacklist:boolean = false;
+  usersOnlineItem: any;
+  profileUrl: any;
+  showSendMessage: boolean = false;
+  showBlacklist: boolean = false;
 
   constructor(private chatService: ChatService, private confirmationService: ConfirmationService) {
     this.profileUrl = this.chatService.constant.profileUrl;
@@ -69,7 +69,7 @@ export class ZChatToolbarComponent implements OnInit {
     this.chatService.leaveConversation(this.item.value);
   }
 
-  onRemoveFromConversation(user:any) {
+  onRemoveFromConversation(user: any) {
     this.chatService.removeFromConversation(this.item.value, user.id);
   }
 
@@ -89,13 +89,13 @@ export class ZChatToolbarComponent implements OnInit {
     this.chatService.deleteContact(this.item.value);
   }
 
-  onSelect(user:any) {
+  onSelect(user: any) {
     this.chatService.selectContactByPartnerId(user.id);
   }
 
-  checkSendMessage(user:any) {
-    let conversations:any = this.chatService.storage.find('chat_contacts').value;
-    let contact:any = _.find(conversations.data, { 'partner_id': user.id});
+  checkSendMessage(user: any) {
+    let conversations: any = this.chatService.storage.find('chat_contacts').value;
+    let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       this.showSendMessage = true;
     } else {
@@ -103,9 +103,9 @@ export class ZChatToolbarComponent implements OnInit {
     }
   }
 
-  inContact(user:any) {
-    let conversations:any = this.chatService.storage.find('chat_contacts').value;
-    let contact:any = _.find(conversations.data, { 'partner_id': user.id});
+  inContact(user: any) {
+    let conversations: any = this.chatService.storage.find('chat_contacts').value;
+    let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       return true;
     } else {
@@ -116,7 +116,7 @@ export class ZChatToolbarComponent implements OnInit {
     }
   }
 
-  onAddToBlackList(user:any) {
+  onAddToBlackList(user: any) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to add this contact to black list ?',
       header: 'Add To Black List',
@@ -126,7 +126,7 @@ export class ZChatToolbarComponent implements OnInit {
     });
   }
 
-  checkBlacklist(user:any) {
+  checkBlacklist(user: any) {
     if (this.chatService.user.profile.id == user.id) {
       this.showBlacklist = false;
     } else {
