@@ -79,9 +79,11 @@ export class CommentItemEditorComponent implements OnInit {
     // Create, Update, Reply
     if (e.keyCode == 13 && this.comment.content != '') {
 
-      this.comment.content = this.commentEditorForm.value.content;
-      this.comment.photo = this.commentEditorForm.value.photo;
-      this.post(this.comment);
+      // this.comment.content = this.commentEditorForm.value.content;
+      // this.comment.photo = this.commentEditorForm.value.photo;
+      // this.post(this.comment);
+
+      this.post(this.commentEditorForm.value);
     }
     // Cancel comment
     if (e.keyCode == 27) {

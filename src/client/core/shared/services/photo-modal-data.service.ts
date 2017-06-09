@@ -22,7 +22,7 @@ export class PhotoModalDataService {
   private modalCloseSource = new Subject<string>();
   private modalChooseFilesSource = new Subject<string>();
   private modalUploadSource = new Subject<string>();
-  private modalSaveSource = new Subject<string>();
+  // private modalSaveSource = new Subject<string>();
   private modalDismissSource = new Subject<string>();
   private modalInitSource = new Subject<string>();
 
