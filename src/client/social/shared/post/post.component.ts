@@ -452,17 +452,34 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   private updateItemComments(data: any) {
     let updatedComment = new SoComment().from(data);
+
     _.forEach(this.item.comments, (comment: SoComment, index: any) => {
-      if (comment.uuid == updatedComment.uuid)
+      // Update comment items
+      if (data.parent_type !== 'SocialNetwork::Comment' && (comment.uuid == updatedComment.uuid))
+      {
         this.item.comments[index] = updatedComment;
+        return;
+      }
+      // Update the reply items
+      else if (data.parent_type === 'SocialNetwork::Comment' && comment.uuid === _.get(updatedComment, 'parent.uuid')) {
+        _.forEach(this.item.comments[index].comments, (reply: SoComment, j: any) => {
+          if (reply.uuid === _.get(updatedComment, 'uuid')) {
+            this.item.comments[index].comments[j] = updatedComment;
+            return;
+          }
+        })
+      }
     });
+
+
   }
 
 
   private subscribePhotoEvents() {
     // Subscribe actions corresponding with photo modal actions
 
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$);
+    // let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$);
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
 
     if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
       this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
