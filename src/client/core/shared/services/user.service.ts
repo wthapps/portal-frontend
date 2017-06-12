@@ -19,10 +19,10 @@ export class UserService extends ApiBaseService {
   profile: User = null;
   defaultPayment: any;
 
-  private cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
+  public cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
 
   constructor(http: Http, router: Router,
-              cookieService: CookieService) {
+              public cookieService: CookieService) {
     super(http, router, cookieService);
     this.readUserInfo();
   }

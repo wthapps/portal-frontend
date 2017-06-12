@@ -49,7 +49,7 @@
     <li>
       <a draggable="false" href="#">Gadget</a>
     </li>
-    <li class="has-sub" [ngClass]="{'active': urls.media == hostname}">
+    <li class="has-sub" [ngClass]="{'active': urls.media == hostname && !isProfileTab}">
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>

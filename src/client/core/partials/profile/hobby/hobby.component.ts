@@ -20,6 +20,7 @@ declare var _: any;
 export class PartialsProfileHobbyComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   form: FormGroup;
 
@@ -79,6 +80,7 @@ export class PartialsProfileHobbyComponent {
 
 
   onSubmit(values: any): void {
+    console.log(values);
     this.profileService.updateMyProfile(values).subscribe((res: any) => {
       this.data = res.data;
       this.modal.close();

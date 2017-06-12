@@ -6,6 +6,7 @@ export class User {
   uuid: string;
   first_name: string;
   last_name: string;
+  name: string;
   email: string;
   password: string;
   birthday: string;

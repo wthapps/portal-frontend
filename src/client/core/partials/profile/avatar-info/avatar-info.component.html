@@ -10,7 +10,7 @@
       <p>{{data.nickname}}</p>
     </div>
     <div class="media-right">
-      <button class="btn btn-default" (click)="onOpenModal()">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
         <i class="fa fa-pencil"></i>
       </button>
     </div>
@@ -26,7 +26,7 @@
     <modal-body>
       <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched),
         'has-success': (first_name.valid && first_name.touched)}">
-        <label for="first_name">Last name <span class="text-danger">*</span></label>
+        <label for="first_name">First name <span class="text-danger">*</span></label>
         <input [formControl]="first_name" type="text" class="form-control" id="first_name"
                placeholder="First name">
         <div *ngIf="!first_name.valid && first_name.touched">

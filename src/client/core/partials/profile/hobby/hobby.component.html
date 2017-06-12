@@ -1,26 +1,24 @@
 <div class="panel panel-default" *ngIf="data">
   <div class="panel-heading">
-    <button class="btn btn-default pull-right" (click)="onOpenModal()">
+    <button *ngIf="editable" class="btn btn-default pull-right" (click)="onOpenModal()">
       <i class="fa fa-pencil"></i>
     </button>
     <h3 class="panel-title">Hobby &amp; Interest</h3>
   </div>
   <div class="panel-body">
-    <div *ngIf="data.hobby">
-      <!--<dl *ngFor="let hobby of data.hobby">
-      <dt>Drinking</dt>
+    <div *ngIf="data.hobbys">
+      <dl *ngFor="let hobby of data.hobbys">
+      <dt>{{hobby.title}}</dt>
       <dd>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium corporis, doloribus eligendi impedit
-          necessitatibus nobis quisquam sed sit tempora. Doloremque error est et iure libero nisi perferendis, sapiente
-          vel.
+          {{hobby.description}}
         </p>
       </dd>
-    </dl>-->
+    </dl>
     </div>
 
 
-    <div *ngIf="!data.hobby">
+    <div *ngIf="!data.hobbys">
       <p class="text-fade">
         Tell us more about your hobby &amp; interest
       </p>

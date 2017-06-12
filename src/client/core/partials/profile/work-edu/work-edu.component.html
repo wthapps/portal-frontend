@@ -1,26 +1,24 @@
 <div class="panel panel-default" *ngIf="data">
   <div class="panel-heading">
-    <button class="btn btn-default pull-right" (click)="onOpenModal()">
+    <button *ngIf="editable" class="btn btn-default pull-right" (click)="onOpenModal()">
       <i class="fa fa-pencil"></i>
     </button>
     <h3 class="panel-title">Work &amp; Education</h3>
   </div>
   <div class="panel-body">
     <h4 class="mt0 text-normal text-fade">Employment</h4>
-    <div *ngIf="data.profile_info.works.length > 0">
-      <dl *ngFor="let work of data.profile_info.works">
-        <dt>Bodyguard</dt>
+    <div *ngIf="data.works && data.works.length > 0">
+      <dl *ngFor="let work of data.works">
+        <dt>{{work.title}}</dt>
         <dd>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium corporis, doloribus eligendi impedit
-            necessitatibus nobis quisquam sed sit tempora. Doloremque error est et iure libero nisi perferendis, sapiente
-            vel.
+            {{work.description}}
           </p>
         </dd>
       </dl>
     </div>
 
-    <div *ngIf="data.profile_info.works.length == 0">
+    <div *ngIf="data.works && data.works.length == 0">
       <p class="text-fade">
         Tell us more about your work
       </p>
@@ -30,20 +28,18 @@
     </div>
 
     <h4 class="text-normal text-fade">Education</h4>
-    <div *ngIf="data.profile_info.educations.length > 0">
-      <dl *ngFor="let education of data.profile_info.educations">
-        <dt>Bodyguard</dt>
+    <div *ngIf="data.educations && data.educations.length > 0">
+      <dl *ngFor="let education of data.educations">
+        <dt>{{education.title}}</dt>
         <dd>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium corporis, doloribus eligendi impedit
-            necessitatibus nobis quisquam sed sit tempora. Doloremque error est et iure libero nisi perferendis, sapiente
-            vel.
+            {{education.description}}
           </p>
         </dd>
       </dl>
     </div>
 
-    <div *ngIf="data.profile_info.educations.length == 0">
+    <div *ngIf="data.educations && data.educations.length == 0">
       <p class="text-fade">
         Tell us more about your education
       </p>

@@ -22,6 +22,7 @@ declare var _: any;
 export class PartialsProfileAboutComponent implements OnInit {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   constants = Constants;
   countriesCode: any;
@@ -31,7 +32,7 @@ export class PartialsProfileAboutComponent implements OnInit {
   last_name: AbstractControl;
   nickname: AbstractControl;
   about: AbstractControl;
-  gender: AbstractControl;
+  sex: AbstractControl;
   tag_line: AbstractControl;
   description: AbstractControl;
   birthday_day: AbstractControl;
@@ -44,7 +45,7 @@ export class PartialsProfileAboutComponent implements OnInit {
               private countryService: CountryService) {
     this.form = fb.group({
       'about': [''],
-      'gender': [''],
+      'sex': [''],
       'birthday_day': [''],
       'birthday_month': [''],
       'birthday_year': [''],
@@ -52,7 +53,7 @@ export class PartialsProfileAboutComponent implements OnInit {
     });
 
     this.about = this.form.controls['about'];
-    this.gender = this.form.controls['gender'];
+    this.sex = this.form.controls['sex'];
     this.birthday_day = this.form.controls['birthday_day'];
     this.birthday_month = this.form.controls['birthday_month'];
     this.birthday_year = this.form.controls['birthday_year'];
@@ -70,38 +71,33 @@ export class PartialsProfileAboutComponent implements OnInit {
   onOpenModal() {
     console.log(this.data);
 
-    (<FormControl>this.about).setValue(this.data.basic_info.about);
-    (<FormControl>this.gender).setValue(this.data.basic_info.sex);
+    (<FormControl>this.about).setValue(this.data.about);
+    (<FormControl>this.sex).setValue(this.data.sex);
 
-    console.log(this.data.basic_info.birthday);
+    console.log(this.data.birthday);
 
-    if (this.data.basic_info.birthday !== null) {
-      let birthday = new Date(this.data.basic_info.birthday);
+    if (this.data.birthday !== null) {
+      let birthday = new Date(this.data.birthday);
       (<FormControl>this.birthday_day).setValue(birthday.getDate());
       (<FormControl>this.birthday_month).setValue(birthday.getMonth() + 1);
       (<FormControl>this.birthday_year).setValue(birthday.getUTCFullYear());
     }
 
-    (<FormControl>this.nationality).setValue(this.data.basic_info.nationality);
+    (<FormControl>this.nationality).setValue(this.data.nationality);
 
     this.modal.open();
   }
 
   onSubmit(values: any): void {
-    console.log('values:', values);
+    console.log(values);
+    let birthday = new Date(values.birthday_year, values.birthday_month - 1, values.birthday_day);
 
-    let birthday = new Date(values.birthday_year, values.birthday_month, values.birthday_day);
-
-    let body = JSON.stringify({
-      basic_info: {
-        about: values.about,
-        birthday: birthday,
-        nationality: values.nationality,
-        sex: values.sex
-      }
-    });
-
-    console.log(body);
+    let body = {
+      about: values.about,
+      birthday: birthday,
+      nationality: values.nationality,
+      sex: values.sex
+    };
 
     this.profileService.updateMyProfile(body).subscribe((res: any) => {
       this.data = res.data;

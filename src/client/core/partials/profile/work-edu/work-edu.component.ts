@@ -20,6 +20,7 @@ declare var _: any;
 export class PartialsProfileWorkEduComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   form: FormGroup;
   contact_note: AbstractControl;

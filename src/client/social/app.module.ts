@@ -16,8 +16,8 @@ import { ZSocialProfileModule } from './profile/profile.module';
 import { ZSocialPhotoModule } from './photo/photo.module';
 import { ZSocialSearchModule } from './search/search.module';
 import { PhotoService } from '../core/shared/services/photo.service';
-import { CoverProfileModule } from '../core/partials/cover-profile/cover-profile.module';
 import { ZoneReportService } from '../core/shared/form/report/report.service';
+import { ZSocialMyProfileModule } from './my-profile/my-profile.module';
 
 
 @NgModule({
@@ -33,6 +33,7 @@ import { ZoneReportService } from '../core/shared/form/report/report.service';
     ZSocialProfileModule,
     ZSocialPhotoModule,
     ZSocialSearchModule,
+    ZSocialMyProfileModule,
     AppRoutingModule
   ],
 

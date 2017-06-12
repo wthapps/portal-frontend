@@ -148,7 +148,7 @@ export let Constants = {
     photo: 'photo',
     chatConversation: 'conversations'
   },
-  sex: ['Male', 'Female', 'Other'],
+  sex: ['', 'Male', 'Female', 'Other'],
   communityRole: {
     admin: [1, 'Admin'],
     member: [2, 'Member']

@@ -8,6 +8,7 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
+import { UserService } from '../../../shared/services/user.service';
 
 declare var _: any;
 
@@ -20,13 +21,14 @@ declare var _: any;
 export class PartialsProfileAvatarInfoComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
+  @Input() editable: boolean;
 
   form: FormGroup;
   first_name: AbstractControl;
   last_name: AbstractControl;
   nickname: AbstractControl;
 
-  constructor(private fb: FormBuilder, private profileService: PartialsProfileService) {
+  constructor(private fb: FormBuilder, private profileService: PartialsProfileService, public userService: UserService) {
     this.form = fb.group({
       'first_name': ['', Validators.compose([Validators.required])],
       'last_name': ['', Validators.compose([Validators.required])],
@@ -49,8 +51,12 @@ export class PartialsProfileAvatarInfoComponent {
 
   onSubmit(values: any): void {
     this.profileService.updateMyProfile(values).subscribe((res: any) => {
-      this.data = res.data;
       this.modal.close();
+      this.data = res.data;
+      this.userService.profile.name = this.data.name;
+      this.userService.profile.first_name = this.data.first_name;
+      this.userService.profile.last_name = this.data.last_name;
+      this.userService.cookieService.put('profile', JSON.stringify(this.userService.profile), this.userService.cookieOptionsArgs);
     });
   }
 }
