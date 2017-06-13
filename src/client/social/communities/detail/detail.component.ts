@@ -364,7 +364,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onLoadMore() {
-    this.posts.viewMorePosts();
+    if (this.isPostTab)
+      this.posts.viewMorePosts();
   }
 
   private getCommunity(uuid: string) {
