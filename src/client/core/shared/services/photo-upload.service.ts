@@ -84,26 +84,6 @@ export class PhotoUploadService {
    * @returns {any}
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
-    // return Observable.create((observer: any) => {
-    //   for (let i = 0; i < photos.length; i++) {
-    //     let file = photos[i];
-    //     let reader: FileReader = new FileReader();
-    //
-    //     reader.onload = (data: any) => {
-    //       let currentPhoto = data.target['result'];
-    //       // Convert this Api call to Promise from Rxjs subscription to prevent memory leak
-    //       this.apiService.post('media/photos', {name: file.name, type: file.type, file: currentPhoto})
-    //         .toPromise()
-    //         .then((response: any) => {
-    //         console.log('photo:', response.data);
-    //         observer.next(response);
-    //       });
-    //     };
-    //     reader.readAsDataURL(file);
-    //   };
-    // });
-
-
     // ONLY Process 4 photos at a time
     return Observable.from(photos)
       .mergeMap((photo: any) => this.readFile(photo),
@@ -114,7 +94,8 @@ export class PhotoUploadService {
           }},
           this.MAX_FILES
       )
-      .mergeMap((combinedData: any) => this.apiService.post('media/photos', combinedData).toPromise(), null, this.MAX_FILES);
+      .mergeMap((combinedData: any) => this.apiService.post('media/photos', combinedData),
+        (combinedData: any, returnData: any) => { return { originPhoto: combinedData, data: returnData.data}; }, this.MAX_FILES);
   }
 
   // TODO: Handle readFile failed cases
@@ -127,6 +108,7 @@ export class PhotoUploadService {
       };
 
       reader.onerror = (error: any) => {
+        reject(error);
         console.error('File could not be read: ', file, error);
       }
       reader.readAsDataURL(file);
