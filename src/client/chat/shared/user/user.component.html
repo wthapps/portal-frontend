@@ -1,10 +1,13 @@
 <div *ngIf="data" class="media-user media-user-{{size}}">
   <div class="media-user-avatar avatar-{{size}}">
-    <img [src]="data.display.image" alt="">
+    <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
+    <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
   </div>
   <div class="media-user-name">
     <p *ngIf="data.group_json?.group_type == 'couple'">{{data.display.name}}</p>
-    <p *ngIf="data.group_json?.group_type == 'multiple'">{{data.group_json | chatGroupName}}</p>
+    <p *ngIf="data.group_json?.group_type == 'multiple' && data.group_json.name">{{data.group_json.name}}</p>
+    <p *ngIf="data.group_json?.group_type == 'multiple' && !data.group_json.name">{{data.group_json.users_name}}</p>
+    <!--{{data.group_json.users_name | json}}-->
     <ng-content></ng-content>
   </div>
   <span *ngIf="data.display.id" class="media-user-status"

@@ -67,7 +67,7 @@ export class ChatCommonService {
     let contactSelect = this.storage.find('contact_select').value;
     let chatContacts = this.storage.find('chat_contacts').value.data;
     for (let i = 0; i < chatContacts.length; i++) {
-      if (chatContacts[i].id == contactSelect.id) {
+      if (chatContacts[i] && chatContacts[i].id == contactSelect.id) {
         this.storage.save('contact_select', chatContacts[i]);
       }
     }

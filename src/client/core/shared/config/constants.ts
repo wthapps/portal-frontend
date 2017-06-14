@@ -214,6 +214,7 @@ export let Constants = {
       globalActive: true,
       photoActive: true,
       socialActive: true,
+      chatActive: true,
     }
   },
 

@@ -64,6 +64,6 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   search() {
-    this.chatService.router.navigate([`${this.chatService.constant.searchUrl}`]);
+    this.chatService.router.navigate([`${this.chatService.constant.searchNewContactsUrl}`]);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { BaseSearchForm } from './base-search-form';
 import { ServiceManager } from '../../../shared/services/service-manager';
 
 declare let _:any;
@@ -10,7 +9,7 @@ declare let _:any;
   templateUrl: 'photo-search-form.component.html',
 })
 
-export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
+export class PhotoSearchFormComponent implements OnInit {
   constants: any;
   form: FormGroup;
   searchFrom: AbstractControl;
@@ -26,7 +25,6 @@ export class PhotoSearchFormComponent extends BaseSearchForm implements OnInit {
   active:any;
 
   constructor(public serviceManager: ServiceManager) {
-    super();
     this.constants = this.serviceManager.getConstants();
     this.active = this.constants.search.config.photoActive;
 

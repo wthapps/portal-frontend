@@ -1,6 +1,7 @@
 export class ChatConstant {
   public static conversationUrl = '/conversations';
   public static searchUrl = '/search';
+  public static searchNewContactsUrl = '/search_new_contacts';
   public static profileUrl = '/profile';
 }
 

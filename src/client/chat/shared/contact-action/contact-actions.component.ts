@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
@@ -19,6 +19,7 @@ export class ZChatContactActionsComponent implements OnInit {
   conversationUrl: any;
   profileUrl: any;
   @ViewChild('addConversation') addConversation: ZChatShareAddToConversationComponent;
+  @Output() updateEvent: EventEmitter<any> = new EventEmitter<any>();
   // Config component
   @Input() config: any = {
     history: false
@@ -63,10 +64,12 @@ export class ZChatContactActionsComponent implements OnInit {
 
   disableNotification() {
     this.chatService.updateNotification(this.contact, {notification: false});
+    this.contact.notification = !this.contact.notification;
   }
 
   enableNotification() {
     this.chatService.updateNotification(this.contact, {notification: true});
+    this.contact.notification = !this.contact.notification;
   }
 
   deleteContact() {
@@ -75,6 +78,7 @@ export class ZChatContactActionsComponent implements OnInit {
       header: 'Delete Contact',
       accept: () => {
         this.chatService.deleteContact(this.contact);
+        this.updateEvent.emit();
       }
     });
   }

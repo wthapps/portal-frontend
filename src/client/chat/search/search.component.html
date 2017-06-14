@@ -1,0 +1,17 @@
+<div class="page-body-content has-page-body-sidebar">
+  <div class="page-body-content-in" *ngIf="conversations">
+    <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of conversations">
+      <div class="media-left">
+        <z-chat-share-user [data]="contact"></z-chat-share-user>
+      </div>
+      <div class="media-left">
+        <span class="text-fade">{{contact.updated_chat_at | timeFormat }}</span>
+      </div>
+
+      <div class="media-right">
+        <z-chat-contact-actions [contact]="contact" (updateEvent)="delayAndGetConversations()"></z-chat-contact-actions>
+      </div>
+    </div>
+  </div>
+</div>
+

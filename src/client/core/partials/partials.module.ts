@@ -33,6 +33,8 @@ import { PartialsProfileModule } from './profile/profile.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UndoNotificationComponent } from './header/notification/undo-notification.component';
 import { NotificationItemComponent } from './notifications/item/notification-item.component';
+import { ChatSearchFormComponent } from './header/search/chat-search-form.component';
+import { TextBoxSearchComponent } from './header/search/components/textbox-search.component';
 
 
 @NgModule({
@@ -67,6 +69,8 @@ import { NotificationItemComponent } from './notifications/item/notification-ite
     SearchFormComponent,
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
+    ChatSearchFormComponent,
+    TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
@@ -82,6 +86,8 @@ import { NotificationItemComponent } from './notifications/item/notification-ite
     SearchFormComponent,
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
+    ChatSearchFormComponent,
+    TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,

@@ -6,12 +6,13 @@
     <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg" *ngIf="!config.history">
       <li><a href="javascript:;" (click)="onSelect(contact)">Send Message</a></li>
       <!--<li><a href="#">Send Contact</a></li>-->
-      <li><a href="javascript:;" (click)="addToConversation()">Add to Conversation</a></li>
+      <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="addToConversation()">Add to Conversation</a></li>
       <li class="divider" role="separator"></li>
-      <li><a [routerLink]="[profileUrl, contact.display.uuid]">View Profile</a></li>
-      <li><a href="javascript:;" (click)="report(contact.display.uuid)">Report Member</a></li>
-      <li><a href="javascript:;" (click)="addBlackList()">Blacklist</a></li>
-      <li><a href="javascript:;" (click)="deleteContact()">Delete Contact</a></li>
+      <li *ngIf="contact.group_type == 'couple'"><a [routerLink]="[profileUrl, contact.display.uuid]">View Profile</a></li>
+      <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="report(contact.display.uuid)">Report Member</a></li>
+      <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="addBlackList()">Blacklist</a></li>
+      <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="deleteContact()">Delete Contact</a></li>
+      <li *ngIf="contact.group_type == 'multiple'"><a href="javascript:;" (click)="deleteContact()">Delete Conversation</a></li>
       <li class="divider" role="separator"></li>
       <li *ngIf="contact.notification"><a href="javascript:;" (click)="disableNotification()">Disable Notification</a></li>
       <li *ngIf="!contact.notification"><a href="javascript:;" (click)="enableNotification()">Enable Notification</a></li>

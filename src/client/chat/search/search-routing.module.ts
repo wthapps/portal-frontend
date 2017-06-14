@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ZChatContactSearchComponent } from './contact-search.component';
+import { ZChatSearchComponent } from './search.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'search',
-        component: ZChatContactSearchComponent
+        component: ZChatSearchComponent
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZChatContactSearchRoutingModule {
+export class ZChatSearchRoutingModule {
 }
