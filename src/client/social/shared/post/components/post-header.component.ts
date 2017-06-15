@@ -84,7 +84,7 @@ export class PostHeaderComponent implements OnChanges {
 
   getSettings(e: any) {
     e.preventDefault();
-    this.socialService.post.getSettings(this.item.uuid).subscribe(
+    this.socialService.post.getSettings(this.item.uuid).take(1).subscribe(
       (res: any) => {
         this.settings = res.data.settings;
       }

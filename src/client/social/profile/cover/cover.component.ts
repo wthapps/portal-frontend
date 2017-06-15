@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { SocialService } from '../../shared/services/social.service';
@@ -6,6 +6,7 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { Subject } from 'rxjs';
 
 
 declare var _: any;
@@ -16,7 +17,7 @@ declare var _: any;
   templateUrl: 'cover.component.html'
 })
 
-export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
+export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() data: any;
 
@@ -28,7 +29,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   relationships: any;
   showFriends:boolean = true;
 
-
+  private destroySubject: Subject<any> = new Subject<any>();
   constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,
               public userService: UserService,
@@ -59,12 +60,19 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
       this.uuid = params['id'] ? params['id'] : this.userService.getProfileUuid();
 
       if (this.userService.profile.uuid != params['id']) {
-        this.socialService.user.getRelationShips(params['id']).subscribe((res: any) => {
+        this.socialService.user.getRelationShips(params['id'])
+          .takeUntil(this.destroySubject)
+          .subscribe((res: any) => {
             this.relationships = res.data;
           },
         );
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   onCoverAction(event: any) {

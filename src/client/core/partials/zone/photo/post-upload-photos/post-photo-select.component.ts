@@ -37,8 +37,8 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.initSubscription = this.photoDataService.initObs$.subscribe( () => {
-        this.init();
+    this.initSubscription = this.photoDataService.initObs$.subscribe( (options: any) => {
+        this.init(options);
       }
     );
 
@@ -58,9 +58,12 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
     this.unsubscribeAll([this.initSubscription, this.openSubscription, this.closeSubscription]);
   }
 
-  public init() {
+  public init(options: any) {
     this.action = 'DONE';
-    this.photoList.multipleSelect = true;
+    if(_.get(options, 'multipleSelect', true) === true)
+      this.photoList.multipleSelect = true;
+    else
+      this.photoList.multipleSelect = false;
   };
 
   open(options: any = {return: false}) {
@@ -69,6 +72,11 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
     if (options.return == true) {
       this.hasBack = true;
     }
+    if(_.get(options, 'multipleSelect', true) === true)
+      this.photoList.multipleSelect = true;
+    else
+      this.photoList.multipleSelect = false;
+
     this.photoList.loadPhotos();
     this.modal.open();
   }

@@ -173,6 +173,7 @@ export class NotificationService {
       return; // Only load once at first time
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest`, {sort_name: 'created_at'})
       .filter((x: any) => this.userService.loggedIn) // Do not call this API if user is not logged in
+      .take(1)
       .subscribe(
         (result: any) => {
           _.remove(this.notifications); // Make sure this.notifications has no value before assigning
@@ -205,6 +206,7 @@ export class NotificationService {
     }
     this.api.get(this.nextLink)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
+      .take(1)
       .subscribe(
         (result: any) => {
           this.notifications.push(...result.data);

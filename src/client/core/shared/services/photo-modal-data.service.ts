@@ -38,8 +38,8 @@ export class PhotoModalDataService {
   }
 
 
-  init() {
-    this.modalInitSource.next('');
+  init(options: any) {
+    this.modalInitSource.next(options);
   }
 
   open(options: any = {return: false}) {

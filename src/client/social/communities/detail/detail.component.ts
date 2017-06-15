@@ -12,7 +12,7 @@ import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { ZSocialFavoritesComponent } from '../../shared/favorites/social-favorites.component';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { ZoneReportService } from '../../../core/shared/form/report/report.service';
@@ -103,8 +103,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   closeObs$: Observable<any>;
 
   // Subscription for photo select in modal
-  nextPhotoSubscription: Subscription;
-  uploadPhotoSubscription: Subscription;
+  // nextPhotoSubscription: Subscription;
+  // uploadPhotoSubscription: Subscription;
+
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
@@ -148,12 +150,14 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.loadSubscription.unsubscribe();
-    if (this.nextPhotoSubscription)
-      this.nextPhotoSubscription.unsubscribe();
+    // if (this.nextPhotoSubscription)
+    //   this.nextPhotoSubscription.unsubscribe();
+    //
+    // if (this.uploadPhotoSubscription)
+    //   this.uploadPhotoSubscription.unsubscribe();
 
-    if (this.uploadPhotoSubscription)
-      this.uploadPhotoSubscription.unsubscribe();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   onPreference() {
@@ -396,7 +400,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     if (tabName === undefined)
       return;
     // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/${tabName}`).subscribe(
-    this.socialService.community.getTabItems(uuid, tabName).subscribe(
+    this.socialService.community.getTabItems(uuid, tabName)
+      .takeUntil(this.destroySubject)
+      .subscribe(
       (res: any)=> {
         this.tabItems = res.data;
 
