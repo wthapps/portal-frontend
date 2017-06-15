@@ -1,0 +1,61 @@
+<div class="media media-no-hidden" *ngIf="data">
+  <div class="media-left">
+        <span class="avatar-sm">
+          <img [src]="data.profile_image" alt="{{data.name}}">
+        </span>
+  </div>
+  <div class="media-body">
+    <h5 class="media-heading m0"><a [routerLink]="[data.link]" class="link-text">{{data.name}}</a></h5>
+    <div class="text-fade">
+      Nickname
+      <br>
+      14 friends - 55 followers
+    </div>
+  </div>
+  <!--Communities-->
+  <div class="media-right" *ngIf="group == 'communities'">
+    <div class="pull-right no-wrap">
+      <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)"
+              *ngIf="data.user_status == comUserStatus.stranger">
+        Join
+      </button>
+      <button class="btn btn-default" type="button"
+              *ngIf="data.user_status == comUserStatus.joinRequestSent">
+        Asked To Join
+      </button>
+
+      <span class="btn-text" *ngIf="data.user_status == comUserStatus.member"><i class="fa fa-check"></i> Joined</span>
+
+      <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                *ngIf="data?.user_status == comUserStatus.member"
+                (click)="getFavourite(item, 'community')">
+          <i class="fa fa-check"></i> Joined <span class="caret"></span>
+        </button>
+
+        <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+          <li>
+            <a href="javascript:;" (click)="toggleFavourite(data, 'community')">
+              Favourite
+              <i class="fa pull-right" [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="btn-group" *ngIf="item?.user_status == comUserStatus.member">
+        <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                data-toggle="dropdown">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+          <li><a href="javascript:;">Report community</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>

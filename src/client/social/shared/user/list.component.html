@@ -1,0 +1,10 @@
+<template [ngIf]="data">
+  <div class="list-group-item" *ngFor="let item of data">
+    <template [ngIf]="type == 'members'">
+      <z-social-share-profile-member [data]="item"></z-social-share-profile-member>
+    </template>
+    <template [ngIf]="type == 'communities'">
+      <z-social-share-profile-community [data]="item"></z-social-share-profile-community>
+    </template>
+  </div>
+</template>

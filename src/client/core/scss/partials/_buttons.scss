@@ -268,10 +268,35 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
 }
 
 .btn-text {
-  @extend .btn-link;
+  @extend .btn;
+  background-color: transparent;
+  min-width: initial;
+  border-width: 0;
   text-decoration: none !important;
   color: $text-color;
-  min-width: inherit;
+  cursor: auto;
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      outline: 0 none;
+      @include box-shadow(none);
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    outline: 0 none;
+    @include box-shadow(none);
+  }
+
+  &:active,
+  &.active {
+    outline: 0 none;
+    @include box-shadow(none);
+  }
 }
 
 .btn-link-inline {

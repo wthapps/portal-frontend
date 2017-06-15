@@ -23,6 +23,7 @@ import { SoPhotoListComponent } from './post/photo-list.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
 import { SocialFavoriteService } from './services/social-favorites.service';
+import { ZSocialShareProfileModule } from './user/list.module';
 
 
 /**
@@ -35,7 +36,8 @@ import { SocialFavoriteService } from './services/social-favorites.service';
     // HdModalModule,
     Ng2HdModule,
     CoverProfileModule,
-    PostModule
+    PostModule,
+    ZSocialShareProfileModule
   ],
   declarations: [
     ZSocialFavoritesComponent,
@@ -68,7 +70,8 @@ import { SocialFavoriteService } from './services/social-favorites.service';
     Ng2HdModule,
     CoverProfileModule,
     SharedModule,
-    PostModule
+    PostModule,
+    ZSocialShareProfileModule
   ]
 })
 export class ZSocialSharedModule {
