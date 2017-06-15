@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { KeyToValuePipe } from './keyToValue.pipe';
+import { LinkifyPipe } from './linkify.pipe';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    KeyToValuePipe
+    KeyToValuePipe,
+    LinkifyPipe
   ],
   exports: [
-    KeyToValuePipe
+    KeyToValuePipe,
+    LinkifyPipe
   ],
   providers: []
 })

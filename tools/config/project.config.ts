@@ -42,7 +42,9 @@ export class ProjectConfig extends SeedConfig {
       {src: 'wheelzoom.js/wheelzoom.min.js', inject: 'libs'},
       {src: 'shave/dist/shave.min.js', inject: 'libs'},
       {src: 'slick-carousel/slick/slick.min.js', inject: 'libs'},
-      {src: 'aws-sdk/dist/aws-sdk.min.js', inject: 'libs'}
+      {src: 'aws-sdk/dist/aws-sdk.min.js', inject: 'libs'},
+      {src: 'linkifyjs/dist/linkify.js', inject: 'libs'},
+      {src: 'linkifyjs/dist/linkify-html.min.js', inject: 'libs'}
     ];
 
     // Add `local` third-party libraries to be injected/bundled.
