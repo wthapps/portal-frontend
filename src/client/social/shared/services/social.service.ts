@@ -79,7 +79,7 @@ export class SoUserService {
   }
 
   getFavourite(uuid: any, type: string) {
-    return this.apiBaseService.get(`${soFavouritesUrl}/${uuid}`, {type: type});
+    return this.apiBaseService.get(`${soFavouritesUrl}/${uuid}`, {type: type}).take(1);
   }
 
   toggleFavourites(uuid: any, type: string) {
@@ -143,7 +143,7 @@ export class SoPostService {
   }
 
   getSettings(uuid: string) {
-    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`);
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).debounceTime(250);
   }
 
   private getListSocialPosts(uuid:any, type:string) {

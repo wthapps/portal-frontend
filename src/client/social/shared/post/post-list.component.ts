@@ -9,7 +9,7 @@ import { SoPost } from '../../../core/shared/models/social_network/so-post.model
 import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { UserService } from '../../../core/shared/services/user.service';
 
@@ -45,6 +45,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   nextPhotoSubscription: Subscription;
   postIsEmpty: boolean = false;
 
+  private destroySubject: Subject<any> = new Subject<any>();
+
   constructor(public apiBaseService: ApiBaseService,
               public socialService: SocialService,
               private loadingService: LoadingService,
@@ -78,11 +80,11 @@ export class PostListComponent implements OnInit, OnDestroy {
     // this.photoModal.photoList.multipleSelect = false;
 
     // Subscribe photo select events
-    this.photoSelectDataService.init();
+    this.photoSelectDataService.init('');
 
-    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$);
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$, this.destroySubject);
 
-    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
+    this.photoSelectDataService.nextObs$
       .takeUntil(closeObs$).subscribe(
       (photos: any) => {
         this.onSelectPhotoComment(photos);
@@ -90,11 +92,14 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.loadSubscription)
-      this.loadSubscription.unsubscribe();
+    // if (this.loadSubscription)
+    //   this.loadSubscription.unsubscribe();
+    //
+    // if (this.nextPhotoSubscription)
+    //   this.nextPhotoSubscription.unsubscribe();
 
-    if (this.nextPhotoSubscription)
-      this.nextPhotoSubscription.unsubscribe();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   mapPost(post: any) {
@@ -113,6 +118,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     }
     this.loadingService.start('#post-list-component');
     this.socialService.post.getList(this.uuid, this.type)
+      .takeUntil(this.destroySubject)
       .subscribe(
         (res: any) => {
           this.loadingService.stop('#post-list-component');
@@ -230,7 +236,8 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   viewMorePosts() {
     if (this.nextLink) {
-      this.apiBaseService.get(this.nextLink).subscribe((res: any)=> {
+      this.apiBaseService.get(this.nextLink).take(1)
+        .subscribe((res: any)=> {
         _.map(res.data, (v: any)=> {
           this.items.push(this.mapPost(v));
         });

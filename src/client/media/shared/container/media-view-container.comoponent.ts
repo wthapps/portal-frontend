@@ -220,6 +220,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   ngOnDestroy() {
     // this.list.events.unsubscribe();
     this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   // considering moving doAction into list-media

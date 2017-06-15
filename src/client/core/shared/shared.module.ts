@@ -63,6 +63,7 @@ import { HdModalComponent } from './ng2-hd/modal/components/modal';
 import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
 import { BytesPipe } from './pipe/bytes.pipe';
 import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
+import { PipeModule } from './pipe/pipe.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -85,7 +86,8 @@ import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
     CalendarModule,
     CheckboxModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    PipeModule
   ],
   declarations: [
     ToolbarComponent,
@@ -133,6 +135,7 @@ import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
     CheckboxModule,
     RadioButtonModule,
     InputTextareaModule,
+    PipeModule,
 
     // Component
     ToolbarComponent,

@@ -82,7 +82,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   ngOnInit() {
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
-    this.photoSelectDataService.init();
+    this.photoSelectDataService.init({multipleSelect: false});
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -326,8 +326,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // Open photo modal
     if (event instanceof OpenPhotoModalEvent) {
       this.commentEditor = event.data;
-      // this.photoModalOpened.emit(this.commentEditor);
-      this.openPhotoModal(this.commentEditor);
+      this.openPhotoModal(event.data);
 
       this.subscribePhotoEvents();
     }

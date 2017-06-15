@@ -7,8 +7,9 @@ import { UserService } from './user.service';
 declare var AWS: any;
 declare let _: any;
 declare let Promise: any;
+declare let window: any;
 
-export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
+// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
 
 @Injectable()
 export class PhotoUploadService {
@@ -84,6 +85,12 @@ export class PhotoUploadService {
    * @returns {any}
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
+    if ( !( window.File && window.FileReader && window.FileList && window.Blob ) ) {
+      let err_msg = 'The File APIs are not fully supported in this browser.';
+      console.error(err_msg);
+      return Observable.throw(err_msg);
+    }
+
     // ONLY Process 4 photos at a time
     return Observable.from(photos)
       .mergeMap((photo: any) => this.readFile(photo),
@@ -115,34 +122,4 @@ export class PhotoUploadService {
     })
   }
 
-  // TODO:
-  remove(file: any) {
-
-  }
-
-  /*
-    Get filename, remove the extension if possible. Ex: small.dog.jpg => small.dog
-   */
-  getFileName(file: any) {
-    let fullName = file.name.trim();
-    let pattern = '.' + EXT_LIST.join('|.'); // Pattern format: .jpg|.jpeg|.gif
-    return fullName.replace(new RegExp('' + pattern + '$', 'i'),'');
-  }
-
-  // Expected result:
-  //    https://env-staging-oregon-temp-upload.s3-us-west-2.amazonaws.com/small.cat.jpg
-  // => https://env-staging-oregon.s3-us-west-2.amazonaws.com/small.cat-thumb.jpg
-  getThumbnailUrl(tempUrl: string) {
-    let str = tempUrl.replace(this.SUFFIX, '');
-    return str.replace(new RegExp('.([a-zA-Z]*)*$'),'-thumb.$1'); // small.cat.jpg => small.cat-thumb.jpg
-  }
-
-
-  // Expected result:
-  //    https://env-staging-oregon-temp-upload.s3-us-west-2.amazonaws.com/small.cat.jpg
-  // => https://env-staging-oregon.s3-us-west-2.amazonaws.com/small.cat-compress.jpg
-  private getCompressUrl(tempUrl: string) {
-    let str = tempUrl.replace(this.SUFFIX, '');
-    return str.replace(new RegExp('.([a-zA-Z]*)*$'),'-compress.$1'); // small.cat.jpg => small.cat-compress.jpg
-  }
 }

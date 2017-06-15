@@ -148,7 +148,7 @@ export class SoCommunityService  {
   }
 
   getCommunity(uuid: string) {
-    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`);
+    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).take(1);
   }
 
 
