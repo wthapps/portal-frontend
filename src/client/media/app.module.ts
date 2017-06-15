@@ -35,8 +35,7 @@ import { MediaUploaderDataService } from './shared/uploader/media-uploader-data.
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'
-  },
-    MediaUploaderDataService],
+  }],
   bootstrap: [AppComponent]
 
 })

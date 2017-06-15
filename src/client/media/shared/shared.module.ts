@@ -111,7 +111,8 @@ export class ZMediaSharedModule {
       providers: [
         ZMediaAlbumService,
         ZMediaSharingService,
-        ZMediaTaggingService
+        ZMediaTaggingService,
+        MediaUploaderDataService
       ]
     };
   }
