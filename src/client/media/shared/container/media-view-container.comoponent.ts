@@ -25,6 +25,8 @@ import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { Constants } from '../../../core/shared/config/constants';
+import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
+import { Subject } from 'rxjs';
 
 declare var $: any;
 declare var _: any;
@@ -102,6 +104,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   viewOption: string = 'grid';
   showDetailInfo: boolean = false;
   private currentPage: string;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   // you are also able to inject PhotoService and AlbumService here for calling existing functions quickly
   constructor(private resolver: ComponentFactoryResolver,
@@ -110,6 +113,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private location: Location,
               private mediaObjectService: MediaObjectService,
               private zMediaAlbumService: ZMediaAlbumService,
+              private mediaUploaderDataService: MediaUploaderDataService,
               private confirmationService: ConfirmationService) {
 
   }
@@ -121,17 +125,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     // console.log('this. INit:', this.object, this.params);
   }
 
-  subscribeUploader() {
-    this.toolbar.uploader.events.subscribe((res:any) => {
-      if (this.page == 'photos') {
-        this.list.objects.unshift(res);
-      }
-      if (this.page == 'album_detail') {
-        this.zMediaAlbumService.addToAlbum(this.params['id'], [res]).subscribe((res:any) => {
-          this.list.objects = res.data;
-        });
-      }
-    });
+  updateMediaList(res: any) {
+    if (this.page == 'photos') {
+      this.list.objects.unshift(res);
+    }
+    if (this.page == 'album_detail') {
+      this.zMediaAlbumService.addToAlbum(this.params['id'], [res]).subscribe((res:any) => {
+        this.list.objects = res.data;
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -149,7 +151,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     });
 
     // subscribe event
-    this.toolbar.events.subscribe((event: any) => {
+    this.toolbar.events.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
     });
 
@@ -163,15 +165,19 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       params: this.params
     });
 
-    this.list.events.subscribe((event: any) => {
+    this.list.events.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
     });
 
     this.createDetailInfoComponent();
-    this.detailInfo.event.subscribe((event: any) => {
+    this.detailInfo.event.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
     });
 
+  //  Listen to media uploader events
+    this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
+      this.doAction(event);
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -191,7 +197,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.toolbarComponent = this.toolbarContainer.createComponent(tbComponentFactory);
     this.toolbar = <MediaToolbarListComponent>this.toolbarComponent.instance;
     this.toolbar.page = this.page;
-    this.subscribeUploader();
+    // this.subscribeUploader();
   }
 
   createListComponent() {
@@ -212,7 +218,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngOnDestroy() {
-    this.list.events.unsubscribe();
+    // this.list.events.unsubscribe();
+    this.destroySubject.next('');
   }
 
   // considering moving doAction into list-media
@@ -237,6 +244,14 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       // Handle modal events
       case 'closeModal':
         this.closeModal();
+        break;
+
+      case 'openUploadModal':
+        console.log('openUploadModal');
+        this.mediaUploaderDataService.onShowUp();
+        break;
+      case 'updateMediaList':
+        this.updateMediaList(event.params.data);
         break;
       case 'updateDetailObject':
         this.updateDetailObject(event.params.properties);
@@ -448,7 +463,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.modal = this.modalComponent.instance;
 
     // handle all of action from modal all
-    this.modal.event.subscribe((event: any) => {
+    this.modal.event.takeUntil(this.destroySubject).subscribe((event: any) => {
 
       // considering moving doAction into list-media
       this.doAction(event);

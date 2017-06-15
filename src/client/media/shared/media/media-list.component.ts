@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
-  ViewContainerRef, ViewChild, ComponentFactoryResolver
+  ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
@@ -18,6 +18,7 @@ import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component
 import { ZMediaAlbumService } from '../../album/album.service';
 import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
 import { PhotoService } from '../../../core/shared/services/photo.service';
+import { Subject } from 'rxjs/Subject';
 
 declare var _: any;
 declare var $: any;
@@ -42,7 +43,7 @@ declare var $: any;
   ]
 })
 
-export class MediaListComponent implements OnInit, AfterViewInit {
+export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() selectedObjects: Array<any> = new Array<any>();
   // @Input() type: string = 'photo';
   // @Input() objects: any;
@@ -86,6 +87,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   private currentPage: string;
   private objectType: string; //photo, album, video, playlist, all
   private params: any;
+  private currentView: number;
+  private destroySubject: Subject<any> = new Subject<any>();
 
 
   @HostListener('document:keydown', ['$event'])
@@ -151,14 +154,21 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.changeView('grid'); // Default view should be grid
   }
 
+  ngOnDestroy() {
+    this.currentView = 0;
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();    // Destroy unused subscriptions
+  }
+
   getObjects(options?: any) {
     let path = this.currentPath;
     let moreOptions = {};
 
     if (this.page == 'favorites') {
-
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`media?list_type=favorites`).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`media?list_type=favorites`)
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -173,7 +183,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       // options['album'] = this.params['id'];
       moreOptions = Object.assign({}, options, {'album': this.params['id']});
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`photos`, moreOptions).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`photos`, moreOptions)
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -186,7 +198,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
     if (this.params) {
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`photos`, {album: this.params['id']}).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`photos`, {album: this.params['id']})
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -198,7 +212,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     }
 
     this.loadingService.start('#list-photo');
-    this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
+    this.mediaObjectService.getObjects(this.currentPath, options)
+      .takeUntil(this.destroySubject)
+      .subscribe((response: any)=> {
       this.loadingService.stop('#list-photo');
       this.objects = response.data;
       this.nextLink = response.page_metadata.links.next;
@@ -212,7 +228,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     // this.loadingService.start('#list-photo');
     if (this.nextLink != null) { // if there are more objects
       // this.mediaObjectService.getObjects(this.nextLink).subscribe((response: any)=> {
-      this.mediaObjectService.loadMore(this.nextLink).subscribe((response: any)=> {
+      this.mediaObjectService.loadMore(this.nextLink)
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         // this.loadingService.stop('#list-photo');
         this.objects.push(...response.data);
         this.nextLink = response.page_metadata.links.next;
@@ -437,7 +455,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
     let self = this;
 
-    this.mediaObjectService.favourite(body).subscribe(
+    this.mediaObjectService.favourite(body)
+      .takeUntil(this.destroySubject)
+      .subscribe(
       (response: any) => {
         // update favourite attribute
         if (selectedIndex != -1) {

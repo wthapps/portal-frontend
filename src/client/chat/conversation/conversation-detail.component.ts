@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
 import { PubSubEvent } from '../../core/shared/services/pub-sub/pub-sub-event';
 import { PubSubAction } from '../../core/shared/services/pub-sub/pub-sub-action';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { PubSubEventService } from '../../core/shared/services/pub-sub/pub-sub-event.service';
 import { CHAT_ACTIONS, FORM_MODE } from '../../core/shared/constant/chat-constant';
 import { MessageListComponent } from '../shared/message/message-list.component';

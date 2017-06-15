@@ -31,6 +31,7 @@ import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
 import { PhotoDetailModalComponent } from './modal/photo-detail-modal.component';
 import { TaggingElComponent } from './modal/tagging/tagging-el.component';
 import { AlbumDeleteModalComponent } from './modal/album-delete-modal.component';
+import { MediaUploaderDataService } from './uploader/media-uploader-data.service';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */

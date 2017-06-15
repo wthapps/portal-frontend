@@ -17,6 +17,7 @@ import { PhotoUploadService } from '../../../core/shared/services/photo-upload.s
 import { Subject } from 'rxjs/Subject';
 import { ModalDockComponent } from '../../../core/partials/modal/dock.component';
 import { Router } from '@angular/router';
+import { MediaUploaderDataService } from './media-uploader-data.service';
 
 declare var $: any;
 declare var _: any;
@@ -45,7 +46,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     error: 3,
     stop: 4,
   };
-  events: Subject<any>;
+  // events: Subject<any>;
 
   @ViewChild('inputfiles') inputFiles: ElementRef;
 
@@ -60,9 +61,16 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   constructor(private apiService: ApiBaseService, private renderer: Renderer,
               private router: Router,
+              private mediaUploadDataService: MediaUploaderDataService,
               private photoUploadService: PhotoUploadService) {
     this.dragleave();
-    this.events = new Subject();
+    // this.events = new Subject();
+
+  //  Listen to summon command from other components
+    this.mediaUploadDataService.showUp$.subscribe(() => {
+      this.browseFiles(null);
+    });
+
   }
 
   ngOnInit() {
@@ -148,7 +156,8 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
           this.photos.push(returnData);
 
           // newPhoto.thumbnail_url = this.current_photo;
-          this.events.next(returnData);
+          // this.events.next(returnData);
+          this.onAction({action: 'updateMediaList', params: { data: returnData}})
 
           if (this.uploaded_num == this.files_num) {
             this.step = this.uploadSteps.uploaded;
@@ -161,28 +170,21 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
         });
   }
 
-
-  cancel() {
-    this.closePopup();
-  }
-
-  closePopup() {
-    // Providing a `null` value to the named outlet
-    // clears the contents of the named outlet
-    this.router.navigate([{ outlets: { popup: null }}]);
-  }
-
   onAction(options?: any): void {
     // close uploading form
-    this.step = this.uploadSteps.closed;
-    this.modalDock.close();
+    if ( _.get(options, 'action') !== 'updateMediaList') {
+      this.step = this.uploadSteps.closed;
+      this.modalDock.close();
+      console.log('media-uploader action: ', options);
+    }
 
-    this.outEvent.emit(options);
+    // this.outEvent.emit(options);
+    this.mediaUploadDataService.onAction(options);
   }
 
-  onCreateNewAlbum() {
-    this.createNewAlbum.emit(this.photos);
-  }
+  // onCreateNewAlbum() {
+  //   this.createNewAlbum.emit(this.photos);
+  // }
 
   browseFiles(event: any) {
     this.renderer.invokeElementMethod(this.inputFiles.nativeElement, 'click');

@@ -91,4 +91,8 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
     this.hasMultiObjects = this.selectedObjects.length > 1 ? true : false;
     this.favouriteTooltip = this.isFavourited ? 'Remove from favourites' : 'Add to favourites';
   }
+
+  showUploadForm() {
+    this.events.emit({action: 'openUploadModal'});
+  }
 }

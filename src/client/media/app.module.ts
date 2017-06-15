@@ -14,6 +14,7 @@ import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
 import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
+import { MediaUploaderDataService } from './shared/uploader/media-uploader-data.service';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'
-  }],
+  },
+    MediaUploaderDataService],
   bootstrap: [AppComponent]
 
 })
