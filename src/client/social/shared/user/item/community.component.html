@@ -1,21 +1,18 @@
 <div class="media media-no-hidden" *ngIf="data">
   <div class="media-left">
-        <span class="avatar-sm">
-          <img [src]="data.profile_image" alt="{{data.name}}">
-        </span>
+    <span class="avatar-sm">
+      <img [src]="data.profile_image" alt="{{data.name}}">
+    </span>
   </div>
   <div class="media-body">
     <h5 class="media-heading m0"><a [routerLink]="[data.link]" class="link-text">{{data.name}}</a></h5>
     <div class="text-fade">
-      Nickname
-      <br>
-      14 friends - 55 followers
+      14 members
     </div>
   </div>
-  <!--Communities-->
-  <div class="media-right" *ngIf="group == 'communities'">
+  <div class="media-right">
     <div class="pull-right no-wrap">
-      <button class="btn btn-default" type="button" (click)="sendJoinRequest(item)"
+      <button class="btn btn-default" type="button" (click)="sendJoinRequest(data)"
               *ngIf="data.user_status == comUserStatus.stranger">
         Join
       </button>
@@ -26,14 +23,32 @@
 
       <span class="btn-text" *ngIf="data.user_status == comUserStatus.member"><i class="fa fa-check"></i> Joined</span>
 
-      <div class="btn-group">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                *ngIf="data?.user_status == comUserStatus.member"
-                (click)="getFavourite(item, 'community')">
-          <i class="fa fa-check"></i> Joined <span class="caret"></span>
+      <div class="btn-group" *ngIf="data?.user_status == comUserStatus.member">
+        <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+                data-toggle="dropdown">
+          <i class="fa fa-ellipsis-v"></i>
         </button>
 
-        <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+
+
+        <!--// @TODO checking permission-->
+        <ul class="dropdown-menu dropdown-custom">
+          <li><a href="javascript:;" (click)="onEdit(my)">Edit Information</a></li>
+          <li><a href="#" (click)="onPreference(my)">Preferences</a></li>
+          <li><a [routerLink]="[communitiesUrl,my.uuid]" [queryParams]="{tab: 'members'}">Manage
+            members</a>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li><a href="javascript:;" (click)="addFavourite(my.uuid)"> Favourites <i class="fa pull-right"
+                                                                                    [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a>
+          </li>
+          <li><a href="javascript:;" (click)="confirmLeaveCommunity(my)">Leave community</a></li>
+          <li><a href="javascript:;" (click)="onDelete(my)" href="javascript:;">Delete community</a></li>
+        </ul>
+        <!--// @TODO checking permission-->
+
+
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
           <li>
             <a href="javascript:;" (click)="toggleFavourite(data, 'community')">
               Favourite
@@ -43,15 +58,8 @@
           <li>
             <a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a>
           </li>
-        </ul>
-      </div>
 
-      <div class="btn-group" *ngIf="item?.user_status == comUserStatus.member">
-        <button class="btn btn-default-inline-border dropdown-toggle" type="button"
-                data-toggle="dropdown">
-          <i class="fa fa-ellipsis-v"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+          <li class="divider"></li>
           <li><a href="javascript:;">Report community</a></li>
         </ul>
       </div>

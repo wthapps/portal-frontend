@@ -11,3 +11,17 @@
     width: auto;
   }
 }
+
+.row {
+  display: block;
+}
+
+.row-striped {
+  > div {
+    .media {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid $line;
+    }
+  }
+}

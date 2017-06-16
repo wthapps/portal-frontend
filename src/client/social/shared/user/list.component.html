@@ -1,9 +1,9 @@
 <template [ngIf]="data">
-  <div class="list-group-item" *ngFor="let item of data">
+  <div class="{{class}}" *ngFor="let item of data">
     <template [ngIf]="type == 'members'">
       <z-social-share-profile-member [data]="item"></z-social-share-profile-member>
     </template>
-    <template [ngIf]="type == 'communities'">
+    <template [ngIf]="(type == 'communities' || type == 'community')">
       <z-social-share-profile-community [data]="item"></z-social-share-profile-community>
     </template>
   </div>
