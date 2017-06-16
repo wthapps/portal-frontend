@@ -180,20 +180,20 @@
                 <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
                 <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
                 <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true" (click)="getFavourite(item.uuid)">
+                        aria-haspopup="true" aria-expanded="true" >
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
                   <li><a href="javascript:;" (click)="makeAdmin(item.user)" *ngIf="isAdmin">Make Admin</a></li>
                   <li><a href="javascript:;" (click)="deleteMember(item.user)" *ngIf="isAdmin">Remove</a></li>
-                  <li><a href="javascript:;" (click)="onReportMember(item?.user?.uuid)">Report
+                  <li><a href="javascript:;" (click)="onReportMember(item?.user.uuid)">Report
                     Member</a>
                   </li>
-                  <li><a href="#" *ngIf="isAdmin">Blacklist</a></li>
+                  <li><a href="javascript:;" *ngIf="isAdmin">Blacklist</a></li>
                 </ul>
               </div>
               <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
-              <span>{{item.user?.name}}</span>
+              <span>{{item?.user.name}}</span>
             </li>
           </template>
         </ul>
@@ -205,7 +205,7 @@
                 <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
                 <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
                 <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true" (click)="getFavourite(item.uuid)">
+                        aria-haspopup="true" aria-expanded="true" >
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
@@ -217,8 +217,8 @@
                   <li><a href="#" *ngIf="isAdmin">Blacklist</a></li>
                 </ul>
               </div>
-              <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
-              <span>{{item.user?.name}}</span>
+              <img [alt]="item?.accepter.name" [src]="item?.accepter?.profile_image" title="" width="30">
+              <span>{{item?.accepter.name}}</span>
             </li>
           </template>
         </ul>
@@ -234,8 +234,8 @@
                 <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">REJECT</a>
               </div>
               <a href="#">
-                <img [alt]="item.inviter.name" [src]="item.inviter.profile_image" title="" width="30">
-                <span>{{item?.inviter?.name}}</span>
+                <img [alt]="item?.inviter.name" [src]="item?.inviter.profile_image" title="" width="30">
+                <span>{{item?.inviter.name}}</span>
               </a>
             </li>
           </template>

@@ -52,11 +52,9 @@ export class SoCommunityService  {
   confirmLeaveCommunity(community: any): Promise<any> {
     let enoughAdmins = community.admin_count > 1 ? true : false;
 
-    console.debug('before Promise: community: ', community);
     let pickAnotherAdmin = _.find(community.admins, (a: any) => a.user_id == this.userService.profile.id) != undefined  && !enoughAdmins;
 
     return new Promise<any>((resolve, reject) => {
-      console.debug('inside confire leave community Promise !!!');
       this.confirmationService.confirm({
         message: pickAnotherAdmin ?
           `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :

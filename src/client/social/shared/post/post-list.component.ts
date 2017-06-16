@@ -116,12 +116,11 @@ export class PostListComponent implements OnInit, OnDestroy {
       console.error('type params should be assigned: ', this.type);
       return;
     }
-    this.loadingService.start('#post-list-component');
+    this.loadingService.start();
     this.socialService.post.getList(this.uuid, this.type)
-      .takeUntil(this.destroySubject)
       .subscribe(
         (res: any) => {
-          this.loadingService.stop('#post-list-component');
+          this.loadingService.stop();
           this.items = _.map(res.data, this.mapPost);
           this.nextLink = res.page_metadata.links.next;
           if (res.data.length == 0) {
@@ -133,6 +132,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           //   this.page_index += 1;
         },
         (error: any) => {
+          this.loadingService.stop();
           console.log('loading posts errors: ', error);
         }
       );

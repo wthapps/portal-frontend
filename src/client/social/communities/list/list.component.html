@@ -33,8 +33,8 @@
                   <div class="media-center-body">
                     <h4 class="media-center-heading"><a [routerLink]="[communitiesUrl, my.uuid]">{{my.name}}</a>
                     </h4>
-                    <p *ngIf="my.users.length<2" class="media-center-p">{{my.users.length}} member</p>
-                    <p *ngIf="my.users.length>1" class="media-center-p">{{my.users.length}} members</p>
+                    <p *ngIf="my.member_count<2" class="media-center-p">{{my.member_count}} member</p>
+                    <p *ngIf="my.member_count>1" class="media-center-p">{{my.member_count}} members</p>
                   </div>
                   <div class="media-center-right">
                     <div class="dropdown pull-right">
@@ -94,8 +94,8 @@
                     <h4 class="media-center-heading">
                       <a [routerLink]="[communitiesUrl, item.uuid]">{{item.name}}</a>
                     </h4>
-                    <p *ngIf="item.user_count <2" class="media-center-p">{{item.user_count}} member</p>
-                    <p *ngIf="item.user_count>1" class="media-center-p">{{item.user_count}} members</p>
+                    <p *ngIf="item.member_count <2" class="media-center-p">{{item.member_count}} member</p>
+                    <p *ngIf="item.member_count>1" class="media-center-p">{{item.member_count}} members</p>
                     <!--<p *ngIf="item.users.length <2" class="media-center-p">{{item.users.length}} member</p>-->
                     <!--<p *ngIf="item.users.length >1" class="media-center-p">{{item.users.length}} members</p>-->
                   </div>

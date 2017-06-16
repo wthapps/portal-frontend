@@ -35,7 +35,7 @@
       </li>
       <li class="pull-right dropdown">
         <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="true">
+                aria-haspopup="true" aria-expanded="true" *ngIf="userInfo.uuid != userService.profile.uuid">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-custom" *ngIf="userInfo.uuid == userService.profile.uuid">

@@ -61,7 +61,7 @@ export class ZSocialCommunityListComponent implements OnInit {
     let myuuid = this.userService.profile.uuid;
     var _this_community = this;
 
-    this.socialService.community.getCommunitiesList().subscribe(
+    this.socialService.community.getCommunitiesList().take(1).subscribe(
       (res: any)=> {
         _this_community.myList.length = 0;
         _this_community.list.length = 0;
@@ -74,7 +74,10 @@ export class ZSocialCommunityListComponent implements OnInit {
         });
         this.loadingService.stop('#communites-list');
       },
-      error => this.errorMessage = <any>error
+      (error: any) => {
+        this.errorMessage = <any>error
+        this.loadingService.stop('#communites-list');
+      }
     );
   }
 
