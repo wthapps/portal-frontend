@@ -17,6 +17,15 @@
             </h3>
           </div>
 
+          <template [ngIf]="myList.length>0">
+            <z-social-share-profile-list
+              [layout]="'row'"
+              [class]="'col-xs-12 col-md-6 col-lg-4'"
+              [data]="myList"
+              [type]="'community'">
+            </z-social-share-profile-list>
+          </template>
+
           <div class="z-social-box-body-communities" *ngIf="myList.length>0">
             <div class="row">
               <div *ngFor="let my of myList" class="col-xs-12 col-md-6 col-lg-4">

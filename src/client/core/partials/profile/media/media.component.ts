@@ -56,8 +56,6 @@ export class PartialsProfileMediaComponent {
         this.initItem(),
       ])
     });
-
-    console.log(this.form);
   }
 
   removeAll() {

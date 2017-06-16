@@ -1,26 +1,35 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Constants } from '../../../../core/shared/config/constants';
 import { ServiceManager } from '../../../../core/shared/services/service-manager';
 import { SocialService } from '../../services/social.service';
+import { ZSocialShareCommunityFormEditComponent } from '../../form/edit.component';
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
   selector: 'z-social-share-profile-community',
-  templateUrl: 'community.component.html'
+  templateUrl: 'community.component.html',
+  entryComponents: [
+    ZSocialShareCommunityFormEditComponent
+  ]
 })
 export class ZSocialShareProfileCommunityComponent implements OnInit {
   @Input() data: any;
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  modalComponent: any;
+  modal: any;
 
   favourite: any; // toggle favourites status for members, communities
   comUserStatus = Constants.soCommunityUserStatus;
+  communitiesUrl: string = Constants.urls.zoneSoCommunities;
 
   constructor(public serviceManager: ServiceManager,
               private confirmationService: ConfirmationService,
-              private socialService: SocialService) {
+              private socialService: SocialService,
+              private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
@@ -99,5 +108,19 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
           community.user_status = this.comUserStatus.stranger;
         }
       );
+  }
+
+  onEdit() {
+    this.loadModalComponent(ZSocialShareCommunityFormEditComponent);
+    this.modal.data = this.data;
+    this.modal.onOpenModal();
+  }
+
+
+  private loadModalComponent(component: any) {
+    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    this.modalContainer.clear();
+    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modal = this.modalComponent.instance;
   }
 }

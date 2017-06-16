@@ -24,6 +24,7 @@ import { ZSocialProfileService } from '../profile/profile.service';
 import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
 import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
+import { ZSocialShareCommunityFormEditComponent } from './form/edit.component';
 
 
 /**
@@ -59,6 +60,9 @@ import { ZSocialShareProfileModule } from './user/list.module';
     // Search
     // ZSocialSearchResultComponent,
 
+    // Community
+    ZSocialShareCommunityFormEditComponent
+
   ],
   exports: [
     ZSocialFavoritesComponent,
@@ -71,14 +75,23 @@ import { ZSocialShareProfileModule } from './user/list.module';
     CoverProfileModule,
     SharedModule,
     PostModule,
-    ZSocialShareProfileModule
+    ZSocialShareProfileModule,
+    // Community
+    ZSocialShareCommunityFormEditComponent
   ]
 })
 export class ZSocialSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZSocialSharedModule,
-      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService, SocialFavoriteService]
+      providers: [
+        SocialService,
+        SoUserService,
+        SoPostService,
+        SoCommunityService,
+        ZSocialProfileService,
+        SocialFavoriteService
+      ]
     };
   }
 }

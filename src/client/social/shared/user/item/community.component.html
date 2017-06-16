@@ -5,7 +5,11 @@
     </span>
   </div>
   <div class="media-body">
-    <h5 class="media-heading m0"><a [routerLink]="[data.link]" class="link-text">{{data.name}}</a></h5>
+    <h5 class="media-heading m0">
+      {{communitiesUrl|json}}
+      <a *ngIf="data.link" [routerLink]="[data.link]" class="link-text">{{data.name}}</a>
+      <a *ngIf="!data.link" [routerLink]="['/' + communitiesUrl,data.uuid]" class="link-text">{{data.name}}</a>
+    </h5>
     <div class="text-fade">
       14 members
     </div>
@@ -23,27 +27,27 @@
 
       <span class="btn-text" *ngIf="data.user_status == comUserStatus.member"><i class="fa fa-check"></i> Joined</span>
 
+
+      <a href="javascript:;" (click)="onEdit()">Edit Information</a>
+
       <div class="btn-group" *ngIf="data?.user_status == comUserStatus.member">
         <button class="btn btn-default-inline-border dropdown-toggle" type="button"
                 data-toggle="dropdown">
           <i class="fa fa-ellipsis-v"></i>
         </button>
-
-
-
         <!--// @TODO checking permission-->
         <ul class="dropdown-menu dropdown-custom">
-          <li><a href="javascript:;" (click)="onEdit(my)">Edit Information</a></li>
-          <li><a href="#" (click)="onPreference(my)">Preferences</a></li>
-          <li><a [routerLink]="[communitiesUrl,my.uuid]" [queryParams]="{tab: 'members'}">Manage
-            members</a>
-          </li>
+          <li><a href="javascript:;" (click)="onEdit(data)">Edit Information</a></li>
+          <li><a href="javascript:;" (click)="onPreference(data)">Preferences</a></li>
+          <li><a [routerLink]="[communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
           <li role="separator" class="divider"></li>
-          <li><a href="javascript:;" (click)="addFavourite(my.uuid)"> Favourites <i class="fa pull-right"
-                                                                                    [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a>
+          <li>
+            <a href="javascript:;" (click)="addFavourite(data.uuid)">
+              Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i>
+            </a>
           </li>
-          <li><a href="javascript:;" (click)="confirmLeaveCommunity(my)">Leave community</a></li>
-          <li><a href="javascript:;" (click)="onDelete(my)" href="javascript:;">Delete community</a></li>
+          <li><a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a></li>
+          <li><a href="javascript:;" (click)="onDelete(data)" href="javascript:;">Delete community</a></li>
         </ul>
         <!--// @TODO checking permission-->
 
@@ -67,3 +71,6 @@
     </div>
   </div>
 </div>
+
+
+<template #modalContainer></template>
