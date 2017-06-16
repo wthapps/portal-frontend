@@ -175,17 +175,17 @@
       <div class="panel panel-default" *ngIf="isMember && !isAboutTab && !isPostTab">
         <ul class="list-group" *ngIf="selectedTab == 'members'">
           <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
-            <li class="list-group-item" data-id="user_{{item?.user?.uuid}}">
+            <li class="list-group-item" >
               <div class="dropdown pull-right">
                 <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
-                <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
+                <span class="text-fade member-role">{{(item?.role === 1) ? 'Admin' :'Member'}}</span>
                 <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="true" >
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="javascript:;" (click)="makeAdmin(item.user)" *ngIf="isAdmin">Make Admin</a></li>
-                  <li><a href="javascript:;" (click)="deleteMember(item.user)" *ngIf="isAdmin">Remove</a></li>
+                  <li><a href="javascript:;" (click)="makeAdmin(item?.user)" *ngIf="isAdmin">Make Admin</a></li>
+                  <li><a href="javascript:;" (click)="deleteMember(item?.user)" *ngIf="isAdmin">Remove</a></li>
                   <li><a href="javascript:;" (click)="onReportMember(item?.user.uuid)">Report
                     Member</a>
                   </li>
@@ -200,22 +200,9 @@
 
         <ul class="list-group" *ngIf="selectedTab == 'invitations'">
           <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
-            <li class="list-group-item" data-id="user_{{item?.user?.uuid}}">
+            <li class="list-group-item" data-id="invitation_{{item.id}}">
               <div class="dropdown pull-right">
-                <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
-                <span class="text-fade member-role">{{(item.role && item.role == 1) ? 'Admin' :'Member'}}</span>
-                <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true" >
-                  <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="javascript:;" (click)="makeAdmin(item.user)" *ngIf="isAdmin">Make Admin</a></li>
-                  <li><a href="javascript:;" (click)="deleteMember(item.user)" *ngIf="isAdmin">Remove</a></li>
-                  <li><a href="javascript:;" (click)="onReportMember(item?.user?.uuid)">Report
-                    Member</a>
-                  </li>
-                  <li><a href="#" *ngIf="isAdmin">Blacklist</a></li>
-                </ul>
+                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
               </div>
               <img [alt]="item?.accepter.name" [src]="item?.accepter?.profile_image" title="" width="30">
               <span>{{item?.accepter.name}}</span>
