@@ -289,6 +289,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   deleteMember(user: any) {
     this.user = user;
+    console.debug('user: ', user);
     this.confirmationService.confirm({
       message: `Are you sure to delete member ${this.user.name} from the community?`,
       header: 'Delete Member',
@@ -297,7 +298,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.socialService.community.deleteMember(this.uuid, user.uuid).subscribe(
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
-            $('#user_' + user.uuid).remove();
+            // $('#user_' + user.uuid).remove();
+            _.remove(this.tabItems, (item: any) => item.accepter.uuid === user.uuid);
 
             // Update community member count
             this.community.member_count -= 1;

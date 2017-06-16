@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Renderer, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, ViewChild, Renderer, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 declare var $: any;
 
@@ -11,6 +11,7 @@ declare var $: any;
 export class FileSelectionComponent implements OnInit {
   @ViewChild('fileBrowse') inputFiles: ElementRef;
   @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Input() multipleSelect: boolean = true;
 
   selectedFiles: Array<any> = new Array<any>();
 

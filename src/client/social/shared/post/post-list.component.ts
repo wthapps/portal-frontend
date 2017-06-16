@@ -65,6 +65,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.params;
 
+    this.loadingService.start('#post-list-loading');
     this.route.params
       .combineLatest(parentRouteParams)
       .map((paramsPair: any) => _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined))
@@ -74,6 +75,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       // Load if items empty
       if (this.type != 'search') {
         this.loadPosts();
+      } else {
+        this.loadingService.stop('#post-list-loading');
       }
     });
     // this.photoModal.action = 'DONE';
@@ -114,14 +117,13 @@ export class PostListComponent implements OnInit, OnDestroy {
   loadPosts() {
     if (!this.type) {
       console.error('type params should be assigned: ', this.type);
+      this.loadingService.stop('#post-list-loading');
       return;
     }
-    this.loadingService.start('#post-list-component');
     this.socialService.post.getList(this.uuid, this.type)
-      .takeUntil(this.destroySubject)
       .subscribe(
         (res: any) => {
-          this.loadingService.stop('#post-list-component');
+          this.loadingService.stop('#post-list-loading');
           this.items = _.map(res.data, this.mapPost);
           this.nextLink = res.page_metadata.links.next;
           if (res.data.length == 0) {
@@ -133,6 +135,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           //   this.page_index += 1;
         },
         (error: any) => {
+          this.loadingService.stop('#post-list-loading');
           console.log('loading posts errors: ', error);
         }
       );

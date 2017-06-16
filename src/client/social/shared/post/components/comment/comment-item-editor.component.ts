@@ -223,6 +223,7 @@ export class CommentItemEditorComponent implements OnInit {
     switch (response.action) {
       case 'remove':
         this.comment.photo = null;
+        this.files = null;
         // _.remove(this.comment.photos, (photo: any) =>{
         //   return photo.uuid == response.data.uuid;
         // });
