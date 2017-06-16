@@ -129,7 +129,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.isShare = options.isShare;
 
     if (options.post != null) {
-      this.post = options.post;
+      this.post = _.cloneDeep(options.post);
       this.originalTags = this.post.tags;
     }
     if (options.parent != null) {

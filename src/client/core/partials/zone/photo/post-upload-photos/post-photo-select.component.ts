@@ -77,6 +77,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
     else
       this.photoList.multipleSelect = false;
 
+    console.debug('this.photoList.multipleSelect: ', this.photoList.multipleSelect );
     this.photoList.loadPhotos();
     this.modal.open();
   }

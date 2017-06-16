@@ -326,6 +326,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // Open photo modal
     if (event instanceof OpenPhotoModalEvent) {
       this.commentEditor = event.data;
+      Object.assign(this.commentEditor, {multipleSelect: false});
       this.openPhotoModal(event.data);
 
       this.subscribePhotoEvents();
