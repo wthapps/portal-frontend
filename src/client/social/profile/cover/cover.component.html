@@ -35,11 +35,11 @@
       </li>
       <li class="pull-right dropdown">
         <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="true" *ngIf="userInfo.uuid != userService.profile.uuid">
+                aria-haspopup="true" aria-expanded="true" *ngIf="userInfo.uuid !== userService.profile.uuid">
           <i class="fa fa-ellipsis-v"></i>
         </button>
-        <ul class="dropdown-menu dropdown-custom" *ngIf="userInfo.uuid == userService.profile.uuid">
-          <li *ngIf="userInfo.uuid != userService.profile.uuid"><a href="#" (click)="onReport()">Report member</a></li>
+        <ul class="dropdown-menu dropdown-custom" >
+          <li *ngIf="userInfo.uuid !== userService.profile.uuid"><a href="#" (click)="onReport()">Report member</a></li>
         </ul>
       </li>
       <li *ngIf="relationships" class="pull-right mr10">
