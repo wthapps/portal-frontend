@@ -40,7 +40,12 @@
           <h4 class="media-heading"><a [routerLink]="['/profile', comment.owner.uuid]">{{comment.owner.name}}</a>
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
-          <p>{{comment.content}}</p>
+          <span [innerHtml]="comment.content | linkify | safeHtml"></span>
+          <div *ngIf="comment.links && comment.links.length > 0">
+            <div *ngIf="comment.links[0].image && comment.links[0].title" class="message-item-content-main" >
+              <display-link [data]="comment.links[0]"></display-link>
+            </div>
+          </div>
           <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">
             <img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
           </a>
@@ -113,7 +118,12 @@
                 </ul>
               </div>
             </h4>
-            <p>{{reply.content}}</p>
+            <span [innerHtml]="reply.content | linkify | safeHtml"></span>
+            <div *ngIf="reply.links && reply.links.length > 0">
+              <div *ngIf="reply.links[0].image && reply.links[0].title" class="message-item-content-main" >
+                <display-link [data]="reply.links[0]"></display-link>
+              </div>
+            </div>
             <a *ngIf="reply.photo"
                (click)="onActions(actions.onShowPhotoDetail, {data: reply.uuid, commentType: reply.photo.id})">
               <img *ngIf="reply.photo" [src]="reply.photo.thumbnail_url">

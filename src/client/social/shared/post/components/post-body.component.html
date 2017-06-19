@@ -3,6 +3,11 @@
     <div class="z-social-post-txt">
       <read-more [limit]="100" [content]="item.description | linkify">
       </read-more>
+      <div *ngIf="item.links && item.links.length > 0">
+        <div *ngIf="item.links[0].image && item.links[0].title" class="message-item-content-main" >
+          <display-link [data]="item.links[0]"></display-link>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -5,7 +5,7 @@
       <div id="chat-message-text" class="chatbox-container-input message-editor-input" contenteditable="true"
            spellcheck="true" tabindex="0" placeholder="Type message here" alt=""
            [ngClass]="{'message-editing': mode=='EDIT'}"
-           [innerHtml]="message.message" (input)="message.message=$event.target.innerHtml">
+           [innerHtml]="message.message">
 
             <!--<template contenteditable="false">-->
               <!--<p [innerHtml]="message.message"></p>-->

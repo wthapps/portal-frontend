@@ -32,7 +32,7 @@ export class ChatService {
     this.storage.save('contact_select', null);
     this.storage.save('current_chat_messages', null);
     this.storage.save('users_online', []);
-    this.storage.save('number_message', 10);
+    this.storage.save('number_message', 20);
     this.fileUploadHelper = new FileUploadHelper();
     this.constant = ChatConstant;
   }
@@ -125,7 +125,8 @@ export class ChatService {
     if (item && item.value) {
       this.storage.save('current_chat_messages', item.value);
     } else {
-      this.apiBaseService.get('zone/chat/messages/' + groupId).subscribe(
+      //
+      this.apiBaseService.get('zone/chat/message/' + groupId).subscribe(
         (res: any) => {
           this.storage.save('chat_messages_group_' + groupId, res);
           this.storage.save('current_chat_messages', res);
@@ -164,7 +165,7 @@ export class ChatService {
   }
 
   getLatestConversation(groupId: number) {
-    return this.apiBaseService.get('zone/chat/messages/' + groupId);
+    return this.apiBaseService.get('zone/chat/message/' + groupId);
   }
 
 
@@ -256,7 +257,7 @@ export class ChatService {
     let page: any = Math.floor(currentMessages.length / n) + 1;
     let body: any = {page: page};
     let groupId: any = this.storage.find('contact_select').value.group_json.id;
-    this.apiBaseService.get('zone/chat/messages/' + groupId, body).subscribe(
+    this.apiBaseService.get('zone/chat/message/' + groupId, body).subscribe(
       (res: any) => {
         let newMessages: any = _.concat(currentMessages, res.data);
         newMessages = _.uniqBy(newMessages, 'id');

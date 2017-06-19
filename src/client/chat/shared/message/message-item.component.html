@@ -197,6 +197,14 @@
   </div>
 </div>
 
+<div class="p20 text-center" *ngIf="message.links && message.links.length > 0" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+  <div *ngFor="let link of message.links">
+    <div *ngIf="link.image && link.title" class="message-item-content-main" >
+      <display-link [data]="link" *ngIf="link.image && link.title"></display-link>
+    </div>
+  </div>
+</div>
+
 
 <div *ngIf="message.message_type == 'notification'" class="p20 text-center">
   <div><span class="text-bold">{{message.display.name}}</span> {{message.message}}</div>
