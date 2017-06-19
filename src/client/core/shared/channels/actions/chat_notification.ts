@@ -66,7 +66,7 @@ export class ChatNotification {
   }
 
   addNotificationMessage(data:any) {
-    this.serviceManager.getChatCommonService().addMessage(data.group, data.message);
+    this.serviceManager.getChatCommonService().addMessage(data.group, data);
   }
 }
 

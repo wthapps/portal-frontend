@@ -35,6 +35,8 @@ import { UndoNotificationComponent } from './header/notification/undo-notificati
 import { NotificationItemComponent } from './notifications/item/notification-item.component';
 import { ChatSearchFormComponent } from './header/search/chat-search-form.component';
 import { TextBoxSearchComponent } from './header/search/components/textbox-search.component';
+import { DisplayLinkComponent } from './link/display-link.component';
+import { PipeModule } from '../shared/pipe/pipe.module';
 
 
 @NgModule({
@@ -60,6 +62,7 @@ import { TextBoxSearchComponent } from './header/search/components/textbox-searc
     CalendarModule,
     CoverProfileModule,
     PartialsProfileModule,
+    PipeModule,
 
     ModalDockModule,
     Ng2Bs3ModalModule,
@@ -77,6 +80,7 @@ import { TextBoxSearchComponent } from './header/search/components/textbox-searc
     PartialsNotificationsComponent,
     NotificationItemComponent,
     UndoNotificationComponent,
+    DisplayLinkComponent,
 
     // Pipe
     TitleCase,
@@ -92,6 +96,7 @@ import { TextBoxSearchComponent } from './header/search/components/textbox-searc
     FooterComponent,
     FooterPromotionComponent,
     PartialsNotificationsComponent,
+    DisplayLinkComponent,
     LoadingModule,
     ToastsModule,
     TablePricingModule,
