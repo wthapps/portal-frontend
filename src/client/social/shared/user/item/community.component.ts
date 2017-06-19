@@ -1,10 +1,14 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef
+} from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Constants } from '../../../../core/shared/config/constants';
 import { ServiceManager } from '../../../../core/shared/services/service-manager';
 import { SocialService } from '../../services/social.service';
 import { ZSocialShareCommunityFormEditComponent } from '../../form/edit-community.component';
+import { ZSocialShareCommunityFormPreferenceComponent } from '../../form/preferences-community.component';
+import { SocialFavoriteService } from '../../services/social-favorites.service';
 
 declare var _: any;
 
@@ -13,22 +17,25 @@ declare var _: any;
   selector: 'z-social-share-profile-community',
   templateUrl: 'community.component.html',
   entryComponents: [
-    ZSocialShareCommunityFormEditComponent
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent
   ]
 })
 export class ZSocialShareProfileCommunityComponent implements OnInit {
   @Input() data: any;
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+
   modalComponent: any;
   modal: any;
 
   favourite: any; // toggle favourites status for members, communities
   comUserStatus = Constants.soCommunityUserStatus;
-  communitiesUrl: string = Constants.urls.zoneSoCommunities;
+  communitiesUrl: string = Constants.urls.communities;
 
   constructor(public serviceManager: ServiceManager,
               private confirmationService: ConfirmationService,
               private socialService: SocialService,
+              private favoriteService: SocialFavoriteService,
               private resolver: ComponentFactoryResolver) {
   }
 
@@ -52,24 +59,16 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
    item: community / member object
    group: community / members
    */
-  getFavourite(item: any, group: string) {
-    this.socialService.user.getFavourite(item.uuid, group).subscribe(
+  getFavourite(uuid: any) {
+    this.socialService.user.getFavourite(uuid, 'community').subscribe(
       (res: any) => {
         this.favourite = res.data;
       }
     );
   }
 
-  toggleFavourite(item: any, group: string) {
-    this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
-      (res: any) => {
-        if (!_.isEmpty(this.favourite)) {
-          this.favourite = undefined;
-        } else {
-          this.favourite = res.data;
-        }
-      }
-    );
+  toggleFavourite(uuid: any) {
+    this.favoriteService.addFavourite(uuid, 'community', this.favourite);
   }
 
   confirmLeaveCommunity(community: any) {
@@ -116,11 +115,22 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
     this.modal.onOpenModal();
   }
 
+  onPreferences() {
+    this.loadModalComponent(ZSocialShareCommunityFormPreferenceComponent);
+    this.modal.data = this.data;
+    this.modal.onOpenModal();
+  }
+
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
     this.modalContainer.clear();
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;
+    this.modal.setupDataUpdated.subscribe((data: any) => {
+      console.log('data:', data);
+      this.data = data;
+    });
+
   }
 }

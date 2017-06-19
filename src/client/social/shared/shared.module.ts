@@ -25,6 +25,7 @@ import { CoverProfileModule } from '../../core/partials/cover-profile/cover-prof
 import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
 import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
+import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences-community.component';
 
 
 /**
@@ -61,7 +62,8 @@ import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.co
     // ZSocialSearchResultComponent,
 
     // Community
-    ZSocialShareCommunityFormEditComponent
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent
 
   ],
   exports: [
@@ -77,7 +79,8 @@ import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.co
     PostModule,
     ZSocialShareProfileModule,
     // Community
-    ZSocialShareCommunityFormEditComponent
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent
   ]
 })
 export class ZSocialSharedModule {

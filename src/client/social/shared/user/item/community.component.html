@@ -26,18 +26,15 @@
 
       <span class="btn-text" *ngIf="data.user_status == comUserStatus.member"><i class="fa fa-check"></i> Joined</span>
 
-
-      <a href="javascript:;" (click)="onEdit()">Edit Information</a>
-
       <div class="btn-group" *ngIf="data?.user_status == comUserStatus.member">
         <button class="btn btn-default-inline-border dropdown-toggle" type="button"
-                data-toggle="dropdown">
+                data-toggle="dropdown" (click)="getFavourite(data?.uuid)">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <!--// @TODO checking permission-->
         <ul class="dropdown-menu dropdown-custom">
-          <li><a href="javascript:;" (click)="onEdit(data)">Edit Information</a></li>
-          <li><a href="javascript:;" (click)="onPreference(data)">Preferences</a></li>
+          <li><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
+          <li><a href="javascript:;" (click)="onPreferences()">Preferences</a></li>
           <li><a [routerLink]="[communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
           <li role="separator" class="divider"></li>
           <li>
@@ -50,10 +47,9 @@
         </ul>
         <!--// @TODO checking permission-->
 
-
         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
           <li>
-            <a href="javascript:;" (click)="toggleFavourite(data, 'community')">
+            <a href="javascript:;" (click)="toggleFavourite(data.uuid)">
               Favourite
               <i class="fa pull-right" [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i>
             </a>

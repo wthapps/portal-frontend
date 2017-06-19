@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   AbstractControl,
@@ -22,7 +22,8 @@ declare var _: any;
 
 export class ZSocialShareCommunityFormEditComponent {
   @ViewChild('modal') modal: ModalComponent;
-  data: any;
+  @Input() data: any;
+  @Output() setupDataUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   form: FormGroup;
   community_name: AbstractControl;
@@ -117,9 +118,9 @@ export class ZSocialShareCommunityFormEditComponent {
       additional_links: additional_links_filter
     });
 
+
     this.communityService.updateCommunity(this.data.uuid, body).subscribe((res: any) => {
-      console.log(res);
-      this.data = res.data;
+      this.setupDataUpdated.emit(res.data);
       this.modal.close();
     });
   }
