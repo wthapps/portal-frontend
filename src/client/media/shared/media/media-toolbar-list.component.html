@@ -174,14 +174,12 @@
               <i class="fa fa-edit"></i> Edit Information</a>
           </li>
 
-          <!--<li>
-            <a (click)="onAction({action: 'download', params: {}})">
-              <i class="fa fa-download"></i> Download</a>
-          </li>-->
-          <li *ngIf="selectedObjects.length == 1">
-            <a [href]="selectedObjects[0].url" download>
+          <li>
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'download', params: {selectedObjects: selectedObjects}})">
               <i class="fa fa-download"></i> Download</a>
           </li>
+
           <li>
             <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal', showDetails: true}})"
                href="javascript:;" draggable="false">
@@ -242,12 +240,14 @@
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'download', params: {}})">
-              <i class="fa fa-download"></i> Download</a>
+            <a href="javascript:;" draggable="false" [ngClass]="{'text-disable': selectedObjects.length != 1}"
+               (click)="onAction({action: 'downloadAlbum', params: {selectedObjects: selectedObjects}})">
+              <i class="fa fa-download"></i> Download
+            </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})"
-               href="javascript:;" draggable="false">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})">
               <i class="fa fa-info-circle"></i> Information
             </a>
           </li>
@@ -301,12 +301,14 @@
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'download', params: {selectedObjects: selectedObjects}})">
+              <i class="fa fa-download"></i> Download
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})"
-               href="javascript:;" draggable="false">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})">
               <i class="fa fa-info-circle"></i> View Information
             </a>
           </li>
@@ -352,19 +354,3 @@
     </ul>
   </div>
 </div>
-
-
-<!--<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"-->
-<!--[selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>-->
-<!--<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>-->
-
-<!--<z-media-share-form-edit-name *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>-->
-<!--<z-media-share-form-edit-name *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></z-media-share-form-edit-name>-->
-
-
-<!--<z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>-->
-
-
-<!--<z-media-share-sharing #zoneSharing [selectedItems]="selectedPhotos"></z-media-share-sharing>-->
-<!--<z-media-share-tagging #zoneTagging></z-media-share-tagging>-->
-<!--<me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>-->

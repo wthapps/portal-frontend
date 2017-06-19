@@ -157,6 +157,7 @@
     "cropper": "^3.0.0-rc",
     "cropperjs": "^1.0.0-rc",
     "dropzone": "^4.3.0",
+    "file-saver": "^1.3.3",
     "font-awesome": "^4.7.0",
     "hover.css": "^2.0.2",
     "intl": "^1.2.5",

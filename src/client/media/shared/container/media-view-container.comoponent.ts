@@ -4,8 +4,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-
-
 import { ConfirmationService } from 'primeng/components/common/api';
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
 import { MediaListComponent } from '../media/media-list.component';
@@ -28,8 +26,12 @@ import { Constants } from '../../../core/shared/config/constants';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { Subject } from 'rxjs';
 
+
+declare var saveAs: any;
+
 declare var $: any;
 declare var _: any;
+
 
 @Component({
   moduleId: module.id,
@@ -112,7 +114,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private route: ActivatedRoute,
               private location: Location,
               private mediaObjectService: MediaObjectService,
-              private zMediaAlbumService: ZMediaAlbumService,
+              private albumService: ZMediaAlbumService,
               private mediaUploaderDataService: MediaUploaderDataService,
               private confirmationService: ConfirmationService) {
 
@@ -123,6 +125,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.currentPath = this.router.url.toString().split('/')[1].split('?')[0]; // currentPath: photos, albums, shared-with-me
     this.currentPage = `${this.objectType}_${this.pageType}`;
     // console.log('this. INit:', this.object, this.params);
+
+    console.log(saveAs);
   }
 
   updateMediaList(res: any) {
@@ -130,7 +134,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       this.list.objects.unshift(res);
     }
     if (this.page == 'album_detail') {
-      this.zMediaAlbumService.addToAlbum(this.params['id'], [res]).subscribe((res:any) => {
+      this.albumService.addToAlbum(this.params['id'], [res]).subscribe((res:any) => {
         this.list.objects = res.data;
       });
     }
@@ -257,6 +261,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'updateDetailObject':
         this.updateDetailObject(event.params.properties);
         break;
+      case 'download':
+        this.download(event.params.selectedObjects);
+        break;
+      case 'downloadAlbum':
+        this.downloadAlbum(event.params.selectedObjects[0]);
+        break;
       default:
         this.list.doAction(event);
         break;
@@ -314,8 +324,28 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.modal.open({show: true, showDetails: true, selectedObjects: this.selectedObjects});
   }
 
-  download() {
+  downloadAlbum(album: any) {
+    let self = this;
+    this.albumService.getPhotosByAlbum(album.id).subscribe(
+      (response: any) => {
+       self.download(response.data);
+      }, (error: any) => {
 
+      });
+  }
+
+  download(files: any) {
+    _.each(files, (file: any) => {
+      this.mediaObjectService.download({id: file.id}).subscribe(
+        (response: any) => {
+          var blob = new Blob([response.blob()], { type: file.content_type });
+          saveAs(blob, file.name);
+        },
+        (error: any) => {
+
+        }
+      );
+    });
   }
 
   edit() {

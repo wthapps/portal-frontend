@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
+import {
+  Http, Headers, RequestOptions, RequestOptionsArgs, Response, RequestMethod,
+  ResponseContentType
+} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
@@ -83,6 +86,14 @@ export class ApiBaseService {
       .take(1)
       .map((res: any) => res.json())
       .catch(this.handleError);
+  }
+
+  download(path: string, body: any=''): Observable<Response> {
+    return this.http.post(this._baseUrl + path, body, {
+      method: RequestMethod.Post,
+      responseType: ResponseContentType.Blob,
+      headers: this._headers
+    });
   }
 
   paramsToString(params: any): string {
