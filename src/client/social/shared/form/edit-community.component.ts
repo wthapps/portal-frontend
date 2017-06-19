@@ -17,7 +17,7 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'z-social-share-community-form-edit',
-  templateUrl: 'edit.component.html'
+  templateUrl: 'edit-community.component.html'
 })
 
 export class ZSocialShareCommunityFormEditComponent {

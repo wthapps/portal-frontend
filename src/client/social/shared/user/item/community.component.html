@@ -6,7 +6,6 @@
   </div>
   <div class="media-body">
     <h5 class="media-heading m0">
-      {{communitiesUrl|json}}
       <a *ngIf="data.link" [routerLink]="[data.link]" class="link-text">{{data.name}}</a>
       <a *ngIf="!data.link" [routerLink]="['/' + communitiesUrl,data.uuid]" class="link-text">{{data.name}}</a>
     </h5>

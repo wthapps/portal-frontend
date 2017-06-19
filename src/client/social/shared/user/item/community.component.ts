@@ -4,7 +4,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { Constants } from '../../../../core/shared/config/constants';
 import { ServiceManager } from '../../../../core/shared/services/service-manager';
 import { SocialService } from '../../services/social.service';
-import { ZSocialShareCommunityFormEditComponent } from '../../form/edit.component';
+import { ZSocialShareCommunityFormEditComponent } from '../../form/edit-community.component';
 
 declare var _: any;
 

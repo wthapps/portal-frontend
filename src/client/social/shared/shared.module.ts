@@ -24,7 +24,7 @@ import { ZSocialProfileService } from '../profile/profile.service';
 import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
 import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
-import { ZSocialShareCommunityFormEditComponent } from './form/edit.component';
+import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
 
 
 /**
