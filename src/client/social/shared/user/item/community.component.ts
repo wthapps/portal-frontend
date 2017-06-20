@@ -1,14 +1,16 @@
 import {
-  Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef
+  Component, OnInit, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Constants } from '../../../../core/shared/config/constants';
 import { ServiceManager } from '../../../../core/shared/services/service-manager';
+import { ZoneReportService } from '../../../../core/shared/form/report/report.service';
+
 import { SocialService } from '../../services/social.service';
+import { SocialFavoriteService } from '../../services/social-favorites.service';
 import { ZSocialShareCommunityFormEditComponent } from '../../form/edit-community.component';
 import { ZSocialShareCommunityFormPreferenceComponent } from '../../form/preferences-community.component';
-import { SocialFavoriteService } from '../../services/social-favorites.service';
 
 declare var _: any;
 
@@ -23,6 +25,7 @@ declare var _: any;
 })
 export class ZSocialShareProfileCommunityComponent implements OnInit {
   @Input() data: any;
+  @Output() actionFromItem: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
   modalComponent: any;
@@ -36,18 +39,18 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
               private confirmationService: ConfirmationService,
               private socialService: SocialService,
               private favoriteService: SocialFavoriteService,
+              private zoneReportService: ZoneReportService,
               private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
   }
 
-  sendJoinRequest(community: any) {
-    this.socialService.community.askToJoin(community.uuid)
+  sendJoinRequest() {
+    this.socialService.community.askToJoin(this.data.uuid)
       .subscribe((result: any) => {
           // TODO: Update status of community
-          // this.invitationId = result.data.id;
-          community.user_status = Constants.soCommunityUserStatus.joinRequestSent;
+          this.data.user_status = Constants.soCommunityUserStatus.joinRequestSent;
         },
         (error: any) => {
           console.log('error', error);
@@ -59,24 +62,25 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
    item: community / member object
    group: community / members
    */
-  getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, 'community').subscribe(
+  getFavourite() {
+    this.socialService.user.getFavourite(this.data.uuid, 'community').subscribe(
       (res: any) => {
         this.favourite = res.data;
       }
     );
   }
 
-  toggleFavourite(uuid: any) {
-    this.favoriteService.addFavourite(uuid, 'community', this.favourite);
+  toggleFavourite() {
+    this.favoriteService.addFavourite(this.data.uuid, 'community', this.favourite);
   }
 
-  confirmLeaveCommunity(community: any) {
+  confirmLeaveCommunity() {
     // Check if there are other admins beside current user in community
     // If not, he must pick another one before leaving
     // let enoughAdmins = community.admin_count > 1 ? true : false;
     // let pickAnotherAdmin = this.userService.profile.uuid == this.item.admin.uuid && !enoughAdmins;
     let pickAnotherAdmin = false;
+    let community = this.data;
 
     this.confirmationService.confirm({
       message: pickAnotherAdmin ?
@@ -103,7 +107,7 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
 
   leaveCommunity(community: any) {
     this.socialService.community.leaveCommunity(community.uuid)
-      .subscribe((response: any) => {
+      .subscribe((res: any) => {
           community.user_status = this.comUserStatus.stranger;
         }
       );
@@ -111,16 +115,31 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
 
   onEdit() {
     this.loadModalComponent(ZSocialShareCommunityFormEditComponent);
-    this.modal.data = this.data;
-    this.modal.onOpenModal();
+    this.modal.onOpenModal(this.data);
   }
 
   onPreferences() {
     this.loadModalComponent(ZSocialShareCommunityFormPreferenceComponent);
-    this.modal.data = this.data;
-    this.modal.onOpenModal();
+    this.modal.onOpenModal(this.data);
   }
 
+  onReport(uuid: any) {
+    this.zoneReportService.community(uuid);
+    return false;
+  }
+
+  onDelete() {
+    this.socialService.community.confirmDeleteCommunity(this.data).then(
+      (community: any) => {
+        this.actionFromItem.emit(
+          {
+            action: 'delete',
+            data: community
+          }
+        );
+      }
+    );
+  }
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
@@ -128,7 +147,6 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;
     this.modal.setupDataUpdated.subscribe((data: any) => {
-      console.log('data:', data);
       this.data = data;
     });
 

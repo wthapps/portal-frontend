@@ -1,5 +1,5 @@
-<form>
-  <modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'">
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
       <h4 *ngIf="entityType == 'member'" class="modal-title text-left"> Report Member</h4>
       <h4 *ngIf="entityType == 'community'" class="modal-title text-left"> Report Community</h4>
@@ -7,7 +7,6 @@
       <h4 *ngIf="entityType == 'friend'" class="modal-title text-left"> Report Friend</h4>
     </modal-header>
     <modal-body>
-      <!--member-->
       <div class="mb20">
         <p>Please specify your reason for reporting.</p>
         <div class="radio" *ngFor="let reason of reasons">
@@ -28,9 +27,8 @@
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">SUBMIT</button>
-      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
+      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
     </modal-footer>
   </modal>
 </form>
-

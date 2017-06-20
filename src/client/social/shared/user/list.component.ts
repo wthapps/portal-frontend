@@ -4,6 +4,8 @@
 
 import { Component, OnInit, HostBinding, Input, OnChanges } from '@angular/core';
 
+declare var _: any;
+
 @Component({
   moduleId: module.id,
   selector: 'z-social-share-profile-list',
@@ -27,5 +29,19 @@ export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
     if (this.layout == 'row') {
       this.classHost = this.layout + ' row-striped';
     }
+  }
+
+  onAction(event: any) {
+    switch (event.action) {
+      case 'delete':
+        this.removeItem(event.data);
+        break;
+      default:
+        break;
+    }
+  }
+
+  removeItem(data: any) {
+    _.remove(this.data, (c: any) => c.uuid == data.uuid);
   }
 }

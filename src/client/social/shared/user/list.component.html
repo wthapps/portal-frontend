@@ -4,7 +4,7 @@
       <z-social-share-profile-member [data]="item"></z-social-share-profile-member>
     </template>
     <template [ngIf]="(type == 'communities' || type == 'community')">
-      <z-social-share-profile-community [data]="item"></z-social-share-profile-community>
+      <z-social-share-profile-community [data]="item" (actionFromItem)="onAction($event)"></z-social-share-profile-community>
     </template>
   </div>
 </template>

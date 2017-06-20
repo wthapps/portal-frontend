@@ -55,8 +55,12 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
   }
 
-  onOpenModal() {
+  onOpenModal(data?: any) {
     this.hasChange = false;
+    if (data) {
+      this.data = data;
+    }
+
     if (this.data.admin) {
       // check if admin
       this.isAdmin = (this.data.admin.uuid == this.userService.profile.uuid) ? true : false;

@@ -11,7 +11,6 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 import { SoCommunityService } from '../services/community.service';
 
-declare var $: any;
 declare var _: any;
 
 @Component({
@@ -22,7 +21,8 @@ declare var _: any;
 
 export class ZSocialShareCommunityFormEditComponent {
   @ViewChild('modal') modal: ModalComponent;
-  @Input() data: any;
+  @Input() data: any = null;
+  @Input() action: string = 'update'; // update, create
   @Output() setupDataUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   form: FormGroup;
@@ -86,19 +86,27 @@ export class ZSocialShareCommunityFormEditComponent {
     control.removeAt(i);
   }
 
-  onOpenModal() {
+  onOpenModal(data?: any) {
+    this.removeAll();
 
-    let _this = this;
-    (<FormControl>this.community_name).setValue(this.data.name);
-    (<FormControl>this.tag_line).setValue(this.data.tag_line);
-    (<FormControl>this.description).setValue(this.data.description);
+    this.community_name.reset();
+    this.tag_line.reset();
+    this.description.reset();
 
-    _this.removeAll();
+    if (data) {
+      (<FormControl>this.community_name).setValue(data.name);
+      (<FormControl>this.tag_line).setValue(data.tag_line);
+      (<FormControl>this.description).setValue(data.description);
+      let _this = this;
+      _.map(this.data.additional_links, (v: any)=> {
+        _this.addItem(v);
+      });
 
-    _.map(this.data.additional_links, (v: any)=> {
-      _this.addItem(v);
-    });
-
+    } else {
+      (<FormControl>this.community_name).setValue('');
+      (<FormControl>this.tag_line).setValue('');
+      (<FormControl>this.description).setValue('');
+    }
     this.modal.open();
   }
 
@@ -118,10 +126,16 @@ export class ZSocialShareCommunityFormEditComponent {
       additional_links: additional_links_filter
     });
 
-
-    this.communityService.updateCommunity(this.data.uuid, body).subscribe((res: any) => {
-      this.setupDataUpdated.emit(res.data);
-      this.modal.close();
-    });
+    if (this.action == 'update') {
+      this.communityService.updateCommunity(this.data.uuid, body).subscribe((res: any) => {
+        this.setupDataUpdated.emit(res.data);
+        this.modal.close();
+      });
+    } else {
+      this.communityService.createCommunity(body).subscribe((res: any) => {
+        this.setupDataUpdated.emit(res.data);
+        this.modal.close();
+      });
+    }
   }
 }

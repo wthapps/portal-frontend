@@ -163,6 +163,10 @@ export class SoCommunityService  {
     return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/join_request_status`);
   }
 
+  createCommunity(body: any) {
+    return this.apiBaseService.post(`${this.soCommunitiesUrl}`, body);
+  }
+
   updateCommunity(uuid: string, body: any) {
     return this.apiBaseService.put(`${this.soCommunitiesUrl}/${uuid}`, body);
   }

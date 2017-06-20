@@ -15,7 +15,7 @@
   </div>
   <div class="media-right">
     <div class="pull-right no-wrap">
-      <button class="btn btn-default" type="button" (click)="sendJoinRequest(data)"
+      <button class="btn btn-default" type="button" (click)="sendJoinRequest()"
               *ngIf="data.user_status == comUserStatus.stranger">
         Join
       </button>
@@ -28,7 +28,7 @@
 
       <div class="btn-group" *ngIf="data?.user_status == comUserStatus.member">
         <button class="btn btn-default-inline-border dropdown-toggle" type="button"
-                data-toggle="dropdown" (click)="getFavourite(data?.uuid)">
+                data-toggle="dropdown" (click)="getFavourite()">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <!--// @TODO checking permission-->
@@ -42,14 +42,14 @@
               Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i>
             </a>
           </li>
-          <li><a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a></li>
-          <li><a href="javascript:;" (click)="onDelete(data)" href="javascript:;">Delete community</a></li>
+          <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
+          <li><a href="javascript:;" (click)="onDelete()" href="javascript:;">Delete community</a></li>
         </ul>
         <!--// @TODO checking permission-->
 
         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
           <li>
-            <a href="javascript:;" (click)="toggleFavourite(data.uuid)">
+            <a href="javascript:;" (click)="toggleFavourite()">
               Favourite
               <i class="fa pull-right" [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i>
             </a>
@@ -59,7 +59,7 @@
           </li>
 
           <li class="divider"></li>
-          <li><a href="javascript:;">Report community</a></li>
+          <li><a href="javascript:;" (click)="onReport(data.uuid)">Report community</a></li>
         </ul>
       </div>
 

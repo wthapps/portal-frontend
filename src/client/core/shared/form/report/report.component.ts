@@ -6,7 +6,6 @@ import {
   FormBuilder,
   FormControl
 } from '@angular/forms';
-import { LoadingService } from '../../../partials/loading/loading.service';
 import { ZoneReportService } from './report.service';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
@@ -42,8 +41,7 @@ export class ZoneReportComponent implements OnInit {
 
   constructor(private zoneReportService: ZoneReportService,
               private fb: FormBuilder,
-              private reportService: ZoneReportService,
-              private loadingService: LoadingService) {
+              private reportService: ZoneReportService) {
 
     this.form = fb.group({
       'other': ['']

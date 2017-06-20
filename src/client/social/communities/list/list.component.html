@@ -26,51 +26,6 @@
             </z-social-share-profile-list>
           </template>
 
-          <div class="z-social-box-body-communities" *ngIf="myList.length>0">
-            <div class="row">
-              <div *ngFor="let my of myList" class="col-xs-12 col-md-6 col-lg-4">
-                <div class="media-center">
-                  <div class="media-center-left">
-                    <figure>
-                      <a [routerLink]="[communitiesUrl, my.uuid]">
-                      <span class="avatar-sm">
-                        <img [src]="my.profile_image" alt="">
-                      </span>
-                      </a>
-                    </figure>
-                  </div>
-                  <div class="media-center-body">
-                    <h4 class="media-center-heading"><a [routerLink]="[communitiesUrl, my.uuid]">{{my.name}}</a>
-                    </h4>
-                    <p *ngIf="my.member_count<2" class="media-center-p">{{my.member_count}} member</p>
-                    <p *ngIf="my.member_count>1" class="media-center-p">{{my.member_count}} members</p>
-                  </div>
-                  <div class="media-center-right">
-                    <div class="dropdown pull-right">
-                      <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="true" (click)="getFavourite(my.uuid)">
-                        <i class="fa fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-custom">
-                        <li><a href="javascript:;" (click)="onEdit(my)">Edit Information</a></li>
-                        <li><a href="#" (click)="onPreference(my)">Preferences</a></li>
-                        <li><a [routerLink]="[communitiesUrl,my.uuid]" [queryParams]="{tab: 'members'}">Manage
-                          members</a>
-                        </li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="javascript:;" (click)="addFavourite(my.uuid)"> Favourites <i class="fa pull-right"
-                                                                                                  [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a>
-                        </li>
-                        <li><a href="javascript:;" (click)="confirmLeaveCommunity(my)">Leave community</a></li>
-                        <li><a href="javascript:;" (click)="onDelete(my)" href="javascript:;">Delete community</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
 
@@ -86,62 +41,20 @@
             </h3>
           </div>
 
-          <div class="z-social-box-body-communities" *ngIf="list.length>0">
-            <div class="row">
-              <div *ngFor="let item of list" class="col-xs-12 col-md-6 col-lg-4">
-                <div class="media-center">
-                  <div class="media-center-left">
-                    <figure>
-                      <a [routerLink]="[communitiesUrl, item.uuid]">
-                      <span class="avatar-sm">
-                        <img [src]="item.profile_image" alt="">
-                      </span>
-                      </a>
-                    </figure>
-                  </div>
-                  <div class="media-center-body">
-                    <h4 class="media-center-heading">
-                      <a [routerLink]="[communitiesUrl, item.uuid]">{{item.name}}</a>
-                    </h4>
-                    <p *ngIf="item.member_count <2" class="media-center-p">{{item.member_count}} member</p>
-                    <p *ngIf="item.member_count>1" class="media-center-p">{{item.member_count}} members</p>
-                    <!--<p *ngIf="item.users.length <2" class="media-center-p">{{item.users.length}} member</p>-->
-                    <!--<p *ngIf="item.users.length >1" class="media-center-p">{{item.users.length}} members</p>-->
-                  </div>
-                  <div class="media-center-right">
-                    <div class="dropdown pull-right">
-                      <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="true">
-                        <i class="fa fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-custom">
-                        <li><a href="javascript:;" (click)="addFavourite(item.uuid)"> Favourites</a></li>
-                        <li><a href="javascript:;" (click)="confirmLeaveCommunity(item)">Leave community</a></li>
-                        <li><a href="javascript:;" (click)="onReport(item.uuid)">Report community</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <template [ngIf]="list.length>0">
+            <z-social-share-profile-list
+              [layout]="'row'"
+              [class]="'col-xs-12 col-md-6 col-lg-4'"
+              [data]="list"
+              [type]="'community'">
+            </z-social-share-profile-list>
+          </template>
         </div>
       </div>
     </div>
   </div>
 
-  <z-social-community-form-edit
-    #modalEdit
-    [data]="currentItem"
-    [action]="action"
-    (updated)="onUpdated($event)">
-  </z-social-community-form-edit>
-
-  <z-social-community-form-preference
-    #modalPreference
-    [data]="currentItem"
-    (updated)="onUpdated($event)">
-  </z-social-community-form-preference>
-
+  <z-social-share-community-form-edit #modalEdit [action]="'create'" (setupDataUpdated)="onActionsCreate($event)">
+  </z-social-share-community-form-edit>
   <wth-zone-report></wth-zone-report>
 </div>
