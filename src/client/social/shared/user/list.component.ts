@@ -13,7 +13,7 @@ declare var _: any;
 })
 export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   @Input() data: any;
-  @Input() type: string;
+  @Input() type: string; // members, member, communities, community
   @Input() layout: string = 'list-group'; //row
   @Input() class: string = 'list-group-item'; //col-xs-6
 

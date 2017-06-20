@@ -1,6 +1,6 @@
 <template [ngIf]="data">
   <div class="{{class}}" *ngFor="let item of data">
-    <template [ngIf]="type == 'members'">
+    <template [ngIf]="(type == 'members' || type == 'member')">
       <z-social-share-profile-member [data]="item"></z-social-share-profile-member>
     </template>
     <template [ngIf]="(type == 'communities' || type == 'community')">

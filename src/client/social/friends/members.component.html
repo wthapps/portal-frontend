@@ -87,124 +87,16 @@
             </div>
 
           </div>
-          <div *ngIf="list && list.length > 0" class="row">
-            <div *ngFor="let item of list" class="col-xs-12 col-lg-6">
-              <div class="media-center" *ngIf="currentState != 'notification'">
-                <div class="media-center-left">
-                  <figure>
-                    <a [routerLink]="['/profile', item?.uuid]">
-                      <span class="avatar-sm">
-                        <img [src]="item?.profile_image" alt="">
-                      </span>
-                    </a>
-                  </figure>
-                </div>
-                <div class="media-center-body">
-                  <h4 class="media-center-heading">
-                    <a [routerLink]="['/profile', item?.uuid]">
-                      {{item.name}}
-                    </a>
-                  </h4>
-                  <!--<p *ngIf="nickname" class="media-center-p">{{item.nickname}}</p>-->
-                </div>
-                <div class="media-center-right">
-                  <div *ngIf="currentState == friendTabs.friends" class="pull-right no-wrap">
 
-                    <div class="btn-group">
-                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        <i class="fa fa-check"></i> Friend <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="javascript:;" *ngIf="!item.is_following" (click)="follow(item)">Follow</a></li>
-                        <li><a href="javascript:;" *ngIf="item.is_following" (click)="unfollow(item)">Unfollow</a></li>
-                        <li class="divider"></li>
-                        <li><a href="javascript:;" (click)="unfriend(item)">Unfriend</a></li>
-                      </ul>
-                    </div>
+          <template [ngIf]="list && list.length > 0">
+            <z-social-share-profile-list
+              [layout]="'row'"
+              [class]="'col-xs-12 col-md-6 col-lg-4'"
+              [data]="list"
+              [type]="'member'">
+            </z-social-share-profile-list>
+          </template>
 
-                    <div class="btn-group">
-                      <button (click)="getFavourite(item?.uuid)" class="btn btn-default-inline-border dropdown-toggle" type="button" data-toggle="dropdown">
-                        <i class="fa fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
-                          <a href="javascript:;" (click)="addFavourite(item?.uuid)">
-                            <span *ngIf="!favourite && !favourite?.uuid">Add to Favorites</span>
-                            <span *ngIf="favourite && favourite?.uuid">Remove from Favorites</span>
-                          </a>
-                        </li>
-                        <li><a href="javascript:;" (click)="addToContacts(item?.uuid)">Import to contacts</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="javascript:;" (click)="reportFriend(item)">Report Member</a></li>
-                        <li><a href="javascript:;" (click)="addToBlackList(item?.uuid)">Add to blacklist</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div *ngIf="currentState == friendTabs.followers" class="pull-right no-wrap">
-                    <button class="btn btn-default" type="button" (click)="follow(item)">
-                      <i class="fa fa-share"></i> Follow
-                    </button>
-
-                    <div class="btn-group">
-                      <button class="btn btn-default-inline-border dropdown-toggle" type="button" data-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="true">
-                        <i class="fa fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="javascript:;" (click)="reportFriend(item)">Report Member</a></li>
-                        <li><a href="javascript:;" (click)="addToBlackList(item?.uuid)">Add to blacklist</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div *ngIf="currentState == friendTabs.followings" class="pull-right no-wrap">
-                    <button class="btn btn-default" type="button" (click)="unfollow(item)">
-                      <i class="fa fa-times"></i> Unfollow
-                    </button>
-
-                    <div class="btn-group">
-                      <button class="btn btn-default-inline-border dropdown-toggle" type="button" data-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="true">
-                        <i class="fa fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="javascript:;" (click)="reportFriend(item)">Report Member</a></li>
-                        <li><a href="javascript:;" (click)="addToBlackList(item?.uuid)">Add to blacklist</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div *ngIf="currentState == friendTabs.blacklists" class="dropdown pull-right">
-                    <button class="btn btn-default" type="button">
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <!--<div class="media-center" *ngIf="currentState == 'notification'">-->
-                <!--<div class="media-center-left">-->
-                  <!--<figure>-->
-                    <!--<a [routerLink]="['/profile', item?.uuid]">-->
-                      <!--<img [src]="item?.actor?.profile_image" width="70" alt="">-->
-                    <!--</a>-->
-                  <!--</figure>-->
-                <!--</div>-->
-                <!--<div class="media-center-body">-->
-                  <!--<h4 class="media-center-heading">-->
-                    <!--&lt;!&ndash;<a [routerLink]="['/profile', item.uuid]">&ndash;&gt;-->
-                    <!--&lt;!&ndash;{{item.actor.name}}&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--<span style="font-weight:normal" [innerHtml]="item?.text"></span>-->
-                  <!--</h4>-->
-
-                <!--</div>-->
-                <!--<div style="white-space: nowrap" class="media-center-right">-->
-                  <!--<button *ngFor="let action of item?.actions" class="btn btn-default ml5" type="button"-->
-                          <!--(click)="doAction(action, item?.id)">-->
-                    <!--{{action.name}}-->
-                  <!--</button>-->
-                <!--</div>-->
-              <!--</div>-->
-            </div>
-          </div>
         </div>
       </div>
     </div>
