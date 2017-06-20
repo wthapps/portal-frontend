@@ -97,7 +97,6 @@ import { PipeModule } from './pipe/pipe.module';
     ZoneReportComponent,
 
     // Pipe
-    GroupByMonthYearPipe,
     GroupByObjectTypePipe,
     GroupByPipe,
     NewlinePipe,
@@ -146,7 +145,6 @@ import { PipeModule } from './pipe/pipe.module';
 
 
     // Pipe
-    GroupByMonthYearPipe,
     GroupByObjectTypePipe,
     WthFilterByPipe,
     ArrayLengthPipe,

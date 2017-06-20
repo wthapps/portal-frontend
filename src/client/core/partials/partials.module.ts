@@ -37,6 +37,7 @@ import { ChatSearchFormComponent } from './header/search/chat-search-form.compon
 import { TextBoxSearchComponent } from './header/search/components/textbox-search.component';
 import { DisplayLinkComponent } from './link/display-link.component';
 import { PipeModule } from '../shared/pipe/pipe.module';
+import { PartialsPhotoModule } from './photo/photo.module';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { PipeModule } from '../shared/pipe/pipe.module';
 
     ModalDockModule,
     Ng2Bs3ModalModule,
+    PartialsPhotoModule,
     CheckboxModule
   ],
   declarations: [
@@ -113,7 +115,7 @@ import { PipeModule } from '../shared/pipe/pipe.module';
     NotificationItemComponent,
     UndoNotificationComponent,
     PartialsProfileModule,
-
+    PartialsPhotoModule,
     ModalDockModule,
 
     // Pipe

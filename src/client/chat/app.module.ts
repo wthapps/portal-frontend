@@ -15,6 +15,7 @@ import { ZChatHistoryModule } from './history/history.module';
 import { ZChatProfileModule } from './profile/profile.module';
 import { ZChatMyProfileModule } from './my-profile/my-profile.module';
 import { ZChatSearchModule } from './search/search.module';
+import { ZChatPhotoModule } from './photo/photo.module';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { ZChatSearchModule } from './search/search.module';
     ZChatHistoryModule,
     ZChatProfileModule,
     ZChatSearchModule,
+    ZChatPhotoModule,
     ZChatMyProfileModule
   ],
   declarations: [
