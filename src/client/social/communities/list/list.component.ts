@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { SocialService } from '../../shared/services/social.service';
@@ -6,6 +6,7 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZSocialShareCommunityFormEditComponent } from '../../shared/form/edit-community.component';
+import { Subject } from 'rxjs/Subject';
 
 declare var _: any;
 
@@ -15,7 +16,7 @@ declare var _: any;
   templateUrl: 'list.component.html'
 })
 
-export class ZSocialCommunityListComponent implements OnInit {
+export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   @ViewChild('modalEdit') modalEdit: ZSocialShareCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
 
@@ -27,6 +28,7 @@ export class ZSocialCommunityListComponent implements OnInit {
   favourite: any;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   // readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private loadingService: LoadingService,
               private socialService: SocialService,
@@ -37,13 +39,20 @@ export class ZSocialCommunityListComponent implements OnInit {
     this.getList();
   }
 
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
+  }
+
   getList() {
     this.loadingService.start('#communites-list');
 
     let myuuid = this.userService.profile.uuid;
     var _this_community = this;
 
-    this.socialService.community.getCommunitiesList().take(1).subscribe(
+    this.socialService.community.getCommunitiesList().take(1)
+      .takeUntil(this.destroySubject)
+      .subscribe(
       (res: any)=> {
         _this_community.myList.length = 0;
         _this_community.list.length = 0;

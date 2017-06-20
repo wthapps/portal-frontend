@@ -105,6 +105,14 @@ export class SoCommunityService  {
     });
   }
 
+  toggleComNotification(uuid: string) {
+    return this.apiBaseService.post(`${this.soCommunitiesUrl}/toggle_com_notification`, {uuid: uuid});
+  }
+
+  getUserSettings(uuid: string) {
+    return this.apiBaseService.get(`${this.soCommunitiesUrl}/get_user_settings`, {uuid: uuid});
+  }
+
   askToJoin(uuid: string) {
     return this.apiBaseService.post(`${this.soCommunitiesUrl}/${uuid}/invitations`);
   }

@@ -146,6 +146,10 @@ export class SoPostService {
     return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).debounceTime(250);
   }
 
+  togglePostNotification(uuid: string) {
+    return this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: uuid});
+  }
+
   private getListSocialPosts(uuid:any, type:string) {
     return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoUserPosts}/${uuid}`, {type: type});
   }
