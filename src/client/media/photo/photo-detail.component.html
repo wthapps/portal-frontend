@@ -68,8 +68,8 @@
       <dt>Type</dt>
       <dd>{{selectedPhotos[index].extension}}</dd>
       <dt>Size</dt>
-      <dd>{{selectedPhotos[index].size}}</dd>
-      <dt>Demension</dt>
+      <dd>{{selectedPhotos[index].size | fileSize}}</dd>
+      <dt>Dimensions</dt>
       <dd>{{selectedPhotos[index].dimensions}}</dd>
       <dt>Uploaded</dt>
       <dd>{{selectedPhotos[index].created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>
