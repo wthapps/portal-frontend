@@ -64,6 +64,7 @@ import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
 import { BytesPipe } from './pipe/bytes.pipe';
 import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
 import { PipeModule } from './pipe/pipe.module';
+import { FileSizePipe } from './pipe/index';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -110,6 +111,7 @@ import { PipeModule } from './pipe/pipe.module';
     WthFilterByPipe,
     ArrayLengthPipe,
     BytesPipe,
+    FileSizePipe,
 
     //Directive
     ScrollToBottomDirective,
@@ -159,6 +161,7 @@ import { PipeModule } from './pipe/pipe.module';
     SafeHtmlPipe,
     ConvertByPatternPipe,
     BytesPipe,
+    FileSizePipe,
 
     //Directive
     ScrollToBottomDirective,
