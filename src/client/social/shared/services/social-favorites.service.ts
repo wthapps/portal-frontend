@@ -31,21 +31,19 @@ export class SocialFavoriteService {
   }
 
 
-  addFavourite(uuid: any, type: any, localFavorite?: any) {
-    this.socialService.user.toggleFavourites(uuid, type)
-      .toPromise()
-      .then((res: any) => {
+  addFavourite(uuid: any, type: any, localFavorite?: any): Promise<any> {
+    return this.socialService.user.toggleFavourites(uuid, type)
+      .map((res: any) => {
         if(_.find(this.favorites, (f: any) => f.uuid == _.get(res, 'data.uuid'))) {
           this.removeFavorite(res.data);
-          if (localFavorite != undefined)
-            localFavorite = undefined;
         } else {
           this.addFavorite(res.data);
-          if (localFavorite != undefined)
-            localFavorite = res.data;
-        }})
-        .catch((err: any) => console.error(`Error in addFavourite: ${err}`))
-      ;
+        }
+      })
+      .toPromise()
+      .catch((err: any) => {
+        console.error(`Error in addFavourite: ${err}`)
+      });
   }
 
 

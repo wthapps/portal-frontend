@@ -53,9 +53,9 @@
         <li class="note" *ngIf="item.adult">
           Adult content
         </li>
-        <li class="note" *ngIf="item.mute">
-          Mute
-        </li>
+        <!--<li class="note" *ngIf="item.mute">-->
+          <!--Mute-->
+        <!--</li>-->
         <li class="note" *ngIf="item.disable_comment">
           Disable comment
         </li>
@@ -77,11 +77,6 @@
         <li>
           <a href="javascript:;" (click)="update({'adult': !item.adult}, $event)" *ngIf="settings.enable_adult != null">
             Adult content <i class="fa fa-check" *ngIf="item.adult"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" (click)="update({mute: !item.mute}, $event)" *ngIf="settings.mute != null">
-            Mute<i class="fa fa-check" *ngIf="item.mute"></i>
           </a>
         </li>
         <li role="separator" class="divider" *ngIf="settings.edit != null || settings.delete != null"></li>
@@ -112,6 +107,12 @@
         <li>
           <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == false"
              (click)="update({disable_share: true}, $event)">Disable share
+          </a>
+        </li>
+
+        <li>
+          <a href="javascript:;"
+             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable '}} notification for this post
           </a>
         </li>
 

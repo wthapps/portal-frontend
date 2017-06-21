@@ -71,7 +71,8 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
   }
 
   toggleFavourite() {
-    this.favoriteService.addFavourite(this.data.uuid, 'community', this.favourite);
+    this.favoriteService.addFavourite(this.data.uuid, 'community')
+      .then((res: any) => this.favourite = res.data);
   }
 
   confirmLeaveCommunity() {

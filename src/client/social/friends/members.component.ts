@@ -184,7 +184,7 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   addFavourite(uuid: any) {
-    this.favoriteService.addFavourite(uuid, 'friend', this.favourite);
+    this.favoriteService.addFavourite(uuid, 'friend').then((res: any) => this.favourite = res.data);
   }
 
 
