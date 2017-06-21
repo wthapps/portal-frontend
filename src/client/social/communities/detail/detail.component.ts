@@ -83,7 +83,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   isMember: boolean = false;
   is_close: boolean = true;
-  favourite: any;
+  // favourite: any;
+  userSettings: any;
 
   isPostTab: boolean = true;
   isAboutTab: boolean = false;
@@ -101,10 +102,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('posts') posts: PostListComponent;
 
   closeObs$: Observable<any>;
-
-  // Subscription for photo select in modal
-  // nextPhotoSubscription: Subscription;
-  // uploadPhotoSubscription: Subscription;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -150,12 +147,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // if (this.nextPhotoSubscription)
-    //   this.nextPhotoSubscription.unsubscribe();
-    //
-    // if (this.uploadPhotoSubscription)
-    //   this.uploadPhotoSubscription.unsubscribe();
-
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
   }
@@ -182,15 +173,34 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   addFavourite(uuid: any) {
-    this.favoriteService.addFavourite(uuid, 'community', this.favourite);
+    this.favoriteService.addFavourite(uuid, 'community')
+      .then((res: any) => this.userSettings.favorite = !this.userSettings.favorite );
   }
 
-  getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, 'community').subscribe(
+  // getFavourite(uuid: any) {
+  //   this.socialService.user.getFavourite(uuid, 'community').subscribe(
+  //     (res: any) => {
+  //       this.favourite = res.data;
+  //     }
+  //   );
+  // }
+
+  getUserSettings(uuid: any) {
+    this.socialService.community.getUserSettings(uuid).take(1).subscribe(
       (res: any) => {
-        this.favourite = res.data;
+        console.log('inside getUserSettings', res);
+        this.userSettings = res.data;
       }
     );
+  }
+
+  toggleComNotification(uuid: any) {
+    this.socialService.community.toggleComNotification(uuid).subscribe(
+      (res: any) => {
+        console.log('inside toggleComNotification', res);
+        this.userSettings = res.data;
+      }
+    )
   }
 
   confirmLeaveCommunity() {

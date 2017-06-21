@@ -117,7 +117,7 @@
           <ul class="pull-right list-unstyled clearfix">
             <li class=" dropdown">
               <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true" (click)="getFavourite(community?.uuid)">
+                      aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)">
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
@@ -127,10 +127,11 @@
                   members</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right"
-                                                                                       [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i></a>
+                                                                                       [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i></a>
                 </li>
                 <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
                 <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
+                <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">{{userSettings?.mute ? 'Enable' : 'Disable'}} notifications for this community</a></li>
                 <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
               </ul>
             </li>

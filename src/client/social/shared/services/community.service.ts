@@ -110,7 +110,7 @@ export class SoCommunityService  {
   }
 
   getUserSettings(uuid: string) {
-    return this.apiBaseService.get(`${this.soCommunitiesUrl}/get_user_settings`, {uuid: uuid});
+    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/get_user_settings`);
   }
 
   askToJoin(uuid: string) {
