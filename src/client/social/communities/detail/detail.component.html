@@ -27,8 +27,9 @@
               </div>
               <div class="z-shared-description">{{community?.tag_line}}</div>
             </div>
-            <div class="z-social-media-right mb5">
-              <button class="btn btn-default pull-right" type="button" (click)="chooseMembers($event)"
+
+            <div class="hd-item-action-right-bottom">
+              <button class="btn btn-default" type="button" (click)="chooseMembers($event)"
                       data-toggle="modal"
                       data-target="#modal-social-share-com" *ngIf="isMember">
                 <i class="fa fa-user-plus"></i> Invite Member

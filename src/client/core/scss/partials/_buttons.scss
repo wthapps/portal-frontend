@@ -330,3 +330,7 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
     }
   }
 }
+
+.btn-default-no-border {
+  border: none;
+}
