@@ -1,16 +1,10 @@
 <div *ngIf="object" class="photo-box" id="photo-box-img-{{object.id}}">
-
-  <div class="photo-box-action">
-    <i class="fa fa-check"></i>
-  </div>
-
   <div class="photo-box-action photo-box-action-right">
     <i (click)="onAction({action:'favourite', params: {mode: 'add', selectedObject: object}})" class="fa fa-star-o"
        *ngIf="!object.favorite"></i>
     <i (click)="onAction({action:'favourite', params: {mode: 'remove', selectedObject: object}})" class="fa fa-star"
        *ngIf="object.favorite"></i>
   </div>
-
 
   <!--type == 'photo'-->
   <div *ngIf="object.object_type == 'photo'" class="photo-box-figure"
@@ -24,7 +18,9 @@
       </div>
     </figure>
     <div class="photo-box-name">
-      <span (dblclick)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: object}})">{{object.name}}.{{object.extension}}</span>
+      <span class="can-click" (dblclick)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: object}})">
+        {{object.name}}.{{object.extension}}
+      </span>
       <div class="hidden">
         <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
         <i *ngIf="object.favorite" class="fa fa-star"></i>
@@ -42,7 +38,7 @@
       <i class="fa fa-check"></i>
     </div>
     <figure class="img-center-dv can-click" (dblclick)="onAction({action:'viewDetails', params: {selectedObject: object}})">
-      <div class="photo-box-img-figure-in">
+      <div class="photo-box-figure-in">
         <img draggable="false" class="img-center" [src]="object.photo_default" alt="">
       </div>
       <div class="photo-box-info">
@@ -56,7 +52,9 @@
       </div>
     </figure>
     <div class="photo-box-name">
-      <span (dblclick)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: object}})">{{object.name}}</span>
+      <span class="can-click" (dblclick)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: object}})">
+        <i class="wthico-album"></i> {{object.name}}
+      </span>
       <div class="hidden">
         <!--data return doesn't have json_shares-->
         <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->

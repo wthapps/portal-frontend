@@ -840,7 +840,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedObjects.push(item);
       }
     } else {
-      $('.row-img .photo-box-img').removeClass('selected');
+      $('.row-img .photo-box').removeClass('selected');
       $('#photo-box-img-' + item.id).addClass('selected');
       this.selectedObjects.length = 0;
       this.selectedObjects.push(item);

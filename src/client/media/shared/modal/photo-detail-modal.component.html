@@ -52,6 +52,16 @@
     <div class="name"><i class="fa fa-picture-o"></i> {{selectedPhotos[index].name}}.{{selectedPhotos[index].extension}}
     </div>
   </div>
+
+  <div class="photo-detail-top-info">
+    <div class="photo-detail-top-num" *ngIf="selectedPhotos.length > 1">
+      {{index + 1}} of {{selectedPhotos.length}}
+    </div>
+    <div class="photo-detail-top-txt">
+      {{selectedPhotos[index].description}}
+    </div>
+  </div>
+
   <div *ngIf="selectedPhotos[index]" class="photo-detail-content">
     <div class="photo-detail-img">
       <figure [ngClass]="{'img-loading': loadingImg}">
@@ -89,7 +99,7 @@
       <dd>{{selectedPhotos[index].extension}}</dd>
       <dt>Size</dt>
       <dd>{{selectedPhotos[index].size | bytes}}</dd>
-      <dt>Demension</dt>
+      <dt>Dimension</dt>
       <dd>{{selectedPhotos[index].dimensions}}</dd>
       <dt>Uploaded</dt>
       <dd>{{selectedPhotos[index].created_at | date:'MMM dd yyyy' : 'UTC'}}</dd>

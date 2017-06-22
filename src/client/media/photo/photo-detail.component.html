@@ -27,7 +27,8 @@
       <li class="dropdown">
         <a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
         <ul class="dropdown-menu dropdown-menu-lg">
-          <li><a href="javascript:;" (click)="doAction('addToAlbum')"><i class="fa fa-plus-square"></i> Add to Album</a></li>
+          <li><a href="javascript:;" (click)="doAction('addToAlbum')"><i class="fa fa-plus-square"></i> Add to Album</a>
+          </li>
           <li>
             <a href="javascript:;"
                (click)="doAction({action: 'download', params: {selectedObjects: [selectedPhotos[index]]}})">
@@ -42,6 +43,17 @@
     </ul>
     <div class="name"><i class="fa fa-picture-o"></i> {{selectedPhotos[index].name}}</div>
   </div>
+
+  <div class="photo-detail-top-info">
+    <div class="photo-detail-top-num">
+      999 of 1000
+    </div>
+    <div class="photo-detail-top-txt">
+      This is the testing text for the limitation of photo description in WTFPicture app. This part will be around one
+      hundred and fifty characters in long.
+    </div>
+  </div>
+
   <div *ngIf="selectedPhotos[index]" class="photo-detail-content">
     <div class="photo-detail-img">
       <figure [ngClass]="{'img-loading': loadingImg}">
@@ -103,7 +115,7 @@
   </div>
 </div>
 
-<photo-edit-modal #formEdit ></photo-edit-modal>
+<photo-edit-modal #formEdit></photo-edit-modal>
 <tagging-modal #zoneTagging></tagging-modal>
 
 <template #modalContainer></template>
