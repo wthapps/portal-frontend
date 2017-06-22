@@ -678,6 +678,15 @@
         right: 0;
         top: 0;
       }
+      .hd-item-action-right-bottom {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 33px;
+        button {
+          background-color: #fff;
+        }
+      }
     }
     &.user {
       .zone-social-cover-info {
@@ -785,6 +794,7 @@
       }
     }
   }
+
 }
 
 //communities

@@ -63,6 +63,36 @@
                   </li>
                 </ul>
               </div>
+
+
+              <!--community menu-->
+              <ul class="pull-right list-unstyled clearfix">
+                <li class=" dropdown">
+                  <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)">
+                    <i class="fa fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                    <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
+                    <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">
+                      {{userSettings?.mute ? 'Enable' : 'Disable'}} notifications </a>
+                    </li>
+                    <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
+                    <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage
+                      members</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <a href="javascript:;" (click)="addFavourite(uuid)"> Favourites
+                        <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
+                    <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
+                    <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
+                  </ul>
+                </li>
+              </ul>
             </div>
 
           </so-information>
@@ -70,7 +100,7 @@
         </cover-profile>
 
 
-        <nav class="zone-social-cover-nav clearfix">
+        <nav class="nav-tabs-wrap clearfix">
           <div class="pull-left btn-group hidden-md hidden-lg">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -90,7 +120,7 @@
             </ul>
           </div>
 
-          <ul class="pull-left list-unstyled clearfix visible-md-block visible-lg-block">
+          <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
             <li [ngClass]="selectedTab==undefined || selectedTab == 'post' ? 'active': ''">
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{}">Post</a>
             </li>
@@ -99,43 +129,28 @@
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
             </li>
             <li [ngClass]="selectedTab=='members'? 'active': ''">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">Members {{ (
-                community?.member_count ) ? '( ' + community?.member_count+ ' )' : '' }} </a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">
+                Members
+                <span *ngIf="community?.member_count" class="badge-right">{{community?.member_count}}</span>
+               </a>
             </li>
             <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">Invitations {{ ( isAdmin &&
-                community?.invitation_count ) ? '( ' + community?.invitation_count + ' )' : '' }}</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">
+                Invitations
+                <span *ngIf="community?.invitation_count" class="badge-right">{{community?.invitation_count}}</span>
+              </a>
             </li>
             <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
-              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">Join Requests {{ ( isAdmin
-                && community?.join_request_count ) ? '( ' + community?.join_request_count + ' )' : '' }}</a>
+              <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">
+                Join Requests
+                <span *ngIf="community?.join_request_count" class="badge-right">{{community?.join_request_count}}</span>
+              </a>
             </li>
             <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
             <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
             <!--</li>-->
           </ul>
-          <ul class="pull-right list-unstyled clearfix">
-            <li class=" dropdown">
-              <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
-                <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
-                <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
-                <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage
-                  members</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="javascript:;" (click)="addFavourite(uuid)"> Favourites <i class="fa pull-right"
-                                                                                       [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i></a>
-                </li>
-                <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
-                <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-                <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">{{userSettings?.mute ? 'Enable' : 'Disable'}} notifications for this community</a></li>
-                <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
-              </ul>
-            </li>
-          </ul>
+
         </nav>
       </div>
 

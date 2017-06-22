@@ -2,7 +2,7 @@
   <div class="page-body-content-in zone-social">
     <div class="zone-social-container">
       <div class="z-social-box">
-        <div class="z-social-box-header">
+        <div class="z-social-box-header padding0 ">
           <nav class="z-social-box-header-nav pull-left nav-tabs-wrap">
 
             <div class="pull-left btn-group hidden-md hidden-lg">
@@ -39,22 +39,22 @@
             <ul class="nav nav-tabs visible-md-block visible-lg-block">
               <li [ngClass]="{'active': currentState == friendTabs.friends}">
                 <a (click)="getDataList('friends')" href="javascript:;">
-                  FRIENDS <span *ngIf="totalFriends" class="badge badge-rounded badge-wth badge-right">{{totalFriends}}</span>
+                  Friends <span *ngIf="totalFriends" class="badge-right">{{totalFriends}}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.followers}">
                 <a (click)="getDataList('followers')" href="javascript:;">
-                  FOLLOWERS <span *ngIf="totalFollowers" class="badge badge-rounded badge-wth badge-right">{{totalFollowers}}</span>
+                  Followers <span *ngIf="totalFollowers" class="badge-right">{{totalFollowers}}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.followings}">
                 <a (click)="getDataList('followings')" href="javascript:;">
-                  FOLLOWING <span *ngIf="totalFollowings" class="badge badge-rounded badge-wth badge-right">{{totalFollowings}}</span>
+                  Following <span *ngIf="totalFollowings" class="badge-right">{{totalFollowings}}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.blacklists}">
                 <a (click)="getDataList('blacklists')" href="javascript:;">
-                  BLACKLIST <span *ngIf="totalBlacklist" class="badge badge-rounded badge-wth badge-right">{{totalBlacklist}}</span>
+                  Blacklist <span *ngIf="totalBlacklist" class="badge-right">{{totalBlacklist}}</span>
                 </a>
               </li>
             </ul>

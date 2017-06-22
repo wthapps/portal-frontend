@@ -1,4 +1,6 @@
 .nav-tabs-wrap {
+  //border-top: 1px solid $line;
+  padding: 15px;
   .nav-tabs {
     border-width: 0;
     margin: 0;
@@ -10,7 +12,8 @@
         &:hover,
         &:focus {
           display: block;
-          font-size: 18px;
+          //font-size: 18px;
+          font-weight: bold;
           color: $text-color-fade;
           position: relative;
           text-decoration: none;
@@ -31,7 +34,9 @@
           color: $text-color;
         }
         span {
-          font-size: 80%;
+          //font-size: 80%;
+          font-weight: normal;
+          color: #89919c;
         }
       }
       &.active {
@@ -43,6 +48,8 @@
             left: 0;
             right: 0;
             bottom: -15px;
+            color:#000000;
+            font-weight: bold;
             background-color: rgb(245, 74, 89);
             height: 3px;
             @media (max-width: $screen-md-max) and (min-width: $screen-sm-min) {
