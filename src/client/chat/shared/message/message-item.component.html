@@ -117,13 +117,13 @@
             <div class="media-div-body">
               <a href="profile/{{message.display.share_contact.uuid}}" class="media-heading bold">{{message.display.share_contact.name}}</a>
               <div class="mt15" *ngIf="!message.byMe">
-                <button class="btn btn-wth-inline-border" (click)="onAdd(message.display.share_contact)">
+                <button class="btn btn-wth-default" (click)="onAdd(message.display.share_contact)">
                   <i class="fa fa-user-plus"></i> Add to Contact
                 </button>
               </div>
 
               <div class="mt15" *ngIf="message.byMe">
-                <button class="btn btn-wth-inline-border">
+                <button class="btn btn-wth-default">
                   Resent
                 </button>
                 <button class="btn btn-default" >
@@ -149,7 +149,7 @@
             <div class="media-div-body">
               <a href="profile/{{message.receiver.uuid}}" class="media-heading bold">{{message.receiver.name}}</a>
               <div class="mt15" *ngIf="message.byMe">
-                <button class="btn btn-wth-inline-border"
+                <button class="btn btn-wth-default"
                         (click)="doEvent({action: 'CONTACT_REQUEST_CREATE', data: message.receiver})">
                   Resend
                 </button>

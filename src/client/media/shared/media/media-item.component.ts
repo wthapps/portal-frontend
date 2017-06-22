@@ -1,12 +1,14 @@
-import { Component, Input, EventEmitter, Output, HostBinding, OnChanges } from '@angular/core';
+import { Component, Input, EventEmitter, Output, HostBinding, OnChanges, ViewEncapsulation } from '@angular/core';
 
 @Component({
   moduleId: module.id,
+  encapsulation: ViewEncapsulation.None,
   selector: 'me-item',
-  templateUrl: 'media-item.component.html'
+  templateUrl: 'media-item.component.html',
+  styleUrls: ['media-item.component.css']
 })
 export class MediaItemComponent implements OnChanges {
-  @HostBinding('class') leftBarClass = 'row-img-item';
+  @HostBinding('class') cssClass = 'row-img-item';
   @Input() type: string = 'photo';
   @Input() object: any;
 
@@ -19,6 +21,7 @@ export class MediaItemComponent implements OnChanges {
     'favorites': 'mix',
     'shared-with-me': 'mix',
   };
+
   ngOnChanges() {
 
   }

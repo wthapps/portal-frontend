@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
-  ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy
+  ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy, ViewEncapsulation
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
@@ -25,6 +25,7 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
+  encapsulation: ViewEncapsulation.None,
   selector: 'me-list',
   templateUrl: 'media-list.component.html',
   styleUrls: ['media-list.component.css'],

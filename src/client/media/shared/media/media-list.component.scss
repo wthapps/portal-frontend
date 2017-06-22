@@ -1,0 +1,19 @@
+@import "../../../core/scss/global";
+
+.row-img-item {
+  float: left;
+  display: block;
+}
+
+.row-img {
+  &.grid {
+    @for $i from 1 through 12 {
+      &.row-img-#{$i} {
+        .row-img-item {
+          width: percentage(1/(14 - $i));
+          //width: percentage(24/$i);
+        }
+      }
+    }
+  }
+}
