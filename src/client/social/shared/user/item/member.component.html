@@ -5,11 +5,16 @@
         </span>
   </div>
   <div class="media-body">
-    <h5 class="media-heading m0"><a [routerLink]="[data.link]" class="link-text">{{data.name}}</a></h5>
+    <h5 class="media-heading m0">
+      <a [routerLink]="['/profile', data.uuid]" class="link-text">{{data.name}}</a>
+    </h5>
+
     <div class="text-fade">
-      Nickname
+      {{data.friend_count}} friends
       <br>
-      14 friends - 55 followers
+      {{data.follower_count}} followers
+      <br>
+      {{data.following_count}} following
     </div>
   </div>
   <div class="media-right">

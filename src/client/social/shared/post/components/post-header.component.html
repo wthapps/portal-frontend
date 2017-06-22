@@ -68,7 +68,7 @@
   <div class="z-social-media-right">
     <div class="dropdown pull-right">
       <!--<post-settings [item]="item"></post-settings>-->
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+      <button class="btn btn-default btn-default-no-border dropdown-toggle" type="button" id="dropdownMenu1"
               data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)">
         <i class="fa fa-ellipsis-v"></i>
@@ -112,7 +112,7 @@
 
         <li>
           <a href="javascript:;"
-             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable '}} notification for this post
+             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable '}} notifications
           </a>
         </li>
 
@@ -124,7 +124,7 @@
     </div>
 
     <div *ngIf="!showDetail" class="dropdown pull-right">
-      <a [routerLink]="['/'+ postUrl, item.uuid]"  class="btn btn-default">
+      <a [routerLink]="['/'+ postUrl, item.uuid]"  class="btn btn-default btn-default-no-border">
         <i class="fa fa-external-link"></i>
       </a>
     </div>

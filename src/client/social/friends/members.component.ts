@@ -23,7 +23,8 @@ export let FRIEND_TABS: any = {
 @Component({
   moduleId: module.id,
   selector: 'z-social-members',
-  templateUrl: 'members.component.html'
+  templateUrl: 'members.component.html',
+  styleUrls: ['members.component.css']
 })
 export class ZSocialMembersComponent implements OnInit {
   errorMessage: string;

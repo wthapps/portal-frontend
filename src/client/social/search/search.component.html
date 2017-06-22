@@ -3,7 +3,12 @@
     <div class="zone-social-in" *ngIf="result && groups">
       <div class="panel panel-default" *ngFor="let group of groups">
         <div class="panel-heading">
-          <h3 class="panel-title">{{group | titleCase}}</h3>
+          <h3 class="panel-title">
+             <a class="link-text"
+                [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post']" >
+               {{group | titleCase}}
+             </a>
+          </h3>
         </div>
         <div class="panel-body" *ngIf="result[group] && result[group].length == 0">
           <h3 class="text-fade">

@@ -6,11 +6,10 @@
   </div>
   <div class="media-body">
     <h5 class="media-heading m0">
-      <a *ngIf="data.link" [routerLink]="[data.link]" class="link-text">{{data.name}}</a>
-      <a *ngIf="!data.link" [routerLink]="['/' + communitiesUrl,data.uuid]" class="link-text">{{data.name}}</a>
+      <a [routerLink]="['/' + communitiesUrl, data.uuid]" class="link-text">{{data.name}}</a>
     </h5>
     <div class="text-fade">
-      14 members
+      {{data.member_count}} {{data.member_count > 1 ? 'members': 'member'}}
     </div>
   </div>
   <div class="media-right">
@@ -32,7 +31,7 @@
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <!--// @TODO checking permission-->
-        <ul class="dropdown-menu dropdown-custom">
+        <ul class="dropdown-menu dropdown-menu-right">
           <li><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
           <li><a href="javascript:;" (click)="onPreferences()">Preferences</a></li>
           <li><a [routerLink]="[communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
@@ -42,27 +41,12 @@
               Favourites <i class="fa pull-right" [ngClass]="favourite && favourite.uuid? 'fa-star': 'fa-star-o'"></i>
             </a>
           </li>
-          <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
-          <li><a href="javascript:;" (click)="onDelete()" href="javascript:;">Delete community</a></li>
-        </ul>
-        <!--// @TODO checking permission-->
-
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-          <li>
-            <a href="javascript:;" (click)="toggleFavourite()">
-              Favourite
-              <i class="fa pull-right" [ngClass]="favourite && favourite?.uuid? 'fa-star': 'fa-star-o'"></i>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a>
-          </li>
-
+          <li><a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a></li>
+          <li><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
           <li class="divider"></li>
           <li><a href="javascript:;" (click)="onReport(data.uuid)">Report community</a></li>
         </ul>
       </div>
-
     </div>
   </div>
 </div>

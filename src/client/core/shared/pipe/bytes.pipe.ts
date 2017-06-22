@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { isNumberFinite, isPositive, isInteger, toDecimal } from '../utils/utils';
 
-export type ByteUnit = 'B' | 'KB' | 'MB' | 'GB' | 'TB';
+export type ByteUnit = 'Byte' | 'KB' | 'MB' | 'GB' | 'TB';
 
 
 @Pipe({
@@ -10,15 +10,15 @@ export type ByteUnit = 'B' | 'KB' | 'MB' | 'GB' | 'TB';
 export class BytesPipe implements PipeTransform {
 
   static formats: { [key: string]: { max: number, prev?: ByteUnit }} = {
-    'B': {max: 1024},
-    'KB': {max: Math.pow(1024, 2), prev: 'B'},
+    'Byte': {max: 1024},
+    'KB': {max: Math.pow(1024, 2), prev: 'Byte'},
     'MB': {max: Math.pow(1024, 3), prev: 'KB'},
     'GB': {max: Math.pow(1024, 4), prev: 'MB'},
     'TB': {max: Number.MAX_SAFE_INTEGER, prev: 'GB'}
   };
 
 
-  transform(input_x: any, decimal: number = 0, from: ByteUnit = 'B'): any {
+  transform(input_x: any, decimal: number = 0, from: ByteUnit = 'Byte'): any {
     let input:number = parseInt(input_x);
 
 
@@ -31,7 +31,7 @@ export class BytesPipe implements PipeTransform {
 
     let bytes = input;
     let unit = from;
-    while (unit != 'B') {
+    while (unit != 'Byte') {
       bytes *= 1024;
       unit = BytesPipe.formats[unit].prev;
     }
@@ -46,7 +46,7 @@ export class BytesPipe implements PipeTransform {
           toDecimal(bytes / prev.max, decimal) :
           toDecimal(bytes, decimal);
 
-        return `${result} ${key}`;
+        return (result > 1 && key == 'Byte') ? `${result} Bytes` : `${result} ${key}`;
       }
     }
   }
