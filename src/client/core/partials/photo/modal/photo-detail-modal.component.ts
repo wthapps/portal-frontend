@@ -1,10 +1,10 @@
 import {
   Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild,
-  ViewContainerRef, ComponentFactoryResolver
+  ViewContainerRef, ComponentFactoryResolver, OnInit
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ZMediaToolbarComponent } from '../toolbar/toolbar.component';
 import { SharingModalComponent } from './sharing/sharing-modal.component';
 import { TaggingModalComponent } from './tagging/tagging-modal.component';
@@ -13,10 +13,12 @@ import { AddToAlbumModalComponent } from './add-to-album-modal.component';
 import { PhotoService } from '../../../shared/services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
 import { PhotoEditComponent } from '../edit/edit-photo.component';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
-declare var $: any;
-declare var _: any;
+declare let $: any;
+declare let _: any;
 const KEY_ESC = 27;
+declare let saveAs: any;
 
 @Component({
   moduleId: module.id,
@@ -31,7 +33,7 @@ const KEY_ESC = 27;
     TaggingModalComponent
   ]
 })
-export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal {
+export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMediaModal {
   @Input() selectedPhotos: any = [];
   @Input() allPhotos: any = [];
 
@@ -56,7 +58,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   img: any;
 
   private showDetails: boolean = false;
-  private active: boolean = false;
+  private show: boolean = false;
   private canDelete: boolean = true;
 
   @HostListener('document:keydown', ['$event'])
@@ -65,11 +67,23 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   }
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private resolver: ComponentFactoryResolver,
               private photoService: PhotoService,
               private confirmationService: ConfirmationService,
               private location: Location,
+              private apiBaseService: ApiBaseService,
               private loadingService: LoadingService) {
+  }
+
+  ngOnInit() {
+    this.loadingImg = true;
+    this.route.params.forEach((params: any) => {
+      this.apiBaseService.get('zone/social_network/photos/' + params['id']).subscribe((res:any) => {
+        this.selectedPhotos = [res.data];
+        this.open({show: true});
+      });
+    });
   }
 
   ngAfterViewInit() {
@@ -162,6 +176,20 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
       case 'addToAlbum':
         this.mediaToolbar.formAddAlbum.modal.open();
         break;
+      case 'download':
+        _.each(event.params.selectedObjects, (file: any) => {
+          this.apiBaseService.download('media/files/download', {id: file.id}).subscribe(
+            (response: any) => {
+              var blob = new Blob([response.blob()], { type: file.content_type });
+              saveAs(blob, file.name);
+            },
+            (error: any) => {
+
+            }
+          );
+        });
+
+        break;
       default:
         this.event.emit(event);
         break;
@@ -174,44 +202,45 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   open(options: any) {
 
     //get options values
-    if (_.has(options, 'showDetails')) {
-      this.showDetails = options.showDetails;
-    }
+    // if (_.has(options, 'showDetails')) {
+    //   this.showDetails = options.showDetails;
+    // }
+    // if (_.has(options, 'show')) {
+    //   this.active = options.show;
+    // }
+    // if (_.has(options, 'selectedObjects')) {
+    //   this.selectedPhotos = options.selectedObjects;
+    // }
+    //
+    // if (_.has(options, 'selectedObjects')) {
+    //   this.selectedPhotos = options.selectedObjects;
+    // }
+    //
+    // if (_.has(options, 'objects')) {
+    //   this.objects = options.objects;
+    // }
+    // if (_.has(options, 'canDelete')) {
+    //   this.canDelete = options.canDelete;
+    // }
+    //
+    // if (this.selectedPhotos && this.selectedPhotos.length == 1) {
+    //   this.selectedPhotos = this.objects;
+    //   if (options.selectedObjects && options.selectedObjects.length > 0) {
+    //     this.index = _.findIndex(this.objects, {'id': options.selectedObjects[options.selectedObjects.length - 1].id});
+    //   } else {
+    //     this.index = 0;
+    //   }
+    // } else {
+    //   if (options.selectedObjects && options.selectedObjects.length > 0) {
+    //     this.index = options.selectedObjects.length - 1;
+    //   } else {
+    //     this.index = 0;
+    //   }
+    // }
+
     if (_.has(options, 'show')) {
-      this.active = options.show;
+      this.show = options.show;
     }
-    if (_.has(options, 'selectedObjects')) {
-      this.selectedPhotos = options.selectedObjects;
-    }
-
-    if (_.has(options, 'selectedObjects')) {
-      this.selectedPhotos = options.selectedObjects;
-    }
-
-    if (_.has(options, 'objects')) {
-      this.objects = options.objects;
-    }
-    if (_.has(options, 'canDelete')) {
-      this.canDelete = options.canDelete;
-    }
-
-    if (this.selectedPhotos && this.selectedPhotos.length == 1) {
-      this.selectedPhotos = this.objects;
-      if (options.selectedObjects && options.selectedObjects.length > 0) {
-        this.index = _.findIndex(this.objects, {'id': options.selectedObjects[options.selectedObjects.length - 1].id});
-      } else {
-        this.index = 0;
-      }
-    } else {
-      if (options.selectedObjects && options.selectedObjects.length > 0) {
-        this.index = options.selectedObjects.length - 1;
-      } else {
-        this.index = 0;
-      }
-    }
-
-    this.loadingImg = true;
-
   }
 
 
@@ -225,7 +254,7 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   }
 
   goBack() {
-    this.active = false;
+    this.show = false;
     this.showDetails = false;
     this.location.back();
   }

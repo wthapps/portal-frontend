@@ -28,7 +28,6 @@ import { CheckboxModule } from 'primeng/primeng';
 import { MediaListHeaderComponent } from './list/media-list-header.component';
 import { ZMediaShareItemComponent } from './list/item/item.component';
 import { SliderModule } from 'primeng/primeng';
-import { PhotoDetailWrapperComponent } from './edit/photo-detail-wrapper.component';
 
 
 @NgModule({
@@ -62,7 +61,6 @@ import { PhotoDetailWrapperComponent } from './edit/photo-detail-wrapper.compone
     AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
-    PhotoDetailWrapperComponent,
     ZMediaShareItemComponent
   ],
   exports: [
@@ -83,7 +81,6 @@ import { PhotoDetailWrapperComponent } from './edit/photo-detail-wrapper.compone
     TaggingElComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
-    PhotoDetailWrapperComponent,
     ZMediaShareItemComponent
   ],
   providers: [
