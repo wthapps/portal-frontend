@@ -61,7 +61,6 @@ import { ZoneReportService } from './form/report/report.service';
 import { ZoneReportComponent } from './form/report/report.component';
 import { HdModalComponent } from './ng2-hd/modal/components/modal';
 import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
-import { BytesPipe } from './pipe/bytes.pipe';
 import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
 import { PipeModule } from './pipe/pipe.module';
 
@@ -108,7 +107,6 @@ import { PipeModule } from './pipe/pipe.module';
     SafeHtmlPipe,
     WthFilterByPipe,
     ArrayLengthPipe,
-    BytesPipe,
 
     //Directive
     ScrollToBottomDirective,
@@ -156,7 +154,6 @@ import { PipeModule } from './pipe/pipe.module';
     ShowLengthTransformPipe,
     SafeHtmlPipe,
     ConvertByPatternPipe,
-    BytesPipe,
 
     //Directive
     ScrollToBottomDirective,

@@ -5,6 +5,7 @@ import { LinkifyPipe } from './linkify.pipe';
 import { MaxLengthPipe } from './max-length.pipe';
 import { FileSizePipe } from './file-size.pipe';
 import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
+import { BytesPipe } from './bytes.pipe';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
     MaxLengthPipe,
     FileSizePipe,
     GroupByMonthYearPipe,
+    BytesPipe,
     LinkifyPipe
   ],
   exports: [
@@ -22,6 +24,7 @@ import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
     MaxLengthPipe,
     FileSizePipe,
     GroupByMonthYearPipe,
+    BytesPipe,
     LinkifyPipe
   ],
   providers: []

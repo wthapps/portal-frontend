@@ -56,7 +56,7 @@
     <div class="photo-detail-top-num" *ngIf="selectedPhotos.length > 1">
       {{index + 1}} of {{selectedPhotos.length}}
     </div>
-    <div class="photo-detail-top-txt">
+    <div *ngIf="selectedPhotos[index]" class="photo-detail-top-txt">
       {{selectedPhotos[index].description}}
     </div>
   </div>
@@ -66,11 +66,11 @@
       <figure [ngClass]="{'img-loading': loadingImg}">
         <img imgFull draggable="false" [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
       </figure>
-      <span *ngIf="objects && objects.length>1" draggable="false" (click)="imgPrev()"
+      <span *ngIf="(objects && objects.length>1)" draggable="false" (click)="imgPrev()"
             class="photo-detail-img-control img-control-prev">
         <i class="fa fa-angle-left"></i>
       </span>
-      <span *ngIf="objects && objects.length>1" draggable="false" (click)="imgNext()"
+      <span *ngIf="(objects && objects.length>1)" draggable="false" (click)="imgNext()"
             class="photo-detail-img-control img-control-next">
         <i class="fa fa-angle-right"></i>
       </span>
