@@ -175,6 +175,9 @@ $photo-detail-info-width: 380px;
       right: 0;
       z-index: 100;
     }
+    .photo-detail-top-info {
+      right: $photo-detail-info-width;
+    }
     .photo-detail-content {
       .photo-detail-img {
         figure {

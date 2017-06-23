@@ -23,6 +23,7 @@
     .photo-box {
       position: relative;
       background: #FFFFFF;
+      border: 2px solid transparent;
       @include box-shadow(0 2px 4px 0 rgba(164, 164, 164, 0.40));
 
       .photo-box-action {
@@ -43,11 +44,12 @@
           color: #ffffff;
         }
       }
-      .photo-box-figure {
-        .photo-box-figure-in {
-          padding-bottom: 75%;
-        }
+
+      .photo-box-figure-in {
+        padding-bottom: 75%;
+        position: relative;
       }
+
       .photo-box-input {
         position: absolute;
         top: 10px;
@@ -104,6 +106,13 @@
         }
       }
       &.selected {
+        border-color: $color-inverse;
+        .photo-box-figure-in {
+          background-color: #D8D8D8;
+          img {
+            padding: 15px;
+          }
+        }
         .fa-check {
           display: block;
           border-color: $color-inverse;
