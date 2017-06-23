@@ -53,6 +53,8 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   loadingImg: boolean = true;
   objects: any;
 
+  img: any;
+
   private showDetails: boolean = false;
   private active: boolean = false;
   private canDelete: boolean = true;
@@ -73,11 +75,11 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
   ngAfterViewInit() {
     let _thisPhotoDetail = this;
     $('body').on('click', '#photo-box-detail figure', function () {
-      console.log('asdfasdf');
       _thisPhotoDetail.goBack();
     });
-    $('body').on('click', '#photo-box-detail figure .bigImg, .photo-detail-img-control', function (e: any) {
-      console.log('asdfasdf');
+    $('body').on('click',
+      '#photo-box-detail figure #photo-detail-img, .photo-detail-img-control, .cropper-container'
+      , function (e: any) {
       e.stopPropagation();
     });
 
@@ -89,8 +91,25 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
 
     console.log('after init view  photo details');
 
+
   }
 
+  onZoomReset(e: any) {
+    console.log(e);
+    this.reInitPhoto();
+    this.img.cropper('clear');
+    return false;
+  }
+
+  onZoomOut(e: any) {
+    console.log(e);
+    return false;
+  }
+
+  onZoomIn(e: any) {
+    console.log(e);
+    return false;
+  }
 
   showLoading(e: any) {
     this.loadingImg = false;
@@ -284,4 +303,15 @@ export class PhotoDetailModalComponent implements AfterViewInit, BaseMediaModal 
     this.modal = this.modalComponent.instance;
   }
 
+  private reInitPhoto(): void {
+    // Define variables
+    let elImage = $('#photo-detail-img');
+    elImage.cropper({
+      viewMode: 2,
+      dragMode: 'move',
+      autoCropArea: 1,
+      autoCrop: false
+    });
+    this.img = elImage;
+  }
 }

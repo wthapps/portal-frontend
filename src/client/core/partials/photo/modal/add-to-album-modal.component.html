@@ -10,26 +10,29 @@
     <div class="content-overflow" style="max-height: 300px;">
       <div class="pl30 pr30">
         <div class="row-img list" *ngIf="dataAlbums">
-          <div *ngFor="let data of dataAlbums; let i = index;" class="photo-box-img" id="photo-box-img-{{data.id}}">
-            <div class="photo-box-img-figure" (click)="addToAlbum(data, i)">
-              <figure class="img-center-dv">
-              <span class="photo-box-img-figure-in">
-                <img class="img-full" src="/assets/images/zone/img-photo.png" alt="">
-                <img class="img-center" [src]="data.photo_default" alt="">
-              </span>
-              </figure>
-              <div class="photo-box-img-name">{{data.name}}</div>
-              <div class="photo-box-img-size">
-            <span *ngIf="data.photo_number>1">
-              {{data.photo_number}} photos
-            </span>
-                <span *ngIf="data.photo_number<=1">
-              {{data.photo_number}} photo
-            </span>
+          <div class="row-img-item" *ngFor="let data of dataAlbums; let i = index;">
+            <div class="photo-box can-click" id="photo-box-img-{{data.id}}" (click)="addToAlbum(data, i)">
+              <div class="photo-box-figure">
+                <figure class="img-center-dv">
+                  <div class="photo-box-figure-in">
+                    <img alt="" class="img-center" draggable="false" [src]="data.photo_default">
+                  </div>
+                </figure>
+                <div class="photo-box-name">
+                  <span>
+                    {{data.name}}
+                  </span>
+                </div>
+                <div class="photo-box-size no-wrap">
+                  <span *ngIf="data.photo_number>1">{{data.photo_number}} photos</span>
+                  <span *ngIf="data.photo_number<=1">{{data.photo_number}} photo</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+
       </div>
     </div>
     <div class="text-center p20">
@@ -51,7 +54,8 @@
     <div class="toast-wrap-bottom-content">
       <div class="media">
         <div class="media-body">
-          <p>{{selectedPhotos?.length}} item{{(selectedPhotos?.length>1)?'s':''}} are added to {{selectedAlbum?.name}}</p>
+          <p>{{selectedPhotos?.length}} item{{(selectedPhotos?.length>1)?'s':''}} are added to
+            {{selectedAlbum?.name}}</p>
           <div class="text-right">
             <a [routerLink]="['/' + urls.album, selectedAlbum.id]">View</a>
           </div>

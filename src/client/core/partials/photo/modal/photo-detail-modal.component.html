@@ -61,10 +61,16 @@
     </div>
   </div>
 
+  <div class="photo-detail-bottom-action hidden">
+    <a href="#" (click)="onZoomOut($event)"><i class="fa fa-plus"></i></a>
+    <a href="#" (click)="onZoomReset($event)"><i class="fa fa-refresh"></i></a>
+    <a href="#" (click)="onZoomIn($event)"><i class="fa fa-minus"></i></a>
+  </div>
+
   <div *ngIf="selectedPhotos[index]" class="photo-detail-content">
     <div class="photo-detail-img">
       <figure [ngClass]="{'img-loading': loadingImg}">
-        <img imgFull draggable="false" [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
+        <img imgFull id="photo-detail-img" draggable="false" [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
       </figure>
       <span *ngIf="(objects && objects.length>1)" draggable="false" (click)="imgPrev()"
             class="photo-detail-img-control img-control-prev">
@@ -122,7 +128,8 @@
       <dt>Owner</dt>
       <dd>
         <ul class="list-unstyled">
-          <li><img src="assets/images/zone/img-group.png" alt="{{selectedPhotos[index].owner.name}}"
+          <li>
+            <img src="assets/images/zone/img-group.png" alt="{{selectedPhotos[index].owner.name}}"
                    title="{{selectedPhotos[index].owner.name}}"> {{selectedPhotos[index].owner.name}}
           </li>
         </ul>

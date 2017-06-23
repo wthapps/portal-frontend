@@ -109,23 +109,23 @@
           <div class="form-group">
             <div class="row-img row-img-10 grid">
               <div class="row-img-item" *ngFor="let f of files">
-                <div class="photo-box-img">
-                  <div class="photo-box-img-action photo-box-img-action-left">
+                <div class="photo-box">
+                  <div class="photo-box-action">
                     <i class="fa fa-remove" (click)="cancelUploading(f)"></i>
                   </div>
-                  <div class="photo-box-img-figure">
+                  <div class="photo-box-figure">
                     <figure class="img-center-dv photo-item-uploading loading"></figure>
                   </div>
                 </div>
               </div>
               <div class="row-img-item" *ngFor="let p of post.photos">
-                <div class="photo-box-img">
-                  <div class="photo-box-img-action photo-box-img-action-left">
+                <div class="photo-box">
+                  <div class="photo-box-action">
                     <i class="fa fa-remove" (click)="removePhoto(p,$event)"></i>
                   </div>
-                  <div class="photo-box-img-figure">
+                  <div class="photo-box-figure">
                     <figure class="img-center-dv">
-                      <span class="photo-box-img-figure-in">
+                      <span class="photo-box-figure-in">
                         <img class="img-center" draggable="false" [src]="p['thumbnail_url']" alt="currentUser.profile_image">
                       </span>
                     </figure>

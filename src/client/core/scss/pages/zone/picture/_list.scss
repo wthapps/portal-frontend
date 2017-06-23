@@ -1,5 +1,4 @@
-/*
-@import "../../../core/scss/global";
+@import "../../../global";
 
 .row-img {
   @include clearfix;
@@ -36,19 +35,21 @@
           left: auto;
           right: 10px;
         }
-        .fa-star, .fa-star-o {
+        .fa-star, .fa-star-o, .fa-remove {
           cursor: pointer;
           margin-top: 2px;
           font-size: 24px;
           background-color: transparent;
           border-width: 0;
           color: #ffffff;
+          text-shadow: 0 0 2px rgba(#000, 0.5);
         }
       }
 
       .photo-box-figure-in {
         padding-bottom: 75%;
         position: relative;
+        display: block;
       }
 
       .photo-box-input {
@@ -69,6 +70,7 @@
           line-height: 20px;
           color: #ffffff;
           border: 2px solid #ffffff;
+          @include box-shadow(0 0 2px rgba(#000, 0.5));
         }
         .fa-check {
           display: none;
@@ -198,6 +200,16 @@
   }
 }
 
+.modal {
+  .row-img {
+    &.grid {
+      .row-img-item {
+        width: 25%;
+      }
+    }
+  }
+}
+
 .photo-box-nav {
   font-size: 14px;
   margin: -30px -30px 0;
@@ -245,4 +257,3 @@ $photo-box-img-owner: 150px;
   }
 }
 
-*/

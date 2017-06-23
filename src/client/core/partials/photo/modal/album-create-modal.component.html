@@ -17,17 +17,25 @@
       <tagging-el #tag></tagging-el>
     </div>
     <div class="form-group">
-      <ul class="modal-social-photo-grid" *ngIf="selectedPhotos != undefined">
-        <li *ngFor="let p of selectedPhotos">
-          <div class="social-photo-grid-item">
-            <i class="fa fa-remove wth-fa-remove" (click)="removePhoto(p,$event)"></i>
-            <figure class="img-center-dv">
-              <!--<img class="img-full" [src]="currentUser.profile_image" alt="">-->
-              <img class="img-center" [src]="p['thumbnail_url']" alt="">
-            </figure>
-          </div>
-        </li>
-      </ul>
+
+      <div class="row-img row-img-10 grid" *ngIf="selectedPhotos != undefined">
+        <div *ngFor="let p of selectedPhotos" class="row-img-item">
+            <div class="photo-box">
+              <div class="photo-box-action">
+                <i class="fa fa-remove" (click)="removePhoto(p,$event)"></i>
+              </div>
+              <div class="photo-box-figure">
+                <figure class="img-center-dv">
+                  <div class="photo-box-figure-in">
+                    <img class="img-center" draggable="false" [src]="p['thumbnail_url']" alt="">
+                  </div>
+                </figure>
+              </div>
+            </div>
+        </div>
+      </div>
+
+
     </div>
     </form>
   </modal-body>

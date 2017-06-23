@@ -105,6 +105,12 @@ $photo-detail-info-width: 380px;
     }
   }
 
+  .photo-detail-bottom-action {
+    @include center(true, false);
+    bottom: 5%;
+    z-index: 100;
+  }
+
   .photo-detail-content {
     position: relative;
     z-index: 1;
