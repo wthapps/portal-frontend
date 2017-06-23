@@ -8,23 +8,21 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
-import { ZMediaPhotoDetailComponent } from '../../photo/photo-detail.component';
-import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
-import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
-import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
-import { AlbumCreateModalComponent } from '../modal/album-create-modal.component';
-import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
-import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
-import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
 import { PhotoSelectModalComponent } from '../../../core/partials/zone/photo/upload-photos/photo-select-modal.component';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { Subject } from 'rxjs';
+import { SharingModalComponent } from '../../../core/partials/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../../../core/partials/photo/modal/tagging/tagging-modal.component';
+import { PhotoDetailModalComponent } from '../../../core/partials/photo/modal/photo-detail-modal.component';
+import { PhotoEditModalComponent } from '../../../core/partials/photo/form/photo-edit-modal.component';
+import { BaseObjectEditNameModalComponent } from '../../../core/partials/photo/modal/base-object-edit-name-modal.component';
+import { AlbumCreateModalComponent } from '../../../core/partials/photo/modal/album-create-modal.component';
+import { AlbumEditModalComponent } from '../../../core/partials/photo/modal/album-edit-modal.component';
+import { AlbumDeleteModalComponent } from '../../../core/partials/photo/modal/album-delete-modal.component';
+import { AddToAlbumModalComponent } from '../../../core/partials/photo/modal/add-to-album-modal.component';
 
 
 declare var saveAs: any;
@@ -41,7 +39,6 @@ declare var _: any;
   entryComponents: [
     MediaToolbarListComponent,
     MediaListComponent,
-    ZMediaPhotoDetailComponent,
 
     SharingModalComponent,
     TaggingModalComponent,
@@ -54,7 +51,6 @@ declare var _: any;
     AlbumDeleteModalComponent,
 
     PhotoSelectModalComponent,
-
     PhotoDetailModalComponent,
     PhotoEditModalComponent,
     AddToAlbumModalComponent
@@ -320,7 +316,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   viewInfo() {
-    this.loadModalComponent(ZMediaPhotoDetailComponent);
+    this.loadModalComponent(PhotoEditModalComponent);
     this.modal.open({show: true, showDetails: true, selectedObjects: this.selectedObjects});
   }
 
@@ -442,17 +438,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
         break;
       case 'previewModal':
-        this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: false, selectedObjects: this.selectedObjects, objects: this.list.objects};
-
-        // Delete button should not be listed in shared with me screen
-        if (this.page == Constants.mediaPageType.sharedWithMe) {
-          Object.assign(options, {'canDelete': false});
-        }
-
-        // this.modal.event.subscribe((event: any) => {
-        //   this.doAction(event);
-        // });
+        // this.loadModalComponent(PhotoDetailModalComponent);
+        // options = {show: true, showDetails: false, selectedObjects: this.selectedObjects, objects: this.list.objects};
+        //
+        // // Delete button should not be listed in shared with me screen
+        // if (this.page == Constants.mediaPageType.sharedWithMe) {
+        //   Object.assign(options, {'canDelete': false});
+        // }
+        //
+        this.router.navigate(['photos', this.selectedObjects[0].uuid]);
         break;
       case 'previewDetailsModal':
         this.loadModalComponent(PhotoDetailModalComponent);
@@ -472,7 +466,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         options = {};
         break;
     }
-    this.modal.open(options);
+    if (this.modal) {
+      this.modal.open(options);
+    }
   }
 
   closeModal() {

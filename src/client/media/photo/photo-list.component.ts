@@ -1,12 +1,11 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 
 import { ConfirmationService } from 'primeng/components/common/api';
-
-import { ZMediaPhotoDetailComponent } from './photo-detail.component';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ActivatedRoute } from '@angular/router';
-import { ZMediaToolbarComponent } from '../shared/toolbar/toolbar.component';
 import { PhotoService } from '../../core/shared/services/photo.service';
+import { ZMediaToolbarComponent } from '../../core/partials/photo/toolbar/toolbar.component';
+import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -17,7 +16,7 @@ declare var _: any;
   templateUrl: 'photo-list.component.html'
 })
 export class ZMediaPhotoListComponent implements OnInit {
-  @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  @ViewChild('photoDetail') photoDetail: PhotoDetailModalComponent;
   @ViewChild('mediaToolbar') mediaToolbar: ZMediaToolbarComponent;
 
   data: any = [];

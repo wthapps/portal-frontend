@@ -1,0 +1,5 @@
+<!--<partials-photo-detail #photoDetail *ngIf="photo" [allPhotos]="[photo]" [selectedPhotos]="[photo]"></partials-photo-detail>-->
+<div *ngIf="photo">
+  <partials-photo-edit [data]="photo"></partials-photo-edit>
+</div>
+
