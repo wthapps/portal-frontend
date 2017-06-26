@@ -70,6 +70,7 @@ export class AddToAlbumModalComponent implements OnInit, BaseMediaModal {
     let body = JSON.stringify({
       photos: _.map(this.selectedPhotos, 'id')
     });
+    console.log(album, body);
     this.apiBaseService.post(`media/albums/${album.id}/photos`, body).subscribe((res: any)=> {
       this.dataAlbums[index].photo_number = res.data.length;
       this.modal.close();

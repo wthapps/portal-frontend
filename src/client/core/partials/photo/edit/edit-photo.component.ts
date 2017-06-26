@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, Output, AfterViewInit, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PhotoService } from '../../../shared/services/photo.service';
@@ -17,6 +17,7 @@ declare var Cropper: any;
 })
 export class PhotoEditComponent implements OnInit, AfterViewInit {
   @Input() data:any = null;
+  @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
   loadingImg: boolean = true;
   imgUrl: string = 'assets/images/zone/media/photo-edit-default.png';
@@ -110,7 +111,7 @@ export class PhotoEditComponent implements OnInit, AfterViewInit {
           type: `image/${extension}`,
           file: blob
         }).subscribe((res:any) => {
-          console.log(res);
+          this.events.emit(res);
         });
       }
     });

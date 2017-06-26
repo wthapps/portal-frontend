@@ -91,10 +91,12 @@ export class CommentItemEditorComponent implements OnInit {
         this.post(this.commentEditorForm.value);
       else
         this.cancel();
+      return;
     }
     // Cancel comment
     if (e.keyCode == 27) {
       this.cancel();
+      return;
     }
 
     this.hasUpdatedContent = true;
@@ -178,14 +180,11 @@ export class CommentItemEditorComponent implements OnInit {
     this.hasUpdatedContent = false;
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
-      console.log('canceling add...........', this.comment);
-
       _.set(this.originComment, 'isCreatingNewReply', false);
       // this.eventEmitter.emit(new CancelAddCommentEvent(this.comment));
 
     } else if(this.mode == CommentEditorMode.Edit) {
       // update current comment/reply
-      console.log('canceling edit...........');
       _.set(this.originComment, 'isEditting', false);
       this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
     }

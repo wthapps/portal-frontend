@@ -446,7 +446,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         //   Object.assign(options, {'canDelete': false});
         // }
         //
-        this.router.navigate(['photos', this.selectedObjects[0].uuid]);
+        this.router.navigate(['photos', this.selectedObjects[0].id]);
         break;
       case 'previewDetailsModal':
         this.loadModalComponent(PhotoDetailModalComponent);

@@ -61,7 +61,7 @@
           <!--photo type-->
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Photo'">
             <figure>
-              <a [routerLink]="['/photos', message.file_json.uuid]">
+              <a [routerLink]="['/photos', message.file_json.id]" [queryParams]="{message: message.id}">
                 <img [src]="message.file_json.url" alt="">
 
               </a>

@@ -80,11 +80,12 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
   }
 
   ngOnInit() {
-    this.loadingImg = true;
+    this.loadingService.start('#photo-box-detail');
     this.route.params.forEach((params: any) => {
       this.apiBaseService.get('zone/social_network/photos/' + params['id']).subscribe((res: any) => {
         this.selectedPhotos = [res.data];
         this.open({show: true});
+        this.loadingService.stop();
       });
     });
   }
@@ -195,6 +196,9 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
         });
 
         break;
+      case 'confirmDeleteMedia':
+        this.confirmDeleteMedia(event.params);
+        break;
       default:
         this.event.emit(event);
         break;
@@ -205,44 +209,6 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
 
 
   open(options: any) {
-
-    //get options values
-    // if (_.has(options, 'showDetails')) {
-    //   this.showDetails = options.showDetails;
-    // }
-    // if (_.has(options, 'show')) {
-    //   this.active = options.show;
-    // }
-    // if (_.has(options, 'selectedObjects')) {
-    //   this.selectedPhotos = options.selectedObjects;
-    // }
-    //
-    // if (_.has(options, 'selectedObjects')) {
-    //   this.selectedPhotos = options.selectedObjects;
-    // }
-    //
-    // if (_.has(options, 'objects')) {
-    //   this.objects = options.objects;
-    // }
-    // if (_.has(options, 'canDelete')) {
-    //   this.canDelete = options.canDelete;
-    // }
-    //
-    // if (this.selectedPhotos && this.selectedPhotos.length == 1) {
-    //   this.selectedPhotos = this.objects;
-    //   if (options.selectedObjects && options.selectedObjects.length > 0) {
-    //     this.index = _.findIndex(this.objects, {'id': options.selectedObjects[options.selectedObjects.length - 1].id});
-    //   } else {
-    //     this.index = 0;
-    //   }
-    // } else {
-    //   if (options.selectedObjects && options.selectedObjects.length > 0) {
-    //     this.index = options.selectedObjects.length - 1;
-    //   } else {
-    //     this.index = 0;
-    //   }
-    // }
-
     if (_.has(options, 'show')) {
       this.show = options.show;
     }
@@ -277,6 +243,9 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
     // this.router.navigate(['photos', uuid, 'edit']);
     this.loadModalComponent(PhotoEditComponent);
     this.modal.data = this.selectedPhotos[0];
+    this.modal.events.subscribe((res:any) => {
+      this.event.emit(res);
+    });
   }
 
   openModal(modalName: string) {
@@ -299,7 +268,7 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
-        options = {selectedItems: this.selectedPhotos};
+        options = {selectedObjects: this.selectedPhotos};
         break;
     }
     this.modal.open(options);
@@ -347,5 +316,34 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
       autoCrop: false
     });
     this.img = elImage;
+  }
+
+  confirmDeleteMedia(params: any) {
+    // Ask for user confirmation before delete media items
+    let photos = _.filter(params.selectedObjects, (o: any) => o.object_type == 'photo');
+    let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
+    let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
+
+    if( photos.length > 0 ) {
+      // Ask for user confirmation before deleting selected PHOTOS
+      this.confirmationService.confirm({
+        message: 'Are you sure to delete ' + photos_count,
+        accept: () => {
+          this.loadingService.start();
+          this.apiBaseService.post('media/media/delete', {objects: photos, child_destroy: params.child_destroy}).subscribe(
+            (res: any) => {
+              _.map(photos, (obj: any)=> {
+                _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
+              });
+              this.loadingService.stop();
+              this.deleteAndChangeImg();
+            },
+            (error: any) => this.loadingService.stop());
+        },
+        reject: () => {
+          // Ask for user confirmation before deleting selected ALBUMS
+        }
+      });
+    }
   }
 }

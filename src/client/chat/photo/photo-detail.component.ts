@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { ApiBaseService } from '../../core/shared/services/apibase.service';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
+import { ChatService } from '../shared/services/chat.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var $: any;
 declare var _: any;
@@ -16,31 +16,25 @@ const KEY_ESC = 27;
   templateUrl: 'photo-detail.component.html',
   styleUrls: ['photo-detail.component.css']
 })
-export class ChatPhotoDetailComponent implements OnInit, OnDestroy {
-  events:any;
-  photo:any;
+export class ChatPhotoDetailComponent implements OnInit{
   @ViewChild('photoDetailModal') photoDetailModal: PhotoDetailModalComponent;
+  messageId:any;
 
-  constructor(private router: Router, private apiBaseService: ApiBaseService) {
+  constructor(private chatService: ChatService, private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
-    this.events = this.router.events
-      .filter((event:any) => event instanceof NavigationEnd)
-      .subscribe((event:NavigationEnd) => {
-        let paths = event.url.toString().split('/');
-        if (paths[2]) {
-          this.apiBaseService.get('zone/social_network/photos/' + paths[2]).subscribe((res:any) => {
-            console.log(res);
-            this.photo = res.data;
-            this.photoDetailModal.open({show: true});
-          });
-        }
-      });
+    this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        console.log('queryParams', queryParams);
+        this.messageId = queryParams.message;
+      }
+    );
   }
 
-  ngOnDestroy() {
-    this.events.unsubscribe();
+  onEditEvent(event:any) {
+    let conversationItem = this.chatService.getContactSelect();
+    this.chatService.updatePhotoMessage(this.messageId, conversationItem.value.group_json.id, event.data);
   }
 }
