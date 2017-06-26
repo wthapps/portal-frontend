@@ -61,16 +61,16 @@
     </div>
   </div>
 
-  <div class="photo-detail-bottom-action hidden">
-    <a href="#" (click)="onZoomOut($event)"><i class="fa fa-plus"></i></a>
-    <a href="#" (click)="onZoomReset($event)"><i class="fa fa-refresh"></i></a>
-    <a href="#" (click)="onZoomIn($event)"><i class="fa fa-minus"></i></a>
+  <div class="photo-detail-bottom-action">
+    <a draggable="false" href="#" (click)="onZoomOut($event)"><i class="fa fa-plus"></i></a>
+    <a draggable="false" href="#" (click)="onZoomReset($event)"><i class="fa fa-refresh"></i></a>
+    <a draggable="false" href="#" (click)="onZoomIn($event)"><i class="fa fa-minus"></i></a>
   </div>
 
   <div *ngIf="selectedPhotos[index]" class="photo-detail-content">
     <div class="photo-detail-img">
       <figure [ngClass]="{'img-loading': loadingImg}">
-        <img imgFull draggable="false" [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
+        <img imgFull class="img-zoom-{{imgZoomClass}}" draggable="false" [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
       </figure>
       <span *ngIf="(objects && objects.length>1)" draggable="false" (click)="imgPrev()"
             class="photo-detail-img-control img-control-prev">

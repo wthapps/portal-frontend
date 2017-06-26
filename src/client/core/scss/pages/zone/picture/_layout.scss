@@ -109,6 +109,19 @@ $photo-detail-info-width: 380px;
     @include center(true, false);
     bottom: 5%;
     z-index: 100;
+    font-size: 0;
+    i {
+      width: 60px;
+      height: 60px;
+      text-align: center;
+      font-size: 18px;
+      color: #9b9b9b;
+      line-height: 60px;
+      background-color: #000;
+      &:hover, &:focus {
+        color: #ffffff;
+      }
+    }
   }
 
   .photo-detail-content {

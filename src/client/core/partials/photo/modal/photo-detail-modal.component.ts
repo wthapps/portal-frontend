@@ -56,6 +56,9 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
   objects: any;
 
   img: any;
+  imgZoomClass: number = 0;
+  imgZoomMin: number = -10;
+  imgZoomMax: number = 24;
 
   private showDetails: boolean = false;
   private show: boolean = false;
@@ -79,7 +82,7 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
   ngOnInit() {
     this.loadingImg = true;
     this.route.params.forEach((params: any) => {
-      this.apiBaseService.get('zone/social_network/photos/' + params['id']).subscribe((res:any) => {
+      this.apiBaseService.get('zone/social_network/photos/' + params['id']).subscribe((res: any) => {
         this.selectedPhotos = [res.data];
         this.open({show: true});
       });
@@ -94,8 +97,8 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
     $('body').on('click',
       '#photo-box-detail figure #photo-detail-img, .photo-detail-img-control, .cropper-container'
       , function (e: any) {
-      e.stopPropagation();
-    });
+        e.stopPropagation();
+      });
 
     $('.photo-detail-img img').load(function () {
       if ($(this).height() > 100) {
@@ -109,19 +112,21 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
   }
 
   onZoomReset(e: any) {
-    console.log(e);
-    this.reInitPhoto();
-    this.img.cropper('clear');
+    this.imgZoomClass = 0;
     return false;
   }
 
   onZoomOut(e: any) {
-    console.log(e);
+    if (this.imgZoomClass < this.imgZoomMax) {
+      this.imgZoomClass = this.imgZoomClass + 1;
+    }
     return false;
   }
 
   onZoomIn(e: any) {
-    console.log(e);
+    if (this.imgZoomClass > this.imgZoomMin) {
+      this.imgZoomClass = this.imgZoomClass - 1;
+    }
     return false;
   }
 
@@ -180,7 +185,7 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMed
         _.each(event.params.selectedObjects, (file: any) => {
           this.apiBaseService.download('media/files/download', {id: file.id}).subscribe(
             (response: any) => {
-              var blob = new Blob([response.blob()], { type: file.content_type });
+              var blob = new Blob([response.blob()], {type: file.content_type});
               saveAs(blob, file.name);
             },
             (error: any) => {
