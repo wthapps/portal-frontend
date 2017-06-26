@@ -25,19 +25,19 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a (click)="redirectTo('media', '', $event)">
+              <a (click)="redirectTo('media', '', $event)" href="javascript:;">
                 <i class="fa fa-bullseye"></i>
                 <span>Zone</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('my', 'apps', $event)">
+              <a (click)="redirectTo('my', 'apps', $event)" href="javascript:;">
                 <i class="fa fa-list-alt"></i>
                 <span>Apps</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('my', 'my-apps', $event)">
+              <a (click)="redirectTo('my', 'my-apps', $event)" href="javascript:;">
                 <i class="fa fa-plug"></i>
                 <span>My Apps</span>
               </a>
@@ -71,7 +71,8 @@
                     [scrollWindow]="false"
                     (scrolled)="getMoreNotifications()"
                 >
-                  <li class="navbar-nav-notification-item" *ngFor="let notification of notificationService.notifications"
+                  <li class="navbar-nav-notification-item"
+                      *ngFor="let notification of notificationService.notifications"
                       [ngClass]="{'unread-notification': !notification?.is_read }">
                     <div class="media" data-id="notification_{{notification.id}}">
                       <notification-item [notification]="notification"></notification-item>
@@ -92,14 +93,18 @@
         </li>
         <li class="dropdown navbar-nav-profile">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <img alt="" width="30" [src]="userService.profile.profile_image">
+            <span class="avatar-xxs">
+              <img alt="" width="30" [src]="userService.profile.profile_image">
+            </span>
             <span class="name">{{userService.profile.first_name}}</span>
             <i class="fa fa-caret-down"></i></a>
           <ul class="dropdown-menu dropdown-menu-lg">
             <li>
               <div class="media p10">
                 <div class="media-left">
-                  <img alt="" class="img-rounded" width="80" [src]="userService.profile.profile_image">
+                  <div class="avatar-md">
+                    <img alt="" [src]="userService.profile.profile_image">
+                  </div>
                 </div>
                 <div class="media-body">
                   <p class="media-heading bold mb0">{{userService.profile.first_name}}
@@ -116,33 +121,37 @@
               </div>
             </li>
             <li role="separator" class="divider"></li>
-            <li><a (click)="redirectTo('my', 'setting/profile', $event)">Profile</a></li>
-            <li><a (click)="redirectTo('my', 'setting/account', $event)">Account</a></li>
-            <li><a (click)="redirectTo('my', 'setting/preferences', $event)">Preferences</a></li>
+            <li><a (click)="redirectTo('my', 'setting/profile', $event)" href="javascript:;">Profile</a></li>
+            <li><a (click)="redirectTo('my', 'setting/account', $event)" href="javascript:;">Account</a></li>
+            <li><a (click)="redirectTo('my', 'setting/preferences', $event)" href="javascript:;">Preferences</a></li>
             <li role="separator" class="divider"></li>
-            <li><a (click)="redirectTo('my', 'plans', $event)">Plans</a></li>
+            <li><a (click)="redirectTo('my', 'plans', $event)" href="javascript:;">Plans</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="javascript:;" (click)="logout()">Sign Out</a></li>
+            <li><a (click)="logout()" href="javascript:;">Sign Out</a></li>
           </ul>
         </li>
       </ul>
 
       <ul *ngIf="!userService.loggedIn" class="nav navbar-nav navbar-right">
         <li class="hidden-xs">
-          <a [routerLink]="['/signup']">Sign up</a>
+          <a [routerLink]="['/signup']" href="javascript:;">Sign up</a>
         </li>
 
         <template [ngIf]="!userService.loggedIn">
           <li class="hidden-xs navbar-nav-button">
               <span>
-                <a class="btn btn-detail btn-min" [routerLink]="['/login']">Log in</a>
+                <a class="btn btn-detail btn-min" [routerLink]="['/login']" href="javascript:;">Log in</a>
               </span>
           </li>
           <li class="visible-xs pt10 pb10">
             <div class="container-fluid">
               <div class="row">
-                <div class="col-xs-6"><a class="btn btn-detail btn-block" [routerLink]="['/signup']">Sign up</a></div>
-                <div class="col-xs-6"><a class="btn btn-detail btn-block" [routerLink]="['/login']">Log in</a></div>
+                <div class="col-xs-6">
+                  <a class="btn btn-detail btn-block" [routerLink]="['/signup']" href="javascript:;">Sign up</a>
+                </div>
+                <div class="col-xs-6">
+                  <a class="btn btn-detail btn-block" [routerLink]="['/login']" href="javascript:;">Log in</a>
+                </div>
               </div>
             </div>
           </li>
@@ -150,9 +159,9 @@
       </ul>
 
       <ul *ngIf="headerOver && !flagsRelease" class="nav navbar-nav navbar-right">
-        <li><a [routerLink]="['/products']">Products</a></li>
-        <li><a [routerLink]="['/pricing']">Pricing</a></li>
-        <li><a [routerLink]="['/about']">About us</a></li>
+        <li><a [routerLink]="['/products']" href="javascript:;">Products</a></li>
+        <li><a [routerLink]="['/pricing']" href="javascript:;">Pricing</a></li>
+        <li><a [routerLink]="['/about']" href="javascript:;">About us</a></li>
       </ul>
 
     </div><!-- /.navbar-collapse -->

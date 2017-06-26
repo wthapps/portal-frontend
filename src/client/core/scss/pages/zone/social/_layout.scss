@@ -627,12 +627,13 @@
   .zone-social-cover-action {
     position: absolute;
     top: 15px;
-    right: 15px;
+    left: 15px;
     z-index: 3;
     .btn {
       color: #ffffff;
-      border-width: 0;
+      border-color: #ffffff;
       background-color: rgba(#FFF, 0.3);
+      @include box-shadow(0 0 2px rgba(#000, 0.5));
     }
   }
   .zone-social-cover-img {
@@ -689,6 +690,9 @@
           background-color: #fff;
         }
       }
+      .avatar-md {
+        border: 1px solid #FFF;
+      }
     }
     &.user {
       .zone-social-cover-info {
@@ -729,24 +733,22 @@
 
   .zone-social-cover-info-profile {
     position: absolute;
-    left: 0;
+    top: 0;
     right: 0;
-    bottom: -100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #ffffff;
-    font-size: 11px;
-    padding: 5px 5px 5px 22px;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(#ffffff, 0.5);
     @include transition($transition-base);
+    @include opacity(0);
     i {
-      position: absolute;
-      left: 5px;
-      top: 8px;
+      font-size: 36px;
+      @include center();
     }
   }
   .z-social-media-left {
     &:hover, &:focus {
       .zone-social-cover-info-profile {
-        bottom: 0;
+        @include opacity(1);
       }
     }
   }

@@ -33,3 +33,7 @@
 .avatar-xs {
   @include avatar-mixin($avatar-xs);
 }
+
+.avatar-xxs {
+  @include avatar-mixin($avatar-xxs);
+}

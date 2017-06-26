@@ -5,7 +5,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   template: `
     <div class="zone-social-cover-action">
     <button class="btn btn-wth-default" (click)="changeCoverImage($event)" *ngIf="item?.canEdit">
-      <i class="fa fa-pencil" ></i>
+      <i class="fa fa-camera"></i> Edit cover
     </button>
   </div>
   <div class="zone-social-cover-img" id="cover_image">

@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       <div class="avatar-md">
           <img [src]="item.profile_image" class="no-user-selected">
           <span class="zone-social-cover-info-profile">
-            <i class="fa fa-camera"></i> Update Profile Picture
+            <i class="fa fa-camera"></i>
           </span>
       </div>
      </div>
