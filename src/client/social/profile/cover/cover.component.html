@@ -14,15 +14,13 @@
         <div class="z-shared-description"> </div>
       </div>
 
-      <!--TODO below menu is being tested and worked by Jack-->
-
-      <div class="hd-item-action-right-bottom">
+      <div class="hd-item-action-right-bottom" *ngIf="relationships">
         <button class="btn btn-default" type="button"
-               (click)="onAddfriend()">
+               (click)="onAddfriend()" *ngIf="relationships.status == 0">
           <i class="fa fa-user-plus"></i> Add Friend
         </button>
 
-        <div class="btn-group"
+        <div class="btn-group" *ngIf="relationships.status == 2"
         >
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
@@ -36,7 +34,7 @@
           </ul>
         </div>
 
-        <div class="btn-group"
+        <div class="btn-group" *ngIf="relationships.status == 1"
              >
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
@@ -52,7 +50,7 @@
 
 
         <!--menu-->
-        <ul class="pull-right list-unstyled clearfix">
+        <ul class="pull-right list-unstyled clearfix" *ngIf="userInfo.uuid !== userService.profile.uuid">
           <li class="dropdown">
             <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="true">
