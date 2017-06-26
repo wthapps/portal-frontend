@@ -81,8 +81,15 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
         .subscribe((result: any) => {
           console.log('update profile sucess: ', result);
           let toastMsg = '';
-          if (_.has(event.body, 'profile_image') )
+          if (_.has(event.body, 'profile_image') ) {
             toastMsg = 'You have updated profile image successfully';
+            // Update user profile
+            if(this.socialService.user.profile.uuid === _.get(result, 'data.uuid') ) {
+              Object.assign(this.socialService.user.profile, {'profile_image' : result.data.profile_image});
+              Object.assign(this.userService.profile, {'profile_image' : result.data.profile_image});
+              this.userService.updateProfile(this.userService.profile);
+            }
+          }
           else if (_.has(event.body, 'cover_image') )
             toastMsg = 'You have updated cover image of this community successfully';
           else

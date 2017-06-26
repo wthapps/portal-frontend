@@ -25,7 +25,7 @@
                           [files]="files"
                           [hasUploadingPhoto]="hasUploadingPhoto" (events)="doEvents($event)"></photo-item-preview>
 
-      <div class="clearfix text-right comment-editor-button-region" *ngIf="contentCtrl.value.length > 0 || comment.photo">
+      <div class="clearfix text-right comment-editor-button-region" *ngIf="hasUpdatedContent">
         <button class="btn btn-sm btn-default" (click)="cancel()"
            href="javascript:;">Cancel</button>
 
