@@ -26,7 +26,7 @@
 
       <li *ngIf="canDelete">
         <a href="javascript:;"
-           (click)="doAction({action: 'confirmDeleteMedia', params: {selectedObjects: [selectedPhotos[index]], callback: deleteAndChangeImg()} })"><i
+           (click)="doAction({action: 'confirmDeleteMedia', params: {selectedObjects: [selectedPhotos[index]]} })"><i
           class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown">

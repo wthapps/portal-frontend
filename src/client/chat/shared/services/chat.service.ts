@@ -423,6 +423,12 @@ export class ChatService {
   getOwnUserProfile() {
     return this.user.profile;
   }
+
+  updatePhotoMessage(messageId:any, groupId:any, fileJson:any) {
+    this.apiBaseService.put('zone/chat/message/' + messageId, {group_id: groupId, file_json: fileJson, id: messageId}).subscribe((res: any) => {
+      // console.log(res);
+    });
+  }
 }
 
 

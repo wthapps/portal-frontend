@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
+import { ChatPhotoDetailComponent } from './photo-detail.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'photos/:id', component: PhotoDetailModalComponent},
+      {path: 'photos/:id', component: ChatPhotoDetailComponent},
     ])
   ],
   exports: [RouterModule]

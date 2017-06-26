@@ -712,7 +712,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
     let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
 
-
+    console.log(photos, photos.length)
     if( photos.length > 0 ) {
       // Ask for user confirmation before deleting selected PHOTOS
       this.confirmationService.confirm({
