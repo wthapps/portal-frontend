@@ -11,24 +11,22 @@
           <div class="z-name">
             {{currentUser?.first_name}}
           </div>
-          <div class="z-shared-with">
-            <span class="dropdown">
-              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
-                 aria-haspopup="true" aria-expanded="true">
-                  <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{privacyName(post)}} </a>
-              <ul class="dropdown-menu">
-                <li><a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
-                  <i class="fa fa-globe"></i> Public</a></li>
-                <li><a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
-                  <i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)"><i
-                  class="fa fa-lock"></i> Personal</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a></li>
-                <li><a href="#"
-                       (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities</a></li>
-              </ul>
-            </span>
+          <div class="z-shared-with dropdown">
+            <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
+               aria-haspopup="true" aria-expanded="true">
+              <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{privacyName(post)}} </a>
+            <ul class="dropdown-menu">
+              <li><a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
+                <i class="fa fa-globe"></i> Public</a></li>
+              <li><a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
+                <i class="fa fa-users"></i> Friends</a></li>
+              <li><a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)"><i
+                class="fa fa-lock"></i> Personal</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a></li>
+              <li><a href="#"
+                     (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities</a></li>
+            </ul>
           </div>
         </div>
         <div class="z-shared-info">

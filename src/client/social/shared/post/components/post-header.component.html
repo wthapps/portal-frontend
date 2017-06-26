@@ -48,7 +48,7 @@
     <div class="z-shared-info">
       <ul>
         <li>
-          {{item.created_at | date}}
+          <span class="text-fade">{{item.created_at | date}}</span>
         </li>
         <li class="note" *ngIf="item.adult">
           Adult content

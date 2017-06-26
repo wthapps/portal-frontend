@@ -106,8 +106,10 @@
     .z-shared-with {
       float: left;
       color: $light-slate;
+      margin-left: 5px;
       > a {
         color: inherit;
+        margin-left: 5px;
       }
       &:before {
         @extend .fa;
