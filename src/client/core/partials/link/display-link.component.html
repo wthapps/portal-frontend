@@ -1,11 +1,16 @@
-<div class="display-link clearfix">
-  <a  [href]="data.link" target="_blank">
-    <img *ngIf="data.image" [src]="data.image"/>
-
-    <div class="text-rigth" style="float: right;">
-      <h4 *ngIf="data.title">{{data.title | maxLength:60}}</h4>
-      <p *ngIf="data.description">{{data.description | maxLength:90}}</p>
-      <p class="site_name" *ngIf="data.site_name">{{data.site_name}}</p>
-    </div>
-  </a>
+<div class="display-link">
+  <div class="display-link-img">
+    <a [href]="data.link" target="_blank">
+      <figure class="img-center-dv" *ngIf="data.image">
+        <img class="img-center" [src]="data.image" alt="">
+      </figure>
+    </a>
+  </div>
+  <div class="display-link-txt">
+    <h4 *ngIf="data.title">
+      <a [href]="data.link" target="_blank">{{data.title | maxLength:60}}</a>
+    </h4>
+    <p *ngIf="data.description">{{data.description | maxLength:90}}</p>
+    <small *ngIf="data.site_name">{{data.site_name}}</small>
+  </div>
 </div>
