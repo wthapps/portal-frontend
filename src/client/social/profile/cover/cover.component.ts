@@ -65,6 +65,8 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
             this.relationships = res.data;
           },
         );
+      } else {
+        this.relationships = undefined;
       }
     });
   }
