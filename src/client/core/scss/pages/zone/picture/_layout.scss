@@ -197,6 +197,9 @@ $photo-detail-info-width: 380px;
     .photo-detail-top-info {
       right: $photo-detail-info-width;
     }
+    .photo-detail-bottom-action {
+      padding-right: $photo-detail-info-width;
+    }
     .photo-detail-content {
       .photo-detail-img {
         figure {
