@@ -1,0 +1,27 @@
+<div>
+  <input #input type="text" name="search" style="
+  height: 34px;
+  border: none;
+  position: relative;
+  width: 400px;
+  left: 2px;" [(ngModel)]="search">
+
+  <span class="input-group-btn" style="float: right;">
+    <button class="btn btn-default" type="button" (click)="onEnter()">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </button>
+  </span>
+
+
+</div>
+<div class="suggestions"
+     style="position: absolute;
+     border: 1px solid #ccc;
+     background-color: white;
+     width: 440px;">
+  <ng-content></ng-content>
+</div>
+
+
+
+

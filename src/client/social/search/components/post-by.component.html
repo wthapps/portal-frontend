@@ -14,7 +14,7 @@
       </li>
       <li>
         <p-radioButton name="searchPostedBy" value="frinedOfFriend" label="Communites"
-                       [(ngModel)]="searchPostedBy" (click)="filter('community_id:*'); disable(true);"></p-radioButton>
+                       [(ngModel)]="searchPostedBy" (click)="filter('privacy:custom_community'); disable(true);"></p-radioButton>
       </li>
       <li>
         <p-radioButton name="searchPostedBy" value="custom" label="Custom friend" (click)="disable(false);"></p-radioButton>

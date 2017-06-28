@@ -45,12 +45,13 @@
 
   </wth-modal-dock-body>
   <wth-modal-dock-footer [inline]="true">
-    <div *ngIf="step==1">
+    <div *ngIf="step==uploadSteps.init">
       <a href="javascript:;" (click)="stop($event)">
         Stop
       </a>
     </div>
-    <div *ngIf="step==2 || step==4">
+
+    <div *ngIf="step==uploadSteps.uploaded || step==uploadSteps.stop">
       <a class="mr20" href="javascript:;"
          (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal', data: photos}})">
         Create Album
@@ -58,6 +59,10 @@
       <a href="javascript:;"
          (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal', data: photos}})">
         Add to Album
+      </a>
+
+      <a href="javascript:;" (click)="retryUpload($event)" *ngIf="pending_files.length > 0">
+        Retry ( {{pending_files.length}} files )
       </a>
     </div>
   </wth-modal-dock-footer>

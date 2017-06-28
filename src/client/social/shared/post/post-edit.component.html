@@ -1,4 +1,4 @@
-<hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
+<modal #modal cssClass="modal-social modal-long" [animation]="false">
   <modal-body>
     <div class="z-social-media mb15">
       <div class="z-social-media-left">
@@ -11,24 +11,22 @@
           <div class="z-name">
             {{currentUser?.first_name}}
           </div>
-          <div class="z-shared-with">
-            <span class="dropdown">
-              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
-                 aria-haspopup="true" aria-expanded="true">
-                  <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{privacyName(post)}} </a>
-              <ul class="dropdown-menu">
-                <li><a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
-                  <i class="fa fa-globe"></i> Public</a></li>
-                <li><a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
-                  <i class="fa fa-users"></i> Friends</a></li>
-                <li><a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)"><i
-                  class="fa fa-lock"></i> Personal</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a></li>
-                <li><a href="#"
-                       (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities</a></li>
-              </ul>
-            </span>
+          <div class="z-shared-with dropdown">
+            <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
+               aria-haspopup="true" aria-expanded="true">
+              <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{privacyName(post)}} </a>
+            <ul class="dropdown-menu">
+              <li><a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
+                <i class="fa fa-globe"></i> Public</a></li>
+              <li><a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
+                <i class="fa fa-users"></i> Friends</a></li>
+              <li><a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)"><i
+                class="fa fa-lock"></i> Personal</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a></li>
+              <li><a href="#"
+                     (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities</a></li>
+            </ul>
           </div>
         </div>
         <div class="z-shared-info">
@@ -109,23 +107,23 @@
           <div class="form-group">
             <div class="row-img row-img-10 grid">
               <div class="row-img-item" *ngFor="let f of files">
-                <div class="photo-box-img">
-                  <div class="photo-box-img-action photo-box-img-action-left">
+                <div class="photo-box">
+                  <div class="photo-box-action">
                     <i class="fa fa-remove" (click)="cancelUploading(f)"></i>
                   </div>
-                  <div class="photo-box-img-figure">
+                  <div class="photo-box-figure">
                     <figure class="img-center-dv photo-item-uploading loading"></figure>
                   </div>
                 </div>
               </div>
               <div class="row-img-item" *ngFor="let p of post.photos">
-                <div class="photo-box-img">
-                  <div class="photo-box-img-action photo-box-img-action-left">
+                <div class="photo-box">
+                  <div class="photo-box-action">
                     <i class="fa fa-remove" (click)="removePhoto(p,$event)"></i>
                   </div>
-                  <div class="photo-box-img-figure">
+                  <div class="photo-box-figure">
                     <figure class="img-center-dv">
-                      <span class="photo-box-img-figure-in">
+                      <span class="photo-box-figure-in">
                         <img class="img-center" draggable="false" [src]="p['thumbnail_url']" alt="currentUser.profile_image">
                       </span>
                     </figure>
@@ -151,7 +149,7 @@
       </div>
     </form>
   </modal-body>
-</hd-modal>
+</modal>
 <!--<post-photo-select #photoSelectModal-->
 <!--(onNext)="next($event)"-->
 <!--(onDismiss)="dismiss($event)"-->

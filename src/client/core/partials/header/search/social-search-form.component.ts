@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { BaseSearchForm } from './base-search-form';
 import { ServiceManager } from '../../../shared/services/service-manager';
 
 declare let _:any;
@@ -10,7 +9,7 @@ declare let _:any;
   templateUrl: 'social-search-form.component.html',
 })
 
-export class SocialSearchFormComponent extends BaseSearchForm implements OnInit {
+export class SocialSearchFormComponent implements OnInit {
   result:any;
   groups:any;
   constants:any;
@@ -19,7 +18,6 @@ export class SocialSearchFormComponent extends BaseSearchForm implements OnInit 
   active:boolean;
 
   constructor(public serviceManager: ServiceManager) {
-    super();
     this.constants = this.serviceManager.getConstants();
     this.active = this.constants.search.config.socialActive;
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaFavoriteService } from './favourites.service';
-import { ZMediaPhotoDetailComponent } from '../photo/photo-detail.component';
 import { PhotoService } from '../../core/shared/services/photo.service';
+import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -12,7 +12,7 @@ declare var _: any;
   templateUrl: 'favourites-list.component.html'
 })
 export class ZMediaFavoriteListComponent implements OnInit {
-  @ViewChild('photoDetail') photoDetail: ZMediaPhotoDetailComponent;
+  @ViewChild('photoDetail') photoDetail: PhotoDetailModalComponent;
 
   data: any = [];
   nextLink: string = null;

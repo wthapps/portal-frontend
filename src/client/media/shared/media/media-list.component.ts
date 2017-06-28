@@ -1,29 +1,31 @@
 import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
-  ViewContainerRef, ViewChild, ComponentFactoryResolver
+  ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy, ViewEncapsulation
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
-import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
-import { AlbumCreateModalComponent } from '../modal/album-create-modal.component';
-import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
-import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { PhotoDetailModalComponent } from '../modal/photo-detail-modal.component';
 import { ZMediaAlbumService } from '../../album/album.service';
-import { AlbumDeleteModalComponent } from '../modal/album-delete-modal.component';
 import { PhotoService } from '../../../core/shared/services/photo.service';
+import { Subject } from 'rxjs/Subject';
+import { SharingModalComponent } from '../../../core/partials/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../../../core/partials/photo/modal/tagging/tagging-modal.component';
+import { PhotoEditModalComponent } from '../../../core/partials/photo/form/photo-edit-modal.component';
+import { BaseObjectEditNameModalComponent } from '../../../core/partials/photo/modal/base-object-edit-name-modal.component';
+import { PhotoDetailModalComponent } from '../../../core/partials/photo/modal/photo-detail-modal.component';
+import { AlbumDeleteModalComponent } from '../../../core/partials/photo/modal/album-delete-modal.component';
+import { AlbumEditModalComponent } from '../../../core/partials/photo/modal/album-edit-modal.component';
+import { AlbumCreateModalComponent } from '../../../core/partials/photo/modal/album-create-modal.component';
 
 declare var _: any;
 declare var $: any;
 
 @Component({
   moduleId: module.id,
+  encapsulation: ViewEncapsulation.None,
   selector: 'me-list',
   templateUrl: 'media-list.component.html',
   styleUrls: ['media-list.component.css'],
@@ -42,7 +44,7 @@ declare var $: any;
   ]
 })
 
-export class MediaListComponent implements OnInit, AfterViewInit {
+export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() selectedObjects: Array<any> = new Array<any>();
   // @Input() type: string = 'photo';
   // @Input() objects: any;
@@ -86,6 +88,8 @@ export class MediaListComponent implements OnInit, AfterViewInit {
   private currentPage: string;
   private objectType: string; //photo, album, video, playlist, all
   private params: any;
+  private currentView: number;
+  private destroySubject: Subject<any> = new Subject<any>();
 
 
   @HostListener('document:keydown', ['$event'])
@@ -151,14 +155,21 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       this.changeView('grid'); // Default view should be grid
   }
 
+  ngOnDestroy() {
+    this.currentView = 0;
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();    // Destroy unused subscriptions
+  }
+
   getObjects(options?: any) {
     let path = this.currentPath;
     let moreOptions = {};
 
     if (this.page == 'favorites') {
-
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`media?list_type=favorites`).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`media?list_type=favorites`)
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -173,7 +184,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
       // options['album'] = this.params['id'];
       moreOptions = Object.assign({}, options, {'album': this.params['id']});
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`photos`, moreOptions).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`photos`, moreOptions)
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -186,7 +199,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
     if (this.params) {
       this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`photos`, {album: this.params['id']}).subscribe((response: any)=> {
+      this.mediaObjectService.getObjects(`photos`, {album: this.params['id']})
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
@@ -198,7 +213,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     }
 
     this.loadingService.start('#list-photo');
-    this.mediaObjectService.getObjects(this.currentPath, options).subscribe((response: any)=> {
+    this.mediaObjectService.getObjects(this.currentPath, options)
+      .takeUntil(this.destroySubject)
+      .subscribe((response: any)=> {
       this.loadingService.stop('#list-photo');
       this.objects = response.data;
       this.nextLink = response.page_metadata.links.next;
@@ -212,7 +229,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     // this.loadingService.start('#list-photo');
     if (this.nextLink != null) { // if there are more objects
       // this.mediaObjectService.getObjects(this.nextLink).subscribe((response: any)=> {
-      this.mediaObjectService.loadMore(this.nextLink).subscribe((response: any)=> {
+      this.mediaObjectService.loadMore(this.nextLink)
+        .takeUntil(this.destroySubject)
+        .subscribe((response: any)=> {
         // this.loadingService.stop('#list-photo');
         this.objects.push(...response.data);
         this.nextLink = response.page_metadata.links.next;
@@ -437,7 +456,9 @@ export class MediaListComponent implements OnInit, AfterViewInit {
 
     let self = this;
 
-    this.mediaObjectService.favourite(body).subscribe(
+    this.mediaObjectService.favourite(body)
+      .takeUntil(this.destroySubject)
+      .subscribe(
       (response: any) => {
         // update favourite attribute
         if (selectedIndex != -1) {
@@ -691,7 +712,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
     let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
 
-
+    console.log(photos, photos.length)
     if( photos.length > 0 ) {
       // Ask for user confirmation before deleting selected PHOTOS
       this.confirmationService.confirm({
@@ -819,7 +840,7 @@ export class MediaListComponent implements OnInit, AfterViewInit {
         this.selectedObjects.push(item);
       }
     } else {
-      $('.row-img .photo-box-img').removeClass('selected');
+      $('.row-img .photo-box').removeClass('selected');
       $('#photo-box-img-' + item.id).addClass('selected');
       this.selectedObjects.length = 0;
       this.selectedObjects.push(item);

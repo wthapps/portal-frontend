@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
+declare var _: any;
+
 export class ICountry {
   name: string;
   dial_code: string;
@@ -19,7 +21,8 @@ export class CountryService {
    * @param {Http} http - The injected Http.
    * @constructor
    */
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+  }
 
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
@@ -37,10 +40,29 @@ export class CountryService {
       .catch(this.handleError);
   }
 
+  getCountryNameToCode(name: any, dataCountries: any) {
+    if (dataCountries) {
+      let phoneName = name.split(' (+');
+      let phoneCode = _.find(dataCountries, ['name', phoneName[0]]);
+      return phoneCode.code;
+    } else {
+      return name;
+    }
+  }
+
+  getCountryCodeToName(code: any, dataCountries: any) {
+    if (dataCountries) {
+      let objName = _.find(dataCountries, ['code', code]);
+      return objName.name + ' (' + objName.dial_code + ')';
+    } else {
+      return name;
+    }
+  }
+
   /**
    * Handle HTTP error
    */
-  private handleError (error: any) {
+  private handleError(error: any) {
     // In a real world app, we might use a remote logging infrastructure
     // We'd also dig deeper into the error to get a better message
     let errMsg = (error.message) ? error.message :

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 declare var $:any;
 @Component({
@@ -17,14 +18,27 @@ export class ZChatSidebarComponent implements OnInit {
   historyContacts:any;
   recentContacts:any;
   historyShow:any = true;
+  isRedirect:boolean;
   @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
 
-  constructor(public chatService: ChatService) {}
+  constructor(public chatService: ChatService, private router: Router) {}
 
   ngOnInit() {
+    this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe((event: any) => {
+        // URL "/" and "/conversations"
+        if (event.url.indexOf('conversations') !== -1 || event.url.length == 1) {
+          this.isRedirect = true;
+        } else {
+          this.isRedirect = false;
+        }
+      });
     this.chatService.handler.addListener('on_default_contact_select_side_bar', 'on_default_contact_select', (contact:any) => {
-      this.chatService.router.navigate([`${this.chatService.constant.conversationUrl}/${contact.id}`]);
-      this.chatService.getMessages(contact.group_json.id);
+      if (this.isRedirect) {
+        this.chatService.router.navigate([`${this.chatService.constant.conversationUrl}/${contact.id}`]);
+        this.chatService.getMessages(contact.group_json.id);
+      }
     });
     this.item = this.chatService.getContacts();
     this.recentContacts = this.chatService.getRecentContacts();
@@ -35,6 +49,8 @@ export class ZChatSidebarComponent implements OnInit {
 
   onSelect(contact:any) {
     $('#chat-message-text').focus();
+    // Scroll to bottom when click
+    $('.page-body-chat-content-in').animate({ scrollTop: $(document).height() }, "fast");
     this.chatService.selectContact(contact);
   }
 

@@ -1,0 +1,42 @@
+<div class="page-body-control has-page-body-sidebar">
+  <z-chat-contact-navigation [tab]="'sent_request'"></z-chat-contact-navigation>
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem && contactItem.value">
+  <div class="page-body-content-in">
+    <div class="row media-user-list-group">
+      <div class="col-sm-6"
+           *ngFor="let contact of contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupSentRquest:contactItem.value.data.length">
+        <div class="media media-user-list">
+          <div class="media-body">
+            <z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>
+          </div>
+          <div class="media-right no-wrap">
+            <button class="btn btn-wth-default" type="button" (click)="onResend(contact)">
+              ReSend
+            </button>
+            <button type="button" class="btn btn-default" (click)="onCancel(contact)">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!contactItem.value">
+  <div class="page-body-content-in">
+    <div class="inside-loading">
+      <div class="pt20 pb20"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar"
+     *ngIf="contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupSentRquest:contactItem.value.data.length).length == 0">
+  <div class="page-body-content-in">
+    No data
+  </div>
+</div>

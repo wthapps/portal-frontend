@@ -1,5 +1,5 @@
 <!--Create new post here-->
-<div class="z-social-box" *ngIf="type != 'search'">
+<div class="z-social-box" *ngIf="type != 'search' && canCreatePost">
   <div class="z-social-media">
     <div class="z-social-media-left">
       <div class="avatar-xs">
@@ -19,7 +19,8 @@
   </div>
 </div>
 <!--List of post items-->
-<div id="post-list-component" class="pt20 pb20">
+
+<div id="post-list-component">
   <div class="z-social-box" *ngFor="let item of items; ">
     <so-post [item]="item"
              (onDeleted)="deletedPost($event, item)"
@@ -27,6 +28,7 @@
              (modalOpened)="openEditModal($event)"
              (photoModalOpened)="openPhotoModal($event)">
     </so-post>
+
   </div>
 
   <div *ngIf="postIsEmpty" class="text-center text-fade">
@@ -35,6 +37,7 @@
     <p><a href="javascript:;"  (click)="postEditModal.open()" class="btn btn-default">Create new post</a></p>
   </div>
 </div>
+<div id="post-list-loading" class="pt20 pb20"></div>
 
 <div class="view-all" *ngIf="nextLink != undefined">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>

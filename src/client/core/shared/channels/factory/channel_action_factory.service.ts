@@ -4,6 +4,8 @@ import { AppearanceAllUsersOnline } from '../actions/appearance_all_users_online
 import { AppearanceNewUserOffline } from '../actions/appearance_new_user_offline';
 import { ChatSendMessage } from '../actions/chat_send_message';
 import { ChatNotification } from '../actions/chat_notification';
+import { ChatActions } from '../actions/chat_actions';
+import { CommonNotification } from '../actions/common_notification';
 
 @Injectable()
 export class ChannelActionFactoryService {
@@ -12,6 +14,7 @@ export class ChannelActionFactoryService {
   appearance_new_user_offline:string = 'appearance_new_user_offline';
   chat_send_message:string = 'chat_send_message';
   chat_notification:string = 'chat_notification';
+  common_notification: string = 'common_notification';
   action:any;
   data:any;
 
@@ -35,6 +38,11 @@ export class ChannelActionFactoryService {
       case this.chat_notification:
         action = new ChatNotification(this.data, service);
         break;
+      case this.common_notification:
+        action = new CommonNotification(this.data, service);
+        break;
+      default:
+        action = new ChatActions(service);
     }
     return action;
   }

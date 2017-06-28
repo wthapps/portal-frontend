@@ -1,0 +1,214 @@
+<div *ngIf="message.message_type != 'notification'" class="message-item"
+     [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+  <div class="message-item-date" *ngIf="hasShowDate()">
+    <span>{{ message.created_at | date }}</span>
+  </div>
+  <div class="message-item-content">
+    <div class="message-item-owner" *ngIf="hasShowOwner() && message.display">
+      <h4 class="message-item-owner-name">
+        <a [routerLink]="[profileUrl, message.display.uuid]"> {{message.display.name}} </a>
+      </h4>
+      <figure class="message-item-owner-avatar">
+        <span class="avatar-xs">
+          <img [src]="message.display.image" alt="">
+        </span>
+      </figure>
+    </div>
+    <div class="message-item-content-card">
+      <div class="message-item-content-main">
+
+        <!--mesasge menu-->
+        <div class="message-item-menu dropdown"
+             *ngIf="(message.message_type == 'text' || message.file_type == 'Photo' || message.file_type == 'FileMedium')">
+          <i class="fa fa-sort-down" data-toggle="dropdown"></i>
+
+          <!--text message menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
+            <li *ngIf="!message.file_json"><a href="javascript:;" (click)="copy()">Copy</a></li>
+            <!--comment out this menu because this function is not working now-->
+            <!--<li *ngIf="!message.file_json"><a href="javascript:;" (click)="quote()">Quote Message</a></li>-->
+            <li *ngIf="!message.file_json && message.byMe"><a href="javascript:;" (click)="edit()">Edit</a></li>
+            <li *ngIf="!message.file_json && message.byMe"><a href="javascript:;" (click)="delete()">Delete</a></li>
+          </ul>
+
+          <!--photos menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Photo'">
+            <li *ngIf="message.file_json">
+              <a [href]="message.file_json.url" target="_blank" download>
+                Download
+              </a>
+            </li>
+          </ul>
+
+          <!--other menu menu menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
+            <li *ngIf="message.file_json">
+              <a [href]="message.file_json.url" target="_blank" download>
+                Download
+              </a>
+            </li>
+          </ul>
+
+        </div>
+
+
+        <!--text type-->
+        <div class="message-item-content-text" *ngIf="message.message_type == 'text'">
+          <span [innerHtml]="message.message | wthEmojis | linkify | safeHtml"></span>
+        </div>
+
+        <template [ngIf]="message.message_type == 'file'">
+          <!--photo type-->
+          <div class="message-item-content-photo" *ngIf="message.file_type == 'Photo'">
+            <figure>
+              <a [routerLink]="['/photos', message.file_json.id]" [queryParams]="{message: message.id}">
+                <img [src]="message.file_json.url" alt="">
+
+              </a>
+            </figure>
+          </div>
+          <div class="message-item-content-other-files" *ngIf="message.file_type == 'FileMedium'">
+            <a class="media-div link-text" [href]="message.file_json.url" target="_blank" download>
+              <div class="pull-left">
+                <i class="fa fa-file-o"></i>
+              </div>
+              <div class="media-div-body">
+                <div class="media-div-heading">{{message.file_json.name}}</div>
+                <div class="text-fade">{{message.file_json.size | bytes:3}}</div>
+              </div>
+            </a>
+          </div>
+        </template>
+
+
+        <template [ngIf]="message.message_type == 'file_tmp'">
+          <!--other file types-->
+          <div class="message-item-content-other-files">
+            <i class="fa fa-spinner fa-spin fa-fw"></i> Sending ...
+          </div>
+
+        </template>
+
+
+        <!--hyperlink tpe-->
+        <div class="message-item-content-hyperlink">
+
+        </div>
+
+        <!--quote message type-->
+        <div class="message-item-content-quote-text" *ngIf="message.message_type == 'quote'">
+          <blockquote>
+            <strong>David Nguyen</strong>
+            <span>4:37 PM</span>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aut cupiditate doloremque, ea esse
+              eveniet illum incidunt itaque molestias nisi non quae recusandae, sequi sint sunt suscipit tenetur ullam
+              voluptatibus?</p>
+          </blockquote>
+        </div>
+
+        <!--share contact type-->
+        <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'share_contact_message'">
+          <div class="media-div">
+            <div class="pull-left">
+              <span class="avatar-sm">
+                <img [src]="message.display.share_contact.profile_image" alt="">
+              </span>
+            </div>
+            <div class="media-div-body">
+              <a href="profile/{{message.display.share_contact.uuid}}" class="media-heading bold">{{message.display.share_contact.name}}</a>
+              <div class="mt15" *ngIf="!message.byMe">
+                <button class="btn btn-wth-default" (click)="onAdd(message.display.share_contact)">
+                  <i class="fa fa-user-plus"></i> Add to Contact
+                </button>
+              </div>
+
+              <div class="mt15" *ngIf="message.byMe">
+                <button class="btn btn-wth-default">
+                  Resent
+                </button>
+                <button class="btn btn-default" >
+                  Cancel
+                </button>
+                <!--<p *ngIf="message.byMe" class="text-fade">-->
+                  <!--Contact send-->
+                <!--</p>-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!--share contact type-->
+        <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
+          <div class="media-div" *ngIf="message.byMe">
+            <div class="pull-left">
+              <span class="avatar-sm">
+                <img [src]="message.receiver.profile_image" alt="">
+              </span>
+            </div>
+            <div class="media-div-body">
+              <a href="profile/{{message.receiver.uuid}}" class="media-heading bold">{{message.receiver.name}}</a>
+              <div class="mt15" *ngIf="message.byMe">
+                <button class="btn btn-wth-default"
+                        (click)="doEvent({action: 'CONTACT_REQUEST_CREATE', data: message.receiver})">
+                  Resend
+                </button>
+
+                <!--TODO consider  cancel contact in api-->
+                <!--add notification or status change after canceling-->
+                <button class="btn btn-default"
+                        (click)="doEvent({action: 'CONTACT_REQUEST_CANCEL', data: message})">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="media-div" *ngIf="!message.byMe">
+            Hello! You are now connected on Chat.
+          </div>
+        </div>
+
+        <!--leave conversation-->
+        <div class="message-item-content-conversation-leave">
+
+        </div>
+
+        <!--add new contact-->
+        <div class="message-item-content-conversation-add-new-contact">
+
+        </div>
+
+        <!--text type-->
+        <div class="message-item-content-text" *ngIf="message.message_type == 'message_deleted'">
+          <span>This message has been deleted</span>
+        </div>
+
+      </div>
+      <div class="message-item-action"
+           *ngIf="(message.message_type == 'text' || message.message_type == 'Photo' || message.message_type == 'FileMedium')">
+        <div class="message-item-time">
+          <small>{{message.created_at | timeFormat: "time_only"}}</small>
+        </div>
+      </div>
+      <div class="message-item-status">
+        <span>Sent <i class="fa fa-check-circle-o"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="p20 text-center" *ngIf="message.links && message.links.length > 0" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+  <div *ngFor="let link of message.links">
+    <div *ngIf="link.image && link.title" class="message-item-content-main" >
+      <display-link [data]="link" *ngIf="link.image && link.title"></display-link>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="message.message_type == 'notification'" class="p20 text-center">
+  <div><span class="text-bold">{{message.display.name}}</span> {{message.message}}</div>
+  <div class="text-fade">
+    <small>{{message.created_at | timeFormat: "time_only"}}</small>
+  </div>
+</div>

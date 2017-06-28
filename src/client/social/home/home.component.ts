@@ -2,6 +2,7 @@ import { Component, ViewChild, AfterViewInit, HostListener, OnInit } from '@angu
 import { PostListComponent } from '../shared/post/post-list.component';
 import { SocialService } from '../shared/services/social.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { SocialFavoriteService } from '../shared/services/social-favorites.service';
 
 
 declare var $: any;
@@ -20,6 +21,7 @@ export class ZSocialHomeComponent {
   @ViewChild('posts') posts: PostListComponent;
 
   constructor(private socialService: SocialService,
+              public favoriteService: SocialFavoriteService,
               private router: Router) {
     this.socialService.community.currentCommunity = undefined;
 

@@ -49,10 +49,15 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.removeAll();
+    this.addAll();
   }
 
   ngOnChanges() {
     this.removeAll();
+    this.addAll();
+  }
+
+  addAll() {
     let _this = this;
     if (this.data && this.data.profile_info) {
       this.removeAll();

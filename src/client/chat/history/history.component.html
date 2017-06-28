@@ -1,22 +1,23 @@
-<!--<div class="page-body-content has-page-body-sidebar" *ngIf="contactItem.value">-->
-  <!--<div class="page-body-content-in">-->
-    <!--<ul class="p-list-user p-list-border">-->
-      <!--<li *ngFor="let contact of contactItem.value" >-->
-        <!--<div class="media-flex">-->
-          <!--<div class="media-flex-item">-->
-            <!--<figure>-->
-              <!--<img [src]="contact.display.image">-->
-            <!--</figure>-->
-          <!--</div>-->
-          <!--<div class="media-flex-item">-->
-            <!--<span class="text-overflow-name">{{contact.display.name}}</span>-->
-          <!--</div>-->
-          <!--<div class="media-flex-body text-fade">-->
-            <!--&lt;!&ndash;Nickname&ndash;&gt;-->
-          <!--</div>-->
-          <!--<z-chat-contact-actions [contact]="contact" [config]="configActions"></z-chat-contact-actions>-->
-        <!--</div>-->
-      <!--</li>-->
-    <!--</ul>-->
-  <!--</div>-->
-<!--</div>-->
+<div class="page-body-content has-page-body-sidebar">
+  <div class="page-body-content-in" *ngIf="contactItem.value">
+    <div *ngFor="let contact of contactItem.value | chatGroupHistory" class="media media-middle media-user-list media-user-list-history">
+      <div class="media-left">
+        <z-chat-share-user [data]="contact" [size]="'xs'"></z-chat-share-user>
+      </div>
+      <div class="media-left">
+        <span class="text-fade">{{contact.group_json.updated_at | timeFormat }}</span>
+      </div>
+      <div class="media-body">
+        <p class="no-wrap">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, asperiores aut consequuntur dolor dolorem
+          doloribus ducimus ex expedita id iusto magnam nemo nesciunt, quae, quasi repellat tenetur voluptatibus. Ipsam,
+          quos!
+        </p>
+      </div>
+      <div class="media-right">
+        <z-chat-contact-actions [contact]="contact" [config]="configActions"></z-chat-contact-actions>
+      </div>
+    </div>
+  </div>
+</div>
+

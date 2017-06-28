@@ -1,7 +1,7 @@
 <div class="list-group-item" *ngFor="let notification of notificationService.notifications"
     data-id="notification_{{notification.id}}"
     [ngClass]="{'unread-notification': !notification?.is_read}">
-  <div class="media">
+  <div class="media" *ngIf="!notification.isHidden">
     <div class="media-left">
       <a>
           <span class="avatar-xsm">
@@ -40,7 +40,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-lg">
           <li><a href="javascript:;" class="text-disable">Disable Notification for this post</a>
-          <li><a href="javascript:;" (click)="hideNotification(notification)">Hide this notification</a>
+          <li><a href="javascript:;" (click)="confirmHideNotification(notification)">Hide this notification</a>
           </li>
           <!--<li><a href="javascript:;" (click)="turnOffNotificaion(notification)">Turn off all notifications relate to this</a>
           </li>-->
@@ -56,6 +56,12 @@
 
     </div>
   </div>
+  <undo-notification [notification]="notification" *ngIf="!!notification.isHidden"></undo-notification>
+</div>
+<div *ngIf="notificationService.notifications.length == 0">
+  <p class="p10">
+    Currently you have no notifications
+  </p>
 </div>
 
 

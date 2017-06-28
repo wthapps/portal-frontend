@@ -4,8 +4,9 @@ import { SocialService } from '../shared/services/social.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { NotificationService } from '../../core/shared/services/notification.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ZoneReportService } from '../shared/form/report/report.service';
 import { LoadingService } from '../../core/partials/loading/loading.service';
+import { ZoneReportService } from '../../core/shared/form/report/report.service';
+import { SocialFavoriteService } from '../shared/services/social-favorites.service';
 
 
 declare var $: any;
@@ -22,7 +23,8 @@ export let FRIEND_TABS: any = {
 @Component({
   moduleId: module.id,
   selector: 'z-social-members',
-  templateUrl: 'members.component.html'
+  templateUrl: 'members.component.html',
+  styleUrls: ['members.component.css']
 })
 export class ZSocialMembersComponent implements OnInit {
   errorMessage: string;
@@ -45,6 +47,7 @@ export class ZSocialMembersComponent implements OnInit {
 
   constructor(private socialService: SocialService,
               private zoneReportService: ZoneReportService,
+              private favoriteService: SocialFavoriteService,
               private loadingService: LoadingService) {
   }
 
@@ -182,11 +185,7 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.toggleFavourites(uuid, 'friend').subscribe(
-      (res: any) => {
-        this.favourite = res.data;
-      }
-    );
+    this.favoriteService.addFavourite(uuid, 'friend').then((res: any) => this.favourite = res.data);
   }
 
 

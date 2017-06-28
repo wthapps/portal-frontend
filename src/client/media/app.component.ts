@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { Config } from '../core/shared/config/env.config';
 
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import './operators';
 import 'rxjs/add/operator/filter';
 
@@ -32,5 +32,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+  }
+
+  onAction(event: any) {
+    console.log('app - onAction');
   }
 }

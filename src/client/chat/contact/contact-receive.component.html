@@ -1,0 +1,56 @@
+<div class="page-body-control has-page-body-sidebar">
+  <z-chat-contact-navigation [tab]="'receive'"></z-chat-contact-navigation>
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="users">
+  <div class="page-body-content-in">
+    <div class="row media-user-list-group">
+      <div class="col-sm-6" *ngFor="let user of users">
+        <div class="media media-user-list">
+          <div class="media-body">
+            <z-chat-share-user-icon
+              [image]="user.profile_image"
+              [name]="user.name"
+              [size]="'sm'"
+              [groupType]="'couple'"
+              [userId]="user.id">
+            </z-chat-share-user-icon>
+          </div>
+          <div class="media-right no-wrap">
+            <button class="btn btn-wth-default" type="button" (click)="onAddToContact(user)">
+              <i class="fa fa-user-plus"></i>
+            </button>
+
+            <div class="btn-group">
+              <button class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" type="button">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="javascript:;">Remove</a></li>
+                <li class="divider" role="separator"></li>
+                <li><a href="javascript:;" (click)="addBlackList(user)">Blacklist</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<z-chat-share-request-contact #request></z-chat-share-request-contact>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!users">
+  <div class="page-body-content-in">
+    <div class="inside-loading">
+      <div class="pt20 pb20"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="users && users.length == 0">
+  <div class="page-body-content-in">
+    No data
+  </div>
+</div>

@@ -16,8 +16,11 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
 import { ModalDockComponent } from '../../../core/partials/modal/dock.component';
+import { Router } from '@angular/router';
+import { MediaUploaderDataService } from './media-uploader-data.service';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -31,10 +34,11 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   files_num: number;
   uploaded_num: number;
   stopped_num: number;
+  pending_files: any;
   pending_request: any;
   photos: Array<any> = [];
   files: Array<any>;
-  uploadSteps: any = {
+  readonly uploadSteps: any = {
     closed: -1,
     begin: 0,
     init: 1,
@@ -42,7 +46,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     error: 3,
     stop: 4,
   };
-  events: Subject<any>;
+  // events: Subject<any>;
 
   @ViewChild('inputfiles') inputFiles: ElementRef;
 
@@ -56,9 +60,17 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   @ViewChild('modalDock') modalDock: ModalDockComponent;
 
   constructor(private apiService: ApiBaseService, private renderer: Renderer,
+              private router: Router,
+              private mediaUploadDataService: MediaUploaderDataService,
               private photoUploadService: PhotoUploadService) {
     this.dragleave();
-    this.events = new Subject();
+    // this.events = new Subject();
+
+  //  Listen to summon command from other components
+    this.mediaUploadDataService.showUp$.subscribe(() => {
+      this.browseFiles(null);
+    });
+
   }
 
   ngOnInit() {
@@ -102,14 +114,27 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     }
   }
 
+  // Retry upload pending files
+  retryUpload(event: any) {
+    event.preventDefault();
+
+    let pending_files = this.pending_files.slice();
+    this.uploadImages(pending_files);
+  }
+
+
   uploadImages(files: any) {
     this.step = this.uploadSteps.init;
     this.modalDock.open();
 
     this.uploaded_num = 0;
     this.stopped_num = 0;
-    this.files_num = this.files.length;
+    this.files_num = files.length;
     this.photos.length = 0;
+
+    // Convert fileList to array
+    this.pending_files = Array.prototype.slice.call( files );
+    console.log('Pending files: ', this.pending_files);
 
     this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => {
       this.current_photo = res;
@@ -117,39 +142,49 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
     // Stop observable when finish uploading all files
     this.photoUploadService.uploadPhotos(files)
-      .takeWhile(() => this.step != this.uploadSteps.uploaded)
+      .takeWhile(() => this.step != this.uploadSteps.uploaded && this.step != this.uploadSteps.stop)
       .subscribe((res: any) => {
           console.log('Upload image to s3 and save info successfully', res);
           this.uploaded_num++;
-          // this.current_photo = res['current_photo'];
-          // let newPhoto = new Photo(res['data']);
-          this.current_photo = res.data.thumbnail_url;
-          this.photos.push(res.data);
+          let returnData = res.data;
+          let originPhoto = res.originPhoto;
+          // Remove success photos from pending files
+          console.log('Return data: ', res);
+          _.remove(this.pending_files, (file: any) => file.name === originPhoto.name && file.type === originPhoto.type);
+
+          this.current_photo = returnData.thumbnail_url;
+          this.photos.push(returnData);
 
           // newPhoto.thumbnail_url = this.current_photo;
-          this.events.next(res.data);
+          // this.events.next(returnData);
+          this.onAction({action: 'updateMediaList', params: { data: returnData}})
 
           if (this.uploaded_num == this.files_num) {
             this.step = this.uploadSteps.uploaded;
           }
         }
         , (err: any) => {
-          this.step = this.uploadSteps.error;
+          this.uploaded_num++;
+          // this.step = this.uploadSteps.error;
           console.error('Error when uploading files ', err);
         });
   }
 
   onAction(options?: any): void {
     // close uploading form
-    this.step = this.uploadSteps.closed;
-    this.modalDock.close();
+    if ( _.get(options, 'action') !== 'updateMediaList') {
+      this.step = this.uploadSteps.closed;
+      this.modalDock.close();
+      console.log('media-uploader action: ', options);
+    }
 
-    this.outEvent.emit(options);
+    // this.outEvent.emit(options);
+    this.mediaUploadDataService.onAction(options);
   }
 
-  onCreateNewAlbum() {
-    this.createNewAlbum.emit(this.photos);
-  }
+  // onCreateNewAlbum() {
+  //   this.createNewAlbum.emit(this.photos);
+  // }
 
   browseFiles(event: any) {
     this.renderer.invokeElementMethod(this.inputFiles.nativeElement, 'click');

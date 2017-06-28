@@ -1,0 +1,58 @@
+@import "../../../../core/scss/global";
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px !important;
+  direction: ltr;
+  cursor: pointer;
+}
+
+.wth-emoji {
+  cursor: pointer;
+}
+
+.message-editor-input {
+  //@extend .form-control;
+  width: 100%;
+  max-height: 130px;
+  overflow-y: auto;
+  color: #565867;
+  resize: none;
+  //border: none;
+  background-color: transparent;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  padding: 5px 10px;
+  box-shadow: none !important;
+
+  outline: 0 none !important;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.message-editing {
+  background-color: #ffd !important;
+}
+/*
+.chatbox-container-input {
+  //height: 34px !important;
+  //overflow: hidden !important;
+}
+
+:host.active .chatbox-container-input {
+  height: auto !important;
+  overflow: auto !important;
+}
+*/
+

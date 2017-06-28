@@ -57,6 +57,12 @@ import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
 import { ChannelService } from './channels/channel.service';
 import { ChatCommonService } from './services/chat.common.service';
+import { ZoneReportService } from './form/report/report.service';
+import { ZoneReportComponent } from './form/report/report.component';
+import { HdModalComponent } from './ng2-hd/modal/components/modal';
+import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
+import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
+import { PipeModule } from './pipe/pipe.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -79,16 +85,17 @@ import { ChatCommonService } from './services/chat.common.service';
     CalendarModule,
     CheckboxModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    PipeModule
   ],
   declarations: [
     ToolbarComponent,
     NavbarComponent,
     ReadMoreComponent,
     PhotoItemPreviewComponent,
+    ZoneReportComponent,
 
     // Pipe
-    GroupByMonthYearPipe,
     GroupByObjectTypePipe,
     GroupByPipe,
     NewlinePipe,
@@ -105,7 +112,8 @@ import { ChatCommonService } from './services/chat.common.service';
     ScrollToBottomDirective,
     AutofocusDirective,
     ImgFullDirective,
-    TextAreaAutoHeightDirective
+    TextAreaAutoHeightDirective,
+    DisplayAsHtmlDirective
   ],
   exports: [
     CommonModule,
@@ -124,16 +132,17 @@ import { ChatCommonService } from './services/chat.common.service';
     CheckboxModule,
     RadioButtonModule,
     InputTextareaModule,
+    PipeModule,
 
     // Component
     ToolbarComponent,
     NavbarComponent,
     ReadMoreComponent,
     PhotoItemPreviewComponent,
+    ZoneReportComponent,
 
 
     // Pipe
-    GroupByMonthYearPipe,
     GroupByObjectTypePipe,
     WthFilterByPipe,
     ArrayLengthPipe,
@@ -150,7 +159,8 @@ import { ChatCommonService } from './services/chat.common.service';
     ScrollToBottomDirective,
     AutofocusDirective,
     ImgFullDirective,
-    TextAreaAutoHeightDirective
+    TextAreaAutoHeightDirective,
+    DisplayAsHtmlDirective
   ]
 })
 export class SharedModule {
@@ -175,8 +185,10 @@ export class SharedModule {
         PhotoUploadService,
         UrlService,
         DateService,
+        ZoneReportService,
         ChatCommonService,
-        PhotoService
+        PhotoService,
+        PubSubEventService
       ]
     };
   }

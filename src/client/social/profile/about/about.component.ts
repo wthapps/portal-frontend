@@ -32,40 +32,16 @@ export class ZSocialProfileAboutComponent implements OnInit {
   userInfo: any;
   constants = Constants;
   actions:any;
+  data:any;
 
-  constructor(private profileDataService: ZSocialProfileDataService
+  constructor(private apiBaseService: ApiBaseService, private route: ActivatedRoute, private profileDataService: ZSocialProfileDataService,
               ) {
   }
 
   ngOnInit() {
-    this.profileDataService.profileData$.take(1).subscribe((res: any) => {
-      this.userInfo = _.get(res, 'userInfo', '');
-      this.actions = _.get(res, 'actions', []);
+    this.profileDataService.profileData$.subscribe((res: any) => {
+      this.data = res.userInfo;
+      this.actions = res.actions;
     });
-  }
-
-  onUpdated(userInfo:any) {
-    this.userInfo = userInfo;
-  }
-
-  onEditAbout() {
-    console.log(this.privacyUser);
-    this.modalAbout.modal.open();
-    return false;
-  }
-
-  onEditContact() {
-    this.modalContact.modal.open();
-    return false;
-  }
-
-  onEditWorkEdu() {
-    this.modalWorkEdu.modal.open();
-    return false;
-  }
-
-  onEditInterest() {
-    this.modalInterest.modal.open();
-    return false;
   }
 }

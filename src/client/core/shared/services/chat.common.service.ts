@@ -27,17 +27,28 @@ export class ChatCommonService {
 
   moveFristRecentList() {
     let contactSelect:any = this.storage.find('contact_select').value;
-    let chatRecentContacts:any = this.storage.find('chat_recent_contacts').value;
-    chatRecentContacts.unshift(contactSelect);
-    chatRecentContacts = _.uniqBy(chatRecentContacts, 'id');
-    this.storage.save('chat_recent_contacts', chatRecentContacts);
+    let conversations:any = this.storage.find('chat_contacts').value.data;
+    _.pullAllBy(conversations, [{ 'group_id': contactSelect.group_id }], 'group_id');
+    conversations.unshift(contactSelect);
+    _.uniqBy(conversations, 'id');
   }
 
   addMessage(groupId:any, data:any) {
+    let message = data.message;
+    message.links = data.links;
     let item = this.storage.find('chat_messages_group_' + groupId);
     let contactSelect = this.storage.find('contact_select').value;
     if (item && item.value) {
-      item.value.data.push(data);
+      let isReplace = false;
+      for (let i = 0; i < item.value.data.length; i++) {
+        if(item.value.data[i].id == message.id) {
+          isReplace = true;
+          item.value.data[i] = message;
+        }
+      }
+      if (!isReplace) {
+        item.value.data.push(message);
+      }
       if(contactSelect.group_json.id == groupId) {
         this.storage.save('current_chat_messages', item);
       }
@@ -47,11 +58,27 @@ export class ChatCommonService {
     }
   }
 
+  updateItemInList(groupId: any, data: any) {
+    let items = this.storage.find('chat_messages_group_' + groupId);
+    // let contactSelect = this.storage.find('contact_select').value;
+    if (items && items.value) {
+      let currentItemIndex = _.findIndex(items.value.data, {id: data.id});
+      // replace current item in array
+      items.value.data.splice(currentItemIndex, 1, data);
+      // if(contactSelect.group_json.id == groupId) {
+        this.storage.save('chat_messages_group_' + groupId, items);
+      // }
+      // if (!contactSelect.favourite) {
+      //   this.moveFristRecentList();
+      // }
+    }
+  }
+
   updateContactSelect() {
     let contactSelect = this.storage.find('contact_select').value;
     let chatContacts = this.storage.find('chat_contacts').value.data;
     for (let i = 0; i < chatContacts.length; i++) {
-      if (chatContacts[i].id == contactSelect.id) {
+      if (chatContacts[i] && chatContacts[i].id == contactSelect.id) {
         this.storage.save('contact_select', chatContacts[i]);
       }
     }

@@ -14,7 +14,7 @@
           <i class="fa fa-camera" (click)="onOpenPhotoSelect()"></i>
           <i class="fa fa-smile-o"></i>
         </span>
-        <textarea class="form-control" placeholder="Add a comment"
+        <textarea class="form-control comment-editor-input" placeholder="Add a comment"
                   textAreaAutoHeight
                   [formControl]="contentCtrl"
                   (keyup)="onKey($event)"
@@ -25,7 +25,7 @@
                           [files]="files"
                           [hasUploadingPhoto]="hasUploadingPhoto" (events)="doEvents($event)"></photo-item-preview>
 
-      <div class="clearfix text-right comment-editor-button-region" *ngIf="contentCtrl.value.length > 0 || comment.photo">
+      <div class="clearfix text-right comment-editor-button-region" *ngIf="hasUpdatedContent">
         <button class="btn btn-sm btn-default" (click)="cancel()"
            href="javascript:;">Cancel</button>
 

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../config/constants';
-import { UUID } from 'angular2-uuid';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { UserService } from './user.service';
 
 declare var AWS: any;
 declare let _: any;
 declare let Promise: any;
+declare let window: any;
 
-export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
+// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
 
 @Injectable()
 export class PhotoUploadService {
@@ -20,6 +20,7 @@ export class PhotoUploadService {
   s3: any;
   readonly SUFFIX: string = '-temp-upload';
   readonly TIMEOUT : number =  4000;
+  readonly MAX_FILES: number = 4; // only process 4 files at a time
 
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
 
@@ -65,54 +66,6 @@ export class PhotoUploadService {
     });
   }
 
-  // TODO: Convert this function to be a Observable
-  // Deprecated
-  // upload(file: any): Promise<any> {
-  //
-  //   return new Promise((resolve: any, reject: any) => {
-  //     var ext = file.name.split('.').reverse()[0];
-  //     let fileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
-  //     let tempImageUrl : string = '';
-  //     let imageUrl: string = '';
-  //     let imageName: string = '';
-  //     let imageUrlThumbnail: string = '';
-  //     let body: any = {};
-  //
-  //     var photoKey = this.bucketSubFolder + '/' + fileName;
-  //     var options = {partSize: 10 * 1024 * 1024, queueSize: 1};
-  //     this.s3.upload({
-  //         Key: photoKey,
-  //         Body: file,
-  //         ACL: 'public-read'
-  //       }, options, (err: any, data: any) => {
-  //         if (err)
-  //           reject(err);
-  //         else {
-  //           console.log('Successfully uploaded photo.', data);
-  //
-  //           imageName = data.key;
-  //           tempImageUrl = data.Location;;
-  //           imageUrl = this.getCompressUrl(tempImageUrl);
-  //           imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
-  //           body = {
-  //             name: imageName,
-  //             url: imageUrl,
-  //             thumbnail_url: imageUrlThumbnail
-  //           };
-  //
-  //           // Delay 4s waiting for image thumbnail to be created
-  //           this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
-  //             .subscribe((result: any) => {
-  //               setTimeout(() => {
-  //                 resolve(result['data']);
-  //               }, 4000);
-  //             },
-  //               (err2: any) => { reject(err2); });
-  //         }
-  //       }
-  //     );
-  //   });
-  // }
 
   getPhoto(photo: any): Observable<any> {
     return Observable.create((observer: any) => {
@@ -132,95 +85,41 @@ export class PhotoUploadService {
    * @returns {any}
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
-    // this.loadConfigOnce(); // Reload config if mandatory config variables is not ready
-    return Observable.create((observer: any) => {
-      for (let i = 0; i < photos.length; i++) {
-        let file = photos[i];
-        let reader: FileReader = new FileReader();
+    if ( !( window.File && window.FileReader && window.FileList && window.Blob ) ) {
+      let err_msg = 'The File APIs are not fully supported in this browser.';
+      console.error(err_msg);
+      return Observable.throw(err_msg);
+    }
 
-        reader.onload = (data: any) => {
-          let currentPhoto = data.target['result'];
-          this.apiService.post('media/photos', {name: file.name, type: file.type, file: currentPhoto})
-          .subscribe((response: any) => {
-            console.log('photo:', response.data);
-            observer.next(response);
-          });
+    // ONLY Process 4 photos at a time
+    return Observable.from(photos)
+      .mergeMap((photo: any) => this.readFile(photo),
+            (photo: any, data: any) => { return {
+            name: photo.name,
+            type: photo.type,
+            file: data
+          }},
+          this.MAX_FILES
+      )
+      .mergeMap((combinedData: any) => this.apiService.post('media/photos', combinedData),
+        (combinedData: any, returnData: any) => { return { originPhoto: combinedData, data: returnData.data}; }, this.MAX_FILES);
+  }
 
-          // let ext = file.name.split('.').reverse()[0];
-          // let fileName = this.getFileName(file);
-          // let encodedFileName = UUID.UUID() + '.' + ext ; // cat.jpg => <uuid>.jpg
-          // let photoKey = this.bucketSubFolder + '/' + encodedFileName;
-          // let options = {partSize: 10 * 1024 * 1024, queueSize: 1};
-          //
-          // console.log('file name: ', fileName);
-          // console.log('file: ', file);
-          // this.s3.upload({
-          //   Key: photoKey,
-          //   Body: file,
-          //   ACL: 'public-read'
-          // }, options, (err: any, data: any) => {
-          //   if (err)
-          //     observer.error(err);
-          //   else {
-          //     console.log('Successfully uploaded photo.', data);
-          //
-          //     // let imageName = data.key;
-          //     let tempImageUrl = data.Location;
-          //     let imageUrl = this.getCompressUrl(tempImageUrl);
-          //     let imageUrlThumbnail = this.getThumbnailUrl(tempImageUrl);
-          //     let body = {
-          //       name: fileName,
-          //       image: currentPhoto,
-          //       url: imageUrl,
-          //       thumbnail_url: imageUrlThumbnail
-          //     };
-          //
-          //     // TODO: Implement polling to reduce delay time
-          //     // Delay 4s waiting for image thumbnail to be created
-          //     this.apiService.post(`${this.soPhotoUrl}/save_photo_info`, body)
-          //       .subscribe((result: any) => {
-          //           setTimeout(() => {
-          //             let wrapperRes = { data: result['data'], current_photo: currentPhoto };
-          //             observer.next(wrapperRes);
-          //           }, this.TIMEOUT);
-          //         },
-          //         (err2: any) => { observer.error(err2); });
-          //   }
-          // });
-        };
-        reader.readAsDataURL(file);
+  // TODO: Handle readFile failed cases
+  readFile(file: any): Promise<any> {
+    return new Promise((resolve: any, reject: any) => {
+      let reader: FileReader = new FileReader();
+
+      reader.onload = (data: any) => {
+        resolve(data.target['result'])
       };
-    });
+
+      reader.onerror = (error: any) => {
+        reject(error);
+        console.error('File could not be read: ', file, error);
+      }
+      reader.readAsDataURL(file);
+    })
   }
 
-  // TODO:
-  remove(file: any) {
-
-  }
-
-  /*
-    Get filename, remove the extension if possible. Ex: small.dog.jpg => small.dog
-   */
-  getFileName(file: any) {
-    let fullName = file.name.trim();
-    let pattern = '.' + EXT_LIST.join('|.'); // Pattern format: .jpg|.jpeg|.gif
-    return fullName.replace(new RegExp('' + pattern + '$', 'i'),'');
-  }
-
-  // Expected result:
-  //    https://env-staging-oregon-temp-upload.s3-us-west-2.amazonaws.com/small.cat.jpg
-  // => https://env-staging-oregon.s3-us-west-2.amazonaws.com/small.cat-thumb.jpg
-  getThumbnailUrl(tempUrl: string) {
-    let str = tempUrl.replace(this.SUFFIX, '');
-    return str.replace(new RegExp('.([a-zA-Z]*)*$'),'-thumb.$1'); // small.cat.jpg => small.cat-thumb.jpg
-  }
-
-
-  // Expected result:
-  //    https://env-staging-oregon-temp-upload.s3-us-west-2.amazonaws.com/small.cat.jpg
-  // => https://env-staging-oregon.s3-us-west-2.amazonaws.com/small.cat-compress.jpg
-  private getCompressUrl(tempUrl: string) {
-    let str = tempUrl.replace(this.SUFFIX, '');
-    return str.replace(new RegExp('.([a-zA-Z]*)*$'),'-compress.$1'); // small.cat.jpg => small.cat-compress.jpg
-  }
 }

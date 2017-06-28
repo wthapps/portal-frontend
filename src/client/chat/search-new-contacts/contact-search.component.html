@@ -1,0 +1,36 @@
+<div class="page-body-control has-page-body-sidebar">
+  <h3>Add Contact</h3>
+  <p>Enter user name of the user you are looking for</p>
+
+  <div #form class="navbar-searchTop">
+    <div class="form-group">
+      <div class="input-group">
+        <input type="text" class="form-control" [(ngModel)]="name" (keyup)="search()" placeholder="">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-body-content has-page-body-sidebar">
+  <div class="page-body-content-in">
+    <div class="row media-user-list-group" *ngIf="newContacts">
+      <div class="col-sm-12"
+           *ngFor="let contact of newContacts | chatUserNew:contactItem">
+        <div class="media media-user-list">
+          <div class="media-body">
+            <z-chat-share-user-icon [image]="contact.profile_image" [name]="contact.name" [size]="'xs'" [groupType]="'couple'" [userId]="contact.id">
+            </z-chat-share-user-icon>
+          </div>
+          <div class="media-right no-wrap">
+            <button class="btn btn-wth-default" (click)="onRequest(contact)">
+              <i class="fa fa-user-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<z-chat-share-request-contact #request></z-chat-share-request-contact>

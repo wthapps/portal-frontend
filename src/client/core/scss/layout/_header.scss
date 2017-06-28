@@ -4,7 +4,7 @@ Header
 .header {
   position: relative;
   z-index: 1000;
-  @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.40));
+  @include box-shadow($box-shadow-bottom);
   .navbar-default {
     border-width: 0;
     -webkit-border-radius: 0;
@@ -111,7 +111,7 @@ Header
       }
       &.navbar-nav-profile {
         a.dropdown-toggle {
-          img {
+          .avatar-xxs {
             float: left;
             margin-right: 10px;
           }
@@ -250,64 +250,52 @@ Header
     overflow: auto;
     border-top: 1px solid $line;
     border-bottom: 1px solid $line;
+
+    .dropdown-menu {
+      padding: 0;
+      width: auto;
+      top: auto;
+      margin: -5px 20px 0 0;
+      > li > a {
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+    }
+
+    .avatar-xsm {
+      width: 42px;
+      height: 42px;
+    }
+    .btn {
+      text-transform: capitalize;
+    }
+    p {
+      line-height: 14px;
+      margin-bottom: 0;
+    }
+    .notifications-item-button {
+      margin-top: 2px;
+    }
     .navbar-nav-notification-item {
       padding: 10px;
       border-bottom: 1px solid $line;
       position: relative;
-      .media-right {
-        .dropdown-submenu {
-          position: inherit;
-        }
-      }
-      .media-heading a, .media-right .btn {
-        position: relative;
-        z-index: 2;
-      }
       &:last-child {
         border-bottom-width: 0;
       }
-      .avatar-xsm {
-        width: 42px;
-        height: 42px;
-      }
-      .btn-default-inline {
-        padding: 0;
-        width: 20px;
-        min-width: inherit;
-        height: 20px;
-        text-align: center;
-        line-height: 20px;
-      }
-      .btn {
-        text-transform: capitalize;
-      }
-      p {
-        line-height: 14px;
-        margin-bottom: 0;
-      }
-      .notification-item-time {
-        &:after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 1;
+      .media-right {
+        .btn {
+          padding: 0;
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          text-align: center;
+          min-width: 20px;
+          float: right;
         }
       }
-      &:hover {
-        background-color: rgba($color-inverse, 0.1);
-      }
     }
-    .sub-menu {
-      width: auto !important;
-      margin: 0 5px 0 0;
-      top: auto;
-      a {
-        padding: 10px;
-      }
-    }
+
   }
 }
 

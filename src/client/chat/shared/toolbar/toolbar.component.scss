@@ -11,21 +11,5 @@
       background-color: #d8d8d8;
       text-transform: none;
     }
-    .dropdown-toggle {
-      i {
-        width: 10px;
-        height: 10px;
-        display: inline-block;
-        border: 1px solid $user-online;
-        background-color: #ffffff;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        &.online {
-          border-color: #ffffff;
-          background-color: $user-online;
-        }
-      }
-    }
   }
 }

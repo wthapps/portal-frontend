@@ -9,7 +9,7 @@ declare let App: any;
 export class CableService {
 
   createConnectionInstance(userId: any, type?: string, clientId?: string) {
-    if (App.cable == undefined) {
+    if (App == undefined || App.cable == undefined) {
       // if(type == 'cs') {
       //   App.cable = ActionCable.createConsumer(`${ApiConfig.url}cable?t=${type}&cId=${clientId}`);
       //   return;

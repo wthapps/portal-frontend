@@ -8,7 +8,7 @@ export class ChatSendMessage {
   }
 
   process() {
-    this.serviceManager.getChatCommonService().addMessage(this.data.group, this.data.message);
+    this.serviceManager.getChatCommonService().addMessage(this.data.group, this.data);
   }
 }
 

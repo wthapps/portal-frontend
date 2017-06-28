@@ -1,4 +1,6 @@
 .nav-tabs-wrap {
+  //border-top: 1px solid $line;
+  padding: 15px;
   .nav-tabs {
     border-width: 0;
     margin: 0;
@@ -10,7 +12,8 @@
         &:hover,
         &:focus {
           display: block;
-          font-size: 18px;
+          //font-size: 18px;
+          font-weight: bold;
           color: $text-color-fade;
           position: relative;
           text-decoration: none;
@@ -31,7 +34,9 @@
           color: $text-color;
         }
         span {
-          font-size: 80%;
+          //font-size: 80%;
+          font-weight: normal;
+          color: #89919c;
         }
       }
       &.active {
@@ -43,11 +48,42 @@
             left: 0;
             right: 0;
             bottom: -15px;
+            color:#000000;
+            font-weight: bold;
             background-color: rgb(245, 74, 89);
             height: 3px;
             @media (max-width: $screen-md-max) and (min-width: $screen-sm-min) {
               bottom: -5px;
             }
+          }
+        }
+      }
+    }
+
+    &.nav-tabs-sm {
+      > li {
+        > a {
+          padding-left: 8px;
+          padding-right: 8px;
+          &,
+          &:hover,
+          &:focus {
+            font-size: 14px;
+          }
+          span {
+            font-size: 14px;
+            display: inline-block;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            min-width: 28px;
+            background-color: #D8D8D8;
+            line-height: 28px;
+            text-align: center;
+            padding: 0 2px;
+            float: right;
+            margin-left: 3px;
+            margin-top: 3px;
           }
         }
       }

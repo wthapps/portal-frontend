@@ -17,6 +17,7 @@ import { EntitySelectComponent } from '../../../core/partials/entity-select/enti
 
 
 declare var _: any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -128,7 +129,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.isShare = options.isShare;
 
     if (options.post != null) {
-      this.post = options.post;
+      this.post = _.cloneDeep(options.post);
       this.originalTags = this.post.tags;
     }
     if (options.parent != null) {
@@ -179,6 +180,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     };
     console.log('adding................', options);
     this.saved.emit(options);
+    $('.modal-backdrop').remove();
     this.unsubscribeAll();
   }
 
@@ -186,8 +188,10 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.photoUploadService.uploadPhotos(files)
       .subscribe((res: any) => {
           this.files.shift(); // remove file was uploaded
+          // Only add distinct photos into post edit
           this.post.photos.unshift(res.data);
           this.uploadedPhotos.push(res.data);
+
     }, (err: any) => {
         console.log('Error when uploading files ', err);
     });
@@ -212,8 +216,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   next(selectedPhotos: any) {
     console.log('on next ...........:', selectedPhotos);
-    this.post.photos = _.concat(this.post.photos, selectedPhotos);
-    // this.photoSelectModal.close();
+    // Create union of selected photos and add to post
+    this.post.photos = _.uniqBy(_.flatten([this.post.photos, selectedPhotos]), 'id');
     this.photoSelectDataService.close();
     this.modal.open();
   }
@@ -330,13 +334,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         this.next(photos);
       });
     }
-
-    // if (this.needInitSubscription(this.nextSubscription)) {
-    //
-    //   this.nextSubscription = this.photoSelectDataService.nextObs$.subscribe((photos : any) => {
-    //     this.next(photos);
-    //   });
-    // }
 
     if (this.needInitSubscription(this.dismissSubscription)) {
 

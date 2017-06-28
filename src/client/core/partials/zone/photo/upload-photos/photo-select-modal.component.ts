@@ -12,7 +12,7 @@ declare var _: any;
 
 // PhotoSelectModalComponent is a PostPhotoSelectComponent (DEPRECATED clone with another way to communicate with its invoker: It use event EventEmitter instead of PhotoModalDataService
 // Consider replace this component with the DEPRECATED one
-export class PhotoSelectModalComponent implements OnInit, BaseMediaModal {
+export class PhotoSelectModalComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('photoList') photoList: SoPhotoListComponent;
   @Input() selectedItems: Array<any>;

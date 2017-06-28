@@ -19,10 +19,10 @@ export class UserService extends ApiBaseService {
   profile: User = null;
   defaultPayment: any;
 
-  private cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
+  public cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
 
   constructor(http: Http, router: Router,
-              cookieService: CookieService) {
+              public cookieService: CookieService) {
     super(http, router, cookieService);
     this.readUserInfo();
   }
@@ -79,6 +79,8 @@ export class UserService extends ApiBaseService {
           // this.profile.billing_address = res.billing_address;
           /*console.log(res, this.profile);
            Cookie.set('profile', JSON.stringify(this.profile));*/
+          // this.updateProfile(res.data);
+          // this.readUserInfo();
           this.updateProfile(res.data);
           this.readUserInfo();
         }
@@ -95,7 +97,6 @@ export class UserService extends ApiBaseService {
     //     });
     // }
   }
-
 
   /*
    * change current password
@@ -149,6 +150,11 @@ export class UserService extends ApiBaseService {
     return this.profile != null ? this.profile.uuid : '';
   }
 
+
+  updateProfile(profile: Object) {
+    this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
+  }
+
   private storeDefaultPayment(response: any) {
     // Check if profile_image is null
     if (response.user.default_payment) {
@@ -179,10 +185,6 @@ export class UserService extends ApiBaseService {
       this.profile = JSON.parse(this.cookieService.get('profile'));
       this.loggedIn = Boolean(this.cookieService.get('logged_in'));
     }
-  }
-
-  private updateProfile(profile: Object) {
-    this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
   }
 }
 

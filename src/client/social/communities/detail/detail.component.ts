@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ZoneReportService } from '../../shared/form/report/report.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
@@ -8,15 +7,16 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 import { SocialService } from '../../shared/services/social.service';
-// import { MemberListInviteComponent } from '../member/member-list-invite.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { ZSocialFavoritesComponent } from '../../shared/favorites/social-favorites.component';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 
 declare let _: any;
 declare let $: any;
@@ -83,7 +83,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   isMember: boolean = false;
   is_close: boolean = true;
-  favourite: any;
+  // favourite: any;
+  userSettings: any;
 
   isPostTab: boolean = true;
   isAboutTab: boolean = false;
@@ -96,15 +97,13 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @ViewChild('users') users: EntitySelectComponent;
-  @ViewChild('favorites') favorites: ZSocialFavoritesComponent;
+  // @ViewChild('favorites') favorites: ZSocialFavoritesComponent;
   // @ViewChild('users') users: MemberListInviteComponent;
   @ViewChild('posts') posts: PostListComponent;
 
   closeObs$: Observable<any>;
 
-  // Subscription for photo select in modal
-  nextPhotoSubscription: Subscription;
-  uploadPhotoSubscription: Subscription;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private apiBaseService: ApiBaseService,
               private route: ActivatedRoute,
@@ -116,6 +115,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
               private zoneReportService: ZoneReportService,
+              public favoriteService: SocialFavoriteService,
               private socialService: SocialService) {
 
     // All subscriptions to photo select modal should be closed when 1 of following events are emitted
@@ -147,12 +147,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.loadSubscription.unsubscribe();
-    if (this.nextPhotoSubscription)
-      this.nextPhotoSubscription.unsubscribe();
-
-    if (this.uploadPhotoSubscription)
-      this.uploadPhotoSubscription.unsubscribe();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   onPreference() {
@@ -177,27 +173,34 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   addFavourite(uuid: any) {
-    this.socialService.user.toggleFavourites(uuid, 'community').subscribe(
+    this.favoriteService.addFavourite(uuid, 'community')
+      .then((res: any) => this.userSettings.favorite = !this.userSettings.favorite );
+  }
+
+  // getFavourite(uuid: any) {
+  //   this.socialService.user.getFavourite(uuid, 'community').subscribe(
+  //     (res: any) => {
+  //       this.favourite = res.data;
+  //     }
+  //   );
+  // }
+
+  getUserSettings(uuid: any) {
+    this.socialService.community.getUserSettings(uuid).take(1).subscribe(
       (res: any) => {
-        if(!_.isEmpty(this.favourite)) {
-          _.remove( this.favorites.favourites, (f: any) => f.uuid == _.get(res, 'data.uuid')); // Remove friend / community from favorite list at the sidebar
-          this.favourite = undefined;
-        } else {
-          this.favorites.favourites.push(res.data); // Update favorite list at the sidebar
-          this.favourite = res.data;
-        }
-
-
+        console.log('inside getUserSettings', res);
+        this.userSettings = res.data;
       }
     );
   }
 
-  getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, 'community').subscribe(
+  toggleComNotification(uuid: any) {
+    this.socialService.community.toggleComNotification(uuid).subscribe(
       (res: any) => {
-        this.favourite = res.data;
+        console.log('inside toggleComNotification', res);
+        this.userSettings = res.data;
       }
-    );
+    )
   }
 
   confirmLeaveCommunity() {
@@ -296,6 +299,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   deleteMember(user: any) {
     this.user = user;
+    console.debug('user: ', user);
     this.confirmationService.confirm({
       message: `Are you sure to delete member ${this.user.name} from the community?`,
       header: 'Delete Member',
@@ -304,7 +308,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.socialService.community.deleteMember(this.uuid, user.uuid).subscribe(
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
-            $('#user_' + user.uuid).remove();
+            // $('#user_' + user.uuid).remove();
+            _.remove(this.tabItems, (item: any) => item.accepter.uuid === user.uuid);
 
             // Update community member count
             this.community.member_count -= 1;
@@ -375,7 +380,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onLoadMore() {
-    this.posts.viewMorePosts();
+    if (this.isPostTab)
+      this.posts.viewMorePosts();
   }
 
   private getCommunity(uuid: string) {
@@ -406,7 +412,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     if (tabName === undefined)
       return;
     // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/${tabName}`).subscribe(
-    this.socialService.community.getTabItems(uuid, tabName).subscribe(
+    this.socialService.community.getTabItems(uuid, tabName)
+      .takeUntil(this.destroySubject)
+      .subscribe(
       (res: any)=> {
         this.tabItems = res.data;
 

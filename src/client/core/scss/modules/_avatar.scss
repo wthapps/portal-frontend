@@ -15,21 +15,25 @@
 }
 
 .avatar-lg {
-  @include avatar-mixin(150px);
+  @include avatar-mixin($avatar-lg);
 }
 
 .avatar-md {
-  @include avatar-mixin(100px);
+  @include avatar-mixin($avatar-md);
 }
 
 .avatar-sm {
-  @include avatar-mixin(70px);
+  @include avatar-mixin($avatar-sm);
 }
 
 .avatar-xsm {
-  @include avatar-mixin(54px);
+  @include avatar-mixin($avatar-xsm);
 }
 
 .avatar-xs {
-  @include avatar-mixin(34px);
+  @include avatar-mixin($avatar-xs);
+}
+
+.avatar-xxs {
+  @include avatar-mixin($avatar-xxs);
 }

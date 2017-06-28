@@ -66,3 +66,4 @@ bower_components
 /src/client/assets/.tmp/
 
 *_BAK*
+/src/html/

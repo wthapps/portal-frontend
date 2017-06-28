@@ -34,14 +34,15 @@ export class CommentItemEditorComponent implements OnInit {
   // @Input() item: SoPost;
   @Input() parent: any; // parent is able to be Post or Comment or Photo or other object
   @Input() parentType: string = 'SocialNetwork::Post';  // 'SocialNetwork::Post' or 'SocialNetwork::Comment'
-
-  @Input() comment: SoComment = new SoComment();
+  @Input() originComment = new SoComment();
   @Input() reply: SoComment;
   @Input() mode: any = CommentEditorMode.Add;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
 
+  comment: SoComment = new SoComment(); // Clone comment
   commentEditorMode = CommentEditorMode;
   hasUploadingPhoto: boolean = false;
+  hasUpdatedContent: boolean = false;
   files: any;
 
   commentEditorForm: FormGroup;
@@ -58,6 +59,8 @@ export class CommentItemEditorComponent implements OnInit {
     if (this.mode == CommentEditorMode.Add) {
       // this.comment = new SoComment();
     }
+
+    this.comment = _.cloneDeep(this.originComment);
     //Init From controls
     this.commentEditorForm = this.fb.group({
       'content': [this.comment.content, null],
@@ -66,27 +69,37 @@ export class CommentItemEditorComponent implements OnInit {
     this.contentCtrl = this.commentEditorForm.controls['content'];
     this.photosCtrl = this.commentEditorForm.controls['photo'];
 
-    $('.js-textarea-autoheight').each(function () {
-      this.setAttribute('style', 'height: 34px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
-    }).on('input', function () {
-      this.style.height = 'auto';
-      this.style.height = (this.scrollHeight) + 'px';
-    });
+    // $('.js-textarea-autoheight').each(function () {
+    //   this.setAttribute('style', 'height: 34px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
+    // }).on('input', function () {
+    //   this.style.height = 'auto';
+    //   this.style.height = (this.scrollHeight) + 'px';
+    // });
   }
 
 
   onKey(e: any) {
     // Create, Update, Reply
+
     if (e.keyCode == 13 && this.comment.content != '') {
 
-      this.comment.content = this.commentEditorForm.value.content;
-      this.comment.photo = this.commentEditorForm.value.photo;
-      this.post(this.comment);
+      // this.comment.content = this.commentEditorForm.value.content;
+      // this.comment.photo = this.commentEditorForm.value.photo;
+      // this.post(this.comment);
+
+      if(this.hasUpdatedContent)
+        this.post(this.commentEditorForm.value);
+      else
+        this.cancel();
+      return;
     }
     // Cancel comment
     if (e.keyCode == 27) {
       this.cancel();
+      return;
     }
+
+    this.hasUpdatedContent = true;
   }
   /*
   * Now we just supports ONE photo
@@ -102,6 +115,8 @@ export class CommentItemEditorComponent implements OnInit {
     if ('content' in attributes) {
       this.comment.content = attributes.content || '';
     }
+
+    this.hasUpdatedContent = true;
   }
 
   updateAttributes(options: any) {
@@ -156,19 +171,21 @@ export class CommentItemEditorComponent implements OnInit {
     // if (this.type == this.commentEditorMode.EditReply) {
     //   this.eventEmitter.emit(new CancelEditReplyCommentEvent(this.reply));
     // }
+
+
+    this.comment.content = '';
+    this.comment.photo = null;
+    this.commentEditorForm.value.content = '';
+    this.commentEditorForm.value.photo = null;
+    this.hasUpdatedContent = false;
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
-      console.log('canceling add...........', this.comment);
-      this.comment.content = '';
-      this.comment.photo = null;
-      this.commentEditorForm.value.content = '';
-      this.commentEditorForm.value.photo = null;
-
+      _.set(this.originComment, 'isCreatingNewReply', false);
       // this.eventEmitter.emit(new CancelAddCommentEvent(this.comment));
 
     } else if(this.mode == CommentEditorMode.Edit) {
       // update current comment/reply
-      console.log('canceling edit...........');
+      _.set(this.originComment, 'isEditting', false);
       this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
     }
 
@@ -185,6 +202,7 @@ export class CommentItemEditorComponent implements OnInit {
       this.comment.parentId = this.parent.uuid;
       this.comment.parentType = this.parentType;
 
+      _.set(this.originComment, 'isCreatingNewReply', false);
       event = new CommentCreateEvent(this.comment);
 
     } else if(this.mode == CommentEditorMode.Edit) {
@@ -196,12 +214,15 @@ export class CommentItemEditorComponent implements OnInit {
     this.eventEmitter.emit(event);
     this.comment.content = '';
     this.comment.photo = null;
+    this.files = null;
+    this.hasUpdatedContent = false;
   }
 
   doEvents(response: any) {
     switch (response.action) {
       case 'remove':
         this.comment.photo = null;
+        this.files = null;
         // _.remove(this.comment.photos, (photo: any) =>{
         //   return photo.uuid == response.data.uuid;
         // });
@@ -212,7 +233,7 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   checkValidForm(): boolean {
-    return true;
+    return this.hasUpdatedContent;
     // if (this.mode == CommentEditorMode.Add) {
     //   return (this.comment.content.length > 0 || this.comment.photo != null);
     // } else if (this.mode == CommentEditorMode.Edit) {

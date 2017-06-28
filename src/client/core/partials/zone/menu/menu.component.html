@@ -1,7 +1,7 @@
 <nav class="page-menuleft" draggable="false">
   <ul class="list-unstyled">
-    <li>
-      <a draggable="false" href="#">Profile</a>
+    <li [routerLinkActive]="['active']">
+      <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
     </li>
     <li>
       <a draggable="false" href="#">Contact</a>
@@ -10,13 +10,14 @@
       <a draggable="false" href="#">Calendar</a>
     </li>
 
-    <li class="has-sub" [ngClass]="{'active': urls.social == hostname}">
+    <li class="has-sub" [ngClass]="{'active': urls.social == hostname && !isProfileTab}">
       <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
       <ul [ngClass]="{'active': urls.social == hostname}" class="list-unstyled">
         <template ngFor let-social [ngForOf]="socialMenu" let-i="index" [ngForTrackBy]="trackByFn">
-          <li *ngIf="social.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': social.link == '/search'}">
+          <li *ngIf="social.name != ''" [routerLinkActive]="['active']"
+              [ngClass]="{'hidden': social.link == '/search'}">
             <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
               <i class="{{social.icon}}"></i> {{social.name}}
             </a>
@@ -29,7 +30,7 @@
       </ul>
     </li>
 
-    <li class="has-sub" [ngClass]="{'active': urls.chat == hostname}">
+    <li class="has-sub" [ngClass]="{'active': urls.chat == hostname && !isProfileTab}">
       <a draggable="false" [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
         Chat
       </a>
@@ -48,7 +49,7 @@
     <li>
       <a draggable="false" href="#">Gadget</a>
     </li>
-    <li class="has-sub" [ngClass]="{'active': urls.media == hostname}">
+    <li class="has-sub" [ngClass]="{'active': urls.media == hostname && !isProfileTab}">
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>

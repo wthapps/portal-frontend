@@ -3,11 +3,14 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'so-profile',
   template: `
-    <div class="z-social-media-left" (click)="changeProfileImage($event)" id="profile_image">
+    <div class="z-social-media-left can-click" (click)="changeProfileImage($event)" id="profile_image">
       <div class="avatar-md">
-      <img [src]="item.profile_image" class="no-user-selected">
+          <img [src]="item.profile_image" class="no-user-selected">
+          <span class="zone-social-cover-info-profile">
+            <i class="fa fa-camera"></i>
+          </span>
       </div>
-      </div>
+     </div>
     `
 })
 export class ProfileComponent {

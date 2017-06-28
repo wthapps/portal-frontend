@@ -74,6 +74,8 @@ export class PostFooterComponent implements OnChanges {
       this.showInfo = true;
     }
     this.totalComment = this.item.comment_count;
+    if(this.totalComment === 0 || this.totalComment <= this.item.comments.length)
+      this.loadingDone = true;
   }
 
   onActions(action: any, params?: any) {
@@ -89,10 +91,12 @@ export class PostFooterComponent implements OnChanges {
 
         console.log('editing..........:', data);
         // show edit comment form
-        $('#editComment-' + currentComment.uuid).show();
+        // $('#editComment-' + currentComment.uuid).show();
 
         // hide current comment content
-        $('#comment-' + currentComment.uuid).hide();
+        // $('#comment-' + currentComment.uuid).hide();
+
+        currentComment.isEditting = true;
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
@@ -104,7 +108,8 @@ export class PostFooterComponent implements OnChanges {
         console.log('replying..........:', parent);
 
         // this.eventEmitter.emit(new ReplyCreateEvent(data));
-        $('#reply-' + parent.uuid).show();
+        // $('#reply-' + parent.uuid).show();
+        _.set(parent, 'isCreatingNewReply', true);
         break;
       case this.actions.openLikeDislike:
         this.postItem.openLikeDislike(data, type);
@@ -121,12 +126,15 @@ export class PostFooterComponent implements OnChanges {
   onCallBack(event: any) {
     // console.log('data:::::::', event);
     if (event instanceof CancelEditCommentEvent) {
-      $('#editComment-' + event.data.uuid).hide();
-      $('#comment-' + event.data.uuid).show();
+      // $('#editComment-' + event.data.uuid).hide();
+      // $('#comment-' + event.data.uuid).show();
+
+      event.data.isEditting = false;
       return;
     }
     if (event instanceof CancelReplyCommentEvent) {
-      $('#reply-' + event.data.uuid).hide();
+      // $('#reply-' + event.data.uuid).hide();
+      event.data.isEditting = false;
       return;
     }
 

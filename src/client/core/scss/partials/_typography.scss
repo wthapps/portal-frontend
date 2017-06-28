@@ -100,8 +100,16 @@ body {
   white-space: nowrap;
 }
 
+.no-resize {
+  resize: none;
+}
+
 .text-normal {
   font-weight: normal;
+}
+
+.text-bold {
+  font-weight: bold;
 }
 
 .text-inherit {

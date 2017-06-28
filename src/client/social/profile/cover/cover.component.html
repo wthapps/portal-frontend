@@ -2,55 +2,40 @@
   <cover-profile [item]="userInfo" (outEvent)="onCoverAction($event)">
     <so-information>
       <div class="z-social-media-body">
-      <div class="z-heading">
-      <div class="z-name">
-      {{userInfo.name}}
-      </div>
-      </div>
-      <div class="z-shared-info">
-      <ul>
-      <li>
-      {{userInfo.nickname}}
-      </li>
-      </ul>
-      </div>
+        <div class="z-heading">
+          <div class="z-name">{{userInfo.name}}</div>
+        </div>
+        <div class="z-shared-info">
+          <ul>
+            <li>{{userInfo.nickname}}</li>
+          </ul>
+        </div>
 
         <div class="z-shared-description"> </div>
       </div>
 
-    </so-information>
-
-  </cover-profile>
-
-  <nav class="zone-social-cover-nav">
-    <ul class="list-unstyled clearfix">
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'post']" >Post</a>
-      </li>
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'about']" >About</a>
-      </li>
-      <li *ngIf="showFriends" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'friends']" >Friends</a>
-      </li>
-      <li class="pull-right dropdown">
-        <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="true">
-          <i class="fa fa-ellipsis-v"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-custom" *ngIf="userInfo.uuid == userService.profile.uuid">
-          <li><a href="#">Edit Contact Profile</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a [routerLink]="['/setting']">Settings</a></li>
-          <li *ngIf="userInfo.uuid != userService.profile.uuid"><a href="#" (click)="onReport()">Report member</a></li>
-        </ul>
-      </li>
-      <li *ngIf="relationships" class="pull-right mr10">
-        <button *ngIf="relationships.status == 0" class="btn btn-default" type="button" (click)="onAddfriend()">
+      <div class="hd-item-action-right-bottom" *ngIf="relationships">
+        <button class="btn btn-default" type="button"
+               (click)="onAddfriend()" *ngIf="relationships.status == 0">
           <i class="fa fa-user-plus"></i> Add Friend
         </button>
 
-        <div *ngIf="relationships.status == 1" class="btn-group pull-right">
+        <div class="btn-group" *ngIf="relationships.status == 2"
+        >
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-check"></i> Friend <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-custom">
+            <li>
+              <a href="javascript:;" (click)="onUnfriend()">Unfriend</a>
+              <i class="fa fa-times"></i>
+            </li>
+          </ul>
+        </div>
+
+        <div class="btn-group" *ngIf="relationships.status == 1"
+             >
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
             Friend Requested <span class="caret"></span>
@@ -62,10 +47,43 @@
           </ul>
         </div>
 
-        <button *ngIf="relationships.status == 2" class="btn btn-default" type="button" (click)="onUnfriend()">
-          <i class="fa fa-times"></i> Unfriend
-        </button>
+
+
+        <!--menu-->
+        <ul class="pull-right list-unstyled clearfix" *ngIf="userInfo.uuid !== userService.profile.uuid">
+          <li class="dropdown">
+            <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+              <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" >
+              <li ><a href="#" (click)="onReport()">Report member</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+    </so-information>
+
+  </cover-profile>
+
+  <nav class="nav-tabs-wrap">
+    <ul class="nav nav-tabs list-unstyled clearfix">
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/profile', uuid, 'post']" >Post</a>
       </li>
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/profile', uuid, 'about']" >About</a>
+      </li>
+      <li *ngIf="showFriends" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/profile', uuid, 'friends']" >Friends</a>
+      </li>
+      <li class="pull-right dropdown">
+
+      </li>
+      <!--<li *ngIf="relationships" class="pull-right mr10">-->
+
+      <!--</li>-->
     </ul>
   </nav>
 </div>

@@ -62,7 +62,7 @@
     position: relative;
     z-index: 3;
     @include clearfix;
-    @include box-shadow(0px 2px 4px 0px rgba(73, 73, 73, 0.4));
+    @include box-shadow($box-shadow-bottom);
     & + .page-body-content {
       top: $page-body-control-height;
     }

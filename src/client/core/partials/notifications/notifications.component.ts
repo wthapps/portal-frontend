@@ -29,6 +29,12 @@ export class PartialsNotificationsComponent {
     this.notificationService.hideNotification(notification);
   }
 
+  confirmHideNotification(notification:any) {
+    console.debug('inside partials-notifications: confirmHideNotification !!!');
+    // notification.isHidden = true;
+    this.hideNotification(notification);
+  }
+
   toggleViewNotifications() {
     this.notificationService.getLatestNotifications(); // Load latest notifications in the first click
     if (this.notificationService.notifications.length <= 0) {
@@ -45,8 +51,12 @@ export class PartialsNotificationsComponent {
     this.notificationService.toggleReadStatus(notification);
   }
 
-  toggleAllReadStatus() {
-    this.notificationService.toggleAllReadStatus();
+  // toggleAllReadStatus() {
+  //   this.notificationService.toggleAllReadStatus();
+  // }
+
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
   }
 
   doAction(action: any, notif_id: string) {

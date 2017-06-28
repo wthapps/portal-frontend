@@ -76,4 +76,8 @@ export class MediaObjectService {
     return this.api.post('media/media/favourite', body);
   }
 
+  download(body: any): any {
+    return this.api.download('media/files/download', body);
+  }
+
 }

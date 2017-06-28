@@ -1,3 +1,8 @@
+$brand-wth: #F54A59;
+$brand-wth-color: #fff !default;
+$brand-wth-bg: $brand-wth !default;
+$brand-wth-border: darken($brand-wth, 5%) !default;
+
 @mixin button-variant-inline($color, $background, $border) {
 
   //@if $background == transparent {
@@ -69,21 +74,21 @@
     border-color: darken($border_hover, 12%);
   }
   &:hover {
-    color: $color;
+    color: $color_hover;
     background-color: $background_hover;
     border-color: $border_hover;
   }
   &:active,
   &.active,
   .open > &.dropdown-toggle {
-    color: $color;
+    color: $color_hover;
     background-color: darken($background_hover, 0%);
     border-color: darken($border_hover, 2%);
 
     &:hover,
     &:focus,
     &.focus {
-      color: $color;
+      color: $color_hover;
       background-color: darken($background_hover, 7%);
       border-color: darken($border_hover, 15%);
     }
@@ -127,15 +132,22 @@
 }
 
 .btn-wth {
-  @include button-variant(#FFF, #F54A59, darken(#F54A59, 10%));
+  @include button-variant(#FFF, $brand-wth, darken($brand-wth, 10%));
 }
 
+//
+//.btn-wth-default {
+//  @include button-variant($brand-wth, #FFF, $btn-default-border);
+//}
+
 .btn-wth-default {
-  @include button-variant(#F54A59, #FFF, $btn-default-border);
+  @include button-variant-style(
+      $brand-wth, transparent, $brand-wth,
+      #FFF, $brand-wth, $brand-wth);
 }
 
 .btn-primary-inline {
-  @include button-variant-inline(#F54A59, #FFF, transparent);
+  @include button-variant-inline($brand-wth, #FFF, transparent);
 }
 
 .btn-default-inline {
@@ -176,6 +188,16 @@
       $btn-default-color,
       transparent,
       $btn-default-border);
+}
+
+.btn-wth-default {
+  @include button-variant-style(
+      $brand-wth,
+      $brand-wth-color,
+      $brand-wth-border,
+      $brand-wth-color,
+      $brand-wth-bg,
+      $brand-wth-border);
 }
 
 .btn-min {
@@ -253,10 +275,35 @@
 }
 
 .btn-text {
-  @extend .btn-link;
+  @extend .btn;
+  background-color: transparent;
+  min-width: initial;
+  border-width: 0;
   text-decoration: none !important;
   color: $text-color;
-  min-width: inherit;
+  cursor: auto;
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      outline: 0 none;
+      @include box-shadow(none);
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    outline: 0 none;
+    @include box-shadow(none);
+  }
+
+  &:active,
+  &.active {
+    outline: 0 none;
+    @include box-shadow(none);
+  }
 }
 
 .btn-link-inline {
@@ -265,4 +312,32 @@
   &:hover, &:focus {
     text-decoration: none;
   }
+}
+
+.btn {
+  .fa-circle {
+    width: 12px;
+    height: 12px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 1px solid #FFF;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+    margin-right: 3px;
+    &:before {
+      display: none;
+    }
+    &.online {
+      background-color: $user-online;
+    }
+    &.offline {
+      background-color: $user-offline;
+    }
+  }
+}
+
+.btn-default-no-border {
+  border: none;
 }

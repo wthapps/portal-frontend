@@ -1,19 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ZChatConversationGlobalComponent } from './conversation-global.component';
-import { ZChatConversationComponent } from './conversation.component';
+import { ConversationListComponent } from './conversation-list.component';
+import { ConversationDetailComponent } from './conversation-detail.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
-        path: 'conversation',
-        component: ZChatConversationGlobalComponent
+        path: 'conversations',
+        component: ConversationListComponent
       },
       {
-        path: 'conversation/:id',
-        component: ZChatConversationComponent
+        path: 'conversations/:id',
+        component: ConversationDetailComponent
       },
+      {
+        path: 'conversations/:id/photos',
+        component: ConversationDetailComponent
+      }
     ])
   ],
   exports: [RouterModule]

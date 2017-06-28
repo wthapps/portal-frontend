@@ -18,14 +18,16 @@
       <!--<div id="container-comment-{{comment?.uuid}}-edit"></div>-->
 
       <!--Edit comment-->
-      <comment-item-editor id="editComment-{{comment?.uuid}}" style="display: none"
-                           (eventEmitter)="onCallBack($event)"
-                           [parent]="item"
-                           [comment]="comment"
-                           [mode]="commentEditorMode.Edit"></comment-item-editor>
 
+      <template [ngIf]="comment?.isEditting">
+       <comment-item-editor style="display: block"
+                             (eventEmitter)="onCallBack($event)"
+                             [parent]="item"
+                             [originComment]="comment"
+                             [mode]="commentEditorMode.Edit" ></comment-item-editor>
+      </template>
 
-      <div id="comment-{{comment?.uuid}}">
+      <div *ngIf="!comment?.isEditting">
         <div class="media-left">
           <a [routerLink]="['/profile/', comment.owner.uuid]">
             <span class="avatar-xs">
@@ -38,7 +40,12 @@
           <h4 class="media-heading"><a [routerLink]="['/profile', comment.owner.uuid]">{{comment.owner.name}}</a>
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
-          <p>{{comment.content}}</p>
+          <span [innerHtml]="comment.content | linkify | safeHtml"></span>
+          <div *ngIf="comment.links && comment.links.length > 0">
+            <div *ngIf="comment.links[0].image && comment.links[0].title" class="message-item-content-main" >
+              <display-link [data]="comment.links[0]"></display-link>
+            </div>
+          </div>
           <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">
             <img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
           </a>
@@ -82,13 +89,15 @@
 
       <div class="media" *ngFor="let reply of comment.comments; let j = index">
         <!--Edit reply-->
-        <comment-item-editor id="editComment-{{reply.uuid}}" style="display: none"
+        <template [ngIf]="reply?.isEditting">
+        <comment-item-editor style="display: block"
                              (eventEmitter)="onCallBack($event)"
                              [parent]="comment"
                              [parentType]="'SocialNetwork::Comment'"
-                             [comment]="reply"
+                             [originComment]="reply"
                              [mode]="commentEditorMode.Edit"></comment-item-editor>
-        <div id="comment-{{reply.uuid}}">
+        </template>
+        <div *ngIf="!reply?.isEditting">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
               <span class="avatar-xs">
@@ -109,7 +118,12 @@
                 </ul>
               </div>
             </h4>
-            <p>{{reply.content}}</p>
+            <span [innerHtml]="reply.content | linkify | safeHtml"></span>
+            <div *ngIf="reply.links && reply.links.length > 0">
+              <div *ngIf="reply.links[0].image && reply.links[0].title" class="message-item-content-main" >
+                <display-link [data]="reply.links[0]"></display-link>
+              </div>
+            </div>
             <a *ngIf="reply.photo"
                (click)="onActions(actions.onShowPhotoDetail, {data: reply.uuid, commentType: reply.photo.id})">
               <img *ngIf="reply.photo" [src]="reply.photo.thumbnail_url">
@@ -137,14 +151,16 @@
           </div>
         </div>
       </div>
-      <comment-item-editor id="reply-{{comment.uuid}}" style="display: none;"
+      <template [ngIf]="comment?.isCreatingNewReply">
+      <comment-item-editor style="display: block;"
                            (eventEmitter)="onCallBack($event)"
                            [parent]="comment"
                            [parentType]="'SocialNetwork::Comment'"
                            [mode]="commentEditorMode.Add"></comment-item-editor>
+      </template>
     </li>
   </ul>
-  <div *ngIf="notAllCommentsLoaded()" class="z-social-comment-more">
+  <div *ngIf="!loadingDone" class="z-social-comment-more">
     <!--<label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="viewAllComments()">View all comments</label>-->
     <label attr.for="post-{{item.uuid}}" class="read-more-trigger" (click)="getMoreComments()">View more
       comments</label>

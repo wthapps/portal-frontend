@@ -4,7 +4,7 @@
 
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 
 declare var _: any;

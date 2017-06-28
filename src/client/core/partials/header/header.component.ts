@@ -1,4 +1,7 @@
-import { Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input, OnDestroy } from '@angular/core';
+import {
+  Component, AfterViewInit, OnInit, ViewChild, HostBinding, Input, OnDestroy,
+  ViewContainerRef, ComponentFactoryResolver, ViewChildren, QueryList
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { Constants } from '../../shared/config/constants';
@@ -8,6 +11,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 import { WTHNavigateService } from '../../shared/services/wth-navigate.service';
 import { ChannelService } from '../../shared/channels/channel.service';
+import { UndoNotificationComponent } from './notification/undo-notification.component';
 
 declare var $: any;
 declare var _: any;
@@ -20,12 +24,16 @@ declare let App: any; //This App stands for ActionCable
   moduleId: module.id,
   selector: 'wth-header',
   templateUrl: 'header.component.html',
-  styleUrls: ['header.component.css']
+  styleUrls: ['header.component.css'],
+  entryComponents: [UndoNotificationComponent]
 })
 export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
+  // @ViewChild('undo_notification', {read: ViewContainerRef}) undoNotificationRef: ViewContainerRef;
   @Input('headerOver') headerOver: boolean = false;
   @HostBinding('class') headerClass = 'header';
 
+
+  undoNotification: any;
   firstName: string = '';
   lastName: string = '';
   urls: any;
@@ -39,10 +47,6 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
   communitiesUrl: string = '';
 
-  // notifications: Array<any> = new Array<any>();
-  // newNotifCount: number = 0 ;
-  // currentNotifId: any;
-  // notifOffset: number = 0;
 
   @ViewChild('search') searchForm: SearchFormComponent;
 
@@ -51,6 +55,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
               public notificationService: NotificationService,
+              private componentFactoryResolver: ComponentFactoryResolver,
               private appearancesChannelService: AppearancesChannelService) {
   }
 
@@ -71,11 +76,12 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
       // Start the appearance channel after notification channel is connected
       console.debug('start channel notification');
-      this.notificationService.startChannel();
+      // this.notificationService.startChannel();
 
       // TODO comment this line for release 1.0.14. It should be uncommented after the release
       // this.appearancesChannelService.subscribe()
       // this.notificationService.startChannel(this.appearancesChannelService.subscribe());
+
 
       this.channelService.subscribe();
     }
@@ -101,20 +107,29 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
       lastScrollTop = currentScrollTop;
     });
 
-    documentElem.on('click', '.navbar-nav-notification .dropdown-menu', function (e: any) {
+    documentElem.on('click', '#nav-notification-list', function (e: any) {
       e.stopPropagation();
-      $(this).find('.dropdown-menu').hide();
     });
-    documentElem.on('click', '.navbar-nav-notification .dropdown-submenu .dropdown-toggle', function (e: any) {
+
+    documentElem.on('click', '#nav-notification-list .dropdown-toggle', function (e: any) {
       e.stopPropagation();
-      e.preventDefault();
       $(this).next('ul').toggle();
     });
-    documentElem.on('click', function (e: any) {
-      if (!$('.navbar-nav-notification').hasClass('open')) {
-        $('.navbar-nav-notification .dropdown-submenu').find('.dropdown-menu').hide();
-      }
-    });
+
+    /*documentElem.on('click', '.navbar-nav-notification .dropdown-menu', function (e: any) {
+     e.stopPropagation();
+     $(this).find('.dropdown-menu').hide();
+     });
+     documentElem.on('click', '.navbar-nav-notification .dropdown-submenu .dropdown-toggle', function (e: any) {
+     e.stopPropagation();
+     e.preventDefault();
+     $(this).next('ul').toggle();
+     });
+     documentElem.on('click', function (e: any) {
+     if (!$('.navbar-nav-notification').hasClass('open')) {
+     $('.navbar-nav-notification .dropdown-submenu').find('.dropdown-menu').hide();
+     }
+     });*/
   }
 
   onNavigation(event: any): void {
@@ -207,8 +222,8 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
     this.notificationService.toggleReadStatus(notification);
   }
 
-  toggleAllReadStatus() {
-    this.notificationService.toggleAllReadStatus();
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
   }
 
   showSetting() {

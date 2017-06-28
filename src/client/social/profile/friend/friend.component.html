@@ -3,26 +3,16 @@
      infinite-scroll
      [scrollWindow]="false"
      (scrolled)="onLoadMore()">
-  <div class="z-social-box clearfix">
-    <div *ngFor="let item of list" class="z-social-box-body-communities col-xs-12 col-lg-6">
-      <div class="media-center">
-        <div class="media-center-left">
-          <figure>
-            <a [routerLink]="['/profile', item?.uuid]">
-              <span class="avatar-sm">
-                <img [src]="item?.profile_image" alt="">
-              </span>
-            </a>
-          </figure>
-        </div>
-        <div class="media-center-body">
-          <h4 class="media-center-heading">
-            <a [routerLink]="['/profile', item?.uuid]">
-              {{item.name}}
-            </a>
-          </h4>
-        </div>
-      </div>
+
+  <div class="z-social-box">
+    <div class="z-social-box-body">
+      <z-social-share-profile-list
+        [layout]="'row'"
+        [class]="'col-xs-12 col-md-6 col-lg-6'"
+        [data]="list"
+        [type]="'member'">
+      </z-social-share-profile-list>
     </div>
   </div>
+
 </div>

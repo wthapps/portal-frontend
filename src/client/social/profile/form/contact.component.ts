@@ -53,16 +53,22 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
         this.initAddress(),
       ])
     });
+
   }
 
   ngOnInit() {
     this.removeAll();
+    this.addAll();
 
     this.countryService.getCountries().subscribe(data => this.countriesCode = data);
   }
 
   ngOnChanges() {
     this.removeAll();
+    this.addAll();
+  }
+
+  addAll() {
     let _this = this;
     if (this.data && this.data.contact) {
       this.removeAll();

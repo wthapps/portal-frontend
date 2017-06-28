@@ -1,0 +1,63 @@
+<div *ngIf="viewOption == 'grid'" class="clearfix sortbar-wrap">
+  <span class="btn btn-text pull-right" (click)="toggleSort(); doSort();">
+    <i class="fa" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"
+       ></i>
+  </span>
+  <div class="dropdown pull-right">
+    <span class="btn btn-text dropdown-toggle" type="button" data-toggle="dropdown">
+      {{sortName}}
+    </span>
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+      <li><a (click)="setSortName('Date'); doSort();" href="javascript:;"> Date</a></li>
+      <li><a (click)="setSortName('Name'); doSort();" href="javascript:;"> Name</a></li>
+    </ul>
+  </div>
+
+  <div class="pull-right">
+    <div class="sortbar-slider">
+      <i draggable="false" class="fa fa-picture-o fz10"></i>
+      <div class="sortbar-slider-in">
+        <p-slider draggable="false" [(ngModel)]="sliderVal" (onChange)="handleChangeSliderVal($event)" [step]="1" [min]="sliderMin" [max]="sliderMax"></p-slider>
+      </div>
+      <i draggable="false" class="fa fa-picture-o fz18"></i>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="viewOption == 'list'">
+  <div class="photo-box-img-nav">
+    <div class="photo-box-img-figure">
+      <div (click)="setSortName('Name'); toggleSort(); doSort()" class="photo-box-img-name can-click">
+        Name <i *ngIf="sortName" class="fa"
+                [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
+      </div>
+      <div (click)="setSortName('owner'); toggleSort(); doSort()" class="photo-box-img-owner can-click">Owner
+        <i *ngIf="sort" class="fa"
+           [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
+      </div>
+      <div (click)="setSortName('Date'); toggleSort(); doSort()" class="photo-box-img-date can-click">
+        Create Date <i *ngIf="sort" class="fa"
+                       [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
+      </div>
+      <div class="photo-box-img-size">Size</div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="viewOption == 'timeline'" class="pull-right">
+  <span class="dropdown">
+    <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"
+            data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">
+      {{sortName}}
+    </button>
+    <ul class="dropdown-menu">
+      <li><a (click)="setSortName('Date'); group('date');" href="javascript:;"> Date</a></li>
+      <li><a (click)="setSortName('Month'); group('month');" href="javascript:;"> Month</a></li>
+      <li><a (click)="setSortName('Year'); group('year');" href="javascript:;"> Year</a></li>
+    </ul>
+  </span>
+  <i class="fa can-click" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"
+     (click)="toggleSort(); doSort();"></i>
+</div>
+<div class="clearfix"></div>

@@ -82,7 +82,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   ngOnInit() {
     // this.photoModal.action = 'DONE';
     // this.photoModal.photoList.multipleSelect = false;
-    this.photoSelectDataService.init();
+    this.photoSelectDataService.init({multipleSelect: false});
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -326,8 +326,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // Open photo modal
     if (event instanceof OpenPhotoModalEvent) {
       this.commentEditor = event.data;
-      // this.photoModalOpened.emit(this.commentEditor);
-      this.openPhotoModal(this.commentEditor);
+      Object.assign(this.commentEditor, {multipleSelect: false});
+      this.openPhotoModal(event.data);
 
       this.subscribePhotoEvents();
     }
@@ -452,17 +452,34 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   private updateItemComments(data: any) {
     let updatedComment = new SoComment().from(data);
+
     _.forEach(this.item.comments, (comment: SoComment, index: any) => {
-      if (comment.uuid == updatedComment.uuid)
+      // Update comment items
+      if (data.parent_type !== 'SocialNetwork::Comment' && (comment.uuid == updatedComment.uuid))
+      {
         this.item.comments[index] = updatedComment;
+        return;
+      }
+      // Update the reply items
+      else if (data.parent_type === 'SocialNetwork::Comment' && comment.uuid === _.get(updatedComment, 'parent.uuid')) {
+        _.forEach(this.item.comments[index].comments, (reply: SoComment, j: any) => {
+          if (reply.uuid === _.get(updatedComment, 'uuid')) {
+            this.item.comments[index].comments[j] = updatedComment;
+            return;
+          }
+        })
+      }
     });
+
+
   }
 
 
   private subscribePhotoEvents() {
     // Subscribe actions corresponding with photo modal actions
 
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$);
+    // let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$);
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
 
     if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
       this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
@@ -478,7 +495,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
       this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
-        .switchMap((files: any) => {
+        .mergeMap((files: any) => {
           this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
           return this.photoUploadService.uploadPhotos(files);
           // return Observable.from(['']);

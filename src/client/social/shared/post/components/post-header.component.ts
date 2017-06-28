@@ -3,9 +3,9 @@ import { PostComponent } from '../index';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';
-import { ZoneReportService } from '../../../shared/form/report/report.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { User } from '../../../../core/shared/models/user.model';
+import { ZoneReportService } from '../../../../core/shared/form/report/report.service';
 
 declare var _: any;
 
@@ -52,6 +52,13 @@ export class PostHeaderComponent implements OnChanges {
     this.postItem.update(attr);
   }
 
+  togglePostNotitification(uuid: string, event: any) {
+    event.preventDefault();
+    console.log('Toggle post notification: ', event);
+
+    this.socialService.post.togglePostNotification(uuid).subscribe((res: any) => { this.settings = res.data;});
+  }
+
   edit(event: any) {
     event.preventDefault();
     this.postItem.edit();
@@ -84,11 +91,14 @@ export class PostHeaderComponent implements OnChanges {
 
   getSettings(e: any) {
     e.preventDefault();
-    this.socialService.post.getSettings(this.item.uuid).subscribe(
-      (res: any) => {
-        this.settings = res.data.settings;
-      }
-    );
+    // Only get settings when the pop up form shown up
+    // if (e.target.attributes['aria-expanded'].value === 'true')
+    //   return;
+
+    this.socialService.post.getSettings(this.item.uuid).take(1).subscribe(
+    (res: any) => {
+      this.settings = res.data.settings;
+    });
   }
 
 

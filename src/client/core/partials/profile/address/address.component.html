@@ -1,0 +1,92 @@
+<div *ngIf="data">
+  <div class="field-group-title">
+    <h3 class="pull-left">Address</h3>
+    <div class="pull-right">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+  </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
+      <template ngFor let-item [ngForOf]="data.addresses" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{item.kind_of | keyToValue:addressType:'kind_of':'name'}}</dt>
+        <dd><p>{{item.address_line1}}</p></dd>
+      </template>
+    </dl>
+
+    <div *ngIf="data.addresses.length == 0 && editable">
+      <p class="text-fade">
+        Tell us more about your address
+      </p>
+      <button type="button" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-plus"></i> Add detail
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"><i class="fa fa-pencil"></i> address</h4>
+    </modal-header>
+    <modal-body>
+      <div formArrayName="addresses">
+        <div *ngFor="let add_phone of form.controls.addresses.controls; let i=index" class="media mt0">
+          <div class="media-body" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-4">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.addresses.controls[i].controls.kind_of.valid
+                  && form.controls.addresses.controls[i].controls.kind_of.touched),
+                  'has-success': (form.controls.addresses.controls[i].controls.kind_of.valid
+                  && form.controls.addresses.controls[i].controls.kind_of.touched
+                  && form.value.addresses[i].kind_of.length>1)}">
+                  <select class="form-control" name="name" formControlName="kind_of">
+                    <option value=""> -- Select One -- </option>
+                    <option *ngFor="let et of addressType" value="{{et.kind_of}}">{{et.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.addresses.controls[i].controls.address_line1.valid
+                  && form.controls.addresses.controls[i].controls.address_line1.touched),
+                  'has-success': (form.controls.addresses.controls[i].controls.address_line1.valid
+                  && form.controls.addresses.controls[i].controls.address_line1.touched
+                  && form.value.addresses[i].address_line1.length>1)}">
+                  <input type="text" class="form-control" formControlName="address_line1" placeholder="">
+                  <div
+                    *ngIf="!form.controls.addresses.controls[i].controls.address_line1.valid && form.controls.addresses.controls[i].controls.address_line1.touched">
+                    <span
+                      *ngIf="!form.controls.addresses.controls[i].controls.address_line1.valid && form.controls.addresses.controls[i].controls.address_line1.errors.url"
+                      class="help-block text-danger">
+                      Address is not valid
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <button type="button" class="btn btn-default" (click)="removeItem(i)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-default" (click)="addItem()">
+        <i class="fa fa-plus"></i> Add more
+      </button>
+    </modal-body>
+    <modal-footer>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10"
+              (click)="onSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

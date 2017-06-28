@@ -1,0 +1,25 @@
+<div id="list-photo" class="row-img" *ngIf="data" [ngClass]="view" (dragenter)="onDragenter($event)"
+     (dragleave)="onDragleave($event)">
+  <me-list-header *ngIf="showSortBar" [data]="data" (outEvent)="actionItem($event)" [viewOption]="view"></me-list-header>
+  <div *ngIf="view != 'time'">
+    <z-media-share-item *ngFor="let item of data;" [type]="type" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
+  </div>
+  <div *ngIf="view == 'time'">
+    <div *ngFor="let group of data | groupByMonthYear:'created_at' :groupBy :data.length" class="clearfix">
+      <div style="color: #4A4A4A; font-size: 15px">{{group.key}}</div>
+      <z-media-share-item *ngFor="let item of group.value" [type]="type" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
+    </div>
+  </div>
+
+  <!--<div *ngIf="view == 'time'" *ngFor="let group of data | groupByMonthYear:'created_at'">-->
+    <!--{{group|json}}-->
+  <!--</div>-->
+</div>
+
+<!--<div *ngIf="data">
+  <div *ngIf="data.length==0" class="text-center">
+    <div class="zone-no-photo">F
+      <p>Drag photos anywhere to upload</p>
+    </div>
+  </div>
+</div>-->

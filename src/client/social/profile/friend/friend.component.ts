@@ -26,19 +26,18 @@ export class ZSocialProfileFriendComponent implements OnInit {
 
   ngOnInit() {
 
-    this.profileDataService.profileData$.take(1).subscribe((res: any) => {
+    this.profileDataService.profileData$.subscribe((res: any) => {
       this.userInfo = res.data;
     });
 
-    this.route.params.subscribe(params => {
-      this.socialService.user.getFriends(params['id']).subscribe(
+    this.route.params
+      .switchMap((params: any) => this.socialService.user.getFriends(params['id']))
+      .subscribe(
         (res: any) => {
           console.log(res);
           this.list = res.data;
           // this.userInfo = res.data;
-        }
-      );
-    });
+        });
   }
 
   onLoadMore() {

@@ -17,6 +17,12 @@ export class ChatNotification {
     if (this.data.type == 'update_display') {
       this.updateDisplay(this.data);
     }
+    if (this.data.type == 'update_conversation_list') {
+      this.updateConversationList(this.data);
+    }
+    if (this.data.type == 'notification_message') {
+      this.addNotificationMessage(this.data);
+    }
   }
 
 
@@ -49,6 +55,18 @@ export class ChatNotification {
       item.value.data[index] = data.group_user;
     }
     this.serviceManager.getChatCommonService().updateAll();
+  }
+
+  updateConversationList(data:any) {
+    console.log(data);
+    let item = this.serviceManager.getStorageService().find('chat_contacts');
+    item.value.data = data.group_users;
+    this.serviceManager.getChatCommonService().updateAll();
+    // this.serviceManager.getStorageService().save('chat_contacts', item);
+  }
+
+  addNotificationMessage(data:any) {
+    this.serviceManager.getChatCommonService().addMessage(data.group, data);
   }
 }
 

@@ -2,19 +2,18 @@
   <div class="page-body-control-nav" *ngIf="displayCreateButtons">
     <ul class="page-body-control-menu">
       <li>
-        <button class="btn btn-wth-default" (click)="uploader.browseFiles($event)">
+        <button class="btn btn-wth-default" (click)="showUploadForm()">
           <i class="fa fa-cloud-upload"></i> Upload File
         </button>
       </li>
       <li>
-        <button class="btn btn-default"
+        <button class="btn btn-wth-default"
                 (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">
           <i class="fa fa-plus-circle"></i> Create Album
         </button>
       </li>
     </ul>
   </div>
-
 
 
   <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
@@ -100,7 +99,8 @@
             </a>
           </li>
           <li>
-            <a href="javascript:;" draggable="false" (click)="onAction({action: 'deleteAlbumAndBack', params: {selectedObjects: [object]}})">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'deleteAlbumAndBack', params: {selectedObjects: [object]}})">
               <i class="fa fa-trash-o"></i> Delete Album
             </a>
           </li>
@@ -152,7 +152,8 @@
       </li>
       <!-- Shared with me screen DOES NOT support delete objects action -->
       <li *ngIf="page != 'shared-with-me'">
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
@@ -172,10 +173,13 @@
                draggable="false">
               <i class="fa fa-edit"></i> Edit Information</a>
           </li>
+
           <li>
-            <a (click)="onAction({action: 'download', params: {}})">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'download', params: {selectedObjects: selectedObjects}})">
               <i class="fa fa-download"></i> Download</a>
           </li>
+
           <li>
             <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal', showDetails: true}})"
                href="javascript:;" draggable="false">
@@ -189,7 +193,8 @@
 
     <!--album list-->
 
-    <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
+    <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
@@ -209,7 +214,8 @@
           <i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: selectedObjects}})">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown action">
@@ -234,12 +240,14 @@
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'download', params: {}})">
-              <i class="fa fa-download"></i> Download</a>
+            <a href="javascript:;" draggable="false" [ngClass]="{'text-disable': selectedObjects.length != 1}"
+               (click)="onAction({action: 'downloadAlbum', params: {selectedObjects: selectedObjects}})">
+              <i class="fa fa-download"></i> Download
+            </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})"
-               href="javascript:;" draggable="false">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})">
               <i class="fa fa-info-circle"></i> Information
             </a>
           </li>
@@ -249,7 +257,8 @@
 
 
     <!--album details-->
-    <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
+    <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})">
@@ -269,7 +278,8 @@
         </a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false" (click)="onAction({action: 'delete', params: { selectedObjects: selectedObjects}})">
+        <a class="btn" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'delete', params: { selectedObjects: selectedObjects}})">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
@@ -291,17 +301,20 @@
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'download', params: {}})"><i class="fa fa-download"></i> Download
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'download', params: {selectedObjects: selectedObjects}})">
+              <i class="fa fa-download"></i> Download
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})"
-               href="javascript:;" draggable="false">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'previewDetailsModal'}})">
               <i class="fa fa-info-circle"></i> View Information
             </a>
           </li>
           <li>
-            <a href="javascript:;" draggable="false" (click)="onAction({action: 'removeFromAlbum', params: {selectedObject: object, selectedObjects: selectedObjects}})">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'removeFromAlbum', params: {selectedObject: object, selectedObjects: selectedObjects}})">
               <i class="fa fa-minus-square"></i> Remove from Album
             </a>
           </li>
@@ -313,7 +326,7 @@
     <!--view option-->
     <ul class="page-body-control-menu">
       <li class="dropdown">
-        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" draggable="false" >
+        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" draggable="false">
           <i class="fa"
              [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
         </a>
@@ -341,19 +354,3 @@
     </ul>
   </div>
 </div>
-
-
-<!--<z-media-share-form-add-to-album #formAddAlbum [editAlbum]="formEditAlbum"-->
-<!--[selectedPhotos]="selectedPhotos"></z-media-share-form-add-to-album>-->
-<!--<z-media-share-form-edit-album #formEditAlbum [selectedPhotos]="selectedPhotos"></z-media-share-form-edit-album>-->
-
-<!--<z-media-share-form-edit-name *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></z-media-share-form-edit-name>-->
-<!--<z-media-share-form-edit-name *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></z-media-share-form-edit-name>-->
-
-
-<!--<z-media-share-uploading #zoneUpload (outEvent)="onActionUploading($event)"></z-media-share-uploading>-->
-
-
-<!--<z-media-share-sharing #zoneSharing [selectedItems]="selectedPhotos"></z-media-share-sharing>-->
-<!--<z-media-share-tagging #zoneTagging></z-media-share-tagging>-->
-<me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>

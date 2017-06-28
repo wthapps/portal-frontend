@@ -16,13 +16,16 @@ import {
 import { PostDetailComponent } from './post/post-detail.component';
 import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
 import { PostListComponent } from './post/post-list.component';
-import { ZoneReportComponent } from './form/report/report.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../friends/members.component';
 import { SoPhotoListComponent } from './post/photo-list.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
+import { SocialFavoriteService } from './services/social-favorites.service';
+import { ZSocialShareProfileModule } from './user/list.module';
+import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
+import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences-community.component';
 
 
 /**
@@ -35,7 +38,8 @@ import { CoverProfileModule } from '../../core/partials/cover-profile/cover-prof
     // HdModalModule,
     Ng2HdModule,
     CoverProfileModule,
-    PostModule
+    PostModule,
+    ZSocialShareProfileModule
   ],
   declarations: [
     ZSocialFavoritesComponent,
@@ -51,14 +55,15 @@ import { CoverProfileModule } from '../../core/partials/cover-profile/cover-prof
     PostDetailComponent,
     PostDetailPhotoComponent,
 
-    //Share
-    ZoneReportComponent,
-
     // Notifications
     ZSocialNotificationsComponent,
 
     // Search
     // ZSocialSearchResultComponent,
+
+    // Community
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent
 
   ],
   exports: [
@@ -66,20 +71,30 @@ import { CoverProfileModule } from '../../core/partials/cover-profile/cover-prof
     SoPhotoListComponent,
     PostListComponent,
     PostComponent,
-    ZoneReportComponent,
     ZSocialNotificationsComponent,
 
     Ng2HdModule,
     CoverProfileModule,
     SharedModule,
-    PostModule
+    PostModule,
+    ZSocialShareProfileModule,
+    // Community
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent
   ]
 })
 export class ZSocialSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZSocialSharedModule,
-      providers: [SocialService, SoUserService, SoPostService, SoCommunityService, ZSocialProfileService]
+      providers: [
+        SocialService,
+        SoUserService,
+        SoPostService,
+        SoCommunityService,
+        ZSocialProfileService,
+        SocialFavoriteService
+      ]
     };
   }
 }

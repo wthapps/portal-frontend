@@ -1,0 +1,16 @@
+<nav class="nav-tabs-wrap clearfix">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-tabs-sm pull-left">
+    <li *ngFor="let t of menu" [ngClass]="{'active': (t.tab == tab)}">
+      <a *ngIf="t.tab == tab" href="javascript:;">{{t.text}}<!-- <span>99</span>--></a>
+      <a *ngIf="t.tab != tab" [routerLink]="[t.link]">{{t.text}}<!-- <span>99</span>--></a>
+    </li>
+  </ul>
+  <div class="pull-right">
+    <a class="btn btn-wth-default" [routerLink]="[constant.searchNewContactsUrl]">
+      <i class="fa fa-user-plus"></i> Add Contact
+    </a>
+  </div>
+</nav>
+
+<z-chat-share-add-contact #addContact></z-chat-share-add-contact>

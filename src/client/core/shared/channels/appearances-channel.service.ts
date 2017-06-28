@@ -18,7 +18,7 @@ export class AppearancesChannelService extends CableService {
     console.debug('Start channel appearance');
     if(this.userService.loggedIn) {
       this.createConnectionInstance(this.userService.profile.uuid);
-      let _this = this;
+      let thisCopy = this;
       App.personal_appearances = App.cable.subscriptions.create(
         {channel: 'AppearancesChannel'},
         {
@@ -30,7 +30,7 @@ export class AppearancesChannelService extends CableService {
           },
           received: function(data:any){
             console.log('received', data);
-            _this.saveData(data);
+            thisCopy.saveData(data);
           }
         }
       );

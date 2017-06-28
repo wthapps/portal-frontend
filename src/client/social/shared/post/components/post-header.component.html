@@ -19,14 +19,14 @@
           <i class="fa {{ privacyClassIcon(item)}}">
           </i> {{ privacyName(item) }}</a>
 
-        <hd-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
-          <hd-modal-header cssClass="modal-social-head" [showClose]="true">
+        <modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
+          <modal-header cssClass="modal-social-head" >
             <h4 class="modal-title text-left text-capitalize"> {{privacyName(item)}}</h4>
             <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </hd-modal-header>
-          <hd-modal-body>
+          </modal-header>
+          <modal-body>
             <ul class="list-unstyled social-list-user wth-scrollable">
               <li *ngFor="let item of item.custom_objects">
             <span class="social-list-user-action">
@@ -35,27 +35,27 @@
                 <span>{{item.name}}</span>
               </li>
             </ul>
-          </hd-modal-body>
-          <hd-modal-footer>
+          </modal-body>
+          <modal-footer>
             <button type="button" class="btn btn-wth-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">
               DONE
             </button>
-          </hd-modal-footer>
-        </hd-modal>
+          </modal-footer>
+        </modal>
 
       </div>
     </div>
     <div class="z-shared-info">
       <ul>
         <li>
-          {{item.created_at | date}}
+          <span class="text-fade">{{item.created_at | date}}</span>
         </li>
         <li class="note" *ngIf="item.adult">
           Adult content
         </li>
-        <li class="note" *ngIf="item.mute">
-          Mute
-        </li>
+        <!--<li class="note" *ngIf="item.mute">-->
+          <!--Mute-->
+        <!--</li>-->
         <li class="note" *ngIf="item.disable_comment">
           Disable comment
         </li>
@@ -68,7 +68,7 @@
   <div class="z-social-media-right">
     <div class="dropdown pull-right">
       <!--<post-settings [item]="item"></post-settings>-->
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+      <button class="btn btn-default btn-default-no-border dropdown-toggle" type="button" id="dropdownMenu1"
               data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)">
         <i class="fa fa-ellipsis-v"></i>
@@ -77,11 +77,6 @@
         <li>
           <a href="javascript:;" (click)="update({'adult': !item.adult}, $event)" *ngIf="settings.enable_adult != null">
             Adult content <i class="fa fa-check" *ngIf="item.adult"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" (click)="update({mute: !item.mute}, $event)" *ngIf="settings.mute != null">
-            Mute<i class="fa fa-check" *ngIf="item.mute"></i>
           </a>
         </li>
         <li role="separator" class="divider" *ngIf="settings.edit != null || settings.delete != null"></li>
@@ -115,6 +110,12 @@
           </a>
         </li>
 
+        <li>
+          <a href="javascript:;"
+             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable '}} notifications
+          </a>
+        </li>
+
         <li *ngIf="item.owner.uuid != userService.profile.uuid">
           <a href="javascript:;" (click)="onReport()">Report post</a>
         </li>
@@ -123,7 +124,7 @@
     </div>
 
     <div *ngIf="!showDetail" class="dropdown pull-right">
-      <a [routerLink]="['/'+ postUrl, item.uuid]"  class="btn btn-default">
+      <a [routerLink]="['/'+ postUrl, item.uuid]"  class="btn btn-default btn-default-no-border">
         <i class="fa fa-external-link"></i>
       </a>
     </div>

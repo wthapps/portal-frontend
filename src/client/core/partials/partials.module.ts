@@ -29,6 +29,15 @@ import { SocialSearchFormComponent } from './header/search/social-search-form.co
 import { CoverProfileModule } from './cover-profile/cover-profile.module';
 import { PartialsNotificationsComponent } from './notifications/notifications.component';
 import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
+import { PartialsProfileModule } from './profile/profile.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { UndoNotificationComponent } from './header/notification/undo-notification.component';
+import { NotificationItemComponent } from './notifications/item/notification-item.component';
+import { ChatSearchFormComponent } from './header/search/chat-search-form.component';
+import { TextBoxSearchComponent } from './header/search/components/textbox-search.component';
+import { DisplayLinkComponent } from './link/display-link.component';
+import { PipeModule } from '../shared/pipe/pipe.module';
+import { PartialsPhotoModule } from './photo/photo.module';
 
 
 @NgModule({
@@ -46,25 +55,34 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
+    InfiniteScrollModule,
     EntitySelectModule,
     PhotoModule,
     TagInputModule,
     AutoCompleteModule,
     CalendarModule,
     CoverProfileModule,
+    PartialsProfileModule,
+    PipeModule,
 
     ModalDockModule,
     Ng2Bs3ModalModule,
+    PartialsPhotoModule,
     CheckboxModule
   ],
   declarations: [
     SearchFormComponent,
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
+    ChatSearchFormComponent,
+    TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
     PartialsNotificationsComponent,
+    NotificationItemComponent,
+    UndoNotificationComponent,
+    DisplayLinkComponent,
 
     // Pipe
     TitleCase,
@@ -74,10 +92,13 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     SearchFormComponent,
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
+    ChatSearchFormComponent,
+    TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,
     FooterPromotionComponent,
     PartialsNotificationsComponent,
+    DisplayLinkComponent,
     LoadingModule,
     ToastsModule,
     TablePricingModule,
@@ -86,11 +107,15 @@ import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
     CoreChatSupportModule,
     UploadCropImageModule,
     ZSharedModule,
+    InfiniteScrollModule,
     EntitySelectModule,
     PhotoModule,
     CalendarModule,
     CoverProfileModule,
-
+    NotificationItemComponent,
+    UndoNotificationComponent,
+    PartialsProfileModule,
+    PartialsPhotoModule,
     ModalDockModule,
 
     // Pipe

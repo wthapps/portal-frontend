@@ -76,7 +76,7 @@ export class SoPhotoListComponent implements OnInit {
 
     e.stopPropagation();  // stop events on parent element
 
-    if (this.pressingCtrlKey) {
+    if (this.pressingCtrlKey && this.multipleSelect) {
       el.toggleClass(selectedClass);
       if (_.find(this.selectedItems, _.matchesProperty('id', item['id'])) == undefined) {
         this.selectedItems.push(item); // add
