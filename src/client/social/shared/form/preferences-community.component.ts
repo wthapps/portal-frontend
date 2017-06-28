@@ -51,7 +51,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
 
   }
 

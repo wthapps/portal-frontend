@@ -49,7 +49,7 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
     this.addAll();
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     this.removeAll();
     this.addAll();
   }
@@ -103,6 +103,9 @@ export class ZSocialProfileFormInterestComponent implements OnInit, OnChanges {
     control.removeAt(i);
   }
 
+  hobbyInterestControls() {
+    return (<FormGroup>(<FormGroup>this.form).controls.hobby_interests).controls;
+  }
 
   onHideModal() {
     this.modal.close();

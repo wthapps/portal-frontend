@@ -110,6 +110,10 @@ export class ZSocialShareCommunityFormEditComponent {
     this.modal.open();
   }
 
+  additionalLinkControls() {
+    return (<FormGroup>(<FormGroup>this.form).controls.additional_links).controls;;
+  }
+
 
   onSubmit(values: any): void {
     let additional_links_filter: any = [];

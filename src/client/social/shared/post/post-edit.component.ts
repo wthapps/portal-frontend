@@ -96,7 +96,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
 
   }
 

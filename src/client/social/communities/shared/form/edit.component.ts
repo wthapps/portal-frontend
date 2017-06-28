@@ -69,7 +69,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     this.removeAllLink();
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     this.removeAllLink();
     let _this = this;
     // console.log(this.form.controls['additional_links'].controls.length=0);
@@ -188,5 +188,9 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
     this.community_name.reset('');
     this.tag_line.reset('');
     this.description.reset('');
+  }
+
+  additionalLinkControls() {
+    return (<FormGroup>(<FormGroup>this.form).controls.additional_links).controls;
   }
 }

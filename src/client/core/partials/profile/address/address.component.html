@@ -35,7 +35,7 @@
     </modal-header>
     <modal-body>
       <div formArrayName="addresses">
-        <div *ngFor="let add_phone of addressControls; let i=index" class="media mt0">
+        <div *ngFor="let add_phone of addressControls(); let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">

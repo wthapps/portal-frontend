@@ -52,7 +52,7 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
     this.addAll();
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     this.removeAll();
     this.addAll();
   }
@@ -148,6 +148,14 @@ export class ZSocialProfileFormWorkEduComponent implements OnInit, OnChanges {
 
   onHideModal() {
     this.modal.close();
+  }
+
+  workControls() {
+    return  (<FormGroup>(<FormGroup>this.form).controls.works).controls;
+  }
+
+  educationControls() {
+    return  (<FormGroup>(<FormGroup>this.form).controls.educations).controls;
   }
 
   onSubmit(values: any): void {

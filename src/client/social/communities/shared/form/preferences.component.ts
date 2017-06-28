@@ -60,7 +60,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     if (this.data) {
       this.hasChange = false;
       console.log(this.data.admin);

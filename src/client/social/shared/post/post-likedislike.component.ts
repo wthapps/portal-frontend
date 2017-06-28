@@ -18,7 +18,7 @@ export class PostLikeDislikeComponent implements OnChanges, BaseSocialModal {
 
   @ViewChild('modal') modal: HdModalComponent;
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     // console.log('this.type:', this.type);
     // console.log('this.item:', this.item);
   }

@@ -37,7 +37,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
               private route: ActivatedRoute) {
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     if (this.data) {
 
       this.userInfo = this.data;
