@@ -12,7 +12,7 @@ declare var _: any;
   selector: 'album-edit-modal',
   templateUrl: 'album-edit-modal.component.html',
 })
-export class AlbumEditModalComponent implements BaseMediaModal, AfterViewInit {
+export class AlbumEditModalComponent implements AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
 
 

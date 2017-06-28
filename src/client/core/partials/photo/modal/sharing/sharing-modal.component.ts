@@ -14,7 +14,7 @@ declare var _: any;
   selector: 'sharing-modal',
   templateUrl: 'sharing-modal.component.html'
 })
-export class SharingModalComponent implements OnInit, OnDestroy, BaseMediaModal {
+export class SharingModalComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
   @Input() type: string;

@@ -11,7 +11,7 @@ declare var _: any;
   selector: 'me-edit-name-modal',
   templateUrl: 'base-object-edit-name-modal.component.html',
 })
-export class BaseObjectEditNameModalComponent implements OnInit, OnChanges, BaseMediaModal {
+export class BaseObjectEditNameModalComponent implements OnInit, OnChanges {
   @ViewChild('modal') modal: ModalComponent;
 
   @Input() data: any = null;

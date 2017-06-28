@@ -19,7 +19,7 @@ declare var $: any;
   selector: 'photo-edit-modal',
   templateUrl: 'photo-edit-modal.component.html'
 })
-export class PhotoEditModalComponent implements OnChanges, BaseMediaModal {
+export class PhotoEditModalComponent implements OnChanges {
   @Input() data: Photo = null;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: ModalComponent;

@@ -15,7 +15,7 @@ declare var _: any;
   selector: 'tagging-modal',
   templateUrl: 'tagging-modal.component.html'
 })
-export class TaggingModalComponent implements OnInit, BaseMediaModal {
+export class TaggingModalComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('tag') tag: TaggingElComponent;
   @Input() selectedItems: any = [];

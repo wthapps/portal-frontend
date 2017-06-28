@@ -13,7 +13,7 @@ declare var _: any;
   selector: 'add-to-album-modal',
   templateUrl: 'add-to-album-modal.component.html',
 })
-export class AddToAlbumModalComponent implements OnInit, BaseMediaModal {
+export class AddToAlbumModalComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
 
   @Input() selectedPhotos: any;

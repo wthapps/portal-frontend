@@ -17,7 +17,7 @@ declare var _: any;
   templateUrl: 'album-create-modal.component.html',
   styleUrls: ['album-create-modal.component.css']
 })
-export class AlbumCreateModalComponent implements BaseMediaModal, OnInit {
+export class AlbumCreateModalComponent implements OnInit {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 

@@ -11,7 +11,7 @@ declare var _: any;
   selector: 'album-delete-modal',
   templateUrl: 'album-delete-modal.component.html',
 })
-export class AlbumDeleteModalComponent implements BaseMediaModal, AfterViewInit {
+export class AlbumDeleteModalComponent implements AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   selectedAlbums: any;

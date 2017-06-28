@@ -33,7 +33,7 @@ declare let saveAs: any;
     TaggingModalComponent
   ]
 })
-export class PhotoDetailModalComponent implements OnInit, AfterViewInit, BaseMediaModal {
+export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
   @Input() selectedPhotos: any = [];
   @Input() allPhotos: any = [];
 
