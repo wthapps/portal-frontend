@@ -77,19 +77,19 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
     return value;
   }
 
-  onSubmit(data?: any): void {
+  onSubmit(data: any): void {
     this.loadingService.start();
 
     let body = JSON.stringify({
       // setting_notification_posts: this.setting_notification_posts,
       // setting_notification_request: this.setting_notification_request,
 
-      is_close: (this.data.is_close) ? true : false,
-      searchable_level: this.data.searchable_level,
-      posted_level: this.data.posted_level
+      is_close: (data.is_close) ? true : false,
+      searchable_level: data.searchable_level,
+      posted_level: data.posted_level
     });
 
-    this.communityService.updateCommunity(this.data.uuid, body).subscribe((res: any) => {
+    this.communityService.updateCommunity(data.uuid, body).toPromise().then((res: any) => {
       this.loadingService.stop();
 
       this.setupDataUpdated.emit(res.data);

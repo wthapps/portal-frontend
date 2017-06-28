@@ -80,7 +80,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
     return value;
   }
 
-  onSubmit(): void {
+  onSubmit(data?: any): void {
     let body = JSON.stringify({
       // setting_notification_posts: this.setting_notification_posts,
       // setting_notification_request: this.setting_notification_request,
