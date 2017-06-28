@@ -68,7 +68,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   ];
 
   selectedTab: string = 'post';
-  selectedTabTitle: string ;
+  selectedTabTitle: any;
 
   // item: any = null;
   community: any = null;
@@ -83,7 +83,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   isMember: boolean = false;
   is_close: boolean = true;
-  // favourite: any;
+  favourite: any;
   userSettings: any;
 
   isPostTab: boolean = true;
