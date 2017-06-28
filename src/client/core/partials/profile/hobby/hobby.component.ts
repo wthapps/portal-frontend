@@ -86,4 +86,8 @@ export class PartialsProfileHobbyComponent {
       this.modal.close();
     });
   }
+
+  getHobbyControls() {
+    return (<FormGroup>(<FormGroup>this.form.get('hobbys')))['controls'];
+  }
 }

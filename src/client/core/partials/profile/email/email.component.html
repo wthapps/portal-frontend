@@ -36,15 +36,15 @@
     </modal-header>
     <modal-body>
       <div formArrayName="emails">
-        <div *ngFor="let add_email of form.controls.emails.controls; let i=index" class="media mt0">
+        <div *ngFor="let add_email of getEmailControls(); let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.kind_of.valid
-                  && form.controls.emails.controls[i].controls.kind_of.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.kind_of.valid
-                  && form.controls.emails.controls[i].controls.kind_of.touched
+                  'has-error': (!add_email['controls'].kind_of.valid
+                  && add_email[i]['controls'].kind_of.touched),
+                  'has-success': (add_email['controls'].kind_of.valid
+                  && add_email['controls'].kind_of.touched
                   && form.value.emails[i].kind_of.length > 1)}">
                   <select class="form-control" name="name" formControlName="kind_of">
                     <option value=""> -- Select One --</option>
@@ -54,16 +54,16 @@
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.value.valid
-                  && form.controls.emails.controls[i].controls.value.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.value.valid
-                  && form.controls.emails.controls[i].controls.value.touched
+                  'has-error': (!add_email['controls'].value.valid
+                  && add_email['controls'].value.touched),
+                  'has-success': (add_email['controls'].value.valid
+                  && add_email['controls'].value.touched
                   && form.value.emails[i].value.length > 1)}">
                   <input type="text" class="form-control" formControlName="value" placeholder="">
                   <div
-                    *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.touched">
+                    *ngIf="!add_email['controls'].value.valid && add_email['controls'].value.touched">
                     <span
-                      *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.errors.emailFormat"
+                      *ngIf="!add_email['controls'].value.valid && add_email['controls'].value.errors.emailFormat"
                       class="help-block text-danger">
                       Email is not valid
                     </span>

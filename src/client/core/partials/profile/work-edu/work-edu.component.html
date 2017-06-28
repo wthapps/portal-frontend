@@ -61,7 +61,7 @@
       <h4>Employment</h4>
       <div class="form-group">
         <div class="content-overflow" style="max-height: 195px;" formArrayName="works">
-          <div *ngFor="let add_work of form.controls.works.controls; let i=index" class="media">
+          <div *ngFor="let add_work of getWorkControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
                 <div class="col-sm-12">
@@ -96,7 +96,7 @@
       <h4>Education</h4>
       <div class="form-group">
         <div class="content-overflow" style="max-height: 195px;" formArrayName="educations">
-          <div *ngFor="let add_education of form.controls.educations.controls; let i=index" class="media">
+          <div *ngFor="let add_education of getEducationControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
                 <div class="col-sm-12">

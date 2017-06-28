@@ -24,7 +24,7 @@ export class ReadMoreComponent implements OnChanges {
   shaveContent: string = '';
   showMore: boolean = false;
 
-  ngOnChanges(): void {
+  ngOnChanges(data: any): void {
     this.content = this.content.replace(/(\r\n|\n\r|\r|\n)/g, ' <br> ');
     let value = this.content;
     let limit = this.limit;

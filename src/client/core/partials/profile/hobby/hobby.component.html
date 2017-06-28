@@ -40,7 +40,7 @@
     <modal-body>
       <div class="form-group">
         <div class="content-overflow" style="max-height: 195px;" formArrayName="hobbys">
-          <div *ngFor="let hobby of form.controls.hobbys.controls; let i=index" class="media">
+          <div *ngFor="let hobby of  getHobbyControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
                 <div class="col-sm-12">

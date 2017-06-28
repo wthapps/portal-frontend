@@ -35,15 +35,15 @@
     </modal-header>
     <modal-body>
       <div formArrayName="medias">
-        <div *ngFor="let add_phone of form.controls.medias.controls; let i=index" class="media mt0">
+        <div *ngFor="let add_phone of getMediaControls(); let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.medias.controls[i].controls.kind_of.valid
-                  && form.controls.medias.controls[i].controls.kind_of.touched),
-                  'has-success': (form.controls.medias.controls[i].controls.kind_of.valid
-                  && form.controls.medias.controls[i].controls.kind_of.touched
+                  'has-error': (!add_phone['controls'].kind_of.valid
+                  && add_phone['controls'].kind_of.touched),
+                  'has-success': (add_phone['controls'].kind_of.valid
+                  && add_phone['controls'].kind_of.touched
                   && form.value.medias[i].kind_of.length>1)}">
                   <select class="form-control" name="name" formControlName="kind_of">
                     <option value=""> -- Select One -- </option>
@@ -53,16 +53,16 @@
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.medias.controls[i].controls.value.valid
-                  && form.controls.medias.controls[i].controls.value.touched),
-                  'has-success': (form.controls.medias.controls[i].controls.value.valid
-                  && form.controls.medias.controls[i].controls.value.touched
+                  'has-error': (!add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched),
+                  'has-success': (add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched
                   && form.value.medias[i].value.length>1)}">
                   <input type="text" class="form-control" formControlName="value" placeholder="">
                   <div
-                    *ngIf="!form.controls.medias.controls[i].controls.value.valid && form.controls.medias.controls[i].controls.value.touched">
+                    *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
                     <span
-                      *ngIf="!form.controls.medias.controls[i].controls.value.valid && form.controls.medias.controls[i].controls.value.errors.urlFormat"
+                      *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.urlFormat"
                       class="help-block text-danger">
                       Link is not valid
                     </span>

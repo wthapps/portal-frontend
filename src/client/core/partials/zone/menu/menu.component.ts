@@ -54,5 +54,8 @@ export class ZSharedMenuComponent implements OnInit {
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
+  trackByFn() {
+
+  }
 
 }

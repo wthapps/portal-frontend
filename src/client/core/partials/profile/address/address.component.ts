@@ -3,7 +3,7 @@ import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormArray
+  FormArray, FormControl
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -91,6 +91,10 @@ export class PartialsProfileAddressComponent {
     _.map(this.data.addresses, (v: any)=> {
       _this.addItem(v);
     });
+  }
+
+  getAddressControls() {
+    return (<FormGroup>this.form.get('addresses')).controls;
   }
 
 

@@ -13,6 +13,8 @@ export class ZMediaToolbarPhotoComponent {
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   onAction(action: string) {
+    if (action === 'favourite')
+      this.hasFavourite = !this.hasFavourite;
     this.outEvent.emit(action);
     return false;
   }

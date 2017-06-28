@@ -115,4 +115,8 @@ export class PartialsProfileMediaComponent {
       this.modal.close();
     });
   }
+
+  getMediaControls() {
+    return (<FormGroup>(<FormGroup>this.form.get('medias')))['controls'];
+  }
 }

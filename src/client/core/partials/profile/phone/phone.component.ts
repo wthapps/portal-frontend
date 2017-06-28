@@ -149,4 +149,8 @@ export class PartialsProfilePhoneComponent implements OnInit {
       this.filteredCountriesCode = this.countriesNameCode;
     }, 100);
   }
+
+  getPhoneControls() {
+    return (<FormGroup>(<FormGroup>this.form.get('phones')))['controls'];
+  }
 }

@@ -127,4 +127,12 @@ export class PartialsProfileWorkEduComponent {
       this.modal.close();
     });
   }
+
+  getWorkControls() {
+    return (<FormGroup>(<FormGroup>this.form.get('works')))['controls'];
+  }
+
+  getEducationControls() {
+    return (<FormGroup>(<FormGroup>this.form.get('educations')))['controls'];
+  }
 }

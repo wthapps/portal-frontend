@@ -107,4 +107,8 @@ export class PartialsProfileEmailComponent {
       this.modal.close();
     });
   }
+
+  getEmailControls() {
+    return (<FormGroup>(<FormGroup>this.form.get('emails')))['controls'];
+  }
 }
