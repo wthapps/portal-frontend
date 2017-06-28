@@ -24,7 +24,7 @@ export class ZSocialFavoritesComponent implements OnInit {
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
   constructor(private socialService: SocialService,
-              private favoriteService: SocialFavoriteService,
+              public favoriteService: SocialFavoriteService,
               private zoneReportService: ZoneReportService
   ) {
     // this.favorites$ = this.favoriteService.favoritesObs;

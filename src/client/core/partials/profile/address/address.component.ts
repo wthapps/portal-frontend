@@ -68,7 +68,7 @@ export class PartialsProfileAddressComponent {
     }
   }
 
-  addressControls(form: any) {
+  addressControls() {
     return (<FormGroup>(<FormGroup>this.form.get('addresses')))['controls'];
   }
 

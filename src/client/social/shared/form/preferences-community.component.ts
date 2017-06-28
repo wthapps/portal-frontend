@@ -77,7 +77,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
     return value;
   }
 
-  onSubmit(): void {
+  onSubmit(data?: any): void {
     this.loadingService.start();
 
     let body = JSON.stringify({
