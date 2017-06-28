@@ -36,7 +36,7 @@ export class BaseObjectEditNameModalComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(data:any): void {
     if (this.data) {
       // update form
       (<FormControl>this.name).setValue(this.data.name);

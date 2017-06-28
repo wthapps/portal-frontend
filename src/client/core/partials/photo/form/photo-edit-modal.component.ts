@@ -44,7 +44,7 @@ export class PhotoEditModalComponent implements OnChanges {
     this.date = this.form.controls['date'];
   }
 
-  ngOnChanges() {
+  ngOnChanges(data:any) {
     if (this.data) {
       // update form
       this.updateForm(this.data);
@@ -77,7 +77,7 @@ export class PhotoEditModalComponent implements OnChanges {
     }
   }
 
-  onSubmit(values: any): void {
+  onSubmit(values: any) {
     if (this.form.valid) {
       this.modal.close();
       this.data.name = values.name;

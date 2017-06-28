@@ -17,7 +17,7 @@ export class ZMediaShareItemComponent implements OnChanges {
 
   actionFavourite: boolean = false;
 
-  ngOnChanges() {
+  ngOnChanges(data:any) {
     if (this.hasAction.indexOf('favourite') != -1) {
       this.actionFavourite = true;
     }

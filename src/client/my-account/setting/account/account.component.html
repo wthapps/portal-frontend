@@ -11,7 +11,7 @@
   </div>
   <div *ngIf="!userService.profile.plan.is_trial">
     <p class="p-plan-info"><span>{{userService.profile.plan.name}}</span>
-      - Activated on {{userService.profile.plan_registered_at | date:'MMM dd, yyyy'}}</p>
+      - Activated on {{userService.profile.plan_registered_at | date:'yMMMd'}}</p>
     <p>
       <button (click)="cancelPlan()" class="btn btn-default2 btn-min">Downgrade</button>
     </p>

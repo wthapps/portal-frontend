@@ -17,7 +17,7 @@
     </td>
     <td>{{record.content}}</td>
     <td>{{record.record_type == 'A' ? 'IPv4' : 'IPv6'}}</td>
-    <td>{{record.updated_at | date:'MMM dd, yyyy'}} {{record.updated_at | date:'H:mm:ss'}}</td>
+    <td>{{record.updated_at | date:'yMMMd'}} {{record.updated_at | date:'H:mm:ss'}}</td>
     <td width="160" class="text-right">
       <button class="btn btn-sm btn-default" (click)="editHost($event,record.id)"><i class="fa fa-pencil"></i> Edit
       </button>
