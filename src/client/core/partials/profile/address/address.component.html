@@ -35,15 +35,15 @@
     </modal-header>
     <modal-body>
       <div formArrayName="addresses">
-        <div *ngFor="let add_phone of getAddressControls(); let i=index" class="media mt0">
+        <div *ngFor="let add_phone of addressControls; let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form['controls']['addresses']['controls'][i]['controls'].kind_of.valid
-                  && form['controls']['addresses']['controls'][i]['controls'].kind_of.touched),
-                  'has-success': (form['controls']['addresses']['controls'][i]['controls'].kind_of.valid
-                  && form['controls']['addresses']['controls'][i]['controls'].kind_of.touched
+                  'has-error': (!add_phone.controls.kind_of.valid
+                  && add_phone.controls.kind_of.touched),
+                  'has-success': (add_phone.controls.kind_of.valid
+                  && add_phone.controls.kind_of.touched
                   && form.value.addresses[i].kind_of.length>1)}">
                   <select class="form-control" name="name" formControlName="kind_of">
                     <option value=""> -- Select One -- </option>
@@ -53,16 +53,16 @@
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form['controls']['addresses']['controls'][i]['controls'].address_line1.valid
-                  && form['controls']['addresses']['controls'][i]['controls'].address_line1.touched),
-                  'has-success': (form['controls']['addresses']['controls'][i]['controls'].address_line1.valid
-                  && form['controls']['addresses']['controls'][i]['controls'].address_line1.touched
+                  'has-error': (!add_phone.controls.address_line1.valid
+                  && add_phone.controls.address_line1.touched),
+                  'has-success': (add_phone.controls.address_line1.valid
+                  && add_phone.controls.address_line1.touched
                   && form.value.addresses[i].address_line1.length>1)}">
                   <input type="text" class="form-control" formControlName="address_line1" placeholder="">
                   <div
-                    *ngIf="!form['controls']['addresses']['controls'][i]['controls'].address_line1.valid && form['controls']['addresses']['controls'][i]['controls'].address_line1.touched">
+                    *ngIf="!add_phone.controls.address_line1.valid && add_phone.controls.address_line1.touched">
                     <span
-                      *ngIf="!form['controls']['addresses']['controls'][i]['controls'].address_line1.valid && form['controls']['addresses']['controls'][i]['controls'].address_line1.errors.url"
+                      *ngIf="!add_phone.controls.address_line1.valid && add_phone.controls.address_line1.errors.url"
                       class="help-block text-danger">
                       Address is not valid
                     </span>
