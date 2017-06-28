@@ -1,4 +1,4 @@
-interface BaseMediaModal {
+export interface BaseMediaModal {
   event: any;
 
   open(options?: any): void;

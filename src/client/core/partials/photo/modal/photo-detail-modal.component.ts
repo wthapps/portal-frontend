@@ -14,6 +14,8 @@ import { PhotoService } from '../../../shared/services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
 import { PhotoEditComponent } from '../edit/edit-photo.component';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { BaseMediaModal } from './base-media-modal';
+
 
 declare let $: any;
 declare let _: any;

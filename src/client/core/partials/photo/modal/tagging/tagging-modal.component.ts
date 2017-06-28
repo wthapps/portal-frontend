@@ -5,6 +5,7 @@ import { Response } from '@angular/http';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaTaggingService } from './tagging.service';
 import { TaggingElComponent } from './tagging-el.component';
+import { BaseMediaModal } from '../base-media-modal';
 
 
 declare var $: any;

@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
+import { BaseMediaModal } from '../modal/base-media-modal';
+
 
 import {
   FormGroup,

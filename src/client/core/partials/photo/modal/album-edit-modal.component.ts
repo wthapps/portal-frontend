@@ -3,6 +3,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Constants } from '../../../shared/config/constants';
+import { BaseMediaModal } from './base-media-modal';
 
 declare var $: any;
 declare var _: any;

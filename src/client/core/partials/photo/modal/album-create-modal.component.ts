@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { TaggingElComponent } from './tagging/tagging-el.component';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { BaseMediaModal } from './base-media-modal';
+
 
 declare var $: any;
 declare var _: any;
