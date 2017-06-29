@@ -471,7 +471,7 @@ export class SeedConfig {
       'rxjs': {
         main: 'Rx.js',
         defaultExtension: 'js'
-      },
+      }/*,
       'ng2-tag-input': {
         main: 'dist/ng2-tag-input.bundle.js',
         format: 'cjs'
@@ -483,7 +483,7 @@ export class SeedConfig {
       },
       'ng2-tag-input/modules/components/tag-input.template.html': {
         defaultJSExtension: false
-      }
+      }*/
     }
   };
 

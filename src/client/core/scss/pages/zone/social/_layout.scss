@@ -31,7 +31,7 @@
   -moz-border-radius: 5px;
   border-radius: 5px;
   padding: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   border: 1px solid $line;
   .z-social-box-header {
     margin: -15px -15px 0;
@@ -622,7 +622,7 @@
   @include border-top-radius($border-radius-base);
   border: 1px solid $line;
   background-color: #ffffff;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 
   .zone-social-cover-action {
     position: absolute;

@@ -81,12 +81,28 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/angular2-cookie/core.js'
       },
       {
-        name: 'ng2-material-dropdown',
-        path: 'node_modules/ng2-material-dropdown/dist/ng2-dropdown.bundle.js'
+        name: 'ng2-tag-input',
+        path: `node_modules/ng2-tag-input/dist/ng2-tag-input.bundle.js`,
+        packageMeta: {
+          defaultExtension: 'js',
+          main: 'dist/ng2-tag-input.bundle.js',
+          format: 'cjs'
+        }
       },
       {
-        name: 'ng2-tag-input',
-        path: 'node_modules/ng2-tag-input/dist/ng2-tag-input.bundle.js'
+        name: 'ng2-material-dropdown',
+        path: `node_modules/ng2-material-dropdown/dist/ng2-dropdown.bundle.js`,
+        packageMeta: {
+          defaultExtension: 'js',
+          main: 'dist/ng2-material.bundle.js',
+          format: 'cjs'
+        }
+      },
+      {
+        name: 'ng2-tag-input/modules/components/tag-input.template.html',
+        packageMeta: {
+          defaultJSExtension: false
+        }
       },
       {
         name: 'rxjs',
@@ -115,7 +131,7 @@ export class ProjectConfig extends SeedConfig {
     // ];
 
     /* Add to or override NPM module configurations: */
-    this.PLUGIN_CONFIGS['browser-sync'] = { ghostMode: false };
+    this.PLUGIN_CONFIGS['browser-sync'] = {ghostMode: false};
   }
 
 }

@@ -162,11 +162,12 @@
     "hover.css": "^2.0.2",
     "intl": "^1.2.5",
     "jquery": "~1.11.3",
+    "linkifyjs": "^2.1.4",
     "lodash": "4.17.4",
     "ng2-bs3-modal": "^0.10.4",
     "ng2-cable": "1.0.5",
     "ng2-material-dropdown": "^0.7.5",
-    "ng2-tag-input": "^0.9.8",
+    "ng2-tag-input": "^0.9.10",
     "ngx-infinite-scroll": "^0.4.1",
     "primeng": "^2.0.0-rc.1",
     "rxjs": "~5.1.1",
@@ -175,7 +176,6 @@
     "svg-country-flags": "^1.0.0",
     "systemjs": "0.19.41",
     "wheelzoom.js": "^1.0.1",
-    "zone.js": "^0.7.2",
-    "linkifyjs": "^2.1.4"
+    "zone.js": "^0.7.2"
   }
 }
