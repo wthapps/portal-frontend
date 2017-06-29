@@ -6,6 +6,7 @@ import { MaxLengthPipe } from './max-length.pipe';
 import { FileSizePipe } from './file-size.pipe';
 import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
 import { BytesPipe } from './bytes.pipe';
+import { SafeHtmlPipe } from './safeHtml.pipe';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { BytesPipe } from './bytes.pipe';
     FileSizePipe,
     GroupByMonthYearPipe,
     BytesPipe,
+    SafeHtmlPipe,
     LinkifyPipe
   ],
   exports: [
@@ -25,6 +27,7 @@ import { BytesPipe } from './bytes.pipe';
     FileSizePipe,
     GroupByMonthYearPipe,
     BytesPipe,
+    SafeHtmlPipe,
     LinkifyPipe
   ],
   providers: []

@@ -32,9 +32,7 @@ import { GroupByPipe } from './pipe/groupby.pipe';
 import { NewlinePipe } from './pipe/newline.pipe';
 import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
-import { SafeHtmlPipe } from './pipe/safeHtml.pipe';
 import { ConvertByPatternPipe } from './pipe/convert.pipe';
-
 import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
 
 import { NotificationService } from './services/notification.service';
@@ -104,7 +102,6 @@ import { PipeModule } from './pipe/pipe.module';
     // TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe,
     WthFilterByPipe,
     ArrayLengthPipe,
 
@@ -152,7 +149,6 @@ import { PipeModule } from './pipe/pipe.module';
     // TitleCase,
     UrlTransformPipe,
     ShowLengthTransformPipe,
-    SafeHtmlPipe,
     ConvertByPatternPipe,
 
     //Directive
