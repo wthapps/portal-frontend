@@ -3,6 +3,7 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 import { ZMediaPhotoListComponent } from './photo-list.component';
 import { ZMediaPhotoRoutingModule } from './photo-routing.module';
 import { PhotoService } from '../../core/shared/services/photo.service';
+import { PhotoDetailComponent } from './photo-detail.component';
 
 @NgModule({
   imports: [
@@ -10,10 +11,12 @@ import { PhotoService } from '../../core/shared/services/photo.service';
     ZMediaSharedModule.forRoot()
   ],
   declarations: [
-    ZMediaPhotoListComponent
+    ZMediaPhotoListComponent,
+    PhotoDetailComponent
   ],
   exports: [
-    ZMediaPhotoListComponent
+    ZMediaPhotoListComponent,
+    PhotoDetailComponent
   ],
   providers: [
     PhotoService

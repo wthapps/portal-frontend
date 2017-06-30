@@ -9,7 +9,7 @@ import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component'
 import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
 import { ZMediaToolbarPhotoComponent } from './photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './album/album.component';
-import { Constants } from '../../../shared/config/constants';
+import { Constants } from '../../../config/constants';
 
 @Component({
   moduleId: module.id,

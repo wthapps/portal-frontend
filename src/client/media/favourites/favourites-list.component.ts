@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ZMediaFavoriteService } from './favourites.service';
 import { PhotoService } from '../../core/shared/services/photo.service';
-import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
+import { PhotoDetailModalComponent } from '../../core/shared/components/photo/modal/photo-detail-partial.component';
 
 declare var $: any;
 declare var _: any;

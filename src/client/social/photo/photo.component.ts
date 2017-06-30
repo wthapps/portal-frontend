@@ -28,7 +28,7 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
   id: any; // at present we are using uuid for this value
   ids: any;
 
-  loadingImg: boolean = true;
+  loading: boolean = true;
 
   selectedPhoto: any = null;
   hasMultiItems: boolean = false;
@@ -106,7 +106,7 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
   }
 
   showLoading(e: any) {
-    this.loadingImg = false;
+    this.loading = false;
   }
 
   onBack() {

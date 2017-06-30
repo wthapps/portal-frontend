@@ -38,6 +38,7 @@ export class ProjectConfig extends SeedConfig {
       {src: 'bootstrap/dist/js/bootstrap.min.js', inject: 'libs'},
       {src: 'dropzone/dist/dropzone.js', inject: 'libs'},
       {src: 'cropper/dist/cropper.min.js', inject: 'libs'},
+      {src: 'cropperjs/dist/cropper.min.js', inject: 'libs'},
       {src: 'wheelevent.js/wheelevent.js', inject: 'libs'},
       {src: 'wheelzoom.js/wheelzoom.min.js', inject: 'libs'},
       {src: 'shave/dist/shave.min.js', inject: 'libs'},

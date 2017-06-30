@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZMediaPhotoListComponent } from './photo-list.component';
-import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
+import { PhotoDetailModalComponent } from '../../core/shared/components/photo/modal/photo-detail-partial.component';
+import { PhotoDetailComponent } from './photo-detail.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {path: 'photos', component: ZMediaPhotoListComponent},
-      {path: 'photos/:id', component: PhotoDetailModalComponent},
+      {path: 'photos/:id', component: PhotoDetailComponent},
     ])
   ],
   exports: [RouterModule]

@@ -34,7 +34,6 @@ import { UrlTransformPipe } from './pipe/url.pipe';
 import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
 import { ConvertByPatternPipe } from './pipe/convert.pipe';
 import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
-
 import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './channels/notification-channel.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
@@ -57,10 +56,10 @@ import { ChannelService } from './channels/channel.service';
 import { ChatCommonService } from './services/chat.common.service';
 import { ZoneReportService } from './form/report/report.service';
 import { ZoneReportComponent } from './form/report/report.component';
-import { HdModalComponent } from './ng2-hd/modal/components/modal';
 import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
 import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
 import { PipeModule } from './pipe/pipe.module';
+import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -84,7 +83,8 @@ import { PipeModule } from './pipe/pipe.module';
     CheckboxModule,
     RadioButtonModule,
     InputTextareaModule,
-    PipeModule
+    PipeModule,
+    PartialsPhotoModule
   ],
   declarations: [
     ToolbarComponent,
@@ -130,6 +130,7 @@ import { PipeModule } from './pipe/pipe.module';
     RadioButtonModule,
     InputTextareaModule,
     PipeModule,
+    PartialsPhotoModule,
 
     // Component
     ToolbarComponent,

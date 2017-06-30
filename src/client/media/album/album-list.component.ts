@@ -6,7 +6,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 
 import { ZMediaAlbumService } from './album.service';
-import { ZMediaToolbarComponent } from '../../core/partials/photo/toolbar/toolbar.component';
+import { ZMediaToolbarComponent } from '../../core/shared/components/photo/toolbar/toolbar.component';
 
 declare var $: any;
 declare var _: any;

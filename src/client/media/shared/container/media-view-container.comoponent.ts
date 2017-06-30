@@ -14,15 +14,15 @@ import { ZMediaAlbumService } from '../../album/album.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { Subject } from 'rxjs';
-import { SharingModalComponent } from '../../../core/partials/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '../../../core/partials/photo/modal/tagging/tagging-modal.component';
-import { PhotoDetailModalComponent } from '../../../core/partials/photo/modal/photo-detail-modal.component';
-import { PhotoEditModalComponent } from '../../../core/partials/photo/form/photo-edit-modal.component';
-import { BaseObjectEditNameModalComponent } from '../../../core/partials/photo/modal/base-object-edit-name-modal.component';
-import { AlbumCreateModalComponent } from '../../../core/partials/photo/modal/album-create-modal.component';
-import { AlbumEditModalComponent } from '../../../core/partials/photo/modal/album-edit-modal.component';
-import { AlbumDeleteModalComponent } from '../../../core/partials/photo/modal/album-delete-modal.component';
-import { AddToAlbumModalComponent } from '../../../core/partials/photo/modal/add-to-album-modal.component';
+import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
+import { PhotoDetailModalComponent } from '../../../core/shared/components/photo/modal/photo-detail-partial.component';
+import { PhotoEditModalComponent } from '../../../core/shared/components/photo/modal/photo-edit-modal.component';
+import { BaseObjectEditNameModalComponent } from '../../../core/shared/components/photo/modal/base-object-edit-name-modal.component';
+import { AlbumCreateModalComponent } from '../../../core/shared/components/photo/modal/album-create-modal.component';
+import { AlbumEditModalComponent } from '../../../core/shared/components/photo/modal/album-edit-modal.component';
+import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
+import { AddToAlbumModalComponent } from '../../../core/shared/components/photo/modal/add-to-album-modal.component';
 
 
 declare var saveAs: any;
@@ -446,7 +446,14 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         //   Object.assign(options, {'canDelete': false});
         // }
         //
-        this.router.navigate(['photos', this.selectedObjects[0].id]);
+        //mode 0 -> view, 1: edit
+        let ids = _.map(this.selectedObjects, 'id');
+        this.router.navigate([
+          'photos',
+          this.selectedObjects[0].id,
+          { module: 'media', ids: ids, mode: 0, prevUrl: this.router.url}
+        ]);
+
         break;
       case 'previewDetailsModal':
         this.loadModalComponent(PhotoDetailModalComponent);

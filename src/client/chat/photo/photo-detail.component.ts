@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
+import { PhotoDetailModalComponent } from '../../core/shared/components/photo/modal/photo-detail-partial.component';
 import { ChatService } from '../shared/services/chat.service';
 import { ActivatedRoute } from '@angular/router';
 

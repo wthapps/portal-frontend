@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { ApiBaseService } from '../../../shared/services/apibase.service';
-import { Constants } from '../../../shared/config/constants';
+import { ApiBaseService } from '../../../services/apibase.service';
+import { Constants } from '../../../config/constants';
 import { BaseMediaModal } from './base-media-modal';
 
 

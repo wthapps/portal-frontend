@@ -5,7 +5,10 @@
         <a href="javascript:;" draggable="false" (click)="goBack()"><i class="fa fa-arrow-left"></i></a>
       </li>
     </ul>
-    <ul class="action navbar-right">
+
+    <!--view menu-->
+
+    <ul *ngIf="mode == 0" class="action navbar-right">
       <li>
         <a href="javascript:;" draggable="false"
            (click)="doAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i
@@ -48,11 +51,47 @@
         </ul>
       </li>
     </ul>
+
+
+    <!--editable menu-->
+    <ul *ngIf="mode == 1" class="action action-text navbar-right ml10">
+      <li>
+        <a (click)="resetCropper()" href="javascript:;" class="mr20">Reset</a>
+      </li>
+      <li>
+        <a (click)="setMode(1)" href="javascript:;" class="mr20">Cancel</a>
+      </li>
+      <li *ngIf="!editing">
+        <a (click)="cropperDone()" href="javascript:;">Done</a>
+      </li>
+      <li>
+        <a (click)="cropperSave()" href="javascript:;">Save</a>
+      </li>
+    </ul>
+    <ul *ngIf="mode == 1" class="action navbar-right">
+      <li>
+        <a (click)="cropCropper()" href="javascript:;"><i class="fa fa-crop"></i></a>
+      </li>
+      <li>
+        <a (click)="cropperZoomIn()" href="javascript:;"><i class="fa fa-search-plus"></i></a>
+      </li>
+      <li>
+        <a (click)="cropperZoomOut()" href="javascript:;"><i class="fa fa-search-minus"></i></a>
+      </li>
+      <li>
+        <a (click)="rotateCropper(true)" href="javascript:;"><i class="fa fa-rotate-left"></i></a>
+      </li>
+      <li>
+        <a (click)="rotateCropper()" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
+      </li>
+    </ul>
+
+
     <div class="name"><i class="fa fa-picture-o"></i> {{selectedPhotos[index].name}}.{{selectedPhotos[index].extension}}
     </div>
   </div>
 
-  <div class="photo-detail-top-info">
+  <div *ngIf="mode == 0" class="photo-detail-top-info">
     <div class="photo-detail-top-num" *ngIf="selectedPhotos.length > 1">
       {{index + 1}} of {{selectedPhotos.length}}
     </div>
@@ -61,22 +100,32 @@
     </div>
   </div>
 
-  <div class="photo-detail-bottom-action">
+  <div *ngIf="mode == 0" class="photo-detail-bottom-action">
     <a draggable="false" href="#" (click)="onZoomOut($event)"><i class="fa fa-plus"></i></a>
     <a draggable="false" href="#" (click)="onZoomReset($event)"><i class="fa fa-refresh"></i></a>
     <a draggable="false" href="#" (click)="onZoomIn($event)"><i class="fa fa-minus"></i></a>
   </div>
 
-  <div *ngIf="selectedPhotos[index]" class="photo-detail-content">
+  <div class="photo-detail-content">
     <div class="photo-detail-img">
-      <figure [ngClass]="{'img-loading': loadingImg}">
-        <img imgFull class="img-zoom-{{imgZoomClass}}" draggable="false" [src]="selectedPhotos[index].url" alt="" (load)="showLoading()">
-      </figure>
-      <span *ngIf="(objects && objects.length>1)" draggable="false" (click)="imgPrev()"
+
+      <!--view mode-->
+      <div class="image-figure" [ngClass]="{'img-loading': loading}" id="cropper-wrap">
+        <figure [ngClass]="{'img-loading': loading}">
+          <img imgFull class="img-zoom-{{imgZoomClass}}" draggable="false" id="photo-detail-image"
+               [src]="photo?.url" alt="">
+        </figure>
+      </div>
+      <!--edit mode-->
+      <!--<div *ngIf="mode==1" class="image-figure" [ngClass]="{'img-loading': loading}" id="cropper-wrap">-->
+        <!--<img id="photo-detail-image" [src]="selectedPhotos[index]?.url" alt="">-->
+      <!--</div>-->
+
+      <span *ngIf="(ids.length>1)" draggable="false" (click)="move(false)"
             class="photo-detail-img-control img-control-prev">
         <i class="fa fa-angle-left"></i>
       </span>
-      <span *ngIf="(objects && objects.length>1)" draggable="false" (click)="imgNext()"
+      <span *ngIf="(ids.length>1)" draggable="false" (click)="move()"
             class="photo-detail-img-control img-control-next">
         <i class="fa fa-angle-right"></i>
       </span>

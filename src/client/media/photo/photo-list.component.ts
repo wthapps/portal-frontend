@@ -4,8 +4,8 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ActivatedRoute } from '@angular/router';
 import { PhotoService } from '../../core/shared/services/photo.service';
-import { ZMediaToolbarComponent } from '../../core/partials/photo/toolbar/toolbar.component';
-import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
+import { ZMediaToolbarComponent } from '../../core/shared/components/photo/toolbar/toolbar.component';
+import { PhotoDetailModalComponent } from '../../core/shared/components/photo/modal/photo-detail-partial.component';
 
 declare var $: any;
 declare var _: any;

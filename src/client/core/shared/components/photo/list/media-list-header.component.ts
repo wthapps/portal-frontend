@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { Constants } from '../../../shared/config/constants';
+import { Constants } from '../../../config/constants';
 
 declare var _: any;
 

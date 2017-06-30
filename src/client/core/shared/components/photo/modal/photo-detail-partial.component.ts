@@ -1,6 +1,6 @@
 import {
   Component, AfterViewInit, Input, EventEmitter, Output, HostListener, ViewChild,
-  ViewContainerRef, ComponentFactoryResolver, OnInit
+  ViewContainerRef, ComponentFactoryResolver, OnInit, OnChanges, SimpleChanges
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { ConfirmationService } from 'primeng/components/common/api';
@@ -8,25 +8,27 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ZMediaToolbarComponent } from '../toolbar/toolbar.component';
 import { SharingModalComponent } from './sharing/sharing-modal.component';
 import { TaggingModalComponent } from './tagging/tagging-modal.component';
-import { PhotoEditModalComponent } from '../../photo/form/photo-edit-modal.component';
+import { PhotoEditModalComponent } from './photo-edit-modal.component';
 import { AddToAlbumModalComponent } from './add-to-album-modal.component';
-import { PhotoService } from '../../../shared/services/photo.service';
-import { LoadingService } from '../../loading/loading.service';
+import { PhotoService } from '../../../services/photo.service';
+import { LoadingService } from '../../../../partials/loading/loading.service';
 import { PhotoEditComponent } from '../edit/edit-photo.component';
-import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 import { BaseMediaModal } from './base-media-modal';
+import { Photo } from '../../../models/photo.model';
 
 
 declare let $: any;
 declare let _: any;
 const KEY_ESC = 27;
 declare let saveAs: any;
+declare let Cropper: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'photo-detail-modal',
-  templateUrl: 'photo-detail-modal.component.html',
-  styleUrls: ['photo-detail-modal.component.css'],
+  selector: 'photo-detail-partial',
+  templateUrl: 'photo-detail-partial.component.html',
+  styleUrls: ['photo-detail-partial.component.css'],
   entryComponents: [
     SharingModalComponent,
     PhotoEditModalComponent,
@@ -35,7 +37,15 @@ declare let saveAs: any;
     TaggingModalComponent
   ]
 })
-export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
+export class PhotoDetailModalComponent implements OnInit, AfterViewInit, OnChanges {
+
+  @Input() module: string;
+  @Input() photo: Photo;
+  @Input() loading: boolean;
+  @Input() ids: Array<number>;
+  @Input() mode: number;
+
+
   @Input() selectedPhotos: any = [];
   @Input() allPhotos: any = [];
 
@@ -54,10 +64,10 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
   modal: any;
 
   index: number = 0;
-  loadingImg: boolean = true;
   objects: any;
 
-  img: any;
+  image: any;
+  cropper: any;
   imgZoomClass: number = 0;
   imgZoomMin: number = -10;
   imgZoomMax: number = 24;
@@ -65,15 +75,26 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
   private showDetails: boolean = false;
   private show: boolean = false;
   private canDelete: boolean = true;
+  private editing: boolean = false;
+
+  private degree: number = 0;
+  private cropping: boolean;
+
+  private cropperDefaultOptions: any = {
+    viewMode: 2,
+    dragMode: 'none',
+    autoCropArea: 1,
+    autoCrop: false,
+    center: true
+  };
+
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
     if (ev.which === KEY_ESC) this.goBack();
   }
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private resolver: ComponentFactoryResolver,
+  constructor(private resolver: ComponentFactoryResolver,
               private photoService: PhotoService,
               private confirmationService: ConfirmationService,
               private location: Location,
@@ -82,35 +103,32 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.loadingService.start('#photo-box-detail');
-    this.route.params.forEach((params: any) => {
-      this.apiBaseService.get('zone/social_network/photos/' + params['id']).subscribe((res: any) => {
-        this.selectedPhotos = [res.data];
-        this.open({show: true});
-        this.loadingService.stop();
-      });
-    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(this.loading) {
+      this.open({show: true});
+    } else {
+      this.selectedPhotos[0] = this.photo;
+      this.createImageCropper();
+    }
   }
 
   ngAfterViewInit() {
-    let _thisPhotoDetail = this;
-    $('body').on('click', '#photo-box-detail figure', function () {
-      _thisPhotoDetail.goBack();
-    });
+    let self = this;
+    $('body').on('click', '#photo-box-detail figure', () => self.goBack());
+
     $('body').on('click',
-      '#photo-box-detail figure #photo-detail-img, .photo-detail-img-control, .cropper-container'
-      , function (e: any) {
+      '#photo-box-detail figure #photo-detail-img, .photo-detail-img-control, .cropper-container, #photo-detail-image'
+      , (e: any) => {
         e.stopPropagation();
       });
 
-    $('.photo-detail-img img').load(function () {
-      if ($(this).height() > 100) {
-        $(this).addClass('bigImg');
-      }
-    });
-
-    console.log('after init view  photo details');
-
+    // $('.photo-detail-img img').load(function () {
+    //   if ($(this).height() > 100) {
+    //     $(this).addClass('bigImg');
+    //   }
+    // });
 
   }
 
@@ -133,22 +151,18 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  showLoading(e: any) {
-    this.loadingImg = false;
-  }
 
-  imgPrev(): void {
-    this.index = this.index - 1;
-    if (this.index < 0) this.index = this.selectedPhotos.length - 1;
-    this.loadingImg = true;
-    // console.log(this.objects);
-  }
-
-  imgNext(): void {
-    this.index = this.index + 1;
-    if (this.index >= this.selectedPhotos.length) this.index = 0;
-    this.loadingImg = true;
-    // console.log(this.index, this.selectedPhotos, this.allPhotos);
+  // true --> next
+  // false --> pre
+  move(direction: boolean = true): void {
+    let index = 0;
+    let currentIndex = _.indexOf(this.ids, this.photo.id);
+    if(direction) {
+      index = currentIndex < (this.ids.length - 1) ? currentIndex + 1: 0;
+    } else {
+      index = currentIndex > 0 ? currentIndex - 1 : this.ids.length - 1;
+    }
+    this.event.emit({action: 'loadItem', id: this.ids[index]});
   }
 
   // Change image when delete current one: next, prev or go back to photo list
@@ -158,8 +172,8 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
     this.selectedPhotos.splice(this.index, 1);
     if (this.selectedPhotos.length == 0)
       this.goBack();
-    else
-      this.imgNext();
+    // else
+    //   this.imgNext();
   }
 
 
@@ -216,20 +230,12 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   close(options: any) {
     this.modal.close();
   }
 
-  preview(show: boolean): void {
-    // this.active = false;
-    // this.collapseInfo = true;
-  }
-
   goBack() {
-    this.show = false;
-    this.showDetails = false;
-    this.location.back();
+    this.event.emit({action: 'goBack'})
   }
 
   onShowInfo() {
@@ -242,13 +248,99 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
   }
 
   onEditPhoto(uuid: any) {
-    // this.router.navigate(['photos', uuid, 'edit']);
-    this.loadModalComponent(PhotoEditComponent);
-    this.modal.data = this.selectedPhotos[0];
-    this.modal.events.subscribe((res:any) => {
-      this.event.emit(res);
+    // this.loadModalComponent(PhotoEditComponent);
+    // this.modal.data = this.selectedPhotos[0];
+    // this.modal.events.subscribe((res:any) => {
+    //   this.event.emit(res);
+    // });
+    //
+
+    this.setMode(1);
+    this.event.emit({action: 'editPhoto'})
+  }
+
+  setMode(mode: number) {
+    if (mode == 1) {
+      // this.createImageCropper();
+    }
+    this.mode = mode;
+  }
+
+  createImageCropper(){
+
+    var image = document.getElementById('photo-detail-image');
+    this.cropper = new Cropper(image, {
+
+    });
+    this.cropper.reset();
+    this.cropper.replace(this.photo.url);
+
+    // this.cropper.reset();
+    // editingImage.cropper();
+    // this.image = editingImage;
+    // this.image.cropper('reset', true).cropper('replace', this.photo.url);
+    // this.image.cropper('destroy').attr('src', this.photo.url).cropper(this.cropperDefaultOptions).cropper('clear');
+    // this.image.cropper.disable();
+  }
+  ////////////////////////////////////////////////////CROPPER/////////////////////////////////////
+  rotateCropper(leftDirect?: boolean) {
+    this.cropper.rotate(leftDirect ? -90 : 90);
+  }
+
+  cropCropper() {
+    this.cropping = !this.cropping;
+    if(this.cropping) {
+      this.cropper.setDragMode('none');
+    } else {
+      this.cropper.setDragMode('move');
+    }
+
+  }
+
+  cropperZoomIn() {
+    this.cropper.zoom(0.1);
+  }
+
+  cropperZoomOut() {
+    this.cropper.zoom(-0.1);
+  }
+
+  resetCropper() {
+    this.cropper.reset();
+    // this.image.cropper('destroy').attr('src', this.photo.url).cropper(this.cropperDefaultOptions).cropper('clear');
+  }
+
+  cropperDone() {
+    let result = this.image.cropper.getCroppedCanvas().toDataURL();
+    this.cropper.destroy().attr('src', result).cropper(this.cropperDefaultOptions).cropper('clear');
+
+    this.editing = true;
+  }
+
+  cropperSave() {
+    // get cropped image data
+    let blob = this.cropper.getCroppedCanvas().toDataURL();
+    let extension:any;
+    if (blob.indexOf("/png") !== -1) extension = "png";
+    if (blob.indexOf("/jpg") !== -1) extension = "jpg";
+    if (blob.indexOf("/jpeg") !== -1) extension = "jpeg";
+    if (blob.indexOf("/tiff") !== -1) extension = "tiff";
+
+    this.confirmationService.confirm({
+      message: 'Do you want to save ?',
+      header: 'Save Image',
+      accept: () => {
+        this.apiBaseService.post('media/photos', {
+          name: this.photo.name + `.${extension}`,
+          type: `image/${extension}`,
+          file: blob
+        }).subscribe((res:any) => {
+          this.event.emit(res);
+        });
+      }
     });
   }
+  /////////////////////////////////////////END-CROPPER/////////////////////////////////////
 
   openModal(modalName: string) {
     let options: any;
@@ -306,18 +398,6 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit {
     this.modalContainer.clear();
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;
-  }
-
-  private reInitPhoto(): void {
-    // Define variables
-    let elImage = $('#photo-detail-img');
-    elImage.cropper({
-      viewMode: 2,
-      dragMode: 'move',
-      autoCropArea: 1,
-      autoCrop: false
-    });
-    this.img = elImage;
   }
 
   confirmDeleteMedia(params: any) {

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, Output, AfterViewInit, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Params } from '@angular/router';
-import { PhotoService } from '../../../shared/services/photo.service';
-import { PhotoUploadService } from '../../../shared/services/photo-upload.service';
-import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { PhotoService } from '../../../services/photo.service';
+import { PhotoUploadService } from '../../../services/photo-upload.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 declare var $: any;
@@ -119,8 +119,11 @@ export class PhotoEditComponent implements OnInit, AfterViewInit {
 
 
   private reInitPhoto(): void {
+
+
+
     // Define variables
-    let elImage = $('#photo-detail-img');
+    let elImage = $('#photo-detail-image-edit');
     elImage.cropper();
     this.img = elImage;
   }

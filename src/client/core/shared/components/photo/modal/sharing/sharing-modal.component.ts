@@ -4,7 +4,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { ZMediaSharingService } from './sharing.service';
 import { Subject } from 'rxjs';
-import { Constants } from '../../../../shared/config/constants';
+import { Constants } from '../../../../config/constants';
 import { BaseMediaModal } from '../base-media-modal';
 
 

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
-import { BaseMediaModal } from '../modal/base-media-modal';
+import { BaseMediaModal } from './base-media-modal';
 
 
 import {
@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { Photo } from '../../../shared/models/photo.model';
+import { Photo } from '../../../models/photo.model';
 
 
 declare var $: any;
