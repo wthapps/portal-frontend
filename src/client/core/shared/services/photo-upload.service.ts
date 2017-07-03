@@ -9,7 +9,7 @@ declare let _: any;
 declare let Promise: any;
 declare let window: any;
 
-// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
+export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
 
 @Injectable()
 export class PhotoUploadService {
@@ -79,6 +79,20 @@ export class PhotoUploadService {
       });
   }
 
+  getValidImages(files: Array<any>): Array<any> {
+    return _.filter(files, (f: any) => { return f.type.indexOf('image') > -1 } );
+  }
+
+  // Convert raster image type (PNG) to jpg
+  getFileName(name: string) {
+    return name.replace('.png', '.jpg');
+  }
+
+  getExtensionType(extension: string) {
+    return extension.replace('png', 'jpg');
+  }
+
+
   /**
    * Upload multiple photos to s3 and convert output streams to Observable
    * @param photos
@@ -95,8 +109,8 @@ export class PhotoUploadService {
     return Observable.from(photos)
       .mergeMap((photo: any) => this.readFile(photo),
             (photo: any, data: any) => { return {
-            name: photo.name,
-            type: photo.type,
+            name: this.getFileName(photo.name),
+            type: this.getExtensionType(photo.type),
             file: data
           }},
           this.MAX_FILES
@@ -105,7 +119,6 @@ export class PhotoUploadService {
         (combinedData: any, returnData: any) => { return { originPhoto: combinedData, data: returnData.data}; }, this.MAX_FILES);
   }
 
-  // TODO: Handle readFile failed cases
   readFile(file: any): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
       let reader: FileReader = new FileReader();
