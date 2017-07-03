@@ -37,12 +37,12 @@
     <modal-body>
       <div formArrayName="emails">
         <div *ngFor="let add_email of getEmailControls(); let i=index" class="media mt0">
-          <div class="media-body" [formGroupName]="i">
+          <div *ngIf="add_email" class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
                   'has-error': (!add_email['controls'].kind_of.valid
-                  && add_email[i]['controls'].kind_of.touched),
+                  && add_email['controls'].kind_of.touched),
                   'has-success': (add_email['controls'].kind_of.valid
                   && add_email['controls'].kind_of.touched
                   && form.value.emails[i].kind_of.length > 1)}">

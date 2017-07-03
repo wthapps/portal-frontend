@@ -3,7 +3,7 @@
     <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
     <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
   </div>
-  <div class="media-user-name">
+  <div *ngIf="displayUserName" class="media-user-name">
     <p *ngIf="data.group_json?.group_type == 'couple'">{{data.display.name}}</p>
     <p *ngIf="data.group_json?.group_type == 'multiple' && data.group_json.name">{{data.group_json.name}}</p>
     <p *ngIf="data.group_json?.group_type == 'multiple' && !data.group_json.name">{{data.group_json.users_name}}</p>

@@ -1,11 +1,11 @@
 <div class="page-body-content has-page-body-sidebar">
   <div class="page-body-content-in" *ngIf="conversations">
     <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of conversations">
-      <div class="media-left">
+      <div class="media-body">
         <z-chat-share-user [data]="contact"></z-chat-share-user>
       </div>
       <div class="media-left">
-        <span class="text-fade">{{contact.updated_chat_at | timeFormat }}</span>
+        <p style="min-width: 100px" class="text-fade">{{contact.updated_chat_at | timeFormat }}</p>
       </div>
 
       <div class="media-right">

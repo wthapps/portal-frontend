@@ -4,16 +4,14 @@
       <h4 class="modal-title"> <i class="fa fa-plus"></i> Edit Conversation </h4>
     </modal-header>
     <modal-body>
-      <div class="media mb20">
+      <div class="media media-user-list">
         <div class="media-left">
-          <img class="img-rounded" width="100"
-               [src]="item.value.display.image">
+          <z-chat-share-user [data]="item.value" [size]="'sm'" [displayUserName]=false></z-chat-share-user>
         </div>
         <div class="media-body">
           <div class="form-group">
             <input type="text" name="name" class="form-control" placeholder="Name" [(ngModel)]="item.value.display.name">
           </div>
-          <!--<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Edit Photo</button>-->
         </div>
       </div>
     </modal-body>
