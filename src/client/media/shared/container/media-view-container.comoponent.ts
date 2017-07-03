@@ -451,7 +451,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.router.navigate([
           'photos',
           this.selectedObjects[0].id,
-          { module: 'media', ids: ids, mode: 0, prevUrl: this.router.url}
+          { ids: ids, mode: 0, prevUrl: this.router.url}
         ]);
 
         break;

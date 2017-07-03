@@ -19,6 +19,10 @@ export class PhotoService {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
+  create(body: any) {
+    return this.apiBaseService.post(`${this.url}`, body);
+  }
+
   actionOneFavourite(item: any) {
     // let body = JSON.stringify({
     //   ids: [item.id],
@@ -51,4 +55,5 @@ export class PhotoService {
   loadMore(next: string): any {
     return this.apiBaseService.get(next);
   }
+
 }

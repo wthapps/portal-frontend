@@ -67,10 +67,7 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, OnChang
   objects: any;
 
   image: any;
-  cropper: any;
-  imgZoomClass: number = 0;
-  imgZoomMin: number = -10;
-  imgZoomMax: number = 24;
+  cropper: any = null;
 
   private showDetails: boolean = false;
   private show: boolean = false;
@@ -110,7 +107,7 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, OnChang
       this.open({show: true});
     } else {
       this.selectedPhotos[0] = this.photo;
-      this.createImageCropper();
+      this.initCropper();
     }
   }
 
@@ -131,26 +128,6 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, OnChang
     // });
 
   }
-
-  onZoomReset(e: any) {
-    this.imgZoomClass = 0;
-    return false;
-  }
-
-  onZoomOut(e: any) {
-    if (this.imgZoomClass < this.imgZoomMax) {
-      this.imgZoomClass = this.imgZoomClass + 1;
-    }
-    return false;
-  }
-
-  onZoomIn(e: any) {
-    if (this.imgZoomClass > this.imgZoomMin) {
-      this.imgZoomClass = this.imgZoomClass - 1;
-    }
-    return false;
-  }
-
 
   // true --> next
   // false --> pre
@@ -247,96 +224,91 @@ export class PhotoDetailModalComponent implements OnInit, AfterViewInit, OnChang
     this.formEdit.onShow();
   }
 
-  onEditPhoto(uuid: any) {
-    // this.loadModalComponent(PhotoEditComponent);
-    // this.modal.data = this.selectedPhotos[0];
-    // this.modal.events.subscribe((res:any) => {
-    //   this.event.emit(res);
-    // });
-    //
+  ////////////////////////////////////////////////////CROPPER/////////////////////////////////////
 
+  editPhoto() {
     this.setMode(1);
     this.event.emit({action: 'editPhoto'})
   }
 
   setMode(mode: number) {
     if (mode == 1) {
-      // this.createImageCropper();
+      $('.cropper-crop-box').show();
+    } else {
+      $('.cropper-crop-box').hide();
     }
     this.mode = mode;
   }
 
-  createImageCropper(){
-
-    var image = document.getElementById('photo-detail-image');
-    this.cropper = new Cropper(image, {
-
-    });
-    this.cropper.reset();
+  initCropper(){
+    if (this.cropper == null) {
+      let image = document.getElementById('photo-detail-image');
+      this.cropper = new Cropper(image, {
+        dragMode: 'none',
+        autoCrop: true,
+        autoCropArea: 1,
+        viewMode: 2,
+        modal: false,
+        ready: () => {
+          // hide crop area on view mode
+          $('.cropper-crop-box').hide();
+        }
+      });
+    }
     this.cropper.replace(this.photo.url);
-
-    // this.cropper.reset();
-    // editingImage.cropper();
-    // this.image = editingImage;
-    // this.image.cropper('reset', true).cropper('replace', this.photo.url);
-    // this.image.cropper('destroy').attr('src', this.photo.url).cropper(this.cropperDefaultOptions).cropper('clear');
-    // this.image.cropper.disable();
   }
-  ////////////////////////////////////////////////////CROPPER/////////////////////////////////////
+
   rotateCropper(leftDirect?: boolean) {
     this.cropper.rotate(leftDirect ? -90 : 90);
   }
 
   cropCropper() {
-    this.cropping = !this.cropping;
     if(this.cropping) {
-      this.cropper.setDragMode('none');
-    } else {
       this.cropper.setDragMode('move');
+    } else {
+      this.cropper.setDragMode('crop');
     }
-
+    this.cropping = !this.cropping;
   }
 
-  cropperZoomIn() {
-    this.cropper.zoom(0.1);
+  cropperZoom(ratio: any) {
+    if (ratio == 0) {
+      this.cropper.reset();
+    } else if (ratio == 0.1) {
+      this.cropper.zoom(0.1);
+    } else {
+      this.cropper.zoom(-0.1);
+    }
   }
 
-  cropperZoomOut() {
-    this.cropper.zoom(-0.1);
-  }
-
-  resetCropper() {
+  cancel() {
     this.cropper.reset();
-    // this.image.cropper('destroy').attr('src', this.photo.url).cropper(this.cropperDefaultOptions).cropper('clear');
+    this.setMode(0);
   }
 
   cropperDone() {
-    let result = this.image.cropper.getCroppedCanvas().toDataURL();
-    this.cropper.destroy().attr('src', result).cropper(this.cropperDefaultOptions).cropper('clear');
-
+    let editingData = this.cropper.getCroppedCanvas().toDataURL(this.photo.content_type);
+    this.cropper.replace(editingData);
     this.editing = true;
   }
 
   cropperSave() {
     // get cropped image data
-    let blob = this.cropper.getCroppedCanvas().toDataURL();
-    let extension:any;
-    if (blob.indexOf("/png") !== -1) extension = "png";
-    if (blob.indexOf("/jpg") !== -1) extension = "jpg";
-    if (blob.indexOf("/jpeg") !== -1) extension = "jpeg";
-    if (blob.indexOf("/tiff") !== -1) extension = "tiff";
+    let editedData = this.cropper.getCroppedCanvas().toDataURL(this.photo.content_type);
 
     this.confirmationService.confirm({
-      message: 'Do you want to save ?',
-      header: 'Save Image',
+      message: 'Do you want to save editing item',
+      header: 'Save Photo',
       accept: () => {
-        this.apiBaseService.post('media/photos', {
-          name: this.photo.name + `.${extension}`,
-          type: `image/${extension}`,
-          file: blob
-        }).subscribe((res:any) => {
-          this.event.emit(res);
-        });
+        this.event.emit({action: 'updatePhoto', editedData: editedData});
+
+        // this.apiBaseService.post('media/photos', {
+        //   name: this.photo.name + `.${this.photo.extension}`,
+        //   type: this.photo.content_type,
+        //   file: editedData
+        // }).subscribe((res:any) => {
+        //   this.event.emit(res);
+        // });
       }
     });
   }
