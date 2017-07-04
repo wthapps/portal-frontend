@@ -27,8 +27,7 @@
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
               <a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
-                <span *ngIf="!favourite && !favourite?.uuid">Add to Favorites</span>
-                <span *ngIf="favourite && favourite?.uuid">Remove from Favorites</span>
+                <i class="fa fa-check" *ngIf="favourite && favourite?.uuid"></i> {{(!favourite && !favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites'}}
               </a>
             </li>
             <li><a href="javascript:;" (click)="importToContacts(userInfo)">Import to Contacts</a></li>
@@ -56,7 +55,10 @@
 
         <!--menu-->
         <div class="btn-group" *ngIf="userInfo.uuid !== userService.profile.uuid">
-          <button type="button" class="btn btn-default">
+          <button type="button" class="btn btn-default" *ngIf="!relationships?.follow" (click)="follow(userInfo.uuid)" >
+            Follow
+          </button>
+          <button type="button" class="btn btn-default" *ngIf="relationships?.follow">
             <i class="fa fa-check"></i> Following
           </button>
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -64,7 +66,8 @@
             <i class="fa fa-ellipsis-v"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="#" (click)="onReport()">Report member</a></li>
+            <li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>
+            <li><a href="javascript:;" (click)="onReport()">Report member</a></li>
           </ul>
         </div>
 

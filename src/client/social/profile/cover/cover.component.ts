@@ -30,8 +30,6 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
 
   favourite: any; // toggle favourites status for members, communities
 
-  private destroySubject: Subject<any> = new Subject<any>();
-
   constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,
               public userService: UserService,
@@ -63,9 +61,9 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
 
       if (this.userService.profile.uuid != params['id']) {
         this.socialService.user.getRelationShips(params['id'])
-          .takeUntil(this.destroySubject)
-          .subscribe((res: any) => {
-              this.relationships = res.data;
+          .toPromise()
+          .then((res: any) => {
+              this.relationships = res.data
             },
           );
       } else {
@@ -75,8 +73,16 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   }
 
   ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
+  }
+
+  follow(uuid: string) {
+    this.socialService.user.follow(uuid).toPromise()
+      .then((res: any) => this.relationships.follow = true);
+  }
+
+  unfollow(uuid: string) {
+    this.socialService.user.unfollow(uuid).toPromise()
+      .then((res: any) => this.relationships.follow = false);
   }
 
   onCoverAction(event: any) {
@@ -143,7 +149,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   }
 
   toggleFavourite(item: any, group: string) {
-    this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
+    this.socialService.user.toggleFavourites(item.uuid, group).toPromise().then(
       (res: any) => {
         console.log(res);
         if (!_.isEmpty(this.favourite)) {

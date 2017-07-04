@@ -24,6 +24,14 @@ export let soFriendUrl: any = Constants.urls.soFriendUrl;
 export class SoUserService {
   profile: User = null;
 
+  // Cached friends data of current user
+  private ownFriendInfo: any =  {
+    totalFriends: undefined,
+    totalFollowers: undefined,
+    totalFollowings: undefined,
+    totalBlacklist: undefined
+  };
+
 
   constructor(private apiBaseService: ApiBaseService, private user: UserService) {
     this.profile = user.profile;
@@ -33,6 +41,20 @@ export class SoUserService {
     return this.apiBaseService.get(`${soUsersUrl}/${uuid}`);
   }
 
+  getOwnFriendInfo(): Promise<any> {
+    console.debug('ownFriendInfo: ', this.ownFriendInfo);
+    if(this.ownFriendInfo.totalFriends && this.ownFriendInfo.totalFollowers && this.ownFriendInfo.totalFollowings && this.ownFriendInfo.totalBlacklists)
+      return Promise.resolve(this.ownFriendInfo);
+
+    return this.get().toPromise().then(
+      (res: any) => {
+        _.set(this.ownFriendInfo, 'totalFriends', res.data.total_friends);
+        _.set(this.ownFriendInfo, 'totalFollowers', res.data.total_followers);
+        _.set(this.ownFriendInfo, 'totalFollowings', res.data.total_followings);
+        _.set(this.ownFriendInfo, 'totalBlacklist', res.data.total_blacklists);
+        return this.ownFriendInfo;
+      });
+  }
 
   // update(body: any) {
   //   return this.apiBaseService.put(`zone/social_network/users/${this.user.profile.uuid}`, body);

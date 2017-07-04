@@ -66,23 +66,29 @@ export class ZSocialMembersComponent implements OnInit {
     if ( this.currentState === tab && !forceOption)
       return;
     this.currentState = tab;
+    this.loadingService.start('#users-list');
     switch(tab) {
       case FRIEND_TABS.friends:
         this.socialService.user.getFriends().take(1)
+          .finally(() => this.loadingService.stop('#users-list'))
           .subscribe((res: any) => {this.list = res.data;});
         break;
       case FRIEND_TABS.followers:
         this.socialService.user.getFollowerList().take(1)
+          .finally(() => this.loadingService.stop('#users-list'))
           .subscribe((res: any) => {this.list = res.data;});
         break;
       case FRIEND_TABS.followings:
         this.socialService.user.getFollowingList().take(1)
+          .finally(() => this.loadingService.stop('#users-list'))
           .subscribe((res: any) => {this.list = res.data;});
         break;
       case FRIEND_TABS.blacklists:
         this.list = [];
+        this.loadingService.stop('#users-list')
         break;
       default:
+        this.loadingService.stop('#users-list')
         console.error('Getting a strange tab. Need implementation? ', tab);
     }
   }
@@ -147,8 +153,8 @@ export class ZSocialMembersComponent implements OnInit {
 
 
   getUser() {
-    this.loadingService.start('#users-list');
-    this.socialService.user.get().subscribe(
+    this.getDataList(this.currentState, true);
+    this.socialService.user.get().toPromise().then(
       (res: any) => {
         // this.data = res.data;
         // this.addFollowingIntoFollower();
@@ -157,8 +163,6 @@ export class ZSocialMembersComponent implements OnInit {
         this.totalFollowings = _.get(res, 'data.total_followings', 0);
         this.totalBlacklist = _.get(res, 'data.total_blacklists', 0);
         // this.list = res.data[this.currentState];
-        this.getDataList(this.currentState, true);
-        this.loadingService.stop('#users-list');
       },
       error => this.errorMessage = <any>error
     );
