@@ -151,6 +151,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.modal.open();
     }
 
+    // Clear pending files in case of failure
+    this.files.length = 0;
+
     this.subscribePhotoSelectEvents();
   }
 

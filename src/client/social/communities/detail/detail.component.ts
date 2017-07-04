@@ -78,7 +78,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   // invitation: any = null;
   invitationId: string;
   joinRequestId: string;
-  tabItems: Array<any> = new Array<any>();
+  tabItems: Array<any> = [];
   // users: Array<any> = [];
   isAdmin: boolean = false;
   isMember: boolean = false;
@@ -366,7 +366,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   onReportMember(reportee_id: string, reason: string = '') {
     this.socialService.community.onReportMember(reportee_id, this.uuid, reason)
-      .subscribe((result: any) => {
+      .toPromise().then((result: any) => {
           console.log('reported member');
         },
         error => {
@@ -384,9 +384,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       this.posts.viewMorePosts();
   }
 
-  private getCommunity(uuid: string) {
+  private getCommunity(uuid: string): Promise<any> {
     // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).subscribe(
-    this.socialService.community.getCommunity(uuid).subscribe(
+    return this.socialService.community.getCommunity(uuid).toPromise().then(
       (res: any)=> {
         // this.item = res.data;
         this.community = res.data;
@@ -407,17 +407,17 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
 
-  private getTabItems(uuid: string, tabName: string) {
-    this.tabItems = [];
+  private getTabItems(uuid: string, tabName: string): void {
+    this.tabItems.length = 0;
     if (tabName === undefined)
       return;
-    // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/${tabName}`).subscribe(
-    this.socialService.community.getTabItems(uuid, tabName)
-      .takeUntil(this.destroySubject)
-      .subscribe(
-      (res: any)=> {
-        this.tabItems = res.data;
 
+    this.socialService.community.getTabItems(uuid, tabName)
+      .toPromise()
+      .then(
+      (res: any)=> {
+        if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) == -1 )
+          this.tabItems = res.data;
         // Update member_count, invitation_count, join_request_count
         switch(this.selectedTab) {
           case this.tab.members:
