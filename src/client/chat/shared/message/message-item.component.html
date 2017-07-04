@@ -1,7 +1,7 @@
 <div *ngIf="message.message_type != 'notification'" class="message-item"
      [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
   <div class="message-item-date" *ngIf="hasShowDate()">
-    <span>{{ message.created_at | date }}</span>
+    <span>{{ message.created_at | timeFormat:'day' }}</span>
   </div>
   <div class="message-item-content">
     <div class="message-item-owner" *ngIf="hasShowOwner() && message.display">

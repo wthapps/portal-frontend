@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="photo-box-owner">{{object.owner.name}}</div>
-    <div class="photo-box-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
+    <div class="photo-box-date">{{object.created_at | timeFormat}}</div>
     <div class="photo-box-size">{{object.size | bytes:3}}</div>
   </div>
 
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="photo-box-owner">{{object.owner.name}}</div>
-    <div class="photo-box-date">{{object.created_at | date:'MMM dd yyyy' : 'UTC'}}</div>
+    <div class="photo-box-date">{{object.created_at | timeFormat}}</div>
     <div class="photo-box-size">{{object.photo_number}}</div>
   </div>
 </div>

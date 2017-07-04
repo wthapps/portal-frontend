@@ -7,6 +7,7 @@ import { FileSizePipe } from './file-size.pipe';
 import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
 import { BytesPipe } from './bytes.pipe';
 import { SafeHtmlPipe } from './safeHtml.pipe';
+import { TimeFormatPipe } from './time-format.pipe';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { SafeHtmlPipe } from './safeHtml.pipe';
     GroupByMonthYearPipe,
     BytesPipe,
     SafeHtmlPipe,
+    TimeFormatPipe,
     LinkifyPipe
   ],
   exports: [
@@ -28,6 +30,7 @@ import { SafeHtmlPipe } from './safeHtml.pipe';
     GroupByMonthYearPipe,
     BytesPipe,
     SafeHtmlPipe,
+    TimeFormatPipe,
     LinkifyPipe
   ],
   providers: []

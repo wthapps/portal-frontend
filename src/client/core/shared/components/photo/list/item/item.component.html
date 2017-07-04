@@ -14,7 +14,7 @@
       <span (dblclick)="onAction('editName')">{{data.name}}.{{data.extension}}</span>
     </div>
     <div class="photo-box-img-owner">{{data.owner.name}}</div>
-    <div class="photo-box-img-date">{{data.created_at | date:'yMMMd'}}</div>
+    <div class="photo-box-img-date">{{data.created_at | timeFormat}}</div>
     <div class="photo-box-img-size">{{data.size}}</div>
   </div>
 
@@ -37,7 +37,7 @@
       <span (dblclick)="onAction('editName')">{{data.name}}</span>
     </div>
     <div class="photo-box-img-owner">{{data.owner.name}}</div>
-    <div class="photo-box-img-date">{{data.created_at | date:'yMMMd'}}</div>
+    <div class="photo-box-img-date">{{data.created_at | timeFormat}}</div>
     <div class="photo-box-img-size">{{data.photo_number}}</div>
   </div>
 

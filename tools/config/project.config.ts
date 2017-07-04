@@ -45,7 +45,8 @@ export class ProjectConfig extends SeedConfig {
       {src: 'slick-carousel/slick/slick.min.js', inject: 'libs'},
       {src: 'linkifyjs/dist/linkify.js', inject: 'libs'},
       {src: 'linkifyjs/dist/linkify-html.min.js', inject: 'libs'},
-      {src: 'file-saver/FileSaver.min.js', inject: 'libs'}
+      {src: 'file-saver/FileSaver.min.js', inject: 'libs'},
+      {src: 'moment/moment.js', inject: 'libs'}
     ];
 
     // Add `local` third-party libraries to be injected/bundled.

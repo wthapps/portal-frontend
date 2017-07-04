@@ -164,6 +164,7 @@
     "jquery": "~1.11.3",
     "linkifyjs": "^2.1.4",
     "lodash": "4.17.4",
+    "moment": "^2.18.1",
     "ng2-bs3-modal": "^0.10.4",
     "ng2-cable": "1.0.5",
     "ng2-material-dropdown": "^0.7.5",

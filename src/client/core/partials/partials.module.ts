@@ -28,7 +28,6 @@ import { ModalDockModule } from './modal/dock.module';
 import { SocialSearchFormComponent } from './header/search/social-search-form.component';
 import { CoverProfileModule } from './cover-profile/cover-profile.module';
 import { PartialsNotificationsComponent } from './notifications/notifications.component';
-import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 import { PartialsProfileModule } from './profile/profile.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UndoNotificationComponent } from './header/notification/undo-notification.component';
@@ -84,7 +83,6 @@ import { PipeModule } from '../shared/pipe/pipe.module';
 
     // Pipe
     TitleCase,
-    TimeFormatPipe
   ],
   exports: [
     SearchFormComponent,
@@ -120,7 +118,6 @@ import { PipeModule } from '../shared/pipe/pipe.module';
     // GroupByPipe,
     // NewlinePipe,
     TitleCase,
-    TimeFormatPipe
     // UrlTransformPipe,
     // ShowLengthTransformPipe,
     // SafeHtmlPipe,
