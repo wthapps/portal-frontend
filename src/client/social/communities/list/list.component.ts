@@ -28,7 +28,6 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   favourite: any;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   // readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
-  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private loadingService: LoadingService,
               private socialService: SocialService,
@@ -40,27 +39,24 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
   }
 
   getList() {
     this.loadingService.start('#communites-list');
 
     let myuuid = this.userService.profile.uuid;
-    var _this_community = this;
+    // var _this_community = this;
 
-    this.socialService.community.getCommunitiesList().take(1)
-      .takeUntil(this.destroySubject)
-      .subscribe(
+    this.socialService.community.getCommunitiesList().toPromise()
+      .then(
       (res: any)=> {
-        _this_community.myList.length = 0;
-        _this_community.list.length = 0;
+        this.myList.length = 0;
+        this.list.length = 0;
         _.map(res.data, (v: any)=> {
           if (v.admin.uuid == myuuid) {
-            _this_community.myList.push(v);
+            this.myList.push(v);
           } else {
-            _this_community.list.push(v);
+            this.list.push(v);
           }
         });
         this.loadingService.stop('#communites-list');

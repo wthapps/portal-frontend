@@ -31,8 +31,10 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
   modalComponent: any;
   modal: any;
 
-  favourite: any; // toggle favourites status for members, communities
+  // favourite: any; // toggle favourites status for members, communities
+  userSettings: any;
   comUserStatus = Constants.soCommunityUserStatus;
+  comUserRole = Constants.communityRole;
   communitiesUrl: string = Constants.urls.communities;
 
   constructor(public serviceManager: ServiceManager,
@@ -62,17 +64,17 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
    item: community / member object
    group: community / members
    */
-  getFavourite() {
-    this.socialService.user.getFavourite(this.data.uuid, 'community').subscribe(
-      (res: any) => {
-        this.favourite = res.data;
-      }
-    );
-  }
+  // getFavourite() {
+  //   this.socialService.user.getFavourite(this.data.uuid, 'community').subscribe(
+  //     (res: any) => {
+  //       this.favourite = res.data;
+  //     }
+  //   );
+  // }
 
   toggleFavourite() {
     this.favoriteService.addFavourite(this.data.uuid, 'community')
-      .then((res: any) => this.favourite = res.data);
+      .then((res: any) => this.userSettings.favorite = !this.userSettings.favorite);
   }
 
   confirmLeaveCommunity() {
@@ -141,6 +143,25 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
       }
     );
   }
+
+  getUserSettings(uuid: any) {
+    this.socialService.community.getUserSettings(uuid).take(1).subscribe(
+      (res: any) => {
+        console.log('inside getUserSettings', res);
+        this.userSettings = res.data;
+      }
+    );
+  }
+
+  toggleComNotification(uuid: any) {
+    this.socialService.community.toggleComNotification(uuid).subscribe(
+      (res: any) => {
+        console.log('inside toggleComNotification', res);
+        this.userSettings = res.data;
+      }
+    )
+  }
+
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
