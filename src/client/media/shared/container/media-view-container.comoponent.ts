@@ -77,6 +77,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   @Input() params: any;
   @Input() object: any; // object for detail pages
   @Input() page: string;
+  @Input() showDetailInfo: boolean = false;
+
 
   @ViewChild('toolbarContainer', {read: ViewContainerRef}) toolbarContainer: ViewContainerRef;
   @ViewChild('listContainer', {read: ViewContainerRef}) listContainer: ViewContainerRef;
@@ -100,7 +102,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
 
   viewOption: string = 'grid';
-  showDetailInfo: boolean = false;
   private currentPage: string;
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -390,16 +391,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         options = {selectedObject: this.selectedObjects[0]};
         break;
       case 'editInfoModal':
-        switch (this.objectType) {
-          case 'photo':
-            this.loadModalComponent(PhotoEditModalComponent);
-            options = {selectedObject: this.selectedObjects[0]};
-            break;
-          case 'album':
-            this.loadModalComponent(AlbumEditModalComponent);
-            options = {selectedObject: this.object};
-            break;
-        }
+        console.log('params deetai;', params.detail);
+        let object = params.detail == true ? this.object : this.selectedObjects[0] || this.object;
+        this.loadModalComponent(
+          object.object_type == 'photo' ? PhotoEditModalComponent : AlbumEditModalComponent
+        );
+        options = {selectedObject: object};
+        this.objectType = object.object_type;
         break;
       case 'deleteModal':
         // switch (this.objectType) {
@@ -438,15 +436,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
         break;
       case 'previewModal':
-        // this.loadModalComponent(PhotoDetailModalComponent);
-        // options = {show: true, showDetails: false, selectedObjects: this.selectedObjects, objects: this.list.objects};
-        //
-        // // Delete button should not be listed in shared with me screen
-        // if (this.page == Constants.mediaPageType.sharedWithMe) {
-        //   Object.assign(options, {'canDelete': false});
-        // }
-        //
-        //mode 0 -> view, 1: edit
         let ids = _.map(this.selectedObjects, 'id');
         this.router.navigate([
           'photos',
@@ -456,13 +445,20 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
         break;
       case 'previewDetailsModal':
-        this.loadModalComponent(PhotoDetailModalComponent);
-        options = {show: true, showDetails: true, selectedObjects: this.selectedObjects, objects: this.list.objects};
+        ids = _.map(this.selectedObjects, 'id');
+        this.router.navigate([
+          `${this.selectedObjects[0].object_type}s`,
+          this.selectedObjects[0].id,
+          { ids: ids, mode: 0, showDetail: true, prevUrl: this.router.url}
+        ]);
 
-        // Delete button should not be listed in shared with me screen
-        if (this.page == Constants.mediaPageType.sharedWithMe) {
-          Object.assign(options, {'canDelete': false});
-        }
+        // this.loadModalComponent(PhotoDetailModalComponent);
+        // options = {show: true, showDetails: true, selectedObjects: this.selectedObjects, objects: this.list.objects};
+        //
+        // // Delete button should not be listed in shared with me screen
+        // if (this.page == Constants.mediaPageType.sharedWithMe) {
+        //   Object.assign(options, {'canDelete': false});
+        // }
         // this.modal.event.subscribe((event: any) => {
         //   this.doAction(event);
         // });

@@ -1,1 +1,6 @@
-<photo-detail-partial #photoDetailModal (event)="onEditEvent($event)"></photo-detail-partial>
+<photo-detail-partial [module]="'chat'"
+                      [loading]="loading"
+                      [photo]="photo" [ids]="ids"
+                      [mode]="mode"
+                      (event)="doEvent($event)"
+                      ></photo-detail-partial>

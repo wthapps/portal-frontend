@@ -68,7 +68,9 @@ export class PostBodyComponent implements OnInit, OnChanges {
       case this.actions.onShowPhotoDetail:
         let photoIds = _.map(this.item.photos, 'id');
         console.log('this. item', this.item.photos, data);
-        this.router.navigate(['/posts',  this.item.uuid, 'photos', data.id, {ids: photoIds, prevUrl: this.router.url}]);
+        // this.router.navigate(['/posts',  this.item.uuid, 'photos', data.id, {ids: photoIds, prevUrl: this.router.url}]);
+        this.router.navigate(['/photos', data.id, {module: 'social', ids: photoIds, prevUrl: this.router.url}]);
+
         break;
     }
   }

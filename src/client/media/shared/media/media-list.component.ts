@@ -570,7 +570,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   editInfo(selectedObject: any) {
     this.loadingService.start();
-    if (this.currentPath == 'photos') {
+    if (selectedObject.object_type == 'photo') {
       let updated_at = new Date(selectedObject.created_at);
       let body = JSON.stringify({
         name: selectedObject.name,
@@ -589,7 +589,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
 
-    } else if (this.currentPath == 'albums') {
+    } else if (selectedObject.object_type == 'album') {
       let body = JSON.stringify({
         name: selectedObject.name,
         description: selectedObject.description,
@@ -604,11 +604,9 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
     }
-    console.log('call edit info method here');
   }
 
   delete() {
-    console.log('testing...... detete:', this.selectedObjects);
     let objType = this.selectedObjects[0].object_type;
     let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
     if (objType == 'photo') {
@@ -712,7 +710,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
     let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
 
-    console.log(photos, photos.length)
     if( photos.length > 0 ) {
       // Ask for user confirmation before deleting selected PHOTOS
       this.confirmationService.confirm({

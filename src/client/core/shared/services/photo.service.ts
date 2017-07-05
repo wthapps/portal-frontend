@@ -23,6 +23,14 @@ export class PhotoService {
     return this.apiBaseService.post(`${this.url}`, body);
   }
 
+  update(body: any) {
+    return this.apiBaseService.post(`${this.url}`, body);
+  }
+
+  download(body: any) {
+    return this.apiBaseService.download(`media/files/download`, body);
+  }
+
   actionOneFavourite(item: any) {
     // let body = JSON.stringify({
     //   ids: [item.id],
