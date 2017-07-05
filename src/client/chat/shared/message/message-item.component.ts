@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { ChatService } from '../services/chat.service';
 import { Config } from '../../../core/shared/config/env.config';
 import { PubSubEventService } from '../../../core/shared/services/pub-sub/pub-sub-event.service';
@@ -27,6 +29,7 @@ export class MessageItemComponent implements OnInit {
   private modifiedMessage: any;
 
   constructor(
+    private router: Router,
     private chatService: ChatService,
     private pubSubEventService: PubSubEventService) {
     this.profileUrl = this.chatService.constant.profileUrl;

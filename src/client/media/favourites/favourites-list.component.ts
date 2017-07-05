@@ -120,8 +120,8 @@ export class ZMediaFavoriteListComponent implements OnInit {
   }
 
   private onPreviewAll(item: any) {
-    this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
-    this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
+    // this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
+    // this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
     this.photoDetail.open({show: true});
   }
 

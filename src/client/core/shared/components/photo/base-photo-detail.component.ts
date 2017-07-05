@@ -1,9 +1,14 @@
 import {
-  Component, OnDestroy, OnInit
+  Component, OnDestroy, OnInit, HostListener
 } from '@angular/core';
 import { ActivatedRoute, Route, Router, UrlTree } from '@angular/router';
 import { Photo } from '../../models/photo.model';
 import { PhotoService } from "../../services/photo.service";
+import { ConfirmationService } from 'primeng/primeng';
+import { LoadingService } from '../../../partials/loading/loading.service';
+
+declare let _: any;
+declare let saveAs: any;
 
 @Component({
   moduleId: module.id,
@@ -22,12 +27,23 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   prevUrl: string;
   loading: boolean;
   mode: number;
+  showDetail: boolean;
   private routeSub: any;
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
+    // Back to prevUrl after pressing ESC key
+    if (ev.which === 27) this.router.navigateByUrl(this.prevUrl);
+  }
 
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
-    protected photoService: PhotoService) {
+    protected photoService: PhotoService,
+    protected confirmationService: ConfirmationService,
+    protected loadingService: LoadingService
+
+  ) {
     this.router = router;
     this.route = route;
     this.photoService = photoService;
@@ -42,6 +58,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         this.ids = params['ids'].split(',').map(Number) || [];
         this.module = params['module'] || this.module;
         this.mode = params['mode'] || 0;
+        this.showDetail = params['showDetail'] || false;
         this.loadItem(this.id);
       });
   }
@@ -59,15 +76,107 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         tree.root.children.primary.segments[1].path = payload.id;
         this.router.navigateByUrl(tree);
         break;
-      case 'updatePhoto':
-        this.photoService.create({
-          name: this.photo.name + `.${this.photo.extension}`,
-          type: this.photo.content_type,
-          file: payload.editedData
-        }).subscribe((res:any) => {
+      case 'update':
+        this.confirmationService.confirm({
+          message: 'Do you want to save editing item',
+          header: 'Save Photo',
+          accept: () => {
+            this.photoService.create({
+              name: this.photo.name + `.${this.photo.extension}`,
+              type: this.photo.content_type,
+              file: payload.editedData
+            }).subscribe((res:any) => {
+            });
+          }
         });
+
+        break;
+      case 'favourite':
+        this.favourite();
+        break;
+      case 'download':
+        this.photoService.download({id: this.photo.id}).subscribe(
+          (response: any) => {
+            var blob = new Blob([response.blob()], {type: this.photo.content_type});
+            saveAs(blob, this.photo.name);
+          },
+          (error: any) => {
+
+          }
+        );
+        break;
+      case 'delete':
+
+          // Ask for user confirmation before deleting selected PHOTOS
+          this.confirmationService.confirm({
+            message: `Are you sure to delete photo ${this.photo.name}`,
+            accept: () => {
+              this.loadingService.start();
+              let body = JSON.stringify({ids: [this.photo.id]});
+              this.loadingService.start();
+              this.photoService.deletePhoto(body).subscribe((res: any)=> {
+
+                // considering remove item in ids array and back to preUrl
+                this.router.navigateByUrl(this.prevUrl);
+                // _.remove(this.ids, ['id', this.photo.id]);
+                this.loadingService.stop();
+              });
+            },
+            reject: () => {
+              // Ask for user confirmation before deleting selected ALBUMS
+            }
+          });
+
+
         break;
     }
+  }
+
+  // confirmDeleteMedia(params: any) {
+  //   // Ask for user confirmation before delete media items
+  //   let photos = _.filter(params.selectedObjects, (o: any) => o.object_type == 'photo');
+  //   let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
+  //   let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
+  //
+  //   if( photos.length > 0 ) {
+  //     // Ask for user confirmation before deleting selected PHOTOS
+  //     this.confirmationService.confirm({
+  //       message: 'Are you sure to delete ' + photos_count,
+  //       accept: () => {
+  //         this.loadingService.start();
+  //         this.apiBaseService.post('media/media/delete', {objects: photos, child_destroy: params.child_destroy}).subscribe(
+  //           (res: any) => {
+  //             _.map(photos, (obj: any)=> {
+  //               _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
+  //             });
+  //             this.loadingService.stop();
+  //             this.deleteAndChangeImg();
+  //           },
+  //           (error: any) => this.loadingService.stop());
+  //       },
+  //       reject: () => {
+  //         // Ask for user confirmation before deleting selected ALBUMS
+  //       }
+  //     });
+  //   }
+  // }
+
+  private favourite() {
+    this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
+      if (res.message === 'success') {
+        this.photo.favorite = !this.photo.favorite;
+      }
+    });
+  }
+
+  // Change image when delete current one: next, prev or go back to photo list
+  deleteAndChangeImg() {
+    // Remove images at index position
+    // this.selectedPhotos.splice(this.index, 1);
+    // if (this.selectedPhotos.length == 0)
+    //   this.goBack();
+    // else
+    //   this.imgNext();
   }
 
   loadItem(id: number) {
@@ -79,7 +188,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         },
         (error: any) => {
           console.error('Error when loading photo ', error);
-        });
+      });
   }
 
   ngOnDestroy() {
