@@ -2,7 +2,7 @@
   <div class="z-social-media-left">
     <a [routerLink]="['/profile/', parent?.owner?.uuid]" class="media-object">
       <span class="avatar-xs">
-        <img [src]="parent?.owner?.profile_image" alt="">
+        <img [src]="(user$ | async )?.profile_image" alt="">
       </span>
     </a>
   </div>

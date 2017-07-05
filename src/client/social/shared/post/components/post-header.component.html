@@ -2,7 +2,7 @@
   <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="item.owner.profile_image" alt="">
+        <img [src]="item?.owner?.is_owner ? (userService.profile$ | async).profile_image : item.owner.profile_image" alt="">
       </div>
     </div>
   </a>
