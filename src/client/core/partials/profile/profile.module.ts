@@ -11,7 +11,6 @@ import { PartialsProfileAddressComponent } from './address/address.component';
 import { PartialsProfileMediaComponent } from './media/media.component';
 import { PartialsProfileNoteComponent } from './note/note.component';
 import { PipeModule } from '../../shared/pipe/pipe.module';
-import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone/phone.pipe';
 import { PartialsProfileAvatarInfoComponent } from './avatar-info/avatar-info.component';
 import { PartialsProfileAboutComponent } from './about/about.component';
 import { PartialsProfileContactComponent } from './contact/contact.component';
@@ -41,9 +40,7 @@ import { PartialsProfileService } from './profile.service';
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
     PartialsProfileWorkEduComponent,
-    PartialsProfileHobbyComponent,
-    PhoneCodeCountriesPipe,
-    PhoneCodeFlagPipe
+    PartialsProfileHobbyComponent
   ],
   exports: [
     PartialsProfileComponent,
@@ -56,9 +53,7 @@ import { PartialsProfileService } from './profile.service';
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
     PartialsProfileWorkEduComponent,
-    PartialsProfileHobbyComponent,
-    PhoneCodeCountriesPipe,
-    PhoneCodeFlagPipe
+    PartialsProfileHobbyComponent
   ],
   providers: [
     PartialsProfileService

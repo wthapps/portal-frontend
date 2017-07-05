@@ -10,6 +10,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { CountryService } from '../../countries/countries.service';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { Constants } from '../../../shared/config/constants';
 
 declare var _: any;
 
@@ -34,20 +35,7 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   filteredCountriesCode: any[];
 
-  phoneType: any = [
-    {
-      kind_of: 'mobile',
-      name: 'Mobile'
-    },
-    {
-      kind_of: 'fax',
-      name: 'Fax'
-    },
-    {
-      kind_of: 'other',
-      name: 'Other'
-    },
-  ];
+  phoneType: any = Constants.phoneType;
 
   constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
     this.form = fb.group({

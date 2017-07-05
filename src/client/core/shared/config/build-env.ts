@@ -7,7 +7,8 @@ export const PORTS = {
   my: 3005,
   media: 3010,
   social: 3015,
-  chat: 3020
+  chat: 3020,
+  contact: 3025
 };
 
 // export const HOSTNAME_PROD = '192.168.0.8';

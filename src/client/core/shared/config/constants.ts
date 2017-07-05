@@ -208,7 +208,6 @@ export let Constants = {
   searchDebounceTime: 250,
 
 
-
   search: {
     config: {
       globalActive: true,
@@ -231,7 +230,36 @@ export let Constants = {
     favorites: 'favorites',
     albums: 'albums',
     album_detail: 'album_detail'
-  }
+  },
+
+  emailType: [
+    {
+      kind_of: 'work',
+      name: 'Work'
+    },
+    {
+      kind_of: 'personal',
+      name: 'Personal'
+    },
+    {
+      kind_of: 'other',
+      name: 'Other'
+    },
+  ],
+  phoneType: [
+    {
+      kind_of: 'mobile',
+      name: 'Mobile'
+    },
+    {
+      kind_of: 'fax',
+      name: 'Fax'
+    },
+    {
+      kind_of: 'other',
+      name: 'Other'
+    },
+  ]
 };
 
 export let MediaType = {

@@ -1,0 +1,87 @@
+@import "../../../core/scss/global";
+
+$contact-listbox-input: 40px;
+$contact-listbox-name: auto;
+$contact-listbox-email: 220px;
+$contact-listbox-phone: 180px;
+$contact-listbox-favorite: 60px;
+$contact-listbox-action: 140px;
+
+:host {
+  display: block;
+
+  & /deep/ .contact-listbox-wrap {
+    .contact-listbox-row {
+      display: table;
+      width: 100%;
+      border-bottom: 1px solid $line;
+      > div {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 9px 10px;
+      }
+    }
+    .contact-listbox-input {
+      width: $contact-listbox-input;
+
+      text-align: center;
+      .fa-check {
+        border: 1px solid $text-color;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        cursor: pointer;
+        &:before {
+          visibility: hidden;
+        }
+      }
+
+      &.active {
+        .fa-check {
+          color: $color-inverse;
+          &:before {
+            visibility: visible;
+          }
+        }
+      }
+    }
+    .contact-listbox-name {
+      width: $contact-listbox-name;
+
+      position: relative;
+      figure {
+        float: left;
+      }
+      span.name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        position: absolute;
+        left: 54px;
+        right: 0;
+        line-height: 34px;
+      }
+    }
+    .contact-listbox-email {
+      width: $contact-listbox-email;
+    }
+    .contact-listbox-phone {
+      width: $contact-listbox-phone;
+    }
+    .contact-listbox-favorite {
+      width: $contact-listbox-favorite;
+    }
+    .contact-listbox-action {
+      width: $contact-listbox-action;
+    }
+
+    .contact-listbox-header {
+      .contact-listbox-row {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+
+

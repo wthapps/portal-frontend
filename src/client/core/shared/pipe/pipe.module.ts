@@ -8,6 +8,7 @@ import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
 import { BytesPipe } from './bytes.pipe';
 import { SafeHtmlPipe } from './safeHtml.pipe';
 import { TimeFormatPipe } from './time-format.pipe';
+import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone-to-flag.pipe';
 
 @NgModule({
   imports: [
@@ -21,7 +22,9 @@ import { TimeFormatPipe } from './time-format.pipe';
     BytesPipe,
     SafeHtmlPipe,
     TimeFormatPipe,
-    LinkifyPipe
+    LinkifyPipe,
+    PhoneCodeCountriesPipe,
+    PhoneCodeFlagPipe
   ],
   exports: [
     KeyToValuePipe,
@@ -31,7 +34,9 @@ import { TimeFormatPipe } from './time-format.pipe';
     BytesPipe,
     SafeHtmlPipe,
     TimeFormatPipe,
-    LinkifyPipe
+    LinkifyPipe,
+    PhoneCodeCountriesPipe,
+    PhoneCodeFlagPipe
   ],
   providers: []
 })

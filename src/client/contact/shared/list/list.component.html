@@ -1,0 +1,22 @@
+<div class="contact-listbox-wrap">
+  <div class="contact-listbox-header">
+    <div class="contact-listbox-row">
+      <div class="contact-listbox-input" [ngClass]="{'active': (selectedAll && selectedAllClass)}">
+        <i (click)="onSelectedAll()" class="fa fa-check"></i>
+      </div>
+      <div class="contact-listbox-name">Name</div>
+      <div class="contact-listbox-email">Email</div>
+      <div class="contact-listbox-phone">Phone Number</div>
+      <div class="contact-listbox-favorite">&nbsp;</div>
+      <div class="contact-listbox-action">&nbsp;</div>
+    </div>
+  </div>
+  <div class="contact-listbox-body">
+    <z-contact-shared-item *ngFor="let item of data"
+                           [data]="item"
+                           [selected]="selectedAll" (unSelectedAll)="onSelectedAll($event)">
+    </z-contact-shared-item>
+  </div>
+</div>
+
+

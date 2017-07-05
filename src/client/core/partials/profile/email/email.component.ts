@@ -9,6 +9,7 @@ import {
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { Constants } from '../../../shared/config/constants';
 
 declare var _: any;
 
@@ -27,20 +28,7 @@ export class PartialsProfileEmailComponent {
 
   form: FormGroup;
 
-  emailType: any = [
-    {
-      kind_of: 'work',
-      name: 'Work'
-    },
-    {
-      kind_of: 'personal',
-      name: 'Personal'
-    },
-    {
-      kind_of: 'other',
-      name: 'Other'
-    },
-  ];
+  emailType: any = Constants.emailType;
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
     this.form = fb.group({

@@ -18,7 +18,8 @@ const ProdConfig: EnvConfig = {
     MYACCOUNT: `${protocol}://my-${fullDomain}`,
     MEDIA: `${protocol}://media-${fullDomain}`,
     SOCIAL: `${protocol}://social-${fullDomain}`,
-    CHAT: `${protocol}://chat-${fullDomain}`
+    CHAT: `${protocol}://chat-${fullDomain}`,
+    CONTACT: `${protocol}://contact-${fullDomain}`
   },
   RES: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon'
 };
