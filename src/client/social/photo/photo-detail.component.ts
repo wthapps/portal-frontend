@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Route, Router, UrlTree } from '@angular/router';
 import { PhotoService } from '../../core/shared/services/photo.service';
-import { BasePhotoDetailComponent } from '../../core/shared/components/photo/base-photo-detail.component';
+import { BasePhotoDetailComponent } from '../../core/shared/components/photo/detail/base-photo-detail.component';
 import { ConfirmationService } from 'primeng/primeng';
 import { LoadingService } from "../../core/partials/loading/loading.service";
 

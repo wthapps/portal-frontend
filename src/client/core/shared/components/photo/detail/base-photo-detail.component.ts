@@ -1,11 +1,11 @@
 import {
   Component, OnDestroy, OnInit, HostListener
 } from '@angular/core';
-import { ActivatedRoute, Route, Router, UrlTree } from '@angular/router';
-import { Photo } from '../../models/photo.model';
-import { PhotoService } from "../../services/photo.service";
+import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+import { Photo } from '../../../models/photo.model';
+import { PhotoService } from "../../../services/photo.service";
 import { ConfirmationService } from 'primeng/primeng';
-import { LoadingService } from '../../../partials/loading/loading.service';
+import { LoadingService } from '../../../../partials/loading/loading.service';
 
 declare let _: any;
 declare let saveAs: any;

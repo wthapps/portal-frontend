@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZMediaPhotoListComponent } from './photo-list.component';
-import { PhotoDetailModalComponent } from '../../core/shared/components/photo/modal/photo-detail-partial.component';
 import { PhotoDetailComponent } from './photo-detail.component';
 
 @NgModule({
