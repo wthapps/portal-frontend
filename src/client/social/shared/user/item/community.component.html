@@ -36,7 +36,7 @@
             {{userSettings?.mute ? 'Enable' : 'Disable'}} notifications </a>
           </li>
           <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onPreferences()">Preferences</a></li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a [routerLink]="[communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a [routerLink]="['/', communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
           <li role="separator" class="divider"></li>
           <li>
             <a href="javascript:;" (click)="toggleFavourite(data.uuid)">
@@ -46,7 +46,7 @@
           <li><a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a></li>
           <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
           <li class="divider"></li>
-          <li><a href="javascript:;" (click)="onReport(data.uuid)">Report community</a></li>
+          <li *ngIf="!data?.user_role"><a href="javascript:;" (click)="onReport(data.uuid)">Report community</a></li>
         </ul>
       </div>
     </div>

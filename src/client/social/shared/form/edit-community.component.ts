@@ -92,15 +92,18 @@ export class ZSocialShareCommunityFormEditComponent {
     this.community_name.reset();
     this.tag_line.reset();
     this.description.reset();
+    this.data = _.cloneDeep(data);
 
     if (data) {
       (<FormControl>this.community_name).setValue(data.name);
       (<FormControl>this.tag_line).setValue(data.tag_line);
       (<FormControl>this.description).setValue(data.description);
       let _this = this;
-      _.map(this.data.additional_links, (v: any)=> {
-        _this.addItem(v);
-      });
+      if (_.get(this.data, 'additional_links') !== undefined) {
+        _.map(this.data.additional_links, (v: any)=> {
+          _this.addItem(v);
+        });
+      }
 
     } else {
       (<FormControl>this.community_name).setValue('');

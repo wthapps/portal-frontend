@@ -92,7 +92,10 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
     this.communityService.updateCommunity(this.data.uuid, body).toPromise().then((res: any) => {
       this.loadingService.stop();
 
-      this.setupDataUpdated.emit(res.data);
+      // this.setupDataUpdated.emit(res.data);
+      this.modal.close();
+    },(err: any) => {
+      this.loadingService.stop();
       this.modal.close();
     });
 

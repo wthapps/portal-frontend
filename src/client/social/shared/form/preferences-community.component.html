@@ -4,8 +4,6 @@
       <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> About</h4>
     </modal-header>
     <modal-body>
-      {{data|json}}
-
       <div *ngIf="data">
         <template [ngIf]="isAdmin">
           <div class="mb20">

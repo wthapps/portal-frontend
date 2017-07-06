@@ -34,7 +34,7 @@
   <div *ngIf="postIsEmpty" class="text-center text-fade">
     <i class="fa fa-newspaper-o" style="font-size: 80px;"></i>
     <h4>No posts to show</h4>
-    <p><a href="javascript:;"  (click)="postEditModal.open()" class="btn btn-default">Create new post</a></p>
+    <p *ngIf="canCreatePost"><a href="javascript:;"  (click)="postEditModal.open()" class="btn btn-default">Create new post</a></p>
   </div>
 </div>
 <div id="post-list-loading" class="pt20 pb20"></div>

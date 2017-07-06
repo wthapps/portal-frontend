@@ -78,43 +78,24 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
   }
 
   confirmLeaveCommunity() {
-    // Check if there are other admins beside current user in community
-    // If not, he must pick another one before leaving
-    // let enoughAdmins = community.admin_count > 1 ? true : false;
-    // let pickAnotherAdmin = this.userService.profile.uuid == this.item.admin.uuid && !enoughAdmins;
-    let pickAnotherAdmin = false;
-    let community = this.data;
-
-    this.confirmationService.confirm({
-      message: pickAnotherAdmin ?
-        `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
-        `Are you sure to leave the community ${community.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        if (pickAnotherAdmin) {
-          // Navigate to member tab
-          this.serviceManager.getRouter().navigate([Constants.urls.communities, community.uuid], {
-            queryParams: {
-              tab: 'members',
-              skipLocationChange: true
-            }
-          });
-        } else {
-          this.leaveCommunity(community);
-        }
-      }
-    });
-
-    return false;
-  }
-
-  leaveCommunity(community: any) {
-    this.socialService.community.leaveCommunity(community.uuid)
-      .subscribe((res: any) => {
-          community.user_status = this.comUserStatus.stranger;
+    this.socialService.community.confirmLeaveCommunity(this.data).then((res: any) => {
+      this.actionFromItem.emit(
+        {
+          action: 'delete',
+          data: this.data
         }
       );
+      }
+    );
   }
+
+  // leaveCommunity(community: any) {
+  //   this.socialService.community.leaveCommunity(community.uuid)
+  //     .subscribe((res: any) => {
+  //         community.user_status = this.comUserStatus.stranger;
+  //       }
+  //     );
+  // }
 
   onEdit() {
     this.loadModalComponent(ZSocialShareCommunityFormEditComponent);
@@ -169,7 +150,7 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;
     this.modal.setupDataUpdated.subscribe((data: any) => {
-      this.data = data;
+      _.merge(this.data, data);
     });
 
   }

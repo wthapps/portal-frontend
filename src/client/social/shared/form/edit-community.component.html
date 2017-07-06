@@ -41,16 +41,16 @@
                        [ngClass]="{
                        'has-error': (add_link['controls'].url.valid
                        && add_link['controls'].url.touched
-                       && form.value.additional_links[i].name.length==0
-                       && form.value.additional_links[i].url.length>1),
+                       && form?.value?.additional_links[i].name.length==0
+                       && form?.value?.additional_links[i].url.length>1),
                        'has-success': (add_link['controls'].url.valid
                        && add_link['controls'].url.touched
-                       && form.value.additional_links[i].name.length>1)}">
+                       && form?.value?.additional_links[i].name.length>1)}">
                     <input type="text" class="form-control" formControlName="name" placeholder="External link title">
                     <div *ngIf="(add_link['controls'].url.valid
                        && add_link['controls'].url.touched
-                       && form.value.additional_links[i].name.length==0
-                       && form.value.additional_links[i].url.length>1)">
+                       && form?.value?.additional_links[i].name.length==0
+                       && form?.value?.additional_links[i].url.length>1)">
                       <span class="help-block">
                         Title is required
                       </span>
@@ -62,7 +62,7 @@
                   <div class="form-group mb0 no-label" [ngClass]="{'has-error': (!add_link['controls'].url.valid && add_link['controls'].url.touched),
         'has-success': (add_link['controls'].url.valid
         && add_link['controls'].url.touched
-        && form.value.additional_links[i].url.length>1)}">
+        && form?.value?.additional_links[i].url.length>1)}">
                     <input type="text" class="form-control" formControlName="url" placeholder="http://...">
                     <div
                       *ngIf="!add_link['controls'].url.valid && add_link['controls'].url.touched">
