@@ -3,12 +3,18 @@ import {
   ViewContainerRef, ComponentFactoryResolver, OnInit, OnChanges, SimpleChanges
 } from '@angular/core';
 
-import { ZMediaToolbarComponent } from '../toolbar/toolbar.component';
-import { SharingModalComponent } from './sharing/sharing-modal.component';
-import { TaggingModalComponent } from './tagging/tagging-modal.component';
-import { PhotoEditModalComponent } from './photo-edit-modal.component';
-import { AddToAlbumModalComponent } from './add-to-album-modal.component';
-import { PhotoEditComponent } from '../edit/edit-photo.component';
+import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
+import { PhotoEditModalComponent } from '../modal/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
+import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
+
+// import {
+//   SharingModalComponent,
+//   AddToAlbumModalComponent,
+//   PhotoEditModalComponent,
+//   TaggingModalComponent
+// } from '../index';
+
 
 
 
@@ -25,11 +31,10 @@ declare let Cropper: any;
     SharingModalComponent,
     PhotoEditModalComponent,
     AddToAlbumModalComponent,
-    PhotoEditComponent,
     TaggingModalComponent
   ]
 })
-export class PhotoDetailModalComponent implements OnInit, AfterViewInit, OnChanges {
+export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() module: string;
   @Input() photo: any;

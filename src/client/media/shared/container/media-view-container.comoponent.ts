@@ -16,7 +16,7 @@ import { MediaUploaderDataService } from '../uploader/media-uploader-data.servic
 import { Subject } from 'rxjs';
 import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
-import { PhotoDetailModalComponent } from '../../../core/shared/components/photo/modal/photo-detail-partial.component';
+import { PhotoDetailPartialComponent } from '../../../core/shared/components/photo/detail/photo-detail-partial.component';
 import { PhotoEditModalComponent } from '../../../core/shared/components/photo/modal/photo-edit-modal.component';
 import { BaseObjectEditNameModalComponent } from '../../../core/shared/components/photo/modal/base-object-edit-name-modal.component';
 import { AlbumCreateModalComponent } from '../../../core/shared/components/photo/modal/album-create-modal.component';
@@ -51,7 +51,7 @@ declare var _: any;
     AlbumDeleteModalComponent,
 
     PhotoSelectModalComponent,
-    PhotoDetailModalComponent,
+    PhotoDetailPartialComponent,
     PhotoEditModalComponent,
     AddToAlbumModalComponent
   ]

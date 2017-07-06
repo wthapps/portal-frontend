@@ -15,7 +15,7 @@ import { SharingModalComponent } from '../../../core/shared/components/photo/mod
 import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '../../../core/shared/components/photo/modal/photo-edit-modal.component';
 import { BaseObjectEditNameModalComponent } from '../../../core/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { PhotoDetailModalComponent } from '../../../core/shared/components/photo/modal/photo-detail-partial.component';
+import { PhotoDetailPartialComponent } from '../../../core/shared/components/photo/detail/photo-detail-partial.component';
 import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
 import { AlbumEditModalComponent } from '../../../core/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumCreateModalComponent } from '../../../core/shared/components/photo/modal/album-create-modal.component';
@@ -38,7 +38,7 @@ declare var $: any;
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
     AlbumDeleteModalComponent,
-    PhotoDetailModalComponent,
+    PhotoDetailPartialComponent,
     TaggingModalComponent,
     SharingModalComponent
   ]

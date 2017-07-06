@@ -26,21 +26,21 @@
 </div>
 
 <div *ngIf="viewOption == 'list'">
-  <div class="photo-box-img-nav">
-    <div class="photo-box-img-figure">
-      <div (click)="setSortName('Name'); toggleSort(); doSort()" class="photo-box-img-name can-click">
+  <div class="photo-box-nav">
+    <div class="photo-box-figure">
+      <div (click)="setSortName('Name'); toggleSort(); doSort()" class="photo-box-name can-click">
         Name <i *ngIf="sortName" class="fa"
                 [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
       </div>
-      <div (click)="setSortName('owner'); toggleSort(); doSort()" class="photo-box-img-owner can-click">Owner
+      <div (click)="setSortName('owner'); toggleSort(); doSort()" class="photo-box-owner can-click">Owner
         <i *ngIf="sort" class="fa"
            [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
       </div>
-      <div (click)="setSortName('Date'); toggleSort(); doSort()" class="photo-box-img-date can-click">
+      <div (click)="setSortName('Date'); toggleSort(); doSort()" class="photo-box-date can-click">
         Create Date <i *ngIf="sort" class="fa"
                        [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
       </div>
-      <div class="photo-box-img-size">Size</div>
+      <div class="photo-box-size">Size</div>
     </div>
   </div>
 </div>

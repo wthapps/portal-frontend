@@ -5,7 +5,7 @@ import { ChatService } from '../shared/services/chat.service';
 import { PhotoService } from '../../core/shared/services/photo.service';
 import { ConfirmationService } from 'primeng/primeng';
 import { LoadingService } from '../../core/partials/loading/loading.service';
-import { BasePhotoDetailComponent } from '../../core/shared/components/photo/base-photo-detail.component';
+import { BasePhotoDetailComponent } from '../../core/shared/components/photo/detail/base-photo-detail.component';
 
 
 @Component({
