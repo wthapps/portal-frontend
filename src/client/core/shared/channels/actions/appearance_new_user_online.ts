@@ -11,8 +11,10 @@ export class AppearanceNewUserOnline {
 
   process() {
     let users = this.serviceManager.getStorageService().find('users_online').value;
-    users.push(this.data.id);
-    this.serviceManager.getStorageService().save('users_online', _.union(users));
+    if (users) {
+      users.push(this.data.id);
+      this.serviceManager.getStorageService().save('users_online', _.union(users));
+    }
   }
 }
 

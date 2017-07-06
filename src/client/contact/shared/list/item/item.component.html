@@ -1,51 +1,39 @@
-<div class="contact-listbox-row">
-  <div class="contact-listbox-input" [ngClass]="{'active': selected}">
-    <i (click)="onSelected()" class="fa fa-check"></i>
-  </div>
-  <div class="contact-listbox-name">
-    <figure class="avatar-xs">
-      <img [src]="data.profile_image" alt="">
-    </figure>
-    <span class="name">{{data.name}}</span>
-  </div>
-  <div class="contact-listbox-email">
-    <ul class="list-unstyled m0" *ngIf="data.emails.length>0">
-      <li *ngFor="let email of data.emails">
-        <strong>{{email.kind_of | keyToValue:emailType:'kind_of':'name'}}:</strong>
-        <a href="mailto:{{email.value}}">{{email.value}}</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="contact-listbox-phone">
-    <ul class="list-unstyled m0" *ngIf="data.phones.length>0">
-      <li *ngFor="let phone of data.phones">
-          <img *ngIf="countriesCode"
-               src="assets/images/flags/{{phone.country_alpha_code | phoneCodeFlag:countriesCode}}.svg"
-               width="30" alt="">
-          {{phone.value}}
-      </li>
-    </ul>
-  </div>
-
-  <div class="contact-listbox-favorite">
-    <a href="#" class="btn btn-default-inline"><i class="fa fa-star"></i></a>
-  </div>
-
-  <div class="contact-listbox-action">
-    <a href="#" class="btn btn-default-inline"><i class="fa fa-comments-o"></i></a>
-    <a href="#" class="btn btn-default-inline"><i class="fa fa-globe"></i></a>
-
-    <div class="btn-group">
-      <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
-        <i class="fa fa-ellipsis-v"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li><a href="#">Edit Contact</a></li>
-        <li><a href="#">Add Label</a></li>
-        <li><a href="#">Delete</a></li>
-      </ul>
-    </div>
-  </div>
+<div class="contact-listbox-input" [ngClass]="{'active': selected}">
+  <i (click)="onSelected()" class="fa fa-check"></i>
 </div>
+<div class="contact-listbox-name">
+  <figure class="avatar-xs">
+    <img [src]="data.profile_image" alt="">
+  </figure>
+  <span class="name">{{data.name}}</span>
+</div>
+<div class="contact-listbox-email">
+  <ul class="list-unstyled m0" *ngIf="data.emails && data.emails.length > 0">
+    <li>
+      {{data.emails[0].value}}
+    </li>
+  </ul>
+  <!--<ul class="list-unstyled m0">
+    <li>
+      bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    </li>
+  </ul>-->
+</div>
+
+<div class="contact-listbox-phone">
+  <ul class="list-unstyled m0" *ngIf="data.phones && data.phones.length>0">
+    <li>
+      <img *ngIf="countriesCode && data.phones[0].country_alpha_code"
+           src="assets/images/flags/{{phone.country_alpha_code | phoneCodeFlag:countriesCode}}.svg"
+           width="30" alt="">
+      {{data.phones[0].value}}
+    </li>
+  </ul>
+  <!--<ul class="list-unstyled m0">
+    <li>
+      999999999999999999999999999999999999999999999999999
+    </li>
+  </ul>-->
+</div>
+
+<z-contact-shared-actions-bar class="actions-bar" [data]="data"></z-contact-shared-actions-bar>

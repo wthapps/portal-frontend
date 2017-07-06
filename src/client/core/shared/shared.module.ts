@@ -60,6 +60,7 @@ import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
 import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
 import { PipeModule } from './pipe/pipe.module';
 import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
+// import { Communication } from './models/communication.model';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -146,6 +147,7 @@ import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
     ArrayLengthPipe,
     GroupByPipe,
     NewlinePipe,
+    // Communication,
     // TimeFormatPipe,
     // TitleCase,
     UrlTransformPipe,

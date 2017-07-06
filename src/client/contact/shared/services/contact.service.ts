@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Response, Http } from '@angular/http';
+import { ZContactThreeDotActionsService } from '../three-dot-actions/contact-three-dot.service';
 
 declare var _: any;
 
 @Injectable()
 export class ZContactService {
   selectedObjects: any = [];
-
-  private apiUrl = '/api/zone/contact/user/info.json';
 
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
@@ -18,24 +17,17 @@ export class ZContactService {
   listenToItem = this.listenToItemSource.asObservable();
 
 
-  constructor(private http: Http, private apiBaseService: ApiBaseService) {
+  constructor(private apiBaseService: ApiBaseService,
+              public contactThreeDotActionsService: ZContactThreeDotActionsService) {
 
   }
 
-  getContactList(): Observable<any[]> {
-    // return this.apiBaseService.get(this.apiUrl)
-    return this.http.get(this.apiUrl)
-      .map((response: Response) => <any[]> response.json())
-      // .do(data => console.log('All: ' + JSON.stringify(data)))
-      .catch(this.handleError);
+  getContactList(): Observable<any> {
+    return this.apiBaseService.get("contact/contacts");
   }
 
-  deleteContact(contact: any): Observable<any[]> {
-    // return this.apiBaseService.get(this.apiUrl)
-    return this.http.get(this.apiUrl)
-      .map((response: Response) => <any[]> response.json())
-      // .do(data => console.log('All: ' + JSON.stringify(data)))
-      .catch(this.handleError);
+  deleteContact(contact: any): Observable<any> {
+    return this.apiBaseService.delete(`contact/contacts/${contact.id}`);
   }
 
   addItemSelectedObjects(item: any) {
@@ -55,6 +47,10 @@ export class ZContactService {
 
   sendItemToList(event: any) {
     this.listenToItemSource.next(event);
+  }
+
+  updateContact(contact: any, data: any) {
+    return this.apiBaseService.put(`contact/contacts/${contact.id}`, data);
   }
 
 

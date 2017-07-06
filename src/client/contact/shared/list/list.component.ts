@@ -11,14 +11,12 @@ declare var _: any;
 })
 export class ZContactSharedListComponent implements OnInit {
   @Input() data: any;
-  selectedAll: boolean = false;
-  selectedObjects: any = [];
 
   constructor(public contactService: ZContactService) {
-    // this.selectedObjects = this.contactService.selectedObjects;
   }
 
   ngOnInit() {
+
   }
 
   onSelectedAll() {

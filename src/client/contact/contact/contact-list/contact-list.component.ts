@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params } from '@angular/router';
 
@@ -9,8 +9,9 @@ declare var _: any;
   selector: 'z-contact-list',
   templateUrl: 'contact-list.component.html'
 })
-export class ZContactListComponent implements OnInit {
+export class ZContactListComponent implements OnInit, OnDestroy {
   data: any = [];
+  eventThreeDot: any;
 
   constructor(private contactService: ZContactService, private route: ActivatedRoute) {
   }
@@ -20,7 +21,21 @@ export class ZContactListComponent implements OnInit {
       console.log(params);
     });
 
+    this.getAllContact();
 
+    this.eventThreeDot = this.contactService.contactThreeDotActionsService.eventOut.subscribe((event: any) => {
+      if (event.action == "deleted") {
+        this.getAllContact();
+      }
+    });
+  }
+
+  onDeleteAll() {
+    console.log('delete all');
+    console.log(this.contactService.selectedObjects);
+  }
+
+  getAllContact() {
     this.contactService.getContactList().subscribe(
       (res: any)=> {
         this.data = res.data;
@@ -28,8 +43,7 @@ export class ZContactListComponent implements OnInit {
     )
   }
 
-  onDeleteAll() {
-    console.log('delete all');
-    console.log(this.contactService.selectedObjects);
+  ngOnDestroy() {
+    this.eventThreeDot.unsubscribe();
   }
 }
