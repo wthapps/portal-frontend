@@ -18,7 +18,7 @@ export class TimeFormatPipe implements PipeTransform {
   }
 
   dayFormat(value: any) {
-    return moment().calendar(value, {
+    return moment(value).calendar(moment(), {
       sameDay: '[Today]',
       nextDay: '[Tomorrow]',
       lastDay: '[Yesterday]',
@@ -30,7 +30,7 @@ export class TimeFormatPipe implements PipeTransform {
     if (moment(value).isSame(moment(), 'day')) {
       return moment(value).fromNow();
     } else {
-      return moment().calendar(value, {
+      return moment(value).calendar(moment(), {
         sameDay: '[Today]',
         nextDay: '[Tomorrow]',
         lastDay: '[Yesterday]',
