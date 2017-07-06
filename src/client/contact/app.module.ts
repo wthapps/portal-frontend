@@ -8,7 +8,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from '../core/shared/shared.module';
 import { ZContactSharedModule } from './shared/shared.module';
 
+import { ZContactHomeModule } from './home/home.module';
 import { ZContactListModule } from './contact/contact-list/contact-list.module';
+import { ZContactDetailModule } from './contact/contact-detail/contact-detail.module';
 
 @NgModule({
   imports: [
@@ -16,7 +18,9 @@ import { ZContactListModule } from './contact/contact-list/contact-list.module';
     HttpModule,
     AppRoutingModule,
     ZContactSharedModule,
+    ZContactHomeModule,
     ZContactListModule,
+    ZContactDetailModule,
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],

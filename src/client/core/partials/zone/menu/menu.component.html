@@ -6,6 +6,23 @@
     <li>
       <a draggable="false" href="#">Contact</a>
     </li>
+
+    <li class="has-sub" [ngClass]="{'active': urls.contact == hostname && !isProfileTab}">
+      <a draggable="false" [routerLink]="[contactMenu[0].link]" (click)="onMenu('contact')">
+        Contact
+      </a>
+      <ul [ngClass]="{'active': urls.contact == hostname}" class="list-unstyled" id="zone_menu_contact">
+        <template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackByFn">
+          <li *ngIf="contact.name != ''" [routerLinkActive]="['active']">
+            <a draggable="false" [routerLink]="[contact.link]">
+              <i class="{{contact.icon}}"></i> {{contact.name}}
+            </a>
+          </li>
+          <li class="divider" *ngIf="contact.name == ''"></li>
+        </template>
+      </ul>
+    </li>
+
     <li>
       <a draggable="false" href="#">Calendar</a>
     </li>

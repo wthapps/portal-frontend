@@ -23,7 +23,8 @@ export let Constants = {
     myAccount: Config.SUB_DOMAIN.MYACCOUNT,
     media: Config.SUB_DOMAIN.MEDIA,
     social: Config.SUB_DOMAIN.SOCIAL,
-    chat: Config.SUB_DOMAIN.CHAT
+    chat: Config.SUB_DOMAIN.CHAT,
+    contact: Config.SUB_DOMAIN.CONTACT
   },
 
   flagsRelease: false,
@@ -83,7 +84,16 @@ export let Constants = {
   },
 
   contactMenuItems: [
-    {name: 'All Contact', link: '/', icon: 'fa fa-comments-o'}
+    {name: 'All Contact', link: '/list', icon: 'fa fa-address-book-o'},
+    {name: '', link: '', icon: ''},
+    {name: 'Labels', link: '/list/labels', icon: 'fa fa-tags'},
+    {name: 'Favourites (2)', link: '/list/favourites', icon: 'fa fa-star'},
+    {name: 'Social (5)', link: '/list/social', icon: 'fa fa-globe'},
+    {name: 'Chat (2)', link: '/list/chat', icon: 'fa fa-comments-o'},
+    {name: 'Custom label 01 (1)', link: '/list/custom-label-01', icon: 'fa fa-folder-o'},
+    {name: 'Custom label 01 (2)', link: '/list/custom-label-02', icon: 'fa fa-folder-o'},
+    {name: 'Blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
+    {name: 'New label', link: '/new', icon: 'fa fa-plus'}
   ],
 
   chatMenuItems: [

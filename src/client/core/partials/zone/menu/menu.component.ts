@@ -21,6 +21,7 @@ export class ZSharedMenuComponent implements OnInit {
   mediaMenu = Constants.pictureMenuItems;
   socialMenu = Constants.socialMenuItems;
   chatMenu = Constants.chatMenuItems;
+  contactMenu = Constants.contactMenuItems;
   hostname: string = '';
   isProfileTab: boolean;
 
