@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from '../core/shared/shared.module';
 import { ZContactSharedModule } from './shared/shared.module';
 
-import { ZContactListModule } from './contact-list/contact-list.module';
+import { ZContactListModule } from './contact/contact-list/contact-list.module';
 
 @NgModule({
   imports: [

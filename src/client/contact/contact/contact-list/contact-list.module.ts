@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZContactListRoutingModule } from './contact-list-routing.module';
 import { ZContactListComponent } from './contact-list.component';
-import { ZContactSharedModule } from '../shared/shared.module';
+import { ZContactSharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [

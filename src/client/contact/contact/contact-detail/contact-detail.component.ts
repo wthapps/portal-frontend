@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ZContactService } from '../shared/services/contact.service';
+import { ZContactService } from '../../shared/services/contact.service';
 
 @Component({
   moduleId: module.id,
