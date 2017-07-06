@@ -51,6 +51,10 @@ $contact-listbox-action: 140px;
       position: relative;
       figure {
         float: left;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
       span.name {
         overflow: hidden;

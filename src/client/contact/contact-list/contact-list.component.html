@@ -1,23 +1,13 @@
 <div class="media-page-detail-left">
-  <div class="page-body-control">
-    <div class="page-body-control-nav">
-      <ul class="page-body-control-menu">
-        <li>
-          <button type="button" class="btn btn-wth-default"><i class="fa fa-plus"></i> New Contact</button>
-        </li>
-        <li>
-          <button type="button" class="btn btn-default"><i class="fa fa-download"></i> Import</button>
-        </li>
-      </ul>
-    </div>
-
-    <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+  <z-contact-shared-toolbar>
+    <div *ngIf="contactService.selectedObjects.length>0"
+         class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
       <ul class="page-body-control-menu">
         <li>
           <a href="javascript:;" class="btn"><i class="fa fa-star-o"></i></a>
         </li>
         <li>
-          <a href="javascript:;" class="btn"><i class="fa fa-trash"></i></a>
+          <a href="javascript:;" (click)="onDeleteAll()" class="btn"><i class="fa fa-trash"></i></a>
         </li>
         <li class="dropdown action">
           <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -29,10 +19,12 @@
         </li>
       </ul>
     </div>
-  </div>
+  </z-contact-shared-toolbar>
   <div class="page-body-content has-page-body-control">
-    <div class="page-body-content-in">
-
+    <div class="page-body-content-in" *ngIf="data.length==0">
+      There is no contact in your contact book
+    </div>
+    <div class="page-body-content-in" *ngIf="data.length>1">
       <z-contact-shared-list [data]="data"></z-contact-shared-list>
     </div>
   </div>

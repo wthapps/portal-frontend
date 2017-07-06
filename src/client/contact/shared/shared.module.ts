@@ -1,10 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ZContactSharedList } from './list/list.component';
-import { ZContactSharedItem } from './list/item/item.component';
+import { ZContactSharedListComponent } from './list/list.component';
+import { ZContactSharedItemComponent } from './list/item/item.component';
 import { ZContactService } from './services/contact.service';
 import { SharedModule } from '../../core/shared/shared.module';
+import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -17,15 +18,17 @@ import { SharedModule } from '../../core/shared/shared.module';
     SharedModule.forRoot()
   ],
   declarations: [
-    ZContactSharedList,
-    ZContactSharedItem
+    ZContactSharedListComponent,
+    ZContactSharedItemComponent,
+    ZContactSharedToolbarComponent
   ],
   exports: [
     CommonModule,
     RouterModule,
 
-    ZContactSharedList,
-    ZContactSharedItem
+    ZContactSharedListComponent,
+    ZContactSharedItemComponent,
+    ZContactSharedToolbarComponent
   ]
 })
 export class ZContactSharedModule {

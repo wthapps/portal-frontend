@@ -82,6 +82,10 @@ export let Constants = {
     scrollBarWidth: getBarwidth()
   },
 
+  contactMenuItems: [
+    {name: 'All Contact', link: '/', icon: 'fa fa-comments-o'}
+  ],
+
   chatMenuItems: [
     {name: 'Conversations', link: '/conversations', icon: 'fa fa-comments-o'},
     {name: 'Contacts', link: '/contacts', icon: 'fa fa-address-book-o'},

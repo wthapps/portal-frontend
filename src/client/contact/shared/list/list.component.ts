@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ZContactService } from '../services/contact.service';
+
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -6,24 +9,29 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: 'list.component.html',
   styleUrls: ['list.component.css']
 })
-export class ZContactSharedList implements OnInit {
+export class ZContactSharedListComponent implements OnInit {
   @Input() data: any;
   selectedAll: boolean = false;
-  selectedAllClass: boolean = false;
   selectedObjects: any = [];
 
-  constructor() {
+  constructor(public contactService: ZContactService) {
+    // this.selectedObjects = this.contactService.selectedObjects;
   }
 
   ngOnInit() {
   }
 
-  onSelectedAll(e?: any) {
-    if (e) {
-      this.selectedAllClass = false;
+  onSelectedAll() {
+    if (this.contactService.selectedObjects.length == this.data.length) {
+      this.contactService.sendListToItem(false);
+      this.contactService.selectedObjects.length = 0;
     } else {
-      this.selectedAll = !this.selectedAll;
-      this.selectedAllClass = true;
+      this.contactService.sendListToItem(true);
+      this.contactService.selectedObjects.length = 0;
+
+      _.map(this.data, (v: any)=> {
+        this.contactService.selectedObjects.push(v);
+      });
     }
   }
 }

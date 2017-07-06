@@ -1,21 +1,27 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Constants } from '../../../../core/shared/config/constants';
 import { CountryService } from '../../../../core/partials/countries/countries.service';
+import { ZContactService } from '../../services/contact.service';
 
 @Component({
   moduleId: module.id,
   selector: 'z-contact-shared-item',
   templateUrl: 'item.component.html'
 })
-export class ZContactSharedItem implements OnInit {
+export class ZContactSharedItemComponent implements OnInit {
   @Input() data: any;
-  @Input() selected: boolean = false;
-  @Output() unSelectedAll: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  selected: boolean = false;
 
   emailType: any = Constants.emailType;
   countriesCode: any;
 
-  constructor(private countryService: CountryService) {
+  constructor(private countryService: CountryService, private contactService: ZContactService) {
+
+    this.contactService.listenToList.subscribe((event: any) => {
+      this.selected = event;
+    });
+
   }
 
   ngOnInit() {
@@ -27,8 +33,10 @@ export class ZContactSharedItem implements OnInit {
 
   onSelected() {
     this.selected = !this.selected;
-    if (this.selected == false) {
-      this.unSelectedAll.emit(true);
+    if (this.selected) {
+      this.contactService.addItemSelectedObjects(this.data);
+    } else {
+      this.contactService.removeItemSelectedObjects(this.data);
     }
   }
 }
