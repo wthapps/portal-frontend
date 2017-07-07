@@ -14,9 +14,26 @@
       <ul [ngClass]="{'active': urls.contact == hostname}" class="list-unstyled" id="zone_menu_contact">
         <template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li *ngIf="contact.name != ''" [routerLinkActive]="['active']">
-            <a draggable="false" [routerLink]="[contact.link]" (click)="doEvent({action: contact?.action, event: $event})">
-              <i class="{{contact.icon}}"></i> {{contact.name}}
-            </a>
+            <div class="float clearfix">
+              <div class="pull-left">
+                <a draggable="false" [routerLink]="[contact.link]" (click)="doEvent({action: contact?.action, event: $event})">
+                  <i class="{{contact.icon}}"></i> {{contact.name}}
+                </a>
+              </div>
+              <div class="menu-item-right-action clearfix pull-right">
+                <div class="menu-item-edit-icon">
+                  <a (click)="doEvent({action:'contact:label:edit'})" title="edit label name">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                </div>
+                <div class="menu-item-delete-icon">
+                  <a (click)="doEvent({action:'contact:label:delete'})" title="delete label">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </li>
           <li class="divider" *ngIf="contact.name == ''"></li>
         </template>

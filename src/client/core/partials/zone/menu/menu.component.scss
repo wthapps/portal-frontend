@@ -1,0 +1,13 @@
+.menu-item-right-action {
+  display: inline-block;
+
+  div {
+    display: inline-block;
+    a {
+      padding: 0 10px 0 10px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

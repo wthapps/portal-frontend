@@ -14,7 +14,8 @@ declare var $: any;
 @Component({
   moduleId: module.id,
   selector: 'z-shared-menu',
-  templateUrl: 'menu.component.html'
+  templateUrl: 'menu.component.html',
+  styleUrls: ['menu.component.css']
 })
 
 export class ZSharedMenuComponent implements OnInit {
