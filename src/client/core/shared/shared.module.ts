@@ -56,7 +56,7 @@ import { ChannelService } from './channels/channel.service';
 import { ChatCommonService } from './services/chat.common.service';
 import { ZoneReportService } from './form/report/report.service';
 import { ZoneReportComponent } from './form/report/report.component';
-import { PubSubEventService } from './services/pub-sub/pub-sub-event.service';
+import { CommonEventService } from './services/common-event/common-event.service';
 import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
 import { PipeModule } from './pipe/pipe.module';
 import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
@@ -187,7 +187,7 @@ export class SharedModule {
         ZoneReportService,
         ChatCommonService,
         PhotoService,
-        PubSubEventService
+        CommonEventService
       ]
     };
   }

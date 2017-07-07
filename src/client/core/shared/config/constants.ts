@@ -93,7 +93,7 @@ export let Constants = {
     {name: 'Custom label 01 (1)', link: '/list/custom-label-01', icon: 'fa fa-folder-o'},
     {name: 'Custom label 01 (2)', link: '/list/custom-label-02', icon: 'fa fa-folder-o'},
     {name: 'Blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
-    {name: 'New label', link: '/new', icon: 'fa fa-plus'}
+    {name: 'New label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
   ],
 
   chatMenuItems: [

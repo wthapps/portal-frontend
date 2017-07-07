@@ -14,7 +14,7 @@
       <ul [ngClass]="{'active': urls.contact == hostname}" class="list-unstyled" id="zone_menu_contact">
         <template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li *ngIf="contact.name != ''" [routerLinkActive]="['active']">
-            <a draggable="false" [routerLink]="[contact.link]">
+            <a draggable="false" [routerLink]="[contact.link]" (click)="doEvent({action: contact?.action, event: $event})">
               <i class="{{contact.icon}}"></i> {{contact.name}}
             </a>
           </li>

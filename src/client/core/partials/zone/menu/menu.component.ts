@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+
 
 import { UserService } from '../../../shared/services/user.service';
 import { Constants } from '../../../shared/config/constants';
 import { WTHNavigateService } from '../../../shared/services/wth-navigate.service';
+import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 
 declare var $: any;
 
@@ -15,6 +18,9 @@ declare var $: any;
 })
 
 export class ZSharedMenuComponent implements OnInit {
+  /**public event for somewhere are able to subscribe*/
+  event: Observable<any>;
+
 
   uuid: string;
   urls: any;
@@ -29,7 +35,9 @@ export class ZSharedMenuComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private navigateService: WTHNavigateService,
-              private location: Location) {
+              private location: Location,
+    private commonEventService: CommonEventService
+  ) {
     this.uuid = this.userService.getProfileUuid();
     this.urls = Constants.baseUrls;
   }
@@ -56,6 +64,14 @@ export class ZSharedMenuComponent implements OnInit {
   }
 
   trackByFn() {
+
+  }
+
+  doEvent(event: any) {
+    if (event.event) {
+      event.event.preventDefault();
+    }
+    this.commonEventService.broadcast(event);
 
   }
 

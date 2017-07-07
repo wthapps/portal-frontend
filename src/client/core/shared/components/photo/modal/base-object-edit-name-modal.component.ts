@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnIni
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { BaseMediaModal } from './base-media-modal';
+import { WthAppsBaseModal } from '../../../interfaces/base-media-modal';
 
 
 declare var $: any;

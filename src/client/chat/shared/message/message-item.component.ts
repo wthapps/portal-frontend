@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
 import { Config } from '../../../core/shared/config/env.config';
-import { PubSubEventService } from '../../../core/shared/services/pub-sub/pub-sub-event.service';
-import { PubSubEvent } from '../../../core/shared/services/pub-sub/pub-sub-event';
+import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
+import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { CHAT_ACTIONS } from '../../../core/shared/constant/chat-constant';
 
 declare var _: any;
@@ -31,7 +31,7 @@ export class MessageItemComponent implements OnInit {
   constructor(
     private router: Router,
     private chatService: ChatService,
-    private pubSubEventService: PubSubEventService) {
+    private pubSubEventService: CommonEventService) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }
 
@@ -46,10 +46,10 @@ export class MessageItemComponent implements OnInit {
 
   }
 
-  doAction(event: PubSubEvent) {
+  doAction(event: CommonEvent) {
     var editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
 
-    this.pubSubEventService.addEvent(editingEvent);
+    this.pubSubEventService.broadcast(editingEvent);
   }
 
   copy() {

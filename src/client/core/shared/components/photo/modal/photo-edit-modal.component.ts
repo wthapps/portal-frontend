@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
-import { BaseMediaModal } from './base-media-modal';
+import { WthAppsBaseModal } from '../../../interfaces/base-media-modal';
 
 
 import {
@@ -21,7 +21,7 @@ declare var $: any;
   selector: 'photo-edit-modal',
   templateUrl: 'photo-edit-modal.component.html'
 })
-export class PhotoEditModalComponent implements OnChanges, BaseMediaModal {
+export class PhotoEditModalComponent implements OnChanges, WthAppsBaseModal {
   @Input() data: Photo = null;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: ModalComponent;
