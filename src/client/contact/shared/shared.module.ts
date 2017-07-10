@@ -6,9 +6,11 @@ import { ZContactSharedItemComponent } from './list/item/item.component';
 import { ZContactService } from './services/contact.service';
 import { SharedModule } from '../../core/shared/shared.module';
 import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
-import { ZContactSharedActionsBarComponent } from './actions-bar/actions-bar.component';
-import { ZContactSharedThreeDotActionComponent } from './three-dot-actions/three-dot-actions.component';
-import { ZContactThreeDotActionsService } from './three-dot-actions/contact-three-dot.service';
+import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
+import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
+import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
+import { ZContactShareAddContactComponent } from './modal/add-contact/add-contact.component';
+import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -25,6 +27,7 @@ import { ZContactThreeDotActionsService } from './three-dot-actions/contact-thre
     ZContactSharedItemComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
+    ZContactShareAddContactComponent,
     ZContactSharedToolbarComponent
   ],
   exports: [
@@ -35,6 +38,7 @@ import { ZContactThreeDotActionsService } from './three-dot-actions/contact-thre
     ZContactSharedItemComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
+    ZContactShareAddContactComponent,
     ZContactSharedToolbarComponent
   ]
 })
@@ -44,6 +48,7 @@ export class ZContactSharedModule {
       ngModule: ZContactSharedModule,
       providers: [
         ZContactService,
+        ZContactAddContactService,
         ZContactThreeDotActionsService
       ]
     };

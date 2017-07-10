@@ -15,6 +15,7 @@ declare var _: any;
 export class ZContactListComponent implements OnInit, OnDestroy, CommonEventAction {
   data: any = [];
   eventThreeDot: any;
+  eventAddContact: any;
   commonEventSub: Subscription;
 
 
@@ -38,6 +39,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         this.getAllContact();
       }
     });
+    this.eventAddContact = this.contactService.contactAddContactService.eventOut.subscribe((event: any) => {
+      this.data = event.data;
+    });
   }
 
   onDeleteAll() {
@@ -55,6 +59,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
 
   ngOnDestroy() {
     this.eventThreeDot.unsubscribe();
+    this.eventAddContact.unsubscribe();
+    this.commonEventSub.unsubscribe();
   }
 
   doEvent(event: any) {

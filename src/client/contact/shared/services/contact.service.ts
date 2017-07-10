@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Response, Http } from '@angular/http';
-import { ZContactThreeDotActionsService } from '../three-dot-actions/contact-three-dot.service';
+import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/contact-three-dot.service';
+import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
 
 declare var _: any;
 
@@ -18,7 +19,9 @@ export class ZContactService {
 
 
   constructor(private apiBaseService: ApiBaseService,
-              public contactThreeDotActionsService: ZContactThreeDotActionsService) {
+              public contactThreeDotActionsService: ZContactThreeDotActionsService,
+              public contactAddContactService: ZContactAddContactService
+  ) {
 
   }
 
@@ -40,7 +43,6 @@ export class ZContactService {
     });
   }
 
-
   sendListToItem(event: any) {
     this.listenToListSource.next(event);
   }
@@ -53,6 +55,9 @@ export class ZContactService {
     return this.apiBaseService.put(`contact/contacts/${contact.id}`, data);
   }
 
+  addContact(data: any) {
+    return this.apiBaseService.post(`contact/contacts`, data);
+  }
 
   private handleError(error: Response) {
     console.error(error);

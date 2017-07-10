@@ -11,7 +11,7 @@ export class Communication {
     this.eventOutSource.next(data);
   }
 
-  recieve(data: any) {
-    this.eventIn.next(data);
+  sendIn(data: any) {
+    this.eventInSource.next(data);
   }
 }

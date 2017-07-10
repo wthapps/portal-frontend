@@ -12,9 +12,15 @@ declare var _: any;
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
 
-  constructor(public contactService: ZContactService) {
+  constructor(private contactService: ZContactService) {
   }
 
   ngOnInit() {
+    //
+  }
+
+  openAddModal() {
+    console.log("openAddModal");
+    this.contactService.contactAddContactService.sendIn({action: "open"});
   }
 }

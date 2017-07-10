@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Communication } from '../../../core/shared/models/communication.model';
+import { Communication } from '../../../../core/shared/models/communication.model';
 
 declare var _: any;
 

@@ -1,0 +1,14 @@
+<form>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> <i class="fa fa-plus"></i> New Contact</h4>
+    </modal-header>
+    <modal-body>
+      Test
+    </modal-body>
+    <modal-footer>
+      <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="add()">Done</button>
+      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>
