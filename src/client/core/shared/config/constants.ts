@@ -90,8 +90,8 @@ export let Constants = {
     {name: 'Favourites (2)', link: '/list/favourites', icon: 'fa fa-star'},
     {name: 'Social (5)', link: '/list/social', icon: 'fa fa-globe'},
     {name: 'Chat (2)', link: '/list/chat', icon: 'fa fa-comments-o'},
-    {name: 'Custom label 01 (1)', link: '/list/custom-label-01', icon: 'fa fa-folder-o'},
-    {name: 'Custom label 01 (2)', link: '/list/custom-label-02', icon: 'fa fa-folder-o'},
+    {name: 'Custom label 01 (1)', link: '/list/custom-label-01', icon: 'fa fa-folder-o visibility-hidden'},
+    {name: 'Custom label 01 (2)', link: '/list/custom-label-02', icon: 'fa fa-folder-o visibility-hidden'},
     {name: 'Blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
     {name: 'New label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
   ],

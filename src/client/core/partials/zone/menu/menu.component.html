@@ -1,5 +1,5 @@
 <nav class="page-menuleft" draggable="false">
-  <ul class="list-unstyled">
+  <ul class="menuleft-nav">
     <li [routerLinkActive]="['active']">
       <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
     </li>
@@ -7,31 +7,24 @@
       <a draggable="false" href="#">Contact</a>
     </li>
 
-    <li class="has-sub" [ngClass]="{'active': urls.contact == hostname && !isProfileTab}">
+    <li class="has-sub has-action" [ngClass]="{'active': urls.contact == hostname && !isProfileTab}">
       <a draggable="false" [routerLink]="[contactMenu[0].link]" (click)="onMenu('contact')">
         Contact
       </a>
-      <ul [ngClass]="{'active': urls.contact == hostname}" class="list-unstyled" id="zone_menu_contact">
+      <ul [ngClass]="{'active': urls.contact == hostname}" class="menuleft-nav-sub" id="zone_menu_contact">
         <template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li *ngIf="contact.name != ''" [routerLinkActive]="['active']">
-            <div class="float clearfix">
-              <div class="pull-left">
-                <a draggable="false" [routerLink]="[contact.link]" (click)="doEvent({action: contact?.action, event: $event})">
-                  <i class="{{contact.icon}}"></i> {{contact.name}}
-                </a>
-              </div>
-              <div class="menu-item-right-action clearfix pull-right">
-                <div class="menu-item-edit-icon">
-                  <a (click)="doEvent({action:'contact:label:edit'})" title="edit label name">
-                    <i class="fa fa-edit"></i>
-                  </a>
-                </div>
-                <div class="menu-item-delete-icon">
-                  <a (click)="doEvent({action:'contact:label:delete'})" title="delete label">
-                    <i class="fa fa-trash"></i>
-                  </a>
-                </div>
-              </div>
+            <a draggable="false" [routerLink]="[contact.link]" (click)="doEvent({action: contact?.action, event: $event})">
+              <i class="{{contact.icon}}"></i> {{contact.name}}
+            </a>
+
+            <div class="menuleft-nav-sub-action">
+              <span class="can-click" (click)="doEvent({action:'contact:label:edit'})" title="edit label name">
+                <i class="fa fa-pencil"></i>
+              </span>
+              <span class="can-click" (click)="doEvent({action:'contact:label:delete'})" title="delete label">
+                <i class="fa fa-trash"></i>
+              </span>
             </div>
 
           </li>
@@ -48,7 +41,7 @@
       <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
-      <ul [ngClass]="{'active': urls.social == hostname}" class="list-unstyled">
+      <ul [ngClass]="{'active': urls.social == hostname}" class="menuleft-nav-sub">
         <template ngFor let-social [ngForOf]="socialMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li *ngIf="social.name != ''" [routerLinkActive]="['active']"
               [ngClass]="{'hidden': social.link == '/search'}">
@@ -68,7 +61,7 @@
       <a draggable="false" [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
         Chat
       </a>
-      <ul [ngClass]="{'active': urls.chat == hostname}" class="list-unstyled" id="zone_menu_chat">
+      <ul [ngClass]="{'active': urls.chat == hostname}" class="menuleft-nav-sub" id="zone_menu_chat">
         <template ngFor let-chat [ngForOf]="chatMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li *ngIf="chat.name != ''" [routerLinkActive]="['active']">
             <a draggable="false" [routerLink]="[chat.link]">
@@ -87,7 +80,7 @@
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>
-      <ul [ngClass]="{'active': urls.media == hostname}" class="list-unstyled">
+      <ul [ngClass]="{'active': urls.media == hostname}" class="menuleft-nav-sub">
         <template ngFor let-media [ngForOf]="mediaMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li *ngIf="media.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
             <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">

@@ -13,7 +13,7 @@ import { CommonEventHandler } from './common-event-handler';
 export class CommonEventService implements CommonEventHandler {
   event: Observable<CommonEvent>;
 
-  private eventSub: Subject<CommonEvent> = new Subject<CommonEvent>();;
+  private eventSub: Subject<CommonEvent> = new Subject<CommonEvent>();
   // private subscription: Subscription;
 
   constructor() {
