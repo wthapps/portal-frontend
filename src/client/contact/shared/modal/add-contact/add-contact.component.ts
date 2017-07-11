@@ -10,6 +10,9 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 export class ZContactShareAddContactComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
+  name: any;
+  phone: any;
+  email: any;
 
   constructor(private contactService: ZContactService) {
 
@@ -25,7 +28,7 @@ export class ZContactShareAddContactComponent implements OnInit {
 
   add() {
     this.modal.close();
-    this.contactService.addContact({name: "test"}).subscribe((res: any) => {
+    this.contactService.addContact({name: this.name, emails: [{value: this.email}], phones: [{value: this.phone}]}).subscribe((res: any) => {
       this.contactService.contactAddContactService.sendOut(res);
     });
   }
