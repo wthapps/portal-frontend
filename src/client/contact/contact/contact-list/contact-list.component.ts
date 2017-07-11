@@ -22,9 +22,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   constructor(private contactService: ZContactService, private route: ActivatedRoute,
               private commonEventService: CommonEventService
   ) {
-    this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
-      this.doEvent(event);
-    });
+    // this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
+    //   this.doEvent(event);
+    // });
   }
 
   ngOnInit() {

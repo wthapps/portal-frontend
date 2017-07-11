@@ -4,11 +4,9 @@ import { Observable } from 'rxjs/Observable';
 
 export class BaseEntityService<T> {
 
-  items: T[];
-  item: T;
   url = '';
 
-  constructor(private api: ApiBaseService) {
+  constructor(protected api: ApiBaseService) {
 
   }
 
@@ -17,20 +15,18 @@ export class BaseEntityService<T> {
   }
 
   get(id: number): Observable<any> {
-    return this.api.get(this.url);
+    return this.api.get(`${this.url}/${id}`);
   }
 
-  create(id: number): Observable<any> {
-    return this.api.get(this.url);
+  create(body: any): Observable<any> {
+    return this.api.post(this.url, body);
   }
 
-  update(id: number): Observable<any> {
-    return this.api.get(this.url);
+  update(body: number): Observable<any> {
+    return this.api.post(this.url, body);
   }
 
-  delete(id: number): Observable<any> {
-    return this.api.get(this.url);
+  delete(id: any): Observable<any> {
+    return this.api.delete(`${this.url}/${id}`);
   }
 }
-
-

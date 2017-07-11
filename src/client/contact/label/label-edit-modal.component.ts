@@ -3,6 +3,7 @@ import { WthAppsBaseModal } from '../../core/shared/interfaces/base-media-modal'
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Label } from './label.model';
+import { LabelService } from './label.service';
 
 // import { CommonEvent } from '../../core/shared/services/common-event/common-event';
 // import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
@@ -30,7 +31,7 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
   form: FormGroup;
   name: AbstractControl;
 
-  constructor(private fb: FormBuilder)  {
+  constructor(private fb: FormBuilder, private labelService: LabelService)  {
 
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
@@ -42,6 +43,23 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
   ngOnInit() {
     this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
     this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
+  }
+
+  submit() {
+    if (this.mode == 'edit') {
+      // this.labelService.update()
+    } else {
+      this.labelService.create(this.form.value).subscribe(
+        (response: any) => {
+          console.log('response:::::', response.data);
+
+          // update list after added new label here
+
+        }, (error: any)=> {
+
+        }
+      )
+    }
   }
 
   open(options?: any) {

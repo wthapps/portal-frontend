@@ -1,5 +1,5 @@
 <nav class="page-menuleft" draggable="false">
-  <ul class="menuleft-nav">
+  <ul class="list-unstyled">
     <li [routerLinkActive]="['active']">
       <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
     </li>
@@ -19,10 +19,10 @@
             </a>
 
             <div class="menuleft-nav-sub-action">
-              <span class="can-click" (click)="doEvent({action:'contact:label:edit'})" title="edit label name">
+              <span class="can-click" (click)="doEvent({action:'contact:label:edit', payload: {selectedItem: getLabel(contact.name)}})" title="edit label name">
                 <i class="fa fa-pencil"></i>
               </span>
-              <span class="can-click" (click)="doEvent({action:'contact:label:delete'})" title="delete label">
+              <span class="can-click" (click)="doEvent({action:'contact:label:delete', payload: {selectedItem: getLabel(contact.name)}})" title="delete label">
                 <i class="fa fa-trash"></i>
               </span>
             </div>
@@ -30,6 +30,16 @@
           </li>
           <li class="divider" *ngIf="contact.name == ''"></li>
         </template>
+
+        <li>
+          <div class="float clearfix">
+            <div class="">
+              <a draggable="false" href="javascipt:;" (click)="doEvent({action: 'contact:label:create', event: $event})">
+                <i class="fa fa-plus"></i> New label
+              </a>
+            </div>
+          </div>
+        </li>
       </ul>
     </li>
 

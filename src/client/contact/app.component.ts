@@ -11,6 +11,7 @@ import { CommonEvent } from '../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { LabelEditModalComponent } from './label/label-edit-modal.component';
 import { ConfirmationService } from 'primeng/primeng';
+import { LabelService } from './label/label.service';
 
 /**
  * This class represents the main application component.
@@ -33,7 +34,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   constructor(private router: Router,
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private labelService: LabelService
   ) {
     console.log('Environment config', Config);
     this.commonEventSub = this.commonEventService.event.subscribe((event: any) => this.doEvent(event));
@@ -58,15 +60,29 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       case 'contact:label:edit':
         this.loadModalComponent(LabelEditModalComponent);
         this.modal.mode = (<Array<string>>event.action.split(':')).pop();
+        this.modal.item = event.payload.selectedItem;
         this.modal.open();
         break;
-      case 'contact:label:delete':
+      case 'contact:label:delete_confirm':
         this.confirmationService.confirm({
           message: 'Are you sure to this label',
           accept: () => {
-            console.log('yes deleted!!!');
+            event.action = 'contact:label:delete';
+            this.commonEventService.broadcast(event);
           }
         });
+        break;
+      case 'contact:label:delete':
+        this.labelService.delete(event.payload.selectedItem.id).subscribe(
+          (response: any) => {
+            this.commonEventService.broadcast({
+              action: 'contact:label:delete_refresh_list',
+              payload: {
+                selectedItem: response.data
+              }
+            })
+          }
+        );
         break;
     }
   }
