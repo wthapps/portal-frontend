@@ -1,8 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MySharedMenuComponent } from './menu/menu.component';
 
-import { ACMenuComponent } from './menu/menu.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -14,17 +14,16 @@ import { ACMenuComponent } from './menu/menu.component';
     RouterModule
   ],
   declarations: [
-    ACMenuComponent
+    MySharedMenuComponent
   ],
   exports: [
-    CommonModule,
-    ACMenuComponent
+    MySharedMenuComponent
   ]
 })
-export class ACSharedModule {
+export class MySharedModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: ACSharedModule,
+      ngModule: MySharedModule,
       providers: []
     };
   }

@@ -1,0 +1,11 @@
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" (onDismiss)="dismiss($event)" style="z-index: 1111;">
+  <modal-header class="modal-header-action" [show-close]="true">
+    <button type="button" class="btn btn-wth-default btn-min"
+            (click)="next($event)" [disabled]="photoList.selectedItems.length <= 0">{{ action }}
+    </button>
+    <span class="modal-title">{{ photoList.selectedItems.length }} photo<span *ngIf="photoList.selectedItems.length > 1">s</span> selected</span>
+  </modal-header>
+  <modal-body>
+    <so-photo-list #photoList [showUpload]="true" (onFilesChanged)="chooseFiles($event)"></so-photo-list>
+  </modal-body>
+</modal>

@@ -10,25 +10,25 @@ declare var $: any;
  */
 @Component({
   moduleId: module.id,
-  selector: 'ac-apps-shared-slider',
+  selector: 'my-apps-shared-slider',
   template: `
             <div class="article-slide-wrap">
               <div class="article-slide-in">
                 <div class="slider slider-for">
                   <div class="swiper-slide" *ngFor="let img of images; let i = index">
-                    <img [src]="imagesBg[i]" alt="{{i}}">
+                    <img [src]="imagesBg[i]" alt="{{ i }}">
                   </div>
                 </div>
                 <div class="slider slider-nav">
                   <div *ngFor="let img of images; let ii = index">
-                    <img [src]="imagesBg[ii]" alt="{{ii}}">
+                    <img [src]="imagesBg[ii]" alt="{{ ii }}">
                   </div>
                 </div>
               </div>
             </div>
   `
 })
-export class ACAppsSharedSliderComponent implements OnChanges, AfterViewInit {
+export class MyAppsSharedSliderComponent implements OnChanges, AfterViewInit {
   @Input() data: Array<any>;
 
   images: Array<any> = [

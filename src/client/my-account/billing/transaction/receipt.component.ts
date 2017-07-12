@@ -1,19 +1,18 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { MyTransactionService } from '../shared/transaction.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-
-import { ACTransactionService } from '../shared/transaction.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
 declare var $: any;
 @Component({
   moduleId: module.id,
-  selector: 'ac-transaction-receipt',
+  selector: 'my-transaction-receipt',
   templateUrl: 'receipt.component.html'
 })
 
-export class ACReceiptComponent implements OnInit {
+export class MyReceiptComponent implements OnInit {
   pageTitle: string = 'Receipt';
   transaction: any = {
     amount: 0,
@@ -47,7 +46,7 @@ export class ACReceiptComponent implements OnInit {
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
-              private transactionService: ACTransactionService,
+              private transactionService: MyTransactionService,
               private loadingService: LoadingService,
               private _el: ElementRef) {
   }

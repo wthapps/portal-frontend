@@ -1,29 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ACMyAppsService } from '../my-apps.service';
+import { MyMyAppsService } from '../my-apps.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-my-apps-list',
+  selector: 'my-my-apps-list',
   templateUrl: 'list.component.html'
 })
 
-export class ACMyAppsListComponent implements OnInit {
+export class MyMyAppsListComponent implements OnInit {
   pageTitle: string = 'App List';
   errorMessage: string;
 
   my_apps: Array<any> = [];
 
-  constructor(private myAppsService: ACMyAppsService,
+  constructor(private myAppsService: MyMyAppsService,
               private userService: UserService,
               private router: Router) {
   }
 
   ngOnInit(): void {
     this.getMyApps();
-
   }
+
   getMyApps() {
     this.myAppsService.list(this.userService.profile.id).subscribe(
       (response: any) => {

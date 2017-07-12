@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/observable/fromPromise';
-import { Router } from '@angular/router';
 import {
   FormGroup,
   AbstractControl,
@@ -10,25 +9,22 @@ import {
 
 import { ConfirmationService } from 'primeng/components/common/api';
 
-import { Constants } from '../../../core/shared/config/constants';
-import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 import { UserService } from '../../../core/shared/services/user.service';
-
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-
-//2 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { CustomValidator } from '../../../core/shared/validator/custom.validator';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-setting-account',
+  selector: 'my-setting-account',
   templateUrl: 'account.component.html'
 })
 
-export class ACAccountComponent implements OnInit {
+export class MyAccountComponent implements OnInit {
   pageTitle: string = 'Account';
   errorMessage: string = Constants.errorMessage.default;
 
@@ -44,10 +40,7 @@ export class ACAccountComponent implements OnInit {
               public userService: UserService,
               private toastsService: ToastsService,
               private confirmationService: ConfirmationService,
-              private loadingService: LoadingService,
-              //2 private appearancesChannelService: AppearancesChannelService,
-              //2 private deactivateConfirmService: DeactivateConfirmService,
-              private router: Router) {
+              private loadingService: LoadingService) {
 
     this.form = fb.group({
       'oldPassword': ['', Validators.compose([

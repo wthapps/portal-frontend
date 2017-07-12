@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { UserService } from '../../core/shared/services/user.service';
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
 
 declare var $: any;
 

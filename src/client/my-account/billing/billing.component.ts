@@ -2,9 +2,9 @@ import { Component }                from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-billing',
+  selector: 'my-billing',
   templateUrl: 'billing.component.html'
 })
 
-export class ACBillingComponent {
+export class MyBillingComponent {
 }

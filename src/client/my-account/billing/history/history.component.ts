@@ -2,21 +2,21 @@ import { Component, OnInit }   from '@angular/core';
 import { Router }                from '@angular/router';
 
 import { UserService } from '../../../core/shared/services/user.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { ACTransactionService } from '../shared/transaction.service';
+import { MyTransactionService } from '../shared/transaction.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-billing-history',
+  selector: 'my-billing-history',
   templateUrl: 'history.component.html'
 })
 
-export class ACBillingHistoryComponent implements OnInit {
+export class MyBillingHistoryComponent implements OnInit {
   pageTitle: string = 'Billing History';
   transactions: any[] = [];
 
   constructor(private userService: UserService,
-              private transactionService: ACTransactionService,
+              private transactionService: MyTransactionService,
               private loadingService: LoadingService,
               private router: Router) {
   }

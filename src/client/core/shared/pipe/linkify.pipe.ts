@@ -5,7 +5,7 @@ declare let linkifyHtml:any;
 export class LinkifyPipe implements PipeTransform {
   transform(str: string) {
     if(!str) {
-      return "";
+      return '';
     }
     return linkifyHtml(str, {
       defaultProtocol: 'https'

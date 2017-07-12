@@ -8,10 +8,10 @@ import {
   Validators
 } from '@angular/forms';
 
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
 
 declare var $: any;
 

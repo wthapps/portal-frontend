@@ -1,44 +1,47 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
-import { PartialsModule } from '../../core/partials/partials.module';
+import { MyMyAppsRoutingModule } from './my-apps-routing.module';
+import { MySharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+import { MyMyAppsComponent } from './my-apps.component';
+import { MyMyAppsListComponent } from './list/list.component';
+import { MyMyAppsDetailComponent } from './detail/detail.component';
+import { MyMyAppsDetailAddComponent } from './detail/detail-add.component';
+import { MyDNSComponent } from './dns/dns.component';
+import { MyDNSEditComponent } from './dns/dns-edit.component';
 
-import { ACMyAppsComponent } from './my-apps.component';
-import { ACMyAppsRoutingModule } from './my-apps-routing.module';
-import { ACMyAppsListComponent } from './list/list.component';
-import { ACMyAppsDetailAddComponent } from './detail/detail-add.component';
-import { ACMyAppsDetailComponent } from './detail/detail.component';
-import { ACAppsSharedModule } from '../apps/shared/shared.module';
-import { ACMyAppsService } from './my-apps.service';
-import { ACDNSService } from './dns/dns.service';
-import { ACDNSComponent } from './dns/dns.component';
-import { ACDNSEditComponent } from './dns/dns-edit.component';
+import { MyMyAppsService } from './my-apps.service';
+import { MyDNSService } from './dns/dns.service';
+import { MyAppsSharedModule } from '../apps/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    ACMyAppsRoutingModule,
-    ReactiveFormsModule,
-    PartialsModule,
-    ACAppsSharedModule.forRoot()
+    MyAppsSharedModule.forRoot(),
+    MyMyAppsRoutingModule,
+    MySharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
-    ACMyAppsComponent,
-    ACMyAppsListComponent,
-    ACMyAppsDetailComponent,
-    ACMyAppsDetailAddComponent,
-    ACDNSComponent,
-    ACDNSEditComponent
+    MyMyAppsComponent,
+    MyMyAppsListComponent,
+    MyMyAppsDetailComponent,
+    MyMyAppsDetailAddComponent,
+    MyDNSComponent,
+    MyDNSEditComponent
   ],
   exports: [
-    ACMyAppsComponent
+    MyMyAppsComponent,
+    MyMyAppsListComponent,
+    MyMyAppsDetailComponent,
+    MyMyAppsDetailAddComponent,
+    MyDNSComponent,
+    MyDNSEditComponent
   ],
   providers: [
-    ACMyAppsService,
-    ACDNSService
+    MyMyAppsService,
+    MyDNSService
   ]
 })
 
-export class ACMyAppsModule {
+export class MyMyAppsModule {
 }

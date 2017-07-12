@@ -1,5 +1,5 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">{{pageTitle}}</h3>
+  <h3 class="box-panel-title">{{ pageTitle }}</h3>
   <h4 class="box-panel-subtitle">Profile Picture</h4>
   <div class="media media-upload-profile">
     <div class="media-left">
@@ -65,7 +65,7 @@
             <div class="col-xs-4">
               <select name="phone_prefix" class="form-control" id="phone_prefix" [formControl]="phone_prefix">
                 <option value="">Select your country</option>
-                <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}} ({{c.dial_code}})</option>
+                <option *ngFor="let c of countriesCode" value="{{ c.code }}">{{ c.name }} ({{ c.dial_code }})</option>
               </select>
             </div>
             <div class="col-xs-8">

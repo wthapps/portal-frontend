@@ -1,0 +1,171 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="javascript:;" (click)="onNavigation($event)">
+        <img alt="WTHApps" [src]="imgLogo">
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <search-form #search></search-form>
+
+      <ul *ngIf="userService.loggedIn" class="nav navbar-nav-top navbar-right">
+        <li class="dropdown navbar-nav-management">
+          <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown">
+            <i class="fa fa-list"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a (click)="redirectTo('media', '', $event)" href="javascript:;">
+                <i class="fa fa-bullseye"></i>
+                <span>Zone</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="redirectTo('my', 'apps', $event)" href="javascript:;">
+                <i class="fa fa-list-alt"></i>
+                <span>Apps</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="redirectTo('my', 'my-apps', $event)" href="javascript:;">
+                <i class="fa fa-plug"></i>
+                <span>My Apps</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown navbar-nav-notification">
+          <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
+             data-toggle="dropdown" href="javascript:;" role="button" (click)="toggleViewNotifications()">
+            <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="notificationService.newNotifCount > 0">{{ notificationService.newNotifCount }}</span>
+          </a>
+          <ul class="dropdown-menu" id="nav-notification-list">
+            <li class="dropdown-menu-bar">
+              <div class="pull-left">
+                <span class="bold">Notification</span>
+              </div>
+              <div class="pull-right">
+                <a href="javascript:;" (click)="markAllAsRead()">Mark All as Read</a>
+                <a href="javascript:;">Settings</a>
+                <!--<a href="#">Mute</a>-->
+                <!--<a href="#">Settings</a>-->
+              </div>
+            </li>
+            <li>
+
+              <div>
+                <ul class="list-unstyled" id="notification-items"
+                    lockYOffset="30"
+                    observeAttributes="true"
+                    infinite-scroll
+                    [scrollWindow]="false"
+                    (scrolled)="getMoreNotifications()"
+                >
+                  <li class="navbar-nav-notification-item"
+                      *ngFor="let notification of notificationService.notifications"
+                      [ngClass]="{'unread-notification': !notification?.is_read }">
+                    <div class="media" data-id="notification_{{notification.id}}">
+                      <notification-item [notification]="notification"></notification-item>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li *ngIf="notificationService.notifications.length == 0">
+              <p class="p10">
+                Currently you have no notifications
+              </p>
+            </li>
+            <li class="view-all">
+              <a href="javascript:;" (click)="viewAllNotifications()">View All</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown navbar-nav-profile">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="avatar-xxs">
+              <img alt="" width="30" [src]="userService.profile.profile_image">
+            </span>
+            <span class="name">{{ userService.profile.first_name }}</span>
+            <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu dropdown-menu-lg">
+            <li>
+              <div class="media p10">
+                <div class="media-left">
+                  <div class="avatar-md">
+                    <img alt="" [src]="userService.profile.profile_image">
+                  </div>
+                </div>
+                <div class="media-body">
+                  <p class="media-heading bold mb0">{{ userService.profile.first_name }}
+                    {{ userService.profile.last_name }}</p>
+                  <small class="text-fade">{{ userService.profile.email }}</small>
+                  <div class="navbar-nav-plan m">
+                    <p class="media-heading bold">{{ userService.profile.plan.name }}</p>
+                    <button class="btn btn-primary" *ngIf="userService.profile.plan.is_trial"
+                            (click)="redirectTo('my', 'plans', $event)">
+                      <i class="fa fa-arrow-circle-up"></i> Upgrade
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li><a (click)="redirectTo('my', 'setting/profile', $event)" href="javascript:;">Profile</a></li>
+            <li><a (click)="redirectTo('my', 'setting/account', $event)" href="javascript:;">Account</a></li>
+            <li><a (click)="redirectTo('my', 'setting/preferences', $event)" href="javascript:;">Preferences</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a (click)="redirectTo('my', 'plans', $event)" href="javascript:;">Plans</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a (click)="logout()" href="javascript:;">Sign Out</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul *ngIf="!userService.loggedIn" class="nav navbar-nav navbar-right">
+        <li class="hidden-xs">
+          <a [routerLink]="['/signup']" href="javascript:;">Sign up</a>
+        </li>
+
+        <ng-template [ngIf]="!userService.loggedIn">
+          <li class="hidden-xs navbar-nav-button">
+              <span>
+                <a class="btn btn-detail btn-min" [routerLink]="['/login']" href="javascript:;">Log in</a>
+              </span>
+          </li>
+          <li class="visible-xs pt10 pb10">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-6">
+                  <a class="btn btn-detail btn-block" [routerLink]="['/signup']" href="javascript:;">Sign up</a>
+                </div>
+                <div class="col-xs-6">
+                  <a class="btn btn-detail btn-block" [routerLink]="['/login']" href="javascript:;">Log in</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ng-template>
+      </ul>
+
+      <ul *ngIf="headerOver && !flagsRelease" class="nav navbar-nav navbar-right">
+        <li><a [routerLink]="['/products']" href="javascript:;">Products</a></li>
+        <li><a [routerLink]="['/pricing']" href="javascript:;">Pricing</a></li>
+        <li><a [routerLink]="['/about']" href="javascript:;">About us</a></li>
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+

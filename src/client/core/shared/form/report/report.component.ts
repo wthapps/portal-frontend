@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import {
   FormGroup,
@@ -17,7 +17,7 @@ declare var _: any;
   selector: 'wth-zone-report',
   templateUrl: 'report.component.html'
 })
-export class ZoneReportComponent implements OnInit {
+export class ZoneReportComponent {
   @ViewChild('modal') modal: ModalComponent;
 
   REASONS: Array<any> = [
@@ -50,9 +50,6 @@ export class ZoneReportComponent implements OnInit {
     this.other = this.form.controls['other'];
 
     zoneReportService.set = this.activate.bind(this);
-  }
-
-  ngOnInit() {
   }
 
   activate(type: string, uuid: string) {

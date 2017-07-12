@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ACMyAppsComponent } from './my-apps.component';
-import { ACMyAppsListComponent } from './list/list.component';
-import { ACMyAppsDetailComponent } from './detail/detail.component';
-import { ACMyAppsDetailAddComponent } from './detail/detail-add.component';
+import { MyMyAppsComponent } from './my-apps.component';
+import { MyMyAppsListComponent } from './list/list.component';
+import { MyMyAppsDetailComponent } from './detail/detail.component';
+import { MyMyAppsDetailAddComponent } from './detail/detail-add.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'my-apps',
-        component: ACMyAppsComponent,
+        component: MyMyAppsComponent,
         children: [
-          {path: ':id/add', component: ACMyAppsDetailAddComponent},
-          {path: ':id/edit/:id_dns', component: ACMyAppsDetailAddComponent},
-          {path: ':id', component: ACMyAppsDetailComponent},
-          {path: '', component: ACMyAppsListComponent},
-          {path: '**', component: ACMyAppsListComponent}
+          {path: ':id/add', component: MyMyAppsDetailAddComponent},
+          {path: ':id/edit/:id_dns', component: MyMyAppsDetailAddComponent},
+          {path: ':id', component: MyMyAppsDetailComponent},
+          {path: '', component: MyMyAppsListComponent},
+          {path: '**', component: MyMyAppsListComponent}
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class ACMyAppsRoutingModule {
+export class MyMyAppsRoutingModule {
 }

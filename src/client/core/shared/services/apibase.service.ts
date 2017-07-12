@@ -6,7 +6,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieService } from 'ngx-cookie';
 
 import { Constants } from '../config/constants';
 

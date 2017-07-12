@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Photo } from '../../../models/photo.model';
 import { PhotoService } from "../../../services/photo.service";
 import { ConfirmationService } from 'primeng/primeng';
-import { LoadingService } from '../../../../partials/loading/loading.service';
+import { LoadingService } from '../../loading/loading.service';
 
 declare let _: any;
 declare let saveAs: any;
@@ -14,8 +14,7 @@ declare let saveAs: any;
   moduleId: module.id,
   selector: 'base-photo-detail',
   templateUrl: `<div>base photo details</div>`,
-  entryComponents: [
-  ]
+  entryComponents: []
 })
 
 export class BasePhotoDetailComponent implements OnInit, OnDestroy {
@@ -36,18 +35,14 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     if (ev.which === 27) this.router.navigateByUrl(this.prevUrl);
   }
 
-  constructor(
-    protected route: ActivatedRoute,
-    protected router: Router,
-    protected photoService: PhotoService,
-    protected confirmationService: ConfirmationService,
-    protected loadingService: LoadingService
-
-  ) {
+  constructor(protected route: ActivatedRoute,
+              protected router: Router,
+              protected photoService: PhotoService,
+              protected confirmationService: ConfirmationService,
+              protected loadingService: LoadingService) {
     this.router = router;
     this.route = route;
     this.photoService = photoService;
-
   }
 
   ngOnInit() {
@@ -85,7 +80,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
               name: this.photo.name + `.${this.photo.extension}`,
               type: this.photo.content_type,
               file: payload.editedData
-            }).subscribe((res:any) => {
+            }).subscribe((res: any) => {
             });
           }
         });
@@ -107,25 +102,25 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         break;
       case 'delete':
 
-          // Ask for user confirmation before deleting selected PHOTOS
-          this.confirmationService.confirm({
-            message: `Are you sure to delete photo ${this.photo.name}`,
-            accept: () => {
-              this.loadingService.start();
-              let body = JSON.stringify({ids: [this.photo.id]});
-              this.loadingService.start();
-              this.photoService.deletePhoto(body).subscribe((res: any)=> {
+        // Ask for user confirmation before deleting selected PHOTOS
+        this.confirmationService.confirm({
+          message: `Are you sure to delete photo ${this.photo.name}`,
+          accept: () => {
+            this.loadingService.start();
+            let body = JSON.stringify({ids: [this.photo.id]});
+            this.loadingService.start();
+            this.photoService.deletePhoto(body).subscribe((res: any)=> {
 
-                // considering remove item in ids array and back to preUrl
-                this.router.navigateByUrl(this.prevUrl);
-                // _.remove(this.ids, ['id', this.photo.id]);
-                this.loadingService.stop();
-              });
-            },
-            reject: () => {
-              // Ask for user confirmation before deleting selected ALBUMS
-            }
-          });
+              // considering remove item in ids array and back to preUrl
+              this.router.navigateByUrl(this.prevUrl);
+              // _.remove(this.ids, ['id', this.photo.id]);
+              this.loadingService.stop();
+            });
+          },
+          reject: () => {
+            // Ask for user confirmation before deleting selected ALBUMS
+          }
+        });
 
 
         break;
@@ -188,7 +183,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         },
         (error: any) => {
           console.error('Error when loading photo ', error);
-      });
+        });
   }
 
   ngOnDestroy() {

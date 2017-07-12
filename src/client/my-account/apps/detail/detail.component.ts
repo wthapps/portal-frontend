@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { Product } from '../../../core/shared/models/product.model';
-import { MenuItemBreadcrumb } from '../../../core/partials/breadcrumb/breadcrumb';
-import { UserService } from '../../../core/shared/services/user.service';
+import { MyAppsService } from '../apps.service';
 
-import { ACAppsService } from '../apps.service';
+import { Product } from '../../../core/shared/models/product.model';
+import { UserService } from '../../../core/shared/services/user.service';
+import { MenuItemBreadcrumb } from '../../../core/shared/components/breadcrumb/breadcrumb';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-apps-detail',
+  selector: 'my-apps-detail',
   templateUrl: 'detail.component.html'
 })
 
-export class ACAppsDetailComponent implements OnInit {
+export class MyAppsDetailComponent implements OnInit {
   pageTitle: string = '';
   errorMessage: string;
 
@@ -26,8 +26,8 @@ export class ACAppsDetailComponent implements OnInit {
   private app_id: number = 0;
 
   constructor(private route: ActivatedRoute,
-              private appsService: ACAppsService,
               private router: Router,
+              private appsService: MyAppsService,
               private userService: UserService) {
   }
 

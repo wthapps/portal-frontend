@@ -8,25 +8,25 @@ import { Constants } from '../../../../core/shared/config/constants';
  */
 @Component({
   moduleId: module.id,
-  selector: 'ac-apps-shared-card',
+  selector: 'my-apps-shared-card',
   template: `
     <div *ngIf="data" class="app-card" [ngClass]="{'app-card-sm': (type == 'small'), 'app-card-md': (type == 'medium')}">
-      <a href="javascript:;" (click)='onClick()'>
+      <a href="javascript:;" (click)='onClick(data.id)'>
         <div class="app-card-cover">
           <figure>
             <img [src]="data.img_src" (error)="checkError($event)" [alt]="data.display_name">
           </figure>
         </div>
         <div class="app-card-content">
-          <p class="name">{{data.display_name}}</p>
-          <p class="cat">{{data.category.name}}</p>
-          <ac-apps-shared-platform [data]="data.platforms"></ac-apps-shared-platform>
+          <p class="name">{{ data.display_name }}</p>
+          <p class="cat">{{ data.category.name }}</p>
+          <my-apps-shared-platform [data]="data.platforms"></my-apps-shared-platform>
         </div>
       </a>
     </div>
   `
 })
-export class ACAppsSharedCardComponent {
+export class MyAppsSharedCardComponent {
   @Input() data: Product = new Product();
   @Input() type: string = 'small';
 

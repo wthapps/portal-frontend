@@ -1,0 +1,82 @@
+<div class="panel panel-default" *ngIf="data">
+  <div class="panel-heading">
+    <button *ngIf="editable" class="btn btn-default pull-right" (click)="onOpenModal()">
+      <i class="fa fa-pencil"></i>
+    </button>
+    <h3 class="panel-title">Hobby &amp; Interest</h3>
+  </div>
+  <div class="panel-body">
+    <div *ngIf="data.hobbys">
+      <dl *ngFor="let hobby of data.hobbys">
+      <dt>{{ hobby.title }}</dt>
+      <dd>
+        <p>
+          {{ hobby.description }}
+        </p>
+      </dd>
+    </dl>
+    </div>
+
+
+    <div *ngIf="!data.hobbys">
+      <p class="text-fade">
+        Tell us more about your hobby &amp; interest
+      </p>
+      <button type="button" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-plus"></i> Add detail
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"><i class="fa fa-pencil"></i> Hobby &amp; Interest</h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group">
+        <div class="content-overflow" style="max-height: 195px;" formArrayName="hobbys">
+          <div *ngFor="let hobby of  getHobbyControls(); let i=index" class="media">
+            <div class="media-body" [formGroupName]="i">
+              <div class="row row-10">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" formControlName="title" placeholder="">
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <div class="pull-right text-fade"><span>{{ form.value.hobbys[i].description.length }}</span>/150 characters</div>
+                    <label>Description</label>
+                    <textarea formControlName="description" maxlength="150" rows="3" class="form-control no-resize" placeholder=""></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button type="button" class="btn btn-default mt25" (click)="removeItem(i)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mt15">
+          <button type="button" class="btn btn-default" (click)="addItem()">
+            <i class="fa fa-plus"></i> Add more
+          </button>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10"
+              (click)="onSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

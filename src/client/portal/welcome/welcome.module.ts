@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { WelcomeRoutingModule } from './welcome-routing.module';
 import { WelcomeComponent } from './welcome.component';
+import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    WelcomeRoutingModule
+    WelcomeRoutingModule,
+    PortalSharedModule.forRoot()
   ],
   declarations: [
     WelcomeComponent

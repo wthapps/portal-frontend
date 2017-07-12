@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { NameListService } from '../../core/shared/name-list/name-list.service';
 import { Constants } from '../../core/shared/config/constants';
 
 /**
@@ -13,11 +11,8 @@ import { Constants } from '../../core/shared/config/constants';
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
-  newName: string = '';
-  errorMessage: string;
-  names: any[] = [];
   flagsRelease: boolean = Constants.flagsRelease;
 
   /**
@@ -26,39 +21,9 @@ export class HomeComponent implements OnInit {
    *
    * @param {NameListService} nameListService - The injected NameListService.
    */
-  constructor(public nameListService: NameListService, private router: Router) {
+  constructor(private router: Router) {
     if (this.flagsRelease) {
       this.router.navigate(['/login']);
     }
   }
-
-  /**
-   * Get the names OnInit
-   */
-  ngOnInit() {
-    this.getNames();
-  }
-
-  /**
-   * Handle the nameListService observable
-   */
-  getNames() {
-    this.nameListService.get()
-      .subscribe(
-        names => this.names = names,
-        error => this.errorMessage = <any>error
-      );
-  }
-
-  /**
-   * Pushes a new name onto the names array
-   * @return {boolean} false to prevent default form submit behavior to refresh the page.
-   */
-  addName(): boolean {
-    // TODO: implement nameListService.post
-    this.names.push(this.newName);
-    this.newName = '';
-    return false;
-  }
-
 }

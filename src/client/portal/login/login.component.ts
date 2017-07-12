@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -7,13 +7,13 @@ import {
   AbstractControl
 } from '@angular/forms';
 
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 import { AppearancesChannelService } from '../../core/shared/channels/appearances-channel.service';
 import { UserService } from '../../core/shared/services/user.service';
 import { AuthService } from '../../core/shared/services/auth.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
 import { Constants } from '../../core/shared/config/constants';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
 
 
 declare var $: any;

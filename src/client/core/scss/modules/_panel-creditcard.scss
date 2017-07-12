@@ -21,7 +21,7 @@
           width: 22px;
           height: 22px;
           display: inline-block;
-          background-image: url("../images/icons/radio_tick.png");
+          background-image: url("/assets/images/icons/radio_tick.png");
 
           float: left;
           margin-right: 10px;
@@ -34,7 +34,7 @@
       &:first-child {
         > a {
           span {
-            background-image: url("../images/card/credit_card.png");
+            background-image: url("/assets/images/card/credit_card.png");
             width: 306px;
             height: 32px;
             display: inline-block;
@@ -44,7 +44,7 @@
       &:nth-child(2) {
         > a {
           span {
-            background-image: url("../images/card/paypal_icon.png");
+            background-image: url("/assets/images/card/paypal_icon.png");
             width: 102px;
             height: 32px;
             line-height: 32px;

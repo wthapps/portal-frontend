@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { CookieService } from 'ngx-cookie';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { LoadingService } from '../../core/partials/loading/loading.service';
+
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { UserService } from '../../core/shared/services/user.service';
-import { BillingAddress } from '../../core/shared/models/billing-address.model';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { CreditCard } from '../../core/shared/models/credit-card.model';
+import { BillingAddress } from '../../core/shared/models/billing-address.model';
+
 
 @Component({
   moduleId: module.id,
   templateUrl: 'payment-confirm.component.html'
 })
 
-export class ACPaymentConfirmComponent implements OnInit {
+export class MyPaymentConfirmComponent implements OnInit {
   PanelTitle: string = 'Confirm Your Purchase';
   selected_plan: any = null;
   upgraded: boolean = false;

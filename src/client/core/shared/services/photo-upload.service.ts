@@ -19,7 +19,7 @@ export class PhotoUploadService {
   identityPoolId: string;
   s3: any;
   readonly SUFFIX: string = '-temp-upload';
-  readonly TIMEOUT : number =  4000;
+  readonly TIMEOUT: number = 4000;
   readonly MAX_FILES: number = 4; // only process 4 files at a time
 
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
@@ -46,7 +46,7 @@ export class PhotoUploadService {
       this.identityPoolId = data.identityPoolId;
 
       this.init();
-    },(err: any) => {
+    }, (err: any) => {
       console.error('Error loading config', err);
     });
   }
@@ -69,18 +69,20 @@ export class PhotoUploadService {
 
   getPhoto(photo: any): Observable<any> {
     return Observable.create((observer: any) => {
-        let reader: FileReader = new FileReader();
+      let reader: FileReader = new FileReader();
 
-        reader.onload = (data: any) => {
-          observer.next(data.target['result']);
-          observer.complete();
-        };
-        reader.readAsDataURL(photo);
-      });
+      reader.onload = (data: any) => {
+        observer.next(data.target['result']);
+        observer.complete();
+      };
+      reader.readAsDataURL(photo);
+    });
   }
 
   getValidImages(files: Array<any>): Array<any> {
-    return _.filter(files, (f: any) => { return f.type.indexOf('image') > -1 } );
+    return _.filter(files, (f: any) => {
+      return f.type.indexOf('image') > -1;
+    });
   }
 
   // Convert raster image type (PNG) to jpg
@@ -99,7 +101,7 @@ export class PhotoUploadService {
    * @returns {any}
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
-    if ( !( window.File && window.FileReader && window.FileList && window.Blob ) ) {
+    if (!( window.File && window.FileReader && window.FileList && window.Blob )) {
       let err_msg = 'The File APIs are not fully supported in this browser.';
       console.error(err_msg);
       return Observable.throw(err_msg);
@@ -108,15 +110,19 @@ export class PhotoUploadService {
     // ONLY Process 4 photos at a time
     return Observable.from(photos)
       .mergeMap((photo: any) => this.readFile(photo),
-            (photo: any, data: any) => { return {
+        (photo: any, data: any) => {
+          return {
             name: this.getFileName(photo.name),
             type: this.getExtensionType(photo.type),
             file: data
-          }},
-          this.MAX_FILES
+          };
+        },
+        this.MAX_FILES
       )
       .mergeMap((combinedData: any) => this.apiService.post('media/photos', combinedData),
-        (combinedData: any, returnData: any) => { return { originPhoto: combinedData, data: returnData.data}; }, this.MAX_FILES);
+        (combinedData: any, returnData: any) => {
+          return {originPhoto: combinedData, data: returnData.data};
+        }, this.MAX_FILES);
   }
 
   readFile(file: any): Promise<any> {
@@ -124,7 +130,7 @@ export class PhotoUploadService {
       let reader: FileReader = new FileReader();
 
       reader.onload = (data: any) => {
-        resolve(data.target['result'])
+        resolve(data.target['result']);
       };
 
       reader.onerror = (error: any) => {
@@ -132,7 +138,7 @@ export class PhotoUploadService {
         console.error('File could not be read: ', file, error);
       };
       reader.readAsDataURL(file);
-    })
+    });
   }
 
 }

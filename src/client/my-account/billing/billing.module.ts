@@ -1,44 +1,36 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-
-import { PartialsModule } from '../../core/partials/partials.module';
-
-import { ACSharedModule } from '../shared/shared.module';
-
-import { ACBillingRoutingModule } from './billing-routing.module';
-import { ACBillingComponent } from './billing.component';
-import { ACTransactionService } from './shared/transaction.service';
-import { ACBillingDetailsComponent } from './details/details.component';
-import { ACBillingHistoryComponent } from './history/history.component';
-import { ACTransactionDetailsComponent } from './transaction/details.component';
-import { ACReceiptComponent } from './transaction/receipt.component';
-
-
-
+import { MyBillingRoutingModule } from './billing-routing.module';
+import { MySharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+import { MyBillingComponent } from './billing.component';
+import { MyBillingDetailsComponent } from './details/details.component';
+import { MyBillingHistoryComponent } from './history/history.component';
+import { MyTransactionDetailsComponent } from './transaction/details.component';
+import { MyReceiptComponent } from './transaction/receipt.component';
+import { MyTransactionService } from './shared/transaction.service';
 
 @NgModule({
   imports: [
-    CommonModule,
-    PartialsModule,
-    ReactiveFormsModule,
-    ACBillingRoutingModule,
-    ACSharedModule
+    MyBillingRoutingModule,
+    MySharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
-    ACBillingComponent,
-    ACBillingDetailsComponent,
-    ACBillingHistoryComponent,
-    ACTransactionDetailsComponent,
-    ACReceiptComponent
+    MyBillingComponent,
+    MyBillingDetailsComponent,
+    MyBillingHistoryComponent,
+    MyTransactionDetailsComponent,
+    MyReceiptComponent
   ],
   exports: [
-    ACBillingComponent,
-    ACTransactionDetailsComponent,
-    ACReceiptComponent
+    MyBillingComponent,
+    MyBillingDetailsComponent,
+    MyBillingHistoryComponent,
+    MyTransactionDetailsComponent,
+    MyReceiptComponent
   ],
-  providers: [ACTransactionService]
+  providers: [MyTransactionService]
 })
 
-export class ACBillingModule {
+export class MyBillingModule {
 }

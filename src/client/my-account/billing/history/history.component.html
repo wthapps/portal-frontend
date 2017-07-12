@@ -1,5 +1,5 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">{{pageTitle}}</h3>
+  <h3 class="box-panel-title">{{ pageTitle }}</h3>
   <table class="table table-striped table-middle">
     <thead>
     <tr>
@@ -13,10 +13,10 @@
     <tbody>
     <tr *ngFor="let t of transactions">
 
-      <td>{{t.created_at | date:'yMMMd'}} {{t.created_at | date:'H:mm:ss'}}</td>
+      <td>{{ t.created_at | date:'yMMMd' }} {{ t.created_at | date:'H:mm:ss' }}</td>
       <td>Invoice</td>
-      <td>{{t.amount}} {{t.currency_iso_code}}</td>
-      <td>{{t.id}}</td>
+      <td>{{ t.amount }} {{ t.currency_iso_code }}</td>
+      <td>{{ t.id }}</td>
       <td>
         <a class="btn btn-sm btn-wth-default pull-right" (click)="viewReceipt(t.id, $event)">Receipt</a>
       </td>

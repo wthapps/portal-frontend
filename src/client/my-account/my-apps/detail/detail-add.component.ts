@@ -1,19 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { Product } from '../../../core/shared/models/product.model';
-import { MenuItemBreadcrumb } from '../../../core/partials/breadcrumb/breadcrumb';
+import { MenuItemBreadcrumb } from '../../../core/shared/components/breadcrumb/breadcrumb';
+import { MyMyAppsService } from '../my-apps.service';
 import { UserService } from '../../../core/shared/services/user.service';
 
-import { ACMyAppsService } from '../my-apps.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-my-apps-detail-add',
+  selector: 'my-my-apps-detail-add',
   templateUrl: 'detail-add.component.html'
 })
 
-export class ACMyAppsDetailAddComponent implements OnInit, OnDestroy {
+export class MyMyAppsDetailAddComponent implements OnInit, OnDestroy {
   pageTitle: string = '';
   errorMessage: string;
 
@@ -27,7 +26,7 @@ export class ACMyAppsDetailAddComponent implements OnInit, OnDestroy {
   private breadcrumbs: MenuItemBreadcrumb[];
 
   constructor(private route: ActivatedRoute,
-              private myAppsService: ACMyAppsService,
+              private myAppsService: MyMyAppsService,
               private userService: UserService) {
   }
 

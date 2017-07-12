@@ -1,30 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ACBillingComponent } from './billing.component';
-import { ACBillingDetailsComponent } from './details/details.component';
-import { ACBillingHistoryComponent } from './history/history.component';
-import { ACReceiptComponent } from './transaction/receipt.component';
-import { ACTransactionDetailsComponent } from './transaction/details.component';
+import { MyBillingComponent } from './billing.component';
+import { MyBillingDetailsComponent } from './details/details.component';
+import { MyBillingHistoryComponent } from './history/history.component';
+import { MyReceiptComponent } from './transaction/receipt.component';
+import { MyTransactionDetailsComponent } from './transaction/details.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'billing',
-        component: ACBillingComponent,
+        component: MyBillingComponent,
         children: [
-          {path: 'details', component: ACBillingDetailsComponent},
-          {path: 'history', component: ACBillingHistoryComponent},
-          {path: '', component: ACBillingHistoryComponent},
-          {path: '*', component: ACBillingHistoryComponent}
+          {path: 'details', component: MyBillingDetailsComponent},
+          {path: 'history', component: MyBillingHistoryComponent},
+          {path: '', component: MyBillingHistoryComponent},
+          {path: '*', component: MyBillingHistoryComponent}
         ]
       },
-      {path: 'transactions/:id/receipt', component: ACReceiptComponent},
-      {path: 'transactions/:id', component: ACTransactionDetailsComponent},
+      {path: 'transactions/:id/receipt', component: MyReceiptComponent},
+      {path: 'transactions/:id', component: MyTransactionDetailsComponent},
     ])
   ],
   exports: [RouterModule]
 })
-export class ACBillingRoutingModule {
+export class MyBillingRoutingModule {
 }
