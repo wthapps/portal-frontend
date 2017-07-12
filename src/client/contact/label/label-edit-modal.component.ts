@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { WthAppsBaseModal } from '../../core/shared/interfaces/base-media-modal';
+import { WthAppsBaseModal } from '../../core/shared/interfaces/wthapps-base-modal';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Label } from './label.model';

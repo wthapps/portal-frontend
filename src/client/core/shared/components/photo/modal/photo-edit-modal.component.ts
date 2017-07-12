@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
-import { WthAppsBaseModal } from '../../../interfaces/base-media-modal';
+import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 
 import {

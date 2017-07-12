@@ -3,7 +3,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Constants } from '../../../config/constants';
-import { WthAppsBaseModal } from '../../../interfaces/base-media-modal';
+import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 declare var $: any;
 declare var _: any;

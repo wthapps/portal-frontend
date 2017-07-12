@@ -130,7 +130,7 @@ export class PhotoUploadService {
       reader.onerror = (error: any) => {
         reject(error);
         console.error('File could not be read: ', file, error);
-      }
+      };
       reader.readAsDataURL(file);
     })
   }

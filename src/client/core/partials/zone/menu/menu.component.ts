@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +10,7 @@ import { WTHNavigateService } from '../../../shared/services/wth-navigate.servic
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 import { LabelService } from '../../../../contact/label/label.service';
 import { Label } from '../../../../contact/label/label.model';
+import { Subject } from 'rxjs/Subject';
 
 declare var $: any;
 declare var _: any;
@@ -21,7 +22,7 @@ declare var _: any;
   styleUrls: ['menu.component.css']
 })
 
-export class ZSharedMenuComponent implements OnInit {
+export class ZSharedMenuComponent implements OnInit, OnDestroy {
   /**public event for somewhere are able to subscribe*/
   event: Observable<any>;
 
@@ -37,6 +38,8 @@ export class ZSharedMenuComponent implements OnInit {
 
   labels: Array<any>;
   commonEventSub: any;
+  private destroySubject: Subject<any> = new Subject<any>();
+
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
@@ -82,9 +85,9 @@ export class ZSharedMenuComponent implements OnInit {
 
 
         // TODO check leak memory here
-        // this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
-        //   this.doEvent(event);
-        // });
+        this.commonEventSub = this.commonEventService.event.takeUntil(this.destroySubject).subscribe((event: any) => {
+          this.doEvent(event);
+        });
 
       }
     );
@@ -122,4 +125,7 @@ export class ZSharedMenuComponent implements OnInit {
     return _.find(this.labels, {name: name});
   }
 
+  ngOnDestroy() {
+    this.destroySubject.unsubscribe();
+  }
 }

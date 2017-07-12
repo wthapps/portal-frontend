@@ -1,7 +1,6 @@
-import { BaseHelper } from '../base.helper';
 import { ApiBaseService } from '../../services/apibase.service';
 
-export class FileUploadHelper extends BaseHelper {
+export class FileUploadHelper {
   apiBaseService: ApiBaseService;
   callback: any;
 

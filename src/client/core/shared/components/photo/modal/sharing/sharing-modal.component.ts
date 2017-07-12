@@ -5,7 +5,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaSharingService } from './sharing.service';
 import { Subject } from 'rxjs';
 import { Constants } from '../../../../config/constants';
-import { WthAppsBaseModal } from '../../../../interfaces/base-media-modal';
+import { WthAppsBaseModal } from '../../../../interfaces/wthapps-base-modal';
 
 
 declare var $: any;

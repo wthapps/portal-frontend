@@ -55,6 +55,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   }
 
   doEvent(event: CommonEvent) {
+    console.log('doEvent inside app component', event);
     switch(event.action) {
       case 'contact:label:create':
       case 'contact:label:edit':

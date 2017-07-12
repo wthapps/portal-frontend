@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { Constants } from '../../../config/constants';
-import { WthAppsBaseModal } from '../../../interfaces/base-media-modal';
+import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 
 declare var $: any;
