@@ -59,6 +59,10 @@ export class ZContactService {
     return this.apiBaseService.post(`contact/contacts`, data);
   }
 
+  importGoogleContacts(data: any) {
+    return this.apiBaseService.post(`contact/contacts/import_google_contacts`, data);
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
