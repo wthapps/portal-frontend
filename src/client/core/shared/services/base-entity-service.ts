@@ -22,8 +22,9 @@ export class BaseEntityService<T> {
     return this.api.post(this.url, body);
   }
 
-  update(body: number): Observable<any> {
-    return this.api.post(this.url, body);
+  update(body: any): Observable<any> {
+    console.log('body:::::', body);
+    return this.api.put(`${this.url}/${body.id}`, body);
   }
 
   delete(id: any): Observable<any> {

@@ -84,7 +84,7 @@ export let Constants = {
   },
 
   contactMenuItems: [
-    {name: 'All Contact', link: '/list', icon: 'fa fa-address-book-o'},
+    {name: 'All Contact', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
     {name: '', link: '', icon: ''},
     {name: 'Labels', link: '/list/labels', icon: 'fa fa-tags'},
     {name: 'Favourites (2)', link: '/list/favourites', icon: 'fa fa-star'},
