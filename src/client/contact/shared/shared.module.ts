@@ -9,9 +9,17 @@ import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
 import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
 import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
 import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
-import { ZContactShareAddContactComponent } from './modal/add-contact/add-contact.component';
 import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
+
 import { GoogleApiService } from './services/google-api.service';
+import { TagInputModule } from 'ng2-tag-input';
+
+
+import {
+  ZContactShareAddContactComponent,
+  ContactAddLabelModalComponent
+} from './modal/index';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -21,6 +29,12 @@ import { GoogleApiService } from './services/google-api.service';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    // third party libs
+    TagInputModule,
+
     SharedModule.forRoot()
   ],
   declarations: [
@@ -29,18 +43,28 @@ import { GoogleApiService } from './services/google-api.service';
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
     ZContactShareAddContactComponent,
-    ZContactSharedToolbarComponent
+    ZContactSharedToolbarComponent,
+
+    //modal here
+    ContactAddLabelModalComponent
   ],
   exports: [
     CommonModule,
     RouterModule,
+
+    // third party libs
+    TagInputModule,
+
 
     ZContactSharedListComponent,
     ZContactSharedItemComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
     ZContactShareAddContactComponent,
-    ZContactSharedToolbarComponent
+    ZContactSharedToolbarComponent,
+
+    // modal here
+    ContactAddLabelModalComponent
   ]
 })
 export class ZContactSharedModule {

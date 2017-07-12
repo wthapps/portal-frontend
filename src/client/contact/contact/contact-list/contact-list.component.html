@@ -3,12 +3,23 @@
     <div *ngIf="contactService.selectedObjects.length>0"
          class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
       <ul class="page-body-control-menu">
+
+        <li>
+          <div class="selected-contact">{{contactService.selectedObjects.length}} selected</div>
+        </li>
+
         <li>
           <a href="javascript:;" class="btn"><i class="fa fa-star-o"></i></a>
         </li>
+
+        <li>
+          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-tags"></i></a>
+        </li>
+
         <li>
           <a href="javascript:;" (click)="onDeleteAll()" class="btn"><i class="fa fa-trash"></i></a>
         </li>
+
         <li class="dropdown action">
           <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-ellipsis-v"></i>
@@ -29,3 +40,6 @@
     </div>
   </div>
 </div>
+
+
+<contact-add-label-modal #modal></contact-add-label-modal>

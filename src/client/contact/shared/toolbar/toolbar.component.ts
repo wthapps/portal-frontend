@@ -13,12 +13,14 @@ declare var _: any;
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
 
+  selectedContact: string;
+
   constructor(private contactService: ZContactService,
               private gapi: GoogleApiService) {
   }
 
   ngOnInit() {
-    //
+    this.selectedContact = '3 contacts';
   }
 
   openAddModal() {

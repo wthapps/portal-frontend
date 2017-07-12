@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEventAction } from '../../../core/shared/services/common-event/common-event-action';
+import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 
 declare var _: any;
 
@@ -13,6 +14,8 @@ declare var _: any;
   templateUrl: 'contact-list.component.html'
 })
 export class ZContactListComponent implements OnInit, OnDestroy, CommonEventAction {
+  @ViewChild('modal') modal: ContactAddLabelModalComponent;
+
   data: any = [];
   eventThreeDot: any;
   eventAddContact: any;
@@ -65,5 +68,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
 
   doEvent(event: any) {
     console.log('I am doing event !!!!', event);
+  }
+
+  addTags(event: any) {
+    this.modal.open();
   }
 }
