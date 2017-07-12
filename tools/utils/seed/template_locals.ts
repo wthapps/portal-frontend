@@ -35,8 +35,8 @@ export class TemplateLocalsBuilder {
 
     const envConfig = Object.assign({}, baseConfig, envOnlyConfig);
     let locals = Object.assign({},
-        Config,
-        { ENV_CONFIG: this.stringifyEnvConfig ? JSON.stringify(envConfig) : envConfig }
+      Config,
+      { ENV_CONFIG: this.stringifyEnvConfig ? JSON.stringify(envConfig) : envConfig }
     );
     if (this.stringifySystemConfigDev) {
       Object.assign(locals, {SYSTEM_CONFIG_DEV: JSON.stringify(Config.SYSTEM_CONFIG_DEV)});
@@ -55,5 +55,5 @@ export class TemplateLocalsBuilder {
     }
 
     return config;
-  };
+  }
 }

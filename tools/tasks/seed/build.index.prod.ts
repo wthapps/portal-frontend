@@ -14,10 +14,10 @@ const plugins = <any>gulpLoadPlugins();
  */
 export = () => {
   return gulp.src(join(Config.APP_SRC, 'index.html'))
-      .pipe(injectJs())
-      .pipe(injectCss())
-      .pipe(plugins.template(new TemplateLocalsBuilder().withoutStringifiedEnvConfig().build()))
-      .pipe(gulp.dest(Config.APP_DEST));
+    .pipe(injectJs())
+    .pipe(injectCss())
+    .pipe(plugins.template(new TemplateLocalsBuilder().withoutStringifiedEnvConfig().build()))
+    .pipe(gulp.dest(Config.APP_DEST));
 };
 
 /**
@@ -25,10 +25,10 @@ export = () => {
  * @param {Array<string>} files - The files to be injected.
  */
 function inject(...files: Array<string>) {
-  return plugins.inject(gulp.src(files, { read: false }), {
-    files,
-    transform: transformPath()
-  });
+    return plugins.inject(gulp.src(files, { read: false }), {
+        files,
+        transform: transformPath()
+    });
 }
 
 /**
@@ -58,7 +58,11 @@ function transformPath() {
     } else {
       slice_after = 3;
     }
-    arguments[0] = Config.APP_BASE + path.slice(slice_after, path.length).join(sep) + `?${Date.now()}`;
+    arguments[0] = Config.APP_BASE + path.slice(slice_after, path.length).join(sep);
+    const queryString = Config.QUERY_STRING_GENERATOR();
+    if (queryString) {
+      arguments[0] += `?${queryString}`;
+    }
     return slash(plugins.inject.transform.apply(plugins.inject.transform, arguments));
   };
 }
