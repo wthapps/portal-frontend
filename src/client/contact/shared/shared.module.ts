@@ -11,6 +11,7 @@ import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actio
 import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
 import { ZContactShareAddContactComponent } from './modal/add-contact/add-contact.component';
 import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
+import { GoogleApiService } from './services/google-api.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -48,6 +49,7 @@ export class ZContactSharedModule {
       ngModule: ZContactSharedModule,
       providers: [
         ZContactService,
+        GoogleApiService,
         ZContactAddContactService,
         ZContactThreeDotActionsService
       ]
