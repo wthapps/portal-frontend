@@ -2,10 +2,12 @@
   <i (click)="onSelected()" class="fa fa-check"></i>
 </div>
 <div class="contact-listbox-name">
-  <figure class="avatar-xs">
-    <img [src]="data.profile_image" alt="">
-  </figure>
-  <span class="name">{{data.name}}</span>
+  <a href="#" class="link-text contact-listbox-block-link">
+    <figure class="avatar-xs">
+      <img [src]="data.profile_image" alt="">
+    </figure>
+    <span class="name">{{data.name}}</span>
+  </a>
 </div>
 <div class="contact-listbox-email">
   <ul class="list-unstyled m0" *ngIf="data.emails && data.emails.length > 0">
