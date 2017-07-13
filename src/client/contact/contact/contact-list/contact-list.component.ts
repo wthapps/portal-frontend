@@ -40,7 +40,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     });
 
     this.getAllContact();
-
     this.eventThreeDot = this.contactService.contactThreeDotActionsService.eventOut.subscribe((event: any) => {
       if (event.action == "deleted") {
         this.getAllContact();
@@ -65,9 +64,15 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
   ngOnDestroy() {
-    this.eventThreeDot.unsubscribe();
-    this.eventAddContact.unsubscribe();
-    this.commonEventSub.unsubscribe();
+    if (this.eventThreeDot) {
+      this.eventThreeDot.unsubscribe();
+    }
+    if (this.eventAddContact) {
+      this.eventAddContact.unsubscribe();
+    }
+    if (this.commonEventSub) {
+      this.commonEventSub.unsubscribe();
+    }
   }
 
   doEvent(event: any) {

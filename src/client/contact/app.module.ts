@@ -13,6 +13,8 @@ import { ZContactListModule } from './contact/contact-list/contact-list.module';
 import { ZContactDetailModule } from './contact/contact-detail/contact-detail.module';
 import { ZContactLabelModule } from './label/label.module';
 import { LabelEditModalComponent } from './label/label-edit-modal.component';
+import { ZContactMyProfileModule } from './my-profile/my-profile.module';
+import { ZNewContactModule } from './contact/new/new-contact.module';
 
 @NgModule({
   imports: [
@@ -24,10 +26,11 @@ import { LabelEditModalComponent } from './label/label-edit-modal.component';
     ZContactHomeModule,
     ZContactListModule,
     ZContactDetailModule,
+    ZContactMyProfileModule,
+    ZNewContactModule,
     ZContactLabelModule
   ],
-  declarations: [AppComponent
-  ],
+  declarations: [AppComponent],
 
   providers: [{
     provide: APP_BASE_HREF,

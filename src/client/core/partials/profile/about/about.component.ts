@@ -10,6 +10,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
 import { Constants } from '../../../shared/config/constants';
 import { CountryService } from '../../countries/countries.service';
+import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -23,6 +24,7 @@ export class PartialsProfileAboutComponent implements OnInit {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+  @Input() config: ProfileConfig;
 
   constants = Constants;
   countriesCode: any;

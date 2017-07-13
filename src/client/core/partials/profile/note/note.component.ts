@@ -8,6 +8,7 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -21,6 +22,7 @@ export class PartialsProfileNoteComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+  @Input() config: ProfileConfig;
 
   form: FormGroup;
   contact_note: AbstractControl;

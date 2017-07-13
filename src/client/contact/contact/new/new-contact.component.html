@@ -1,0 +1,11 @@
+<div class="page-body-content">
+  <z-contact-shared-toolbar>
+    <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+      <button class="btn btn-primary-inline" type="button" (click)="cd.accept()">Done</button>
+      <button class="btn btn-default-inline" type="button" (click)="cd.reject()">Cancel</button>
+    </div>
+  </z-contact-shared-toolbar>
+  <div class="page-body-content-in">
+    <partials-profile [dataConfig]="profileConfig"></partials-profile>
+  </div>
+</div>
