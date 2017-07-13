@@ -13,8 +13,9 @@ declare var _: any;
 
 export class PartialsProfileComponent implements OnInit {
   @Input() dataConfig: any;
+  @Input() data: any;
+
   config: ProfileConfig;
-  data: any;
 
   constructor(private profileService: PartialsProfileService) {
 

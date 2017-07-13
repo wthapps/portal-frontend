@@ -5,11 +5,12 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Response, Http } from '@angular/http';
 import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/contact-three-dot.service';
 import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
+import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
 
 declare var _: any;
 
 @Injectable()
-export class ZContactService {
+export class ZContactService extends BaseEntityService<any>{
   selectedObjects: any = [];
 
   private listenToListSource = new Subject<any>();
@@ -19,11 +20,12 @@ export class ZContactService {
   listenToItem = this.listenToItemSource.asObservable();
 
 
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(protected apiBaseService: ApiBaseService,
               public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService
   ) {
-
+    super(apiBaseService);
+    this.url = 'contact/contacts';
   }
 
   getContactList(): Observable<any> {
