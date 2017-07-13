@@ -10,6 +10,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../validator/custom.validator';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { Constants } from '../../../config/constants';
+import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -23,6 +24,7 @@ export class PartialsProfileEmailComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+  @Input() config: ProfileConfig;
 
   @HostBinding('class') class = 'field-group';
 
@@ -86,14 +88,23 @@ export class PartialsProfileEmailComponent {
 
 
   onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
-      this.removeAll();
-      this.data = res.data;
-      _.map(this.data.emails, (v: any)=> {
-        this.addItem(v);
+    if (this.config.callApiAfterChange) {
+
+      let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
+
+      this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res: any) => {
+        this.removeAll();
+        this.data = res.data;
+        _.map(this.data.emails, (v: any)=> {
+          this.addItem(v);
+        });
       });
-      this.modal.close();
-    });
+
+
+    } else {
+      this.data.emails = values.emails;
+    }
+    this.modal.close();
   }
 
   getEmailControls() {

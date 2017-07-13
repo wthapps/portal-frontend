@@ -23,7 +23,7 @@
     </modal-body>
 
     <modal-footer>
-      <button type="button" (click)="submit()" class="btn btn-primary-inline">Done</button>
+      <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine" class="btn btn-primary-inline">Done</button>
       <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </form>

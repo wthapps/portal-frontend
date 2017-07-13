@@ -16,7 +16,7 @@
     </dl>
 
     <div *ngIf="data.addresses.length == 0 && editable">
-      <p class="text-fade">
+      <p class="text-fade" *ngIf="config.getCurrentUser">
         Tell us more about your address
       </p>
       <button type="button" class="btn btn-default" (click)="onOpenModal()">
@@ -31,7 +31,7 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"><i class="fa fa-pencil"></i> address</h4>
+      <h4 class="modal-title"><i class="fa fa-pencil"></i> Address</h4>
     </modal-header>
     <modal-body>
       <div formArrayName="addresses">

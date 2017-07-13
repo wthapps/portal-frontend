@@ -8,6 +8,7 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ApiBaseService } from '../../../services/apibase.service';
+import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -21,6 +22,7 @@ export class PartialsProfileAddressComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+  @Input() config: ProfileConfig;
 
   @HostBinding('class') class = 'field-group';
 
@@ -104,13 +106,19 @@ export class PartialsProfileAddressComponent {
 
 
   onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
-      this.removeAll();
-      this.data = res.data;
-      _.map(this.data.addresses, (v: any)=> {
-        this.addItem(v);
+    if (this.config.callApiAfterChange) {
+      let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
+
+      this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res:any) => {
+        this.removeAll();
+        this.data = res.data;
+        _.map(this.data.addresses, (v: any)=> {
+          this.addItem(v);
+        });
       });
-      this.modal.close();
-    });
+    } else {
+      this.data.addresses = values.addresses;
+    }
+    this.modal.close();
   }
 }

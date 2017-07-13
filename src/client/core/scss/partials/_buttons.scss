@@ -104,6 +104,7 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
     &:hover,
     &:focus,
     &.focus {
+      color: $color;
       background-color: $background;
       border-color: $border;
     }

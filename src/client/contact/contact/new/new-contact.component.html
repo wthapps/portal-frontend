@@ -1,0 +1,17 @@
+<div class="media-page-detail-left">
+  <div class="page-body-content">
+    <z-contact-shared-toolbar>
+      <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+        <button class="btn btn-primary-inline" type="button" (click)="done()">Done</button>
+        <button class="btn btn-default-inline" type="button" [routerLink]="['/contacts']">Cancel</button>
+      </div>
+    </z-contact-shared-toolbar>
+    <div class="page-body-content has-page-body-control">
+      <div class="page-body-content-in zone-social">
+        <div class="zone-social-in">
+          <partials-profile [dataConfig]="profileConfig"></partials-profile>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

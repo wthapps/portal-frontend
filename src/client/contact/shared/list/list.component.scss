@@ -25,9 +25,31 @@ $color-table-row: #F9F9F9;
         display: table-cell;
       }
 
+      .contact-listbox-block-link {
+        color: inherit;
+        text-decoration: none;
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          color: $text-color;
+        }
+      }
+
+      &.contact-listbox-header {
+        font-weight: bold;
+      }
+
     }
-    .contact-listbox-row:nth-child(2n+2) {
-      background-color: $color-table-row;
+    .contact-listbox-row {
+      &.active, &:hover {
+        background-color: $color-table-row;
+      }
+
     }
 
     .contact-listbox-input {
@@ -92,11 +114,6 @@ $color-table-row: #F9F9F9;
       padding: 10px;
     }
 
-    .contact-listbox-header {
-      .contact-listbox-row {
-        font-weight: bold;
-      }
-    }
   }
 }
 

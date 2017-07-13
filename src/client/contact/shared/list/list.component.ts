@@ -12,11 +12,26 @@ declare var _: any;
 export class ZContactSharedListComponent implements OnInit {
   @Input() data: any;
 
+  descending: boolean = false;
+  currentSort: string = 'name';
+
   constructor(public contactService: ZContactService) {
   }
 
   ngOnInit() {
 
+  }
+
+  onSort(event: any) {
+    if (this.currentSort == event) {
+      this.descending = !this.descending;
+    } else {
+      this.descending = false;
+      this.currentSort = event;
+    }
+    this.data = _.orderBy(this.data, [this.currentSort], [(this.descending ? 'desc' : 'asc')]);
+
+    return false;
   }
 
   onSelectedAll() {
@@ -32,4 +47,5 @@ export class ZContactSharedListComponent implements OnInit {
       });
     }
   }
+
 }

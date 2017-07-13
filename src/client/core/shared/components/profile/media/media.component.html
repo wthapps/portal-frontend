@@ -8,15 +8,15 @@
     </div>
   </div>
   <div class="field-group-content">
-    <dl class="dl-horizontal" *ngIf="data.media.length > 0">
+    <dl class="dl-horizontal" *ngIf="data.media && data.media.length > 0">
       <template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{ item.kind_of | keyToValue:mediaType:'kind_of':'name' }}</dt>
         <dd><p><a href="{{ item.value }}" target="_blank">{{ item.value }}</a></p></dd>
       </template>
     </dl>
 
-    <div *ngIf="data.media.length == 0 && editable">
-      <p class="text-fade">
+    <div *ngIf="data.media && data.media.length == 0 && editable">
+      <p class="text-fade" *ngIf="config.getCurrentUser">
         Tell us more about your media
       </p>
       <button type="button" class="btn btn-default" (click)="onOpenModal()">
@@ -31,7 +31,7 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"><i class="fa fa-pencil"></i> media</h4>
+      <h4 class="modal-title"><i class="fa fa-pencil"></i> Media</h4>
     </modal-header>
     <modal-body>
       <div formArrayName="medias">

@@ -50,7 +50,7 @@
 
       <hr>
 
-      <div class="form-group" [ngClass]="{'has-error': (!nickname.valid && nickname.touched),
+      <!--<div class="form-group" [ngClass]="{'has-error': (!nickname.valid && nickname.touched),
         'has-success': (nickname.valid && nickname.touched)}">
         <label for="nickname">Nickname <span class="text-danger">*</span></label>
         <input [formControl]="nickname" type="text" class="form-control" id="nickname"
@@ -60,6 +60,11 @@
                 Nickname is required
               </span>
         </div>
+      </div>-->
+      <div class="form-group">
+        <label for="nickname">Nickname </label>
+        <input [formControl]="nickname" type="text" class="form-control" id="nickname"
+               placeholder="Nickname">
       </div>
     </modal-body>
     <modal-footer>

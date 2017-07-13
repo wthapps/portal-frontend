@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
+import { GoogleApiService } from '../services/google-api.service';
 
 declare var _: any;
 
@@ -12,15 +13,23 @@ declare var _: any;
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
 
-  constructor(private contactService: ZContactService) {
+  selectedContact: string;
+
+  constructor(private contactService: ZContactService,
+              private gapi: GoogleApiService) {
   }
 
   ngOnInit() {
-    //
+    this.selectedContact = '3 contacts';
   }
 
   openAddModal() {
     console.log("openAddModal");
     this.contactService.contactAddContactService.sendIn({action: "open"});
+  }
+
+  importContact() {
+    console.log('importContact: ');
+    this.gapi.importContact();
   }
 }

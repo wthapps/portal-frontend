@@ -2,4 +2,11 @@
 
 :host {
   display: block;
+  & /deep/ {
+    .btn-text {
+      line-height: 1.7;
+      color: #9b9b9b;
+      font-weight: normal;
+    }
+  }
 }

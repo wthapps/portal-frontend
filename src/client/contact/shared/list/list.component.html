@@ -1,14 +1,21 @@
 <div class="contact-listbox-wrap">
   <div class="contact-listbox-header contact-listbox-row">
-      <div class="contact-listbox-input" [ngClass]="{'active': (contactService.selectedObjects.length == data.length)}">
-        <i (click)="onSelectedAll()" class="fa fa-check"></i>
-      </div>
-      <div class="contact-listbox-name">Name</div>
-      <div class="contact-listbox-email">Email</div>
-      <div class="contact-listbox-phone">Phone Number</div>
-      <div class="contact-listbox-action">&nbsp;</div>
+    <div class="contact-listbox-input" [ngClass]="{'active': (contactService.selectedObjects.length == data.length)}">
+      <i (click)="onSelectedAll()" class="fa fa-check"></i>
+    </div>
+    <div class="contact-listbox-name">
+      <a href="#" class="contact-listbox-block-link" (click)="onSort('name')">Name
+        <i class="fa" [ngClass]="{'fa-arrow-up': descending, 'fa-arrow-down': !descending}"></i> </a>
+    </div>
+    <div class="contact-listbox-email">
+      Email
+    </div>
+    <div class="contact-listbox-phone">
+      Phone Number
+    </div>
+    <div class="contact-listbox-action">&nbsp;</div>
   </div>
-  <z-contact-shared-item class="contact-listbox-row" *ngFor="let item of data" [data]="item">
+  <z-contact-shared-item *ngFor="let item of data" [data]="item">
   </z-contact-shared-item>
 
 </div>
