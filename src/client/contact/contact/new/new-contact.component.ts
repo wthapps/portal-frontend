@@ -16,4 +16,8 @@ export class ZNewContactComponent implements OnInit {
   ngOnInit() {
 
   }
+
+  done() {
+  //
+  }
 }

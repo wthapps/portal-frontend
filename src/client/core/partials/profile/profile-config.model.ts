@@ -2,7 +2,7 @@ import { BaseModel } from '../../shared/models/base.model';
 
 export class ProfileConfig extends BaseModel {
   // urls
-  onLoadUrl: string;
+  onLoadCustomUrl: string;
   // Components
   aboutAvatarComponent: boolean = true;
   aboutComponent: boolean = true;
