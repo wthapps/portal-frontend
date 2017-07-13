@@ -4,7 +4,7 @@
 <div class="contact-listbox-name">
   <a class="link-text contact-listbox-block-link"
      title="view detail"
-     (click)="viewContactDetail()" >
+     [routerLink]="['/contacts', data.id, {mode:'view'}]" >
     <figure class="avatar-xs">
       <img [src]="data.profile_image" alt="">
     </figure>
