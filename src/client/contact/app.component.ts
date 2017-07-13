@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           this.contactMenu.push({
             id: label.id,
             name: label.name,
-            link: '',
+            link: '/contacts',
             hasSubMenu: !label.system,
             count: label.contact_count,
             icon: label.name == 'all contact' ? 'fa fa-address-book-o'

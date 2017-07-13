@@ -2,7 +2,9 @@
   <i (click)="onSelected()" class="fa fa-check"></i>
 </div>
 <div class="contact-listbox-name">
-  <a href="#" class="link-text contact-listbox-block-link">
+  <a class="link-text contact-listbox-block-link"
+     title="view detail"
+     (click)="viewContactDetail()" >
     <figure class="avatar-xs">
       <img [src]="data.profile_image" alt="">
     </figure>

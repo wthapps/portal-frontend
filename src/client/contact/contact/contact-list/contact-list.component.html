@@ -15,19 +15,28 @@
         </li>
 
         <li>
-          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-tags"></i></a>
+          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-globe"></i></a>
         </li>
 
         <li>
-          <a href="javascript:;" (click)="onDeleteAll()" class="btn"><i class="fa fa-trash"></i></a>
+          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-comments-o"></i></a>
+        </li>
+
+        <li>
+          <a href="javascript:;" class="btn" (click)="doEvent({action: 'contact:contact:open_add_label_modal'})"><i class="fa fa-tags"></i></a>
         </li>
 
         <li class="dropdown action">
           <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-ellipsis-v"></i>
           </a>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li role="presentation"><a href="#">Action</a></li>
+          <ul class="dropdown-menu dropdown-menu-right text-right">
+            <li>
+              <a href="javascript:;" (click)="onDeleteAll()"><i class="fa fa-trash"></i> Delete</a>
+            </li>
+            <li>
+              <a href="javascript:;" (click)="addTags($event)"><i class="fa fa-ban"></i> Blacklist</a>
+            </li>
           </ul>
         </li>
       </ul>

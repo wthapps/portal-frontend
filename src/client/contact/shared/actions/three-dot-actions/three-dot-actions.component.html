@@ -4,8 +4,10 @@
     <i class="fa fa-ellipsis-v"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-right">
-    <li><a href="javascript:;">Edit Contact</a></li>
-    <li><a href="javascript:;">Add Label</a></li>
-    <li><a href="javascript:;" (click)="deleteContact()">Delete</a></li>
+    <li><a [routerLink]="['/contacts', data.id , {mode: 'view'}]"><i class="fa fa-info-circle"></i> View Contact</a></li>
+    <li><a [routerLink]="['/contacts', data.id , {mode: 'edit'}]"><i class="fa fa-edit"></i> Edit Contact</a></li>
+    <li><a href="javascript:;" (click)="doEvent({action: 'contact:contact:open_add_label_modal'})">
+      <i class="fa fa-tags" ></i> Add Label</a></li>
+    <li><a href="javascript:;" (click)="doEvent({action: 'contact:contact:delete'})"><i class="fa fa-trash"></i> Delete</a></li>
   </ul>
 </div>
