@@ -5,8 +5,8 @@ import { ZContactListComponent } from './contact-list.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'list/:id', component: ZContactListComponent },
-      { path: 'list', component: ZContactListComponent }
+      // { path: 'contact/:id', component: ZContactListComponent },
+      { path: 'contacts', component: ZContactListComponent }
     ])
   ],
   exports: [RouterModule]

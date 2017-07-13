@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 
 @Component({
   moduleId: module.id,
@@ -8,6 +9,8 @@ import { ActivatedRoute, Params } from '@angular/router';
   templateUrl: 'contact-detail.component.html'
 })
 export class ZContactDetailComponent implements OnInit {
+  @ViewChild('modal') modal: ContactAddLabelModalComponent;
+
   data: any = [];
 
   constructor(private contactService: ZContactService, private route: ActivatedRoute) {
@@ -15,7 +18,7 @@ export class ZContactDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      console.log(params);
+      console.log('parmas::::',params);
     });
   }
 }

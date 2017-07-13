@@ -47,4 +47,5 @@ export class ZContactSharedListComponent implements OnInit {
       });
     }
   }
+
 }
