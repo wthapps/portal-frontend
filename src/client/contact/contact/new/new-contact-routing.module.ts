@@ -7,7 +7,7 @@ import { ZNewContactComponent } from './new-contact.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'new-contact',
+        path: 'contacts/new',
         component: ZNewContactComponent
       }
     ])

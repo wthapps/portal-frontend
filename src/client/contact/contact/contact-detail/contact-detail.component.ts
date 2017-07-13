@@ -11,14 +11,23 @@ import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-la
 export class ZContactDetailComponent implements OnInit {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
 
-  data: any = [];
+  contact: any;
 
   constructor(private contactService: ZContactService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      console.log('parmas::::',params);
+      //
+      console.log('current contact id:::::', params['id']);
+      this.getContact(params['id']);
+    });
+  }
+
+
+  private getContact(id: number) {
+    this.contactService.get(id).subscribe((response: any) => {
+      this.contact = response.data;
     });
   }
 }
