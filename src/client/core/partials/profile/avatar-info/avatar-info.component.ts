@@ -9,6 +9,7 @@ import {
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
 import { UserService } from '../../../shared/services/user.service';
+import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -20,6 +21,7 @@ declare var _: any;
 
 export class PartialsProfileAvatarInfoComponent {
   @Input('data') data: any;
+  @Input() config: ProfileConfig;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
 
@@ -32,7 +34,8 @@ export class PartialsProfileAvatarInfoComponent {
     this.form = fb.group({
       'first_name': ['', Validators.compose([Validators.required])],
       'last_name': ['', Validators.compose([Validators.required])],
-      'nickname': ['', Validators.compose([Validators.required])]
+      // 'nickname': ['', Validators.compose([Validators.required])]
+      'nickname': ['']
     });
 
     this.first_name = this.form.controls['first_name'];
@@ -50,13 +53,19 @@ export class PartialsProfileAvatarInfoComponent {
 
 
   onSubmit(values: any): void {
-    this.profileService.updateMyProfile(values).subscribe((res: any) => {
+    if (this.config.callApiAfterChange) {
+      this.profileService.updateMyProfile(values).subscribe((res: any) => {
+        this.modal.close();
+        this.data = res.data;
+        this.userService.profile.name = this.data.name;
+        this.userService.profile.first_name = this.data.first_name;
+        this.userService.profile.last_name = this.data.last_name;
+        this.userService.cookieService.put('profile', JSON.stringify(this.userService.profile), this.userService.cookieOptionsArgs);
+      });
+    } else {
       this.modal.close();
-      this.data = res.data;
-      this.userService.profile.name = this.data.name;
-      this.userService.profile.first_name = this.data.first_name;
-      this.userService.profile.last_name = this.data.last_name;
-      this.userService.cookieService.put('profile', JSON.stringify(this.userService.profile), this.userService.cookieOptionsArgs);
-    });
+      this.data.name = values.first_name + ' ' + values.last_name;
+      this.data.nickname = values.nickname;
+    }
   }
 }

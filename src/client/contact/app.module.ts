@@ -14,6 +14,7 @@ import { ZContactDetailModule } from './contact/contact-detail/contact-detail.mo
 import { ZContactLabelModule } from './label/label.module';
 import { LabelEditModalComponent } from './label/label-edit-modal.component';
 import { ZContactMyProfileModule } from './my-profile/my-profile.module';
+import { ZNewContactModule } from './contact/new/new-contact.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { ZContactMyProfileModule } from './my-profile/my-profile.module';
     ZContactListModule,
     ZContactDetailModule,
     ZContactMyProfileModule,
+    ZNewContactModule,
     ZContactLabelModule
   ],
   declarations: [AppComponent],

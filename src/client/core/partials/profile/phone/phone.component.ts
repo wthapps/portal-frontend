@@ -11,6 +11,7 @@ import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { CountryService } from '../../countries/countries.service';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/config/constants';
+import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -21,9 +22,10 @@ declare var _: any;
 })
 
 export class PartialsProfilePhoneComponent implements OnInit {
-  @Input('data') data: any;
+  @Input() data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+  @Input() config: ProfileConfig;
 
   @HostBinding('class') class = 'field-group';
 
@@ -108,14 +110,19 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
 
   onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res: any) => {
-      this.removeAll();
-      this.data = res.data;
-      _.map(this.data.emails, (v: any)=> {
-        this.addItem(v);
+    if (this.config.callApiAfterChange) {
+      this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res: any) => {
+        this.removeAll();
+        this.data = res.data;
+        _.map(this.data.emails, (v: any)=> {
+          this.addItem(v);
+        });
+        this.modal.close();
       });
-      this.modal.close();
-    });
+    } else {
+      this.data.phones = values.phones;
+    }
+    this.modal.close();
   }
 
 

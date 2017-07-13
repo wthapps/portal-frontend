@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ProfileConfig } from '../profile-config.model';
 
 @Component({
   moduleId: module.id,
@@ -8,5 +9,6 @@ import { Component, Input } from '@angular/core';
 
 export class PartialsProfileContactComponent {
   @Input('data') data: any;
+  @Input() config: ProfileConfig;
   @Input() editable: boolean;
 }
