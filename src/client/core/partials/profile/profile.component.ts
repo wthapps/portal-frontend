@@ -25,13 +25,18 @@ export class PartialsProfileComponent implements OnInit {
     this.config = new ProfileConfig(this.dataConfig);
     if (this.config.createNew) {
       this.data = new UserContact();
-    } else {
-      let load = this.profileService.onLoad(this.config);
-      if (load) {
-        load.subscribe((res: any) => {
-          this.data = res.data;
-        });
-      }
+      return;
+    }
+    if (this.config.getCurrentUser) {
+      this.profileService.getMyProfile().subscribe((res: any) => {
+        this.data = res.data;
+      });
+      return;
+    }
+    if (this.config.onLoadCustomUrl) {
+      this.profileService.onLoad(this.config.onLoadCustomUrl).subscribe((res: any) => {
+        this.data = res.data;
+      });
     }
   }
 }

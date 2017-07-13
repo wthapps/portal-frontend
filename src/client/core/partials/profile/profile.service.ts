@@ -12,23 +12,19 @@ export class PartialsProfileService extends Communication {
     super();
   }
 
-  // getMyProfile() {
-  //   return this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`);
-  // }
-  //
-  // updateMyProfile(body: any) {
-  //   return this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, body);
-  // }
-
-  onLoad(config: ProfileConfig) {
-    if(config.onLoadUrl) {
-      return this.apiBaseService.get(config.onLoadUrl);
-    }
-    return null;
+  getMyProfile() {
+    return this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`);
   }
 
   updateMyProfile(body: any) {
     return this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, body);
+  }
+
+  onLoad(url: string) {
+    if(url) {
+      return this.apiBaseService.get(url);
+    }
+    return null;
   }
 
 }

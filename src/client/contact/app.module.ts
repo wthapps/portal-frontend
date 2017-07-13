@@ -25,9 +25,9 @@ import { ZNewContactModule } from './contact/new/new-contact.module';
     ZContactSharedModule,
     ZContactHomeModule,
     ZContactListModule,
+    ZNewContactModule,
     ZContactDetailModule,
     ZContactMyProfileModule,
-    ZNewContactModule,
     ZContactLabelModule
   ],
   declarations: [AppComponent],
