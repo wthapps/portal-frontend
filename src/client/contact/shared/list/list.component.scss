@@ -45,8 +45,11 @@ $color-table-row: #F9F9F9;
       }
 
     }
-    .contact-listbox-row:nth-child(2n+2) {
-      background-color: $color-table-row;
+    .contact-listbox-row {
+      &.active, &:hover {
+        background-color: $color-table-row;
+      }
+
     }
 
     .contact-listbox-input {
