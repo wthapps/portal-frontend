@@ -7,7 +7,8 @@
     <modal-body>
       <div class="row ng2-tags-container-wrapper">
         <tag-input [maxItems]='100'
-                   [(ngModel)]="selectedLabels" [ngModelOptions]="{standalone: true}"
+                   [(ngModel)]="selectedLabels"
+                   [ngModelOptions]="{standalone: true}"
                    (onRemove)="removeTag($event)"
                    (onAdd)="addTag($event)">
           <tag-input-dropdown [autocompleteItems]="labels">
