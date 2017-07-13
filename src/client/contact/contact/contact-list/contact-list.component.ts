@@ -59,6 +59,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   getAllContact() {
     this.contactService.getContactList().subscribe(
       (res: any)=> {
+        console.log(res.data);
         this.data = res.data;
       }
     )

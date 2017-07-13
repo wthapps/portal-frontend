@@ -10,7 +10,7 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.phones.length > 0">
       <template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.kind_of | keyToValue:phoneType:'kind_of':'name'}}</dt>
+        <!--<dt>{{item.kind_of | keyToValue:phoneType:'kind_of':'name'}}</dt>-->
         <dd>
           <p>
             <img *ngIf="countriesCode"

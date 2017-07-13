@@ -1,0 +1,43 @@
+<div class="panel panel-default" *ngIf="data">
+  <div class="panel-body">
+    <div class="media-left">
+       <span class="avatar-md">
+         <img [src]="data.profile_image" alt="">
+       </span>
+    </div>
+    <div class="media-body">
+      <div class="media-heading">{{data.name}}</div>
+    </div>
+    <div class="media-right">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Information</h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched),
+        'has-success': (name.valid && name.touched)}">
+        <label for="name"> Name <span class="text-danger">*</span></label>
+        <input [formControl]="name" type="text" class="form-control" id="name"
+               placeholder="Name">
+        <div *ngIf="!name.valid && name.touched">
+              <span *ngIf="!name.valid && name.errors.required" class="help-block">
+                Name is required
+              </span>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button [disabled]="!name.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
+      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

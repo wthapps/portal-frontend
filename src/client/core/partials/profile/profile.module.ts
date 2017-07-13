@@ -18,6 +18,7 @@ import { PartialsProfileWorkEduComponent } from './work-edu/work-edu.component';
 import { PartialsProfileHobbyComponent } from './hobby/hobby.component';
 import { PartialsProfileComponent } from './profile.component';
 import { PartialsProfileService } from './profile.service';
+import { PartialsProfileAvatarInfoNameOnlyComponent } from './avatar-info/avatar-info-name-only.component';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { PartialsProfileService } from './profile.service';
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
     PartialsProfileWorkEduComponent,
+    PartialsProfileAvatarInfoNameOnlyComponent,
     PartialsProfileHobbyComponent
   ],
   exports: [
@@ -53,6 +55,7 @@ import { PartialsProfileService } from './profile.service';
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
     PartialsProfileWorkEduComponent,
+    PartialsProfileAvatarInfoNameOnlyComponent,
     PartialsProfileHobbyComponent
   ],
   providers: [

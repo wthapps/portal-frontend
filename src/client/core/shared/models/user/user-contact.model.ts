@@ -5,7 +5,7 @@ export class UserContact extends BaseModel {
   uuid: string;
   first_name: string;
   last_name: string;
-  name: string;
+  name: string = '';
   emails: Array<any> = [];
   password: string;
   birthday: string;

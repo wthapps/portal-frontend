@@ -1,6 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { UserContact } from '../../../core/shared/models/user/user-contact.model';
+import { PartialsProfileContactComponent } from '../../../core/partials/profile/contact/contact.component';
+import { PartialsProfileAvatarInfoComponent } from '../../../core/partials/profile/avatar-info/avatar-info.component';
+import { PartialsProfileEmailComponent } from '../../../core/partials/profile/email/email.component';
+import { PartialsProfilePhoneComponent } from '../../../core/partials/profile/phone/phone.component';
+import { PartialsProfileAddressComponent } from '../../../core/partials/profile/address/address.component';
+import { PartialsProfileMediaComponent } from '../../../core/partials/profile/media/media.component';
+import { PartialsProfileAvatarInfoNameOnlyComponent } from '../../../core/partials/profile/avatar-info/avatar-info-name-only.component';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 @Component({
   moduleId: module.id,
@@ -9,8 +18,16 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
   styleUrls: ['new-contact.component.css']
 })
 export class ZNewContactComponent implements OnInit {
-  profileConfig: any = {getCurrentUser: false, createNew: true, aboutComponent: false, workComponent: false, hobbyComponent: false, callApiAfterChange: false};
-  constructor(private route: ActivatedRoute) {
+  profileConfig: any = {getCurrentUser: false, createNew: true, callApiAfterChange: false};
+  data: UserContact = new UserContact();
+  @ViewChild('avatar') avatar: PartialsProfileAvatarInfoNameOnlyComponent;
+  @ViewChild('contact') contact: PartialsProfileContactComponent;
+  @ViewChild('email') email: PartialsProfileEmailComponent;
+  @ViewChild('phone') phone: PartialsProfilePhoneComponent;
+  @ViewChild('address') address: PartialsProfileAddressComponent;
+  @ViewChild('media') media: PartialsProfileMediaComponent;
+
+  constructor(private route: ActivatedRoute, private apiBaseService: ApiBaseService) {
   }
 
   ngOnInit() {
@@ -19,5 +36,13 @@ export class ZNewContactComponent implements OnInit {
 
   done() {
   //
+    console.log(this.avatar.data);
+    this.apiBaseService.post(`contact/contacts`, this.avatar.data).subscribe((res: any) => {
+      console.log(res);
+    });
+    // console.log(this.email.data);
+    // console.log(this.phone.data);
+    // console.log(this.address.data);
+    // console.log(this.media.data);
   }
 }
