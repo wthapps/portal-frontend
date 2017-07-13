@@ -89,13 +89,18 @@ export class PartialsProfileEmailComponent {
 
   onSubmit(values: any): void {
     if (this.config.callApiAfterChange) {
-      this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
+
+      let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
+
+      this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res: any) => {
         this.removeAll();
         this.data = res.data;
         _.map(this.data.emails, (v: any)=> {
           this.addItem(v);
         });
       });
+
+
     } else {
       this.data.emails = values.emails;
     }

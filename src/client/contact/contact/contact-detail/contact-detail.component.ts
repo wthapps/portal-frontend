@@ -13,6 +13,15 @@ export class ZContactDetailComponent implements OnInit {
 
   contact: any;
 
+  profileConfig: any = {
+    onEditCustomUrl: 'contact/contacts',
+    getCurrentUser: false,
+    aboutComponent: false,
+    workComponent: false,
+    hobbyComponent: false
+  };
+
+
   constructor(private contactService: ZContactService, private route: ActivatedRoute) {
   }
 
