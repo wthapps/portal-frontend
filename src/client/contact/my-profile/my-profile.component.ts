@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 @Component({
@@ -8,13 +7,9 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
   templateUrl: 'my-profile.component.html',
   styleUrls: ['my-profile.component.css']
 })
-export class ZContactMyProfileComponent implements OnInit {
+export class ZContactMyProfileComponent {
   @ViewChild('modal') modal: ModalComponent;
 
-  constructor(private route: ActivatedRoute) {
-  }
-
-  ngOnInit() {
-
+  constructor() {
   }
 }

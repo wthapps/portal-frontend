@@ -41,6 +41,7 @@ export class CommonEventService implements CommonEventHandler {
     // });
     // this.subscription.unsubscribe();
   }
+
   // subscribe(callback: any): void {
   //   // this.subscription = this.event.subscribe((event: CommonEvent) => {
   //   //   callback(event);

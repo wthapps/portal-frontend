@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { ActivatedRoute } from '@angular/router';
 import { UserContact } from '../../../core/shared/models/user/user-contact.model';
-import { PartialsProfileContactComponent } from '../../../core/partials/profile/contact/contact.component';
-import { PartialsProfileAvatarInfoComponent } from '../../../core/partials/profile/avatar-info/avatar-info.component';
-import { PartialsProfileEmailComponent } from '../../../core/partials/profile/email/email.component';
-import { PartialsProfilePhoneComponent } from '../../../core/partials/profile/phone/phone.component';
-import { PartialsProfileAddressComponent } from '../../../core/partials/profile/address/address.component';
-import { PartialsProfileMediaComponent } from '../../../core/partials/profile/media/media.component';
-import { PartialsProfileAvatarInfoNameOnlyComponent } from '../../../core/partials/profile/avatar-info/avatar-info-name-only.component';
+import { PartialsProfileAvatarInfoNameOnlyComponent } from '../../../core/shared/components/profile/avatar-info/avatar-info-name-only.component';
+import { PartialsProfileContactComponent } from '../../../core/shared/components/profile/contact/contact.component';
+import { PartialsProfileEmailComponent } from '../../../core/shared/components/profile/email/email.component';
+import { PartialsProfilePhoneComponent } from '../../../core/shared/components/profile/phone/phone.component';
+import { PartialsProfileAddressComponent } from '../../../core/shared/components/profile/address/address.component';
+import { PartialsProfileMediaComponent } from '../../../core/shared/components/profile/media/media.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 @Component({
@@ -35,7 +33,7 @@ export class ZNewContactComponent implements OnInit {
   }
 
   done() {
-  //
+    //
     console.log(this.avatar.data);
     this.apiBaseService.post(`contact/contacts`, this.avatar.data).subscribe((res: any) => {
       console.log(res);

@@ -1,25 +1,20 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ZContactSharedListComponent } from './list/list.component';
-import { ZContactSharedItemComponent } from './list/item/item.component';
+
 import { ZContactService } from './services/contact.service';
-import { SharedModule } from '../../core/shared/shared.module';
-import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
-import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
-import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
-import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
-import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
-
 import { GoogleApiService } from './services/google-api.service';
-import { TagInputModule } from 'ng2-tag-input';
 
+import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
+import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
 
-import {
-  ZContactShareAddContactComponent,
-  ContactAddLabelModalComponent
-} from './modal/index';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
+import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
+
+import { ZContactSharedItemComponent } from './list/item/item.component';
+import { ZContactSharedListComponent } from './list/list.component';
+import { ZContactShareAddContactComponent } from './modal/add-contact/add-contact.component';
+import { ContactAddLabelModalComponent } from './modal/contact-add-label/contact-add-label-modal.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -28,42 +23,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-
-    // third party libs
-    TagInputModule,
-
-    SharedModule.forRoot()
+    RouterModule
   ],
   declarations: [
-    ZContactSharedListComponent,
-    ZContactSharedItemComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
+    ZContactSharedItemComponent,
+    ZContactSharedListComponent,
     ZContactShareAddContactComponent,
-    ZContactSharedToolbarComponent,
-
-    //modal here
     ContactAddLabelModalComponent
   ],
   exports: [
-    CommonModule,
-    RouterModule,
-
-    // third party libs
-    TagInputModule,
-
-
-    ZContactSharedListComponent,
-    ZContactSharedItemComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
+    ZContactSharedItemComponent,
+    ZContactSharedListComponent,
     ZContactShareAddContactComponent,
-    ZContactSharedToolbarComponent,
-
-    // modal here
     ContactAddLabelModalComponent
   ]
 })

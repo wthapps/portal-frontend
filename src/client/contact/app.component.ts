@@ -1,22 +1,20 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/filter';
+import './operators';
+
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { Config } from '../core/shared/config/env.config';
-
-import { Subscription } from 'rxjs/Subscription';
-import './operators';
-import 'rxjs/add/operator/filter';
-import { CommonEventAction } from '../core/shared/services/common-event/common-event-action';
-import { CommonEvent } from '../core/shared/services/common-event/common-event';
-import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { LabelEditModalComponent } from './label/label-edit-modal.component';
-import { ConfirmationService } from 'primeng/primeng';
-import { LabelService } from './label/label.service';
-import { Subject } from 'rxjs/Subject';
-import { Constants } from '../core/shared/config/constants';
 import { Label } from './label/label.model';
-import { label } from 'aws-sdk/clients/sns';
-import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
+import { LabelService } from './label/label.service';
+
+import { CommonEvent } from '../core/shared/services/common-event/common-event';
+import { CommonEventAction } from '../core/shared/services/common-event/common-event-action';
+import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 
 /**
  * This class represents the main application component.
@@ -47,8 +45,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
-              private labelService: LabelService
-  ) {
+              private labelService: LabelService) {
     console.log('Environment config', Config);
     this.commonEventSub = this.commonEventService.event.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
   }
@@ -86,7 +83,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
   doEvent(event: CommonEvent) {
     console.log('doEvent inside app component', event);
-    switch(event.action) {
+    switch (event.action) {
       case 'contact:label:open_modal_edit':
         this.loadModalComponent(LabelEditModalComponent);
         this.modal.open({
@@ -109,7 +106,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.labelService.create(event.payload.label).subscribe(
           (response: any) => {
             this.labels.push(response.data);
-            this.contactMenu.push((this.mapLabelToMenuItem((this.labels.pop()));
+            this.contactMenu.push((this.mapLabelToMenuItem((this.labels.pop()))));
           }
         );
         break;
@@ -119,15 +116,15 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           (response: any) => {
 
             // update menu item and label data
-            _.each(this.labels,(label: Label) => {
-              if(response.data.id == label.id) {
+            _.each(this.labels, (label: Label) => {
+              if (response.data.id == label.id) {
                 label.name = response.data.name;
                 return;
               }
             });
 
-            _.each(this.contactMenu,(menu: Label) => {
-              if(response.data.id == menu.id) {
+            _.each(this.contactMenu, (menu: Label) => {
+              if (response.data.id == menu.id) {
                 menu.name = response.data.name;
                 return;
               }
@@ -156,12 +153,12 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       hasSubMenu: !label.system,
       count: label.contact_count,
       icon: label.name == 'all contact' ? 'fa fa-address-book-o'
-      : label.name == 'favourite' ? 'fa fa-star'
+        : label.name == 'favourite' ? 'fa fa-star'
         : label.name == 'labels' ? 'fa fa-tags'
-          : label.name == 'blacklist' ? 'fa fa-ban'
-            : label.name == 'social' ? 'fa fa-globe'
-              : label.name == 'chat' ? 'fa fa-comments-o'
-                : 'fa fa-folder-o'
+        : label.name == 'blacklist' ? 'fa fa-ban'
+        : label.name == 'social' ? 'fa fa-globe'
+        : label.name == 'chat' ? 'fa fa-comments-o'
+        : 'fa fa-folder-o'
     };
   }
 

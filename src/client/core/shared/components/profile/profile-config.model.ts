@@ -1,4 +1,5 @@
-import { BaseModel } from '../../shared/models/base.model';
+
+import { BaseModel } from '../../models/base.model';
 
 export class ProfileConfig extends BaseModel {
   // urls

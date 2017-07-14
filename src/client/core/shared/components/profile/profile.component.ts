@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PartialsProfileService } from './profile.service';
 import { ProfileConfig } from './profile-config.model';
-import { UserContact } from '../../shared/models/user/user-contact.model';
+import { UserContact } from '../../models/user/user-contact.model';
 
 declare var _: any;
 

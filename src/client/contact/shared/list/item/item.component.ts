@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { Constants } from '../../../../core/shared/config/constants';
-import { CountryService } from '../../../../core/partials/countries/countries.service';
 import { ZContactService } from '../../services/contact.service';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
+import { CountryService } from '../../../../core/shared/components/countries/countries.service';
 
 @Component({
   moduleId: module.id,

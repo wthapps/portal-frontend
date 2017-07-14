@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ZContactService } from '../../services/contact.service';
-import { RouterLinkActive, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Config } from '../../../../core/shared/config/env.config';
 
 declare var _: any;
@@ -12,9 +12,10 @@ declare var _: any;
 })
 export class ZContactSharedActionsBarComponent {
 
-  constructor(private contactService: ZContactService, private router: Router) {
+  constructor(private contactService: ZContactService) {
 
   }
+
   @Input() data: any;
 
   toogleFavourite() {
