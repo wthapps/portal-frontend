@@ -66,27 +66,14 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
         //map labels to ContactMenu Item
         _.each(this.labels, (label: Label) => {
-          this.contactMenu.push({
-            id: label.id,
-            name: label.name,
-            link: '/contacts',
-            hasSubMenu: !label.system,
-            count: label.contact_count,
-            icon: label.name == 'all contact' ? 'fa fa-address-book-o'
-              : label.name == 'favourite' ? 'fa fa-star'
-                : label.name == 'labels' ? 'fa fa-tags'
-                  : label.name == 'blacklist' ? 'fa fa-ban'
-                    : label.name == 'social' ? 'fa fa-globe'
-                      : label.name == 'chat' ? 'fa fa-comments-o'
-                        : 'fa fa-folder-o visibility-hidden'
-          });
+          this.contactMenu.push(this.mapLabelToMenuItem(label));
 
         });
         // this.contactMenu.push(label.convertToMenuItem());
-        this.contactMenu.push(
-          { name: '', link: '', icon: '' },
-          { name: 'Settings', link: '/settings', icon: 'fa fa-cog'}
-        );
+        // this.contactMenu.push(
+        //   { name: '', link: '', icon: '' },
+        //   { name: 'Settings', link: '/settings', icon: 'fa fa-cog'}
+        // );
       }
     );
   }
@@ -122,7 +109,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.labelService.create(event.payload.label).subscribe(
           (response: any) => {
             this.labels.push(response.data);
-            this.contactMenu.push(this.labels.pop());
+            this.contactMenu.push((this.mapLabelToMenuItem((this.labels.pop()));
           }
         );
         break;
@@ -161,8 +148,21 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
     }
   }
 
-  private mapLabelToMenuItem() {
-
+  private mapLabelToMenuItem(label: Label): any {
+    return {
+      id: label.id,
+      name: label.name,
+      link: '/contacts',
+      hasSubMenu: !label.system,
+      count: label.contact_count,
+      icon: label.name == 'all contact' ? 'fa fa-address-book-o'
+      : label.name == 'favourite' ? 'fa fa-star'
+        : label.name == 'labels' ? 'fa fa-tags'
+          : label.name == 'blacklist' ? 'fa fa-ban'
+            : label.name == 'social' ? 'fa fa-globe'
+              : label.name == 'chat' ? 'fa fa-comments-o'
+                : 'fa fa-folder-o'
+    };
   }
 
   private getLabel(name: string): Label {

@@ -21,6 +21,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   eventThreeDot: any;
   eventAddContact: any;
   commonEventSub: Subscription;
+  originalContacts: any = [];
 
 
   constructor(private contactService: ZContactService,
@@ -36,7 +37,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      console.log(params);
+      console.log('change params::::', params);
     });
 
     this.getAllContact();
@@ -58,6 +59,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   getAllContact() {
     this.contactService.getContactList().subscribe(
       (res: any)=> {
+        console.log(res.data);
         this.data = res.data;
       }
     )
@@ -76,6 +78,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
   doEvent(event: any) {
+
     console.log('doEvent in contact list:::', event);
     switch(event.action) {
       case 'contact:contact:view_detail':
@@ -83,7 +86,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         break;
 
       case 'contact:contact:open_add_label_modal':
-        this.modal.open();
+        this.modal.open({contact: event.payload.selectedContact});
         break;
       case 'contact:contact:import':
         break;
@@ -92,7 +95,10 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
+        console.log('updating contact......', event.payload.contact);
+        this.contactService.update(event.payload.contact).subscribe((response: any) => {
 
+        });
         break;
       case 'contact:contact:delete':
         this.delete();

@@ -8,11 +8,18 @@
       <a draggable="false" (click)="onMenu('contact')">
         Contact
       </a>
-      <ul [ngClass]="{'active': urls.contact == hostname}" class="menuleft-nav-sub" id="zone_menu_contact">
+      <ul [ngClass]="{'active': urls.contact == hostname}"
+          class="menuleft-nav-sub"
+          id="zone_menu_contact"
+          [routerLinkActive]="['active']" >
         <template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackByFn">
           <li *ngIf="contact.name != ''" class="text-capitalize">
-            <a draggable="false"  (click)="doEvent({action: contact?.action, event: $event})">
-              <i class="{{contact.icon}}"></i> {{contact.name}} ({{contact?.count}})
+            <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]"  (click)="doEvent({action: contact?.action, event: $event})">
+              <i class="{{contact.icon}}"></i> {{contact.name}}  ({{contact?.count}})
+            </a>
+
+            <a *ngIf="contact.name =='labels'" draggable="false" href="#"  (click)="doEvent({action: contact?.action, event: $event})">
+              <i class="{{contact.icon}}"></i> {{contact.name}}
             </a>
 
             <div *ngIf="contact.hasSubMenu" class="menuleft-nav-sub-action">
@@ -23,16 +30,20 @@
                 <i class="fa fa-trash"></i>
               </span>
             </div>
-
           </li>
-          <!--<li class="divider" *ngIf="contact.name == ''"></li>-->
-        </template>
 
-        <!--<li>-->
-          <!--<a draggable="false" href="javascipt:;" (click)="doEvent({action: 'contact:label:open_modal_edit', payload:{mode: 'add'}, event: $event})">-->
-            <!--<i class="fa fa-plus"></i> New label-->
-          <!--</a>-->
-        <!--</li>-->
+        </template>
+        <li>
+          <a draggable="false" href="javascipt:;" (click)="doEvent({action: 'contact:label:open_modal_edit', payload:{mode: 'add'}, event: $event})">
+            <i class="fa fa-plus"></i> New label
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li [routerLinkActive]="['active']">
+          <a draggable="false" [routerLink]="['contacts','settings']">
+            <i class="fa fa fa-cog"></i> Settings
+          </a>
+        </li>
 
       </ul>
     </li>

@@ -4,10 +4,10 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { WthAppsBaseModal } from '../../../../core/shared/interfaces/wthapps-base-modal';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 import { Label } from '../../../label/label.model';
-
-
+import { LabelService } from '../../../label/label.service';
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -18,26 +18,31 @@ declare var $: any;
 
 export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
-  @Input() item: Label;
+  @Input() contact: any;
 
   @ViewChild('modal') modal: ModalComponent;
   event: any;
   titleIcon: string;
-  titleName: string;
 
   form: FormGroup;
   name: AbstractControl;
   labels: Array<string> = new Array<string>();
+  originalLabels: Array<any> = new Array<any>();
   selectedLabels: Array<any> = [];
 
-  constructor(private fb: FormBuilder, private commonEventService: CommonEventService)  {
+  constructor(private fb: FormBuilder, private commonEventService: CommonEventService,
+   private labelService: LabelService)  {
 
 
 
   }
 
   ngOnInit() {
-    this.labels = ['one', 'two', 'three'];
+
+    this.labelService.getAll().subscribe((response: any) => {
+      this.originalLabels = response.data;
+      this.labels = _.map(this.originalLabels, 'name');
+    });
     // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
     // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
     //
@@ -49,19 +54,22 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   }
 
   submit() {
-    // if (this.mode == 'edit') {
-    //   this.commonEventService.broadcast({action: 'contact:label:update', payload: { label: this.form.value }})
-    // } else {
-    //  this.commonEventService.broadcast({action: 'contact:label:create', payload: { label: this.form.value }});
-    // }
-    // this.modal.close().then();
+
+    // find selectedLabels and push to label array
+    _.forEach(this.selectedLabels, (label: any) => {
+      this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
+    });
+
+    this.commonEventService.broadcast({
+      action: 'contact:contact:update',
+      payload: { labels: this.selectedLabels, contact: this.contact }}
+    );
+    this.modal.close().then();
   }
 
   open(options?: any) {
     // this.mode = options.mode || 'add';
-    // this.item = options.item || new Label();
-
-
+    this.contact = options.contact || null;
     this.modal.open(options).then();
   }
 

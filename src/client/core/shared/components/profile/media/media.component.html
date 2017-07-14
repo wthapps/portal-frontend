@@ -10,8 +10,8 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.media && data.media.length > 0">
       <template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{ item.kind_of | keyToValue:mediaType:'kind_of':'name' }}</dt>
-        <dd><p><a href="{{ item.value }}" target="_blank">{{ item.value }}</a></p></dd>
+        <!--<dt>{{ item.kind_of | keyToValue:mediaType:'kind_of':'name' }}</dt>-->
+        <dd><p><a href="{{item.value}}" target="_blank">{{item.value}}</a></p></dd>
       </template>
     </dl>
 

@@ -10,8 +10,9 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
       <template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{ item.kind_of | keyToValue:emailType:'kind_of':'name' }}</dt>
-        <dd><p><a class="link-text" href="mailto:{{ item.value }}">{{ item.value }}</a></p></dd>
+        <!--<dt>{{ item.kind_of | keyToValue:emailType:'kind_of':'name' }}</dt>-->
+
+        <dd><p><a class="link-text" href="mailto:{{item.value}}">{{item.value}}</a></p></dd>
       </template>
     </dl>
 

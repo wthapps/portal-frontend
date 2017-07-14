@@ -9,7 +9,20 @@
     <div class="page-body-content has-page-body-control">
       <div class="page-body-content-in zone-social">
         <div class="zone-social-in">
-          <partials-profile [dataConfig]="profileConfig"></partials-profile>
+          <!--<partials-profile [dataConfig]="profileConfig"></partials-profile>-->
+          <partials-profile-avatar-info-name-only #avatar [data]="data" [editable]="true" [config]="profileConfig"></partials-profile-avatar-info-name-only>
+          <!--<partials-profile-contact #contact [data]="data" [editable]="true" [config]="profileConfig" (eventOut)="getContact($event)"></partials-profile-contact>-->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Contact Information</h3>
+            </div>
+            <div class="panel-body">
+              <partials-profile-email #email [data]="data" [editable]="true" [config]="profileConfig"></partials-profile-email>
+              <partials-profile-phone #phone [data]="data" [editable]="true" [config]="profileConfig"></partials-profile-phone>
+              <partials-profile-address #address [data]="data" [editable]="true" [config]="profileConfig"></partials-profile-address>
+              <partials-profile-media #media [data]="data" [editable]="true" [config]="profileConfig"></partials-profile-media>
+            </div>
+          </div>
         </div>
       </div>
     </div>
