@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEventAction } from '../../../core/shared/services/common-event/common-event-action';
+import { Observable } from 'rxjs/Observable';
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 import { ConfirmationService } from 'primeng/primeng';
 
@@ -17,10 +18,11 @@ declare var _: any;
 export class ZContactListComponent implements OnInit, OnDestroy, CommonEventAction {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
 
-  data: any = [];
+  // data: any = [];
   eventThreeDot: any;
   eventAddContact: any;
   commonEventSub: Subscription;
+  contact$: Observable<any>;
   originalContacts: any = [];
 
 
@@ -33,6 +35,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
       this.doEvent(event);
     });
+
+    this.contact$ = this.contactService.contacts$;
   }
 
   ngOnInit() {
@@ -47,7 +51,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       }
     });
     this.eventAddContact = this.contactService.contactAddContactService.eventOut.subscribe((event: any) => {
-      this.data = event.data;
+      // this.data = event.data;
+
+      this.contactService.addMoreContacts(_.get(event, 'data', []));
     });
   }
 
@@ -57,12 +63,11 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
   getAllContact() {
-    this.contactService.getContactList().subscribe(
-      (res: any)=> {
-        console.log(res.data);
-        this.data = res.data;
-      }
-    )
+    // this.contactService.getContactList().take(1).subscribe(
+    //   (res: any)=> {
+    //     this.data = res.data;
+    //   }
+    // )
   }
 
   ngOnDestroy() {
@@ -78,7 +83,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
   doEvent(event: any) {
-
     console.log('doEvent in contact list:::', event);
     switch(event.action) {
       case 'contact:contact:view_detail':
@@ -106,12 +110,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     }
   }
 
-  delete() {
+  delete(data: any) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this contact ?',
       header: 'Delete Contact',
       accept: () => {
-        this.contactService.deleteContact(this.data).subscribe((res: any) => {
+        this.contactService.deleteContact(data).subscribe((res: any) => {
           // MUST update local data here
           // this.contactService.contactThreeDotActionsService.sendOut({action: "deleted"});
         });

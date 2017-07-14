@@ -4,10 +4,11 @@
       <button type="button" class="btn btn-wth-default" [routerLink]="['/contacts', 'new']"><i class="fa fa-plus"></i> New Contact</button>
     </li>
     <li>
-      <button type="button" class="btn btn-default" (click)="importContact()"><i class="fa fa-download"></i> Import</button>
+      <button type="button" class="btn btn-default" (click)="openImportContactModal()"><i class="fa fa-download"></i> Import</button>
     </li>
   </ul>
 </div>
 <div id="auth-status" style="display: inline; padding-left: 25px"></div>
 
+<z-contact-share-import-contact #importContactSelect (optionSelected)="onImportOptionSelected($event)"></z-contact-share-import-contact>
 <ng-content></ng-content>
