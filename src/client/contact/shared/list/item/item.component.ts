@@ -3,6 +3,7 @@ import { Constants } from '../../../../core/shared/config/constants';
 import { CountryService } from '../../../../core/partials/countries/countries.service';
 import { ZContactService } from '../../services/contact.service';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
+import { Observable } from 'rxjs';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +18,8 @@ export class ZContactSharedItemComponent implements OnInit {
   selected: boolean = false;
 
   emailType: any = Constants.emailType;
-  countriesCode: any;
+  // contriesCode: any;
+  countriesCode$: Observable<any>;
 
   constructor(
     private countryService: CountryService,
@@ -32,10 +34,12 @@ export class ZContactSharedItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.countryService.getCountries().subscribe(
-      (res: any) => {
-        this.countriesCode = res;
-      });
+    this.countriesCode$ = this.countryService.countriesCode$;
+
+    // this.countryService.getCountries().subscribe(
+    //   (res: any) => {
+    //     this.countriesCode = res;
+    //   });
   }
 
   onSelected() {

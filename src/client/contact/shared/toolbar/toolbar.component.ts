@@ -1,6 +1,9 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
 import { GoogleApiService } from '../services/google-api.service';
+import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
+import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
+import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 
 declare var _: any;
 
@@ -12,11 +15,12 @@ declare var _: any;
 })
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
+  @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
 
   selectedContact: string;
 
-  constructor(private contactService: ZContactService,
-              private gapi: GoogleApiService) {
+  constructor(private contactService: ZContactService
+  ) {
   }
 
   ngOnInit() {
@@ -28,8 +32,29 @@ export class ZContactSharedToolbarComponent implements OnInit {
     this.contactService.contactAddContactService.sendIn({action: "open"});
   }
 
-  importContact() {
-    console.log('importContact: ');
-    this.gapi.importContact();
+  openImportContactModal(options?: any) {
+    this.importContactSelect.modal.open(options);
   }
+
+  onImportOptionSelected(event: any) {
+    console.debug('onImportOptionSelected: event - ', event);
+
+    switch (event.name) {
+      case 'google':
+        console.log('google import contact');
+        this.contactService.commonEventService.broadcast({action: 'contact:contact:open_import_progress'});
+
+        break;
+      case 'yahoo':
+        break;
+      case 'outlook':
+        break;
+      case 'others':
+        break;
+      default:
+        console.error('Unhandled import option: ', event.name);
+        break;
+    }
+  }
+
 }

@@ -20,6 +20,8 @@ import {
   ContactAddLabelModalComponent
 } from './modal/index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
+import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -44,6 +46,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ZContactSharedThreeDotActionComponent,
     ZContactShareAddContactComponent,
     ZContactSharedToolbarComponent,
+    ZContactShareImportProgressComponent,
+    ZContactShareImportContactComponent,
+    ZContactSharedToolbarComponent,
 
     //modal here
     ContactAddLabelModalComponent
@@ -61,6 +66,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
     ZContactShareAddContactComponent,
+    ZContactSharedToolbarComponent,
+    ZContactShareImportProgressComponent,
+    ZContactShareImportContactComponent,
     ZContactSharedToolbarComponent,
 
     // modal here

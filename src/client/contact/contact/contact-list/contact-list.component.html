@@ -43,11 +43,11 @@
     </div>
   </z-contact-shared-toolbar>
   <div class="page-body-content has-page-body-control">
-    <div class="page-body-content-in" *ngIf="data.length==0">
+    <div class="page-body-content-in" *ngIf="(contact$ | async)?.length==0">
       There is no contact in your contact book
     </div>
-    <div class="page-body-content-in" *ngIf="data.length>1">
-      <z-contact-shared-list [data]="data"></z-contact-shared-list>
+    <div class="page-body-content-in" *ngIf="(contact$ | async)?.length>1">
+      <z-contact-shared-list [data]="(contact$ | async)"></z-contact-shared-list>
     </div>
   </div>
 </div>
