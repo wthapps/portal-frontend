@@ -19,6 +19,7 @@ import { PartialsProfileHobbyComponent } from './hobby/hobby.component';
 import { PartialsProfileComponent } from './profile.component';
 import { PartialsProfileService } from './profile.service';
 import { PartialsProfileAvatarInfoNameOnlyComponent } from './avatar-info/avatar-info-name-only.component';
+import { PartialsFormModule } from '../form/partials-form.module';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { PartialsProfileAvatarInfoNameOnlyComponent } from './avatar-info/avatar
     RadioButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    PartialsFormModule,
     PipeModule
   ],
   declarations: [

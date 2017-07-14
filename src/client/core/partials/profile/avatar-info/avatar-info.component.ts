@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -10,6 +10,10 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
 import { UserService } from '../../../shared/services/user.service';
 import { ProfileConfig } from '../profile-config.model';
+import { QuestionBase } from '../../form/base/question-base';
+import { DropdownQuestion } from '../../form/base/question-dropdown';
+import { TextboxQuestion } from '../../form/base/question-textbox';
+import { QuestionControlService } from '../../form/base/question-control.service';
 
 declare var _: any;
 
@@ -22,38 +26,74 @@ declare var _: any;
 export class PartialsProfileAvatarInfoComponent {
   @Input('data') data: any;
   @Input() config: ProfileConfig;
+  @Input() editable: boolean = true;
+  @Input() nameOnly: boolean = false;
   @ViewChild('modal') modal: ModalComponent;
-  @Input() editable: boolean;
+
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
+
 
   form: FormGroup;
-  first_name: AbstractControl;
-  last_name: AbstractControl;
-  nickname: AbstractControl;
+  // first_name: AbstractControl;
+  // last_name: AbstractControl;
+  // name: AbstractControl;
+  // nickname: AbstractControl;
+  questions: QuestionBase<any>[];
 
-  constructor(private fb: FormBuilder, private profileService: PartialsProfileService, public userService: UserService) {
-    this.form = fb.group({
-      'first_name': ['', Validators.compose([Validators.required])],
-      'last_name': ['', Validators.compose([Validators.required])],
-      // 'nickname': ['', Validators.compose([Validators.required])]
-      'nickname': ['']
-    });
+  constructor(private fb: FormBuilder,
+              // private profileService: PartialsProfileService,
+              private qcs: QuestionControlService,
+              public userService: UserService) {
+    // this.form = fb.group({
+    //   'first_name': ['', Validators.compose([Validators.required])],
+    //   'last_name': ['', Validators.compose([Validators.required])],
+    //   'name': ['', Validators.compose([Validators.required])],
+    //   'nickname': ['']
+    // });
+    //
+    // this.first_name = this.form.controls['first_name'];
+    // this.last_name = this.form.controls['last_name'];
+    // this.nickname = this.form.controls['nickname'];
+    // this.name = this.form.controls['name'];
 
-    this.first_name = this.form.controls['first_name'];
-    this.last_name = this.form.controls['last_name'];
-    this.nickname = this.form.controls['nickname'];
+    this.questions = [
+
+      new TextboxQuestion({
+        key: 'firstName',
+        label: 'Frist Name',
+        required: true,
+        order: 1
+      }),
+
+      new TextboxQuestion({
+        key: 'lastName',
+        label: 'Last Name',
+        required: true,
+        order: 1
+      }),
+
+      new TextboxQuestion({
+        key: 'nicknam',
+        label: 'Nickname',
+        order: 1
+      }),
+    ];
+    this.form = this.qcs.toFormGroup(this.questions);
+
   }
 
   onOpenModal() {
-    (<FormControl>this.first_name).setValue(this.data.first_name);
-    (<FormControl>this.last_name).setValue(this.data.last_name);
-    (<FormControl>this.nickname).setValue(this.data.nickname);
-
+    // (<FormControl>this.first_name).setValue(this.data.first_name);
+    // (<FormControl>this.last_name).setValue(this.data.last_name);
+    // (<FormControl>this.nickname).setValue(this.data.nickname);
+    // (<FormControl>this.name).setValue(this.data.name);
+    //
     this.modal.open();
   }
 
 
   onSubmit(values: any): void {
-    if (this.config.callApiAfterChange) {
+    /*if (this.config.callApiAfterChange) {
       this.profileService.updateMyProfile(values).subscribe((res: any) => {
         this.modal.close();
         this.data = res.data;
@@ -66,6 +106,7 @@ export class PartialsProfileAvatarInfoComponent {
       this.modal.close();
       this.data.name = values.first_name + ' ' + values.last_name;
       this.data.nickname = values.nickname;
-    }
+    }*/
+    this.eventOut.emit(values);
   }
 }
