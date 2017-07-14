@@ -11,11 +11,15 @@ declare var _: any;
   templateUrl: 'actions-bar.component.html'
 })
 export class ZContactSharedActionsBarComponent {
+  @Input() data: any;
+
+  linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
+  linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
 
   constructor(private contactService: ZContactService, private router: Router) {
 
   }
-  @Input() data: any;
+
 
   toogleFavourite() {
     this.contactService.updateContact(this.data, {favourite: !this.data.favourite}).subscribe((res: any) => {
@@ -24,10 +28,10 @@ export class ZContactSharedActionsBarComponent {
   }
 
   gotoSocial() {
-    window.location.href = Config.SUB_DOMAIN.SOCIAL;
+    window.location.href = `${Config.SUB_DOMAIN.SOCIAL}/profile/${this.data.uuid}`;
   }
 
   gotoChat() {
-    window.location.href = Config.SUB_DOMAIN.CHAT;
+    window.location.href = `${Config.SUB_DOMAIN.CHAT}/conversations/${this.data.id}`;
   }
 }
