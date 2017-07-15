@@ -41,7 +41,9 @@ export class ZContactService extends BaseEntityService<any>{
   addMoreContacts(data: any[]) {
     // _.uniqBy(_.flatten([this.post.photos, selectedPhotos]), 'id');
     // this.contactsSubject.next(_.uniqBy(_.flatten([this.contactsSubject.getValue(), data]), 'id'));
-    this.contactsSubject.next(Object.assign(this.contactsSubject.getValue(), data));
+
+    this.contactsSubject.next(this.contactsSubject.getValue().concat(data));
+
     console.log('inside addMoreContacts: ', data, this.contactsSubject.getValue());
   }
 

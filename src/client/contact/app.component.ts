@@ -109,7 +109,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.labelService.create(event.payload.label).subscribe(
           (response: any) => {
             this.labels.push(response.data);
-            this.contactMenu.push((this.mapLabelToMenuItem((this.labels.pop()));
+            this.contactMenu.push((this.mapLabelToMenuItem((this.labels.pop()))));
           }
         );
         break;
