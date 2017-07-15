@@ -1,6 +1,6 @@
-import { QuestionBase } from './question-base';
+import { QuestionBase } from './../base/question-base';
 
-export class DropdownQuestion extends QuestionBase<string> {
+export class Dropdown extends QuestionBase<string> {
   controlType = 'dropdown';
   options: {key: string, value: string}[] = [];
 
