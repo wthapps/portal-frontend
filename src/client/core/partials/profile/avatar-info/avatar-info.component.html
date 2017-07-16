@@ -17,26 +17,7 @@
   </div>
 </div>
 
-<form *ngIf="!nameOnly" [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
-      <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Information</h4>
-    </modal-header>
-    <modal-body>
-      <div *ngFor="let question of questions" class="form-row">
-        <df-question [question]="question" [form]="form"></df-question>
-      </div>
-      {{form.valid}}
-    </modal-body>
-    <modal-footer>
-      {{form.valid}}
-      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
-      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
-    </modal-footer>
-  </modal>
-</form>
-
-<form *ngIf="nameOnly" [formGroup]="form" novalidate>
+<form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
       <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Information</h4>
@@ -52,4 +33,3 @@
     </modal-footer>
   </modal>
 </form>
-

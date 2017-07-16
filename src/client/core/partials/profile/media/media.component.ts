@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, HostBinding } from '@angular/core';
+import { Component, Input, ViewChild, HostBinding, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -25,29 +25,31 @@ export class PartialsProfileMediaComponent {
   @Input() editable: boolean;
   @Input() config: ProfileConfig;
 
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
+
   @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
 
   mediaType: any = [
     {
-      kind_of: 'facebook',
+      category: 'facebook',
       name: 'Facebook'
     },
     {
-      kind_of: 'google_plus',
+      category: 'google_plus',
       name: 'Google Plus'
     },
     {
-      kind_of: 'twitter',
+      category: 'twitter',
       name: 'Twitter'
     },
     {
-      kind_of: 'linkedin',
+      category: 'linkedin',
       name: 'LinkedIn'
     },
     {
-      kind_of: 'other',
+      category: 'other',
       name: 'Other'
     },
   ];
@@ -70,12 +72,12 @@ export class PartialsProfileMediaComponent {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        category: [item.category, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.urlFormat])]
       });
     } else {
       return this.fb.group({
-        kind_of: ['', Validators.compose([Validators.required])],
+        category: ['', Validators.compose([Validators.required])],
         value: ['', Validators.compose([Validators.required, CustomValidator.urlFormat])]
       });
     }
@@ -108,20 +110,8 @@ export class PartialsProfileMediaComponent {
 
 
   onSubmit(values: any): void {
-    if (this.config.callApiAfterChange) {
-
-      let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
-
-      this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res:any) => {
-        this.removeAll();
-        this.data = res.data;
-        _.map(this.data.media, (v: any)=> {
-          this.addItem(v);
-        });
-      });
-    } else {
-      this.data.media = values.media;
-    }
+    this.data.media = values.media;
+    this.eventOut.emit(values);
     this.modal.close();
   }
 

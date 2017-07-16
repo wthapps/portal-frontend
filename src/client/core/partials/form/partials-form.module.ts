@@ -23,3 +23,4 @@ import { DynamicFormQuestionComponent } from './base/dynamic-form-question.compo
 
 export class PartialsFormModule {
 }
+

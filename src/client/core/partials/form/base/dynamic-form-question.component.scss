@@ -1,31 +1,24 @@
 @import "../../../../core/scss/global";
+@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/grid";
 
-.chat-profile {
-  position: relative;
-  padding-left: 120px;
-  .chat-profile-img {
-    position: absolute;
-    left: 0;
-    top: 0;
+
+.df-form {
+  .df-form-label {
+    margin-top: 10px;
   }
-  .chat-profile-content {
-    h3 {
-      &:first-child {
-        margin-top: 0;
-      }
+  .df-form-content {
+    .df-form-el {
+      width: 100%;
+      border-radius: 5px;
     }
   }
-  .dl-horizontal {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid $line;
+  .error {
+    @extend .col-lg-offset-3;
+    @extend .col-md-offset-3;
+    @extend .col-sm-offset-3;
   }
-
-  @media (min-width: $screen-sm-min) {
-    .dl-horizontal {
-      dd {
-        margin-bottom: 10px;
-      }
-    }
-  }
+}
+.form-group:before {
+  top: 10px;
+  right: 20px;
 }

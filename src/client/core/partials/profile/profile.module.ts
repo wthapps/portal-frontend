@@ -18,7 +18,6 @@ import { PartialsProfileWorkEduComponent } from './work-edu/work-edu.component';
 import { PartialsProfileHobbyComponent } from './hobby/hobby.component';
 import { PartialsProfileComponent } from './profile.component';
 import { PartialsProfileService } from './profile.service';
-import { PartialsProfileAvatarInfoNameOnlyComponent } from './avatar-info/avatar-info-name-only.component';
 import { PartialsFormModule } from '../form/partials-form.module';
 
 @NgModule({
@@ -43,7 +42,6 @@ import { PartialsFormModule } from '../form/partials-form.module';
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
     PartialsProfileWorkEduComponent,
-    PartialsProfileAvatarInfoNameOnlyComponent,
     PartialsProfileHobbyComponent
   ],
   exports: [
@@ -57,7 +55,6 @@ import { PartialsFormModule } from '../form/partials-form.module';
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
     PartialsProfileWorkEduComponent,
-    PartialsProfileAvatarInfoNameOnlyComponent,
     PartialsProfileHobbyComponent
   ],
   providers: [

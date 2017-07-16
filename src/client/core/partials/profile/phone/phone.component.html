@@ -10,7 +10,7 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.phones.length > 0">
       <template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
-        <!--<dt>{{item.kind_of | keyToValue:phoneType:'kind_of':'name'}}</dt>-->
+        <dt>{{item.category | keyToValue:phoneType:'category':'name'}}</dt>
         <dd>
           <p>
             <img *ngIf="countriesCode"
@@ -23,7 +23,7 @@
     </dl>
 
     <div *ngIf="data.phones.length == 0 && editable">
-      <p class="text-fade" *ngIf="config.getCurrentUser">
+      <p class="text-fade">
         Tell us more about your phone
       </p>
       <button type="button" class="btn btn-default" (click)="onOpenModal()">
@@ -46,14 +46,14 @@
             <div class="row row-10">
               <div class="col-sm-2">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_phone['controls'].kind_of.valid
-                  && add_phone['controls'].kind_of.touched),
-                  'has-success': (add_phone['controls'].kind_of.valid
-                  && add_phone['controls'].kind_of.touched
-                  && form.value.phones[i].kind_of.length > 1)}">
-                  <select class="form-control" name="name" formControlName="kind_of">
+                  'has-error': (!add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched),
+                  'has-success': (add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched
+                  && form.value.phones[i].category.length > 1)}">
+                  <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One --</option>
-                    <option *ngFor="let et of phoneType" value="{{et.kind_of}}">{{et.name}}</option>
+                    <option *ngFor="let et of phoneType" value="{{et.category}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>

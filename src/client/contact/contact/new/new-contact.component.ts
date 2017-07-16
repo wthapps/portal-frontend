@@ -8,7 +8,6 @@ import { PartialsProfileEmailComponent } from '../../../core/partials/profile/em
 import { PartialsProfilePhoneComponent } from '../../../core/partials/profile/phone/phone.component';
 import { PartialsProfileAddressComponent } from '../../../core/partials/profile/address/address.component';
 import { PartialsProfileMediaComponent } from '../../../core/partials/profile/media/media.component';
-import { PartialsProfileAvatarInfoNameOnlyComponent } from '../../../core/partials/profile/avatar-info/avatar-info-name-only.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 @Component({
@@ -20,7 +19,7 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 export class ZNewContactComponent implements OnInit {
   profileConfig: any = {getCurrentUser: false, createNew: true, callApiAfterChange: false};
   data: UserContact = new UserContact();
-  @ViewChild('avatar') avatar: PartialsProfileAvatarInfoNameOnlyComponent;
+  @ViewChild('avatar') avatar: PartialsProfileAvatarInfoComponent;
   @ViewChild('contact') contact: PartialsProfileContactComponent;
   @ViewChild('email') email: PartialsProfileEmailComponent;
   @ViewChild('phone') phone: PartialsProfilePhoneComponent;
@@ -35,14 +34,12 @@ export class ZNewContactComponent implements OnInit {
   }
 
   done() {
-  //
-    console.log(this.avatar.data);
     this.apiBaseService.post(`contact/contacts`, this.avatar.data).subscribe((res: any) => {
       console.log(res);
     });
-    // console.log(this.email.data);
-    // console.log(this.phone.data);
-    // console.log(this.address.data);
-    // console.log(this.media.data);
+  }
+
+  doEvent(e: any) {
+    // console.log(">>>>>", this.data);
   }
 }

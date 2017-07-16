@@ -6,7 +6,8 @@ import { QuestionBase }     from './question-base';
 @Component({
   moduleId: module.id,
   selector: 'df-question',
-  templateUrl: 'dynamic-form-question.component.html'
+  templateUrl: 'dynamic-form-question.component.html',
+  styleUrls: ['dynamic-form-question.component.css']
 })
 export class DynamicFormQuestionComponent {
   @Input() question: QuestionBase<any>;
@@ -17,5 +18,9 @@ export class DynamicFormQuestionComponent {
       return true;
     }
     return this.form.controls[this.question.key].valid
+  }
+
+  get isTouched() {
+    return this.form.controls[this.question.key].touched;
   }
 }

@@ -248,29 +248,29 @@ export let Constants = {
 
   emailType: [
     {
-      kind_of: 'work',
+      category: 'work',
       name: 'Work'
     },
     {
-      kind_of: 'personal',
+      category: 'personal',
       name: 'Personal'
     },
     {
-      kind_of: 'other',
+      category: 'other',
       name: 'Other'
     },
   ],
   phoneType: [
     {
-      kind_of: 'mobile',
+      category: 'mobile',
       name: 'Mobile'
     },
     {
-      kind_of: 'fax',
+      category: 'fax',
       name: 'Fax'
     },
     {
-      kind_of: 'other',
+      category: 'other',
       name: 'Other'
     },
   ]
