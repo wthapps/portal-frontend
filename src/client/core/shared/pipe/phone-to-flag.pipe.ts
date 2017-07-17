@@ -34,9 +34,10 @@ export class PhoneCodeFlagPipe implements PipeTransform {
       if (key) {
         let phoneName = key.split(' (+');
         let phoneCode = _.find(data, ['name', phoneName[0]]);
-        // return phoneCode.code.toLowerCase();
-        // fix to pass
-        return "";
+        if (phoneCode && phoneCode.code) {
+          return phoneCode.code.toLowerCase();
+        }
+        return null;
       }
     }
   }
