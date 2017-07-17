@@ -28,7 +28,7 @@ export class ZContactShareAddContactComponent implements OnInit {
 
   add() {
     this.modal.close();
-    this.contactService.addContact({
+    this.contactService.create({
       name: this.name,
       emails: [{value: this.email}],
       phones: [{value: this.phone}]

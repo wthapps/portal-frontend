@@ -6,12 +6,15 @@ import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/con
 import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
+import { Constants } from '../../../core/shared/config/constants';
+import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 
 declare var _: any;
 
 @Injectable()
 export class ZContactService extends BaseEntityService<any>{
   selectedObjects: any = [];
+  contacts: Array<any> = new Array<any>();
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private listenToListSource = new Subject<any>();
@@ -22,7 +25,7 @@ export class ZContactService extends BaseEntityService<any>{
   contacts$: Observable<Array<any>> = this.contactsSubject.asObservable();
 
   constructor(protected apiBaseService: ApiBaseService,
-              public commonEventService: CommonEventService,
+              public importContactDataService: ContactImportContactDataService,
               public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService
   ) {
@@ -31,31 +34,43 @@ export class ZContactService extends BaseEntityService<any>{
     this.initialLoad();
   }
 
-  initialLoad() {
-    this.getContactList().toPromise()
-      .then((res: any) => { this.contactsSubject.next(this.contactsSubject.getValue().concat(res.data));
-      console.debug('this.contactSubject: ', this.contactsSubject.getValue());
-      });
+  getAllContacts() {
+    return this.contactsSubject.getValue();
   }
 
   addMoreContacts(data: any[]) {
-    // _.uniqBy(_.flatten([this.post.photos, selectedPhotos]), 'id');
-    // this.contactsSubject.next(_.uniqBy(_.flatten([this.contactsSubject.getValue(), data]), 'id'));
-
-    this.contactsSubject.next(this.contactsSubject.getValue().concat(data));
+    this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
+    this.contactsSubject.next(this.contacts);
 
     console.log('inside addMoreContacts: ', data, this.contactsSubject.getValue());
   }
 
-  // Only load contact lists from DB once
-  getContactList(): Observable<any> {
-    return this.apiBaseService.get("contact/contacts");
+  delete(contact: any): Observable<any> {
+    return super.delete(`${contact.id}`)
+      .map((response: any) => {
+        this.deleteCallback(response.data);
+      });
   }
 
-  deleteContact(contact: any): Observable<any> {
-    return this.apiBaseService.delete(`contact/contacts/${contact.id}`)
-      .map(() =>  this.contactsSubject.next(_.remove(this.contactsSubject.getValue(),
-          (ct: any) => ct.id === contact.id)));
+  deleteContact(contact: any): Promise<any> {
+    return super.delete(`${contact.id}`)
+      .toPromise()
+      .then((res: any) => {
+        _.remove(this.contacts, (ct: any) => {ct.id === res.data.id ;});
+        this.contactsSubject.next(this.contacts);
+      });
+  }
+
+  deleteSelectedContacts(): Promise<any> {
+    let body =  { contacts: this.selectedObjects};
+    return this.apiBaseService.post(`${this.url}/multi_destroy`, body).toPromise()
+      .then(() => {
+      let deletedIds = _.map(this.selectedObjects, (contact: any) => contact.id);
+
+      _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
+        this.contactsSubject.next(this.contacts);
+        this.selectedObjects.length = 0;
+    });
   }
 
   addItemSelectedObjects(item: any) {
@@ -76,17 +91,75 @@ export class ZContactService extends BaseEntityService<any>{
     this.listenToItemSource.next(event);
   }
 
-  updateContact(contact: any, data: any) {
-    return this.apiBaseService.put(`contact/contacts/${contact.id}`, data);
+  update(body: any): Observable<any> {
+    return super.update(body)
+      .map(
+        (res: any) => {
+          this.updateCallback(res.data);
+          return res;
+        }
+      );
   }
 
-  addContact(data: any) {
-    return this.apiBaseService.post(`contact/contacts`, data);
+  create(body: any): Observable<any> {
+    return super.create(body)
+      .map(
+        (res: any) => {
+          this.createCallback(res.data);
+          return res;
+        }
+      );
+  }
+
+  addContact(data: any): Promise<any> {
+    return this.apiBaseService.post(`${this.url}`, data).toPromise().then((res: any) => this.createCallback(res.data));
   }
 
   importGoogleContacts(data: any) {
-    return this.apiBaseService.post(`contact/contacts/import_google_contacts`, data);
+    return this.apiBaseService.post(`${this.url}/import_google_contacts`, data);
   }
+
+  getGoogleApiConfig() {
+    return this.apiBaseService.get(`${this.url}/get_google_api_config`);
+  }
+
+  filter(options: any): Array<any> {
+    return _.filter(this.contacts, (contact: any)=> {
+      if (options.label != 'undefined') {
+        return _.find(contact.labels, (label: any) => {
+          if(label.name === options.label) {
+            return contact;
+          };
+        });
+      }
+    });
+  }
+
+  private initialLoad() {
+    this.getAll().toPromise()
+      .then((res: any) => {
+        this.contacts.push(...res.data);
+        this.contactsSubject.next(this.contacts);
+        // console.debug('this.contactSubject: ', this.contacts, this.contactsSubject.getValue());
+      });
+  }
+
+  private createCallback(contact: any): void {
+    this.contacts.unshift(contact);
+    this.contactsSubject.next(this.contacts);
+  }
+
+  private updateCallback(contact: any): void {
+    _.set(this.contacts, contact.id, contact.data);
+    this.contactsSubject.next(this.contacts);
+  }
+
+  private deleteCallback(contact: any) {
+    _.remove(this.contacts, (ct: any) => {ct.id === contact.id ;});
+    this.contactsSubject.next(this.contacts);
+  }
+
+
 
   private handleError(error: Response) {
     console.error(error);

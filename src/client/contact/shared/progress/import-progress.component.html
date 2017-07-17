@@ -1,10 +1,11 @@
 <wth-modal-dock #modalDock>
-  <wth-modal-dock-header >
+  <wth-modal-dock-header [loading]="(importStatus==IMPORT_STATUS.importing)">
     <span *ngIf="importStatus==IMPORT_STATUS.importing">Importing</span>
-    <span *ngIf="importStatus==IMPORT_STATUS.done"><i class="fa fa-check"></i> Done</span>
+    <span *ngIf="importStatus==IMPORT_STATUS.done">Imported</span>
+    <span *ngIf="importStatus==IMPORT_STATUS.cancelled">Import cancelled</span>
   </wth-modal-dock-header>
   <wth-modal-dock-body>
-    <div class="media" *ngIf="importStatus==IMPORT_STATUS.importing || importStatus==IMPORT_STATUS.done ">
+    <div class="media" *ngIf="importStatus==IMPORT_STATUS.importing || importStatus==IMPORT_STATUS.cancelled  || importStatus==IMPORT_STATUS.done ">
       <div class="media-left">
         <div class="row-img-item">
           <div class="photo-box">
@@ -19,12 +20,13 @@
         </div>
       </div>
       <div class="media-body">
-        <div *ngIf="importStatus==IMPORT_STATUS.importing">Importing contacts ...</div>
-        <div *ngIf="importStatus==IMPORT_STATUS.done">All contacts imported</div>
+        <div *ngIf="importStatus==IMPORT_STATUS.importing">Importing {{ gapi.totalImporting > 0 ? 'total ' + gapi.totalImporting + ' contacts' : '' }}  ...</div>
+        <div *ngIf="importStatus==IMPORT_STATUS.done">{{ gapi.totalImporting }} contacts imported</div>
+        <div *ngIf="importStatus==IMPORT_STATUS.cancelled">{{ gapi.totalImporting }} contacts cancelled</div>
       </div>
     </div>
 
-    <div class="media" *ngIf="importStatus==3">
+    <div class="media" *ngIf="importStatus==IMPORT_STATUS.error">
       <div class="media-body">
         <p class="h3 m0 text-normal">Oops, something's wrong happened</p>
       </div>
@@ -33,8 +35,11 @@
   </wth-modal-dock-body>
   <wth-modal-dock-footer [inline]="true">
     <div>
-      <a href="javascript:;" (click)="close($event)">
-        Close
+      <a *ngIf="importStatus==IMPORT_STATUS.done || importStatus==IMPORT_STATUS.cancelled" href="javascript:;" (click)="addToLabel($event)">
+        Add to Label
+      </a>
+      <a *ngIf="importStatus==IMPORT_STATUS.importing" href="javascript:;" (click)="stop($event)">
+        Stop
       </a>
     </div>
   </wth-modal-dock-footer>

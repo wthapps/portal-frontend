@@ -28,9 +28,28 @@ export class ZContactDetailComponent implements OnInit {
 
   doEvent(e: any) {
     console.log(e);
-    this.apiBaseService.put(`contact/contacts/` + this.contactId, this.data).subscribe((res: any) => {
-      this.data = res.data;
-    });
+    if (e.action && e.action == 'update') {
+      this.apiBaseService.put(`contact/contacts/` + this.contactId, this.data).subscribe((res: any) => {
+        this.data = res.data;
+      });
+    }
+    if (e.action && e.action == 'delete') {
+      let body: any = {};
+      e.data._destroy = true;
+      if (e.item = 'emails') {
+        body = {emails: [e.data]};
+      }
+      if (e.item = 'phones') {
+        body = {phones: [e.data]};
+      }
+      this.apiBaseService.put(`contact/contacts/` + this.contactId, body).subscribe((res: any) => {
+        this.data = res.data;
+      });
+    }
+  }
+
+  deleteContact() {
+    this.contactService.deleteContact(this.data);
   }
 
 

@@ -22,9 +22,11 @@ export class ZContactSharedActionsBarComponent {
 
 
   toogleFavourite() {
-    this.contactService.updateContact(this.data, {favourite: !this.data.favourite}).subscribe((res: any) => {
-      this.data = res.data;
-    })
+    // edit labels favourite instead of favourite attribute here
+
+    // this.contactService.update(this.data, {favourite: !this.data.favourite}).then((res: any) => {
+    //   this.data = res.data;
+    // })
   }
 
   gotoSocial() {

@@ -9,6 +9,7 @@ import { PartialsProfilePhoneComponent } from '../../../core/partials/profile/ph
 import { PartialsProfileAddressComponent } from '../../../core/partials/profile/address/address.component';
 import { PartialsProfileMediaComponent } from '../../../core/partials/profile/media/media.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { ZContactService } from '../../shared/services/contact.service';
 
 @Component({
   moduleId: module.id,
@@ -26,7 +27,8 @@ export class ZNewContactComponent implements OnInit {
   @ViewChild('address') address: PartialsProfileAddressComponent;
   @ViewChild('media') media: PartialsProfileMediaComponent;
 
-  constructor(private route: ActivatedRoute, private apiBaseService: ApiBaseService) {
+  constructor(private route: ActivatedRoute, private apiBaseService: ApiBaseService,
+              private contactService: ZContactService) {
   }
 
   ngOnInit() {
@@ -34,9 +36,13 @@ export class ZNewContactComponent implements OnInit {
   }
 
   done() {
-    this.apiBaseService.post(`contact/contacts`, this.avatar.data).subscribe((res: any) => {
+    // this.apiBaseService.post(`contact/contacts`, this.avatar.data).subscribe((res: any) => {
+    //   console.log(res);
+    // });
+
+    this.contactService.create(this.avatar.data).subscribe((res: any) => {
       console.log(res);
-    });
+    })
   }
 
   doEvent(e: any) {

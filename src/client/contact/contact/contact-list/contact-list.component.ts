@@ -18,7 +18,9 @@ declare var _: any;
 export class ZContactListComponent implements OnInit, OnDestroy, CommonEventAction {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
 
-  // data: any = [];
+  contacts: Array<any> = new Array<any>();
+  filteredContacts: Array<any> = new Array<any>();
+
   eventThreeDot: any;
   eventAddContact: any;
   commonEventSub: Subscription;
@@ -41,13 +43,22 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      console.log('change params::::', params);
+
+      switch(params['label']) {
+        case 'all contact':
+        case 'undefined':
+          this.filteredContacts = this.contactService.contacts;
+          break;
+        default:
+          this.filteredContacts = this.contactService.filter({label: params['label']});
+          break;
+      }
     });
 
-    this.getAllContact();
+    this.getContacts();
     this.eventThreeDot = this.contactService.contactThreeDotActionsService.eventOut.subscribe((event: any) => {
       if (event.action == "deleted") {
-        this.getAllContact();
+        this.getContacts();
       }
     });
     this.eventAddContact = this.contactService.contactAddContactService.eventOut.subscribe((event: any) => {
@@ -60,6 +71,11 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   onDeleteAll() {
     console.log('delete all');
     console.log(this.contactService.selectedObjects);
+  }
+
+
+  deleteSelectedContacts() {
+    this.contactService.deleteSelectedContacts();
   }
 
   getAllContact() {
@@ -116,7 +132,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       message: 'Are you sure you want to delete this contact ?',
       header: 'Delete Contact',
       accept: () => {
-        this.contactService.deleteContact(data).subscribe((res: any) => {
+        this.contactService.deleteContact(data).then((res: any) => {
           // MUST update local data here
           // this.contactService.contactThreeDotActionsService.sendOut({action: "deleted"});
         });
@@ -126,5 +142,11 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
 
   addTags(event: any) {
     this.modal.open();
+  }
+
+  private getContacts() {
+    this.contacts = this.contactService.contacts;
+    this.filteredContacts = this.contactService.contacts;
+    console.log('get contacts:::', this.filteredContacts);
   }
 }

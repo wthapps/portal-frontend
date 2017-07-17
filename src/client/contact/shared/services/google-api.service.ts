@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Response, Http } from '@angular/http';
 import { ZContactService } from './contact.service';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 declare var _: any;
 declare var gapi: any;
@@ -11,12 +12,12 @@ declare var gapi: any;
 export class GoogleApiService {
   GoogleAuth: any;
   SCOPE: string = 'https://www.googleapis.com/auth/contacts.readonly';
-  API_KEY: string = 'AIzaSyBATa8fWBJz-ZH8UCscn0PEdC03-ng5bn8';
-  CLIENT_KEY: string = '764809689102-jjug0itrqj9qts1mv7vj1r6e7v6qrrhv.apps.googleusercontent.com';
-  MAX_RESULTS: number = 25;
+  CREDENTIAL_KEYS: any = {};
+  MAX_RESULTS: number = 1000;
   GCONTACT_SCOPE: string = '/m8/feeds/contacts/default/full/';
 
   allContactsUrl: string = 'https://www.google.com/m8/feeds/contacts/default/full';
+  totalImporting: number;
 
   GDATA_LVL_1 : any = {
     'name': 'title.$t',
@@ -28,12 +29,12 @@ export class GoogleApiService {
 
   GDATA_LVL_2: any = {
     'phones' : {
-      'type': 'rel',
+      'category': 'rel',
       'value': '$t',
       'primary': 'primary'
     },
     'emails': {
-      'type': 'rel',
+      'category': 'rel',
       'value': 'address',
       'primary': 'primary'
     }
@@ -41,7 +42,7 @@ export class GoogleApiService {
   PARSE_FIELDS = ['rel'];
 
 
-  constructor(public http: Http,
+  constructor(public api: ApiBaseService,
               private contactService: ZContactService) {
     this.handleClientLoad();
   }
@@ -51,16 +52,25 @@ export class GoogleApiService {
     gapi.load('client:auth2', this.initClient.bind(this));
   }
 
+  getGoogleApiConfig(): Promise<any> {
+    if(_.isEmpty(this.CREDENTIAL_KEYS)) {
+      return this.contactService.getGoogleApiConfig().toPromise().then((res: any) => this.CREDENTIAL_KEYS = res.data);
+    }
+    return Promise.resolve( this.CREDENTIAL_KEYS );
+  }
+
   initClient() {
     // Initialize the gapi.client object, which app uses to make API requests.
     // Get API key and client ID from API Console.
     // 'scope' field specifies space-delimited list of access scopes.
     console.debug('inside initClient, this: ', this);
-    gapi.client.init({
-      'apiKey': this.API_KEY,
-      // 'discoveryDocs': [this.discoveryUrl],
-      'clientId': this.CLIENT_KEY,
-      'scope': this.SCOPE
+    this.getGoogleApiConfig().then((cre_keys: any) => {
+      gapi.client.init({
+        'apiKey': cre_keys.API_KEY,
+        // 'discoveryDocs': [this.discoveryUrl],
+        'clientId': cre_keys.CLIENT_KEY,
+        'scope': this.SCOPE
+      })
     }).then(() => {
       console.debug('inside initClient Promise, this: ', this);
       this.GoogleAuth = gapi.auth2.getAuthInstance();
@@ -87,12 +97,14 @@ export class GoogleApiService {
     return new Promise<any>((resolve: any, reject: any) => {
       let user = this.GoogleAuth.currentUser.get();
       let isAuthorized = user.hasGrantedScopes(this.SCOPE)
+      this.totalImporting = 0;
       console.log('user: ', user);
       if (_.get(user, 'Zi.access_token') != undefined && isAuthorized)
         this.getGoogleContactsList(user.Zi.access_token)
           .then((data: any) => {
             console.log('client request result: ', data);
-            return this.mappingParams(data.feed.entry);
+            this.totalImporting = _.get(data, 'feed.entry', []).length;
+            return this.mappingParams(_.get(data, 'feed.entry', []));
           })
           .then((mapped_data: any) => { return this.importContactsToDb({contacts: mapped_data}); })
           .then((data: any) => { this.revokeAccess() ; resolve(data)});
