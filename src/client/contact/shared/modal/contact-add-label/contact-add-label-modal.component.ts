@@ -39,16 +39,18 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
 
   ngOnInit() {
 
-    this.labelService.getAll().subscribe((response: any) => {
-      this.originalLabels = response.data;
-      // this.originalLabels = _.map(this.originalLabels, ['id','name']);
-      this.labels = _.map(this.originalLabels, 'name');
-    });
-
-    // this.labelService.getAllLabels().then((labels: any) => {
-    //   this.originalLabels = labels;
+    // this.labelService.getAll().subscribe((response: any) => {
+    //   this.originalLabels = response.data;
+    //   // this.originalLabels = _.map(this.originalLabels, ['id','name']);
     //   this.labels = _.map(this.originalLabels, 'name');
-    // })
+    // });
+
+
+    this.labelService.getAllLabels().then((labels: any[]) => {
+      console.log('getAllLabels: ', labels);
+      this.originalLabels.push(...labels);
+      this.labels = _.map(this.originalLabels, 'name');
+    })
 
     // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
     // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';

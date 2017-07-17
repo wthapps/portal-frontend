@@ -14,10 +14,10 @@ export class LabelService extends BaseEntityService<Label> {
     this.url = 'contact/labels';
   }
 
-  // getAllLabels(): Promise<any> {
-  //   if(_.isEmpty(this.labels))
-  //     return this.getAll().toPromise().then((res: any) => {this.labels.push(...res.data); return this.labels;});
-  //
-  //   return Promise.resolve(this.labels);
-  // }
+  getAllLabels(): Promise<any> {
+    if(_.isEmpty(this.labels))
+      return this.getAll().toPromise().then((res: any) => {this.labels.push(...res.data); return this.labels;});
+
+    return Promise.resolve(this.labels);
+  }
 }
