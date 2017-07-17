@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit, HostBinding } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, HostBinding, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -26,6 +26,8 @@ export class PartialsProfilePhoneComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
   @Input() config: ProfileConfig;
+
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
   @HostBinding('class') class = 'field-group';
 
@@ -70,13 +72,13 @@ export class PartialsProfilePhoneComponent implements OnInit {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        category: [item.category, Validators.compose([Validators.required])],
         country_alpha_code: [item.country_alpha_code, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
     } else {
       return this.fb.group({
-        kind_of: ['', Validators.compose([Validators.required])],
+        category: ['', Validators.compose([Validators.required])],
         country_alpha_code: ['', Validators.compose([Validators.required])],
         value: ['', Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
@@ -110,21 +112,8 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
 
   onSubmit(values: any): void {
-    if (this.config.callApiAfterChange) {
-
-      let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
-
-      this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res: any) => {
-        this.removeAll();
-        this.data = res.data;
-        _.map(this.data.emails, (v: any)=> {
-          this.addItem(v);
-        });
-        this.modal.close();
-      });
-    } else {
-      this.data.phones = values.phones;
-    }
+    this.data.phones = values.phones;
+    this.eventOut.emit(values);
     this.modal.close();
   }
 

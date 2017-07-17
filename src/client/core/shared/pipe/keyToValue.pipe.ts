@@ -26,6 +26,9 @@ export class KeyToValuePipe implements PipeTransform {
     // console.log(key, obj, objKey, objValue);
 
     let newObj: any = _.find(obj, [objKey, key]);
-    return newObj[objValue];
+    if (newObj && newObj[objValue]) {
+      return newObj[objValue];
+    }
+    return "";
   }
 }

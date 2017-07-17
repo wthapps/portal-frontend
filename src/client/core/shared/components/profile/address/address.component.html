@@ -10,13 +10,13 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
       <template ngFor let-item [ngForOf]="data.addresses" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{ item.kind_of | keyToValue:addressType:'kind_of':'name' }}</dt>
-        <dd><p>{{ item.address_line1 }}</p></dd>
+        <dt>{{item.category | keyToValue:addressType:'category':'name'}}</dt>
+        <dd><p>{{item.address_line1}}</p></dd>
       </template>
     </dl>
 
-    <div *ngIf="data.addresses.length == 0 && editable">
-      <p class="text-fade" *ngIf="config.getCurrentUser">
+    <div *ngIf="data.addresses && data.addresses.length == 0 && editable">
+      <p class="text-fade">
         Tell us more about your address
       </p>
       <button type="button" class="btn btn-default" (click)="onOpenModal()">
@@ -40,14 +40,14 @@
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_phone.controls.kind_of.valid
-                  && add_phone.controls.kind_of.touched),
-                  'has-success': (add_phone.controls.kind_of.valid
-                  && add_phone.controls.kind_of.touched
-                  && form.value.addresses[i].kind_of.length>1)}">
-                  <select class="form-control" name="name" formControlName="kind_of">
+                  'has-error': (!add_phone.controls.category.valid
+                  && add_phone.controls.category.touched),
+                  'has-success': (add_phone.controls.category.valid
+                  && add_phone.controls.category.touched
+                  && form.value.addresses[i].category.length>1)}">
+                  <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One -- </option>
-                    <option *ngFor="let et of addressType" value="{{ et.kind_of }}">{{ et.name }}</option>
+                    <option *ngFor="let et of addressType" value="{{et.category}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>

@@ -17,47 +17,18 @@
   </div>
 </div>
 
-
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
       <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Information</h4>
     </modal-header>
     <modal-body>
-      <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched),
-        'has-success': (first_name.valid && first_name.touched)}">
-        <label for="first_name">First name <span class="text-danger">*</span></label>
-        <input [formControl]="first_name" type="text" class="form-control" id="first_name"
-               placeholder="First name">
-        <div *ngIf="!first_name.valid && first_name.touched">
-              <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">
-                First name is required
-              </span>
-        </div>
-      </div>
-
-      <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched),
-        'has-success': (last_name.valid && last_name.touched)}">
-        <label for="last_name">Last name <span class="text-danger">*</span></label>
-        <input [formControl]="last_name" type="text" class="form-control" id="last_name"
-               placeholder="Last name">
-        <div *ngIf="!last_name.valid && last_name.touched">
-              <span *ngIf="!last_name.valid && last_name.errors.required" class="help-block">
-                Last name is required
-              </span>
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="form-group">
-        <label for="nickname">Nickname </label>
-        <input [formControl]="nickname" type="text" class="form-control" id="nickname"
-               placeholder="Nickname">
+      <div *ngFor="let question of questions" class="form-row">
+        <df-question [question]="question" [form]="form"></df-question>
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!first_name.valid || !last_name.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
       <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
     </modal-footer>
   </modal>

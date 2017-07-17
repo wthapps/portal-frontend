@@ -1,20 +1,24 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
-import { ZContactService } from './services/contact.service';
-import { GoogleApiService } from './services/google-api.service';
-
-import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
-import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
-
-import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
-import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
-
-import { ZContactSharedItemComponent } from './list/item/item.component';
 import { ZContactSharedListComponent } from './list/list.component';
+import { ZContactSharedItemComponent } from './list/item/item.component';
+import { ZContactService } from './services/contact.service';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
+import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
+import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
+import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
+import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
+
+import { GoogleApiService } from './services/google-api.service';
+import { TagInputModule } from 'ng2-tag-input';
+
 import { ZContactShareAddContactComponent } from './modal/add-contact/add-contact.component';
 import { ContactAddLabelModalComponent } from './modal/contact-add-label/contact-add-label-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
+import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -23,22 +27,48 @@ import { ContactAddLabelModalComponent } from './modal/contact-add-label/contact
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    // third party libs
+    TagInputModule,
+
+    CoreSharedModule.forRoot()
   ],
   declarations: [
+    ZContactSharedListComponent,
+    ZContactSharedItemComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
-    ZContactSharedItemComponent,
-    ZContactSharedListComponent,
     ZContactShareAddContactComponent,
+    ZContactSharedToolbarComponent,
+    ZContactShareImportProgressComponent,
+    ZContactShareImportContactComponent,
+    ZContactSharedToolbarComponent,
+
+    //modal here
     ContactAddLabelModalComponent
   ],
   exports: [
+    CommonModule,
+    RouterModule,
+
+    // third party libs
+    TagInputModule,
+
+
+    ZContactSharedListComponent,
+    ZContactSharedItemComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedThreeDotActionComponent,
-    ZContactSharedItemComponent,
-    ZContactSharedListComponent,
     ZContactShareAddContactComponent,
+    ZContactSharedToolbarComponent,
+    ZContactShareImportProgressComponent,
+    ZContactShareImportContactComponent,
+    ZContactSharedToolbarComponent,
+
+    // modal here
     ContactAddLabelModalComponent
   ]
 })
