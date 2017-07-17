@@ -41,6 +41,7 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
 
     this.labelService.getAll().subscribe((response: any) => {
       this.originalLabels = response.data;
+      // this.originalLabels = _.map(this.originalLabels, ['id','name']);
       this.labels = _.map(this.originalLabels, 'name');
     });
     // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
@@ -59,6 +60,9 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
     _.forEach(this.selectedLabels, (label: any) => {
       this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
     });
+
+    this.contact['labels_attributes'] = this.contact.labels;
+    this.contact = _.pick(this.contact, ['id', 'labels_attributes']);
 
     this.commonEventService.broadcast({
       action: 'contact:contact:update',

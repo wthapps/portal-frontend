@@ -40,7 +40,7 @@ export class ZNewContactComponent implements OnInit {
     //   console.log(res);
     // });
 
-    this.contactService.addContact(this.avatar.data).then((res: any) => {
+    this.contactService.create(this.avatar.data).subscribe((res: any) => {
       console.log(res);
     })
   }
