@@ -93,15 +93,20 @@ export class ZContactService extends BaseEntityService<any>{
 
   update(body: any, multiple: boolean=false): Observable<any> {
     if(multiple) {
-      return super.update(body)
+      return this.apiBaseService.post(`${this.url}/update_multiple`, body)
         .map(
-          (res: any) => {
-            this.updateCallback(res.data);
-            return res;
+          (response: any) => {
+            let contacts = response.data;
+
+            _.forEach(contacts, (contact: any) => {
+              this.updateCallback(contact);
+            });
+            return response;
           }
         );
     }
     else {
+      console.log('body::::', body);
       return super.update(body)
         .map(
           (res: any) => {
@@ -110,16 +115,6 @@ export class ZContactService extends BaseEntityService<any>{
           }
         );
     }
-  }
-
-  updateMultiple(body: any): Observable<any> {
-    return super.update(body)
-      .map(
-        (res: any) => {
-          this.updateCallback(res.data);
-          return res;
-        }
-      );
   }
 
   create(body: any): Observable<any> {
@@ -144,18 +139,19 @@ export class ZContactService extends BaseEntityService<any>{
     return this.apiBaseService.get(`${this.url}/get_google_api_config`);
   }
 
-  filter(options: any): Array<any> {
-    // return _.filter(this.contacts, (contact: any)=> {
-    //   if (options.label != 'undefined') {
-    //     return _.find(contact.labels, (label: any) => {
-    //       if(label.name === options.label) {
-    //         return contact;
-    //       };
-    //     });
-    //   }
-    // });
+  filter(options: any) {
+    let contacts = _.filter(this.contacts, (contact: any)=> {
+      if (options.label != 'undefined') {
+        return _.find(contact.labels, (label: any) => {
+          if(label.name === options.label) {
+            return contact;
+          };
+        });
+      }
+    });
 
-    return this.contacts;
+    this.contactsSubject.next(contacts);
+
   }
 
   private initialLoad() {
@@ -174,12 +170,14 @@ export class ZContactService extends BaseEntityService<any>{
 
   private updateCallback(contact: any): void {
     // _.set(this.contacts, contact.id, contact);
-    this.contacts = _.map(this.contacts, (ct: any) => { if(contact.id === ct.id)
+    this.contacts = _.map(this.contacts, (ct: any) => {
+      if(contact.id === ct.id)
         return contact;
       else
       return ct;
     });
     console.log('updateCallback: ', contact, this.contacts);
+    this.contactsSubject.next([]);
     this.contactsSubject.next(this.contacts);
   }
 

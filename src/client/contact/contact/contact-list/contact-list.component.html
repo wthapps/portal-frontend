@@ -12,7 +12,7 @@
 
         <!--single selected item-->
           <li>
-            <a href="javascript:;" class="btn" (click)="doEvent({action: 'contact:contact:update', payload:{multiple: true}})"><i class="fa fa-star-o"></i></a>
+            <a href="javascript:;" class="btn" (click)="favourite()"><i class="fa" [ngClass]="hasFavourite() ? 'fa-star-o' : 'fa-star'" ></i></a>
           </li>
 
           <li>
