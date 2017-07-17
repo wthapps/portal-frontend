@@ -63,6 +63,7 @@ export class PartialsProfileEmailComponent implements OnInit{
     if (item) {
       return this.fb.group({
         category: [item.category, Validators.compose([Validators.required])],
+        id: [item.id, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     } else {
@@ -84,6 +85,7 @@ export class PartialsProfileEmailComponent implements OnInit{
 
   removeItem(i: number) {
     const control = <FormArray>this.form.controls['emails'];
+    this.eventOut.emit({action: 'delete', item: 'emails', data: control.at(i).value});
     control.removeAt(i);
   }
 
@@ -117,7 +119,7 @@ export class PartialsProfileEmailComponent implements OnInit{
     //   this.data.emails = values.emails;
     // }
     this.data.emails = values.emails;
-    this.eventOut.emit(values);
+    this.eventOut.emit({action: 'update', item: 'email', data: values});
     this.modal.close();
   }
 
