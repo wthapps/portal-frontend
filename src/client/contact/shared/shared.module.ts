@@ -22,6 +22,7 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
 import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
+import { ContactImportContactDataService } from './modal/import-contact/import-contact-data.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -83,7 +84,8 @@ export class ZContactSharedModule {
         ZContactService,
         GoogleApiService,
         ZContactAddContactService,
-        ZContactThreeDotActionsService
+        ZContactThreeDotActionsService,
+        ContactImportContactDataService
       ]
     };
   }

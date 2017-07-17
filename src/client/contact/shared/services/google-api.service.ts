@@ -13,7 +13,7 @@ export class GoogleApiService {
   GoogleAuth: any;
   SCOPE: string = 'https://www.googleapis.com/auth/contacts.readonly';
   CREDENTIAL_KEYS: any = {};
-  MAX_RESULTS: number = 25;
+  MAX_RESULTS: number = 1000;
   GCONTACT_SCOPE: string = '/m8/feeds/contacts/default/full/';
 
   allContactsUrl: string = 'https://www.google.com/m8/feeds/contacts/default/full';
@@ -101,7 +101,7 @@ export class GoogleApiService {
         this.getGoogleContactsList(user.Zi.access_token)
           .then((data: any) => {
             console.log('client request result: ', data);
-            return this.mappingParams(data.feed.entry);
+            return this.mappingParams(_.get(data, 'feed.entry', []));
           })
           .then((mapped_data: any) => { return this.importContactsToDb({contacts: mapped_data}); })
           .then((data: any) => { this.revokeAccess() ; resolve(data)});

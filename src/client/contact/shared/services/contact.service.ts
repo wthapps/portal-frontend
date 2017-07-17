@@ -7,6 +7,7 @@ import { ZContactAddContactService } from '../modal/add-contact/add-contact.serv
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { Constants } from '../../../core/shared/config/constants';
+import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 
 declare var _: any;
 
@@ -25,7 +26,7 @@ export class ZContactService extends BaseEntityService<any>{
   contacts$: Observable<Array<any>> = this.contactsSubject.asObservable();
 
   constructor(protected apiBaseService: ApiBaseService,
-              public commonEventService: CommonEventService,
+              public importContactDataService: ContactImportContactDataService,
               public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService
   ) {

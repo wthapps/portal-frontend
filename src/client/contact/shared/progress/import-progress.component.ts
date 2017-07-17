@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZContactService } from '../services/contact.service';
 import { Subscription } from 'rxjs/Subscription';
-import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { GoogleApiService } from '../services/google-api.service';
 import { ModalDockComponent } from '../../../core/partials/modal/dock.component';
-import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 
 @Component({
@@ -23,15 +20,14 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     error: 3
   }
 
-  commonSubscription: Subscription;
+  importSubscription: Subscription;
   public importStatus: any;
 
   constructor(private contactService: ZContactService,
-              private commonEventService: CommonEventService,
               private gapi: GoogleApiService,
               public loadingService: LoadingService) {
 
-    this.commonSubscription = this.commonEventService.event.subscribe((event: any) => {
+    this.importSubscription = this.contactService.importContactDataService.eventIn.subscribe((event: any) => {
       switch (event.action) {
         case 'contact:contact:open_import_progress:google':
           this.open();
@@ -50,7 +46,7 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.commonSubscription.unsubscribe();
+    this.importSubscription.unsubscribe();
   }
 
   open(options?: any) {
