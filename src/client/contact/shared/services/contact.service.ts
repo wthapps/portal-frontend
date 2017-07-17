@@ -124,15 +124,17 @@ export class ZContactService extends BaseEntityService<any>{
   }
 
   filter(options: any): Array<any> {
-    return _.filter(this.contacts, (contact: any)=> {
-      if (options.label != 'undefined') {
-        return _.find(contact.labels, (label: any) => {
-          if(label.name === options.label) {
-            return contact;
-          };
-        });
-      }
-    });
+    // return _.filter(this.contacts, (contact: any)=> {
+    //   if (options.label != 'undefined') {
+    //     return _.find(contact.labels, (label: any) => {
+    //       if(label.name === options.label) {
+    //         return contact;
+    //       };
+    //     });
+    //   }
+    // });
+
+    return this.contacts;
   }
 
   private initialLoad() {
@@ -150,7 +152,13 @@ export class ZContactService extends BaseEntityService<any>{
   }
 
   private updateCallback(contact: any): void {
-    _.set(this.contacts, contact.id, contact.data);
+    // _.set(this.contacts, contact.id, contact);
+    this.contacts = _.map(this.contacts, (ct: any) => { if(contact.id === ct.id)
+        return contact;
+      else
+      return ct;
+    });
+    console.log('updateCallback: ', contact, this.contacts);
     this.contactsSubject.next(this.contacts);
   }
 

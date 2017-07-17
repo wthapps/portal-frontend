@@ -29,7 +29,10 @@ export class ZContactDetailComponent implements OnInit {
   doEvent(e: any) {
     console.log(e);
     if (e.action && e.action == 'update') {
-      this.apiBaseService.put(`contact/contacts/` + this.contactId, this.data).subscribe((res: any) => {
+      // this.apiBaseService.put(`contact/contacts/` + this.contactId, this.data).subscribe((res: any) => {
+      //   this.data = res.data;
+      // });
+      this.contactService.update(this.data).subscribe((res: any) => {
         this.data = res.data;
       });
     }

@@ -44,6 +44,12 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
       // this.originalLabels = _.map(this.originalLabels, ['id','name']);
       this.labels = _.map(this.originalLabels, 'name');
     });
+
+    // this.labelService.getAllLabels().then((labels: any) => {
+    //   this.originalLabels = labels;
+    //   this.labels = _.map(this.originalLabels, 'name');
+    // })
+
     // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
     // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
     //
