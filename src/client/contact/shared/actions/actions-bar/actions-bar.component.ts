@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { RouterLinkActive, Router } from '@angular/router';
 import { ZContactService } from '../../services/contact.service';
-import { Router } from '@angular/router';
 import { Config } from '../../../../core/shared/config/env.config';
 
 declare var _: any;
@@ -11,24 +11,29 @@ declare var _: any;
   templateUrl: 'actions-bar.component.html'
 })
 export class ZContactSharedActionsBarComponent {
+  @Input() data: any;
 
-  constructor(private contactService: ZContactService) {
+  linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
+  linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
+
+  constructor(private contactService: ZContactService, private router: Router) {
 
   }
 
-  @Input() data: any;
 
   toogleFavourite() {
-    this.contactService.updateContact(this.data, {favourite: !this.data.favourite}).subscribe((res: any) => {
-      this.data = res.data;
-    })
+    // edit labels favourite instead of favourite attribute here
+
+    // this.contactService.update(this.data, {favourite: !this.data.favourite}).then((res: any) => {
+    //   this.data = res.data;
+    // })
   }
 
   gotoSocial() {
-    window.location.href = Config.SUB_DOMAIN.SOCIAL;
+    window.location.href = `${Config.SUB_DOMAIN.SOCIAL}/profile/${this.data.wthapps_user.uuid}`;
   }
 
   gotoChat() {
-    window.location.href = Config.SUB_DOMAIN.CHAT;
+    window.location.href = `${Config.SUB_DOMAIN.CHAT}/conversations/${this.data.wthapps_user.id}`;
   }
 }

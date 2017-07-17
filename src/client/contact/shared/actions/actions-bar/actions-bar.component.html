@@ -1,8 +1,8 @@
 <div class="contact-listbox-action">
   <div>
     <a href="javascript:;" (click)="toogleFavourite()" class="btn btn-default-inline"><i class="fa" [ngClass]="data.favourite? 'fa-star': 'fa-star-o'"></i></a>
-    <a href="javascript:;" (click)="gotoSocial()" class="btn btn-default-inline"><i class="fa fa-globe"></i></a>
-    <a href="javascript:;" (click)="gotoChat()" class="btn btn-default-inline"><i class="fa fa-comments-o"></i></a>
+    <a href="{{ linkSocial }}{{ data.wthapps_user.uuid }}" target="_blank" class="btn btn-default-inline"><i class="fa fa-globe"></i></a>
+    <a href="{{ linkChat }}{{ data.wthapps_user.id }}" target="_blank" class="btn btn-default-inline"><i class="fa fa-comments-o"></i></a>
   </div>
   <z-contact-shared-three-dot-actions [data]="data"></z-contact-shared-three-dot-actions>
 </div>

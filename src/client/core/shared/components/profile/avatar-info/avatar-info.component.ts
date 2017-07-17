@@ -73,7 +73,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
 
   onOpenModal() {
     if (this.data.name) {
-      this.form.controls['name'] = this.data.name;
+      this.form.controls['name'].setValue(this.data.name);
     }
     if (this.data.first_name && this.data.last_name) {
       this.form.controls['first_name'].setValue(this.data.first_name);
@@ -87,6 +87,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
 
 
   onSubmit(values: any): void {
+    console.log(this.form);
     if (values.name) {
       this.data.name = values.name;
     }
@@ -100,6 +101,6 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
     }
 
     this.modal.close();
-    this.eventOut.emit(values);
+    this.eventOut.emit({action: 'update', item: 'info', data: values});
   }
 }

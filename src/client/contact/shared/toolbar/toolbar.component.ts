@@ -42,7 +42,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
     switch (event.name) {
       case 'google':
         console.log('google import contact');
-        this.contactService.commonEventService.broadcast({action: 'contact:contact:open_import_progress:google'});
+        this.contactService.importContactDataService.sendIn({action: 'contact:contact:open_import_progress:google'});
 
         break;
       case 'yahoo':

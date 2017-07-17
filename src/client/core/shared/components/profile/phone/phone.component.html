@@ -13,7 +13,7 @@
         <dt>{{item.category | keyToValue:phoneType:'category':'name'}}</dt>
         <dd>
           <p>
-            <img *ngIf="countriesCode"
+            <img *ngIf="item.country_alpha_code | phoneCodeFlag:countriesCode"
                  src="assets/images/flags/{{item.country_alpha_code | phoneCodeFlag:countriesCode}}.svg"
                  width="30" alt="">
             {{item.value}}
@@ -50,7 +50,7 @@
                   && add_phone['controls'].category.touched),
                   'has-success': (add_phone['controls'].category.valid
                   && add_phone['controls'].category.touched
-                  && form.value.phones[i].category.length > 1)}">
+                  && form.value.phones[i].category && form.value.phones[i].category.length > 1)}">
                   <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One --</option>
                     <option *ngFor="let et of phoneType" value="{{et.category}}">{{et.name}}</option>
@@ -63,7 +63,7 @@
                   && add_phone['controls'].country_alpha_code.touched),
                   'has-success': (add_phone['controls'].country_alpha_code.valid
                   && add_phone['controls'].country_alpha_code.touched
-                  && form.value.phones[i].country_alpha_code.length>1)}">
+                  && form.value.phones[i].country_alpha_code && form.value.phones[i].country_alpha_code.length>1)}">
 
                   <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
                                   [suggestions]="filteredCountriesCode"

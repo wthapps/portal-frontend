@@ -74,6 +74,7 @@ export class PartialsProfilePhoneComponent implements OnInit {
       return this.fb.group({
         category: [item.category, Validators.compose([Validators.required])],
         country_alpha_code: [item.country_alpha_code, Validators.compose([Validators.required])],
+        id: [item.id, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
     } else {
@@ -96,6 +97,7 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   removeItem(i: number) {
     const control = <FormArray>this.form.controls['phones'];
+    this.eventOut.emit({action: 'delete', item: 'phones', data: control.at(i).value});
     control.removeAt(i);
   }
 
@@ -113,7 +115,7 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   onSubmit(values: any): void {
     this.data.phones = values.phones;
-    this.eventOut.emit(values);
+    this.eventOut.emit({action: 'update', item: 'phone', data: values});
     this.modal.close();
   }
 
