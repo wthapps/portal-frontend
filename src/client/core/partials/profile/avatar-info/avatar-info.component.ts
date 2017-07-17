@@ -101,6 +101,6 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
     }
 
     this.modal.close();
-    this.eventOut.emit(values);
+    this.eventOut.emit({action: 'update', item: 'info', data: values});
   }
 }

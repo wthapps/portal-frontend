@@ -36,10 +36,10 @@ export class ZContactDetailComponent implements OnInit {
     if (e.action && e.action == 'delete') {
       let body: any = {};
       e.data._destroy = true;
-      if (e.item = 'emails') {
+      if (e.item == 'emails') {
         body = {emails: [e.data]};
       }
-      if (e.item = 'phones') {
+      if (e.item == 'phones') {
         body = {phones: [e.data]};
       }
       this.apiBaseService.put(`contact/contacts/` + this.contactId, body).subscribe((res: any) => {
