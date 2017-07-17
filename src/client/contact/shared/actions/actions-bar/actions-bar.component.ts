@@ -30,10 +30,10 @@ export class ZContactSharedActionsBarComponent {
   }
 
   gotoSocial() {
-    window.location.href = `${Config.SUB_DOMAIN.SOCIAL}/profile/${this.data.uuid}`;
+    window.location.href = `${Config.SUB_DOMAIN.SOCIAL}/profile/${this.data.wthapps_user.uuid}`;
   }
 
   gotoChat() {
-    window.location.href = `${Config.SUB_DOMAIN.CHAT}/conversations/${this.data.id}`;
+    window.location.href = `${Config.SUB_DOMAIN.CHAT}/conversations/${this.data.wthapps_user.id}`;
   }
 }
