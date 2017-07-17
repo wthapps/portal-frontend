@@ -6,7 +6,7 @@ import {
   FormBuilder,
   FormControl
 } from '@angular/forms';
-import { ZoneReportService } from './report.service';
+import { ZSharedReportService } from './report.service';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 declare var $: any;
@@ -17,7 +17,7 @@ declare var _: any;
   selector: 'wth-zone-report',
   templateUrl: 'report.component.html'
 })
-export class ZoneReportComponent {
+export class ZSharedReportComponent {
   @ViewChild('modal') modal: ModalComponent;
 
   REASONS: Array<any> = [
@@ -39,9 +39,8 @@ export class ZoneReportComponent {
   form: FormGroup;
   other: AbstractControl;
 
-  constructor(private zoneReportService: ZoneReportService,
-              private fb: FormBuilder,
-              private reportService: ZoneReportService) {
+  constructor(private fb: FormBuilder,
+              private reportService: ZSharedReportService) {
 
     this.form = fb.group({
       'other': ['']
@@ -49,7 +48,7 @@ export class ZoneReportComponent {
 
     this.other = this.form.controls['other'];
 
-    zoneReportService.set = this.activate.bind(this);
+    this.reportService.set = this.activate.bind(this);
   }
 
   activate(type: string, uuid: string) {
@@ -75,9 +74,7 @@ export class ZoneReportComponent {
       .subscribe((result: any) => {
           console.log(result);
         },
-        error => {
-          console.log(error);
-        }
+        error => console.log(error)
       );
     this.modal.close();
   }

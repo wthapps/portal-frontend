@@ -1,51 +1,52 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { TagInputModule } from 'ng2-tag-input';
-import { CheckboxModule, SliderModule, CalendarModule } from 'primeng/primeng';
+import { CalendarModule } from 'primeng/components/calendar/calendar';
+import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 
-import { PhotoService } from '../../services/photo.service';
 import { PipeModule } from '../../pipe/pipe.module';
 
-import {
-  PartialsPhotoSharingModule,
-  TaggingModalComponent,
-  TaggingElComponent,
-  ZMediaTaggingService,
-  AddToAlbumModalComponent,
-  AlbumEditModalComponent,
-  AlbumCreateModalComponent,
-  AlbumDeleteModalComponent,
-  PhotoEditModalComponent,
-  BaseObjectEditNameModalComponent,
-  PhotoDetailPartialComponent,
+import { PhotoDetailPartialComponent } from './detail/photo-detail-partial.component';
+import { TaggingModalComponent } from './modal/tagging/tagging-modal.component';
+import { TaggingElComponent } from './modal/tagging/tagging-el.component';
+import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
+import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
+import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
+import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.component';
+import { BaseObjectEditNameModalComponent } from './modal/base-object-edit-name-modal.component';
+import { PhotoEditModalComponent } from './modal/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
+import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
+import { AlbumDeleteModalComponent } from './modal/album-delete-modal.component';
+import { AlbumCreateModalComponent } from './modal/album-create-modal.component';
+import { ZMediaShareListComponent } from './list/list.component';
+import { MediaListHeaderComponent } from './list/media-list-header.component';
+import { ZMediaShareItemComponent } from './list/item/item.component';
 
-  ZMediaToolbarComponent,
-  ZMediaToolbarPhotoComponent,
-  ZMediaToolbarAlbumComponent,
-  ZMediaToolbarAlbumDetailComponent,
+import { PhotoService } from '../../services/photo.service';
+import { ZMediaTaggingService } from './modal/tagging/tagging.service';
 
-  ZMediaShareListComponent,
-  MediaListHeaderComponent,
-  ZMediaShareItemComponent
-} from './index';
+import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
+import { SliderModule } from 'primeng/components/slider/slider';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    Ng2Bs3ModalModule,
-    PartialsPhotoSharingModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    Ng2Bs3ModalModule,
     TagInputModule,
     CalendarModule,
-    RouterModule,
     CheckboxModule,
     SliderModule,
-    PipeModule
+    PipeModule,
+    PartialsPhotoSharingModule
   ],
   declarations: [
     PhotoDetailPartialComponent,
@@ -67,8 +68,10 @@ import {
   ],
   exports: [
     PartialsPhotoSharingModule,
+
     PhotoDetailPartialComponent,
     TaggingModalComponent,
+    TaggingElComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
@@ -77,9 +80,8 @@ import {
     PhotoEditModalComponent,
     AddToAlbumModalComponent,
     AlbumEditModalComponent,
-    AlbumCreateModalComponent,
     AlbumDeleteModalComponent,
-    TaggingElComponent,
+    AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
     ZMediaShareItemComponent

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '../../services/apibase.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 
 @Injectable()
-export class ZoneReportService {
+export class ZSharedReportService {
   set: (type: string, uuid: string) => Promise<boolean>;
 
   constructor(private apiBaseService: ApiBaseService) {

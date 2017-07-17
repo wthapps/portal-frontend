@@ -13,12 +13,11 @@ import { PhotoSelectModalComponent } from './upload-photos/photo-select-modal.co
     CommonModule,
     RouterModule,
     Ng2Bs3ModalModule
-
   ],
   declarations: [PostPhotoSelectComponent, SoPhotoListComponent, FileSelectionComponent, PhotoSelectModalComponent],
   exports: [PostPhotoSelectComponent, SoPhotoListComponent, FileSelectionComponent, PhotoSelectModalComponent],
   providers: []
 })
 
-export class PhotoModule {
+export class ZSharedPhotoModule {
 }

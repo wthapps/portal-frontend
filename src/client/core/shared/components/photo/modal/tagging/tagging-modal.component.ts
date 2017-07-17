@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Response } from '@angular/http';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaTaggingService } from './tagging.service';

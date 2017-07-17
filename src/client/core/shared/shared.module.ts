@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { ApiBaseService } from './services/apibase.service';
 import { ServiceManager } from './services/service-manager';
@@ -22,11 +24,13 @@ import { PhotoModalDataService } from './services/photo-modal-data.service';
 import { PhotoUploadService } from './services/photo-upload.service';
 import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
-import { ZoneReportService } from './form/report/report.service';
+import { ZSharedReportService } from './components/zone/report/report.service';
 import { ChatCommonService } from './services/chat.common.service';
 import { PhotoService } from './services/photo.service';
 import { CountryService } from './components/countries/countries.service';
-//// import { CommonEventService } from './services/common-event/common-event.service';
+import { CommonEventService } from './services/common-event/common-event.service';
+
+import { PipeModule } from './pipe/pipe.module';
 
 import { LoadingModule } from './components/loading/loading.module';
 import { FooterModule } from './components/footer/footer.module';
@@ -37,6 +41,12 @@ import { ToastsModule } from './components/toast/toast-message.module';
 import { CoreChatSupportModule } from './components/chat-support/chat-support.module';
 import { UploadCropImageModule } from './components/upload-crop-image/upload-crop-image.module';
 import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
+import { ZSharedMenuModule } from './components/zone/menu/menu.module';
+import { ZSharedPhotoModule } from './components/zone/photo/photo.module';
+import { DisplayLinkModule } from './components/link/display-link.module';
+import { ZSharedReportModule } from './components/zone/report/report.module';
+import { PartialsProfileModule } from './components/profile/profile.module';
+import { PartialsPhotoModule } from './components/photo/photo.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -55,10 +65,13 @@ import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    Ng2Bs3ModalModule,
 
     LoadingModule,
     ToastsModule,
     ConfirmDialogModule,
+    InfiniteScrollModule,
+    InputSwitchModule,
 
     FooterModule,
     HeaderModule,
@@ -66,7 +79,17 @@ import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
     TablePricingModule,
     CoreChatSupportModule,
     UploadCropImageModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    ZSharedMenuModule,
+    ZSharedMenuModule,
+    ZSharedPhotoModule,
+    DisplayLinkModule,
+    ZSharedReportModule,
+    PartialsProfileModule,
+    PartialsPhotoModule,
+
+    // Pipe
+    PipeModule
   ]
 })
 export class CoreSharedModule {
@@ -91,10 +114,10 @@ export class CoreSharedModule {
         PhotoUploadService,
         UrlService,
         DateService,
-        ZoneReportService,
+        ZSharedReportService,
         ChatCommonService,
         PhotoService,
-        //// CommonEventService
+        CommonEventService
       ]
     };
   }

@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 import './operators';
 import 'rxjs/add/operator/filter';
+
+import { Config } from '../core/shared/config/env.config';
 import { ChatService } from './shared/services/chat.service';
+
 
 /**
  * This class represents the main application component.
@@ -9,12 +14,27 @@ import { ChatService } from './shared/services/chat.service';
 @Component({
   moduleId: module.id,
   selector: 'sd-app',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css'],
 })
-export class AppComponent implements OnInit {
-  constructor(private chatService: ChatService) {}
+export class AppComponent implements OnInit, OnDestroy {
+  routerSubscription: Subscription;
+
+  constructor(private router: Router, private chatService: ChatService) {
+    console.log('Environment config', Config);
+  }
 
   ngOnInit() {
     this.chatService.subscribeNotification();
+
+    this.routerSubscription = this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe((event: any) => {
+        document.body.scrollTop = 0;
+      });
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
   }
 }

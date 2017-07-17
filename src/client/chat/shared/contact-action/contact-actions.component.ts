@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversation.component';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 
 declare let $: any;
 
@@ -27,7 +27,7 @@ export class ZChatContactActionsComponent implements OnInit {
 
   constructor(private router: Router,
               private chatService: ChatService,
-              private zoneReportService: ZoneReportService,
+              private zoneReportService: ZSharedReportService,
               private confirmationService: ConfirmationService) {
     this.conversationUrl = this.chatService.constant.conversationUrl;
     this.profileUrl = this.chatService.constant.profileUrl;
