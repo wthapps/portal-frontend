@@ -17,7 +17,8 @@ import { TagInputModule } from 'ng2-tag-input';
 
 import {
   ZContactShareAddContactComponent,
-  ContactAddLabelModalComponent
+  ContactAddLabelModalComponent,
+  ContactEditLabelModalComponent
 } from './modal/index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
@@ -52,7 +53,8 @@ import { ContactImportContactDataService } from './modal/import-contact/import-c
     ZContactSharedToolbarComponent,
 
     //modal here
-    ContactAddLabelModalComponent
+    ContactAddLabelModalComponent,
+    ContactEditLabelModalComponent
   ],
   exports: [
     CommonModule,
@@ -73,7 +75,8 @@ import { ContactImportContactDataService } from './modal/import-contact/import-c
     ZContactSharedToolbarComponent,
 
     // modal here
-    ContactAddLabelModalComponent
+    ContactAddLabelModalComponent,
+    ContactEditLabelModalComponent
   ]
 })
 export class ZContactSharedModule {

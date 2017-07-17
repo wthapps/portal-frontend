@@ -91,7 +91,28 @@ export class ZContactService extends BaseEntityService<any>{
     this.listenToItemSource.next(event);
   }
 
-  update(body: any): Observable<any> {
+  update(body: any, multiple: boolean=false): Observable<any> {
+    if(multiple) {
+      return super.update(body)
+        .map(
+          (res: any) => {
+            this.updateCallback(res.data);
+            return res;
+          }
+        );
+    }
+    else {
+      return super.update(body)
+        .map(
+          (res: any) => {
+            this.updateCallback(res.data);
+            return res;
+          }
+        );
+    }
+  }
+
+  updateMultiple(body: any): Observable<any> {
     return super.update(body)
       .map(
         (res: any) => {

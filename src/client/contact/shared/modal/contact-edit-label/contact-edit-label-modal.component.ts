@@ -11,12 +11,12 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'contact-add-label-modal',
-  templateUrl: 'contact-add-label-modal.component.html',
-  styleUrls: ['contact-add-label-modal.component.css']
+  selector: 'contact-edit-label-modal',
+  templateUrl: 'contact-edit-label-modal.component.html',
+  styleUrls: ['contact-edit-label-modal.component.css']
 })
 
-export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
+export class ContactEditLabelModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
   @Input() contact: any;
 
@@ -34,24 +34,15 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
    private labelService: LabelService)  {
 
 
-
   }
 
   ngOnInit() {
 
-    // this.labelService.getAll().subscribe((response: any) => {
-    //   this.originalLabels = response.data;
-    //   // this.originalLabels = _.map(this.originalLabels, ['id','name']);
-    //   this.labels = _.map(this.originalLabels, 'name');
-    // });
-
-
-    this.labelService.getAllLabels().then((labels: any[]) => {
-      console.log('getAllLabels: ', labels);
-      this.originalLabels.push(...labels);
+    this.labelService.getAll().subscribe((response: any) => {
+      this.originalLabels = response.data;
+      // this.originalLabels = _.map(this.originalLabels, ['id','name']);
       this.labels = _.map(this.originalLabels, 'name');
-    })
-
+    });
     // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
     // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
     //
@@ -63,20 +54,20 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   }
 
   submit() {
-    if (this.mode =='edit') {
-      // find selectedLabels and push to label array
-      _.forEach(this.selectedLabels, (label: any) => {
-        this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
-      });
-      this.contact['labels_attributes'] = this.contact.labels;
-      this.contact = _.pick(this.contact, ['id', 'labels_attributes']);
-    }
+
+    // find selectedLabels and push to label array
+    _.forEach(this.selectedLabels, (label: any) => {
+      this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
+    });
+
+    this.contact['labels_attributes'] = this.contact.labels;
+    this.contact = _.pick(this.contact, ['id', 'labels_attributes']);
+
     this.commonEventService.broadcast({
       action: 'contact:contact:update',
-      payload: { labels: this.getSelectedLabels(), contact: this.contact }}
+      payload: { labels: this.selectedLabels, contact: this.contact }}
     );
     this.modal.close().then();
-
   }
 
   open(options?: any) {
@@ -92,14 +83,4 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   removeTag(event: any) {}
 
   addTag(event: any) {}
-
-  private getSelectedLabels(): Array<any> {
-    let result: Array<any> = new Array<any>();
-
-    _.forEach(this.selectedLabels, (label: any) => {
-      result.push(_.find(this.originalLabels, {name: label.value}));
-    });
-    return result;
-  }
-
 }

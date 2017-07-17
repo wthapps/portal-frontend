@@ -10,21 +10,24 @@
           </span>
         </li>
 
-        <li>
-          <a href="javascript:;" class="btn"><i class="fa fa-star-o"></i></a>
-        </li>
+        <!--single selected item-->
+          <li>
+            <a href="javascript:;" class="btn" (click)="doEvent({action: 'contact:contact:update', payload:{multiple: true}})"><i class="fa fa-star-o"></i></a>
+          </li>
 
-        <li>
-          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-globe"></i></a>
-        </li>
+          <li>
+            <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-globe"></i></a>
+          </li>
 
-        <li>
-          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-comments-o"></i></a>
-        </li>
+          <li>
+            <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-comments-o"></i></a>
+          </li>
 
-        <li>
-          <a href="javascript:;" class="btn" (click)="doEvent({action: 'contact:contact:open_add_label_modal'})"><i class="fa fa-tags"></i></a>
-        </li>
+          <li>
+            <a href="javascript:;" class="btn"
+               (click)="doEvent({action: 'contact:contact:open_add_label_modal', mode: 'add'})">
+              <i class="fa fa-tags"></i></a>
+          </li>
 
         <li class="dropdown action">
           <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown">

@@ -106,6 +106,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         break;
 
       case 'contact:contact:open_add_label_modal':
+        this.modal.open({mode: event.mode});
+        break;
+      case 'contact:contact:open_edit_label_modal':
         this.modal.open({contact: event.payload.selectedContact});
         break;
       case 'contact:contact:import':
@@ -114,11 +117,30 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       // this will handle all cases as: favourite, add to label
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
-        // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
-        console.log('updating contact......', event.payload.contact);
-        this.contactService.update(event.payload.contact).subscribe((response: any) => {
 
-        });
+        if (event.payload.labels !== 'undefined') {
+          let selectedContacts = this.contactService.selectedObjects;
+          _.forEach(selectedContacts, (contact: any) => {
+            contact.labels = _.merge(contact.labels, event.payload.labels);
+            console.log('selected contact:::', contact.labels);
+          });
+        }
+
+
+        // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
+        if (this.contactService.selectedObjects.length > 1) {
+          console.log('selected::::', event.payload.labels);
+
+          let contacts = JSON.stringify({contacts: this.contactService.selectedObjects});
+          console.log('updating multiple::::', contacts);
+          // build contacts params
+
+        } else if (this.contactService.selectedObjects.length == 1){
+          console.log('updating contact......', event.payload.contact);
+          this.contactService.update(this.contactService.selectedObjects.length[0]).subscribe((response: any) => {
+
+          });
+        }
         break;
       case 'contact:contact:delete':
         // TODO:
