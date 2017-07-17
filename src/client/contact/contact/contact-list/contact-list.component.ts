@@ -45,19 +45,14 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
 
 
     this.route.params.forEach((params: Params) => {
-      console.log('params::::', params['label']);
+
       switch(params['label']) {
-        case 'favourite':
-        case 'social':
-        case 'chat':
-        case 'blacklist':
-          this.filteredContacts = this.contactService.filter({label: params['label']});
-          console.log('after filter:::', this.filteredContacts);
-          break;
         case 'all contact':
         case 'undefined':
-        default:
           this.filteredContacts = this.contactService.contacts;
+          break;
+        default:
+          this.filteredContacts = this.contactService.filter({label: params['label']});
           break;
       }
     });

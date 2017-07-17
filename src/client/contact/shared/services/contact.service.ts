@@ -14,7 +14,7 @@ declare var _: any;
 @Injectable()
 export class ZContactService extends BaseEntityService<any>{
   selectedObjects: any = [];
-  contacts: Array<any> = new Array([]);
+  contacts: Array<any> = new Array<any>();
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private listenToListSource = new Subject<any>();
@@ -97,18 +97,12 @@ export class ZContactService extends BaseEntityService<any>{
   filter(options: any): Array<any> {
     return _.filter(this.contacts, (contact: any)=> {
       if (options.label != 'undefined') {
-
-        _.find(contact.labels, (label: any) => {
+        return _.find(contact.labels, (label: any) => {
           if(label.name === options.label) {
             return contact;
           };
         });
-        // console.log('contact labels:::',x, contact.labels);
-        // if(x != 'undefined') {
-        //   return contact;
-        // }
       }
-      // return contact;
     });
   }
 
