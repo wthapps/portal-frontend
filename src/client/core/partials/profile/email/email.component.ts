@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, HostBinding } from '@angular/core';
+import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -11,6 +11,10 @@ import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/config/constants';
 import { ProfileConfig } from '../profile-config.model';
+import { QuestionBase } from '../../form/base/question-base';
+import { TextboxQuestion } from '../../form/categories/textbox-question';
+import { QuestionControlService } from '../../form/base/question-control.service';
+import { DropdownQuestion } from '../../form/categories/dropdown-question';
 
 declare var _: any;
 
@@ -20,21 +24,29 @@ declare var _: any;
   templateUrl: 'email.component.html'
 })
 
-export class PartialsProfileEmailComponent {
+export class PartialsProfileEmailComponent implements OnInit{
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
   @Input() config: ProfileConfig;
 
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
+
   @HostBinding('class') class = 'field-group';
 
+  questions: QuestionBase<any>[];
   form: FormGroup;
 
   emailType: any = Constants.emailType;
 
-  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
-    this.form = fb.group({
-      'emails': fb.array([
+  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService, private questionControlService: QuestionControlService) {
+
+  }
+
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      'emails': this.fb.array([
         this.initItem(),
       ])
     });
@@ -50,12 +62,12 @@ export class PartialsProfileEmailComponent {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        category: [item.category, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     } else {
       return this.fb.group({
-        kind_of: ['', Validators.compose([Validators.required])],
+        category: ['', Validators.compose([Validators.required])],
         value: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     }
@@ -88,22 +100,24 @@ export class PartialsProfileEmailComponent {
 
 
   onSubmit(values: any): void {
-    if (this.config.callApiAfterChange) {
-
-      let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
-
-      this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res: any) => {
-        this.removeAll();
-        this.data = res.data;
-        _.map(this.data.emails, (v: any)=> {
-          this.addItem(v);
-        });
-      });
-
-
-    } else {
-      this.data.emails = values.emails;
-    }
+    // if (this.config.callApiAfterChange) {
+    //
+    //   let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
+    //
+    //   this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res: any) => {
+    //     this.removeAll();
+    //     this.data = res.data;
+    //     _.map(this.data.emails, (v: any)=> {
+    //       this.addItem(v);
+    //     });
+    //   });
+    //
+    //
+    // } else {
+    //   this.data.emails = values.emails;
+    // }
+    this.data.emails = values.emails;
+    this.eventOut.emit(values);
     this.modal.close();
   }
 

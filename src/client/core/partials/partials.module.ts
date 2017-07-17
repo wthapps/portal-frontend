@@ -36,6 +36,7 @@ import { ChatSearchFormComponent } from './header/search/chat-search-form.compon
 import { TextBoxSearchComponent } from './header/search/components/textbox-search.component';
 import { DisplayLinkComponent } from './link/display-link.component';
 import { PipeModule } from '../shared/pipe/pipe.module';
+import { PartialsFormModule } from './form/partials-form.module';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { PipeModule } from '../shared/pipe/pipe.module';
     CoverProfileModule,
     PartialsProfileModule,
     PipeModule,
+    PartialsFormModule,
 
     ModalDockModule,
     Ng2Bs3ModalModule,
@@ -112,6 +114,7 @@ import { PipeModule } from '../shared/pipe/pipe.module';
     UndoNotificationComponent,
     PartialsProfileModule,
     ModalDockModule,
+    PartialsFormModule,
 
     // Pipe
     // GroupByMonthYearPipe,

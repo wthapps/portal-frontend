@@ -10,7 +10,7 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
       <template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
-        <!--<dt>{{item.kind_of | keyToValue:emailType:'kind_of':'name'}}</dt>-->
+        <dt>{{item.category | keyToValue:emailType:'category':'name'}}</dt>
 
         <dd><p><a class="link-text" href="mailto:{{item.value}}">{{item.value}}</a></p></dd>
       </template>
@@ -18,7 +18,7 @@
 
 
     <div *ngIf="data.emails.length == 0 && editable">
-      <p class="text-fade" *ngIf="config.getCurrentUser">
+      <p class="text-fade">
         Tell us more about your email
       </p>
       <button type="button" class="btn btn-default" (click)="onOpenModal()">
@@ -28,7 +28,6 @@
 
   </div>
 </div>
-
 
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
@@ -42,14 +41,14 @@
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_email['controls'].kind_of.valid
-                  && add_email['controls'].kind_of.touched),
-                  'has-success': (add_email['controls'].kind_of.valid
-                  && add_email['controls'].kind_of.touched
-                  && form.value.emails[i].kind_of.length > 1)}">
-                  <select class="form-control" name="name" formControlName="kind_of">
+                  'has-error': (!add_email['controls'].category.valid
+                  && add_email['controls'].category.touched),
+                  'has-success': (add_email['controls'].category.valid
+                  && add_email['controls'].category.touched
+                  && form.value.emails[i].category.length > 1)}">
+                  <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One --</option>
-                    <option *ngFor="let et of emailType" value="{{et.kind_of}}">{{et.name}}</option>
+                    <option *ngFor="let et of emailType" value="{{et.category}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>

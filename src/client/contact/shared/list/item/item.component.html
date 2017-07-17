@@ -28,7 +28,7 @@
   <ul class="list-unstyled m0" *ngIf="data.phones && data.phones.length>0">
     <li>
       <img *ngIf="(countriesCode$ | async) && data.phones[0].country_alpha_code"
-           src="assets/images/flags/{{phone.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
+           src="assets/images/flags/{{data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
            width="30" alt="">
       {{data.phones[0].value}}
     </li>

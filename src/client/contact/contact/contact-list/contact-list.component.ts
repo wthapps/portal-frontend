@@ -105,7 +105,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         });
         break;
       case 'contact:contact:delete':
-        this.delete();
+        // TODO:
+        this.delete({id: 1});
         break;
     }
   }

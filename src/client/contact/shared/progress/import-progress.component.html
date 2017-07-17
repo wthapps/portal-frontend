@@ -1,0 +1,41 @@
+<wth-modal-dock #modalDock>
+  <wth-modal-dock-header >
+    <span *ngIf="importStatus==IMPORT_STATUS.importing">Importing</span>
+    <span *ngIf="importStatus==IMPORT_STATUS.done"><i class="fa fa-check"></i> Done</span>
+  </wth-modal-dock-header>
+  <wth-modal-dock-body>
+    <div class="media" *ngIf="importStatus==IMPORT_STATUS.importing || importStatus==IMPORT_STATUS.done ">
+      <div class="media-left">
+        <div class="row-img-item">
+          <div class="photo-box">
+            <div class="photo-box-action">
+            </div>
+            <div class="photo-box-figure">
+              <figure class="img-center-dv photo-item-uploading loading">
+                <span class="photo-box-figure-in"></span>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="media-body">
+        <div *ngIf="importStatus==IMPORT_STATUS.importing">Importing contacts ...</div>
+        <div *ngIf="importStatus==IMPORT_STATUS.done">All contacts imported</div>
+      </div>
+    </div>
+
+    <div class="media" *ngIf="importStatus==3">
+      <div class="media-body">
+        <p class="h3 m0 text-normal">Oops, something's wrong happened</p>
+      </div>
+    </div>
+
+  </wth-modal-dock-body>
+  <wth-modal-dock-footer [inline]="true">
+    <div>
+      <a href="javascript:;" (click)="close($event)">
+        Close
+      </a>
+    </div>
+  </wth-modal-dock-footer>
+</wth-modal-dock>

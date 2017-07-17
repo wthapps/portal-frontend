@@ -1,0 +1,36 @@
+<form>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> <i class="fa fa-plus"></i> Import Contact</h4>
+    </modal-header>
+    <modal-body>
+      <div>Import your contacts from other account</div>
+
+      <div class="content-overflow" style="max-height: 300px;">
+        <div class="pl30 pr30">
+          <div class="row-img list">
+            <div class="row-img-item" *ngFor="let data of OAUTH_LIST; let i = index;">
+              <div class="photo-box can-click" (click)="onOptionSelected({name: data?.name})">
+                <div class="photo-box-figure">
+                  <figure class="img-center-dv">
+                    <div class="photo-box-figure-in">
+                      <img [alt]="data.name" class="img-center" draggable="false" [src]="data.image">
+                    </div>
+                  </figure>
+                  <div class="photo-box-name">
+                  <span>
+                    {{data.text}}
+                  </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>
