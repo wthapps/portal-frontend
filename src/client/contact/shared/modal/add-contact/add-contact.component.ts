@@ -32,7 +32,7 @@ export class ZContactShareAddContactComponent implements OnInit {
       name: this.name,
       emails: [{value: this.email}],
       phones: [{value: this.phone}]
-    }).subscribe((res: any) => {
+    }).then((res: any) => {
       this.contactService.contactAddContactService.sendOut(res);
     });
   }

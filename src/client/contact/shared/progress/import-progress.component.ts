@@ -17,8 +17,10 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   IMPORT_STATUS: any = {
     importing: 1,
     done: 2,
-    error: 3
+    error: 3,
+    cancelled: 4
   }
+  importedContacts: Array<any> = [];
 
   importSubscription: Subscription;
   public importStatus: any;
@@ -53,6 +55,7 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     this.importStatus = this.IMPORT_STATUS.importing;
 
     console.log('importStatus: ', this.importStatus);
+    this.importedContacts.length = 0;
     // this.modalDock.open();
     this.gapi.isSignedIn()
       .then((user: any) => {
@@ -61,7 +64,8 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
       .then((data: any) => {
         console.log('importContact data: ', data);
         // this.contactService.contactAddContactService.sendOut({data: data});
-        this.contactService.addMoreContacts(data)
+        this.importedContacts = data;
+        this.contactService.addMoreContacts(data);
         this.importDone()})
       .catch((err: any) => {console.log('importContact err: ', err); this.importDone(err)});
   }
@@ -70,11 +74,21 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     this.modalDock.close();
   }
 
+  addToLabel(event?: any) {
+    console.log('AddToLabel: ', this.importedContacts);
+    setTimeout(() => this.modalDock.close(), 2000);
+  }
+
+  stop(event?: any) {
+    console.log('stop: ',this.importedContacts);
+    setTimeout(() => this.modalDock.close(), 2000);
+  }
+
   private importDone(error?: any) {
     if (!error)
       this.importStatus = this.IMPORT_STATUS.done;
     else
       this.importStatus = this.IMPORT_STATUS.error;
-    setTimeout(() => this.modalDock.close(), 2000);
+    // setTimeout(() => this.modalDock.close(), 2000);
   }
 }

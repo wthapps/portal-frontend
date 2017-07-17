@@ -17,6 +17,7 @@ export class GoogleApiService {
   GCONTACT_SCOPE: string = '/m8/feeds/contacts/default/full/';
 
   allContactsUrl: string = 'https://www.google.com/m8/feeds/contacts/default/full';
+  totalImporting: number;
 
   GDATA_LVL_1 : any = {
     'name': 'title.$t',
@@ -96,11 +97,13 @@ export class GoogleApiService {
     return new Promise<any>((resolve: any, reject: any) => {
       let user = this.GoogleAuth.currentUser.get();
       let isAuthorized = user.hasGrantedScopes(this.SCOPE)
+      this.totalImporting = 0;
       console.log('user: ', user);
       if (_.get(user, 'Zi.access_token') != undefined && isAuthorized)
         this.getGoogleContactsList(user.Zi.access_token)
           .then((data: any) => {
             console.log('client request result: ', data);
+            this.totalImporting = _.get(data, 'feed.entry', []).length;
             return this.mappingParams(_.get(data, 'feed.entry', []));
           })
           .then((mapped_data: any) => { return this.importContactsToDb({contacts: mapped_data}); })

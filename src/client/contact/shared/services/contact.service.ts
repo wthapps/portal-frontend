@@ -14,7 +14,7 @@ declare var _: any;
 @Injectable()
 export class ZContactService extends BaseEntityService<any>{
   selectedObjects: any = [];
-  private allContacts: Array<any> = new Array();
+  private allContacts: Array<any> = new Array([]);
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private listenToListSource = new Subject<any>();
@@ -36,7 +36,7 @@ export class ZContactService extends BaseEntityService<any>{
   }
 
   initialLoad() {
-    this.apiBaseService.get(this.contactsUrl).toPromise()
+    this.getAll().toPromise()
       .then((res: any) => {
       this.allContacts.push(...res.data);
       this.contactsSubject.next(this.allContacts);
@@ -64,7 +64,7 @@ export class ZContactService extends BaseEntityService<any>{
   // }
 
   deleteContact(contact: any): Observable<any> {
-    return this.apiBaseService.delete(`${this.contactsUrl}/${contact.id}`)
+    return super.delete(`${contact.id}`)
       .map(() => {
         _.remove(this.allContacts, (ct: any) => {ct.id === contact.id ;});
         this.contactsSubject.next(this.allContacts);
@@ -89,12 +89,14 @@ export class ZContactService extends BaseEntityService<any>{
     this.listenToItemSource.next(event);
   }
 
-  updateContact(contact: any, data: any) {
-    return this.apiBaseService.put(`${this.contactsUrl}/${contact.id}`, data);
+  updateContact(contact: any, data: any): Promise<any> {
+    return this.apiBaseService.put(`${this.contactsUrl}/${contact.id}`, data)
+      .toPromise()
+      .then((res: any) => this.updateEditedContact(res.data));
   }
 
-  addContact(data: any) {
-    return this.apiBaseService.post(`${this.contactsUrl}`, data);
+  addContact(data: any): Promise<any> {
+    return this.apiBaseService.post(`${this.contactsUrl}`, data).toPromise().then((res: any) => this.addNewContact(res.data));
   }
 
   importGoogleContacts(data: any) {
@@ -103,6 +105,18 @@ export class ZContactService extends BaseEntityService<any>{
 
   getGoogleApiConfig() {
     return this.apiBaseService.get(`${this.contactsUrl}/get_google_api_config`);
+  }
+
+  private addNewContact(contact: any): void {
+    this.allContacts.unshift(contact);
+    this.contactsSubject.next(this.allContacts);
+  }
+
+  private updateEditedContact(contact: any): void {
+    // _.map(this.allContacts, (old_contact: any) => {if(old_contact.id !== contact.id ) });
+    _.set(this.allContacts, contact.id, contact.data);
+    this.contactsSubject.next(this.allContacts);
+    console.log('updateEditedContact: ', this.allContacts);
   }
 
   private handleError(error: Response) {

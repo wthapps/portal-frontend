@@ -18,7 +18,7 @@ export class ZContactSharedActionsBarComponent {
   @Input() data: any;
 
   toogleFavourite() {
-    this.contactService.updateContact(this.data, {favourite: !this.data.favourite}).subscribe((res: any) => {
+    this.contactService.updateContact(this.data, {favourite: !this.data.favourite}).then((res: any) => {
       this.data = res.data;
     })
   }
