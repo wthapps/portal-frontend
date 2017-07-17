@@ -34,6 +34,10 @@ export class ZContactService extends BaseEntityService<any>{
     this.initialLoad();
   }
 
+  getAllContacts() {
+    return this.contactsSubject.getValue();
+  }
+
   addMoreContacts(data: any[]) {
     this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
     this.contactsSubject.next(this.contacts);
@@ -45,6 +49,27 @@ export class ZContactService extends BaseEntityService<any>{
     return super.delete(`${contact.id}`)
       .map((response: any) => {
         this.deleteCallback(response.data);
+      });
+  }
+
+  deleteContact(contact: any): Promise<any> {
+    return super.delete(`${contact.id}`)
+      .toPromise()
+      .then((res: any) => {
+        _.remove(this.contacts, (ct: any) => {ct.id === res.data.id ;});
+        this.contactsSubject.next(this.contacts);
+      });
+  }
+
+  deleteSelectedContacts(): Promise<any> {
+    let body =  { contacts: this.selectedObjects};
+    return this.apiBaseService.post(`${this.url}/multi_destroy`, body).toPromise()
+      .then(() => {
+      let deletedIds = _.map(this.selectedObjects, (contact: any) => contact.id);
+
+      _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
+        this.contactsSubject.next(this.contacts);
+        this.selectedObjects.length = 0;
     });
   }
 
@@ -84,6 +109,10 @@ export class ZContactService extends BaseEntityService<any>{
           return res;
         }
       );
+  }
+
+  addContact(data: any): Promise<any> {
+    return this.apiBaseService.post(`${this.url}`, data).toPromise().then((res: any) => this.createCallback(res.data));
   }
 
   importGoogleContacts(data: any) {

@@ -13,11 +13,15 @@ declare var _: any;
 export class ZContactSharedThreeDotActionComponent {
   @Input() data: any;
 
-  constructor(private commonEventService: CommonEventService
+  constructor(private commonEventService: CommonEventService,
+              private contactService: ZContactService
   ) {
 
   }
 
+  deleteContact(data: any) {
+    this.contactService.deleteContact(data);
+  }
 
   doEvent(event: any) {
     this.commonEventService.broadcast(event);

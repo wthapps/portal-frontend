@@ -48,6 +48,10 @@ export class ZContactDetailComponent implements OnInit {
     }
   }
 
+  deleteContact() {
+    this.contactService.deleteContact(this.data);
+  }
+
 
   private getContact(id: number) {
     this.contactService.get(id).subscribe((response: any) => {

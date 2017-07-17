@@ -32,7 +32,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right text-right">
             <li>
-              <a href="javascript:;" (click)="onDeleteAll()"><i class="fa fa-trash"></i> Delete</a>
+              <a href="javascript:;" (click)="deleteSelectedContacts()"><i class="fa fa-trash"></i> Delete</a>
             </li>
             <li>
               <a href="javascript:;" (click)="addTags($event)"><i class="fa fa-ban"></i> Blacklist</a>
@@ -43,11 +43,11 @@
     </div>
   </z-contact-shared-toolbar>
   <div class="page-body-content has-page-body-control">
-    <div class="page-body-content-in" *ngIf="filteredContacts?.length==0">
+    <div class="page-body-content-in" *ngIf="(contact$ | async)?.length==0">
       There is no contact in your contact book
     </div>
-    <div class="page-body-content-in" *ngIf="filteredContacts?.length>1">
-      <z-contact-shared-list [data]="filteredContacts"></z-contact-shared-list>
+    <div class="page-body-content-in" *ngIf="(contact$ | async)?.length>1">
+      <z-contact-shared-list [data]="(contact$ | async)"></z-contact-shared-list>
     </div>
   </div>
 </div>

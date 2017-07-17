@@ -52,7 +52,6 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   }
 
   open(options?: any) {
-    this.importStatus = this.IMPORT_STATUS.importing;
 
     console.log('importStatus: ', this.importStatus);
     this.importedContacts.length = 0;
@@ -60,6 +59,7 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     this.gapi.isSignedIn()
       .then((user: any) => {
         this.modalDock.open();
+        this.importStatus = this.IMPORT_STATUS.importing;
         return this.gapi.startImportContact(user);})
       .then((data: any) => {
         console.log('importContact data: ', data);
@@ -76,12 +76,12 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
 
   addToLabel(event?: any) {
     console.log('AddToLabel: ', this.importedContacts);
-    setTimeout(() => this.modalDock.close(), 2000);
+    this.modalDock.close();
   }
 
   stop(event?: any) {
     console.log('stop: ',this.importedContacts);
-    setTimeout(() => this.modalDock.close(), 2000);
+    this.modalDock.close();
   }
 
   private importDone(error?: any) {

@@ -38,12 +38,10 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       this.doEvent(event);
     });
 
-    // this.contact$ = this.contactService.contacts$;
+    this.contact$ = this.contactService.contacts$;
   }
 
   ngOnInit() {
-
-
     this.route.params.forEach((params: Params) => {
 
       switch(params['label']) {
@@ -76,6 +74,17 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
 
+  deleteSelectedContacts() {
+    this.contactService.deleteSelectedContacts();
+  }
+
+  getAllContact() {
+    // this.contactService.getContactList().take(1).subscribe(
+    //   (res: any)=> {
+    //     this.data = res.data;
+    //   }
+    // )
+  }
 
   ngOnDestroy() {
     if (this.eventThreeDot) {
@@ -123,7 +132,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       message: 'Are you sure you want to delete this contact ?',
       header: 'Delete Contact',
       accept: () => {
-        this.contactService.delete(data).subscribe((res: any) => {
+        this.contactService.deleteContact(data).then((res: any) => {
           // MUST update local data here
           // this.contactService.contactThreeDotActionsService.sendOut({action: "deleted"});
         });
