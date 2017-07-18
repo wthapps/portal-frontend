@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ZChatToolbarComponent } from '../shared/toolbar/toolbar.component';
 
 @Component({
@@ -6,14 +6,8 @@ import { ZChatToolbarComponent } from '../shared/toolbar/toolbar.component';
   selector: 'z-chat-new-conversation',
   templateUrl: 'new-conversation.component.html'
 })
-export class ZChatNewConversationComponent implements OnInit {
+export class ZChatNewConversationComponent {
   @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 
   onAddContact() {
     this.chatToolbar.onAddContact();

@@ -47,6 +47,7 @@ import { DisplayLinkModule } from './components/link/display-link.module';
 import { ZSharedReportModule } from './components/zone/report/report.module';
 import { PartialsProfileModule } from './components/profile/profile.module';
 import { PartialsPhotoModule } from './components/photo/photo.module';
+import { ModalDockModule } from './components/modal/dock.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -87,7 +88,7 @@ import { PartialsPhotoModule } from './components/photo/photo.module';
     ZSharedReportModule,
     PartialsProfileModule,
     PartialsPhotoModule,
-
+    ModalDockModule,
     // Pipe
     PipeModule
   ]

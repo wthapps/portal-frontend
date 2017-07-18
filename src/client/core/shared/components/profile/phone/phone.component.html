@@ -9,17 +9,17 @@
   </div>
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.phones.length > 0">
-      <template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.category | keyToValue:phoneType:'category':'name'}}</dt>
+      <ng-template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{ item.category | keyToValue:phoneType:'category':'name' }}</dt>
         <dd>
           <p>
             <img *ngIf="item.country_alpha_code | phoneCodeFlag:countriesCode"
-                 src="assets/images/flags/{{item.country_alpha_code | phoneCodeFlag:countriesCode}}.svg"
+                 src="assets/images/flags/{{ item.country_alpha_code | phoneCodeFlag:countriesCode }}.svg"
                  width="30" alt="">
-            {{item.value}}
+            {{ item.value }}
           </p>
         </dd>
-      </template>
+      </ng-template>
     </dl>
 
     <div *ngIf="data.phones.length == 0 && editable">
@@ -53,7 +53,7 @@
                   && form.value.phones[i].category && form.value.phones[i].category.length > 1)}">
                   <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One --</option>
-                    <option *ngFor="let et of phoneType" value="{{et.category}}">{{et.name}}</option>
+                    <option *ngFor="let et of phoneType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>
                 </div>
               </div>
@@ -70,14 +70,14 @@
                                   (completeMethod)="filterCountriesCode($event)" [size]="30"
                                   [minLength]="1" placeholder="Select your country" [dropdown]="true"
                                   (onDropdownClick)="handleDropdownClick($event)">
-                    <template ngFor let-code let-i="index" pTemplate="item">
+                    <ng-template ngFor let-code let-i="index" pTemplate="item">
                       <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
-                    </template>
+                    </ng-template>
                   </p-autoComplete>
 
                   <!--<select class="form-control" name="name" formControlName="country_alpha_code">
                     <option value=""> Select your country</option>
-                    <option *ngFor="let c of countriesCode" value="{{ c.code }}">{{ c.name }} ({{ c.dial_code }})</option>
+                    <option *ngFor="let c of countriesCode" value="{{  c.code  }}">{{  c.name  }} ({{  c.dial_code  }})</option>
                   </select>-->
                 </div>
               </div>

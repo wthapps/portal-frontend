@@ -27,7 +27,7 @@ export class ZChatSidebarComponent implements OnInit {
     this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {
-        // URL "/" and "/conversations"
+        // URL '/' and '/conversations'
         if (event.url.indexOf('conversations') !== -1 || event.url.length == 1) {
           this.isRedirect = true;
         } else {
@@ -50,7 +50,7 @@ export class ZChatSidebarComponent implements OnInit {
   onSelect(contact:any) {
     $('#chat-message-text').focus();
     // Scroll to bottom when click
-    $('.page-body-chat-content-in').animate({ scrollTop: $(document).height() }, "fast");
+    $('.page-body-chat-content-in').animate({ scrollTop: $(document).height() }, 'fast');
     this.chatService.selectContact(contact);
   }
 

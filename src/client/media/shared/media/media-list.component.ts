@@ -5,7 +5,7 @@ import {
 import { Location } from '@angular/common';
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZMediaAlbumService } from '../../album/album.service';

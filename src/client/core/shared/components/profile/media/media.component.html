@@ -9,10 +9,10 @@
   </div>
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.media && data.media.length > 0">
-      <template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.category | keyToValue:mediaType:'category':'name'}}</dt>
-        <dd><p><a href="{{item.value}}" target="_blank">{{item.value}}</a></p></dd>
-      </template>
+      <ng-template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{ item.category | keyToValue:mediaType:'category':'name' }}</dt>
+        <dd><p><a href="{{ item.value }}" target="_blank">{{ item.value }}</a></p></dd>
+      </ng-template>
     </dl>
 
     <div *ngIf="data.media && data.media.length == 0 && editable">
@@ -47,7 +47,7 @@
                   && form.value.medias[i].category.length>1)}">
                   <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One -- </option>
-                    <option *ngFor="let et of mediaType" value="{{et.category}}">{{et.name}}</option>
+                    <option *ngFor="let et of mediaType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>
                 </div>
               </div>

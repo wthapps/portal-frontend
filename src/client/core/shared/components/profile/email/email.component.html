@@ -9,11 +9,11 @@
   </div>
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
-      <template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.category | keyToValue:emailType:'category':'name'}}</dt>
+      <ng-template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{ item.category | keyToValue:emailType:'category':'name' }}</dt>
 
-        <dd><p><a class="link-text" href="mailto:{{item.value}}">{{item.value}}</a></p></dd>
-      </template>
+        <dd><p><a class="link-text" href="mailto:{{ item.value }}">{{ item.value }}</a></p></dd>
+      </ng-template>
     </dl>
 
 
@@ -48,7 +48,7 @@
                   && form.value.emails[i].category.length > 1)}">
                   <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One --</option>
-                    <option *ngFor="let et of emailType" value="{{et.category}}">{{et.name}}</option>
+                    <option *ngFor="let et of emailType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>
                 </div>
               </div>

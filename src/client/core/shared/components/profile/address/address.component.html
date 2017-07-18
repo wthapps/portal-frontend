@@ -9,10 +9,10 @@
   </div>
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
-      <template ngFor let-item [ngForOf]="data.addresses" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.category | keyToValue:addressType:'category':'name'}}</dt>
-        <dd><p>{{item.address_line1}}</p></dd>
-      </template>
+      <ng-template ngFor let-item [ngForOf]="data.addresses" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{ item.category | keyToValue:addressType:'category':'name' }}</dt>
+        <dd><p>{{ item.address_line1 }}</p></dd>
+      </ng-template>
     </dl>
 
     <div *ngIf="data.addresses && data.addresses.length == 0 && editable">
@@ -47,7 +47,7 @@
                   && form.value.addresses[i].category.length>1)}">
                   <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One -- </option>
-                    <option *ngFor="let et of addressType" value="{{et.category}}">{{et.name}}</option>
+                    <option *ngFor="let et of addressType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>
                 </div>
               </div>

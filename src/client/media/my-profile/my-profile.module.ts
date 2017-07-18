@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../../core/shared/shared.module';
+
+import { ZMediaSharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+
 import { ZMediaMyProfileComponent } from './my-profile.component';
 import { ZMediaMyProfileRoutingModule } from './my-profile-routing.module';
 
 
 @NgModule({
   imports: [
-    ReactiveFormsModule,
     ZMediaMyProfileRoutingModule,
-    SharedModule.forRoot(),
+    ZMediaSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZMediaMyProfileComponent

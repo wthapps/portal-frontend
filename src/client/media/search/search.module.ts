@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
+
+import { ZMediaSharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+
 import { ZMediaSearchRoutingModule } from './search-routing.module';
 import { ZMediaSearchComponent } from './search.component';
-import { ZMediaSharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     ZMediaSearchRoutingModule,
-    ZMediaSharedModule
+    ZMediaSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [ZMediaSearchComponent],
   exports: [

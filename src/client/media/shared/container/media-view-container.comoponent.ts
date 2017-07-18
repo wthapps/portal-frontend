@@ -9,11 +9,11 @@ import { MediaToolbarListComponent } from '../media/media-toolbar-list.component
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
-import { PhotoSelectModalComponent } from '../../../core/partials/zone/photo/upload-photos/photo-select-modal.component';
+import { PhotoSelectModalComponent } from '../../../core/shared/components/zone/photo/upload-photos/photo-select-modal.component';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoDetailPartialComponent } from '../../../core/shared/components/photo/detail/photo-detail-partial.component';
@@ -23,7 +23,6 @@ import { AlbumCreateModalComponent } from '../../../core/shared/components/photo
 import { AlbumEditModalComponent } from '../../../core/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
 import { AddToAlbumModalComponent } from '../../../core/shared/components/photo/modal/add-to-album-modal.component';
-
 
 declare var saveAs: any;
 

@@ -10,9 +10,9 @@
 <div class="page-body-content has-page-body-control gray-light">
   <div class="page-body-content-in">
     <div class="page-body-in-title" style="text-transform: capitalize;">
-      {{type}}
+      {{ type }}
     </div>
-    <template [ngIf]="type == 'album'">
+    <ng-template [ngIf]="type == 'album'">
       <z-media-share-list
         [type]="'album'"
         [data]="data.albums"
@@ -20,9 +20,9 @@
         [hasAction]="['favourite', 'select', 'previewAll']"
         (outEvent)="actionAlbumItem($event)">
       </z-media-share-list>
-    </template>
+    </ng-template>
 
-    <template [ngIf]="type == 'photo'">
+    <ng-template [ngIf]="type == 'photo'">
       <z-media-share-list
         [type]="'photo'"
         [data]="data.photos"
@@ -31,6 +31,6 @@
         (outEvent)="actionPhotoItem($event)">
       </z-media-share-list>
 
-    </template>
+    </ng-template>
   </div>
 </div>

@@ -1,9 +1,7 @@
-import {
-  Component, OnDestroy, OnInit, HostListener
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Photo } from '../../../models/photo.model';
-import { PhotoService } from "../../../services/photo.service";
+import { PhotoService } from '../../../services/photo.service';
 import { ConfirmationService } from 'primeng/primeng';
 import { LoadingService } from '../../loading/loading.service';
 
@@ -81,6 +79,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
               type: this.photo.content_type,
               file: payload.editedData
             }).subscribe((res: any) => {
+              console.log(res);
             });
           }
         });
@@ -96,7 +95,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
             saveAs(blob, this.photo.name);
           },
           (error: any) => {
-
+            console.log(error);
           }
         );
         break;

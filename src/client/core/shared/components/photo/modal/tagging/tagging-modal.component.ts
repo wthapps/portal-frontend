@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaTaggingService } from './tagging.service';
 import { TaggingElComponent } from './tagging-el.component';
-import { WthAppsBaseModal } from '../../../../interfaces/wthapps-base-modal';
-
 
 declare var $: any;
 declare var _: any;
@@ -14,7 +12,7 @@ declare var _: any;
   selector: 'tagging-modal',
   templateUrl: 'tagging-modal.component.html'
 })
-export class TaggingModalComponent implements OnInit {
+export class TaggingModalComponent {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('tag') tag: TaggingElComponent;
   @Input() selectedItems: any = [];
@@ -36,10 +34,6 @@ export class TaggingModalComponent implements OnInit {
   hasDeletedItems: boolean = false;
 
   constructor(private taggingService: ZMediaTaggingService) {
-  }
-
-  ngOnInit() {
-
   }
 
   update(res: any) {

@@ -1,7 +1,7 @@
 <form *ngIf="contactsItem.value">
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"> <i class="fa fa-plus"></i> Add To Conversation</h4>
+      <h4 class="modal-title"><i class="fa fa-plus"></i> Add To Conversation</h4>
     </modal-header>
     <modal-body>
       <div class="form-group">
@@ -27,10 +27,13 @@
           </div>
         </div>
 
-        <div *ngIf="(contactsItem.value.data | chatGroupCouple | wthFilterBy:'display.name':filter | arrayLength) == 0" class="text-center">
+        <div *ngIf="(contactsItem.value.data | chatGroupCouple | wthFilterBy:'display.name':filter | arrayLength) == 0"
+             class="text-center">
           <p>There is no contact</p>
           <p>You can find more people through search</p>
-          <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="search()"> <i class="fa fa-plus"></i> Add New Contact</button>
+          <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="search()"><i
+            class="fa fa-plus"></i> Add New Contact
+          </button>
         </div>
 
       </div>

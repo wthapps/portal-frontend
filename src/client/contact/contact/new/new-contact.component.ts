@@ -10,7 +10,7 @@ import { PartialsProfileAddressComponent } from '../../../core/shared/components
 import { PartialsProfileMediaComponent } from '../../../core/shared/components/profile/media/media.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { ZContactService } from '../../shared/services/contact.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 @Component({
   moduleId: module.id,

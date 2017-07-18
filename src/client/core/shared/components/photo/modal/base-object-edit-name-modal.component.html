@@ -5,7 +5,7 @@
     </modal-header>
     <modal-body>
       <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched)}">
-        <p>Please enter a new name for the {{objectType}}:</p>
+        <p>Please enter a new name for the {{ objectType }}:</p>
         <label for="edit-photo-album-name" class="sr-only">name</label>
         <input [formControl]="name" value="selectedPhotos.name" type="text" id="edit-photo-album-name"
                class="form-control" placeholder="">

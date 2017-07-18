@@ -3,7 +3,7 @@
     <h4 class="modal-title">Confirmation</h4>
   </modal-header>
   <modal-body>
-    <p>Are you sure to delete {{selectedAlbums.length}} album<span *ngIf="selectedAlbums.length > 1">s</span> ?</p>
+    <p>Are you sure to delete {{ selectedAlbums.length }} album<span *ngIf="selectedAlbums.length > 1">s</span> ?</p>
     <div>
       <p-checkbox [(ngModel)]="checked" binary="true" label="Permanently delete all of photos in this album."></p-checkbox>
     </div>

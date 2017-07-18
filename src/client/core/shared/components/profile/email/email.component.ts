@@ -24,7 +24,7 @@ declare var _: any;
   templateUrl: 'email.component.html'
 })
 
-export class PartialsProfileEmailComponent implements OnInit{
+export class PartialsProfileEmailComponent implements OnInit {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;

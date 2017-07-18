@@ -17,7 +17,7 @@
         <ul *ngIf="menu?.parent" class="dropdown-menu dropdown-menu-lg">
           <li *ngFor="let subMenu of menu.menus">
             <a href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})">
-              <i [ngClass]="subMenu.iconClass"></i> {{subMenu.text}}
+              <i [ngClass]="subMenu.iconClass"></i> {{ subMenu.text }}
             </a>
           </li>
         </ul>
@@ -53,7 +53,7 @@
     <!--<ul *ngIf="mode == 0" class="action navbar-right">-->
       <!--<li>-->
         <!--<a href="javascript:;" draggable="false"-->
-           <!--(click)="doAction({action: 'openModal', params: {modalName: 'sharingModal'}})"><i-->
+           <!--(click)="doAction({action: 'openModal', params: {modalName: 'sharingModal' }})"><i-->
           <!--class="fa fa-share-alt"></i></a>-->
       <!--</li>-->
       <!--<li>-->
@@ -63,7 +63,7 @@
       <!--</li>-->
       <!--<li>-->
         <!--<a href="javascript:;" draggable="false"-->
-           <!--(click)="doAction({action: 'openModal', params: {modalName: 'taggingModal'}})"><i class="fa fa-tag"></i></a>-->
+           <!--(click)="doAction({action: 'openModal', params: {modalName: 'taggingModal' }})"><i class="fa fa-tag"></i></a>-->
       <!--</li>-->
       <!--<li>-->
         <!--<a href="javascript:;" draggable="false" (click)="editPhoto()"><i class="fa fa-edit"></i></a>-->
@@ -78,11 +78,11 @@
         <!--<a href="javascript:;" draggable="false" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>-->
         <!--<ul class="dropdown-menu dropdown-menu-lg">-->
           <!--<li><a href="javascript:;" draggable="false"-->
-                 <!--(click)="doAction({action: 'openModal', params: {modalName: 'addToAlbumModal'}})"><i-->
+                 <!--(click)="doAction({action: 'openModal', params: {modalName: 'addToAlbumModal' }})"><i-->
             <!--class="fa fa-plus-square"></i> Add to Album</a></li>-->
           <!--<li>-->
             <!--<a href="javascript:;"-->
-               <!--(click)="doAction({action: 'download', params: {selectedObjects: [selectedPhotos[index]]}})">-->
+               <!--(click)="doAction({action: 'download', params: {selectedObjects: [selectedPhotos[index]] }})">-->
               <!--<i class="fa fa-download"></i> Download-->
             <!--</a>-->
           <!--</li>-->
@@ -130,16 +130,16 @@
     </ul>
 
 
-    <div class="name"><i class="fa fa-picture-o"></i> {{photo?.name}}.{{photo?.extension}}
+    <div class="name"><i class="fa fa-picture-o"></i> {{ photo?.name }}.{{ photo?.extension }}
     </div>
   </div>
 
   <div *ngIf="mode == 0" class="photo-detail-top-info">
     <div class="photo-detail-top-num" *ngIf="ids.length > 1">
-      {{currentIndex + 1}} of {{ids.length}}
+      {{ currentIndex + 1 }} of {{ ids.length }}
     </div>
     <div *ngIf="photo" class="photo-detail-top-txt">
-      {{photo?.description}}
+      {{ photo?.description }}
     </div>
   </div>
 
@@ -155,7 +155,7 @@
       <!--view mode-->
       <div class="image-figure" [ngClass]="{'img-loading': loading}" id="cropper-wrap">
         <figure>
-          <img imgFull class="img-zoom-{{imgZoomClass}}" draggable="false" id="photo-detail-image"
+          <img imgFull class="img-zoom-{{ imgZoomClass }}" draggable="false" id="photo-detail-image"
                [src]="photo?.url" alt="">
         </figure>
       </div>
@@ -189,40 +189,40 @@
     </div>
     <dl class="dl-horizontal">
       <dt>Name</dt>
-      <dd>{{photo.name}}</dd>
+      <dd>{{ photo.name }}</dd>
       <dt>Description</dt>
-      <dd>{{photo.description}}</dd>
+      <dd>{{ photo.description }}</dd>
       <dt>Type</dt>
-      <dd>{{photo.extension}}</dd>
+      <dd>{{ photo.extension }}</dd>
       <dt>Size</dt>
-      <dd>{{photo.size | bytes:3}}</dd>
+      <dd>{{ photo.size | bytes:3 }}</dd>
       <dt>Dimensions</dt>
-      <dd>{{photo.dimensions}}</dd>
+      <dd>{{ photo.dimensions }}</dd>
       <dt>Uploaded</dt>
-      <dd>{{photo.created_at | timeFormat}}</dd>
+      <dd>{{ photo.created_at | timeFormat }}</dd>
     </dl>
     <div class="photo-detail-info-title">
       <h4><i class="fa fa-tag"></i> Tag </h4>
       <a href="javascript:;" draggable="false"
-         (click)="doAction({action: 'openModal', params: {modalName: 'taggingModal'}})">Edit</a>
+         (click)="doAction({action: 'openModal', params: {modalName: 'taggingModal' }})">Edit</a>
     </div>
     <div class="tags-text">
-      <span *ngFor="let tag of photo.json_tags">{{tag.name}}</span>
+      <span *ngFor="let tag of photo.json_tags">{{ tag.name }}</span>
     </div>
 
 
     <div class="photo-detail-info-title">
       <h4><i class="fa fa-share-alt"></i> Sharing</h4>
       <a href="javascript:;" draggable="false"
-         (click)="doAction({action: 'openModal', params: {modalName: 'sharingModal'}})">Edit</a>
+         (click)="doAction({action: 'openModal', params: {modalName: 'sharingModal' }})">Edit</a>
     </div>
     <dl>
       <dt>Owner</dt>
       <dd>
         <ul class="list-unstyled">
           <li>
-            <img src="assets/images/zone/img-group.png" alt="{{photo.owner.name}}"
-                   title="{{photo.owner.name}}"> {{photo.owner.name}}
+            <img src="assets/images/zone/img-group.png" alt="{{ photo.owner.name }}"
+                   title="{{ photo.owner.name }}"> {{ photo.owner.name }}
           </li>
         </ul>
       </dd>
@@ -231,8 +231,8 @@
       <dd>
         <ul class="list-unstyled">
           <li *ngFor="let contact of photo?.json_shares?.contacts">
-            <img src="assets/images/zone/img-group.png" title="{{contact.name}}">
-            {{contact.name}}
+            <img src="assets/images/zone/img-group.png" title="{{ contact.name }}">
+            {{ contact.name }}
           </li>
         </ul>
       </dd>
@@ -240,4 +240,4 @@
   </div>
 </div>
 
-<template #modalContainer></template>
+<ng-template #modalContainer></ng-template>
