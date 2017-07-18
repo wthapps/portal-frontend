@@ -15,18 +15,22 @@ import { ZContactLabelModule } from './label/label.module';
 import { LabelEditModalComponent } from './label/label-edit-modal.component';
 import { ZContactMyProfileModule } from './my-profile/my-profile.module';
 import { ZNewContactModule } from './contact/new/new-contact.module';
+import { ContactModule } from './contact/contact.module';
+import { ContactRoutingModule } from './contact/contact-routing.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
     SharedModule.forRoot(),
+    ContactRoutingModule,
     AppRoutingModule,
     ZContactSharedModule,
-    ZContactHomeModule,
-    ZContactListModule,
-    ZNewContactModule,
-    ZContactDetailModule,
+    ContactModule,
+    // ZContactHomeModule,
+    // ZContactListModule,
+    // ZNewContactModule,
+    // ZContactDetailModule,
     ZContactMyProfileModule,
     ZContactLabelModule
   ],

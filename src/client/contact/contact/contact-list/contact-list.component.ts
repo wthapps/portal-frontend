@@ -18,9 +18,6 @@ declare var _: any;
 export class ZContactListComponent implements OnInit, OnDestroy, CommonEventAction {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
 
-  contacts: Array<any> = new Array<any>();
-  filteredContacts: Array<any> = new Array<any>();
-
   eventThreeDot: any;
   eventAddContact: any;
   commonEventSub: Subscription;
@@ -37,16 +34,11 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
       this.doEvent(event);
     });
-
-
   }
 
   ngOnInit() {
     this.contact$ = this.contactService.contacts$;
-
     this.route.params.forEach((params: Params) => {
-      console.log('params::::', params['label']);
-
       switch(params['label']) {
         case 'all contact':
         case 'undefined':
@@ -58,35 +50,17 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       }
     });
 
-    this.getContacts();
     this.eventThreeDot = this.contactService.contactThreeDotActionsService.eventOut.subscribe((event: any) => {
       if (event.action == "deleted") {
-        this.getContacts();
       }
     });
     this.eventAddContact = this.contactService.contactAddContactService.eventOut.subscribe((event: any) => {
-      // this.data = event.data;
-
       this.contactService.addMoreContacts(_.get(event, 'data', []));
     });
   }
 
-  onDeleteAll() {
-    console.log('delete all');
-    console.log(this.contactService.selectedObjects);
-  }
-
-
   confirmDeleteContacts() {
     this.contactService.confirmDeleteContacts();
-  }
-
-  getAllContact() {
-    // this.contactService.getContactList().take(1).subscribe(
-    //   (res: any)=> {
-    //     this.data = res.data;
-    //   }
-    // )
   }
 
   ngOnDestroy() {
@@ -109,7 +83,15 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         break;
 
       case 'contact:contact:open_add_label_modal':
-        this.modal.open({mode: event.mode});
+        let labels = [];
+        console.log('selected item count', this.contactService.selectedObjects.length);
+        if(this.contactService.selectedObjects.length > 1) {
+          labels = [];
+        } else if(this.contactService.selectedObjects.length == 1) {
+          labels = this.contactService.selectedObjects[0].labels
+        }
+
+        this.modal.open({mode: event.mode, labels: labels});
         break;
       case 'contact:contact:open_edit_label_modal':
         this.modal.open({contact: event.payload.selectedContact});
@@ -165,41 +147,59 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
 
-  favourite() {
+  toggleLabel(name: string) {
     let event: any = {
       action: 'contact:contact:update',
       payload: {
-        labels: [{
+        labels: name=='favourite' ? [{
           id: 3,
           uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
           name: 'favourite',
+          user_id: null,
+          system: true
+        }] : [{
+          id: 6,
+          uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
+          name: 'blacklist',
           user_id: null,
           system: true
         }]
       }
     };
 
-    this.doEvent(event)
+    if (this.hasLabel(name)) {
+      this.removeLabel(name);
+    } else {
+      this.addLabel(event.payload.labels[0]);
+    }
+     this.doEvent(event)
   }
 
-  hasFavourite(): boolean {
-    // _.forEach(this.contactService.selectedObjects, (contact: any) => {
-    //   _.forEach(contact.labels, (label: any) => {
-    //     if (label.name !== 'favourite') {
-    //       return false;
-    //     }
-    //   })
-    // });
-    return true;
+  hasLabel(name: string): boolean {
+    let result = true;
+    _.forEach(this.contactService.selectedObjects, (contact: any) => {
+      if (_.some(contact.labels, {name: name}) == false){
+        result = false;
+        return;
+      }
+    });
+    return result;
+  }
+
+  removeLabel(name: string) {
+    _.forEach(this.contactService.selectedObjects, (contact: any) => {
+      _.remove(contact.labels, (label: any) => label.name === name);
+    });
+  }
+
+  addLabel(label: any) {
+    _.forEach(this.contactService.selectedObjects, (contact: any) => {
+      contact.labels.push(label);
+    });
   }
 
   addTags(event: any) {
     this.modal.open();
   }
 
-  private getContacts() {
-    this.contacts = this.contactService.contacts;
-    this.filteredContacts = this.contactService.contacts;
-    console.log('get contacts:::', this.filteredContacts);
-  }
 }

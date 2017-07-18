@@ -23,7 +23,6 @@ export class BaseEntityService<T> {
   }
 
   update(body: any): Observable<any> {
-    console.log('body:::::', body);
     return this.api.put(`${this.url}/${body.id}`, body);
   }
 
