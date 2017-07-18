@@ -10,6 +10,7 @@ import { PartialsProfileAddressComponent } from '../../../core/shared/components
 import { PartialsProfileMediaComponent } from '../../../core/shared/components/profile/media/media.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { ZContactService } from '../../shared/services/contact.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 
 @Component({
   moduleId: module.id,
@@ -28,6 +29,7 @@ export class ZNewContactComponent implements OnInit {
   @ViewChild('media') media: PartialsProfileMediaComponent;
 
   constructor(private route: ActivatedRoute, private apiBaseService: ApiBaseService,
+              private toastsService: ToastsService,
               private contactService: ZContactService) {
   }
 
@@ -42,6 +44,7 @@ export class ZNewContactComponent implements OnInit {
 
     this.contactService.create(this.avatar.data).subscribe((res: any) => {
       console.log(res);
+      this.toastsService.success("Add Contact Success");
     })
   }
 

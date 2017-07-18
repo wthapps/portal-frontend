@@ -57,9 +57,9 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         document.body.scrollTop = 0;
       });
 
-    this.labelService.getAll().subscribe(
+    this.labelService.getAllLabels().then(
       (response: any) => {
-        this.labels = response.data;
+        this.labels = response;
 
         //map labels to ContactMenu Item
         _.each(this.labels, (label: Label) => {

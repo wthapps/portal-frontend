@@ -38,19 +38,22 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       this.doEvent(event);
     });
 
-    this.contact$ = this.contactService.contacts$;
+
   }
 
   ngOnInit() {
+    this.contact$ = this.contactService.contacts$;
+
     this.route.params.forEach((params: Params) => {
+      console.log('params::::', params['label']);
 
       switch(params['label']) {
         case 'all contact':
         case 'undefined':
-          this.filteredContacts = this.contactService.contacts;
+          this.contactService.filter({label: undefined});
           break;
         default:
-          this.filteredContacts = this.contactService.filter({label: params['label']});
+          this.contactService.filter({label: params['label']});
           break;
       }
     });
@@ -106,6 +109,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         break;
 
       case 'contact:contact:open_add_label_modal':
+        this.modal.open({mode: event.mode});
+        break;
+      case 'contact:contact:open_edit_label_modal':
         this.modal.open({contact: event.payload.selectedContact});
         break;
       case 'contact:contact:import':
@@ -114,9 +120,27 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       // this will handle all cases as: favourite, add to label
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
+        let params: any;
+        let multiple: boolean = false;
+
+        if (event.payload.labels !== 'undefined') {
+          let selectedContacts = this.contactService.selectedObjects;
+          _.forEach(selectedContacts, (contact: any) => {
+            contact.labels = _.merge(contact.labels, event.payload.labels);
+            console.log('selected contact:::', contact.labels);
+          });
+        }
+
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
-        console.log('updating contact......', event.payload.contact);
-        this.contactService.update(event.payload.contact).subscribe((response: any) => {
+        if (this.contactService.selectedObjects.length > 1) {
+          params = JSON.stringify({contacts: this.contactService.selectedObjects});
+          multiple = true;
+        } else {
+          params = this.contactService.selectedObjects[0];
+          multiple = false;
+        }
+
+        this.contactService.update(params, multiple).subscribe((response: any) => {
 
         });
         break;
@@ -138,6 +162,35 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         });
       }
     });
+  }
+
+
+  favourite() {
+    let event: any = {
+      action: 'contact:contact:update',
+      payload: {
+        labels: [{
+          id: 3,
+          uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
+          name: 'favourite',
+          user_id: null,
+          system: true
+        }]
+      }
+    };
+
+    this.doEvent(event)
+  }
+
+  hasFavourite(): boolean {
+    // _.forEach(this.contactService.selectedObjects, (contact: any) => {
+    //   _.forEach(contact.labels, (label: any) => {
+    //     if (label.name !== 'favourite') {
+    //       return false;
+    //     }
+    //   })
+    // });
+    return true;
   }
 
   addTags(event: any) {
