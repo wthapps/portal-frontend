@@ -18,6 +18,7 @@ import { Label } from './label/label.model';
 import { label } from 'aws-sdk/clients/sns';
 import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
 import { ZContactService } from './shared/services/contact.service';
+import { ZContactMenuService } from './shared/services/contact-menu.service';
 
 /**
  * This class represents the main application component.
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
               private contactService: ZContactService,
+              private contactMenuService: ZContactMenuService,
               private labelService: LabelService
   ) {
     console.log('Environment config', Config);

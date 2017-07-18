@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { ServiceManager } from '../../../shared/services/service-manager';
 import { Constants } from '../../../shared/config/constants';
+import { ZContactService } from '../../../../contact/shared/services/contact.service';
+import { Observable } from 'rxjs/Observable';
 
 declare let _:any;
 
@@ -19,9 +21,15 @@ export class ContactSearchFormComponent implements OnInit {
   active:boolean;
   contactUrl: string = Constants.urls.contacts;
 
-  constructor(public serviceManager: ServiceManager) {
+  suggest$: Observable<any>;
+
+  constructor(public serviceManager: ServiceManager,
+              public contactService: ZContactService
+  ) {
     this.constants = this.serviceManager.getConstants();
     this.active = this.constants.search.config.contactActive;
+    this.suggest$ = this.contactService.suggest$
+    ;
   }
 
   showSearchAdvanced() {
@@ -37,39 +45,25 @@ export class ContactSearchFormComponent implements OnInit {
   }
 
   getSuggestions(e:any) {
-    // this.serviceManager.getApi().post(`zone/social_network/search`, {q: `${this.searchText}`, types: ['member', 'community']}).subscribe(
-    //   (res:any) => {
-    //     this.suggestions = [];
-    //     this.groups = Object.keys(res.data);
-    //     for (let i=0; i < this.groups.length; i++) {
-    //       for (let j = 0; j < res.data[this.groups[i]].length; j++) {
-    //         let suggestion = res.data[this.groups[i]][j];
-    //         suggestion.type = this.groups[i];
-    //         this.suggestions.push(suggestion);
-    //       }
-    //     }
-    //   }
-    // );
+    this.contactService.suggestContacts(this.searchText);
 
     console.log('inside Contact getSuggestion.', this.searchText);
   }
 
   onSelect(e:any) {
-    this.serviceManager.getRouter().navigate([`${this.contactUrl},${e.id}`]);
+    // this.serviceManager.getRouter().navigate([`${this.contactUrl},${e.id}`]);
     console.log('inside Contact onSelect.', this.searchText, e);
 
     // this.searchText = e.name;
     // this.serviceManager.getRouter().navigate([`${e.link}`]);
   }
 
-  onEnter() {
-    // this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: `${this.searchText}`}});
-    // // close suggestions
-    // if (this.suggestions) {
-    //   this.suggestions.length = 0;
-    // }
+  onEscape(e: any) {
+    this.searchText = '';
+    this.onEnter();
+  }
 
+  onEnter() {
     this.serviceManager.getCommonEventService().broadcast({action: 'contact:contact:search', payload: {search_value: this.searchText}});
-    console.log('inside Contact onEnter().');
   }
 }

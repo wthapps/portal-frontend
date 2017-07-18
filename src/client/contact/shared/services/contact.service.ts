@@ -19,12 +19,14 @@ export class ZContactService extends BaseEntityService<any>{
   contacts: Array<any> = new Array<any>();
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
+  private suggestSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
 
   listenToList = this.listenToListSource.asObservable();
   listenToItem = this.listenToItemSource.asObservable();
   contacts$: Observable<Array<any>> = this.contactsSubject.asObservable();
+  suggest$: Observable<Array<any>> = this.suggestSubject.asObservable();
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
@@ -63,18 +65,11 @@ export class ZContactService extends BaseEntityService<any>{
   }
 
   // confirmDeleteContacts(contacts: Array<any> = []): Promise<any> {
-  confirmDeleteContacts(contacts: any[] = []): Promise<any> {
-    if(contacts.length === 0) {
-      contacts.push(...this.selectedObjects);
-    }
-
+  confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
     let contact_names: string= _.map(contacts, (ct: any) => ct.name).join(', ');
-
-    console.debug('inside confirmDeleteContacts: ', contacts, contact_names,this.selectedObjects);
     return new Promise((resolve) => {
       this.confirmationService.confirm({
         message: `Are you sure you want to remove following ${contacts.length} contacts:  ${contact_names} ?`,
-        // message: `Are you sure you want to remove following contacts:  ${contact_names} ?`,
         header: 'Remove Contacts',
         accept: () => {
           this.deleteSelectedContacts().then(() => {
@@ -84,8 +79,6 @@ export class ZContactService extends BaseEntityService<any>{
         }
       });
     });
-
-    // return Promise.resolve('');
   };
 
   addItemSelectedObjects(item: any) {
@@ -173,23 +166,35 @@ export class ZContactService extends BaseEntityService<any>{
   // Search by name, email, phone number
   search(options: any) {
     let search_value = _.get(options, 'search_value','').trim().toLowerCase();
+    let contacts = this.searchContact(search_value);
+
+    this.contactsSubject.next(contacts);
+  }
+
+  suggestContacts(value: any) {
+    let contacts: any[] = _.cloneDeep(this.searchContact(value));
+
+    console.log('suggestContacts: ', contacts);
+    this.suggestSubject.next(contacts);
+  }
+
+  private searchContact(name: string): any[] {
+    let search_value = name.toLowerCase();
     if ( search_value === '') {
-      this.contactsSubject.next(this.contacts);
-      return;
+      return this.contacts;
     }
     let contacts = _.filter(this.contacts, (contact: any)=> {
       let emails_string : string = _.map(contact.emails, (e: any) => e.value).join(', ');
       let phones_string : string = _.map(contact.phones, (e: any) => e.value).join(', ');
       if((contact.name.toLowerCase().indexOf(search_value) > -1)
-      || (emails_string.toLowerCase().indexOf(search_value) > -1)
-      || (phones_string.toLowerCase().indexOf(search_value) > -1)
+        || (emails_string.toLowerCase().indexOf(search_value) > -1)
+        || (phones_string.toLowerCase().indexOf(search_value) > -1)
       ) {
         return contact;
       };
     });
 
-    console.log('inside contactService.search: ', options, contacts, this.contacts);
-    this.contactsSubject.next(contacts);
+    return contacts;
   }
 
   private deleteContact(contact: any): Promise<any> {
