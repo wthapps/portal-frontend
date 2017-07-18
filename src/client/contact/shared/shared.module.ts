@@ -25,6 +25,7 @@ import { ZContactShareImportContactComponent } from './modal/import-contact/impo
 import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
 import { ContactImportContactDataService } from './modal/import-contact/import-contact-data.service';
 import { ZContactSharedSettingsComponent } from './modal/settings/settings.component';
+import { ZContactMenuService } from './services/contact-menu.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -90,6 +91,7 @@ export class ZContactSharedModule {
         ZContactService,
         GoogleApiService,
         ZContactAddContactService,
+        ZContactMenuService,
         ZContactThreeDotActionsService,
         ContactImportContactDataService
       ]

@@ -229,6 +229,7 @@ export let Constants = {
       photoActive: true,
       socialActive: true,
       chatActive: true,
+      contactActive: true,
     }
   },
 

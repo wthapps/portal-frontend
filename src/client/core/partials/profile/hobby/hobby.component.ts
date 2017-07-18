@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -8,7 +8,6 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
-import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -22,20 +21,21 @@ export class PartialsProfileHobbyComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
-  @Input() config: ProfileConfig;
+
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
   form: FormGroup;
 
   constructor(private fb: FormBuilder, private profileService: PartialsProfileService) {
     this.form = fb.group({
-      'hobbys': fb.array([
+      'hobbies': fb.array([
         this.initItem(),
       ])
     });
   }
 
   removeAll() {
-    const control = <FormArray>this.form.controls['hobbys'];
+    const control = <FormArray>this.form.controls['hobbies'];
     control.controls.length = 0;
     control.reset();
   }
@@ -56,7 +56,7 @@ export class PartialsProfileHobbyComponent {
   }
 
   addItem(item?: any) {
-    const control = <FormArray>this.form.controls['hobbys'];
+    const control = <FormArray>this.form.controls['hobbies'];
     if (item) {
       control.push(this.initItem(item));
     } else {
@@ -65,7 +65,7 @@ export class PartialsProfileHobbyComponent {
   }
 
   removeItem(i: number) {
-    const control = <FormArray>this.form.controls['hobbys'];
+    const control = <FormArray>this.form.controls['hobbies'];
     control.removeAt(i);
   }
 
@@ -75,21 +75,19 @@ export class PartialsProfileHobbyComponent {
 
     _this.removeAll();
 
-    _.map(this.data.hobbys, (v: any)=> {
+    _.map(this.data.hobbies, (v: any)=> {
       _this.addItem(v);
     });
   }
 
 
   onSubmit(values: any): void {
-    console.log(values);
-    this.profileService.updateMyProfile(values).subscribe((res: any) => {
-      this.data = res.data;
-      this.modal.close();
-    });
+    this.data.hobbies = values.hobbies;
+    this.eventOut.emit(values);
+    this.modal.close();
   }
 
   getHobbyControls() {
-    return (<FormGroup>(<FormGroup>this.form.get('hobbys')))['controls'];
+    return (<FormGroup>(<FormGroup>this.form.get('hobbies')))['controls'];
   }
 }

@@ -6,8 +6,8 @@
     <h3 class="panel-title">Hobby &amp; Interest</h3>
   </div>
   <div class="panel-body">
-    <div *ngIf="data.hobbys">
-      <dl *ngFor="let hobby of data.hobbys">
+    <div *ngIf="data.hobbies">
+      <dl *ngFor="let hobby of data.hobbies">
       <dt>{{hobby.title}}</dt>
       <dd>
         <p>
@@ -18,7 +18,7 @@
     </div>
 
 
-    <div *ngIf="!data.hobbys">
+    <div *ngIf="data.hobbies && data.hobbies.length == 0">
       <p class="text-fade">
         Tell us more about your hobby &amp; interest
       </p>
@@ -39,7 +39,7 @@
     </modal-header>
     <modal-body>
       <div class="form-group">
-        <div class="content-overflow" style="max-height: 195px;" formArrayName="hobbys">
+        <div class="content-overflow" style="max-height: 195px;" formArrayName="hobbies">
           <div *ngFor="let hobby of  getHobbyControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group">
-                    <div class="pull-right text-fade"><span>{{form.value.hobbys[i].description.length}}</span>/150 characters</div>
+                    <div class="pull-right text-fade"><span>{{form.value.hobbies[i].description.length}}</span>/150 characters</div>
                     <label>Description</label>
                     <textarea formControlName="description" maxlength="150" rows="3" class="form-control no-resize" placeholder=""></textarea>
                   </div>

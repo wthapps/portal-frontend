@@ -18,6 +18,8 @@ import { Label } from './label/label.model';
 import { label } from 'aws-sdk/clients/sns';
 import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
+import { ZContactService } from './shared/services/contact.service';
+import { ZContactMenuService } from './shared/services/contact-menu.service';
 
 /**
  * This class represents the main application component.
@@ -49,6 +51,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
+              private contactService: ZContactService,
+              private contactMenuService: ZContactMenuService,
               private labelService: LabelService
   ) {
     console.log('Environment config', Config);
@@ -65,8 +69,6 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
     this.labelService.getAllLabels().then(
       (response: any) => {
         this.labels = response;
-
-        console.log(response);
 
         //map labels to ContactMenu Item
         _.each(this.labels, (label: Label) => {
@@ -152,6 +154,10 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
             _.remove(this.contactMenu, {name: response.data.name});
           }
         );
+        break;
+      case 'contact:contact:search':
+        console.log('inside contact:contact:search: ', event);
+        this.contactService.search(event.payload);
         break;
     }
   }

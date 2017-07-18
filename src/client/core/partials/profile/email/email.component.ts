@@ -10,7 +10,6 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/config/constants';
-import { ProfileConfig } from '../profile-config.model';
 import { QuestionBase } from '../../form/base/question-base';
 import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { QuestionControlService } from '../../form/base/question-control.service';
@@ -28,7 +27,6 @@ export class PartialsProfileEmailComponent implements OnInit{
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
-  @Input() config: ProfileConfig;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
@@ -36,6 +34,7 @@ export class PartialsProfileEmailComponent implements OnInit{
 
   questions: QuestionBase<any>[];
   form: FormGroup;
+  deleteObjects: any = [];
 
   emailType: any = Constants.emailType;
 
@@ -55,6 +54,7 @@ export class PartialsProfileEmailComponent implements OnInit{
   removeAll() {
     const control = <FormArray>this.form.controls['emails'];
     control.controls.length = 0;
+    this.deleteObjects.length = 0;
     control.reset();
   }
 
@@ -85,7 +85,10 @@ export class PartialsProfileEmailComponent implements OnInit{
 
   removeItem(i: number) {
     const control = <FormArray>this.form.controls['emails'];
-    this.eventOut.emit({action: 'delete', item: 'emails', data: control.at(i).value});
+    if (this.data.emails[i]) {
+      this.data.emails[i]._destroy = true;
+      this.deleteObjects.push(this.data.emails[i]);
+    }
     control.removeAt(i);
   }
 
@@ -102,24 +105,8 @@ export class PartialsProfileEmailComponent implements OnInit{
 
 
   onSubmit(values: any): void {
-    // if (this.config.callApiAfterChange) {
-    //
-    //   let urlApi = (this.config.onEditCustomUrl ? this.config.onEditCustomUrl : 'zone/social_network/users');
-    //
-    //   this.apiBaseService.put(`${urlApi}/` + this.data.uuid, values).subscribe((res: any) => {
-    //     this.removeAll();
-    //     this.data = res.data;
-    //     _.map(this.data.emails, (v: any)=> {
-    //       this.addItem(v);
-    //     });
-    //   });
-    //
-    //
-    // } else {
-    //   this.data.emails = values.emails;
-    // }
-    this.data.emails = values.emails;
-    this.eventOut.emit({action: 'update', item: 'email', data: values});
+    this.data.emails = _.concat(this.deleteObjects, values.emails);
+    this.eventOut.emit({action: 'update', item: 'emails', data: this.data.emails});
     this.modal.close();
   }
 
