@@ -24,6 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
 import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
 import { ContactImportContactDataService } from './modal/import-contact/import-contact-data.service';
+import { ZContactSharedSettingsComponent } from './modal/settings/settings.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -54,7 +55,8 @@ import { ContactImportContactDataService } from './modal/import-contact/import-c
 
     //modal here
     ContactAddLabelModalComponent,
-    ContactEditLabelModalComponent
+    ContactEditLabelModalComponent,
+    ZContactSharedSettingsComponent
   ],
   exports: [
     CommonModule,
@@ -76,7 +78,8 @@ import { ContactImportContactDataService } from './modal/import-contact/import-c
 
     // modal here
     ContactAddLabelModalComponent,
-    ContactEditLabelModalComponent
+    ContactEditLabelModalComponent,
+    ZContactSharedSettingsComponent
   ]
 })
 export class ZContactSharedModule {

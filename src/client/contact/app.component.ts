@@ -17,6 +17,7 @@ import { Constants } from '../core/shared/config/constants';
 import { Label } from './label/label.model';
 import { label } from 'aws-sdk/clients/sns';
 import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
+import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
 
 /**
  * This class represents the main application component.
@@ -28,7 +29,8 @@ declare var _: any;
   selector: 'sd-app',
   templateUrl: 'app.component.html',
   entryComponents: [
-    LabelEditModalComponent
+    LabelEditModalComponent,
+    ZContactSharedSettingsComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
@@ -64,6 +66,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       (response: any) => {
         this.labels = response;
 
+        console.log(response);
+
         //map labels to ContactMenu Item
         _.each(this.labels, (label: Label) => {
           this.contactMenu.push(this.mapLabelToMenuItem(label));
@@ -93,6 +97,10 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           mode: event.payload.mode,
           item: this.getLabel(event.payload.selectedItem) || new Label()
         });
+        break;
+      case 'contact:label:open_modal_setting':
+        this.loadModalComponent(ZContactSharedSettingsComponent);
+        this.modal.open();
         break;
       case 'contact:label:delete_confirm':
         this.confirmationService.confirm({
