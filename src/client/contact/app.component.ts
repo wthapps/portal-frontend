@@ -17,6 +17,7 @@ import { Constants } from '../core/shared/config/constants';
 import { Label } from './label/label.model';
 import { label } from 'aws-sdk/clients/sns';
 import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
+import { ZContactService } from './shared/services/contact.service';
 
 /**
  * This class represents the main application component.
@@ -47,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
+              private contactService: ZContactService,
               private labelService: LabelService
   ) {
     console.log('Environment config', Config);
@@ -144,6 +146,10 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
             _.remove(this.contactMenu, {name: response.data.name});
           }
         );
+        break;
+      case 'contact:contact:search':
+        console.log('inside contact:contact:search: ', event);
+        this.contactService.search(event.payload);
         break;
     }
   }

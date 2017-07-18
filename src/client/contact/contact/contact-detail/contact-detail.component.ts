@@ -34,7 +34,7 @@ export class ZContactDetailComponent implements OnInit {
   }
 
   deleteContact() {
-    this.contactService.deleteContact(this.data);
+    this.contactService.confirmDeleteContact(this.data);
   }
 
 

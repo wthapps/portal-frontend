@@ -20,8 +20,7 @@ export class ZContactSharedActionsBarComponent {
 
   }
 
-
-  toogleFavourite() {
+  toggleFavourite() {
     // edit labels favourite instead of favourite attribute here
 
     // this.contactService.update(this.data, {favourite: !this.data.favourite}).then((res: any) => {

@@ -20,7 +20,7 @@ export class ZContactSharedThreeDotActionComponent {
   }
 
   deleteContact(data: any) {
-    this.contactService.deleteContact(data);
+    this.contactService.confirmDeleteContact(data);
   }
 
   doEvent(event: any) {

@@ -8,12 +8,14 @@ import { BaseEntityService } from '../../../core/shared/services/base-entity-ser
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
+import { ConfirmationService } from 'primeng/components/common/api';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 
 declare var _: any;
 
 @Injectable()
 export class ZContactService extends BaseEntityService<any>{
-  selectedObjects: any = [];
+  selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
@@ -27,7 +29,9 @@ export class ZContactService extends BaseEntityService<any>{
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
               public contactThreeDotActionsService: ZContactThreeDotActionsService,
-              public contactAddContactService: ZContactAddContactService
+              public contactAddContactService: ZContactAddContactService,
+              private toastsService: ToastsService,
+              private confirmationService: ConfirmationService
   ) {
     super(apiBaseService);
     this.url = 'contact/contacts';
@@ -52,26 +56,37 @@ export class ZContactService extends BaseEntityService<any>{
       });
   }
 
-  deleteContact(contact: any): Promise<any> {
-    return super.delete(`${contact.id}`)
-      .toPromise()
-      .then((res: any) => {
-        _.remove(this.contacts, (ct: any) => {ct.id === res.data.id ;});
-        this.contactsSubject.next(this.contacts);
+  confirmDeleteContact(contact: any): Promise<any> {
+    this.selectedObjects.length = 0;
+    this.selectedObjects = [contact];
+    return this.confirmDeleteContacts();
+  }
+
+  // confirmDeleteContacts(contacts: Array<any> = []): Promise<any> {
+  confirmDeleteContacts(contacts: any[] = []): Promise<any> {
+    if(contacts.length === 0) {
+      contacts.push(...this.selectedObjects);
+    }
+
+    let contact_names: string= _.map(contacts, (ct: any) => ct.name).join(', ');
+
+    console.debug('inside confirmDeleteContacts: ', contacts, contact_names,this.selectedObjects);
+    return new Promise((resolve) => {
+      this.confirmationService.confirm({
+        message: `Are you sure you want to remove following ${contacts.length} contacts:  ${contact_names} ?`,
+        // message: `Are you sure you want to remove following contacts:  ${contact_names} ?`,
+        header: 'Remove Contacts',
+        accept: () => {
+          this.deleteSelectedContacts().then(() => {
+            this.toastsService.success(`Remove ${contacts.length} contacts successfully`);
+            resolve();
+          });
+        }
       });
-  }
-
-  deleteSelectedContacts(): Promise<any> {
-    let body =  { contacts: this.selectedObjects};
-    return this.apiBaseService.post(`${this.url}/multi_destroy`, body).toPromise()
-      .then(() => {
-      let deletedIds = _.map(this.selectedObjects, (contact: any) => contact.id);
-
-      _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
-        this.contactsSubject.next(this.contacts);
-        this.selectedObjects.length = 0;
     });
-  }
+
+    // return Promise.resolve('');
+  };
 
   addItemSelectedObjects(item: any) {
     this.selectedObjects.push(item);
@@ -153,7 +168,49 @@ export class ZContactService extends BaseEntityService<any>{
     });
 
     this.contactsSubject.next(contacts);
+  }
 
+  // Search by name, email, phone number
+  search(options: any) {
+    let search_value = _.get(options, 'search_value','').trim().toLowerCase();
+    if ( search_value === '') {
+      this.contactsSubject.next(this.contacts);
+      return;
+    }
+    let contacts = _.filter(this.contacts, (contact: any)=> {
+      let emails_string : string = _.map(contact.emails, (e: any) => e.value).join(', ');
+      let phones_string : string = _.map(contact.phones, (e: any) => e.value).join(', ');
+      if((contact.name.toLowerCase().indexOf(search_value) > -1)
+      || (emails_string.toLowerCase().indexOf(search_value) > -1)
+      || (phones_string.toLowerCase().indexOf(search_value) > -1)
+      ) {
+        return contact;
+      };
+    });
+
+    console.log('inside contactService.search: ', options, contacts, this.contacts);
+    this.contactsSubject.next(contacts);
+  }
+
+  private deleteContact(contact: any): Promise<any> {
+    return super.delete(`${contact.id}`)
+      .toPromise()
+      .then((res: any) => {
+        _.remove(this.contacts, (ct: any) => {ct.id === res.data.id ;});
+        this.contactsSubject.next(this.contacts);
+      });
+  }
+
+  private deleteSelectedContacts(): Promise<any> {
+    let body =  { contacts: this.selectedObjects};
+    return this.apiBaseService.post(`${this.url}/multi_destroy`, body).toPromise()
+      .then(() => {
+        let deletedIds = _.map(this.selectedObjects, (contact: any) => contact.id);
+
+        _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
+        this.contactsSubject.next(this.contacts);
+        this.selectedObjects.length = 0;
+      });
   }
 
   private initialLoad() {

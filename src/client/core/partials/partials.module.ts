@@ -37,6 +37,7 @@ import { TextBoxSearchComponent } from './header/search/components/textbox-searc
 import { DisplayLinkComponent } from './link/display-link.component';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { PartialsFormModule } from './form/partials-form.module';
+import { ContactSearchFormComponent } from './header/search/contact-search-form.component';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { PartialsFormModule } from './form/partials-form.module';
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
     ChatSearchFormComponent,
+    ContactSearchFormComponent,
     TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,
@@ -91,6 +93,7 @@ import { PartialsFormModule } from './form/partials-form.module';
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
     ChatSearchFormComponent,
+    ContactSearchFormComponent,
     TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,

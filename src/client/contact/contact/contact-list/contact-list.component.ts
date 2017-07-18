@@ -77,8 +77,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
 
-  deleteSelectedContacts() {
-    this.contactService.deleteSelectedContacts();
+  confirmDeleteContacts() {
+    this.contactService.confirmDeleteContacts();
   }
 
   getAllContact() {
@@ -156,7 +156,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       message: 'Are you sure you want to delete this contact ?',
       header: 'Delete Contact',
       accept: () => {
-        this.contactService.deleteContact(data).then((res: any) => {
+        this.contactService.confirmDeleteContact(data).then((res: any) => {
           // MUST update local data here
           // this.contactService.contactThreeDotActionsService.sendOut({action: "deleted"});
         });

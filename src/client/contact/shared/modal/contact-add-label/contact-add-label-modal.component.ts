@@ -46,11 +46,6 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
     // });
 
 
-    this.labelService.getAllLabels().then((labels: any[]) => {
-      console.log('getAllLabels: ', labels);
-      this.originalLabels.push(...labels);
-      this.labels = _.map(this.originalLabels, 'name');
-    });
 
     // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
     // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
@@ -82,7 +77,13 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   open(options?: any) {
     // this.mode = options.mode || 'add';
     this.contact = options.contact || null;
-    this.modal.open(options).then();
+    this.modal.open(options).then(() => {
+      this.labelService.getAllLabels().then((labels: any[]) => {
+        console.log('getAllLabels: ', labels);
+        this.originalLabels.push(...labels);
+        this.labels = _.map(this.originalLabels, 'name');
+      });
+    });
   }
 
   close(options?: any) {
