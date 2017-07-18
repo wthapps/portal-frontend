@@ -141,12 +141,14 @@ export class ZContactService extends BaseEntityService<any>{
 
   filter(options: any) {
     let contacts = _.filter(this.contacts, (contact: any)=> {
-      if (options.label != 'undefined') {
+      if (_.get(options, 'label', 'undefined') != 'undefined') {
         return _.find(contact.labels, (label: any) => {
           if(label.name === options.label) {
             return contact;
           };
         });
+      } else {
+        return contact;
       }
     });
 

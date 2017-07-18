@@ -50,7 +50,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
       switch(params['label']) {
         case 'all contact':
         case 'undefined':
-          this.contact$ = this.contactService.contacts$;
+          this.contactService.filter({label: undefined});
           break;
         default:
           this.contactService.filter({label: params['label']});
