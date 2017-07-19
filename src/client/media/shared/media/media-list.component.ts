@@ -3,6 +3,10 @@ import {
   ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy, ViewEncapsulation
 } from '@angular/core';
 import { Location } from '@angular/common';
+
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
@@ -10,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { PhotoService } from '../../../core/shared/services/photo.service';
-import { Subject } from 'rxjs/Subject';
+
 import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '../../../core/shared/components/photo/modal/photo-edit-modal.component';

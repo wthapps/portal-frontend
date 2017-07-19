@@ -8,6 +8,8 @@ import { CookieModule, CookieService } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
+import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { ApiBaseService } from './services/apibase.service';
@@ -73,6 +75,8 @@ import { ModalDockModule } from './components/modal/dock.module';
     ConfirmDialogModule,
     InfiniteScrollModule,
     InputSwitchModule,
+    RadioButtonModule,
+    AutoCompleteModule,
 
     FooterModule,
     HeaderModule,

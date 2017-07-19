@@ -8,6 +8,12 @@ import {
   SimpleChanges,
   EventEmitter, OnDestroy, ViewContainerRef, ComponentFactoryResolver, Type
 } from '@angular/core';
+
+
+import { Subscription } from 'rxjs';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/observable/from';
+
 import {
   PostActivitiesComponent
 } from './index';
@@ -25,12 +31,9 @@ import {
 } from '../../events/social-events';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Subscription, Observable } from 'rxjs';
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
 import { BaseEvent } from '../../../core/shared/event/base-event';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/observable/from';
 
 declare var $: any;
 declare var _: any;
@@ -455,8 +458,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     _.forEach(this.item.comments, (comment: SoComment, index: any) => {
       // Update comment items
-      if (data.parent_type !== 'SocialNetwork::Comment' && (comment.uuid == updatedComment.uuid))
-      {
+      if (data.parent_type !== 'SocialNetwork::Comment' && (comment.uuid == updatedComment.uuid)) {
         this.item.comments[index] = updatedComment;
         return;
       }

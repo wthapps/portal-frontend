@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+import 'rxjs/add/operator/debounceTime';
+
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoCommunityService } from './community.service';

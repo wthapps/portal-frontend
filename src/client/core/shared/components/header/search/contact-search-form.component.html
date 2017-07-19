@@ -8,7 +8,7 @@
         [delay]="500"
         (keyup.enter)="onEnter()"
         (keyup.esc)="onEscape()" (onSelect)="onSelect($event)">
-        <template let-item pTemplate="item">
+        <ng-template let-item pTemplate="item">
           <!--{{item |json}}-->
           <ul class="list-unstyled social-list-user">
             <li>
@@ -28,7 +28,7 @@
               </div>
             </li>
           </ul>
-        </template>
+        </ng-template>
       </p-autoComplete>
 
       <span class="input-group-btn">

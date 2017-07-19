@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Response, Http } from '@angular/http';
 import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/contact-three-dot.service';

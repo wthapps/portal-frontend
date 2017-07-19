@@ -4,16 +4,19 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+
 import { ConfirmationService } from 'primeng/components/common/api';
+
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
 import { PhotoSelectModalComponent } from '../../../core/shared/components/zone/photo/upload-photos/photo-select-modal.component';
 import { ZMediaAlbumService } from '../../album/album.service';
-import { Constants } from '../../../core/shared/config/constants';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
-import { Subject } from 'rxjs/Subject';
 import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoDetailPartialComponent } from '../../../core/shared/components/photo/detail/photo-detail-partial.component';

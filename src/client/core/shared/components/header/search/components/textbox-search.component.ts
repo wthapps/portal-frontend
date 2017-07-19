@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 
 declare let _: any;
 
