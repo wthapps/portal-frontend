@@ -63,7 +63,7 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
       _.forEach(this.selectedLabels, (label: any) => {
         this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
       });
-      this.contact['labels_attributes'] = this.contact.labels;
+      // this.contact['labels_attributes'] = this.contact.labels;
       this.contact = _.pick(this.contact, ['id', 'labels_attributes']);
     }
     this.commonEventService.broadcast({
@@ -77,10 +77,10 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
     // this.mode = options.mode || 'add';
     this.contact = options.contact || null;
     this.inputLabels = options.labels || [];
+    this.selectedLabels = _.map(this.inputLabels, 'name');
     this.modal.open(options).then(() => {
       this.labelService.getAllLabels().then((labels: any[]) => {
-        console.log('getAllLabels: ', labels);
-        this.originalLabels.push(...labels);
+        this.originalLabels = labels;
         this.labels = _.map(this.originalLabels, 'name');
       });
     });
@@ -103,7 +103,7 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
             result = false;
             return;
           }
-        });
+        })
       });
     }
     return result;

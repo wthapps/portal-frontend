@@ -135,9 +135,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
 
         if (event.payload.labels !== 'undefined') {
           let selectedContacts = this.contactService.selectedObjects;
-          _.forEach(selectedContacts, (contact: any) => {
-            contact.labels = _.merge(contact.labels, event.payload.labels);
-            console.log('selected contact:::', contact.labels);
+          // _.forEach(selectedContacts, (contact: any) => {
+          //   contact.labels = _.merge(contact.labels, event.payload.labels);
+          //   console.log('selected contact:::', contact.labels);
+          // });
+          _.forEach(this.contactService.selectedObjects, (contact: any) => {
+            contact.labels = event.payload.labels
           });
         }
 
@@ -179,26 +182,28 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     let event: any = {
       action: 'contact:contact:update',
       payload: {
-        labels: name=='favourite' ? [{
-          id: 3,
-          uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
-          name: 'favourite',
-          user_id: null,
-          system: true
-        }] : [{
-          id: 6,
-          uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
-          name: 'blacklist',
-          user_id: null,
-          system: true
-        }]
+
       }
+    };
+
+    let label = name=='favourite' ? {
+      id: 3,
+      uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
+      name: 'favourite',
+      user_id: null,
+      system: true
+    } : {
+      id: 6,
+      uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
+      name: 'blacklist',
+      user_id: null,
+      system: true
     };
 
     if (this.hasLabel(name)) {
       this.removeLabel(name);
     } else {
-      this.addLabel(event.payload.labels[0]);
+      this.addLabel(label);
     }
      this.doEvent(event)
   }
