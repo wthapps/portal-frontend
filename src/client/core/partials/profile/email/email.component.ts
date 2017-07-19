@@ -14,16 +14,19 @@ import { QuestionBase } from '../../form/base/question-base';
 import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { QuestionControlService } from '../../form/base/question-control.service';
 import { DropdownQuestion } from '../../form/categories/dropdown-question';
+import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
+import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin])
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-email',
   templateUrl: 'email.component.html'
 })
 
-export class PartialsProfileEmailComponent implements OnInit{
+export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
@@ -32,16 +35,15 @@ export class PartialsProfileEmailComponent implements OnInit{
 
   @HostBinding('class') class = 'field-group';
 
-  questions: QuestionBase<any>[];
   form: FormGroup;
   deleteObjects: any = [];
+  type: string = "emails";
 
   emailType: any = Constants.emailType;
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService, private questionControlService: QuestionControlService) {
 
   }
-
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -51,12 +53,10 @@ export class PartialsProfileEmailComponent implements OnInit{
     });
   }
 
-  removeAll() {
-    const control = <FormArray>this.form.controls['emails'];
-    control.controls.length = 0;
-    this.deleteObjects.length = 0;
-    control.reset();
-  }
+  removeItem:(i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   //emails
   initItem(item?: any) {
@@ -83,15 +83,6 @@ export class PartialsProfileEmailComponent implements OnInit{
     }
   }
 
-  removeItem(i: number) {
-    const control = <FormArray>this.form.controls['emails'];
-    if (this.data.emails[i]) {
-      this.data.emails[i]._destroy = true;
-      this.deleteObjects.push(this.data.emails[i]);
-    }
-    control.removeAt(i);
-  }
-
   onOpenModal() {
     this.modal.open();
     let _this = this;
@@ -101,16 +92,5 @@ export class PartialsProfileEmailComponent implements OnInit{
     _.map(this.data.emails, (v: any)=> {
       _this.addItem(v);
     });
-  }
-
-
-  onSubmit(values: any): void {
-    this.data.emails = _.concat(this.deleteObjects, values.emails);
-    this.eventOut.emit({action: 'update', item: 'emails', data: this.data.emails});
-    this.modal.close();
-  }
-
-  getEmailControls() {
-    return (<FormGroup>(<FormGroup>this.form.get('emails')))['controls'];
   }
 }

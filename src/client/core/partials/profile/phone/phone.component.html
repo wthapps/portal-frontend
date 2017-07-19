@@ -41,7 +41,7 @@
     </modal-header>
     <modal-body>
       <div formArrayName="phones">
-        <div *ngFor="let add_phone of getPhoneControls(); let i=index" class="media media-no-hidden mt0">
+        <div *ngFor="let add_phone of getFormControls(); let i=index" class="media media-no-hidden mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-2">
@@ -120,3 +120,4 @@
     </modal-footer>
   </modal>
 </form>
+
