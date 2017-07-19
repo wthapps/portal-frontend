@@ -36,7 +36,7 @@
     </modal-header>
     <modal-body>
       <div formArrayName="emails">
-        <div *ngFor="let add_email of getEmailControls(); let i=index" class="media mt0">
+        <div *ngFor="let add_email of getFormControls(); let i=index" class="media mt0">
           <div *ngIf="add_email" class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">

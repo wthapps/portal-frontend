@@ -18,7 +18,15 @@
             <partials-profile-media #media *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-media>
           </div>
         </div>
-        <partials-profile-work-edu [data]="data" [editable]="true"></partials-profile-work-edu>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Works & Educations</h3>
+          </div>
+          <div class="panel-body">
+            <partials-profile-work [data]="data" [editable]="true"></partials-profile-work>
+            <partials-profile-edu [data]="data" [editable]="true"></partials-profile-edu>
+          </div>
+        </div>
         <partials-profile-hobby [data]="data" [editable]="true"></partials-profile-hobby>
       </partials-profile>
     </div>

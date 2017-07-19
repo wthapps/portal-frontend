@@ -1,46 +1,42 @@
-<div class="panel panel-default" *ngIf="data">
-  <div class="panel-heading">
-    <button *ngIf="editable" class="btn btn-default pull-right" (click)="onOpenModal()">
-      <i class="fa fa-pencil"></i>
-    </button>
-    <h3 class="panel-title">Hobby &amp; Interest</h3>
-  </div>
-  <div class="panel-body">
-    <div *ngIf="data.hobbies">
-      <dl *ngFor="let hobby of data.hobbies">
-      <dt>{{hobby.title}}</dt>
-      <dd>
-        <p>
-          {{hobby.description}}
-        </p>
-      </dd>
-    </dl>
+<div *ngIf="data" class="field-group">
+  <div class="field-group-title">
+    <h3 class="pull-left">Works</h3>
+    <div class="pull-right">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
     </div>
+  </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal" *ngIf="data.works && data.works.length > 0">
+      <template ngFor let-item [ngForOf]="data.works" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{item.title}}</dt>
+        <dd><p>{{item.description}}</p></dd>
+      </template>
+    </dl>
 
-
-    <div *ngIf="data.hobbies && data.hobbies.length == 0">
+    <div *ngIf="data.works && data.works.length == 0 && editable">
       <p class="text-fade">
-        Tell us more about your hobby &amp; interest
+        Tell us more about your media
       </p>
       <button type="button" class="btn btn-default" (click)="onOpenModal()">
         <i class="fa fa-plus"></i> Add detail
       </button>
     </div>
+
   </div>
 </div>
 
-
-
-
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"><i class="fa fa-pencil"></i> Hobby &amp; Interest</h4>
+      <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Work &amp; Education</h4>
     </modal-header>
     <modal-body>
+      <h4>Employment</h4>
       <div class="form-group">
-        <div class="content-overflow" style="max-height: 195px;" formArrayName="hobbies">
-          <div *ngFor="let hobby of  getFormControls(); let i=index" class="media">
+        <div class="content-overflow" style="max-height: 195px;" formArrayName="works">
+          <div *ngFor="let add_work of getFormControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
                 <div class="col-sm-12">
@@ -51,7 +47,7 @@
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group">
-                    <div class="pull-right text-fade"><span>{{form.value.hobbies[i].description.length}}</span>/150 characters</div>
+                    <div class="pull-right text-fade"><span>{{form.value.works[i].description.length}}</span>/150 characters</div>
                     <label>Description</label>
                     <textarea formControlName="description" maxlength="150" rows="3" class="form-control no-resize" placeholder=""></textarea>
                   </div>
@@ -59,23 +55,21 @@
               </div>
             </div>
             <div class="media-right">
-              <button type="button" class="btn btn-default mt25" (click)="removeItem(i)">
+              <button type="button" class="btn btn-default mt25" (click)="removeWork(i)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </div>
           </div>
         </div>
         <div class="mt15">
-          <button type="button" class="btn btn-default" (click)="addItem()">
+          <button type="button" class="btn btn-default" (click)="addWork()">
             <i class="fa fa-plus"></i> Add more
           </button>
         </div>
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10"
-              (click)="onCustomSubmit(form.value)">Done
-      </button>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onCustomSubmit(form.value)">Done</button>
       <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
     </modal-footer>
   </modal>

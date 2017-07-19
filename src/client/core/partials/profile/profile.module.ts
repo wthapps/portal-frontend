@@ -14,11 +14,12 @@ import { PipeModule } from '../../shared/pipe/pipe.module';
 import { PartialsProfileAvatarInfoComponent } from './avatar-info/avatar-info.component';
 import { PartialsProfileAboutComponent } from './about/about.component';
 import { PartialsProfileContactComponent } from './contact/contact.component';
-import { PartialsProfileWorkEduComponent } from './work-edu/work-edu.component';
+import { PartialsProfileWorkComponent } from './work-edu/work.component';
 import { PartialsProfileHobbyComponent } from './hobby/hobby.component';
 import { PartialsProfileComponent } from './profile.component';
 import { PartialsProfileService } from './profile.service';
 import { PartialsFormModule } from '../form/partials-form.module';
+import { PartialsProfileEducationComponent } from './work-edu/education.component';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { PartialsFormModule } from '../form/partials-form.module';
     PartialsProfileMediaComponent,
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
-    PartialsProfileWorkEduComponent,
+    PartialsProfileWorkComponent,
+    PartialsProfileEducationComponent,
     PartialsProfileHobbyComponent
   ],
   exports: [
@@ -54,7 +56,8 @@ import { PartialsFormModule } from '../form/partials-form.module';
     PartialsProfileMediaComponent,
     PartialsProfileNoteComponent,
     PartialsProfileContactComponent,
-    PartialsProfileWorkEduComponent,
+    PartialsProfileWorkComponent,
+    PartialsProfileEducationComponent,
     PartialsProfileHobbyComponent
   ],
   providers: [
