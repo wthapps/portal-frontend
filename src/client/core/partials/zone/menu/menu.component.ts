@@ -79,15 +79,14 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
-  trackByFn() {
+  trackMenu() {
 
   }
 
   doEvent(event: any) {
-    console.log('doEvent in menu:', event);
-    if (event.event) {
-      event.event.preventDefault();
-    }
+    // if (event.event) {
+    //   event.event.preventDefault();
+    // }
     this.commonEventService.broadcast(event);
   }
 

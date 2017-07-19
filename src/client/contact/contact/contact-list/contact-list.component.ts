@@ -19,6 +19,12 @@ declare var _: any;
 export class ZContactListComponent implements OnInit, OnDestroy, CommonEventAction {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
 
+  ITEM_PER_PAGE: number = 20;
+  page: number = 1;
+
+  contacts: Array<any> = new Array<any>([]);
+  filteredContacts: Array<any> = new Array<any>();
+
   eventThreeDot: any;
   eventAddContact: any;
   commonEventSub: Subscription;
@@ -40,7 +46,20 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   }
 
   ngOnInit() {
+    this.page = 1;
     this.contact$ = this.contactService.contacts$;
+
+    this.contactService.contacts$
+      .subscribe((contacts: any[]) => {
+        // this.contacts = contacts.splice(0, this.ITEM_PER_PAGE * this.page);
+      //   TODO: Update contacts locally
+      //   this.contacts.length = 0;
+        this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
+        // this.contacts = contacts.slice();
+
+        console.debug('inside contact list onInit: ', this.contacts, contacts);
+      });
+
     this.route.params.forEach((params: Params) => {
       switch(params['label']) {
         case 'all contact':
@@ -76,6 +95,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     if (this.commonEventSub) {
       this.commonEventSub.unsubscribe();
     }
+  }
+
+  onLoadMore() {
+    this.page += 1;
+    this.contacts = this.contactService.getAllContacts().slice(0, this.page * this.ITEM_PER_PAGE);
+    console.log('on Load more: ',  this.contacts.length, this.page);
   }
 
   doEvent(event: any) {

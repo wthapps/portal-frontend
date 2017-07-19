@@ -16,17 +16,20 @@ declare var _: any;
 @Injectable()
 export class ZContactService extends BaseEntityService<any>{
   selectedObjects: any[] = [];
-  contacts: Array<any> = new Array<any>();
+  contacts: Array<any> = new Array<any>([]);
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private suggestSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
+  private maxContactIndex: number = 20;
+  private maxSuggestIndex: number = 20;
 
   listenToList = this.listenToListSource.asObservable();
   listenToItem = this.listenToItemSource.asObservable();
   contacts$: Observable<Array<any>> = this.contactsSubject.asObservable();
   suggest$: Observable<Array<any>> = this.suggestSubject.asObservable();
+
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
@@ -41,12 +44,12 @@ export class ZContactService extends BaseEntityService<any>{
   }
 
   getAllContacts() {
-    return this.contactsSubject.getValue();
+    return this.contacts;
   }
 
   addMoreContacts(data: any[]) {
     this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
-    this.contactsSubject.next(this.contacts);
+    this.notifyContactsObservers(this.contacts);
 
     console.log('inside addMoreContacts: ', data, this.contactsSubject.getValue());
   }
@@ -148,19 +151,22 @@ export class ZContactService extends BaseEntityService<any>{
   }
 
   filter(options: any) {
-    let contacts = _.filter(this.contacts, (contact: any)=> {
-      if (_.get(options, 'label', 'undefined') != 'undefined') {
+    let contacts: any[] = [];
+    let label=  _.get(options, 'label', 'undefined');
+    if (label === 'undefined')
+      // contacts.push(...this.contacts);
+      contacts = this.contacts;
+    else {
+      contacts = _.filter(this.contacts, (contact: any)=> {
         return _.find(contact.labels, (label: any) => {
           if(label.name === options.label) {
             return contact;
           };
         });
-      } else {
-        return contact;
-      }
-    });
+      })
+    }
 
-    this.contactsSubject.next(contacts);
+    this.notifyContactsObservers(contacts);
   }
 
   // Search by name, email, phone number
@@ -168,14 +174,19 @@ export class ZContactService extends BaseEntityService<any>{
     let search_value = _.get(options, 'search_value','').trim().toLowerCase();
     let contacts = this.searchContact(search_value);
 
-    this.contactsSubject.next(contacts);
+    this.notifyContactsObservers(contacts);
   }
 
   suggestContacts(value: any) {
     let contacts: any[] = _.cloneDeep(this.searchContact(value));
 
     console.log('suggestContacts: ', contacts);
-    this.suggestSubject.next(contacts);
+    this.notifyContactsObservers(contacts);
+  }
+
+  notifyContactsObservers(contacts: Array<any>): void {
+    this.contactsSubject.next(contacts);
+    this.selectedObjects.length = 0;
   }
 
   private searchContact(name: string): any[] {
@@ -202,7 +213,7 @@ export class ZContactService extends BaseEntityService<any>{
       .toPromise()
       .then((res: any) => {
         _.remove(this.contacts, (ct: any) => {ct.id === res.data.id ;});
-        this.contactsSubject.next(this.contacts);
+        this.notifyContactsObservers(this.contacts);
       });
   }
 
@@ -213,7 +224,7 @@ export class ZContactService extends BaseEntityService<any>{
         let deletedIds = _.map(this.selectedObjects, (contact: any) => contact.id);
 
         _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
-        this.contactsSubject.next(this.contacts);
+        this.notifyContactsObservers(this.contacts);
         this.selectedObjects.length = 0;
       });
   }
@@ -221,15 +232,16 @@ export class ZContactService extends BaseEntityService<any>{
   private initialLoad() {
     this.getAll().toPromise()
       .then((res: any) => {
-        this.contacts.push(...res.data);
-        this.contactsSubject.next(this.contacts);
-        // console.debug('this.contactSubject: ', this.contacts, this.contactsSubject.getValue());
+        // this.contacts.push(...res.data);
+        this.contacts = res.data.slice();
+        this.notifyContactsObservers(this.contacts);
+        console.debug('this.contactSubject - initialLoad: ', res.data, this.contacts, this.contactsSubject.getValue());
       });
   }
 
   private createCallback(contact: any): void {
     this.contacts.unshift(contact);
-    this.contactsSubject.next(this.contacts);
+    this.notifyContactsObservers(this.contacts);
   }
 
   private updateCallback(contact: any): void {
@@ -241,8 +253,8 @@ export class ZContactService extends BaseEntityService<any>{
       return ct;
     });
     console.log('updateCallback: ', contact, this.contacts);
-    this.contactsSubject.next([]);
-    this.contactsSubject.next(this.contacts);
+    // this.contactsSubject.next([]);
+    this.notifyContactsObservers(this.contacts);
   }
 
   private deleteCallback(contact: any) {

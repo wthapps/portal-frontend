@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { ServiceManager } from '../../../shared/services/service-manager';
 import { Constants } from '../../../shared/config/constants';
-import { ZContactService } from '../../../../contact/shared/services/contact.service';
+// import { ZContactService } from '../../../../contact/shared/services/contact.service';
 import { Observable } from 'rxjs/Observable';
 
 declare let _:any;
@@ -24,11 +24,11 @@ export class ContactSearchFormComponent implements OnInit {
   suggest$: Observable<any>;
 
   constructor(public serviceManager: ServiceManager,
-              public contactService: ZContactService
+              // public contactService: ZContactService
   ) {
     this.constants = this.serviceManager.getConstants();
     this.active = this.constants.search.config.contactActive;
-    this.suggest$ = this.contactService.suggest$
+    // this.suggest$ = this.contactService.suggest$
     ;
   }
 
@@ -45,7 +45,7 @@ export class ContactSearchFormComponent implements OnInit {
   }
 
   getSuggestions(e:any) {
-    this.contactService.suggestContacts(this.searchText);
+    // this.contactService.suggestContacts(this.searchText);
 
     console.log('inside Contact getSuggestion.', this.searchText);
   }

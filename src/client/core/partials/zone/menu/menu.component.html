@@ -12,7 +12,7 @@
           class="menuleft-nav-sub"
           id="zone_menu_contact"
           [routerLinkActive]="['active']" >
-        <template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackByFn">
+        <template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackMenu">
           <li *ngIf="contact.name != ''" class="text-capitalize">
             <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]"  (click)="doEvent({action: contact?.action, event: $event})">
               <i class="{{contact.icon}}"></i> {{contact.name}}  ({{contact?.count}})

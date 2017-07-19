@@ -15,7 +15,7 @@
     </div>
     <div class="contact-listbox-action">&nbsp;</div>
   </div>
-  <z-contact-shared-item *ngFor="let item of data" [data]="item">
+  <z-contact-shared-item *ngFor="let item of data; trackBy: trackItem" [data]="item">
   </z-contact-shared-item>
 
 </div>
