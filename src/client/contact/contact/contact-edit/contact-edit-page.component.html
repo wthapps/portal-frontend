@@ -1,9 +1,5 @@
 <div class="media-page-detail-left">
-  <z-contact-shared-toolbar>
-    <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-      <button class="btn btn-primary-inline" type="button" (click)="done()">Done</button>
-      <button class="btn btn-default-inline" type="button" [routerLink]="['/contacts']">Cancel</button>
-    </div>
+  <z-contact-shared-toolbar [pageTitle]="pageTitle">
   </z-contact-shared-toolbar>
 
   <div class="page-body-content has-page-body-control">

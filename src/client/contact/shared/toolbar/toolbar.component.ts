@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild, Input } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
 import { GoogleApiService } from '../services/google-api.service';
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
@@ -16,7 +16,7 @@ declare var _: any;
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
   @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
-
+  @Input() pageTitle: string = ''; // TODO will be removed
   selectedContact: string;
 
   constructor(private contactService: ZContactService
