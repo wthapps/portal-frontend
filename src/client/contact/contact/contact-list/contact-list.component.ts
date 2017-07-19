@@ -7,6 +7,7 @@ import { CommonEventAction } from '../../../core/shared/services/common-event/co
 import { Observable } from 'rxjs/Observable';
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 import { ConfirmationService } from 'primeng/primeng';
+import { Config } from '../../../core/shared/config/env.config';
 
 declare var _: any;
 
@@ -24,6 +25,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
   contact$: Observable<any>;
   originalContacts: any = [];
 
+  linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
+  linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
 
   constructor(private contactService: ZContactService,
               private route: ActivatedRoute,

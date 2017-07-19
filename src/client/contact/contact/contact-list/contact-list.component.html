@@ -11,17 +11,20 @@
         </li>
 
         <!--single selected item-->
+
           <li>
             <a href="javascript:;" class="btn" (click)="toggleLabel('favourite')"><i class="fa" [ngClass]="!hasLabel('favourite') ? 'fa-star-o' : 'fa-star'" ></i></a>
           </li>
 
+        <template [ngIf]="contactService.selectedObjects.length==1">
           <li>
-            <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-globe"></i></a>
+            <a href="{{ linkSocial }}{{ contactService.selectedObjects[0]?.wthapps_user?.uuid }}" class="btn" (click)="addTags($event)"><i class="fa fa-globe"></i></a>
           </li>
 
           <li>
-            <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-comments-o"></i></a>
+            <a href="{{ linkChat }}{{ contactService.selectedObjects[0]?.wthapps_user?.id }}" class="btn" (click)="addTags($event)"><i class="fa fa-comments-o"></i></a>
           </li>
+        </template>
 
           <li>
             <a href="javascript:;" class="btn"
