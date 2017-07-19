@@ -89,42 +89,80 @@ export class ContactEditComponent implements OnInit, OnChanges {
   }
 
   initForm() {
-    this.form = this.fb.group({
-      id: [this.contact.id],
-      uuid: [this.contact.uuid],
-      name: [this.contact.name, Validators.required],
-      company: [this.contact.company],
-      job_title: [this.contact.job_title],
-      notes: [this.contact.notes],
-      description: [this.contact.description],
-      phones: this.fb.array([
-        this.fb.group({
-          category: [this.contact.phones[0].category, Validators.compose([Validators.required])],
-          country_alpha_code: [this.contact.phones[0].country_alpha_code],
-          value: [this.contact.phones[0].value, Validators.compose([CustomValidator.phoneFormat])]
-        })
-      ]),
-      emails: this.fb.array([
-        this.fb.group({
-          id: [this.contact.emails[0].id],
-          category: [this.contact.emails[0].category, Validators.required],
-          value: [this.contact.emails[0].value, CustomValidator.emailFormat]
-        })
-      ]),
-      addresses: this.fb.array([
-        this.fb.group({
-          id: [this.contact.addresses[0].id],
-          category: [this.contact.addresses[0].category, Validators.compose([Validators.required])],
-          address_line1: [this.contact.addresses[0].address_line1],
-          address_line2: [this.contact.addresses[0].address_line2],
-          city: [this.contact.addresses[0].city],
-          postcode: [this.contact.addresses[0].postcode],
-          province: [this.contact.addresses[0].province],
-          country: [this.contact.addresses[0].country],
-          primary: [this.contact.addresses[0].primary]
-        })
-      ]),
-    });
+
+    if(this.mode == 'create') {
+      this.form = this.fb.group({
+        name: [this.contact.name, Validators.required],
+        company: [this.contact.company],
+        job_title: [this.contact.job_title],
+        notes: [this.contact.notes],
+        description: [this.contact.description],
+        phones: this.fb.array([
+          this.fb.group({
+            category: [this.contact.phones[0].category, Validators.compose([Validators.required])],
+            country_alpha_code: [this.contact.phones[0].country_alpha_code],
+            value: [this.contact.phones[0].value, Validators.compose([CustomValidator.phoneFormat])]
+          })
+        ]),
+        emails: this.fb.array([
+          this.fb.group({
+            category: [this.contact.emails[0].category, Validators.required],
+            value: [this.contact.emails[0].value, CustomValidator.emailFormat]
+          })
+        ]),
+        addresses: this.fb.array([
+          this.fb.group({
+            category: [this.contact.addresses[0].category, Validators.compose([Validators.required])],
+            address_line1: [this.contact.addresses[0].address_line1],
+            address_line2: [this.contact.addresses[0].address_line2],
+            city: [this.contact.addresses[0].city],
+            postcode: [this.contact.addresses[0].postcode],
+            province: [this.contact.addresses[0].province],
+            country: [this.contact.addresses[0].country],
+            primary: [this.contact.addresses[0].primary]
+          })
+        ]),
+      });
+    } else {
+      this.form = this.fb.group({
+        id: [this.contact.id],
+        uuid: [this.contact.uuid],
+        name: [this.contact.name, Validators.required],
+        company: [this.contact.company],
+        job_title: [this.contact.job_title],
+        notes: [this.contact.notes],
+        description: [this.contact.description],
+        phones: this.fb.array([
+          this.fb.group({
+            id: [this.contact.phones[0].id || 0],
+            category: [this.contact.phones[0].category, Validators.compose([Validators.required])],
+            country_alpha_code: [this.contact.phones[0].country_alpha_code],
+            value: [this.contact.phones[0].value, Validators.compose([CustomValidator.phoneFormat])]
+          })
+        ]),
+        emails: this.fb.array([
+          this.fb.group({
+            id: [this.contact.emails[0].id] || 0,
+            category: [this.contact.emails[0].category, Validators.required],
+            value: [this.contact.emails[0].value, CustomValidator.emailFormat]
+          })
+        ]),
+        addresses: this.fb.array([
+          this.fb.group({
+            id: [this.contact.addresses[0].id] || 0,
+            category: [this.contact.addresses[0].category, Validators.compose([Validators.required])],
+            address_line1: [this.contact.addresses[0].address_line1],
+            address_line2: [this.contact.addresses[0].address_line2],
+            city: [this.contact.addresses[0].city],
+            postcode: [this.contact.addresses[0].postcode],
+            province: [this.contact.addresses[0].province],
+            country: [this.contact.addresses[0].country],
+            primary: [this.contact.addresses[0].primary]
+          })
+        ]),
+      });
+    }
+
   }
 
   editing(): boolean {

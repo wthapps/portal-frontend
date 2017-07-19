@@ -60,11 +60,10 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   submit() {
     if (this.mode =='edit') {
       // find selectedLabels and push to label array
-      _.forEach(this.selectedLabels, (label: any) => {
-        this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
-      });
-      // this.contact['labels_attributes'] = this.contact.labels;
-      this.contact = _.pick(this.contact, ['id', 'labels_attributes']);
+      // _.forEach(this.selectedLabels, (label: any) => {
+      //   this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
+      // });
+      this.contact = _.pick(this.contact, ['id', 'labels']);
     }
     this.commonEventService.broadcast({
       action: 'contact:contact:update',
@@ -74,10 +73,13 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   }
 
   open(options?: any) {
-    // this.mode = options.mode || 'add';
+    this.mode = options.mode || 'add';
     this.contact = options.contact || null;
     this.inputLabels = options.labels || [];
-    this.selectedLabels = _.map(this.inputLabels, 'name');
+    this.selectedLabels = [];
+    _.forEach(this.inputLabels, (label: any) => {
+      this.selectedLabels.push({value: label.name, display: label.name});
+    });
     this.modal.open(options).then(() => {
       this.labelService.getAllLabels().then((labels: any[]) => {
         this.originalLabels = labels;

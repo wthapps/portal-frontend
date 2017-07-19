@@ -1,5 +1,13 @@
 <div class="media-page-detail-left">
   <z-contact-shared-toolbar [pageTitle]="pageTitle">
+    <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="mode=='view'">
+      <ul class="page-body-control-menu">
+        <li>
+          <a href="javascript:;" (click)="gotoEdit()" class="btn" title="Edit">
+            <i class="fa fa-edit" ></i></a>
+        </li>
+      </ul>
+    </div>
   </z-contact-shared-toolbar>
 
   <div class="page-body-content has-page-body-control">
@@ -10,3 +18,5 @@
     </div>
   </div>
 </div>
+
+

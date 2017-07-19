@@ -72,11 +72,11 @@ export class ZContactService extends BaseEntityService<any>{
     let contact_names: string= _.map(contacts, (ct: any) => ct.name).join(', ');
     return new Promise((resolve) => {
       this.confirmationService.confirm({
-        message: `Are you sure you want to remove following ${contacts.length} contacts:  ${contact_names} ?`,
-        header: 'Remove Contacts',
+        message: `Are you sure you want to delete following ${contacts.length} contacts:  ${contact_names} ?`,
+        header: 'Delete Contacts',
         accept: () => {
           this.deleteSelectedContacts().then(() => {
-            this.toastsService.success(`Remove ${contacts.length} contacts successfully`);
+            this.toastsService.success(`Delete ${contacts.length} contacts successfully`);
             resolve();
           });
         }

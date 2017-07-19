@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
+import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 
 @Component({
   moduleId: module.id,
@@ -34,8 +35,11 @@ export class ContactEditPageComponent implements OnInit {
   pageTitle: string;
 
   constructor(
+    private router: Router,
     private contactService: ZContactService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastsService: ToastsService,
+
   ) {
   }
 
@@ -68,15 +72,20 @@ export class ContactEditPageComponent implements OnInit {
     switch(event.action) {
       case 'contact:contact:create':
         this.contactService.create(event.payload.item).subscribe((response: any) => {
-          console.log('response:::::', response.data);
+          this.toastsService.success('Contact has been just created successfully!');
         });
         break;
       case 'contact:contact:update':
         this.contactService.update(event.payload.item).subscribe((response: any) => {
-
+          this.toastsService.success('Contact has been just updated successfully!');
         });
         break;
     }
+  }
+
+  gotoEdit() {
+    this.router.navigate(['/contacts', this.contact.id, {mode:'edit'}]);
+    this.pageTitle = 'Edit contact';
   }
 
   private get(id: number) {

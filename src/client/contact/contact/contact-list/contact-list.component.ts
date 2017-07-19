@@ -116,7 +116,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         if(this.contactService.selectedObjects.length > 1) {
           labels = [];
         } else if(this.contactService.selectedObjects.length == 1) {
-          labels = this.contactService.selectedObjects[0].labels
+          labels = this.contactService.selectedObjects[0].labels;
+          event.mode = 'edit';
         }
 
         this.modal.open({mode: event.mode, labels: labels});
@@ -133,22 +134,26 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
         let params: any;
         let multiple: boolean = false;
 
-        if (event.payload.labels !== 'undefined') {
-          let selectedContacts = this.contactService.selectedObjects;
-          // _.forEach(selectedContacts, (contact: any) => {
-          //   contact.labels = _.merge(contact.labels, event.payload.labels);
-          //   console.log('selected contact:::', contact.labels);
-          // });
-          _.forEach(this.contactService.selectedObjects, (contact: any) => {
-            contact.labels = event.payload.labels
-          });
-        }
+
 
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
         if (this.contactService.selectedObjects.length > 1) {
+          if (event.payload.labels !== 'undefined' && event.payload.toggleLabel == undefined) {
+
+            _.forEach(this.contactService.selectedObjects, (contact: any) => {
+              contact.labels = _.union(contact.labels, event.payload.labels);
+            });
+          }
+
           params = JSON.stringify({contacts: this.contactService.selectedObjects});
           multiple = true;
         } else {
+          if (event.payload.labels !== 'undefined' && event.payload.toggleLabel == undefined) {
+            _.forEach(this.contactService.selectedObjects, (contact: any) => {
+              contact.labels = event.payload.labels
+            });
+          }
+
           params = this.contactService.selectedObjects[0];
           multiple = false;
         }
@@ -182,28 +187,39 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     let event: any = {
       action: 'contact:contact:update',
       payload: {
-
+        toggleLabel: true,
+        labels: [
+          name =='favourite' ? {
+            id: 3,
+            uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
+            name: 'favourite',
+            system: true
+          } : {
+            id: 6,
+            uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
+            name: 'blacklist',
+            system: true
+          }
+        ]
       }
     };
 
-    let label = name=='favourite' ? {
-      id: 3,
-      uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
-      name: 'favourite',
-      user_id: null,
-      system: true
-    } : {
-      id: 6,
-      uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
-      name: 'blacklist',
-      user_id: null,
-      system: true
-    };
+    // let label = name =='favourite' ? {
+    //   id: 3,
+    //   uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
+    //   name: 'favourite',
+    //   system: true
+    // } : {
+    //   id: 6,
+    //   uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
+    //   name: 'blacklist',
+    //   system: true
+    // };
 
     if (this.hasLabel(name)) {
       this.removeLabel(name);
     } else {
-      this.addLabel(label);
+      this.addLabel(event.payload.labels[0]);
     }
      this.doEvent(event)
   }
