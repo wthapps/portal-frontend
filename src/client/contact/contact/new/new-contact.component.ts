@@ -19,7 +19,6 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
   styleUrls: ['new-contact.component.css']
 })
 export class ZNewContactComponent implements OnInit {
-  profileConfig: any = {getCurrentUser: false, createNew: true, callApiAfterChange: false};
   data: UserContact = new UserContact();
   @ViewChild('avatar') avatar: PartialsProfileAvatarInfoComponent;
   @ViewChild('contact') contact: PartialsProfileContactComponent;

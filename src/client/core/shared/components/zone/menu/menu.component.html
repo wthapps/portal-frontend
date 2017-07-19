@@ -40,7 +40,7 @@
         </li>
         <li class="divider"></li>
         <li [routerLinkActive]="['active']">
-          <a draggable="false" [routerLink]="['contacts','settings']">
+          <a draggable="false" href="javascipt:;" (click)="doEvent({action: 'contact:label:open_modal_setting', payload:{mode: 'add'}, event: $event})">
             <i class="fa fa fa-cog"></i> Settings
           </a>
         </li>

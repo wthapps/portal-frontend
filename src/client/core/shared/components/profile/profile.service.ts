@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../../services/apibase.service';
 import { UserService } from '../../services/user.service';
 import { Communication } from '../../models/communication.model';
-import { ProfileConfig } from './profile-config.model';
 
 @Injectable()
 export class PartialsProfileService extends Communication {

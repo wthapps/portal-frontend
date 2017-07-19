@@ -3,35 +3,34 @@
     <h4 class="modal-title"><i class="fa" [ngClass]="titleIcon"></i> Add Label</h4>
   </modal-header>
 
-  <form novalidate>
+  <form [formGroup]="form" novalidate>
     <modal-body>
       <div class="row ng2-tags-container-wrapper">
-        <tag-input [maxItems]='100'
-                   [(ngModel)]="selectedLabels"
-                   [ngModelOptions]="{standalone: true}"
-                   (onRemove)="removeTag($event)"
-                   (onAdd)="addTag($event)">
-          <tag-input-dropdown [autocompleteItems]="labels">
-          </tag-input-dropdown>
-        </tag-input>
-        <!--<div class="col-sm-12">-->
-          <!--<div class="form-group"-->
-               <!--[ngClass]="{'has-error': (!name.valid && name.touched),'has-success': (name.valid && name.touched)}">-->
-            <!--<label for="name"></label>-->
-            <!--<input [formControl]="name" type="text" class="form-control" id="name" placeholder="New label name">-->
+        <div class="col-sm-12">
+          <div class="form-group">
+            <!--<label for="tag"></label>-->
+            <!--selectedLabels-->
+            <tag-input  [maxItems]='100'
+                       [(ngModel)]="selectedLabels"
+                       (onRemove)="removeTag($event)"
+                       (onAdd)="addTag($event)"
+                       [formControl]="labelsCtrl">
+              <tag-input-dropdown [autocompleteItems]="labels">
+              </tag-input-dropdown>
+            </tag-input>
             <!--<div *ngIf="!name.valid && name.touched">-->
               <!--<span *ngIf="!name.valid && name.errors.required" class="help-block">-->
                 <!--Name is required-->
               <!--</span>-->
             <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
+          </div>
+        </div>
 
       </div>
     </modal-body>
 
     <modal-footer>
-      <button type="button" (click)="submit()"  class="btn btn-primary-inline">Done</button>
+      <button type="button" (click)="submit()" [disabled]="!validData()"  class="btn btn-primary-inline">Done</button>
       <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </form>

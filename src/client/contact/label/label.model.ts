@@ -1,10 +1,7 @@
-export class Label {
-  id: number;
-  uuid: string;
+import { BaseEntity } from '../../core/shared/models/base-entity.model';
+export class Label extends BaseEntity {
   name: string;
   system: boolean;
-  created_by: any;
-  updated_by: any;
   user_id?: number;
   user?: any;
   contact_count?: number;

@@ -11,7 +11,6 @@ import { CustomValidator } from '../../../validator/custom.validator';
 import { CountryService } from '../../countries/countries.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { Constants } from '../../../config/constants';
-import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -25,7 +24,6 @@ export class PartialsProfilePhoneComponent implements OnInit {
   @Input() data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
-  @Input() config: ProfileConfig;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
@@ -40,6 +38,8 @@ export class PartialsProfilePhoneComponent implements OnInit {
   filteredCountriesCode: any[];
 
   phoneType: any = Constants.phoneType;
+
+  deleteObjects: any = [];
 
   constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
@@ -65,6 +65,7 @@ export class PartialsProfilePhoneComponent implements OnInit {
   removeAll() {
     const control = <FormArray>this.form.controls['phones'];
     control.controls.length = 0;
+    this.deleteObjects.length = 0;
     control.reset();
   }
 
@@ -73,14 +74,14 @@ export class PartialsProfilePhoneComponent implements OnInit {
     if (item) {
       return this.fb.group({
         category: [item.category, Validators.compose([Validators.required])],
-        country_alpha_code: [item.country_alpha_code, Validators.compose([Validators.required])],
+        country_alpha_code: [item.country_alpha_code],
         id: [item.id, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
     } else {
       return this.fb.group({
         category: ['', Validators.compose([Validators.required])],
-        country_alpha_code: ['', Validators.compose([Validators.required])],
+        country_alpha_code: [''],
         value: ['', Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
     }
@@ -97,7 +98,10 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   removeItem(i: number) {
     const control = <FormArray>this.form.controls['phones'];
-    this.eventOut.emit({action: 'delete', item: 'phones', data: control.at(i).value});
+    if (this.data.phones[i]) {
+      this.data.phones[i]._destroy = true;
+      this.deleteObjects.push(this.data.phones[i]);
+    }
     control.removeAt(i);
   }
 
@@ -114,8 +118,8 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
 
   onSubmit(values: any): void {
-    this.data.phones = values.phones;
-    this.eventOut.emit({action: 'update', item: 'phone', data: values});
+    this.data.phones = _.concat(this.deleteObjects, values.phones);
+    this.eventOut.emit({action: 'update', item: 'phones', data: this.data.phones});
     this.modal.close();
   }
 

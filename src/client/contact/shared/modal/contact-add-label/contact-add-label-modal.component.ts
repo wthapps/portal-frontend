@@ -25,10 +25,11 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   titleIcon: string;
 
   form: FormGroup;
-  name: AbstractControl;
+  labelsCtrl: AbstractControl;
   labels: Array<string> = new Array<string>();
   originalLabels: Array<any> = new Array<any>();
   selectedLabels: Array<any> = [];
+  inputLabels: Array<any> = [];
 
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService,
    private labelService: LabelService)  {
@@ -39,18 +40,12 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
 
   ngOnInit() {
 
-    // this.labelService.getAll().subscribe((response: any) => {
-    //   this.originalLabels = response.data;
-    //   // this.originalLabels = _.map(this.originalLabels, ['id','name']);
-    //   this.labels = _.map(this.originalLabels, 'name');
-    // });
-
-
-    this.labelService.getAllLabels().then((labels: any[]) => {
-      console.log('getAllLabels: ', labels);
-      this.originalLabels.push(...labels);
-      this.labels = _.map(this.originalLabels, 'name');
+    this.form = this.fb.group({
+      'labels': [this.selectedLabels],
     });
+    this.labelsCtrl = this.form.controls['labels'];
+
+
 
     // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
     // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
@@ -76,17 +71,42 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
       payload: { labels: this.getSelectedLabels(), contact: this.contact }}
     );
     this.modal.close().then();
-
   }
 
   open(options?: any) {
     // this.mode = options.mode || 'add';
     this.contact = options.contact || null;
-    this.modal.open(options).then();
+    this.inputLabels = options.labels || [];
+    this.modal.open(options).then(() => {
+      this.labelService.getAllLabels().then((labels: any[]) => {
+        console.log('getAllLabels: ', labels);
+        this.originalLabels.push(...labels);
+        this.labels = _.map(this.originalLabels, 'name');
+      });
+    });
   }
 
   close(options?: any) {
     this.modal.close(options).then();
+  }
+
+  validData(): boolean {
+    let result: boolean = true;
+    if (this.selectedLabels.length == 0 && this.inputLabels.length == 0){
+      return false;
+    }
+
+    if(this.selectedLabels.length == this.inputLabels.length) {
+      _.forEach(this.inputLabels, (l: any) => {
+        _.forEach(this.selectedLabels, (sl: any) => {
+          if (sl.value !== l.name) {
+            result = false;
+            return;
+          }
+        });
+      });
+    }
+    return result;
   }
 
   removeTag(event: any) {}

@@ -33,7 +33,7 @@ export class CountryService {
 
   initialLoad() {
     this.getCountries().toPromise()
-      .then((data: any[]) => { this.countriesCodeSubject.next(this.countriesCodeSubject.getValue().concat(data));});
+      .then((data: any[]) => { this.countriesCodeSubject.next(data);});
   }
 
   /**

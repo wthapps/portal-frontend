@@ -12,7 +12,7 @@ import { PhotoSearchFormComponent } from './search/photo-search-form.component';
 import { SocialSearchFormComponent } from './search/social-search-form.component';
 import { ChatSearchFormComponent } from './search/chat-search-form.component';
 import { TextBoxSearchComponent } from './search/components/textbox-search.component';
-
+import { ContactSearchFormComponent } from './search/contact-search-form.component';
 import { PartialsNotificationsModule } from '../notifications/notifications.module';
 
 @NgModule({
@@ -34,7 +34,8 @@ import { PartialsNotificationsModule } from '../notifications/notifications.modu
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
     ChatSearchFormComponent,
-    TextBoxSearchComponent
+    TextBoxSearchComponent,
+    ContactSearchFormComponent
   ],
   exports: [
     HeaderComponent,
@@ -42,7 +43,8 @@ import { PartialsNotificationsModule } from '../notifications/notifications.modu
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
     ChatSearchFormComponent,
-    TextBoxSearchComponent
+    TextBoxSearchComponent,
+    ContactSearchFormComponent
   ],
   providers: []
 })

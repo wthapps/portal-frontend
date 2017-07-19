@@ -12,7 +12,7 @@
 
         <!--single selected item-->
           <li>
-            <a href="javascript:;" class="btn" (click)="favourite()"><i class="fa" [ngClass]="hasFavourite() ? 'fa-star-o' : 'fa-star'" ></i></a>
+            <a href="javascript:;" class="btn" (click)="toggleLabel('favourite')"><i class="fa" [ngClass]="!hasLabel('favourite') ? 'fa-star-o' : 'fa-star'" ></i></a>
           </li>
 
           <li>
@@ -35,10 +35,13 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right text-right">
             <li>
-              <a href="javascript:;" (click)="deleteSelectedContacts()"><i class="fa fa-trash"></i> Delete</a>
+              <a href="javascript:;" (click)="confirmDeleteContacts()"><i class="fa fa-trash"></i> Delete</a>
             </li>
             <li>
-              <a href="javascript:;" (click)="addTags($event)"><i class="fa fa-ban"></i> Blacklist</a>
+              <a href="javascript:;"
+                 (click)="toggleLabel('blacklist')"
+                 [title]="hasLabel('blacklist') ? 'remove from blacklist' : 'add to blacklist'">
+                <i class="fa fa-ban"></i> Blacklist</a>
             </li>
           </ul>
         </li>
@@ -49,7 +52,7 @@
     <div class="page-body-content-in" *ngIf="(contact$ | async)?.length==0">
       There is no contact in your contact book
     </div>
-    <div class="page-body-content-in" *ngIf="(contact$ | async)?.length>1">
+    <div class="page-body-content-in" *ngIf="(contact$ | async)?.length>=1">
       <z-contact-shared-list [data]="(contact$ | async)"></z-contact-shared-list>
     </div>
   </div>

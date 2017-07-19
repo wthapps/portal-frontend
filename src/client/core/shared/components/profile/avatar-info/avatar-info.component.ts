@@ -7,9 +7,11 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+
 import { QuestionBase } from '../../form/base/question-base';
 import { QuestionControlService } from '../../form/base/question-control.service';
 import { TextboxQuestion } from '../../form/categories/textbox-question';
+import { UserInfo } from '../../../models/user/user-info.model';
 
 declare var _: any;
 
@@ -36,6 +38,9 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.data) {
+      this.data = new UserInfo();
+    }
     if (this.nameOnly) {
       this.questions = [
         new TextboxQuestion({
@@ -72,22 +77,21 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
   }
 
   onOpenModal() {
-    if (this.data.name) {
+    if (this.data.name && this.form.controls['name']) {
       this.form.controls['name'].setValue(this.data.name);
     }
-    if (this.data.first_name && this.data.last_name) {
+    if (this.data.first_name && this.data.last_name && this.form.controls['first_name'] && this.form.controls['last_name']) {
       this.form.controls['first_name'].setValue(this.data.first_name);
       this.form.controls['last_name'].setValue(this.data.last_name);
     }
-    if (this.data.nickname) {
-      this.form.controls['last_name'].setValue(this.data.last_name);
+    if (this.data.nickname && this.form.controls['nickname']) {
+      this.form.controls['nickname'].setValue(this.data.nickname);
     }
     this.modal.open();
   }
 
 
   onSubmit(values: any): void {
-    console.log(this.form);
     if (values.name) {
       this.data.name = values.name;
     }

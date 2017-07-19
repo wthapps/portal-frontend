@@ -9,7 +9,6 @@ import {
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../validator/custom.validator';
 import { ApiBaseService } from '../../../services/apibase.service';
-import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -23,13 +22,13 @@ export class PartialsProfileMediaComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
-  @Input() config: ProfileConfig;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
   @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
+  deleteObjects: any = [];
 
   mediaType: any = [
     {
@@ -56,23 +55,25 @@ export class PartialsProfileMediaComponent {
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
-      'medias': fb.array([
+      'media': fb.array([
         this.initItem(),
       ])
     });
   }
 
   removeAll() {
-    const control = <FormArray>this.form.controls['medias'];
+    const control = <FormArray>this.form.controls['media'];
     control.controls.length = 0;
+    this.deleteObjects.length = 0;
     control.reset();
   }
 
-  //medias
+  //media
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
         category: [item.category, Validators.compose([Validators.required])],
+        id: [item.id, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.urlFormat])]
       });
     } else {
@@ -84,7 +85,7 @@ export class PartialsProfileMediaComponent {
   }
 
   addItem(item?: any) {
-    const control = <FormArray>this.form.controls['medias'];
+    const control = <FormArray>this.form.controls['media'];
     if (item) {
       control.push(this.initItem(item));
     } else {
@@ -93,7 +94,11 @@ export class PartialsProfileMediaComponent {
   }
 
   removeItem(i: number) {
-    const control = <FormArray>this.form.controls['medias'];
+    const control = <FormArray>this.form.controls['media'];
+    if (this.data.media[i]) {
+      this.data.media[i]._destroy = true;
+      this.deleteObjects.push(this.data.media[i]);
+    }
     control.removeAt(i);
   }
 
@@ -110,12 +115,12 @@ export class PartialsProfileMediaComponent {
 
 
   onSubmit(values: any): void {
-    this.data.media = values.media;
-    this.eventOut.emit(values);
+    this.data.media = _.concat(this.deleteObjects, values.media);
+    this.eventOut.emit({action: 'update', item: 'media', data: this.data.media});
     this.modal.close();
   }
 
   getMediaControls() {
-    return (<FormGroup>(<FormGroup>this.form.get('medias')))['controls'];
+    return (<FormGroup>(<FormGroup>this.form.get('media')))['controls'];
   }
 }

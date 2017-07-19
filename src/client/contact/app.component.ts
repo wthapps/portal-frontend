@@ -1,20 +1,24 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/filter';
-import './operators';
-
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { Config } from '../core/shared/config/env.config';
-import { LabelEditModalComponent } from './label/label-edit-modal.component';
-import { Label } from './label/label.model';
-import { LabelService } from './label/label.service';
 
-import { CommonEvent } from '../core/shared/services/common-event/common-event';
+import { Subscription } from 'rxjs/Subscription';
+import './operators';
+import 'rxjs/add/operator/filter';
 import { CommonEventAction } from '../core/shared/services/common-event/common-event-action';
+import { CommonEvent } from '../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
+import { LabelEditModalComponent } from './label/label-edit-modal.component';
+import { ConfirmationService } from 'primeng/primeng';
+import { LabelService } from './label/label.service';
+import { Subject } from 'rxjs/Subject';
+import { Constants } from '../core/shared/config/constants';
+import { Label } from './label/label.model';
+import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
+import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
+import { ZContactService } from './shared/services/contact.service';
+import { ZContactMenuService } from './shared/services/contact-menu.service';
 
 /**
  * This class represents the main application component.
@@ -26,7 +30,8 @@ declare var _: any;
   selector: 'sd-app',
   templateUrl: 'app.component.html',
   entryComponents: [
-    LabelEditModalComponent
+    LabelEditModalComponent,
+    ZContactSharedSettingsComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
@@ -45,7 +50,10 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
-              private labelService: LabelService) {
+              private contactService: ZContactService,
+              private contactMenuService: ZContactMenuService,
+              private labelService: LabelService
+  ) {
     console.log('Environment config', Config);
     this.commonEventSub = this.commonEventService.event.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
   }
@@ -90,6 +98,10 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           mode: event.payload.mode,
           item: this.getLabel(event.payload.selectedItem) || new Label()
         });
+        break;
+      case 'contact:label:open_modal_setting':
+        this.loadModalComponent(ZContactSharedSettingsComponent);
+        this.modal.open();
         break;
       case 'contact:label:delete_confirm':
         this.confirmationService.confirm({
@@ -141,6 +153,10 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
             _.remove(this.contactMenu, {name: response.data.name});
           }
         );
+        break;
+      case 'contact:contact:search':
+        console.log('inside contact:contact:search: ', event);
+        this.contactService.search(event.payload);
         break;
     }
   }

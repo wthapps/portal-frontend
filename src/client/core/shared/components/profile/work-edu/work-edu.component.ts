@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -10,7 +10,6 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
-import { ProfileConfig } from '../profile-config.model';
 
 declare var _: any;
 
@@ -24,7 +23,7 @@ export class PartialsProfileWorkEduComponent {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
-  @Input() config: ProfileConfig;
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
   form: FormGroup;
   contact_note: AbstractControl;
@@ -126,10 +125,10 @@ export class PartialsProfileWorkEduComponent {
 
 
   onSubmit(values: any): void {
-    this.profileService.updateMyProfile(values).subscribe((res: any) => {
-      this.data = res.data;
-      this.modal.close();
-    });
+    this.data.educations = values.educations;
+    this.data.works = values.works;
+    this.eventOut.emit({action: 'update', item: 'educations_works', data: values});
+    this.modal.close();
   }
 
   getWorkControls() {
