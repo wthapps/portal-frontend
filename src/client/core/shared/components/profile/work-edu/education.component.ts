@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -17,25 +17,26 @@ declare var _: any;
 @Mixin([ProfileFormMixin, ProfileFormCustomSubmitMixin])
 @Component({
   moduleId: module.id,
-  selector: 'partials-profile-hobby',
-  templateUrl: 'hobby.component.html'
+  selector: 'partials-profile-edu',
+  templateUrl: 'education.component.html'
 })
 
-export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileFormCustomSubmitMixin {
+export class PartialsProfileEducationComponent implements ProfileFormMixin, ProfileFormCustomSubmitMixin {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
-
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
   form: FormGroup;
+  contact_note: AbstractControl;
+  type: string = "educations";
   deleteObjects: any = [];
-  type: string = "hobbies";
 
-  constructor(private fb: FormBuilder, private profileService: PartialsProfileService) {
+  constructor(private fb: FormBuilder,
+              private profileService: PartialsProfileService) {
     this.form = fb.group({
-      'hobbies': fb.array([
-        this.initItem(),
+      'educations': fb.array([
+        this.initEducation(),
       ])
     });
   }
@@ -46,12 +47,12 @@ export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileF
   getFormControls: () => any;
   onCustomSubmit:(values: any) => void;
 
-  //hobbys
-  initItem(item?: any) {
-    if (item) {
+  //Educations
+  initEducation(education?: any) {
+    if (education) {
       return this.fb.group({
-        title: [item.title],
-        description: [item.description]
+        title: [education.title],
+        description: [education.description]
       });
     } else {
       return this.fb.group({
@@ -61,23 +62,21 @@ export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileF
     }
   }
 
-  addItem(item?: any) {
-    const control = <FormArray>this.form.controls['hobbies'];
-    if (item) {
-      control.push(this.initItem(item));
+  addEducation(education?: any) {
+    const control = <FormArray>this.form.controls['educations'];
+    if (education) {
+      control.push(this.initEducation(education));
     } else {
-      control.push(this.initItem());
+      control.push(this.initEducation());
     }
   }
 
   onOpenModal() {
     this.modal.open();
-    let _this = this;
+    this.removeAll();
 
-    _this.removeAll();
-
-    _.map(this.data.hobbies, (v: any)=> {
-      _this.addItem(v);
+    _.map(this.data.educations, (v: any)=> {
+      this.addEducation(v);
     });
   }
 }

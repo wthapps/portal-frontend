@@ -11,16 +11,21 @@ import { CustomValidator } from '../../../validator/custom.validator';
 import { CountryService } from '../../countries/countries.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { Constants } from '../../../config/constants';
+import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
+import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin])
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-phone',
   templateUrl: 'phone.component.html'
 })
 
-export class PartialsProfilePhoneComponent implements OnInit {
+
+
+export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
   @Input() data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
@@ -30,10 +35,10 @@ export class PartialsProfilePhoneComponent implements OnInit {
   @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
+  type: string = "phones";
 
   countriesCode: any;
   countriesNameCode: any;
-
 
   filteredCountriesCode: any[];
 
@@ -62,12 +67,10 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   }
 
-  removeAll() {
-    const control = <FormArray>this.form.controls['phones'];
-    control.controls.length = 0;
-    this.deleteObjects.length = 0;
-    control.reset();
-  }
+  removeItem:(i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   //phones
   initItem(item?: any) {
@@ -96,33 +99,14 @@ export class PartialsProfilePhoneComponent implements OnInit {
     }
   }
 
-  removeItem(i: number) {
-    const control = <FormArray>this.form.controls['phones'];
-    if (this.data.phones[i]) {
-      this.data.phones[i]._destroy = true;
-      this.deleteObjects.push(this.data.phones[i]);
-    }
-    control.removeAt(i);
-  }
-
   onOpenModal() {
     this.modal.open();
-    let _this = this;
-
-    _this.removeAll();
+    this.removeAll();
 
     _.map(this.data.phones, (v: any)=> {
-      _this.addItem(v);
+      this.addItem(v);
     });
   }
-
-
-  onSubmit(values: any): void {
-    this.data.phones = _.concat(this.deleteObjects, values.phones);
-    this.eventOut.emit({action: 'update', item: 'phones', data: this.data.phones});
-    this.modal.close();
-  }
-
 
   filterCountriesCode(event: any) {
     this.filteredCountriesCode = [];
@@ -141,9 +125,5 @@ export class PartialsProfilePhoneComponent implements OnInit {
     setTimeout(() => {
       this.filteredCountriesCode = this.countriesNameCode;
     }, 100);
-  }
-
-  getPhoneControls() {
-    return (<FormGroup>(<FormGroup>this.form.get('phones')))['controls'];
   }
 }

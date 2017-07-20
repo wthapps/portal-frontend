@@ -3,7 +3,6 @@
     <div class="input-group">
       <p-autoComplete
         [(ngModel)]="searchText"
-        [suggestions]="(suggest$ | async)"
         (completeMethod)="getSuggestions($event)"
         [delay]="500"
         (keyup.enter)="onEnter()"

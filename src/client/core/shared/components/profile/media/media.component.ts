@@ -9,16 +9,19 @@ import {
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../validator/custom.validator';
 import { ApiBaseService } from '../../../services/apibase.service';
+import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
+import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin])
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-media',
   templateUrl: 'media.component.html'
 })
 
-export class PartialsProfileMediaComponent {
+export class PartialsProfileMediaComponent implements ProfileFormMixin {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
@@ -29,6 +32,7 @@ export class PartialsProfileMediaComponent {
 
   form: FormGroup;
   deleteObjects: any = [];
+  type: string = 'media';
 
   mediaType: any = [
     {
@@ -61,12 +65,10 @@ export class PartialsProfileMediaComponent {
     });
   }
 
-  removeAll() {
-    const control = <FormArray>this.form.controls['media'];
-    control.controls.length = 0;
-    this.deleteObjects.length = 0;
-    control.reset();
-  }
+  removeItem:(i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   //media
   initItem(item?: any) {
@@ -93,15 +95,6 @@ export class PartialsProfileMediaComponent {
     }
   }
 
-  removeItem(i: number) {
-    const control = <FormArray>this.form.controls['media'];
-    if (this.data.media[i]) {
-      this.data.media[i]._destroy = true;
-      this.deleteObjects.push(this.data.media[i]);
-    }
-    control.removeAt(i);
-  }
-
   onOpenModal() {
     this.modal.open();
     let _this = this;
@@ -111,16 +104,5 @@ export class PartialsProfileMediaComponent {
     _.map(this.data.media, (v: any)=> {
       _this.addItem(v);
     });
-  }
-
-
-  onSubmit(values: any): void {
-    this.data.media = _.concat(this.deleteObjects, values.media);
-    this.eventOut.emit({action: 'update', item: 'media', data: this.data.media});
-    this.modal.close();
-  }
-
-  getMediaControls() {
-    return (<FormGroup>(<FormGroup>this.form.get('media')))['controls'];
   }
 }

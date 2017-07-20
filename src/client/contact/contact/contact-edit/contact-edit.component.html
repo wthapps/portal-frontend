@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="form" novalidate>
 
   <div class="media">
     <div class="media-left">
@@ -9,14 +9,14 @@
     </div>
     <div class="media-body">
       <div class="row row-10">
-        <div class="col-xs-12 mb5">
-            <input type="fullname" class="form-control" placeholder="Enter contact name">
+        <div class="col-xs-12 mb10">
+            <input type="text" class="form-control" formControlName="name" placeholder="Full name">
         </div>
-        <div class="col-xs-6 mb5">
-          <input type="job" class="form-control"  placeholder="Enter job">
+        <div class="col-xs-6 mb10">
+          <input type="text" class="form-control" formControlName="company" placeholder="Company or organization">
         </div>
-        <div class="col-xs-6 mb5">
-          <input type="company" class="form-control" placeholder="Enter company">
+        <div class="col-xs-6 mb10">
+          <input type="text" class="form-control" formControlName="job_title" placeholder="Job title">
         </div>
         <!--<div class="col-xs-12 mb5">-->
           <!--<input type="company" class="form-control" placeholder="input labels">-->
@@ -34,37 +34,40 @@
   </div>
 
   <!--phone-->
-  <div class="field-group field-group-contact">
+  <div class="">
     <div class="field-group-title">
       <h3>Phone</h3>
     </div>
     <div class="field-group-content">
-      <div class="media mt0">
-        <div class="media-body">
-          <div class="row row-10">
-            <div class="col-sm-3">
-              <div class="form-group no-label">
-                <select class="form-control" name="name">
-                  <option *ngFor="let cat of phoneCategories" value="{{cat.value}}"> {{cat.text}}</option>
-                </select>
+      <div formArrayName="phones">
+        <div class="media mt0" *ngFor="let phone of form.controls.phones.controls; let i=index">
+          <div class="media-body" *ngIf="phone" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-3">
+                <div class="form-group no-label">
+                  <select class="form-control" name="name" formControlName="category">
+                    <option *ngFor="let cat of phoneCategories" value="{{cat.value}}"> {{cat.text}}</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="col-sm-9">
-              <div class="form-group no-label" >
-                <input type="text" class="form-control" placeholder="">
-                <div>
-                      <span class="help-block text-danger">
-                        Email is not valid
+              <div class="col-sm-9">
+                <div class="form-group no-label" >
+                  <input type="text" class="form-control" formControlName="value" placeholder="Phone number">
+                  <div *ngIf="!phone['controls'].value.valid && phone['controls'].value.touched">
+                  <span class="help-block text-danger"
+                        *ngIf="!phone['controls'].value.valid && phone['controls'].value.errors.emailFormat">
+                        Phone is invalid
                       </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="media-right">
-          <button type="button" class="btn btn-default" (click)="removeItem(i)">
-            <i class="fa fa-trash-o"></i>
-          </button>
+          <!--<div class="media-right">-->
+          <!--<button type="button" class="btn btn-default" (click)="removeItem(i)">-->
+          <!--<i class="fa fa-trash-o"></i>-->
+          <!--</button>-->
+          <!--</div>-->
         </div>
       </div>
     </div>
@@ -76,32 +79,35 @@
       <h3>Email</h3>
     </div>
     <div class="field-group-content">
-      <div class="media mt0">
-        <div class="media-body">
-          <div class="row row-10">
-            <div class="col-sm-3">
-              <div class="form-group no-label">
-                <select class="form-control" name="name">
-                  <option *ngFor="let cat of categories" value="{{cat.value}}"> {{cat.text}}</option>
-                </select>
+      <div formArrayName="emails">
+        <div class="media mt0" *ngFor="let email of form.controls.emails.controls; let i=index">
+          <div class="media-body" *ngIf="email" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-3">
+                <div class="form-group no-label">
+                  <select class="form-control" name="name" formControlName="category">
+                    <option *ngFor="let cat of categories" value="{{cat.value}}"> {{cat.text}}</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="col-sm-9">
-              <div class="form-group no-label" >
-                <input type="text" class="form-control" placeholder="">
-                <div>
-                      <span class="help-block text-danger">
-                        Email is not valid
-                      </span>
+              <div class="col-sm-9">
+                <div class="form-group no-label" >
+                  <input type="text" class="form-control" formControlName="value" placeholder="Email">
+                  <div *ngIf="!email['controls'].value.valid && email['controls'].value.touched">
+                    <span class="help-block text-danger"
+                      *ngIf="!email['controls'].value.valid && email['controls'].value.errors.emailFormat">
+                      Email is not valid
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="media-right">
-          <button type="button" class="btn btn-default" (click)="removeItem(i)">
-            <i class="fa fa-trash-o"></i>
-          </button>
+          <!--<div class="media-right">-->
+            <!--<button type="button" class="btn btn-default" (click)="removeItem(i)">-->
+              <!--<i class="fa fa-trash-o"></i>-->
+            <!--</button>-->
+          <!--</div>-->
         </div>
       </div>
     </div>
@@ -113,97 +119,99 @@
       <h3>Address</h3>
     </div>
     <div class="field-group-content">
-      <div class="media mt0" *ngFor="let address of addresses">
-        <div class="media-body">
-          <div class="row row-10" >
-            <div class="col-sm-3">
-              <div class="form-group no-label">
-                <select class="form-control" name="name">
-                  <option *ngFor="let cat of categories"
-                          [value]="cat.value"
-                          [selected]="cat.value==address.category"> {{cat.text}}</option>
-                </select>
+      <div formArrayName="addresses">
+        <div class="media mt0" *ngFor="let address of form.controls.addresses.controls; let i=index">
+          <div class="media-body" *ngIf="address" [formGroupName]="i">
+            <div class="row row-10" >
+              <div class="col-sm-3">
+                <div class="form-group no-label">
+                  <select class="form-control" name="name" formControlName="category">
+                    <option *ngFor="let cat of categories"
+                            [value]="cat.value"
+                            [selected]="cat.value==address.category"> {{cat.text}}</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="col-sm-9">
-              <div class="no-label mb10" >
-                <input type="text" class="form-control" placeholder="Address line 1">
-              </div>
-              <div class="no-label mb10 col-sm-6" >
-                <input type="text" class="form-control" placeholder="City">
-                <!--<div>-->
+              <div class="col-sm-9">
+                <div class="no-label mb10" >
+                  <input type="text" class="form-control" placeholder="Address line 1" formControlName="address_line1">
+                </div>
+                <div class="no-label mb10 col-sm-6" >
+                  <input type="text" class="form-control" placeholder="City" formControlName="city">
+                  <!--<div>-->
                   <!--<span class="help-block text-danger">-->
-                    <!--Email is not valid-->
+                  <!--Email is not valid-->
                   <!--</span>-->
-                <!--</div>-->
-              </div>
-              <div class="no-label mb10 col-sm-6" >
-                <input type="text" class="form-control" placeholder="Postal code">
-              </div>
-              <div class="no-label col-sm-6" >
-                <input type="text" class="form-control" placeholder="Province">
-                <!--<div>-->
-                      <!--<span class="help-block text-danger">-->
-                        <!--Email is not valid-->
-                      <!--</span>-->
-                <!--</div>-->
-              </div>
-              <div class="no-label col-sm-6 mb10" >
-                <input type="text" class="form-control" placeholder="Country">
-                <!--<div>-->
-                      <!--<span class="help-block text-danger">-->
-                        <!--Email is not valid-->
-                      <!--</span>-->
-                <!--</div>-->
+                  <!--</div>-->
+                </div>
+                <div class="no-label mb10 col-sm-6" >
+                  <input type="text" class="form-control" placeholder="Postal code" formControlName="postcode">
+                </div>
+                <div class="no-label col-sm-6" >
+                  <input type="text" class="form-control" placeholder="Province" formControlName="province">
+                  <!--<div>-->
+                  <!--<span class="help-block text-danger">-->
+                  <!--Email is not valid-->
+                  <!--</span>-->
+                  <!--</div>-->
+                </div>
+                <div class="no-label col-sm-6 mb10" >
+                  <input type="text" class="form-control" placeholder="Country" formControlName="country">
+                  <!--<div>-->
+                  <!--<span class="help-block text-danger">-->
+                  <!--Email is not valid-->
+                  <!--</span>-->
+                  <!--</div>-->
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="media-right">
-          <button type="button" class="btn btn-default" (click)="removeItem(i)">
-            <i class="fa fa-trash-o"></i>
-          </button>
-        </div>
+          <!--<div class="media-right">-->
+          <!--<button type="button" class="btn btn-default" (click)="removeItem(i)">-->
+          <!--<i class="fa fa-trash-o"></i>-->
+          <!--</button>-->
+          <!--</div>-->
+      </div>
       </div>
     </div>
   </div>
 
   <!--media-->
-  <div class="field-group field-group-contact">
-    <div class="field-group-title">
-      <h3>Media</h3>
-    </div>
-    <div class="field-group-content">
-      <div class="media mt0">
-        <div class="media-body">
-          <div class="row row-10">
-            <div class="col-sm-3">
-              <div class="form-group no-label">
-                <select class="form-control" name="name">
-                  <option *ngFor="let cat of mediaCategories" value="{{cat.value}}"> {{cat.text}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-sm-9">
-              <div class="form-group no-label" >
-                <input type="text" class="form-control" placeholder="">
-                <div>
-                      <span class="help-block text-danger">
-                        Email is not valid
-                      </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="media-right">
-          <button type="button" class="btn btn-default" (click)="removeItem(i)">
-            <i class="fa fa-trash-o"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!--<div class="field-group field-group-contact">-->
+    <!--<div class="field-group-title">-->
+      <!--<h3>Media</h3>-->
+    <!--</div>-->
+    <!--<div class="field-group-content">-->
+      <!--<div class="media mt0">-->
+        <!--<div class="media-body">-->
+          <!--<div class="row row-10">-->
+            <!--<div class="col-sm-3">-->
+              <!--<div class="form-group no-label">-->
+                <!--<select class="form-control" name="name">-->
+                  <!--<option *ngFor="let cat of mediaCategories" value="{{cat.value}}"> {{cat.text}}</option>-->
+                <!--</select>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-9">-->
+              <!--<div class="form-group no-label" >-->
+                <!--<input type="text" class="form-control" placeholder="">-->
+                <!--<div>-->
+                      <!--<span class="help-block text-danger">-->
+                        <!--Email is not valid-->
+                      <!--</span>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="media-right">&ndash;&gt;-->
+          <!--&lt;!&ndash;<button type="button" class="btn btn-default" (click)="removeItem(i)">&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="fa fa-trash-o"></i>&ndash;&gt;-->
+          <!--&lt;!&ndash;</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <!--Note-->
   <div class="field-group field-group-contact">
@@ -211,15 +219,15 @@
       <h3>Note</h3>
     </div>
     <div class="field-group-content">
-      <textarea class="form-control" placeholder=""></textarea>
+      <textarea class="form-control" placeholder="Description" formControlName="description"></textarea>
     </div>
   </div>
 
-  <div class="field-group field-group-contact mt10">
-    <div class="field-group-content">
-      <button type="submit" class="btn btn-wth-default btn-min mr10"
-              (click)="doEvent({action:'contact:contact:create'})">Save</button>
-      <button type="button" class="btn btn-default btn-min">Cancel</button>
+  <div class="">
+    <div class="mt10 mb10">
+      <button type="submit" [disabled]="!form.dirty || !editing()" class="btn btn-wth-default btn-primary-inline mr10"
+              (click)="doEvent()">Done</button>
+      <a [routerLink]="['/contacts']" class="btn btn-default btn-min">Cancel</a>
     </div>
   </div>
 </form>

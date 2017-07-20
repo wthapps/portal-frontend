@@ -7,12 +7,16 @@ import { Phone } from './phone.model';
 
 export class Contact extends BaseEntity {
   name: string = '';
+  company: string = '';
+  job_title: string = '';
+  notes: string = '';
+  description: string = '';
   primary: boolean = false;
   birthday: any;
   addresses: Array<Address>;
   phones: Array<Phone>;
   emails: Array<Email>;
-  social_media: Array<SocialMedium>;
+  media: Array<SocialMedium>;
   custom_fields: Array<CustomField>;
   user?: any;
   wthapps_user?: any;

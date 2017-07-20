@@ -9,6 +9,5 @@ export abstract class BaseEntity {
     if (attributes) {
       Object.assign(this, attributes);
     }
-    console.log('this constructor::::', this);
   }
 }

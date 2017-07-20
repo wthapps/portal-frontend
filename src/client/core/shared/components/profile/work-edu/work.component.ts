@@ -3,23 +3,25 @@ import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormArray,
-  AbstractControl,
-  FormControl
+  FormArray, AbstractControl, FormControl
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
+import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
+import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
+import { ProfileFormCustomSubmitMixin } from '../../../mixins/form/profile/profile-form-custom-submit.mixin';
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin, ProfileFormCustomSubmitMixin])
 @Component({
   moduleId: module.id,
-  selector: 'partials-profile-work-edu',
-  templateUrl: 'work-edu.component.html'
+  selector: 'partials-profile-work',
+  templateUrl: 'work.component.html'
 })
 
-export class PartialsProfileWorkEduComponent {
+export class PartialsProfileWorkComponent implements ProfileFormMixin, ProfileFormCustomSubmitMixin {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
@@ -27,28 +29,23 @@ export class PartialsProfileWorkEduComponent {
 
   form: FormGroup;
   contact_note: AbstractControl;
+  deleteObjects: any = [];
+  type: string = "works";
 
   constructor(private fb: FormBuilder,
               private profileService: PartialsProfileService) {
     this.form = fb.group({
       'works': fb.array([
         this.initWork(),
-      ]),
-      'educations': fb.array([
-        this.initEducation(),
       ])
     });
   }
 
-  removeAll() {
-    const control_work = <FormArray>this.form.controls['works'];
-    control_work.controls.length = 0;
-    control_work.reset();
-
-    const control_education = <FormArray>this.form.controls['educations'];
-    control_education.controls.length = 0;
-    control_education.reset();
-  }
+  removeItem: (i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
+  onCustomSubmit: (values: any) => void;
 
   //Works
   initWork(work?: any) {
@@ -94,48 +91,13 @@ export class PartialsProfileWorkEduComponent {
     }
   }
 
-  addEducation(education?: any) {
-    const control = <FormArray>this.form.controls['educations'];
-    if (education) {
-      control.push(this.initEducation(education));
-    } else {
-      control.push(this.initEducation());
-    }
-  }
-
-  removeEducation(i: number) {
-    const control = <FormArray>this.form.controls['educations'];
-    control.removeAt(i);
-  }
-
   onOpenModal() {
     this.modal.open();
-    let _this = this;
 
-    _this.removeAll();
+    this.removeAll();
 
     _.map(this.data.works, (v: any)=> {
-      _this.addWork(v);
+      this.addWork(v);
     });
-
-    _.map(this.data.educations, (v: any)=> {
-      _this.addEducation(v);
-    });
-  }
-
-
-  onSubmit(values: any): void {
-    this.data.educations = values.educations;
-    this.data.works = values.works;
-    this.eventOut.emit({action: 'update', item: 'educations_works', data: values});
-    this.modal.close();
-  }
-
-  getWorkControls() {
-    return (<FormGroup>(<FormGroup>this.form.get('works')))['controls'];
-  }
-
-  getEducationControls() {
-    return (<FormGroup>(<FormGroup>this.form.get('educations')))['controls'];
   }
 }

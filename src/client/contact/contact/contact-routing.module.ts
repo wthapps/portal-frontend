@@ -8,8 +8,8 @@ import { ZContactDetailComponent } from './contact-detail/contact-detail.compone
   imports: [
     RouterModule.forChild([
       { path: 'contacts', component: ZContactListComponent },
-      { path: 'contacts/new', component: ContactEditPageComponent },
       { path: 'contacts/:id', component: ContactEditPageComponent },
+      { path: 'contacts/new', component: ContactEditPageComponent },
       { path: 'contacts/detail/:id', component: ZContactDetailComponent }
     ])
   ],

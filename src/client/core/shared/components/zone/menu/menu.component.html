@@ -12,21 +12,21 @@
           class="menuleft-nav-sub"
           id="zone_menu_contact"
           [routerLinkActive]="['active']" >
-        <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackByFn">
+        <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackMenu">
           <li *ngIf="contact.name != ''" class="text-capitalize">
             <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]"  (click)="doEvent({action: contact?.action, event: $event})">
-              <i class="{{ contact.icon }}"></i> {{ contact.name }}  ({{ contact?.count }})
+              <i class="{{contact.icon}}"></i> {{ contact.name }}  ({{ contact?.count }})
             </a>
 
-            <a *ngIf="contact.name =='labels'" draggable="false" href="#"  (click)="doEvent({action: contact?.action, event: $event})">
-              <i class="{{ contact.icon }}"></i> {{ contact.name }}
+            <a *ngIf="contact.name =='labels'" draggable="false" href="javascript:;">
+              <i class="{{contact.icon}}"></i> {{ contact.name }}
             </a>
 
             <div *ngIf="contact.hasSubMenu" class="menuleft-nav-sub-action">
-              <span class="can-click" (click)="doEvent({action:'contact:label:open_modal_edit', payload: {mode: 'edit', selectedItem: contact.name }})" title="edit label name">
+              <span class="can-click" (click)="doEvent({action:'contact:label:open_modal_edit', payload: {mode: 'edit', selectedItem: contact.name}})" title="edit label name">
                 <i class="fa fa-pencil"></i>
               </span>
-              <span class="can-click" (click)="doEvent({action:'contact:label:delete', payload: {selectedItem: contact.name }})" title="delete label">
+              <span class="can-click" (click)="doEvent({action:'contact:label:delete', payload: {selectedItem: contact.name}})" title="delete label">
                 <i class="fa fa-trash"></i>
               </span>
             </div>
@@ -34,13 +34,13 @@
 
         </ng-template>
         <li>
-          <a draggable="false" href="javascipt:;" (click)="doEvent({action: 'contact:label:open_modal_edit', payload:{mode: 'add'}, event: $event})">
+          <a draggable="false" href="javascript:;" (click)="doEvent({action: 'contact:label:open_modal_edit', payload:{mode: 'add'}, event: $event})">
             <i class="fa fa-plus"></i> New label
           </a>
         </li>
         <li class="divider"></li>
         <li [routerLinkActive]="['active']">
-          <a draggable="false" href="javascipt:;" (click)="doEvent({action: 'contact:label:open_modal_setting', payload:{mode: 'add'}, event: $event})">
+          <a draggable="false" href="javascript:;" (click)="doEvent({action: 'contact:label:open_modal_setting', payload:{mode: 'add'}, event: $event})">
             <i class="fa fa fa-cog"></i> Settings
           </a>
         </li>

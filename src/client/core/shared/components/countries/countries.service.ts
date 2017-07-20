@@ -17,7 +17,7 @@ export class ICountry {
 @Injectable()
 export class CountryService {
 
-  private countriesCodeSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  private countriesCodeSubject: BehaviorSubject<ICountry[]> = new BehaviorSubject<ICountry[]>([]);
   public countriesCode$: Observable<any>;
 
   /**
@@ -41,6 +41,9 @@ export class CountryService {
    * @return {string[]} The Observable for the HTTP request.
    */
   getCountries(): Observable<ICountry[]> {
+    if(this.countriesCodeSubject.getValue().length > 1)
+      return this.countriesCode$;
+
     return this.http.get('/api/countries/index.json')
       .map((res: Response) => res.json())
       .catch(this.handleError);

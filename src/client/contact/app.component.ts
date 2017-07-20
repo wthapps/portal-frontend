@@ -62,6 +62,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
   ngOnInit() {
     this.routerSubscription = this.router.events
+      .takeUntil(this.destroySubject)
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
@@ -76,18 +77,26 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           this.contactMenu.push(this.mapLabelToMenuItem(label));
 
         });
-        // this.contactMenu.push(label.convertToMenuItem());
-        // this.contactMenu.push(
+        // this.contactMenu.push(label.convertToMenuItem());t
         //   { name: '', link: '', icon: '' },
         //   { name: 'Settings', link: '/settings', icon: 'fa fa-cog'}
         // );
       }
     );
+
+    // Update contacts count
+    this.contactService.contacts$.takeUntil(this.destroySubject)
+      .subscribe((contacts: any[]) => {
+        let idx = _.findIndex(this.contactMenu, (ct: any) => { return ct.name === 'all contact'; });
+        _.set(this.contactMenu, `${idx}.count`, this.contactService.getAllContacts().length);
+      }
+    );
   }
 
   ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
-    this.commonEventSub.unsubscribe();
+    // this.routerSubscription.unsubscribe();
+    // this.commonEventSub.unsubscribe();
+    this.destroySubject.next('');
     this.destroySubject.unsubscribe();
   }
 
@@ -120,7 +129,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.labelService.create(event.payload.label).subscribe(
           (response: any) => {
             this.labels.push(response.data);
-            this.contactMenu.push(this.mapLabelToMenuItem(this.labels.pop()));
+            this.contactMenu.push(this.mapLabelToMenuItem(this.labels[this.labels.length-1]));
           }
         );
         break;
@@ -169,7 +178,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       name: label.name,
       link: '/contacts',
       hasSubMenu: !label.system,
-      count: label.contact_count,
+      count: (label.name == 'all contact' ? this.contactService.getAllContacts().length : label.contact_count),
       icon: label.name == 'all contact' ? 'fa fa-address-book-o'
         : label.name == 'favourite' ? 'fa fa-star'
         : label.name == 'labels' ? 'fa fa-tags'

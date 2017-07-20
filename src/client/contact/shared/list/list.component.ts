@@ -48,4 +48,8 @@ export class ZContactSharedListComponent implements OnInit {
     }
   }
 
+  trackItem(index: any, item: any) {
+    return item ? item.id : undefined;
+  }
+
 }
