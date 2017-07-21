@@ -7,8 +7,7 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../../core/shared/components/loading/loading.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';

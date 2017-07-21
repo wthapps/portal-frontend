@@ -11,7 +11,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoCommunityService } from '../services/community.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
 @Component({
   moduleId: module.id,

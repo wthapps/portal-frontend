@@ -3,9 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
-import { ZoneReportService } from '../../../core/shared/form/report/report.service';
-import { Subject } from 'rxjs';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 
 
 declare var _: any;
@@ -33,7 +32,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,
               public userService: UserService,
-              private zoneReportService: ZoneReportService,
+              private zoneReportService: ZSharedReportService,
               private toastsService: ToastsService,
               private route: ActivatedRoute) {
   }

@@ -5,17 +5,17 @@ import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SocialService } from '../../shared/services/social.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { PostListComponent } from '../../shared/post/post-list.component';
-import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
+import { EntitySelectComponent } from '../../../core/shared/components/entity-select/entity-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Subscription, Observable, Subject } from 'rxjs';
-import { ZSocialFavoritesComponent } from '../../shared/favorites/social-favorites.component';
+import { Observable} from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
-import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 
 declare let _: any;
@@ -114,7 +114,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private toastsService: ToastsService,
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
-              private zoneReportService: ZoneReportService,
+              private zoneReportService: ZSharedReportService,
               public favoriteService: SocialFavoriteService,
               private socialService: SocialService) {
 

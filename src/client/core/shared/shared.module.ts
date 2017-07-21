@@ -50,6 +50,8 @@ import { ZSharedReportModule } from './components/zone/report/report.module';
 import { PartialsProfileModule } from './components/profile/profile.module';
 import { PartialsPhotoModule } from './components/photo/photo.module';
 import { ModalDockModule } from './components/modal/dock.module';
+import { EntitySelectModule } from './components/entity-select/entity-select.module';
+import { ReadMoreModule } from './components/read-more/read-more.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -93,6 +95,8 @@ import { ModalDockModule } from './components/modal/dock.module';
     PartialsProfileModule,
     PartialsPhotoModule,
     ModalDockModule,
+    EntitySelectModule,
+    ReadMoreModule,
     // Pipe
     PipeModule
   ]

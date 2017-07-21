@@ -32,6 +32,7 @@ import { ZMediaTaggingService } from './modal/tagging/tagging.service';
 
 import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
 import { SliderModule } from 'primeng/components/slider/slider';
+import { PhotoItemPreviewComponent } from './photo-item-preview.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { SliderModule } from 'primeng/components/slider/slider';
     AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
-    ZMediaShareItemComponent
+    ZMediaShareItemComponent,
+    PhotoItemPreviewComponent
   ],
   exports: [
     PartialsPhotoSharingModule,
@@ -84,7 +86,8 @@ import { SliderModule } from 'primeng/components/slider/slider';
     AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
-    ZMediaShareItemComponent
+    ZMediaShareItemComponent,
+    PhotoItemPreviewComponent
   ],
   providers: [
     PhotoService,

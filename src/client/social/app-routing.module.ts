@@ -1,23 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ZSocialHomeComponent } from './home/home.component';
-import { ZSocialMembersComponent } from './friends/members.component';
-import { ZSocialNotificationsComponent } from './notifications/notifications.component';
-import { PostDetailComponent } from './shared/post/post-detail.component';
-import { AuthGuard } from '../core/shared/services/auth-guard.service';
-import { ZSocialMyProfileComponent } from './my-profile/my-profile.component';
-
-export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full', canActivate: [AuthGuard] },
-  { path: 'home', component: ZSocialHomeComponent, canActivate: [AuthGuard] },
-  { path: 'friends', component: ZSocialMembersComponent  },
-  { path: 'notifications', component: ZSocialNotificationsComponent },
-  { path: 'posts/:id', component: PostDetailComponent },
-  { path: 'my-profile', component: ZSocialMyProfileComponent}
-];
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot([
+      /* define app module routes here, e.g., to lazily load a module
+         (do not place feature module routes here, use an own -routing.module.ts in the feature instead)
+       */
+    ])
+  ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
+

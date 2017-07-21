@@ -1,19 +1,16 @@
-import {
-  Component, OnDestroy, OnInit
-} from '@angular/core';
-import { ActivatedRoute, Route, Router, UrlTree } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PhotoService } from '../../core/shared/services/photo.service';
 import { BasePhotoDetailComponent } from '../../core/shared/components/photo/detail/base-photo-detail.component';
 import { ConfirmationService } from 'primeng/primeng';
-import { LoadingService } from "../../core/partials/loading/loading.service";
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
 
 @Component({
   moduleId: module.id,
   selector: 'photo-detail',
   templateUrl: 'photo-detail.component.html',
   styleUrls: ['photo-detail.component.css'],
-  entryComponents: [
-  ]
+  entryComponents: []
 })
 
 export class PhotoDetailComponent extends BasePhotoDetailComponent {

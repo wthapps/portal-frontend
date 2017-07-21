@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
 
 import { ZSocialCommunityRoutingModule } from './communities-routing.module';
@@ -13,8 +13,6 @@ import { ZSocialCommunityFormEditComponent } from './shared/form/edit.component'
 import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferences.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { PostModule } from '../shared/post/post.module';
-import { LoadingModule } from '../../core/partials/loading/loading.module';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 
 @NgModule({
   imports: [
@@ -22,10 +20,9 @@ import { LoadingService } from '../../core/partials/loading/loading.service';
     ZSocialCommunityRoutingModule,
     PostModule,
     Ng2HdModule,
-    LoadingModule,
     ZSocialSharedModule.forRoot(),
-    SharedModule.forRoot(),
-    ZSocialCommunitySharedModule.forRoot()
+    ZSocialCommunitySharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZSocialCommunityComponent,
@@ -51,7 +48,7 @@ import { LoadingService } from '../../core/partials/loading/loading.service';
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormPreferenceComponent
   ],
-  providers: [LoadingService]
+  providers: []
 })
 export class ZSocialCommunityModule {
 }

@@ -18,10 +18,10 @@ import { InputTextareaModule } from 'primeng/primeng';
 // import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 import { TagInputModule } from 'ng2-tag-input';
 import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
-import { SharedModule } from '../../../core/shared/shared.module';
+import { CoreSharedModule } from '../../../core/shared/shared.module';
 // import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
 // import { TagInputModule } from 'ng2-tag-input/dist/modules/ng2-tag-input.module';
-// import { FileSelectionComponent } from '../../../core/partials/zone/photo/file-select/file-selection.component';vi
+// import { FileSelectionComponent } from '../../../core/shared/components/zone/photo/file-select/file-selection.component';vi
 
 @NgModule({
   imports: [
@@ -31,7 +31,7 @@ import { SharedModule } from '../../../core/shared/shared.module';
     ReactiveFormsModule,
     // Ng2HdModule,
     // HdTagInputModule,
-    SharedModule,
+    CoreSharedModule.forRoot(),
     TagInputModule,
     InputTextareaModule
 
@@ -58,7 +58,6 @@ import { SharedModule } from '../../../core/shared/shared.module';
     ReactiveFormsModule,
     // HdTagInputModule,
     Ng2HdModule,
-    SharedModule,
 
     TagInputModule,
     PostNewComponent,

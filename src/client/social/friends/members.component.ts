@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SoUser } from '../../core/shared/models/social_network/so-user.model';
 import { SocialService } from '../shared/services/social.service';
-import { ApiBaseService } from '../../core/shared/services/apibase.service';
-import { NotificationService } from '../../core/shared/services/notification.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingService } from '../../core/partials/loading/loading.service';
-import { ZoneReportService } from '../../core/shared/form/report/report.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { ZSharedReportService } from '../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../shared/services/social-favorites.service';
-
 
 declare var $: any;
 declare var _: any;
@@ -46,7 +42,7 @@ export class ZSocialMembersComponent implements OnInit {
   totalBlacklists: number;
 
   constructor(private socialService: SocialService,
-              private zoneReportService: ZoneReportService,
+              private zoneReportService: ZSharedReportService,
               private favoriteService: SocialFavoriteService,
               private loadingService: LoadingService) {
   }

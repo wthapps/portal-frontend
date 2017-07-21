@@ -5,7 +5,7 @@ import {
   FormArray
 } from '@angular/forms';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';

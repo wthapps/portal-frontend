@@ -7,7 +7,7 @@ import { HttpModule } from '@angular/http';
 import { SocialSettingsRoutingModule } from './setting-routing.module';
 import { ZSocialSettingComponent } from './setting.component';
 import { ZSocialSharedModule } from '../shared/shared.module';
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { SharedModule } from '../../core/shared/shared.module';
     HttpModule,
     SocialSettingsRoutingModule,
     // ZSocialSharedModule,
-    SharedModule.forRoot(),
+    CoreSharedModule.forRoot(),
   ],
   declarations: [
     ZSocialSettingComponent

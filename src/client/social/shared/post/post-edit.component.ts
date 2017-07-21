@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
-import { Subscription } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';

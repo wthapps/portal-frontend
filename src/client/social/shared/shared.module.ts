@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 import { SoUserService, SocialService, SoPostService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
@@ -21,7 +21,7 @@ import { ZSocialNotificationsComponent } from '../notifications/notifications.co
 import { ZSocialMembersComponent } from '../friends/members.component';
 import { SoPhotoListComponent } from './post/photo-list.component';
 import { ZSocialProfileService } from '../profile/profile.service';
-import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
+import { CoverProfileModule } from '../../core/shared/components/cover-profile/cover-profile.module';
 import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
 import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
@@ -34,7 +34,7 @@ import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences
 
 @NgModule({
   imports: [
-    SharedModule,
+    CoreSharedModule.forRoot(),
     // HdModalModule,
     Ng2HdModule,
     CoverProfileModule,
@@ -74,8 +74,6 @@ import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences
     ZSocialNotificationsComponent,
 
     Ng2HdModule,
-    CoverProfileModule,
-    SharedModule,
     PostModule,
     ZSocialShareProfileModule,
     // Community

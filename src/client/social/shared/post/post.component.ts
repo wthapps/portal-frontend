@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/from';
 
@@ -21,9 +21,9 @@ import { CommentEditorMode, CommentItemEditorComponent } from './components/comm
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { Constants } from '../../../core/shared/config/constants';
 import {
   CommentCreateEvent, CommentUpdateEvent, ReplyCreateEvent, ReplyUpdateEvent,
