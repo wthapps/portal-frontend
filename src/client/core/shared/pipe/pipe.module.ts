@@ -8,7 +8,7 @@ import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
 import { BytesPipe } from './bytes.pipe';
 import { SafeHtmlPipe } from './safeHtml.pipe';
 import { TimeFormatPipe } from './time-format.pipe';
-import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone-to-flag.pipe';
+import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe } from './phone-to-flag.pipe';
 
 @NgModule({
   imports: [
@@ -24,6 +24,7 @@ import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone-to-flag.pipe'
     TimeFormatPipe,
     LinkifyPipe,
     PhoneCodeCountriesPipe,
+    PhoneCodeToDisplayCodePipe,
     PhoneCodeFlagPipe
   ],
   exports: [
@@ -36,6 +37,7 @@ import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe } from './phone-to-flag.pipe'
     TimeFormatPipe,
     LinkifyPipe,
     PhoneCodeCountriesPipe,
+    PhoneCodeToDisplayCodePipe,
     PhoneCodeFlagPipe
   ],
   providers: []

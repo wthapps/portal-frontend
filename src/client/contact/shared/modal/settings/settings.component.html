@@ -9,7 +9,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="form-group no-label">
-            <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
+            <p-autoComplete class="form-control-phone-country" formControlName="phone_default_code"
                             [suggestions]="filteredCountriesCode"
                             (completeMethod)="filterCountriesCode($event)" [size]="30"
                             [minLength]="1" placeholder="Select your country" [dropdown]="true"
@@ -18,11 +18,6 @@
                 <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
               </template>
             </p-autoComplete>
-
-            <!--<select class="form-control" name="name" formControlName="country_alpha_code">
-              <option value=""> Select your country</option>
-              <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}} ({{c.dial_code}})</option>
-            </select>-->
           </div>
         </div>
       </div>
@@ -30,10 +25,10 @@
       <p class="bold">List sort by</p>
       <div class="row">
         <div class="col-xs-12">
-          <p-radioButton name="sort_by" value="first_name" label="First Name" formControlName="sort_by"></p-radioButton>
+          <p-radioButton name="contacts_sort_by" value="first_name" label="First Name" formControlName="contacts_sort_by"></p-radioButton>
         </div>
         <div class="col-xs-12">
-          <p-radioButton name="sort_by" value="last_name" label="Last Name" formControlName="sort_by"></p-radioButton>
+          <p-radioButton name="contacts_sort_by" value="last_name" label="Last Name" formControlName="contacts_sort_by"></p-radioButton>
         </div>
       </div>
 

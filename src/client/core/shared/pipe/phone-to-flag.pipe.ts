@@ -42,3 +42,19 @@ export class PhoneCodeFlagPipe implements PipeTransform {
     }
   }
 }
+
+@Pipe({
+  name: 'phoneCodeToDisplayCode'
+})
+export class PhoneCodeToDisplayCodePipe implements PipeTransform {
+
+  transform(key: any, data: any): any {
+    let phoneCode = _.find(data, ['code', key.toUpperCase()]);
+    return '<div class="clearfix">' +
+      '<img class="pull-left" width=\'30\' src=\'assets/images/flags/' + phoneCode.code.toLowerCase() + '.svg\' alt=\'\'>' +
+      '<span class="pull-left">' + phoneCode.name + '</span>' +
+      '<span class="pull-right">' + '(' + phoneCode.dial_code + ')' + '</span>' +
+      '</div>';
+  }
+}
+
