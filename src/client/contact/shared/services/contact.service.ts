@@ -180,13 +180,12 @@ export class ZContactService extends BaseEntityService<any>{
   suggestContacts(value: any) {
     let contacts: any[] = _.cloneDeep(this.searchContact(value));
 
-    console.log('suggestContacts: ', contacts);
     this.notifyContactsObservers(contacts);
   }
 
   notifyContactsObservers(contacts: Array<any>): void {
     this.contactsSubject.next(contacts);
-    this.selectedObjects.length = 0;
+    // this.selectedObjects.length = 0;
   }
 
   private searchContact(name: string): any[] {
@@ -252,8 +251,14 @@ export class ZContactService extends BaseEntityService<any>{
       else
       return ct;
     });
-    console.log('updateCallback: ', contact, this.contacts);
-    // this.contactsSubject.next([]);
+
+    _.forEach(this.selectedObjects, (selected: any, index: number) => {
+      if(contact.id === selected.id) {
+        this.selectedObjects[index] = contact;
+        return;
+      }
+    });
+
     this.notifyContactsObservers(this.contacts);
   }
 
