@@ -13,6 +13,9 @@ import {
 } from '../../../../events/social-events';
 import { SoPost } from '../../../../../core/shared/models/social_network/so-post.model';
 import { SoComment } from '../../../../../core/shared/models/social_network/so-comment.model';
+import { UserService } from '../../../../../core/shared/services/user.service';
+import { Observable } from 'rxjs';
+import { User } from '../../../../../core/shared/models/user.model';
 export enum CommentEditorMode {
   Add,
   Edit,
@@ -44,13 +47,15 @@ export class CommentItemEditorComponent implements OnInit {
   hasUploadingPhoto: boolean = false;
   hasUpdatedContent: boolean = false;
   files: any;
+  user$: Observable<User>;
 
   commentEditorForm: FormGroup;
   contentCtrl: AbstractControl;
   photosCtrl: AbstractControl;
 
-  constructor(private fb: FormBuilder,) {
-
+  constructor(private fb: FormBuilder,
+              public userService: UserService) {
+    this.user$ = this.userService.profile$;
   }
 
   ngOnInit() {

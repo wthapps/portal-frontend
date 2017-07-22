@@ -1,0 +1,31 @@
+@import "../../../core/scss/global";
+
+.chat-profile {
+  position: relative;
+  padding-left: 120px;
+  .chat-profile-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .chat-profile-content {
+    h3 {
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+  .dl-horizontal {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $line;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    .dl-horizontal {
+      dd {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

@@ -31,8 +31,10 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
   modalComponent: any;
   modal: any;
 
-  favourite: any; // toggle favourites status for members, communities
+  // favourite: any; // toggle favourites status for members, communities
+  userSettings: any;
   comUserStatus = Constants.soCommunityUserStatus;
+  comUserRole = Constants.communityRole;
   communitiesUrl: string = Constants.urls.communities;
 
   constructor(public serviceManager: ServiceManager,
@@ -62,57 +64,38 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
    item: community / member object
    group: community / members
    */
-  getFavourite() {
-    this.socialService.user.getFavourite(this.data.uuid, 'community').subscribe(
-      (res: any) => {
-        this.favourite = res.data;
+  // getFavourite() {
+  //   this.socialService.user.getFavourite(this.data.uuid, 'community').subscribe(
+  //     (res: any) => {
+  //       this.favourite = res.data;
+  //     }
+  //   );
+  // }
+
+  toggleFavourite() {
+    this.favoriteService.addFavourite(this.data.uuid, 'community')
+      .then((res: any) => this.userSettings.favorite = !this.userSettings.favorite);
+  }
+
+  confirmLeaveCommunity() {
+    this.socialService.community.confirmLeaveCommunity(this.data).then((res: any) => {
+      this.actionFromItem.emit(
+        {
+          action: 'delete',
+          data: this.data
+        }
+      );
       }
     );
   }
 
-  toggleFavourite() {
-    this.favoriteService.addFavourite(this.data.uuid, 'community')
-      .then((res: any) => this.favourite = res.data);
-  }
-
-  confirmLeaveCommunity() {
-    // Check if there are other admins beside current user in community
-    // If not, he must pick another one before leaving
-    // let enoughAdmins = community.admin_count > 1 ? true : false;
-    // let pickAnotherAdmin = this.userService.profile.uuid == this.item.admin.uuid && !enoughAdmins;
-    let pickAnotherAdmin = false;
-    let community = this.data;
-
-    this.confirmationService.confirm({
-      message: pickAnotherAdmin ?
-        `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
-        `Are you sure to leave the community ${community.name}?`,
-      header: 'Leave Community',
-      accept: () => {
-        if (pickAnotherAdmin) {
-          // Navigate to member tab
-          this.serviceManager.getRouter().navigate([Constants.urls.communities, community.uuid], {
-            queryParams: {
-              tab: 'members',
-              skipLocationChange: true
-            }
-          });
-        } else {
-          this.leaveCommunity(community);
-        }
-      }
-    });
-
-    return false;
-  }
-
-  leaveCommunity(community: any) {
-    this.socialService.community.leaveCommunity(community.uuid)
-      .subscribe((res: any) => {
-          community.user_status = this.comUserStatus.stranger;
-        }
-      );
-  }
+  // leaveCommunity(community: any) {
+  //   this.socialService.community.leaveCommunity(community.uuid)
+  //     .subscribe((res: any) => {
+  //         community.user_status = this.comUserStatus.stranger;
+  //       }
+  //     );
+  // }
 
   onEdit() {
     this.loadModalComponent(ZSocialShareCommunityFormEditComponent);
@@ -142,13 +125,32 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
     );
   }
 
+  getUserSettings(uuid: any) {
+    this.socialService.community.getUserSettings(uuid).take(1).subscribe(
+      (res: any) => {
+        console.log('inside getUserSettings', res);
+        this.userSettings = res.data;
+      }
+    );
+  }
+
+  toggleComNotification(uuid: any) {
+    this.socialService.community.toggleComNotification(uuid).subscribe(
+      (res: any) => {
+        console.log('inside toggleComNotification', res);
+        this.userSettings = res.data;
+      }
+    )
+  }
+
+
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
     this.modalContainer.clear();
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;
     this.modal.setupDataUpdated.subscribe((data: any) => {
-      this.data = data;
+      _.merge(this.data, data);
     });
 
   }

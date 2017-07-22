@@ -1,7 +1,7 @@
 <div *ngIf="message.message_type != 'notification'" class="message-item"
      [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
   <div class="message-item-date" *ngIf="hasShowDate()">
-    <span>{{ message.created_at | date }}</span>
+    <span>{{ message.created_at | timeFormat:'day' }}</span>
   </div>
   <div class="message-item-content">
     <div class="message-item-owner" *ngIf="hasShowOwner() && message.display">
@@ -61,11 +61,11 @@
           <!--photo type-->
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Photo'">
             <figure>
-              <a [routerLink]="['/photos', message.file_json.id]" [queryParams]="{message: message.id}">
+              <a [routerLink]="['/photos', message.file_json.id, {ids: [message.file_json.id], message: message.id, prevUrl: '/conversations'}]">
                 <img [src]="message.file_json.url" alt="">
-
               </a>
             </figure>
+            {{message.to_json}}
           </div>
           <div class="message-item-content-other-files" *ngIf="message.file_type == 'FileMedium'">
             <a class="media-div link-text" [href]="message.file_json.url" target="_blank" download>

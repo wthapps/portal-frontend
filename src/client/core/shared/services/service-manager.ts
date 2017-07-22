@@ -7,6 +7,7 @@ import { Config } from '../config/env.config';
 import { StorageService } from './storage.service';
 import { ChatCommonService } from './chat.common.service';
 import { NotificationService } from './notification.service';
+import { CommonEventService } from './common-event/common-event.service';
 
 @Injectable()
 export class ServiceManager {
@@ -18,6 +19,7 @@ export class ServiceManager {
     private storageService: StorageService,
     private router: Router,
     private chatCommonService: ChatCommonService,
+    private commonEventService: CommonEventService,
     private notificationService: NotificationService
   ) {
   }
@@ -56,5 +58,9 @@ export class ServiceManager {
 
   getCommonNotificationService() {
     return this.notificationService;
+  }
+
+  getCommonEventService() {
+    return this.commonEventService;
   }
 }

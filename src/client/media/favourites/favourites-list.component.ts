@@ -1,7 +1,6 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ZMediaFavoriteService } from './favourites.service';
 import { PhotoService } from '../../core/shared/services/photo.service';
-import { PhotoDetailModalComponent } from '../../core/partials/photo/modal/photo-detail-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -12,7 +11,6 @@ declare var _: any;
   templateUrl: 'favourites-list.component.html'
 })
 export class ZMediaFavoriteListComponent implements OnInit {
-  @ViewChild('photoDetail') photoDetail: PhotoDetailModalComponent;
 
   data: any = [];
   nextLink: string = null;
@@ -25,16 +23,6 @@ export class ZMediaFavoriteListComponent implements OnInit {
 
   favouriteIsEmpty: boolean = false;
 
-  // @HostListener('document:keydown', ['$event'])
-  // onKeyDown(ev: KeyboardEvent) {
-  //   console.log(ev);
-  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = true;
-  // }
-  //
-  // @HostListener('document:keyup', ['$event'])
-  // onKeyUp(ev: KeyboardEvent) {
-  //   if (ev.keyCode == 17 || ev.keyCode == 18 || ev.keyCode == 91 || ev.keyCode == 93 || ev.ctrlKey) this.keyCtrl = false;
-  // }
 
   constructor(private photoService: PhotoService,
               private favoriteService: ZMediaFavoriteService) {
@@ -120,9 +108,9 @@ export class ZMediaFavoriteListComponent implements OnInit {
   }
 
   private onPreviewAll(item: any) {
-    this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
-    this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
-    this.photoDetail.open({show: true});
+    // this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
+    // this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
+    // this.photoDetail.open({show: true});
   }
 
   private onOneFavourite(item: any) {

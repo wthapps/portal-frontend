@@ -69,7 +69,7 @@ export class PostFooterComponent implements OnChanges {
               public postItem: PostComponent) {
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     if (this.type == 'info') {
       this.showInfo = true;
     }

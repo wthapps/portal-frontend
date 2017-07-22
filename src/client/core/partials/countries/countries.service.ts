@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs';
 
 declare var _: any;
 
@@ -16,12 +17,23 @@ export class ICountry {
 @Injectable()
 export class CountryService {
 
+  private countriesCodeSubject: BehaviorSubject<ICountry[]> = new BehaviorSubject<ICountry[]>([]);
+  public countriesCode$: Observable<any>;
+
   /**
    * Creates a new CountryService with the injected Http.
    * @param {Http} http - The injected Http.
    * @constructor
    */
   constructor(private http: Http) {
+    this.countriesCode$ = this.countriesCodeSubject.asObservable();
+    this.initialLoad();
+  }
+
+
+  initialLoad() {
+    this.getCountries().toPromise()
+      .then((data: any[]) => { this.countriesCodeSubject.next(data);});
   }
 
   /**
@@ -29,6 +41,9 @@ export class CountryService {
    * @return {string[]} The Observable for the HTTP request.
    */
   getCountries(): Observable<ICountry[]> {
+    if(this.countriesCodeSubject.getValue().length > 1)
+      return this.countriesCode$;
+
     return this.http.get('/api/countries/index.json')
       .map((res: Response) => res.json())
       .catch(this.handleError);

@@ -10,12 +10,12 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
       <template ngFor let-item [ngForOf]="data.addresses" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.kind_of | keyToValue:addressType:'kind_of':'name'}}</dt>
+        <dt>{{item.category | keyToValue:addressType:'category':'name'}}</dt>
         <dd><p>{{item.address_line1}}</p></dd>
       </template>
     </dl>
 
-    <div *ngIf="data.addresses.length == 0 && editable">
+    <div *ngIf="data.addresses && data.addresses.length == 0 && editable">
       <p class="text-fade">
         Tell us more about your address
       </p>
@@ -31,38 +31,38 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"><i class="fa fa-pencil"></i> address</h4>
+      <h4 class="modal-title"><i class="fa fa-pencil"></i> Address</h4>
     </modal-header>
     <modal-body>
       <div formArrayName="addresses">
-        <div *ngFor="let add_phone of form.controls.addresses.controls; let i=index" class="media mt0">
+        <div *ngFor="let add_phone of addressControls(); let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.addresses.controls[i].controls.kind_of.valid
-                  && form.controls.addresses.controls[i].controls.kind_of.touched),
-                  'has-success': (form.controls.addresses.controls[i].controls.kind_of.valid
-                  && form.controls.addresses.controls[i].controls.kind_of.touched
-                  && form.value.addresses[i].kind_of.length>1)}">
-                  <select class="form-control" name="name" formControlName="kind_of">
+                  'has-error': (!add_phone.controls.category.valid
+                  && add_phone.controls.category.touched),
+                  'has-success': (add_phone.controls.category.valid
+                  && add_phone.controls.category.touched
+                  && form.value.addresses[i].category.length>1)}">
+                  <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One -- </option>
-                    <option *ngFor="let et of addressType" value="{{et.kind_of}}">{{et.name}}</option>
+                    <option *ngFor="let et of addressType" value="{{et.category}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.addresses.controls[i].controls.address_line1.valid
-                  && form.controls.addresses.controls[i].controls.address_line1.touched),
-                  'has-success': (form.controls.addresses.controls[i].controls.address_line1.valid
-                  && form.controls.addresses.controls[i].controls.address_line1.touched
+                  'has-error': (!add_phone.controls.address_line1.valid
+                  && add_phone.controls.address_line1.touched),
+                  'has-success': (add_phone.controls.address_line1.valid
+                  && add_phone.controls.address_line1.touched
                   && form.value.addresses[i].address_line1.length>1)}">
                   <input type="text" class="form-control" formControlName="address_line1" placeholder="">
                   <div
-                    *ngIf="!form.controls.addresses.controls[i].controls.address_line1.valid && form.controls.addresses.controls[i].controls.address_line1.touched">
+                    *ngIf="!add_phone.controls.address_line1.valid && add_phone.controls.address_line1.touched">
                     <span
-                      *ngIf="!form.controls.addresses.controls[i].controls.address_line1.valid && form.controls.addresses.controls[i].controls.address_line1.errors.url"
+                      *ngIf="!add_phone.controls.address_line1.valid && add_phone.controls.address_line1.errors.url"
                       class="help-block text-danger">
                       Address is not valid
                     </span>

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
-import { PubSubEvent } from '../../core/shared/services/pub-sub/pub-sub-event';
-import { PubSubAction } from '../../core/shared/services/pub-sub/pub-sub-action';
+import { CommonEvent } from '../../core/shared/services/common-event/common-event';
+import { CommonEventAction } from '../../core/shared/services/common-event/common-event-action';
 import { Subscription } from 'rxjs/Subscription';
-import { PubSubEventService } from '../../core/shared/services/pub-sub/pub-sub-event.service';
+import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
 import { CHAT_ACTIONS, FORM_MODE } from '../../core/shared/constant/chat-constant';
 import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
@@ -17,16 +17,16 @@ declare  var $: any;
   selector: 'conversation-detail',
   templateUrl: 'conversation-detail.component.html'
 })
-export class ConversationDetailComponent implements PubSubAction, OnInit, OnDestroy {
+export class ConversationDetailComponent implements CommonEventAction, OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
   item: any;
 
-  subscriptionPubSub: Subscription;
+  commonEventSub: Subscription;
 
   constructor(
     private chatService: ChatService,
-    private pubSubEvent: PubSubEventService,
+    private commonEventService: CommonEventService,
     private conversationService: ConversationService
   ) {}
 
@@ -34,14 +34,14 @@ export class ConversationDetailComponent implements PubSubAction, OnInit, OnDest
 
     //subscribe all
 
-    this.subscriptionPubSub = this.pubSubEvent.event.subscribe((event: PubSubEvent) => {
-      this.doAction(event);
+    this.commonEventSub = this.commonEventService.event.subscribe((event: CommonEvent) => {
+      this.doEvent(event);
     });
 
     this.item = this.chatService.getCurrentMessages();
   }
 
-  doAction(event: PubSubEvent) {
+  doEvent(event: CommonEvent) {
     switch (event.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_COPY:
         this.messageEditor.updateAttributes({message: event.payload, mode: FORM_MODE.CREATE});
@@ -77,6 +77,6 @@ export class ConversationDetailComponent implements PubSubAction, OnInit, OnDest
   }
 
   ngOnDestroy() {
-    this.subscriptionPubSub.unsubscribe();
+    this.commonEventSub.unsubscribe();
   }
 }

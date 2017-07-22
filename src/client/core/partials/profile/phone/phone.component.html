@@ -10,10 +10,10 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.phones.length > 0">
       <template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.kind_of | keyToValue:phoneType:'kind_of':'name'}}</dt>
+        <dt>{{item.category | keyToValue:phoneType:'category':'name'}}</dt>
         <dd>
           <p>
-            <img *ngIf="countriesCode"
+            <img *ngIf="item.country_alpha_code | phoneCodeFlag:countriesCode"
                  src="assets/images/flags/{{item.country_alpha_code | phoneCodeFlag:countriesCode}}.svg"
                  width="30" alt="">
             {{item.value}}
@@ -41,29 +41,29 @@
     </modal-header>
     <modal-body>
       <div formArrayName="phones">
-        <div *ngFor="let add_phone of form.controls.phones.controls; let i=index" class="media media-no-hidden mt0">
+        <div *ngFor="let add_phone of getFormControls(); let i=index" class="media media-no-hidden mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-2">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.phones.controls[i].controls.kind_of.valid
-                  && form.controls.phones.controls[i].controls.kind_of.touched),
-                  'has-success': (form.controls.phones.controls[i].controls.kind_of.valid
-                  && form.controls.phones.controls[i].controls.kind_of.touched
-                  && form.value.phones[i].kind_of.length > 1)}">
-                  <select class="form-control" name="name" formControlName="kind_of">
+                  'has-error': (!add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched),
+                  'has-success': (add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched
+                  && form.value.phones[i].category && form.value.phones[i].category.length > 1)}">
+                  <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One --</option>
-                    <option *ngFor="let et of phoneType" value="{{et.kind_of}}">{{et.name}}</option>
+                    <option *ngFor="let et of phoneType" value="{{et.category}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-5">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.phones.controls[i].controls.country_alpha_code.valid
-                  && form.controls.phones.controls[i].controls.country_alpha_code.touched),
-                  'has-success': (form.controls.phones.controls[i].controls.country_alpha_code.valid
-                  && form.controls.phones.controls[i].controls.country_alpha_code.touched
-                  && form.value.phones[i].country_alpha_code.length>1)}">
+                  'has-error': (!add_phone['controls'].country_alpha_code.valid
+                  && add_phone['controls'].country_alpha_code.touched),
+                  'has-success': (add_phone['controls'].country_alpha_code.valid
+                  && add_phone['controls'].country_alpha_code.touched
+                  && form.value.phones[i].country_alpha_code && form.value.phones[i].country_alpha_code.length>1)}">
 
                   <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
                                   [suggestions]="filteredCountriesCode"
@@ -83,16 +83,16 @@
               </div>
               <div class="col-sm-5">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.phones.controls[i].controls.value.valid
-                  && form.controls.phones.controls[i].controls.value.touched),
-                  'has-success': (form.controls.phones.controls[i].controls.value.valid
-                  && form.controls.phones.controls[i].controls.value.touched
+                  'has-error': (!add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched),
+                  'has-success': (add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched
                   && form.value.phones[i].value.length > 1)}">
                   <input type="text" class="form-control" formControlName="value" placeholder="">
                   <div
-                    *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.touched">
+                    *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
                     <span
-                      *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.errors.phoneFormat"
+                      *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.phoneFormat"
                       class="help-block text-danger">
                       Phone is not valid
                     </span>
@@ -120,3 +120,4 @@
     </modal-footer>
   </modal>
 </form>
+

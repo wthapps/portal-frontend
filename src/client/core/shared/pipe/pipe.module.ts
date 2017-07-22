@@ -6,6 +6,9 @@ import { MaxLengthPipe } from './max-length.pipe';
 import { FileSizePipe } from './file-size.pipe';
 import { GroupByMonthYearPipe } from './groupby-month-year.pipe';
 import { BytesPipe } from './bytes.pipe';
+import { SafeHtmlPipe } from './safeHtml.pipe';
+import { TimeFormatPipe } from './time-format.pipe';
+import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe } from './phone-to-flag.pipe';
 
 @NgModule({
   imports: [
@@ -17,7 +20,12 @@ import { BytesPipe } from './bytes.pipe';
     FileSizePipe,
     GroupByMonthYearPipe,
     BytesPipe,
-    LinkifyPipe
+    SafeHtmlPipe,
+    TimeFormatPipe,
+    LinkifyPipe,
+    PhoneCodeCountriesPipe,
+    PhoneCodeToDisplayCodePipe,
+    PhoneCodeFlagPipe
   ],
   exports: [
     KeyToValuePipe,
@@ -25,7 +33,12 @@ import { BytesPipe } from './bytes.pipe';
     FileSizePipe,
     GroupByMonthYearPipe,
     BytesPipe,
-    LinkifyPipe
+    SafeHtmlPipe,
+    TimeFormatPipe,
+    LinkifyPipe,
+    PhoneCodeCountriesPipe,
+    PhoneCodeToDisplayCodePipe,
+    PhoneCodeFlagPipe
   ],
   providers: []
 })

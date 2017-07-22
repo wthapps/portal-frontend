@@ -9,7 +9,8 @@ const ProdConfig: EnvConfig = {
     MYACCOUNT: 'https://my.wthapps.com',
     MEDIA: 'https://media.wthapps.com',
     SOCIAL: 'https://social.wthapps.com',
-    CHAT: 'https://chat.wthapps.com'
+    CHAT: 'https://chat.wthapps.com',
+    CONTACT: 'https://contact.wthapps.com',
   },
   RES: 'https://s3-ap-southeast-1.amazonaws.com/env-staging'
 };

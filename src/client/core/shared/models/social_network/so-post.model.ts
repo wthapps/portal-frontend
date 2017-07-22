@@ -18,6 +18,7 @@ export class SoPost extends BaseInput implements FromData {
   shares: Array<any> = [];
   reactions: Array<any> = [];
   adult: boolean = false;
+  is_owner: boolean = false;
   // privacy: string = 'public';
   privacy: string = Constants.soPostPrivacy.public.data;
   custom_objects: Array<any> = [];

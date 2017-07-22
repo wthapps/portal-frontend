@@ -112,7 +112,9 @@
                     <i class="fa fa-remove" (click)="cancelUploading(f)"></i>
                   </div>
                   <div class="photo-box-figure">
-                    <figure class="img-center-dv photo-item-uploading loading"></figure>
+                    <figure class="img-center-dv photo-item-uploading loading">
+                      <span class="photo-box-figure-in"></span>
+                    </figure>
                   </div>
                 </div>
               </div>
@@ -142,7 +144,7 @@
           <i class="fa fa-camera"></i> Add Photo
         </button>
         <button type="submit" class="btn btn-wth-default btn-min"
-                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0))">Done
+                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0)) || (files.length > 0)">Done
         </button>
         <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel
         </button>

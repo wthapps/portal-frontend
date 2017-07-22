@@ -29,7 +29,7 @@
     </dl>
     <dl *ngIf="(data.birthday)">
       <dt>Date of Birth</dt>
-      <dd *ngIf="data.birthday">{{data.birthday | date:'MMM dd, yyyy' : 'UTC'}}</dd>
+      <dd *ngIf="data.birthday">{{data.birthday | timeFormat}}</dd>
     </dl>
     <dl *ngIf="(data.nationality)">
       <dt>Nationality</dt>

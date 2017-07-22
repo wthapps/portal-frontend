@@ -5,7 +5,8 @@ import { NavigationEnd, Router } from '@angular/router';
 @Component({
   moduleId: module.id,
   selector: 'z-chat-search',
-  templateUrl: 'search.component.html'
+  templateUrl: 'search.component.html',
+  styleUrls: ['search.component.css']
 })
 export class ZChatSearchComponent implements OnInit {
   conversations:any;

@@ -1,0 +1,27 @@
+<div class="wrapper">
+  <wth-header></wth-header>
+  <main class="main">
+    <div class="main-page-left">
+      <aside class="main-page-left-in aside-menu">
+        <z-shared-menu [contactMenu]="contactMenu"></z-shared-menu>
+      </aside>
+    </div>
+    <div class="main-page-body">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  <wth-toast></wth-toast>
+  <wth-loading></wth-loading>
+  <z-contact-share-import-progress></z-contact-share-import-progress>
+  <p-confirmDialog header="Confirmation" width="670" #cd>
+    <p-footer>
+      <button class="btn btn-default-inline" type="button" (click)="cd.reject()">Cancel</button>
+      <button class="btn btn-primary-inline" type="button" (click)="cd.accept()">Done</button>
+    </p-footer>
+  </p-confirmDialog>
+
+  <z-contact-share-add-contact></z-contact-share-add-contact>
+</div>
+
+<template #modalContainer></template>
+

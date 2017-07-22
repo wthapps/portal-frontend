@@ -10,6 +10,7 @@ export class Photo {
   description: string;
   favorite: boolean;
   json_shares: any;
+  content_type: string;
 
   constructor(fields: {
     id?: number,

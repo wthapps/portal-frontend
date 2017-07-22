@@ -26,9 +26,10 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   userInfo: any;
 
   relationships: any;
-  showFriends:boolean = true;
+  showFriends: boolean = true;
 
-  private destroySubject: Subject<any> = new Subject<any>();
+  favourite: any; // toggle favourites status for members, communities
+
   constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,
               public userService: UserService,
@@ -37,7 +38,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
               private route: ActivatedRoute) {
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     if (this.data) {
 
       this.userInfo = this.data;
@@ -60,11 +61,11 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
 
       if (this.userService.profile.uuid != params['id']) {
         this.socialService.user.getRelationShips(params['id'])
-          .takeUntil(this.destroySubject)
-          .subscribe((res: any) => {
-            this.relationships = res.data;
-          },
-        );
+          .toPromise()
+          .then((res: any) => {
+              this.relationships = res.data
+            },
+          );
       } else {
         this.relationships = undefined;
       }
@@ -72,27 +73,35 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   }
 
   ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
+  }
+
+  follow(uuid: string) {
+    this.socialService.user.follow(uuid).toPromise()
+      .then((res: any) => this.relationships.follow = true);
+  }
+
+  unfollow(uuid: string) {
+    this.socialService.user.unfollow(uuid).toPromise()
+      .then((res: any) => this.relationships.follow = false);
   }
 
   onCoverAction(event: any) {
-    if(event.action == 'updateItem') {
+    if (event.action == 'updateItem') {
       // Update profile via API call
       this.socialService.user.update(event.body)
         .subscribe((result: any) => {
           console.log('update profile sucess: ', result);
           let toastMsg = '';
-          if (_.has(event.body, 'profile_image') ) {
+          if (_.has(event.body, 'profile_image')) {
             toastMsg = 'You have updated profile image successfully';
             // Update user profile
-            if(this.socialService.user.profile.uuid === _.get(result, 'data.uuid') ) {
-              Object.assign(this.socialService.user.profile, {'profile_image' : result.data.profile_image});
-              Object.assign(this.userService.profile, {'profile_image' : result.data.profile_image});
+            if (this.socialService.user.profile.uuid === _.get(result, 'data.uuid')) {
+              Object.assign(this.socialService.user.profile, {'profile_image': result.data.profile_image});
+              Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
               this.userService.updateProfile(this.userService.profile);
             }
           }
-          else if (_.has(event.body, 'cover_image') )
+          else if (_.has(event.body, 'cover_image'))
             toastMsg = 'You have updated cover image of this community successfully';
           else
             toastMsg = result.message;
@@ -137,5 +146,23 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   onReport() {
     this.zoneReportService.member(this.userInfo.uuid);
     return false;
+  }
+
+  toggleFavourite(item: any, group: string) {
+    this.socialService.user.toggleFavourites(item.uuid, group).toPromise().then(
+      (res: any) => {
+        console.log(res);
+        if (!_.isEmpty(this.favourite)) {
+          this.favourite = undefined;
+        } else {
+          this.favourite = res.data;
+        }
+      }
+    );
+  }
+
+  // TODO:
+  importToContacts(item: any) {
+    console.log(item);
   }
 }

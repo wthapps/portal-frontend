@@ -10,37 +10,42 @@
             <li>{{userInfo.nickname}}</li>
           </ul>
         </div>
-
-        <div class="z-shared-description"> </div>
+        <div class="z-shared-description"></div>
       </div>
 
       <div class="hd-item-action-right-bottom" *ngIf="relationships">
         <button class="btn btn-default" type="button"
-               (click)="onAddfriend()" *ngIf="relationships.status == 0">
+                (click)="onAddfriend()" *ngIf="relationships.status == 0">
           <i class="fa fa-user-plus"></i> Add Friend
         </button>
 
-        <div class="btn-group" *ngIf="relationships.status == 2"
-        >
+        <div class="btn-group" *ngIf="relationships.status == 2">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-check"></i> Friend <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu dropdown-custom">
+          <ul class="dropdown-menu dropdown-menu-right">
             <li>
-              <a href="javascript:;" (click)="onUnfriend()">Unfriend</a>
-              <i class="fa fa-times"></i>
+              <a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
+                <i class="fa fa-check" *ngIf="favourite?.uuid"></i> {{(!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites'}}
+              </a>
+            </li>
+            <li><a href="javascript:;" (click)="importToContacts(userInfo)">Import to Contacts</a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="javascript:;" (click)="onUnfriend()">
+                <i class="fa fa-times"></i> Unfriend
+              </a>
             </li>
           </ul>
         </div>
 
-        <div class="btn-group" *ngIf="relationships.status == 1"
-             >
+        <div class="btn-group" *ngIf="relationships.status == 1">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
             Friend Requested <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu dropdown-custom">
+          <ul class="dropdown-menu dropdown-menu-right">
             <li>
               <a href="javascript:;" (click)="onCancelRequest()">Cancel Request</a>
             </li>
@@ -48,19 +53,25 @@
         </div>
 
 
-
         <!--menu-->
-        <ul class="pull-right list-unstyled clearfix" *ngIf="userInfo.uuid !== userService.profile.uuid">
-          <li class="dropdown">
-            <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="true">
-              <i class="fa fa-ellipsis-v"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right" >
-              <li ><a href="#" (click)="onReport()">Report member</a></li>
-            </ul>
-          </li>
-        </ul>
+        <div class="btn-group" *ngIf="userInfo.uuid !== userService.profile.uuid">
+          <button type="button" class="btn btn-default" *ngIf="!relationships?.follow" (click)="follow(userInfo.uuid)" >
+            Follow
+          </button>
+          <button type="button" class="btn btn-default" *ngIf="relationships?.follow">
+            <i class="fa fa-check"></i> Following
+          </button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>
+            <li><a href="javascript:;" (click)="onReport()">Report member</a></li>
+          </ul>
+        </div>
+
+
       </div>
 
     </so-information>
@@ -70,13 +81,13 @@
   <nav class="nav-tabs-wrap">
     <ul class="nav nav-tabs list-unstyled clearfix">
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'post']" >Post</a>
+        <a [routerLink]="['/profile', uuid, 'post']">Post</a>
       </li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'about']" >About</a>
+        <a [routerLink]="['/profile', uuid, 'about']">About</a>
       </li>
       <li *ngIf="showFriends" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'friends']" >Friends</a>
+        <a [routerLink]="['/profile', uuid, 'friends']">Friends</a>
       </li>
       <li class="pull-right dropdown">
 

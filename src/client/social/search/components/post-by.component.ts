@@ -21,7 +21,7 @@ export class ZSocialPostByFilterComponent implements OnInit {
   ownerId:any;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private urlService: UrlService,
     private apiBaseService: ApiBaseService,
     private router: Router,

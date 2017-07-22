@@ -4,7 +4,7 @@ import { ChatService } from '../../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs/Subscription';
-import { PubSubEventService } from '../../../../core/shared/services/pub-sub/pub-sub-event.service';
+import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 import { FORM_MODE } from '../../../../core/shared/constant/chat-constant';
 import { FormGroup, AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Message } from '../../models/message.model';

@@ -1,0 +1,17 @@
+<div class="df-form media mt0">
+  <div [ngClass]="question.contentCss">
+    <div class="form-group" [ngClass]="{'has-error': !isValid, 'has-success': isValid && isTouched}" [formGroup]="form">
+      <label class="df-form-label" [ngClass]="question.labelCss" [attr.for]="question.key">{{question.label}}</label>
+      <div class="df-form-content" [ngClass]="question.elementCss" [ngSwitch]="question.controlType">
+        <input class="form-control df-form-text" *ngSwitchCase="'textbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+
+        <select class="form-control df-form-dropdown" [ngClass]="question.elementCss" [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
+          <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+        </select>
+      </div>
+
+      <div class="error help-block text-danger" *ngIf="!isValid">{{question.label}} is required</div>
+    </div>
+  </div>
+</div>
+

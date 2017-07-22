@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../../shared/services/apibase.service';
 import { UserService } from '../../shared/services/user.service';
+import { Communication } from '../../shared/models/communication.model';
 
 @Injectable()
-export class PartialsProfileService {
+export class PartialsProfileService extends Communication {
 
   constructor(private apiBaseService: ApiBaseService,
               private userService: UserService) {
-    console.log(this.userService);
-    console.log(this.apiBaseService);
+    super();
   }
 
   getMyProfile() {
@@ -17,6 +17,13 @@ export class PartialsProfileService {
 
   updateMyProfile(body: any) {
     return this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, body);
+  }
+
+  onLoad(url: string) {
+    if(url) {
+      return this.apiBaseService.get(url);
+    }
+    return null;
   }
 
 }

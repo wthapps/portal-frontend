@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ZSocialPhotoComponent } from './photo.component';
+import {
+  ZSocialPhotoComponent,
+  PhotoDetailComponent
+} from './index';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
+      {path: 'photos/:id', component: PhotoDetailComponent},
       {path: 'posts/:postId/photos/:id', component: ZSocialPhotoComponent},
       {path: 'posts/:postId/photos', component: ZSocialPhotoComponent},
       {path: 'comments/:commentId/photos/:id', component: ZSocialPhotoComponent},

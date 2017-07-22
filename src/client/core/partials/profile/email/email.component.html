@@ -10,7 +10,8 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
       <template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.kind_of | keyToValue:emailType:'kind_of':'name'}}</dt>
+        <dt>{{item.category | keyToValue:emailType:'category':'name'}}</dt>
+
         <dd><p><a class="link-text" href="mailto:{{item.value}}">{{item.value}}</a></p></dd>
       </template>
     </dl>
@@ -28,7 +29,6 @@
   </div>
 </div>
 
-
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
@@ -36,34 +36,34 @@
     </modal-header>
     <modal-body>
       <div formArrayName="emails">
-        <div *ngFor="let add_email of form.controls.emails.controls; let i=index" class="media mt0">
-          <div class="media-body" [formGroupName]="i">
+        <div *ngFor="let add_email of getFormControls(); let i=index" class="media mt0">
+          <div *ngIf="add_email" class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.kind_of.valid
-                  && form.controls.emails.controls[i].controls.kind_of.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.kind_of.valid
-                  && form.controls.emails.controls[i].controls.kind_of.touched
-                  && form.value.emails[i].kind_of.length > 1)}">
-                  <select class="form-control" name="name" formControlName="kind_of">
+                  'has-error': (!add_email['controls'].category.valid
+                  && add_email['controls'].category.touched),
+                  'has-success': (add_email['controls'].category.valid
+                  && add_email['controls'].category.touched
+                  && form.value.emails[i].category.length > 1)}">
+                  <select class="form-control" name="name" formControlName="category">
                     <option value=""> -- Select One --</option>
-                    <option *ngFor="let et of emailType" value="{{et.kind_of}}">{{et.name}}</option>
+                    <option *ngFor="let et of emailType" value="{{et.category}}">{{et.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.value.valid
-                  && form.controls.emails.controls[i].controls.value.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.value.valid
-                  && form.controls.emails.controls[i].controls.value.touched
+                  'has-error': (!add_email['controls'].value.valid
+                  && add_email['controls'].value.touched),
+                  'has-success': (add_email['controls'].value.valid
+                  && add_email['controls'].value.touched
                   && form.value.emails[i].value.length > 1)}">
                   <input type="text" class="form-control" formControlName="value" placeholder="">
                   <div
-                    *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.touched">
+                    *ngIf="!add_email['controls'].value.valid && add_email['controls'].value.touched">
                     <span
-                      *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.errors.emailFormat"
+                      *ngIf="!add_email['controls'].value.valid && add_email['controls'].value.errors.emailFormat"
                       class="help-block text-danger">
                       Email is not valid
                     </span>

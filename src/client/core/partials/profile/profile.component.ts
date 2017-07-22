@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PartialsProfileService } from './profile.service';
+import { UserContact } from '../../shared/models/user/user-contact.model';
 
 declare var _: any;
 
@@ -10,22 +11,14 @@ declare var _: any;
 })
 
 export class PartialsProfileComponent implements OnInit {
-
-  data: any;
+  @Input() dataConfig: any;
+  @Input() data: any;
 
   constructor(private profileService: PartialsProfileService) {
+
   }
 
   ngOnInit() {
-    this.getProfile();
-  }
-
-  getProfile() {
-    this.profileService.getMyProfile().subscribe(
-      (res: any)=> {
-        this.data = res.data;
-        console.log(res.data);
-      }
-    );
+  //
   }
 }

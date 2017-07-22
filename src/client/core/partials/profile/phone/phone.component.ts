@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit, HostBinding } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, HostBinding, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -10,44 +10,41 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { CountryService } from '../../countries/countries.service';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { Constants } from '../../../shared/config/constants';
+import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
+import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin])
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-phone',
   templateUrl: 'phone.component.html'
 })
 
-export class PartialsProfilePhoneComponent implements OnInit {
-  @Input('data') data: any;
+
+
+export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
+  @Input() data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
   @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
+  type: string = "phones";
 
   countriesCode: any;
   countriesNameCode: any;
 
-
   filteredCountriesCode: any[];
 
-  phoneType: any = [
-    {
-      kind_of: 'mobile',
-      name: 'Mobile'
-    },
-    {
-      kind_of: 'fax',
-      name: 'Fax'
-    },
-    {
-      kind_of: 'other',
-      name: 'Other'
-    },
-  ];
+  phoneType: any = Constants.phoneType;
+
+  deleteObjects: any = [];
 
   constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
@@ -70,24 +67,24 @@ export class PartialsProfilePhoneComponent implements OnInit {
 
   }
 
-  removeAll() {
-    const control = <FormArray>this.form.controls['phones'];
-    control.controls.length = 0;
-    control.reset();
-  }
+  removeItem:(i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   //phones
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        kind_of: [item.kind_of, Validators.compose([Validators.required])],
-        country_alpha_code: [item.country_alpha_code, Validators.compose([Validators.required])],
+        category: [item.category, Validators.compose([Validators.required])],
+        country_alpha_code: [item.country_alpha_code],
+        id: [item.id, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
     } else {
       return this.fb.group({
-        kind_of: ['', Validators.compose([Validators.required])],
-        country_alpha_code: ['', Validators.compose([Validators.required])],
+        category: ['', Validators.compose([Validators.required])],
+        country_alpha_code: [''],
         value: ['', Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
     }
@@ -102,34 +99,14 @@ export class PartialsProfilePhoneComponent implements OnInit {
     }
   }
 
-  removeItem(i: number) {
-    const control = <FormArray>this.form.controls['phones'];
-    control.removeAt(i);
-  }
-
   onOpenModal() {
     this.modal.open();
-    let _this = this;
-
-    _this.removeAll();
+    this.removeAll();
 
     _.map(this.data.phones, (v: any)=> {
-      _this.addItem(v);
+      this.addItem(v);
     });
   }
-
-
-  onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res: any) => {
-      this.removeAll();
-      this.data = res.data;
-      _.map(this.data.emails, (v: any)=> {
-        this.addItem(v);
-      });
-      this.modal.close();
-    });
-  }
-
 
   filterCountriesCode(event: any) {
     this.filteredCountriesCode = [];

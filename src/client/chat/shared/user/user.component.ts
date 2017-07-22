@@ -10,6 +10,7 @@ import { ChatService } from '../services/chat.service';
 export class ZChatShareUserComponent implements OnInit {
   @Input() data: any;
   @Input() size: string = 'xs'; //xs, xsm, sm, md, lg
+  @Input() displayUserName: boolean = true;
   usersOnlineItem: any;
 
   constructor(private chatService: ChatService) {

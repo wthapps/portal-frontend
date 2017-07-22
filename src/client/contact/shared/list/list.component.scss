@@ -1,0 +1,121 @@
+@import '../../../core/scss/global';
+
+$contact-listbox-input: 0%;
+$contact-listbox-name: 35%;
+$contact-listbox-email: 20%;
+$contact-listbox-phone: 20%;
+$contact-listbox-action: 100%;
+$color-table-row: #F9F9F9;
+
+:host {
+  display: block;
+
+  & /deep/ .contact-listbox-wrap {
+    display: table;
+    border-collapse: collapse;
+    .contact-listbox-row {
+      display: table-row;
+      border-bottom: 1px solid $line;
+      > div {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 9px 10px;
+      }
+      .actions-bar {
+        display: table-cell;
+      }
+
+      .contact-listbox-block-link {
+        color: inherit;
+        text-decoration: none;
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          color: $text-color;
+        }
+      }
+
+      &.contact-listbox-header {
+        font-weight: bold;
+      }
+
+    }
+    .contact-listbox-row {
+      &.active, &:hover {
+        background-color: $color-table-row;
+      }
+
+    }
+
+    .contact-listbox-input {
+      width: $contact-listbox-input;
+      text-align: left;
+      .fa-check {
+        border: 1px solid $text-color;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        cursor: pointer;
+        &:before {
+          visibility: hidden;
+        }
+      }
+
+      &.active {
+        .fa-check {
+          color: $color-inverse;
+          &:before {
+            visibility: visible;
+          }
+        }
+      }
+    }
+    .contact-listbox-name {
+      width: $contact-listbox-name;
+      min-width: 200px;
+      position: relative;
+      figure {
+        float: left;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      span.name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        position: absolute;
+        left: 54px;
+        right: 0;
+        line-height: 34px;
+      }
+    }
+    .contact-listbox-email {
+      width: $contact-listbox-email;
+      min-width: 160px;
+    }
+    .contact-listbox-phone {
+      width: $contact-listbox-phone;
+      min-width: 160px;
+    }
+    .contact-listbox-action {
+      width: $contact-listbox-action;
+      min-width: 180px;
+      > div {
+        display: inline;
+      }
+      text-align: right;
+      padding: 10px;
+    }
+
+  }
+}
+
+
+

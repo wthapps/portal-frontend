@@ -1,3 +1,6 @@
-<!--<partials-photo-detail #partialsPhotoDetail [allPhotos]="[photo]" [selectedPhotos]="[photo]"></partials-photo-detail>-->
-
-<photo-detail-modal #photoDetailModal (event)="onEditEvent($event)"></photo-detail-modal>
+<photo-detail-partial [module]="'chat'"
+                      [loading]="loading"
+                      [photo]="photo" [ids]="ids"
+                      [mode]="mode"
+                      (event)="doEvent($event)"
+                      ></photo-detail-partial>

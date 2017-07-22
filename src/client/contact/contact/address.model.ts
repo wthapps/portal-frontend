@@ -1,0 +1,16 @@
+import { BaseEntity } from '../../core/shared/models/base-entity.model';
+export class Address extends BaseEntity {
+  category: string='work';
+  house_number?: string;
+  house_name?: string;
+  street_name?: string;
+  address_line1?: string;
+  address_line2?: string;
+  city?: string;
+  province?: string;
+  country?: string;
+  postcode?: string;
+  primary: boolean = false;
+  contact?: any;
+  contact_id?: number;
+}

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -7,8 +7,10 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { PartialsProfileService } from '../profile.service';
-import { UserService } from '../../../shared/services/user.service';
+import { QuestionBase } from '../../form/base/question-base';
+import { QuestionControlService } from '../../form/base/question-control.service';
+import { TextboxQuestion } from '../../form/categories/textbox-question';
+import { UserInfo } from '../../../shared/models/user/user-info.model';
 
 declare var _: any;
 
@@ -18,45 +20,90 @@ declare var _: any;
   templateUrl: 'avatar-info.component.html'
 })
 
-export class PartialsProfileAvatarInfoComponent {
-  @Input('data') data: any;
+export class PartialsProfileAvatarInfoComponent implements OnInit {
+  @Input() data: any;
+  @Input() editable: boolean = true;
+  @Input() nameOnly: boolean = false;
   @ViewChild('modal') modal: ModalComponent;
-  @Input() editable: boolean;
+
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
+
 
   form: FormGroup;
-  first_name: AbstractControl;
-  last_name: AbstractControl;
-  nickname: AbstractControl;
+  questions: QuestionBase<any>[];
 
-  constructor(private fb: FormBuilder, private profileService: PartialsProfileService, public userService: UserService) {
-    this.form = fb.group({
-      'first_name': ['', Validators.compose([Validators.required])],
-      'last_name': ['', Validators.compose([Validators.required])],
-      'nickname': ['', Validators.compose([Validators.required])]
-    });
+  constructor(private questionControlService: QuestionControlService) {
 
-    this.first_name = this.form.controls['first_name'];
-    this.last_name = this.form.controls['last_name'];
-    this.nickname = this.form.controls['nickname'];
+  }
+
+  ngOnInit() {
+    if (!this.data) {
+      this.data = new UserInfo();
+    }
+    if (this.nameOnly) {
+      this.questions = [
+        new TextboxQuestion({
+          key: 'name',
+          label: 'Name',
+          value: this.data.name,
+          required: true
+        })
+      ];
+    } else {
+      this.questions = [
+        new TextboxQuestion({
+          key: 'first_name',
+          label: 'First Name',
+          value: this.data.first_name,
+          required: true
+        }),
+
+        new TextboxQuestion({
+          key: 'last_name',
+          label: 'Last Name',
+          value: this.data.last_name,
+          required: true
+        }),
+
+        new TextboxQuestion({
+          key: 'nickname',
+          value: this.data.nickname,
+          label: 'Nickname'
+        }),
+      ];
+    }
+    this.form = this.questionControlService.toFormGroup(this.questions);
   }
 
   onOpenModal() {
-    (<FormControl>this.first_name).setValue(this.data.first_name);
-    (<FormControl>this.last_name).setValue(this.data.last_name);
-    (<FormControl>this.nickname).setValue(this.data.nickname);
-
+    if (this.data.name && this.form.controls['name']) {
+      this.form.controls['name'].setValue(this.data.name);
+    }
+    if (this.data.first_name && this.data.last_name && this.form.controls['first_name'] && this.form.controls['last_name']) {
+      this.form.controls['first_name'].setValue(this.data.first_name);
+      this.form.controls['last_name'].setValue(this.data.last_name);
+    }
+    if (this.data.nickname && this.form.controls['nickname']) {
+      this.form.controls['nickname'].setValue(this.data.nickname);
+    }
     this.modal.open();
   }
 
 
   onSubmit(values: any): void {
-    this.profileService.updateMyProfile(values).subscribe((res: any) => {
-      this.modal.close();
-      this.data = res.data;
-      this.userService.profile.name = this.data.name;
-      this.userService.profile.first_name = this.data.first_name;
-      this.userService.profile.last_name = this.data.last_name;
-      this.userService.cookieService.put('profile', JSON.stringify(this.userService.profile), this.userService.cookieOptionsArgs);
-    });
+    if (values.name) {
+      this.data.name = values.name;
+    }
+
+    if (values.first_name && values.last_name) {
+      this.data.name = values.first_name + ' ' + values.last_name;
+    }
+
+    if (values.nickname) {
+      this.data.nickname = values.nickname;
+    }
+
+    this.modal.close();
+    this.eventOut.emit({action: 'update', item: 'info', data: values});
   }
 }

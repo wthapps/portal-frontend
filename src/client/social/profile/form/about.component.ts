@@ -96,7 +96,7 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     this.removeAllLink();
     let _this = this;
     if (this.data && this.data.basic_info) {
@@ -218,5 +218,9 @@ export class ZSocialProfileFormAboutComponent implements OnInit, OnChanges {
       );
 
     this.modal.close();
+  }
+
+  additionalLinkControls() {
+    return(<FormGroup>(<FormGroup>this.form).controls.additional_links).controls;
   }
 }

@@ -3,6 +3,7 @@ import { PhotoSearchFormComponent } from './photo-search-form.component';
 import { ServiceManager } from '../../../shared/services/service-manager';
 import { SocialSearchFormComponent } from './social-search-form.component';
 import { ChatSearchFormComponent } from './chat-search-form.component';
+import { ContactSearchFormComponent } from './contact-search-form.component';
 
 @Component({
   moduleId: module.id,
@@ -11,6 +12,7 @@ import { ChatSearchFormComponent } from './chat-search-form.component';
   entryComponents: [
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
+    ContactSearchFormComponent,
     ChatSearchFormComponent
   ]
 })
@@ -36,6 +38,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         }
         if (this.serviceManager.getConfig().SUB_DOMAIN.CHAT == document.location.origin) {
           factory = this.resolver.resolveComponentFactory(ChatSearchFormComponent);
+          this.searchContainer.createComponent(factory);
+        }
+        if (this.serviceManager.getConfig().SUB_DOMAIN.CONTACT == document.location.origin) {
+          factory = this.resolver.resolveComponentFactory(ContactSearchFormComponent);
           this.searchContainer.createComponent(factory);
         }
       }

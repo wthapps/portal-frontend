@@ -215,3 +215,25 @@ body {
     font-weight: normal;
   }
 }
+
+body {
+  .ui-radiobutton {
+    .ui-radiobutton-box {
+      &.ui-state-active {
+        position: relative;
+        border: 1px solid $input-color-active;
+        background-color: $input-color-active;
+
+        .ui-radiobutton-icon.fa-circle {
+          width: 8px;
+          height: 8px;
+          background-color: #ffffff;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+          @include center();
+        }
+      }
+    }
+  }
+}

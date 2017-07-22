@@ -1,4 +1,4 @@
-<div class="display-link">
+<div *ngIf="!embedCode" class="display-link">
   <div class="display-link-img">
     <a [href]="data.link" target="_blank">
       <figure class="img-center-dv" *ngIf="data.image">
@@ -14,3 +14,5 @@
     <small *ngIf="data.site_name">{{data.site_name}}</small>
   </div>
 </div>
+
+<span *ngIf="embedCode" [innerHtml]="embedCode | safeHtml"></span>

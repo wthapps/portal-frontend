@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, HostBinding } from '@angular/core';
+import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -9,63 +9,66 @@ import {
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { Constants } from '../../../shared/config/constants';
+import { QuestionBase } from '../../form/base/question-base';
+import { TextboxQuestion } from '../../form/categories/textbox-question';
+import { QuestionControlService } from '../../form/base/question-control.service';
+import { DropdownQuestion } from '../../form/categories/dropdown-question';
+import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
+import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin])
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-email',
   templateUrl: 'email.component.html'
 })
 
-export class PartialsProfileEmailComponent {
+export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
 
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
+
   @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
+  deleteObjects: any = [];
+  type: string = "emails";
 
-  emailType: any = [
-    {
-      kind_of: 'work',
-      name: 'Work'
-    },
-    {
-      kind_of: 'personal',
-      name: 'Personal'
-    },
-    {
-      kind_of: 'other',
-      name: 'Other'
-    },
-  ];
+  emailType: any = Constants.emailType;
 
-  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
-    this.form = fb.group({
-      'emails': fb.array([
+  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService, private questionControlService: QuestionControlService) {
+
+  }
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      'emails': this.fb.array([
         this.initItem(),
       ])
     });
   }
 
-  removeAll() {
-    const control = <FormArray>this.form.controls['emails'];
-    control.controls.length = 0;
-    control.reset();
-  }
+  removeItem:(i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   //emails
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        category: [item.category, Validators.compose([Validators.required])],
+        id: [item.id, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     } else {
       return this.fb.group({
-        kind_of: ['', Validators.compose([Validators.required])],
+        category: ['', Validators.compose([Validators.required])],
         value: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     }
@@ -80,11 +83,6 @@ export class PartialsProfileEmailComponent {
     }
   }
 
-  removeItem(i: number) {
-    const control = <FormArray>this.form.controls['emails'];
-    control.removeAt(i);
-  }
-
   onOpenModal() {
     this.modal.open();
     let _this = this;
@@ -93,18 +91,6 @@ export class PartialsProfileEmailComponent {
 
     _.map(this.data.emails, (v: any)=> {
       _this.addItem(v);
-    });
-  }
-
-
-  onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
-      this.removeAll();
-      this.data = res.data;
-      _.map(this.data.emails, (v: any)=> {
-        this.addItem(v);
-      });
-      this.modal.close();
     });
   }
 }

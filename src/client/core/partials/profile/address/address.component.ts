@@ -1,9 +1,9 @@
-import { Component, Input, ViewChild, HostBinding } from '@angular/core';
+import { Component, Input, ViewChild, HostBinding, OnInit, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormArray
+  FormArray, FormControl
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -17,10 +17,12 @@ declare var _: any;
   templateUrl: 'address.component.html'
 })
 
-export class PartialsProfileAddressComponent {
+export class PartialsProfileAddressComponent implements OnInit {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
+
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 
   @HostBinding('class') class = 'field-group';
 
@@ -28,23 +30,24 @@ export class PartialsProfileAddressComponent {
 
   addressType: any = [
     {
-      kind_of: 'home',
+      category: 'home',
       name: 'Home'
     },
     {
-      kind_of: 'work',
+      category: 'work',
       name: 'Work'
     }
   ];
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
-    this.form = fb.group({
-      'addresses': fb.array([
+  }
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      'addresses': this.fb.array([
         this.initItem(),
       ])
     });
-
-    console.log(this.form);
   }
 
   removeAll() {
@@ -57,16 +60,21 @@ export class PartialsProfileAddressComponent {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        kind_of: [item.kind_of, Validators.compose([Validators.required])],
+        category: [item.category, Validators.compose([Validators.required])],
         address_line1: [item.address_line1, Validators.compose([Validators.required])]
       });
     } else {
       return this.fb.group({
-        kind_of: ['', Validators.compose([Validators.required])],
+        category: ['', Validators.compose([Validators.required])],
         address_line1: ['', Validators.compose([Validators.required])]
       });
     }
   }
+
+  addressControls() {
+    return (<FormGroup>(<FormGroup>this.form.get('addresses')))['controls'];
+  }
+
 
   addItem(item?: any) {
     const control = <FormArray>this.form.controls['addresses'];
@@ -93,15 +101,14 @@ export class PartialsProfileAddressComponent {
     });
   }
 
+  getAddressControls() {
+    return (<FormGroup>this.form.get('addresses')).controls;
+  }
+
 
   onSubmit(values: any): void {
-    this.apiBaseService.put('zone/social_network/users/' + this.data.uuid, values).subscribe((res:any) => {
-      this.removeAll();
-      this.data = res.data;
-      _.map(this.data.addresses, (v: any)=> {
-        this.addItem(v);
-      });
-      this.modal.close();
-    });
+    this.data.addresses = values.addresses;
+    this.eventOut.emit(values);
+    this.modal.close();
   }
 }

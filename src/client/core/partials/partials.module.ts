@@ -28,7 +28,6 @@ import { ModalDockModule } from './modal/dock.module';
 import { SocialSearchFormComponent } from './header/search/social-search-form.component';
 import { CoverProfileModule } from './cover-profile/cover-profile.module';
 import { PartialsNotificationsComponent } from './notifications/notifications.component';
-import { TimeFormatPipe } from '../shared/pipe/time-format.pipe';
 import { PartialsProfileModule } from './profile/profile.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UndoNotificationComponent } from './header/notification/undo-notification.component';
@@ -37,7 +36,8 @@ import { ChatSearchFormComponent } from './header/search/chat-search-form.compon
 import { TextBoxSearchComponent } from './header/search/components/textbox-search.component';
 import { DisplayLinkComponent } from './link/display-link.component';
 import { PipeModule } from '../shared/pipe/pipe.module';
-import { PartialsPhotoModule } from './photo/photo.module';
+import { PartialsFormModule } from './form/partials-form.module';
+import { ContactSearchFormComponent } from './header/search/contact-search-form.component';
 
 
 @NgModule({
@@ -64,10 +64,10 @@ import { PartialsPhotoModule } from './photo/photo.module';
     CoverProfileModule,
     PartialsProfileModule,
     PipeModule,
+    PartialsFormModule,
 
     ModalDockModule,
     Ng2Bs3ModalModule,
-    PartialsPhotoModule,
     CheckboxModule
   ],
   declarations: [
@@ -75,6 +75,7 @@ import { PartialsPhotoModule } from './photo/photo.module';
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
     ChatSearchFormComponent,
+    ContactSearchFormComponent,
     TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,
@@ -86,13 +87,13 @@ import { PartialsPhotoModule } from './photo/photo.module';
 
     // Pipe
     TitleCase,
-    TimeFormatPipe
   ],
   exports: [
     SearchFormComponent,
     PhotoSearchFormComponent,
     SocialSearchFormComponent,
     ChatSearchFormComponent,
+    ContactSearchFormComponent,
     TextBoxSearchComponent,
     HeaderComponent,
     FooterComponent,
@@ -115,15 +116,14 @@ import { PartialsPhotoModule } from './photo/photo.module';
     NotificationItemComponent,
     UndoNotificationComponent,
     PartialsProfileModule,
-    PartialsPhotoModule,
     ModalDockModule,
+    PartialsFormModule,
 
     // Pipe
     // GroupByMonthYearPipe,
     // GroupByPipe,
     // NewlinePipe,
     TitleCase,
-    TimeFormatPipe
     // UrlTransformPipe,
     // ShowLengthTransformPipe,
     // SafeHtmlPipe,

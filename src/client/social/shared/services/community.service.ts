@@ -52,7 +52,7 @@ export class SoCommunityService  {
   confirmLeaveCommunity(community: any): Promise<any> {
     let enoughAdmins = community.admin_count > 1 ? true : false;
 
-    let pickAnotherAdmin = _.find(community.admins, (a: any) => a.user_id == this.userService.profile.id) != undefined  && !enoughAdmins;
+    let pickAnotherAdmin = _.find(community.admins, (a: any) => a.id == this.userService.profile.id) != undefined  && !enoughAdmins;
 
     return new Promise<any>((resolve, reject) => {
       this.confirmationService.confirm({

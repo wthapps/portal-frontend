@@ -25,7 +25,7 @@ export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     if (this.layout == 'row') {
       this.classHost = this.layout + ' row-striped';
     }

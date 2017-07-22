@@ -34,7 +34,7 @@ export class PostHeaderComponent implements OnChanges {
     this.user = this.socialService.user.profile;
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     if (this.type == 'info') {
       this.showInfo = true;
     } else if (this.type == 'detail') {

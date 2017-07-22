@@ -48,7 +48,7 @@
       </div>
 
       <div class="form-group">
-        <div class="pull-right text-fade"><span>{{tag_line.value|showLength}}</span>/150 characters</div>
+        <div class="pull-right text-fade"><span>{{tag_line.value | showLength}}</span>/150 characters</div>
         <label>Tag Line</label>
         <textarea [formControl]="tag_line" maxlength="150" rows="3" class="form-control" id="tag_line"
                   placeholder="Tag Line">
@@ -297,10 +297,10 @@
         <div class="content-overflow" style="max-height: 155px;" formArrayName="additional_links">
 
           <!--<pre>-->
-          <!--{{form.controls.additional_links.controls |json}}-->
+          <!--{{form['controls'].additional_links['controls'] |json}}-->
           <!--</pre>-->
 
-          <div *ngFor="let add_link of form.controls.additional_links.controls; let i=index" class="media">
+          <div *ngFor="let add_link of additionalLinkControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
 
               <!--<pre>-->
@@ -311,16 +311,16 @@
                 <div class="col-sm-6">
                   <div class="form-group mb0 no-label"
                        [ngClass]="{
-                       'has-error': (form.controls.additional_links.controls[i].controls.url.valid
-                       && form.controls.additional_links.controls[i].controls.url.touched
+                       'has-error': (add_link['controls'].url.valid
+                       && add_link['controls'].url.touched
                        && form.value.additional_links[i].name.length==0
                        && form.value.additional_links[i].url.length>1),
-                       'has-success': (form.controls.additional_links.controls[i].controls.url.valid
-                       && form.controls.additional_links.controls[i].controls.url.touched
+                       'has-success': (add_link['controls'].url.valid
+                       && add_link['controls'].url.touched
                        && form.value.additional_links[i].name.length>1)}">
                     <input type="text" class="form-control" formControlName="name" placeholder="External link title">
-                    <div *ngIf="(form.controls.additional_links.controls[i].controls.url.valid
-                       && form.controls.additional_links.controls[i].controls.url.touched
+                    <div *ngIf="(add_link['controls'].url.valid
+                       && add_link['controls'].url.touched
                        && form.value.additional_links[i].name.length==0
                        && form.value.additional_links[i].url.length>1)">
                       <span class="help-block">
@@ -331,15 +331,15 @@
 
                 </div>
                 <div class="col-sm-6">
-                  <div class="form-group mb0 no-label" [ngClass]="{'has-error': (!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.touched),
-        'has-success': (form.controls.additional_links.controls[i].controls.url.valid
-        && form.controls.additional_links.controls[i].controls.url.touched
+                  <div class="form-group mb0 no-label" [ngClass]="{'has-error': (!add_link['controls'].url.valid && add_link['controls'].url.touched),
+        'has-success': (add_link['controls'].url.valid
+        && add_link['controls'].url.touched
         && form.value.additional_links[i].url.length>1)}">
                     <input type="text" class="form-control" formControlName="url" placeholder="http://...">
                     <div
-                      *ngIf="!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.touched">
+                      *ngIf="!add_link['controls'].url.valid && add_link['controls'].url.touched">
                     <span
-                      *ngIf="!form.controls.additional_links.controls[i].controls.url.valid && form.controls.additional_links.controls[i].controls.url.errors.url"
+                      *ngIf="!add_link['controls'].url.valid && add_link['controls'].url.errors.url"
                       class="help-block text-danger">
                       URL is not valid
                     </span>

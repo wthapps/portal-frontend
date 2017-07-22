@@ -2,7 +2,7 @@
   <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="item.owner.profile_image" alt="">
+        <img [src]="item?.owner?.is_owner ? (userService.profile$ | async).profile_image : item.owner.profile_image" alt="">
       </div>
     </div>
   </a>
@@ -48,7 +48,7 @@
     <div class="z-shared-info">
       <ul>
         <li>
-          <span class="text-fade">{{item.created_at | date}}</span>
+          <span class="text-fade">{{item.created_at | timeFormat}}</span>
         </li>
         <li class="note" *ngIf="item.adult">
           Adult content

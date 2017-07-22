@@ -51,7 +51,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
 
   }
 
@@ -77,7 +77,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
     return value;
   }
 
-  onSubmit(): void {
+  onSubmit(data: any): void {
     this.loadingService.start();
 
     let body = JSON.stringify({
@@ -89,10 +89,13 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
       posted_level: this.data.posted_level
     });
 
-    this.communityService.updateCommunity(this.data.uuid, body).subscribe((res: any) => {
+    this.communityService.updateCommunity(this.data.uuid, body).toPromise().then((res: any) => {
       this.loadingService.stop();
 
-      this.setupDataUpdated.emit(res.data);
+      // this.setupDataUpdated.emit(res.data);
+      this.modal.close();
+    },(err: any) => {
+      this.loadingService.stop();
       this.modal.close();
     });
 

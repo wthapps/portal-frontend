@@ -38,13 +38,15 @@ export class ProjectConfig extends SeedConfig {
       {src: 'bootstrap/dist/js/bootstrap.min.js', inject: 'libs'},
       {src: 'dropzone/dist/dropzone.js', inject: 'libs'},
       {src: 'cropper/dist/cropper.min.js', inject: 'libs'},
+      {src: 'cropperjs/dist/cropper.min.js', inject: 'libs'},
       {src: 'wheelevent.js/wheelevent.js', inject: 'libs'},
       {src: 'wheelzoom.js/wheelzoom.min.js', inject: 'libs'},
       {src: 'shave/dist/shave.min.js', inject: 'libs'},
       {src: 'slick-carousel/slick/slick.min.js', inject: 'libs'},
       {src: 'linkifyjs/dist/linkify.js', inject: 'libs'},
       {src: 'linkifyjs/dist/linkify-html.min.js', inject: 'libs'},
-      {src: 'file-saver/FileSaver.min.js', inject: 'libs'}
+      {src: 'file-saver/FileSaver.min.js', inject: 'libs'},
+      {src: 'moment/moment.js', inject: 'libs'}
     ];
 
     // Add `local` third-party libraries to be injected/bundled.
@@ -81,12 +83,28 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/angular2-cookie/core.js'
       },
       {
-        name: 'ng2-material-dropdown',
-        path: 'node_modules/ng2-material-dropdown/dist/ng2-dropdown.bundle.js'
+        name: 'ng2-tag-input',
+        path: `node_modules/ng2-tag-input/dist/ng2-tag-input.bundle.js`,
+        packageMeta: {
+          defaultExtension: 'js',
+          main: 'dist/ng2-tag-input.bundle.js',
+          format: 'cjs'
+        }
       },
       {
-        name: 'ng2-tag-input',
-        path: 'node_modules/ng2-tag-input/dist/ng2-tag-input.bundle.js'
+        name: 'ng2-material-dropdown',
+        path: `node_modules/ng2-material-dropdown/dist/ng2-dropdown.bundle.js`,
+        packageMeta: {
+          defaultExtension: 'js',
+          main: 'dist/ng2-material.bundle.js',
+          format: 'cjs'
+        }
+      },
+      {
+        name: 'ng2-tag-input/modules/components/tag-input.template.html',
+        packageMeta: {
+          defaultJSExtension: false
+        }
       },
       {
         name: 'rxjs',
@@ -115,7 +133,7 @@ export class ProjectConfig extends SeedConfig {
     // ];
 
     /* Add to or override NPM module configurations: */
-    this.PLUGIN_CONFIGS['browser-sync'] = { ghostMode: false };
+    this.PLUGIN_CONFIGS['browser-sync'] = {ghostMode: false};
   }
 
 }

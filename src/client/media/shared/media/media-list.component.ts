@@ -11,14 +11,14 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { PhotoService } from '../../../core/shared/services/photo.service';
 import { Subject } from 'rxjs/Subject';
-import { SharingModalComponent } from '../../../core/partials/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '../../../core/partials/photo/modal/tagging/tagging-modal.component';
-import { PhotoEditModalComponent } from '../../../core/partials/photo/form/photo-edit-modal.component';
-import { BaseObjectEditNameModalComponent } from '../../../core/partials/photo/modal/base-object-edit-name-modal.component';
-import { PhotoDetailModalComponent } from '../../../core/partials/photo/modal/photo-detail-modal.component';
-import { AlbumDeleteModalComponent } from '../../../core/partials/photo/modal/album-delete-modal.component';
-import { AlbumEditModalComponent } from '../../../core/partials/photo/modal/album-edit-modal.component';
-import { AlbumCreateModalComponent } from '../../../core/partials/photo/modal/album-create-modal.component';
+import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
+import { PhotoEditModalComponent } from '../../../core/shared/components/photo/modal/photo-edit-modal.component';
+import { BaseObjectEditNameModalComponent } from '../../../core/shared/components/photo/modal/base-object-edit-name-modal.component';
+import { PhotoDetailPartialComponent } from '../../../core/shared/components/photo/detail/photo-detail-partial.component';
+import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
+import { AlbumEditModalComponent } from '../../../core/shared/components/photo/modal/album-edit-modal.component';
+import { AlbumCreateModalComponent } from '../../../core/shared/components/photo/modal/album-create-modal.component';
 
 declare var _: any;
 declare var $: any;
@@ -38,7 +38,7 @@ declare var $: any;
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
     AlbumDeleteModalComponent,
-    PhotoDetailModalComponent,
+    PhotoDetailPartialComponent,
     TaggingModalComponent,
     SharingModalComponent
   ]
@@ -570,7 +570,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   editInfo(selectedObject: any) {
     this.loadingService.start();
-    if (this.currentPath == 'photos') {
+    if (selectedObject.object_type == 'photo') {
       let updated_at = new Date(selectedObject.created_at);
       let body = JSON.stringify({
         name: selectedObject.name,
@@ -589,7 +589,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
 
-    } else if (this.currentPath == 'albums') {
+    } else if (selectedObject.object_type == 'album') {
       let body = JSON.stringify({
         name: selectedObject.name,
         description: selectedObject.description,
@@ -604,11 +604,9 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
     }
-    console.log('call edit info method here');
   }
 
   delete() {
-    console.log('testing...... detete:', this.selectedObjects);
     let objType = this.selectedObjects[0].object_type;
     let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
     if (objType == 'photo') {
@@ -712,7 +710,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
     let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
 
-    console.log(photos, photos.length)
     if( photos.length > 0 ) {
       // Ask for user confirmation before deleting selected PHOTOS
       this.confirmationService.confirm({

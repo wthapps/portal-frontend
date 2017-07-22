@@ -11,6 +11,7 @@ import { Constants } from '../config/constants';
 
 import { ApiBaseService } from './apibase.service';
 import { User }           from '../models/user.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -21,10 +22,14 @@ export class UserService extends ApiBaseService {
 
   public cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
 
+  public readonly profile$: Observable<any>;
+  private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
   constructor(http: Http, router: Router,
               public cookieService: CookieService) {
     super(http, router, cookieService);
     this.readUserInfo();
+
+    this.profile$ = this._profile.asObservable();
   }
 
   login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
@@ -153,6 +158,7 @@ export class UserService extends ApiBaseService {
 
   updateProfile(profile: Object) {
     this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
+    this.setProfile(profile);
   }
 
   private storeDefaultPayment(response: any) {
@@ -182,9 +188,16 @@ export class UserService extends ApiBaseService {
 
   private readUserInfo() {
     if (this.cookieService.get('logged_in')) {
-      this.profile = JSON.parse(this.cookieService.get('profile'));
+      this.setProfile(JSON.parse(this.cookieService.get('profile')));
+
       this.loggedIn = Boolean(this.cookieService.get('logged_in'));
     }
+  }
+
+  private setProfile(profile: any) {
+    this.profile = profile;
+    this._profile.next(Object.assign(this._profile.getValue(), profile));
+    console.debug('inside setProfile: ', this._profile);
   }
 }
 

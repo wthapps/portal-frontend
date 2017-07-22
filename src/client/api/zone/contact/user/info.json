@@ -1,0 +1,2818 @@
+{
+  "data": [
+    {
+      "id": 4,
+      "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
+      "nickname": null,
+      "name": "John Tran",
+      "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fish1.jpg",
+      "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/dog1.jpg",
+      "sex": 0,
+      "about": null,
+      "birthday": null,
+      "nationality": "",
+      "contact": {
+        "emails": [],
+        "phones": [],
+        "addresses": []
+      },
+      "works": [],
+      "educations": [],
+      "hobbys": [],
+      "settings": {
+        "show_friends": {
+          "group": "privacy",
+          "value": true
+        },
+        "viewable_post": {
+          "group": "privacy",
+          "value": "public"
+        },
+        "viewable_social": {
+          "value": "public",
+          "public": "privacy"
+        },
+        "show_communities": {
+          "group": "privacy",
+          "value": true
+        },
+        "hide_adult_content": {
+          "group": "general_settings",
+          "value": false
+        },
+        "searchable_contact": {
+          "group": "privacy",
+          "value": "public"
+        },
+        "auto_import_from_contact": {
+          "group": "general_settings",
+          "value": false
+        },
+        "allow_friend_import_contact": {
+          "group": "general_settings",
+          "value": true
+        }
+      },
+      "basic_info_privacy": "personal",
+      "contact_privacy": "personal",
+      "first_name": "John",
+      "last_name": "Tran",
+      "tag_line": null,
+      "works_educations_privacy": "personal",
+      "hobbys_privacy": "personal",
+      "friends": [
+        {
+          "id": 2,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "David Nguyen",
+          "user_name": "davidnguyen",
+          "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "David",
+          "last_name": "Nguyen",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 2
+        },
+        {
+          "id": 5,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Ray Phan",
+          "user_name": "rayphan",
+          "uuid": "36b33970-fac1-401c-af75-9e83cf9c3716",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Ray",
+          "last_name": "Phan",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 5
+        },
+        {
+          "id": 1,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/05b1_Mypage About_1.png",
+          "name": "Jack Huynh",
+          "user_name": "jackhuynh",
+          "uuid": "65c3e97c-9c52-4b91-9cd5-8561e4ce0c02",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/IMG_19062017_183120_0_2.png",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Jack",
+          "last_name": "Huynh",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 1
+        }
+      ],
+      "followers": [
+        {
+          "id": 2,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "David Nguyen",
+          "user_name": "davidnguyen",
+          "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "David",
+          "last_name": "Nguyen",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 2
+        },
+        {
+          "id": 5,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Ray Phan",
+          "user_name": "rayphan",
+          "uuid": "36b33970-fac1-401c-af75-9e83cf9c3716",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Ray",
+          "last_name": "Phan",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 5
+        },
+        {
+          "id": 1,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/05b1_Mypage About_1.png",
+          "name": "Jack Huynh",
+          "user_name": "jackhuynh",
+          "uuid": "65c3e97c-9c52-4b91-9cd5-8561e4ce0c02",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/IMG_19062017_183120_0_2.png",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Jack",
+          "last_name": "Huynh",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 1
+        }
+      ],
+      "followings": [
+        {
+          "id": 2,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "David Nguyen",
+          "user_name": "davidnguyen",
+          "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "David",
+          "last_name": "Nguyen",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 2
+        },
+        {
+          "id": 3,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Luna Pham",
+          "user_name": "lunapham",
+          "uuid": "08f2ef35-bff0-4982-a86f-56c00a861a7f",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Luna",
+          "last_name": "Pham",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 3
+        },
+        {
+          "id": 5,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Ray Phan",
+          "user_name": "rayphan",
+          "uuid": "36b33970-fac1-401c-af75-9e83cf9c3716",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Ray",
+          "last_name": "Phan",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 5
+        },
+        {
+          "id": 1,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/05b1_Mypage About_1.png",
+          "name": "Jack Huynh",
+          "user_name": "jackhuynh",
+          "uuid": "65c3e97c-9c52-4b91-9cd5-8561e4ce0c02",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/IMG_19062017_183120_0_2.png",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Jack",
+          "last_name": "Huynh",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 1
+        }
+      ],
+      "blacklists": [],
+      "communities": [
+        {
+          "id": 16,
+          "uuid": "038b702a-3e10-4652-8309-529493966917",
+          "name": "John Tran's community #0",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.176Z",
+          "updated_at": "2017-06-27T02:24:18.176Z",
+          "creator_id": 4,
+          "admin_id": 4
+        },
+        {
+          "id": 17,
+          "uuid": "b94f4e4b-c847-431b-9df9-519629db3663",
+          "name": "John Tran's community #1",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.189Z",
+          "updated_at": "2017-06-27T02:24:18.189Z",
+          "creator_id": 4,
+          "admin_id": 4
+        },
+        {
+          "id": 18,
+          "uuid": "0cc1201b-39d6-4adb-acc9-a0258ec47409",
+          "name": "John Tran's community #2",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.212Z",
+          "updated_at": "2017-06-27T02:24:18.212Z",
+          "creator_id": 4,
+          "admin_id": 4
+        },
+        {
+          "id": 19,
+          "uuid": "9c0ee9cc-1981-417b-853c-307e5c5372e9",
+          "name": "John Tran's community #3",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.227Z",
+          "updated_at": "2017-06-27T02:24:18.227Z",
+          "creator_id": 4,
+          "admin_id": 4
+        },
+        {
+          "id": 20,
+          "uuid": "2f7036f3-a619-45e2-a83d-1de77fec4264",
+          "name": "John Tran's community #4",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.242Z",
+          "updated_at": "2017-06-27T02:24:18.242Z",
+          "creator_id": 4,
+          "admin_id": 4
+        }
+      ],
+      "user": {
+        "id": 4,
+        "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fish1.jpg",
+        "name": "John Tran",
+        "user_name": "johntran",
+        "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
+        "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/dog1.jpg",
+        "nickname": null,
+        "about": null,
+        "sex": 0,
+        "birthday": null,
+        "nationality": "",
+        "basic_info_privacy": "personal",
+        "tag_line": null,
+        "additional_links": null,
+        "contact": {
+          "emails": [],
+          "phones": [],
+          "addresses": []
+        },
+        "contact_privacy": "personal",
+        "works_educations_privacy": "personal",
+        "works": [],
+        "educations": [],
+        "first_name": "John",
+        "last_name": "Tran",
+        "hobbys": [],
+        "hobbys_privacy": "personal",
+        "settings": {
+          "show_friends": {
+            "group": "privacy",
+            "value": true
+          },
+          "viewable_post": {
+            "group": "privacy",
+            "value": "public"
+          },
+          "viewable_social": {
+            "value": "public",
+            "public": "privacy"
+          },
+          "show_communities": {
+            "group": "privacy",
+            "value": true
+          },
+          "hide_adult_content": {
+            "group": "general_settings",
+            "value": false
+          },
+          "searchable_contact": {
+            "group": "privacy",
+            "value": "public"
+          },
+          "auto_import_from_contact": {
+            "group": "general_settings",
+            "value": false
+          },
+          "allow_friend_import_contact": {
+            "group": "general_settings",
+            "value": true
+          }
+        },
+        "active": true,
+        "contact_note": null,
+        "user_id": 4
+      },
+      "emails": [
+        {
+          "id": 1,
+          "user_id": 3,
+          "value": "john@gmail.com",
+          "kind_of": "work",
+          "privacy": null,
+          "created_at": "2017-07-05T10:14:28.092Z",
+          "updated_at": "2017-07-05T10:14:28.092Z"
+        }
+      ],
+      "phones": [
+        {
+          "id": 1,
+          "user_id": 3,
+          "value": "11111111111",
+          "kind_of": "mobile",
+          "country_alpha_code": "Vietnam (+84)",
+          "privacy": null,
+          "created_at": "2017-07-05T10:18:19.223Z",
+          "updated_at": "2017-07-05T10:18:19.223Z"
+        }
+      ],
+      "media": [],
+      "contact_note": null,
+      "addresses": [],
+      "total_friends": 3,
+      "total_followers": 3,
+      "total_followings": 4,
+      "total_blacklists": 0
+    },
+    {
+      "id": 2,
+      "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+      "nickname": null,
+      "name": "David Nguyen",
+      "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+      "cover_image": null,
+      "sex": 0,
+      "about": null,
+      "birthday": null,
+      "nationality": "",
+      "contact": {
+        "emails": [],
+        "phones": [],
+        "addresses": []
+      },
+      "works": [],
+      "educations": [],
+      "hobbys": [],
+      "settings": {
+        "show_friends": {
+          "group": "privacy",
+          "value": true
+        },
+        "viewable_post": {
+          "group": "privacy",
+          "value": "public"
+        },
+        "viewable_social": {
+          "value": "public",
+          "public": "privacy"
+        },
+        "show_communities": {
+          "group": "privacy",
+          "value": true
+        },
+        "hide_adult_content": {
+          "group": "general_settings",
+          "value": false
+        },
+        "searchable_contact": {
+          "group": "privacy",
+          "value": "public"
+        },
+        "auto_import_from_contact": {
+          "group": "general_settings",
+          "value": false
+        },
+        "allow_friend_import_contact": {
+          "group": "general_settings",
+          "value": true
+        }
+      },
+      "basic_info_privacy": "personal",
+      "contact_privacy": "personal",
+      "first_name": "David",
+      "last_name": "Nguyen",
+      "tag_line": null,
+      "works_educations_privacy": "personal",
+      "hobbys_privacy": "personal",
+      "friends": [
+        {
+          "id": 6,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/topic-1350661050.jpg",
+          "name": "Albert Vo",
+          "user_name": "albertvo",
+          "uuid": "8a633293-36f8-4d51-97f9-4be8a3a8224e",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/8a633293-36f8-4d51-97f9-4be8a3a8224e/Bl.jpg",
+          "nickname": null,
+          "about": "abcdddf",
+          "sex": 0,
+          "birthday": "1899-11-29T17:00:00.000Z",
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Albert",
+          "last_name": "Vo",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 6
+        },
+        {
+          "id": 3,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Luna Pham",
+          "user_name": "lunapham",
+          "uuid": "08f2ef35-bff0-4982-a86f-56c00a861a7f",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Luna",
+          "last_name": "Pham",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 3
+        },
+        {
+          "id": 4,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fish1.jpg",
+          "name": "John Tran",
+          "user_name": "johntran",
+          "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/dog1.jpg",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "John",
+          "last_name": "Tran",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 4
+        }
+      ],
+      "followers": [
+        {
+          "id": 6,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/topic-1350661050.jpg",
+          "name": "Albert Vo",
+          "user_name": "albertvo",
+          "uuid": "8a633293-36f8-4d51-97f9-4be8a3a8224e",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/8a633293-36f8-4d51-97f9-4be8a3a8224e/Bl.jpg",
+          "nickname": null,
+          "about": "abcdddf",
+          "sex": 0,
+          "birthday": "1899-11-29T17:00:00.000Z",
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Albert",
+          "last_name": "Vo",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 6
+        },
+        {
+          "id": 3,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Luna Pham",
+          "user_name": "lunapham",
+          "uuid": "08f2ef35-bff0-4982-a86f-56c00a861a7f",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Luna",
+          "last_name": "Pham",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 3
+        },
+        {
+          "id": 4,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fish1.jpg",
+          "name": "John Tran",
+          "user_name": "johntran",
+          "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/dog1.jpg",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "John",
+          "last_name": "Tran",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 4
+        }
+      ],
+      "followings": [
+        {
+          "id": 6,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/topic-1350661050.jpg",
+          "name": "Albert Vo",
+          "user_name": "albertvo",
+          "uuid": "8a633293-36f8-4d51-97f9-4be8a3a8224e",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/8a633293-36f8-4d51-97f9-4be8a3a8224e/Bl.jpg",
+          "nickname": null,
+          "about": "abcdddf",
+          "sex": 0,
+          "birthday": "1899-11-29T17:00:00.000Z",
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Albert",
+          "last_name": "Vo",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 6
+        },
+        {
+          "id": 3,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Luna Pham",
+          "user_name": "lunapham",
+          "uuid": "08f2ef35-bff0-4982-a86f-56c00a861a7f",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Luna",
+          "last_name": "Pham",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 3
+        },
+        {
+          "id": 4,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fish1.jpg",
+          "name": "John Tran",
+          "user_name": "johntran",
+          "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/dog1.jpg",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "John",
+          "last_name": "Tran",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 4
+        }
+      ],
+      "blacklists": [],
+      "communities": [
+        {
+          "id": 6,
+          "uuid": "20526f9c-0f34-4995-99e5-31faa08788aa",
+          "name": "David Nguyen's community #0",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.002Z",
+          "updated_at": "2017-06-27T02:24:18.002Z",
+          "creator_id": 2,
+          "admin_id": 2
+        },
+        {
+          "id": 7,
+          "uuid": "cc38371b-d631-484c-82a9-8e5f3694fefd",
+          "name": "David Nguyen's community #1",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.018Z",
+          "updated_at": "2017-06-27T02:24:18.018Z",
+          "creator_id": 2,
+          "admin_id": 2
+        },
+        {
+          "id": 8,
+          "uuid": "6a2e6b25-bab9-4522-938d-3936d7f9b5d7",
+          "name": "David Nguyen's community #2",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.034Z",
+          "updated_at": "2017-06-27T02:24:18.034Z",
+          "creator_id": 2,
+          "admin_id": 2
+        },
+        {
+          "id": 9,
+          "uuid": "4b3289f3-f82c-4ea7-810c-df190bb10465",
+          "name": "David Nguyen's community #3",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.051Z",
+          "updated_at": "2017-06-27T02:24:18.051Z",
+          "creator_id": 2,
+          "admin_id": 2
+        },
+        {
+          "id": 10,
+          "uuid": "ed621a13-b104-49d7-935d-453286735972",
+          "name": "David Nguyen's community #4",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.068Z",
+          "updated_at": "2017-06-27T02:24:18.068Z",
+          "creator_id": 2,
+          "admin_id": 2
+        }
+      ],
+      "user": {
+        "id": 2,
+        "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+        "name": "David Nguyen",
+        "user_name": "davidnguyen",
+        "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+        "cover_image": null,
+        "nickname": null,
+        "about": null,
+        "sex": 0,
+        "birthday": null,
+        "nationality": "",
+        "basic_info_privacy": "personal",
+        "tag_line": null,
+        "additional_links": null,
+        "contact": {
+          "emails": [],
+          "phones": [],
+          "addresses": []
+        },
+        "contact_privacy": "personal",
+        "works_educations_privacy": "personal",
+        "works": [],
+        "educations": [],
+        "first_name": "David",
+        "last_name": "Nguyen",
+        "hobbys": [],
+        "hobbys_privacy": "personal",
+        "settings": {
+          "show_friends": {
+            "group": "privacy",
+            "value": true
+          },
+          "viewable_post": {
+            "group": "privacy",
+            "value": "public"
+          },
+          "viewable_social": {
+            "value": "public",
+            "public": "privacy"
+          },
+          "show_communities": {
+            "group": "privacy",
+            "value": true
+          },
+          "hide_adult_content": {
+            "group": "general_settings",
+            "value": false
+          },
+          "searchable_contact": {
+            "group": "privacy",
+            "value": "public"
+          },
+          "auto_import_from_contact": {
+            "group": "general_settings",
+            "value": false
+          },
+          "allow_friend_import_contact": {
+            "group": "general_settings",
+            "value": true
+          }
+        },
+        "active": true,
+        "contact_note": null,
+        "user_id": 2
+      },
+      "emails": [
+        {
+          "id": 1,
+          "user_id": 3,
+          "value": "david@gmail.com",
+          "kind_of": "work",
+          "privacy": null,
+          "created_at": "2017-07-05T10:14:28.092Z",
+          "updated_at": "2017-07-05T10:14:28.092Z"
+        }
+      ],
+      "phones": [
+        {
+          "id": 1,
+          "user_id": 3,
+          "value": "222222222",
+          "kind_of": "mobile",
+          "country_alpha_code": "Canada (+1)",
+          "privacy": null,
+          "created_at": "2017-07-05T10:18:19.223Z",
+          "updated_at": "2017-07-05T10:18:19.223Z"
+        }
+      ],
+      "media": [],
+      "contact_note": null,
+      "addresses": [],
+      "total_friends": 3,
+      "total_followers": 3,
+      "total_followings": 3,
+      "total_blacklists": 0
+    },
+    {
+      "id": 3,
+      "uuid": "08f2ef35-bff0-4982-a86f-56c00a861a7f",
+      "nickname": null,
+      "name": "Luna Pham",
+      "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+      "cover_image": null,
+      "sex": 0,
+      "about": null,
+      "birthday": null,
+      "nationality": "",
+      "contact": {
+        "emails": [],
+        "phones": [],
+        "addresses": []
+      },
+      "works": [],
+      "educations": [],
+      "hobbys": [],
+      "settings": {
+        "show_friends": {
+          "group": "privacy",
+          "value": true
+        },
+        "viewable_post": {
+          "group": "privacy",
+          "value": "public"
+        },
+        "viewable_social": {
+          "value": "public",
+          "public": "privacy"
+        },
+        "show_communities": {
+          "group": "privacy",
+          "value": true
+        },
+        "hide_adult_content": {
+          "group": "general_settings",
+          "value": false
+        },
+        "searchable_contact": {
+          "group": "privacy",
+          "value": "public"
+        },
+        "auto_import_from_contact": {
+          "group": "general_settings",
+          "value": false
+        },
+        "allow_friend_import_contact": {
+          "group": "general_settings",
+          "value": true
+        }
+      },
+      "basic_info_privacy": "personal",
+      "contact_privacy": "personal",
+      "first_name": "Luna",
+      "last_name": "Pham",
+      "tag_line": null,
+      "works_educations_privacy": "personal",
+      "hobbys_privacy": "personal",
+      "friends": [
+        {
+          "id": 2,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "David Nguyen",
+          "user_name": "davidnguyen",
+          "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "David",
+          "last_name": "Nguyen",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 2
+        },
+        {
+          "id": 5,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Ray Phan",
+          "user_name": "rayphan",
+          "uuid": "36b33970-fac1-401c-af75-9e83cf9c3716",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Ray",
+          "last_name": "Phan",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 5
+        },
+        {
+          "id": 1,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/05b1_Mypage About_1.png",
+          "name": "Jack Huynh",
+          "user_name": "jackhuynh",
+          "uuid": "65c3e97c-9c52-4b91-9cd5-8561e4ce0c02",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/IMG_19062017_183120_0_2.png",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Jack",
+          "last_name": "Huynh",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 1
+        }
+      ],
+      "followers": [
+        {
+          "id": 2,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "David Nguyen",
+          "user_name": "davidnguyen",
+          "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "David",
+          "last_name": "Nguyen",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 2
+        },
+        {
+          "id": 5,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Ray Phan",
+          "user_name": "rayphan",
+          "uuid": "36b33970-fac1-401c-af75-9e83cf9c3716",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Ray",
+          "last_name": "Phan",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 5
+        },
+        {
+          "id": 1,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/05b1_Mypage About_1.png",
+          "name": "Jack Huynh",
+          "user_name": "jackhuynh",
+          "uuid": "65c3e97c-9c52-4b91-9cd5-8561e4ce0c02",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/IMG_19062017_183120_0_2.png",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Jack",
+          "last_name": "Huynh",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 1
+        },
+        {
+          "id": 4,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/fish1.jpg",
+          "name": "John Tran",
+          "user_name": "johntran",
+          "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/zone/pictures/common-photos-do-not-delete/dog1.jpg",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "John",
+          "last_name": "Tran",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 4
+        }
+      ],
+      "followings": [
+        {
+          "id": 2,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "David Nguyen",
+          "user_name": "davidnguyen",
+          "uuid": "03aa2c87-c67b-4c55-94c0-fcc3a703f8de",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "David",
+          "last_name": "Nguyen",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 2
+        },
+        {
+          "id": 5,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+          "name": "Ray Phan",
+          "user_name": "rayphan",
+          "uuid": "36b33970-fac1-401c-af75-9e83cf9c3716",
+          "cover_image": null,
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Ray",
+          "last_name": "Phan",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 5
+        },
+        {
+          "id": 1,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/05b1_Mypage About_1.png",
+          "name": "Jack Huynh",
+          "user_name": "jackhuynh",
+          "uuid": "65c3e97c-9c52-4b91-9cd5-8561e4ce0c02",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/photos/65c3e97c-9c52-4b91-9cd5-8561e4ce0c02/IMG_19062017_183120_0_2.png",
+          "nickname": null,
+          "about": null,
+          "sex": 0,
+          "birthday": null,
+          "nationality": "",
+          "basic_info_privacy": "personal",
+          "tag_line": null,
+          "additional_links": null,
+          "contact": {
+            "emails": [],
+            "phones": [],
+            "addresses": []
+          },
+          "contact_privacy": "personal",
+          "works_educations_privacy": "personal",
+          "works": [],
+          "educations": [],
+          "first_name": "Jack",
+          "last_name": "Huynh",
+          "hobbys": [],
+          "hobbys_privacy": "personal",
+          "settings": {
+            "show_friends": {
+              "group": "privacy",
+              "value": true
+            },
+            "viewable_post": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "viewable_social": {
+              "value": "public",
+              "public": "privacy"
+            },
+            "show_communities": {
+              "group": "privacy",
+              "value": true
+            },
+            "hide_adult_content": {
+              "group": "general_settings",
+              "value": false
+            },
+            "searchable_contact": {
+              "group": "privacy",
+              "value": "public"
+            },
+            "auto_import_from_contact": {
+              "group": "general_settings",
+              "value": false
+            },
+            "allow_friend_import_contact": {
+              "group": "general_settings",
+              "value": true
+            }
+          },
+          "active": true,
+          "contact_note": null,
+          "user_id": 1
+        }
+      ],
+      "blacklists": [],
+      "communities": [
+        {
+          "id": 11,
+          "uuid": "b7157291-8873-404c-b409-3b8471e5ca46",
+          "name": "Luna Pham's community #0",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.095Z",
+          "updated_at": "2017-06-27T02:24:18.095Z",
+          "creator_id": 3,
+          "admin_id": 3
+        },
+        {
+          "id": 12,
+          "uuid": "9b020967-75e0-45b6-a9cc-e80993566872",
+          "name": "Luna Pham's community #1",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.112Z",
+          "updated_at": "2017-06-27T02:24:18.112Z",
+          "creator_id": 3,
+          "admin_id": 3
+        },
+        {
+          "id": 13,
+          "uuid": "4ca4c8a4-ca22-4ba9-8b99-11b1b24b39ff",
+          "name": "Luna Pham's community #2",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.129Z",
+          "updated_at": "2017-06-27T02:24:18.129Z",
+          "creator_id": 3,
+          "admin_id": 3
+        },
+        {
+          "id": 14,
+          "uuid": "a8fb4f39-8074-44aa-b593-a5b2bc442a8f",
+          "name": "Luna Pham's community #3",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.145Z",
+          "updated_at": "2017-06-27T02:24:18.145Z",
+          "creator_id": 3,
+          "admin_id": 3
+        },
+        {
+          "id": 15,
+          "uuid": "5265083a-5978-47e7-aa0b-3722b1a6849c",
+          "name": "Luna Pham's community #4",
+          "description": "my community",
+          "tag_line": null,
+          "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "cover_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/profile-images-default/community-small.png",
+          "admins_json": [],
+          "tags_json": [],
+          "additional_links": [
+            {
+              "key": "abc",
+              "url": "https://lodash.com",
+              "name": "Phil",
+              "order": 1
+            },
+            {
+              "key": "def",
+              "url": "https://lodash.com",
+              "name": "John",
+              "order": 2
+            }
+          ],
+          "is_close": true,
+          "searchable_level": 3,
+          "posted_level": 3,
+          "created_at": "2017-06-27T02:24:18.160Z",
+          "updated_at": "2017-06-27T02:24:18.160Z",
+          "creator_id": 3,
+          "admin_id": 3
+        }
+      ],
+      "user": {
+        "id": 3,
+        "profile_image": "https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png",
+        "name": "Luna Pham",
+        "user_name": "lunapham",
+        "uuid": "08f2ef35-bff0-4982-a86f-56c00a861a7f",
+        "cover_image": null,
+        "nickname": null,
+        "about": null,
+        "sex": 0,
+        "birthday": null,
+        "nationality": "",
+        "basic_info_privacy": "personal",
+        "tag_line": null,
+        "additional_links": null,
+        "contact": {
+          "emails": [],
+          "phones": [],
+          "addresses": []
+        },
+        "contact_privacy": "personal",
+        "works_educations_privacy": "personal",
+        "works": [],
+        "educations": [],
+        "first_name": "Luna",
+        "last_name": "Pham",
+        "hobbys": [],
+        "hobbys_privacy": "personal",
+        "settings": {
+          "show_friends": {
+            "group": "privacy",
+            "value": true
+          },
+          "viewable_post": {
+            "group": "privacy",
+            "value": "public"
+          },
+          "viewable_social": {
+            "value": "public",
+            "public": "privacy"
+          },
+          "show_communities": {
+            "group": "privacy",
+            "value": true
+          },
+          "hide_adult_content": {
+            "group": "general_settings",
+            "value": false
+          },
+          "searchable_contact": {
+            "group": "privacy",
+            "value": "public"
+          },
+          "auto_import_from_contact": {
+            "group": "general_settings",
+            "value": false
+          },
+          "allow_friend_import_contact": {
+            "group": "general_settings",
+            "value": true
+          }
+        },
+        "active": true,
+        "contact_note": null,
+        "user_id": 3
+      },
+      "emails": [
+        {
+          "id": 1,
+          "user_id": 3,
+          "value": "luna@gmail.com",
+          "kind_of": "work",
+          "privacy": null,
+          "created_at": "2017-07-05T10:14:28.092Z",
+          "updated_at": "2017-07-05T10:14:28.092Z"
+        }
+      ],
+      "phones": [
+        {
+          "id": 1,
+          "user_id": 3,
+          "value": "3333333333",
+          "kind_of": "mobile",
+          "country_alpha_code": "Canada (+1)",
+          "privacy": null,
+          "created_at": "2017-07-05T10:18:19.223Z",
+          "updated_at": "2017-07-05T10:18:19.223Z"
+        }
+      ],
+      "media": [],
+      "contact_note": null,
+      "addresses": [],
+      "total_friends": 3,
+      "total_followers": 4,
+      "total_followings": 3,
+      "total_blacklists": 0
+    }
+  ]
+}

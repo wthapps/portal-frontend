@@ -10,7 +10,7 @@
       <div class="form-group">
         <label>Title</label>
         <div class="content-overflow" style="max-height: 325px;" formArrayName="hobby_interests">
-          <div *ngFor="let add_work of form.controls.hobby_interests.controls; let i=index" class="media">
+          <div *ngFor="let add_work of hobbyInterestControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
                 <div class="col-sm-12">

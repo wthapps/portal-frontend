@@ -4,7 +4,10 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../core/shared/shared.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
 
-import { ZSocialPhotoComponent } from './photo.component';
+import {
+  ZSocialPhotoComponent,
+  PhotoDetailComponent
+} from './index';
 import { ZSocialPhotoRoutingModule } from './photo-routing.module';
 
 @NgModule({
@@ -14,8 +17,14 @@ import { ZSocialPhotoRoutingModule } from './photo-routing.module';
     SharedModule.forRoot(),
     ZSocialSharedModule.forRoot()
   ],
-  declarations: [ZSocialPhotoComponent],
-  exports: [ZSocialPhotoComponent],
+  declarations: [
+    ZSocialPhotoComponent,
+    PhotoDetailComponent
+  ],
+  exports: [
+    ZSocialPhotoComponent,
+    PhotoDetailComponent
+  ],
   providers: []
 })
 export class ZSocialPhotoModule {

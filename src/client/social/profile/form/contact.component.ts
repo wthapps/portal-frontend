@@ -63,7 +63,7 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
     this.countryService.getCountries().subscribe(data => this.countriesCode = data);
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
     this.removeAll();
     this.addAll();
   }
@@ -233,4 +233,16 @@ export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
 
     this.modal.close();
   }
+
+  emailControls() {
+    return (<FormGroup>(<FormGroup>this.form).controls.emails).controls;
+  }
+
+  phoneControls() {
+    return(<FormGroup>(<FormGroup>this.form).controls.phones).controls;
+  }
+
+  addressControls() {
+  return(<FormGroup>(<FormGroup>this.form).controls.addresses).controls;
+}
 }

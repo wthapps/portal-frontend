@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -8,35 +8,43 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PartialsProfileService } from '../profile.service';
+import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
+import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
+import { ProfileFormCustomSubmitMixin } from '../../../shared/mixins/form/profile/profile-form-custom-submit.mixin';
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin, ProfileFormCustomSubmitMixin])
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-hobby',
   templateUrl: 'hobby.component.html'
 })
 
-export class PartialsProfileHobbyComponent {
+export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileFormCustomSubmitMixin {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
 
+  @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
+
   form: FormGroup;
+  deleteObjects: any = [];
+  type: string = "hobbies";
 
   constructor(private fb: FormBuilder, private profileService: PartialsProfileService) {
     this.form = fb.group({
-      'hobbys': fb.array([
+      'hobbies': fb.array([
         this.initItem(),
       ])
     });
   }
 
-  removeAll() {
-    const control = <FormArray>this.form.controls['hobbys'];
-    control.controls.length = 0;
-    control.reset();
-  }
+  removeItem:(i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
+  onCustomSubmit:(values: any) => void;
 
   //hobbys
   initItem(item?: any) {
@@ -54,17 +62,12 @@ export class PartialsProfileHobbyComponent {
   }
 
   addItem(item?: any) {
-    const control = <FormArray>this.form.controls['hobbys'];
+    const control = <FormArray>this.form.controls['hobbies'];
     if (item) {
       control.push(this.initItem(item));
     } else {
       control.push(this.initItem());
     }
-  }
-
-  removeItem(i: number) {
-    const control = <FormArray>this.form.controls['hobbys'];
-    control.removeAt(i);
   }
 
   onOpenModal() {
@@ -73,17 +76,8 @@ export class PartialsProfileHobbyComponent {
 
     _this.removeAll();
 
-    _.map(this.data.hobbys, (v: any)=> {
+    _.map(this.data.hobbies, (v: any)=> {
       _this.addItem(v);
-    });
-  }
-
-
-  onSubmit(values: any): void {
-    console.log(values);
-    this.profileService.updateMyProfile(values).subscribe((res: any) => {
-      this.data = res.data;
-      this.modal.close();
     });
   }
 }

@@ -96,7 +96,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  ngOnChanges() {
+  ngOnChanges(data: any) {
 
   }
 
@@ -150,6 +150,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.modal.open();
     }
+
+    // Clear pending files in case of failure
+    this.files.length = 0;
 
     this.subscribePhotoSelectEvents();
   }
@@ -236,7 +239,10 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   upload(files: Array<any>) {
-    _.forEach(files, (file: any) => {
+    // Filter valid image type
+    let valid_images = this.photoUploadService.getValidImages(files);
+
+    _.forEach(valid_images, (file: any) => {
       this.files.push(file);
     });
     // this.files = files;

@@ -235,7 +235,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name onTextChangeDebounce
      * @type {number}
      */
-    @Input() private onTextChangeDebounce: number = 250;
+    @Input() public onTextChangeDebounce: number = 250;
 
 
     /**
