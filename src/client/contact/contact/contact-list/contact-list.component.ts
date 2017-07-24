@@ -1,13 +1,17 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
-import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+
+import { Config } from '../../../core/shared/config/env.config';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+
+import { ZContactService } from '../../shared/services/contact.service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEventAction } from '../../../core/shared/services/common-event/common-event-action';
-import { Observable } from 'rxjs/Observable';
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
-import { ConfirmationService } from 'primeng/primeng';
-import { Config } from '../../../core/shared/config/env.config';
 
 declare var _: any;
 
