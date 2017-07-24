@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { CountryService } from '../../../../core/shared/components/countries/countries.service';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { CountryService } from "../../../../core/shared/components/countries/countries.service";
 
 declare var _: any;
 
@@ -14,25 +15,30 @@ declare var _: any;
 export class ZContactSharedSettingsComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   item: any;
-
   form: FormGroup;
-  country_alpha_code: AbstractControl;
-  sort_by: AbstractControl;
 
   countriesCode: any;
   countriesNameCode: any;
   filteredCountriesCode: any[];
 
-  constructor(private fb: FormBuilder, private countryService: CountryService) {
+  constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
+    // Init default
     this.form = this.fb.group({
-      'country_alpha_code': ['Albania (+355)'],
-      'sort_by': ['first_name']
+      'phone_default_code': ['Albania (+355)'],
+      'contacts_sort_by': ['first_name']
     });
-    this.country_alpha_code = this.form.controls['country_alpha_code'];
-    this.sort_by = this.form.controls['sort_by'];
   }
 
   ngOnInit() {
+    this.apiBaseService.get(`contact/contacts/settings`).subscribe((res: any) => {
+      if(res.data && res.data.phone_default_code) {
+        this.form = this.fb.group({
+          'id': res.data.id,
+          'phone_default_code': res.data.phone_default_code,
+          'contacts_sort_by': res.data.contacts_sort_by
+        });
+      }
+    });
     this.countryService.getCountries().subscribe(
       (res: any) => {
         this.countriesCode = res;
@@ -45,7 +51,10 @@ export class ZContactSharedSettingsComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.form.value);
+    this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: this.form.value}).subscribe((res: any) => {
+
+    });
+    this.modal.close();
   }
 
   open() {
