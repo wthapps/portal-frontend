@@ -31,7 +31,7 @@
         <div class="media-left">
           <a [routerLink]="['/profile/', comment.owner.uuid]">
             <span class="avatar-xs">
-              <img [src]="comment.owner.profile_image" alt="">
+              <img [src]="(comment.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : comment.owner.profile_image) " alt="">
             </span>
 
           </a>
@@ -40,15 +40,25 @@
           <h4 class="media-heading"><a [routerLink]="['/profile', comment.owner.uuid]">{{comment.owner.name}}</a>
             <span class="media-heading-time">{{comment.created_at | timeFormat}}</span>
           </h4>
-          <span [innerHtml]="comment.content | linkify | safeHtml"></span>
+          <span [innerHtml]="comment.content | wthEmojis |linkify | safeHtml"></span>
           <div *ngIf="comment.links && comment.links.length > 0">
             <div *ngIf="comment.links[0].image && comment.links[0].title" class="message-item-content-main" >
               <display-link [data]="comment.links[0]"></display-link>
             </div>
           </div>
-          <a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">
-            <img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
-          </a>
+
+          <div class="z-social-carousel">
+            <ul class="{{item?.displayCss}}">
+              <li *ngIf="comment.photo" >
+                <figure (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">
+                  <img class="img-full" *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
+                </figure>
+              </li>
+            </ul>
+          </div>
+          <!--<a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">-->
+            <!--<img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">-->
+          <!--</a>-->
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <a data-toggle="dropdown">
               <i class="fa fa-pencil"></i>
@@ -101,7 +111,7 @@
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
               <span class="avatar-xs">
-                <img [src]="reply.owner.profile_image" alt="">
+                <img [src]="(reply.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : reply.owner.profile_image)" alt="">
               </span>
             </a>
           </div>

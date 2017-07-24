@@ -24,6 +24,7 @@ import { PostService } from '../shared/post.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { SoComment } from '../../../../core/shared/models/social_network/so-comment.model';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 declare var _: any;
 declare var $: any;
@@ -57,6 +58,7 @@ export class PostFooterComponent implements OnChanges {
   totalComment: number = 1;
   commentPageIndex: number = 0;
   loadingDone: boolean = false;
+  user$: Observable<any>;
   readonly commentLimit: number = Constants.soCommentLimit;
 
   constructor(private apiBaseService: ApiBaseService,
@@ -67,6 +69,7 @@ export class PostFooterComponent implements OnChanges {
               private postService: PostService,
               public userService: UserService,
               public postItem: PostComponent) {
+    this.user$ = this.userService.profile$;
   }
 
   ngOnChanges(data: any) {

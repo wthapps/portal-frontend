@@ -60,6 +60,7 @@ import { CommonEventService } from './services/common-event/common-event.service
 import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
 import { PipeModule } from './pipe/pipe.module';
 import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
+import { ZChatEmojiModule } from './emoji/emoji.module';
 // import { Communication } from './models/communication.model';
 
 /**
@@ -85,6 +86,7 @@ import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
     RadioButtonModule,
     InputTextareaModule,
     PipeModule,
+    ZChatEmojiModule,
     PartialsPhotoModule
   ],
   declarations: [
@@ -131,6 +133,7 @@ import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
     RadioButtonModule,
     InputTextareaModule,
     PipeModule,
+    ZChatEmojiModule,
     PartialsPhotoModule,
 
     // Component

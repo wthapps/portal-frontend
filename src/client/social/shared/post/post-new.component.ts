@@ -5,6 +5,8 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/partials/loading/loading.service';
 import { User } from '../../../core/shared/models/user.model';
 import { SocialService } from '../services/social.service';
+import { UserService } from '../../../core/shared/services/user.service';
+import { Observable } from 'rxjs/Observable';
 
 declare var _: any;
 
@@ -22,15 +24,18 @@ export class PostNewComponent implements OnInit {
   selectedPhotos: Array<any> = new Array<any>();
   uploadPhotos: Array<any> = new Array<any>();
   // files: Array<any> = new Array<any>();
-  user: User;
+  // user: User;
+  user$: Observable<any>;
 
   constructor(private apiService: ApiBaseService,
               private socialService: SocialService,
+              public userService: UserService,
               private loadingService: LoadingService) {
+    this.user$ =  this.userService.profile$;
   }
 
   ngOnInit(): void {
-      this.user = this.socialService.user.profile;
+      // this.user = this.socialService.user.profile;
   }
 
   open(event: any, choosePhotos?: boolean) {

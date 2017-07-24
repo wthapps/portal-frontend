@@ -18,7 +18,7 @@
         <partials-notifications #notifications></partials-notifications>
 
         <div class="panel-footer text-center">
-          <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()">View more</a>
+          <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()" *ngIf="isLoadingDone()">View more</a>
         </div>
       </div>
 

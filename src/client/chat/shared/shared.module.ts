@@ -7,7 +7,7 @@ import { MessageItemComponent } from './message/message-item.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
 import { ChatService } from './services/chat.service';
 import { SharedModule } from '../../core/shared/shared.module';
-import { ZChatEmojiModule } from './emoji/emoji.module';
+import { ZChatEmojiModule } from '../../core/shared/emoji/emoji.module';
 import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from './modal/add-contact.component';
 import { ZChatShareUserIconComponent } from './user/user-icon.component';

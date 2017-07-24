@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
 import {
@@ -6,16 +6,14 @@ import {
   OpenPhotoModalEvent,
   CommentUpdateEvent,
   CancelEditCommentEvent,
-  CancelReplyCommentEvent,
   ReplyCreateEvent,
-  ReplyUpdateEvent,
-  CancelEditReplyCommentEvent, DeleteCommentEvent, DeleteReplyEvent, CancelAddCommentEvent
+  ReplyUpdateEvent
 } from '../../../../events/social-events';
-import { SoPost } from '../../../../../core/shared/models/social_network/so-post.model';
 import { SoComment } from '../../../../../core/shared/models/social_network/so-comment.model';
 import { UserService } from '../../../../../core/shared/services/user.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { User } from '../../../../../core/shared/models/user.model';
+import { ZChatEmojiService } from '../../../../../core/shared/emoji/emoji.service';
 export enum CommentEditorMode {
   Add,
   Edit,
@@ -41,12 +39,14 @@ export class CommentItemEditorComponent implements OnInit {
   @Input() reply: SoComment;
   @Input() mode: any = CommentEditorMode.Add;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('commentContent') commentContent: ElementRef;
 
   comment: SoComment = new SoComment(); // Clone comment
   commentEditorMode = CommentEditorMode;
   hasUploadingPhoto: boolean = false;
   hasUpdatedContent: boolean = false;
   files: any;
+  emojiData: any[];
   user$: Observable<User>;
 
   commentEditorForm: FormGroup;
@@ -56,6 +56,8 @@ export class CommentItemEditorComponent implements OnInit {
   constructor(private fb: FormBuilder,
               public userService: UserService) {
     this.user$ = this.userService.profile$;
+
+    this.emojiData = ZChatEmojiService.emojis;
   }
 
   ngOnInit() {
@@ -85,8 +87,9 @@ export class CommentItemEditorComponent implements OnInit {
 
   onKey(e: any) {
     // Create, Update, Reply
+    console.debug('commentEditorForm - ng-prestine: ', this.commentEditorForm);
 
-    if (e.keyCode == 13 && this.comment.content != '') {
+    if (e.keyCode == 13 && this.comment.content.trim() !== '') {
 
       // this.comment.content = this.commentEditorForm.value.content;
       // this.comment.photo = this.commentEditorForm.value.photo;
@@ -164,6 +167,14 @@ export class CommentItemEditorComponent implements OnInit {
     this.eventEmitter.emit(new OpenPhotoModalEvent(this));
 
   }
+
+  onEmojiClick(e: any) {
+    let emoj: any = e.replace(/\\/gi, '');
+    this.comment.content += emoj;
+    this.hasUpdatedContent = true;
+    // this.placeCaretAtEnd(document.getElementById('chat-message-text'));
+  }
+
 
   cancel() {
     // if (this.type == this.commentEditorMode.Edit) {

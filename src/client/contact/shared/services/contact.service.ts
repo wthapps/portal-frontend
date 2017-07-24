@@ -16,7 +16,7 @@ declare var _: any;
 @Injectable()
 export class ZContactService extends BaseEntityService<any>{
   selectedObjects: any[] = [];
-  contacts: Array<any> = new Array<any>([]);
+  contacts: Array<any> = new Array<any>();
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private suggestSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);

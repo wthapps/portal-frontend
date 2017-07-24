@@ -1,5 +1,5 @@
 import { Component, ViewChild, HostListener, OnInit, HostBinding, OnDestroy, ElementRef } from '@angular/core';
-import { ZChatEmojiService } from '../../emoji/emoji.service';
+import { ZChatEmojiService } from '../../../../core/shared/emoji/emoji.service';
 import { ChatService } from '../../services/chat.service';
 import { PostPhotoSelectComponent } from '../../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';

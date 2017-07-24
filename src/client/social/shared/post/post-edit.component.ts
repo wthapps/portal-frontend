@@ -11,7 +11,7 @@ import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialService } from '../services/social.service';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
 
@@ -64,7 +64,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   uploadedPhotos: Array<any> = new Array<any>();
 
   parent: any = null;
-  currentUser: User;
+  // currentUser: User;
+  profile$: Observable<any>;
   readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
   // Subscription list
@@ -92,7 +93,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    this.currentUser = this.userService.profile;
+    // this.currentUser = this.userService.profile;
+    this.profile$ = this.userService.profile$;
 
   }
 
