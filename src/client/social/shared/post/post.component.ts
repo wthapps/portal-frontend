@@ -13,6 +13,7 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/merge';
 
 import {
   PostActivitiesComponent

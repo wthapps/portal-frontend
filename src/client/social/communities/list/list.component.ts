@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
+import 'rxjs/add/operator/toPromise';
+
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';

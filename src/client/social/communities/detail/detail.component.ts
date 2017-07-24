@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { Observable} from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/merge';
+
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
@@ -12,8 +17,6 @@ import { LoadingService } from '../../../core/shared/components/loading/loading.
 import { PostListComponent } from '../../shared/post/post-list.component';
 import { EntitySelectComponent } from '../../../core/shared/components/entity-select/entity-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Observable} from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';

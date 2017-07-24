@@ -11,8 +11,6 @@ import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 import { PipeModule } from '../../pipe/pipe.module';
 
 import { PhotoDetailPartialComponent } from './detail/photo-detail-partial.component';
-import { TaggingModalComponent } from './modal/tagging/tagging-modal.component';
-import { TaggingElComponent } from './modal/tagging/tagging-el.component';
 import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
 import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
@@ -28,11 +26,11 @@ import { MediaListHeaderComponent } from './list/media-list-header.component';
 import { ZMediaShareItemComponent } from './list/item/item.component';
 
 import { PhotoService } from '../../services/photo.service';
-import { ZMediaTaggingService } from './modal/tagging/tagging.service';
 
 import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
 import { SliderModule } from 'primeng/components/slider/slider';
 import { PhotoItemPreviewComponent } from './photo-item-preview.component';
+import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
 
 
 @NgModule({
@@ -47,12 +45,11 @@ import { PhotoItemPreviewComponent } from './photo-item-preview.component';
     CheckboxModule,
     SliderModule,
     PipeModule,
-    PartialsPhotoSharingModule
+    PartialsPhotoSharingModule,
+    PartialsPhotoTaggingModule
   ],
   declarations: [
     PhotoDetailPartialComponent,
-    TaggingModalComponent,
-    TaggingElComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
@@ -70,10 +67,9 @@ import { PhotoItemPreviewComponent } from './photo-item-preview.component';
   ],
   exports: [
     PartialsPhotoSharingModule,
+    PartialsPhotoTaggingModule,
 
     PhotoDetailPartialComponent,
-    TaggingModalComponent,
-    TaggingElComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
@@ -90,8 +86,7 @@ import { PhotoItemPreviewComponent } from './photo-item-preview.component';
     PhotoItemPreviewComponent
   ],
   providers: [
-    PhotoService,
-    ZMediaTaggingService
+    PhotoService
   ]
 })
 

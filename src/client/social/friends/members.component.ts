@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
+
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/finally';
+
+
 import { SoUser } from '../../core/shared/models/social_network/so-user.model';
 import { SocialService } from '../shared/services/social.service';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';

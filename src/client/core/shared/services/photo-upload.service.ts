@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/mergeMap';
+
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../config/constants';
-import { Observable } from 'rxjs/Observable';
 import { UserService } from './user.service';
 
 declare var AWS: any;

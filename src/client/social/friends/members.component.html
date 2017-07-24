@@ -88,14 +88,14 @@
 
           </div>
 
-          <template [ngIf]="list && list.length > 0">
+          <ng-template [ngIf]="list && list.length > 0">
             <z-social-share-profile-list
               [layout]="'row'"
               [class]="'col-xs-12 col-md-6 col-lg-4'"
               [data]="list"
               [type]="'member'">
             </z-social-share-profile-list>
-          </template>
+          </ng-template>
 
         </div>
       </div>

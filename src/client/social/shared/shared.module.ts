@@ -26,6 +26,7 @@ import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
 import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
 import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences-community.component';
+import { SocialDataService } from './services/social-data.service';
 
 
 /**
@@ -91,7 +92,8 @@ export class ZSocialSharedModule {
         SoPostService,
         SoCommunityService,
         ZSocialProfileService,
-        SocialFavoriteService
+        SocialFavoriteService,
+        SocialDataService
       ]
     };
   }

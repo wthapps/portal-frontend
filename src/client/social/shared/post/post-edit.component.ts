@@ -6,6 +6,8 @@ import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/fo
 
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/do';
 
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';

@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/merge';
 
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 

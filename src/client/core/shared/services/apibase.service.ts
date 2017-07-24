@@ -3,8 +3,10 @@ import {
   Http, Headers, RequestOptions, RequestOptionsArgs, Response, RequestMethod,
   ResponseContentType
 } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
 
 import { CookieService } from 'ngx-cookie';
 

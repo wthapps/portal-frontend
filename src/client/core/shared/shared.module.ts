@@ -10,6 +10,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
 import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
+import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { ApiBaseService } from './services/apibase.service';
@@ -52,6 +53,9 @@ import { PartialsPhotoModule } from './components/photo/photo.module';
 import { ModalDockModule } from './components/modal/dock.module';
 import { EntitySelectModule } from './components/entity-select/entity-select.module';
 import { ReadMoreModule } from './components/read-more/read-more.module';
+import { CoverProfileModule } from './components/cover-profile/cover-profile.module';
+import { AuthGuard } from './services/auth-guard.service';
+import { AuthService } from './services/auth.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -79,6 +83,7 @@ import { ReadMoreModule } from './components/read-more/read-more.module';
     InputSwitchModule,
     RadioButtonModule,
     AutoCompleteModule,
+    CalendarModule,
 
     FooterModule,
     HeaderModule,
@@ -97,6 +102,7 @@ import { ReadMoreModule } from './components/read-more/read-more.module';
     ModalDockModule,
     EntitySelectModule,
     ReadMoreModule,
+    CoverProfileModule,
     // Pipe
     PipeModule
   ]
@@ -109,6 +115,8 @@ export class CoreSharedModule {
         ApiBaseService,
         ServiceManager,
         UserService,
+        AuthGuard,
+        AuthService,
         CountryService,
         ConfirmationService,
         CookieService,

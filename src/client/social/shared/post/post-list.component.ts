@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription} from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/merge';
 
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/empty';
 
 import { SocialService } from '../services/social.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
-import { Observable } from 'rxjs/Observable';
+
 import { SocialFavoriteService } from '../services/social-favorites.service';
 
 declare let _: any;

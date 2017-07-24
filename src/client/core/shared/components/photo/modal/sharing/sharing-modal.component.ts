@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaSharingService } from './sharing.service';
