@@ -89,13 +89,13 @@ export class CommentItemEditorComponent implements OnInit {
     // Create, Update, Reply
     console.debug('commentEditorForm - ng-prestine: ', this.commentEditorForm);
 
-    if (e.keyCode == 13 && this.comment.content.trim() !== '') {
+    if (e.keyCode == 13 ) {
 
       // this.comment.content = this.commentEditorForm.value.content;
       // this.comment.photo = this.commentEditorForm.value.photo;
       // this.post(this.comment);
 
-      if(this.hasUpdatedContent)
+      if(this.checkValidForm())
         this.post(this.commentEditorForm.value);
       else
         this.cancel();
@@ -249,12 +249,7 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   checkValidForm(): boolean {
-    return this.hasUpdatedContent;
-    // if (this.mode == CommentEditorMode.Add) {
-    //   return (this.comment.content.length > 0 || this.comment.photo != null);
-    // } else if (this.mode == CommentEditorMode.Edit) {
-    //   return (this.commentEditorForm.dirty || this.comment.photo != null);
-    // }
-    // return false;
+    // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
+    return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
   }
 }
