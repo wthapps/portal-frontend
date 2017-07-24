@@ -7,10 +7,11 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { FORM_MODE } from '../../../../core/shared/constant/chat-constant';
-import { ZChatEmojiService } from '../../emoji/emoji.service';
+import { ZChatEmojiService } from '../../../../core/shared/emoji/emoji.service';
 import { ChatService } from '../../services/chat.service';
 
 import { Message } from '../../models/message.model';
+
 
 declare var $: any;
 

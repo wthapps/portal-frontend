@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,7 +16,7 @@ declare var _: any;
   selector: 'z-contact-list',
   templateUrl: 'contact-list.component.html'
 })
-export class ZContactListComponent implements OnInit, OnDestroy, CommonEventAction {
+export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
 
   ITEM_PER_PAGE: number = 20;
@@ -38,6 +38,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
               private route: ActivatedRoute,
               private router: Router,
               private confirmationService: ConfirmationService,
+              private loadingService: LoadingService,
               private commonEventService: CommonEventService
   ) {
     this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
@@ -49,16 +50,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     this.page = 1;
     this.contact$ = this.contactService.contacts$;
 
-    this.contactService.contacts$
-      .subscribe((contacts: any[]) => {
-        // this.contacts = contacts.splice(0, this.ITEM_PER_PAGE * this.page);
-      //   TODO: Update contacts locally
-      //   this.contacts.length = 0;
-        this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
-        // this.contacts = contacts.slice();
-
-        console.debug('inside contact list onInit: ', this.contacts, contacts);
-      });
 
     this.route.params.forEach((params: Params) => {
       switch(params['label']) {
@@ -79,6 +70,20 @@ export class ZContactListComponent implements OnInit, OnDestroy, CommonEventActi
     this.eventAddContact = this.contactService.contactAddContactService.eventOut.subscribe((event: any) => {
       this.contactService.addMoreContacts(_.get(event, 'data', []));
     });
+  }
+
+  ngAfterViewInit() {
+    this.loadingService.start();
+    this.contactService.contacts$
+      .subscribe((contacts: any[]) => {
+        // this.contacts = contacts.splice(0, this.ITEM_PER_PAGE * this.page);
+        //   TODO: Update contacts locally
+        //   this.contacts.length = 0;
+        this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
+
+        console.debug('inside contact list onInit: ', this.contacts, contacts);
+        this.loadingService.stop();
+      });
   }
 
   confirmDeleteContacts() {

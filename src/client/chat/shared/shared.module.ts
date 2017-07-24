@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { CoreSharedModule } from '../../core/shared/shared.module';
-import { ZChatEmojiModule } from './emoji/emoji.module';
+import { ZChatEmojiModule } from '../../core/shared/emoji/emoji.module';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
 import { MessageEditorComponent } from './message/editor/message-editor.component';

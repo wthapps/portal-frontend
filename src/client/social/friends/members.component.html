@@ -8,7 +8,7 @@
             <div class="pull-left btn-group hidden-md hidden-lg">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                       aria-expanded="false">
-                {{currentState}} <span class="text-fade">{{currentStateTitleNumber}}</span> <span class="caret"></span>
+                {{currentState | titleCase}} <span class="text-fade">{{totalFriends}}</span> <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
                 <li [ngClass]="{'active': currentState == friendTabs.friends}">

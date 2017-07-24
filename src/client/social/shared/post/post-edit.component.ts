@@ -5,6 +5,7 @@ import {
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/do';
@@ -69,7 +70,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   uploadedPhotos: Array<any> = new Array<any>();
 
   parent: any = null;
-  currentUser: User;
+  // currentUser: User;
+  profile$: Observable<any>;
   readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
   // Subscription list
@@ -97,7 +99,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    this.currentUser = this.userService.profile;
+    // this.currentUser = this.userService.profile;
+    this.profile$ = this.userService.profile$;
 
   }
 

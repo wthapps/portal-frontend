@@ -198,9 +198,13 @@ export class NotificationService {
         });
   }
 
+  isLoadingDone() {
+    return this.loadingDone ;
+  }
+
   getMoreNotifications() {
     // if(this.loadingDone) {
-    if(_.isEmpty(this.nextLink)) {
+    if(this.isLoadingDone()) {
       console.debug('All notifications are loaded !');
       return;
     }

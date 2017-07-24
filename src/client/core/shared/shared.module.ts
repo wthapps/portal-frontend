@@ -54,6 +54,9 @@ import { ModalDockModule } from './components/modal/dock.module';
 import { EntitySelectModule } from './components/entity-select/entity-select.module';
 import { ReadMoreModule } from './components/read-more/read-more.module';
 import { CoverProfileModule } from './components/cover-profile/cover-profile.module';
+import { ZChatEmojiModule } from './emoji/emoji.module';
+
+
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 
@@ -103,6 +106,7 @@ import { AuthService } from './services/auth.service';
     EntitySelectModule,
     ReadMoreModule,
     CoverProfileModule,
+    ZChatEmojiModule,
     // Pipe
     PipeModule
   ]

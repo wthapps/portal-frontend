@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription} from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/merge';
@@ -50,9 +51,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   // type: string = 'user';
 
   // Subscription
-  loadSubscription: Subscription;
   nextPhotoSubscription: Subscription;
   postIsEmpty: boolean = false;
+
+  profile$: Observable<any>;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -71,6 +73,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.socialService.user.profile;
+    this.profile$ = this.userService.profile$;
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.params;
 
