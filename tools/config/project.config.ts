@@ -32,7 +32,9 @@ export class ProjectConfig extends SeedConfig {
       {src: 'linkifyjs/dist/linkify.js', inject: 'libs'},
       {src: 'linkifyjs/dist/linkify-html.min.js', inject: 'libs'},
       {src: 'file-saver/FileSaver.min.js', inject: 'libs'},
-      {src: 'moment/moment.js', inject: 'libs'}
+      {src: 'moment/moment.js', inject: 'libs'},
+      {src: 'cropper/dist/cropper.min.js', inject: 'libs'},
+      {src: 'cropperjs/dist/cropper.min.js', inject: 'libs'}
 
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
