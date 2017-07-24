@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ZoneReportService } from '../../core/shared/form/report/report.service';
 import { SocialFavoriteService } from '../shared/services/social-favorites.service';
+import { Constants } from '../../core/shared/config/constants';
 
 
 declare var $: any;
@@ -71,17 +72,32 @@ export class ZSocialMembersComponent implements OnInit {
       case FRIEND_TABS.friends:
         this.socialService.user.getFriends().take(1)
           .finally(() => this.loadingService.stop('#users-list'))
-          .subscribe((res: any) => {this.list = res.data;});
+          .subscribe((res: any) => {
+          this.list = res.data;
+          this.totalFriends = this.list.length;
+          for(let i = 0; i < this.list.length; i++) {
+            _.set(this.list, `${i}.friend_status`, Constants.friendStatus.accepted);
+          }
+        });
         break;
       case FRIEND_TABS.followers:
         this.socialService.user.getFollowerList().take(1)
           .finally(() => this.loadingService.stop('#users-list'))
-          .subscribe((res: any) => {this.list = res.data;});
+          .subscribe((res: any) => {
+          this.list = res.data;
+          this.totalFollowers = this.list.length;
+        });
         break;
       case FRIEND_TABS.followings:
         this.socialService.user.getFollowingList().take(1)
           .finally(() => this.loadingService.stop('#users-list'))
-          .subscribe((res: any) => {this.list = res.data;});
+          .subscribe((res: any) => {
+          this.list = res.data;
+          this.totalFollowings = this.list.length;
+          for(let i = 0; i < this.list.length; i++) {
+            _.set(this.list, `${i}.is_following`, true);
+          }
+        });
         break;
       case FRIEND_TABS.blacklists:
         this.list = [];
