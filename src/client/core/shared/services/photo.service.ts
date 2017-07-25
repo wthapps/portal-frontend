@@ -24,7 +24,7 @@ export class PhotoService {
   }
 
   update(body: any) {
-    return this.apiBaseService.post(`${this.url}`, body);
+    return this.apiBaseService.put(`${this.url}/${body.id}`, body);
   }
 
   download(body: any) {

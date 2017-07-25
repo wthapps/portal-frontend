@@ -98,7 +98,7 @@
     <!--editable menu-->
     <ul *ngIf="mode == 1" class="action action-text navbar-right ml10">
       <li>
-        <a (click)="cropperZoom(0)" href="javascript:;" class="mr20">Reset</a>
+        <a (click)="reset()" href="javascript:;" class="mr20" [ngClass]="{'a-not-editing': !editing}">Reset</a>
       </li>
       <li>
         <a (click)="cancel()" href="javascript:;" class="mr20">Cancel</a>
@@ -107,25 +107,25 @@
         <!--<a (click)="cropperDone()" href="javascript:;">Done</a>-->
       <!--</li>-->
       <li>
-        <a (click)="cropperSave()" href="javascript:;">Save</a>
+        <a href="javascript:;" (click)="cropperSave()" [ngClass]="{'a-not-editing': !editing}">Save</a>
       </li>
     </ul>
 
     <ul *ngIf="mode == 1" class="action navbar-right">
       <li>
-        <a (click)="cropCropper()" href="javascript:;"><i class="fa fa-crop"></i></a>
+        <a (click)="cropCropper()" href="javascript:;" [ngClass]="{'a-hover': cropping}"><i class="fa fa-crop" ></i></a>
       </li>
       <li>
-        <a (click)="cropperZoom(-0.1)" href="javascript:;"><i class="fa fa-search-minus"></i></a>
+        <a (click)="zoomCropper(-0.1)" href="javascript:;"><i class="fa fa-search-minus"></i></a>
       </li>
       <li>
-        <a (click)="cropperZoom(0.1)" href="javascript:;"><i class="fa fa-search-plus"></i></a>
+        <a (click)="zoomCropper(0.1)" href="javascript:;"><i class="fa fa-search-plus"></i></a>
       </li>
       <li>
         <a (click)="rotateCropper(true)" href="javascript:;"><i class="fa fa-rotate-left"></i></a>
       </li>
       <li>
-        <a (click)="rotateCropper()" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
+        <a (click)="rotateCropper(false)" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
       </li>
     </ul>
 
@@ -144,9 +144,9 @@
   </div>
 
   <div *ngIf="mode == 0" class="photo-detail-bottom-action">
-    <a draggable="false" href="javascript:;" (click)="cropperZoom(-0.1)"><i class="fa fa-minus"></i></a>
-    <a draggable="false" href="javascript:;" (click)="cropperZoom(0)"><i class="fa fa-refresh"></i></a>
-    <a draggable="false" href="javascript:;" (click)="cropperZoom(0.1)"><i class="fa fa-plus"></i></a>
+    <a draggable="false" href="javascript:;" (click)="zoomCropper(-0.1)"><i class="fa fa-minus"></i></a>
+    <a draggable="false" href="javascript:;" (click)="zoomCropper(0)"><i class="fa fa-refresh"></i></a>
+    <a draggable="false" href="javascript:;" (click)="zoomCropper(0.1)"><i class="fa fa-plus"></i></a>
   </div>
 
   <div class="photo-detail-content">

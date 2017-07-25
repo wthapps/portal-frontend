@@ -78,14 +78,16 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         break;
       case 'update':
         this.confirmationService.confirm({
-          message: 'Do you want to save editing item',
+          message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
           header: 'Save Photo',
           accept: () => {
-            this.photoService.create({
+            this.photoService.update({
+              id: this.photo.id,
               name: this.photo.name + `.${this.photo.extension}`,
               type: this.photo.content_type,
               file: payload.editedData
-            }).subscribe((res:any) => {
+            }).subscribe((response: any) => {
+              this.photo = response.data;
             });
           }
         });

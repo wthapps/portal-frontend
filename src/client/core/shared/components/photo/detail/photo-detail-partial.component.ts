@@ -52,6 +52,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   cropper: any = null;
   menus: Array<any>;
   currentIndex: number = 0;
+  editingData: any = null;
 
   private editing: boolean = false;
   private cropping: boolean;
@@ -235,32 +236,41 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       this.cropper = new Cropper(image, {
         dragMode: 'none',
         autoCrop: true,
-        autoCropArea: 1,
+        autoCropArea: 0,
         viewMode: 2,
         modal: false,
         ready: () => {
           // hide crop area on view mode
           $('.cropper-crop-box').hide();
+        },
+        cropstart: () => {
+          $('.cropper-crop-box').show();
         }
       });
     }
     this.cropper.replace(this.photo.url);
   }
 
-  rotateCropper(leftDirect?: boolean) {
+  rotateCropper(leftDirect: boolean) {
+    this.editing = leftDirect == undefined ? false : true;
     this.cropper.rotate(leftDirect ? -90 : 90);
   }
 
   cropCropper() {
     if(this.cropping) {
-      this.cropper.setDragMode('move');
+      this.cropper.setDragMode('none');
+      this.editing = false;
     } else {
       this.cropper.setDragMode('crop');
+      this.editing = true;
     }
     this.cropping = !this.cropping;
+
   }
 
-  cropperZoom(ratio: any) {
+  zoomCropper(ratio: any) {
+    console.log('sdflasjfd;laf', ratio);
+    this.editing = ratio != 0 ? true : false;
     if (ratio == 0) {
       this.cropper.reset();
     } else if (ratio == 0.1) {
@@ -270,21 +280,28 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     }
   }
 
-  cancel() {
+  reset () {
     this.cropper.reset();
-    this.setMode(0);
+    this.cropper.setDragMode('none');
+    this.cropping = false;
+    this.editing = false;
   }
 
-  cropperDone() {
-    let editingData = this.cropper.getCroppedCanvas().toDataURL(this.photo.content_type);
-    this.cropper.replace(editingData);
-    this.editing = true;
+  cancel() {
+    if(this.cropping) {
+      $('.cropper-crop-box').hide();
+    }
+    this.editing = false;
+    this.cropper.reset();
+    this.cropper.setDragMode('none');
+    this.setMode(0);
   }
 
   cropperSave() {
     // get cropped image data
     let editedData = this.cropper.getCroppedCanvas().toDataURL(this.photo.content_type);
     this.event.emit({action: 'update', editedData: editedData});
+    this.cancel();
   }
   /////////////////////////////////////////END-CROPPER/////////////////////////////////////
 

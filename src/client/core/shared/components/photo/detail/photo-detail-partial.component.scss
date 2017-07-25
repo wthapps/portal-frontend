@@ -25,3 +25,12 @@
 .cropper-crop-box-hidden {
   display: none !important;
 }
+
+.a-hover {
+  background-color: #9B9B9B;
+}
+
+.a-not-editing {
+  pointer-events: none;
+  cursor: default;
+}
