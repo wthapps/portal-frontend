@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
+
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { ApiBaseService } from './apibase.service';
+import { Observable } from 'rxjs/Observable';
 
 declare var _: any;
 
@@ -8,7 +12,23 @@ export class PhotoService {
 
   url = 'media/photos';
 
+  previewPhotos$: Observable<any[]>;
+  private previewPhotosSubject: BehaviorSubject<any[]> = new BehaviorSubject([]);
+
   constructor(private apiBaseService: ApiBaseService) {
+    this.previewPhotos$ = this.previewPhotosSubject.asObservable();
+  }
+
+  clearPreviewPhotos() {
+    this.setPreviewPhotos([]);
+  }
+
+  setPreviewPhotos(photos: any[]): void {
+    this.previewPhotosSubject.next(photos);
+  }
+
+  getPreviewPhotos() {
+    return this.previewPhotosSubject.getValue();
   }
 
   listPhoto(body: any = {}): any {

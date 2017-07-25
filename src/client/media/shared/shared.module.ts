@@ -12,6 +12,7 @@ import { MediaItemComponent } from './media/media-item.component';
 import { MediaUploaderDataService } from './uploader/media-uploader-data.service';
 import { ZMediaSharingService } from '../../core/shared/components/photo/modal/sharing/sharing.service';
 import { ZMediaTaggingService } from '../../core/shared/components/photo/modal/tagging/tagging.service';
+import { ZMediaStore } from './store/media.store';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -50,6 +51,7 @@ export class ZMediaSharedModule {
         ZMediaAlbumService,
         ZMediaSharingService,
         ZMediaTaggingService,
+        ZMediaStore,
         MediaUploaderDataService
       ]
     };

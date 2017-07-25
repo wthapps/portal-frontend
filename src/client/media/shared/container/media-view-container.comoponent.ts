@@ -23,6 +23,8 @@ import { AlbumCreateModalComponent } from '../../../core/shared/components/photo
 import { AlbumEditModalComponent } from '../../../core/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
 import { AddToAlbumModalComponent } from '../../../core/shared/components/photo/modal/add-to-album-modal.component';
+import { ZMediaStore } from '../store/media.store';
+
 
 
 declare var saveAs: any;
@@ -113,6 +115,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private mediaObjectService: MediaObjectService,
               private albumService: ZMediaAlbumService,
               private mediaUploaderDataService: MediaUploaderDataService,
+              private mediaStore: ZMediaStore,
               private confirmationService: ConfirmationService) {
 
   }
@@ -375,12 +378,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   // TODO: Go back using previous path
   goBack() {
-    // switch (this.objectType) {
-    //   case 'photo':
-    //   case 'album':
+    this.route.params.subscribe((params: any) => {
+      if(params['prevUrl'] !== undefined)
+        this.router.navigate([params['prevUrl']]);
+      else
         this.location.back();
-    //     break;
-    // }
+    });
+
   }
 
   openModal(params: any) {
@@ -435,6 +439,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         // Take selected photos from photo list screen OR uploaded photos from upload photo component
         options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
         break;
+      case 'previewAllPhotos':
+        let ids2 = _.map(this.mediaStore.getSelectedObjects(), 'id');
+        let selectedIdx = this.mediaStore.getCurrentSelectedIndex();
+        this.router.navigate([
+          'photos',
+          this.mediaStore.getSelectedObjects()[selectedIdx].id,
+          { ids: ids2, mode: 0, prevUrl: this.router.url}
+        ]);
+
+        break;
+
       case 'previewModal':
         let ids = _.map(this.selectedObjects, 'id');
         this.router.navigate([

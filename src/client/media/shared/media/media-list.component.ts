@@ -19,6 +19,7 @@ import { PhotoDetailPartialComponent } from '../../../core/shared/components/pho
 import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
 import { AlbumEditModalComponent } from '../../../core/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumCreateModalComponent } from '../../../core/shared/components/photo/modal/album-create-modal.component';
+import { ZMediaStore } from '../store/media.store';
 
 declare var _: any;
 declare var $: any;
@@ -131,6 +132,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
               protected mediaObjectService: MediaObjectService,
               protected photoService: PhotoService,
               protected location: Location,
+              protected mediaStore: ZMediaStore,
               protected albumService: ZMediaAlbumService) {
 
   }
@@ -265,6 +267,14 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectObject(options.params.selectedObject);
       options = {action: 'select', params: {selectedObjects: this.selectedObjects}};
     }
+    if (options.action == 'openModal' && options.params.modalName == 'previewAllPhotos') {
+      console.log('medialist - onACtion -previewAllPhotos');
+      this.selectAllPhotos();
+      if(_.has(options, 'params.selectedObject')) {
+        this.mediaStore.setCurrentSelectedObject(_.get(options, 'params.selectedObject'));
+      }
+      // options = {action: 'select', params: {selectedObjects: this.selectedObjects}};
+    }
 
     this.doAction(options);
     switch (options.action) {
@@ -272,6 +282,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'deselect':
       case 'goBack':
       case 'openModal':
+      case 'previewAllPhotos':
       case 'updateDetailObject':
         this.events.emit(options);
         break;
@@ -407,7 +418,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case 'select':
       case 'deselect':
-        this.selectedObjects = event.params.selectedObjects;
+        this.setSelectedObjects(event.params.selectedObjects);
         // this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
         break;
     }
@@ -416,6 +427,14 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   upload() {
     // this.loadModalComponent(MediaUloaderComponent);
 
+  }
+
+  setSelectedObjects(objects: any[]) {
+    // this.selectedObjects.length = 0;
+    // this.selectedObjects.concat(...objects);
+    this.selectedObjects = objects;
+    this.mediaStore.selectObjects(objects);
+    console.log('select Objects: ', objects, this.mediaStore.getSelectedObjects());
   }
 
   preview() {
@@ -795,9 +814,9 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   viewDetails() {
     if (this.page != 'shared-with-me')
-      this.router.navigate(['/albums', this.selectedObjects[0].id]);
+      this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}]);
     else
-      this.router.navigate(['/albums', this.selectedObjects[0].id], {queryParams: {'shared-with-me': true}});
+      this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}], {queryParams: {'shared-with-me': true}});
   }
 
   slideShow() {
@@ -826,6 +845,12 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.objects.unshift(...photos);
   }
 
+  private selectAllPhotos() {
+    this.selectedObjects.length = 0;
+    this.selectedObjects.push(..._.filter(this.objects, ['object_type','photo']));
+    this.mediaStore.selectObjects(this.selectedObjects);
+  }
+
   private selectObject(item: any): void {
 
     if (this.pressingCtrlKey) {
@@ -842,6 +867,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedObjects.length = 0;
       this.selectedObjects.push(item);
     }
+    this.mediaStore.selectObjects(this.selectedObjects);
   }
 
   private deSelectObjects() {
@@ -854,6 +880,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // remove all selected objects
       this.selectedObjects.length = 0;
+      this.mediaStore.clearSelected();
       this.onAction({action: 'deselect', params: {selectedObjects: this.selectedObjects}});
     }
   }
