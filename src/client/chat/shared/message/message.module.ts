@@ -4,7 +4,6 @@ import { MessageEditorComponent } from "./editor/message-editor.component";
 import { MessageListComponent } from "./message-list.component";
 import { MessageItemComponent } from "./message-item.component";
 import { SharedModule } from "../../../core/shared/shared.module";
-import { ZChatEmojiModule } from "../emoji/emoji.module";
 import { ZChatShareItemRequestComponent } from "./item-request.component";
 import { ZChatShareRequestContactComponent } from "../modal/request-contact.component";
 import { ZChatShareUserIconComponent } from "../user/user-icon.component";
@@ -14,7 +13,7 @@ import { MessageItemSimpleComponent } from "./messages/message-simple-item.compo
 @NgModule({
   imports: [
     SharedModule.forRoot(),
-    ZChatEmojiModule
+    // ZChatEmojiModule
   ],
   declarations: [
     MessageEditorComponent,
