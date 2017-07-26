@@ -15,13 +15,13 @@ export class ZChatContactComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
+    this.contactItem = this.chatService.getConversations();
 
     console.log(this.contactItem);
   }
 
   newContact() {
     this.addContact.type = 'addContact';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 }

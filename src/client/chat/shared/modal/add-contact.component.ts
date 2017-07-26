@@ -13,21 +13,18 @@ declare var _:any;
 export class ZChatShareAddContactComponent implements OnInit {
 
   @ViewChild('modal') modal: ModalComponent;
-  friends:any = [];
-  contactsItem:any;
-  type:string = 'addContact';
-  filter:any;
+  contacts: any;
+  type: string = 'addContact';
+  title: string = 'Message';
+  filter: any;
+  conversationSelect: any;
 
   constructor(private chatService: ChatService ) {
 
   }
 
   ngOnInit() {
-    this.chatService.getFriends().subscribe(
-    (res:any) => {
-      this.friends = res.data;
-    });
-    this.contactsItem = this.chatService.getContacts();
+    //
   }
 
   add() {
@@ -42,23 +39,62 @@ export class ZChatShareAddContactComponent implements OnInit {
     }
   }
 
+  open() {
+    if(this.type == 'addContact') {
+      this.title = 'Message';
+    }
+    if(this.type == 'addMember') {
+      this.title = 'Add To Conversation';
+    }
+    if(this.type == 'shareContact') {
+      this.title = 'Share Contact';
+    }
+    this.chatService.getUserContacts().subscribe((res:any) => {
+      this.contacts = res.data;
+      if(this.title == 'Add To Conversation') {
+        this.conversationSelect = this.chatService.getContactSelect().value;
+        if(this.conversationSelect && this.conversationSelect.group_json.users_json) {
+
+          this.contacts = _.map(this.contacts, (contact: any) => {
+            for(let user of this.conversationSelect.group_json.users_json) {
+              contact.checked = false;
+              contact.inConversation = false;
+              if(contact.id == user.id) {
+                contact.checked = true;
+                contact.inConversation = true;
+                break
+              }
+            }
+            return contact;
+          });
+        }
+      }
+    });
+
+    this.modal.open();
+  }
+
+  checkBox(contact: any) {
+    contact.checked = true;
+  }
+
   addContact() {
-    let contacts = _.filter(this.contactsItem.value.data, { checked: true });
-    let ids = _.map(contacts, 'display.id');
-    this.chatService.addContact(ids);
+    let contacts = _.filter(this.contacts, { checked: true });
+    let ids = _.map(contacts, 'id');
+    this.chatService.chatContactService.addContact(ids);
     this.modal.close();
   }
 
   addMember() {
-    let contacts = _.filter(this.contactsItem.value.data, { checked: true });
-    let ids = _.map(contacts, 'display.id');
+    let contacts = _.filter(this.contacts, { checked: true });
+    let ids = _.map(contacts, 'id');
     this.chatService.addMembersGroup(ids);
     this.modal.close();
   }
 
   shareContact() {
-    let contacts = _.filter(this.contactsItem.value.data, { checked: true });
-    let ids = _.map(contacts, 'display.id');
+    let contacts = _.filter(this.contacts, { checked: true });
+    let ids = _.map(contacts, 'id');
     this.chatService.shareContact(ids);
     this.modal.close();
   }

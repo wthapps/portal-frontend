@@ -27,7 +27,7 @@ export class ChatNotification {
 
 
   updateDisplay(data:any) {
-    let item = this.serviceManager.getStorageService().find('chat_contacts');
+    let item = this.serviceManager.getStorageService().find('chat_conversations');
     let index = _.findIndex(item.value.data, { id: data.group_user.id });
     if(index != -1) {
       item.value.data[index] = data.group_user;
@@ -36,7 +36,7 @@ export class ChatNotification {
   }
 
   addNotification(data:any) {
-    let item = this.serviceManager.getStorageService().find('chat_contacts');
+    let item = this.serviceManager.getStorageService().find('chat_conversations');
     if(item && item.value) {
       let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.group_id) return contact;});
       if (contact && contact.notification) {
@@ -47,7 +47,7 @@ export class ChatNotification {
   }
 
   addContact(data:any) {
-    let item = this.serviceManager.getStorageService().find('chat_contacts');
+    let item = this.serviceManager.getStorageService().find('chat_conversations');
     let index = _.findIndex(item.value.data, { id: data.group_user.id });
     if(index == -1) {
       item.value.data.push(data.group_user);
@@ -59,10 +59,10 @@ export class ChatNotification {
 
   updateConversationList(data:any) {
     console.log(data);
-    let item = this.serviceManager.getStorageService().find('chat_contacts');
+    let item = this.serviceManager.getStorageService().find('chat_conversations');
     item.value.data = data.group_users;
     this.serviceManager.getChatCommonService().updateAll();
-    // this.serviceManager.getStorageService().save('chat_contacts', item);
+    // this.serviceManager.getStorageService().save('chat_conversations', item);
   }
 
   addNotificationMessage(data:any) {

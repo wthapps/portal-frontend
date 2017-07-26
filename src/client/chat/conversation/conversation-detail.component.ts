@@ -8,6 +8,7 @@ import { CHAT_ACTIONS, FORM_MODE } from '../../core/shared/constant/chat-constan
 import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
 import { ConversationService } from './conversation.service';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
 declare var _: any;
 declare var $: any;
@@ -21,17 +22,31 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
   item: any;
+  events: any;
 
   commonEventSub: Subscription;
 
   constructor(private chatService: ChatService,
               private commonEventService: CommonEventService,
+              private router: Router,
+              private route: ActivatedRoute,
               private conversationService: ConversationService) {
   }
 
   ngOnInit() {
-
-    //subscribe all
+    this.events = this.router.events
+      .filter((event:any) => event instanceof NavigationEnd)
+      .subscribe((event:NavigationEnd) => {
+        this.route.params.forEach((params: any) => {
+          let contact = this.chatService.getContactSelect().value;
+          if(contact) {
+            this.chatService.getMessages(contact.group_json.id);
+            if (contact.history) {
+              this.chatService.updateHistory(contact);
+            }
+          }
+        });
+      });
 
     this.commonEventSub = this.commonEventService.event.subscribe((event: CommonEvent) => {
       this.doEvent(event);

@@ -9,6 +9,7 @@ import { ChatConstant } from '../../../core/shared/constant/chat-constant';
 import { ChatCommonService } from '../../../core/shared/services/chat.common.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { Observable } from 'rxjs/Observable';
+import { ChatContactService } from "./chat-contact.service";
 
 declare var _: any;
 
@@ -20,16 +21,17 @@ export class ChatService {
   constructor(public storage: StorageService,
               public apiBaseService: ApiBaseService,
               public user: UserService,
+              public chatContactService: ChatContactService,
               public chatCommonService: ChatCommonService,
               public photoUploadService: PhotoUploadService,
               public router: Router,
               public handler: HandlerService) {
     // =============================
-    this.storage.save('chat_contacts', null);
-    this.storage.save('chat_recent_contacts', null);
-    this.storage.save('chat_favourite_contacts', null);
-    this.storage.save('chat_history_contacts', null);
-    this.storage.save('contact_select', null);
+    this.storage.save('chat_conversations', null);
+    this.storage.save('chat_recent_conversations', null);
+    this.storage.save('chat_favourite_conversations', null);
+    this.storage.save('chat_history_conversations', null);
+    this.storage.save('conversation_select', null);
     this.storage.save('current_chat_messages', null);
     this.storage.save('users_online', []);
     this.storage.save('number_message', 20);
@@ -37,69 +39,54 @@ export class ChatService {
     this.constant = ChatConstant;
   }
 
-  getContacts(option: any = {}) {
-    let res: any = this.storage.find('chat_contacts');
+  getConversations(option: any = {}) {
+    let res: any = this.storage.find('chat_conversations');
     if (res && res.value && !option.forceFromApi) {
       return res;
     } else {
       this.apiBaseService.get('zone/chat/contacts').subscribe(
         (res: any) => {
-          this.storage.save('chat_contacts', res);
-          this.chatCommonService.setRecentContacts();
-          this.chatCommonService.setFavouriteContacts();
-          this.chatCommonService.setHistoryContacts();
-          this.setDefaultSelectContact();
+          this.storage.save('chat_conversations', res);
+          this.chatCommonService.setRecentConversations();
+          this.chatCommonService.setFavouriteConversations();
+          this.chatCommonService.setHistoryConversations();
+          this.chatCommonService.setDefaultSelectContact();
         }
       );
       return res;
     }
   }
 
-  getRecentContacts() {
-    return this.storage.find('chat_recent_contacts');
+  getUserContacts(option: any = {}) {
+    return this.apiBaseService.get('contact/contacts/internal_contacts');
   }
 
-  getFavouriteContacts() {
-    return this.storage.find('chat_favourite_contacts');
+  getRecentConversations() {
+    return this.storage.find('chat_recent_conversations');
   }
 
-  getHistoryContacts() {
-    // return this.storage.find('chat_history_contacts');
-    return this.storage.find('chat_contacts');
+  getFavouriteConversations() {
+    return this.storage.find('chat_favourite_conversations');
   }
 
-  addContact(ids: any, text?: any) {
-    this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text}).subscribe(
-      (res: any) => {
-        this.updateConversationBroadcast(res.data.group_id);
-      }
-    );
-  }
-
-  cancelContact(contact: any) {
-    console.log(contact);
-    this.apiBaseService.post('zone/chat/contact/cancel', {group_id: contact.group_id}).subscribe(
-      (res: any) => {
-        console.log(res);
-      }
-    );
-  }
-
-  setDefaultSelectContact() {
-    let res: any = this.storage.find('chat_contacts');
-    if (res && res.value && res.value.data[0]) {
-      this.storage.save('contact_select', res.value.data[0]);
-      this.handler.triggerEvent('on_default_contact_select', res.value.data[0]);
-    }
+  getHistoryConversations() {
+    // return this.storage.find('chat_history_conversations');
+    return this.storage.find('chat_conversations');
   }
 
   selectContact(contact: any) {
-    this.storage.save('contact_select', contact);
-    this.handler.triggerEvent('on_contact_select', contact);
+    this.storage.save('conversation_select', contact);
+    this.handler.triggerEvent('on_conversation_select', contact);
+  }
+
+  subscribeNotification() {
+    this.handler.addListener('remove_notification_after_select', 'on_conversation_select', (contact: any) => {
+      this.markAsRead(contact.group_json.id);
+    });
   }
 
   selectContactByPartnerId(id: any) {
-    let conversations: any = this.storage.find('chat_contacts').value;
+    let conversations: any = this.storage.find('chat_conversations').value;
     let contact: any = _.find(conversations.data, {'partner_id': id});
     if (contact) {
       this.selectContact(contact);
@@ -108,16 +95,12 @@ export class ChatService {
   }
 
   getContactByPartnerId(id: any) {
-    let conversations: any = this.storage.find('chat_contacts').value;
+    let conversations: any = this.storage.find('chat_conversations').value;
     return _.find(conversations.data, {'partner_id': id});
   }
 
   getContactSelect() {
-    return this.storage.find('contact_select');
-  }
-
-  getFriends() {
-    return this.apiBaseService.get('zone/chat/friends');
+    return this.storage.find('conversation_select');
   }
 
   getMessages(groupId: number) {
@@ -136,12 +119,6 @@ export class ChatService {
   }
 
   getCurrentMessages() {
-    this.handler.addListener('get_messages_after_select', 'on_contact_select', (contact: any) => {
-      this.getMessages(contact.group_json.id);
-      if (contact.history) {
-        this.updateHistory(contact);
-      }
-    });
     return this.storage.find('current_chat_messages');
   }
 
@@ -160,25 +137,12 @@ export class ChatService {
   }
 
   getLatestGroupId(): any {
-    let recentContacts = this.storage.find('chat_recent_contacts');
+    let recentContacts = this.storage.find('chat_recent_conversations');
     return _.map(recentContacts.value, 'group_id')[0];
   }
 
   getLatestConversation(groupId: number) {
     return this.apiBaseService.get('zone/chat/message/' + groupId);
-  }
-
-
-  subscribeChanel() {
-    this.handler.addListener('subscribe_chanel_after_select', 'on_contact_select', (contact: any) => {
-      // this.chanel.subscribe(contact.group_json.id);
-    });
-  }
-
-  subscribeNotification() {
-    this.handler.addListener('remove_notification_after_select', 'on_contact_select', (contact: any) => {
-      this.markAsRead(contact.group_json.id);
-    });
   }
 
   sendMessage(groupId: any, data: any, option: any = {}, callback?: any) {
@@ -190,9 +154,9 @@ export class ChatService {
   }
 
   sendTextMessage(message: any, option: any = {}, callback?: any) {
-    let item = this.storage.find('contact_select');
+    let item = this.storage.find('conversation_select');
     if (item && item.value && message) {
-      let item = this.storage.find('contact_select');
+      let item = this.storage.find('conversation_select');
       this.sendMessage(item.value.group_json.id, {message: message, type: 'text'}, option, callback);
     }
   }
@@ -202,7 +166,7 @@ export class ChatService {
   }
 
   uploadFiles(files: any) {
-    let groupId = this.storage.find('contact_select').value.group_json.id;
+    let groupId = this.storage.find('conversation_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event: any, file: any) => {
       let data = event.target['result'];
       this.apiBaseService.post('zone/chat/upload', {file: data, file_name: file.name}).subscribe((res: any) => {
@@ -213,7 +177,7 @@ export class ChatService {
   }
 
   uploadPhotos(files: any) {
-    let groupId = this.storage.find('contact_select').value.group_json.id;
+    let groupId = this.storage.find('conversation_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event: any, file: any) => {
       let result = this.photoUploadService.uploadPhotos([file]).take(1)
         .subscribe((res: any) => {
@@ -226,7 +190,7 @@ export class ChatService {
   }
 
   uploadPhotoOnWeb(photo: any) {
-    let groupId = this.storage.find('contact_select').value.group_json.id;
+    let groupId = this.storage.find('conversation_select').value.group_json.id;
     this.sendMessage(groupId, {type: 'file', id: photo.id, object: 'Photo'});
   }
 
@@ -241,7 +205,7 @@ export class ChatService {
       return v.message_type != 'file_tmp';
     });
     item.value.data = newValue;
-    let currentGroupId = this.storage.find('contact_select').value.group_json.id;
+    let currentGroupId = this.storage.find('conversation_select').value.group_json.id;
     if (currentGroupId == groupId)
       this.storage.save('current_chat_messages', item);
   }
@@ -256,7 +220,7 @@ export class ChatService {
     let currentMessages: any = this.storage.find('current_chat_messages').value.data;
     let page: any = Math.floor(currentMessages.length / n) + 1;
     let body: any = {page: page};
-    let groupId: any = this.storage.find('contact_select').value.group_json.id;
+    let groupId: any = this.storage.find('conversation_select').value.group_json.id;
     this.apiBaseService.get('zone/chat/message/' + groupId, body).subscribe(
       (res: any) => {
         let newMessages: any = _.concat(currentMessages, res.data);
@@ -282,7 +246,7 @@ export class ChatService {
   }
 
   updateNotification(contact: any, data: any) {
-    this.storage.find('contact_select').value.notification = !this.storage.find('contact_select').value.notification;
+    this.storage.find('conversation_select').value.notification = !this.storage.find('conversation_select').value.notification;
     this.updateGroupUser(contact.group_id, data);
   }
 
@@ -302,20 +266,20 @@ export class ChatService {
 
   leaveConversation(contact: any) {
     this.updateGroupUser(contact.group_id, {leave: true}, (res: any) => {
-      this.updateConversationBroadcast(contact.group_id);
+      this.chatCommonService.updateConversationBroadcast(contact.group_id);
     });
   }
 
   removeFromConversation(contact: any, userId: any) {
     this.updateGroupUser(contact.group_id, {remove_from_conversation: true, user_id: userId}, (res: any) => {
-      this.updateConversationBroadcast(contact.group_id);
+      this.chatCommonService.updateConversationBroadcast(contact.group_id);
     });
   }
 
   updateGroupUser(groupId: any, data: any, callback?: any) {
     this.apiBaseService.put('zone/chat/group_user/' + groupId, data).subscribe(
       (res: any) => {
-        this.storage.save('chat_contacts', res);
+        this.storage.save('chat_conversations', res);
         this.chatCommonService.updateAll();
         if (callback) {
           callback(res);
@@ -329,12 +293,12 @@ export class ChatService {
     if (group) {
       groupId = group;
     } else {
-      groupId = this.storage.find('contact_select').value.group_json.id;
+      groupId = this.storage.find('conversation_select').value.group_json.id;
     }
     let body = {friends: friends};
     this.apiBaseService.put('zone/chat/group/' + groupId, body).subscribe(
       (res: any) => {
-        this.updateConversationBroadcast(groupId);
+        this.chatCommonService.updateConversationBroadcast(groupId);
       }
     );
   }
@@ -366,7 +330,7 @@ export class ChatService {
   declineRequest(contact: any, setDefaultOnSelect: boolean = true) {
     this.updateGroupUser(contact.group_id, {status: 'decline'}, (res: any) => {
       if (setDefaultOnSelect) {
-        this.setDefaultSelectContact();
+        this.chatCommonService.setDefaultSelectContact();
       }
     });
   }
@@ -376,7 +340,7 @@ export class ChatService {
   }
 
   shareContact(ids: any) {
-    let item = this.storage.find('contact_select');
+    let item = this.storage.find('conversation_select');
     this.apiBaseService.post('zone/chat/contact/share', {
       group_id: item.value.group_json.id,
       share_user_ids: ids
@@ -385,7 +349,6 @@ export class ChatService {
     });
     for (let i = 0; i < ids.length; i++) {
       if (item && item.value) {
-        // this.chanel.sendContactMessage(item.value.group_json.id, '', ids[i]);
         this.sendMessage(item.value.group_json.id, {message: '', type: 'contact', contact: ids[i]});
         if (item.value.history) {
           this.updateHistory(item.value);
@@ -396,7 +359,7 @@ export class ChatService {
 
   markAsRead(groupId: any) {
     this.apiBaseService.post('zone/chat/notification/mark_as_read', {group_id: groupId}).subscribe((res: any) => {
-      let item = this.storage.find('chat_contacts');
+      let item = this.storage.find('chat_conversations');
       if (item && item.value) {
         let contact = _.find(item.value.data, (contact: any) => {
           if (contact.group_json.id == groupId) return contact;
@@ -410,12 +373,6 @@ export class ChatService {
 
   updateDisplayNotification(groupId: any) {
     this.apiBaseService.post('zone/chat/notification/broadcard_group_user_display', {group_id: groupId}).subscribe((res: any) => {
-      // console.log(res);
-    });
-  }
-
-  updateConversationBroadcast(groupId: any) {
-    this.apiBaseService.post('zone/chat/notification/broadcard_contact', {group_id: groupId}).subscribe((res: any) => {
       // console.log(res);
     });
   }
@@ -434,5 +391,3 @@ export class ChatService {
     });
   }
 }
-
-

@@ -18,7 +18,7 @@ export class ZChatContactSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
+    this.contactItem = this.chatService.getConversations();
   }
 
   search() {
@@ -30,7 +30,6 @@ export class ZChatContactSearchComponent implements OnInit {
   }
 
   onRequest(contact:any) {
-    console.log(contact);
     this.requestModal.contact = contact;
     this.requestModal.modal.open();
   }

@@ -12,7 +12,6 @@ declare var $:any;
 })
 
 export class ZChatSidebarComponent implements OnInit {
-  item:any;
   usersOnlineItem:any;
   favouriteContacts:any;
   historyContacts:any;
@@ -27,23 +26,22 @@ export class ZChatSidebarComponent implements OnInit {
     this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {
-        // URL '/' and '/conversations'
         if (event.url.indexOf('conversations') !== -1 || event.url.length == 1) {
           this.isRedirect = true;
         } else {
           this.isRedirect = false;
         }
       });
-    this.chatService.handler.addListener('on_default_contact_select_side_bar', 'on_default_contact_select', (contact:any) => {
+    this.chatService.handler.addListener('on_default_contact_select_side_bar', 'on_default_conversation_select', (contact:any) => {
       if (this.isRedirect) {
         this.chatService.router.navigate([`${this.chatService.constant.conversationUrl}/${contact.id}`]);
         this.chatService.getMessages(contact.group_json.id);
       }
     });
-    this.item = this.chatService.getContacts();
-    this.recentContacts = this.chatService.getRecentContacts();
-    this.favouriteContacts = this.chatService.getFavouriteContacts();
-    this.historyContacts = this.chatService.getHistoryContacts();
+    this.chatService.getConversations();
+    this.recentContacts = this.chatService.getRecentConversations();
+    this.favouriteContacts = this.chatService.getFavouriteConversations();
+    this.historyContacts = this.chatService.getHistoryConversations();
     this.usersOnlineItem = this.chatService.getUsersOnline();
   }
 

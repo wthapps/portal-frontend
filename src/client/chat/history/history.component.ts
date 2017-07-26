@@ -21,6 +21,6 @@ export class ZChatHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getHistoryContacts();
+    this.contactItem = this.chatService.getHistoryConversations();
   }
 }

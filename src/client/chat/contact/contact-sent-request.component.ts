@@ -13,14 +13,14 @@ export class ZChatContactSentRequestComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
+    this.contactItem = this.chatService.getConversations();
   }
 
   onResend(contact:any) {
-    this.chatService.addContact([contact.display.id]);
+    this.chatService.chatContactService.addContact([contact.display.id]);
   }
 
   onCancel(contact:any) {
-    this.chatService.cancelContact(contact);
+    this.chatService.chatContactService.cancelContactRequest(contact);
   }
 }

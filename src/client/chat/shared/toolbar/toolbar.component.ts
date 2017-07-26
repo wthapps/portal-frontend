@@ -36,7 +36,7 @@ export class ZChatToolbarComponent implements OnInit {
 
   onAddContact() {
     this.addContact.type = 'addContact';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 
   onEditConversation() {
@@ -45,7 +45,7 @@ export class ZChatToolbarComponent implements OnInit {
 
   onAddMember() {
     this.addContact.type = 'addMember';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 
   onFavorite() {
@@ -62,7 +62,7 @@ export class ZChatToolbarComponent implements OnInit {
 
   sendContact() {
     this.addContact.type = 'shareContact';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 
   leaveConversation() {
@@ -94,7 +94,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   checkSendMessage(user: any) {
-    let conversations: any = this.chatService.storage.find('chat_contacts').value;
+    let conversations: any = this.chatService.storage.find('chat_conversations').value;
     let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       this.showSendMessage = true;
@@ -104,7 +104,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   inContact(user: any) {
-    let conversations: any = this.chatService.storage.find('chat_contacts').value;
+    let conversations: any = this.chatService.storage.find('chat_conversations').value;
     let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       return true;

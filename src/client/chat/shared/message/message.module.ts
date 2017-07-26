@@ -7,8 +7,8 @@ import { CoreSharedModule } from "../../../core/shared/shared.module";
 import { ZChatShareItemRequestComponent } from "./item-request.component";
 import { ZChatShareRequestContactComponent } from "../modal/request-contact.component";
 import { ZChatShareUserIconComponent } from "../user/user-icon.component";
-import { MessageItemRequestComponent } from "./messages/message-request-item.component";
 import { MessageItemSimpleComponent } from "./messages/message-simple-item.component";
+import { MessageItemActionComponent } from "./messages/message-actions-item.component";
 
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ import { MessageItemSimpleComponent } from "./messages/message-simple-item.compo
     ZChatShareItemRequestComponent,
     ZChatShareRequestContactComponent,
     ZChatShareUserIconComponent,
-    MessageItemRequestComponent,
+    MessageItemActionComponent,
     MessageItemSimpleComponent,
     MessageItemComponent
   ],
@@ -31,7 +31,7 @@ import { MessageItemSimpleComponent } from "./messages/message-simple-item.compo
     ZChatShareItemRequestComponent,
     ZChatShareRequestContactComponent,
     ZChatShareUserIconComponent,
-    MessageItemRequestComponent,
+    MessageItemActionComponent,
     MessageItemSimpleComponent,
     MessageItemComponent
   ],

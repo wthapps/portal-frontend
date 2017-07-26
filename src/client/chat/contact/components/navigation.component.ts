@@ -25,12 +25,12 @@ export class ZChatContactMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
+    this.contactItem = this.chatService.getConversations();
     this.constant = this.chatService.constant;
   }
 
   newContact() {
     this.addContact.type = 'addContact';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 }

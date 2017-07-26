@@ -22,7 +22,7 @@ export class ZChatShareRequestContactComponent {
   }
 
   send() {
-    this.chatService.addContact([this.contact.id], this.message);
+    this.chatService.chatContactService.addContact([this.contact.id], this.message);
     this.modal.close();
     this.onClose.emit();
   }

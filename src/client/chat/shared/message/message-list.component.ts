@@ -42,7 +42,7 @@ export class MessageListComponent implements OnInit {
         this.requestModal.modal.open();
         break;
       case 'CONTACT_REQUEST_CANCEL':
-        this.chatService.cancelContact(event.data);
+        this.chatService.chatContactService.cancelContactRequest(event.data);
         break;
     }
   }

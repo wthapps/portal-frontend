@@ -23,6 +23,7 @@ import { ConversationService } from '../conversation/conversation.service';
 import { ChatService } from './services/chat.service';
 import { ChatCommonService } from '../../core/shared/services/chat.common.service';
 import { ZChatMessageModule } from './message/message.module';
+import { ChatContactService } from "./services/chat-contact.service";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -82,6 +83,7 @@ export class ZChatSharedModule {
       providers: [
         ConversationService,
         ChatService,
+        ChatContactService,
         ChatCommonService
       ]
     };

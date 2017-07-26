@@ -13,7 +13,7 @@ export class ZChatContactPendingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
+    this.contactItem = this.chatService.getConversations();
   }
 
   onAccept(contact:any) {

@@ -78,11 +78,20 @@ export class MessageItemComponent implements OnInit {
     this.event.emit({action: event.action, data: this.message});
   }
 
-  onAdd(contact: any) {
-    this.onAddContact.emit(contact);
+  onAdd(data: any) {
+    this.onAddContact.emit(this.message.display.share_contact);
   }
 
-  cancelContact(contact: any) {
+  onShareContact(data: any) {
+    if (data.action == 'cancel') {
+      this.delete();
+    }
+    if (data.action == 'resend') {
+      this.chatService.shareContact([this.message.display.share_contact.id]);
+    }
+  }
+
+  cancelContactRequest(contact: any) {
 
   }
 
