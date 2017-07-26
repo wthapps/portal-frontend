@@ -16,8 +16,6 @@ import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component'
 // } from '../index';
 
 
-
-
 declare let $: any;
 declare let _: any;
 declare let Cropper: any;
@@ -72,7 +70,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(this.loading) {
+    if (this.loading) {
+      console.log(this.loading);
     } else {
       this.currentIndex = _.indexOf(this.ids, this.photo.id);
       this.initCropper();
@@ -105,7 +104,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         toolTip: 'share',
         iconClass: 'fa fa-share-alt',
         action: 'openModal',
-        params: { modalName: 'sharingModal' }
+        params: {modalName: 'sharingModal'}
       },
       {
         text: 'Favourite',
@@ -118,7 +117,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         toolTip: 'tag',
         iconClass: 'fa fa-tag',
         action: 'openModal',
-        params: { modalName: 'taggingModal' }
+        params: {modalName: 'taggingModal'}
       },
       {
         text: 'Edit',
@@ -145,7 +144,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
             toolTip: 'add to album',
             iconClass: 'fa fa-plus-square',
             action: 'openModal',
-            params: { modalName: 'addToAlbumModal' }
+            params: {modalName: 'addToAlbumModal'}
           },
           {
             text: 'Download',
@@ -170,8 +169,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   move(direction: boolean = true): void {
     let index = 0;
 
-    if(direction) {
-      index = this.currentIndex < (this.ids.length - 1) ? this.currentIndex + 1: 0;
+    if (direction) {
+      index = this.currentIndex < (this.ids.length - 1) ? this.currentIndex + 1 : 0;
     } else {
       index = this.currentIndex > 0 ? this.currentIndex - 1 : this.ids.length - 1;
     }
@@ -207,7 +206,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   goBack() {
-    this.event.emit({action: 'goBack'})
+    this.event.emit({action: 'goBack'});
   }
 
   onShowInfo() {
@@ -218,7 +217,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
 
   editPhoto() {
     this.setMode(1);
-    this.event.emit({action: 'editPhoto'})
+    this.event.emit({action: 'editPhoto'});
   }
 
   setMode(mode: number) {
@@ -230,7 +229,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     this.mode = mode;
   }
 
-  initCropper(){
+  initCropper() {
     if (this.cropper == null) {
       let image = document.getElementById('photo-detail-image');
       this.cropper = new Cropper(image, {
@@ -257,7 +256,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   cropCropper() {
-    if(this.cropping) {
+    if (this.cropping) {
       this.cropper.setDragMode('none');
       this.editing = false;
     } else {

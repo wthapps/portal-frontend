@@ -14,8 +14,7 @@ export class ZContactSharedThreeDotActionComponent {
   @Input() data: any;
 
   constructor(private commonEventService: CommonEventService,
-              private contactService: ZContactService
-  ) {
+              private contactService: ZContactService) {
 
   }
 

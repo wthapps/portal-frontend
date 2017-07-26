@@ -2,9 +2,9 @@ import { Component }                from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-setting',
+  selector: 'my-setting',
   templateUrl: 'setting.component.html'
 })
 
-export class ACSettingComponent {
+export class MySettingComponent {
 }

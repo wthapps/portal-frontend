@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 
 
@@ -7,13 +7,10 @@ import { ChatService } from '../services/chat.service';
   selector: 'z-chat-share-item-request',
   templateUrl: 'item-request.component.html'
 })
-export class ZChatShareItemRequestComponent implements OnInit {
+export class ZChatShareItemRequestComponent {
   @Input() message: any;
 
-  constructor(private chatService: ChatService) {};
-
-  ngOnInit() {
-
+  constructor(private chatService: ChatService) {
   }
 
   onAccept() {

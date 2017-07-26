@@ -1,7 +1,7 @@
 <form *ngIf="item.value">
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"> <i class="fa fa-plus"></i> Edit Conversation </h4>
+      <h4 class="modal-title"><i class="fa fa-plus"></i> Edit Conversation </h4>
     </modal-header>
     <modal-body>
       <div class="media media-user-list">
@@ -10,7 +10,8 @@
         </div>
         <div class="media-body">
           <div class="form-group">
-            <input type="text" name="name" class="form-control" placeholder="Name" [(ngModel)]="item.value.display.name">
+            <input type="text" name="name" class="form-control" placeholder="Name"
+                   [(ngModel)]="item.value.display.name">
           </div>
         </div>
       </div>

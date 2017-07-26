@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
 
 import {
@@ -14,8 +14,8 @@ import { ZSocialPhotoRoutingModule } from './photo-routing.module';
   imports: [
     CommonModule,
     ZSocialPhotoRoutingModule,
-    SharedModule.forRoot(),
-    ZSocialSharedModule.forRoot()
+    ZSocialSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZSocialPhotoComponent,

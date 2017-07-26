@@ -49,7 +49,7 @@ export class WTHNavigateService {
     if(!this.inSameModule(baseUrl)) {
       window.location.href = this.buildUrl(baseUrl, path, queryParams);
       return;
-    };
+    }
   }
 
   private buildUrl(url: string, path: string, body?: any) {

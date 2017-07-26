@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Page404Component } from './page404.component';
 import { Page500Component } from './page500.component';
 import { PageErrorsRoutingModule } from './errors-routing.module';
+import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    PageErrorsRoutingModule
+    PageErrorsRoutingModule,
+    PortalSharedModule.forRoot()
   ],
   declarations: [
     Page404Component,

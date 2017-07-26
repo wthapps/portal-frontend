@@ -1,8 +1,10 @@
-import { BaseMenuItem } from '../../core/partials/zone/menu/base-menu-item';
+import { BaseMenuItem } from '../../core/shared/components/zone/menu/base-menu-item';
+
 export class ContactLeftMenuItem extends BaseMenuItem {
-  constructor(){
+  constructor() {
     super();
   }
+
   count?: number;
   hasSubMenu?: boolean;
   menuItems?: BaseMenuItem[];

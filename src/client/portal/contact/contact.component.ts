@@ -9,11 +9,11 @@ import {
 
 import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
 
-import { LoadingService } from '../../core/partials/loading/loading.service';
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
-import { CustomValidator } from '../../core/shared/validator/custom.validator';
-
 import { ContactService } from './contact.service';
+
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { CustomValidator } from '../../core/shared/validator/custom.validator';
 
 /**
  * This class represents the lazy loaded AboutComponent.

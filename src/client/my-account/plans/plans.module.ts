@@ -1,28 +1,25 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-
-import { PartialsModule } from '../../core/partials/partials.module';
-import { ACPlansService } from './plans.service';
-import { ACPlansRoutingModule } from './plans-routing.module';
-import { ACPlansComponent } from './plans.component';
+import { MyPlansRoutingModule } from './plans-routing.module';
+import { MySharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+import { MyPlansComponent } from './plans.component';
+import { MyPlansService } from './plans.service';
 
 
 @NgModule({
   imports: [
-    CommonModule,
-    ACPlansRoutingModule,
-    PartialsModule,
-    ReactiveFormsModule
+    MyPlansRoutingModule,
+    MySharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
-    ACPlansComponent
+    MyPlansComponent
   ],
   exports: [
-    ACPlansComponent
+    MyPlansComponent
   ],
-  providers: [ACPlansService]
+  providers: [MyPlansService]
 })
 
-export class ACPlansModule {
+export class MyPlansModule {
 }

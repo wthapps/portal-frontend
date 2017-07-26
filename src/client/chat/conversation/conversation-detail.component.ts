@@ -9,8 +9,8 @@ import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
 import { ConversationService } from './conversation.service';
 
-declare  var _: any;
-declare  var $: any;
+declare var _: any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -24,11 +24,10 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
 
   commonEventSub: Subscription;
 
-  constructor(
-    private chatService: ChatService,
-    private commonEventService: CommonEventService,
-    private conversationService: ConversationService
-  ) {}
+  constructor(private chatService: ChatService,
+              private commonEventService: CommonEventService,
+              private conversationService: ConversationService) {
+  }
 
   ngOnInit() {
 
@@ -47,10 +46,10 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
         this.messageEditor.updateAttributes({message: event.payload, mode: FORM_MODE.CREATE});
         this.messageEditor.focus();
         // Real copy
-        let temp = $("<input>");
-        $("body").append(temp);
+        let temp = $('<input>');
+        $('body').append(temp);
         temp.val(event.payload.message).select();
-        document.execCommand("copy");
+        document.execCommand('copy');
         temp.remove();
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_QUOTE:

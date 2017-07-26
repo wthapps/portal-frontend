@@ -5,7 +5,7 @@
     </hd-modal-header>
     <hd-modal-body>
       <div *ngIf="data">
-        <template [ngIf]="isAdmin">
+        <ng-template [ngIf]="isAdmin">
           <div class="mb20">Q
             <label>Privacy Settings</label>
             <div class="radio">
@@ -95,7 +95,7 @@
             </div>
           </div>
           <!--end Post Settings-->
-        </template>
+        </ng-template>
 
         <div class="mb20">
           <label>Notification</label>

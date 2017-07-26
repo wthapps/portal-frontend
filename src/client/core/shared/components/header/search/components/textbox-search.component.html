@@ -1,0 +1,12 @@
+<div class="input-group-wrap">
+  <div class="input-group">
+    <input #input type="text" name="search" class="form-control" [(ngModel)]="search" placeholder="{{placeholder}}">
+    <span class="input-group-btn">
+    <button class="btn btn-default" type="button" (click)="onEnter()"><i class="fa fa-search"></i></button>
+  </span>
+  </div>
+  <div class="input-group-suggestions">
+    <ng-content></ng-content>
+  </div>
+</div>
+

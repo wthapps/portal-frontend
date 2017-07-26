@@ -4,7 +4,7 @@
       <z-chat-share-user [data]="item.value">
         <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
-          {{item.value.group_json.member_count}} people <i
+          {{ item.value.group_json.member_count }} people <i
           [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
         </small>
       </z-chat-share-user>
@@ -30,8 +30,9 @@
           <!--show if current isn't one user-->
 
           <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
-          <li *ngIf="item.value.group_json.group_type == 'multiple'"><a href="javascript:;"
-                                                                        (click)="leaveConversation()">Leave Conversation</a></li>
+          <li *ngIf="item.value.group_json.group_type == 'multiple'">
+            <a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a>
+          </li>
           <!--show if current isn't one user-->
 
           <li><a href="javascript:;" (click)="onDeleteConversation()">Delete Conversation</a></li>
@@ -45,36 +46,42 @@
 
 
           <li role="separator" class="divider"></li>
-          <li *ngIf="item.value.notification"><a href="javascript:;" (click)="disableNotification()">Disable
-            Notification</a></li>
-          <li *ngIf="!item.value.notification"><a href="javascript:;" (click)="enableNotification()">Enable
-            Notification</a></li>
+          <li *ngIf="item.value.notification">
+            <a href="javascript:;" (click)="disableNotification()">Disable Notification</a>
+          </li>
+          <li *ngIf="!item.value.notification">
+            <a href="javascript:;" (click)="enableNotification()">Enable Notification</a>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 
 </div>
-<template [ngIf]="item.value && showMemberBar">
+<ng-template [ngIf]="item.value && showMemberBar">
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
-      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)" class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
+      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
+              class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
               data-toggle="dropdown">
-        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1" class="fa fa-circle online"></span>
-        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1" class="fa fa-circle offline"></span>
+        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1"
+              class="fa fa-circle online"></span>
+        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1"
+              class="fa fa-circle offline"></span>
         <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
-        {{user_in_group.name}} <span class="caret"></span>
+        {{ user_in_group.name }} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-lg">
         <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
         <!--<li class="divider"></li>-->
         <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>
         <li *ngIf="showBlacklist"><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
-        <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove From Conversation</a></li>
+        <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove
+          From Conversation</a></li>
       </ul>
     </div>
   </div>
-</template>
+</ng-template>
 
 
 <z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>

@@ -1,32 +1,27 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpModule } from '@angular/http';
+
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { SharedModule } from '../core/shared/shared.module';
+import { CoreSharedModule } from '../core/shared/shared.module';
+import { ZSocialSharedModule } from './shared/shared.module';
 
 import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialCommunityModule } from './communities/communities.module';
-import { ZSocialSharedModule } from './shared/shared.module';
-import { AppRoutingModule } from './app-routing.module';
-import { CoreModule } from '../core/core.module';
-import { SocialDataService } from './shared/services/social-data.service';
 import { SocialSettingsModule } from './settings/setting.module';
 import { ZSocialProfileModule } from './profile/profile.module';
 import { ZSocialPhotoModule } from './photo/photo.module';
 import { ZSocialSearchModule } from './search/search.module';
-import { PhotoService } from '../core/shared/services/photo.service';
-import { ZoneReportService } from '../core/shared/form/report/report.service';
 import { ZSocialMyProfileModule } from './my-profile/my-profile.module';
-
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
-    CoreModule.forRoot(),
-    SharedModule.forRoot(),
-    ZSocialSharedModule,
+    AppRoutingModule,
     ZSocialHomeModule,
     ZSocialCommunityModule,
     SocialSettingsModule,
@@ -34,36 +29,15 @@ import { ZSocialMyProfileModule } from './my-profile/my-profile.module';
     ZSocialPhotoModule,
     ZSocialSearchModule,
     ZSocialMyProfileModule,
-    AppRoutingModule
+    ZSocialSharedModule.forRoot(),
+    CoreSharedModule.forRoot(),
   ],
-
-  declarations: [AppComponent,
-    // ZSocialSettingComponent,
-    // ZSocialProfileComponent
-
-    // // Communities
-    // ZSocialCommunityComponent,
-    // ZSocialCommunityListComponent,
-    // ZSocialCommunityCoverComponent,
-    // ZSocialCommunityDetailComponent,
-    // // ZSocialCommunityDetailNotificationComponent,
-    // ComMemberListComponent,
-    // // InvitationListComponent,
-    // // ZSocialCommunityDetailAboutComponent,
-    // // ZSocialCommunityDetailPostComponent,
-    // ZSocialCommunityFormEditComponent,
-    // ZSocialCommunityFormPreferenceComponent,
-  ],
-  // providers: [{
-  //   provide: APP_BASE_HREF,
-  //   useValue: '<%= APP_BASE %>'
-  // }],
-  providers: [
-    SocialDataService,
-    ZoneReportService,
-    PhotoService
-  ],
+  declarations: [AppComponent],
+  providers: [{
+    provide: APP_BASE_HREF,
+    useValue: '<%= APP_BASE %>'
+  }],
   bootstrap: [AppComponent]
+
 })
-export class AppModule {
-}
+export class AppModule { }

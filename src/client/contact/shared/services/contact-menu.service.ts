@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Response, Http } from '@angular/http';
 import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/contact-three-dot.service';
@@ -9,12 +12,12 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 import { Constants } from '../../../core/shared/config/constants';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { ConfirmationService } from 'primeng/components/common/api';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 declare var _: any;
 
 @Injectable()
-export class ZContactMenuService extends BaseEntityService<any>{
+export class ZContactMenuService extends BaseEntityService<any> {
   private contactMenuSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
 
   contactsMenu$: Observable<Array<any>> = this.contactMenuSubject.asObservable();
@@ -24,8 +27,7 @@ export class ZContactMenuService extends BaseEntityService<any>{
               public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService,
               private toastsService: ToastsService,
-              private confirmationService: ConfirmationService
-  ) {
+              private confirmationService: ConfirmationService) {
     super(apiBaseService);
   }
 

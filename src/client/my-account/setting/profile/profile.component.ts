@@ -11,22 +11,21 @@ import {
 import { Constants } from '../../../core/shared/config/constants';
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 import { UserService } from '../../../core/shared/services/user.service';
-import { UploadCropImageComponent } from '../../../core/partials/upload-crop-image/upload-crop-image.component';
-
-import { CountryService } from '../../../core/partials/countries/countries.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { CountryService } from '../../../core/shared/components/countries/countries.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { UploadCropImageComponent } from '../../../core/shared/components/upload-crop-image/upload-crop-image.component';
 
 declare var $: any;
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-setting-profile',
+  selector: 'my-setting-profile',
   templateUrl: 'profile.component.html'
 })
 
-export class ACProfileComponent implements OnInit {
+export class MyProfileComponent implements OnInit {
   @ViewChild('uploadProfile') uploadProfile: UploadCropImageComponent;
 
   pageTitle: string = 'Profile';
@@ -56,13 +55,11 @@ export class ACProfileComponent implements OnInit {
 
   submitted: boolean = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(public userService: UserService,
+              private fb: FormBuilder,
               private countryService: CountryService,
-              public userService: UserService,
               private toastsService: ToastsService,
-              private loadingService: LoadingService,
-              //2 private deactivateConfirmService: DeactivateConfirmService,
-  ) {
+              private loadingService: LoadingService) {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
 

@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/cor
 // import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { PostEditComponent } from './index';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { User } from '../../../core/shared/models/user.model';
 import { SocialService } from '../services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';

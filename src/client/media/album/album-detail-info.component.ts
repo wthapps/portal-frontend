@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, OnChanges, OnInit } from '@angular/core';
+import { Component, Output, Input, EventEmitter, OnChanges } from '@angular/core';
 import { Album } from '../shared/model/album.model';
 
 @Component({
@@ -8,7 +8,7 @@ import { Album } from '../shared/model/album.model';
   styleUrls: ['album-detail-info.component.css'],
 })
 
-export class AlbumDetailInfoComponent implements OnInit, OnChanges {
+export class AlbumDetailInfoComponent implements OnChanges {
 
   @Input() object: any;
   @Output() closeInfo: EventEmitter<any> = new EventEmitter<any>();
@@ -18,10 +18,6 @@ export class AlbumDetailInfoComponent implements OnInit, OnChanges {
 
   albumData: Album = null;
 
-  constructor() {
-
-  }
-
   updateProperties(properties: any) {
     if (properties.hasOwnProperty('object')) {
       this.object = properties.object;
@@ -30,10 +26,6 @@ export class AlbumDetailInfoComponent implements OnInit, OnChanges {
 
   onClose() {
     this.closeInfo.emit();
-  }
-
-  ngOnInit() {
-
   }
 
   ngOnChanges() {

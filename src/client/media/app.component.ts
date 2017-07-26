@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-
-import { Config } from '../core/shared/config/env.config';
-
 import { Subscription } from 'rxjs/Subscription';
 import './operators';
 import 'rxjs/add/operator/filter';
+
+import { Config } from '../core/shared/config/env.config';
+
 
 /**
  * This class represents the main application component.
@@ -14,6 +14,7 @@ import 'rxjs/add/operator/filter';
   moduleId: module.id,
   selector: 'sd-app',
   templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
@@ -34,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
   }
 
-  onAction(event: any) {
-    console.log('app - onAction');
+  onAction(e: any) {
+    console.log(e);
   }
 }

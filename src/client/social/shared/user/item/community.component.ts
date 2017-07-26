@@ -5,7 +5,7 @@ import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Constants } from '../../../../core/shared/config/constants';
 import { ServiceManager } from '../../../../core/shared/services/service-manager';
-import { ZoneReportService } from '../../../../core/shared/form/report/report.service';
+import { ZSharedReportService } from '../../../../core/shared/components/zone/report/report.service';
 
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
@@ -41,7 +41,7 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
               private confirmationService: ConfirmationService,
               private socialService: SocialService,
               private favoriteService: SocialFavoriteService,
-              private zoneReportService: ZoneReportService,
+              private zoneReportService: ZSharedReportService,
               private resolver: ComponentFactoryResolver) {
   }
 
@@ -79,12 +79,12 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
 
   confirmLeaveCommunity() {
     this.socialService.community.confirmLeaveCommunity(this.data).then((res: any) => {
-      this.actionFromItem.emit(
-        {
-          action: 'delete',
-          data: this.data
-        }
-      );
+        this.actionFromItem.emit(
+          {
+            action: 'delete',
+            data: this.data
+          }
+        );
       }
     );
   }

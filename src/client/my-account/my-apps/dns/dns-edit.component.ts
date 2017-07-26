@@ -8,15 +8,13 @@ import {
   FormControl
 } from '@angular/forms';
 
-import { MenuItemBreadcrumb } from '../../../core/partials/breadcrumb/breadcrumb';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
-
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 import { UserService } from '../../../core/shared/services/user.service';
 import { Constants } from '../../../core/shared/config/constants';
-
-import { ACDNSService } from './dns.service';
+import { MenuItemBreadcrumb } from '../../../core/shared/components/breadcrumb/breadcrumb';
+import { MyDNSService } from './dns.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 @Component({
   moduleId: module.id,
@@ -24,7 +22,7 @@ import { ACDNSService } from './dns.service';
   templateUrl: 'dns-edit.component.html'
 })
 
-export class ACDNSEditComponent implements OnInit {
+export class MyDNSEditComponent implements OnInit {
   panelTitle: string = 'Add Host';
   errorMessage: string = '';
 
@@ -41,7 +39,7 @@ export class ACDNSEditComponent implements OnInit {
   private dns_id: number = 0;
   private sub: any;
 
-  constructor(private dnsService: ACDNSService,
+  constructor(private dnsService: MyDNSService,
               private router: Router,
               private fb: FormBuilder,
               private route: ActivatedRoute,

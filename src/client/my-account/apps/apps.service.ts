@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
 @Injectable()
-export class ACAppsService {
+export class MyAppsService {
 
   constructor(private apiBaseService: ApiBaseService) {
   }

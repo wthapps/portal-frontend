@@ -1,35 +1,33 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
-import { PartialsModule } from '../../core/partials/partials.module';
+import { MyAppsRoutingModule } from './apps-routing.module';
+import { MyAppsComponent } from './apps.component';
+import { MyAppsListComponent } from './list/list.component';
+import { MyAppsDetailComponent } from './detail/detail.component';
+import { MyAppsService } from './apps.service';
 
-import { ACAppsRoutingModule } from './apps-routing.module';
-import { ACAppsComponent } from './apps.component';
-import { ACAppsListComponent } from './list/list.component';
-import { ACAppsDetailComponent } from './detail/detail.component';
-import { ACAppsService } from './apps.service';
-import { ACAppsSharedModule } from './shared/shared.module';
+import { MyAppsSharedModule } from './shared/shared.module';
+import { MySharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 
 @NgModule({
   imports: [
-    CommonModule,
-    PartialsModule,
-    ReactiveFormsModule,
-    ACAppsRoutingModule,
-    ACAppsSharedModule.forRoot()
+    MyAppsRoutingModule,
+    MyAppsSharedModule.forRoot(),
+    MySharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
-    ACAppsComponent,
-    ACAppsListComponent,
-    ACAppsDetailComponent
+    MyAppsComponent,
+    MyAppsListComponent,
+    MyAppsDetailComponent
   ],
   exports: [
-    ACAppsComponent
+    MyAppsComponent
   ],
-  providers: [ACAppsService]
+  providers: [MyAppsService]
 })
 
-export class ACAppsModule {
+export class MyAppsModule {
 }

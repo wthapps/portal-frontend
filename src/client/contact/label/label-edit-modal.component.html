@@ -1,6 +1,6 @@
 <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <modal-header [show-close]="true">
-    <h4 class="modal-title"><i class="fa" [ngClass]="titleIcon"></i> {{titleName}}</h4>
+    <h4 class="modal-title"><i class="fa" [ngClass]="titleIcon"></i> {{ titleName }}</h4>
   </modal-header>
 
   <form [formGroup]="form" novalidate>
@@ -23,7 +23,9 @@
     </modal-body>
 
     <modal-footer>
-      <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine" class="btn btn-primary-inline">Done</button>
+      <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine" class="btn btn-primary-inline">
+        Done
+      </button>
       <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </form>

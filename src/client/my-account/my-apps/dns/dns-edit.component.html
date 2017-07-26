@@ -6,7 +6,7 @@
         <div class="col-sm-10 col-md-9">
           <div class="box-panel">
             <div class="box-panel-top">
-              <h3>{{panelTitle}}</h3>
+              <h3>{{ panelTitle }}</h3>
             </div>
             <div class="box-panel-body">
               <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
@@ -46,7 +46,7 @@
                     </div>
                   </div>
                 </div>
-                <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">{{panelTitle}}
+                <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10">{{ panelTitle }}
                 </button>
                 <a (click)="onBack($event)" class="btn btn-default btn-min">Cancel</a>
               </form>

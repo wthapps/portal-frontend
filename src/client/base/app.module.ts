@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { BaseHomeModule } from './home/home.module';
-import { SharedModule } from '../core/shared/shared.module';
+import { BaseSharedModule } from './shared/shared.module';
+import { CoreSharedModule } from '../core/shared/shared.module';
+
 
 @NgModule({
   imports: [
@@ -14,7 +16,8 @@ import { SharedModule } from '../core/shared/shared.module';
     HttpModule,
     AppRoutingModule,
     BaseHomeModule,
-    SharedModule.forRoot()
+    BaseSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [AppComponent],
   providers: [{
@@ -24,5 +27,4 @@ import { SharedModule } from '../core/shared/shared.module';
   bootstrap: [AppComponent]
 
 })
-export class AppModule {
-}
+export class AppModule { }

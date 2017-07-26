@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 @Component({
   moduleId: module.id,
@@ -31,22 +31,19 @@ export class ContactEditPageComponent implements OnInit {
       }]
     }
   );
-  mode: string ='view';
+  mode: string = 'view';
   pageTitle: string;
 
-  constructor(
-    private router: Router,
-    private contactService: ZContactService,
-    private route: ActivatedRoute,
-    private toastsService: ToastsService,
-
-  ) {
+  constructor(private router: Router,
+              private contactService: ZContactService,
+              private route: ActivatedRoute,
+              private toastsService: ToastsService) {
   }
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       let id = params['id'];
-      if(params['mode'] !== undefined) {
+      if (params['mode'] !== undefined) {
         this.mode = params['mode'];
       } else {
         this.mode = 'create';
@@ -57,9 +54,9 @@ export class ContactEditPageComponent implements OnInit {
       }
     });
 
-    if(this.mode === 'view') {
+    if (this.mode === 'view') {
       this.pageTitle = 'Contact details';
-    } else if(this.mode == 'create') {
+    } else if (this.mode == 'create') {
       this.pageTitle = 'Create contact'
     } else {
       this.pageTitle = 'Edit contact';
@@ -69,7 +66,7 @@ export class ContactEditPageComponent implements OnInit {
   doEvent(event: any) {
     console.log('doing event::::', event, event.payload.item);
 
-    switch(event.action) {
+    switch (event.action) {
       case 'contact:contact:create':
         this.contactService.create(event.payload.item).subscribe((response: any) => {
           this.toastsService.success('Contact has been just created successfully!');
@@ -84,7 +81,7 @@ export class ContactEditPageComponent implements OnInit {
   }
 
   gotoEdit() {
-    this.router.navigate(['/contacts', this.contact.id, {mode:'edit'}]);
+    this.router.navigate(['/contacts', this.contact.id, {mode: 'edit'}]);
     this.pageTitle = 'Edit contact';
   }
 

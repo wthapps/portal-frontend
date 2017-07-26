@@ -2,17 +2,17 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { ZChatProfileRoutingModule } from './profile-routing.module';
-import { ChatSharedModule } from '../shared/shared.module';
 import { ZChatProfileComponent } from './profile.component';
-import { SharedModule } from '../../core/shared/shared.module';
+import { ZChatSharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ZChatProfileRoutingModule,
-    SharedModule.forRoot(),
-    ChatSharedModule.forRoot()
+    ZChatSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZChatProfileComponent

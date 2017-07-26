@@ -40,8 +40,6 @@ ts-node
 *.iml
 
 /tools/**/*.js
-/src/client/**/**/**/*.js
-/src/client/**/**/*.js
 dist
 dev
 docs

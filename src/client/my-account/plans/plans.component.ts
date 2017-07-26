@@ -1,37 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
+import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { Product } from '../../core/shared/models/product.model';
 import { Plan } from '../../core/shared/models/plan.model';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 import { UserService } from '../../core/shared/services/user.service';
-import { ACPlansService } from './plans.service';
 import { Constants } from '../../core/shared/config/constants';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { MyPlansService } from './plans.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-plans',
+  selector: 'my-plans',
   templateUrl: 'plans.component.html'
 })
 
-export class ACPlansComponent implements OnInit {
+export class MyPlansComponent implements OnInit {
   pageTitle: string = 'Plan Options';
 
   products: Product[] = [];
   plans: Plan[] = [];
 
-  private cookieOptionsArgs: CookieOptionsArgs = {
+  private cookieOptionsArgs: CookieOptions = {
     path: '/',
     domain: Constants.baseUrls.domain,
     expires: new Date('2030-07-19')
   };
+
   constructor(private router: Router,
               private loadingService: LoadingService,
               private userService: UserService,
-              private plansService: ACPlansService,
+              private plansService: MyPlansService,
               private cookieService: CookieService) {
     //console.log(this.userService)
   }

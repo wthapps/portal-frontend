@@ -10,22 +10,15 @@ import { ContactRoutingModule } from './contact-routing.module';
 // import { ZNewContactComponent } from './new/new-contact.component';
 // import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
 
-import {
-  ContactEditPageComponent,
-  ContactEditComponent
-} from './index';
-import { FormsModule } from '@angular/forms';
 import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+import { ContactEditPageComponent } from './contact-edit/contact-edit-page.component';
+import { ContactEditComponent } from './contact-edit/contact-edit.component';
 
 @NgModule({
   imports: [
     CommonModule,
     ContactRoutingModule,
-    ZContactSharedModule.forRoot(),
-
-    SharedModule.forRoot(),
-
     ZContactHomeModule,
     // ZContactListModule,
     // ZNewContactComponent,
@@ -34,8 +27,10 @@ import { SharedModule } from '../../core/shared/shared.module';
     ZContactHomeModule,
     // ZContactListModule,
     // ZNewContactModule,
-    // ZContactDetailModule
+    // ZContactDetailModule,
 
+    ZContactSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZContactListComponent,

@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ZNewContactRoutingModule } from './new-contact-routing.module';
 import { ZNewContactComponent } from './new-contact.component';
-import { SharedModule } from '../../../core/shared/shared.module';
 import { ZContactSharedModule } from '../../shared/shared.module';
+import { CoreSharedModule } from '../../../core/shared/shared.module';
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ZNewContactRoutingModule,
-    SharedModule.forRoot(),
-    ZContactSharedModule.forRoot()
+    ZContactSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZNewContactComponent

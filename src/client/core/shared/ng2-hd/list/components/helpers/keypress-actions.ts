@@ -22,8 +22,9 @@ export function getAction(key: number): () => any {
       action = switchNext;
       break;
     default:
-      return () => {
-      };
+      /*return () => {
+      };*/
+      break;
   }
 
   return action;

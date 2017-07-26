@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ZContactService } from '../../services/contact.service';
 import { RouterLinkActive, Router } from '@angular/router';
+import { ZContactService } from '../../services/contact.service';
 import { Config } from '../../../../core/shared/config/env.config';
 
 declare var _: any;

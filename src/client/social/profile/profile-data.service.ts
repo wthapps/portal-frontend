@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
  * This class provides the ZSocialProfileService service with methods to read info and add info.

@@ -1,0 +1,35 @@
+<div class="panel panel-default" *ngIf="data">
+  <div class="panel-body">
+    <div class="media-left">
+       <span class="avatar-md">
+         <img [src]="data.profile_image" alt="">
+       </span>
+    </div>
+    <div class="media-body">
+      <div class="media-heading">{{ data.name }}</div>
+      <p>{{ data.nickname }}</p>
+    </div>
+    <div class="media-right">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Information</h4>
+    </modal-header>
+    <modal-body>
+      <div *ngFor="let question of questions" class="form-row">
+        <df-question [question]="question" [form]="form"></df-question>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
+      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

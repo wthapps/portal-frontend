@@ -3,6 +3,13 @@ import {
   Renderer, ElementRef
 } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
+
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/do';
+
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
@@ -11,9 +18,8 @@ import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialService } from '../services/social.service';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { Subscription, Observable } from 'rxjs';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
-import { EntitySelectComponent } from '../../../core/partials/entity-select/entity-select.component';
+import { EntitySelectComponent } from '../../../core/shared/components/entity-select/entity-select.component';
 
 
 declare var _: any;

@@ -2,7 +2,7 @@
   margin-bottom: 20px;
   .payment-method-credit {
     display: inline-block;
-    background-image: url('../images/card/credit_card.png');
+    background-image: url('/assets/images/card/credit_card.png');
     background-position: left center;
     background-repeat: no-repeat;
     width: 306px;
@@ -14,7 +14,7 @@
   }
   .payment-method-paypal {
     @extend .payment-method-credit;
-    background-image: url('../images/card/paypal.png');
+    background-image: url('/assets/images/card/paypal.png');
     width: 48px;
   }
 }

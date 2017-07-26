@@ -1,8 +1,8 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">{{pageTitle}}</h3>
+  <h3 class="box-panel-title">{{ pageTitle }}</h3>
   <h4 class="box-panel-subtitle">Plan</h4>
   <div *ngIf="userService.profile.plan.is_trial">
-    <p class="p-plan-info"><span>{{userService.profile.plan.name}}</span>
+    <p class="p-plan-info"><span>{{ userService.profile.plan.name }}</span>
       <!-- - 8 days left-->
     </p>
     <p>
@@ -10,8 +10,8 @@
     </p>
   </div>
   <div *ngIf="!userService.profile.plan.is_trial">
-    <p class="p-plan-info"><span>{{userService.profile.plan.name}}</span>
-      - Activated on {{userService.profile.plan_registered_at | date:'yMMMd'}}</p>
+    <p class="p-plan-info"><span>{{ userService.profile.plan.name }}</span>
+      - Activated on {{ userService.profile.plan_registered_at | date:'yMMMd' }}</p>
     <p>
       <button (click)="cancelPlan()" class="btn btn-default2 btn-min">Downgrade</button>
     </p>
@@ -50,25 +50,25 @@
         <p>New password must:</p>
         <ul [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
 
-          <template [ngIf]="!password.valid">
-            <template [ngIf]="password.errors.required">
+          <ng-template [ngIf]="!password.valid">
+            <ng-template [ngIf]="password.errors.required">
               <li>Contain at least 8 characters or more</li>
-            </template>
-            <template [ngIf]="password.errors.minlength">
+            </ng-template>
+            <ng-template [ngIf]="password.errors.minlength">
               <li class="text-danger">Contain at least 8 characters or more</li>
-            </template>
-            <template [ngIf]="!password.errors.required && !password.errors.minlength">
+            </ng-template>
+            <ng-template [ngIf]="!password.errors.required && !password.errors.minlength">
               <li class="text-success">Contain at least 8 characters or more</li>
-            </template>
+            </ng-template>
             <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and lowercase characters</li>
             <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number or symbol</li>
 
-          </template>
-          <template [ngIf]="password.valid">
+          </ng-template>
+          <ng-template [ngIf]="password.valid">
             <li>Contain at least 8 characters or more</li>
             <li>Contain both uppercase and lowercase characters</li>
             <li>Contain at least one number or symbol</li>
-          </template>
+          </ng-template>
         </ul>
       </div>
     </div>

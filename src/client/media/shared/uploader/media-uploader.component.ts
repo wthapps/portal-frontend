@@ -15,7 +15,7 @@ import { Photo } from '../../../core/shared/models/photo.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
-import { ModalDockComponent } from '../../../core/partials/modal/dock.component';
+import { ModalDockComponent } from '../../../core/shared/components/modal/dock.component';
 import { Router } from '@angular/router';
 import { MediaUploaderDataService } from './media-uploader-data.service';
 

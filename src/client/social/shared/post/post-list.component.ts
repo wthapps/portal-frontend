@@ -1,15 +1,25 @@
 import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { Subscription} from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/merge';
+
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { SocialService } from '../../shared/services/social.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
-import { Subscription, Observable, Subject } from 'rxjs';
+
+
+
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { UserService } from '../../../core/shared/services/user.service';
 

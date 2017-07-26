@@ -1,12 +1,15 @@
-import { Component, ViewChild, HostListener, OnInit, HostBinding, OnDestroy, ElementRef } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/merge';
+
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+
+import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
+import { FORM_MODE } from '../../../../core/shared/constant/chat-constant';
 import { ZChatEmojiService } from '../../../../core/shared/emoji/emoji.service';
 import { ChatService } from '../../services/chat.service';
-import { PostPhotoSelectComponent } from '../../../../core/partials/zone/photo/post-upload-photos/post-photo-select.component';
-import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
-import { Subscription } from 'rxjs/Subscription';
-import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
-import { FORM_MODE } from '../../../../core/shared/constant/chat-constant';
-import { FormGroup, AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
+
 import { Message } from '../../models/message.model';
 
 
@@ -35,11 +38,9 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   private pressingShiftKey: boolean = false;
   private messageEditorId = '#chat-message-text';
 
-  constructor(
-    private chatService: ChatService,
-    private photoSelectDataService: PhotoModalDataService,
-    private fb: FormBuilder
-  ) {
+  constructor(private chatService: ChatService,
+              private photoSelectDataService: PhotoModalDataService,
+              private fb: FormBuilder) {
     this.createForm();
   }
 
@@ -85,7 +86,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
       if (!this.pressingShiftKey) {
         // if (!this.pressingShiftKey && this.messageEditorForm.valid) {
 
-          this.send(true);
+        this.send(true);
       }
     }
 
@@ -107,26 +108,26 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
 
   updateAttributes(attributes: any) {
-    if('message' in attributes) {
+    if ('message' in attributes) {
       this.message = attributes.message;
-      if(this.message.message_type == 'text') {
+      if (this.message.message_type == 'text') {
         this.setEditor(this.message);
       }
     }
-    if('appendedMessage' in attributes) {
+    if ('appendedMessage' in attributes) {
       this.appendedMessages.push(attributes.appendedMessage);
       this.message = attributes.appendedMessage;
       // this.message.message += this.buildQuoteMessage(attributes.appendedMessage);
 
       console.log('testing:::::::::', this.appendedMessages[0]);
     }
-    if('mode' in attributes) {
+    if ('mode' in attributes) {
       this.mode = attributes.mode;
     }
   }
 
   focus() {
-      //set background color #ffd when editing
+    //set background color #ffd when editing
   }
 
   cancelEditingMessage() {
@@ -152,9 +153,9 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
         (response: any) => {
           this.mode = FORM_MODE.CREATE;
           this.resetEditor();
-      },
-      error => {
-      });
+        },
+        error => {
+        });
 
     } else {
       this.chatService.sendTextMessage(this.message.message, {toTop: true});

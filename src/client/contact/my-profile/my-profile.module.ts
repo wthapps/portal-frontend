@@ -3,14 +3,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ZContactMyProfileRoutingModule } from './my-profile-routing.module';
 import { ZContactMyProfileComponent } from './my-profile.component';
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ZContactMyProfileRoutingModule,
-    SharedModule.forRoot()
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZContactMyProfileComponent

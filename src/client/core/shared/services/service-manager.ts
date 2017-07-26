@@ -12,16 +12,14 @@ import { CommonEventService } from './common-event/common-event.service';
 @Injectable()
 export class ServiceManager {
 
-  constructor(
-    private apiBaseService: ApiBaseService,
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private storageService: StorageService,
-    private router: Router,
-    private chatCommonService: ChatCommonService,
-    private commonEventService: CommonEventService,
-    private notificationService: NotificationService
-  ) {
+  constructor(private apiBaseService: ApiBaseService,
+              private fb: FormBuilder,
+              private route: ActivatedRoute,
+              private storageService: StorageService,
+              private router: Router,
+              private chatCommonService: ChatCommonService,
+              private commonEventService: CommonEventService,
+              private notificationService: NotificationService) {
   }
 
   getApi() {

@@ -11,7 +11,7 @@ export class SearchInputAccessor implements ControlValueAccessor {
 
   public get items(): Array<any> {
     return this._items;
-  };
+  }
 
   public set items(items: Array<any>) {
     this._items = items;

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChatSharedModule } from '../shared/shared.module';
-import { SharedModule } from '../../core/shared/shared.module';
+import { ZChatSharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZChatHistoryRoutingModule } from './history-routing.module';
 import { ZChatHistoryComponent } from './history.component';
 
@@ -10,8 +10,8 @@ import { ZChatHistoryComponent } from './history.component';
   imports: [
     ReactiveFormsModule,
     ZChatHistoryRoutingModule,
-    SharedModule.forRoot(),
-    ChatSharedModule.forRoot()
+    ZChatSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZChatHistoryComponent

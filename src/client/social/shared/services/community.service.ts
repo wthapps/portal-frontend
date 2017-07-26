@@ -6,8 +6,8 @@ import { ConfirmationService } from 'primeng/components/common/api';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from '../../../core/shared/services/user.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 declare let _: any;
 /**

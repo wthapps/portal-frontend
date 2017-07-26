@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ZContactSharedListComponent } from './list/list.component';
 import { ZContactSharedItemComponent } from './list/item/item.component';
 import { ZContactService } from './services/contact.service';
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
 import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
 import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
@@ -14,12 +14,10 @@ import { ZContactAddContactService } from './modal/add-contact/add-contact.servi
 import { GoogleApiService } from './services/google-api.service';
 import { TagInputModule } from 'ng2-tag-input';
 
+import { ZContactShareAddContactComponent } from './modal/add-contact/add-contact.component';
+import { ContactAddLabelModalComponent } from './modal/contact-add-label/contact-add-label-modal.component';
+import { ContactEditLabelModalComponent } from './modal/contact-edit-label/contact-edit-label-modal.component';
 
-import {
-  ZContactShareAddContactComponent,
-  ContactAddLabelModalComponent,
-  ContactEditLabelModalComponent
-} from './modal/index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
 import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
@@ -41,7 +39,7 @@ import { ZContactMenuService } from './services/contact-menu.service';
     // third party libs
     TagInputModule,
 
-    SharedModule.forRoot()
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZContactSharedListComponent,

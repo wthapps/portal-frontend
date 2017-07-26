@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import 'rxjs/add/operator/switchMap';
+
 import { SocialService } from '../shared/services/social.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/shared/services/user.service';

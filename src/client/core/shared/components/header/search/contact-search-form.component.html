@@ -1,0 +1,26 @@
+<div *ngIf="active" class="navbar-form navbar-left">
+  <div class="navbar-searchTop navbar-searchUser">
+    <div class="input-group">
+      <p-autoComplete [(ngModel)]="searchText"
+                      (completeMethod)="getSuggestions($event)"
+                      [minLength]="1"
+                      placeholder=""
+                      (keyup.enter)="onEnter()"
+                      (keyup.esc)="onEscape()"
+                      (onSelect)="onSelect($event)">
+        <ng-template let-item pTemplate="item">
+          <a class="can-click" [routerLink]="['/contacts', item.id]">
+            <span class="avatar-xxs"><img [src]="item.profile_image" alt=""></span>
+            {{ item.name }}
+          </a>
+        </ng-template>
+      </p-autoComplete>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">
+          <i class="fa fa-search" aria-hidden="true" (click)="onEnter()"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+
+</div>

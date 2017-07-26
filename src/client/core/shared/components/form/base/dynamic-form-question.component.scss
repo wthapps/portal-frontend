@@ -1,0 +1,24 @@
+@import "../../../../scss/global";
+@import "../../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/grid";
+
+
+.df-form {
+  .df-form-label {
+    margin-top: 10px;
+  }
+  .df-form-content {
+    .df-form-el {
+      width: 100%;
+      border-radius: 5px;
+    }
+  }
+  .error {
+    @extend .col-lg-offset-3;
+    @extend .col-md-offset-3;
+    @extend .col-sm-offset-3;
+  }
+}
+.form-group:before {
+  top: 10px;
+  right: 20px;
+}

@@ -6,7 +6,7 @@
   <div class="message-item-content">
     <div class="message-item-owner" *ngIf="hasShowOwner() && message.display">
       <h4 class="message-item-owner-name">
-        <a [routerLink]="[profileUrl, message.display.uuid]"> {{message.display.name}} </a>
+        <a [routerLink]="[profileUrl, message.display.uuid]"> {{ message.display.name }} </a>
       </h4>
       <figure class="message-item-owner-avatar">
         <span class="avatar-xs">
@@ -57,7 +57,7 @@
           <span [innerHtml]="message.message | wthEmojis | linkify | safeHtml"></span>
         </div>
 
-        <template [ngIf]="message.message_type == 'file'">
+        <ng-template [ngIf]="message.message_type == 'file'">
           <!--photo type-->
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Photo'">
             <figure>
@@ -65,7 +65,7 @@
                 <img [src]="message.file_json.url" alt="">
               </a>
             </figure>
-            {{message.to_json}}
+            {{ message.to_json }}
           </div>
           <div class="message-item-content-other-files" *ngIf="message.file_type == 'FileMedium'">
             <a class="media-div link-text" [href]="message.file_json.url" target="_blank" download>
@@ -73,21 +73,21 @@
                 <i class="fa fa-file-o"></i>
               </div>
               <div class="media-div-body">
-                <div class="media-div-heading">{{message.file_json.name}}</div>
-                <div class="text-fade">{{message.file_json.size | bytes:3}}</div>
+                <div class="media-div-heading">{{ message.file_json.name }}</div>
+                <div class="text-fade">{{ message.file_json.size | bytes:3 }}</div>
               </div>
             </a>
           </div>
-        </template>
+        </ng-template>
 
 
-        <template [ngIf]="message.message_type == 'file_tmp'">
+        <ng-template [ngIf]="message.message_type == 'file_tmp'">
           <!--other file types-->
           <div class="message-item-content-other-files">
             <i class="fa fa-spinner fa-spin fa-fw"></i> Sending ...
           </div>
 
-        </template>
+        </ng-template>
 
 
         <!--hyperlink tpe-->
@@ -115,7 +115,7 @@
               </span>
             </div>
             <div class="media-div-body">
-              <a href="profile/{{message.display.share_contact.uuid}}" class="media-heading bold">{{message.display.share_contact.name}}</a>
+              <a href="profile/{{ message.display.share_contact.uuid }}" class="media-heading bold">{{ message.display.share_contact.name }}</a>
               <div class="mt15" *ngIf="!message.byMe">
                 <button class="btn btn-wth-default" (click)="onAdd(message.display.share_contact)">
                   <i class="fa fa-user-plus"></i> Add to Contact
@@ -180,7 +180,7 @@
       <div class="message-item-action"
            *ngIf="(message.message_type == 'text' || message.message_type == 'Photo' || message.message_type == 'FileMedium')">
         <div class="message-item-time">
-          <small>{{message.created_at | timeFormat: "time_only"}}</small>
+          <small>{{ message.created_at | timeFormat: "time_only" }}</small>
         </div>
       </div>
       <div class="message-item-status">
@@ -200,8 +200,8 @@
 
 
 <div *ngIf="message.message_type == 'notification'" class="p20 text-center">
-  <div><span class="text-bold">{{message.display.name}}</span> {{message.message}}</div>
+  <div><span class="text-bold">{{ message.display.name }}</span> {{ message.message }}</div>
   <div class="text-fade">
-    <small>{{message.created_at | timeFormat: "time_only"}}</small>
+    <small>{{ message.created_at | timeFormat: "time_only" }}</small>
   </div>
 </div>

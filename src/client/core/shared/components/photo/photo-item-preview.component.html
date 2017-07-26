@@ -1,6 +1,6 @@
 <div class="row-img row-img-10 grid">
   <div *ngIf="photo||files" class="row-img-item">
-    <template [ngIf]="hasUploadingPhoto">
+    <ng-template [ngIf]="hasUploadingPhoto">
       <div class="photo-box">
         <div class="photo-box-action">
           <i class="fa fa-remove"
@@ -14,9 +14,9 @@
           </figure>
         </div>
       </div>
-    </template>
+    </ng-template>
 
-    <template [ngIf]="!hasUploadingPhoto">
+    <ng-template [ngIf]="!hasUploadingPhoto">
       <div class="photo-box">
         <div class="photo-box-action">
           <i class="fa fa-remove"
@@ -33,6 +33,6 @@
           </figure>
         </div>
       </div>
-    </template>
+    </ng-template>
   </div>
 </div>

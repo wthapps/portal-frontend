@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-
 import { ZMediaSharingService } from './sharing.service';
-import { Subject } from 'rxjs';
 import { Constants } from '../../../../config/constants';
 import { WthAppsBaseModal } from '../../../../interfaces/wthapps-base-modal';
 
@@ -52,10 +54,10 @@ export class SharingModalComponent implements OnInit, OnDestroy {
     this.contactTerm$
       .debounceTime(Constants.searchDebounceTime)
       .distinctUntilChanged()
-      .switchMap((term: any) => this.mediaSharingService.getContacts( term.query))
-      .subscribe( (res: any) => {
+      .switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
+      .subscribe((res: any) => {
           this.filteredContacts = res['data'];
-        }, (error : any)=> {
+        }, (error: any)=> {
           console.log('error', error);
         }
       );
@@ -75,7 +77,7 @@ export class SharingModalComponent implements OnInit, OnDestroy {
     console.log('Sharing selectedItems: ', options['selectedObjects']);
     this.getShared();
     this.modal.open(options)
-      .then((res:any) => console.log('Sharing modal opened!!!', res));
+      .then((res: any) => console.log('Sharing modal opened!!!', res));
   }
 
   close(options?: any) {
@@ -83,12 +85,14 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   }
 
   getShared() {
-    let body = {photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id')
-      , albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id')};
+    let body = {
+      photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id')
+      , albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id')
+    };
     this.mediaSharingService.getShared(body).take(1).subscribe((res: any)=> {
       // this.sharedContacts = res.data['contacts'];
-      this.sharedContacts = _.get(res, 'data.contacts', [] );
-      this.sharedContactGroups = _.get(res, 'data.contactgroups', [] );
+      this.sharedContacts = _.get(res, 'data.contacts', []);
+      this.sharedContactGroups = _.get(res, 'data.contactgroups', []);
     });
   }
 
@@ -172,9 +176,11 @@ export class SharingModalComponent implements OnInit, OnDestroy {
         });
 
     } else { // save adding sharing
-      let body = { photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
-          albums:  _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
-          contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')};
+      let body = {
+        photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
+        albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
+        contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
+      };
 
       // Only subscribe to this action once
       this.mediaSharingService.add(body).take(1).subscribe((res: any) => {
@@ -183,8 +189,8 @@ export class SharingModalComponent implements OnInit, OnDestroy {
           this.selectedContacts = [];
           this.selectedContactGroups = [];
 
-        //  TODO: Update sharing result to invoked component: Album detail, photo detail ...
-        this.updateSelectedItems({contacts: this.sharedContacts});
+          //  TODO: Update sharing result to invoked component: Album detail, photo detail ...
+          this.updateSelectedItems({contacts: this.sharedContacts});
         },
         (error: any) => {
           console.log('error', error);
@@ -199,13 +205,13 @@ export class SharingModalComponent implements OnInit, OnDestroy {
 
   // Update sharing info for selected items
   updateSelectedItems(properties: any) {
-    for (let i=0; i< this.selectedItems.length; i++) {
-      if (!_.isEmpty(this.selectedItems[i].json_shares))
+    for (let i = 0; i < this.selectedItems.length; i++) {
+      if (!_.isEmpty(this.selectedItems[i].json_shares)) {
         _.extend(this.selectedItems[i].json_shares, properties);
-      else
+      } else {
         this.selectedItems[i].json_shares = properties;
-    };
-
+      }
+    }
   }
 
   cancel() {

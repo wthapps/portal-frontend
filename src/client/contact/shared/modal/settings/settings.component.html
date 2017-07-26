@@ -14,9 +14,9 @@
                             (completeMethod)="filterCountriesCode($event)" [size]="30"
                             [minLength]="1" placeholder="Select your country" [dropdown]="true"
                             (onDropdownClick)="handleDropdownClick($event)">
-              <template ngFor let-code let-i="index" pTemplate="item">
+              <ng-template ngFor let-code let-i="index" pTemplate="item">
                 <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
-              </template>
+              </ng-template>
             </p-autoComplete>
           </div>
         </div>

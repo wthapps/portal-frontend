@@ -1,0 +1,76 @@
+@import '../../../../../scss/global';
+
+:host {
+  display: block;
+
+  & /deep/ {
+    .input-group {
+      width: 100%;
+      .form-control {
+        position: relative;
+        z-index: 1;
+        -webkit-border-radius: $border-radius-base;
+        -moz-border-radius: $border-radius-base;
+        border-radius: $border-radius-base;
+      }
+      .input-group-btn {
+        position: absolute;
+        right: 1px;
+        top: 1px;
+        z-index: 2;
+        .btn {
+          padding-top: $padding-base-vertical - 1;
+          padding-bottom: $padding-base-vertical - 1;
+          border-color: transparent;
+          -webkit-border-radius: $border-radius-base;
+          -moz-border-radius: $border-radius-base;
+          border-radius: $border-radius-base;
+          &,
+          &:active,
+          &.active {
+            &:focus,
+            &.focus {
+              background-color: transparent;
+              @include box-shadow(none);
+            }
+          }
+
+          &:hover,
+          &:focus,
+          &.focus {
+            background-color: transparent;
+            @include box-shadow(none);
+            color: $color-inverse;
+          }
+
+          &:active,
+          &.active {
+            background-color: transparent;
+            @include box-shadow(0 0 0 none);
+            color: $color-inverse;
+          }
+        }
+      }
+    }
+
+    .ui-autocomplete-panel {
+      .ui-autocomplete-items {
+        .ui-autocomplete-list-item {
+          border-bottom: 1px solid $line;
+          .can-click {
+            display: block;
+            overflow: hidden;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            line-height: 30px;
+            span {
+              float: left;
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

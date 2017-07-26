@@ -1,36 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
-import { PartialsModule } from '../../core/partials/partials.module';
+import { MySettingRoutingModule } from './setting-routing.module';
+import { MySettingComponent } from './setting.component';
 
-import { ACSettingRoutingModule } from './setting-routing.module';
-import { ACSettingComponent } from './setting.component';
+import { MyProfileComponent } from './profile/profile.component';
+import { MyAccountComponent } from './account/account.component';
+import { MyPreferencesComponent } from './preferences/preferences.component';
 
-import { ACProfileComponent } from './profile/profile.component';
-import { ACAccountComponent } from './account/account.component';
-import { ACPreferencesComponent } from './preferences/preferences.component';
-import { ACSharedModule } from '../shared/shared.module';
+import { MySharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    ACSettingRoutingModule,
-    PartialsModule,
-    ReactiveFormsModule,
-    ACSharedModule
+    MySettingRoutingModule,
+    MySharedModule.forRoot(),
+    CoreSharedModule.forRoot(),
   ],
   declarations: [
-    ACSettingComponent,
-    ACProfileComponent,
-    ACAccountComponent,
-    ACPreferencesComponent
+    MySettingComponent,
+    MyProfileComponent,
+    MyAccountComponent,
+    MyPreferencesComponent
   ],
   exports: [
-    ACSettingComponent
+    MySettingComponent
   ]
 })
 
-export class ACSettingModule {
+export class MySettingModule {
 }

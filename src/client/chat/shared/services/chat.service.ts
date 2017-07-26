@@ -80,7 +80,7 @@ export class ChatService {
     console.log(contact);
     this.apiBaseService.post('zone/chat/contact/cancel', {group_id: contact.group_id}).subscribe(
       (res: any) => {
-
+        console.log(res);
       }
     );
   }
@@ -269,7 +269,7 @@ export class ChatService {
     );
   }
 
-  addGroupUserFavorite(contact:any) {
+  addGroupUserFavorite(contact: any) {
     let body: any = {favourite: !contact.favourite};
     this.updateGroupUser(contact.group_id, body);
     contact.favourite = !contact.favourite;
@@ -277,7 +277,7 @@ export class ChatService {
 
   addGroupUserBlackList(userId: any) {
     this.apiBaseService.post('users/users_blacklist', {user_id: userId, module_name: 'chat'}).subscribe((res: any) => {
-      //
+      console.log(res);
     });
   }
 
@@ -381,7 +381,7 @@ export class ChatService {
       group_id: item.value.group_json.id,
       share_user_ids: ids
     }).subscribe((res: any) => {
-
+      console.log(res);
     });
     for (let i = 0; i < ids.length; i++) {
       if (item && item.value) {
@@ -424,9 +424,13 @@ export class ChatService {
     return this.user.profile;
   }
 
-  updatePhotoMessage(messageId:any, groupId:any, fileJson:any) {
-    this.apiBaseService.put('zone/chat/message/' + messageId, {group_id: groupId, file_json: fileJson, id: messageId}).subscribe((res: any) => {
-      // console.log(res);
+  updatePhotoMessage(messageId: any, groupId: any, fileJson: any) {
+    this.apiBaseService.put('zone/chat/message/' + messageId, {
+      group_id: groupId,
+      file_json: fileJson,
+      id: messageId
+    }).subscribe((res: any) => {
+      console.log(res);
     });
   }
 }

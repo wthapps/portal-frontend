@@ -5,7 +5,7 @@ import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { User } from '../../../../core/shared/models/user.model';
-import { ZoneReportService } from '../../../../core/shared/form/report/report.service';
+import { ZSharedReportService } from '../../../../core/shared/components/zone/report/report.service';
 
 declare var _: any;
 
@@ -30,7 +30,7 @@ export class PostHeaderComponent implements OnChanges {
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
               public userService: UserService,
-              private zoneReportService: ZoneReportService) {
+              private zoneReportService: ZSharedReportService) {
     this.user = this.socialService.user.profile;
   }
 

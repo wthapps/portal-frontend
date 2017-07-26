@@ -217,6 +217,8 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
 }
 
 .btn {
+  line-height: 1.45;
+
   &,
   &:active,
   &.active {

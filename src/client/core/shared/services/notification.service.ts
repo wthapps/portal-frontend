@@ -3,7 +3,7 @@ import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
 import { NotificationChannelService } from '../channels/notification-channel.service';
 import { UserService } from './user.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { WTHNavigateService } from './wth-navigate.service';
 
 /**

@@ -1,5 +1,5 @@
 import { CommonEvent } from './common-event';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * @interface CommonEventAction

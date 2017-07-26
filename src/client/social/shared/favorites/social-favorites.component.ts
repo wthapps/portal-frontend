@@ -1,15 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/empty';
 
 import { SocialService } from '../services/social.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { Router } from '@angular/router';
-import { UserService } from '../../../core/shared/services/user.service';
-import { ConfirmationService } from 'primeng/components/common/api';
-import { ZoneReportService } from '../../../core/shared/form/report/report.service';
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
+
 import { SocialFavoriteService } from '../services/social-favorites.service';
 
-declare let _ : any;
+declare let _: any;
 
 @Component({
   moduleId: module.id,
@@ -25,8 +24,7 @@ export class ZSocialFavoritesComponent implements OnInit {
 
   constructor(private socialService: SocialService,
               public favoriteService: SocialFavoriteService,
-              private zoneReportService: ZoneReportService
-  ) {
+              private zoneReportService: ZSharedReportService) {
     // this.favorites$ = this.favoriteService.favoritesObs;
   }
 

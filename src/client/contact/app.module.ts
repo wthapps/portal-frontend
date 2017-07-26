@@ -5,8 +5,8 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { SharedModule } from '../core/shared/shared.module';
 import { ZContactSharedModule } from './shared/shared.module';
+import { CoreSharedModule } from '../core/shared/shared.module';
 
 import { ZContactHomeModule } from './home/home.module';
 import { ZContactListModule } from './contact/contact-list/contact-list.module';
@@ -22,20 +22,20 @@ import { ContactRoutingModule } from './contact/contact-routing.module';
   imports: [
     BrowserModule,
     HttpModule,
-    SharedModule.forRoot(),
     ContactRoutingModule,
     AppRoutingModule,
-    ZContactSharedModule,
     ContactModule,
     // ZContactHomeModule,
     // ZContactListModule,
     // ZNewContactModule,
     // ZContactDetailModule,
     ZContactMyProfileModule,
-    ZContactLabelModule
+    ZContactLabelModule,
+
+    ZContactSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [AppComponent],
-
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'

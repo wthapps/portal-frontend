@@ -4,8 +4,7 @@ import { Router }         from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
-import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
+import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { Constants } from '../config/constants';
 
@@ -20,7 +19,7 @@ export class UserService extends ApiBaseService {
   profile: User = null;
   defaultPayment: any;
 
-  public cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
+  public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
 
   public readonly profile$: Observable<any>;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});

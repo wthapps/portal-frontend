@@ -8,16 +8,14 @@ import {
 } from '@angular/forms';
 
 import { Constants } from '../../core/shared/config/constants';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
-
-import { ACPaymentService } from './payment.service';
+import { CookieService, CookieOptions } from 'ngx-cookie';
 import { CreditCard } from '../../core/shared/models/credit-card.model';
 import { UserService } from '../../core/shared/services/user.service';
+import { MyPaymentService } from './payment.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
-import { CountryService } from '../../core/partials/countries/countries.service';
-import { LoadingService } from '../../core/partials/loading/loading.service';
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
+import { CountryService } from '../../core/shared/components/countries/countries.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
 import { BillingAddress } from '../../core/shared/models/billing-address.model';
 
 declare var braintree: any;
@@ -25,11 +23,11 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-payment',
+  selector: 'my-payment',
   templateUrl: 'payment.component.html'
 })
 
-export class ACPaymentComponent implements AfterViewInit, OnInit {
+export class MyPaymentComponent implements AfterViewInit, OnInit {
   PanelTitle: string = 'Find Services and add-ons';
   button_text: string = 'Add Payment Method';
   edit_mode: boolean = false;
@@ -54,13 +52,13 @@ export class ACPaymentComponent implements AfterViewInit, OnInit {
   private next: string = '';
   private operation: string = '';
 
-  private cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
+  private cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
 
   constructor(private cookieService: CookieService,
               private router: Router,
               private route: ActivatedRoute,
               private userService: UserService,
-              private paymentService: ACPaymentService,
+              private paymentService: MyPaymentService,
               private apiBaseService: ApiBaseService,
               private countryService: CountryService,
               private loadingService: LoadingService,

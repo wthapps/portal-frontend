@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZSocialSearchResultComponent } from './search.component';
 import { ZSocialSearchRoutingModule } from './search-routing.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
@@ -13,7 +13,7 @@ import { ZSocialPostDateFilterComponent } from './components/post-date.component
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule.forRoot(),
+    CoreSharedModule.forRoot(),
     ZSocialSharedModule.forRoot(),
     ZSocialSearchRoutingModule
   ],

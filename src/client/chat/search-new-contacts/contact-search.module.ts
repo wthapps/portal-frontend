@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChatSharedModule } from '../shared/shared.module';
-import { SharedModule } from '../../core/shared/shared.module';
+import { ZChatSharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZChatContactSearchRoutingModule } from './contact-search-routing.module';
 import { ZChatContactSearchComponent } from './contact-search.component';
 
@@ -10,8 +10,8 @@ import { ZChatContactSearchComponent } from './contact-search.component';
   imports: [
     ReactiveFormsModule,
     ZChatContactSearchRoutingModule,
-    SharedModule.forRoot(),
-    ChatSharedModule.forRoot()
+    ZChatSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZChatContactSearchComponent

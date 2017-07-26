@@ -108,16 +108,16 @@
               {{selectedTabTitle?.value}} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-              <template ngFor let-itab [ngForOf]="tabData" *ngIf="isAdmin">
+              <ng-template ngFor let-itab [ngForOf]="tabData" *ngIf="isAdmin">
                 <li>
                   <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{itab.value}}</a>
                 </li>
-              </template>
-              <template ngFor let-itab [ngForOf]="tabData" *ngIf="!isAdmin">
+              </ng-template>
+              <ng-template ngFor let-itab [ngForOf]="tabData" *ngIf="!isAdmin">
                 <li *ngIf="itab.key != 'invitations' && itab.key != 'join_requests'">
                   <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{itab.value}}</a>
                 </li>
-              </template>
+              </ng-template>
             </ul>
           </div>
 
@@ -191,7 +191,7 @@
 
       <div class="panel panel-default" *ngIf="isMember && !isAboutTab && !isPostTab">
         <ul class="list-group" *ngIf="selectedTab == 'members'">
-          <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
+          <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" >
               <div class="dropdown pull-right">
                 <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
@@ -212,11 +212,11 @@
               <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
               <span>{{item?.user.name}}</span>
             </li>
-          </template>
+          </ng-template>
         </ul>
 
         <ul class="list-group" *ngIf="selectedTab == 'invitations'">
-          <template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
+          <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" data-id="invitation_{{item.id}}">
               <div class="dropdown pull-right">
                 <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
@@ -224,11 +224,11 @@
               <img [alt]="item?.accepter.name" [src]="item?.accepter?.profile_image" title="" width="30">
               <span>{{item?.accepter.name}}</span>
             </li>
-          </template>
+          </ng-template>
         </ul>
 
         <ul class="list-group" *ngIf="selectedTab == 'join_requests'">
-          <template ngFor let-item [ngForOf]="tabItems">
+          <ng-template ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" data-id="invitation_{{item.id}}">
               <div class="dropdown pull-right">
                 <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
@@ -242,14 +242,14 @@
                 <span>{{item?.inviter.name}}</span>
               </a>
             </li>
-          </template>
+          </ng-template>
         </ul>
       </div>
     </div>
     <z-social-favorites #favorites></z-social-favorites>
   </div>
 
-  <template [ngIf]="community">
+  <ng-template [ngIf]="community">
     <z-social-community-form-edit
       #modalEdit
       [data]="community"
@@ -262,7 +262,7 @@
       [data]="community"
       (updated)="onUpdated($event)">
     </z-social-community-form-preference>
-  </template>
+  </ng-template>
 
   <z-social-community-form-edit
     #modalEdit

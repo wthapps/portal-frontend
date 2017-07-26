@@ -1,9 +1,9 @@
-import { Directive, ElementRef, Renderer, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import { Directive, ElementRef, Renderer, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[imgFull]'
 })
-export class ImgFullDirective implements OnInit, AfterViewInit {
+export class ImgFullDirective {
 
   aspectRatioWindow: number = 1;
   aspectRatioImg: number = 1;
@@ -24,12 +24,6 @@ export class ImgFullDirective implements OnInit, AfterViewInit {
 
   constructor(private el: ElementRef, private renderer: Renderer) {
     this.aspectRatioWindow = this.getAspectRatio(window.innerWidth, window.innerHeight);
-  }
-
-  ngOnInit() {
-  }
-
-  ngAfterViewInit() {
   }
 
   private getAspectRatio(w: any, h: any) {

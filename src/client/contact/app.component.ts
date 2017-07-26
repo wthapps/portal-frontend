@@ -6,6 +6,8 @@ import { Config } from '../core/shared/config/env.config';
 import { Subscription } from 'rxjs/Subscription';
 import './operators';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/takeUntil';
+
 import { CommonEventAction } from '../core/shared/services/common-event/common-event-action';
 import { CommonEvent } from '../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
@@ -15,7 +17,6 @@ import { LabelService } from './label/label.service';
 import { Subject } from 'rxjs/Subject';
 import { Constants } from '../core/shared/config/constants';
 import { Label } from './label/label.model';
-import { label } from 'aws-sdk/clients/sns';
 import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
 import { ZContactService } from './shared/services/contact.service';
@@ -101,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
   doEvent(event: CommonEvent) {
     console.log('doEvent inside app component', event);
-    switch(event.action) {
+    switch (event.action) {
       case 'contact:label:open_modal_edit':
         this.loadModalComponent(LabelEditModalComponent);
         this.modal.open({
@@ -138,15 +139,15 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           (response: any) => {
 
             // update menu item and label data
-            _.each(this.labels,(label: Label) => {
-              if(response.data.id == label.id) {
+            _.each(this.labels, (label: Label) => {
+              if (response.data.id == label.id) {
                 label.name = response.data.name;
                 return;
               }
             });
 
-            _.each(this.contactMenu,(menu: Label) => {
-              if(response.data.id == menu.id) {
+            _.each(this.contactMenu, (menu: Label) => {
+              if (response.data.id == menu.id) {
                 menu.name = response.data.name;
                 return;
               }
@@ -179,12 +180,12 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       hasSubMenu: !label.system,
       count: (label.name == 'all contact' ? this.contactService.getAllContacts().length : label.contact_count),
       icon: label.name == 'all contact' ? 'fa fa-address-book-o'
-      : label.name == 'favourite' ? 'fa fa-star'
+        : label.name == 'favourite' ? 'fa fa-star'
         : label.name == 'labels' ? 'fa fa-tags'
-          : label.name == 'blacklist' ? 'fa fa-ban'
-            : label.name == 'social' ? 'fa fa-globe'
-              : label.name == 'chat' ? 'fa fa-comments-o'
-                : 'fa fa-folder-o'
+        : label.name == 'blacklist' ? 'fa fa-ban'
+        : label.name == 'social' ? 'fa fa-globe'
+        : label.name == 'chat' ? 'fa fa-comments-o'
+        : 'fa fa-folder-o'
     };
   }
 

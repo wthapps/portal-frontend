@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
 import { Subscription } from 'rxjs/Subscription';
 import { GoogleApiService } from '../services/google-api.service';
-import { ModalDockComponent } from '../../../core/partials/modal/dock.component';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ModalDockComponent } from '../../../core/shared/components/modal/dock.component';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
 @Component({
   moduleId: module.id,
@@ -60,14 +60,19 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
       .then((user: any) => {
         this.modalDock.open();
         this.importStatus = this.IMPORT_STATUS.importing;
-        return this.gapi.startImportContact(user);})
+        return this.gapi.startImportContact(user);
+      })
       .then((data: any) => {
         console.log('importContact data: ', data);
         // this.contactService.contactAddContactService.sendOut({data: data});
         this.importedContacts = data;
         this.contactService.addMoreContacts(data);
-        this.importDone()})
-      .catch((err: any) => {console.log('importContact err: ', err); this.importDone(err)});
+        this.importDone()
+      })
+      .catch((err: any) => {
+        console.log('importContact err: ', err);
+        this.importDone(err)
+      });
   }
 
   close(options?: any) {
@@ -80,7 +85,7 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   }
 
   stop(event?: any) {
-    console.log('stop: ',this.importedContacts);
+    console.log('stop: ', this.importedContacts);
     this.modalDock.close();
   }
 

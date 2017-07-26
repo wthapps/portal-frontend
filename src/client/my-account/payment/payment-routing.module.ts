@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ACPaymentComponent } from './payment.component';
-import { ACPaymentConfirmComponent } from './payment-confirm.component';
+import { MyPaymentComponent } from './payment.component';
+import { MyPaymentConfirmComponent } from './payment-confirm.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'payment',
-        component: ACPaymentComponent
+        component: MyPaymentComponent
       },
       {
         path: 'payment/confirm',
-        component: ACPaymentConfirmComponent
+        component: MyPaymentConfirmComponent
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class ACPaymentRoutingModule {
+export class MyPaymentRoutingModule {
 }

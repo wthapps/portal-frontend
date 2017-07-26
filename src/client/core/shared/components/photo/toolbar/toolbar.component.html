@@ -6,7 +6,7 @@
     </li>
     <li class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-        {{albumDetail?.name}}
+        {{ albumDetail?.name }}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
@@ -39,13 +39,13 @@
     <!--<li class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-        <i [ngClass]="selectedEl.css"></i> {{selectedEl.name}}
+        <i [ngClass]="selectedEl.css"></i> {{ selectedEl.name }}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" *ngFor="let item of items">
           <a [routerLink]="[item.link]">
-            {{item.name}}
+            {{ item.name }}
           </a>
         </li>
       </ul>

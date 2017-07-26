@@ -1,0 +1,87 @@
+<div class="intercom-content">
+  <div class="intercom-content-header">
+    <div>
+      <h4>Conversations</h4>
+      <p>with WTHApps</p>
+    </div>
+
+
+    <div *ngIf="!supporter" class="intercom-content-header-list js-intercom-content-header-list">
+      <div *ngFor="let supporter of supporters">
+        <figure>
+          <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
+          <i [ngClass]="{'intercom-avatar-online': supporter.online}"></i>
+        </figure>
+        <span>
+            {{ supporter.name }}
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="supporter" class="intercom-content-header-list js-intercom-content-header-list">
+      <div> Account members
+        <figure>
+          <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
+        </figure>
+        <span>
+            {{ accounts.length }}
+        </span>
+      </div>
+      <div>
+        <figure>
+          <img class="media-object img-circle" [src]='supporter.profile_image' alt="">
+        </figure>
+        <span>
+            {{ anonymous.length }}
+        </span>
+      </div>
+    </div>
+
+  </div>
+  <div class="intercom-content-body" style="position: relative; min-height: 40px">
+    <div class="intercom-conversation-btn-new">
+      <button class="btn btn-wth btn-min-sm " type="button" (click)="createConversation()">
+        <i class="fa fa-edit"></i> New Conversation
+      </button>
+    </div>
+    <div class="intercom-conversation-summary intercom-conversation-summary-unread has-reply" (click)="goToDetail()">
+      <div class="intercom-conversation-summary-avatar intercom-group-avatar-3">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <div class="conversation-has-reply-action">
+          <i class="fa fa-mail-forward"></i>
+        </div>
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+    <div class="intercom-conversation-summary has-reply" (click)="goToDetail()">
+      <div class="intercom-conversation-summary-avatar intercom-group-avatar-2">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <div class="conversation-has-reply-action">
+          <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+        </div>
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+    <div class="intercom-conversation-summary" (click)="goToDetail()">
+      <div class="intercom-conversation-summary-avatar intercom-group-avatar-1">
+        <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+      </div>
+      <div class="intercom-conversation-summary-body">
+        <div class="conversation-has-reply-action">
+          <img class="media-object img-circle" src="/assets/images/avatar/avatar.png" alt="">
+        </div>
+        <h4 class="media-heading">Humi <span>5m ago</span></h4>
+        <p>Hey! Just message us here if you have any questions</p>
+      </div>
+    </div>
+  </div>
+</div>

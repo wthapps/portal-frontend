@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ACAppsComponent } from './apps.component';
-import { ACAppsListComponent } from './list/list.component';
-import { ACAppsDetailComponent } from './detail/detail.component';
+import { MyAppsComponent } from './apps.component';
+import { MyAppsListComponent } from './list/list.component';
+import { MyAppsDetailComponent } from './detail/detail.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'apps',
-        component: ACAppsComponent,
+        component: MyAppsComponent,
         children: [
-          {path: ':id', component: ACAppsDetailComponent},
-          {path: '', component: ACAppsListComponent},
-          {path: '*', component: ACAppsListComponent}
+          {path: ':id', component: MyAppsDetailComponent},
+          {path: '', component: MyAppsListComponent},
+          {path: '*', component: MyAppsListComponent}
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class ACAppsRoutingModule {
+export class MyAppsRoutingModule {
 }

@@ -8,22 +8,19 @@ import {
 }                           from '@angular/forms';
 
 import { Constants } from '../../../core/shared/config/constants';
-import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 import { UserService } from '../../../core/shared/services/user.service';
-
-import { CountryService } from '../../../core/partials/countries/countries.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-setting-preferences',
+  selector: 'my-setting-preferences',
   templateUrl: 'preferences.component.html'
 })
 
-export class ACPreferencesComponent implements OnInit {
+export class MyPreferencesComponent implements OnInit {
   pageTitle: string = 'Preferences';
   errorMessage: string = Constants.errorMessage.default;
 
@@ -39,7 +36,6 @@ export class ACPreferencesComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private toastsService: ToastsService,
-              //2 private deactivateConfirmService: DeactivateConfirmService,
               private loadingService: LoadingService,
               private userService: UserService) {
 
