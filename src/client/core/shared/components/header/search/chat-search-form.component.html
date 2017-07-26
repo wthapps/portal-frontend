@@ -1,12 +1,4 @@
-<style>
-  .media-user-name-text {
-    padding: 7px;
-    overflow: hidden;
-    white-space: nowrap;
-    -ms-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-  }
-</style>
+<!--
 <div *ngIf="active" class="navbar-form navbar-left">
   <div class="navbar-searchTop">
     <div class="input-group">
@@ -39,5 +31,15 @@
         </div>
       </textbox-search>
     </div>
+  </div>
+</div>
+-->
+<div class="navbar-form navbar-left">
+  <div class="navbar-searchTop">
+    <textbox-search [placeholder]="'Search something'">
+      <ng-template [ngIf]="show">
+        <h5> Conversations </h5>
+      </ng-template>
+    </textbox-search>
   </div>
 </div>

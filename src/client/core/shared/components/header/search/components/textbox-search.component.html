@@ -1,27 +1,12 @@
-<div>
-  <input #input type="text" name="search" style="
-  height: 34px;
-  border: none;
-  position: relative;
-  width: 400px;
-  left: 2px;" [(ngModel)]="search">
-
-  <span class="input-group-btn" style="float: right;">
-    <button class="btn btn-default" type="button" (click)="onEnter()">
-      <i class="fa fa-search" aria-hidden="true"></i>
-    </button>
+<div class="input-group-wrap">
+  <div class="input-group">
+    <input #input type="text" name="search" class="form-control" [(ngModel)]="search" placeholder="{{placeholder}}">
+    <span class="input-group-btn">
+    <button class="btn btn-default" type="button" (click)="onEnter()"><i class="fa fa-search"></i></button>
   </span>
-
-
+  </div>
+  <div class="input-group-suggestions">
+    <ng-content></ng-content>
+  </div>
 </div>
-<div class="suggestions"
-     style="position: absolute;
-     border: 1px solid #ccc;
-     background-color: white;
-     width: 440px;">
-  <ng-content></ng-content>
-</div>
-
-
-
 

@@ -49,6 +49,7 @@ export class SocialSearchFormComponent {
   }
 
   onSelect(e: any) {
+    console.log(e);
     this.searchText = e.name;
     this.serviceManager.getRouter().navigate([`${e.link}`]);
   }
