@@ -24,77 +24,6 @@
       </li>
     </ul>
 
-    <!--<ul class="action navbar-right">-->
-      <!--<li>-->
-        <!--<i (click)="actionPhoto('like')" class="fa fa-thumbs-o-up"></i>-->
-        <!--0-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<i (click)="actionPhoto('dislike')" class="fa fa-thumbs-o-down"></i>-->
-        <!--0-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<i (click)="actionPhoto('share')" class="fa fa-share-alt"></i>-->
-        <!--0-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<a href="javascript:;" (click)="onShowInfo()"><i class="fa fa-comments"></i></a>-->
-      <!--</li>-->
-      <!--<li class="dropdown">-->
-        <!--<a href="javascript:;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>-->
-        <!--<ul class="dropdown-menu">-->
-          <!--<li><a [href]="photo?.url" download>Download</a></li>-->
-          <!--<li><a href="javascript:;" (click)="actionPhoto('report')">Report</a></li>-->
-        <!--</ul>-->
-      <!--</li>-->
-    <!--</ul>-->
-
-
-    <!--<ul *ngIf="mode == 0" class="action navbar-right">-->
-      <!--<li>-->
-        <!--<a href="javascript:;" draggable="false"-->
-           <!--(click)="doAction({action: 'openModal', params: {modalName: 'sharingModal' }})"><i-->
-          <!--class="fa fa-share-alt"></i></a>-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<a href="javascript:;" draggable="false" (click)="doAction({action: 'favourite'})">-->
-          <!--<i class="fa" [ngClass]="selectedPhotos[index].favorite ? 'fa-star': 'fa-star-o'"></i>-->
-        <!--</a>-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<a href="javascript:;" draggable="false"-->
-           <!--(click)="doAction({action: 'openModal', params: {modalName: 'taggingModal' }})"><i class="fa fa-tag"></i></a>-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<a href="javascript:;" draggable="false" (click)="editPhoto()"><i class="fa fa-edit"></i></a>-->
-      <!--</li>-->
-
-      <!--<li *ngIf="canDelete">-->
-        <!--<a href="javascript:;"-->
-           <!--(click)="doAction({action: 'confirmDeleteMedia', params: {selectedObjects: [selectedPhotos[index]]} })"><i-->
-          <!--class="fa fa-trash-o"></i></a>-->
-      <!--</li>-->
-      <!--<li class="dropdown">-->
-        <!--<a href="javascript:;" draggable="false" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>-->
-        <!--<ul class="dropdown-menu dropdown-menu-lg">-->
-          <!--<li><a href="javascript:;" draggable="false"-->
-                 <!--(click)="doAction({action: 'openModal', params: {modalName: 'addToAlbumModal' }})"><i-->
-            <!--class="fa fa-plus-square"></i> Add to Album</a></li>-->
-          <!--<li>-->
-            <!--<a href="javascript:;"-->
-               <!--(click)="doAction({action: 'download', params: {selectedObjects: [selectedPhotos[index]] }})">-->
-              <!--<i class="fa fa-download"></i> Download-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="javascript:;" draggable="false" (click)="doAction({action: 'viewInfo'})"><i-->
-              <!--class="fa fa-info-circle"></i> Information</a>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</li>-->
-    <!--</ul>-->
-
-
     <!--editable menu-->
     <ul *ngIf="mode == 1" class="action action-text navbar-right ml10">
       <li>
@@ -104,7 +33,7 @@
         <a (click)="cancel()" href="javascript:;" class="mr20">Cancel</a>
       </li>
       <!--<li *ngIf="!editing">-->
-        <!--<a (click)="cropperDone()" href="javascript:;">Done</a>-->
+      <!--<a (click)="cropperDone()" href="javascript:;">Done</a>-->
       <!--</li>-->
       <li>
         <a href="javascript:;" (click)="cropperSave()" [ngClass]="{'a-not-editing': !editing}">Save</a>
@@ -113,7 +42,7 @@
 
     <ul *ngIf="mode == 1" class="action navbar-right">
       <li>
-        <a (click)="cropCropper()" href="javascript:;" [ngClass]="{'a-hover': cropping}"><i class="fa fa-crop" ></i></a>
+        <a (click)="cropCropper()" href="javascript:;" [ngClass]="{'a-hover': cropping}"><i class="fa fa-crop"></i></a>
       </li>
       <li>
         <a (click)="zoomCropper(-0.1)" href="javascript:;"><i class="fa fa-search-minus"></i></a>
@@ -129,9 +58,7 @@
       </li>
     </ul>
 
-
-    <div class="name"><i class="fa fa-picture-o"></i> {{ photo?.name }}.{{ photo?.extension }}
-    </div>
+    <div class="name"><i class="fa fa-picture-o"></i> {{ photo?.name }}.{{ photo?.extension }}</div>
   </div>
 
   <div *ngIf="mode == 0" class="photo-detail-top-info">
@@ -149,32 +76,21 @@
     <a draggable="false" href="javascript:;" (click)="zoomCropper(0.1)"><i class="fa fa-plus"></i></a>
   </div>
 
-  <div class="photo-detail-content">
-    <div class="photo-detail-img">
-
-      <!--view mode-->
-      <div class="image-figure" [ngClass]="{'img-loading': loading}" id="cropper-wrap">
-        <figure>
-          <img imgFull class="img-zoom-{{ imgZoomClass }}" draggable="false" id="photo-detail-image"
-               [src]="photo?.url" alt="">
-        </figure>
-      </div>
-      <!--edit mode-->
-      <!--<div *ngIf="mode==1" class="image-figure" [ngClass]="{'img-loading': loading}" id="cropper-wrap">-->
-        <!--<img id="photo-detail-image" [src]="selectedPhotos[index]?.url" alt="">-->
-      <!--</div>-->
-
-      <span *ngIf="(ids.length>1 && mode==0)" draggable="false" (click)="move(false)"
-            class="photo-detail-img-control img-control-prev">
-        <i class="fa fa-angle-left"></i>
-      </span>
-      <span *ngIf="(ids.length>1 && mode==0)" draggable="false" (click)="move()"
-            class="photo-detail-img-control img-control-next">
-        <i class="fa fa-angle-right"></i>
-      </span>
-    </div>
+  <div class="photo-detail-img-control-wrap">
+    <span *ngIf="(ids.length>1 && mode==0)" draggable="false" (click)="move(false)"
+          class="photo-detail-img-control img-control-prev">
+      <i class="fa fa-angle-left"></i>
+    </span>
+    <span *ngIf="(ids.length>1 && mode==0)" draggable="false" (click)="move()"
+          class="photo-detail-img-control img-control-next">
+      <i class="fa fa-angle-right"></i>
+    </span>
   </div>
 
+  <div class="photo-view-wrap">
+    <img imgFull class="img-zoom-{{ imgZoomClass }}" draggable="false" id="photo-detail-image"
+         [src]="photo?.url" alt="">
+  </div>
 
   <div *ngIf="photo" class="photo-detail-info">
     <h3>Information <a href="javascript:;" draggable="false" (click)="doAction({action: 'viewInfo'})"><i
@@ -222,7 +138,7 @@
         <ul class="list-unstyled">
           <li>
             <img src="assets/images/zone/img-group.png" alt="{{ photo.owner.name }}"
-                   title="{{ photo.owner.name }}"> {{ photo.owner.name }}
+                 title="{{ photo.owner.name }}"> {{ photo.owner.name }}
           </li>
         </ul>
       </dd>

@@ -1,36 +1,81 @@
 @import '../../../../scss/global';
 
-
 @for $i from 1 through 24 {
   .img-zoom-#{$i} {
     @include transform(scale(1 + $i/10));
   }
 }
+
 @for $i from 1 through 12 {
   .img-zoom--#{$i} {
     @include transform(scale(1 - $i/12));
   }
 }
 
+:host {
+  display: block;
 
-#cropper-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+  & /deep/ .photo-box-detail {
+
+    .photo-view-wrap {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+    }
+
+    .photo-detail-img-control {
+      @include center(false, true);
+      position: fixed;
+      z-index: 10;
+      width: 60px;
+      height: 60px;
+      padding: 5px 0;
+      text-align: center;
+      background-color: rgba(#A4A4A4, 0.4);
+      cursor: pointer;
+      @include transition($transition-base);
+      &:hover {
+        background-color: rgba(#A4A4A4, 1);
+      }
+      i {
+        font-size: 50px;
+        line-height: 0.95;
+        color: #ffffff;
+      }
+      &.img-control-prev {
+        left: 15px;
+      }
+      &.img-control-next {
+        right: 15px;
+      }
+    }
+
+    .cropper-crop-box-hidden {
+      display: none !important;
+    }
+
+    .a-hover {
+      background-color: #9B9B9B;
+    }
+
+    .a-not-editing {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    &.active-info {
+      .photo-detail-img-control {
+        &.img-control-next {
+          right: 15px + $photo-detail-info-width;
+        }
+      }
+      .cropper-container {
+        right: $photo-detail-info-width/2;
+      }
+    }
+  }
 }
 
-.cropper-crop-box-hidden {
-  display: none !important;
-}
-
-.a-hover {
-  background-color: #9B9B9B;
-}
-
-.a-not-editing {
-  pointer-events: none;
-  cursor: default;
-}

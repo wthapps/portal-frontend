@@ -233,10 +233,10 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     if (this.cropper == null) {
       let image = document.getElementById('photo-detail-image');
       this.cropper = new Cropper(image, {
-        dragMode: 'none',
-        autoCrop: true,
-        autoCropArea: 0,
-        viewMode: 2,
+        // dragMode: 'none',
+        // autoCrop: true,
+        // autoCropArea: 0,
+        // viewMode: 2,
         modal: false,
         ready: () => {
           // hide crop area on view mode
