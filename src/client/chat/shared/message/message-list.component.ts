@@ -24,7 +24,6 @@ export class MessageListComponent implements OnInit {
     this.item = this.chatService.getCurrentMessages();
 
     this.contactItem = this.chatService.getContactSelect();
-    // this.chatService.subscribeChanel();
   }
 
   onLoadMore() {
@@ -32,7 +31,6 @@ export class MessageListComponent implements OnInit {
   }
 
   onAddContact(contact:any) {
-    console.log(contact);
     this.requestModal.contact = contact;
     this.requestModal.modal.open();
   }
@@ -40,7 +38,7 @@ export class MessageListComponent implements OnInit {
   doEvent(event: any) {
     switch(event.action) {
       case 'CONTACT_REQUEST_CREATE':
-        this.requestModal.contact = event.data;
+        this.requestModal.contact = event.data.receiver;
         this.requestModal.modal.open();
         break;
       case 'CONTACT_REQUEST_CANCEL':

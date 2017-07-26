@@ -17,7 +17,8 @@ declare var _: any;
 })
 export class MessageItemComponent implements OnInit {
   @Input() message: any;
-  @Input() prevMessage: any = null;
+  @Input() prevMessage: any;
+  @Input() contactItem: any;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
@@ -36,6 +37,7 @@ export class MessageItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.contactItem = this.chatService.getContactSelect();
     // ByMe
     if (this.message.display && this.message.display.id) {
       this.message.byMe = this.chatService.user.profile.id == this.message.display.id;
@@ -73,7 +75,7 @@ export class MessageItemComponent implements OnInit {
   }
 
   doEvent(event: any) {
-    this.event.emit(event);
+    this.event.emit({action: event.action, data: this.message});
   }
 
   onAdd(contact: any) {

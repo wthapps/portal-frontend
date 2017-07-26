@@ -1,20 +1,13 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { CoreSharedModule } from '../../core/shared/shared.module';
-import { ZChatEmojiModule } from '../../core/shared/emoji/emoji.module';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
-import { MessageEditorComponent } from './message/editor/message-editor.component';
-import { MessageItemComponent } from './message/message-item.component';
-import { MessageListComponent } from './message/message-list.component';
-import { ZChatShareUserIconComponent } from './user/user-icon.component';
 import { ZChatShareUserComponent } from './user/user.component';
 import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from './modal/add-contact.component';
 import { ZChatShareAddToConversationComponent } from './modal/add-to-conversation.component';
 import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
-import { ZChatShareItemRequestComponent } from './message/item-request.component';
-import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ChatMonthDayYearPipe } from './pipe/chat-month-day-year.pipe';
 import { ChatGroupCouplePipe } from './pipe/chat-group-couple.pipe';
 import { ChatGroupMultiplePipe } from './pipe/chat-group-multiple.pipe';
@@ -29,6 +22,7 @@ import { ChatGroupHistoryPipe } from './pipe/chat-group-history.pipe';
 import { ConversationService } from '../conversation/conversation.service';
 import { ChatService } from './services/chat.service';
 import { ChatCommonService } from '../../core/shared/services/chat.common.service';
+import { ZChatMessageModule } from './message/message.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -37,22 +31,16 @@ import { ChatCommonService } from '../../core/shared/services/chat.common.servic
 @NgModule({
   imports: [
     CoreSharedModule.forRoot(),
-    ZChatEmojiModule
+    ZChatMessageModule
   ],
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    MessageEditorComponent,
-    MessageItemComponent,
-    MessageListComponent,
-    ZChatShareUserIconComponent,
     ZChatShareUserComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
     ZChatContactActionsComponent,
-    ZChatShareItemRequestComponent,
-    ZChatShareRequestContactComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
@@ -66,19 +54,14 @@ import { ChatCommonService } from '../../core/shared/services/chat.common.servic
     ChatGroupHistoryPipe
   ],
   exports: [
+    ZChatMessageModule,
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    MessageEditorComponent,
-    MessageItemComponent,
-    MessageListComponent,
-    ZChatShareUserIconComponent,
     ZChatShareUserComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
     ZChatContactActionsComponent,
-    ZChatShareItemRequestComponent,
-    ZChatShareRequestContactComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,

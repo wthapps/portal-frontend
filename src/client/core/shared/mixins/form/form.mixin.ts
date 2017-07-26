@@ -4,7 +4,6 @@ import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
 
 @Mixin([SubmitMixin])
 export class FormMixin implements SubmitMixin {
-  @Input() data: any;
   @Output() eventOut: any;
 
   onSubmit: (values: any) => void;

@@ -45,15 +45,29 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSub = this.route.params
-      .subscribe((params: any) => {
+      .map((params: any) => {
         this.id = params['id'];
         this.prevUrl = params['prevUrl'];
         this.ids = params['ids'].split(',').map(Number) || [];
         this.module = params['module'] || this.module;
         this.mode = params['mode'] || 0;
         this.showDetail = params['showDetail'] || false;
-        this.loadItem(this.id);
-      });
+        // this.loadItem(this.id);
+        return params['id'];
+      })
+      .switchMap((id: any ) => {
+        this.loading = true;
+        return this.photoService.getPhoto(id);
+      })
+      .subscribe((response: any) => {
+          this.photo = response.data;
+          this.loading = false;
+        },
+        (error: any) => {
+          console.error('Error when loading photo ', error);
+        });
+
+    ;
   }
 
   doEvent(payload: any) {
@@ -71,15 +85,16 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         break;
       case 'update':
         this.confirmationService.confirm({
-          message: 'Do you want to save editing item',
+          message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
           header: 'Save Photo',
           accept: () => {
-            this.photoService.create({
+            this.photoService.update({
+              id: this.photo.id,
               name: this.photo.name + `.${this.photo.extension}`,
               type: this.photo.content_type,
               file: payload.editedData
-            }).subscribe((res: any) => {
-              console.log(res);
+            }).subscribe((response: any) => {
+              this.photo = response.data;
             });
           }
         });
@@ -174,15 +189,15 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   }
 
   loadItem(id: number) {
-    this.loading = true;
-    return this.photoService.getPhoto(id)
-      .subscribe((response: any) => {
-          this.photo = response.data;
-          this.loading = false;
-        },
-        (error: any) => {
-          console.error('Error when loading photo ', error);
-        });
+    // this.loading = true;
+    // return this.photoService.getPhoto(id)
+    //   .subscribe((response: any) => {
+    //       this.photo = response.data;
+    //       this.loading = false;
+    //     },
+    //     (error: any) => {
+    //       console.error('Error when loading photo ', error);
+    //   });
   }
 
   ngOnDestroy() {

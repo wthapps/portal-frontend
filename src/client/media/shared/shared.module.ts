@@ -13,6 +13,9 @@ import { ModalDockModule } from '../../core/shared/components/modal/dock.module'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PartialsPhotoModule } from '../../core/shared/components/photo/photo.module';
 import { PipeModule } from '../../core/shared/pipe/pipe.module';
+import { ZMediaSharingService } from '../../core/shared/components/photo/modal/sharing/sharing.service';
+import { ZMediaTaggingService } from '../../core/shared/components/photo/modal/tagging/tagging.service';
+import { ZMediaStore } from './store/media.store';
 
 
 /**
@@ -49,6 +52,9 @@ export class ZMediaSharedModule {
       ngModule: ZMediaSharedModule,
       providers: [
         ZMediaAlbumService,
+        ZMediaSharingService,
+        ZMediaTaggingService,
+        ZMediaStore,
         MediaUploaderDataService
       ]
     };

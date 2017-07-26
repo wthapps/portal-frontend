@@ -1,10 +1,3 @@
-<!--<div class="page-body-chat-content-in" scrollToBottom lock-y-offset="10" observe-attributes="true">-->
-<!--<div class="chat-item-wrap">-->
-<!--<div *ngIf="item.value">-->
-<!--<z-chat-share-item *ngFor="let message of item.value.data" [message]="message"></z-chat-share-item>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
 <div *ngIf="contactItem.value">
   <div *ngIf="contactItem.value.active"
        class="page-body-chat-content-in"
@@ -27,6 +20,3 @@
 </div>
 
 <z-chat-share-request-contact #request></z-chat-share-request-contact>
-
-
-

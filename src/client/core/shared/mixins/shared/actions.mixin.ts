@@ -7,3 +7,11 @@ export class SubmitMixin {
     this.eventOut.emit(values);
   }
 }
+
+export class EmitEventMixin {
+  @Output() eventOut: EventEmitter<any>;
+
+  emitEvent(values: any) {
+    this.eventOut.emit(values);
+  }
+}
