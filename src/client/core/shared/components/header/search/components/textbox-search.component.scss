@@ -27,6 +27,8 @@
       }
       .list-group {
         margin: 0;
+        max-height: 250px;
+        overflow: auto;
         .list-group-item {
           -webkit-border-radius: 0;
           -moz-border-radius: 0;
@@ -44,6 +46,22 @@
             margin-right: 10px;
           }
         }
+        &:first-child {
+          > .list-group-item {
+            &:first-child {
+              border-top-width: 0;
+              @include border-top-radius($border-radius-base);
+            }
+          }
+        }
+      }
+      .list-group-footer {
+        padding: 10px;
+        text-align: center;
+        border-top: 1px solid $dropdown-border;
+        margin-top: -1px;
+        position: relative;
+        z-index: 2;
       }
     }
 

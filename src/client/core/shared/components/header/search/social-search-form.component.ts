@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { TextBoxSearchComponent } from './components/textbox-search.component';
 import { ServiceManager } from '../../../services/service-manager';
 
 declare let _: any;
@@ -9,56 +10,53 @@ declare let _: any;
 })
 
 export class SocialSearchFormComponent {
-  result: any;
-  groups: any;
   constants: any;
-  searchText: any;
-  suggestions: any;
+  suggestions: any = [];
   active: boolean;
+  show: boolean = false;
+  search: string;
+  @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   constructor(public serviceManager: ServiceManager) {
     this.constants = this.serviceManager.getConstants();
     this.active = this.constants.search.config.socialActive;
   }
 
-  showSearchAdvanced() {
-    console.log('showSearchAdvanced');
+  onEnter(e: any) {
+    this.show = false;
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: e.search}});
   }
 
-  onSubmit(values: any) {
-    console.log(values);
-  }
-
-  getSuggestions(e: any) {
+  onKey(e: any) {
+    console.log(e);
+    if (!e.search) {
+      this.show = false;
+      return;
+    }
+    this.show = true;
+    this.search = e.search;
     this.serviceManager.getApi().post(`zone/social_network/search`, {
-      q: `${this.searchText}`,
+      q: `${this.search}`,
       types: ['member', 'community']
     }).subscribe(
       (res: any) => {
-        this.suggestions = [];
-        this.groups = Object.keys(res.data);
-        for (let i = 0; i < this.groups.length; i++) {
-          for (let j = 0; j < res.data[this.groups[i]].length; j++) {
-            let suggestion = res.data[this.groups[i]][j];
-            suggestion.type = this.groups[i];
-            this.suggestions.push(suggestion);
-          }
+        this.suggestions.length = 0;
+        console.log(res);
+        if (res.data.communities || res.data.members) {
+          this.suggestions = _.concat(res.data['members'], res.data['communities']);
         }
       }
     );
   }
 
-  onSelect(e: any) {
-    console.log(e);
-    this.searchText = e.name;
-    this.serviceManager.getRouter().navigate([`${e.link}`]);
-  }
+  onNavigation(data: any) {
+    this.show = false;
 
-  onEnter() {
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: `${this.searchText}`}});
-    // close suggestions
-    if (this.suggestions) {
-      this.suggestions.length = 0;
+    if (data.user_name) {
+      this.serviceManager.getRouter().navigate([`/profile/${data.uuid}`]);
+    } else if (data.admin) {
+      this.serviceManager.getRouter().navigate([`/communities/${data.uuid}`]);
     }
   }
+
 }
