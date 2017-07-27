@@ -14,6 +14,7 @@ declare let _: any;
 export class TextBoxSearchComponent implements OnInit {
   @Input() search: string = '';
   @Input() placeholder: string = '';
+  @Input() showDropdown: boolean = false;
   @Input() debounceTime: any = 300;
 
   @Output() onEnterEvent: EventEmitter<any> = new EventEmitter<any>();

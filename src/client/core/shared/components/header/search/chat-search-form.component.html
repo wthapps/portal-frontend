@@ -1,44 +1,37 @@
-<!--
 <div *ngIf="active" class="navbar-form navbar-left">
   <div class="navbar-searchTop">
-    <div class="input-group">
-      <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onKeyUpEvent)="onKey($event)">
-        <div class="list-unstyled social-list-user" *ngIf="show" style="padding: 10px;">
-          <h5> Conversations </h5>
-          <p *ngIf="suggestions && suggestions.length == 0"> No conversation found </p>
-          <div *ngFor="let data of suggestions" style="padding: 5px" class="can-click" (click)="setText(data)">
-            <div *ngIf="data" class="media-user media-user-xs">
-              <div class="media-user-avatar avatar-xs" style="float: left">
-                <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
-                <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
-              </div>
-              <div class="media-user-name">
-                <p class="media-user-name-text" *ngIf="data.group_json?.group_type == 'couple'">
-                  {{ data.display.name }}</p>
-                <p class="media-user-name-text"
-                   *ngIf="data.group_json?.group_type == 'multiple' && data.group_json.name">
-                  {{ data.group_json.name }}</p>
-                <p class="media-user-name-text"
-                   *ngIf="data.group_json?.group_type == 'multiple' && !data.group_json.name">
-                  {{ data.group_json.users_name }}</p>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-          <a [routerLink]="['search']" (click)="show = false" [queryParams]="{q: search}"> Show all result </a>
-          <hr/>
-          <a [routerLink]="['search_new_contacts']" (click)="show = false"> Search New Contact </a>
-        </div>
-      </textbox-search>
-    </div>
-  </div>
-</div>
--->
-<div class="navbar-form navbar-left">
-  <div class="navbar-searchTop">
-    <textbox-search [placeholder]="'Search something'">
+    <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onKeyUpEvent)="onKey($event)"
+                    [placeholder]="'Search something'" [showDropdown]="show">
       <ng-template [ngIf]="show">
         <h5> Conversations </h5>
+        <div class="list-group">
+          <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="setText(data)">
+            <span class="avatar-xxs">
+              <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
+              <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
+            </span>
+            <span class="avatar-name-txt" *ngIf="data.group_json?.group_type == 'couple'">
+                {{ data.display.name }}</span>
+            <span class="avatar-name-txt" *ngIf="data.group_json?.group_type == 'multiple' && data.group_json.name">
+                {{ data.group_json.name }}</span>
+            <span class="avatar-name-txt" *ngIf="data.group_json?.group_type == 'multiple' && !data.group_json.name">
+                {{ data.group_json.users_name }}</span>
+          </a>
+
+        </div>
+        <div class="p10 text-center">
+          <div class="row row-10">
+            <div class="col-sm-6">
+              <a [routerLink]="['search']" class="btn btn-block btn-link-inline" (click)="show = false"
+                 [queryParams]="{q: search}"> Show all result </a>
+            </div>
+            <div class="col-sm-6">
+              <a [routerLink]="['search_new_contacts']" class="btn btn-block btn-link-inline" (click)="show = false">
+                Search New Contact </a>
+            </div>
+          </div>
+        </div>
+
       </ng-template>
     </textbox-search>
   </div>

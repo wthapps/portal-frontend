@@ -4,6 +4,49 @@
   display: block;
 
   & /deep/ {
+    .input-group-wrap {
+      position: relative;
+    }
+
+    .input-group-suggestions {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 2px 0 0; // override default ul
+      list-style: none;
+      font-size: $font-size-base;
+      text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
+      background-color: $dropdown-bg;
+      border: 1px solid $dropdown-fallback-border; // IE8 fallback
+      border: 1px solid $dropdown-border;
+      border-radius: $border-radius-base;
+      @include box-shadow(0 6px 12px rgba(0, 0, 0, .175));
+      background-clip: padding-box;
+      h5 {
+        margin: 10px;
+      }
+      .list-group {
+        margin: 0;
+        .list-group-item {
+          -webkit-border-radius: 0;
+          -moz-border-radius: 0;
+          border-radius: 0;
+          border-left-width: 0;
+          border-right-width: 0;
+          padding: 10px;
+          overflow: hidden;
+          line-height: 30px;
+          white-space: nowrap;
+          -ms-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+          .avatar-xxs, .avatar-xs {
+            float: left;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
     .input-group {
       width: 100%;
       .form-control {

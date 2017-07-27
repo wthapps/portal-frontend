@@ -5,7 +5,7 @@
     <button class="btn btn-default" type="button" (click)="onEnter()"><i class="fa fa-search"></i></button>
   </span>
   </div>
-  <div class="input-group-suggestions">
+  <div class="input-group-suggestions" *ngIf="showDropdown">
     <ng-content></ng-content>
   </div>
 </div>
