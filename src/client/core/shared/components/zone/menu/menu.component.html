@@ -4,8 +4,12 @@
       <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
     </li>
 
-    <li class="has-sub has-action" [ngClass]="{'active': urls.contact == hostname && !isProfileTab}">
-      <a draggable="false" (click)="onMenu('contact')">
+    <li>
+      <a draggable="false" href="#">Calendar</a>
+    </li>
+
+    <li class="has-sub has-action" [ngClass]="{'active': urls.contact == hostname}">
+      <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
         Contact
       </a>
       <ul [ngClass]="{'active': urls.contact == hostname}"
@@ -46,10 +50,6 @@
         </li>
 
       </ul>
-    </li>
-
-    <li>
-      <a draggable="false" href="#">Calendar</a>
     </li>
 
     <li class="has-sub" [ngClass]="{'active': urls.social == hostname}">

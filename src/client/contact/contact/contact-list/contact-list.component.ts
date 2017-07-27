@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { Config } from '../../../core/shared/config/env.config';
@@ -26,7 +28,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   ITEM_PER_PAGE: number = 20;
   page: number = 1;
 
-  contacts: Array<any> = new Array<any>([]);
+  contacts: Array<any> = new Array<any>();
   filteredContacts: Array<any> = new Array<any>();
 
   eventThreeDot: any;
@@ -38,6 +40,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
 
+  private destroySubject: Subject<any> = new Subject<any>();
+
   constructor(private contactService: ZContactService,
               private route: ActivatedRoute,
               private router: Router,
@@ -48,13 +52,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
       this.doEvent(event);
     });
+
+    this.page = 1;
+    this.contact$ = this.contactService.contacts$;
   }
 
   ngOnInit() {
-    this.page = 1;
-    this.contact$ = this.contactService.contacts$;
-
-
     this.route.params.forEach((params: Params) => {
       switch(params['label']) {
         case 'all contact':
@@ -74,20 +77,26 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.eventAddContact = this.contactService.contactAddContactService.eventOut.subscribe((event: any) => {
       this.contactService.addMoreContacts(_.get(event, 'data', []));
     });
-  }
 
-  ngAfterViewInit() {
-    this.loadingService.start();
+    this.contactService.initLoad$
+      .takeUntil(this.destroySubject)
+      .subscribe(
+      (data: any) => { if(data)
+        this.loadingService.stop('#contact-list');
+      });
+
     this.contactService.contacts$
+      .takeUntil(this.destroySubject)
       .subscribe((contacts: any[]) => {
-        // this.contacts = contacts.splice(0, this.ITEM_PER_PAGE * this.page);
-        //   TODO: Update contacts locally
-        //   this.contacts.length = 0;
+         // this.contacts.length = 0;
         this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
 
         console.debug('inside contact list onInit: ', this.contacts, contacts);
-        this.loadingService.stop();
       });
+  }
+
+  ngAfterViewInit() {
+    this.loadingService.start('#contact-list');
   }
 
   confirmDeleteContacts() {
@@ -104,6 +113,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     if (this.commonEventSub) {
       this.commonEventSub.unsubscribe();
     }
+
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   onLoadMore() {

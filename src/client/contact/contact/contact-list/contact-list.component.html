@@ -58,7 +58,7 @@
        [scrollWindow]="false"
        (scrolled)="onLoadMore()">
 
-    <div class="page-body-content-in" *ngIf="contacts?.length==0">
+    <div  class="page-body-content-in" *ngIf="contacts?.length==0">
       There is no contact in your contact book
     </div>
     <div class="page-body-content-in" *ngIf="contacts?.length>=1"

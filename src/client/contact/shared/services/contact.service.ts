@@ -24,6 +24,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private suggestSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
+  private initLoadSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(false);
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
   private maxContactIndex: number = 20;
@@ -33,7 +34,7 @@ export class ZContactService extends BaseEntityService<any> {
   listenToItem = this.listenToItemSource.asObservable();
   contacts$: Observable<Array<any>> = this.contactsSubject.asObservable();
   suggest$: Observable<Array<any>> = this.suggestSubject.asObservable();
-
+  initLoad$: Observable<boolean> = this.initLoadSubject.asObservable();
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
@@ -231,12 +232,15 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
-  private initialLoad() {
-    this.getAll().toPromise()
+  public initialLoad(): Promise<any> {
+    if(this.loadingDone)
+      return Promise.resolve(this.contacts);
+    return this.getAll().toPromise()
       .then((res: any) => {
         // this.contacts.push(...res.data);
-        this.contacts = res.data.slice();
+        this.contacts = res.data;
         this.notifyContactsObservers(this.contacts);
+        this.initLoadSubject.next(true);
         console.debug('this.contactSubject - initialLoad: ', res.data, this.contacts, this.contactsSubject.getValue());
       });
   }
