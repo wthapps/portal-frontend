@@ -16,12 +16,12 @@ export class FooterComponent {
   }
 
   checkUrls(url: string): void {
-    let urls = url.split('/');
-    if (urls.indexOf('zone') >= 0) {
-      this.hideFooter = true;
-    } else {
-      this.hideFooter = false;
-    }
+    // let urls = url.split('/');
+    // if (urls.indexOf('zone') >= 0) {
+    //   this.hideFooter = true;
+    // } else {
+    //   this.hideFooter = false;
+    // }
   }
 }
 

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { TagInputModule } from 'ng2-tag-input';
-// import { TagInputModule } from 'ng2-tag-input';
+import { TagInputModule } from 'ngx-chips';
 
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { TaggingModalComponent } from './tagging-modal.component';
@@ -15,6 +15,8 @@ import { ZMediaTaggingService } from './tagging.service';
   imports: [
     CommonModule,
     FormsModule,
+    BrowserAnimationsModule,
+
     Ng2Bs3ModalModule,
     TagInputModule
   ],

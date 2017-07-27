@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { TagInputModule } from 'ng2-tag-input';
+// import { TagInputModule } from 'ngx-chips';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 
@@ -39,8 +40,10 @@ import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    // BrowserAnimationsModule,
+
     Ng2Bs3ModalModule,
-    TagInputModule,
+    // TagInputModule,
     CalendarModule,
     CheckboxModule,
     SliderModule,

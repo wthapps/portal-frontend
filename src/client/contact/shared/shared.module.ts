@@ -12,7 +12,8 @@ import { ZContactThreeDotActionsService } from './actions/three-dot-actions/cont
 import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
 
 import { GoogleApiService } from './services/google-api.service';
-import { TagInputModule } from 'ng2-tag-input';
+import { TagInputModule } from 'ngx-chips';
+
 
 import { ZContactShareAddContactComponent } from './modal/add-contact/add-contact.component';
 import { ContactAddLabelModalComponent } from './modal/contact-add-label/contact-add-label-modal.component';

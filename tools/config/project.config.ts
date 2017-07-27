@@ -90,8 +90,8 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/ngx-infinite-scroll/bundles/ngx-infinite-scroll.umd.js'
       },
       {
-        name: 'ng2-tag-input',
-        path: 'node_modules/ng2-tag-input/dist/ng2-tag-input.bundle.js',
+        name: 'ngx-chips',
+        path: 'node_modules/ngx-chips/dist/ngx-chips.bundle.js',
         packageMeta: {
           format: 'cjs'
         }
@@ -101,12 +101,6 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/ng2-material-dropdown/dist/ng2-dropdown.bundle.js',
         packageMeta: {
           format: 'cjs'
-        }
-      },
-      {
-        name: 'ng2-tag-input/modules/components/tag-input.template.html',
-        packageMeta: {
-          defaultJSExtension: false
         }
       }
     ];

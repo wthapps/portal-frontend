@@ -77,6 +77,7 @@ import { AuthService } from './services/auth.service';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     Ng2Bs3ModalModule,
 
     LoadingModule,
