@@ -63,6 +63,8 @@ bower_components
 /deploy-*.sh
 /src/client/assets/.tmp/
 
+*.js
+
 *_BAK*
 /src/html/
 ts-node*

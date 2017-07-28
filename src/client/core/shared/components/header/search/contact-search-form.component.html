@@ -28,7 +28,7 @@
 
 <div *ngIf="active" class="navbar-form navbar-left">
   <div class="navbar-searchTop">
-    <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onKeyUpEvent)="onKey($event)"
+    <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)" (onKeyUpEvent)="onKey($event)"
                     [placeholder]="'Search something'" [showDropdown]="show">
       <ng-template [ngIf]="show">
         <div class="list-group">
@@ -42,8 +42,7 @@
         <div class="list-group-footer">
           <div class="row row-10">
             <div class="col-md-12">
-              <a [routerLink]="['search']" class="btn btn-block btn-link-inline" (click)="show = false"
-                 [queryParams]="{q: search}"> Show all result </a>
+              <a href="javascript:;" class="btn btn-block btn-link-inline" (click)="onEnter($event)" > Show all result </a>
             </div>
           </div>
         </div>

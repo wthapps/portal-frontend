@@ -18,6 +18,7 @@ export class TextBoxSearchComponent implements OnInit {
   @Input() debounceTime: any = 300;
 
   @Output() onEnterEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEscapeEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() onKeyUpEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('input') input: any;
@@ -36,10 +37,20 @@ export class TextBoxSearchComponent implements OnInit {
       this.onEnter();
       return;
     }
+    console.log('e.code : ', e.code);
+    if (e.code == 'Escape') {
+      this.onEscape();
+      return;
+    }
     this.onKeyUpEvent.emit({search: this.search});
   }
 
   onEnter() {
     this.onEnterEvent.emit({search: this.search});
+  }
+
+  onEscape() {
+    this.search = '';
+    this.onEscapeEvent.emit({search: this.search});
   }
 }

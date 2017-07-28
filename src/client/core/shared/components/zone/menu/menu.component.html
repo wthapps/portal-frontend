@@ -4,8 +4,12 @@
       <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
     </li>
 
-    <li class="has-sub has-action" [ngClass]="{'active': urls.contact == hostname && !isProfileTab}">
-      <a draggable="false" (click)="onMenu('contact')">
+    <li>
+      <a draggable="false" href="#">Calendar</a>
+    </li>
+
+    <li class="has-sub has-action" [ngClass]="{'active': urls.contact == hostname}">
+      <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
         Contact
       </a>
       <ul [ngClass]="{'active': urls.contact == hostname}"
@@ -14,7 +18,7 @@
           [routerLinkActive]="['active']" >
         <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackMenu">
           <li *ngIf="contact.name != ''" class="text-capitalize">
-            <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]"  (click)="doEvent({action: contact?.action, event: $event})">
+            <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]" [routerLinkActive]="['router-link-active']"  (click)="doEvent({action: contact?.action, event: $event})">
               <i class="{{contact.icon}}"></i> {{ contact.name }}  ({{ contact?.count }})
             </a>
 
@@ -46,10 +50,6 @@
         </li>
 
       </ul>
-    </li>
-
-    <li>
-      <a draggable="false" href="#">Calendar</a>
     </li>
 
     <li class="has-sub" [ngClass]="{'active': urls.social == hostname}">
