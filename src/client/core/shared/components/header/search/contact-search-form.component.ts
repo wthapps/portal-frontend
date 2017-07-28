@@ -3,6 +3,7 @@ import { ServiceManager } from '../../../services/service-manager';
 import { Constants } from '../../../config/constants';
 import { Observable } from 'rxjs/Observable';
 import { TextBoxSearchComponent } from './components/textbox-search.component';
+import { SuggestionService } from '../../../services/suggestion.service';
 // import { ZContactService } from '../../../../../contact/shared/services/contact.service';
 
 declare let _: any;
@@ -13,82 +14,38 @@ declare let _: any;
 })
 
 export class ContactSearchFormComponent {
-  /*result: any;
-  groups: any;
   constants: any;
-  searchText: any;
-  suggestions: any;
-  active: boolean;
-  contactUrl: string = Constants.urls.contacts;
-
-  suggest$: Observable<any>;
-
-  constructor(public serviceManager: ServiceManager,
-              // public contactService: ZContactService
-  ) {
-    this.constants = this.serviceManager.getConstants();
-    this.active = this.constants.search.config.contactActive;
-    // this.suggest$ = this.contactService.suggest$;
-  }
-
-  showSearchAdvanced() {
-
-  }
-
-  onSubmit(values: any) {
-    console.log(values);
-  }
-
-  ngOnInit() {
-
-  }
-
-  getSuggestions(e: any) {
-    // this.contactService.suggestContacts(this.searchText);
-
-    console.log('inside Contact getSuggestion.', this.searchText);
-  }
-
-  onSelect(e: any) {
-    // this.serviceManager.getRouter().navigate([`${this.contactUrl},${e.id}`]);
-    console.log('inside Contact onSelect.', this.searchText, e);
-
-    // this.searchText = e.name;
-    // this.serviceManager.getRouter().navigate([`${e.link}`]);
-  }
-
-  onEscape(e: any) {
-    this.searchText = '';
-    this.onEnter();
-  }
-
-  onEnter() {
-    this.serviceManager.getCommonEventService().broadcast({
-      action: 'contact:contact:search',
-      payload: {search_value: this.searchText}
-    });
-  }*/
-
-  constants: any;
-  suggestions: any = [];
+  suggestions: any[] = [];
   active: boolean;
   show: boolean = false;
   search: string;
+  suggest$: Observable<any>;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
-  constructor(public serviceManager: ServiceManager) {
+  constructor(public serviceManager: ServiceManager,
+              public suggestService: SuggestionService) {
     this.constants = this.serviceManager.getConstants();
     this.active = this.constants.search.config.contactActive;
+    this.suggestService.suggest$.subscribe((suggestions: any[]) => {
+      this.suggestions.length = 0;
+      this.suggestions.push(...suggestions);
+      console.log('suggestions received: ', this.suggestions, this.active);
+    });
   }
 
   onEnter(e: any) {
-    e.preventDefault();
+    // e.preventDefault();
 
     this.show = false;
     this.serviceManager.getCommonEventService().broadcast({
       action: 'contact:contact:search',
       payload: {search_value: this.search}
     });
+  }
+
+  onEscape(e: any) {
+    this.search = '';
+    this.onEnter(e);
   }
 
   onKey(e: any) {
@@ -99,28 +56,20 @@ export class ContactSearchFormComponent {
     }
     this.show = true;
     this.search = e.search;
-    /*this.serviceManager.getApi().post(`zone/social_network/search`, {
-      q: `${this.search}`,
-      types: ['member', 'community']
-    }).subscribe(
-      (res: any) => {
-        this.suggestions.length = 0;
-        console.log(res);
-        if (res.data.communities || res.data.members) {
-          this.suggestions = _.concat(res.data['members'], res.data['communities']);
-        }
-      }
-    );*/
+    this.suggestService.setInput(this.search);
+
+    // if(e.code = 'Enter') {
+    //   this.onEnter(e);
+    // }
+    // if(e.code = 'Esc') {
+    //   this.onEscape(e);
+    // }
   }
 
   onNavigation(data: any) {
     this.show = false;
 
-    if (data.user_name) {
-      this.serviceManager.getRouter().navigate([`/profile/${data.uuid}`]);
-    } else if (data.admin) {
-      this.serviceManager.getRouter().navigate([`/communities/${data.uuid}`]);
-    }
+    this.serviceManager.getRouter().navigate([`/contacts/${data.id}`]);
   }
 
 }

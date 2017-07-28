@@ -31,6 +31,7 @@ import { ZSharedReportService } from './components/zone/report/report.service';
 import { ChatCommonService } from './services/chat.common.service';
 import { PhotoService } from './services/photo.service';
 import { CountryService } from './components/countries/countries.service';
+import { SuggestionService } from './services/suggestion.service';
 import { CommonEventService } from './services/common-event/common-event.service';
 
 import { PipeModule } from './pipe/pipe.module';
@@ -139,6 +140,7 @@ export class CoreSharedModule {
         ZSharedReportService,
         ChatCommonService,
         PhotoService,
+        SuggestionService,
         CommonEventService
       ]
     };

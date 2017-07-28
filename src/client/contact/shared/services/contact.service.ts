@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Response, Http } from '@angular/http';
+
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
+import { ConfirmationService } from 'primeng/components/common/api';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { Response, Http } from '@angular/http';
 import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/contact-three-dot.service';
 import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
-import { ConfirmationService } from 'primeng/components/common/api';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { SuggestionService } from '../../../core/shared/services/suggestion.service';
 
 declare var _: any;
 
@@ -23,7 +26,6 @@ export class ZContactService extends BaseEntityService<any> {
   contacts: Array<any> = new Array<any>();
 
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
-  private suggestSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private initLoadSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(false);
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
@@ -33,18 +35,26 @@ export class ZContactService extends BaseEntityService<any> {
   listenToList = this.listenToListSource.asObservable();
   listenToItem = this.listenToItemSource.asObservable();
   contacts$: Observable<Array<any>> = this.contactsSubject.asObservable();
-  suggest$: Observable<Array<any>> = this.suggestSubject.asObservable();
   initLoad$: Observable<boolean> = this.initLoadSubject.asObservable();
+
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
               public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService,
+              private suggestService: SuggestionService,
               private toastsService: ToastsService,
               private confirmationService: ConfirmationService) {
     super(apiBaseService);
     this.url = 'contact/contacts';
     this.initialLoad();
+
+    this.suggestService.input$.subscribe((input: any) => {
+      let contacts: any[] = _.cloneDeep(this.searchContact(input));
+      this.suggestService.setSuggestion(contacts);
+
+      console.log('input: ', input, ' - result: ', contacts);
+    });
   }
 
   getAllContacts() {
@@ -182,9 +192,9 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   suggestContacts(value: any) {
-    let contacts: any[] = _.cloneDeep(this.searchContact(value));
-
-    this.notifyContactsObservers(contacts);
+    // let contacts: any[] = _.cloneDeep(this.searchContact(value));
+    //
+    // this.notifyContactsObservers(contacts);
   }
 
   notifyContactsObservers(contacts: Array<any>): void {
@@ -233,8 +243,10 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   public initialLoad(): Promise<any> {
-    if(this.loadingDone)
+    if(this.initLoadSubject.getValue() === true) {
+      this.initLoadSubject.next(true);
       return Promise.resolve(this.contacts);
+    }
     return this.getAll().toPromise()
       .then((res: any) => {
         // this.contacts.push(...res.data);

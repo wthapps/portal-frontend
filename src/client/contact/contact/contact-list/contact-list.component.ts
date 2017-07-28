@@ -78,12 +78,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       this.contactService.addMoreContacts(_.get(event, 'data', []));
     });
 
-    this.contactService.initLoad$
-      .takeUntil(this.destroySubject)
-      .subscribe(
-      (data: any) => { if(data)
-        this.loadingService.stop('#contact-list');
-      });
 
     this.contactService.contacts$
       .takeUntil(this.destroySubject)
@@ -97,6 +91,13 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   ngAfterViewInit() {
     this.loadingService.start('#contact-list');
+
+    this.contactService.initLoad$
+      .takeUntil(this.destroySubject)
+      .subscribe((data: any) => {
+          if(data === true)
+            this.loadingService.stop('#contact-list');
+        });
   }
 
   confirmDeleteContacts() {
