@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Config } from '../core/shared/config/env.config';
 
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import './operators';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/takeUntil';
@@ -15,9 +16,7 @@ import { LabelEditModalComponent } from './label/label-edit-modal.component';
 import { ConfirmationService } from 'primeng/primeng';
 import { LabelService } from './label/label.service';
 import { Subject } from 'rxjs/Subject';
-import { Constants } from '../core/shared/config/constants';
 import { Label } from './label/label.model';
-import { ContactLeftMenuItem } from './shared/contact-left-menu-item';
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
 import { ZContactService } from './shared/services/contact.service';
 import { ZContactMenuService } from './shared/services/contact-menu.service';
@@ -44,6 +43,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   modal: any;
   labels: Label[];
   contactMenu: Array<any> = new Array<any>();
+  contactMenu$: Observable<any[]>;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -53,11 +53,18 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
               private contactService: ZContactService,
-              private contactMenuService: ZContactMenuService,
-              private labelService: LabelService
+              private labelService: LabelService,
+              public contactMenuService: ZContactMenuService
   ) {
     console.log('Environment config', Config);
     this.commonEventSub = this.commonEventService.event.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
+    this.contactMenu$ = this.contactMenuService.contactMenu$;
+
+    this.contactMenuService.contactMenu$.subscribe((menus: any[]) => {
+      this.contactMenu.length = 0;
+      this.contactMenu.push(...menus);
+      console.log('contactMenu: ', menus, this.contactMenu);
+    });
   }
 
   ngOnInit() {
@@ -72,25 +79,23 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       (response: any) => {
         this.labels = response;
 
-        //map labels to ContactMenu Item
-        _.each(this.labels, (label: Label) => {
-          this.contactMenu.push(this.mapLabelToMenuItem(label));
+        // //map labels to ContactMenu Item
+        // _.each(this.labels, (label: Label) => {
+        //   this.contactMenuService.addMenu(this.mapLabelToMenuItem(label));
+        //
+        // });
 
-        });
-        // this.contactMenu.push(label.convertToMenuItem());t
-        //   { name: '', link: '', icon: '' },
-        //   { name: 'Settings', link: '/settings', icon: 'fa fa-cog'}
-        // );
+        this.contactMenuService.addLabels(this.labels);
       }
     );
 
-    // Update contacts count
-    this.contactService.contacts$.takeUntil(this.destroySubject)
-      .subscribe((contacts: any[]) => {
-        let idx = _.findIndex(this.contactMenu, (ct: any) => { return ct.name === 'all contact'; });
-        _.set(this.contactMenu, `${idx}.count`, this.contactService.getAllContacts().length);
-      }
-    );
+    // // Update contacts count
+    // this.contactService.contacts$.takeUntil(this.destroySubject)
+    //   .subscribe((contacts: any[]) => {
+    //     let idx = _.findIndex(this.contactMenu, (ct: any) => { return ct.name === 'all contact'; });
+    //     _.set(this.contactMenu, `${idx}.count`, this.contactService.getAllContacts().length);
+    //   }
+    // );
   }
 
   ngOnDestroy() {
@@ -129,7 +134,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.labelService.create(event.payload.label).subscribe(
           (response: any) => {
             this.labels.push(response.data);
-            this.contactMenu.push(this.mapLabelToMenuItem(this.labels[this.labels.length-1]));
+            // this.contactMenu.push(this.mapLabelToMenuItem(this.labels[this.labels.length-1]));
+            this.contactService.contactMenusService.addLabel(this.labels[this.labels.length-1]);
           }
         );
         break;
@@ -146,12 +152,12 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               }
             });
 
-            _.each(this.contactMenu, (menu: Label) => {
-              if (response.data.id == menu.id) {
-                menu.name = response.data.name;
-                return;
-              }
-            });
+            // _.each(this.contactMenu, (menu: Label) => {
+            //   if (response.data.id == menu.id) {
+            //     menu.name = response.data.name;
+            //     return;
+            //   }
+            // });
 
           }
         );
@@ -161,7 +167,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.labelService.delete(label.id).subscribe(
           (response: any) => {
             _.remove(this.labels, {name: response.data.name});
-            _.remove(this.contactMenu, {name: response.data.name});
+            // _.remove(this.contactMenu, {name: response.data.name});
+            this.contactService.contactMenusService.removeMenuByName({name: response.data.name});
           }
         );
         break;
@@ -172,22 +179,22 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
     }
   }
 
-  private mapLabelToMenuItem(label: Label): any {
-    return {
-      id: label.id,
-      name: label.name,
-      link: '/contacts',
-      hasSubMenu: !label.system,
-      count: (label.name == 'all contact' ? this.contactService.getAllContacts().length : label.contact_count),
-      icon: label.name == 'all contact' ? 'fa fa-address-book-o'
-        : label.name == 'favourite' ? 'fa fa-star'
-        : label.name == 'labels' ? 'fa fa-tags'
-        : label.name == 'blacklist' ? 'fa fa-ban'
-        : label.name == 'social' ? 'fa fa-globe'
-        : label.name == 'chat' ? 'fa fa-comments-o'
-        : 'fa fa-folder-o'
-    };
-  }
+  // private mapLabelToMenuItem(label: Label): any {
+  //   return {
+  //     id: label.id,
+  //     name: label.name,
+  //     link: '/contacts',
+  //     hasSubMenu: !label.system,
+  //     count: (label.name == 'all contact' ? this.contactService.getAllContacts().length : label.contact_count),
+  //     icon: label.name == 'all contact' ? 'fa fa-address-book-o'
+  //       : label.name == 'favourite' ? 'fa fa-star'
+  //       : label.name == 'labels' ? 'fa fa-tags'
+  //       : label.name == 'blacklist' ? 'fa fa-ban'
+  //       : label.name == 'social' ? 'fa fa-globe'
+  //       : label.name == 'chat' ? 'fa fa-comments-o'
+  //       : 'fa fa-folder-o'
+  //   };
+  // }
 
   private getLabel(name: string): Label {
     return _.find(this.labels, {name: name});

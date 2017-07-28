@@ -17,6 +17,9 @@ import { Constants } from '../../../core/shared/config/constants';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
+import { ZContactMenuService } from './contact-menu.service';
+import { LabelService } from '../../label/label.service';
+import { Label } from '../../label/label.model';
 
 declare var _: any;
 
@@ -34,7 +37,8 @@ export class ZContactService extends BaseEntityService<any> {
 
   listenToList = this.listenToListSource.asObservable();
   listenToItem = this.listenToItemSource.asObservable();
-  contacts$: Observable<Array<any>> = this.contactsSubject.asObservable();
+  contacts$: Observable<any[]> = this.contactsSubject.asObservable();
+  contactMenus$: Observable<any[]>;
   initLoad$: Observable<boolean> = this.initLoadSubject.asObservable();
 
 
@@ -42,12 +46,26 @@ export class ZContactService extends BaseEntityService<any> {
               public importContactDataService: ContactImportContactDataService,
               public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService,
+              public contactMenusService: ZContactMenuService,
+              public labelService: LabelService,
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
               private confirmationService: ConfirmationService) {
     super(apiBaseService);
     this.url = 'contact/contacts';
     this.initialLoad();
+
+    this.contactMenus$ = this.contactMenusService.contactMenu$;
+
+
+    // this.labelService.getAllLabels().then(
+    //   (response: any) => {
+    //     this.labels = response;
+    //
+    //     //map labels to ContactMenu Item
+    //     _.each(this.labels, (label: Label) => this.contactService.contactMenusService.addLabel(label));
+    //     });
+
 
     this.suggestService.input$.subscribe((input: any) => {
       let contacts: any[] = _.cloneDeep(this.searchContact(input));
@@ -60,6 +78,7 @@ export class ZContactService extends BaseEntityService<any> {
   getAllContacts() {
     return this.contacts;
   }
+
 
   addMoreContacts(data: any[]) {
     this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
@@ -198,6 +217,8 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   notifyContactsObservers(contacts: Array<any>): void {
+    this.contactMenusService.updateLabelCount(this.contacts);
+
     this.contactsSubject.next(contacts);
     // this.selectedObjects.length = 0;
   }
@@ -253,7 +274,6 @@ export class ZContactService extends BaseEntityService<any> {
         this.contacts = res.data;
         this.notifyContactsObservers(this.contacts);
         this.initLoadSubject.next(true);
-        console.debug('this.contactSubject - initialLoad: ', res.data, this.contacts, this.contactsSubject.getValue());
       });
   }
 

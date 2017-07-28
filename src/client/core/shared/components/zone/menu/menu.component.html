@@ -18,7 +18,7 @@
           [routerLinkActive]="['active']" >
         <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackMenu">
           <li *ngIf="contact.name != ''" class="text-capitalize">
-            <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]"  (click)="doEvent({action: contact?.action, event: $event})">
+            <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]" [routerLinkActive]="['router-link-active']"  (click)="doEvent({action: contact?.action, event: $event})">
               <i class="{{contact.icon}}"></i> {{ contact.name }}  ({{ contact?.count }})
             </a>
 
