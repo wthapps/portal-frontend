@@ -8,7 +8,7 @@ export class ZMediaSharingService {
 
   getContacts(query: string = ''): any {
     let body: any;
-    body = {'query': (query == undefined ? '' : query)};
+    body = {'q': (query == undefined ? '' : "name:"+query)};
     return this.apiBaseService.get('contact/contacts', body);
   }
 
