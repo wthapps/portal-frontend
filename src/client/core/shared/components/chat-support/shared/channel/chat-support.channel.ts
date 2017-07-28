@@ -33,7 +33,7 @@ export class ChatSupportChannel extends CableService {
   subscribe(conversationId: any, type?: string) {
     let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
 
-    this.createConnectionInstance(cId, type);
+    // this.createConnectionInstance(cId, type);
 
     var self = this;
 
