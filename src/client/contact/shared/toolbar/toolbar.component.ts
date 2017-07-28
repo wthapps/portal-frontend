@@ -17,10 +17,10 @@ export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
   @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
   @Input() pageTitle: string = ''; // TODO will be removed
+  @Input() hasBack: boolean = false;
   selectedContact: string;
 
-  constructor(private contactService: ZContactService
-  ) {
+  constructor(private contactService: ZContactService) {
   }
 
   ngOnInit() {

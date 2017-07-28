@@ -201,21 +201,6 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
       $brand-wth-border);
 }
 
-.btn-min {
-  min-width: 106px;
-  text-align: center;
-}
-
-.btn-inline {
-  min-width: initial;
-  color: inherit;
-}
-
-.btn-min-sm {
-  min-width: 160px;
-  text-align: center;
-}
-
 .btn {
   line-height: 1.45;
 
@@ -245,6 +230,7 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
   min-width: 34px;
   &.btn-inline {
     min-width: initial;
+    color: inherit;
   }
 
   &.btn-text-link {
@@ -258,11 +244,15 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
       outline: none;
     }
   }
-}
 
-.modal {
-  [class^="btn-"], [class*=" btn-"] {
-    min-width: 80px;
+  &.btn-min {
+    min-width: 106px;
+    text-align: center;
+  }
+
+  &.btn-min-sm {
+    min-width: 160px;
+    text-align: center;
   }
 }
 

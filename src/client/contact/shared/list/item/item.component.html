@@ -2,9 +2,7 @@
   <i (click)="onSelected()" class="fa fa-check"></i>
 </div>
 <div class="contact-listbox-name">
-  <a class="link-text contact-listbox-block-link"
-     title="view detail"
-     [routerLink]="['/contacts', data.id, {mode:'view'}]" >
+  <a href="javascript:;" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/detail', data.id]">
     <figure class="avatar-xs">
       <img [src]="data.profile_image" alt="">
     </figure>
@@ -22,9 +20,10 @@
 <div class="contact-listbox-phone">
   <ul class="list-unstyled m0" *ngIf="data.phones && data.phones.length>0">
     <li>
-      <img *ngIf="(countriesCode$ | async) && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
-           src="assets/images/flags/{{data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
-           width="30" alt="">
+      <img
+        *ngIf="(countriesCode$ | async) && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
+        src="assets/images/flags/{{data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
+        width="30" alt="">
       {{data.phones[0].value}}
     </li>
   </ul>

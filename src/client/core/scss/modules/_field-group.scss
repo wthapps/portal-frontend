@@ -27,4 +27,8 @@
   dl:last-child {
     margin-bottom: 0;
   }
+  &.field-group-end {
+    border-bottom-width: 0;
+    padding-bottom: 0;
+  }
 }

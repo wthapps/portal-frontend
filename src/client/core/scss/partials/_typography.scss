@@ -137,6 +137,9 @@ body {
   overflow-y: auto;
   margin-right: -10px;
 }
+.content-overflow-visible {
+  overflow: visible;
+}
 
 .content-overflow-fixed {
   position: absolute;

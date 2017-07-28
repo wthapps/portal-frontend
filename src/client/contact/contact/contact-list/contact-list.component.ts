@@ -26,7 +26,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   ITEM_PER_PAGE: number = 20;
   page: number = 1;
 
-  contacts: Array<any> = new Array<any>([]);
+  contacts: any = [];
   filteredContacts: Array<any> = new Array<any>();
 
   eventThreeDot: any;

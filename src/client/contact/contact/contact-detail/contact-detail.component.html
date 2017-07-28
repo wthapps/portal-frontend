@@ -1,5 +1,5 @@
 <div class="media-page-detail-left">
-  <z-contact-shared-toolbar>
+  <z-contact-shared-toolbar [hasBack]="true">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
       <ul class="page-body-control-menu">
 
@@ -25,7 +25,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right text-right">
             <li>
-              <a href="javascript:;" (click)="onDeleteAll()"><i class="fa fa-trash"></i> Delete</a>
+              <a href="javascript:;" (click)="deleteContact()"><i class="fa fa-trash"></i> Delete</a>
             </li>
             <li>
               <a href="javascript:;" (click)="addTags($event)"><i class="fa fa-ban"></i> Blacklist</a>
@@ -37,33 +37,17 @@
   </z-contact-shared-toolbar>
   <div class="page-body-content has-page-body-control">
     <div class="page-body-content-in zone-social">
-      <div class="zone-social-in">
-        <partials-profile>
-          <partials-profile-avatar-info #avatar
-                                        [data]="data"
-                                        *ngIf="data"
-                                        (eventOut)="doEvent($event)"
-                                        [nameOnly]="true">
+      <div class="zone-social-in" *ngIf="data">
+        <button class="btn btn-wth" [routerLink]="['/contacts', data.id, {mode:'edit'}]" type="button">Edit</button>
 
-          </partials-profile-avatar-info>
-          <!--<partials-profile-contact #contact [data]="data" [editable]="true" [config]="profileConfig" (eventOut)="getContact($event)"></partials-profile-contact>-->
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Contact Information</h3>
-            </div>
-            <div class="panel-body">
-              <partials-profile-email #email *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-email>
-              <partials-profile-phone #phone *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-phone>
-              <!--<partials-profile-address #address *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-address>-->
-              <!--<partials-profile-media #media *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-media>-->
-            </div>
-          </div>
-        </partials-profile>
+        <pre>
+          {{data|json}}
+        </pre>
       </div>
     </div>
   </div>
 </div>
-<!---->
+
 <contact-add-label-modal #modal></contact-add-label-modal>
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
@@ -10,7 +10,7 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
   selector: 'contact-edit-page',
   templateUrl: 'contact-edit-page.component.html'
 })
-export class ContactEditPageComponent implements OnInit {
+export class ZContactEditPageComponent implements OnInit {
 
   contact: Contact = new Contact({
       phones: [{

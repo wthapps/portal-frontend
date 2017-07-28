@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 @Component({
   moduleId: module.id,
   selector: 'z-contact-shared-item',
-  templateUrl: 'item.component.html',
-  styleUrls: ['contact-item.css']
+  templateUrl: 'item.component.html'
 })
 export class ZContactSharedItemComponent implements OnInit {
   @Input() data: any;

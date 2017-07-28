@@ -6,6 +6,7 @@ import { Email } from './email.model';
 import { Phone } from './phone.model';
 
 export class Contact extends BaseEntity {
+  profile_image: string = '';
   name: string = '';
   company: string = '';
   job_title: string = '';
