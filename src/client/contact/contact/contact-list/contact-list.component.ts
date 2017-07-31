@@ -14,6 +14,7 @@ import { ZContactService } from '../../shared/services/contact.service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEventAction } from '../../../core/shared/services/common-event/common-event-action';
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
+import { CommonEvent } from "../../../core/shared/services/common-event/common-event";
 
 declare var _: any;
 
@@ -30,9 +31,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   contacts: any = [];
   filteredContacts: Array<any> = new Array<any>();
-
-  eventThreeDot: any;
-  eventAddContact: any;
   commonEventSub: Subscription;
   tokens: any;
   tokensActionsBar: any;
@@ -52,9 +50,14 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
               private loadingService: LoadingService,
               private commonEventService: CommonEventService
   ) {
-    this.tokens = this.commonEventService.subscribe(['commonEvent'], (event: any) => {
+    // this.tokens = this.commonEventService.subscribe(['commonEvent'], (event: any) => {
+    //   this.doEvent(event);
+    // });
+
+    this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'commonEvent').subscribe((event: CommonEvent) => {
+      console.log('commonEvent', event);
       this.doEvent(event);
-    });
+    })
 
 
     this.page = 1;
@@ -62,9 +65,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   ngOnInit() {
-    this.tokensActionsBar = this.commonEventService.subscribe(['actionToolbarOnItem'], (event: any) => {
-      this.doActionsToolbar(event);
-    });
+    // this.tokensActionsBar = this.commonEventService.subscribe(['actionToolbarOnItem'], (event: any) => {
+    //   this.doActionsToolbar(event);
+    // });
 
     this.route.params.forEach((params: Params) => {
       switch(params['label']) {
@@ -104,10 +107,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   ngOnDestroy() {
-    if (this.tokensActionsBar) {
-      this.commonEventService.unsubscribe(this.tokensActionsBar);
-    }
-
     if (this.commonEventSub) {
       this.commonEventSub.unsubscribe();
     }
