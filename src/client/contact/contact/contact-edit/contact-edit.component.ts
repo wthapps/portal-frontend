@@ -207,6 +207,8 @@ export class ZContactEditComponent implements OnChanges {
   onSubmit(values: any): void {
     values.id = this.contact.id;
     values.uuid = this.contact.uuid;
+    values.media = values.medias;
+
 
     if (this.mode == 'create') {
       this.event.emit({action: 'contact:contact:create', payload: {item: values}});

@@ -3,6 +3,7 @@ import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -13,6 +14,11 @@ export class ZContactDetailComponent implements OnInit {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
   contactId: number;
   data: any;
+
+  phoneCategories: any = Constants.phoneCategories;
+  emailCategories: any = Constants.emailCategories;
+  addressCategories: any = Constants.addressCategories;
+  mediaCategories: any = Constants.mediaCategories;
 
   constructor(private contactService: ZContactService, private route: ActivatedRoute, private apiBaseService: ApiBaseService) {
   }

@@ -275,6 +275,31 @@ export let Constants = {
       category: 'other',
       name: 'Other'
     },
+  ],
+  phoneCategories: [
+    {value: 'mobile', text: 'Mobile'},
+    {value: 'home', text: 'Home'},
+    {value: 'work', text: 'Work'},
+    {value: 'main', text: 'Main'},
+    {value: 'fax', text: 'Fax'},
+    {value: 'other', text: 'Other'}
+  ],
+  emailCategories: [
+    {value: 'work', text: 'Work'},
+    {value: 'home', text: 'Home'},
+    {value: 'other', text: 'Other'}
+  ],
+  addressCategories: [
+    {value: 'work', text: 'Work'},
+    {value: 'home', text: 'Home'},
+    {value: 'other', text: 'Other'}
+  ],
+  mediaCategories: [
+    {value: 'wthapps', text: 'WTHApps'},
+    {value: 'facebook', text: 'Facebook'},
+    {value: 'googleplus', text: 'Google Plus'},
+    {value: 'twitter', text: 'Twitter'},
+    {value: 'other', text: 'Other'}
   ]
 };
 
