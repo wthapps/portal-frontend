@@ -35,7 +35,7 @@ export class ZContactSharedListComponent implements OnInit {
   }
 
   onSelectedAll() {
-    if (this.contactService.selectedObjects.length == this.data.length) {
+    if (this.contactService.isSelectAll()) {
       this.contactService.sendListToItem(false);
       this.contactService.selectedObjects.length = 0;
     } else {

@@ -1,6 +1,6 @@
 <div class="contact-listbox-wrap">
   <div class="contact-listbox-header contact-listbox-row">
-    <div class="contact-listbox-input" [ngClass]="{'active': (contactService.selectedObjects.length == data.length)}">
+    <div class="contact-listbox-input" [ngClass]="{'active': (contactService.isSelectAll$ | async)}">
       <i (click)="onSelectedAll()" class="fa fa-check"></i>
     </div>
     <div class="contact-listbox-name">

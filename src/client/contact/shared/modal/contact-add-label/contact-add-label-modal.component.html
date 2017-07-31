@@ -11,7 +11,6 @@
             <!--<label for="tag"></label>-->
             <!--selectedLabels-->
             <tag-input  [maxItems]='100'
-                        [disabled]='true'
                         [placeholder]="'Select a label'"
                        [(ngModel)]="selectedLabels"
                        (onRemove)="removeTag($event)"

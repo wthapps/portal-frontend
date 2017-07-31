@@ -20,7 +20,7 @@ declare var _: any;
   styleUrls: ['menu.component.css']
 })
 
-export class ZSharedMenuComponent implements OnInit, OnDestroy, OnChanges {
+export class ZSharedMenuComponent implements OnInit, OnDestroy {
 
   @Input() contactMenu: Array<any>;
 
@@ -53,10 +53,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, OnChanges {
     this.urls = Constants.baseUrls;
 
 
-  }
-
-  ngOnChanges() {
-    console.debug('ngOnChanges: ', this.contactMenu);
   }
 
   ngOnInit() {

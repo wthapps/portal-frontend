@@ -42,8 +42,6 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   modalComponent: any;
   modal: any;
   labels: Label[] = [];
-  // contactMenu: Array<any> = new Array<any>();
-  // contactMenu$: Observable<any[]>;
   labels$: Observable<any[]>;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -54,26 +52,16 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
               private contactService: ZContactService,
-              private labelService: LabelService,
-              // public contactMenuService: ZContactMenuService
+              private labelService: LabelService
   ) {
     console.log('Environment config', Config);
     this.commonEventSub = this.commonEventService.event.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
     this.labelService.labels$
       .takeUntil(this.destroySubject)
       .subscribe((labels: any[]) => {
-      // this.labels.length = 0;
-      // this.labels.push(...labels);
         this.labels = labels;
-      console.debug('app labels: ', this.labels);
     })
     ;
-
-    // this.contactMenuService.contactMenu$.subscribe((menus: any[]) => {
-    //   this.contactMenu.length = 0;
-    //   this.contactMenu.push(...menus);
-    //   console.log('contactMenu: ', menus, this.contactMenu);
-    // });
   }
 
   ngOnInit() {
@@ -121,40 +109,16 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
       case 'contact:label:create':
         this.labelService.create(event.payload.label).subscribe(
-          (response: any) => {
-            // this.labels.push(response.data);
-            console.log('contact label is created !!!');
-
-          }
-        );
+          () =>{});
         break;
       case 'contact:label:update':
         let name = event.payload.label.name;
         this.labelService.update(event.payload.label).subscribe(
-          (response: any) => {
-
-            // update menu item and label data
-            // _.each(this.labels, (label: Label) => {
-            //   if (response.data.id == label.id) {
-            //     label.name = response.data.name;
-            //     return;
-            //   }
-            // });
-
-            // this.contactMenuService.updateMenuName(response.data);
-
-          }
-        );
+          () => {});
         break;
       case 'contact:label:delete':
         let label = this.getLabel(event.payload.selectedItem);
-        this.labelService.delete(label.id).subscribe(
-          (response: any) => {
-            // _.remove(this.labels, {name: response.data.name});
-            // _.remove(this.contactMenu, {name: response.data.name});
-            // this.contactService.contactMenusService.removeMenuByName({name: response.data.name});
-          }
-        );
+        this.labelService.delete(label.id).subscribe(() => {});
         break;
       case 'contact:contact:search':
         console.log('inside contact:contact:search: ', event);
@@ -162,23 +126,6 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         break;
     }
   }
-
-  // private mapLabelToMenuItem(label: Label): any {
-  //   return {
-  //     id: label.id,
-  //     name: label.name,
-  //     link: '/contacts',
-  //     hasSubMenu: !label.system,
-  //     count: (label.name == 'all contact' ? this.contactService.getAllContacts().length : label.contact_count),
-  //     icon: label.name == 'all contact' ? 'fa fa-address-book-o'
-  //       : label.name == 'favourite' ? 'fa fa-star'
-  //       : label.name == 'labels' ? 'fa fa-tags'
-  //       : label.name == 'blacklist' ? 'fa fa-ban'
-  //       : label.name == 'social' ? 'fa fa-globe'
-  //       : label.name == 'chat' ? 'fa fa-comments-o'
-  //       : 'fa fa-folder-o'
-  //   };
-  // }
 
   private getLabel(name: string): Label {
     // return _.find(this.labelService.getAllLabels(), {name: name});
