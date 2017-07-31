@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -20,7 +20,7 @@ declare var _: any;
   styleUrls: ['menu.component.css']
 })
 
-export class ZSharedMenuComponent implements OnInit, OnDestroy {
+export class ZSharedMenuComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() contactMenu: Array<any>;
 
@@ -55,6 +55,10 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
 
   }
 
+  ngOnChanges() {
+    console.debug('ngOnChanges: ', this.contactMenu);
+  }
+
   ngOnInit() {
     let currentUrl = this.router.url; /// this will give you current url
     this.hostname = window.location.origin;
@@ -76,8 +80,8 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
-  trackMenu() {
-
+  trackMenu(index: any, item: any) {
+    return item.id;
   }
 
   doEvent(event: any) {
