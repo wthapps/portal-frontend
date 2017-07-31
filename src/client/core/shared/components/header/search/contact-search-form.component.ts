@@ -69,7 +69,7 @@ export class ContactSearchFormComponent {
   onNavigation(data: any) {
     this.show = false;
 
-    this.serviceManager.getRouter().navigate([`/contacts/${data.id}`]);
+    this.serviceManager.getRouter().navigate([`/contacts/detail/${data.id}`]);
   }
 
 }

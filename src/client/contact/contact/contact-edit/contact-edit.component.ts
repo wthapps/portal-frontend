@@ -4,6 +4,7 @@ import { CustomValidator } from '../../../core/shared/validator/custom.validator
 
 import { Contact } from '../contact.model';
 import { Constants } from '../../../core/shared/config/constants';
+import { LabelService } from '../../label/label.service';
 declare var _: any;
 
 @Component({
@@ -47,10 +48,13 @@ export class ZContactEditComponent implements OnChanges {
   form: FormGroup;
   name: AbstractControl;
   company: AbstractControl;
+  labels: AbstractControl;
   job_title: AbstractControl;
   notes: AbstractControl;
 
-  constructor(private fb: FormBuilder) {
+  filteredLabelsMultiple: any[];
+
+  constructor(private fb: FormBuilder, private labelService: LabelService) {
     this.createForm();
     console.log(this.form);
   }
@@ -80,6 +84,7 @@ export class ZContactEditComponent implements OnChanges {
       (<FormControl>this.company).setValue(this.contact.company);
       (<FormControl>this.job_title).setValue(this.contact.job_title);
       (<FormControl>this.notes).setValue(this.contact.notes);
+      (<FormControl>this.labels).setValue(this.contact.labels);
     }
   }
 
@@ -91,12 +96,14 @@ export class ZContactEditComponent implements OnChanges {
       'medias': this.fb.array([this.initItem('medias')]),
       'name': [''],
       'company': [''],
+      'labels': [''],
       'job_title': [''],
       'notes': ['']
     });
 
     this.name = this.form.controls['name'];
     this.company = this.form.controls['company'];
+    this.labels = this.form.controls['labels'];
     this.job_title = this.form.controls['job_title'];
     this.notes = this.form.controls['notes'];
   }
@@ -118,7 +125,6 @@ export class ZContactEditComponent implements OnChanges {
     medias.reset();
   }
 
-  //phones
   initItem(type: string, item?: any) {
     let formGroup: any = null;
     switch (type) {
@@ -204,10 +210,19 @@ export class ZContactEditComponent implements OnChanges {
     control.removeAt(i);
   }
 
+  filterLabelMultiple(event: any) {
+    let query = event.query;
+    this.labelService.getAllLabels().then((res: any)=> {
+      this.filteredLabelsMultiple = this.labelService.filterLabel(query, res);
+    });
+  }
+
   onSubmit(values: any): void {
     values.id = this.contact.id;
     values.uuid = this.contact.uuid;
     values.media = values.medias;
+
+    console.log(values);
 
 
     if (this.mode == 'create') {

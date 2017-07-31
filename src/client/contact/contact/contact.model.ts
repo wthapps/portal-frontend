@@ -21,6 +21,7 @@ export class Contact extends BaseEntity {
   custom_fields: Array<CustomField>;
   user?: any;
   wthapps_user?: any;
+  labels: any;
 
   // constructor(options: any) {
   //   super(options);

@@ -1,7 +1,7 @@
 <div class="media-page-detail-left">
   <z-contact-shared-toolbar [hasBack]="true">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-      <ul class="page-body-control-menu">
+      <ul class="page-body-control-menu" *ngIf="data">
         <li>
           <a href="javascript:;" [routerLink]="['/contacts', data.id, {mode:'edit'}]" class="btn">
             <i class="fa fa-pencil"></i>
