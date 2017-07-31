@@ -11,7 +11,7 @@ import { CommonEventHandler } from './common-event-handler';
 
 
 @Injectable()
-export class CommonEventService implements CommonEventHandler {
+export class CommonEventService {
   event: Observable<CommonEvent>;
 
   private eventSub: Subject<CommonEvent> = new Subject<CommonEvent>();
@@ -19,6 +19,14 @@ export class CommonEventService implements CommonEventHandler {
 
   constructor() {
     this.event = this.eventSub.asObservable();
+  }
+
+  filter(func: any) {
+    return this.event.filter(func);
+  }
+
+  subscribe(func: any) {
+    return this.event.subscribe(func);
   }
 
   /**
@@ -42,9 +50,4 @@ export class CommonEventService implements CommonEventHandler {
     // });
     // this.subscription.unsubscribe();
   }
-
-  unsubscribe(): void {
-    // this.subscription.unsubscribe();
-  }
-
 }

@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import './operators';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/last';
 
 import { CommonEventAction } from '../core/shared/services/common-event/common-event-action';
 import { CommonEvent } from '../core/shared/services/common-event/common-event';
@@ -19,7 +20,6 @@ import { Subject } from 'rxjs/Subject';
 import { Label } from './label/label.model';
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
 import { ZContactService } from './shared/services/contact.service';
-import { ZContactMenuService } from './shared/services/contact-menu.service';
 
 /**
  * This class represents the main application component.
@@ -41,7 +41,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
-  labels: Label[];
+  labels: Label[] = [];
+  labels$: Observable<any[]>;
   contactMenu: Array<any> = new Array<any>();
   contactMenu$: Observable<any[]>;
 
@@ -53,17 +54,16 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
               private contactService: ZContactService,
-              private labelService: LabelService,
-              public contactMenuService: ZContactMenuService
+              private labelService: LabelService
   ) {
     console.log('Environment config', Config);
-    this.commonEventSub = this.commonEventService.event.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
-    this.contactMenu$ = this.contactMenuService.contactMenu$;
-
-    this.contactMenuService.contactMenu$.subscribe((menus: any[]) => {
-      this.contactMenu.length = 0;
-      this.contactMenu.push(...menus);
-      console.log('contactMenu: ', menus, this.contactMenu);
+    this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'commonEvent').subscribe((event: CommonEvent) => {
+      this.doEvent(event);
+    })
+    this.labelService.labels$
+      .takeUntil(this.destroySubject)
+      .subscribe((labels: any[]) => {
+        this.labels = labels;
     });
   }
 
@@ -75,34 +75,14 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         document.body.scrollTop = 0;
       });
 
-    this.labelService.getAllLabels().then(
-      (response: any) => {
-        this.labels = response;
-
-        // //map labels to ContactMenu Item
-        // _.each(this.labels, (label: Label) => {
-        //   this.contactMenuService.addMenu(this.mapLabelToMenuItem(label));
-        //
-        // });
-
-        this.contactMenuService.addLabels(this.labels);
-      }
-    );
-
-    // // Update contacts count
-    // this.contactService.contacts$.takeUntil(this.destroySubject)
-    //   .subscribe((contacts: any[]) => {
-    //     let idx = _.findIndex(this.contactMenu, (ct: any) => { return ct.name === 'all contact'; });
-    //     _.set(this.contactMenu, `${idx}.count`, this.contactService.getAllContacts().length);
-    //   }
-    // );
+    this.labelService.getAllLabels().then((labels: any[]) => console.debug('getAllLabels: ', labels));
   }
 
   ngOnDestroy() {
     // this.routerSubscription.unsubscribe();
     // this.commonEventSub.unsubscribe();
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
+    // this.destroySubject.next('');
+    // this.destroySubject.unsubscribe();
   }
 
   doEvent(event: CommonEvent) {
@@ -125,52 +105,23 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           accept: () => {
             event.action = 'contact:label:delete';
             event.payload.selectedItem = this.getLabel(event.payload.selectedItem);
-            this.commonEventService.broadcast(event);
+            this.commonEventService.broadcast({channel: 'commonEvent', action: event.action, payload: event.payload});
           }
         });
         break;
 
       case 'contact:label:create':
         this.labelService.create(event.payload.label).subscribe(
-          (response: any) => {
-            this.labels.push(response.data);
-            // this.contactMenu.push(this.mapLabelToMenuItem(this.labels[this.labels.length-1]));
-            this.contactService.contactMenusService.addLabel(this.labels[this.labels.length-1]);
-          }
-        );
+          () =>{});
         break;
       case 'contact:label:update':
         let name = event.payload.label.name;
         this.labelService.update(event.payload.label).subscribe(
-          (response: any) => {
-
-            // update menu item and label data
-            _.each(this.labels, (label: Label) => {
-              if (response.data.id == label.id) {
-                label.name = response.data.name;
-                return;
-              }
-            });
-
-            // _.each(this.contactMenu, (menu: Label) => {
-            //   if (response.data.id == menu.id) {
-            //     menu.name = response.data.name;
-            //     return;
-            //   }
-            // });
-
-          }
-        );
+          () => {});
         break;
       case 'contact:label:delete':
         let label = this.getLabel(event.payload.selectedItem);
-        this.labelService.delete(label.id).subscribe(
-          (response: any) => {
-            _.remove(this.labels, {name: response.data.name});
-            // _.remove(this.contactMenu, {name: response.data.name});
-            this.contactService.contactMenusService.removeMenuByName({name: response.data.name});
-          }
-        );
+        this.labelService.delete(label.id).subscribe(() => {});
         break;
       case 'contact:contact:search':
         console.log('inside contact:contact:search: ', event);
@@ -179,25 +130,9 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
     }
   }
 
-  // private mapLabelToMenuItem(label: Label): any {
-  //   return {
-  //     id: label.id,
-  //     name: label.name,
-  //     link: '/contacts',
-  //     hasSubMenu: !label.system,
-  //     count: (label.name == 'all contact' ? this.contactService.getAllContacts().length : label.contact_count),
-  //     icon: label.name == 'all contact' ? 'fa fa-address-book-o'
-  //       : label.name == 'favourite' ? 'fa fa-star'
-  //       : label.name == 'labels' ? 'fa fa-tags'
-  //       : label.name == 'blacklist' ? 'fa fa-ban'
-  //       : label.name == 'social' ? 'fa fa-globe'
-  //       : label.name == 'chat' ? 'fa fa-comments-o'
-  //       : 'fa fa-folder-o'
-  //   };
-  // }
-
   private getLabel(name: string): Label {
-    return _.find(this.labels, {name: name});
+    // return _.find(this.labelService.getAllLabels(), {name: name});
+    return this.labelService.getLabelByName(name);
   }
 
   private loadModalComponent(component: any) {

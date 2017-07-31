@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -76,15 +76,15 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
-  trackMenu() {
-
+  trackMenu(index: any, item: any) {
+    return item.id;
   }
 
   doEvent(event: any) {
     // if (event.event) {
     //   event.event.preventDefault();
     // }
-    this.commonEventService.broadcast(event);
+    this.commonEventService.broadcast({channel: 'commonEvent', action: event.action, payload: event.payload});
   }
 
   ngOnDestroy() {

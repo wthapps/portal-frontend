@@ -9,17 +9,12 @@ import 'rxjs/add/operator/toPromise';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/contact-three-dot.service';
 import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
-import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
-import { Constants } from '../../../core/shared/config/constants';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
-import { ZContactMenuService } from './contact-menu.service';
 import { LabelService } from '../../label/label.service';
-import { Label } from '../../label/label.model';
 
 declare var _: any;
 
@@ -28,25 +23,22 @@ export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
 
+  private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private initLoadSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(false);
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
-  private maxContactIndex: number = 20;
-  private maxSuggestIndex: number = 20;
 
   listenToList = this.listenToListSource.asObservable();
   listenToItem = this.listenToItemSource.asObservable();
   contacts$: Observable<any[]> = this.contactsSubject.asObservable();
-  contactMenus$: Observable<any[]>;
   initLoad$: Observable<boolean> = this.initLoadSubject.asObservable();
+  isSelectAll$: Observable<boolean> = this.isSelectAllSubject.asObservable();
 
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
-              public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService,
-              public contactMenusService: ZContactMenuService,
               public labelService: LabelService,
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
@@ -54,18 +46,6 @@ export class ZContactService extends BaseEntityService<any> {
     super(apiBaseService);
     this.url = 'contact/contacts';
     this.initialLoad();
-
-    this.contactMenus$ = this.contactMenusService.contactMenu$;
-
-
-    // this.labelService.getAllLabels().then(
-    //   (response: any) => {
-    //     this.labels = response;
-    //
-    //     //map labels to ContactMenu Item
-    //     _.each(this.labels, (label: Label) => this.contactService.contactMenusService.addLabel(label));
-    //     });
-
 
     this.suggestService.input$.subscribe((input: any) => {
       let contacts: any[] = _.cloneDeep(this.searchContact(input));
@@ -100,16 +80,16 @@ export class ZContactService extends BaseEntityService<any> {
     return this.confirmDeleteContacts();
   }
 
-  // confirmDeleteContacts(contacts: Array<any> = []): Promise<any> {
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
     let contact_names: string = _.map(contacts, (ct: any) => ct.name).join(', ');
+    let contact_length: number = contacts.length;
     return new Promise((resolve) => {
       this.confirmationService.confirm({
-        message: `Are you sure you want to delete following ${contacts.length} contacts:  ${contact_names} ?`,
+        message: `Are you sure you want to delete following ${contact_length} contacts:  ${contact_names} ?`,
         header: 'Delete Contacts',
         accept: () => {
           this.deleteSelectedContacts().then(() => {
-            this.toastsService.success(`Delete ${contacts.length} contacts successfully`);
+            this.toastsService.success(`Delete ${contact_length} contacts successfully`);
             resolve();
           });
         }
@@ -119,16 +99,31 @@ export class ZContactService extends BaseEntityService<any> {
 
   addItemSelectedObjects(item: any) {
     this.selectedObjects.push(item);
+    this.checkSelectAll();
   }
 
   removeItemSelectedObjects(item: any) {
     _.remove(this.selectedObjects, {
       'uuid': item.uuid
     });
+    this.checkSelectAll();
+  }
+
+  isSelectAll(): boolean {
+    return this.isSelectAllSubject.getValue();
+  }
+
+  checkSelectAll() {
+    let isSelectAll = _.isEqual(this.contactsSubject.getValue().map((c: any) => c.id).sort(), this.selectedObjects.map((c: any) => c.id).sort());
+    console.debug('checkSelectAll: ', isSelectAll, this.contactsSubject.getValue().sort(), this.selectedObjects.sort());
+    this.isSelectAllSubject.next(isSelectAll);
   }
 
   sendListToItem(event: any) {
     this.listenToListSource.next(event);
+
+    // TODO: Toggle select all status
+    this.isSelectAllSubject.next(!this.isSelectAllSubject.getValue());
   }
 
   sendItemToList(event: any) {
@@ -210,17 +205,10 @@ export class ZContactService extends BaseEntityService<any> {
     this.notifyContactsObservers(contacts);
   }
 
-  suggestContacts(value: any) {
-    // let contacts: any[] = _.cloneDeep(this.searchContact(value));
-    //
-    // this.notifyContactsObservers(contacts);
-  }
-
   notifyContactsObservers(contacts: Array<any>): void {
-    this.contactMenusService.updateLabelCount(this.contacts);
+    this.labelService.updateLabelCount(this.contacts);
 
-    this.contactsSubject.next(contacts);
-    // this.selectedObjects.length = 0;
+    this.contactsSubject.next(_.orderBy(contacts, ['name'], ['asc']));
   }
 
   private searchContact(name: string): any[] {
