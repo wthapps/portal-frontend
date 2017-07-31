@@ -29,8 +29,8 @@
 <div *ngIf="active" class="navbar-form navbar-left">
   <div class="navbar-searchTop">
     <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)" (onKeyUpEvent)="onKey($event)"
-                    [placeholder]="'Search something'" [showDropdown]="show">
-      <ng-template [ngIf]="show">
+                    [placeholder]="'Search something'">
+      <div class="input-group-suggestions" *ngIf="show">
         <div class="list-group">
 
           <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="onNavigation(data)">
@@ -47,7 +47,7 @@
           </div>
         </div>
 
-      </ng-template>
+      </div>
     </textbox-search>
   </div>
 </div>

@@ -14,15 +14,17 @@ declare let _: any;
 export class TextBoxSearchComponent implements OnInit {
   @Input() search: string = '';
   @Input() placeholder: string = '';
-  @Input() showDropdown: boolean = false;
+  @Input() showSearchAdvanced: boolean = false;
   @Input() debounceTime: any = 300;
 
   @Output() onEnterEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() onEscapeEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() onKeyUpEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onSearchAdvancedEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('input') input: any;
 
+  searchAdvanced: boolean = false;
 
   ngOnInit() {
     Observable.fromEvent(this.input.nativeElement, 'keyup')
@@ -52,5 +54,13 @@ export class TextBoxSearchComponent implements OnInit {
   onEscape() {
     this.search = '';
     this.onEscapeEvent.emit({search: this.search});
+  }
+
+  onShowSearchAdvanced() {
+    this.searchAdvanced = !this.searchAdvanced;
+    this.onSearchAdvancedEvent.emit({
+      search: this.search,
+      searchAdvanced: this.searchAdvanced
+    });
   }
 }

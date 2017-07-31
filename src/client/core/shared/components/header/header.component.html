@@ -69,8 +69,7 @@
                     observeAttributes="true"
                     infinite-scroll
                     [scrollWindow]="false"
-                    (scrolled)="getMoreNotifications()"
-                >
+                    (scrolled)="getMoreNotifications()">
                   <li class="navbar-nav-notification-item"
                       *ngFor="let notification of notificationService.notifications"
                       [ngClass]="{'unread-notification': !notification?.is_read }">

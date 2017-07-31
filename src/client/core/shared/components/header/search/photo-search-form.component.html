@@ -1,4 +1,4 @@
-<div *ngIf="active" class="navbar-form navbar-left">
+<!--<div *ngIf="active" class="navbar-form navbar-left">
   <div class="navbar-searchTop">
     <div class="input-group">
       <p-autoComplete [(ngModel)]="searchText" [suggestions]="suggestions" (completeMethod)="getSuggestions($event)"
@@ -64,5 +64,86 @@
         </div>
       </form>
     </div>
+  </div>
+</div>-->
+
+
+<div *ngIf="active" class="navbar-form navbar-left">
+  <div class="navbar-searchTop">
+
+    <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
+                    (onKeyUpEvent)="onKey($event)"
+                    [placeholder]="'Search something'" [showSearchAdvanced]="true"
+                    (onSearchAdvancedEvent)="onSearchAdvanced($event)">
+
+      <div class="input-group-suggestions" *ngIf="show">
+        <div class="list-group">
+          <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="onNavigation(data)">
+            {{ data|json }}
+          </a>
+        </div>
+        <div class="list-group-footer">
+          <div class="row row-10">
+            <div class="col-md-12">
+              <a href="javascript:;" class="btn btn-block btn-link-inline" (click)="onEnter($event)">
+                Show all result
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group-suggestions navbar-searchTop-advanced" *ngIf="searchAdvanced">
+        <h5> Advance Search </h5>
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate class="form-horizontal pt0">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">From</label>
+            <div class="col-sm-4">
+              <p-calendar [showIcon]="true" class="form-control-block" formControlName="searchFrom"></p-calendar>
+            </div>
+            <label class="col-sm-1 control-label">To</label>
+            <div class="col-sm-4">
+              <p-calendar [showIcon]="true" formControlName="searchTo"></p-calendar>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">File Type</label>
+            <div class="col-sm-9">
+              <input [formControl]="searchFileType" type="text" class="form-control" placeholder="png, jpg,...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Tags</label>
+            <div class="col-sm-9">
+              <input [formControl]="searchTags" type="text" class="form-control" placeholder="dog, cat,...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Owner</label>
+            <div class="col-sm-9">
+              <input [formControl]="searchOwner" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Group Share</label>
+            <div class="col-sm-9">
+              <input [formControl]="searchGroup" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Contact Share</label>
+            <div class="col-sm-9">
+              <input [formControl]="searchContact" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+
+          <div class="clearfix">
+            <button type="submit" class="btn btn-wth mr10">Search</button>
+            <button type="reset" class="btn btn-default">Reset</button>
+          </div>
+        </form>
+      </div>
+
+    </textbox-search>
   </div>
 </div>

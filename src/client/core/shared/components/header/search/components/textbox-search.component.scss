@@ -10,6 +10,7 @@
 
     .input-group-suggestions {
       position: absolute;
+      z-index: 2;
       left: 0;
       right: 0;
       margin: 2px 0 0; // override default ul
@@ -62,6 +63,31 @@
         margin-top: -1px;
         position: relative;
         z-index: 2;
+      }
+
+    }
+
+    .navbar-searchTop-advanced {
+      z-index: 1;
+      .form-horizontal {
+        padding: 15px;
+      }
+      .form-group {
+        display: block;
+        margin-bottom: 15px;
+        .form-control {
+          display: block;
+          width: 100%;
+        }
+        .control-label {
+          white-space: nowrap;
+        }
+        .ui-calendar {
+          .ui-inputtext {
+            font-size: 12px;
+            line-height: 20px;
+          }
+        }
       }
     }
 

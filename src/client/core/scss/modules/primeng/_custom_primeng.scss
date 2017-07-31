@@ -2,6 +2,9 @@
 @import "theme";
 
 body {
+  .ui-inputtext {
+    line-height: 1.3;
+  }
   .ui-inputswitch {
     overflow: visible;
     background-color: #F6F6F6;
