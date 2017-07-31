@@ -5,7 +5,6 @@ import {
 import { Location } from '@angular/common';
 import { ViewOptions } from './view-options.constant';
 import { Observable, Observer } from 'rxjs';
-import { MediaUploaderComponent } from '../uploader/media-uploader.component';
 
 declare let _: any;
 
@@ -16,11 +15,9 @@ declare let _: any;
   styleUrls: ['media-toolbar-list.component.css']
 })
 
-export class MediaToolbarListComponent implements OnInit, AfterViewInit {
+export class MediaToolbarListComponent implements OnInit {
   @Input() currentPage: string; //photo_list, albumlist, object_list, photo_detail, album_detail, object_detail
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
-
-  @ViewChild('uploader') uploader: MediaUploaderComponent;
 
   selectedObjects: Array<any> = new Array<any>();
   object: any;
@@ -41,7 +38,7 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   hasMultiObjects: boolean = false;
   favouriteTooltip: string = 'Add to favourites';
 
-  displayCreateButtons: boolean = true;
+  displayCreateButtons: boolean;
   displayBackButton: boolean = false;
 
 
@@ -49,12 +46,9 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.displayCreateButtons = (this.page == 'search' || this.page == 'album_detail' ? false : true);
     this.displayBackButton = (this.page == 'search' || this.page == 'album_detail' ? true : false);
-  }
-
-  ngAfterViewInit(): void {
   }
 
   initProperties(properties: any) {

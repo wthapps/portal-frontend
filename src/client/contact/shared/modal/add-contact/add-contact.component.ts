@@ -19,11 +19,11 @@ export class ZContactShareAddContactComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactService.contactAddContactService.eventIn.subscribe((event: any) => {
-      if(event.action == 'open') {
-        this.modal.open();
-      }
-    });
+    // this.contactService.contactAddContactService.eventIn.subscribe((event: any) => {
+    //   if(event.action == 'open') {
+    //     this.modal.open();
+    //   }
+    // });
   }
 
   add() {
@@ -33,7 +33,7 @@ export class ZContactShareAddContactComponent implements OnInit {
       emails: [{value: this.email}],
       phones: [{value: this.phone}]
     }).subscribe((res: any) => {
-      this.contactService.contactAddContactService.sendOut(res);
+      // this.contactService.contactAddContactService.sendOut(res);
     });
   }
 }

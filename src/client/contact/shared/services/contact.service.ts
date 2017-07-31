@@ -9,7 +9,6 @@ import 'rxjs/add/operator/toPromise';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { ZContactThreeDotActionsService } from '../actions/three-dot-actions/contact-three-dot.service';
 import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
@@ -39,7 +38,6 @@ export class ZContactService extends BaseEntityService<any> {
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
-              public contactThreeDotActionsService: ZContactThreeDotActionsService,
               public contactAddContactService: ZContactAddContactService,
               public labelService: LabelService,
               private suggestService: SuggestionService,

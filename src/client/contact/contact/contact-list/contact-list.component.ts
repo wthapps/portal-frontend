@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -34,6 +34,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   eventThreeDot: any;
   eventAddContact: any;
   commonEventSub: Subscription;
+  tokens: any;
+  tokensActionsBar: any;
   contact$: Observable<any>;
   originalContacts: any = [];
 
@@ -44,20 +46,26 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   constructor(private contactService: ZContactService,
               private route: ActivatedRoute,
+              private cdr: ChangeDetectorRef,
               private router: Router,
               private confirmationService: ConfirmationService,
               private loadingService: LoadingService,
               private commonEventService: CommonEventService
   ) {
-    this.commonEventSub = this.commonEventService.event.subscribe((event: any) => {
+    this.tokens = this.commonEventService.subscribe(['commonEvent'], (event: any) => {
       this.doEvent(event);
     });
+
 
     this.page = 1;
     this.contact$ = this.contactService.contacts$;
   }
 
   ngOnInit() {
+    this.tokensActionsBar = this.commonEventService.subscribe(['actionToolbarOnItem'], (event: any) => {
+      this.doActionsToolbar(event);
+    });
+
     this.route.params.forEach((params: Params) => {
       switch(params['label']) {
         case 'all contact':
@@ -70,22 +78,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       }
     });
 
-    this.eventThreeDot = this.contactService.contactThreeDotActionsService.eventOut.subscribe((event: any) => {
-      if (event.action == "deleted") {
-      }
-    });
-    this.eventAddContact = this.contactService.contactAddContactService.eventOut.subscribe((event: any) => {
-      this.contactService.addMoreContacts(_.get(event, 'data', []));
-    });
-
-
     this.contactService.contacts$
       .takeUntil(this.destroySubject)
       .subscribe((contacts: any[]) => {
          // this.contacts.length = 0;
         this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
-
-        console.debug('inside contact list onInit: ', this.contacts, contacts);
+        this.loadingService.stop();
       });
   }
 
@@ -98,6 +96,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
           if(data === true)
             this.loadingService.stop('#contact-list');
         });
+    this.cdr.detectChanges();
   }
 
   confirmDeleteContacts() {
@@ -105,12 +104,10 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   ngOnDestroy() {
-    if (this.eventThreeDot) {
-      this.eventThreeDot.unsubscribe();
+    if (this.tokensActionsBar) {
+      this.commonEventService.unsubscribe(this.tokensActionsBar);
     }
-    if (this.eventAddContact) {
-      this.eventAddContact.unsubscribe();
-    }
+
     if (this.commonEventSub) {
       this.commonEventSub.unsubscribe();
     }
@@ -155,8 +152,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       case 'contact:contact:update':
         let params: any;
         let multiple: boolean = false;
-
-
 
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
         if (this.contactService.selectedObjects.length > 1) {
@@ -226,24 +221,42 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       }
     };
 
-    // let label = name =='favourite' ? {
-    //   id: 3,
-    //   uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
-    //   name: 'favourite',
-    //   system: true
-    // } : {
-    //   id: 6,
-    //   uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
-    //   name: 'blacklist',
-    //   system: true
-    // };
-
     if (this.hasLabel(name)) {
       this.removeLabel(name);
     } else {
       this.addLabel(event.payload.labels[0]);
     }
      this.doEvent(event)
+  }
+
+  doActionsToolbar(event: any) {
+    if(event.action == 'favourite') {
+      this.toggleLabel('favourite');
+    }
+
+    if(event.action == 'blacklist') {
+      this.toggleLabel('blacklist');
+    }
+
+    if(event.action == 'tag') {
+      this.doEvent({action: 'contact:contact:open_add_label_modal', mode: 'add'});
+    }
+
+    if(event.action == 'delete') {
+      this.confirmDeleteContacts();
+    }
+
+    if(event.action == 'social') {
+      if(this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
+        window.location.href = this.linkSocial + this.contactService.selectedObjects[0].wthapps_user.uuid;
+      }
+    }
+
+    if(event.action == 'chat') {
+      if(this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
+        window.location.href = this.linkChat + this.contactService.selectedObjects[0].wthapps_user.uuid;
+      }
+    }
   }
 
   hasLabel(name: string): boolean {

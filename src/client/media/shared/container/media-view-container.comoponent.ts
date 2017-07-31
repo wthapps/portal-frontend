@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit,
-  ComponentFactoryResolver, OnDestroy, Input, OnChanges, SimpleChanges
+  ComponentFactoryResolver, OnDestroy, Input, OnChanges, SimpleChanges, ChangeDetectorRef
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -118,6 +118,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private albumService: ZMediaAlbumService,
               private mediaUploaderDataService: MediaUploaderDataService,
               private mediaStore: ZMediaStore,
+              private cdr: ChangeDetectorRef,
               private confirmationService: ConfirmationService) {
 
   }
@@ -184,6 +185,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
     })
+    this.cdr.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {

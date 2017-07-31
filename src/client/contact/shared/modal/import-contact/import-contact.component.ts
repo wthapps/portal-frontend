@@ -24,11 +24,11 @@ export class ZContactShareImportContactComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactService.contactAddContactService.eventIn.subscribe((event: any) => {
-      if(event.action == 'open') {
-        this.modal.open();
-      }
-    });
+    // this.contactService.contactAddContactService.eventIn.subscribe((event: any) => {
+    //   if(event.action == 'open') {
+    //     this.modal.open();
+    //   }
+    // });
   }
 
   // Format: { name }

@@ -29,7 +29,6 @@ export class ZContactSharedToolbarComponent implements OnInit {
 
   openAddModal() {
     console.log("openAddModal");
-    this.contactService.contactAddContactService.sendIn({action: "open"});
   }
 
   openImportContactModal(options?: any) {

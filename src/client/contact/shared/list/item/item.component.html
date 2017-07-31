@@ -29,4 +29,10 @@
   </ul>
 </div>
 
-<z-contact-shared-actions-bar class="actions-bar" [data]="data"></z-contact-shared-actions-bar>
+<z-contact-shared-actions-bar
+  class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action"
+  [showNumber]="false"
+  [toggleFavourite]="true"
+  [toggleBlacklist]="true"
+  (eventOut)="doActionsToolbar($event)"
+></z-contact-shared-actions-bar>

@@ -43,6 +43,9 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   modal: any;
   labels: Label[] = [];
   labels$: Observable<any[]>;
+  contactMenu: Array<any> = new Array<any>();
+  contactMenu$: Observable<any[]>;
+  tokens: any;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -55,13 +58,12 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private labelService: LabelService
   ) {
     console.log('Environment config', Config);
-    this.commonEventSub = this.commonEventService.event.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
+    this.tokens = this.commonEventService.subscribe(['commonEvent'], (event: any) => this.doEvent(event));
     this.labelService.labels$
       .takeUntil(this.destroySubject)
       .subscribe((labels: any[]) => {
         this.labels = labels;
-    })
-    ;
+    });
   }
 
   ngOnInit() {
@@ -78,8 +80,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   ngOnDestroy() {
     // this.routerSubscription.unsubscribe();
     // this.commonEventSub.unsubscribe();
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
+    // this.destroySubject.next('');
+    // this.destroySubject.unsubscribe();
   }
 
   doEvent(event: CommonEvent) {

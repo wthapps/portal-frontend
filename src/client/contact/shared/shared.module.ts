@@ -6,9 +6,6 @@ import { ZContactSharedItemComponent } from './list/item/item.component';
 import { ZContactService } from './services/contact.service';
 import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
-import { ZContactSharedActionsBarComponent } from './actions/actions-bar/actions-bar.component';
-import { ZContactSharedThreeDotActionComponent } from './actions/three-dot-actions/three-dot-actions.component';
-import { ZContactThreeDotActionsService } from './actions/three-dot-actions/contact-three-dot.service';
 import { ZContactAddContactService } from './modal/add-contact/add-contact.service';
 
 import { GoogleApiService } from './services/google-api.service';
@@ -24,6 +21,8 @@ import { ZContactShareImportContactComponent } from './modal/import-contact/impo
 import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
 import { ContactImportContactDataService } from './modal/import-contact/import-contact-data.service';
 import { ZContactSharedSettingsComponent } from './modal/settings/settings.component';
+import { ZContactMenuService } from './services/contact-menu.service';
+import { ZContactSharedActionsBarComponent } from "./toolbar/actions-bar.component";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -44,13 +43,12 @@ import { ZContactSharedSettingsComponent } from './modal/settings/settings.compo
   declarations: [
     ZContactSharedListComponent,
     ZContactSharedItemComponent,
-    ZContactSharedActionsBarComponent,
-    ZContactSharedThreeDotActionComponent,
     ZContactShareAddContactComponent,
     ZContactSharedToolbarComponent,
     ZContactShareImportProgressComponent,
     ZContactShareImportContactComponent,
     ZContactSharedToolbarComponent,
+    ZContactSharedActionsBarComponent,
 
     //modal here
     ContactAddLabelModalComponent,
@@ -67,13 +65,12 @@ import { ZContactSharedSettingsComponent } from './modal/settings/settings.compo
 
     ZContactSharedListComponent,
     ZContactSharedItemComponent,
-    ZContactSharedActionsBarComponent,
-    ZContactSharedThreeDotActionComponent,
     ZContactShareAddContactComponent,
     ZContactSharedToolbarComponent,
     ZContactShareImportProgressComponent,
     ZContactShareImportContactComponent,
     ZContactSharedToolbarComponent,
+    ZContactSharedActionsBarComponent,
 
     // modal here
     ContactAddLabelModalComponent,
@@ -89,7 +86,7 @@ export class ZContactSharedModule {
         ZContactService,
         GoogleApiService,
         ZContactAddContactService,
-        ZContactThreeDotActionsService,
+        ZContactMenuService,
         ContactImportContactDataService
       ]
     };
