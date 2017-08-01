@@ -5,7 +5,7 @@
     </div>
     <div class="contact-listbox-name">
       <a href="#" class="contact-listbox-block-link" (click)="onSort('name')">Name
-        <i class="fa" [ngClass]="{'fa-arrow-up': descending, 'fa-arrow-down': !descending}"></i> </a>
+        <i class="fa" [ngClass]="{'fa-arrow-up': (desc$ | async), 'fa-arrow-down': !(desc$ | async)}"></i> </a>
     </div>
     <div class="contact-listbox-email">
       Email

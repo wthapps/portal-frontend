@@ -1,14 +1,16 @@
 import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 
+
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/do';
 
 import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
-import { Subject } from 'rxjs/Subject';
 
 declare var $: any;
 declare var _: any;
@@ -35,6 +37,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
   chatMenu = Constants.chatMenuItems;
   hostname: string = '';
   isProfileTab: boolean;
+  currentLabel: string;
 
   // labels: Array<any>;
   commonEventSub: any;
@@ -51,8 +54,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
   ) {
     this.uuid = this.userService.getProfileUuid();
     this.urls = Constants.baseUrls;
-
-
   }
 
   ngOnInit() {
@@ -60,14 +61,31 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     this.hostname = window.location.origin;
     this.router.events
       .filter(event => event instanceof NavigationEnd)
+      .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         if (event.url.indexOf('profile') !== -1) {
           this.isProfileTab = true;
         } else {
           this.isProfileTab = false;
         }
+
+        this.currentLabel = this.extractLabel(event.url);
+        console.log('url: ', event.url, this.currentLabel);
       });
     // your logic to know if its my home page.
+
+  }
+
+  extractLabel(url: string) {
+    let regExp = /label=([\w ]*)/;
+    let match = decodeURI(url).match(regExp);
+
+    console.debug('match: ', match);
+    if (match && match[1]) {
+      return match[1];
+    } else {
+      return null;
+    }
   }
 
   onMenu(event: string) {
