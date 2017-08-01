@@ -4,6 +4,7 @@ export class Label extends BaseEntity {
   system: boolean;
   user_id?: number;
   user?: any;
+  order?: number;
   contact_count?: number;
 
   convertToMenuItem(): any {

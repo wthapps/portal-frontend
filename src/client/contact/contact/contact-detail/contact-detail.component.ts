@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params } from '@angular/router';
+
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Constants } from '../../../core/shared/config/constants';
+import { Label } from '../../label/label.model';
+
+declare let _: any;
 
 @Component({
   moduleId: module.id,
@@ -14,6 +18,7 @@ export class ZContactDetailComponent implements OnInit {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
   contactId: number;
   data: any;
+  labels: Label[];
 
   phoneCategories: any = Constants.phoneCategories;
   emailCategories: any = Constants.emailCategories;
@@ -36,6 +41,7 @@ export class ZContactDetailComponent implements OnInit {
     console.log(e);
     this.contactService.update(this.data).subscribe((res: any) => {
       this.data = res.data;
+      this.labels = _.map(this.data, 'name');
     });
   }
 
@@ -47,6 +53,8 @@ export class ZContactDetailComponent implements OnInit {
   private getContact(id: number) {
     this.contactService.get(id).subscribe((response: any) => {
       this.data = response.data;
+      this.labels = _.map(this.data.labels, 'name');
+      console.log('this.labels: ', this.labels);
     });
   }
 }
