@@ -39,7 +39,7 @@ export class ZContactService extends BaseEntityService<any> {
   listenToItem = this.listenToItemSource.asObservable();
   contacts$: Observable<any[]> = this.contactsSubject.asObservable();
   initLoad$: Observable<boolean> = this.initLoadSubject.asObservable();
-  orderDesc$: Observable<boolean> = this.initLoadSubject.asObservable();
+  orderDesc$: Observable<boolean> = this.orderDescSubject.asObservable();
   isSelectAll$: Observable<boolean> = this.isSelectAllSubject.asObservable();
 
 
