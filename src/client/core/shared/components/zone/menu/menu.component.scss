@@ -25,6 +25,10 @@ ul {
       background-color: $color-inverse;
     }
   }
+
+  .divider {
+    border-bottom: 1px solid $line;
+  }
 }
 
 .has-sub {
@@ -55,6 +59,7 @@ ul {
       color: $text-color;
     }
   }
+
 }
 
 .menuleft-nav-sub-action {
