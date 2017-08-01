@@ -23,6 +23,7 @@ import { ContactImportContactDataService } from './modal/import-contact/import-c
 import { ZContactSharedSettingsComponent } from './modal/settings/settings.component';
 import { ZContactMenuService } from './services/contact-menu.service';
 import { ZContactSharedActionsBarComponent } from "./toolbar/actions-bar.component";
+import { ZContactPipeModule } from "./pipe/pipe.module";
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -34,6 +35,7 @@ import { ZContactSharedActionsBarComponent } from "./toolbar/actions-bar.compone
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    ZContactPipeModule,
 
     // third party libs
     TagInputModule,

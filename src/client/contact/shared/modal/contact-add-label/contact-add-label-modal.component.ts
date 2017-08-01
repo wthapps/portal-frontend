@@ -34,41 +34,23 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService,
    private labelService: LabelService)  {
 
-
-
   }
 
   ngOnInit() {
-
     this.form = this.fb.group({
       'labels': [this.selectedLabels],
     });
     this.labelsCtrl = this.form.controls['labels'];
-
-
-
-    // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
-    // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
-    //
-    // this.form = this.fb.group({
-    //   id: [this.item.id],
-    //   'name': [this.item.name, Validators.compose([Validators.required])]
-    // });
-    // this.name = this.form.controls['name'];
   }
 
   submit() {
     if (this.mode =='edit') {
-      // find selectedLabels and push to label array
-      // _.forEach(this.selectedLabels, (label: any) => {
-      //   this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
-      // });
       this.contact = _.pick(this.contact, ['id', 'labels']);
     }
     this.commonEventService.broadcast({
       channel: 'contactCommonEvent',
       action: 'contact:contact:update',
-      payload: { labels: this.getSelectedLabels(), contact: this.contact }}
+      payload: { labels: this.getSelectedLabels(), selectedObjects: [this.contact] }}
     );
     this.modal.close().then();
   }

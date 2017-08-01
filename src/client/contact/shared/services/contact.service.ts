@@ -114,7 +114,7 @@ export class ZContactService extends BaseEntityService<any> {
         message: `Are you sure you want to delete following ${contact_length} contacts:  ${contact_names} ?`,
         header: 'Delete Contacts',
         accept: () => {
-          this.deleteSelectedContacts().then(() => {
+          this.deleteSelectedContacts(contacts).then(() => {
             this.toastsService.success(`Delete ${contact_length} contacts successfully`);
             resolve();
           });
@@ -266,15 +266,15 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
-  private deleteSelectedContacts(): Promise<any> {
-    let body = {contacts: this.selectedObjects};
+  private deleteSelectedContacts(contacts: any[] = this.selectedObjects): Promise<any> {
+    let body = {contacts: contacts};
     return this.apiBaseService.post(`${this.url}/multi_destroy`, body).toPromise()
       .then(() => {
-        let deletedIds = _.map(this.selectedObjects, (contact: any) => contact.id);
+        let deletedIds = _.map(contacts, (contact: any) => contact.id);
 
         _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
         this.notifyContactsObservers(this.contacts);
-        this.selectedObjects.length = 0;
+        contacts.length = 0;
       });
   }
 

@@ -28,11 +28,14 @@
     </li>
   </ul>
 </div>
-
+<!-- {{data | wthFilterBy:'labels' | json}} -->
 <z-contact-shared-actions-bar
+  style="padding-top: 10px"
   class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action"
   [showNumber]="false"
-  [toggleFavourite]="true"
-  [toggleBlacklist]="true"
+  [showViewDetail]="true"
+  [showEdit]="true"
+  [toggleFavourite]="data | contactHasLabel:'favourite'"
+  [toggleBlacklist]="data | contactHasLabel:'blacklist'"
   (eventOut)="doActionsToolbar($event)"
 ></z-contact-shared-actions-bar>
