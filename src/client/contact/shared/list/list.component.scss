@@ -107,11 +107,26 @@ $color-table-row: #F9F9F9;
     .contact-listbox-action {
       width: $contact-listbox-action;
       min-width: 180px;
-      > div {
-        display: inline;
-      }
+      display: table-cell;
+      vertical-align: middle;
+      padding: 9px 10px;
       text-align: right;
-      padding: 10px;
+      ul.page-body-control-menu {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        float: right;
+        > li {
+          float: left;
+        }
+      }
+      .btn {
+        min-width: 34px;
+        color: inherit;
+        &:hover, &:focus {
+          border: 1px solid $line;
+        }
+      }
     }
 
   }
