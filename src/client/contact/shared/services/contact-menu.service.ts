@@ -43,7 +43,7 @@ export class ZContactMenuService {
     let cMenus = _.map(this.contactMenuSubject.getValue(), (m: any) => {
       if(menus[m.name])
         return Object.assign(m, {count: menus[m.name].count});
-      if(m.name === 'all contact')
+      if(m.name === 'all contacts')
         return Object.assign(m, {count: contacts.length});
       else
         return m;
@@ -122,7 +122,7 @@ export class ZContactMenuService {
       link: '/contacts',
       hasSubMenu: !label.system,
       count: label.contact_count,
-      icon: label.name == 'all contact' ? 'fa fa-address-book-o'
+      icon: label.name == 'all contacts' ? 'fa fa-address-book-o'
         : label.name == 'favourite' ? 'fa fa-star'
           : label.name == 'labels' ? 'fa fa-tags'
             : label.name == 'blacklist' ? 'fa fa-ban'

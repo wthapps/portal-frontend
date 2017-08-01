@@ -10,7 +10,7 @@ import { BaseEntityService } from '../../core/shared/services/base-entity-servic
 declare let _: any;
 @Injectable()
 export class LabelService extends BaseEntityService<Label> {
-  private labelsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
+  private labelsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   labels$: Observable<any[]>;
 
@@ -21,14 +21,14 @@ export class LabelService extends BaseEntityService<Label> {
     this.labels$ = this.labelsSubject.asObservable();
   }
 
-  getAllLabels(): Promise<any> {
+  getAllLabels(): Promise<any[]> {
     console.debug('getAllLabels: ',this.labelsSubject.getValue());
     if(_.isEmpty(this.labelsSubject.getValue())) {
 
       return this.getAll().toPromise()
         .then((res: any) => {
         let labels: any[] = _.map(res.data, (l: any) => this.mapLabelToMenuItem(l));
-          return this.notifyLabelObservers(labels);
+        return this.notifyLabelObservers(labels);
       });
     }
 
@@ -77,7 +77,7 @@ export class LabelService extends BaseEntityService<Label> {
     let cMenus = _.map(this.labelsSubject.getValue(), (m: any) => {
       if(menus[m.name])
         return Object.assign(m, {count: menus[m.name].count});
-      if(m.name === 'all contact')
+      if(m.name === 'all contacts')
         return Object.assign(m, {count: contacts.length});
       else
         return m;
@@ -155,7 +155,7 @@ export class LabelService extends BaseEntityService<Label> {
       link: '/contacts',
       hasSubMenu: !label.system,
       count: label.contact_count,
-      icon: label.name == 'all contact' ? 'fa fa-address-book-o'
+      icon: label.name == 'all contacts' ? 'fa fa-address-book-o'
         : label.name == 'favourite' ? 'fa fa-star'
           : label.name == 'labels' ? 'fa fa-tags'
             : label.name == 'blacklist' ? 'fa fa-ban'
@@ -165,8 +165,9 @@ export class LabelService extends BaseEntityService<Label> {
     };
   }
 
-  notifyLabelObservers(menus: any[] = this.labelsSubject.getValue()): Promise<any> {
-    this.labelsSubject.next(menus);
+  notifyLabelObservers(labels: any[] = this.labelsSubject.getValue()): Promise<any[]> {
+    let orderedLabels = _.orderBy(labels, ['order'], ['asc']);
+    this.labelsSubject.next(orderedLabels);
     return Promise.resolve(this.labelsSubject.getValue());
   }
 

@@ -16,8 +16,19 @@
           class="menuleft-nav-sub"
           id="zone_menu_contact"
           [routerLinkActive]="['active']" >
+        <li [ngClass]="(currentLabel === 'all contacts') ? 'active' : ''">
+          <a draggable="false" href="javascript:;" [routerLink]="['contacts', {label: 'all contacts'}]" (click)="doEvent({action: 'contacts', event: $event})">
+            <i class="fa fa-address-book-o"></i> All Contacts
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a draggable="false" href="javascript:;" >
+            <i class="fa fa-star"></i> Labels
+          </a>
+        </li>
         <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackMenu">
-          <li *ngIf="contact.name != ''" class="text-capitalize" [ngClass]="(currentLabel === contact.name) ? 'active' : ''" >
+          <li *ngIf="contact.name != ''" class="text-capitalize" [ngClass]="(currentLabel === contact?.name) ? 'active' : ''" >
             <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]" (click)="doEvent({action: contact?.action, event: $event})">
               <i class="{{contact.icon}}"></i> {{ contact.name }}  ({{ contact?.count }})
             </a>
@@ -43,8 +54,8 @@
           </a>
         </li>
         <li class="divider"></li>
-        <li [routerLinkActive]="['active']">
-          <a draggable="false" href="javascript:;" (click)="doEvent({action: 'contact:label:open_modal_setting', payload:{mode: 'add'}, event: $event})">
+        <li [routerLinkActive]="['active']" >
+          <a draggable="false" [routerLink]="['/settings']">
             <i class="fa fa fa-cog"></i> Settings
           </a>
         </li>

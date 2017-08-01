@@ -67,7 +67,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
     this.route.params.forEach((params: Params) => {
       switch(params['label']) {
-        case 'all contact':
+        case 'all contacts':
         case 'undefined':
           this.contactService.filter({label: undefined});
           break;

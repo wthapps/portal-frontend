@@ -13,6 +13,7 @@ import { ZContactHomeModule } from './home/home.module';
 import { ZContactModule } from './contact/contact.module';
 import { ZContactLabelModule } from './label/label.module';
 import { ZContactMyProfileModule } from './my-profile/my-profile.module';
+import { ZContactSettingsModule } from './settings/contact-settings.module';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { ZContactMyProfileModule } from './my-profile/my-profile.module';
     ZContactModule,
     ZContactMyProfileModule,
     ZContactLabelModule,
+    ZContactSettingsModule,
 
     ZContactSharedModule.forRoot(),
     CoreSharedModule.forRoot()

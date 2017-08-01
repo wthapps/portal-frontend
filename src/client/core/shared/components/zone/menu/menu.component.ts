@@ -11,6 +11,7 @@ import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
+import { ZContactService } from '../../../../../contact/shared/services/contact.service';
 
 declare var $: any;
 declare var _: any;
@@ -70,7 +71,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
         }
 
         this.currentLabel = this.extractLabel(event.url);
-        console.log('url: ', event.url, this.currentLabel);
       });
     // your logic to know if its my home page.
 

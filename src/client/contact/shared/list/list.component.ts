@@ -30,9 +30,9 @@ export class ZContactSharedListComponent implements OnInit {
   onSort(event: any) {
     if (this.currentSort == event) {
       // this.descending = !this.descending;
-      this.contactService.changeOrder();
+      this.contactService.changeSortOption();
     } else {
-      this.contactService.changeOrder('asc');
+      this.contactService.changeSortOption('asc');
       this.currentSort = event;
     }
     // this.data = _.orderBy(this.data, [this.currentSort], [(this.descending ? 'desc' : 'asc')]);

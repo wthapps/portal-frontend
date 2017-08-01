@@ -84,16 +84,16 @@ export let Constants = {
   },
 
   contactMenuItems: [
-    {name: 'All Contact', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
-    {name: '', link: '', icon: ''},
-    {name: 'Labels', link: '/list/labels', icon: 'fa fa-tags'},
-    {name: 'Favourites (2)', link: '/list/favourites', icon: 'fa fa-star'},
-    {name: 'Social (5)', link: '/list/social', icon: 'fa fa-globe'},
-    {name: 'Chat (2)', link: '/list/chat', icon: 'fa fa-comments-o'},
-    {name: 'Custom label 01 (1)', link: '/list/custom-label-01', icon: 'fa fa-folder-o visibility-hidden'},
-    {name: 'Custom label 01 (2)', link: '/list/custom-label-02', icon: 'fa fa-folder-o visibility-hidden'},
-    {name: 'Blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
-    {name: 'New label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
+    {name: 'All Contacts', value: 'all contacts', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
+    {name: '', value: '', link: '', icon: ''},
+    {name: 'Labels', value: 'labels', link: '/list/labels', icon: 'fa fa-tags'},
+    {name: 'Favourites (2)', value: 'favourites', link: '/list/favourites', icon: 'fa fa-star'},
+    {name: 'Social (5)', value: 'social', link: '/list/social', icon: 'fa fa-globe'},
+    {name: 'Chat (2)', value: 'chat', link: '/list/chat', icon: 'fa fa-comments-o'},
+    {name: 'Custom label 01 (1)', value: '', link: '/list/custom-label-01', icon: 'fa fa-folder-o visibility-hidden'},
+    {name: 'Custom label 01 (2)', value: '', link: '/list/custom-label-02', icon: 'fa fa-folder-o visibility-hidden'},
+    {name: 'Blacklist', value: 'blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
+    {name: 'New label', value: 'new label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
   ],
 
   chatMenuItems: [

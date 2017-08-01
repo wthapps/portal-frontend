@@ -77,7 +77,7 @@ export class ZContactService extends BaseEntityService<any> {
     this.notifyContactsObservers(_.orderBy(this.contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']).slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
   }
 
-  changeOrder(order?: string) {
+  changeSortOption(order?: string) {
     if(order === undefined)
       this.orderDescSubject.next(!this.orderDescSubject.getValue());
     else
