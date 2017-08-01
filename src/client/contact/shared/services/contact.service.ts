@@ -22,10 +22,16 @@ declare var _: any;
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
+  page: number = 1;
+  // orderDesc: boolean = false;
+  readonly startIndex: number = 0;
+
+  readonly ITEM_PER_PAGE: number = 20;
 
   private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private initLoadSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(false);
+  private orderDescSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(false);
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
 
@@ -33,6 +39,7 @@ export class ZContactService extends BaseEntityService<any> {
   listenToItem = this.listenToItemSource.asObservable();
   contacts$: Observable<any[]> = this.contactsSubject.asObservable();
   initLoad$: Observable<boolean> = this.initLoadSubject.asObservable();
+  orderDesc$: Observable<boolean> = this.initLoadSubject.asObservable();
   isSelectAll$: Observable<boolean> = this.isSelectAllSubject.asObservable();
 
 
@@ -56,9 +63,28 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   getAllContacts() {
-    return this.contacts;
+    return _.orderBy(this.contacts, ['name'], [ this.orderDescSubject.getValue() ? 'asc' : 'desc']);
   }
 
+  resetPageNumber() {
+    this.page = 1;
+  }
+
+  onLoadMore(orderDesc: boolean = false) {
+    this.page += 1;
+    if(orderDesc !== undefined)
+      this.orderDescSubject.next(orderDesc);
+    this.notifyContactsObservers(_.orderBy(this.contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']).slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
+  }
+
+  changeOrder(order?: string) {
+    if(order === undefined)
+      this.orderDescSubject.next(!this.orderDescSubject.getValue());
+    else
+      this.orderDescSubject.next((order !== 'asc'));
+
+    this.notifyContactsObservers();
+  }
 
   addMoreContacts(data: any[]) {
     this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
@@ -122,7 +148,6 @@ export class ZContactService extends BaseEntityService<any> {
   sendListToItem(event: any) {
     this.listenToListSource.next(event);
 
-    // TODO: Toggle select all status
     this.isSelectAllSubject.next(!this.isSelectAllSubject.getValue());
   }
 
@@ -205,10 +230,12 @@ export class ZContactService extends BaseEntityService<any> {
     this.notifyContactsObservers(contacts);
   }
 
-  notifyContactsObservers(contacts: Array<any>): void {
+  notifyContactsObservers(contacts: Array<any> = this.contactsSubject.getValue()): void {
     this.labelService.updateLabelCount(this.contacts);
+    let orderedContacts: any[] = _.orderBy(contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
 
-    this.contactsSubject.next(_.orderBy(contacts, ['name'], ['asc']));
+    console.log('orderedContacts: ', orderedContacts);
+    this.contactsSubject.next(orderedContacts.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
   }
 
   private searchContact(name: string): any[] {

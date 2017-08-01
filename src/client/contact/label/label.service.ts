@@ -10,8 +10,6 @@ import { BaseEntityService } from '../../core/shared/services/base-entity-servic
 declare let _: any;
 @Injectable()
 export class LabelService extends BaseEntityService<Label> {
-
-  // private labels: Array<any> = new Array<any>();
   private labelsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
 
   labels$: Observable<any[]>;
@@ -30,18 +28,18 @@ export class LabelService extends BaseEntityService<Label> {
       return this.getAll().toPromise()
         .then((res: any) => {
         let labels: any[] = _.map(res.data, (l: any) => this.mapLabelToMenuItem(l));
-          return this.notifyCMObservers(labels);
+          return this.notifyLabelObservers(labels);
       });
     }
 
-    return this.notifyCMObservers();
+    return this.notifyLabelObservers();
   }
 
   create(body: any): Observable<any> {
     return super.create(body)
       .mergeMap((res: any) => {
         let label: any = this.mapLabelToMenuItem(res.data);
-        return this.notifyCMObservers(this.labelsSubject.getValue().concat([label]));
+        return this.notifyLabelObservers(this.labelsSubject.getValue().concat([label]));
       });
   }
 
@@ -86,11 +84,11 @@ export class LabelService extends BaseEntityService<Label> {
 
     });
 
-    this.notifyCMObservers(cMenus);
+    this.notifyLabelObservers(cMenus);
   }
 
   setContactMenu(menus: any[]) {
-    this.notifyCMObservers(menus);
+    this.notifyLabelObservers(menus);
   }
 
   addLabel(label: Label) {
@@ -106,26 +104,26 @@ export class LabelService extends BaseEntityService<Label> {
       menus.push(this.mapLabelToMenuItem(label));
     });
 
-    // this.notifyCMObservers(menus);
+    // this.notifyLabelObservers(menus);
   }
 
   addMenu(menu: any): Promise<any> {
     let menus: any[] = this.labelsSubject.getValue();
     menus.push(menu);
     console.debug('inside addMenu: ', menus);
-    return this.notifyCMObservers(menus);
+    return this.notifyLabelObservers(menus);
   }
 
   removeMenu(menu: any): Promise<any> {
     let menus: any[] = this.labelsSubject.getValue();
     _.remove(menus, (m: any) => m.id === menu.id);
-    return this.notifyCMObservers(menus);
+    return this.notifyLabelObservers(menus);
   }
 
   removeMenuByName(menu: any): Promise<any> {
     let menus: any[] = this.labelsSubject.getValue();
     _.remove(menus, (m: any) => m.name === menu.name);
-    return this.notifyCMObservers(menus);
+    return this.notifyLabelObservers(menus);
   }
 
   updateMenu(menu: any): Promise<any> {
@@ -136,7 +134,7 @@ export class LabelService extends BaseEntityService<Label> {
         return m;
     });
 
-    return this.notifyCMObservers(menus);
+    return this.notifyLabelObservers(menus);
   }
 
   updateMenuName(menu: any): Promise<any> {
@@ -147,7 +145,7 @@ export class LabelService extends BaseEntityService<Label> {
         break;
       }
     }
-    return this.notifyCMObservers(labels);
+    return this.notifyLabelObservers(labels);
   }
 
   private mapLabelToMenuItem(label: Label): any {
@@ -167,7 +165,7 @@ export class LabelService extends BaseEntityService<Label> {
     };
   }
 
-  notifyCMObservers(menus: any[] = this.labelsSubject.getValue()): Promise<any> {
+  notifyLabelObservers(menus: any[] = this.labelsSubject.getValue()): Promise<any> {
     this.labelsSubject.next(menus);
     return Promise.resolve(this.labelsSubject.getValue());
   }
