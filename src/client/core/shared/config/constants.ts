@@ -96,6 +96,12 @@ export let Constants = {
     {name: 'New label', value: 'new label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
   ],
 
+  contactEvents: {
+    common: 'contactCommonEvent',
+    actionsToolbar: 'contactActionsToolbarEvent',
+    googleImport: 'contactGoogleImportEvent'
+  },
+
   chatMenuItems: [
     {name: 'Conversations', link: '/conversations', icon: 'fa fa-comments-o'},
     {name: 'Contacts', link: '/contacts', icon: 'fa fa-address-book-o'},

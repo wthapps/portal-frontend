@@ -56,22 +56,26 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     console.log('importStatus: ', this.importStatus);
     this.importedContacts.length = 0;
     // this.modalDock.open();
-    this.gapi.isSignedIn()
+    this.startImportContacts();
+  }
+
+  startImportContacts(): Promise<any> {
+    return this.gapi.isSignedIn()
       .then((user: any) => {
         this.modalDock.open();
         this.importStatus = this.IMPORT_STATUS.importing;
-        return this.gapi.startImportContact(user);
+        return this.gapi.startImportContact(user)
       })
       .then((data: any) => {
         console.log('importContact data: ', data);
         // this.contactService.contactAddContactService.sendOut({data: data});
         this.importedContacts = data;
         this.contactService.addMoreContacts(data);
-        this.importDone()
+        this.importDone();
       })
       .catch((err: any) => {
         console.log('importContact err: ', err);
-        this.importDone(err)
+        this.importDone(err);
       });
   }
 
@@ -89,11 +93,16 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     this.modalDock.close();
   }
 
+  retry(event?: any) {
+    console.log('import progress - retry: ');
+
+    this.startImportContacts();
+  }
+
   private importDone(error?: any) {
     if (!error)
       this.importStatus = this.IMPORT_STATUS.done;
     else
       this.importStatus = this.IMPORT_STATUS.error;
-    // setTimeout(() => this.modalDock.close(), 2000);
   }
 }

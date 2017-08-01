@@ -5,6 +5,7 @@ import { WthAppsBaseModal } from '../../../../core/shared/interfaces/wthapps-bas
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 import { Label } from '../../../label/label.model';
 import { LabelService } from '../../../label/label.service';
+import { Constants } from '../../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -48,7 +49,7 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
       this.contact = _.pick(this.contact, ['id', 'labels']);
     }
     this.commonEventService.broadcast({
-      channel: 'contactCommonEvent',
+      channel: Constants.contactEvents.common,
       action: 'contact:contact:update',
       payload: { labels: this.getSelectedLabels(), selectedObjects: [this.contact] }}
     );

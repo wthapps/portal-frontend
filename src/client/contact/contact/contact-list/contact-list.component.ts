@@ -15,6 +15,7 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 import { CommonEventAction } from '../../../core/shared/services/common-event/common-event-action';
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 import { CommonEvent } from "../../../core/shared/services/common-event/common-event";
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -50,7 +51,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
               private loadingService: LoadingService,
               private commonEventService: CommonEventService
   ) {
-    this.commonEventService.filter((event: CommonEvent) => event.channel == 'contactCommonEvent').takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
+    this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     })
 
@@ -60,7 +61,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   ngOnInit() {
-    this.commonEventService.filter((event: CommonEvent) => event.channel == 'contactActionsToolbarEvent').takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
+    this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.actionsToolbar).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.contactService.selectedObjects = [event.payload];
       this.doActionsToolbar(event);
       this.contactService.selectedObjects = [];
