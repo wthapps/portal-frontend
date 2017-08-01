@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 
 import { Contact } from '../contact.model';
@@ -57,6 +58,11 @@ export class ZContactEditComponent implements OnChanges {
   constructor(private fb: FormBuilder, private labelService: LabelService) {
     this.createForm();
     console.log(this.form);
+
+    this.labelService.getAllLabels().then((res: any)=> {
+      this.filteredLabelsMultiple = _.map(res, 'name');
+    });
+
   }
 
   ngOnChanges() {
@@ -210,12 +216,12 @@ export class ZContactEditComponent implements OnChanges {
     control.removeAt(i);
   }
 
-  filterLabelMultiple(event: any) {
+  /*filterLabelMultiple(event: any) {
     let query = event.query;
     this.labelService.getAllLabels().then((res: any)=> {
       this.filteredLabelsMultiple = this.labelService.filterLabel(query, res);
     });
-  }
+  }*/
 
   onSubmit(values: any): void {
     values.id = this.contact.id;

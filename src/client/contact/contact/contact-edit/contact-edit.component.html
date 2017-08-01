@@ -17,17 +17,11 @@
                 <input [formControl]="job_title" type="text" class="form-control" placeholder="Job title">
               </div>
               <div class="col-xs-12 mb10">
-                <p-autoComplete formControlName="labels"
-                                [suggestions]="filteredLabelsMultiple"
-                                (completeMethod)="filterLabelMultiple($event)"
-                                [minLength]="1"
-                                placeholder=""
-                                styleClass="form-control-chips"
-                                [multiple]="true">
-                </p-autoComplete>
-                <!--<ul>
-                  <li *ngFor="let c of labels">{{c|json}}</li>
-                </ul>-->
+                <tag-input formControlName="labels" [onlyFromAutocomplete]="true" placeholder="Choose your label"
+                           secondaryPlaceholder="add label">
+                  <tag-input-dropdown [autocompleteItems]="filteredLabelsMultiple">
+                  </tag-input-dropdown>
+                </tag-input>
               </div>
             </div>
           </div>
