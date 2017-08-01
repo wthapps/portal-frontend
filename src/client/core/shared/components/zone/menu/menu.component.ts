@@ -84,7 +84,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     // if (event.event) {
     //   event.event.preventDefault();
     // }
-    this.commonEventService.broadcast({channel: 'commonEvent', action: event.action, payload: event.payload});
+    this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
   }
 
   ngOnDestroy() {

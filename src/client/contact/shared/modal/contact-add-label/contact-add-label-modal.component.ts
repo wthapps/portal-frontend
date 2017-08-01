@@ -66,7 +66,7 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
       this.contact = _.pick(this.contact, ['id', 'labels']);
     }
     this.commonEventService.broadcast({
-      channel: 'commonEvent',
+      channel: 'contactCommonEvent',
       action: 'contact:contact:update',
       payload: { labels: this.getSelectedLabels(), contact: this.contact }}
     );

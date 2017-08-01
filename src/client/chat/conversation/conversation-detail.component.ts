@@ -49,7 +49,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
         });
       });
 
-    this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'commonEvent').subscribe((event: CommonEvent) => {
+    this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatCommonEvent').subscribe((event: CommonEvent) => {
       this.doEvent(event);
     })
 
