@@ -31,7 +31,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   contacts: any = [];
   filteredContacts: Array<any> = new Array<any>();
-  commonEventSub: Subscription;
+  actionsToolbarEvent: Subscription;
   tokens: any;
   tokensActionsBar: any;
   contact$: Observable<any>;
@@ -50,12 +50,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
               private loadingService: LoadingService,
               private commonEventService: CommonEventService
   ) {
-    // this.tokens = this.commonEventService.subscribe(['commonEvent'], (event: any) => {
-    //   this.doEvent(event);
-    // });
-
-    this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'commonEvent').subscribe((event: CommonEvent) => {
-      console.log('commonEvent', event);
+    this.commonEventService.filter((event: CommonEvent) => event.channel == 'commonEvent').takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     })
 
@@ -65,9 +60,10 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   ngOnInit() {
-    // this.tokensActionsBar = this.commonEventService.subscribe(['actionToolbarOnItem'], (event: any) => {
-    //   this.doActionsToolbar(event);
-    // });
+    this.commonEventService.filter((event: CommonEvent) => event.channel == 'contactActionsToolbarEvent').takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
+      this.doActionsToolbar(event);
+    })
+
 
     this.route.params.forEach((params: Params) => {
       switch(params['label']) {
@@ -107,10 +103,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   ngOnDestroy() {
-    if (this.commonEventSub) {
-      this.commonEventSub.unsubscribe();
-    }
-
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
   }
@@ -118,19 +110,23 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   onLoadMore() {
     this.page += 1;
     this.contacts = this.contactService.getAllContacts().slice(0, this.page * this.ITEM_PER_PAGE);
-    console.log('on Load more: ',  this.contacts.length, this.page);
   }
+
+  viewContactDetail(contactId: any) {
+    this.router.navigate(['contacts' + contactId]).then();
+  }
+
+
 
   doEvent(event: any) {
     console.log('doEvent in contact list:::', event);
     switch(event.action) {
       case 'contact:contact:view_detail':
-        this.router.navigate(['contacts/1']).then();
+        this.viewContactDetail(1);
         break;
 
       case 'contact:contact:open_add_label_modal':
         let labels = [];
-        console.log('selected item count', this.contactService.selectedObjects.length);
         if(this.contactService.selectedObjects.length > 1) {
           labels = [];
         } else if(this.contactService.selectedObjects.length == 1) {
@@ -140,6 +136,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
         this.modal.open({mode: event.mode, labels: labels});
         break;
+
       case 'contact:contact:open_edit_label_modal':
         this.modal.open({contact: event.payload.selectedContact});
         break;
