@@ -5,6 +5,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Label } from './label.model';
 import { LabelService } from './label.service';
 import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
+import { Constants } from '../../core/shared/config/constants';
 
 // import { CommonEvent } from '../../core/shared/services/common-event/common-event';
 // import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
@@ -50,9 +51,9 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
 
   submit() {
     if (this.mode == 'edit') {
-      this.commonEventService.broadcast({channel: 'contactCommonEvent', action: 'contact:label:update', payload: {label: this.form.value}});
+      this.commonEventService.broadcast({channel: Constants.contactEvents.common, action: 'contact:label:update', payload: {label: this.form.value}});
     } else {
-      this.commonEventService.broadcast({channel: 'contactCommonEvent', action: 'contact:label:create', payload: {label: this.form.value}});
+      this.commonEventService.broadcast({channel: Constants.contactEvents.common, action: 'contact:label:create', payload: {label: this.form.value}});
     }
     this.modal.close().then();
   }

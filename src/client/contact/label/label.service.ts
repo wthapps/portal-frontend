@@ -46,7 +46,7 @@ export class LabelService extends BaseEntityService<Label> {
 
   update(body: any): Observable<any> {
     return super.update(body)
-      .mergeMap((res: any) => this.updateMenu(res.data));
+      .mergeMap((res: any) => this.updateMenu(this.mapLabelToMenuItem(res.data)));
   }
 
   delete(id: any): Observable<any> {
@@ -155,6 +155,7 @@ export class LabelService extends BaseEntityService<Label> {
       link: '/contacts',
       hasSubMenu: !label.system,
       count: label.contact_count,
+      order: label.system ? label.order : (100 + label.order),
       icon: label.name == 'all contacts' ? 'fa fa-address-book-o'
         : label.name == 'favourite' ? 'fa fa-star'
           : label.name == 'labels' ? 'fa fa-tags'
@@ -168,6 +169,8 @@ export class LabelService extends BaseEntityService<Label> {
   notifyLabelObservers(labels: any[] = this.labelsSubject.getValue()): Promise<any[]> {
     let orderedLabels = _.orderBy(labels, ['order'], ['asc']);
     this.labelsSubject.next(orderedLabels);
+
+    console.debug('notifyLabelObservers: ', orderedLabels);
     return Promise.resolve(this.labelsSubject.getValue());
   }
 
