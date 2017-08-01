@@ -53,7 +53,7 @@ export class ZContactSharedItemComponent implements OnInit {
   }
 
   viewContactDetail() {
-    this.commonEventService.broadcast({channel: 'commonEvent', action: 'contact:contact:view_detail', payload: {item: 123456}})
+    this.commonEventService.broadcast({channel: 'contactCommonEvent', action: 'contact:contact:view_detail', payload: {item: 123456}})
   }
 
   doActionsToolbar(e: any) {

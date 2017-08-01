@@ -37,7 +37,6 @@ declare var _: any;
 })
 export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   routerSubscription: Subscription;
-  commonEventSub: Subscription;
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -57,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private labelService: LabelService
   ) {
     console.log('Environment config', Config);
-    this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'commonEvent').subscribe((event: CommonEvent) => {
+    this.commonEventService.filter((event: CommonEvent) => event.channel == 'contactCommonEvent').takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     })
     this.labelService.labels$
@@ -79,10 +78,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   }
 
   ngOnDestroy() {
-    // this.routerSubscription.unsubscribe();
-    // this.commonEventSub.unsubscribe();
-    // this.destroySubject.next('');
-    // this.destroySubject.unsubscribe();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   doEvent(event: CommonEvent) {
@@ -105,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           accept: () => {
             event.action = 'contact:label:delete';
             event.payload.selectedItem = this.getLabel(event.payload.selectedItem);
-            this.commonEventService.broadcast({channel: 'commonEvent', action: event.action, payload: event.payload});
+            this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
           }
         });
         break;

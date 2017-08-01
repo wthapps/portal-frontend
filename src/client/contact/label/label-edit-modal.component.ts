@@ -50,9 +50,9 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
 
   submit() {
     if (this.mode == 'edit') {
-      this.commonEventService.broadcast({channel: 'commonEvent', action: 'contact:label:update', payload: {label: this.form.value}});
+      this.commonEventService.broadcast({channel: 'contactCommonEvent', action: 'contact:label:update', payload: {label: this.form.value}});
     } else {
-      this.commonEventService.broadcast({channel: 'commonEvent', action: 'contact:label:create', payload: {label: this.form.value}});
+      this.commonEventService.broadcast({channel: 'contactCommonEvent', action: 'contact:label:create', payload: {label: this.form.value}});
     }
     this.modal.close().then();
   }

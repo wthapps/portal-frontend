@@ -50,7 +50,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
               private loadingService: LoadingService,
               private commonEventService: CommonEventService
   ) {
-    this.commonEventService.filter((event: CommonEvent) => event.channel == 'commonEvent').takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
+    this.commonEventService.filter((event: CommonEvent) => event.channel == 'contactCommonEvent').takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     })
 
