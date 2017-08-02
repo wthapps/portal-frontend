@@ -34,6 +34,7 @@ export class ZContactService extends BaseEntityService<any> {
   private orderDescSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(false);
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
+  private filterOption: any = {};
 
   listenToList = this.listenToListSource.asObservable();
   listenToItem = this.listenToItemSource.asObservable();
@@ -70,11 +71,13 @@ export class ZContactService extends BaseEntityService<any> {
     this.page = 1;
   }
 
-  onLoadMore(orderDesc: boolean = false) {
+  onLoadMore(orderDesc?: boolean) {
+
     this.page += 1;
-    if(orderDesc !== undefined)
-      this.orderDescSubject.next(orderDesc);
-    this.notifyContactsObservers(_.orderBy(this.contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']).slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
+    let order: boolean = orderDesc || this.orderDescSubject.getValue();
+    if(order !== undefined)
+      this.orderDescSubject.next(order);
+    this.notifyContactsObservers();
   }
 
   changeSortOption(order?: string) {
@@ -88,7 +91,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   addMoreContacts(data: any[]) {
     this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
-    this.notifyContactsObservers(this.contacts);
+    this.notifyContactsObservers();
 
     console.log('inside addMoreContacts: ', data, this.contactsSubject.getValue());
   }
@@ -204,37 +207,56 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   filter(options: any) {
-    let contacts: any[] = [];
+    this.resetPageNumber();
     let label=  _.get(options, 'label', 'undefined');
-    if (label === 'undefined')
-      // contacts.push(...this.contacts);
+    this.filterOption = {'label': label};
+
+    this.notifyContactsObservers();
+  }
+
+  filterByLabel(label?: string) {
+    let contacts: any[] = [];
+    if (label === undefined || label === 'undefined')
       contacts = this.contacts;
     else {
       contacts = _.filter(this.contacts, (contact: any)=> {
-        return _.find(contact.labels, (label: any) => {
-          if(label.name === options.label) {
-            return contact;
-          };
-        });
+        let clabels = _.map(contact.labels, 'name');
+        if(_.indexOf(clabels, label) > -1)
+          return contact;
       })
     }
 
-    this.notifyContactsObservers(contacts);
+    return contacts;
   }
 
   // Search by name, email, phone number
   search(options: any) {
+    this.resetPageNumber();
     let search_value = _.get(options, 'search_value', '').trim().toLowerCase();
-    let contacts = this.searchContact(search_value);
+    this.filterOption = {'search': search_value};
+    // let contacts = this.searchContact(search_value);
 
-    this.notifyContactsObservers(contacts);
+    this.notifyContactsObservers();
   }
 
-  notifyContactsObservers(contacts: Array<any> = this.contactsSubject.getValue()): void {
+  notifyContactsObservers(order: boolean = true): void {
+    let contacts: any[] = [];
     this.labelService.updateLabelCount(this.contacts);
-    let orderedContacts: any[] = _.orderBy(contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
 
-    console.log('orderedContacts: ', orderedContacts);
+    if(_.has(this.filterOption, 'search')) {
+      contacts = this.searchContact(this.filterOption.search);
+    } else if(_.has(this.filterOption, 'label')) {
+      contacts = this.filterByLabel(this.filterOption.label);
+    } else {
+      contacts = this.contacts;
+    }
+
+    let orderedContacts: any[];
+    if(order)
+      orderedContacts = _.orderBy(contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
+    else
+      orderedContacts = contacts;
+
     this.contactsSubject.next(orderedContacts.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
   }
 
@@ -244,8 +266,8 @@ export class ZContactService extends BaseEntityService<any> {
       return this.contacts;
     }
     let contacts = _.filter(this.contacts, (contact: any)=> {
-      let emails_string: string = _.map(contact.emails, (e: any) => e.value).join(', ');
-      let phones_string: string = _.map(contact.phones, (e: any) => e.value).join(', ');
+      let emails_string: string = _.map(contact.emails, 'value').join(', ');
+      let phones_string: string = _.map(contact.phones, 'value').join(', ');
       if ((contact.name.toLowerCase().indexOf(search_value) > -1)
         || (emails_string.toLowerCase().indexOf(search_value) > -1)
         || (phones_string.toLowerCase().indexOf(search_value) > -1)
@@ -262,7 +284,7 @@ export class ZContactService extends BaseEntityService<any> {
       .toPromise()
       .then((res: any) => {
         _.remove(this.contacts, (ct: any) => {ct.id === res.data.id ;});
-        this.notifyContactsObservers(this.contacts);
+        this.notifyContactsObservers();
       });
   }
 
@@ -273,7 +295,7 @@ export class ZContactService extends BaseEntityService<any> {
         let deletedIds = _.map(contacts, (contact: any) => contact.id);
 
         _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
-        this.notifyContactsObservers(this.contacts);
+        this.notifyContactsObservers();
         contacts.length = 0;
       });
   }
@@ -287,14 +309,14 @@ export class ZContactService extends BaseEntityService<any> {
       .then((res: any) => {
         // this.contacts.push(...res.data);
         this.contacts = res.data;
-        this.notifyContactsObservers(this.contacts);
+        this.notifyContactsObservers();
         this.initLoadSubject.next(true);
       });
   }
 
   private createCallback(contact: any): void {
     this.contacts.unshift(contact);
-    this.notifyContactsObservers(this.contacts);
+    this.notifyContactsObservers();
   }
 
   private updateCallback(contact: any): void {
@@ -313,14 +335,14 @@ export class ZContactService extends BaseEntityService<any> {
       }
     });
 
-    this.notifyContactsObservers(this.contacts);
+    this.notifyContactsObservers();
   }
 
   private deleteCallback(contact: any) {
     _.remove(this.contacts, (ct: any) => {
       ct.id === contact.id;
     });
-    this.contactsSubject.next(this.contacts);
+    this.notifyContactsObservers();
   }
 
 

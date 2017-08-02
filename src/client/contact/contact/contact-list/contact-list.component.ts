@@ -112,7 +112,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   onLoadMore() {
     this.page += 1;
-    this.contacts = this.contactService.getAllContacts().slice(0, this.page * this.ITEM_PER_PAGE);
+    // this.contacts = this.contactService.getAllContacts().slice(0, this.page * this.ITEM_PER_PAGE);
+    this.contactService.onLoadMore();
   }
 
   viewContactDetail(contactId: any) {
