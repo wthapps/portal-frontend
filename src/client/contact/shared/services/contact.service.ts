@@ -14,6 +14,7 @@ import { BaseEntityService } from '../../../core/shared/services/base-entity-ser
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
+import { _wu } from '../../../core/shared/utils/utils';
 import { LabelService } from '../../label/label.service';
 
 declare var _: any;
@@ -145,7 +146,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   checkSelectAll() {
     let isSelectAll = _.isEqual(this.contactsSubject.getValue().map((c: any) => c.id).sort(), this.selectedObjects.map((c: any) => c.id).sort());
-    console.debug('checkSelectAll: ', isSelectAll, this.contactsSubject.getValue().sort(), this.selectedObjects.sort());
+    // console.debug('checkSelectAll: ', isSelectAll, this.contactsSubject.getValue().sort(), this.selectedObjects.sort());
     this.isSelectAllSubject.next(isSelectAll);
   }
 
@@ -159,29 +160,35 @@ export class ZContactService extends BaseEntityService<any> {
     this.listenToItemSource.next(event);
   }
 
-  update(body: any, multiple: boolean = false): Observable<any> {
-    if (multiple) {
-      return this.apiBaseService.post(`${this.url}/update_multiple`, body)
-        .map(
-          (response: any) => {
-            let contacts = response.data;
+  updateMultiple(body: any): Observable<any> {
+    return this.apiBaseService.post(`${this.url}/update_multiple`, body)
+      .map(
+        (response: any) => {
+          let contacts = response.data;
 
-            _.forEach(contacts, (contact: any) => {
-              this.updateCallback(contact);
-            });
-            return response;
-          }
-        );
-    }
-    else {
-      console.log('body::::', body);
-      return super.update(body)
-        .map(
-          (res: any) => {
-            this.updateCallback(res.data);
-            return res;
-          }
-        );
+          _.forEach(contacts, (contact: any) => {
+            this.updateCallback(contact);
+          });
+          return response;
+        }
+      );
+  }
+
+  updateSingle(body: any): Observable<any> {
+    return super.update(body)
+      .map(
+        (res: any) => {
+          this.updateCallback(res.data);
+          return res;
+        }
+      );
+  }
+
+  update(data: any): Observable<any> {
+    if (data && data.length > 1) {
+      return this.updateMultiple({contacts: data});
+    } else {
+      return this.updateSingle(data[0]);
     }
   }
 
@@ -335,7 +342,6 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private updateCallback(contact: any): void {
-    // _.set(this.contacts, contact.id, contact);
     this.contacts = _.map(this.contacts, (ct: any) => {
       if (contact.id === ct.id)
         return contact;

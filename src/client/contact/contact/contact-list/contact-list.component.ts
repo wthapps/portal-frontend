@@ -16,9 +16,10 @@ import { CommonEventAction } from '../../../core/shared/services/common-event/co
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 import { CommonEvent } from "../../../core/shared/services/common-event/common-event";
 import { Constants } from '../../../core/shared/config/constants';
+import { _wu } from "../../../core/shared/utils/utils";
+import { _contact } from "../../shared/functions/contact.functions";
 
 declare var _: any;
-
 @Component({
   moduleId: module.id,
   selector: 'z-contact-list',
@@ -40,6 +41,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
+  hasLabel: any = _contact.isContactsHasLabelName;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -54,17 +56,16 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     })
-
-
     this.page = 1;
     this.contact$ = this.contactService.contacts$;
   }
 
   ngOnInit() {
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.actionsToolbar).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
+      let tmp = _.cloneDeep(this.contactService.selectedObjects);
       this.contactService.selectedObjects = [event.payload];
       this.doActionsToolbar(event);
-      this.contactService.selectedObjects = [];
+      this.contactService.selectedObjects = tmp;
     })
 
 
@@ -142,33 +143,10 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       // this will handle all cases as: favourite, add to label
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
-        let params: any;
-        let multiple: boolean = false;
-        let selectedObjects = event.payload.selectedObjects? event.payload.selectedObjects : this.contactService.selectedObjects;
+        let selectedObjects = (event.payload && event.payload.selectedObjects)? event.payload.selectedObjects : this.contactService.selectedObjects;
 
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
-        if (selectedObjects.length > 1) {
-          if (event.payload.labels !== 'undefined' && event.payload.toggleLabel == undefined) {
-
-            _.forEach(selectedObjects, (contact: any) => {
-              contact.labels = _.union(contact.labels, event.payload.labels);
-            });
-          }
-
-          params = JSON.stringify({contacts: selectedObjects});
-          multiple = true;
-        } else {
-          if (event.payload.labels !== 'undefined' && event.payload.toggleLabel == undefined) {
-            _.forEach(selectedObjects, (contact: any) => {
-              contact.labels = event.payload.labels
-            });
-          }
-
-          params = selectedObjects[0];
-          multiple = false;
-        }
-
-        this.contactService.update(params, multiple).subscribe((response: any) => {
+        this.contactService.update(selectedObjects).subscribe((res: any) => {
 
         });
         break;
@@ -176,36 +154,21 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   toggleLabel(name: string) {
-    let event: any = {
-      action: 'contact:contact:update',
-      payload: {
-        toggleLabel: true,
-        labels: [
-          name =='favourite' ? {
-            id: 3,
-            uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02',
-            name: 'favourite',
-            system: true
-          } : {
-            id: 6,
-            uuid: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c99',
-            name: 'blacklist',
-            system: true
-          }
-        ]
-      }
-    };
+    let label: any = name =='favourite' ? {id: 3} : {id: 6};
 
-    if (this.hasLabel(name)) {
-      this.removeLabel(name);
+    if (_contact.isContactsHasLabelName(this.contactService.selectedObjects, name)) {
+      _contact.removeLabelContactsByName(this.contactService.selectedObjects, name);
     } else {
-      this.addLabel(event.payload.labels[0]);
+      _contact.addLabelContacts(this.contactService.selectedObjects, label);
     }
-     this.doEvent(event)
+    this.contactService.update(this.contactService.selectedObjects).subscribe((res: any) => {
+
+    });
   }
 
   doActionsToolbar(event: any) {
     if(event.action == 'favourite') {
+      // this.toggleLabelB(this.contactService.selectedObjects, 'favourite');
       this.toggleLabel('favourite');
     }
 
@@ -238,31 +201,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
 
     if(event.action == 'edit_contact') {
-      this.editContact(this.contactService.selectedObjects[0].id);
+      this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'edit'}]).then();
     }
-  }
-
-  hasLabel(name: string): boolean {
-    let result = true;
-    _.forEach(this.contactService.selectedObjects, (contact: any) => {
-      if (_.some(contact.labels, {name: name}) == false){
-        result = false;
-        return;
-      }
-    });
-    return result;
-  }
-
-  removeLabel(name: string) {
-    _.forEach(this.contactService.selectedObjects, (contact: any) => {
-      _.remove(contact.labels, (label: any) => label.name === name);
-    });
-  }
-
-  addLabel(label: any) {
-    _.forEach(this.contactService.selectedObjects, (contact: any) => {
-      contact.labels.push(label);
-    });
   }
 
   addTags(event: any) {

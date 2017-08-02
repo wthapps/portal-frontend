@@ -6,9 +6,11 @@
       <z-contact-shared-actions-bar
         [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1"
         [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1"
+        [showViewDetail]="false"
+        [showEdit]="false"
         [number]="contactService.selectedObjects.length"
-        [toggleFavourite]="hasLabel('favourite')"
-        [toggleBlacklist]="hasLabel('blacklist')"
+        [toggleFavourite]="hasLabel(contactService.selectedObjects, 'favourite')"
+        [toggleBlacklist]="hasLabel(contactService.selectedObjects, 'blacklist')"
         (eventOut)="doActionsToolbar($event)"
       ></z-contact-shared-actions-bar>
     </div>

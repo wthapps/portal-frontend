@@ -16,8 +16,9 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() showSocial: boolean = true;
   @Input() showChat: boolean = true;
   @Input() showNumber: boolean = true;
-  @Input() showViewDetail: boolean = false;
-  @Input() showEdit: boolean = false;
+  @Input() showViewDetail: boolean = true;
+  @Input() showEdit: boolean = true;
+  @Input() showTag: boolean = true;
 
   // Toggle
   @Input() toggleFavourite: boolean = false;
