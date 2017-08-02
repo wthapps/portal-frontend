@@ -6,6 +6,7 @@ import { CustomValidator } from '../../../core/shared/validator/custom.validator
 import { Contact } from '../contact.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { LabelService } from '../../label/label.service';
+import { Label } from '../../label/label.model';
 declare var _: any;
 
 @Component({
@@ -53,15 +54,16 @@ export class ZContactEditComponent implements OnChanges {
   job_title: AbstractControl;
   notes: AbstractControl;
 
-  filteredLabelsMultiple: any[];
+  filteredLabelsMultiple: string[];
 
   constructor(private fb: FormBuilder, private labelService: LabelService) {
-    this.createForm();
-    console.log(this.form);
-
     this.labelService.getAllLabels().then((res: any)=> {
       this.filteredLabelsMultiple = _.map(res, 'name');
     });
+
+    this.createForm();
+    console.log(this.form);
+
 
   }
 
@@ -90,7 +92,7 @@ export class ZContactEditComponent implements OnChanges {
       (<FormControl>this.company).setValue(this.contact.company);
       (<FormControl>this.job_title).setValue(this.contact.job_title);
       (<FormControl>this.notes).setValue(this.contact.notes);
-      (<FormControl>this.labels).setValue(this.contact.labels);
+      (<FormControl>this.labels).setValue(_.map(this.contact.labels, 'name'));
     }
   }
 
