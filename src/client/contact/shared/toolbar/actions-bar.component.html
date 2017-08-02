@@ -13,7 +13,7 @@
   <li *ngIf="showChat">
     <a href="javascript:;" class="btn" (click)="emitEvent({action: 'chat'})"><i class="fa fa-comments-o"></i></a>
   </li>
-  <li>
+  <li *ngIf="showTag">
     <a href="javascript:;" class="btn"
        (click)="emitEvent({action: 'tag'})">
       <i class="fa fa-tags"></i></a>

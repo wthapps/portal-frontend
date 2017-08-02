@@ -1,43 +1,14 @@
-<div class="media-page-detail-left">
+<div *ngIf="data" class="media-page-detail-left">
   <z-contact-shared-toolbar [hasBack]="true">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-      <ul class="page-body-control-menu" *ngIf="data">
-        <li>
-          <a href="javascript:;" [routerLink]="['/contacts', data.id, {mode:'edit'}]" class="btn">
-            <i class="fa fa-pencil"></i>
-          </a>
-        </li>
-
-        <li>
-          <a href="javascript:;" class="btn"><i class="fa fa-star-o"></i></a>
-        </li>
-
-        <li>
-          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-globe"></i></a>
-        </li>
-
-        <li>
-          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-comments-o"></i></a>
-        </li>
-
-        <li>
-          <a href="javascript:;" class="btn" (click)="addTags($event)"><i class="fa fa-tags"></i></a>
-        </li>
-
-        <li class="dropdown action">
-          <a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-ellipsis-v"></i>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-right text-right">
-            <li>
-              <a href="javascript:;" (click)="deleteContact()"><i class="fa fa-trash"></i> Delete</a>
-            </li>
-            <li>
-              <a href="javascript:;" (click)="addTags($event)"><i class="fa fa-ban"></i> Blacklist</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+      <z-contact-shared-actions-bar
+        [showViewDetail]="false"
+        [showNumber]="false"
+        [showTag]="false"
+        [toggleFavourite]="hasLabel([data], 'favourite')"
+        [toggleBlacklist]="hasLabel([data], 'blacklist')"
+        (eventOut)="doActionsToolbar($event)"
+      ></z-contact-shared-actions-bar>
     </div>
   </z-contact-shared-toolbar>
   <div class="page-body-content has-page-body-control">
@@ -53,8 +24,8 @@
                 <p>
                   <small>{{ job_title }}</small>
                 </p>
-                <p *ngIf="data.labels.length > 1">
-                  <span *ngFor="let label of labels" class="label label-default mr10">{{ label }}</span>
+                <p *ngIf="data.labels.length > 0">
+                  <span *ngFor="let label of data.labels" class="label label-default mr10">{{ label.name }}</span>
                 </p>
               </div>
             </div>
