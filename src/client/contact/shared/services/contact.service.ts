@@ -23,9 +23,9 @@ export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
   page: number = 1;
+
   // orderDesc: boolean = false;
   readonly startIndex: number = 0;
-
   readonly ITEM_PER_PAGE: number = 20;
 
   private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -35,6 +35,7 @@ export class ZContactService extends BaseEntityService<any> {
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
   private filterOption: any = {};
+  private nextLink: string;
 
   listenToList = this.listenToListSource.asObservable();
   listenToItem = this.listenToItemSource.asObservable();
@@ -311,7 +312,21 @@ export class ZContactService extends BaseEntityService<any> {
         this.contacts = res.data;
         this.notifyContactsObservers();
         this.initLoadSubject.next(true);
+        this.nextLink = _.get(res, 'page_metadata.links.next');
+        this.followingLoad(this.nextLink);
       });
+  }
+
+  private followingLoad(url: string) {
+    if(!_.isEmpty(url))
+      this.apiBaseService.get(url).toPromise()
+        .then((res: any) => {
+          this.contacts.push(...res['data']);
+          this.nextLink = _.get(res, 'page_metadata.links.next');
+          this.followingLoad(this.nextLink);
+        });
+    else
+      this.notifyContactsObservers();
   }
 
   private createCallback(contact: any): void {
