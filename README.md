@@ -9,6 +9,8 @@
 
 Provides fast, reliable and extensible starter for the development of Angular projects.
 
+*Warning:* If you're just getting started with the entire JavaScript ecosystem then Angular Seed might not be the best choice for you. The project provides scalable approach for building Angular applications but you may face difficulties configuring this highly customizable solution. In such case we recommend the [Angular CLI](https://github.com/angular/angular-cli).
+
 `angular-seed` provides the following features:
 
 - Allows you to painlessly update the seed tasks of your already existing project.
@@ -26,6 +28,7 @@ Provides fast, reliable and extensible starter for the development of Angular pr
 - Has autoprefixer and css-lint support.
 - Provides full Docker support for both development and production environment
 - Support for Angular Mobile Toolkit
+- Allows you to analyze the space usage of created bundles by using source-map-explorer
 
 # How to start
 
@@ -152,6 +155,17 @@ $ docker-compose -f docker-compose.production.yml up -d angular-seed-nginx  # St
 
 Now open your browser at http://localhost:5555
 
+# Analyzing the space usage of the app
+You can analyze the bundle with `[source-map-explorer](https://github.com/danvk/source-map-explorer)`.
+It creates a html chart with a file by default, but output can also be json or tsv.
+
+Run the following:
+```bash
+$ npm run sme.prod # or respectively sme.prod.aot / sme.prod.rollup.aot
+# You can specify the output format by passing the `sme-out-format` parameter
+$ npm run sme.prod.aot -- --sme-out-format json # or html / tsv
+```
+
 # Table of Contents
 
 - [Introduction](#introduction)
@@ -162,6 +176,7 @@ Now open your browser at http://localhost:5555
   + [How to build and start the dockerized version of the application](#how-to-build-and-start-the-dockerized-version-of-the-application)
   + [Development build and deployment](#development-build-and-deployment)
   + [Production build and deployment](#production-build-and-deployment)
+- [Analyzing the space usage of the app](#analyzing-the-space-usage-of-the-app)
 - [Table of Content](#table-of-content)
 - [Configuration](#configuration)
 - [Environment Configuration](#environment-configuration)
