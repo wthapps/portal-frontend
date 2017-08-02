@@ -163,7 +163,7 @@ body {
   }
 
   .ui-autocomplete {
-    &.form-control-chips {
+    &, &.ui-autocomplete-multiple {
       display: block;
       width: 100%;
       .ui-inputtext {
@@ -185,7 +185,12 @@ body {
             @include opacity(0.6);
           }
         }
-
+      }
+      .ui-autocomplete-list-item {
+        &.ui-state-highlight {
+          background-color: #D8D8D8;
+          color: $text-color;
+        }
       }
     }
   }
