@@ -26,7 +26,7 @@
             <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
               <div class="media-left">
                 <figure>
-                  <img src="assets/images/zone/img-group.png" alt="">
+                  <img [src]="contact.profile_image" alt="">
                 </figure>
               </div>
               <div class="media-body">
@@ -44,10 +44,10 @@
   </modal-body>
   <modal-footer>
     <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>
-    <button type="button" [ngClass]="{'text-disable': noSelectedContacts && !hasDeletedItems && !hasUpdatedItems}"
-            [disabled]="noSelectedContacts && !hasDeletedItems && !hasUpdatedItems" (click)="save()"
+    <button type="button" [ngClass]="{'text-disable': !hasChanged}"
+            [disabled]="!hasChanged" (click)="save()"
             class="btn btn-primary-inline">Save
     </button>
-    <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-default-inline" (click)="cancel()">Cancel</button>
   </modal-footer>
 </modal>

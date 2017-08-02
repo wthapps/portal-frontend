@@ -24,10 +24,21 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   @Input() type: string;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
+  mode: number = 0;
+  operation: any = {
+    read: 0,
+    edit: 2,
+    editing: 20,
+    create: 1,
+    creating: 10,
+    delete: 9,
+    deleting:90
+  };
+
+
   contacts: any = [];
   contactGroups: any = [];
   sharedContacts: any = [];
-  sharedContactGroups: any = [];
 
   textContacts: string = '';
   textContactGroups: string = '';
@@ -35,15 +46,8 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   filteredContactGroups: any = [];
 
   selectedContacts: any = [];
-  selectedContactGroups: any = [];
-
-  hasDeletedItems: boolean = false;
-  hasUpdatedItems: boolean = false;
-
   removedContacts: any = [];
-  removedContactGroups: any = [];
-
-  noSelectedContacts: boolean = true;
+  hasChanged: boolean = false;
 
   contactTerm$ = new Subject<string>();
 
@@ -64,8 +68,7 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.getContacts();
-    // this.getContactGroups();
+
   }
 
   ngOnDestroy() {
@@ -74,121 +77,53 @@ export class SharingModalComponent implements OnInit, OnDestroy {
 
   open(options: any) {
     this.selectedItems = options['selectedObjects'];
-    console.log('Sharing selectedItems: ', options['selectedObjects']);
-    this.getShared();
-    this.modal.open(options)
-      .then((res: any) => console.log('Sharing modal opened!!!', res));
+    this.modal.open(options).then((res: any) => this.getShared());
   }
 
   close(options?: any) {
-    this.modal.close();
+    this.modal.close().then();
   }
 
   getShared() {
-    let body = {
-      photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id')
-      , albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id')
-    };
-    this.mediaSharingService.getShared(body).take(1).subscribe((res: any)=> {
-      // this.sharedContacts = res.data['contacts'];
-      this.sharedContacts = _.get(res, 'data.contacts', []);
-      this.sharedContactGroups = _.get(res, 'data.contactgroups', []);
+    let body = { objects: _.map(this.selectedItems, 'id') };
+
+    this.mediaSharingService.getShared(body).take(1).subscribe((response: any)=> {
+      this.sharedContacts = response.data;
     });
   }
 
-  toggleRemoving(event: any, id: number, isContact: boolean = true) {
+  toggleRemoving(event: any, id: number) {
     event.preventDefault();
-    var index = -1;
-    if (isContact) {
-      index = this.removedContacts.indexOf(id);
-      if (index != -1) {
-        this.removedContacts.splice(index, 1);
-      } else {
-        this.removedContacts.push(id);
-      }
+    let index = this.removedContacts.indexOf(id);
+    if (index != -1) {
+      this.removedContacts.splice(index, 1);
     } else {
-      index = this.removedContactGroups.indexOf(id);
-      if (index != -1) {
-        this.removedContactGroups.splice(index, 1);
-      } else {
-        this.removedContactGroups.push(id);
-      }
+      this.removedContacts.push(id);
     }
 
-    if (this.removedContactGroups.length > 0 || this.removedContacts.length > 0) {
-      this.hasDeletedItems = true;
-    } else {
-      this.hasDeletedItems = false;
-    }
-
-    // Check if there is no contacts selected
-    this.setNoSelectedContacts();
+    this.setMode();
   }
 
-  isDeletedItem(id: number, isContact: boolean = true) {
-    var index: any;
-    if (isContact) {
-      index = this.removedContacts.indexOf(id);
-    } else {
-      index = this.removedContactGroups.indexOf(id);
-    }
-    return ((index != -1) ? true : false);
+  isDeletedItem(id: number): boolean {
+    return this.removedContacts.indexOf(id) >= 0 ? true : false;
   }
 
   save() {
-    //save removing items
 
-    if (this.hasDeletedItems || this.hasUpdatedItems) {
-      let body = this.hasDeletedItems ? {
-        photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
-        albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
-        contacts: _.xor(_.concat(_.map(this.sharedContacts, 'id'), _.map(this.selectedContacts, 'id')), this.removedContacts),
-
-
-        // groups: _.xor(_.map(this.sharedContactGroups, 'id'), this.removedContactGroups)
-      }
-        : {
-        photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
-        albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
-        contacts: _.map(_.concat(this.sharedContacts, this.selectedContacts), 'id'),
-        // groups: _.map(_.concat(this.sharedContactGroups, this.selectedContactGroups), 'id')
-      };
-
-      this.mediaSharingService.update(body).take(1).subscribe((res: any) => {
-          console.log(res);
-          this.sharedContacts = res.data['contacts'];
-          // this.sharedContactGroups = res.data['contactgroups'];
-
-          if (this.hasDeletedItems) {
-            this.removedContacts = [];
-            // this.removedContactGroups = [];
-            this.hasDeletedItems = false;
-          } else {
-            this.selectedContacts = [];
-            // this.selectedContactGroups = [];
-            this.hasUpdatedItems = false;
-          }
-
-          this.updateSelectedItems({contacts: this.sharedContacts});
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
-
-    } else { // save adding sharing
+    // create new sharing with selected contacts
+    if(this.mode == this.operation.creating) {
       let body = {
-        photos: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'photo'), 'id'),
-        albums: _.map(_.filter(this.selectedItems, (i: any) => i.object_type == 'album'), 'id'),
-        contacts: _.map(this.selectedContacts, 'id'), groups: _.map(this.selectedContactGroups, 'id')
+        objects: _.map(this.selectedItems, (item: any) => {
+          return {id: item.id, object_type: item.object_type}
+        }),
+        recipients: _.map(this.selectedContacts, 'id')
       };
 
-      // Only subscribe to this action once
-      this.mediaSharingService.add(body).take(1).subscribe((res: any) => {
-          this.sharedContacts = res['data']['contacts'];
-          this.sharedContactGroups = res['data']['contactgroups'];
+      // Only subscribe to this action once`
+      this.mediaSharingService.add(body).take(1).subscribe((response: any) => {
+          this.sharedContacts = this.selectedContacts;
           this.selectedContacts = [];
-          this.selectedContactGroups = [];
-
+          this.mode = this.operation.read;
           //  TODO: Update sharing result to invoked component: Album detail, photo detail ...
           this.updateSelectedItems({contacts: this.sharedContacts});
         },
@@ -197,10 +132,36 @@ export class SharingModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    this.modal.close().then(() =>
-      console.log('Item shared')
-    );
-    // console.log('save');
+    if (this.mode == this.operation.editing) {
+
+      // if (this.hasDeletedItems) {
+      let body = {
+        multiple: true,
+        objects: _.map(this.selectedItems, 'id'),
+        recipients: _.xor(_.concat(_.map(this.sharedContacts, 'id'),
+          _.map(this.selectedContacts, 'id')), this.removedContacts)
+      };
+
+      this.mediaSharingService.update(body).take(1).subscribe((response: any) => {
+          this.sharedContacts = response.data;
+          this.removedContacts = [];
+          this.mode = this.operation.read;
+          this.updateSelectedItems({contacts: this.sharedContacts});
+        },
+        (error: any) => {
+          console.log('error', error);
+        });
+    }
+
+    if (this.mode == this.operation.deleting) {
+      this.mode = this.operation.read;
+    }
+
+    if (this.mode == this.operation.read) {
+      this.modal.close().then(() =>
+        console.log('Item shared')
+      );
+    }
   }
 
   // Update sharing info for selected items
@@ -215,29 +176,25 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    //cancel removing items
-    // if (this.hasDeletedItems){
-    //
-    // }else{ // cancel adding sharing
-    //
-    // }
-    console.log('cancel');
+    // cancel removing items
+    if (this.mode == this.operation.editing || this.mode == this.operation.deleting){
+      this.removedContacts = [];
+      this.mode = this.operation.read;
+      return;
+    }
+    this.modal.close().then();
   }
 
   selectContact(contact: any) {
-    console.log('contacts', this.selectedContacts, contact);
     this.selectedContacts.push(contact);
-    console.log('contacts after', this.selectedContacts, contact);
-    this.noSelectedContacts = false;
-    this.setUpdatedItemsStatus();
+    this.setMode();
   }
 
   unSelectContact(contact: any) {
     _.remove(this.selectedContacts, (c: any) => {
       return c['id'] == contact['id'];
     });
-    this.setUpdatedItemsStatus();
-    this.setNoSelectedContacts();
+    this.setMode();
   }
 
   searchContact(event: any) {
@@ -247,18 +204,6 @@ export class SharingModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  selectContactGroup(group: any) {
-    this.selectedContactGroups.push(group);
-    this.setUpdatedItemsStatus();
-  }
-
-  unSelectContactGroup(group: any) {
-    _.remove(this.selectedContactGroups, (c: any) => {
-      return c['id'] == group['id'];
-    });
-    this.setUpdatedItemsStatus();
-  }
-
   searchContactGroup(event: any) {
     this.filteredContactGroups = _.filter(this.contactGroups,
       (c: any) => {
@@ -266,27 +211,18 @@ export class SharingModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setUpdatedItemsStatus() {
-    // this.hasUpdatedItems = ((this.selectedContacts.length > 0 || this.selectedContactGroups.length > 0)
-    // && (this.sharedContacts.length > 0 || this.sharedContactGroups.length > 0)) ? true : false;
-
-    this.hasUpdatedItems = ((this.selectedContacts.length > 0 )
-    && (this.sharedContacts.length > 0 )) ? true : false;
+  private setMode() {
+    if (this.removedContacts.length == 0 && this.selectedContacts == 0) {
+      this.mode = this.operation.read;
+    // }
+    // else if (this.removedContacts.length == 0 && this.selectedContacts == 1) {
+    //   this.mode = this.operation.creating;
+    // } else if (this.removedContacts.length == 1 && this.selectedContacts == 0) {
+    //   this.mode = this.operation.deleting;
+    } else if (this.removedContacts.length >= 0 && this.selectedContacts >= 0) {
+      this.mode = this.operation.editing;
+    }
+    this.hasChanged = this.mode != this.operation.read ? true: false;
   }
 
-  private setNoSelectedContacts() {
-    this.noSelectedContacts = (this.selectedContacts.length > 0 ) ? false : true;
-  }
-
-  // private getContacts() {
-  //   this.mediaSharingService.getContacts().subscribe((res: any)=> {
-  //     this.contacts = res.data;
-  //   });
-  // }
-
-  private getContactGroups() {
-    this.mediaSharingService.getContactGroups().subscribe((res: any)=> {
-      this.contactGroups = res.data;
-    });
-  }
 }
