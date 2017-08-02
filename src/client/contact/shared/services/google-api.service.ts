@@ -78,42 +78,38 @@ export class GoogleApiService {
   }
 
   isSignedIn(): Promise<any> {
-    return new Promise<any>((resolve: any) => {
-      if (!this.GoogleAuth.isSignedIn.get()) {
-        // User is not signed in. Start Google auth flow.
-        this.GoogleAuth.signIn()
-          .then(() => {
-            let user = this.GoogleAuth.currentUser.get();
-            resolve(user);
-        })
-      } else {
-        let user = this.GoogleAuth.currentUser.get();
-        resolve(user);
-      }
-    });
+    if (!this.GoogleAuth.isSignedIn.get()) {
+      // User is not signed in. Start Google auth flow.
+      return this.GoogleAuth.signIn()
+        .then(() => { return Promise.resolve(this.GoogleAuth.currentUser.get());}
+        )
+    } else {
+      return Promise.resolve(this.GoogleAuth.currentUser.get());
+    };
   }
 
-  startImportContact(user: any): Promise<any> {
-    return new Promise<any>((resolve: any, reject: any) => {
-      let user = this.GoogleAuth.currentUser.get();
-      let isAuthorized = user.hasGrantedScopes(this.SCOPE)
-      this.totalImporting = 0;
-      console.log('user: ', user);
-      if (_.get(user, 'Zi.access_token') != undefined && isAuthorized)
-        this.getGoogleContactsList(user.Zi.access_token)
-          .then((data: any) => {
-            console.log('client request result: ', data);
-            this.totalImporting = _.get(data, 'feed.entry', []).length;
-            return this.mappingParams(_.get(data, 'feed.entry', []));
-          })
-          .then((mapped_data: any) => { return this.importContactsToDb({contacts: mapped_data}); })
-          .then((data: any) => { this.revokeAccess() ; resolve(data)});
-      else
-        reject(new Error(`access_token not found. Please recheck: ${user}`));
-    });
+  startImportContact(user1?: any): Promise<any> {
+    let user = user1 || this.GoogleAuth.currentUser.get();
+    let isAuthorized = user.hasGrantedScopes(this.SCOPE)
+    this.totalImporting = 0;
+    console.log('user: ', user);
+    if (_.get(user, 'Zi.access_token') != undefined && isAuthorized)
+      return this.getGoogleContactsList(user.Zi.access_token)
+        .then((data: any) => {
+          console.log('client request result: ', data);
+          this.totalImporting = _.get(data, 'feed.entry', []).length;
+          return this.mappingParams(_.get(data, 'feed.entry', []));
+        }, (err: any) => { return Promise.reject( err);
+        })
+        .then((mapped_data: any) => { return this.importContactsToDb({contacts: mapped_data}); }
+        , (err: any) => { return Promise.reject( err);})
+        .then((data: any) => { this.revokeAccess() ; return Promise.resolve(data)});
+    else
+      return Promise.reject(new Error(`access_token not found. Please recheck: ${user}`));
   }
 
   revokeAccess() {
+    console.debug('revokeAccess ...');
     this.GoogleAuth.disconnect();
   }
 
@@ -128,7 +124,10 @@ export class GoogleApiService {
         'start-index': 1,
         'Bearer': access_token}
     })
-      .then((data: any) => JSON.parse(data.body));
+      .then((data: any) => JSON.parse(data.body)
+          ,(error: any) => {
+            console.error('getGoogleContactsList error', error); throw error;})
+      ;
   }
 
   // Convert Google API params to comply WTH API format and filter out unnecessary data
@@ -171,8 +170,9 @@ export class GoogleApiService {
 
   private importContactsToDb(json_data: any): Promise<any> {
     return this.contactService.importGoogleContacts(json_data).toPromise()
-      .then((res: any) => { console.log('import contacts to DB successfully', res); return res.data;})
-      .catch((err: any) => console.error('import contacts ERRORS ', err));
+      .then((res: any) => { console.log('import contacts to DB successfully', res); return res.data;}
+      ,(err: any) => { console.error('import contacts ERRORS ', err); return Promise.reject(err);}
+      )
   }
 
 

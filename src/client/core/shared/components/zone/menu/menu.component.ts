@@ -26,6 +26,7 @@ declare var _: any;
 export class ZSharedMenuComponent implements OnInit, OnDestroy {
 
   @Input() contactMenu: Array<any>;
+  @Input() totalContactCount: number = 0;
 
   /**public event for somewhere are able to subscribe*/
   event: Observable<any>;
@@ -80,7 +81,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     let regExp = /label=([\w ]*)/;
     let match = decodeURI(url).match(regExp);
 
-    console.debug('match: ', match);
     if (match && match[1]) {
       return match[1];
     } else {

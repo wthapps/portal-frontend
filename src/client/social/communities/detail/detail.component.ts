@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable} from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/zip';
 
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
@@ -128,25 +129,37 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
 
-    // this.postList.type = 'community';
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'];
-      this.getCommunity(this.uuid);
-      // this.checkCurrentUser(this.uuid);
+    // // this.postList.type = 'community';
+    // this.route.params.subscribe(params => {
+    //   this.uuid = params['id'];
+    //   this.getCommunity(this.uuid);
+    //   // this.checkCurrentUser(this.uuid);
+    //
+    // });
+    //
+    // this.route.queryParams.subscribe(
+    //   (queryParams: any) => {
+    //     this.selectedTab = queryParams['tab'];
+    //     this.selectedTabTitle = _.find(this.tabData, ['key', queryParams['tab']]);
+    //     this.setTabVisibility();
+    //     if (this.selectedTab !== undefined)
+    //       this.getTabItems(this.uuid, this.selectedTab);
+    //     // this.isMember = true; // testing
+    //   }
+    // );
 
-    });
-
-    this.route.queryParams.subscribe(
-      (queryParams: any) => {
-        this.selectedTab = queryParams['tab'];
-        this.selectedTabTitle = _.find(this.tabData, ['key', queryParams['tab']]);
-        this.setTabVisibility();
-        if (this.selectedTab !== undefined)
-          this.getTabItems(this.uuid, this.selectedTab);
-        // this.isMember = true; // testing
+    Observable.zip(this.route.params, this.route.queryParams).map((p: any) => {
+      if(this.uuid !== p[0]['id']) {
+        this.uuid = p[0]['id'];
+        this.getCommunity(this.uuid);
       }
-    );
-
+      this.selectedTab = p[1]['tab'];
+    }).subscribe(() => {
+      this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
+      this.setTabVisibility();
+      if (this.selectedTab !== undefined)
+        this.getTabItems(this.uuid, this.selectedTab);
+    });
   }
 
   ngOnDestroy() {

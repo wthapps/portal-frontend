@@ -107,7 +107,6 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           }
         });
         break;
-
       case 'contact:label:create':
         this.labelService.create(event.payload.label).subscribe(
           () =>{});

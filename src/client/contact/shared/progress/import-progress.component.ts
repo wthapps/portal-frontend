@@ -52,7 +52,6 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   }
 
   open(options?: any) {
-
     console.log('importStatus: ', this.importStatus);
     this.importedContacts.length = 0;
     // this.modalDock.open();
@@ -60,23 +59,31 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   }
 
   startImportContacts(): Promise<any> {
+    this.importStatus = undefined;
     return this.gapi.isSignedIn()
       .then((user: any) => {
-        this.modalDock.open();
-        this.importStatus = this.IMPORT_STATUS.importing;
-        return this.gapi.startImportContact(user)
-      })
+          this.modalDock.open();
+          this.importStatus = this.IMPORT_STATUS.importing;
+          return this.gapi.startImportContact(user)}
+          ,(err: any) => {
+          this.importStatus = this.IMPORT_STATUS.error;
+          return this.importDone(err);
+          })
       .then((data: any) => {
-        console.log('importContact data: ', data);
-        // this.contactService.contactAddContactService.sendOut({data: data});
-        this.importedContacts = data;
-        this.contactService.addMoreContacts(data);
-        this.importDone();
-      })
-      .catch((err: any) => {
-        console.log('importContact err: ', err);
-        this.importDone(err);
-      });
+          console.log('importContact data: ', data);
+          if(data !== undefined) {
+            // this.contactService.contactAddContactService.sendOut({data: data});
+            this.importedContacts = data;
+            this.contactService.addMoreContacts(data);
+            return this.importDone();
+          } else {
+            let err: any = new Error('import contact have no data');
+            return this.importDone(err);
+          }
+        },(err: any) => {
+          console.log('importContact err: ', err);
+          return this.importDone(err);
+        });
   }
 
   close(options?: any) {
@@ -99,10 +106,14 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     this.startImportContacts();
   }
 
-  private importDone(error?: any) {
-    if (!error)
+  private importDone(error?: any): Promise<any> {
+    if (!error) {
       this.importStatus = this.IMPORT_STATUS.done;
-    else
-      this.importStatus = this.IMPORT_STATUS.error;
+      return Promise.resolve(this.importStatus);
+    }
+    else {
+      console.error('importDone w/ error: ', error);
+      this.importStatus = this.IMPORT_STATUS.error;}
+      return Promise.reject(error);
   }
 }

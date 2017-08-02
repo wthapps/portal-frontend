@@ -18,7 +18,7 @@
           [routerLinkActive]="['active']" >
         <li [ngClass]="(currentLabel === 'all contacts') ? 'active' : ''">
           <a draggable="false" href="javascript:;" [routerLink]="['contacts', {label: 'all contacts'}]" (click)="doEvent({action: 'contacts', event: $event})">
-            <i class="fa fa-address-book-o"></i> All Contacts
+            <i class="fa fa-address-book-o"></i> All Contacts ({{ totalContactCount }})
           </a>
         </li>
         <li class="divider"></li>

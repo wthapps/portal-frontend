@@ -38,6 +38,7 @@ export class ContactSearchFormComponent {
 
     this.show = false;
     this.serviceManager.getCommonEventService().broadcast({
+      channel:  Constants.contactEvents.common,
       action: 'contact:contact:search',
       payload: {search_value: this.search}
     });
