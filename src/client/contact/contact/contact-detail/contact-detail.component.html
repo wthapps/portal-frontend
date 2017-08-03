@@ -5,8 +5,8 @@
         [showViewDetail]="false"
         [showNumber]="false"
         [showTag]="false"
-        [toggleFavourite]="hasLabel([data], 'favourite')"
-        [toggleBlacklist]="hasLabel([data], 'blacklist')"
+        [toggleFavourite]="_contact.isContactsHasLabelName([data], 'favourite')"
+        [toggleBlacklist]="_contact.isContactsHasLabelName([data], 'blacklist')"
         (eventOut)="doActionsToolbar($event)"
       ></z-contact-shared-actions-bar>
     </div>

@@ -17,7 +17,8 @@ import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-la
 import { CommonEvent } from "../../../core/shared/services/common-event/common-event";
 import { Constants } from '../../../core/shared/config/constants';
 import { _wu } from "../../../core/shared/utils/utils";
-import { _contact } from "../../shared/functions/contact.functions";
+import { _contact } from "../../shared/utils/contact.functions";
+import { LabelService } from "../../label/label.service";
 
 declare var _: any;
 @Component({
@@ -41,7 +42,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
-  hasLabel: any = _contact.isContactsHasLabelName;
+  _contact: any = _contact;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -50,6 +51,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
               private cdr: ChangeDetectorRef,
               private router: Router,
               private confirmationService: ConfirmationService,
+              private labelService: LabelService,
               private loadingService: LoadingService,
               private commonEventService: CommonEventService
   ) {
@@ -159,7 +161,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   toggleLabel(name: string) {
-    let label: any = name =='favourite' ? {id: 3} : {id: 6};
+    let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => { return label.name == name; });
 
     if (_contact.isContactsHasLabelName(this.contactService.selectedObjects, name)) {
       _contact.removeLabelContactsByName(this.contactService.selectedObjects, name);

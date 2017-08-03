@@ -9,7 +9,6 @@ import 'rxjs/add/operator/toPromise';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
@@ -48,7 +47,6 @@ export class ZContactService extends BaseEntityService<any> {
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
-              public contactAddContactService: ZContactAddContactService,
               public labelService: LabelService,
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
@@ -185,10 +183,14 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   update(data: any): Observable<any> {
-    if (data && data.length > 1) {
-      return this.updateMultiple({contacts: data});
+    if (data && _.isArray(data)) {
+      if (data.length > 1) {
+        return this.updateMultiple({contacts: data});
+      } else {
+        return this.updateSingle(data[0]);
+      }
     } else {
-      return this.updateSingle(data[0]);
+      return this.updateSingle(data);
     }
   }
 

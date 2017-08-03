@@ -4,13 +4,13 @@
          class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
 
       <z-contact-shared-actions-bar
-        [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1"
-        [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1"
+        [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
+        [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
         [showViewDetail]="false"
         [showEdit]="false"
         [number]="contactService.selectedObjects.length"
-        [toggleFavourite]="hasLabel(contactService.selectedObjects, 'favourite')"
-        [toggleBlacklist]="hasLabel(contactService.selectedObjects, 'blacklist')"
+        [toggleFavourite]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'favourite')"
+        [toggleBlacklist]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'blacklist')"
         (eventOut)="doActionsToolbar($event)"
       ></z-contact-shared-actions-bar>
     </div>
@@ -31,3 +31,4 @@
   </div>
 </div>
 <contact-add-label-modal #modal></contact-add-label-modal>
+<!-- && contactService.selectedObjects.length==1 -->

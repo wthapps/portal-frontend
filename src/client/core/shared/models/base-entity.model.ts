@@ -4,6 +4,7 @@ export abstract class BaseEntity {
 
   created_by: any;
   updated_by: any;
+  [key: string]: any;
 
   constructor(attributes: any={}) {
     if (attributes) {

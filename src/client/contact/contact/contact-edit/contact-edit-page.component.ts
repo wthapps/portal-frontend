@@ -64,7 +64,7 @@ export class ZContactEditPageComponent implements OnInit {
   }
 
   doEvent(event: any) {
-    console.log('doing event::::', event, event.payload.item);
+    console.log('doing event::::', event.payload.item);
 
     switch (event.action) {
       case 'contact:contact:create':

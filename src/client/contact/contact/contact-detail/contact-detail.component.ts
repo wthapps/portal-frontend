@@ -6,7 +6,8 @@ import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-la
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { Label } from '../../label/label.model';
-import { _contact } from "../../shared/functions/contact.functions";
+import { _contact } from "../../shared/utils/contact.functions";
+import { LabelService } from "../../label/label.service";
 declare let _: any;
 
 @Component({
@@ -23,9 +24,13 @@ export class ZContactDetailComponent implements OnInit {
   emailCategories: any = Constants.emailCategories;
   addressCategories: any = Constants.addressCategories;
   mediaCategories: any = Constants.mediaCategories;
-  hasLabel: any = _contact.isContactsHasLabelName;
+  _contact: any = _contact;
 
-  constructor(private contactService: ZContactService, private route: ActivatedRoute, private apiBaseService: ApiBaseService, private router: Router) {
+  constructor(private contactService: ZContactService,
+     private route: ActivatedRoute,
+     private apiBaseService: ApiBaseService,
+     private labelService: LabelService, 
+     private router: Router) {
   }
 
   ngOnInit() {
@@ -42,7 +47,7 @@ export class ZContactDetailComponent implements OnInit {
   }
 
   toggleLabel(name: string) {
-    let label: any = name =='favourite' ? {id: 3} : {id: 6};
+    let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => { return label.name == name; });
 
     if (_contact.isContactsHasLabelName([this.data], name)) {
       _contact.removeLabelContactsByName([this.data], name);

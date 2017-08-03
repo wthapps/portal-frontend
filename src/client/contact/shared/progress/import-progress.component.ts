@@ -72,7 +72,6 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
       .then((data: any) => {
           console.log('importContact data: ', data);
           if(data !== undefined) {
-            // this.contactService.contactAddContactService.sendOut({data: data});
             this.importedContacts = data;
             this.contactService.addMoreContacts(data);
             return this.importDone();

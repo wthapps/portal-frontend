@@ -6,7 +6,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Label } from '../../label/label.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Response, Http } from '@angular/http';
-import { ZContactAddContactService } from '../modal/add-contact/add-contact.service';
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { Constants } from '../../../core/shared/config/constants';
