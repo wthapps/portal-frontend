@@ -11,10 +11,11 @@ import {
   Renderer
 } from '@angular/core';
 
+import 'rxjs/add/operator/takeWhile';
+
 import { Photo } from '../../../core/shared/models/photo.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
-import { Subject } from 'rxjs/Subject';
 import { ModalDockComponent } from '../../../core/shared/components/modal/dock.component';
 import { Router } from '@angular/router';
 import { MediaUploaderDataService } from './media-uploader-data.service';
@@ -136,7 +137,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     this.pending_files = Array.prototype.slice.call( files );
     console.log('Pending files: ', this.pending_files);
 
-    this.photoUploadService.getPhoto(files[0]).take(1).subscribe((res: any) => {
+    this.photoUploadService.getPhoto(files[0]).then((res: any) => {
       this.current_photo = res;
     });
 

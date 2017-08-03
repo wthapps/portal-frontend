@@ -66,8 +66,16 @@ export class NotificationService {
         this.api.post(link, body)
           .subscribe((result: any) => {
               // Reload data
-              _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
-              console.log('result: ', result);
+              // TODO: Change notification content name and remove the actions
+              // _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
+
+              this.notifications = _.map(this.notifications, (notif: any) => {
+                if(notif.id === this.currentNotifId)
+                  return Object.assign(notif, {actions: _.get(result, 'data.actions', []), response_actions: _.get(result, 'data.response_actions', [])});
+                else
+                  return notif;
+              });
+              console.debug('post - ', this.notifications);
             },
             (error: any) => {
               console.log('error', error);
@@ -204,7 +212,7 @@ export class NotificationService {
 
   getMoreNotifications() {
     // if(this.loadingDone) {
-    if(this.isLoadingDone()) {
+    if(this.isLoadingDone() || this.nextLink === undefined) {
       console.debug('All notifications are loaded !');
       return;
     }

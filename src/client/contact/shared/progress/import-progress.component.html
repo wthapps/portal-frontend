@@ -1,5 +1,6 @@
 <wth-modal-dock #modalDock>
-  <wth-modal-dock-header [loading]="(importStatus==IMPORT_STATUS.importing)">
+  <wth-modal-dock-header [loading]="(importStatus==IMPORT_STATUS.importing)" [failed]="(importStatus==IMPORT_STATUS.cancelled || importStatus==IMPORT_STATUS.error)"
+                         [done]="(importStatus==IMPORT_STATUS.done)">
     <span *ngIf="importStatus==IMPORT_STATUS.importing">Importing</span>
     <span *ngIf="importStatus==IMPORT_STATUS.done">Imported</span>
     <span *ngIf="importStatus==IMPORT_STATUS.cancelled">Import cancelled</span>

@@ -58,7 +58,7 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
 
         this.commentId = params['commentId'];
         return this.photoService.getPhoto(this.id)
-                   .subscribe((response: any) => {
+                   .then((response: any) => {
                        // this.item = response.data;
                        this.selectedPhoto = response.data;
                      },

@@ -61,7 +61,7 @@
         Add to Album
       </a>
 
-      <a href="javascript:;" (click)="retryUpload($event)" *ngIf="pending_files.length > 0">
+      <a href="javascript:;" (click)="retryUpload($event)" *ngIf="pending_files.length > 0 && (step==uploadSteps.error || step==uploadSteps.stop)">
         Retry ( {{ pending_files.length }} files )
       </a>
     </div>

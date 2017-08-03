@@ -191,7 +191,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   loadItem(id: number) {
     // this.loading = true;
     // return this.photoService.getPhoto(id)
-    //   .subscribe((response: any) => {
+    //   .then((response: any) => {
     //       this.photo = response.data;
     //       this.loading = false;
     //     },
