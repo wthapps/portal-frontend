@@ -58,6 +58,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     })
     this.page = 1;
     this.contact$ = this.contactService.contacts$;
+
   }
 
   ngOnInit() {
@@ -70,14 +71,18 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
 
     this.route.params.forEach((params: Params) => {
-      switch(params['label']) {
-        case 'all contacts':
-        case 'undefined':
-          this.contactService.filter({label: undefined});
-          break;
-        default:
-          this.contactService.filter({label: params['label']});
-          break;
+      if(params['search']) {
+        this.contactService.search({search_value: params['search']});
+      } else {
+        switch(params['label']) {
+          case 'all contacts':
+          case 'undefined':
+            this.contactService.filter({label: undefined});
+            break;
+          default:
+            this.contactService.filter({label: params['label']});
+            break;
+        }
       }
     });
 
@@ -129,7 +134,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     console.log('doEvent in contact list:::', event);
     switch(event.action) {
       case 'open_add_label_modal':
-        let labels = [];
+        let labels: any[] = [];
         if(this.contactService.selectedObjects.length > 1) {
           labels = [];
         } else if(this.contactService.selectedObjects.length == 1) {
