@@ -60,10 +60,11 @@
          (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal', data: photos }})">
         Add to Album
       </a>
-
-      <a href="javascript:;" (click)="retryUpload($event)" *ngIf="pending_files.length > 0">
-        Retry ( {{ pending_files.length }} files )
-      </a>
+      <div class="text-right mb10">
+        <a href="javascript:;" (click)="retryUpload($event)" *ngIf="pending_files.length > 0">
+          Retry ( {{ pending_files.length }} files )
+        </a>
+      </div>
     </div>
   </wth-modal-dock-footer>
 </wth-modal-dock>
