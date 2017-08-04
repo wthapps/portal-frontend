@@ -11,14 +11,17 @@
     </div>
     <div class="media-right">
       <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default-inline"
-              (click)="onAddMember()">
+              (click)="onAddMember()" pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
-      <button type="button" class="btn btn-default-inline" (click)="onFavorite()">
+      <button type="button" class="btn btn-default-inline" (click)="onFavorite()"
+              pTooltip="{{ (item.value.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
+              tooltipPosition="top">
         <i class="fa" [ngClass]="item.value.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
       <div class="btn-group">
-        <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown"
+                pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">

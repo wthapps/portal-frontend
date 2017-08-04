@@ -6,6 +6,7 @@ import { Config } from '../../../core/shared/config/env.config';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { CHAT_ACTIONS } from '../../../core/shared/constant/chat-constant';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -22,6 +23,7 @@ export class MessageItemComponent implements OnInit {
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
+  tooltip:any = Constants.tooltip;
 
   actions = CHAT_ACTIONS;
 

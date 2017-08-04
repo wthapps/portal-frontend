@@ -4,7 +4,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { AutoCompleteModule, CalendarModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
+import { CalendarModule } from 'primeng/components/calendar/calendar';
+import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 
 import { HeaderComponent } from './header.component';
 import { SearchFormComponent } from './search/search-form.component';
@@ -25,6 +27,7 @@ import { PartialsNotificationsModule } from '../notifications/notifications.modu
     InfiniteScrollModule,
     AutoCompleteModule,
     CalendarModule,
+    TooltipModule,
 
     PartialsNotificationsModule
   ],

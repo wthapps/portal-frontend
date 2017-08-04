@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { ModalDockComponent } from '../dock.component';
+import { Constants } from '../../../config/constants';
 
 @Component({
   moduleId: module.id,
@@ -11,7 +12,8 @@ import { ModalDockComponent } from '../dock.component';
                 <ng-content> </ng-content>
               </div>
               <div class="modal-dock-header-action">
-                <i class="fa fa-times" (click)="modalDock.close()"></i>
+                <i class="fa fa-times" (click)="modalDock.close()"
+                pTooltip="{{tooltip.close}}" tooltipPosition="top"></i>
               </div>
             </div>`,
   styleUrls: ['dock-header.component.css']
@@ -19,6 +21,8 @@ import { ModalDockComponent } from '../dock.component';
 
 export class ModalDockHeaderComponent {
   @Input() loading: boolean = false;
+
+  tooltip: any = Constants.tooltip;
 
   constructor(public modalDock: ModalDockComponent) {
   }

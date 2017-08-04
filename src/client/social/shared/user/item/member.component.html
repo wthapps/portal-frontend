@@ -43,7 +43,7 @@
 
       <div class="btn-group" *ngIf="data.friend_status == friendStatus.accepted">
         <button class="btn btn-default-inline-border dropdown-toggle" type="button"
-                data-toggle="dropdown">
+                data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
@@ -62,7 +62,7 @@
 
       <div class="btn-group" *ngIf="data.friend_status !== friendStatus.accepted">
         <button class="btn btn-default-inline-border dropdown-toggle" type="button"
-                data-toggle="dropdown">
+                data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">

@@ -1,23 +1,29 @@
 <ul class="control-body-select control-body-btnview">
   <li [ngClass]="{'action-disabled': selectedAlbums.length == 0}">
-    <a href="#" (click)="onAction('preview')"><i class="fa fa-eye"></i></a>
+    <a href="#" (click)="onAction('preview')"
+       pTooltip="{{tooltip.preview}}" tooltipPosition="top"><i class="fa fa-eye"></i></a>
   </li>
   <li [ngClass]="{'action-disabled': selectedAlbums.length == 0}">
-    <a href="#" (click)="onAction('share')"><i class="fa fa-share-alt"></i></a>
+    <a href="#" (click)="onAction('share')"
+       pTooltip="{{tooltip.share}}" tooltipPosition="top"><i class="fa fa-share-alt"></i></a>
   </li>
   <li [ngClass]="{'action-disabled': selectedAlbums.length == 0}">
-    <a href="#" (click)="onAction('favourite'); hasFavourite = (hasFavourite ? false : true)">
+    <a href="#" (click)="onAction('favourite'); hasFavourite = (hasFavourite ? false : true)"
+       pTooltip="{{(hasFavourite) ? tooltip.addToFavorites: tooltip.removeFromFavourites}}" tooltipPosition="top">
       <i class="fa" [ngClass]="hasFavourite ? 'fa-star-o': 'fa-star'"></i>
     </a>
   </li>
   <li [ngClass]="{'action-disabled': selectedAlbums.length == 0}">
-    <a href="#" (click)="onAction('tag')"><i class="fa fa-tag"></i></a>
+    <a href="#" (click)="onAction('tag')"
+       pTooltip="{{tooltip.addTag}}" tooltipPosition="top"><i class="fa fa-tag"></i></a>
   </li>
   <li [ngClass]="{'action-disabled': selectedAlbums.length == 0}">
-    <a href="#" (click)="onAction('delete')"><i class="fa fa-trash-o"></i></a>
+    <a href="#" (click)="onAction('delete')"
+       pTooltip="{{tooltip.delete}}" tooltipPosition="top"><i class="fa fa-trash-o"></i></a>
   </li>
   <li class="dropdown action" [ngClass]="{'action-disabled': selectedAlbums.length == 0}">
-    <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="p10" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+       pTooltip="{{tooltip.moreAction}}" tooltipPosition="left">
       <i class="fa fa-ellipsis-v"></i>
     </a>
     <ul *ngIf="selectedAlbums.length > 1" class="dropdown-menu" aria-labelledby="dropdownMenu2">

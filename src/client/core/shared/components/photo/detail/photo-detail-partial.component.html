@@ -2,7 +2,8 @@
   <div *ngIf="photo" class="photo-detail-top">
     <ul class="action navbar-left">
       <li>
-        <a href="javascript:;" draggable="false" (click)="goBack()"><i class="fa fa-arrow-left"></i></a>
+        <a href="javascript:;" draggable="false" (click)="goBack()"
+           pTooltip="{{ tooltip.back }}" tooltipPosition="right"><i class="fa fa-arrow-left"></i></a>
       </li>
     </ul>
 
@@ -16,7 +17,8 @@
         </a>
         <ul *ngIf="menu?.parent" class="dropdown-menu dropdown-menu-lg">
           <li *ngFor="let subMenu of menu.menus">
-            <a href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})">
+            <a href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})"
+               pTooltip="{{ subMenu.toolTip }}" tooltipPosition="left">
               <i [ngClass]="subMenu.iconClass"></i> {{ subMenu.text }}
             </a>
           </li>
@@ -42,19 +44,24 @@
 
     <ul *ngIf="mode == 1" class="action navbar-right">
       <li>
-        <a (click)="cropCropper()" href="javascript:;" [ngClass]="{'a-hover': cropping}"><i class="fa fa-crop"></i></a>
+        <a (click)="cropCropper()" href="javascript:;" [ngClass]="{'a-hover': cropping}"
+           pTooltip="{{ tooltip.crop }}" tooltipPosition="left"><i class="fa fa-crop"></i></a>
       </li>
       <li>
-        <a (click)="zoomCropper(-0.1)" href="javascript:;"><i class="fa fa-search-minus"></i></a>
+        <a (click)="zoomCropper(-0.1)" href="javascript:;"
+           pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="left"><i class="fa fa-search-minus"></i></a>
       </li>
       <li>
-        <a (click)="zoomCropper(0.1)" href="javascript:;"><i class="fa fa-search-plus"></i></a>
+        <a (click)="zoomCropper(0.1)" href="javascript:;"
+           pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="left"><i class="fa fa-search-plus"></i></a>
       </li>
       <li>
-        <a (click)="rotateCropper(true)" href="javascript:;"><i class="fa fa-rotate-left"></i></a>
+        <a (click)="rotateCropper(true)" href="javascript:;"
+           pTooltip="{{ tooltip.rotateLeft }}" tooltipPosition="left"><i class="fa fa-rotate-left"></i></a>
       </li>
       <li>
-        <a (click)="rotateCropper(false)" href="javascript:;"><i class="fa fa-rotate-right"></i></a>
+        <a (click)="rotateCropper(false)" href="javascript:;"
+           pTooltip="{{ tooltip.rotateRight }}" tooltipPosition="left"><i class="fa fa-rotate-right"></i></a>
       </li>
     </ul>
 
@@ -71,18 +78,23 @@
   </div>
 
   <div *ngIf="mode == 0" class="photo-detail-bottom-action">
-    <a draggable="false" href="javascript:;" (click)="zoomCropper(-0.1)"><i class="fa fa-minus"></i></a>
-    <a draggable="false" href="javascript:;" (click)="zoomCropper(0)"><i class="fa fa-refresh"></i></a>
-    <a draggable="false" href="javascript:;" (click)="zoomCropper(0.1)"><i class="fa fa-plus"></i></a>
+    <a draggable="false" href="javascript:;" (click)="zoomCropper(-0.1)"
+       pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="top"><i class="fa fa-minus"></i></a>
+    <a draggable="false" href="javascript:;" (click)="zoomCropper(0)"
+       pTooltip="{{ tooltip.resetZoom }}" tooltipPosition="top"><i class="fa fa-refresh"></i></a>
+    <a draggable="false" href="javascript:;" (click)="zoomCropper(0.1)"
+       pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="top"><i class="fa fa-plus"></i></a>
   </div>
 
   <div class="photo-detail-img-control-wrap">
     <span *ngIf="(ids.length>1 && mode==0)" draggable="false" (click)="move(false)"
-          class="photo-detail-img-control img-control-prev">
+          class="photo-detail-img-control img-control-prev"
+          pTooltip="{{ tooltip.previous }}" tooltipPosition="right">
       <i class="fa fa-angle-left"></i>
     </span>
     <span *ngIf="(ids.length>1 && mode==0)" draggable="false" (click)="move()"
-          class="photo-detail-img-control img-control-next">
+          class="photo-detail-img-control img-control-next"
+          pTooltip="{{ tooltip.next }}" tooltipPosition="left">
       <i class="fa fa-angle-right"></i>
     </span>
   </div>

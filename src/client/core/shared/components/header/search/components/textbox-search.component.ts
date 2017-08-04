@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angu
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
 
+import { Constants } from '../../../../config/constants';
+
 declare let _: any;
 
 @Component({
@@ -25,6 +27,8 @@ export class TextBoxSearchComponent implements OnInit {
   @ViewChild('input') input: any;
 
   searchAdvanced: boolean = false;
+
+  tooltip:any = Constants.tooltip;
 
   ngOnInit() {
     Observable.fromEvent(this.input.nativeElement, 'keyup')

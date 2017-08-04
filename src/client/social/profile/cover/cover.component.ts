@@ -6,6 +6,7 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -28,6 +29,8 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   showFriends: boolean = true;
 
   favourite: any; // toggle favourites status for members, communities
+
+  tooltip: any = Constants.tooltip;
 
   constructor(private apiBaseService: ApiBaseService,
               private socialService: SocialService,

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
+import { Constants } from '../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -9,9 +10,11 @@ import { ZChatShareRequestContactComponent } from '../shared/modal/request-conta
   styleUrls: ['contact-search.component.css']
 })
 export class ZChatContactSearchComponent implements OnInit {
-  contactItem:any;
-  name:any;
-  newContacts:any;
+  tooltip: any = Constants.tooltip;
+
+  contactItem: any;
+  name: any;
+  newContacts: any;
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 
   constructor(private chatService: ChatService) {
@@ -23,13 +26,13 @@ export class ZChatContactSearchComponent implements OnInit {
 
   search() {
     this.chatService.searchUsers(this.name).subscribe(
-      (res:any) => {
+      (res: any) => {
         this.newContacts = res.data;
       }
     );
   }
 
-  onRequest(contact:any) {
+  onRequest(contact: any) {
     this.requestModal.contact = contact;
     this.requestModal.modal.open();
   }

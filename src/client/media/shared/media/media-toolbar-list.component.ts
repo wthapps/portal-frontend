@@ -1,10 +1,5 @@
-import {
-  Component, Input, EventEmitter, Output, ViewChild, OnInit, AfterViewInit, SimpleChanges,
-  OnChanges, ViewContainerRef
-} from '@angular/core';
-import { Location } from '@angular/common';
-import { ViewOptions } from './view-options.constant';
-import { Observable, Observer } from 'rxjs';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare let _: any;
 
@@ -41,9 +36,9 @@ export class MediaToolbarListComponent implements OnInit {
   displayCreateButtons: boolean;
   displayBackButton: boolean = false;
 
+  tooltip: any = Constants.tooltip;
 
   constructor() {
-
   }
 
   ngOnInit() {
@@ -60,7 +55,7 @@ export class MediaToolbarListComponent implements OnInit {
 
 
   onAction(options: any) {
-    if(_.get(options, 'action', '') == 'changeView') {
+    if (_.get(options, 'action', '') == 'changeView') {
       this.viewOption = options.params.viewOption;
     }
     // toggle favourite action
@@ -73,13 +68,13 @@ export class MediaToolbarListComponent implements OnInit {
   }
 
   updateProperties(properties: any) {
-    if(properties.hasOwnProperty('selectedObjects')) {
+    if (properties.hasOwnProperty('selectedObjects')) {
       this.selectedObjects = properties.selectedObjects;
     }
     if (properties.hasOwnProperty('object')) {
       this.object = properties.object;
     }
-    this.noSelectedObjects = this.selectedObjects.length > 0 ? false: true;
+    this.noSelectedObjects = this.selectedObjects.length > 0 ? false : true;
 
     this.isFavourited = !_.some(this.selectedObjects, ['favorite', false]);
     this.hasMultiObjects = this.selectedObjects.length > 1 ? true : false;

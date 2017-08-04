@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ZContactService } from '../services/contact.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -18,6 +19,8 @@ export class ZContactSharedListComponent implements OnInit {
   // descending: boolean = false;
   desc$: Observable<boolean>;
   currentSort: string = 'name';
+
+  tooltip: any = Constants.tooltip;
 
   constructor(public contactService: ZContactService) {
     this.desc$ = this.contactService.orderDesc$;

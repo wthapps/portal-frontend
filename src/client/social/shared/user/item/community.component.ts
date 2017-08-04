@@ -37,6 +37,8 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
   comUserRole = Constants.communityRole;
   communitiesUrl: string = Constants.urls.communities;
 
+  tooltip: any = Constants.tooltip;
+
   constructor(public serviceManager: ServiceManager,
               private confirmationService: ConfirmationService,
               private socialService: SocialService,

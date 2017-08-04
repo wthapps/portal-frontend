@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit {
 
   flagsRelease: boolean = Constants.flagsRelease;
 
+  tooltip: any = Constants.tooltip;
+
   private returnUrl: string;
 
   constructor(private fb: FormBuilder,

@@ -1,6 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { EmitEventMixin } from "../../../core/shared/mixins/shared/emit-event.mixin";
 import { Mixin } from "../../../core/design-patterns/decorator/mixin-decorator";
+import { Constants } from '../../../core/shared/config/constants';
 
 
 declare var _: any;
@@ -28,4 +29,6 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
   emitEvent: (value: any) => void;
+
+  tooltip: any = Constants.tooltip;
 }

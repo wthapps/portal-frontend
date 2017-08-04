@@ -20,7 +20,8 @@
         <!--mesasge menu-->
         <div class="message-item-menu dropdown"
              *ngIf="(message.message_type == 'text' || message.file_type == 'Photo' || message.file_type == 'FileMedium')">
-          <i class="fa fa-sort-down" data-toggle="dropdown"></i>
+          <i class="fa fa-sort-down" data-toggle="dropdown"
+             pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
           <!--text message menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">

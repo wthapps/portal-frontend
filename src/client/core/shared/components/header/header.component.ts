@@ -53,6 +53,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
 
   communitiesUrl: string = '';
 
+  tooltip: any = Constants.tooltip;
 
   @ViewChild('search') searchForm: SearchFormComponent;
 

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
-import { SoPost } from '../../core/shared/models/social_network/so-post.model';
 import { BaseZoneSocialItem } from '../base/base-social-item';
 import { PhotoService } from '../../core/shared/services/photo.service';
+import { Constants } from '../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -34,13 +34,13 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
   hasMultiItems: boolean = false;
   prevUrl: string;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    public location: Location,
-    public apiBaseService: ApiBaseService,
-    private photoService: PhotoService
-  ) {
+  tooltip: any = Constants.tooltip;
+
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              public location: Location,
+              public apiBaseService: ApiBaseService,
+              private photoService: PhotoService) {
     super();
   }
 
@@ -52,40 +52,41 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
         this.id = params['id'];
         this.prevUrl = params['prevUrl'];
         this.ids = params['ids'].split(',');
-        if(this.ids.length > 1) {
+        if (this.ids.length > 1) {
           this.hasMultiItems = true;
         }
 
         this.commentId = params['commentId'];
         return this.photoService.getPhoto(this.id)
-                   .subscribe((response: any) => {
-                       // this.item = response.data;
-                       this.selectedPhoto = response.data;
-                     },
-                     (error: any) => {
-                       console.error('Error when loading photo ', error);
-                     });
+          .subscribe((response: any) => {
+              // this.item = response.data;
+              this.selectedPhoto = response.data;
+            },
+            (error: any) => {
+              console.error('Error when loading photo ', error);
+            });
 
-    });
-      // if (this.idComment)
-      //       return this.loadItem(this.apiBaseService.urls.zoneSoComments + '/' + this.idComment); // Load photos from comments
-      //     else
-      //       return this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + this.postId); }) // Load photos from posts
-      // .subscribe((response: any) => {
-      //     this.item = response.data;
-      //     if(this.idComment) {
-      //       // TODO: Refractor this item to accept photo index of comment
-      //       this.selectedPhoto = this.item.photo;
-      //     } else {
-      //       this.selectedPhoto = this.item.photos[this.id];
-      //     }
-      //
-      //   },
-      //   ( error: any) => {
-      //     console.error('Error when loading photo ', error);
-      //   });
+      });
+    // if (this.idComment)
+    //       return this.loadItem(this.apiBaseService.urls.zoneSoComments + '/' + this.idComment); // Load photos from comments
+    //     else
+    //       return this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + this.postId); }) // Load photos from posts
+    // .subscribe((response: any) => {
+    //     this.item = response.data;
+    //     if(this.idComment) {
+    //       // TODO: Refractor this item to accept photo index of comment
+    //       this.selectedPhoto = this.item.photo;
+    //     } else {
+    //       this.selectedPhoto = this.item.photos[this.id];
+    //     }
+    //
+    //   },
+    //   ( error: any) => {
+    //     console.error('Error when loading photo ', error);
+    //   });
     // this.loadPost('363ce443-72a8-4d1d-9966-bebf886e3e05');
   }
+
   // loadPost(uuid: string): void {
   //   this.loadItem(this.apiBaseService.urls.zonePhotos + '/' + uuid)
   //     .subscribe((response: any) => {
@@ -128,15 +129,15 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
 
   movePrevious() {
     let currentIndex = _.indexOf(this.ids, this.id);
-    let index = currentIndex > 0 ? currentIndex - 1: this.ids.length-1;
-    this.router.navigate(['/posts',  this.postId, 'photos', this.ids[index], {ids: this.ids}]);
+    let index = currentIndex > 0 ? currentIndex - 1 : this.ids.length - 1;
+    this.router.navigate(['/posts', this.postId, 'photos', this.ids[index], {ids: this.ids}]);
 
   }
 
   moveNext() {
     let currentIndex = _.indexOf(this.ids, this.id);
-    let index = currentIndex < (this.ids.length - 1) ? currentIndex + 1: 0;
-    this.router.navigate(['/posts',  this.postId, 'photos', this.ids[index], {ids: this.ids}]);
+    let index = currentIndex < (this.ids.length - 1) ? currentIndex + 1 : 0;
+    this.router.navigate(['/posts', this.postId, 'photos', this.ids[index], {ids: this.ids}]);
   }
 
 }

@@ -23,7 +23,8 @@
                [ngClass]="{'has-error': (!password.valid && password.touched)}">
             <label for="password">Password</label>
             <input [formControl]="password" type="password" class="form-control" id="password" placeholder="Password">
-            <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
+            <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"
+                  pTooltip="{{tooltip.showPassword}}" tooltipPosition="top"></span>
             <div *ngIf="!password.valid && password.touched">
                 <span *ngIf="!password.valid && password.errors.required"
                       class="help-block">A password is required</span>

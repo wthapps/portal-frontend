@@ -29,6 +29,8 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
   commentIndex: number;
   replyIndex: number;
 
+  tooltip: any = Constants.tooltip;
+
   private id: string = '';
 
   constructor(private route: ActivatedRoute,

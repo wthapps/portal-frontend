@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { TooltipModule } from 'primeng/components/tooltip/tooltip';
+
 import { ModalDockComponent } from './dock.component';
 import { ModalDockHeaderComponent } from './components/dock-header.component';
 import { ModalDockBodyComponent } from './components/dock-body.component';
@@ -8,7 +10,8 @@ import { ModalDockFooterComponent } from './components/dock-footer.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    TooltipModule
   ],
   declarations: [
     ModalDockComponent,

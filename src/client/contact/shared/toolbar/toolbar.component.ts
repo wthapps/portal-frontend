@@ -4,6 +4,7 @@ import { GoogleApiService } from '../services/google-api.service';
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -19,6 +20,8 @@ export class ZContactSharedToolbarComponent implements OnInit {
   @Input() pageTitle: string = ''; // TODO will be removed
   @Input() hasBack: boolean = false;
   selectedContact: string;
+
+  tooltip: any = Constants.tooltip;
 
   constructor(private contactService: ZContactService) {
   }

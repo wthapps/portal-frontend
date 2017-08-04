@@ -1,6 +1,7 @@
 import { Component, Input, HostBinding, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { NotificationService } from '../../services/notification.service';
+import { Constants } from '../../config/constants';
 
 @Component({
   moduleId: module.id,
@@ -17,6 +18,8 @@ export class PartialsNotificationsComponent {
 
   selectedNotifications: string[] = ['social'];
   communitiesUrl: string;
+
+  tooltip: any = Constants.tooltip;
 
   constructor(public notificationService: NotificationService) {
   }

@@ -27,7 +27,8 @@
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
               <a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
-                <i class="fa fa-check" *ngIf="favourite?.uuid"></i> {{(!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites'}}
+                <i class="fa fa-check" *ngIf="favourite?.uuid"></i> {{(!favourite?.uuid) ? 'Add to Favorites' : 'Remove
+                from Favorites'}}
               </a>
             </li>
             <li><a href="javascript:;" (click)="importToContacts(userInfo)">Import to Contacts</a></li>
@@ -55,14 +56,14 @@
 
         <!--menu-->
         <div class="btn-group" *ngIf="userInfo.uuid !== userService.profile.uuid">
-          <button type="button" class="btn btn-default" *ngIf="!relationships?.follow" (click)="follow(userInfo.uuid)" >
+          <button type="button" class="btn btn-default" *ngIf="!relationships?.follow" (click)="follow(userInfo.uuid)">
             Follow
           </button>
           <button type="button" class="btn btn-default" *ngIf="relationships?.follow">
             <i class="fa fa-check"></i> Following
           </button>
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">
+                  aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
             <i class="fa fa-ellipsis-v"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">

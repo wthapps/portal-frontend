@@ -1,7 +1,8 @@
 <div class="page-body-control-nav">
   <ul class="page-body-control-menu" *ngIf="pageTitle==''">
     <li *ngIf="hasBack">
-      <button type="button" class="btn btn-default-inline" [routerLink]="['/contacts']">
+      <button type="button" class="btn btn-default-inline" [routerLink]="['/contacts']"
+              pTooltip="{{tooltip.back}}" tooltipPosition="top">
         <i class="fa fa-arrow-left"></i>
       </button>
     </li>

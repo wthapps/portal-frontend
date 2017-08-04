@@ -27,16 +27,21 @@
 
       <div class="btn-group" *ngIf="data?.user_status == comUserStatus.member || data?.user_role ">
         <button class="btn btn-default-inline-border dropdown-toggle" type="button"
-                data-toggle="dropdown" (click)="getUserSettings(data?.uuid)">
+                data-toggle="dropdown" (click)="getUserSettings(data?.uuid)"
+                pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onEdit()">Edit
+            Information</a></li>
           <li><a href="javascript:;" (click)="toggleComNotification(data?.uuid)">
             {{userSettings?.mute ? 'Enable' : 'Disable'}} notifications </a>
           </li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onPreferences()">Preferences</a></li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a [routerLink]="['/', communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onPreferences()">Preferences</a>
+          </li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a [routerLink]="['/', communitiesUrl,data.uuid]"
+                                                                  [queryParams]="{tab: 'members'}">Manage members</a>
+          </li>
           <li role="separator" class="divider"></li>
           <li>
             <a href="javascript:;" (click)="toggleFavourite(data.uuid)">
@@ -44,7 +49,8 @@
             </a>
           </li>
           <li><a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a></li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onDelete()">Delete
+            community</a></li>
           <li class="divider"></li>
           <li *ngIf="!data?.user_role"><a href="javascript:;" (click)="onReport(data.uuid)">Report community</a></li>
         </ul>

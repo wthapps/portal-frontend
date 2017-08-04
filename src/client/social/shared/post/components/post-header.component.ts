@@ -19,6 +19,8 @@ export class PostHeaderComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
 
+  tooltip: any = Constants.tooltip;
+
   showInfo: boolean = false;
   showDetail: boolean = false;
   settings: any;
@@ -56,7 +58,9 @@ export class PostHeaderComponent implements OnChanges {
     event.preventDefault();
     console.log('Toggle post notification: ', event);
 
-    this.socialService.post.togglePostNotification(uuid).subscribe((res: any) => { this.settings = res.data;});
+    this.socialService.post.togglePostNotification(uuid).subscribe((res: any) => {
+      this.settings = res.data;
+    });
   }
 
   edit(event: any) {
@@ -96,9 +100,9 @@ export class PostHeaderComponent implements OnChanges {
     //   return;
 
     this.socialService.post.getSettings(this.item.uuid).take(1).subscribe(
-    (res: any) => {
-      this.settings = res.data.settings;
-    });
+      (res: any) => {
+        this.settings = res.data.settings;
+      });
   }
 
 

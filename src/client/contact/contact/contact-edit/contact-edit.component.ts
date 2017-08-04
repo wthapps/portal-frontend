@@ -102,7 +102,7 @@ export class ZContactEditComponent implements OnChanges {
       'emails': this.fb.array([this.initItem('emails')]),
       'addresses': this.fb.array([this.initItem('addresses')]),
       'medias': this.fb.array([this.initItem('medias')]),
-      'name': [''],
+      'name': ['', Validators.compose([Validators.required])],
       'company': [''],
       'labels': [''],
       'job_title': [''],

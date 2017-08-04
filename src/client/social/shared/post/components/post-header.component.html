@@ -2,7 +2,8 @@
   <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="item?.owner?.is_owner ? (userService.profile$ | async).profile_image : item.owner.profile_image" alt="">
+        <img [src]="item?.owner?.is_owner ? (userService.profile$ | async).profile_image : item.owner.profile_image"
+             alt="">
       </div>
     </div>
   </a>
@@ -20,7 +21,7 @@
           </i> {{ privacyName(item) }}</a>
 
         <modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
-          <modal-header cssClass="modal-social-head" >
+          <modal-header cssClass="modal-social-head">
             <h4 class="modal-title text-left text-capitalize"> {{privacyName(item)}}</h4>
             <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -54,7 +55,7 @@
           Adult content
         </li>
         <!--<li class="note" *ngIf="item.mute">-->
-          <!--Mute-->
+        <!--Mute-->
         <!--</li>-->
         <li class="note" *ngIf="item.disable_comment">
           Disable comment
@@ -70,7 +71,8 @@
       <!--<post-settings [item]="item"></post-settings>-->
       <button class="btn btn-default btn-default-no-border dropdown-toggle" type="button" id="dropdownMenu1"
               data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)">
+              aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)"
+              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" *ngIf="settings">
@@ -112,7 +114,8 @@
 
         <li>
           <a href="javascript:;"
-             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable '}} notifications
+             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable '}}
+            notifications
           </a>
         </li>
 
@@ -124,7 +127,8 @@
     </div>
 
     <div *ngIf="!showDetail" class="dropdown pull-right">
-      <a [routerLink]="['/'+ postUrl, item.uuid]"  class="btn btn-default btn-default-no-border">
+      <a [routerLink]="['/'+ postUrl, item.uuid]" class="btn btn-default btn-default-no-border"
+         pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top">
         <i class="fa fa-external-link"></i>
       </a>
     </div>

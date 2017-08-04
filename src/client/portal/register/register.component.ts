@@ -6,6 +6,7 @@ import { UserService } from '../../core/shared/services/user.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
 import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { Constants } from '../../core/shared/config/constants';
 
 declare var $: any;
 
@@ -20,6 +21,8 @@ declare var $: any;
 export class RegisterComponent {
   errorMessage: string = '';
   sex: number = 0;
+
+  tooltip: any = Constants.tooltip;
 
   form: FormGroup;
   first_name: AbstractControl;

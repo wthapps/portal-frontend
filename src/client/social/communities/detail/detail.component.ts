@@ -35,6 +35,8 @@ declare let $: any;
 export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
+  tooltip: any = Constants.tooltip;
+
   tab: any = {
     post: 'post',
     about: 'about',

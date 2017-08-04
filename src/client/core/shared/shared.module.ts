@@ -11,6 +11,7 @@ import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
 import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
+import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { ApiBaseService } from './services/apibase.service';
@@ -89,6 +90,7 @@ import { AuthService } from './services/auth.service';
     RadioButtonModule,
     AutoCompleteModule,
     CalendarModule,
+    TooltipModule,
 
     FooterModule,
     HeaderModule,

@@ -25,7 +25,8 @@
           <label for="oldPassword">Current Password</label>
           <input [formControl]="oldPassword" type="password" class="form-control" id="oldPassword"
                  placeholder="Input Old Password">
-          <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
+          <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"
+                pTooltip="{{tooltip.showPassword}}" tooltipPosition="top"></span>
           <div *ngIf="!oldPassword.valid && oldPassword.touched">
             <span *ngIf="!oldPassword.valid && oldPassword.errors.required" class="help-block">Current password is required</span>
           </div>
@@ -35,7 +36,8 @@
           <label for="password">Input New Password</label>
           <input [formControl]="password" type="password" class="form-control" id="password"
                  placeholder="Input New Password">
-          <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"></span>
+          <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"
+                pTooltip="{{tooltip.showPassword}}" tooltipPosition="top"></span>
           <!--<div *ngIf="!password.valid && password.touched">
             <span *ngIf="!password.valid && password.errors.required" class="help-block">A password is required</span>
             <span *ngIf="!password.valid && password.errors.minlength" class="help-block">A password needs to have at least 8 characters</span>

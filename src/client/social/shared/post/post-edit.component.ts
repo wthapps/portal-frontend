@@ -54,6 +54,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   @Output() saved: EventEmitter<any> = new EventEmitter<any>();
   @Output() dismissed: EventEmitter<any> = new EventEmitter<any>();
 
+  tooltip: any = Constants.tooltip;
+
   post: SoPost;
   files: Array<any> = new Array<any>();
   tags: Array<string> = new Array<string>();

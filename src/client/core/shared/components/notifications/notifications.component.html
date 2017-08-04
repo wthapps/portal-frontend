@@ -1,13 +1,11 @@
 <div class="list-group-item" *ngFor="let notification of notificationService.notifications"
-    data-id="notification_{{notification.id}}"
-    [ngClass]="{'unread-notification': !notification?.is_read}">
+     data-id="notification_{{notification.id}}"
+     [ngClass]="{'unread-notification': !notification?.is_read}">
   <div class="media" *ngIf="!notification.isHidden">
     <div class="media-left">
-      <a>
-          <span class="avatar-xsm">
-            <img [src]="notification.actor.profile_image" alt="{{notification.actor.name}}">
-          </span>
-      </a>
+      <span class="avatar-xsm">
+        <img [src]="notification.actor.profile_image" alt="{{notification.actor.name}}">
+      </span>
     </div>
     <div class="media-body">
       <p class="media-heading">
@@ -48,7 +46,8 @@
       </div>
       <div class="pull-right">
         <button class="btn btn-sm btn-default-inline-border" type="button"
-                (click)="toggleReadStatus(notification)">
+                (click)="toggleReadStatus(notification)"
+                pTooltip="{{ notification.is_read ? tooltip.markAsUnread : tooltip.markAsRead }}" tooltipPosition="top">
           <i class="fa"
              [ngClass]="{'fa-circle': notification.is_read, 'fa-circle-o': !notification.is_read}"></i>
         </button>
@@ -72,8 +71,13 @@
   <modal-body>
     <p>Allow notifications from</p>
     <div>
-      <div><p-checkbox name="group1" value="social" label="Social Network" [(ngModel)]="selectedNotifications"></p-checkbox></div>
-      <div><p-checkbox name="group1" value="chat" label="Chat" [(ngModel)]="selectedNotifications"></p-checkbox></div>
+      <div>
+        <p-checkbox name="group1" value="social" label="Social Network"
+                    [(ngModel)]="selectedNotifications"></p-checkbox>
+      </div>
+      <div>
+        <p-checkbox name="group1" value="chat" label="Chat" [(ngModel)]="selectedNotifications"></p-checkbox>
+      </div>
     </div>
   </modal-body>
   <modal-footer>

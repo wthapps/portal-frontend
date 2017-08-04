@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
 import { ConfirmationService } from 'primeng/components/common/api';
+import { Constants } from '../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -9,6 +10,8 @@ import { ConfirmationService } from 'primeng/components/common/api';
   templateUrl: 'contact-receive.component.html'
 })
 export class ZChatContactReceiveComponent implements OnInit {
+  tooltip: any = Constants.tooltip;
+
   users: any;
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 

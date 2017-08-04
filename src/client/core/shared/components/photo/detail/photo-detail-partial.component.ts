@@ -7,6 +7,7 @@ import { SharingModalComponent } from '../modal/sharing/sharing-modal.component'
 import { PhotoEditModalComponent } from '../modal/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
+import { Constants } from '../../../config/constants';
 
 // import {
 //   SharingModalComponent,
@@ -44,6 +45,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+
+  tooltip: any = Constants.tooltip;
 
   modalComponent: any;
   modal: any;
@@ -101,61 +104,61 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     this.menus = [
       {
         text: 'Share',
-        toolTip: 'share',
+        toolTip: Constants.tooltip.share,
         iconClass: 'fa fa-share-alt',
         action: 'openModal',
         params: {modalName: 'sharingModal'}
       },
       {
         text: 'Favourite',
-        toolTip: 'favourite',
+        toolTip: Constants.tooltip.favourite,
         iconClass: 'fa fa-star',
         action: 'favourite'
       },
       {
         text: 'Tag',
-        toolTip: 'tag',
+        toolTip: Constants.tooltip.tag,
         iconClass: 'fa fa-tag',
         action: 'openModal',
         params: {modalName: 'taggingModal'}
       },
       {
         text: 'Edit',
-        toolTip: 'edit',
+        toolTip: Constants.tooltip.edit,
         iconClass: 'fa fa-edit',
         action: 'editPhoto'
       },
       {
         text: 'Delete',
-        toolTip: 'delete',
+        toolTip: Constants.tooltip.delete,
         iconClass: 'fa fa-trash-o',
         action: 'delete',
         params: {}
       },
       {
         text: 'More',
-        toolTip: 'more actions',
+        toolTip: Constants.tooltip.moreAction,
         iconClass: 'fa fa-ellipsis-v',
         dropdown: true,
         parent: true,
         menus: [
           {
             text: 'Add to album',
-            toolTip: 'add to album',
+            toolTip: Constants.tooltip.addToAlbum,
             iconClass: 'fa fa-plus-square',
             action: 'openModal',
             params: {modalName: 'addToAlbumModal'}
           },
           {
             text: 'Download',
-            toolTip: 'download',
+            toolTip: Constants.tooltip.download,
             iconClass: 'fa fa-download',
             action: 'download',
             params: {}
           },
           {
             text: 'View Info',
-            toolTip: 'view info',
+            toolTip: Constants.tooltip.viewInfo,
             iconClass: 'fa fa-info-circle',
             action: 'viewInfo'
           }

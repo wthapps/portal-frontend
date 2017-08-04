@@ -12,6 +12,7 @@ import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
 import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { Constants } from '../../core/shared/config/constants';
 
 declare var $: any;
 
@@ -25,6 +26,8 @@ export class NewPasswordComponent implements OnInit {
   form: FormGroup;
   password: AbstractControl;
   submitted: boolean = false;
+
+  tooltip: any = Constants.tooltip;
 
   private selectedId: number;
   private selectedReset_code: string;

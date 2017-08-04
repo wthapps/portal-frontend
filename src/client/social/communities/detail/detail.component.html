@@ -70,7 +70,8 @@
               <ul class="pull-right list-unstyled clearfix" *ngIf="isMember">
                 <li class=" dropdown">
                   <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)">
+                          aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)"
+                          pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
                     <i class="fa fa-ellipsis-v"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">

@@ -11,7 +11,8 @@
         <!--<i class="fa fa-star-o"></i>-->
         <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
-      <button *ngIf="actions.add_to_contact" type="button" class="btn btn-wth-default" (click)="onRequest(profile)">
+      <button *ngIf="actions.add_to_contact" type="button" class="btn btn-wth-default" (click)="onRequest(profile)"
+              pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
       <z-chat-contact-actions *ngIf="contact && actions.list_actions" #chatContactActions [contact]="contact"></z-chat-contact-actions>

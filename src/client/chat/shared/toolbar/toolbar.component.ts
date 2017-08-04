@@ -3,6 +3,7 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { ConfirmationService } from 'primeng/components/common/api';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare let $: any;
 declare let _: any;
@@ -24,6 +25,8 @@ export class ZChatToolbarComponent implements OnInit {
   profileUrl: any;
   showSendMessage: boolean = false;
   showBlacklist: boolean = false;
+
+  tooltip: any = Constants.tooltip;
 
   constructor(private chatService: ChatService, private confirmationService: ConfirmationService) {
     this.profileUrl = this.chatService.constant.profileUrl;

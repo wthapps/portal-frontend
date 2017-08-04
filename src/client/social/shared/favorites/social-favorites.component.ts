@@ -17,6 +17,7 @@ declare let _: any;
 })
 
 export class ZSocialFavoritesComponent implements OnInit {
+  tooltip: any = Constants.tooltip;
 
   favorites$: Observable<any> = Observable.empty();
   readonly profileUrl: string = '/' + Constants.urls.profile;

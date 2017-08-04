@@ -8,6 +8,7 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 // import { TagInputModule } from 'ngx-chips';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
+import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 
 import { PipeModule } from '../../pipe/pipe.module';
 
@@ -46,6 +47,7 @@ import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
     // TagInputModule,
     CalendarModule,
     CheckboxModule,
+    TooltipModule,
     SliderModule,
     PipeModule,
     PartialsPhotoSharingModule,

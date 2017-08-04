@@ -28,6 +28,8 @@ export class MyAccountComponent implements OnInit {
   pageTitle: string = 'Account';
   errorMessage: string = Constants.errorMessage.default;
 
+  tooltip: any = Constants.tooltip;
+
   formValue: any;
 
   form: FormGroup;

@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { BaseSocialModal } from './shared/modal/base-social-modal';
+import { Constants } from '../../../core/shared/config/constants';
 // import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
 // import { ApiBaseService } from '../../../shared/index';
 
@@ -15,6 +16,8 @@ declare var _: any;
 
 export class PostActivitiesComponent implements BaseSocialModal {
   @ViewChild('modal') modal: HdModalComponent;
+
+  tooltip: any = Constants.tooltip;
 
   shares: Array<any> = new Array<any>();
   item: any = undefined;

@@ -16,6 +16,8 @@ export class ZSocialShareProfileMemberComponent implements OnInit {
 
   friendStatus = Constants.friendStatus;
 
+  tooltip: any = Constants.tooltip;
+
   constructor(private socialService: SocialService) {
   }
 

@@ -11,6 +11,7 @@ import { ZChatEmojiService } from '../../../../core/shared/emoji/emoji.service';
 import { ChatService } from '../../services/chat.service';
 
 import { Message } from '../../models/message.model';
+import { Constants } from '../../../../core/shared/config/constants';
 
 
 declare var $: any;
@@ -23,6 +24,8 @@ declare var $: any;
 })
 
 export class MessageEditorComponent implements OnInit, OnDestroy {
+  tooltip:any = Constants.tooltip;
+
   emojiData: any = [];
 
   mode: string;
