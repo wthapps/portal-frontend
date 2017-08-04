@@ -57,14 +57,17 @@ export class ZContactEditComponent implements OnChanges {
   notes: AbstractControl;
 
   filteredLabelsMultiple: string[];
+  originalLabels: Object[];
 
   constructor(private fb: FormBuilder, private labelService: LabelService) {
     this.labelService.getAllLabels().then((res: any)=> {
+      this.originalLabels = res;
       this.filteredLabelsMultiple = _.map(res, 'name');
     });
     this.deleteObjects['emails'] =  [];
     this.deleteObjects['phones'] =  [];
     this.deleteObjects['addresses'] =  [];
+    this.deleteObjects['media'] =  [];
 
     this.createForm();
     console.log(this.form);
@@ -89,7 +92,7 @@ export class ZContactEditComponent implements OnChanges {
       });
 
       _.map(this.contact.media, (v: any)=> {
-        this.addItem('medias', v);
+        this.addItem('media', v);
       });
 
       this.avatarDefault = this.contact.profile_image;
@@ -106,7 +109,7 @@ export class ZContactEditComponent implements OnChanges {
       'phones': this.fb.array([this.initItem('phones')]),
       'emails': this.fb.array([this.initItem('emails')]),
       'addresses': this.fb.array([this.initItem('addresses')]),
-      'medias': this.fb.array([this.initItem('medias')]),
+      'media': this.fb.array([this.initItem('media')]),
       'name': [''],
       'company': [''],
       'labels': [''],
@@ -125,17 +128,17 @@ export class ZContactEditComponent implements OnChanges {
     const phones = <FormArray>this.form.controls['phones'];
     const emails = <FormArray>this.form.controls['emails'];
     const addresses = <FormArray>this.form.controls['addresses'];
-    const medias = <FormArray>this.form.controls['medias'];
+    const media = <FormArray>this.form.controls['media'];
 
     phones.controls.length = 0;
     emails.controls.length = 0;
     addresses.controls.length = 0;
-    medias.controls.length = 0;
+    media.controls.length = 0;
 
     phones.reset();
     emails.reset();
     addresses.reset();
-    medias.reset();
+    media.reset();
   }
 
   initItem(type: string, item?: any) {
@@ -207,8 +210,8 @@ export class ZContactEditComponent implements OnChanges {
         }
         break;
       }
-      case 'medias': {
-        let data: any = {id: '', category: '', value: ''};
+      case 'media': {
+        let data: any = {category: '', value: ''};
         if (item) {
           formGroup = {
             id: [data.id, Validators.compose([Validators.required])],
@@ -248,17 +251,23 @@ export class ZContactEditComponent implements OnChanges {
     control.removeAt(i);
   }
 
-  /*filterLabelMultiple(event: any) {
-    let query = event.query;
-    this.labelService.getAllLabels().then((res: any)=> {
-      this.filteredLabelsMultiple = this.labelService.filterLabel(query, res);
-    });
-  }*/
-
   onSubmit(values: any): void {
+    this.contact.name = values.name;
+    this.contact.company = values.company;
+    this.contact.job_title = values.job_title;
     this.contact.emails = _.concat(values.emails, this.deleteObjects['emails']);
     this.contact.phones = _.concat(values.phones, this.deleteObjects['phones']);
-    this.contact.labels = values.labels;
+    this.contact.media = _.concat(values.media, this.deleteObjects['media']);
+
+    if(values.labels && values.labels.length > 0) {
+      let labels: any = [];
+      _.forEach(values.labels, (label: any) => {
+        labels.push(_.filter(this.originalLabels, ['name', label.value])[0]);
+      });
+      this.contact.labels = labels;
+    }
+
+    this.contact.notes = values.notes;
 
     if (this.mode == 'create') {
       this.event.emit({action: 'contact:contact:create', payload: {item: this.contact}});
