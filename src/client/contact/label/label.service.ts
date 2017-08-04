@@ -35,6 +35,11 @@ export class LabelService extends BaseEntityService<Label> {
     return this.notifyLabelObservers();
   }
 
+  getAllLabelSyn() {
+    return this.labelsSubject.getValue();
+  }
+
+
   create(body: any): Observable<any> {
     return super.create(body)
       .mergeMap((res: any) => {

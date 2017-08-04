@@ -1,31 +1,50 @@
 <div class="media" *ngIf="!notification?.isHidden">
   <div class="media-left">
     <span class="avatar-xsm">
-      <img [src]="notification.actor.profile_image" alt="{{notification.actor.name}}">
+      <img [src]="notification?.actor.profile_image" alt="{{notification?.actor?.name}}">
     </span>
   </div>
   <div class="media-body">
     <p class="media-heading">
-      <a class="link-text bold" [routerLink]="['/profile', notification.actor.uuid]">
-        {{ notification.actor.name }}</a>
-      <span [innerHTML]="notification.text"></span>
+      <a class="link-text bold" [routerLink]="['/profile', notification?.actor.uuid]">
+        {{ notification?.actor?.name }}</a>
+      <span [innerHTML]="notification?.text"></span>
     </p>
-    <p *ngIf="notification.actions[0].name == 'view'">
-      <small (click)="doAction(notification.actions[0], notification.id)"
+    <div *ngIf="notification?.actions[0]">
+    <p *ngIf="notification?.actions[0]?.name == 'view'">
+      <small (click)="doAction(notification?.actions[0], notification?.id)"
              class="notifications-item-time text-fade can-click">
-        {{ notification.created_at | timeFormat }}
+        {{ notification?.created_at | timeFormat }}
       </small>
     </p>
-    <div *ngIf="notification.actions[0].name != 'view'" class="notifications-item-button">
-      <button *ngFor="let action of notification.actions"
+    <div *ngIf="notification?.actions[0]?.name != 'view'" class="notifications-item-button">
+      <button *ngFor="let action of notification?.actions"
               class="btn btn-sm mr5 text-capitalize" type="button"
-              [ngClass]="{'btn-wth-default': action.name == 'accept', 'btn-default': action.name == 'cancel'}"
-              (click)="doAction(action, notification.id)">
+              [ngClass]="{'btn-wth-default': action?.name == 'accept', 'btn-default': (action.name == 'cancel' || action.name == 'reject')}"
+              (click)="doAction(action, notification?.id)">
         <i class="fa"
-           [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': action.name == 'cancel'}"></i>
+           [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
         {{ action.name }}
       </button>
     </div>
+    </div>
+    <div *ngIf="notification?.response_actions[0]">
+      <p>
+        <small class="notifications-item-time text-fade can-click">
+          {{ notification?.created_at | timeFormat }}
+        </small>
+      </p>
+      <div class="notifications-item-button">
+        <div *ngFor="let action of notification?.response_actions"
+                class="mr5 text-capitalize"
+                [ngClass]="{'btn-wth-default': action?.name == 'accept', 'btn-default': (action.name == 'cancel' || action.name == 'reject')}">
+          <i class="fa"
+             [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
+          {{ action.name | titleCase}}ed
+        </div>
+      </div>
+    </div>
+
   </div>
   <div class="media-right">
     <div class="btn-group pull-right clearfix">
@@ -44,7 +63,7 @@
       <button class="btn btn-sm btn-default-inline-border" type="button"
               (click)="toggleReadStatus(notification)">
         <i class="fa"
-           [ngClass]="{'fa-circle': notification.is_read, 'fa-circle-o': !notification.is_read}"></i>
+           [ngClass]="{'fa-circle': notification?.is_read, 'fa-circle-o': !notification?.is_read}"></i>
       </button>
     </div>
 

@@ -23,6 +23,8 @@ export class ZContactEditComponent implements OnChanges {
 
   avatarDefault: string = Constants.img.avatar;
 
+  deleteObjects: any = {};
+
   phoneCategories: Array<any> = [
     {value: 'mobile', text: 'Mobile'},
     {value: 'home', text: 'Home'},
@@ -55,11 +57,17 @@ export class ZContactEditComponent implements OnChanges {
   notes: AbstractControl;
 
   filteredLabelsMultiple: string[];
+  originalLabels: Object[];
 
   constructor(private fb: FormBuilder, private labelService: LabelService) {
     this.labelService.getAllLabels().then((res: any)=> {
+      this.originalLabels = res;
       this.filteredLabelsMultiple = _.map(res, 'name');
     });
+    this.deleteObjects['emails'] =  [];
+    this.deleteObjects['phones'] =  [];
+    this.deleteObjects['addresses'] =  [];
+    this.deleteObjects['media'] =  [];
 
     this.createForm();
     console.log(this.form);
@@ -84,7 +92,7 @@ export class ZContactEditComponent implements OnChanges {
       });
 
       _.map(this.contact.media, (v: any)=> {
-        this.addItem('medias', v);
+        this.addItem('media', v);
       });
 
       this.avatarDefault = this.contact.profile_image;
@@ -101,7 +109,7 @@ export class ZContactEditComponent implements OnChanges {
       'phones': this.fb.array([this.initItem('phones')]),
       'emails': this.fb.array([this.initItem('emails')]),
       'addresses': this.fb.array([this.initItem('addresses')]),
-      'medias': this.fb.array([this.initItem('medias')]),
+      'media': this.fb.array([this.initItem('media')]),
       'name': ['', Validators.compose([Validators.required])],
       'company': [''],
       'labels': [''],
@@ -120,17 +128,17 @@ export class ZContactEditComponent implements OnChanges {
     const phones = <FormArray>this.form.controls['phones'];
     const emails = <FormArray>this.form.controls['emails'];
     const addresses = <FormArray>this.form.controls['addresses'];
-    const medias = <FormArray>this.form.controls['medias'];
+    const media = <FormArray>this.form.controls['media'];
 
     phones.controls.length = 0;
     emails.controls.length = 0;
     addresses.controls.length = 0;
-    medias.controls.length = 0;
+    media.controls.length = 0;
 
     phones.reset();
     emails.reset();
     addresses.reset();
-    medias.reset();
+    media.reset();
   }
 
   initItem(type: string, item?: any) {
@@ -139,25 +147,33 @@ export class ZContactEditComponent implements OnChanges {
       case 'phones': {
         let data: any = {category: '', value: ''};
         if (item) {
-          data = item;
+          formGroup = {
+            id: [item.id, Validators.compose([Validators.required])],
+            category: [item.category, Validators.compose([Validators.required])],
+            value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
+          };
+        } else {
+          formGroup = {
+            category: [data.category, Validators.compose([Validators.required])],
+            value: [data.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
+          };
         }
-
-        formGroup = {
-          category: [data.category, Validators.compose([Validators.required])],
-          value: [data.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
-        };
         break;
       }
       case 'emails': {
         let data: any = {category: '', value: ''};
         if (item) {
-          data = item;
+          formGroup = {
+            id: [item.id, Validators.compose([Validators.required])],
+            category: [item.category, Validators.compose([Validators.required])],
+            value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
+          };
+        } else {
+          formGroup = {
+            category: [data.category, Validators.compose([Validators.required])],
+            value: [data.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
+          };
         }
-
-        formGroup = {
-          category: [data.category, Validators.compose([Validators.required])],
-          value: [data.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
-        };
         break;
       }
       case 'addresses': {
@@ -171,30 +187,43 @@ export class ZContactEditComponent implements OnChanges {
           country: ''
         };
         if (item) {
-          data = item;
+          formGroup = {
+            id: [item.id, Validators.compose([Validators.required])],
+            category: [item.category],
+            address_line1: [item.address_line1],
+            address_line2: [item.address_line2],
+            city: [item.city],
+            province: [item.province],
+            postcode: [item.postcode],
+            country: [item.country],
+          };
+        } else {
+          formGroup = {
+            category: [data.category],
+            address_line1: [data.address_line1],
+            address_line2: [data.address_line2],
+            city: [data.city],
+            province: [data.province],
+            postcode: [data.postcode],
+            country: [data.country],
+          };
         }
-
-        formGroup = {
-          category: [data.category],
-          address_line1: [data.address_line1],
-          address_line2: [data.address_line2],
-          city: [data.city],
-          province: [data.province],
-          postcode: [data.postcode],
-          country: [data.country],
-        };
         break;
       }
-      case 'medias': {
+      case 'media': {
         let data: any = {category: '', value: ''};
         if (item) {
-          data = item;
+          formGroup = {
+            id: [data.id, Validators.compose([Validators.required])],
+            category: [data.category],
+            value: [data.value]
+          };
+        } else {
+          formGroup = {
+            category: [data.category],
+            value: [data.value]
+          };
         }
-
-        formGroup = {
-          category: [data.category],
-          value: [data.value]
-        };
         break;
       }
       default: {
@@ -215,29 +244,36 @@ export class ZContactEditComponent implements OnChanges {
 
   removeItem(type: string, i: number) {
     const control = <FormArray>this.form.controls[type];
+    if (this.contact[type][i]) {
+      this.contact[type][i]._destroy = true;
+      this.deleteObjects[type].push(this.contact[type][i]);
+    }
     control.removeAt(i);
   }
 
-  /*filterLabelMultiple(event: any) {
-    let query = event.query;
-    this.labelService.getAllLabels().then((res: any)=> {
-      this.filteredLabelsMultiple = this.labelService.filterLabel(query, res);
-    });
-  }*/
-
   onSubmit(values: any): void {
-    values.id = this.contact.id;
-    values.uuid = this.contact.uuid;
-    values.media = values.medias;
+    this.contact.name = values.name;
+    this.contact.company = values.company;
+    this.contact.job_title = values.job_title;
+    this.contact.emails = _.concat(values.emails, this.deleteObjects['emails']);
+    this.contact.phones = _.concat(values.phones, this.deleteObjects['phones']);
+    this.contact.media = _.concat(values.media, this.deleteObjects['media']);
 
-    console.log(values);
+    if(values.labels && values.labels.length > 0) {
+      let labels: any = [];
+      _.forEach(values.labels, (label: any) => {
+        labels.push(_.filter(this.originalLabels, ['name', label.value])[0]);
+      });
+      this.contact.labels = labels;
+    }
 
+    this.contact.notes = values.notes;
 
     if (this.mode == 'create') {
-      this.event.emit({action: 'contact:contact:create', payload: {item: values}});
+      this.event.emit({action: 'contact:contact:create', payload: {item: this.contact}});
     }
     if (this.mode == 'edit') {
-      this.event.emit({action: 'contact:contact:update', payload: {item: values}});
+      this.event.emit({action: 'contact:contact:update', payload: {item: this.contact}});
     }
   }
 }

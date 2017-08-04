@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/take';
@@ -15,7 +17,7 @@ declare let _: any;
 declare let Promise: any;
 declare let window: any;
 
-export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
+// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
 
 @Injectable()
 export class PhotoUploadService {
@@ -72,16 +74,14 @@ export class PhotoUploadService {
     });
   }
 
+  getPhoto(photo: any): Promise<any> {
+    return new Promise((resolve: any) => {
+        let reader: FileReader = new FileReader();
 
-  getPhoto(photo: any): Observable<any> {
-    return Observable.create((observer: any) => {
-      let reader: FileReader = new FileReader();
-
-      reader.onload = (data: any) => {
-        observer.next(data.target['result']);
-        observer.complete();
-      };
-      reader.readAsDataURL(photo);
+        reader.onload = (data: any) => {
+          resolve(data.target['result']);
+        };
+        reader.readAsDataURL(photo);
     });
   }
 

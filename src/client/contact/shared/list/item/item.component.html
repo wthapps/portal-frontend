@@ -32,6 +32,8 @@
 <z-contact-shared-actions-bar
   class="contact-listbox-action"
   [showNumber]="false"
+  [showSocial]="data | isContactInternal"
+  [showChat]="data | isContactInternal"
   [toggleFavourite]="data | contactHasLabel:'favourite'"
   [toggleBlacklist]="data | contactHasLabel:'blacklist'"
   (eventOut)="doActionsToolbar($event)">

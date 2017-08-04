@@ -73,4 +73,8 @@ export class ContactSearchFormComponent {
     this.serviceManager.getRouter().navigate([`/contacts/detail/${data.id}`]);
   }
 
+  showAllResults(event?: any) {
+    this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
+  }
+
 }

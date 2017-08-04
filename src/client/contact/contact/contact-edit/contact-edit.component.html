@@ -235,17 +235,17 @@
         <h3>Media</h3>
       </div>
       <div class="field-group-content">
-        <div formArrayName="medias">
-          <div *ngFor="let add_media of form.controls.medias.controls; let i=index" class="media mt0">
+        <div formArrayName="media">
+          <div *ngFor="let add_media of form.controls.media.controls; let i=index" class="media mt0">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
                 <div class="col-sm-3">
                   <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.medias.controls[i].controls.category.valid
-                  && form.controls.medias.controls[i].controls.category.touched),
-                  'has-success': (form.controls.medias.controls[i].controls.category.valid
-                  && form.controls.medias.controls[i].controls.category.touched
-                  && form.value.medias[i].category.length > 1)}">
+                  'has-error': (!form.controls.media.controls[i].controls.category.valid
+                  && form.controls.media.controls[i].controls.category.touched),
+                  'has-success': (form.controls.media.controls[i].controls.category.valid
+                  && form.controls.media.controls[i].controls.category.touched
+                  && form.value.media[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
                       <option value="">-- Select One --</option>
                       <option *ngFor="let et of mediaCategories" value="{{et.value}}">{{et.text}}</option>
@@ -254,16 +254,16 @@
                 </div>
                 <div class="col-sm-9">
                   <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.medias.controls[i].controls.value.valid
-                  && form.controls.medias.controls[i].controls.value.touched),
-                  'has-success': (form.controls.medias.controls[i].controls.value.valid
-                  && form.controls.medias.controls[i].controls.value.touched
-                  && form.value.medias[i].value.length > 1)}">
+                  'has-error': (!form.controls.media.controls[i].controls.value.valid
+                  && form.controls.media.controls[i].controls.value.touched),
+                  'has-success': (form.controls.media.controls[i].controls.value.valid
+                  && form.controls.media.controls[i].controls.value.touched
+                  && form.value.media[i].value.length > 1)}">
                     <input type="text" class="form-control" formControlName="value" placeholder="">
                     <div
-                      *ngIf="!form.controls.medias.controls[i].controls.value.valid && form.controls.medias.controls[i].controls.value.touched">
+                      *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.touched">
                     <span
-                      *ngIf="!form.controls.medias.controls[i].controls.value.valid && form.controls.medias.controls[i].controls.value.errors.mediaFormat"
+                      *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.errors.mediaFormat"
                       class="help-block text-danger">
                       Link is not valid
                     </span>
@@ -273,13 +273,13 @@
               </div>
             </div>
             <div class="media-right">
-              <button type="button" class="btn btn-default" (click)="removeItem('medias', i)">
+              <button type="button" class="btn btn-default" (click)="removeItem('media', i)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-default" (click)="addItem('medias')">
+        <button type="button" class="btn btn-default" (click)="addItem('media')">
           <i class="fa fa-plus"></i> Add more
         </button>
       </div>

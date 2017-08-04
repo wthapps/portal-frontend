@@ -25,6 +25,14 @@ export module _contact {
     });
   }
 
+  export function isInternal(data: any) {
+    if (_.isArray(data) && data.length > 0) {
+      return data[0].wthapps_user? true : false;
+    } else {
+      return data.wthapps_user? true : false;
+    }
+  }
+
   export function getSocialLink(uuid: string) {
     return `${Config.SUB_DOMAIN.SOCIAL}/profile/` + uuid;
   }

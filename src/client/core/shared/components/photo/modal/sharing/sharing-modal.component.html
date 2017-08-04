@@ -43,7 +43,7 @@
     </div>
   </modal-body>
   <modal-footer>
-    <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>
+    <p *ngIf="hasChanged" class="text-left text-danger">You have made changes that you need to save!</p>
     <button type="button" [ngClass]="{'text-disable': !hasChanged}"
             [disabled]="!hasChanged" (click)="save()"
             class="btn btn-primary-inline">Save
