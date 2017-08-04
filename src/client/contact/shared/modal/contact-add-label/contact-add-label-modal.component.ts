@@ -19,7 +19,7 @@ declare var _: any;
 
 export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
-  @Input() contact: any;
+  @Input() contacts: any;
 
   @ViewChild('modal') modal: ModalComponent;
   event: any;
@@ -45,21 +45,20 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   }
 
   submit() {
-    if (this.mode =='edit') {
-      this.contact = _.pick(this.contact, ['id', 'labels']);
-    }
-    this.contact.labels = this.getSelectedLabels();
+    _.forEach(this.contacts, (contact: any) => {
+      contact.labels = _.unionBy(_.concat(contact.labels, this.getSelectedLabels()), 'id');
+    })
     this.commonEventService.broadcast({
       channel: Constants.contactEvents.common,
       action: 'contact:contact:update',
-      payload: {selectedObjects: [this.contact]}}
+      payload: {selectedObjects: this.contacts}}
     );
     this.modal.close().then();
   }
 
   open(options?: any) {
     this.mode = options.mode || 'add';
-    this.contact = options.contact || null;
+    this.contacts = options.contacts || null;
     this.inputLabels = options.labels || [];
     this.selectedLabels = [];
     _.forEach(this.inputLabels, (label: any) => {

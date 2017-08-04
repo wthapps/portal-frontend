@@ -144,7 +144,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
           event.mode = 'edit';
         }
 
-        this.modal.open({mode: event.mode, labels: labels, contact: this.contactService.selectedObjects[0]});
+        this.modal.open({mode: event.mode, labels: labels, contacts: this.contactService.selectedObjects});
         break;
 
       // this will handle all cases as: favourite, add to label
@@ -162,7 +162,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   toggleLabel(name: string) {
     let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => { return label.name == name; });
-
     if (_contact.isContactsHasLabelName(this.contactService.selectedObjects, name)) {
       _contact.removeLabelContactsByName(this.contactService.selectedObjects, name);
     } else {

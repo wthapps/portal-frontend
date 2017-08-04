@@ -181,7 +181,7 @@ export class ZContactEditComponent implements OnChanges {
         let data: any = {
           category: '',
           address_line1: '',
-          address_line2: '',
+          po_box: '',
           city: '',
           province: '',
           postcode: '',
@@ -192,7 +192,7 @@ export class ZContactEditComponent implements OnChanges {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category],
             address_line1: [item.address_line1],
-            address_line2: [item.address_line2],
+            po_box: [item.po_box],
             city: [item.city],
             province: [item.province],
             postcode: [item.postcode],
@@ -202,7 +202,7 @@ export class ZContactEditComponent implements OnChanges {
           formGroup = {
             category: [data.category],
             address_line1: [data.address_line1],
-            address_line2: [data.address_line2],
+            po_box: [data.po_box],
             city: [data.city],
             province: [data.province],
             postcode: [data.postcode],
@@ -215,9 +215,9 @@ export class ZContactEditComponent implements OnChanges {
         let data: any = {category: '', value: ''};
         if (item) {
           formGroup = {
-            id: [data.id, Validators.compose([Validators.required])],
-            category: [data.category],
-            value: [data.value, Validators.compose([CustomValidator.urlFormat])],
+            id: [item.id, Validators.compose([Validators.required])],
+            category: [item.category],
+            value: [item.value, Validators.compose([CustomValidator.urlFormat])]
           };
         } else {
           formGroup = {
@@ -259,11 +259,16 @@ export class ZContactEditComponent implements OnChanges {
     this.contact.emails = _.concat(values.emails, this.deleteObjects['emails']);
     this.contact.phones = _.concat(values.phones, this.deleteObjects['phones']);
     this.contact.media = _.concat(values.media, this.deleteObjects['media']);
+    this.contact.addresses = _.concat(values.addresses, this.deleteObjects['addresses']);
 
     if (values.labels && values.labels.length > 0) {
       let labels: any = [];
       _.forEach(values.labels, (label: any) => {
-        labels.push(_.filter(this.originalLabels, ['name', label.value])[0]);
+        if (_.isObject(label)) {
+          labels.push(_.filter(this.originalLabels, ['name', label.value])[0]);
+        } else {
+          labels.push(_.filter(this.originalLabels, ['name', label])[0]);
+        }
       });
       this.contact.labels = labels;
     }

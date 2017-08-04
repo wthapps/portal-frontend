@@ -21,7 +21,7 @@ export module _contact {
   export function addLabelContacts(contacts: Object[], label: any) {
     _.forEach(contacts, (contact: any) => {
       contact.labels.push(label);
-      _.unionBy(contact.labels, 'id');
+      contact.labels = _.unionBy(contact.labels, 'id');
     });
   }
 
