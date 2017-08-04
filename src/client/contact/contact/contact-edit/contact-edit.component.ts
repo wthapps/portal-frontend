@@ -7,6 +7,7 @@ import { Contact } from '../contact.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { LabelService } from '../../label/label.service';
 import { Label } from '../../label/label.model';
+import { TagInput } from '../../../core/shared/models/tag-input.model';
 declare var _: any;
 
 @Component({
@@ -56,29 +57,29 @@ export class ZContactEditComponent implements OnChanges {
   job_title: AbstractControl;
   notes: AbstractControl;
 
-  filteredLabelsMultiple: string[];
+  filteredLabelsMultiple: any = [];
   originalLabels: Object[];
 
   constructor(private fb: FormBuilder, private labelService: LabelService) {
     this.labelService.getAllLabels().then((res: any)=> {
       this.originalLabels = res;
-      this.filteredLabelsMultiple = _.map(res, 'name');
+      _.map(res, (v: any)=> {
+        this.filteredLabelsMultiple.push({value: v.name, display: v.name});
+      });
     });
-    this.deleteObjects['emails'] =  [];
-    this.deleteObjects['phones'] =  [];
-    this.deleteObjects['addresses'] =  [];
-    this.deleteObjects['media'] =  [];
+    this.deleteObjects['emails'] = [];
+    this.deleteObjects['phones'] = [];
+    this.deleteObjects['addresses'] = [];
+    this.deleteObjects['media'] = [];
 
     this.createForm();
-    console.log(this.form);
-
-
   }
 
   ngOnChanges() {
-    this.removeAll();
 
     if (this.contact && this.mode == 'edit') {
+      this.removeAll();
+
       _.map(this.contact.phones, (v: any)=> {
         this.addItem('phones', v);
       });
@@ -150,12 +151,12 @@ export class ZContactEditComponent implements OnChanges {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category, Validators.compose([Validators.required])],
-            value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
+            value: [item.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         } else {
           formGroup = {
             category: [data.category, Validators.compose([Validators.required])],
-            value: [data.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
+            value: [data.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         }
         break;
@@ -166,12 +167,12 @@ export class ZContactEditComponent implements OnChanges {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category, Validators.compose([Validators.required])],
-            value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
+            value: [item.value, Validators.compose([CustomValidator.emailFormat])]
           };
         } else {
           formGroup = {
             category: [data.category, Validators.compose([Validators.required])],
-            value: [data.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
+            value: [data.value, Validators.compose([CustomValidator.emailFormat])]
           };
         }
         break;
@@ -216,12 +217,12 @@ export class ZContactEditComponent implements OnChanges {
           formGroup = {
             id: [data.id, Validators.compose([Validators.required])],
             category: [data.category],
-            value: [data.value]
+            value: [data.value, Validators.compose([CustomValidator.urlFormat])],
           };
         } else {
           formGroup = {
             category: [data.category],
-            value: [data.value]
+            value: [data.value, Validators.compose([CustomValidator.urlFormat])],
           };
         }
         break;
@@ -259,7 +260,7 @@ export class ZContactEditComponent implements OnChanges {
     this.contact.phones = _.concat(values.phones, this.deleteObjects['phones']);
     this.contact.media = _.concat(values.media, this.deleteObjects['media']);
 
-    if(values.labels && values.labels.length > 0) {
+    if (values.labels && values.labels.length > 0) {
       let labels: any = [];
       _.forEach(values.labels, (label: any) => {
         labels.push(_.filter(this.originalLabels, ['name', label.value])[0]);

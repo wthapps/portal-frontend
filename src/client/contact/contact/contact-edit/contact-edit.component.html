@@ -26,7 +26,7 @@
               </div>
               <div class="col-xs-12 mb10">
                 <tag-input formControlName="labels" [onlyFromAutocomplete]="true" placeholder="Choose your label"
-                           secondaryPlaceholder="add label">
+                           secondaryPlaceholder="add label" [identifyBy]="'name'" [displayBy]="'name'">
                   <tag-input-dropdown [autocompleteItems]="filteredLabelsMultiple">
                   </tag-input-dropdown>
                 </tag-input>
@@ -74,11 +74,6 @@
                         *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.errors.phoneFormat"
                         class="help-block text-danger">
                         Phone is not valid
-                      </span>
-                      <span
-                        *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.errors.required"
-                        class="help-block">
-                        Phone is required
                       </span>
                     </div>
                   </div>
@@ -131,11 +126,6 @@
                     <div
                       *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.touched">
 
-                      <span
-                        *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.errors.required"
-                        class="help-block">
-                        Email is required
-                      </span>
                       <span
                         *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.errors.emailFormat && !form.controls.emails.controls[i].controls.value.errors.required"
                         class="help-block text-danger">
@@ -263,7 +253,7 @@
                     <div
                       *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.touched">
                     <span
-                      *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.errors.mediaFormat"
+                      *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.errors.urlFormat"
                       class="help-block text-danger">
                       Link is not valid
                     </span>
@@ -295,8 +285,8 @@
     </div>
 
     <div class="form-group pb50">
-      <button *ngIf="mode == 'edit'" [disabled]="!form.valid || form.pristine" type="button" (click)="onSubmit(form.value)" class="btn btn-wth-default btn-min mr10">Save</button>
-      <button *ngIf="mode == 'create'" [disabled]="!form.valid || form.pristine" type="button" (click)="onSubmit(form.value)" class="btn btn-wth-default btn-min mr10">Create</button>
+      <button *ngIf="mode == 'edit'" [disabled]="!name.valid && name.errors.required" type="button" (click)="onSubmit(form.value)" class="btn btn-wth-default btn-min mr10">Save</button>
+      <button *ngIf="mode == 'create'" [disabled]="!name.valid && name.errors.required" type="button" (click)="onSubmit(form.value)" class="btn btn-wth-default btn-min mr10">Create</button>
       <button type="reset" class="btn btn-default btn-min" [routerLink]="['/contacts/detail', contact.id]">Cancel</button>
     </div>
   </form>
