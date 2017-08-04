@@ -103,5 +103,5 @@
 <!--<me-uploader #zoneUpload (outEvent)="onAction($event)"></me-uploader>-->
 
 
-<sharing-modal #zoneSharing [selectedItems]="selectedPhotos"></sharing-modal>
+<sharing-modal #zoneSharing [selectedItems]="selectedPhotos" (event)="onAction($event)"></sharing-modal>
 <tagging-modal #zoneTagging></tagging-modal>

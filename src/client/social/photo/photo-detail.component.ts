@@ -15,10 +15,14 @@ import { LoadingService } from '../../core/shared/components/loading/loading.ser
 
 export class PhotoDetailComponent extends BasePhotoDetailComponent {
 
-  constructor(protected route: ActivatedRoute, protected router: Router, protected photoService: PhotoService,
-              protected confirmationService: ConfirmationService,
-              protected loadingService: LoadingService) {
-    super(route, router, photoService, confirmationService, loadingService);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected confirmationService: ConfirmationService,
+    protected loadingService: LoadingService,
+    protected photoService: PhotoService,
+  ) {
+    super(route, router, confirmationService, loadingService, photoService);
   }
 
 }

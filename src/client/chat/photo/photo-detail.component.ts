@@ -20,12 +20,12 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
-    protected photoService: PhotoService,
     protected confirmationService: ConfirmationService,
     protected loadingService: LoadingService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    protected photoService: PhotoService
   ) {
-    super(route, router, photoService, confirmationService, loadingService);
+    super(route, router, confirmationService, loadingService, photoService);
   }
 
   ngOnInit() {

@@ -149,18 +149,18 @@
       <dd>
         <ul class="list-unstyled">
           <li>
-            <img src="assets/images/zone/img-group.png" alt="{{ photo.owner.name }}"
-                 title="{{ photo.owner.name }}"> {{ photo.owner.name }}
+            <img [src]="photo.owner.profile_image" alt="{{ photo.owner?.name }}"
+                 title="{{ photo.owner?.name }}"> {{ photo.owner?.name }}
           </li>
         </ul>
       </dd>
 
       <dt>Shared with</dt>
       <dd>
-        <ul class="list-unstyled">
-          <li *ngFor="let contact of photo?.json_shares?.contacts">
-            <img src="assets/images/zone/img-group.png" title="{{ contact.name }}">
-            {{ contact.name }}
+        <ul class="list-unstyled" *ngIf="photo.json_shares.length > 0">
+          <li *ngFor="let recipient of photo?.json_shares">
+            <!--<img [src]="recipient?.profile_image" title="{{ recipient?.name }}">-->
+            <!--{{ recipient.name }}-->
           </li>
         </ul>
       </dd>

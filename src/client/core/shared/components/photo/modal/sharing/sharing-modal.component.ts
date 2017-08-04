@@ -140,6 +140,7 @@ export class SharingModalComponent implements OnInit, OnDestroy {
           this.sharedContacts = response.data;
           this.resetData();
           this.updateSelectedItems({contacts: this.sharedContacts});
+          this.event.emit({action: 'media:photo:update_recipients', payload: {data: this.sharedContacts}})
         },
         (error: any) => {
           console.log('error', error);

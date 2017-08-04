@@ -4,6 +4,7 @@ import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../services/photo.service';
 import { ConfirmationService } from 'primeng/primeng';
 import { LoadingService } from '../../loading/loading.service';
+import { ZMediaSharingService } from '../modal/sharing/sharing.service';
 
 declare let _: any;
 declare let saveAs: any;
@@ -25,6 +26,8 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   loading: boolean;
   mode: number;
   showDetail: boolean;
+  recipients: Array<any> = [];
+
   private routeSub: any;
 
   @HostListener('document:keydown', ['$event'])
@@ -35,9 +38,11 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
 
   constructor(protected route: ActivatedRoute,
               protected router: Router,
-              protected photoService: PhotoService,
               protected confirmationService: ConfirmationService,
-              protected loadingService: LoadingService) {
+              protected loadingService: LoadingService,
+              protected photoService: PhotoService,
+              protected sharingService?: ZMediaSharingService
+  ) {
     this.router = router;
     this.route = route;
     this.photoService = photoService;
@@ -46,7 +51,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSub = this.route.params
       .map((params: any) => {
-        this.id = params['id'];
+        this.id = +params['id'];
         this.prevUrl = params['prevUrl'];
         this.ids = params['ids'].split(',').map(Number) || [];
         this.module = params['module'] || this.module;
@@ -136,8 +141,9 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           }
         });
 
-
         break;
+
+
     }
   }
 

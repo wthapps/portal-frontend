@@ -41,7 +41,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   @Input() ids: Array<number>;
   @Input() mode: number;
   @Input() showDetail: boolean;
-
+  @Input() recipients: Array<any> = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
@@ -214,6 +214,9 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
 
   onShowInfo() {
     this.showDetail = !this.showDetail;
+    if(this.recipients.length == 0 && this.showDetail == true) {
+      this.event.emit({action: 'media:photo:load_sharing_info'});
+    }
   }
 
   ////////////////////////////////////////////////////CROPPER/////////////////////////////////////
