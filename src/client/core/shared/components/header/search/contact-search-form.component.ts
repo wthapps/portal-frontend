@@ -37,11 +37,13 @@ export class ContactSearchFormComponent {
     // e.preventDefault();
 
     this.show = false;
-    this.serviceManager.getCommonEventService().broadcast({
-      channel:  Constants.contactEvents.common,
-      action: 'contact:contact:search',
-      payload: {search_value: this.search}
-    });
+    this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
+
+    // this.serviceManager.getCommonEventService().broadcast({
+    //   channel:  Constants.contactEvents.common,
+    //   action: 'contact:contact:search',
+    //   payload: {search_value: this.search}
+    // });
   }
 
   onEscape(e: any) {
@@ -74,7 +76,8 @@ export class ContactSearchFormComponent {
   }
 
   showAllResults(event?: any) {
-    this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
+    // this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
+    this.onEnter(event);
   }
 
 }
