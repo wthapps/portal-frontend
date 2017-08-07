@@ -92,8 +92,6 @@ export class ZContactService extends BaseEntityService<any> {
   addMoreContacts(data: any[]) {
     this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
     this.notifyContactsObservers();
-
-    console.log('inside addMoreContacts: ', data, this.contactsSubject.getValue());
   }
 
   delete(contact: any): Observable<any> {
@@ -174,8 +172,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   updateSingle(body: any): Observable<any> {
     return super.update(body)
-      .map(
-        (res: any) => {
+      .map((res: any) => {
           this.updateCallback(res.data);
           return res;
         }
@@ -196,12 +193,10 @@ export class ZContactService extends BaseEntityService<any> {
 
   create(body: any): Observable<any> {
     return super.create(body)
-      .map(
-        (res: any) => {
+      .map((res: any) => {
           this.createCallback(res.data);
           return res;
-        }
-      );
+        });
   }
 
   addContact(data: any): Promise<any> {
@@ -244,12 +239,11 @@ export class ZContactService extends BaseEntityService<any> {
     this.resetPageNumber();
     let search_value = _.get(options, 'search_value', '').trim().toLowerCase();
     this.filterOption = {'search': search_value};
-    // let contacts = this.searchContact(search_value);
 
     this.notifyContactsObservers();
   }
 
-  notifyContactsObservers(order: boolean = true): void {
+  notifyContactsObservers(): void {
     let contacts: any[] = [];
     this.labelService.updateLabelCount(this.contacts);
 
@@ -261,13 +255,27 @@ export class ZContactService extends BaseEntityService<any> {
       contacts = this.contacts;
     }
 
-    let orderedContacts: any[];
-    if(order)
-      orderedContacts = _.orderBy(contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
-    else
-      orderedContacts = contacts;
+    let orderedContacts: any[] = _.orderBy(contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
 
     this.contactsSubject.next(orderedContacts.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
+  }
+
+  mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
+    let ids: any[] = _.map(contacts, 'id');
+    return this.apiBaseService.post(`${this.url}/merge_duplicate`,{ids: ids}).toPromise()
+      .then((res: any) => {
+      let delete_ids: any[] = res.delete_ids;
+      let updated_contacts: any[] = res.data;
+      _.remove(this.contacts, (c: any) => delete_ids.indexOf(c.id) > -1);
+      _.remove(this.selectedObjects, (c: any) => delete_ids.indexOf(c.id) > -1);
+
+      for(let i=0; i< updated_contacts.length; i++) {
+        let idx: any = _.findIndex(this.contacts, [ 'id', updated_contacts[i].id]);
+        _.set(this.contacts, idx, updated_contacts[i]);
+      }
+      console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
+      this.notifyContactsObservers();
+      });
   }
 
   private searchContact(name: string): any[] {
@@ -287,15 +295,6 @@ export class ZContactService extends BaseEntityService<any> {
     });
 
     return contacts;
-  }
-
-  private deleteContact(contact: any): Promise<any> {
-    return super.delete(`${contact.id}`)
-      .toPromise()
-      .then((res: any) => {
-        _.remove(this.contacts, (ct: any) => {ct.id === res.data.id ;});
-        this.notifyContactsObservers();
-      });
   }
 
   private deleteSelectedContacts(contacts: any[] = this.selectedObjects): Promise<any> {
