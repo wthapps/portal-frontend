@@ -120,10 +120,10 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         let label = this.getLabel(event.payload.selectedItem);
         this.labelService.delete(label.id).subscribe(() => {});
         break;
-      case 'contact:contact:search':
-        console.log('inside contact:contact:search: ', event);
-        this.contactService.search(event.payload);
-        break;
+      // case 'contact:contact:search':
+      //   console.log('inside contact:contact:search: ', event);
+      //   this.contactService.search(event.payload);
+      //   break;
     }
   }
 

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { GoogleApiService } from '../services/google-api.service';
 import { ModalDockComponent } from '../../../core/shared/components/modal/dock.component';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { ContactAddLabelModalComponent } from '../modal/contact-add-label/contact-add-label-modal.component';
 
 @Component({
   moduleId: module.id,
@@ -13,6 +14,7 @@ import { LoadingService } from '../../../core/shared/components/loading/loading.
 
 export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   @ViewChild('modalDock') modalDock: ModalDockComponent;
+  @ViewChild('addLabel') addLabel: ContactAddLabelModalComponent;
 
   IMPORT_STATUS: any = {
     importing: 1,
@@ -92,6 +94,9 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   addToLabel(event?: any) {
     console.log('AddToLabel: ', this.importedContacts);
     this.modalDock.close();
+
+    // this.addLabel.contacts = this.importedContacts;
+    this.addLabel.open({contacts: this.importedContacts});
   }
 
   stop(event?: any) {
