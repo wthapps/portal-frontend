@@ -89,26 +89,16 @@ export class AlbumCreateModalComponent implements OnInit {
     }
     let album:any = {name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName};
     // Only subscribe to this observable once
-    // this.albumService.create(album)
-    //   .take(1)
-    //   .subscribe((res: any) => {
-    //     this.album = new Album(res.data);
-    //     this.doneFormModal.emit(this.album);
-    //
-    //     let retPhotos = _.get(res, 'data.photo_number', 0);
-    //     // if(retPhotos > 0) {
-    //       // let albumPhotos = new AlbumPhoto({album: this.album, photos: retPhotos});
-    //       // this.doneFormModal.emit(albumPhotos);
-    //     // }
-    //     console.log('A new album is created: ', this.album);
-    //
-    //     // this.onAction('showNewAlbum', this.album);
-    //     this.viewAlbumDetail(this.album.id );
-    //
-    //     this.modal.close().then((res: any) => console.log('Album create modal should close now'));
-    //
-    //
-    //   });
+    this.api.post(`media/albums`, album)
+      .subscribe((res: any) => {
+        this.album = res.data;
+        this.doneFormModal.emit(this.album);
+
+        let retPhotos = _.get(res, 'data.photo_number', 0);
+        this.viewAlbumDetail(this.album.id );
+
+        this.modal.close().then((res: any) => console.log('Album create modal should close now'));
+      });
   }
 
   public viewAlbumDetail(albumId: number) {
