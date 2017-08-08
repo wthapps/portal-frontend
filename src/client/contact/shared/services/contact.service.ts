@@ -90,7 +90,8 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   addMoreContacts(data: any[]) {
-    this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
+    // this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
+    this.contacts.push(...data);
     this.notifyContactsObservers();
   }
 
@@ -275,6 +276,7 @@ export class ZContactService extends BaseEntityService<any> {
       }
       console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
       this.notifyContactsObservers();
+      this.labelService.updateLabelCount(this.contacts);
       });
   }
 

@@ -54,6 +54,10 @@ export class ZContactSettingsComponent implements OnInit {
     });
   }
 
+  cancel() {
+
+  }
+
   open() {
 
   }
