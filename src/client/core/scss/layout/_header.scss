@@ -251,6 +251,10 @@ Header
     border-top: 1px solid $line;
     border-bottom: 1px solid $line;
 
+    .media {
+      overflow: visible;
+    }
+
     .dropdown-menu {
       padding: 0;
       width: auto;

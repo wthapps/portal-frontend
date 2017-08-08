@@ -35,13 +35,12 @@
         </small>
       </p>
       <div class="notifications-item-button">
-        <button *ngFor="let action of notification?.response_actions"
-             class="btn btn-xs mr5 text-capitalize"
-             [ngClass]="{'btn-outline-primary': action?.name == 'accept', 'btn-outline-default': (action.name == 'cancel' || action.name == 'reject')}">
+        <span *ngFor="let action of notification?.response_actions"
+              class="btn-text btn-xs mr5 text-capitalize">
           <i class="fa"
              [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
-          {{ action.name | titleCase}}ed
-        </button>
+          {{ action.name }}ed
+        </span>
       </div>
     </div>
 
