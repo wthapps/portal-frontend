@@ -12,7 +12,7 @@ var fullDomain = `${subdomain}.${domain}`;
 const ProdConfig: EnvConfig = {
   API:`${protocol}://api-${fullDomain}`,
   ENV: 'PROD',
-  DOMAIN: `${fullDomain}`,
+  DOMAIN: `${domain}`,
   SUB_DOMAIN: {
     APP: `${protocol}://${fullDomain}`,
     MYACCOUNT: `${protocol}://my-${fullDomain}`,
