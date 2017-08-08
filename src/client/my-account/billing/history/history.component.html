@@ -18,7 +18,7 @@
       <td>{{ t.amount }} {{ t.currency_iso_code }}</td>
       <td>{{ t.id }}</td>
       <td>
-        <a class="btn btn-sm btn-wth-default pull-right" (click)="viewReceipt(t.id, $event)">Receipt</a>
+        <a class="btn btn-sm btn-outline-primary pull-right" (click)="viewReceipt(t.id, $event)">Receipt</a>
       </td>
     </tr>
     <tr *ngIf="transactions.length == 0">

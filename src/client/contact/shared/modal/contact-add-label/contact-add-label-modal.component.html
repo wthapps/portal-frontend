@@ -10,8 +10,8 @@
           <div class="form-group">
             <!--<label for="tag"></label>-->
             <!--selectedLabels-->
-            <tag-input  [maxItems]='100'
-                        [placeholder]="'Select a label'"
+            <tag-input [maxItems]='100'
+                       [placeholder]="'Select a label'"
                        [(ngModel)]="selectedLabels"
                        (onRemove)="removeTag($event)"
                        (onAdd)="addTag($event)"
@@ -20,9 +20,9 @@
               </tag-input-dropdown>
             </tag-input>
             <!--<div *ngIf="!name.valid && name.touched">-->
-              <!--<span *ngIf="!name.valid && name.errors.required" class="help-block">-->
-                <!--Name is required-->
-              <!--</span>-->
+            <!--<span *ngIf="!name.valid && name.errors.required" class="help-block">-->
+            <!--Name is required-->
+            <!--</span>-->
             <!--</div>-->
           </div>
         </div>
@@ -31,8 +31,9 @@
     </modal-body>
 
     <modal-footer>
-      <button type="button" (click)="submit()" [disabled]="!validData()"  class="btn btn-primary-inline">Done</button>
-      <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-outline-primary btn-min" (click)="submit()" [disabled]="!validData()">Done
+      </button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </form>
 

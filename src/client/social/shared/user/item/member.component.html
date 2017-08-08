@@ -19,16 +19,16 @@
   </div>
   <div class="media-right">
     <div class="pull-right no-wrap">
-      <button class="btn btn-default" type="button" (click)="addFriend(data)"
+      <button class="btn btn-outline-default" type="button" (click)="addFriend(data)"
               *ngIf="data.friend_status == friendStatus.stranger">
         Add Friend
       </button>
-      <button class="btn btn-default" type="button" *ngIf="data.friend_status == friendStatus.pending">
+      <button class="btn btn-outline-default" type="button" *ngIf="data.friend_status == friendStatus.pending">
         <i class="fa fa-check"></i> Friend Request Sent
       </button>
 
       <div class="btn-group" *ngIf="data.friend_status == friendStatus.accepted">
-        <button (click)="getFavourite(data, 'friend')" class="btn btn-default dropdown-toggle"
+        <button (click)="getFavourite(data, 'friend')" class="btn btn-outline-default dropdown-toggle"
                 type="button" data-toggle="dropdown">
           <i class="fa fa-check"></i> Friend <span class="caret"></span>
         </button>
@@ -42,7 +42,7 @@
 
 
       <div class="btn-group" *ngIf="data.friend_status == friendStatus.accepted">
-        <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+        <button class="btn btn-default dropdown-toggle" type="button"
                 data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
@@ -61,7 +61,7 @@
       </div>
 
       <div class="btn-group" *ngIf="data.friend_status !== friendStatus.accepted">
-        <button class="btn btn-default-inline-border dropdown-toggle" type="button"
+        <button class="btn btn-default dropdown-toggle" type="button"
                 data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>

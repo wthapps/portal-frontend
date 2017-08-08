@@ -23,7 +23,7 @@
         <div *ngIf="notification?.actions[0]?.name != 'view'" class="notifications-item-button">
           <button *ngFor="let action of notification?.actions"
                   class="btn btn-sm mr5 text-capitalize" type="button"
-                  [ngClass]="{'btn-wth-default': action?.name == 'accept', 'btn-default': (action.name == 'cancel' || action.name == 'reject')}"
+                  [ngClass]="{'btn-outline-primary': action?.name == 'accept', 'btn-default': (action.name == 'cancel' || action.name == 'reject')}"
                   (click)="doAction(action, notification?.id)">
             <i class="fa"
                [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
@@ -38,19 +38,19 @@
           </small>
         </p>
         <div class="notifications-item-button">
-          <div *ngFor="let action of notification?.response_actions"
-               class="mr5 text-capitalize"
-               [ngClass]="{'btn-wth-default': action?.name == 'accept', 'btn-default': (action.name == 'cancel' || action.name == 'reject')}">
+          <button *ngFor="let action of notification?.response_actions"
+                  class="btn btn-sm mr5 text-capitalize"
+                  [ngClass]="{'btn-outline-primary': action?.name == 'accept', 'btn-outline-default': (action.name == 'cancel' || action.name == 'reject')}">
             <i class="fa"
                [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
             {{ action.name | titleCase}}ed
-          </div>
+          </button>
         </div>
       </div>
     </div>
     <div class="media-right">
       <div class="btn-group pull-right clearfix">
-        <button type="button" class="btn btn-sm btn-default-inline-border dropdown-toggle"
+        <button type="button" class="btn btn-sm btn-default dropdown-toggle"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-ellipsis-v"></i>
         </button>
@@ -63,7 +63,7 @@
         </ul>
       </div>
       <div class="pull-right">
-        <button class="btn btn-sm btn-default-inline-border" type="button"
+        <button class="btn btn-sm btn-default" type="button"
                 (click)="toggleReadStatus(notification)"
                 pTooltip="{{ notification.is_read ? tooltip.markAsUnread : tooltip.markAsRead }}" tooltipPosition="top">
           <i class="fa"
@@ -99,8 +99,8 @@
     </div>
   </modal-body>
   <modal-footer>
-    <button type="button" (click)="save()" class="btn btn-wth-default" data-dismiss="modal">Done</button>
-    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <button type="button" (click)="save()" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
   </modal-footer>
 </modal>
 

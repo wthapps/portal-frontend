@@ -14,6 +14,7 @@ import { UserService } from '../../../../../core/shared/services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../../../../../core/shared/models/user.model';
 import { ZChatEmojiService } from '../../../../../core/shared/emoji/emoji.service';
+import { Constants } from '../../../../../core/shared/config/constants';
 export enum CommentEditorMode {
   Add,
   Edit,
@@ -53,6 +54,8 @@ export class CommentItemEditorComponent implements OnInit {
   contentCtrl: AbstractControl;
   photosCtrl: AbstractControl;
 
+  tooltip: any = Constants.tooltip;
+
   constructor(private fb: FormBuilder,
               public userService: UserService) {
     this.user$ = this.userService.profile$;
@@ -89,13 +92,13 @@ export class CommentItemEditorComponent implements OnInit {
     // Create, Update, Reply
     console.debug('commentEditorForm - ng-prestine: ', this.commentEditorForm);
 
-    if (e.keyCode == 13 ) {
+    if (e.keyCode == 13) {
 
       // this.comment.content = this.commentEditorForm.value.content;
       // this.comment.photo = this.commentEditorForm.value.photo;
       // this.post(this.comment);
 
-      if(this.checkValidForm())
+      if (this.checkValidForm())
         this.post(this.commentEditorForm.value);
       else
         this.cancel();
@@ -109,9 +112,10 @@ export class CommentItemEditorComponent implements OnInit {
 
     this.hasUpdatedContent = true;
   }
+
   /*
-  * Now we just supports ONE photo
-  * */
+   * Now we just supports ONE photo
+   * */
   editComment(photo: any) {
     this.comment.photo = photo;
   }
@@ -128,10 +132,10 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   updateAttributes(options: any) {
-    if('hasUploadingPhoto' in options) {
+    if ('hasUploadingPhoto' in options) {
       this.hasUploadingPhoto = options.hasUploadingPhoto;
     }
-    if('files' in options) {
+    if ('files' in options) {
       this.files = options.files;
     }
   }
@@ -199,7 +203,7 @@ export class CommentItemEditorComponent implements OnInit {
       _.set(this.originComment, 'isCreatingNewReply', false);
       // this.eventEmitter.emit(new CancelAddCommentEvent(this.comment));
 
-    } else if(this.mode == CommentEditorMode.Edit) {
+    } else if (this.mode == CommentEditorMode.Edit) {
       // update current comment/reply
       _.set(this.originComment, 'isEditting', false);
       this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
@@ -221,7 +225,7 @@ export class CommentItemEditorComponent implements OnInit {
       _.set(this.originComment, 'isCreatingNewReply', false);
       event = new CommentCreateEvent(this.comment);
 
-    } else if(this.mode == CommentEditorMode.Edit) {
+    } else if (this.mode == CommentEditorMode.Edit) {
 
       // update current comment/reply
       this.comment.content = this.commentEditorForm.value.content;

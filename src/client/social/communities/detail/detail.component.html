@@ -69,7 +69,7 @@
               <!--community menu-->
               <ul class="pull-right list-unstyled clearfix" *ngIf="isMember">
                 <li class=" dropdown">
-                  <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                  <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)"
                           pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
                     <i class="fa fa-ellipsis-v"></i>
@@ -163,7 +163,7 @@
       <div class="panel panel-default" *ngIf="isAboutTab">
         <div class="panel-heading">
           <div class="pull-right">
-            <a href="javascript:;" (click)="onEdit()" class="btn btn-default-inline pull-right" *ngIf="isAdmin">
+            <a href="javascript:;" (click)="onEdit()" class="btn btn-outline-default pull-right" *ngIf="isAdmin">
               <i class="fa fa-pencil"></i>
             </a>
           </div>
@@ -197,7 +197,7 @@
               <div class="dropdown pull-right">
                 <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
                 <span class="text-fade member-role">{{(item?.role === 1) ? 'Admin' :'Member'}}</span>
-                <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown"
+                <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="true" >
                   <i class="fa fa-ellipsis-v"></i>
                 </button>

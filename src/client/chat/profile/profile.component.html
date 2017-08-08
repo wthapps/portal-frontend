@@ -4,14 +4,14 @@
       <h3 class="bold m0">{{ profile.name }}</h3>
     </div>
     <div class="media-right no-wrap">
-      <button *ngIf="actions.send_message" class="btn btn-default-inline" type="button" (click)="onSelect(profile)">
+      <button *ngIf="actions.send_message" class="btn btn-outline-default" type="button" (click)="onSelect(profile)">
         <i class="fa fa-comment"></i>
       </button>
-      <button *ngIf="actions.favorite" type="button" class="btn btn-default-inline" (click)="onFavorite()">
+      <button *ngIf="actions.favorite" type="button" class="btn btn-outline-default" (click)="onFavorite()">
         <!--<i class="fa fa-star-o"></i>-->
         <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
-      <button *ngIf="actions.add_to_contact" type="button" class="btn btn-wth-default" (click)="onRequest(profile)"
+      <button *ngIf="actions.add_to_contact" type="button" class="btn btn-outline-primary" (click)="onRequest(profile)"
               pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>

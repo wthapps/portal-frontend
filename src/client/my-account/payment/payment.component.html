@@ -146,11 +146,11 @@
 
             <li class="list-group-item text-center">
               <button [style.display]="paymentMethod=='paypal' ? 'none' : 'inline-block'" id="button-pay"
-                      class="btn btn-wth-default ml10" type="submit" [disabled]="!paymentForm.valid">
+                      class="btn btn-outline-primary ml10" type="submit" [disabled]="!paymentForm.valid">
                 {{ button_text }}
               </button>
               <button [style.display]="paymentMethod=='paypal' ? 'inline-block' : 'none'" id="paypal-button"
-                      class="btn btn-wth-default ml10" type="submit">
+                      class="btn btn-outline-primary ml10" type="submit">
                 {{ button_text }}
               </button>
               <!--<img id="paypal-button" (click)="paypal()" [style.display]="paymentMethod=='paypal' ? 'inline-block' : 'none'" class="btn" src="https://s3-ap-southeast-1.amazonaws.com/env-staging/portal-frontend/common-images/payments/paypal_vault.png"/>-->

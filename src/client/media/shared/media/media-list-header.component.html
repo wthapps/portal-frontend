@@ -1,11 +1,11 @@
 <div *ngIf="viewOption == 'grid'">
   <div class="sortbar-wrap clearfix">
-    <button class="btn btn-default-inline pull-right ml10" type="button" (click)="toggleSort(); doSort();">
+    <button class="btn btn-outline-default pull-right ml10" type="button" (click)="toggleSort(); doSort();">
       <i class="fa" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
     </button>
 
     <div class="dropdown pull-right">
-      <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown">
+      <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown">
         {{ sortName }}
       </button>
       <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -50,11 +50,11 @@
 
 <div *ngIf="viewOption == 'timeline'">
   <div class="sortbar-wrap clearfix">
-    <button class="btn btn-default-inline pull-right ml10" type="button" (click)="toggleSort(); doSort();">
+    <button class="btn btn-outline-default pull-right ml10" type="button" (click)="toggleSort(); doSort();">
       <i class="fa can-click" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
     </button>
     <div class="dropdown pull-right">
-      <button aria-expanded="false" aria-haspopup="true" class="btn btn-default-inline dropdown-toggle"
+      <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-default dropdown-toggle"
               data-toggle="dropdown" type="button">
         {{ sortName }}
       </button>

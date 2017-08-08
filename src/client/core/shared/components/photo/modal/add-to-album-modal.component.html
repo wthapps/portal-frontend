@@ -3,7 +3,7 @@
     <h4 class="modal-title"> Add to album</h4>
   </modal-header>
   <modal-body>
-    <a class="btn btn-wth-default" data-toggle="dropdown" href="#" (click)="onCreateNewAlbum()">
+    <a class="btn btn-outline-primary" data-toggle="dropdown" href="#" (click)="onCreateNewAlbum()">
       <i class="fa fa-plus"></i> Create New Album
     </a>
     <hr>
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="text-center p20">
-      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">
+      <button class="btn btn-outline-primary" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">
         Load more
       </button>
     </div>

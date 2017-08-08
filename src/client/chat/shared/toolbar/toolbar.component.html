@@ -10,17 +10,17 @@
       </z-chat-share-user>
     </div>
     <div class="media-right">
-      <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default-inline"
+      <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-outline-default"
               (click)="onAddMember()" pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
-      <button type="button" class="btn btn-default-inline" (click)="onFavorite()"
+      <button type="button" class="btn btn-outline-default" (click)="onFavorite()"
               pTooltip="{{ (item.value.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
               tooltipPosition="top">
         <i class="fa" [ngClass]="item.value.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
       <div class="btn-group">
-        <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown"
+        <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
                 pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
@@ -65,7 +65,7 @@
   <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
       <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
-              class="btn btn-sm btn-default-inline dropdown-toggle" type="button"
+              class="btn btn-sm btn-outline-default dropdown-toggle" type="button"
               data-toggle="dropdown">
         <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1"
               class="fa fa-circle online"></span>

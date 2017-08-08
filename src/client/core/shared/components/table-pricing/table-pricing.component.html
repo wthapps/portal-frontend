@@ -21,7 +21,7 @@
 
               <ng-template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></ng-template>
               <ng-template [ngIf]="userService.profile.plan_id!=pp.id">
-                <button (click)="getStarted(pp)" class="btn btn-wth-default btn-min">Get Started</button>
+                <button (click)="getStarted(pp)" class="btn btn-outline-primary btn-min">Get Started</button>
               </ng-template>
 
             </ng-template>
@@ -50,7 +50,7 @@
 
             <ng-template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></ng-template>
             <ng-template [ngIf]="userService.profile.plan_id!=pp.id">
-              <button (click)="getStarted(pp)" class="btn btn-wth-default btn-min">Get Started</button>
+              <button (click)="getStarted(pp)" class="btn btn-outline-primary btn-min">Get Started</button>
             </ng-template>
 
           </ng-template>

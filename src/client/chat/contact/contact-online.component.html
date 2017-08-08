@@ -12,10 +12,10 @@
             <z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>
           </div>
           <div class="media-right no-wrap">
-            <button class="btn btn-default-inline" type="button" (click)="chatContactActions.onSelect(contact)">
+            <button class="btn btn-outline-default" type="button" (click)="chatContactActions.onSelect(contact)">
               <i class="fa fa-comment"></i>
             </button>
-            <button type="button" class="btn btn-default-inline" (click)="chatContactActions.onFavorite()">
+            <button type="button" class="btn btn-outline-default" (click)="chatContactActions.onFavorite()">
               <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
             </button>
             <z-chat-contact-actions #chatContactActions [contact]="contact"></z-chat-contact-actions>

@@ -11,22 +11,22 @@
       <span [innerHTML]="notification?.text"></span>
     </p>
     <div *ngIf="notification?.actions[0]">
-    <p *ngIf="notification?.actions[0]?.name == 'view'">
-      <small (click)="doAction(notification?.actions[0], notification?.id)"
-             class="notifications-item-time text-fade can-click">
-        {{ notification?.created_at | timeFormat }}
-      </small>
-    </p>
-    <div *ngIf="notification?.actions[0]?.name != 'view'" class="notifications-item-button">
-      <button *ngFor="let action of notification?.actions"
-              class="btn btn-sm mr5 text-capitalize" type="button"
-              [ngClass]="{'btn-wth-default': action?.name == 'accept', 'btn-default': (action.name == 'cancel' || action.name == 'reject')}"
-              (click)="doAction(action, notification?.id)">
-        <i class="fa"
-           [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
-        {{ action.name }}
-      </button>
-    </div>
+      <p *ngIf="notification?.actions[0]?.name == 'view'">
+        <small (click)="doAction(notification?.actions[0], notification?.id)"
+               class="notifications-item-time text-fade can-click">
+          {{ notification?.created_at | timeFormat }}
+        </small>
+      </p>
+      <div *ngIf="notification?.actions[0]?.name != 'view'" class="notifications-item-button">
+        <button *ngFor="let action of notification?.actions"
+                class="btn btn-xs mr5 text-capitalize" type="button"
+                [ngClass]="{'btn-outline-primary': action?.name == 'accept', 'btn-outline-default': (action.name == 'cancel' || action.name == 'reject')}"
+                (click)="doAction(action, notification?.id)">
+          <i class="fa"
+             [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
+          {{ action.name }}
+        </button>
+      </div>
     </div>
     <div *ngIf="notification?.response_actions[0]">
       <p>
@@ -35,20 +35,20 @@
         </small>
       </p>
       <div class="notifications-item-button">
-        <div *ngFor="let action of notification?.response_actions"
-                class="mr5 text-capitalize"
-                [ngClass]="{'btn-wth-default': action?.name == 'accept', 'btn-default': (action.name == 'cancel' || action.name == 'reject')}">
+        <button *ngFor="let action of notification?.response_actions"
+             class="btn btn-xs mr5 text-capitalize"
+             [ngClass]="{'btn-outline-primary': action?.name == 'accept', 'btn-outline-default': (action.name == 'cancel' || action.name == 'reject')}">
           <i class="fa"
              [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
           {{ action.name | titleCase}}ed
-        </div>
+        </button>
       </div>
     </div>
 
   </div>
   <div class="media-right">
     <div class="btn-group pull-right clearfix">
-      <button type="button" class="btn btn-sm btn-default-inline-border dropdown-toggle"
+      <button type="button" class="btn btn-xs btn-default dropdown-toggle"
               aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-ellipsis-v"></i>
       </button>
@@ -60,7 +60,7 @@
 
     </div>
     <div class="pull-right">
-      <button class="btn btn-sm btn-default-inline-border" type="button"
+      <button class="btn btn-sm btn-default" type="button"
               (click)="toggleReadStatus(notification)">
         <i class="fa"
            [ngClass]="{'fa-circle': notification?.is_read, 'fa-circle-o': !notification?.is_read}"></i>

@@ -12,6 +12,11 @@
   </main>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
-  <p-confirmDialog header="Confirmation" width="670"></p-confirmDialog>
+  <p-confirmDialog header="Confirmation" width="670" #cd>
+    <p-footer>
+      <button class="btn btn-outline-primary btn-min" type="button" (click)="cd.accept()">Done</button>
+      <button class="btn btn-outline-default btn-min" type="button" (click)="cd.reject()">Cancel</button>
+    </p-footer>
+  </p-confirmDialog>
   <post-photo-select #photoSelectModal22></post-photo-select>
 </div>

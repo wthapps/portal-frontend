@@ -1,12 +1,13 @@
 <div *ngIf="!item.disable_comment" class="z-social-comment">
   <!--Add new comment-->
-  <comment-item-editor (eventEmitter)="onCallBack($event)" [parent]="item" [mode]="commentEditorMode.Add"></comment-item-editor>
+  <comment-item-editor (eventEmitter)="onCallBack($event)" [parent]="item"
+                       [mode]="commentEditorMode.Add"></comment-item-editor>
 
   <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">-->
-    <!--{{item.comments?.length}} of {{item.total_comments}} Comment-->
+  <!--{{item.comments?.length}} of {{item.total_comments}} Comment-->
   <!--</div>-->
   <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{item.comments?.length}} of {{item.total_comments}}-->
-    <!--Comments-->
+  <!--Comments-->
   <!--</div>-->
   <input type="checkbox" class="read-more-state" attr.id="post-{{item.uuid}}"/>
   <ul class="z-social-comment-list media-list read-more-wrap">
@@ -20,18 +21,20 @@
       <!--Edit comment-->
 
       <ng-template [ngIf]="comment?.isEditting">
-       <comment-item-editor style="display: block"
+        <comment-item-editor style="display: block"
                              (eventEmitter)="onCallBack($event)"
                              [parent]="item"
                              [originComment]="comment"
-                             [mode]="commentEditorMode.Edit" ></comment-item-editor>
+                             [mode]="commentEditorMode.Edit"></comment-item-editor>
       </ng-template>
 
       <div *ngIf="!comment?.isEditting">
         <div class="media-left">
           <a [routerLink]="['/profile/', comment.owner.uuid]">
             <span class="avatar-xs">
-              <img [src]="(comment.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : comment.owner.profile_image) " alt="">
+              <img
+                [src]="(comment.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : comment.owner.profile_image) "
+                alt="">
             </span>
 
           </a>
@@ -42,33 +45,36 @@
           </h4>
           <span [innerHtml]="comment.content | wthEmojis |linkify | safeHtml"></span>
           <div *ngIf="comment.links && comment.links.length > 0">
-            <div *ngIf="comment.links[0].image && comment.links[0].title" class="message-item-content-main" >
+            <div *ngIf="comment.links[0].image && comment.links[0].title" class="message-item-content-main">
               <display-link [data]="comment.links[0]"></display-link>
             </div>
           </div>
 
           <div class="z-social-carousel">
             <ul class="{{item?.displayCss}}">
-              <li *ngIf="comment.photo" >
-                <figure (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">
+              <li *ngIf="comment.photo">
+                <figure
+                  (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">
                   <img class="img-full" *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
                 </figure>
               </li>
             </ul>
           </div>
           <!--<a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">-->
-            <!--<img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">-->
+          <!--<img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">-->
           <!--</a>-->
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
-            <a data-toggle="dropdown">
+            <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{ tooltip.edit }}"
+                    tooltipPosition="top">
               <i class="fa fa-pencil"></i>
-            </a>
+            </button>
             <ul class="dropdown-menu">
               <li><a href="javascript:;"
                      (click)="onActions(actions.onEditComment, {data: comment, commentType: 'comment'})">Edit</a></li>
 
               <li><a href="javascript:;"
-                     (click)="onActions(actions.onDeleteComment, {data: comment, commentType: 'comment'})">Delete</a></li>
+                     (click)="onActions(actions.onDeleteComment, {data: comment, commentType: 'comment'})">Delete</a>
+              </li>
             </ul>
           </div>
           <div class="media-body-reply">
@@ -87,7 +93,8 @@
                    (click)="onActions(actions.openLikeDislike, comment.dislikes, 'dislike')">{{comment.dislikes.length}}</a>
                 <a *ngIf="comment.dislikes.length==0" href="javascript:;">{{comment.dislikes.length}}</a>
               </li>
-              <li><a href="javascript:;" (click)="onActions(actions.onCreateComment, {parent: comment, parentType: 'SocialNetwork::Comment'})"
+              <li><a href="javascript:;"
+                     (click)="onActions(actions.onCreateComment, {parent: comment, parentType: 'SocialNetwork::Comment'})"
                      [innerHTML]="totalRepliesInWords(comment?.comments)"> </a></li>
             </ul>
           </div>
@@ -95,23 +102,23 @@
       </div>
 
 
-
-
       <div class="media" *ngFor="let reply of comment.comments; let j = index">
         <!--Edit reply-->
         <ng-template [ngIf]="reply?.isEditting">
-        <comment-item-editor style="display: block"
-                             (eventEmitter)="onCallBack($event)"
-                             [parent]="comment"
-                             [parentType]="'SocialNetwork::Comment'"
-                             [originComment]="reply"
-                             [mode]="commentEditorMode.Edit"></comment-item-editor>
+          <comment-item-editor style="display: block"
+                               (eventEmitter)="onCallBack($event)"
+                               [parent]="comment"
+                               [parentType]="'SocialNetwork::Comment'"
+                               [originComment]="reply"
+                               [mode]="commentEditorMode.Edit"></comment-item-editor>
         </ng-template>
         <div *ngIf="!reply?.isEditting">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
               <span class="avatar-xs">
-                <img [src]="(reply.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : reply.owner.profile_image)" alt="">
+                <img
+                  [src]="(reply.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : reply.owner.profile_image)"
+                  alt="">
               </span>
             </a>
           </div>
@@ -119,18 +126,22 @@
             <h4 class="media-heading"><a [routerLink]="['/profile', reply.owner.uuid]">{{reply.owner.name}}</a>
               <span class="media-heading-time">{{reply.created_at | timeFormat}}</span>
               <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
-                <a data-toggle="dropdown">
+                <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{ tooltip.edit }}"
+                        tooltipPosition="top">
                   <i class="fa fa-pencil"></i>
-                </a>
+                </button>
                 <ul class="dropdown-menu">
-                  <li><a href="javascript:;" (click)="onActions(actions.onEditComment, {data: reply, commentType: 'comment'})">Edit</a></li>
-                  <li><a href="javascript:;" (click)="onActions(actions.onDeleteReply, {data: reply, commentType: 'comment'})">Delete</a></li>
+                  <li><a href="javascript:;"
+                         (click)="onActions(actions.onEditComment, {data: reply, commentType: 'comment'})">Edit</a></li>
+                  <li><a href="javascript:;"
+                         (click)="onActions(actions.onDeleteReply, {data: reply, commentType: 'comment'})">Delete</a>
+                  </li>
                 </ul>
               </div>
             </h4>
             <span [innerHtml]="reply.content | linkify | safeHtml"></span>
             <div *ngIf="reply.links && reply.links.length > 0">
-              <div *ngIf="reply.links[0].image && reply.links[0].title" class="message-item-content-main" >
+              <div *ngIf="reply.links[0].image && reply.links[0].title" class="message-item-content-main">
                 <display-link [data]="reply.links[0]"></display-link>
               </div>
             </div>
@@ -155,18 +166,18 @@
                   <a *ngIf="reply.dislikes.length==0" href="javascript:;">{{reply.dislikes.length}}</a>
                 </li>
                 <!--<li><a href="javascript:;" (click)="onActions(actions.onReply, comment)"-->
-                       <!--[innerHtml]="totalRepliesInWords(comment.replies)"></a></li>-->
+                <!--[innerHtml]="totalRepliesInWords(comment.replies)"></a></li>-->
               </ul>
             </div>
           </div>
         </div>
       </div>
       <ng-template [ngIf]="comment?.isCreatingNewReply">
-      <comment-item-editor style="display: block;"
-                           (eventEmitter)="onCallBack($event)"
-                           [parent]="comment"
-                           [parentType]="'SocialNetwork::Comment'"
-                           [mode]="commentEditorMode.Add"></comment-item-editor>
+        <comment-item-editor style="display: block;"
+                             (eventEmitter)="onCallBack($event)"
+                             [parent]="comment"
+                             [parentType]="'SocialNetwork::Comment'"
+                             [mode]="commentEditorMode.Add"></comment-item-editor>
       </ng-template>
     </li>
   </ul>

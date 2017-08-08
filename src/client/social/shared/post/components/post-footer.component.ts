@@ -61,6 +61,8 @@ export class PostFooterComponent implements OnChanges {
   user$: Observable<any>;
   readonly commentLimit: number = Constants.soCommentLimit;
 
+  tooltip: any = Constants.tooltip;
+
   constructor(private apiBaseService: ApiBaseService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
@@ -77,7 +79,7 @@ export class PostFooterComponent implements OnChanges {
       this.showInfo = true;
     }
     this.totalComment = this.item.comment_count;
-    if(this.totalComment === 0 || this.totalComment <= this.item.comments.length)
+    if (this.totalComment === 0 || this.totalComment <= this.item.comments.length)
       this.loadingDone = true;
   }
 
@@ -120,7 +122,7 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.onShowPhotoDetail:
         // this.router.navigate(['/photos', this.item.uuid, {index: data}]);
 
-        this.router.navigate(['/comments',  data, 'photos', type, {ids: [type]}]);
+        this.router.navigate(['/comments', data, 'photos', type, {ids: [type]}]);
         break;
     }
   }
@@ -146,7 +148,7 @@ export class PostFooterComponent implements OnChanges {
   }
 
   notAllCommentsLoaded() {
-    return ( this.totalComment > 0  && !this.loadingDone);
+    return ( this.totalComment > 0 && !this.loadingDone);
     // return ( this.totalComment > 0  && !this.loadingDone) || ( this.item.comments.length < this.item.total_comments);
   }
 
@@ -160,24 +162,24 @@ export class PostFooterComponent implements OnChanges {
     //   return;
     // }
 
-    let body = { 'post_uuid' : this.item.uuid, 'page_index' : this.commentPageIndex, 'limit' : this.commentLimit };
+    let body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
     this.postService.loadComments(body)
       .subscribe((result: any) => {
           console.log('Get more comments successfully');
-          if ( this.commentPageIndex == 0 ) {
+          if (this.commentPageIndex == 0) {
             // this.item.comments.length = 0; // Clear comments data in the first loading
             this.item.comments = _.map(result.data.comments, this.mapComment);
           } else {
             let cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
             this.item = _.clone(cloneItem); // clone this item to notify parent components
           }
-          if(result.loading_done)
+          if (result.loading_done)
             this.loadingDone = result.loading_done;
 
           this.commentPageIndex += 1;
 
-        //  Update comments for (parent) post component
-        this.eventEmitter.emit(new ViewMoreCommentsEvent(this.item));
+          //  Update comments for (parent) post component
+          this.eventEmitter.emit(new ViewMoreCommentsEvent(this.item));
 
         },
         (error: any) => {

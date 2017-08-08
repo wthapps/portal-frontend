@@ -1,7 +1,7 @@
 <modal #modal cssClass="modal-social modal-long"
-          (onDismiss)="cancel($event)" [animation]="false">
-  <modal-header >
-    <h4 class="modal-title text-left"><i class="{{ titleIcon }}"></i>  {{ title }} </h4>
+       (onDismiss)="cancel($event)" [animation]="false">
+  <modal-header>
+    <h4 class="modal-title text-left"><i class="{{ titleIcon }}"></i> {{ title }} </h4>
   </modal-header>
   <modal-body>
     <hd-list #list
@@ -18,11 +18,13 @@
     </hd-list>
   </modal-body>
   <modal-footer>
-    <button type="button" class="btn btn-wth-default btn-min"
+    <button type="button" class="btn btn-outline-primary btn-min"
             [disabled]="selectedItems.length<=0"
             (click)="selectItems($event)">Done
     </button>
-    <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (onDismiss)="cancel($event)">Cancel</button>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (onDismiss)="cancel($event)">
+      Cancel
+    </button>
   </modal-footer>
 </modal>
 

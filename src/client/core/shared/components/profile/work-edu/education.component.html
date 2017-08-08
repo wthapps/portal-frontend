@@ -47,9 +47,12 @@
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group">
-                    <div class="pull-right text-fade"><span>{{form.value.educations[i].description.length}}</span>/150 characters</div>
+                    <div class="pull-right text-fade"><span>{{form.value.educations[i].description.length}}</span>/150
+                      characters
+                    </div>
                     <label>Description</label>
-                    <textarea formControlName="description" maxlength="150" rows="3" class="form-control no-resize" placeholder=""></textarea>
+                    <textarea formControlName="description" maxlength="150" rows="3" class="form-control no-resize"
+                              placeholder=""></textarea>
                   </div>
                 </div>
               </div>
@@ -69,8 +72,10 @@
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onCustomSubmit(form.value)">Done</button>
-      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onCustomSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
     </modal-footer>
   </modal>
 </form>

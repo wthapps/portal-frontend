@@ -363,8 +363,10 @@
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!first_name.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
-      <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
+      <button [disabled]="!first_name.valid" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="onHideModal()">Cancel</button>
     </modal-footer>
   </modal>
 </form>

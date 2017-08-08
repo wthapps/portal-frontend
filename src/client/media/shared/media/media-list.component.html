@@ -25,7 +25,7 @@
         <h3>There is no album!</h3>
         <h4>Try to create an album.</h4>
         <p>
-          <button class="btn btn-wth-default"
+          <button class="btn btn-outline-primary"
                   (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal' }})">
             <i class="fa fa-plus-circle"></i> Create album
           </button>
@@ -37,7 +37,7 @@
         <h3>There is no photo!</h3>
         <h4>There is no photo. Try to upload a file.</h4>
         <p>
-          <button class="btn btn-wth-default" (click)="onAction({action: 'openUploadModal'})">
+          <button class="btn btn-outline-primary" (click)="onAction({action: 'openUploadModal'})">
             <i class="fa fa-cloud-upload"></i> Upload File
           </button>
         </p>
@@ -73,11 +73,11 @@
         <me-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"
                  (events)="onAction($event)"></me-item>
         <div class="text-center p20" *ngIf="viewOption == 'grid' && MIX_SCREEN.indexOf(currentPath) > -1">
-          <a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-primary-inline"
+          <a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"
              *ngIf="group.key == 'album'">
             View all
           </a>
-          <a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-primary-inline"
+          <a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"
              *ngIf="group.key == 'photo'">
             View all
           </a>

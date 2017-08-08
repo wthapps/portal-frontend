@@ -15,11 +15,11 @@ $gray:                   lighten($gray-base, 33.5%) !default; // #555
 $gray-light:             lighten($gray-base, 46.7%) !default; // #777
 $gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
 
-$brand-primary:         #6EC8F5; //darken(#428bca, 6.5%) !default; // #337ab7
-$brand-success:         #6DD9AC !default;
+$brand-primary:         #F54A59; //darken(#428bca, 6.5%) !default; // #337ab7//
+$brand-success:         #5cb85c !default;
 $brand-info:            #6EC8F5; //#5bc0de !default;
 $brand-warning:         #f0ad4e !default;
-$brand-danger:          #ED1C24; //#d9534f !default;
+$brand-danger:          #d9534f !default;
 
 
 //== Scaffolding
@@ -29,10 +29,10 @@ $brand-danger:          #ED1C24; //#d9534f !default;
 //** Background color for `<body>`.
 $body-bg:               #fff !default;
 //** Global text color on `<body>`.
-$text-color:            #4A4A4A; //$gray-dark !default;
+$text-color:            #4A4A4A; //$gray-dark !default;//
 
 //** Global textual link color.
-$link-color:            #2996CC; //$brand-primary !default;
+$link-color:            #2996CC; //$brand-primary !default;//
 //** Link hover color set via `darken()` function.
 $link-hover-color:      darken($link-color, 15%) !default;
 //** Link hover decoration.
@@ -67,7 +67,7 @@ $line-height-computed:    floor(($font-size-base * $line-height-base)) !default;
 
 //** By default, this inherits from the `<body>`.
 $headings-font-family:    inherit !default;
-$headings-font-weight:    700; //500 !default;
+$headings-font-weight:    500 !default;
 $headings-line-height:    1.1 !default;
 $headings-color:          inherit !default;
 
@@ -98,7 +98,7 @@ $padding-base-horizontal:   12px !default;
 $padding-large-vertical:    10px !default;
 $padding-large-horizontal:  16px !default;
 
-$padding-small-vertical:    3px; //5px !default;
+$padding-small-vertical:    5px !default;
 $padding-small-horizontal:  10px !default;
 
 $padding-xs-vertical:       1px !default;
@@ -108,7 +108,7 @@ $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Ch
 $line-height-small:         1.5 !default;
 
 $border-radius-base:        4px !default;
-$border-radius-large:       4px; //6px !default;
+$border-radius-large:       6px !default;
 $border-radius-small:       3px !default;
 
 //** Global color for active items (e.g., navs or dropdowns).
@@ -116,7 +116,7 @@ $component-active-color:    #fff !default;
 //** Global background color for active items (e.g., navs or dropdowns).
 $component-active-bg:       $brand-primary !default;
 
-//** Width of the `border` for generating carets that indicator dropdowns.
+//** Width of the `border` for generating carets that indicate dropdowns.
 $caret-width-base:          4px !default;
 //** Carets increase slightly in size for larger components.
 $caret-width-large:         5px !default;
@@ -149,7 +149,7 @@ $table-border-color:            #ddd !default;
 
 $btn-font-weight:                normal !default;
 
-$btn-default-color:              #333 !default;
+$btn-default-color:              $text-color; //#333 !default;//
 $btn-default-bg:                 #fff !default;
 $btn-default-border:             #ccc !default;
 
@@ -218,7 +218,7 @@ $input-height-large:             (ceil($font-size-large * $line-height-large) + 
 $input-height-small:             (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2) !default;
 
 //** `.form-group` margin
-$form-group-margin-bottom:       20px; //15px !default;
+$form-group-margin-bottom:       15px !default;
 
 $legend-color:                   $gray-dark !default;
 $legend-border-color:            #e5e5e5 !default;
@@ -501,7 +501,7 @@ $jumbotron-heading-font-size:    ceil(($font-size-base * 4.5)) !default;
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-$state-success-text:             #5cb85c; //#3c763d !default;
+$state-success-text:             #5cb85c; //#3c763d !default;//
 $state-success-bg:               #dff0d8 !default;
 $state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%) !default;
 
@@ -509,11 +509,11 @@ $state-info-text:                #31708f !default;
 $state-info-bg:                  #d9edf7 !default;
 $state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
 
-$state-warning-text:             #f0ad4e; //#8a6d3b !default;
+$state-warning-text:             #f0ad4e; //#8a6d3b !default;//
 $state-warning-bg:               #fcf8e3 !default;
 $state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
 
-$state-danger-text:              #d9534f; //#a94442 !default;
+$state-danger-text:              #d9534f; //#a94442 !default;//
 $state-danger-bg:                #f2dede !default;
 $state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
 

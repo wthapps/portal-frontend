@@ -1,7 +1,7 @@
 <modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'" [animation]="false">
   <modal-header cssClass="modal-social-head" [show-close]="true">
     <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-      <!--<span aria-hidden="true">&times;</span>-->
+    <!--<span aria-hidden="true">&times;</span>-->
     <!--</button>-->
     <h4 class="modal-title">All {{type}}s</h4>
   </modal-header>
@@ -20,7 +20,9 @@
 
   </modal-body>
   <modal-footer>
-    <button type="button" class="btn btn-wth-default btn-min">Done</button>
-    <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-outline-primary btn-min">Done</button>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">
+      Cancel
+    </button>
   </modal-footer>
 </modal>

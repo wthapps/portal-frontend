@@ -11,14 +11,14 @@
     <!--TODO encapsulate this component -> hd-dynamic-action-->
     <ul *ngIf="mode == 0" class="action navbar-right">
       <li *ngFor="let menu of menus" [ngClass]="{'dropdown': menu?.dropdown}">
-        <a href="javascript:;" (click)="doAction({action: menu?.action, params: menu?.params})" data-toggle="dropdown">
+        <a href="javascript:;" (click)="doAction({action: menu?.action, params: menu?.params})" data-toggle="dropdown"
+           pTooltip="{{ menu.toolTip }}" tooltipPosition="left">
           <i *ngIf="menu?.action=='favourite'" class="fa" [ngClass]="photo.favorite ? 'fa-star': 'fa-star-o'"></i>
           <i *ngIf="menu?.action!='favourite'" [ngClass]="menu.iconClass"></i>
         </a>
         <ul *ngIf="menu?.parent" class="dropdown-menu dropdown-menu-lg">
           <li *ngFor="let subMenu of menu.menus">
-            <a href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})"
-               pTooltip="{{ subMenu.toolTip }}" tooltipPosition="left">
+            <a href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})">
               <i [ngClass]="subMenu.iconClass"></i> {{ subMenu.text }}
             </a>
           </li>

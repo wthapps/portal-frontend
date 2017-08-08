@@ -312,6 +312,7 @@ export let Constants = {
     add: 'Add',
     addLabel: 'Add label',
     addPeople: 'Add people',
+    addPhoto: 'Add photo',
     addTag: 'Add Tag',
     addToAlbum: 'Add to album',
     addToBlacklist: 'Add to blacklist',

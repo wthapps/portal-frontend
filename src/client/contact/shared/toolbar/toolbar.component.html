@@ -1,13 +1,13 @@
 <div class="page-body-control-nav">
   <ul class="page-body-control-menu" *ngIf="pageTitle==''">
     <li *ngIf="hasBack">
-      <button type="button" class="btn btn-default-inline" [routerLink]="['/contacts']"
+      <button type="button" class="btn btn-outline-default" [routerLink]="['/contacts']"
               pTooltip="{{tooltip.back}}" tooltipPosition="top">
         <i class="fa fa-arrow-left"></i>
       </button>
     </li>
     <li>
-      <button type="button" class="btn btn-wth-default" [routerLink]="['/contacts', 'new']"><i class="fa fa-plus"></i> New Contact</button>
+      <button type="button" class="btn btn-outline-primary" [routerLink]="['/contacts', 'new']"><i class="fa fa-plus"></i> New Contact</button>
     </li>
     <li>
       <button type="button" class="btn btn-default" (click)="openImportContactModal()"><i class="fa fa-download"></i> Import</button>

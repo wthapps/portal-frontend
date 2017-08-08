@@ -10,8 +10,12 @@
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Share your ideas" (click)="postAddModal.open()">
           <span class="z-social-media-inputpost-icon">
-          <i (click)="postAddModal.open({addingPhotos: true})" class="fa fa-camera"></i>
-        </span>
+            <button class="btn btn-default" (click)="postAddModal.open({addingPhotos: true})"
+                    pTooltip="{{ tooltip.addPhoto }}"
+                    tooltipPosition="top">
+              <i class="fa fa-camera"></i>
+            </button>
+          </span>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
       <!-- - 8 days left-->
     </p>
     <p>
-      <a [routerLink]="['/account/plans']" class="btn btn-wth-default btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
+      <a [routerLink]="['/account/plans']" class="btn btn-outline-primary btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
     </p>
   </div>
   <div *ngIf="!userService.profile.plan.is_trial">
@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="form-group">
-      <button [disabled]="!form.valid || form.pristine" type="submit" class="btn btn-wth-default btn-min mr20">Update</button>
+      <button [disabled]="!form.valid || form.pristine" type="submit" class="btn btn-outline-primary btn-min mr20">Update</button>
       <a [routerLink]="['/account/recovery/forgottenpassword']">I forgot my password</a>
     </div>
   </form>

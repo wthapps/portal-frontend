@@ -11,12 +11,14 @@
 
       <div class="z-social-media-inputpost">
         <span class="z-social-media-inputpost-icon">
-          <!--<i class="fa fa-camera" (click)="onOpenPhotoSelect()"></i>-->
-          <button class="btn btn-default-inline" (click)="onOpenPhotoSelect()">
+          <button class="btn btn-default" (click)="onOpenPhotoSelect()" pTooltip="{{ tooltip.addPhoto }}"
+                  tooltipPosition="top">
             <i class="fa fa-camera"></i>
           </button>
           <div class="btn-group dropup">
-            <button type="button" class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    pTooltip="{{ tooltip.emoticons }}"
+                    tooltipPosition="top">
               <i class="fa fa-smile-o"></i>
             </button>
             <ul class="dropdown-menu wth-emoji-dropdown content-overflow p5">
@@ -40,10 +42,12 @@
 
       <div class="clearfix text-right comment-editor-button-region" *ngIf="hasUpdatedContent">
         <button class="btn btn-sm btn-default" (click)="cancel()"
-           href="javascript:;">Cancel</button>
+                href="javascript:;">Cancel
+        </button>
 
         <button class="btn btn-sm btn-default" href="javascript:;" (click)="post(commentEditorForm.value)"
-           [disabled]="!checkValidForm()">Post</button>
+                [disabled]="!checkValidForm()">Post
+        </button>
       </div>
 
     </form>

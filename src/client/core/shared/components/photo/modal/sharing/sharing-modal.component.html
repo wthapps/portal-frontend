@@ -46,8 +46,8 @@
     <p *ngIf="hasChanged" class="text-left text-danger">You have made changes that you need to save!</p>
     <button type="button" [ngClass]="{'text-disable': !hasChanged}"
             [disabled]="!hasChanged" (click)="save()"
-            class="btn btn-primary-inline">Save
+            class="btn btn-outline-primary btn-min">Done
     </button>
-    <button type="button" class="btn btn-default-inline" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
   </modal-footer>
 </modal>

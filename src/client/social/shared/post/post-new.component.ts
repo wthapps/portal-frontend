@@ -7,6 +7,7 @@ import { User } from '../../../core/shared/models/user.model';
 import { SocialService } from '../services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { Observable } from 'rxjs/Observable';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -26,6 +27,8 @@ export class PostNewComponent implements OnInit {
   // files: Array<any> = new Array<any>();
   // user: User;
   user$: Observable<any>;
+
+  tooltip:any = Constants.tooltip;
 
   constructor(private apiService: ApiBaseService,
               private socialService: SocialService,

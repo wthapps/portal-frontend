@@ -2,7 +2,7 @@
   <!--album-detail-->
   <ul *ngIf="albumDetail && type == 'album-detail'" class="control-body-select">
     <li style="border-right: 1px solid #4A4A4A; padding-right: 10px">
-      <a (click)="onBack()" class="btn btn-wth"><i class="fa fa-arrow-left"></i> New</a>
+      <a (click)="onBack()" class="btn btn-primary"><i class="fa fa-arrow-left"></i> New</a>
     </li>
     <li class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -24,7 +24,7 @@
 
   <ul *ngIf="type != 'album-detail'" class="control-body-select">
     <li class="dropdown">
-      <a href="#" class="btn btn-wth" data-toggle="dropdown"><i class="fa fa-plus"></i> New</a>
+      <a href="#" class="btn btn-primary" data-toggle="dropdown"><i class="fa fa-plus"></i> New</a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <li class="active">
           <a href="javascript:;" (click)="zoneUpload.browseFiles($event)"><i class="fa fa-picture-o"></i> Upload Photos</a>

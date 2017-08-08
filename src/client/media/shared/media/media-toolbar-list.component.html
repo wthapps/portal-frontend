@@ -2,12 +2,12 @@
   <div class="page-body-control-nav" *ngIf="displayCreateButtons">
     <ul class="page-body-control-menu">
       <li>
-        <button class="btn btn-wth-default" (click)="showUploadForm()">
+        <button class="btn btn-outline-primary" (click)="showUploadForm()">
           <i class="fa fa-cloud-upload"></i> Upload File
         </button>
       </li>
       <li>
-        <button class="btn btn-wth-default"
+        <button class="btn btn-outline-primary"
                 (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">
           <i class="fa fa-plus-circle"></i> Create Album
         </button>

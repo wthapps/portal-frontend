@@ -11,7 +11,7 @@
   <div class="media-right">
     <div style="width:150px;">
       <button *ngFor="let action of actions" class="btn"
-              [ngClass]="action.btnClass?  action.btnClass : 'btn-wth-default'"
+              [ngClass]="action.btnClass?  action.btnClass : 'btn-outline-primary'"
               style="margin-right: 10px"
               (click)="emitEvent({action: action.id, data: data})">
         <i *ngIf="action.class" [ngClass]="action.class"></i>
