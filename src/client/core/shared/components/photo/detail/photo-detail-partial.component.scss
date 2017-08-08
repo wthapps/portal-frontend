@@ -76,6 +76,15 @@
         right: $photo-detail-info-width/2;
       }
     }
+
+    // recipients
+    .recipients {
+      img {
+        max-height: 25px;
+        max-width: 25px;
+      }
+    }
+
   }
 }
 

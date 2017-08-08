@@ -38,7 +38,6 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
         });
         break;
       case 'media:photo:update_recipients':
-        console.log('updating recipients::::');
         this.photo.json_shares = event.payload.data;
           break;
       default:

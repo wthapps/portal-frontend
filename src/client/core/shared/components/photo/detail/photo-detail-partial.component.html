@@ -13,7 +13,7 @@
       <li *ngFor="let menu of menus" [ngClass]="{'dropdown': menu?.dropdown}">
         <a href="javascript:;" (click)="doAction({action: menu?.action, params: menu?.params})" data-toggle="dropdown"
            pTooltip="{{ menu.toolTip }}" tooltipPosition="left">
-          <i *ngIf="menu?.action=='favourite'" class="fa" [ngClass]="photo.favorite ? 'fa-star': 'fa-star-o'"></i>
+          <i *ngIf="menu?.action=='favourite'" class="fa" [ngClass]="photo.favorite ? 'fa-star-o': 'fa-star'"></i>
           <i *ngIf="menu?.action!='favourite'" [ngClass]="menu.iconClass"></i>
         </a>
         <ul *ngIf="menu?.parent" class="dropdown-menu dropdown-menu-lg">
@@ -147,7 +147,7 @@
     <dl>
       <dt>Owner</dt>
       <dd>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled recipients">
           <li>
             <img [src]="photo.owner.profile_image" alt="{{ photo.owner?.name }}"
                  title="{{ photo.owner?.name }}"> {{ photo.owner?.name }}
@@ -157,7 +157,7 @@
 
       <dt>Shared with</dt>
       <dd>
-        <ul class="list-unstyled" *ngIf="photo.json_shares.length > 0">
+        <ul class="list-unstyled recipients" *ngIf="photo.json_shares.length > 0">
           <li *ngFor="let recipient of photo?.json_shares">
             <!--<img [src]="recipient?.profile_image" title="{{ recipient?.name }}">-->
             <!--{{ recipient.name }}-->

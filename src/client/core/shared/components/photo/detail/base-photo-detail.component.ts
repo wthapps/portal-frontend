@@ -178,9 +178,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
 
   private favourite() {
     this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
-      if (res.message === 'success') {
-        this.photo.favorite = !this.photo.favorite;
-      }
+      this.photo.favorite = res.data.favorite;
     });
   }
 
