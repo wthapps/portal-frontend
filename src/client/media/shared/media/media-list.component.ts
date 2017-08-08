@@ -288,6 +288,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'openModal':
       case 'previewAllPhotos':
       case 'updateDetailObject':
+      case 'openUploadModal':
         this.events.emit(options);
         break;
     }

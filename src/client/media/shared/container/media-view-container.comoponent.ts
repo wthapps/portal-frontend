@@ -256,7 +256,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
 
       case 'openUploadModal':
-        console.log('openUploadModal');
         this.mediaUploaderDataService.onShowUp();
         break;
       case 'updateMediaList':
