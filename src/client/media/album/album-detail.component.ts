@@ -25,7 +25,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
       .switchMap((params: Params) => {
         this.params = params;
         this.showDetail = params['showDetail'] || false;
-        return this.albumService.getAlbum(params['id']); }).take(1)
+        return this.albumService.getAlbum(params['id']); })
         .subscribe((res: any)=> {
           this.album = res.data;
       });

@@ -159,7 +159,7 @@ export class LabelService extends BaseEntityService<Label> {
       name: label.name,
       link: '/contacts',
       hasSubMenu: !label.system,
-      count: label.contact_count,
+      count: 0,
       order: label.system ? label.order : (100 + label.order),
       icon: label.name == 'all contacts' ? 'fa fa-address-book-o'
         : label.name == 'favourite' ? 'fa fa-star'

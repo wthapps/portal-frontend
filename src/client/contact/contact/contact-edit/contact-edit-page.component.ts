@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { Constants } from '../../../core/shared/config/constants';
+import { ZContactEditComponent } from "./contact-edit.component";
 
 @Component({
   moduleId: module.id,
@@ -12,6 +13,7 @@ import { Constants } from '../../../core/shared/config/constants';
   templateUrl: 'contact-edit-page.component.html'
 })
 export class ZContactEditPageComponent implements OnInit {
+  @ViewChild('contactEdit') contactEdit: ZContactEditComponent;
 
   contact: Contact = new Contact({
       phones: [{

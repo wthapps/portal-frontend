@@ -53,7 +53,9 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
       .map((params: any) => {
         this.id = +params['id'];
         this.prevUrl = params['prevUrl'];
-        this.ids = params['ids'].split(',').map(Number) || [];
+        if(params['ids']) {
+          this.ids = params['ids'].split(',').map(Number) || [];
+        }
         this.module = params['module'] || this.module;
         this.mode = params['mode'] || 0;
         this.showDetail = params['showDetail'] || false;
@@ -85,7 +87,10 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         break;
       case 'loadItem':
         const tree: UrlTree = this.router.parseUrl(this.router.url);
-        tree.root.children.primary.segments[1].path = payload.id;
+        if(tree.root.children.modal)
+          tree.root.children.modal.segments[1].path = payload.id;
+        else
+          tree.root.children.primary.segments[1].path = payload.id;
         this.router.navigateByUrl(tree);
         break;
       case 'update':

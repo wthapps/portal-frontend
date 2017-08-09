@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
@@ -7,6 +9,7 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 
 import { Constants } from '../../../core/shared/config/constants';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 
 declare var _: any;
 
@@ -36,6 +39,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
               private socialService: SocialService,
               public userService: UserService,
               private zoneReportService: ZSharedReportService,
+              private favoriteService: SocialFavoriteService,
               private toastsService: ToastsService,
               private route: ActivatedRoute) {
   }
@@ -72,6 +76,14 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
         this.relationships = undefined;
       }
     });
+  }
+
+  checkFavorite() {
+    // Check favourite status
+    _.each(this.favoriteService.favorites, (f: any) => { if( f.friend && f.friend.uuid === this.uuid)
+      this.favourite = f.friend;
+    });
+    console.debug('this.favoriteService.favorites: ', this.favoriteService.favorites, this.favourite);
   }
 
   ngOnDestroy() {
@@ -151,7 +163,9 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   }
 
   toggleFavourite(item: any, group: string) {
-    this.socialService.user.toggleFavourites(item.uuid, group).toPromise().then(
+    // this.socialService.user.toggleFavourites(item.uuid, group).toPromise().then(
+    this.favoriteService.addFavourite(item.uuid, group)
+      .then(
       (res: any) => {
         console.log(res);
         if (!_.isEmpty(this.favourite)) {
