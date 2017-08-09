@@ -53,7 +53,7 @@ export class ZContactService extends BaseEntityService<any> {
               private confirmationService: ConfirmationService) {
     super(apiBaseService);
     this.url = 'contact/contacts';
-    this.initialLoad();
+    // this.initialLoad();
 
     this.suggestService.input$.subscribe((input: any) => {
       let contacts: any[] = _.cloneDeep(this.searchContact(input));

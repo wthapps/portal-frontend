@@ -74,7 +74,9 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         document.body.scrollTop = 0;
       });
 
-    this.labelService.getAllLabels().then((labels: any[]) => console.debug('getAllLabels: ', labels));
+    this.labelService.getAllLabels()
+      .then((labels: any[]) => console.debug('getAllLabels: ', labels))
+      .then(() => this.contactService.initialLoad());
   }
 
   ngOnDestroy() {
