@@ -30,7 +30,13 @@ export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileF
 
   form: FormGroup;
   deleteObjects: any = [];
-  type: string = "hobbies";
+  type: string = 'hobbies';
+
+  removeItem: (i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
+  onCustomSubmit: (values: any) => void;
 
   constructor(private fb: FormBuilder, private profileService: PartialsProfileService) {
     this.form = fb.group({
@@ -39,12 +45,6 @@ export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileF
       ])
     });
   }
-
-  removeItem:(i: number) => void;
-  onSubmit: (values: any) => void;
-  removeAll: () => void;
-  getFormControls: () => any;
-  onCustomSubmit:(values: any) => void;
 
   //hobbys
   initItem(item?: any) {

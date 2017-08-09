@@ -24,7 +24,6 @@ declare var _: any;
 })
 
 
-
 export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
   @Input() data: any;
   @ViewChild('modal') modal: ModalComponent;
@@ -35,7 +34,7 @@ export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
   @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
-  type: string = "phones";
+  type: string = 'phones';
 
   countriesCode: any;
   countriesNameCode: any;
@@ -45,6 +44,11 @@ export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
   phoneType: any = Constants.phoneType;
 
   deleteObjects: any = [];
+
+  removeItem: (i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
@@ -64,13 +68,7 @@ export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
           }
         );
       });
-
   }
-
-  removeItem:(i: number) => void;
-  onSubmit: (values: any) => void;
-  removeAll: () => void;
-  getFormControls: () => any;
 
   //phones
   initItem(item?: any) {

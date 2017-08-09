@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SocialService } from '../shared/services/social.service';
 import { Constants } from '../../core/shared/config/constants';
 import { NotificationService } from '../../core/shared/services/notification.service';
@@ -11,7 +11,7 @@ declare var _: any;
   templateUrl: 'notifications.component.html'
 })
 
-export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
+export class ZSocialNotificationsComponent implements OnInit {
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   readonly profileUrl: string = '/' + Constants.urls.profile;
 
@@ -21,9 +21,6 @@ export class ZSocialNotificationsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.notificationService.getLatestNotifications();
-  }
-
-  ngOnDestroy() {
   }
 
   getMoreNotifications() {

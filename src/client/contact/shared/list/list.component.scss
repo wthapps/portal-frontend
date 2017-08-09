@@ -120,13 +120,6 @@ $color-table-row: #F9F9F9;
           float: left;
         }
       }
-      .btn {
-        min-width: 34px;
-        color: inherit;
-        &:hover, &:focus {
-          border: 1px solid $line;
-        }
-      }
     }
 
   }

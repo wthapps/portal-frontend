@@ -53,18 +53,17 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
-              private contactService: ZContactService,
-              private labelService: LabelService
-  ) {
+              public contactService: ZContactService,
+              private labelService: LabelService) {
     console.log('Environment config', Config);
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
-    })
+    });
     this.labelService.labels$
       .takeUntil(this.destroySubject)
       .subscribe((labels: any[]) => {
         this.labels = labels;
-    });
+      });
   }
 
   ngOnInit() {
@@ -103,22 +102,33 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
           accept: () => {
             event.action = 'contact:label:delete';
             event.payload.selectedItem = this.getLabel(event.payload.selectedItem);
-            this.commonEventService.broadcast({channel: Constants.contactEvents.common, action: event.action, payload: event.payload});
+            this.commonEventService.broadcast({
+              channel: Constants.contactEvents.common,
+              action: event.action,
+              payload: event.payload
+            });
           }
         });
         break;
       case 'contact:label:create':
         this.labelService.create(event.payload.label).subscribe(
-          () =>{});
+          (res: any) => {
+            console.log(res);
+          });
         break;
       case 'contact:label:update':
         let name = event.payload.label.name;
         this.labelService.update(event.payload.label).subscribe(
-          () => {});
+          (res: any) => {
+            console.log(res);
+          });
         break;
       case 'contact:label:delete':
         let label = this.getLabel(event.payload.selectedItem);
-        this.labelService.delete(label.id).subscribe(() => {});
+        this.labelService.delete(label.id).subscribe(
+          (res: any) => {
+            console.log(res);
+          });
         break;
       // case 'contact:contact:search':
       //   console.log('inside contact:contact:search: ', event);

@@ -60,7 +60,7 @@ export class ZContactEditPageComponent implements OnInit {
     if (this.mode === 'view') {
       this.pageTitle = 'Contact details';
     } else if (this.mode == 'create') {
-      this.pageTitle = 'Create contact'
+      this.pageTitle = 'Create contact';
     } else {
       this.pageTitle = 'Edit contact';
     }

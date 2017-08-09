@@ -30,7 +30,13 @@ export class PartialsProfileWorkComponent implements ProfileFormMixin, ProfileFo
   form: FormGroup;
   contact_note: AbstractControl;
   deleteObjects: any = [];
-  type: string = "works";
+  type: string = 'works';
+
+  removeItem: (i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
+  onCustomSubmit: (values: any) => void;
 
   constructor(private fb: FormBuilder,
               private profileService: PartialsProfileService) {
@@ -40,12 +46,6 @@ export class PartialsProfileWorkComponent implements ProfileFormMixin, ProfileFo
       ])
     });
   }
-
-  removeItem: (i: number) => void;
-  onSubmit: (values: any) => void;
-  removeAll: () => void;
-  getFormControls: () => any;
-  onCustomSubmit: (values: any) => void;
 
   //Works
   initWork(work?: any) {

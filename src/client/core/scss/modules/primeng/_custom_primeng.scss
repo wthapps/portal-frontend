@@ -207,5 +207,14 @@ body {
     &.ui-tooltip-top .ui-tooltip-arrow {
       border-top-color: rgba(#000, 0.6);
     }
+    &.ui-tooltip-bottom .ui-tooltip-arrow {
+      border-bottom-color: rgba(#000, 0.6);
+    }
+    &.ui-tooltip-left {
+      border-left-color: rgba(#000, 0.6);
+    }
+    &.ui-tooltip-right {
+      border-right-color: rgba(#000, 0.6);
+    }
   }
 }

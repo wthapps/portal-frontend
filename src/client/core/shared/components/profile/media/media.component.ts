@@ -57,6 +57,11 @@ export class PartialsProfileMediaComponent implements ProfileFormMixin {
     },
   ];
 
+  removeItem: (i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
+
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
       'media': fb.array([
@@ -64,11 +69,6 @@ export class PartialsProfileMediaComponent implements ProfileFormMixin {
       ])
     });
   }
-
-  removeItem:(i: number) => void;
-  onSubmit: (values: any) => void;
-  removeAll: () => void;
-  getFormControls: () => any;
 
   //media
   initItem(item?: any) {

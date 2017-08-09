@@ -18,8 +18,8 @@ import { ZContactShareImportProgressComponent } from './progress/import-progress
 import { ContactImportContactDataService } from './modal/import-contact/import-contact-data.service';
 import { ZContactSharedSettingsComponent } from './modal/settings/settings.component';
 import { ZContactMenuService } from './services/contact-menu.service';
-import { ZContactSharedActionsBarComponent } from "./toolbar/actions-bar.component";
-import { ZContactPipeModule } from "./pipe/pipe.module";
+import { ZContactSharedActionsBarComponent } from './toolbar/actions-bar.component';
+import { ZContactPipeModule } from './pipe/pipe.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.

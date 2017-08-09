@@ -29,8 +29,14 @@ export class PartialsProfileEducationComponent implements ProfileFormMixin, Prof
 
   form: FormGroup;
   contact_note: AbstractControl;
-  type: string = "educations";
+  type: string = 'educations';
   deleteObjects: any = [];
+
+  removeItem: (i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
+  onCustomSubmit: (values: any) => void;
 
   constructor(private fb: FormBuilder,
               private profileService: PartialsProfileService) {
@@ -40,12 +46,6 @@ export class PartialsProfileEducationComponent implements ProfileFormMixin, Prof
       ])
     });
   }
-
-  removeItem:(i: number) => void;
-  onSubmit: (values: any) => void;
-  removeAll: () => void;
-  getFormControls: () => any;
-  onCustomSubmit:(values: any) => void;
 
   //Educations
   initEducation(education?: any) {

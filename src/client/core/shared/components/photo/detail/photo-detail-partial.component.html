@@ -3,7 +3,7 @@
     <ul class="action navbar-left">
       <li>
         <a href="javascript:;" draggable="false" (click)="goBack()"
-           pTooltip="{{ tooltip.back }}" tooltipPosition="right"><i class="fa fa-arrow-left"></i></a>
+           pTooltip="{{ tooltip.back }}" tooltipPosition="bottom"><i class="fa fa-arrow-left"></i></a>
       </li>
     </ul>
 
@@ -12,7 +12,7 @@
     <ul *ngIf="mode == 0" class="action navbar-right">
       <li *ngFor="let menu of menus" [ngClass]="{'dropdown': menu?.dropdown}">
         <a href="javascript:;" (click)="doAction({action: menu?.action, params: menu?.params})" data-toggle="dropdown"
-           pTooltip="{{ menu.toolTip }}" tooltipPosition="left">
+           pTooltip="{{ menu.toolTip }}" tooltipPosition="bottom">
           <i *ngIf="menu?.action=='favourite'" class="fa" [ngClass]="photo.favorite ? 'fa-star-o': 'fa-star'"></i>
           <i *ngIf="menu?.action!='favourite'" [ngClass]="menu.iconClass"></i>
         </a>
@@ -45,23 +45,23 @@
     <ul *ngIf="mode == 1" class="action navbar-right">
       <li>
         <a (click)="cropCropper()" href="javascript:;" [ngClass]="{'a-hover': cropping}"
-           pTooltip="{{ tooltip.crop }}" tooltipPosition="left"><i class="fa fa-crop"></i></a>
+           pTooltip="{{ tooltip.crop }}" tooltipPosition="bottom"><i class="fa fa-crop"></i></a>
       </li>
       <li>
         <a (click)="zoomCropper(-0.1)" href="javascript:;"
-           pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="left"><i class="fa fa-search-minus"></i></a>
+           pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="bottom"><i class="fa fa-search-minus"></i></a>
       </li>
       <li>
         <a (click)="zoomCropper(0.1)" href="javascript:;"
-           pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="left"><i class="fa fa-search-plus"></i></a>
+           pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="bottom"><i class="fa fa-search-plus"></i></a>
       </li>
       <li>
         <a (click)="rotateCropper(true)" href="javascript:;"
-           pTooltip="{{ tooltip.rotateLeft }}" tooltipPosition="left"><i class="fa fa-rotate-left"></i></a>
+           pTooltip="{{ tooltip.rotateLeft }}" tooltipPosition="bottom"><i class="fa fa-rotate-left"></i></a>
       </li>
       <li>
         <a (click)="rotateCropper(false)" href="javascript:;"
-           pTooltip="{{ tooltip.rotateRight }}" tooltipPosition="left"><i class="fa fa-rotate-right"></i></a>
+           pTooltip="{{ tooltip.rotateRight }}" tooltipPosition="bottom"><i class="fa fa-rotate-right"></i></a>
       </li>
     </ul>
 
@@ -94,7 +94,7 @@
     </span>
     <span *ngIf="(ids.length>1 && mode==0)" draggable="false" (click)="move()"
           class="photo-detail-img-control img-control-next"
-          pTooltip="{{ tooltip.next }}" tooltipPosition="left">
+          pTooltip="{{ tooltip.next }}" tooltipPosition="bottom">
       <i class="fa fa-angle-right"></i>
     </span>
   </div>

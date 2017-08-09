@@ -8,28 +8,29 @@
             <div class="pull-left btn-group hidden-md hidden-lg">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                       aria-expanded="false">
-                {{currentState | titleCase}} <span class="text-fade">{{totalFriends}}</span> <span class="caret"></span>
+                {{ currentState | titleCase }} <span class="text-fade">{{ totalFriends }}</span> <span
+                class="caret"></span>
               </button>
               <ul class="dropdown-menu">
                 <li [ngClass]="{'active': currentState == friendTabs.friends}">
-                  <a  href="javascript:;" (click)="getDataList('friends'); currentStateTitleNumber = totalFriends;"
-                     >
-                    FRIENDS <span *ngIf="totalFriends" class="text-fade">{{totalFriends}}</span>
+                  <a href="javascript:;" (click)="getDataList('friends'); currentStateTitleNumber = totalFriends;">
+                    FRIENDS <span *ngIf="totalFriends" class="text-fade">{{ totalFriends }}</span>
                   </a>
                 </li>
                 <li [ngClass]="{'active': currentState == friendTabs.followers}">
                   <a href="javascript:;" (click)="getDataList('followers'); currentStateTitleNumber = totalFollowers;">
-                    FOLLOWERS <span *ngIf="totalFollowers" class="text-fade">{{totalFollowers}}</span>
+                    FOLLOWERS <span *ngIf="totalFollowers" class="text-fade">{{ totalFollowers }}</span>
                   </a>
                 </li>
                 <li [ngClass]="{'active': currentState == friendTabs.followings}">
-                  <a href="javascript:;" (click)="getDataList('followings'); currentStateTitleNumber = totalFollowings;">
-                    FOLLOWING <span *ngIf="totalFollowings" class="text-fade">{{totalFollowings}}</span>
+                  <a href="javascript:;"
+                     (click)="getDataList('followings'); currentStateTitleNumber = totalFollowings;">
+                    FOLLOWING <span *ngIf="totalFollowings" class="text-fade">{{ totalFollowings }}</span>
                   </a>
                 </li>
                 <li [ngClass]="{'active': currentState == friendTabs.blacklists}">
                   <a href="javascript:;" (click)="getDataList('blacklists'); currentStateTitleNumber = totalBlacklist;">
-                    BLACKLIST <span *ngIf="totalBlacklist" class="text-fade">{{totalBlacklist}}</span>
+                    BLACKLIST <span *ngIf="totalBlacklist" class="text-fade">{{ totalBlacklist }}</span>
                   </a>
                 </li>
               </ul>
@@ -39,22 +40,22 @@
             <ul class="nav nav-tabs visible-md-block visible-lg-block">
               <li [ngClass]="{'active': currentState == friendTabs.friends}">
                 <a (click)="getDataList('friends')" href="javascript:;">
-                  Friends <span *ngIf="totalFriends" class="badge-right">{{totalFriends}}</span>
+                  Friends <span *ngIf="totalFriends" class="badge-right">{{ totalFriends }}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.followers}">
                 <a (click)="getDataList('followers')" href="javascript:;">
-                  Followers <span *ngIf="totalFollowers" class="badge-right">{{totalFollowers}}</span>
+                  Followers <span *ngIf="totalFollowers" class="badge-right">{{ totalFollowers }}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.followings}">
                 <a (click)="getDataList('followings')" href="javascript:;">
-                  Following <span *ngIf="totalFollowings" class="badge-right">{{totalFollowings}}</span>
+                  Following <span *ngIf="totalFollowings" class="badge-right">{{ totalFollowings }}</span>
                 </a>
               </li>
               <li [ngClass]="{'active': currentState == friendTabs.blacklists}">
                 <a (click)="getDataList('blacklists')" href="javascript:;">
-                  Blacklist <span *ngIf="totalBlacklist" class="badge-right">{{totalBlacklist}}</span>
+                  Blacklist <span *ngIf="totalBlacklist" class="badge-right">{{ totalBlacklist }}</span>
                 </a>
               </li>
             </ul>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core';
 
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/finally';
@@ -65,47 +65,47 @@ export class ZSocialMembersComponent implements OnInit {
   // }
 
   getDataList(tab: string, forceOption: boolean = false) {
-    if ( this.currentState === tab && !forceOption)
+    if (this.currentState === tab && !forceOption)
       return;
     this.currentState = tab;
     this.loadingService.start('#users-list');
-    switch(tab) {
+    switch (tab) {
       case FRIEND_TABS.friends:
         this.socialService.user.getFriends().take(1)
           .finally(() => this.loadingService.stop('#users-list'))
           .subscribe((res: any) => {
-          this.list = res.data;
-          this.totalFriends = this.list.length;
-          for(let i = 0; i < this.list.length; i++) {
-            _.set(this.list, `${i}.friend_status`, Constants.friendStatus.accepted);
-          }
-        });
+            this.list = res.data;
+            this.totalFriends = this.list.length;
+            for (let i = 0; i < this.list.length; i++) {
+              _.set(this.list, `${i}.friend_status`, Constants.friendStatus.accepted);
+            }
+          });
         break;
       case FRIEND_TABS.followers:
         this.socialService.user.getFollowerList().take(1)
           .finally(() => this.loadingService.stop('#users-list'))
           .subscribe((res: any) => {
-          this.list = res.data;
-          this.totalFollowers = this.list.length;
-        });
+            this.list = res.data;
+            this.totalFollowers = this.list.length;
+          });
         break;
       case FRIEND_TABS.followings:
         this.socialService.user.getFollowingList().take(1)
           .finally(() => this.loadingService.stop('#users-list'))
           .subscribe((res: any) => {
-          this.list = res.data;
-          this.totalFollowings = this.list.length;
-          for(let i = 0; i < this.list.length; i++) {
-            _.set(this.list, `${i}.is_following`, true);
-          }
-        });
+            this.list = res.data;
+            this.totalFollowings = this.list.length;
+            for (let i = 0; i < this.list.length; i++) {
+              _.set(this.list, `${i}.is_following`, true);
+            }
+          });
         break;
       case FRIEND_TABS.blacklists:
         this.list = [];
-        this.loadingService.stop('#users-list')
+        this.loadingService.stop('#users-list');
         break;
       default:
-        this.loadingService.stop('#users-list')
+        this.loadingService.stop('#users-list');
         console.error('Getting a strange tab. Need implementation? ', tab);
     }
   }
@@ -126,19 +126,18 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
 
-
   reportFriend(friend: any) {
     this.zoneReportService.friend(friend.uuid);
     return false;
   }
 
-  addToContacts(uuid: string) {
+  /*addToContacts(uuid: string) {
 
-  }
+   }
 
-  addToBlackList(uuid: string) {
+   addToBlackList(uuid: string) {
 
-  }
+   }*/
 
 
   unfollow(item: any) {
@@ -148,7 +147,7 @@ export class ZSocialMembersComponent implements OnInit {
         if (_.get(res, 'success', false) == true)
           this.totalFollowings -= 1;
         if (this.currentState == this.friendTabs.followings)
-          _.remove(this.list, (i: any) => i.uuid == item.uuid );
+          _.remove(this.list, (i: any) => i.uuid == item.uuid);
 
         if (this.currentState == this.friendTabs.friends)
           item.is_following = false;
@@ -168,7 +167,6 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
 
-
   getUser() {
     this.getDataList(this.currentState, true);
     this.socialService.user.get().toPromise().then(
@@ -184,6 +182,7 @@ export class ZSocialMembersComponent implements OnInit {
       error => this.errorMessage = <any>error
     );
   }
+
   //
   // addFollowingIntoFollower() {
   //   this.data['followers'] = _.map(this.data['followers'], (follower: any) => {

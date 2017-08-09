@@ -56,7 +56,7 @@
                   && form.value.phones[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
                       <option value="">-- Select One --</option>
-                      <option *ngFor="let et of phoneCategories" value="{{et.value}}">{{et.text}}</option>
+                      <option *ngFor="let et of phoneCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
                 </div>
@@ -111,7 +111,7 @@
                   && form.value.emails[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
                       <option value="">-- Select One --</option>
-                      <option *ngFor="let et of emailCategories" value="{{et.value}}">{{et.text}}</option>
+                      <option *ngFor="let et of emailCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
                 </div>
@@ -167,7 +167,7 @@
                   && form.value.addresses[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
                       <option value="">-- Select One --</option>
-                      <option *ngFor="let et of emailCategories" value="{{et.value}}">{{et.text}}</option>
+                      <option *ngFor="let et of emailCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
                 </div>
@@ -238,7 +238,7 @@
                   && form.value.media[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
                       <option value="">-- Select One --</option>
-                      <option *ngFor="let et of mediaCategories" value="{{et.value}}">{{et.text}}</option>
+                      <option *ngFor="let et of mediaCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
                 </div>

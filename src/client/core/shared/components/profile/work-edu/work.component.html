@@ -10,8 +10,8 @@
   <div class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.works && data.works.length > 0">
       <ng-template ngFor let-item [ngForOf]="data.works" let-i="index" [ngForTrackBy]="trackByFn">
-        <dt>{{item.title}}</dt>
-        <dd><p>{{item.description}}</p></dd>
+        <dt>{{ item.title }}</dt>
+        <dd><p>{{ item.description }}</p></dd>
       </ng-template>
     </dl>
 
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group">
-                    <div class="pull-right text-fade"><span>{{form.value.works[i].description.length}}</span>/150 characters</div>
+                    <div class="pull-right text-fade"><span>{{ form.value.works[i].description.length }}</span>/150 characters</div>
                     <label>Description</label>
                     <textarea formControlName="description" maxlength="150" rows="3" class="form-control no-resize" placeholder=""></textarea>
                   </div>

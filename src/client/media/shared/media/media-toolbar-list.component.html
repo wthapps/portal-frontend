@@ -19,8 +19,8 @@
   <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
     <ul class="page-body-control-menu">
       <li class="divider">
-        <a class="btn" href="javascript:;" (click)="onAction({action: 'goBack', params: {}})" draggable="false"
-           pTooltip="{{ tooltip.back }}" tooltipPosition="top">
+        <a class="btn btn-default" href="javascript:;" (click)="onAction({action: 'goBack', params: {}})" draggable="false"
+           pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
           <i class="fa fa-arrow-left"></i>
         </a>
       </li>
@@ -122,52 +122,52 @@
         [ngClass]="{'text-disable': noSelectedObjects}"
         [class.disabled]="noSelectedObjects">
       <li>
-        <a *ngIf="page != 'shared-with-me' " class="btn" href="javascript:;" draggable="false"
+        <a *ngIf="page != 'shared-with-me' " class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'previewModal'}})"
-           pTooltip="{{ tooltip.preview}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.preview}}" tooltipPosition="bottom">
           <i class="fa fa-eye"></i>
         </a>
         <!-- Not allow delete objects in preview modal in shared-with-me screen -->
-        <a *ngIf="page == 'shared-with-me' " class="btn" href="javascript:;" draggable="false"
+        <a *ngIf="page == 'shared-with-me' " class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'previewModal', canDelete: false}})"
-           pTooltip="{{ tooltip.preview}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.preview}}" tooltipPosition="bottom">
           <i class="fa fa-eye"></i>
         </a>
       </li>
 
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"
-           pTooltip="{{ tooltip.share}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.share}}" tooltipPosition="bottom">
           <i class="fa fa-share-alt"></i>
         </a>
       </li>
       <li title="{{favouriteTooltip}}">
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})"
-           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="top">
+           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="bottom">
           <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
 
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"
-           pTooltip="{{ tooltip.tag }}" tooltipPosition="top">
+           pTooltip="{{ tooltip.tag }}" tooltipPosition="bottom">
           <i class="fa fa-tag"></i>
         </a>
       </li>
       <!-- Shared with me screen DOES NOT support delete objects action -->
       <li *ngIf="page != 'shared-with-me'">
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})"
-           pTooltip="{{ tooltip.delete }}" tooltipPosition="top">
+           pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
       <li class="dropdown action">
-        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="top">
+        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
           <i class="fa fa-ellipsis-v"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
@@ -205,35 +205,35 @@
     <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}"
         [class.disabled]="noSelectedObjects">
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"
-           pTooltip="{{ tooltip.share}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.share}}" tooltipPosition="bottom">
           <i class="fa fa-share-alt"></i>
         </a>
       </li>
 
       <li title="{{favouriteTooltip}}">
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})"
-           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="top">
+           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="bottom">
           <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"
-           pTooltip="{{ tooltip.tag}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
           <i class="fa fa-tag"></i></a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: selectedObjects}})"
-           pTooltip="{{ tooltip.delete}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i></a>
       </li>
       <li class="dropdown action">
-        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="top">
+        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
           <i class="fa fa-ellipsis-v"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
@@ -274,36 +274,36 @@
     <ul class="page-body-control-menu" *ngIf="page == 'album_detail'" [ngClass]="{'text-disable': noSelectedObjects}"
         [class.disabled]="noSelectedObjects">
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal'}})"
-           pTooltip="{{ tooltip.share}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.share}}" tooltipPosition="bottom">
           <i class="fa fa-share-alt"></i>
         </a>
       </li>
       <li title="{{favouriteTooltip}}">
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})"
-           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="top">
+           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="bottom">
           <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal'}})"
-           pTooltip="{{ tooltip.tag}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
           <i class="fa fa-tag"></i>
         </a>
       </li>
       <li>
-        <a class="btn" href="javascript:;" draggable="false"
+        <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'delete', params: { selectedObjects: selectedObjects}})"
-           pTooltip="{{ tooltip.delete}}" tooltipPosition="top">
+           pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
       <li class="dropdown action">
-        <a class="btn" href="#" data-toggle="dropdown" draggable="false"
-           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="top">
+        <a class="btn btn-default" href="#" data-toggle="dropdown" draggable="false"
+           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
           <i class="fa fa-ellipsis-v"></i>
         </a>
 
@@ -345,8 +345,8 @@
     <!--view option-->
     <ul class="page-body-control-menu">
       <li class="dropdown">
-        <a class="btn" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" draggable="false"
-           pTooltip="{{ tooltip.changeView}}" tooltipPosition="left">
+        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" draggable="false"
+           pTooltip="{{ tooltip.changeView}}" tooltipPosition="bottom">
           <i class="fa"
              [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
         </a>

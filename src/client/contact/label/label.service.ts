@@ -22,14 +22,14 @@ export class LabelService extends BaseEntityService<Label> {
   }
 
   getAllLabels(): Promise<Label[]> {
-    console.debug('getAllLabels: ',this.labelsSubject.getValue());
-    if(_.isEmpty(this.labelsSubject.getValue())) {
+    console.debug('getAllLabels: ', this.labelsSubject.getValue());
+    if (_.isEmpty(this.labelsSubject.getValue())) {
 
       return this.getAll().toPromise()
         .then((res: any) => {
-        let labels: Label[] = _.map(res.data, (l: any) => this.mapLabelToMenuItem(l));
-        return this.notifyLabelObservers(labels);
-      });
+          let labels: Label[] = _.map(res.data, (l: any) => this.mapLabelToMenuItem(l));
+          return this.notifyLabelObservers(labels);
+        });
     }
 
     return this.notifyLabelObservers();
@@ -65,11 +65,11 @@ export class LabelService extends BaseEntityService<Label> {
 
   updateLabelCount(contacts: any[]) {
     let menus: any = {};
-    for(let ci = 0; ci < contacts.length; ci++) {
+    for (let ci = 0; ci < contacts.length; ci++) {
       _.each(contacts[ci].labels, (l: any) => {
-        if(!l)
+        if (!l)
           return;
-        if(menus[`${l.name}`]) {
+        if (menus[`${l.name}`]) {
           menus[`${l.name}`].count += 1;
         } else {
           menus[`${l.name}`] = l;
@@ -80,9 +80,9 @@ export class LabelService extends BaseEntityService<Label> {
 
     // Update label count
     let cMenus = _.map(this.labelsSubject.getValue(), (m: any) => {
-      if(menus[m.name])
+      if (menus[m.name])
         return Object.assign(m, {count: menus[m.name].count});
-      if(m.name === 'all contacts')
+      if (m.name === 'all contacts')
         return Object.assign(m, {count: contacts.length});
       else
         return m;
@@ -133,7 +133,7 @@ export class LabelService extends BaseEntityService<Label> {
 
   updateMenu(menu: any): Promise<any> {
     let menus: any[] = _.map(this.labelsSubject.getValue(), (m: any) => {
-      if(m.id === menu.id)
+      if (m.id === menu.id)
         return Object.assign(m, menu);
       else
         return m;
@@ -144,7 +144,7 @@ export class LabelService extends BaseEntityService<Label> {
 
   updateMenuName(menu: any): Promise<any> {
     let labels = this.labelsSubject.getValue();
-    for(let i = 0; i < labels.length; i++) {
+    for (let i = 0; i < labels.length; i++) {
       if (menu.id == labels[i]['id']) {
         labels[i]['name'] = menu.name;
         break;
@@ -163,11 +163,11 @@ export class LabelService extends BaseEntityService<Label> {
       order: label.system ? label.order : (100 + label.order),
       icon: label.name == 'all contacts' ? 'fa fa-address-book-o'
         : label.name == 'favourite' ? 'fa fa-star'
-          : label.name == 'labels' ? 'fa fa-tags'
-            : label.name == 'blacklist' ? 'fa fa-ban'
-              : label.name == 'social' ? 'fa fa-globe'
-                : label.name == 'chat' ? 'fa fa-comments-o'
-                  : 'fa fa-folder-o'
+        : label.name == 'labels' ? 'fa fa-tags'
+        : label.name == 'blacklist' ? 'fa fa-ban'
+        : label.name == 'social' ? 'fa fa-globe'
+        : label.name == 'chat' ? 'fa fa-comments-o'
+        : 'fa fa-folder-o'
     };
   }
 

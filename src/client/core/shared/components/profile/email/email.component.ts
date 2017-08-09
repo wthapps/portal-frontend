@@ -37,9 +37,14 @@ export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
 
   form: FormGroup;
   deleteObjects: any = [];
-  type: string = "emails";
+  type: string = 'emails';
 
   emailType: any = Constants.emailType;
+
+  removeItem: (i: number) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService, private questionControlService: QuestionControlService) {
 
@@ -52,11 +57,6 @@ export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
       ])
     });
   }
-
-  removeItem:(i: number) => void;
-  onSubmit: (values: any) => void;
-  removeAll: () => void;
-  getFormControls: () => any;
 
   //emails
   initItem(item?: any) {
