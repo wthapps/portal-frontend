@@ -87,7 +87,10 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         break;
       case 'loadItem':
         const tree: UrlTree = this.router.parseUrl(this.router.url);
-        tree.root.children.modal.segments[1].path = payload.id;
+        if(tree.root.children.modal)
+          tree.root.children.modal.segments[1].path = payload.id;
+        else
+          tree.root.children.primary.segments[1].path = payload.id;
         this.router.navigateByUrl(tree);
         break;
       case 'update':
