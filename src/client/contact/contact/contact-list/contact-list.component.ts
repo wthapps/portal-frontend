@@ -151,7 +151,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
         let selectedObjects = (event.payload && event.payload.selectedObjects)? event.payload.selectedObjects : this.contactService.selectedObjects;
-        console.log(selectedObjects, '<<<<<<')
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
         this.contactService.update(selectedObjects).subscribe((res: any) => {
 

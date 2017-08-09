@@ -1,23 +1,18 @@
 <div class="media-page-detail-left">
   <z-contact-shared-toolbar [pageTitle]="pageTitle">
-    <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="mode=='view'">
-      <ul class="page-body-control-menu">
-        <li>
-          <a href="javascript:;" (click)="gotoEdit()" class="btn"
-             pTooltip="{{ tooltip.edit }}" tooltipPosition="top">
-            <i class="fa fa-edit"></i></a>
-        </li>
-      </ul>
+    <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="contactEdit">
+      <button *ngIf="mode == 'edit'" [disabled]="!contactEdit.name.valid && contactEdit.name.errors.required" type="button" (click)="contactEdit.onSubmit(contactEdit.form.value)" class="btn btn-outline-primary btn-min mr10">Save</button>
+      <button *ngIf="mode == 'create'" [disabled]="!contactEdit.name.valid && contactEdit.name.errors.required" type="button" (click)="contactEdit.onSubmit(contactEdit.form.value)" class="btn btn-outline-primary btn-min mr10">Create</button>
+      <button *ngIf="mode == 'edit'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts/detail', contact.id]">Cancel</button>
+      <button *ngIf="mode == 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel</button>
     </div>
   </z-contact-shared-toolbar>
 
   <div class="page-body-content has-page-body-control">
     <div class="page-body-content-in zone-social">
       <div class="zone-social-in">
-        <contact-edit [contact]="contact" [mode]="mode" (event)="doEvent($event)"></contact-edit>
+        <contact-edit #contactEdit [contact]="contact" [mode]="mode" (event)="doEvent($event)"></contact-edit>
       </div>
     </div>
   </div>
 </div>
-
-
