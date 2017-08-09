@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //noinspection TypeScriptCheckImport
 import {
@@ -33,6 +34,7 @@ import { CoreSharedModule } from '../../../core/shared/shared.module';
     // HdTagInputModule,
     CoreSharedModule.forRoot(),
     TagInputModule,
+    BrowserAnimationsModule,
     InputTextareaModule
 
 
@@ -69,7 +71,6 @@ import { CoreSharedModule } from '../../../core/shared/shared.module';
     PostLikeDislikeComponent,
     PostPrivacyCustomComponent,
     // MemberListInviteComponent,
-
 
 
     // Comments

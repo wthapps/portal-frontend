@@ -8,7 +8,7 @@ import { Location } from '@angular/common';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { ConfirmationService } from 'primeng/components/common/api';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
 import { MediaListComponent } from '../media/media-list.component';
@@ -137,7 +137,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       this.list.objects.unshift(res);
     }
     if (this.page == 'album_detail') {
-      this.albumService.addToAlbum(this.params['id'], [res]).subscribe((res:any) => {
+      this.albumService.addToAlbum(this.params['id'], [res]).subscribe((res: any) => {
         this.list.objects = res.data;
       });
     }
@@ -181,7 +181,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       this.doAction(event);
     });
 
-  //  Listen to media uploader events
+    //  Listen to media uploader events
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
     })
@@ -331,7 +331,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     let self = this;
     this.albumService.getPhotosByAlbum(album.id).subscribe(
       (response: any) => {
-       self.download(response.data);
+        self.download(response.data);
       }, (error: any) => {
 
       });
@@ -341,7 +341,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     _.each(files, (file: any) => {
       this.mediaObjectService.download({id: file.id}).subscribe(
         (response: any) => {
-          var blob = new Blob([response.blob()], { type: file.content_type });
+          var blob = new Blob([response.blob()], {type: file.content_type});
           saveAs(blob, file.name);
         },
         (error: any) => {
@@ -382,7 +382,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   // TODO: Go back using previous path
   goBack() {
     this.route.params.subscribe((params: any) => {
-      if(params['prevUrl'] !== undefined)
+      if (params['prevUrl'] !== undefined)
         this.router.navigate([params['prevUrl']]);
       else
         this.location.back();
@@ -448,7 +448,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.router.navigate([
           'photos',
           this.mediaStore.getSelectedObjects()[selectedIdx].id,
-          { ids: ids2, mode: 0, prevUrl: this.router.url}
+          {ids: ids2, mode: 0, prevUrl: this.router.url}
         ]);
 
         break;
@@ -458,7 +458,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.router.navigate([
           'photos',
           this.selectedObjects[0].id,
-          { ids: ids, mode: 0, prevUrl: this.router.url}
+          {ids: ids, mode: 0, prevUrl: this.router.url}
         ]);
 
         break;
@@ -467,7 +467,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.router.navigate([
           `${this.selectedObjects[0].object_type}s`,
           this.selectedObjects[0].id,
-          { ids: ids, mode: 0, showDetail: true, prevUrl: this.router.url}
+          {ids: ids, mode: 0, showDetail: true, prevUrl: this.router.url}
         ]);
 
         // this.loadModalComponent(PhotoDetailModalComponent);

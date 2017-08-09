@@ -15,10 +15,11 @@ import { ZMediaTaggingService } from './tagging.service';
   imports: [
     CommonModule,
     FormsModule,
-    BrowserAnimationsModule,
 
     Ng2Bs3ModalModule,
-    TagInputModule
+
+    TagInputModule,
+    BrowserAnimationsModule
   ],
   declarations: [
     TaggingModalComponent,

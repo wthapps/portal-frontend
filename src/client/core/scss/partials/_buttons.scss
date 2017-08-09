@@ -100,8 +100,9 @@
 }
 
 .btn-default {
+  background-color: transparent;
   &, &:hover, &:focus, &.focus {
-    border-color: #ffffff;
+    border-color: transparent;
   }
 
   &:active,
@@ -109,7 +110,7 @@
     &:hover,
     &:focus,
     &.focus {
-      border-color: #ffffff;
+      border-color: transparent;
     }
   }
 }

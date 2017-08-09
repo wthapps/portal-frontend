@@ -55,6 +55,10 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   currentIndex: number = 0;
   editingData: any = null;
 
+  imgZoomClass: number = 0;
+  imgZoomMin: number = -10;
+  imgZoomMax: number = 24;
+
   private editing: boolean = false;
   private cropping: boolean;
   private cropperDefaultOptions: any = {

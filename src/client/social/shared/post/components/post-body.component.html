@@ -12,7 +12,7 @@
   </div>
 
   <div class="z-social-carousel">
-    <ul class="{{item.displayCss}}">
+    <ul class="{{ item.displayCss }}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
         <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, photo)">
           <img class="img-full" [src]="photo.url" alt="">
@@ -23,7 +23,7 @@
         <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, photo)"
            *ngIf="i == 5 && item.remainPhotos != 0">
                 <span>
-                  + {{item.remainPhotos}}
+                  + {{ item.remainPhotos }}
                 </span>
           <figure>
             <img class="img-full" [src]="photo.url" alt="">
@@ -35,7 +35,7 @@
   <div class="z-social-post-tag">
     <!--<a *ngFor="let tag of item.tags">-->
     <a *ngFor="let tag of item.tags_json">
-      {{tag.value}}
+      {{ tag.value }}
     </a>
   </div>
 
@@ -43,7 +43,7 @@
   <div *ngIf="!item.is_post">
     <hr/>
     <div class="form-group">
-      Shared from <a [routerLink]="['/posts/', parentItem.uuid]">{{parentItem.owner.name}}</a>
+      Shared from <a [routerLink]="['/posts/', parentItem.uuid]">{{ parentItem.owner.name }}</a>
     </div>
     <div class="z-social-post-content">
       <div class="z-social-post-txt">
@@ -52,13 +52,13 @@
       </div>
       <div class="z-social-post-tag">
         <a *ngFor="let tag of parentItem.tags_json">
-          {{tag.value}}
+          {{ tag.value }}
         </a>
       </div>
     </div>
 
     <div class="z-social-carousel">
-      <ul class="{{parentItem.displayCss}}">
+      <ul class="{{ parentItem.displayCss }}">
         <li *ngFor="let photo of parentItem.photos;	let	i	=	index">
           <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, i)">
             <img class="img-full" [src]="photo.url" alt="">
@@ -69,7 +69,7 @@
           <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, i)"
              *ngIf="i == 5 && parentItem.remainPhotos != 0">
                   <span>
-                    + {{parentItem.remainPhotos}}
+                    + {{ parentItem.remainPhotos }}
                   </span>
             <figure>
               <img class="img-full" [src]="photo.url" alt="">
@@ -86,22 +86,22 @@
         <i class="fa fa-thumbs-o-up" [ngClass]="{'active' : (item.reactions.indexOf('like') >= 0)}"
            (click)="postItem.createReaction($event, 'like', 'post', item.uuid)"></i>
         <span class="can-click" *ngIf="item.likes.length>0" data-toggle="modal"
-              (click)="onActions(actions.openLikeDislike, item.likes, 'like')">{{item.likes.length}}</span>
-        <span *ngIf="item.likes.length==0" href="javascript:;">{{item.likes.length}}</span>
+              (click)="onActions(actions.openLikeDislike, item.likes, 'like')">{{ item.likes.length }}</span>
+        <span *ngIf="item.likes.length==0" href="javascript:;">{{ item.likes.length }}</span>
       </li>
       <li>
         <i class="fa fa-thumbs-o-down" [ngClass]="{'active' : (item.reactions.indexOf('dislike') >= 0)}"
            (click)="postItem.createReaction($event, 'dislike', 'post', item.uuid)"></i>
         <span class="can-click" *ngIf="item.dislikes.length>0" data-toggle="modal"
-              (click)="onActions(actions.openLikeDislike, item.dislikes, 'dislike')">{{item.dislikes.length}}</span>
-        <span *ngIf="item.dislikes.length==0" href="javascript:;">{{item.dislikes.length}}</span>
+              (click)="onActions(actions.openLikeDislike, item.dislikes, 'dislike')">{{ item.dislikes.length }}</span>
+        <span *ngIf="item.dislikes.length==0" href="javascript:;">{{ item.dislikes.length }}</span>
       </li>
       <li *ngIf="!item.disable_share">
-        <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{item.shared_count}}
+        <i class="fa fa-share-alt" (click)="onActions(actions.openShare)"></i> {{ item.shared_count }}
       </li>
 
       <li>
-        <i class="fa fa-comments" (click)="onActions(actions.toggleComments)"></i> {{item.comment_count}}
+        <i class="fa fa-comments" (click)="onActions(actions.toggleComments)"></i> {{ item.comment_count }}
       </li>
     </ul>
 

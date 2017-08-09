@@ -1,4 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ZContactSharedListComponent } from './list/list.component';
@@ -35,6 +36,7 @@ import { ZContactPipeModule } from './pipe/pipe.module';
 
     // third party libs
     TagInputModule,
+    BrowserAnimationsModule,
 
     CoreSharedModule.forRoot()
   ],

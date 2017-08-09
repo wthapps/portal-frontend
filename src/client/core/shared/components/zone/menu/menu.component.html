@@ -27,7 +27,7 @@
             <i class="fa fa-tag"></i> Labels
           </a>
         </li>
-        <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index" [ngForTrackBy]="trackMenu">
+        <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index">
           <li *ngIf="contact.name != ''" class="text-capitalize" [ngClass]="(currentLabel === contact?.name) ? 'active' : ''" >
             <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]" (click)="doEvent({action: contact?.action, event: $event})">
               <i class="{{contact.icon}}"></i> {{ contact.name }}  ({{ contact?.count }})
@@ -68,7 +68,7 @@
         Social Network
       </a>
       <ul [ngClass]="{'active': urls.social == hostname}" class="menuleft-nav-sub">
-        <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index" [ngForTrackBy]="trackByFn">
+        <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
           <li *ngIf="social.name != ''" [routerLinkActive]="['active']"
               [ngClass]="{'hidden': social.link == '/search'}">
             <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
@@ -88,7 +88,7 @@
         Chat
       </a>
       <ul [ngClass]="{'active': urls.chat == hostname}" class="menuleft-nav-sub" id="zone_menu_chat">
-        <ng-template ngFor let-chat [ngForOf]="chatMenu" let-i="index" [ngForTrackBy]="trackByFn">
+        <ng-template ngFor let-chat [ngForOf]="chatMenu" let-i="index">
           <li *ngIf="chat.name != ''" [routerLinkActive]="['active']">
             <a draggable="false" [routerLink]="[chat.link]">
               <i class="{{ chat.icon }}"></i> {{ chat.name }}
@@ -107,7 +107,7 @@
         Picture
       </a>
       <ul [ngClass]="{'active': urls.media == hostname}" class="menuleft-nav-sub">
-        <ng-template ngFor let-media [ngForOf]="mediaMenu" let-i="index" [ngForTrackBy]="trackByFn">
+        <ng-template ngFor let-media [ngForOf]="mediaMenu" let-i="index">
           <li *ngIf="media.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
             <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">
               <i class="{{ media.icon }}"></i> {{ media.name }}

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+
 import { PhotoService } from '../../core/shared/services/photo.service';
 import { BasePhotoDetailComponent } from '../../core/shared/components/photo/detail/base-photo-detail.component';
-import { ConfirmationService } from 'primeng/primeng';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { ZMediaSharingService } from '../../core/shared/components/photo/modal/sharing/sharing.service';
 

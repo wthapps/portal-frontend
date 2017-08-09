@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../services/photo.service';
-import { ConfirmationService } from 'primeng/primeng';
 import { LoadingService } from '../../loading/loading.service';
 import { ZMediaSharingService } from '../modal/sharing/sharing.service';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 declare let _: any;
 declare let saveAs: any;
@@ -12,7 +12,7 @@ declare let saveAs: any;
 @Component({
   moduleId: module.id,
   selector: 'base-photo-detail',
-  templateUrl: `<div>base photo details</div>`,
+  template: `<div>base photo details</div>`,
   entryComponents: []
 })
 
