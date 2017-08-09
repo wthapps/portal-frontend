@@ -1,5 +1,5 @@
-<input #fileBrowse type="file" multiple="multiple" accept="image/*" style="display: none;"
-       autofocus="true" (change)="changeFiles($event)" *ngIf="multipleSelect"/>
-<input #fileBrowse type="file" accept="image/*" style="display: none;"
-       autofocus="true" (change)="changeFiles($event)" *ngIf="!multipleSelect"/>
+<input #fileBrowse type="file" [attr.multiple]="multipleSelect ? 'multiple': null" accept="image/*" style="display: none;"
+       autofocus="true" (change)="changeFiles($event)" >
+<!--<input #fileBrowse type="file" accept="image/*" style="display: none;"-->
+       <!--autofocus="true" (change)="changeFiles($event)" *ngIf="!multipleSelect"/>-->
 

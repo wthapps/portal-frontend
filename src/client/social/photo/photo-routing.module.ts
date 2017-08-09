@@ -8,7 +8,7 @@ import {
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'photos/:id', component: PhotoDetailComponent},
+      {path: 'photos/:id', component: PhotoDetailComponent, outlet: 'modal'},
       {path: 'posts/:postId/photos/:id', component: ZSocialPhotoComponent},
       {path: 'posts/:postId/photos', component: ZSocialPhotoComponent},
       {path: 'comments/:commentId/photos/:id', component: ZSocialPhotoComponent},

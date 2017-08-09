@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+
+import 'rxjs/add/operator/toPromise';
+
 import { Constants } from '../../../../core/shared/config/constants';
 import { SocialService } from '../../services/social.service';
+import { SocialFavoriteService } from '../../services/social-favorites.service';
 
 declare var _: any;
 
@@ -18,22 +22,32 @@ export class ZSocialShareProfileMemberComponent implements OnInit {
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private socialService: SocialService) {
+  constructor(private socialService: SocialService,
+              private favoriteService: SocialFavoriteService) {
   }
 
   ngOnInit() {
   }
 
   toggleFavourite(item: any, group: string) {
-    this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
-      (res: any) => {
+    // this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
+    //   (res: any) => {
+    //     if (!_.isEmpty(this.favourite)) {
+    //       this.favourite = undefined;
+    //     } else {
+    //       this.favourite = res.data;
+    //     }
+    //   }
+    // );
+
+    this.favoriteService.addFavourite(item.uuid, group)
+      .then((res: any) => {
         if (!_.isEmpty(this.favourite)) {
           this.favourite = undefined;
         } else {
           this.favourite = res.data;
         }
-      }
-    );
+      });
   }
 
   /*
