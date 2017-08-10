@@ -10,6 +10,8 @@ import { ChatCommonService } from '../../../core/shared/services/chat.common.ser
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { Observable } from 'rxjs/Observable';
 import { ChatContactService } from './chat-contact.service';
+import { Message } from '../models/message.model';
+
 
 declare var _: any;
 
@@ -195,19 +197,24 @@ export class ChatService {
   }
 
   createUploadingFile() {
-    let item: any = this.getContactSelect();
-    this.chatCommonService.addMessage(item.value.group_json.id, {message_type: 'file_tmp'});
+    let groupId = this.storage.find('conversation_select').value.group_json.id;
+    let message: Message = new Message({
+      message: 'Sending file.....',
+      message_type: 'file',
+      content_type: 'media/generic'
+    });
+    this.sendMessage(groupId, message);
   }
 
   removeUploadingFile(groupId: any) {
-    let item = this.storage.find('chat_messages_group_' + groupId);
-    let newValue = _.remove(item.value.data, (v: any) => {
-      return v.message_type != 'file_tmp';
-    });
-    item.value.data = newValue;
-    let currentGroupId = this.storage.find('conversation_select').value.group_json.id;
-    if (currentGroupId == groupId)
-      this.storage.save('current_chat_messages', item);
+    // let item = this.storage.find('chat_messages_group_' + groupId);
+    // let newValue = _.remove(item.value.data, (v: any) => {
+    //   return v.message_type != 'file_tmp';
+    // });
+    // item.value.data = newValue;
+    // let currentGroupId = this.storage.find('conversation_select').value.group_json.id;
+    // if (currentGroupId == groupId)
+    //   this.storage.save('current_chat_messages', item);
   }
 
   getUsersOnline() {

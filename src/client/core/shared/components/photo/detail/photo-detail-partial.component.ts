@@ -278,7 +278,6 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   zoomCropper(ratio: any) {
-    console.log('sdflasjfd;laf', ratio);
     this.editing = ratio != 0 ? true : false;
     if (ratio == 0) {
       this.cropper.reset();
