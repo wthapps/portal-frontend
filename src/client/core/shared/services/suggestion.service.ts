@@ -11,14 +11,15 @@ declare var _: any;
  */
 export class SuggestionService {
 
+  public input$: Observable<string>;
+  public suggest$: Observable<any[]>;
+
   private inputSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private suggestSubject: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
-  public input$: Observable<string> = this.inputSubject.asObservable();
-  public suggest$: Observable<any[]> = this.suggestSubject.asObservable();
-
   constructor() {
-
+    this.input$ = this.inputSubject.asObservable();
+    this.suggest$  = this.suggestSubject.asObservable();
   }
 
   public setInput(input: string) {

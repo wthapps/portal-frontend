@@ -1,20 +1,20 @@
 <div class="media media-no-hidden" *ngIf="data">
   <div class="media-left">
         <span class="avatar-sm">
-          <img [src]="data.profile_image" alt="{{data.name}}">
+          <img [src]="data.profile_image" alt="{{ data.name }}">
         </span>
   </div>
   <div class="media-body">
     <h5 class="media-heading m0">
-      <a [routerLink]="['/profile', data.uuid]" class="link-text">{{data.name}}</a>
+      <a [routerLink]="['/profile', data.uuid]" class="link-text">{{ data.name }}</a>
     </h5>
 
     <div class="text-fade">
-      {{data.friend_count}} friends
+      {{ data.friend_count }} friends
       <br>
-      {{data.follower_count}} followers
+      {{ data.follower_count }} followers
       <br>
-      {{data.following_count}} following
+      {{ data.following_count }} following
     </div>
   </div>
   <div class="media-right">

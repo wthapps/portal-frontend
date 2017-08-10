@@ -21,7 +21,7 @@
       <ul *ngIf="userService.loggedIn" class="nav navbar-nav-top navbar-right">
         <li class="dropdown navbar-nav-management">
           <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown"
-             pTooltip="{{tooltip.wthApps}}" tooltipPosition="bottom">
+             pTooltip="{{ tooltip.wthApps }}" tooltipPosition="bottom">
             <i class="fa fa-list"></i>
           </a>
           <ul class="dropdown-menu">
@@ -48,7 +48,7 @@
         <li class="dropdown navbar-nav-notification">
           <a aria-expanded="false" aria-haspopup="true" class="navbar-nav-icon dropdown-toggle"
              data-toggle="dropdown" href="javascript:;" role="button" (click)="toggleViewNotifications()"
-             pTooltip="{{tooltip.notifications}}" tooltipPosition="bottom">
+             pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
             <i class="fa fa-bell-o"></i><span class="notification-num" *ngIf="notificationService.newNotifCount > 0">{{ notificationService.newNotifCount }}</span>
           </a>
           <ul class="dropdown-menu" id="nav-notification-list">
@@ -75,7 +75,7 @@
                   <li class="navbar-nav-notification-item"
                       *ngFor="let notification of notificationService.notifications"
                       [ngClass]="{'unread-notification': !notification?.is_read }">
-                    <div class="media" data-id="notification_{{notification.id}}">
+                    <div class="media" data-id="notification_{{ notification.id }}">
                       <notification-item [notification]="notification"></notification-item>
                     </div>
                   </li>

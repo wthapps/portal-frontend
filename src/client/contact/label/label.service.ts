@@ -10,9 +10,9 @@ import { BaseEntityService } from '../../core/shared/services/base-entity-servic
 declare let _: any;
 @Injectable()
 export class LabelService extends BaseEntityService<Label> {
-  private labelsSubject: BehaviorSubject<Label[]> = new BehaviorSubject<Label[]>([]);
-
   labels$: Observable<Label[]>;
+
+  private labelsSubject: BehaviorSubject<Label[]> = new BehaviorSubject<Label[]>([]);
 
   constructor(protected apiBaseService: ApiBaseService) {
     super(apiBaseService);
@@ -153,23 +153,6 @@ export class LabelService extends BaseEntityService<Label> {
     return this.notifyLabelObservers(labels);
   }
 
-  private mapLabelToMenuItem(label: Label): any {
-    return {
-      id: label.id,
-      name: label.name,
-      link: '/contacts',
-      hasSubMenu: !label.system,
-      count: 0,
-      order: label.system ? label.order : (100 + label.order),
-      icon: label.name == 'all contacts' ? 'fa fa-address-book-o'
-        : label.name == 'favourite' ? 'fa fa-star'
-        : label.name == 'labels' ? 'fa fa-tags'
-        : label.name == 'blacklist' ? 'fa fa-ban'
-        : label.name == 'social' ? 'fa fa-globe'
-        : label.name == 'chat' ? 'fa fa-comments-o'
-        : 'fa fa-folder-o'
-    };
-  }
 
   notifyLabelObservers(labels: Label[] = this.labelsSubject.getValue()): Promise<any[]> {
     let orderedLabels = _.orderBy(labels, ['order'], ['asc']);
@@ -188,5 +171,23 @@ export class LabelService extends BaseEntityService<Label> {
       }
     }
     return filtered;
+  }
+
+  private mapLabelToMenuItem(label: Label): any {
+    return {
+      id: label.id,
+      name: label.name,
+      link: '/contacts',
+      hasSubMenu: !label.system,
+      count: 0,
+      order: label.system ? label.order : (100 + label.order),
+      icon: label.name == 'all contacts' ? 'fa fa-address-book-o'
+        : label.name == 'favourite' ? 'fa fa-star'
+          : label.name == 'labels' ? 'fa fa-tags'
+            : label.name == 'blacklist' ? 'fa fa-ban'
+              : label.name == 'social' ? 'fa fa-globe'
+                : label.name == 'chat' ? 'fa fa-comments-o'
+                  : 'fa fa-folder-o'
+    };
   }
 }

@@ -14,7 +14,7 @@
       </div>
 
       <div class="form-group">
-        <div class="pull-right text-fade"><span>{{tag_line.value|showLength}}</span>/150 characters</div>
+        <div class="pull-right text-fade"><span>{{ tag_line.value|showLength }}</span>/150 characters</div>
         <label>Tag Line</label>
         <textarea [formControl]="tag_line" maxlength="150" rows="3" class="form-control"
                   id="tag_line"
@@ -32,14 +32,14 @@
         <div class="content-overflow" style="max-height: 155px;" formArrayName="additional_links">
 
           <!--<pre>-->
-          <!--{{form.value|json}}-->
+          <!--{{ form.value|json }}-->
           <!--</pre>-->
 
           <div *ngFor="let add_link of additionalLinkControls(); let i=index" class="media">
             <div class="media-body" [formGroupName]="i">
 
               <!--<pre>-->
-              <!--{{form.value.additional_links[i].name|json}}-->
+              <!--{{ form.value.additional_links[i].name|json }}-->
               <!--</pre>-->
 
               <div class="row row-10">

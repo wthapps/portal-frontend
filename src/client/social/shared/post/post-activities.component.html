@@ -14,10 +14,10 @@
           <div class="z-social-media-body">
             <div class="z-heading">
               <div class="z-name">
-                {{item.owner.name}}
+                {{ item.owner.name }}
               </div>
               <div class="z-shared-with dropdown">
-                <a data-toggle="dropdown" href="#"><i class="fa fa-globe"></i> {{item.privacy}}</a>
+                <a data-toggle="dropdown" href="#"><i class="fa fa-globe"></i> {{ item.privacy }}</a>
                 <!--<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-check">-->
                 <!--<li><a href="#"><i class="fa fa-globe"></i> Public <i-->
                 <!--class="dropdown-menu-check-item fa fa-check"></i></a>-->
@@ -66,19 +66,19 @@
             </div>
 
             <div class="dropdown pull-right">
-              <a class="btn btn-default" data-toggle="collapse" href="#social-activities-2{{item.uuid}}">
+              <a class="btn btn-default" data-toggle="collapse" href="#social-activities-2{{ item.uuid }}">
                 <i class="fa fa-angle-down"></i>
               </a>
             </div>
 
           </div>
         </div>
-        <div class="collapse" id="social-activities-2{{item.uuid}}">
+        <div class="collapse" id="social-activities-2{{ item.uuid }}">
           <div class="z-social-post">
             <div class="z-social-post-content">
               <div class="z-social-post-txt">
                 <div class="z-social-post-txt-in">
-                  {{item.description}}
+                  {{ item.description }}
                 </div>
                 <!--<div class="z-social-post-txt-more">-->
                 <!--<a href="#">READ MORE</a>-->
@@ -86,11 +86,11 @@
               </div>
               <div class="z-social-post-tag">
                 <a *ngFor="let tag of item.tags">
-                  {{tag.name}}
+                  {{ tag.name }}
                 </a>
               </div>
               <div class="form-group">
-                Shared from <a href="#">{{item.parent_post.owner.name}}</a>
+                Shared from <a href="#">{{ item.parent_post.owner.name }}</a>
               </div>
             </div>
           </div>

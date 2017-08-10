@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { EmitEventMixin } from "../../../core/shared/mixins/shared/emit-event.mixin";
-import { Mixin } from "../../../core/design-patterns/decorator/mixin-decorator";
+import { EmitEventMixin } from '../../../core/shared/mixins/shared/emit-event.mixin';
+import { Mixin } from '../../../core/design-patterns/decorator/mixin-decorator';
 import { Constants } from '../../../core/shared/config/constants';
 
 

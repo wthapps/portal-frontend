@@ -2,7 +2,7 @@
   <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="item?.owner?.is_owner ? (userService.profile$ | async).profile_image : item.owner.profile_image"
+        <img [src]="item?.owner?.is_owner ? (profile$ | async).profile_image : item.owner.profile_image"
              alt="">
       </div>
     </div>
@@ -12,7 +12,7 @@
     <div class="z-heading">
       <a [routerLink]="['/' + profileUrl, item.owner.uuid]">
         <div class="z-name">
-          {{item.owner.name}}
+          {{ item.owner.name }}
         </div>
       </a>
       <div class="z-shared-with dropdown">
@@ -22,7 +22,7 @@
 
         <modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
           <modal-header cssClass="modal-social-head">
-            <h4 class="modal-title text-left text-capitalize"> {{privacyName(item)}}</h4>
+            <h4 class="modal-title text-left text-capitalize"> {{ privacyName(item) }}</h4>
             <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -33,7 +33,7 @@
             <span class="social-list-user-action">
             </span>
                 <img alt="" [src]="item.profile_image" title="" width="30">
-                <span>{{item.name}}</span>
+                <span>{{ item.name }}</span>
               </li>
             </ul>
           </modal-body>
@@ -50,7 +50,7 @@
     <div class="z-shared-info">
       <ul>
         <li>
-          <span class="text-fade">{{item.created_at | timeFormat}}</span>
+          <span class="text-fade">{{ item.created_at | timeFormat }}</span>
         </li>
         <li class="note" *ngIf="item.adult">
           Adult content
@@ -115,7 +115,7 @@
 
         <li>
           <a href="javascript:;"
-             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable '}}
+             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable ' }}
             notifications
           </a>
         </li>

@@ -24,9 +24,9 @@
         </div>
         <div class="media-center-body">
           <a class="link-text" *ngIf="favourite.friend" [routerLink]="[profileUrl, favourite.friend.uuid]">
-            {{favourite.friend.name}} </a>
+            {{ favourite.friend.name }} </a>
           <a class="link-text" *ngIf="favourite.community" [routerLink]="[communitiesUrl, favourite.community.uuid]">
-            {{favourite.community.name}} </a>
+            {{ favourite.community.name }} </a>
         </div>
         <div class="media-center-right">
           <div class="btn-group pull-right">

@@ -1,10 +1,10 @@
 <div class="list-group-item" *ngFor="let notification of notificationService.notifications"
-     data-id="notification_{{notification.id}}"
+     data-id="notification_{{ notification.id }}"
      [ngClass]="{'unread-notification': !notification?.is_read}">
   <div class="media" *ngIf="!notification.isHidden">
     <div class="media-left">
       <span class="avatar-xsm">
-        <img [src]="notification?.actor?.profile_image" alt="{{notification?.actor?.name}}">
+        <img [src]="notification?.actor?.profile_image" alt="{{ notification?.actor?.name }}">
       </span>
     </div>
     <div class="media-body">

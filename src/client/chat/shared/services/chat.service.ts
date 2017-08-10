@@ -9,7 +9,7 @@ import { ChatConstant } from '../../../core/shared/constant/chat-constant';
 import { ChatCommonService } from '../../../core/shared/services/chat.common.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { Observable } from 'rxjs/Observable';
-import { ChatContactService } from "./chat-contact.service";
+import { ChatContactService } from './chat-contact.service';
 
 declare var _: any;
 

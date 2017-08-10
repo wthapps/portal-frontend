@@ -14,11 +14,11 @@ import { ZContactService } from '../../shared/services/contact.service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEventAction } from '../../../core/shared/services/common-event/common-event-action';
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
-import { CommonEvent } from "../../../core/shared/services/common-event/common-event";
+import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { Constants } from '../../../core/shared/config/constants';
-import { _wu } from "../../../core/shared/utils/utils";
-import { _contact } from "../../shared/utils/contact.functions";
-import { LabelService } from "../../label/label.service";
+import { _wu } from '../../../core/shared/utils/utils';
+import { _contact } from '../../shared/utils/contact.functions';
+import { LabelService } from '../../label/label.service';
 
 declare var _: any;
 @Component({
@@ -46,7 +46,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   private destroySubject: Subject<any> = new Subject<any>();
 
-  constructor(private contactService: ZContactService,
+  constructor(public contactService: ZContactService,
               private route: ActivatedRoute,
               private cdr: ChangeDetectorRef,
               private router: Router,

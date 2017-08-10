@@ -273,7 +273,7 @@
               <div class="media-body">
                 <select name="nationality" class="form-control" id="phone_prefix" [formControl]="nationality">
                   <option value="">Select your country</option>
-                  <option *ngFor="let c of countriesCode" value="{{c.code}}">{{ c.name }}</option>
+                  <option *ngFor="let c of countriesCode" value="{{ c.code }}">{{ c.name }}</option>
                 </select>
               </div>
             </div>

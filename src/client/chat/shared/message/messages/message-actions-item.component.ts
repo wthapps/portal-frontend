@@ -1,7 +1,7 @@
 
-import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { Mixin } from "../../../../core/design-patterns/decorator/mixin-decorator";
-import { EmitEventMixin } from "../../../../core/shared/mixins/shared/emit-event.mixin";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Mixin } from '../../../../core/design-patterns/decorator/mixin-decorator';
+import { EmitEventMixin } from '../../../../core/shared/mixins/shared/emit-event.mixin';
 
 declare var _: any;
 

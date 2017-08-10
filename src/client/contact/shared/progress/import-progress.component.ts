@@ -28,7 +28,7 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
   public importStatus: any;
 
   constructor(private contactService: ZContactService,
-              private gapi: GoogleApiService,
+              public gapi: GoogleApiService,
               public loadingService: LoadingService) {
 
     this.importSubscription = this.contactService.importContactDataService.eventIn.subscribe((event: any) => {

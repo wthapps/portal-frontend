@@ -5,7 +5,7 @@ import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { ZContactEditComponent } from "./contact-edit.component";
+import { ZContactEditComponent } from './contact-edit.component';
 
 @Component({
   moduleId: module.id,
