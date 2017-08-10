@@ -131,33 +131,14 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
 
-    // // this.postList.type = 'community';
-    // this.route.params.subscribe(params => {
-    //   this.uuid = params['id'];
-    //   this.getCommunity(this.uuid);
-    //   // this.checkCurrentUser(this.uuid);
-    //
-    // });
-    //
-    // this.route.queryParams.subscribe(
-    //   (queryParams: any) => {
-    //     this.selectedTab = queryParams['tab'];
-    //     this.selectedTabTitle = _.find(this.tabData, ['key', queryParams['tab']]);
-    //     this.setTabVisibility();
-    //     if (this.selectedTab !== undefined)
-    //       this.getTabItems(this.uuid, this.selectedTab);
-    //     // this.isMember = true; // testing
-    //   }
-    // );
-
     this.route.params.combineLatest(this.route.queryParams)
       .map((p: any) => {
       if(this.uuid !== p[0]['id']) {
         this.uuid = p[0]['id'];
         this.getCommunity(this.uuid);
       }
-      this.selectedTab = p[1]['tab'];
-      this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
+      this.selectedTab = p[1]['tab'] ;
+      this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
         this.getTabItems(this.uuid, this.selectedTab);
