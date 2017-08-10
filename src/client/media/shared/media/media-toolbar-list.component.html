@@ -37,7 +37,7 @@
         <a class="btn btn-inline" href="javascript:;" data-toggle="dropdown" draggable="false">
           {{ object.name }} <i class="fa fa-caret-down"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="dropdownMenu2">
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
           <li><a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"
                  draggable="false">
             <i class="fa fa-plus-square"></i> Add Photos</a>
@@ -170,7 +170,7 @@
            pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
           <i class="fa fa-ellipsis-v"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li>
             <a (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal'}})" href="javascript:;"
                draggable="false">
@@ -236,7 +236,7 @@
            pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
           <i class="fa fa-ellipsis-v"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li>
             <a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;" draggable="false">
               <i class="fa fa-toggle-right"></i> Slideshow
@@ -307,7 +307,7 @@
           <i class="fa fa-ellipsis-v"></i>
         </a>
 
-        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li>
             <a (click)="onAction({action: 'slideShow', params: {}})" href="javascript:;" draggable="false">
               <i class="fa fa-toggle-right"></i> Preview
@@ -350,7 +350,7 @@
           <i class="fa"
              [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li>
             <a (click)="onAction({action: 'changeView', params: {viewOption: grid}})" href="javascript:;"
                draggable="false">

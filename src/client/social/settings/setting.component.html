@@ -62,7 +62,7 @@
                 <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i
                   class="fa fa-check"></i> {{ user.settings.viewable_social.value | titleCase }} <span
                   class="caret"></span></a>
-                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-check" aria-labelledby="dropdownMenu">
+                <ul class="dropdown-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
                   <li><a href="javascript:;"
                          (click)="user.settings.viewable_social.value = 'public'; updateSettings({viewable_social: user.settings.viewable_social})">
                     <i class="fa fa-check" *ngIf="user.settings.viewable_social.value == 'public'"></i> Public</a></li>
@@ -106,7 +106,7 @@
               <div>
                 <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i
                   class="fa fa-check"></i> {{ user.settings.viewable_post.value | titleCase }} <span class="caret"></span></a>
-                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-check" aria-labelledby="dropdownMenu">
+                <ul class="dropdown-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
                   <li><a href="javascript:;"
                          (click)="user.settings.viewable_post.value = 'public'; updateSettings({viewable_post: user.settings.viewable_post})">
                     <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'public'"></i> Public</a></li>

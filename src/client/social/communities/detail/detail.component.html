@@ -74,7 +74,7 @@
                           pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
                     <i class="fa fa-ellipsis-v"></i>
                   </button>
-                  <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                  <ul class="dropdown-menu dropdown-menu-right">
                     <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
                     <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">
                       {{userSettings?.mute ? 'Enable' : 'Disable'}} notifications </a>

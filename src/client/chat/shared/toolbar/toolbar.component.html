@@ -24,7 +24,7 @@
                 pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+        <ul class="dropdown-menu dropdown-menu-right">
           <!--<li><a href="#">View Photos</a></li>-->
           <!--<li><a href="#">Mark as Unread</a></li>-->
           <li><a href="javascript:;" (click)="sendContact()">Send Contact</a></li>
@@ -74,7 +74,7 @@
         <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
         {{ user_in_group.name }} <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu dropdown-menu-lg">
+      <ul class="dropdown-menu">
         <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
         <!--<li class="divider"></li>-->
         <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>

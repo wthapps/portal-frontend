@@ -16,7 +16,7 @@
           <i *ngIf="menu?.action=='favourite'" class="fa" [ngClass]="photo.favorite ? 'fa-star-o': 'fa-star'"></i>
           <i *ngIf="menu?.action!='favourite'" [ngClass]="menu.iconClass"></i>
         </a>
-        <ul *ngIf="menu?.parent" class="dropdown-menu dropdown-menu-lg">
+        <ul *ngIf="menu?.parent" class="dropdown-menu">
           <li *ngFor="let subMenu of menu.menus">
             <a href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})">
               <i [ngClass]="subMenu.iconClass"></i> {{ subMenu.text }}
