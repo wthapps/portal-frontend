@@ -17,12 +17,11 @@ declare var _: any;
   styleUrls: ['contact-edit.component.css']
 })
 export class ZContactEditComponent implements OnChanges {
-
   @Input('contact') contact: Contact;
   @Input() mode: string = 'create';
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  avatarDefault: string = Constants.img.avatar;
+  public avatarDefault: string = Constants.img.avatar;
 
   deleteObjects: any = {};
 

@@ -24,7 +24,7 @@ declare var $: any;
 })
 
 export class MessageEditorComponent implements OnInit, OnDestroy {
-  tooltip:any = Constants.tooltip;
+  tooltip: any = Constants.tooltip;
 
   emojiData: any = [];
 
@@ -136,8 +136,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   cancelEditingMessage() {
     if (this.mode == FORM_MODE.EDIT) {
       this.mode = FORM_MODE.CREATE;
-    } else {
-
     }
     this.resetEditor();
   }
@@ -156,10 +154,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
         (response: any) => {
           this.mode = FORM_MODE.CREATE;
           this.resetEditor();
-        },
-        error => {
         });
-
     } else {
       this.chatService.sendTextMessage(this.message.message, {toTop: true});
       this.resetEditor();

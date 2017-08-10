@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { Config } from '../../../core/shared/config/env.config';
@@ -53,8 +54,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
               private confirmationService: ConfirmationService,
               private labelService: LabelService,
               private loadingService: LoadingService,
-              private commonEventService: CommonEventService
-  ) {
+              private commonEventService: CommonEventService) {
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     })
@@ -73,10 +73,10 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
 
     this.route.params.forEach((params: Params) => {
-      if(params['search']) {
+      if (params['search']) {
         this.contactService.search({search_value: params['search']});
       } else {
-        switch(params['label']) {
+        switch (params['label']) {
           case 'all contacts':
           case 'undefined':
             this.contactService.filter({label: undefined});
@@ -91,7 +91,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.contactService.contacts$
       .takeUntil(this.destroySubject)
       .subscribe((contacts: any[]) => {
-         // this.contacts.length = 0;
+        // this.contacts.length = 0;
         this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
         this.loadingService.stop();
       });
@@ -103,9 +103,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.contactService.initLoad$
       .takeUntil(this.destroySubject)
       .subscribe((data: any) => {
-          if(data === true)
-            this.loadingService.stop('#contact-list');
-        });
+        if (data === true)
+          this.loadingService.stop('#contact-list');
+      });
     this.cdr.detectChanges();
   }
 
@@ -134,12 +134,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   doEvent(event: any) {
     console.log('doEvent in contact list:::', event);
-    switch(event.action) {
+    switch (event.action) {
       case 'open_add_label_modal':
         let labels: any[] = [];
-        if(this.contactService.selectedObjects.length > 1) {
+        if (this.contactService.selectedObjects.length > 1) {
           labels = [];
-        } else if(this.contactService.selectedObjects.length == 1) {
+        } else if (this.contactService.selectedObjects.length == 1) {
           labels = this.contactService.selectedObjects[0].labels;
           event.mode = 'edit';
         }
@@ -150,62 +150,64 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       // this will handle all cases as: favourite, add to label
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
-        let selectedObjects = (event.payload && event.payload.selectedObjects)? event.payload.selectedObjects : this.contactService.selectedObjects;
+        let selectedObjects = (event.payload && event.payload.selectedObjects) ? event.payload.selectedObjects : this.contactService.selectedObjects;
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
         this.contactService.update(selectedObjects).subscribe((res: any) => {
-
+          console.log(res);
         });
         break;
     }
   }
 
   toggleLabel(name: string) {
-    let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => { return label.name == name; });
+    let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => {
+      return label.name == name;
+    });
     if (_contact.isContactsHasLabelName(this.contactService.selectedObjects, name)) {
       _contact.removeLabelContactsByName(this.contactService.selectedObjects, name);
     } else {
       _contact.addLabelContacts(this.contactService.selectedObjects, label);
     }
     this.contactService.update(this.contactService.selectedObjects).subscribe((res: any) => {
-
+      console.log(res);
     });
   }
 
   doActionsToolbar(event: any) {
-    if(event.action == 'favourite') {
+    if (event.action == 'favourite') {
       // this.toggleLabelB(this.contactService.selectedObjects, 'favourite');
       this.toggleLabel('favourite');
     }
 
-    if(event.action == 'blacklist') {
+    if (event.action == 'blacklist') {
       this.toggleLabel('blacklist');
     }
 
-    if(event.action == 'tag') {
+    if (event.action == 'tag') {
       this.doEvent({action: 'open_add_label_modal'});
     }
 
-    if(event.action == 'delete') {
+    if (event.action == 'delete') {
       this.contactService.confirmDeleteContacts(this.contactService.selectedObjects);
     }
 
-    if(event.action == 'social') {
-      if(this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
+    if (event.action == 'social') {
+      if (this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
         window.location.href = this.linkSocial + this.contactService.selectedObjects[0].wthapps_user.uuid;
       }
     }
 
-    if(event.action == 'chat') {
-      if(this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
+    if (event.action == 'chat') {
+      if (this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
         window.location.href = this.linkChat + this.contactService.selectedObjects[0].wthapps_user.uuid;
       }
     }
 
-    if(event.action == 'view_detail') {
+    if (event.action == 'view_detail') {
       this.viewContactDetail(this.contactService.selectedObjects[0].id);
     }
 
-    if(event.action == 'edit_contact') {
+    if (event.action == 'edit_contact') {
       this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'edit'}]).then();
     }
   }

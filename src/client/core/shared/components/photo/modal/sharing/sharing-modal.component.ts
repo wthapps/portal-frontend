@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -7,8 +7,6 @@ import 'rxjs/add/operator/switchMap';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaSharingService } from './sharing.service';
 import { Constants } from '../../../../config/constants';
-import { WthAppsBaseModal } from '../../../../interfaces/wthapps-base-modal';
-
 
 declare var $: any;
 declare var _: any;
@@ -19,7 +17,7 @@ declare var _: any;
   templateUrl: 'sharing-modal.component.html',
   styleUrls: ['sharing-modal.component.css']
 })
-export class SharingModalComponent implements OnInit, OnDestroy {
+export class SharingModalComponent implements OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
   @Input() selectedItems: any = [];
   @Input() type: string;
@@ -33,7 +31,7 @@ export class SharingModalComponent implements OnInit, OnDestroy {
     create: 1,
     creating: 10,
     delete: 9,
-    deleting:90
+    deleting: 90
   };
 
 
@@ -66,10 +64,6 @@ export class SharingModalComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnInit() {
-
-  }
-
   ngOnDestroy() {
     this.contactTerm$.unsubscribe();
   }
@@ -84,7 +78,7 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   }
 
   getShared() {
-    let body = { objects: _.map(this.selectedItems, 'id') };
+    let body = {objects: _.map(this.selectedItems, 'id')};
 
     this.mediaSharingService.getShared(body).take(1).subscribe((response: any)=> {
       this.sharedContacts = response.data;
@@ -110,9 +104,11 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   save() {
 
     // create new sharing with selected contacts
-    if(this.mode == this.operation.creating) {
+    if (this.mode == this.operation.creating) {
       let body = {
-        objects: _.map(this.selectedItems, (item: any) => { return {id: item.id, object_type: item.object_type} }),
+        objects: _.map(this.selectedItems, (item: any) => {
+          return {id: item.id, object_type: item.object_type};
+        }),
         recipients: _.map(this.selectedContacts, 'id')
       };
 
@@ -136,11 +132,12 @@ export class SharingModalComponent implements OnInit, OnDestroy {
           _.map(this.selectedContacts, 'id')), this.removedContacts)
       };
 
-      this.mediaSharingService.update(body).take(1).subscribe((response: any) => {
+      this.mediaSharingService.update(body).take(1).subscribe(
+        (response: any) => {
           this.sharedContacts = response.data;
           this.resetData();
           this.updateSelectedItems({contacts: this.sharedContacts});
-          this.event.emit({action: 'media:photo:update_recipients', payload: {data: this.sharedContacts}})
+          this.event.emit({action: 'media:photo:update_recipients', payload: {data: this.sharedContacts}});
         },
         (error: any) => {
           console.log('error', error);
@@ -167,7 +164,7 @@ export class SharingModalComponent implements OnInit, OnDestroy {
 
   cancel() {
     // cancel removing items
-    if (this.mode == this.operation.editing || this.mode == this.operation.deleting){
+    if (this.mode == this.operation.editing || this.mode == this.operation.deleting) {
       this.removedContacts = [];
       this.mode = this.operation.read;
       return;
@@ -203,14 +200,13 @@ export class SharingModalComponent implements OnInit, OnDestroy {
   }
 
   private setMode() {
-    let count = this.removedContacts.length +this.selectedContacts.length;
+    let count = this.removedContacts.length + this.selectedContacts.length;
     if (count == 0) {
       this.mode = this.operation.read;
-    }
-    else if (count > 0) {
+    } else if (count > 0) {
       this.mode = this.sharedContacts.length == 0 ? this.operation.creating : this.operation.editing;
     }
-    this.hasChanged = this.mode != this.operation.read ? true: false;
+    this.hasChanged = this.mode != this.operation.read ? true : false;
   }
 
 }

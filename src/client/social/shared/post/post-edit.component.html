@@ -9,7 +9,7 @@
       <div class="z-social-media-body">
         <div class="z-heading">
           <div class="z-name">
-            {{(profile$ | async)?.first_name}}
+            {{ (profile$ | async)?.first_name }}
           </div>
           <div class="z-shared-with dropdown">
             <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
@@ -94,8 +94,7 @@
                        [(ngModel)]="post.tags"
                        (onRemove)="removeTag($event)"
                        (onAdd)="addTag($event)"
-                       [formControl]="tagsCtrl"
-            >
+                       [formControl]="tagsCtrl">
               <!--TODO: -->
               <tag-input-dropdown [autocompleteItems]="tags">
               </tag-input-dropdown>

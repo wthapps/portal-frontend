@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
+  Component, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/api';
 
@@ -23,7 +23,7 @@ declare var _: any;
     ZSocialShareCommunityFormPreferenceComponent
   ]
 })
-export class ZSocialShareProfileCommunityComponent implements OnInit {
+export class ZSocialShareProfileCommunityComponent {
   @Input() data: any;
   @Output() actionFromItem: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
@@ -45,9 +45,6 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
               private favoriteService: SocialFavoriteService,
               private zoneReportService: ZSharedReportService,
               private resolver: ComponentFactoryResolver) {
-  }
-
-  ngOnInit() {
   }
 
   sendJoinRequest() {
@@ -144,7 +141,6 @@ export class ZSocialShareProfileCommunityComponent implements OnInit {
       }
     )
   }
-
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);

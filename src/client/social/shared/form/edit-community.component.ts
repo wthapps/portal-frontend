@@ -114,7 +114,7 @@ export class ZSocialShareCommunityFormEditComponent {
   }
 
   additionalLinkControls() {
-    return (<FormGroup>(<FormGroup>this.form).controls.additional_links).controls;;
+    return (<FormGroup>(<FormGroup>this.form).controls.additional_links).controls;
   }
 
 

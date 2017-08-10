@@ -9,7 +9,7 @@
       <a [routerLink]="['/' + communitiesUrl, data.uuid]" class="link-text">{{ data.name }}</a>
     </h5>
     <div class="text-fade">
-      {{ data.member_count }} {{data.member_count > 1 ? 'members': 'member'}}
+      {{ data.member_count }} {{ data.member_count > 1 ? 'members': 'member' }}
     </div>
   </div>
   <div class="media-right">
@@ -32,15 +32,19 @@
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onEdit()">Edit
-            Information</a></li>
-          <li><a href="javascript:;" (click)="toggleComNotification(data?.uuid)">
-            {{userSettings?.mute ? 'Enable' : 'Disable'}} notifications </a>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a href="javascript:;" (click)="onEdit()">Edit Information</a>
           </li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onPreferences()">Preferences</a>
+          <li>
+            <a href="javascript:;" (click)="toggleComNotification(data?.uuid)">
+              {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications
+            </a>
           </li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a [routerLink]="['/', communitiesUrl,data.uuid]"
-                                                                  [queryParams]="{tab: 'members'}">Manage members</a>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a href="javascript:;" (click)="onPreferences()">Preferences</a>
+          </li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a [routerLink]="['/', communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a>
           </li>
           <li role="separator" class="divider"></li>
           <li>
@@ -48,11 +52,16 @@
               Favourites <i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>
             </a>
           </li>
-          <li><a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a></li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onDelete()">Delete
-            community</a></li>
+          <li>
+            <a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a>
+          </li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a href="javascript:;" (click)="onDelete()">Delete community</a>
+          </li>
           <li class="divider"></li>
-          <li *ngIf="!data?.user_role"><a href="javascript:;" (click)="onReport(data.uuid)">Report community</a></li>
+          <li *ngIf="!data?.user_role">
+            <a href="javascript:;" (click)="onReport(data.uuid)">Report community</a>
+          </li>
         </ul>
       </div>
     </div>
