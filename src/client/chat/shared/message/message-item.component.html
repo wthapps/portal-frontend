@@ -19,7 +19,7 @@
 
         <!--mesasge menu-->
         <div class="message-item-menu dropdown"
-             *ngIf="(message.message_type == 'text' || message.file_type == 'Photo' || message.file_type == 'FileMedium')">
+             *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'FileMedium')">
           <i class="fa fa-sort-down" data-toggle="dropdown"
              pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
@@ -33,7 +33,7 @@
           </ul>
 
           <!--photos menu-->
-          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Photo'">
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Media::Photo'">
             <li *ngIf="message.file_json">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
@@ -59,8 +59,22 @@
         </div>
 
         <ng-template [ngIf]="message.message_type == 'file'">
+
+          <!--show sending -->
+          <div *ngIf="message.sending_status == 1" class="message-item-content-other-files">
+            <a class="media-div link-text" href="javascript:void();">
+              <div class="pull-left">
+                <i class="fa fa-spinner fa-spin fa-fw"></i>
+              </div>
+              <div class="media-div-body">
+                <div class="media-div-heading">{{ message.message }}</div>
+                <!--<div class="text-fade">{{ message.file_json.size | bytes:3 }}</div>-->
+              </div>
+            </a>
+          </div>
+
           <!--photo type-->
-          <div class="message-item-content-photo" *ngIf="message.file_type == 'Photo'">
+          <div class="message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
             <figure>
               <a [routerLink]="['/photos', message.file_json.id, {ids: [message.file_json.id], message: message.id, prevUrl: '/conversations'}]">
                 <img [src]="message.file_json.url" alt="">
@@ -81,14 +95,6 @@
           </div>
         </ng-template>
 
-
-        <ng-template [ngIf]="message.message_type == 'file_tmp'">
-          <!--other file types-->
-          <div class="message-item-content-other-files">
-            <i class="fa fa-spinner fa-spin fa-fw"></i> Sending ...
-          </div>
-
-        </ng-template>
 
 
         <!--hyperlink tpe-->
@@ -174,7 +180,7 @@
 
       </div>
       <div class="message-item-action"
-           *ngIf="(message.message_type == 'text' || message.message_type == 'Photo' || message.message_type == 'FileMedium')">
+           *ngIf="(message.message_type == 'text' || message.message_type == 'Media::Photo' || message.message_type == 'FileMedium')">
         <div class="message-item-time">
           <small>{{ message.created_at | timeFormat: "time_only" }}</small>
         </div>
