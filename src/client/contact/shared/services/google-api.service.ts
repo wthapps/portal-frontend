@@ -70,7 +70,7 @@ export class GoogleApiService {
         // 'discoveryDocs': [this.discoveryUrl],
         'clientId': cre_keys.CLIENT_KEY,
         'scope': this.SCOPE
-      })
+      });
     }).then(() => {
       console.debug('inside initClient Promise, this: ', this);
       this.GoogleAuth = gapi.auth2.getAuthInstance();
@@ -82,15 +82,15 @@ export class GoogleApiService {
       // User is not signed in. Start Google auth flow.
       return this.GoogleAuth.signIn()
         .then(() => { return Promise.resolve(this.GoogleAuth.currentUser.get());}
-        )
+        );
     } else {
       return Promise.resolve(this.GoogleAuth.currentUser.get());
-    };
+    }
   }
 
   startImportContact(user1?: any): Promise<any> {
     let user = user1 || this.GoogleAuth.currentUser.get();
-    let isAuthorized = user.hasGrantedScopes(this.SCOPE)
+    let isAuthorized = user.hasGrantedScopes(this.SCOPE);
     this.totalImporting = 0;
     console.log('user: ', user);
     if (_.get(user, 'Zi.access_token') != undefined && isAuthorized)
@@ -103,7 +103,7 @@ export class GoogleApiService {
         })
         .then((mapped_data: any) => { return this.importContactsToDb({contacts: mapped_data}); }
         , (err: any) => { return Promise.reject( err);})
-        .then((data: any) => { this.revokeAccess() ; return Promise.resolve(data)});
+        .then((data: any) => { this.revokeAccess(); return Promise.resolve(data);});
     else
       return Promise.reject(new Error(`access_token not found. Please recheck: ${user}`));
   }
@@ -172,7 +172,7 @@ export class GoogleApiService {
     return this.contactService.importGoogleContacts(json_data).toPromise()
       .then((res: any) => { console.log('import contacts to DB successfully', res); return res.data;}
       ,(err: any) => { console.error('import contacts ERRORS ', err); return Promise.reject(err);}
-      )
+      );
   }
 
 

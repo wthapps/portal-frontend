@@ -445,21 +445,24 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'previewAllPhotos':
         let ids2 = _.map(this.mediaStore.getSelectedObjects(), 'id');
         let selectedIdx = this.mediaStore.getCurrentSelectedIndex();
-        this.router.navigate([
-          'photos',
-          this.mediaStore.getSelectedObjects()[selectedIdx].id,
-          {ids: ids2, mode: 0, prevUrl: this.router.url}
-        ]);
+
+        this.router.navigate([{outlets: {modal: [
+            'photos',
+            this.mediaStore.getSelectedObjects()[selectedIdx].id,
+            {ids: ids2, mode: 0, prevUrl: this.router.url}
+          ]}}]
+          );
 
         break;
 
       case 'previewModal':
         let ids = _.map(this.selectedObjects, 'id');
-        this.router.navigate([
-          'photos',
-          this.selectedObjects[0].id,
-          {ids: ids, mode: 0, prevUrl: this.router.url}
-        ]);
+        this.router.navigate([{outlets: {modal: [
+            'photos',
+            this.selectedObjects[0].id,
+            {ids: ids, mode: 0, prevUrl: this.router.url}
+          ]}}]
+          );
 
         break;
       case 'previewDetailsModal':

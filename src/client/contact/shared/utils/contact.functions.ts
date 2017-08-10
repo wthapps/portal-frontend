@@ -1,6 +1,6 @@
 import { Output, EventEmitter } from '@angular/core';
 import { _wu } from '../../../core/shared/utils/utils';
-import { Config } from "../../../core/shared/config/env.config";
+import { Config } from '../../../core/shared/config/env.config';
 
 declare let _: any;
 

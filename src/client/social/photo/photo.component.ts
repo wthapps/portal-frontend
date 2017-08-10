@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+
+import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { BaseZoneSocialItem } from '../base/base-social-item';
 import { PhotoService } from '../../core/shared/services/photo.service';
@@ -57,7 +60,7 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
         }
 
         this.commentId = params['commentId'];
-        return this.photoService.getPhoto(this.id)
+        return this.photoService.getPhoto(this.id).toPromise()
                    .then((response: any) => {
                        // this.item = response.data;
                        this.selectedPhoto = response.data;

@@ -30,11 +30,11 @@
         <ng-template ngFor let-contact [ngForOf]="contactMenu" let-i="index">
           <li *ngIf="contact.name != ''" class="text-capitalize" [ngClass]="(currentLabel === contact?.name) ? 'active' : ''" >
             <a *ngIf="contact.name !='labels'" draggable="false" [routerLink]="['contacts', {label: contact.name}]" (click)="doEvent({action: contact?.action, event: $event})">
-              <i class="{{contact.icon}}"></i> {{ contact.name }}  ({{ contact?.count }})
+              <i class="{{ contact.icon }}"></i> {{ contact.name }}  ({{ contact?.count }})
             </a>
 
             <a *ngIf="contact.name =='labels'" draggable="false" href="javascript:;">
-              <i class="{{contact.icon}}"></i> {{ contact.name }}
+              <i class="{{ contact.icon }}"></i> {{ contact.name }}
             </a>
 
             <div *ngIf="contact.hasSubMenu" class="menuleft-nav-sub-action">

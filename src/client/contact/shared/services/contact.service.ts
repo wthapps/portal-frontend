@@ -28,6 +28,13 @@ export class ZContactService extends BaseEntityService<any> {
   readonly startIndex: number = 0;
   readonly ITEM_PER_PAGE: number = 20;
 
+  listenToList: any;
+  listenToItem: any;
+  contacts$: Observable<any[]>;
+  initLoad$: Observable<boolean>;
+  orderDesc$: Observable<boolean>;
+  isSelectAll$: Observable<boolean>;
+
   private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private initLoadSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(false);
@@ -36,13 +43,6 @@ export class ZContactService extends BaseEntityService<any> {
   private listenToItemSource = new Subject<any>();
   private filterOption: any = {};
   private nextLink: string;
-
-  listenToList = this.listenToListSource.asObservable();
-  listenToItem = this.listenToItemSource.asObservable();
-  contacts$: Observable<any[]> = this.contactsSubject.asObservable();
-  initLoad$: Observable<boolean> = this.initLoadSubject.asObservable();
-  orderDesc$: Observable<boolean> = this.orderDescSubject.asObservable();
-  isSelectAll$: Observable<boolean> = this.isSelectAllSubject.asObservable();
 
 
   constructor(protected apiBaseService: ApiBaseService,
@@ -53,7 +53,14 @@ export class ZContactService extends BaseEntityService<any> {
               private confirmationService: ConfirmationService) {
     super(apiBaseService);
     this.url = 'contact/contacts';
-    // this.initialLoad();
+
+    this.listenToList = this.listenToListSource.asObservable();
+    this.listenToItem = this.listenToItemSource.asObservable();
+    this.contacts$ = this.contactsSubject.asObservable();
+    this.initLoad$ = this.initLoadSubject.asObservable();
+    this.orderDesc$ = this.orderDescSubject.asObservable();
+    this.isSelectAll$ = this.isSelectAllSubject.asObservable();
+
 
     this.suggestService.input$.subscribe((input: any) => {
       let contacts: any[] = _.cloneDeep(this.searchContact(input));

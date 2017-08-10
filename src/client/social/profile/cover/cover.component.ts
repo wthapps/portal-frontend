@@ -19,7 +19,7 @@ declare var _: any;
   templateUrl: 'cover.component.html'
 })
 
-export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestroy {
+export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
 
   @Input() data: any;
 
@@ -86,9 +86,6 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
     console.debug('this.favoriteService.favorites: ', this.favoriteService.favorites, this.favourite);
   }
 
-  ngOnDestroy() {
-  }
-
   follow(uuid: string) {
     this.socialService.user.follow(uuid).toPromise()
       .then((res: any) => this.relationships.follow = true);
@@ -115,10 +112,11 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
               this.userService.updateProfile(this.userService.profile);
             }
           }
-          else if (_.has(event.body, 'cover_image'))
+          else if (_.has(event.body, 'cover_image')) {
             toastMsg = 'You have updated cover image of this community successfully';
-          else
+          } else {
             toastMsg = result.message;
+          }
 
           this.toastsService.success(toastMsg);
         });

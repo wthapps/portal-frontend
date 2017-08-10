@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CountryService } from '../../core/shared/components/countries/countries.service';
@@ -48,18 +50,15 @@ export class ZContactSettingsComponent implements OnInit {
       });
   }
 
-  submit() {
-    this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: this.form.value}).subscribe((res: any) => {
-
-    });
+  onSubmit() {
+    this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: this.form.value})
+      .toPromise();
   }
 
   cancel() {
-
   }
 
   open() {
-
   }
 
   filterCountriesCode(event: any) {

@@ -5,8 +5,8 @@
     </span>
   </div>
   <div class="media-body">
-    <a href="{{url}}" class="bold"><h5 class="media-heading" style="margin-bottom:0px">{{name}}</h5></a>
-    <small class="text-fade">{{status}}</small>
+    <a href="{{ url }}" class="bold"><h5 class="media-heading" style="margin-bottom:0px">{{ name }}</h5></a>
+    <small class="text-fade">{{ status }}</small>
   </div>
   <div class="media-right">
     <div style="width:150px;">
@@ -15,7 +15,7 @@
               style="margin-right: 10px"
               (click)="emitEvent({action: action.id, data: data})">
         <i *ngIf="action.class" [ngClass]="action.class"></i>
-        {{action.text}}
+        {{ action.text }}
       </button>
     </div>
   </div>

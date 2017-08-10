@@ -1,36 +1,36 @@
 <ul class="page-body-control-menu">
   <li *ngIf="showNumber">
     <span style="line-height: 34px;" class="mr10">
-      {{number}} selected
+      {{ number }} selected
     </span>
   </li>
   <li>
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite'})"
-       pTooltip="{{tooltip.favourite}}" tooltipPosition="bottom">
+       pTooltip="{{ tooltip.favourite }}" tooltipPosition="bottom">
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
     </a>
   </li>
   <li *ngIf="showSocial">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'social'})"
-       pTooltip="{{tooltip.goToSocial}}" tooltipPosition="bottom">
+       pTooltip="{{ tooltip.goToSocial }}" tooltipPosition="bottom">
       <i class="fa fa-globe"></i>
     </a>
   </li>
   <li *ngIf="showChat">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'chat'})"
-       pTooltip="{{tooltip.goToChat}}" tooltipPosition="bottom">
+       pTooltip="{{ tooltip.goToChat }}" tooltipPosition="bottom">
       <i class="fa fa-comments-o"></i>
     </a>
   </li>
   <li *ngIf="showTag">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'tag'})"
-       pTooltip="{{tooltip.addLabel}}" tooltipPosition="bottom">
+       pTooltip="{{ tooltip.addLabel }}" tooltipPosition="bottom">
       <i class="fa fa-tags"></i>
     </a>
   </li>
   <li class="dropdown action">
     <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-       pTooltip="{{tooltip.moreAction}}" tooltipPosition="bottom">
+       pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
       <i class="fa fa-ellipsis-v"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-right text-right">

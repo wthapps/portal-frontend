@@ -1,5 +1,5 @@
 <ng-template [ngIf]="data">
-  <div class="{{class}}" *ngFor="let item of data">
+  <div class="{{ class }}" *ngFor="let item of data">
     <ng-template [ngIf]="(type == 'members' || type == 'member')">
       <z-social-share-profile-member [data]="item"></z-social-share-profile-member>
     </ng-template>

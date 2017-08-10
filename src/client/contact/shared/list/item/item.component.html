@@ -6,13 +6,13 @@
     <figure class="avatar-xs">
       <img [src]="data.profile_image" alt="">
     </figure>
-    <span class="name">{{data.name}}</span>
+    <span class="name">{{ data.name }}</span>
   </a>
 </div>
 <div class="contact-listbox-email">
   <ul class="list-unstyled m0" *ngIf="data.emails && data.emails.length > 0">
     <li>
-      {{data.emails[0].value}}
+      {{ data.emails[0].value }}
     </li>
   </ul>
 </div>
@@ -24,7 +24,7 @@
         *ngIf="(countriesCode$ | async) && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
         src="assets/images/flags/{{data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
         width="30" alt="">
-      {{data.phones[0].value}}
+      {{ data.phones[0].value }}
     </li>
   </ul>
 </div>

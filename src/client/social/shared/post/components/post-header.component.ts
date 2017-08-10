@@ -1,4 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { PostComponent } from '../index';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../core/shared/services/user.service';
@@ -6,6 +9,7 @@ import { SocialService } from '../../../shared/services/social.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { User } from '../../../../core/shared/models/user.model';
 import { ZSharedReportService } from '../../../../core/shared/components/zone/report/report.service';
+
 
 declare var _: any;
 
@@ -27,6 +31,7 @@ export class PostHeaderComponent implements OnChanges {
   user: User;
   readonly postUrl: string = Constants.urls.posts;
   readonly profileUrl: string = Constants.urls.profile;
+  profile$: Observable<any>;
 
 
   constructor(private postItem: PostComponent,
@@ -34,6 +39,7 @@ export class PostHeaderComponent implements OnChanges {
               public userService: UserService,
               private zoneReportService: ZSharedReportService) {
     this.user = this.socialService.user.profile;
+    this.profile$ = this.userService.profile$;
   }
 
   ngOnChanges(data: any) {
