@@ -35,7 +35,7 @@ export class PhotoService {
     return this.apiBaseService.get(this.url, body);
   }
 
-  getPhoto(id: any): any {
+  getPhoto(id: any): Observable<any> {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
