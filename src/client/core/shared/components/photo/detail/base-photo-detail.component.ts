@@ -80,7 +80,9 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   doEvent(payload: any) {
     switch (payload.action) {
       case 'goBack':
-        this.router.navigateByUrl(this.prevUrl);
+        console.log('goBack: ', this.router);
+        this.router.navigate([{outlets: {modal: null}}]);
+        // this.router.navigateByUrl(this.prevUrl);
         break;
       case 'changeMode':
         this.mode = 1; // editable mode
