@@ -1,5 +1,7 @@
 import { Component, Input, HostBinding, ViewChild } from '@angular/core';
+
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+
 import { NotificationService } from '../../services/notification.service';
 import { Constants } from '../../config/constants';
 
@@ -33,8 +35,6 @@ export class PartialsNotificationsComponent {
   }
 
   confirmHideNotification(notification: any) {
-    console.debug('inside partials-notifications: confirmHideNotification !!!');
-    // notification.isHidden = true;
     this.hideNotification(notification);
   }
 
@@ -53,10 +53,6 @@ export class PartialsNotificationsComponent {
   toggleReadStatus(notification: any) {
     this.notificationService.toggleReadStatus(notification);
   }
-
-  // toggleAllReadStatus() {
-  //   this.notificationService.toggleAllReadStatus();
-  // }
 
   markAllAsRead() {
     this.notificationService.markAllAsRead();
