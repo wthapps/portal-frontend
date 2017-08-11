@@ -4,18 +4,18 @@
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
   <div class="page-body-content-in">
-    <div class="row media-user-list-group">
-      <div class="col-sm-6"
+    <div class="row media-user-row-group">
+      <div class="col-sm-12"
            *ngFor="let contact of contactItem.value.data | chatGroupCouple:contactItem.value.data.length">
         <div class="media media-user-list">
           <div class="media-body">
-            <z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>
+            <z-chat-share-user [data]="contact" [size]="'xs'"></z-chat-share-user>
           </div>
           <div class="media-right no-wrap">
-            <button class="btn btn-outline-default" type="button" (click)="chatContactActions.onSelect(contact)">
+            <button class="btn btn-default" type="button" (click)="chatContactActions.onSelect(contact)">
               <i class="fa fa-comment"></i>
             </button>
-            <button type="button" class="btn btn-outline-default" (click)="chatContactActions.onFavorite()">
+            <button type="button" class="btn btn-default" (click)="chatContactActions.onFavorite()">
               <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
             </button>
             <z-chat-contact-actions #chatContactActions [contact]="contact"></z-chat-contact-actions>

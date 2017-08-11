@@ -29,17 +29,17 @@
       </div>
       <div class="row">
         <div class="col-sm-6">
-          <button class="btn btn-outline-default" (click)="onOpenSelectPhotos()"
+          <button class="btn btn-default" (click)="onOpenSelectPhotos()"
                   pTooltip="{{ tooltip.sendMedia }}" tooltipPosition="top">
             <i class="fa fa-camera"></i>
           </button>
-          <span class="btn btn-outline-default btn-style-1 fileinput-button"
+          <span class="btn btn-default btn-style-1 fileinput-button"
                 pTooltip="{{ tooltip.sendFile }}" tooltipPosition="top">
-            <i class="fa fa-book"></i>
+            <i class="fa fa-paperclip"></i>
             <input id="files" type="file" (change)="uploadFile($event)"/>
           </span>
           <div class="btn-group dropup">
-            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                     pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top">
               <i class="fa fa-smile-o"></i>
             </button>

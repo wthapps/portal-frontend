@@ -10,17 +10,17 @@
       </z-chat-share-user>
     </div>
     <div class="media-right">
-      <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-outline-default"
+      <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default"
               (click)="onAddMember()" pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
-      <button type="button" class="btn btn-outline-default" (click)="onFavorite()"
+      <button type="button" class="btn btn-default" (click)="onFavorite()"
               pTooltip="{{ (item.value.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
               tooltipPosition="top">
         <i class="fa" [ngClass]="item.value.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
       <div class="btn-group">
-        <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                 pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
