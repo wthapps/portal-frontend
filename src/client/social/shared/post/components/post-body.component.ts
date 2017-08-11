@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../core/shared/services/user.service';
@@ -15,6 +16,7 @@ declare var _: any;
 export class PostBodyComponent implements OnInit, OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
+  @Input() originalPost: SoPost;
   parentItem: SoPost = new SoPost();
 
   showInfo: boolean = false;
@@ -33,8 +35,6 @@ export class PostBodyComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // this.item = new SoPost(null);
-    // console.log('ngOnInit:', this);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -66,9 +66,8 @@ export class PostBodyComponent implements OnInit, OnChanges {
         this.postItem.toggleComments();
         break;
       case this.actions.onShowPhotoDetail:
-        let photoIds = _.map(this.item.photos, 'id');
-        console.log('this. item', this.item.photos, data);
-        // this.router.navigate(['/photos', data.id, {module: 'social', ids: photoIds, prevUrl: this.router.url}]);
+        let photoIds = _.map(this.originalPost.photos, 'id');
+        console.log('this. item', this.originalPost.photos, data);
         this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, prevUrl: this.router.url}]}}]);
 
         break;

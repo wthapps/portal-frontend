@@ -9,14 +9,6 @@ import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component'
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { Constants } from '../../../config/constants';
 
-// import {
-//   SharingModalComponent,
-//   AddToAlbumModalComponent,
-//   PhotoEditModalComponent,
-//   TaggingModalComponent
-// } from '../index';
-
-
 declare let $: any;
 declare let _: any;
 declare let Cropper: any;

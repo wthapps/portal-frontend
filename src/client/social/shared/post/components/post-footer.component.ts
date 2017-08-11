@@ -120,9 +120,8 @@ export class PostFooterComponent implements OnChanges {
         this.postItem.openLikeDislike(data, type);
         break;
       case this.actions.onShowPhotoDetail:
-        // this.router.navigate(['/photos', this.item.uuid, {index: data}]);
-
-        this.router.navigate([{outlets: {modal: ['comments', data, 'photos', type, {ids: [type]}]}}]);
+        // this.router.navigate([{outlets: {modal: ['comments', data, 'photos', type, {ids: [type]}]}}]);
+        this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type]}]}}]);
         break;
     }
   }
