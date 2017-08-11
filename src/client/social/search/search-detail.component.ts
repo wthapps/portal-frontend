@@ -42,33 +42,33 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
               private confirmationService: ConfirmationService,
               private urlService: UrlService,
               private socialService: SocialService) {
-
+      this.events = this.router.events
+        .filter((event:any) => event instanceof NavigationEnd)
+        .subscribe((event:NavigationEnd) => {
+          this.group = this.urlService.getId();
+          this.q = this.urlService.getQuery()['q'];
+          this.filter = this.urlService.getQuery()['filter_post'];
+          this.filterDate = this.urlService.getQuery()['filter_date'];
+          if (this.q) {
+            let query:any = {q : this.q};
+            if (this.filter) {
+              query.filter = this.filter;
+            }
+            if (this.filterDate) {
+              query.filter_date = this.filterDate;
+            }
+            this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, query).subscribe(
+              (res: any) => {
+                this.result = res.data;
+                this.nextLink = res.page_metadata.links.next;
+              }
+            );
+          }
+        });
   }
 
   ngOnInit() {
-    this.events = this.router.events
-      .filter((event:any) => event instanceof NavigationEnd)
-      .subscribe((event:NavigationEnd) => {
-        this.group = this.urlService.getId();
-        this.q = this.urlService.getQuery()['q'];
-        this.filter = this.urlService.getQuery()['filter_post'];
-        this.filterDate = this.urlService.getQuery()['filter_date'];
-        if (this.q) {
-          let query:any = {q : this.q};
-          if (this.filter) {
-            query.filter = this.filter;
-          }
-          if (this.filterDate) {
-            query.filter_date = this.filterDate;
-          }
-          this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, query).subscribe(
-            (res: any) => {
-              this.result = res.data;
-              this.nextLink = res.page_metadata.links.next;
-            }
-          );
-        }
-      });
+
   }
 
   ngOnDestroy() {
