@@ -11,6 +11,5 @@ declare var _: any;
 })
 export class ZMediaSearchComponent {
   @ViewChild('container') container: MediaViewContainerComponent;
-  firtTime: boolean = true;
   sub:any;
 }

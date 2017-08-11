@@ -15,9 +15,6 @@ export class ZChatSearchComponent implements OnInit {
   params:any;
 
   constructor(private chatService: ChatService, private router: Router) {
-  }
-
-  ngOnInit() {
     this.events = this.router.events
       .filter((event:any) => event instanceof NavigationEnd)
       .subscribe((event:NavigationEnd) => {
@@ -27,6 +24,10 @@ export class ZChatSearchComponent implements OnInit {
           this.getConversations();
         }
       });
+  }
+
+  ngOnInit() {
+
   }
 
   getConversations() {

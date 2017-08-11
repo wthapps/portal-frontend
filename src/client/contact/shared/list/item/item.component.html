@@ -3,8 +3,10 @@
 </div>
 <div class="contact-listbox-name">
   <a href="javascript:;" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/detail', data.id]">
-    <figure class="avatar-xs">
+    <figure class="avatar-xs media-user">
       <img [src]="data.profile_image" alt="">
+
+      <i class="media-user-status" [ngClass]="{'blacklist fa fa-ban': data | contactHasLabel:'blacklist'}"></i>
     </figure>
     <span class="name">{{ data.name }}</span>
   </a>
@@ -16,7 +18,6 @@
     </li>
   </ul>
 </div>
-
 <div class="contact-listbox-phone">
   <ul class="list-unstyled m0" *ngIf="data.phones && data.phones.length>0">
     <li>
@@ -36,5 +37,6 @@
   [showChat]="data | isContactInternal"
   [toggleFavourite]="data | contactHasLabel:'favourite'"
   [toggleBlacklist]="data | contactHasLabel:'blacklist'"
+  [order]="true"
   (eventOut)="doActionsToolbar($event)">
 </z-contact-shared-actions-bar>

@@ -41,9 +41,6 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
               private confirmationService: ConfirmationService,
               private socialService: SocialService) {
 
-  }
-
-  ngOnInit() {
     this.events = this.router.events
       .filter((event:any) => event instanceof NavigationEnd)
       .subscribe((event:NavigationEnd) => {
@@ -66,11 +63,14 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
               if (res.show_more_members) {
                 this.show_more_members = res.show_more_members;
               }
-              console.log(this.result, this.groups);
             }
           );
         }
       });
+  }
+
+  ngOnInit() {
+
   }
 
   ngOnDestroy() {

@@ -18,7 +18,6 @@ import { LoadingService } from '../../../core/shared/components/loading/loading.
 import { PostListComponent } from '../../shared/post/post-list.component';
 import { EntitySelectComponent } from '../../../core/shared/components/entity-select/entity-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
-import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 
@@ -76,16 +75,12 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   selectedTab: string = 'post';
   selectedTabTitle: any;
 
-  // item: any = null;
   community: any = null;
   uuid: string;
-  // community_id: string;
   user: any;
-  // invitation: any = null;
   invitationId: string;
   joinRequestId: string;
   tabItems: Array<any> = [];
-  // users: Array<any> = [];
   isAdmin: boolean = false;
   isMember: boolean = false;
   is_close: boolean = true;
@@ -103,8 +98,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
   @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
   @ViewChild('users') users: EntitySelectComponent;
-  // @ViewChild('favorites') favorites: ZSocialFavoritesComponent;
-  // @ViewChild('users') users: MemberListInviteComponent;
   @ViewChild('posts') posts: PostListComponent;
 
   closeObs$: Observable<any>;
@@ -119,7 +112,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private photoSelectDataService: PhotoModalDataService,
-              private photoUploadService: PhotoUploadService,
               private zoneReportService: ZSharedReportService,
               public favoriteService: SocialFavoriteService,
               private socialService: SocialService) {
@@ -131,33 +123,14 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
 
-    // // this.postList.type = 'community';
-    // this.route.params.subscribe(params => {
-    //   this.uuid = params['id'];
-    //   this.getCommunity(this.uuid);
-    //   // this.checkCurrentUser(this.uuid);
-    //
-    // });
-    //
-    // this.route.queryParams.subscribe(
-    //   (queryParams: any) => {
-    //     this.selectedTab = queryParams['tab'];
-    //     this.selectedTabTitle = _.find(this.tabData, ['key', queryParams['tab']]);
-    //     this.setTabVisibility();
-    //     if (this.selectedTab !== undefined)
-    //       this.getTabItems(this.uuid, this.selectedTab);
-    //     // this.isMember = true; // testing
-    //   }
-    // );
-
     this.route.params.combineLatest(this.route.queryParams)
       .map((p: any) => {
       if(this.uuid !== p[0]['id']) {
         this.uuid = p[0]['id'];
         this.getCommunity(this.uuid);
       }
-      this.selectedTab = p[1]['tab'];
-      this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
+      this.selectedTab = p[1]['tab'] ;
+      this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
         this.getTabItems(this.uuid, this.selectedTab);
@@ -196,14 +169,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       .then((res: any) => this.userSettings.favorite = !this.userSettings.favorite );
   }
 
-  // getFavourite(uuid: any) {
-  //   this.socialService.user.getFavourite(uuid, 'community').subscribe(
-  //     (res: any) => {
-  //       this.favourite = res.data;
-  //     }
-  //   );
-  // }
-
   getUserSettings(uuid: any) {
     this.socialService.community.getUserSettings(uuid).take(1).subscribe(
       (res: any) => {
@@ -234,7 +199,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // this.loadingService.start();
   updateCommunity(body: any): void {
 
     this.socialService.community.updateCommunity(this.community.uuid, body)
@@ -258,10 +222,8 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   askToJoin() {
-    // this.apiBaseService.post(`${this.soCommunitiesUrl}/${this.uuid}/invitations`)
     this.socialService.community.askToJoin(this.uuid)
       .subscribe((result: any) => {
-          // this.invitation = result.data;
           this.joinRequestId = result.data.id;
         },
         (error: any) => {
@@ -270,18 +232,14 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   cancelJoinRequest(joinRequestId: any) {
-    // this.apiBaseService.delete(`${this.soCommunitiesUrl}/${this.uuid}/invitations/${joinRequestId}`).subscribe(
     this.socialService.community.cancelJoinRequest(this.uuid, joinRequestId).subscribe(
       (res: any)=> {
-        // this.invitation = undefined;
         this.joinRequestId = undefined;
-        console.log('cancel join request: ' + joinRequestId);
 
         // Update join request count
         this.community.join_request_count -= 1;
       },
       error => {
-        // this.loadingService.stop('.zone-social-cover');
         this.errorMessage = <any>error;
       }
     );
@@ -296,7 +254,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.community.invitation_count -= 1;
       },
       error => {
-        // this.loadingService.stop('.zone-social-cover');
         this.errorMessage = <any>error;
       }
     );
@@ -310,7 +267,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.community.join_request_count -= 1;
       },
       error => {
-        // this.loadingService.stop('.zone-social-cover');
         this.errorMessage = <any>error;
       }
     );
@@ -323,16 +279,13 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       message: `Are you sure to delete member ${this.user.name} from the community?`,
       header: 'Delete Member',
       accept: () => {
-        // this.apiBaseService.delete(`${this.soCommunitiesUrl}/${this.uuid}/members/${user.uuid}`).subscribe(
         this.socialService.community.deleteMember(this.uuid, user.uuid).subscribe(
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
-            // $('#user_' + user.uuid).remove();
             _.remove(this.tabItems, (item: any) => item.accepter.uuid === user.uuid);
 
             // Update community member count
             this.community.member_count -= 1;
-            // this.loadDataBySelectedTab();
           },
           error => {
             this.toastsService.danger(error);
