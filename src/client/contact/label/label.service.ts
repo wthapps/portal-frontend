@@ -82,11 +82,10 @@ export class LabelService extends BaseEntityService<Label> {
     let cMenus = _.map(this.labelsSubject.getValue(), (m: any) => {
       if (menus[m.name])
         return Object.assign(m, {count: menus[m.name].count});
-      if (m.name === 'all contacts')
+      else if (m.name === 'all contacts')
         return Object.assign(m, {count: contacts.length});
       else
-        return m;
-
+        return Object.assign(m, {count: 0});
     });
 
     this.notifyLabelObservers(cMenus);

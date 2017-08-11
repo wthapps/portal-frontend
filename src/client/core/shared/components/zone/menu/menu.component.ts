@@ -11,7 +11,6 @@ import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
-import { ZContactService } from '../../../../../contact/shared/services/contact.service';
 
 declare var $: any;
 declare var _: any;
