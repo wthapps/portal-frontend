@@ -171,7 +171,8 @@ export class ChatService {
     let groupId = this.storage.find('conversation_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event: any, file: any) => {
       let data = event.target['result'];
-      this.apiBaseService.post('zone/chat/upload', {file: data, file_name: file.name}).subscribe((res: any) => {
+      this.apiBaseService.post('zone/chat/upload', {file: data, name: file.name, type: file.type})
+        .subscribe((res: any) => {
         this.removeUploadingFile(groupId);
         this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'File'});
       });
