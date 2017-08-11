@@ -5,6 +5,8 @@
         [showViewDetail]="false"
         [showNumber]="false"
         [showTag]="false"
+        [showSocial]="data | isContactInternal"
+        [showChat]="data | isContactInternal"
         [toggleFavourite]="_contact.isContactsHasLabelName([data], 'favourite')"
         [toggleBlacklist]="_contact.isContactsHasLabelName([data], 'blacklist')"
         (eventOut)="doActionsToolbar($event)"

@@ -16,11 +16,17 @@
       <i class="fa fa-globe"></i>
     </a>
   </li>
+  <li *ngIf="!showSocial && order">
+    <i class="fa fa-globe" style="visibility: hidden;"></i>
+  </li>
   <li *ngIf="showChat">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'chat'})"
        pTooltip="{{ tooltip.goToChat }}" tooltipPosition="bottom">
       <i class="fa fa-comments-o"></i>
     </a>
+  </li>
+  <li *ngIf="!showChat && order">
+    <i class="fa fa-globe" style="visibility: hidden;"></i>
   </li>
   <li *ngIf="showTag">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'tag'})"

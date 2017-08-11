@@ -9,7 +9,8 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'z-contact-shared-actions-bar',
-  templateUrl: 'actions-bar.component.html'
+  templateUrl: 'actions-bar.component.html',
+  styleUrls: ['actions-bar.component.css']
 })
 
 export class ZContactSharedActionsBarComponent implements EmitEventMixin {
@@ -26,6 +27,8 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() toggleBlacklist: boolean = false;
   // Number
   @Input() number: number;
+  // Order
+  @Input() order: boolean = false;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
   emitEvent: (value: any) => void;
