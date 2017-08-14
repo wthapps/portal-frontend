@@ -95,7 +95,7 @@ export class ChatCommonService {
 
   updateConversationBroadcast(groupId: any) {
     this.apiBaseService.post('zone/chat/notification/broadcard_contact', {group_id: groupId}).subscribe((res: any) => {
-      // console.log(res);
+      // code goto core/shared/channels/actions/chat_notification.ts
     });
   }
 

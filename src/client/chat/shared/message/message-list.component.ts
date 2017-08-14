@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 
@@ -7,6 +7,7 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'message-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'message-list.component.html',
   styleUrls: ['message-list.component.css']
 })
@@ -18,12 +19,14 @@ export class MessageListComponent implements OnInit {
   contactItem: any;
   prevMessage: any;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.item = this.chatService.getCurrentMessages();
-
-    this.contactItem = this.chatService.getContactSelect();
+    setInterval(() => {
+      this.item = this.chatService.getCurrentMessages();
+      this.contactItem = this.chatService.getContactSelect();
+      this.ref.markForCheck();
+    }, 200);
   }
 
   onLoadMore() {

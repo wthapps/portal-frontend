@@ -50,7 +50,7 @@ export class ChatNotification {
     let item = this.serviceManager.getStorageService().find('chat_conversations');
     let index = _.findIndex(item.value.data, { id: data.group_user.id });
     if(index == -1) {
-      item.value.data.push(data.group_user);
+      item.value.data.unshift(data.group_user);
     } else {
       item.value.data[index] = data.group_user;
     }
@@ -69,5 +69,3 @@ export class ChatNotification {
     this.serviceManager.getChatCommonService().addMessage(data.group, data);
   }
 }
-
-

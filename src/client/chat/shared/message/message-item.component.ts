@@ -61,27 +61,27 @@ export class MessageItemComponent implements OnInit {
   }
 
   copy() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_COPY, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_COPY, payload: this.message});
   }
 
   quote() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE, payload: this.message});
   }
 
   edit() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT, payload: this.message});
   }
 
   delete() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE, payload: this.message});
   }
 
   download() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD, payload: this.message});
   }
 
   doEvent(event: any) {
-    this.event.emit({action: event.action, data: this.message});
+    this.event.emit({channel: 'chatCommonEvent', action: event.action, data: this.message});
   }
 
   onAdd(data: any) {
