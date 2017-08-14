@@ -272,7 +272,6 @@ export class ZContactService extends BaseEntityService<any> {
       return ct;
     });
 
-    console.debug('inside notifyContactsObservers: ', selectedIds, orderedContactsWSelected);
     this.contactsSubject.next(orderedContactsWSelected.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
   }
 

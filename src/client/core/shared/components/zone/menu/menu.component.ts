@@ -6,13 +6,11 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/toPromise';
 
 import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
-import { LabelService } from '../../../../../contact/label/label.service';
 
 declare var $: any;
 declare var _: any;
@@ -52,8 +50,8 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
               private router: Router,
               private navigateService: WTHNavigateService,
               private location: Location,
-              private commonEventService: CommonEventService,
-              private labelService: LabelService
+              private commonEventService: CommonEventService
+              // private labelService: LabelService
   ) {
     this.uuid = this.userService.getProfileUuid();
     this.urls = Constants.baseUrls;
@@ -104,10 +102,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     //   event.event.preventDefault();
     // }
     this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
-  }
-
-  deleteLabel(label: any) {
-    this.labelService.delete(label.id).toPromise();
   }
 
   ngOnDestroy() {
