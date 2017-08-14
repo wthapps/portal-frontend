@@ -90,8 +90,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['item'].currentValue.id != undefined) {
-    }
+    // if (changes['item'].currentValue.id != undefined) {
+    // }
     if (!this.item) {
       this.item = new SoPost();
     }
@@ -204,9 +204,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           // this.item = result['data'];
           _.merge(this.item, new SoPost().from(result['data']).excludeComments());
           this.mapDisplay();
-        },
-        (error: any) => {
-
         }
       );
   }
@@ -464,14 +461,15 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         return;
       }
       // Update the reply items
-      else if (data.parent_type === 'SocialNetwork::Comment' && comment.uuid === _.get(updatedComment, 'parent.uuid')) {
+      else {
+        if (data.parent_type === 'SocialNetwork::Comment' && comment.uuid === _.get(updatedComment, 'parent.uuid')) {
         _.forEach(this.item.comments[index].comments, (reply: SoComment, j: any) => {
           if (reply.uuid === _.get(updatedComment, 'uuid')) {
             this.item.comments[index].comments[j] = updatedComment;
             return;
           }
         })
-      }
+      }};
     });
 
 

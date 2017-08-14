@@ -102,7 +102,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
       this.socialService.user.update(event.body)
         .subscribe((result: any) => {
           console.log('update profile sucess: ', result);
-          let toastMsg = '';
+          let toastMsg:string = '';
           if (_.has(event.body, 'profile_image')) {
             toastMsg = 'You have updated profile image successfully';
             // Update user profile
@@ -113,7 +113,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
             }
           }
           else if (_.has(event.body, 'cover_image')) {
-            toastMsg = 'You have updated cover image of this community successfully';
+                toastMsg = 'You have updated cover image of this community successfully';
           } else {
             toastMsg = result.message;
           }

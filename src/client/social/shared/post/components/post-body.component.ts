@@ -13,7 +13,7 @@ declare var _: any;
   templateUrl: 'post-body.component.html'
 })
 
-export class PostBodyComponent implements OnInit, OnChanges {
+export class PostBodyComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
   @Input() originalPost: SoPost;
@@ -34,9 +34,6 @@ export class PostBodyComponent implements OnInit, OnChanges {
               public postItem: PostComponent) {
   }
 
-  ngOnInit() {
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (this.type == 'info') {
       this.showInfo = true;
@@ -45,10 +42,6 @@ export class PostBodyComponent implements OnInit, OnChanges {
     if (changes['item'].currentValue.parent_post) {
       this.parentItem = changes['item'].currentValue.parent_post;
     }
-  }
-
-  toggleComments() {
-
   }
 
   onActions(action: any, data?: any, type?: any) {

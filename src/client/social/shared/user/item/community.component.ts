@@ -139,7 +139,7 @@ export class ZSocialShareProfileCommunityComponent {
         console.log('inside toggleComNotification', res);
         this.userSettings = res.data;
       }
-    )
+    );
   }
 
   private loadModalComponent(component: any) {

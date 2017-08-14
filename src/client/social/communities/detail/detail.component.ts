@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/combineLatest';
@@ -131,10 +131,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       }
       this.selectedTab = p[1]['tab'] ;
       this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
+    }).subscribe(() => {
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
         this.getTabItems(this.uuid, this.selectedTab);
-    }).subscribe(() => {
     });
   }
 
@@ -184,7 +184,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         console.log('inside toggleComNotification', res);
         this.userSettings = res.data;
       }
-    )
+    );
   }
 
   confirmLeaveCommunity() {

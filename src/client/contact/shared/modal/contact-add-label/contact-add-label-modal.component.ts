@@ -83,7 +83,7 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
 
   validData(): boolean {
     let result: boolean = true;
-    if (this.selectedLabels.length == 0 && this.inputLabels.length == 0){
+    if (this.selectedLabels.length == 0 && this.inputLabels.length == 0) {
       return false;
     }
 
@@ -94,15 +94,18 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
             result = false;
             return;
           }
-        })
+        });
       });
     }
     return result;
   }
 
-  removeTag(event: any) {}
+  removeTag(event: any) {
+    console.log('inside removeTag');
+  }
 
-  addTag(event: any) {}
+  addTag(event: any) {
+    console.log('inside addTag');}
 
   private getSelectedLabels(): Array<any> {
     let result: Array<any> = new Array<any>();

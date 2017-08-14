@@ -8,7 +8,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
   templateUrl: 'import-contact.component.html'
 })
 
-export class ZContactShareImportContactComponent implements OnInit {
+export class ZContactShareImportContactComponent {
   @ViewChild('modal') modal: ModalComponent;
   @Output() optionSelected: EventEmitter<any> = new EventEmitter<any>();
 
@@ -19,12 +19,7 @@ export class ZContactShareImportContactComponent implements OnInit {
     // {name: 'others', text: 'Other providers', image: ''},
   ];
 
-  constructor(private contactService: ZContactService) {
-
-  }
-
-  ngOnInit() {
-    
+  constructor() {
   }
 
   // Format: { name }

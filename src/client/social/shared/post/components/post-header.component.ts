@@ -118,7 +118,7 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   onShowInfo() {
-
+    console.log('inside onShowInfo');
   }
 
   viewPrivacyCustom(post: any, modal: any) {

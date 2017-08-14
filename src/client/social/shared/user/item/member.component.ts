@@ -13,7 +13,7 @@ declare var _: any;
   selector: 'z-social-share-profile-member',
   templateUrl: 'member.component.html'
 })
-export class ZSocialShareProfileMemberComponent implements OnInit {
+export class ZSocialShareProfileMemberComponent {
   @Input() data: any;
 
   favourite: any; // toggle favourites status for members, communities
@@ -26,20 +26,7 @@ export class ZSocialShareProfileMemberComponent implements OnInit {
               private favoriteService: SocialFavoriteService) {
   }
 
-  ngOnInit() {
-  }
-
   toggleFavourite(item: any, group: string) {
-    // this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
-    //   (res: any) => {
-    //     if (!_.isEmpty(this.favourite)) {
-    //       this.favourite = undefined;
-    //     } else {
-    //       this.favourite = res.data;
-    //     }
-    //   }
-    // );
-
     this.favoriteService.addFavourite(item.uuid, group)
       .then((res: any) => {
         if (!_.isEmpty(this.favourite)) {
@@ -63,14 +50,11 @@ export class ZSocialShareProfileMemberComponent implements OnInit {
     );
   }
 
-  toggleFollow(item: any) {
-
-  }
 
 
   // TODO:
   importToContacts(item: any) {
-
+    console.log('inside importToContacts');
   }
 
   addFriend(user: any) {

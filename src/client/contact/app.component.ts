@@ -98,43 +98,39 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.loadModalComponent(ZContactSharedSettingsComponent);
         this.modal.open();
         break;
-      case 'contact:label:delete_confirm':
-        this.confirmationService.confirm({
-          message: 'Are you sure to this label',
-          accept: () => {
-            event.action = 'contact:label:delete';
-            event.payload.selectedItem = this.getLabel(event.payload.selectedItem);
-            this.commonEventService.broadcast({
-              channel: Constants.contactEvents.common,
-              action: event.action,
-              payload: event.payload
-            });
-          }
-        });
-        break;
-      case 'contact:label:create':
-        this.labelService.create(event.payload.label).subscribe(
-          (res: any) => {
-            console.log(res);
-          });
-        break;
-      case 'contact:label:update':
-        let name = event.payload.label.name;
-        this.labelService.update(event.payload.label).subscribe(
-          (res: any) => {
-            console.log(res);
-          });
-        break;
-      case 'contact:label:delete':
-        let label = this.getLabel(event.payload.selectedItem);
-        this.labelService.delete(label.id).subscribe(
-          (res: any) => {
-            console.log(res);
-          });
-        break;
-      // case 'contact:contact:search':
-      //   console.log('inside contact:contact:search: ', event);
-      //   this.contactService.search(event.payload);
+      // case 'contact:label:delete_confirm':
+      //   this.confirmationService.confirm({
+      //     message: 'Are you sure to this label',
+      //     accept: () => {
+      //       event.action = 'contact:label:delete';
+      //       event.payload.selectedItem = this.getLabel(event.payload.selectedItem);
+      //       this.commonEventService.broadcast({
+      //         channel: Constants.contactEvents.common,
+      //         action: event.action,
+      //         payload: event.payload
+      //       });
+      //     }
+      //   });
+      //   break;
+      // case 'contact:label:create':
+      //   this.labelService.create(event.payload.label).subscribe(
+      //     (res: any) => {
+      //       console.log(res);
+      //     });
+      //   break;
+      // case 'contact:label:update':
+      //   let name = event.payload.label.name;
+      //   this.labelService.update(event.payload.label).subscribe(
+      //     (res: any) => {
+      //       console.log(res);
+      //     });
+      //   break;
+      // case 'contact:label:delete':
+      //   let label = this.getLabel(event.payload.selectedItem);
+      //   this.labelService.delete(label.id).subscribe(
+      //     (res: any) => {
+      //       console.log(res);
+      //     });
       //   break;
     }
   }
