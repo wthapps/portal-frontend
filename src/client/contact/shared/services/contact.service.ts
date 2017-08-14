@@ -264,8 +264,16 @@ export class ZContactService extends BaseEntityService<any> {
     }
 
     let orderedContacts: any[] = _.orderBy(contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
+    let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
+    let orderedContactsWSelected: any[] = _.map(orderedContacts, (ct: any) => {
+      if(selectedIds.indexOf(ct.uuid) > -1)
+      return Object.assign(ct, {selected: true});
+    else
+      return ct;
+    });
 
-    this.contactsSubject.next(orderedContacts.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
+    console.debug('inside notifyContactsObservers: ', selectedIds, orderedContactsWSelected);
+    this.contactsSubject.next(orderedContactsWSelected.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
   }
 
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {

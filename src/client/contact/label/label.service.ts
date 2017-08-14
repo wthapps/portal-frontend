@@ -115,7 +115,6 @@ export class LabelService extends BaseEntityService<Label> {
   addMenu(menu: any): Promise<any> {
     let menus: any[] = this.labelsSubject.getValue();
     menus.push(menu);
-    console.debug('inside addMenu: ', menus);
     return this.notifyLabelObservers(menus);
   }
 
@@ -158,7 +157,6 @@ export class LabelService extends BaseEntityService<Label> {
     let orderedLabels = _.orderBy(labels, ['order'], ['asc']);
     this.labelsSubject.next(orderedLabels);
 
-    console.debug('notifyLabelObservers: ', orderedLabels);
     return Promise.resolve(this.labelsSubject.getValue());
   }
 

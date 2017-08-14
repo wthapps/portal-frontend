@@ -14,10 +14,9 @@ export class ZContactSharedItemComponent implements OnInit {
   @Input() data: any;
   @HostBinding('class') cssClass:string = 'contact-listbox-row';
 
-  selected: boolean = false;
+  // selected: boolean = false;
 
   emailType: any = Constants.emailType;
-  // contriesCode: any;
   countriesCode$: Observable<any>;
 
   constructor(
@@ -27,23 +26,18 @@ export class ZContactSharedItemComponent implements OnInit {
   ) {
 
     this.contactService.listenToList.subscribe((event: any) => {
-      this.selected = event;
+      this.data.selected = event;
     });
 
   }
 
   ngOnInit() {
     this.countriesCode$ = this.countryService.countriesCode$;
-
-    // this.countryService.getCountries().subscribe(
-    //   (res: any) => {
-    //     this.countriesCode = res;
-    //   });
   }
 
   onSelected() {
-    this.selected = !this.selected;
-    if (this.selected) {
+    this.data.selected = !this.data.selected;
+    if (this.data.selected) {
       this.contactService.addItemSelectedObjects(this.data);
       this.cssClass = 'contact-listbox-row active';
     } else {
