@@ -138,7 +138,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       case 'open_add_label_modal':
         let labels: any[] = [];
         if (this.contactService.selectedObjects.length > 1) {
-          labels = [];
+          labels = _contact.getSameLables(this.contactService.selectedObjects);
         } else if (this.contactService.selectedObjects.length == 1) {
           labels = this.contactService.selectedObjects[0].labels;
           event.mode = 'edit';

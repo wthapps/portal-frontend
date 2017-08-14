@@ -1,7 +1,7 @@
 <div class="media-page-detail-left">
   <z-contact-shared-toolbar [pageTitle]="pageTitle">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="contactEdit">
-      <button *ngIf="mode == 'edit'" [disabled]="!contactEdit.name.valid && contactEdit.name.errors.required" type="button" (click)="contactEdit.onSubmit(contactEdit.form.value)" class="btn btn-outline-primary btn-min mr10">Save</button>
+      <button *ngIf="mode == 'edit'" [disabled]="(!contactEdit.name.valid && contactEdit.name.errors.required) || contactEdit.disableEdit" type="button" (click)="contactEdit.onSubmit(contactEdit.form.value)" class="btn btn-outline-primary btn-min mr10">Save</button>
       <button *ngIf="mode == 'create'" [disabled]="!contactEdit.name.valid && contactEdit.name.errors.required" type="button" (click)="contactEdit.onSubmit(contactEdit.form.value)" class="btn btn-outline-primary btn-min mr10">Create</button>
       <button *ngIf="mode == 'edit'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts/detail', contact.id]">Cancel</button>
       <button *ngIf="mode == 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel</button>

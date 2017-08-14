@@ -47,7 +47,8 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   submit() {
     if (this.contacts.length > 1) {
       _.forEach(this.contacts, (contact: any) => {
-        contact.labels = _.unionBy(_.concat(contact.labels, this.getSelectedLabels()), 'id');
+        // contact.labels = _.unionBy(_.concat(contact.labels, this.getSelectedLabels()), 'id');
+        contact.labels = _.unionBy(this.getSelectedLabels(), 'id');
       });
     } else {
       this.contacts[0].labels = _.unionBy(this.getSelectedLabels(), 'id');

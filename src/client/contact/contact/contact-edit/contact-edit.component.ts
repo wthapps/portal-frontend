@@ -58,6 +58,7 @@ export class ZContactEditComponent implements OnChanges {
 
   filteredLabelsMultiple: any = [];
   originalLabels: Object[];
+  disableEdit: boolean = true;
 
   constructor(private fb: FormBuilder, private labelService: LabelService) {
     this.labelService.getAllLabels().then((res: any)=> {
@@ -122,6 +123,7 @@ export class ZContactEditComponent implements OnChanges {
     this.labels = this.form.controls['labels'];
     this.job_title = this.form.controls['job_title'];
     this.notes = this.form.controls['notes'];
+    setTimeout(() => { this.form.valueChanges.subscribe((data: any) => this.disableEdit = false); }, 400);
   }
 
   removeAll() {

@@ -37,6 +37,5 @@
   [showChat]="data | isContactInternal"
   [toggleFavourite]="data | contactHasLabel:'favourite'"
   [toggleBlacklist]="data | contactHasLabel:'blacklist'"
-  [order]="true"
   (eventOut)="doActionsToolbar($event)">
 </z-contact-shared-actions-bar>
