@@ -50,6 +50,10 @@ export class MessageItemComponent implements OnInit {
 
   }
 
+  onPreviewPhoto(message: any) {
+    this.router.navigate([{outlets: {modal: ['photos', message.file_json.id, {ids: [message.file_json.id], message: message.id, prevUrl: '/conversations'}]}}]);
+  }
+
   doAction(event: CommonEvent) {
     var editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
 

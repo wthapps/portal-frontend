@@ -35,19 +35,16 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
   }
 
   ngOnInit() {
-    this.events = this.router.events
-      .filter((event:any) => event instanceof NavigationEnd)
-      .subscribe((event:NavigationEnd) => {
-        this.route.params.forEach((params: any) => {
-          let contact = this.chatService.getContactSelect().value;
-          if(contact) {
-            this.chatService.getMessages(contact.group_json.id);
-            if (contact.history) {
-              this.chatService.updateHistory(contact);
-            }
-          }
-        });
-      });
+    this.route.params.forEach((params: any) => {
+      console.debug('inside conversation detail - ngOnInit', params);
+      let contact = this.chatService.getContactSelect().value;
+      if(contact) {
+        this.chatService.getMessages(contact.group_json.id);
+        if (contact.history) {
+          this.chatService.updateHistory(contact);
+        }
+      }
+    });
 
     this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatCommonEvent').subscribe((event: CommonEvent) => {
       this.doEvent(event);

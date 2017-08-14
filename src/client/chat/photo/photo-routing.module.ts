@@ -5,7 +5,7 @@ import { ChatPhotoDetailComponent } from './photo-detail.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'photos/:id', component: ChatPhotoDetailComponent, outlet: 'modal'},
+      { path: 'photos/:id', component: ChatPhotoDetailComponent, outlet: 'modal'},
     ])
   ],
   exports: [RouterModule]

@@ -76,7 +76,7 @@
           <!--photo type-->
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
             <figure>
-              <a [routerLink]="['/photos', message.file_json.id, {ids: [message.file_json.id], message: message.id, prevUrl: '/conversations'}]">
+              <a href="javascript:;" (click)="onPreviewPhoto(message)">
                 <img [src]="message.file_json.url" alt="">
               </a>
             </figure>
