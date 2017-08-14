@@ -213,6 +213,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
           toastMsg = result.message;
 
       this.toastsService.success(toastMsg);
+      this.favoriteService.updateFavorite(result.data, 'community');
     },
     error => {
       this.toastsService.danger(this.errorMessage);
@@ -289,7 +290,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
           },
           error => {
             this.toastsService.danger(error);
-            this.loadingService.stop();
+            // this.loadingService.stop();
           }
         );
       }
@@ -310,7 +311,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
           },
           error => {
             this.toastsService.danger(error);
-            this.loadingService.stop();
+            // this.loadingService.stop();
           }
         );
       }

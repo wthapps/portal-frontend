@@ -57,13 +57,6 @@ export class ZSocialMembersComponent implements OnInit {
     this.getUser();
   }
 
-
-  // getDataList(type: string) {
-  //   this.currentState = type;
-  //   this.list = this.data[type];
-  //   return false;
-  // }
-
   getDataList(tab: string, forceOption: boolean = false) {
     if (this.currentState === tab && !forceOption)
       return;
@@ -182,19 +175,6 @@ export class ZSocialMembersComponent implements OnInit {
       error => this.errorMessage = <any>error
     );
   }
-
-  //
-  // addFollowingIntoFollower() {
-  //   this.data['followers'] = _.map(this.data['followers'], (follower: any) => {
-  //     follower.isFollowing = false;
-  //     _.forEach(this.data['followings'], (following: any) => {
-  //       if (follower.uuid == following.uuid) {
-  //         follower.isFollowing = true;
-  //       }
-  //     });
-  //     return follower;
-  //   });
-  // }
 
   getFavourite(uuid: any) {
     this.socialService.user.getFavourite(uuid, 'friend').subscribe(

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/finally';
 
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';
@@ -77,12 +78,12 @@ export class PostListComponent implements OnInit, OnDestroy {
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.params;
 
-    this.loadingService.start('#post-list-loading');
     this.route.params
       .combineLatest(parentRouteParams)
-      .map((paramsPair: any) => _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined))
+      .map((paramsPair: any) => {
+        return _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined)})
       .subscribe((params: any) => {
-      console.debug('params Id testing: ', params);
+      this.loadingService.start('#post-list-loading');
       this.uuid = _.get(params, 'id');  // this can be user uuid or community uuid
       // Load if items empty
       if (this.type != 'search') {
@@ -90,9 +91,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       } else {
         this.loadingService.stop('#post-list-loading');
       }
-    });
-    // this.photoModal.action = 'DONE';
-    // this.photoModal.photoList.multipleSelect = false;
+        // this.loadingService.stop('#post-list-loading');
+    }, (err: any) => this.loadingService.stop('#post-list-loading'));
 
     // Subscribe photo select events
     this.photoSelectDataService.init('');
@@ -107,12 +107,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // if (this.loadSubscription)
-    //   this.loadSubscription.unsubscribe();
-    //
-    // if (this.nextPhotoSubscription)
-    //   this.nextPhotoSubscription.unsubscribe();
-
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
   }
@@ -133,6 +127,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       return;
     }
     this.socialService.post.getList(this.uuid, this.type)
+      // .finally(() => this.loadingService.stop('#post-list-loading'))
       .subscribe(
         (res: any) => {
           this.loadingService.stop('#post-list-loading');
@@ -141,10 +136,6 @@ export class PostListComponent implements OnInit, OnDestroy {
           if (res.data.length == 0) {
             this.postIsEmpty = true;
           }
-          // this.loading_done = res.loading_done;
-          // this.socialDataService.loadingDone = this.loading_done;
-          // if(!this.loading_done)
-          //   this.page_index += 1;
         },
         (error: any) => {
           this.loadingService.stop('#post-list-loading');

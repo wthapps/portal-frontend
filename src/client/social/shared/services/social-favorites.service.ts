@@ -11,8 +11,6 @@ declare let _ : any;
 @Injectable()
 // This Data service is created for store Favorites data between components
 export class SocialFavoriteService {
-  // public favoritesObs: any;
-  // public favorites: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public favorites: Array<any>;
   private loaded: boolean = false;
 
@@ -31,7 +29,17 @@ export class SocialFavoriteService {
         this.loaded = true;
       }
     );
+  }
 
+  updateFavorite(item: any, type: any) {
+    console.log('inside updateFavorite: ', item, type);
+    if(type !== 'community')
+      return;
+    this.favorites = _.map(this.favorites, (f: any) => { if(f[type] && f[type]['uuid'] === item.uuid)
+      return Object.assign(item, {'community': item});
+    else
+      return f;
+    });
   }
 
 
