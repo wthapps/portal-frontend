@@ -1,5 +1,9 @@
 import { Injectable }     from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
+
 import { UserService } from '../../../core/shared/services/user.service';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { StorageService } from '../../../core/shared/services/storage.service';
@@ -8,7 +12,6 @@ import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.
 import { ChatConstant } from '../../../core/shared/constant/chat-constant';
 import { ChatCommonService } from '../../../core/shared/services/chat.common.service';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
-import { Observable } from 'rxjs/Observable';
 import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
 
@@ -389,13 +392,15 @@ export class ChatService {
     return this.user.profile;
   }
 
-  updatePhotoMessage(messageId: any, groupId: any, fileJson: any) {
-    this.apiBaseService.put('zone/chat/message/' + messageId, {
+  updatePhotoMessage(messageId: any, groupId: any, fileJson: any): Promise<any> {
+    return this.apiBaseService.put('zone/chat/message/' + messageId, {
       group_id: groupId,
       file_json: fileJson,
       id: messageId
-    }).subscribe((res: any) => {
-      console.log(res);
+    }).toPromise()
+      .then((res: any) => {
+        console.log('updatePhotoMessage: ', res);
+        return res;
     });
   }
 }
