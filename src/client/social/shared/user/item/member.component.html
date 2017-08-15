@@ -10,65 +10,61 @@
     </h5>
 
     <div class="text-fade">
-      {{ data.friend_count }} friends
-      <br>
-      {{ data.follower_count }} followers
-      <br>
-      {{ data.following_count }} following
+      {{ data.friend_count }} friends - {{ data.follower_count }} followers - {{ data.following_count }} following
     </div>
   </div>
-  <div class="media-right">
+  <div class="media-right" style="min-width: 250px;">
     <div class="pull-right no-wrap">
-      <button class="btn btn-outline-default" type="button" (click)="addFriend(data)"
-              *ngIf="data.friend_status == friendStatus.stranger">
-        Add Friend
-      </button>
-      <button class="btn btn-outline-default" type="button" *ngIf="data.friend_status == friendStatus.pending">
-        <i class="fa fa-check"></i> Friend Request Sent
-      </button>
+      <div class="btn-group" role="group">
+        <ng-template [ngIf]="data.friend_status == friendStatus.stranger">
+          <button class="btn btn-outline-default" type="button" (click)="addFriend(data)">
+            <i class="fa fa-user-plus"></i> Add Friend
+          </button>
+        </ng-template>
+        <ng-template [ngIf]="data.friend_status == friendStatus.pending">
+          <button class="btn btn-outline-default" type="button">
+            <i class="fa fa-user-plus"></i> Friend Request Sent
+          </button>
+        </ng-template>
+        <ng-template [ngIf]="data.friend_status == friendStatus.accepted">
+          <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown">
+            <i class="fa fa-check"></i> Friend <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+            <li><a href="javascript:;" (click)="unfriend(data)">Unfriend</a></li>
+          </ul>
+        </ng-template>
 
-      <div class="btn-group" *ngIf="data.friend_status == friendStatus.accepted">
-        <button (click)="getFavourite(data, 'friend')" class="btn btn-outline-default dropdown-toggle"
-                type="button" data-toggle="dropdown">
-          <i class="fa fa-check"></i> Friend <span class="caret"></span>
+
+        <button type="button" class="btn btn-outline-default" *ngIf="!data.is_following"
+                (click)="follow(data)">
+          <i class="fa fa-share"></i> Follow
         </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-          <li *ngIf="data.is_following"><a href="javascript:;" (click)="unfollow(data)">Unfollow</a></li>
-          <li *ngIf="!data.is_following"><a href="javascript:;" (click)="follow(data)">Follow</a></li>
-          <li class="divider"></li>
-          <li><a href="javascript:;" (click)="unfriend(data)">Unfriend</a></li>
-        </ul>
+
+        <button type="button" class="btn btn-outline-default" *ngIf="data.is_following"
+                (click)="unfollow(data)">
+          <i class="fa fa-check"></i> Following
+        </button>
       </div>
 
-
+      <!--menu-->
       <div class="btn-group" *ngIf="data.friend_status == friendStatus.accepted">
-        <button class="btn btn-default dropdown-toggle" type="button"
-                data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+        <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top"
+                (click)="getFavourite(data, 'friend')">
           <i class="fa fa-ellipsis-v"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+        <ul class="dropdown-menu dropdown-menu-right">
           <li>
             <a href="javascript:;" (click)="toggleFavourite(data, 'friend')">
               <span *ngIf="!favourite && !favourite?.uuid">Add to Favorites</span>
               <span *ngIf="favourite && favourite?.uuid">Remove from Favorites</span>
             </a>
           </li>
-          <!--<li><a href="javascript:;" (click)="importToContacts(data)">Import to Contacts</a></li>-->
-          <!--<li class="divider"></li>-->
-          <!--<li><a href="javascript:;" (click)="reportFriend(data)">Report Member</a></li>-->
-          <!--<li><a href="javascript:;" (click)="addToBlackList(data?.uuid)">Add to blacklist</a></li>-->
-        </ul>
-      </div>
-
-      <div class="btn-group" *ngIf="data.friend_status !== friendStatus.accepted">
-        <button class="btn btn-default dropdown-toggle" type="button"
-                data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
-          <i class="fa fa-ellipsis-v"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-          <li *ngIf="data.is_following"><a href="javascript:;" (click)="unfollow(data)"><i
-            class="fa fa-check"></i> Unfollow</a></li>
-          <li *ngIf="!data.is_following"><a href="javascript:;" (click)="follow(data)"> Follow</a></li>
+          <!--<li><a href="javascript:;" (click)="importToContacts(data)">Import to Contacts</a></li>
+          <li class="divider"></li>
+          <li><a href="javascript:;" (click)="reportFriend(data)">Report Member</a></li>
+          <li><a href="javascript:;" (click)="addToBlackList(data?.uuid)">Add to blacklist</a></li>-->
         </ul>
       </div>
     </div>

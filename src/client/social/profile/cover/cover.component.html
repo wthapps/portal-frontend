@@ -14,62 +14,71 @@
       </div>
 
       <div class="hd-item-action-right-bottom" *ngIf="relationships">
-        <button class="btn btn-default" type="button"
-                (click)="onAddfriend()" *ngIf="relationships.status == 0">
-          <i class="fa fa-user-plus"></i> Add Friend
-        </button>
+        <div class="btn-group" role="group">
+          <ng-template [ngIf]="relationships.status == 0">
+            <button class="btn btn-outline-default" type="button" (click)="onAddfriend()">
+              <i class="fa fa-user-plus"></i> Add Friend
+            </button>
+          </ng-template>
 
-        <div class="btn-group" *ngIf="relationships.status == 2">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false" (click)="checkFavorite()">
-            <i class="fa fa-check"></i> Friend <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-              <a href="javascript:;" (click)="onUnfriend()">
-                <i class="fa fa-times"></i> Unfriend
-              </a>
-            </li>
-          </ul>
+          <ng-template [ngIf]="relationships.status == 2">
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false" (click)="checkFavorite()">
+                Friend <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="javascript:;" (click)="onUnfriend()">
+                    <i class="fa fa-times"></i> Unfriend
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+
+          <ng-template [ngIf]="relationships.status == 1">
+            <div class="btn-group">
+              <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                Friend Requested <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="javascript:;" (click)="onCancelRequest()">Cancel Request</a>
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+
+          <ng-template [ngIf]="userInfo.uuid !== userService.profile.uuid">
+
+            <button type="button" class="btn btn-outline-default" *ngIf="!relationships?.follow"
+                    (click)="follow(userInfo.uuid)">
+              <i class="fa fa-share"></i> Follow
+            </button>
+
+            <button type="button" class="btn btn-outline-default" *ngIf="relationships?.follow"
+                    (click)="unfollow(userInfo.uuid)">
+              <i class="fa fa-check"></i> Following
+            </button>
+
+
+          </ng-template>
+
         </div>
-
-        <div class="btn-group" *ngIf="relationships.status == 1">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-            Friend Requested <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-              <a href="javascript:;" (click)="onCancelRequest()">Cancel Request</a>
-            </li>
-          </ul>
-        </div>
-
-
         <!--menu-->
         <div class="btn-group" *ngIf="userInfo.uuid !== userService.profile.uuid">
-          <button type="button" class="btn btn-default" *ngIf="!relationships?.follow" (click)="follow(userInfo.uuid)">
-            Follow
-          </button>
-
-          <div class="btn-group" *ngIf="relationships?.follow">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-check"></i> Following <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>
-            </ul>
-          </div>
-
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+          <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
             <i class="fa fa-ellipsis-v"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <!--<li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>-->
             <li><a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
-                <i class="fa fa-check" *ngIf="favourite?.uuid"></i> {{ (!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites' }}
+              <i class="fa fa-check" *ngIf="favourite?.uuid"></i>
+              {{ (!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites' }}
             </a></li>
             <li><a href="javascript:;" (click)="onReport()">Report member</a></li>
           </ul>

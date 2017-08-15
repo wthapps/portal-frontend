@@ -1,3 +1,22 @@
+<div class="panel panel-default">
+  <div class="panel-heading p0">
+    <!-- TAB NAVIGATION -->
+    <div class="nav-tabs-wrap">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="javascript:;">Friends</a></li>
+        <li><a href="javascript:;">Follower</a></li>
+        <li><a href="javascript:;">Following</a></li>
+      </ul>
+
+    </div>
+  </div>
+  <z-social-share-profile-list
+    [data]="list"
+    [type]="'member'">
+  </z-social-share-profile-list>
+</div>
+
+<!--
 <div class="zone-social-container" lockYOffset="20"
      observeAttributes="true"
      infinite-scroll
@@ -6,6 +25,8 @@
 
   <div class="z-social-box">
     <div class="z-social-box-body">
+      {{ list|json }}
+
       <z-social-share-profile-list
         [layout]="'row'"
         [class]="'col-xs-12 col-md-6 col-lg-6'"
@@ -16,3 +37,4 @@
   </div>
 
 </div>
+-->
