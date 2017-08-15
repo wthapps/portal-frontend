@@ -95,21 +95,9 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           tree.root.children.primary.segments[1].path = payload.id;
         this.router.navigateByUrl(tree);
         break;
-      case 'update':
-        this.confirmationService.confirm({
-          message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
-          header: 'Save Photo',
-          accept: () => {
-            this.photoService.update({
-              id: this.photo.id,
-              name: this.photo.name + `.${this.photo.extension}`,
-              type: this.photo.content_type,
-              file: payload.editedData
-            }).subscribe((response: any) => {
-              this.photo = response.data;
-            });
-          }
-        });
+      case 'confirmUpdate':
+        console.debug('base-photo-detail: confirmUpdate', payload);
+        this.confirmUpdate(payload);
 
         break;
       case 'favourite':
@@ -152,6 +140,27 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
 
 
     }
+  }
+
+  private confirmUpdate(payload: any): Promise<any> {
+    return new Promise<any>((resolve: any) => {
+      this.confirmationService.confirm({
+        message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
+        header: 'Save Photo',
+        accept: () => {
+          return this.photoService.update({
+            id: this.photo.id,
+            name: this.photo.name + `.${this.photo.extension}`,
+            type: this.photo.content_type,
+            file: payload.editedData
+          }).toPromise()
+            .then((response: any) => {
+              this.photo = response.data;
+              resolve(this.photo);
+            });
+        }
+      });
+    });
   }
 
   // confirmDeleteMedia(params: any) {

@@ -30,23 +30,36 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
 
   ngOnInit() {
     super.ngOnInit();
-    this.route.queryParams.subscribe(
-      (queryParams: any) => {
-        this.messageId = queryParams.message;
+    this.route.params.subscribe(
+      (params: any) => {
+        console.debug('photo detail - params: ', params);
+        this.messageId = params.message;
       }
     );
   }
 
   doEvent(event: any) {
+    console.debug('inside photo-detail: doEvent: ', event);
     switch(event.action) {
       // Handle all of event in child class here
       case 'update':
-      default:
         // TODO considering update logic here!!!
         let conversationItem = this.chatService.getContactSelect();
+        console.debug('inside photo-detail: doEvent: ', event, this.messageId, conversationItem.value.group_json.id, event.data);
         this.chatService.updatePhotoMessage(this.messageId, conversationItem.value.group_json.id, event.data);
         super.doEvent(event);
         break;
+      default:
+        super.doEvent(event);
+        break;
     }
+  }
+
+  confirmUpdate(payload: any): Promise<any> {
+    return super.confirmUpdate(payload)
+      .then((res: any) => {
+      console.log('Enhance confirmUpdate: ', res);
+      this.doEvent({action: 'update', data: res});
+    });
   }
 }
