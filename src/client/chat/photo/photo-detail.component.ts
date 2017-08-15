@@ -45,8 +45,8 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
       case 'update':
         // TODO considering update logic here!!!
         let conversationItem = this.chatService.getContactSelect();
-        console.debug('inside photo-detail: doEvent: ', event, this.messageId, conversationItem.value.group_json.id, event.data);
-        this.chatService.updatePhotoMessage(this.messageId, conversationItem.value.group_json.id, event.data);
+        this.chatService.updatePhotoMessage(this.messageId, conversationItem.value.group_json.id, event.data)
+          .then((res: any) => console.debug('after updatePhotoMessage: ', res));
         super.doEvent(event);
         break;
       default:
@@ -58,7 +58,6 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
   confirmUpdate(payload: any): Promise<any> {
     return super.confirmUpdate(payload)
       .then((res: any) => {
-      console.log('Enhance confirmUpdate: ', res);
       this.doEvent({action: 'update', data: res});
     });
   }

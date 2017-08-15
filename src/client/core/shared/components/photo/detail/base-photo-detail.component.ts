@@ -51,6 +51,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSub = this.route.params
       .map((params: any) => {
+        console.debug('base-photo-detail route params: ', params);
         this.id = +params['id'];
         this.prevUrl = params['prevUrl'];
         if(params['ids']) {
@@ -142,7 +143,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  private confirmUpdate(payload: any): Promise<any> {
+  confirmUpdate(payload: any): Promise<any> {
     return new Promise<any>((resolve: any) => {
       this.confirmationService.confirm({
         message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
