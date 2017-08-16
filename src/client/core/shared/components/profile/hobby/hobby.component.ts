@@ -32,7 +32,7 @@ export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileF
   deleteObjects: any = [];
   type: string = 'hobbies';
 
-  removeItem: (i: number) => void;
+  removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
   removeAll: () => void;
   getFormControls: () => any;

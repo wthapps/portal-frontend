@@ -32,7 +32,7 @@ export class PartialsProfileWorkComponent implements ProfileFormMixin, ProfileFo
   deleteObjects: any = [];
   type: string = 'works';
 
-  removeItem: (i: number) => void;
+  removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
   removeAll: () => void;
   getFormControls: () => any;

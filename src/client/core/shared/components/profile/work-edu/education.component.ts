@@ -32,7 +32,7 @@ export class PartialsProfileEducationComponent implements ProfileFormMixin, Prof
   type: string = 'educations';
   deleteObjects: any = [];
 
-  removeItem: (i: number) => void;
+  removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
   removeAll: () => void;
   getFormControls: () => any;
