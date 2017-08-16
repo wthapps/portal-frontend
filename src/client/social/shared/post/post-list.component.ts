@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/finally';
 
@@ -54,6 +54,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   // Subscription
   nextPhotoSubscription: Subscription;
   postIsEmpty: boolean = false;
+  showLoading: boolean = true;
 
   profile$: Observable<any>;
 
@@ -79,20 +80,22 @@ export class PostListComponent implements OnInit, OnDestroy {
     let parentRouteParams = this.route.parent.params;
 
     this.route.params
-      .combineLatest(parentRouteParams)
+      .withLatestFrom(parentRouteParams)
       .map((paramsPair: any) => {
         return _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined)})
       .subscribe((params: any) => {
-      this.loadingService.start('#post-list-loading');
-      this.uuid = _.get(params, 'id');  // this can be user uuid or community uuid
-      // Load if items empty
-      if (this.type != 'search') {
-        this.loadPosts();
-      } else {
-        this.loadingService.stop('#post-list-loading');
-      }
-        // this.loadingService.stop('#post-list-loading');
-    }, (err: any) => this.loadingService.stop('#post-list-loading'));
+        this.showLoading = document.getElementById('post-list-loading') !== null;
+        console.debug('post-list onInit: ', params);
+
+        this.startLoading();
+        this.uuid = _.get(params, 'id');  // this can be user uuid or community uuid
+        // Load if items empty
+        if (this.type != 'search') {
+          this.loadPosts();
+        } else {
+          this.stopLoading();
+        }
+    }, (err: any) => this.stopLoading());
 
     // Subscribe photo select events
     this.photoSelectDataService.init('');
@@ -104,6 +107,16 @@ export class PostListComponent implements OnInit, OnDestroy {
       (photos: any) => {
         this.onSelectPhotoComment(photos);
       });
+  }
+
+  startLoading() {
+    if(this.showLoading)
+      this.loadingService.start('#post-list-loading');
+  }
+
+  stopLoading() {
+    if(this.showLoading)
+      this.loadingService.stop('#post-list-loading');
   }
 
   ngOnDestroy() {
@@ -121,16 +134,17 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   loadPosts() {
+    console.debug('inside loadPosts');
     if (!this.type) {
       console.error('type params should be assigned: ', this.type);
-      this.loadingService.stop('#post-list-loading');
+      this.stopLoading();
       return;
     }
     this.socialService.post.getList(this.uuid, this.type)
       // .finally(() => this.loadingService.stop('#post-list-loading'))
       .subscribe(
         (res: any) => {
-          this.loadingService.stop('#post-list-loading');
+          this.stopLoading();
           this.items = _.map(res.data, this.mapPost);
           this.nextLink = res.page_metadata.links.next;
           if (res.data.length == 0) {
@@ -138,7 +152,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           }
         },
         (error: any) => {
-          this.loadingService.stop('#post-list-loading');
+          this.stopLoading();
           console.log('loading posts errors: ', error);
         }
       );

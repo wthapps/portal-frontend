@@ -3,7 +3,7 @@
     <div class="z-social-media mb15">
       <div class="z-social-media-left">
         <div class="avatar-xs">
-          <img src="{{(profile$ | async)?.profile_image}}" alt="">
+          <img [src]="(profile$ | async)?.profile_image" alt="">
         </div>
       </div>
       <div class="z-social-media-body">
@@ -127,7 +127,7 @@
                     <figure class="img-center-dv">
                       <span class="photo-box-figure-in">
                         <img class="img-center" draggable="false" [src]="p['thumbnail_url']"
-                             alt="(profile$ | async).profile_image">
+                             [alt]="(profile$ | async).profile_image">
                       </span>
                     </figure>
                   </div>
