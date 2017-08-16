@@ -461,15 +461,14 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         return;
       }
       // Update the reply items
-      else {
-        if (data.parent_type === 'SocialNetwork::Comment' && comment.uuid === _.get(updatedComment, 'parent.uuid')) {
-        _.forEach(this.item.comments[index].comments, (reply: SoComment, j: any) => {
-          if (reply.uuid === _.get(updatedComment, 'uuid')) {
-            this.item.comments[index].comments[j] = updatedComment;
-            return;
-          }
-        })
-      }};
+      if (data.parent_type === 'SocialNetwork::Comment' && comment.uuid === _.get(updatedComment, 'parent.uuid')) {
+      _.forEach(this.item.comments[index].comments, (reply: SoComment, j: any) => {
+        if (reply.uuid === _.get(updatedComment, 'uuid')) {
+          this.item.comments[index].comments[j] = updatedComment;
+          return;
+        }
+        });
+      };
     });
 
 
