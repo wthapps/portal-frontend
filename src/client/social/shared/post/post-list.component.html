@@ -1,40 +1,48 @@
 <!--Create new post here-->
-<div class="z-social-box" *ngIf="type != 'search' && canCreatePost">
-  <div class="z-social-media">
-    <div class="z-social-media-left">
-      <div class="avatar-xs">
-        <img [src]="(profile$ | async)?.profile_image" alt="Avatar Image">
-      </div>
-    </div>
-    <div class="z-social-media-body">
-      <div class="z-social-media-inputpost inputpost-new">
-        <div class="mb10">
-          <textarea class="form-control" rows="3" placeholder="Share your ideas" (focus)="postEditModal.open()"></textarea>
+<div class="panel panel-default mb15" *ngIf="type != 'search' && canCreatePost">
+  <div class="panel-body">
+    <div class="z-social-media">
+      <div class="z-social-media-left">
+        <div class="avatar-xs">
+          <img [src]="(profile$ | async)?.profile_image" alt="Avatar Image">
         </div>
-        <button class="btn btn-default" type="button" (click)="postEditModal.open({addingPhotos: true, community: community, mode: 'add', isShare: false})">
-          <i class="fa fa-camera"></i> Add Photo
-        </button>
+      </div>
+      <div class="z-social-media-body">
+        <div class="z-social-media-inputpost inputpost-new">
+          <div class="mb10">
+            <textarea class="form-control" rows="3" placeholder="Share your ideas"
+                      (focus)="postEditModal.open()"></textarea>
+          </div>
+          <button class="btn btn-default" type="button"
+                  (click)="postEditModal.open({addingPhotos: true, community: community, mode: 'add', isShare: false})">
+            <i class="fa fa-camera"></i> Add Photo
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 <!--List of post items-->
 
 <div id="post-list-component">
-  <div class="z-social-box" *ngFor="let item of items; ">
-    <so-post [item]="item"
-             (onDeleted)="deletedPost($event, item)"
-             (onUpdated)="updatedPost($event)"
-             (modalOpened)="openEditModal($event)"
-             (photoModalOpened)="openPhotoModal($event)">
-    </so-post>
-
+  <div class="panel panel-default mb15" *ngFor="let item of items;">
+    <div class="panel-body">
+      <so-post [item]="item"
+               (onDeleted)="deletedPost($event, item)"
+               (onUpdated)="updatedPost($event)"
+               (modalOpened)="openEditModal($event)"
+               (photoModalOpened)="openPhotoModal($event)">
+      </so-post>
+    </div>
   </div>
 
   <div *ngIf="postIsEmpty" class="text-center text-fade">
     <i class="fa fa-newspaper-o" style="font-size: 80px;"></i>
     <h4>No posts to show</h4>
-    <p *ngIf="canCreatePost"><a href="javascript:;"  (click)="postEditModal.open()" class="btn btn-default">Create new post</a></p>
+    <p *ngIf="canCreatePost">
+      <a href="javascript:;" (click)="postEditModal.open()" class="btn btn-default">Create new post</a>
+    </p>
   </div>
 </div>
 <div id="post-list-loading" class="pt20 pb20"></div>
@@ -43,5 +51,6 @@
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
 </div>
 <!--Edit post modal. This modal will handle add new, edit post and share-->
-<so-post-edit #postEditModal (saved)="save($event)" (onUpdated)="update($event)" (dismissed)="dismiss($event)"></so-post-edit>
+<so-post-edit #postEditModal (saved)="save($event)" (onUpdated)="update($event)"
+              (dismissed)="dismiss($event)"></so-post-edit>
 <!--<post-photo-select #photoSelectModal (onNext)="onSelectPhotoComment($event)"></post-photo-select>-->

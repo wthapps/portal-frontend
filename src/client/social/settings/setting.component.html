@@ -1,11 +1,11 @@
 <div class="page-body-content gray-light">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in">
-      <div class="z-social-box">
-        <div class="z-social-box-header">
-          <h3 class="h4"><i class="fa fa-cog"></i> Settings</h3>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-cog"></i> Settings</h3>
         </div>
-        <div class="z-social-box-body" *ngIf="user.settings">
+        <div class="panel-body" *ngIf="user.settings">
           <h3>General Settings</h3>
           <div class="checkbox checkbox-switch">
             <p-inputSwitch [(ngModel)]="user.settings.auto_import_from_contact.value"
@@ -118,7 +118,7 @@
             </div>
           </div>
         </div>
-        <div class="z-social-box-footer">
+        <div class="panel-footer">
           <button class="btn btn-link" (click)="resetSettings()">Reset Default</button>
         </div>
       </div>

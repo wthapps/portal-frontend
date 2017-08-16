@@ -6,8 +6,10 @@
           <i class="fa fa-arrow-left"></i> Back
         </a>
       </div>
-      <div class="z-social-box">
-        <so-post [item]="item" type="detail" (modalOpened)="openEditModal($event)"></so-post>
+      <div class="panel panel-default">
+      	<div class="panel-body">
+          <so-post [item]="item" type="detail" (modalOpened)="openEditModal($event)"></so-post>
+      	</div>
       </div>
     </div>
   </div>
