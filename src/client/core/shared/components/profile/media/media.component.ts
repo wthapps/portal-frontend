@@ -57,7 +57,7 @@ export class PartialsProfileMediaComponent implements ProfileFormMixin {
     },
   ];
 
-  removeItem: (i: number) => void;
+  removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
   removeAll: () => void;
   getFormControls: () => any;

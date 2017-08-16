@@ -27,7 +27,6 @@ export class ZContactMyProfileComponent implements OnInit {
   }
 
   doEvent(e: any) {
-    console.log(this.data, '<<<<<<<<<');
     this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, this.data).subscribe((res: any) => {
       this.data = res.data;
     });

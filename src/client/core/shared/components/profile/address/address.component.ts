@@ -8,16 +8,19 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ApiBaseService } from '../../../services/apibase.service';
+import { ProfileFormMixin } from "../../../mixins/form/profile/profile-form.mixin";
+import { Mixin } from "../../../../design-patterns/decorator/mixin-decorator";
 
 declare var _: any;
 
+@Mixin([ProfileFormMixin])
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-address',
   templateUrl: 'address.component.html'
 })
 
-export class PartialsProfileAddressComponent implements OnInit {
+export class PartialsProfileAddressComponent implements OnInit, ProfileFormMixin {
   @Input('data') data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
@@ -38,9 +41,16 @@ export class PartialsProfileAddressComponent implements OnInit {
       name: 'Work'
     }
   ];
+  type: string = 'addresses';
+  deleteObjects: any = [];
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
   }
+
+  removeItem: (i: number, item: any) => void;
+  onSubmit: (values: any) => void;
+  removeAll: () => void;
+  getFormControls: () => any;
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -50,23 +60,29 @@ export class PartialsProfileAddressComponent implements OnInit {
     });
   }
 
-  removeAll() {
-    const control = <FormArray>this.form.controls['addresses'];
-    control.controls.length = 0;
-    control.reset();
-  }
-
   //addresses
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
+        id: [item.id, Validators.compose([Validators.required])],
         category: [item.category, Validators.compose([Validators.required])],
-        address_line1: [item.address_line1, Validators.compose([Validators.required])]
+        address_line1: [item.address_line1, Validators.compose([Validators.required])],
+        po_box: [item.po_box],
+        city: [item.city],
+        province: [item.province],
+        postcode: [item.postcode],
+        country: [item.country]
+
       });
     } else {
       return this.fb.group({
         category: ['', Validators.compose([Validators.required])],
-        address_line1: ['', Validators.compose([Validators.required])]
+        address_line1: ['', Validators.compose([Validators.required])],
+        po_box: [''],
+        city: [''],
+        province: [''],
+        postcode: [''],
+        country: ['']
       });
     }
   }
@@ -85,11 +101,6 @@ export class PartialsProfileAddressComponent implements OnInit {
     }
   }
 
-  removeItem(i: number) {
-    const control = <FormArray>this.form.controls['addresses'];
-    control.removeAt(i);
-  }
-
   onOpenModal() {
     this.modal.open();
     let _this = this;
@@ -103,12 +114,5 @@ export class PartialsProfileAddressComponent implements OnInit {
 
   getAddressControls() {
     return (<FormGroup>this.form.get('addresses')).controls;
-  }
-
-
-  onSubmit(values: any): void {
-    this.data.addresses = values.addresses;
-    this.eventOut.emit(values);
-    this.modal.close();
   }
 }

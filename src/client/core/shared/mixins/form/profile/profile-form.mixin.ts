@@ -20,13 +20,17 @@ export class ProfileFormMixin {
     this.modal.close();
   }
 
-  removeItem(i: number) {
+  removeItem(i: number, item: any) {
     const control = <FormArray>this.form.controls[this.type];
-    if (this.data[this.type][i]) {
-      this.data[this.type][i]._destroy = true;
-      this.deleteObjects.push(this.data[this.type][i]);
-    }
     control.removeAt(i);
+    if (item && item.id && item.id.value) {
+      _.forEach(this.data[this.type], (data: any) => {
+        if (data.id == item.id.value) {
+          data._destroy = true;
+          this.deleteObjects.push(data);
+        }
+      });
+    }
   }
 
   removeAll() {

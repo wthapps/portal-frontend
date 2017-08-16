@@ -41,7 +41,7 @@ export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
 
   emailType: any = Constants.emailType;
 
-  removeItem: (i: number) => void;
+  removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
   removeAll: () => void;
   getFormControls: () => any;

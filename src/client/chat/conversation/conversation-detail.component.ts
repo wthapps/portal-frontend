@@ -36,7 +36,6 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
 
   ngOnInit() {
     this.route.params.forEach((params: any) => {
-      console.debug('inside conversation detail - ngOnInit', params);
       let contact = this.chatService.getContactSelect().value;
       if(contact) {
         this.chatService.getMessages(contact.group_json.id);
