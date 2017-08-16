@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
-  ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy, ViewEncapsulation
+  ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy, ViewEncapsulation, ChangeDetectorRef
 } from '@angular/core';
 import { Location } from '@angular/common';
 
@@ -116,17 +116,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // @HostListener('document:click', ['$event'])
-  // clickout(event: any) {
-  //
-  //   // if clicking on menu
-  //   if ($(event.target).hasClass('fa')) return;
-  //
-  //   // if clicking outside item
-  //   if(this.elementRef.nativeElement.contains(event.target)) return;
-  //
-  //      this.deSelectObjects();
-  // }
   constructor(protected resolver: ComponentFactoryResolver,
               protected elementRef: ElementRef,
               protected router: Router,
@@ -137,6 +126,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
               protected photoService: PhotoService,
               protected location: Location,
               protected mediaStore: ZMediaStore,
+              protected cdr: ChangeDetectorRef,
               protected albumService: ZMediaAlbumService) {
 
   }
@@ -159,6 +149,8 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     // if(this.MIX_SCREEN.includes(this.currentPath))
     if (this.MIX_SCREEN.indexOf(this.currentPath) > -1)
       this.changeView('grid'); // Default view should be grid
+
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {
@@ -168,67 +160,35 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getObjects(options?: any) {
-    let path = this.currentPath;
+    let url: string = '';
     let moreOptions = {};
 
     if (this.page == 'favorites') {
-      this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`media?list_type=favorites`)
-        .takeUntil(this.destroySubject)
-        .subscribe((response: any)=> {
-        this.loadingService.stop('#list-photo');
-        this.objects = response.data;
-        this.nextLink = response.page_metadata.links.next;
-        if (response.data.length==0) {
-          this.hasObjects = false;
-        }
-      });
-      return;
-    }
-
-    if (this.page == 'album_detail' && this.params && options && Object.keys(options).length > 0) {
-      // options['album'] = this.params['id'];
+      url = `media`;
+      moreOptions = Object.assign({}, options, {'list_type': 'favorites'});
+    } else if (this.page == 'album_detail' && this.params && options && Object.keys(options).length > 0) {
+      url = `photos`;
       moreOptions = Object.assign({}, options, {'album': this.params['id']});
-      this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`photos`, moreOptions)
-        .takeUntil(this.destroySubject)
-        .subscribe((response: any)=> {
-        this.loadingService.stop('#list-photo');
-        this.objects = response.data;
-        this.nextLink = response.page_metadata.links.next;
-        if (response.data.length==0) {
-          this.hasObjects = false;
-        }
-      });
-      return;
-    }
-
-    if (this.params) {
-      this.loadingService.start('#list-photo');
-      this.mediaObjectService.getObjects(`photos`, {album: this.params['id']})
-        .takeUntil(this.destroySubject)
-        .subscribe((response: any)=> {
-        this.loadingService.stop('#list-photo');
-        this.objects = response.data;
-        this.nextLink = response.page_metadata.links.next;
-        if (response.data.length==0) {
-          this.hasObjects = false;
-        }
-      });
-      return;
+    } else if (this.params) {
+      url = `photos`;
+      moreOptions= { album: this.params['id']};
+    } else {
+      url = this.currentPath;
+      moreOptions = options;
     }
 
     this.loadingService.start('#list-photo');
-    this.mediaObjectService.getObjects(this.currentPath, options)
+    this.mediaObjectService.getObjects(url, moreOptions)
       .takeUntil(this.destroySubject)
       .subscribe((response: any)=> {
-      this.loadingService.stop('#list-photo');
-      this.objects = response.data;
-      this.nextLink = response.page_metadata.links.next;
-      if (response.data.length==0) {
-        this.hasObjects = false;
-      }
-    });
+        this.loadingService.stop('#list-photo');
+        this.objects = response.data;
+        this.nextLink = response.page_metadata.links.next;
+        if (response.data.length==0) {
+          this.hasObjects = false;
+        }
+      });
+
   }
 
   getMoreObjects() {
@@ -256,9 +216,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onDragenter(e: any) {
     e.preventDefault();
-    // if (!this.selectablesEnable) {
-    //   this.selectables.enable();
-    // }
   }
 
   onDragleave(e: any) {
@@ -375,13 +332,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'delete':
         this.delete();
         break;
-      // case 'deleteAlbum':
-      //   this.deleteAlbum(event.params.selectedObject);
-      //   break;
-      // case 'deleteAlbumPhotos':
-      //   this.deleteAlbumPhotos(event.params.selectedObjects);
-      //   break;
-
       // Delete albums and photos in list screen: photo list, album list, favorites list, album detail screen
       case 'deleteMedia':
         this.deleteMedia(event.params);
@@ -443,12 +393,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   preview() {
-    // open modal
-    // this.loadModalComponent(PhotoDetailModalComponent);
-    // this.modal.open({show: true, showDetails: false, selectedObjects: this.selectedObjects});
-    // this.modal.event.subscribe((event: any) => {
-    //   this.doAction(event);
-    // });
   }
 
   share() {
@@ -651,61 +595,8 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else if (objType == 'album') {
       console.log('testing...... detete: album');
-      // this.albumService.deleteAlbum(body).subscribe(
-      //   (res: any)=> {
-      //     _.map(objIds, (id: any)=> {
-      //       _.remove(this.objects, ['id', id]);
-      //     });
-      //     this.loadingService.stop();
-      //   });
     }
   }
-
-  deleteAlbum(selectedObject: any) {
-    this.loadingService.start();
-    let objIds = _.get(selectedObject, 'id'); // ['1','2'];
-    let body = JSON.stringify({ids: objIds});
-    this.albumService.deleteAlbum(body).subscribe(
-      (res: any)=> {
-        _.map(objIds, (id: any)=> {
-          _.remove(this.objects, ['id', id]);
-        });
-        this.loadingService.stop();
-      });
-
-  }
-
-  deleteAlbumPhotos(selectedObject: any) {
-    let _thisComponent = this;
-
-    this.loadingService.start();
-    let objIds = _.map(selectedObject, 'id'); // ['1','2'];
-    let body = JSON.stringify({ids: objIds});
-
-    _.map(selectedObject, (v: any) => {
-      _thisComponent.albumService.getPhotosByAlbum(v.id).subscribe(
-        (res: any) => {
-          _.map(res.data, (vk: any) => {
-            this.storagePhotos(vk.id);
-          });
-        }
-      );
-    });
-    this.albumService.deleteAlbum(body).subscribe(
-      (res: any)=> {
-        _.map(objIds, (id: any)=> {
-          _.remove(this.objects, ['id', id]);
-        });
-        // console.log('albumService after deleting: ', _.uniq(this.photos));
-        let objPhotoIds: any = _.uniq(this.photos);
-        this.photoService.deletePhoto({ids: objPhotoIds}).subscribe(
-          (res: any) => {
-            this.loadingService.stop();
-          }
-        );
-      });
-  }
-
 
   // Delete multiple objects: photos, albums
   // Allow delete photos in album (options)
@@ -895,17 +786,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
-    // this.modalContainer.clear();
-    // this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
-    // this.modal = this.modalComponent.instance;
-
-    // handle all of action from modal all
-    // this.modal.event.subscribe((event: any) => {
-    //
-    //   // considering moving doAction into list-media
-    //   this.doAction(event);
-    // });
   }
 
   private sort(data: any) {
