@@ -1,12 +1,13 @@
 import { ServiceManager } from '../../services/service-manager';
+import { Processable } from './processable';
 
-export class AppearanceAllUsersOnline {
-  constructor(private data:any, private serviceManager:ServiceManager) {
+export class AppearanceAllUsersOnline implements Processable {
+  constructor(private serviceManager:ServiceManager) {
 
   }
 
-  process() {
-    this.serviceManager.getStorageService().save('users_online', this.data);
+  process(data: any) {
+    this.serviceManager.getStorageService().save('users_online', data.data);
   }
 }
 

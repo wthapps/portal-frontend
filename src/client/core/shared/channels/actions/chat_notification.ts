@@ -1,27 +1,29 @@
 import { ServiceManager } from '../../services/service-manager';
+import { Processable } from './processable';
 
 declare let _:any;
 
-export class ChatNotification {
-  constructor(private data:any, private serviceManager:ServiceManager) {
+export class ChatNotification implements Processable {
+  constructor(private serviceManager:ServiceManager) {
 
   }
 
-  process() {
-    if (this.data.type == 'notification_count') {
-      this.addNotification(this.data);
+  process(data: any) {
+    console.log('testing::::', data);
+    if (data.data.type == 'notification_count') {
+      this.addNotification(data);
     }
-    if (this.data.type == 'added_contact') {
-      this.addContact(this.data);
+    if (data.data.type == 'added_contact') {
+      this.addContact(data);
     }
-    if (this.data.type == 'update_display') {
-      this.updateDisplay(this.data);
+    if (data.data.type == 'update_display') {
+      this.updateDisplay(data);
     }
-    if (this.data.type == 'update_conversation_list') {
-      this.updateConversationList(this.data);
+    if (data.data.type == 'update_conversation_list') {
+      this.updateConversationList(data);
     }
-    if (this.data.type == 'notification_message') {
-      this.addNotificationMessage(this.data);
+    if (data.data.type == 'notification_message') {
+      this.addNotificationMessage(data);
     }
   }
 

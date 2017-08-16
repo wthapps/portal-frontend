@@ -187,8 +187,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   uploadFile(e: any) {
     let files = e.target.files;
     // Create a file uploading
-    this.chatService.createUploadingFile();
-    this.chatService.uploadFiles(files);
+    this.chatService.createUploadingFile(files);
+    // this.chatService.uploadFiles(files);
   }
 
   uploadPhoto(e: any) {

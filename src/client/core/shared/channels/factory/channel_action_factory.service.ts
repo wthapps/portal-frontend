@@ -24,22 +24,22 @@ export class ChannelActionFactoryService {
     let action:any;
     switch(this.action) {
       case this.appearance_all_users_online:
-        action = new AppearanceAllUsersOnline(this.data, service);
+        action = new AppearanceAllUsersOnline(service);
         break;
       case this.appearance_new_user_online:
-        action = new AppearanceNewUserOnline(this.data, service);
+        action = new AppearanceNewUserOnline(service);
         break;
       case this.appearance_new_user_offline:
-        action = new AppearanceNewUserOffline(this.data, service);
+        action = new AppearanceNewUserOffline(service);
         break;
       case this.chat_send_message:
-        action = new ChatSendMessage(this.data, service);
+        action = new ChatSendMessage(service);
         break;
       case this.chat_notification:
-        action = new ChatNotification(this.data, service);
+        action = new ChatNotification(service);
         break;
       case this.common_notification:
-        action = new CommonNotification(this.data, service);
+        action = new CommonNotification(service);
         break;
       default:
         action = new ChatActions(service);

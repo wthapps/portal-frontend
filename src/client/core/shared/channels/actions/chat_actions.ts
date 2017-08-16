@@ -6,14 +6,21 @@ export class ChatActions {
 
   }
 
-  update(response: any) {
+  process(response: any) {
+    let data = response.data;
+
     switch (response.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
       case CHAT_ACTIONS.CHAT_MESSAGE_UPDATE:
-        console.log('data;;;;;;;;;;;;;;', response.data);
-        this.serviceManager.getChatCommonService().updateItemInList(response.data.group_id, response.data);
-        break;
+        console.log('chat operation message', data);
 
+        this.serviceManager.getChatCommonService().updateItemInList(data.group_id, data);
+        break;
+      default:
+        console.log('chat operation create', data);
+
+        this.serviceManager.getChatCommonService().addMessage(data.group, data);
+        break;
     }
 
     // this.serviceManager.getStorageService().save('users_online', response.data);

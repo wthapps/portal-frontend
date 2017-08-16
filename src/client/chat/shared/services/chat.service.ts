@@ -14,13 +14,15 @@ import { ChatCommonService } from '../../../core/shared/services/chat.common.ser
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
+import { GenericFile } from '../../../core/shared/models/generic-file.model';
+import { GenericeFileService } from '../../../core/shared/services/generic-file.service';
 
 
 declare var _: any;
 
 @Injectable()
 export class ChatService {
-  public fileUploadHelper: any;
+  public fileUploadHelper: FileUploadHelper;
   public constant: any;
 
   constructor(public storage: StorageService,
@@ -30,7 +32,8 @@ export class ChatService {
               public chatCommonService: ChatCommonService,
               public photoUploadService: PhotoUploadService,
               public router: Router,
-              public handler: HandlerService) {
+              public handler: HandlerService,
+  private fileService: GenericeFileService) {
     // =============================
     this.storage.save('chat_conversations', null);
     this.storage.save('chat_recent_conversations', null);
@@ -170,15 +173,33 @@ export class ChatService {
     return this.apiBaseService.put(`zone/chat/conversations/${conversationId}/messages`, {message: message});
   }
 
-  uploadFiles(files: any) {
-    let groupId = this.storage.find('conversation_select').value.group_json.id;
+  uploadFiles(files: any, parent?: any) {
+    // let groupId = this.storage.find('conversation_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event: any, file: any) => {
-      let data = event.target['result'];
-      this.apiBaseService.post('zone/chat/upload', {file: data, name: file.name, type: file.type})
-        .subscribe((res: any) => {
-        this.removeUploadingFile(groupId);
-        this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'File'});
+      let genericFile = new GenericFile({
+        file: event.target['result'],
+        name: file.name,
+        content_type: file.type,
+        parent: {
+          id: parent.id,
+          uuid: '',
+          type: 'Chat::Message'
+        },
       });
+
+      // update current message and broadcast on server
+      this.fileService.create(genericFile)
+        .subscribe((res: any) => {
+        console.log('uploaded file successfully!!!', res);
+          // this.removeUploadingFile(groupId);
+          // this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'File'});
+      });
+
+      // this.apiBaseService.post('zone/chat/upload', {file: data, name: file.name, type: file.type})
+      //   .subscribe((res: any) => {
+      //   this.removeUploadingFile(groupId);
+      //   this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'File'});
+      // });
     });
   }
 
@@ -200,14 +221,16 @@ export class ChatService {
     this.sendMessage(groupId, {type: 'file', id: photo.id, object: 'Photo'});
   }
 
-  createUploadingFile() {
+  createUploadingFile(file?: any) {
     let groupId = this.storage.find('conversation_select').value.group_json.id;
     let message: Message = new Message({
       message: 'Sending file.....',
       message_type: 'file',
       content_type: 'media/generic'
     });
-    this.sendMessage(groupId, message);
+    this.sendMessage(groupId, message, null, (response: any) => {
+      this.uploadFiles(file, {id: response.data.id})
+    });
   }
 
   removeUploadingFile(groupId: any) {

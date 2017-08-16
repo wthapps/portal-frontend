@@ -10,7 +10,7 @@
       </h4>
       <figure class="message-item-owner-avatar">
         <span class="avatar-xs">
-          <img [src]="message.display.image" alt="">
+          <img [src]="message.display?.image" alt="">
         </span>
       </figure>
     </div>
@@ -62,7 +62,7 @@
 
           <!--show sending -->
           <div *ngIf="message.sending_status == 1" class="message-item-content-other-files">
-            <a class="media-div link-text" href="javascript:void();">
+            <a class="media-div link-text" href="javascript:void(0);">
               <div class="pull-left">
                 <i class="fa fa-spinner fa-spin fa-fw"></i>
               </div>
@@ -83,12 +83,12 @@
             {{ message.to_json }}
           </div>
           <div class="message-item-content-other-files" *ngIf="message.file_type == 'FileMedium'">
-            <a class="media-div link-text" [href]="message.file_json.url" target="_blank" download>
+            <a class="media-div link-text" [href]="message.file_json?.url" target="_blank" download>
               <div class="pull-left">
                 <i class="fa fa-file-o"></i>
               </div>
               <div class="media-div-body">
-                <div class="media-div-heading">{{ message.file_json.name }}</div>
+                <div class="media-div-heading">{{ message.file_json.full_name }}</div>
                 <div class="text-fade">{{ message.file_json.size | bytes:3 }}</div>
               </div>
             </a>

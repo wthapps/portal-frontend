@@ -1,4 +1,4 @@
 export interface Processable {
 
-  process(): void;
+  process(data: any): void;
 }

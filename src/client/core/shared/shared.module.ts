@@ -61,6 +61,7 @@ import { ZChatEmojiModule } from './emoji/emoji.module';
 
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
+import { GenericeFileService } from './services/generic-file.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -143,7 +144,8 @@ export class CoreSharedModule {
         ChatCommonService,
         PhotoService,
         SuggestionService,
-        CommonEventService
+        CommonEventService,
+        GenericeFileService
       ]
     };
   }
