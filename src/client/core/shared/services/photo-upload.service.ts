@@ -91,17 +91,7 @@ export class PhotoUploadService {
     });
   }
 
-  // Convert raster image type (PNG) to jpg
-  getFileName(name: string) {
-    return name.replace('.png', '.jpg');
-  }
-
-  getExtensionType(extension: string) {
-    return extension.replace('png', 'jpg');
-  }
-
-
-  /**
+   /**
    * Upload multiple photos to s3 and convert output streams to Observable
    * @param photos
    * @returns {any}
@@ -118,8 +108,8 @@ export class PhotoUploadService {
       .mergeMap((photo: any) => this.readFile(photo),
         (photo: any, data: any) => {
           return {
-            name: this.getFileName(photo.name),
-            type: this.getExtensionType(photo.type),
+            name: photo.name,
+            type: photo.type,
             file: data
           };
         },

@@ -22,7 +22,7 @@ export class UserInfo extends BaseModel {
   language: string;
   online: boolean;
   nickname: string;
-  profile_image: string = 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png';
+  profile_image: string;
 
   constructor(obj?: any) {
     super();
