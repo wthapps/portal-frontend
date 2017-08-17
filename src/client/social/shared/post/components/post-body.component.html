@@ -83,14 +83,14 @@
   <div class="z-social-post-action">
     <ul class="pull-left">
       <li>
-        <i class="fa fa-thumbs-o-up" [ngClass]="{'active' : (item.reactions.indexOf('like') >= 0)}"
+        <i class="fa fa-thumbs-o-up" [ngClass]="{'active' : hasLike}"
            (click)="postItem.createReaction($event, 'like', 'post', item.uuid)"></i>
         <span class="can-click" *ngIf="item.likes.length>0" data-toggle="modal"
               (click)="onActions(actions.openLikeDislike, item.likes, 'like')">{{ item.likes.length }}</span>
         <span *ngIf="item.likes.length==0" href="javascript:;">{{ item.likes.length }}</span>
       </li>
       <li>
-        <i class="fa fa-thumbs-o-down" [ngClass]="{'active' : (item.reactions.indexOf('dislike') >= 0)}"
+        <i class="fa fa-thumbs-o-down" [ngClass]="{'active' : hasDislike}"
            (click)="postItem.createReaction($event, 'dislike', 'post', item.uuid)"></i>
         <span class="can-click" *ngIf="item.dislikes.length>0" data-toggle="modal"
               (click)="onActions(actions.openLikeDislike, item.dislikes, 'dislike')">{{ item.dislikes.length }}</span>

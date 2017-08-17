@@ -46,6 +46,7 @@ export class ZSocialMembersComponent implements OnInit {
   totalBlacklist: number;
   readonly friendTabs = FRIEND_TABS;
   totalBlacklists: number;
+  showLoading: boolean;
 
   constructor(private socialService: SocialService,
               private zoneReportService: ZSharedReportService,
@@ -55,17 +56,18 @@ export class ZSocialMembersComponent implements OnInit {
 
   ngOnInit() {
     this.getUser();
+    this.showLoading = document.getElementById('users-list') !== null;
   }
 
   getDataList(tab: string, forceOption: boolean = false) {
     if (this.currentState === tab && !forceOption)
       return;
     this.currentState = tab;
-    this.loadingService.start('#users-list');
+    this.startLoading();
     switch (tab) {
       case FRIEND_TABS.friends:
         this.socialService.user.getFriends().take(1)
-          .finally(() => this.loadingService.stop('#users-list'))
+          .finally(() => this.stopLoading())
           .subscribe((res: any) => {
             this.list = res.data;
             this.totalFriends = this.list.length;
@@ -76,7 +78,7 @@ export class ZSocialMembersComponent implements OnInit {
         break;
       case FRIEND_TABS.followers:
         this.socialService.user.getFollowerList().take(1)
-          .finally(() => this.loadingService.stop('#users-list'))
+          .finally(() => this.stopLoading())
           .subscribe((res: any) => {
             this.list = res.data;
             this.totalFollowers = this.list.length;
@@ -84,7 +86,7 @@ export class ZSocialMembersComponent implements OnInit {
         break;
       case FRIEND_TABS.followings:
         this.socialService.user.getFollowingList().take(1)
-          .finally(() => this.loadingService.stop('#users-list'))
+          .finally(() => this.stopLoading())
           .subscribe((res: any) => {
             this.list = res.data;
             this.totalFollowings = this.list.length;
@@ -95,12 +97,22 @@ export class ZSocialMembersComponent implements OnInit {
         break;
       case FRIEND_TABS.blacklists:
         this.list = [];
-        this.loadingService.stop('#users-list');
+        this.stopLoading();
         break;
       default:
-        this.loadingService.stop('#users-list');
+        this.stopLoading();
         console.error('Getting a strange tab. Need implementation? ', tab);
     }
+  }
+
+  startLoading() {
+    if (this.showLoading)
+      this.loadingService.start('#users-list');
+  }
+
+  stopLoading() {
+    if (this.showLoading)
+      this.loadingService.stop('#users-list');
   }
 
   unfriend(user: any) {
@@ -123,14 +135,6 @@ export class ZSocialMembersComponent implements OnInit {
     this.zoneReportService.friend(friend.uuid);
     return false;
   }
-
-  /*addToContacts(uuid: string) {
-
-   }
-
-   addToBlackList(uuid: string) {
-
-   }*/
 
 
   unfollow(item: any) {

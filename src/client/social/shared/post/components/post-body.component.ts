@@ -27,6 +27,8 @@ export class PostBodyComponent implements OnChanges {
     openLikeDislike: 6,
     toggleComments: 7
   };
+  hasLike: boolean;
+  hasDislike: boolean;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -42,7 +44,11 @@ export class PostBodyComponent implements OnChanges {
     if (changes['item'].currentValue.parent_post) {
       this.parentItem = changes['item'].currentValue.parent_post;
     }
+
+    this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    this.hasDislike = _.findIndex(this.item.dislikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
   }
+
 
   onActions(action: any, data?: any, type?: any) {
     switch (action) {

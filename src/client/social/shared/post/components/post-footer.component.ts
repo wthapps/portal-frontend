@@ -51,8 +51,8 @@ export class PostFooterComponent implements OnChanges {
     onShowPhotoDetail: 7
   };
 
-  hasLike: boolean = false;
-  hasDislike: boolean = false;
+  // hasLike: boolean = false;
+  // hasDislike: boolean = false;
   showInfo: boolean = false;
   // showComments: boolean = false;
   totalComment: number = 1;
@@ -81,6 +81,17 @@ export class PostFooterComponent implements OnChanges {
     this.totalComment = this.item.comment_count;
     if (this.totalComment === 0 || this.totalComment <= this.item.comments.length)
       this.loadingDone = true;
+
+    // this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    // this.hasDislike = _.findIndex(this.item.dslikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+  }
+
+  hasLike(comment: any) {
+    return _.findIndex(comment.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+  }
+
+  hasDislike(comment: any) {
+    return _.findIndex(comment.dislikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
   }
 
   onActions(action: any, params?: any) {

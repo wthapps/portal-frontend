@@ -237,11 +237,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   onActions(event: BaseEvent) {
-    // Create a comment
-    // console.log('create post', event);
-    // return;
-
-
     if (event instanceof CommentCreateEvent) {
       let self: any = this;
       this.createComment(event.data).subscribe(
@@ -409,8 +404,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     let data = {reaction: reaction, reaction_object: object, uuid: uuid};
     this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).subscribe(
       (res: any) => {
-        // _.merge(this.item, new SoPost().from(res.data).excludeComments());
-        this.updateItemReactions(object, res.data);
+        this.updateItemReactions(object, Object.assign({}, data, res.data));
         this.mapDisplay();
       }
     );
@@ -425,13 +419,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       // update reaction for reply
       let done: boolean = false;
       _.forEach(this.item.comments, (comment: SoComment, index: any) => {
-        if (comment.uuid == data.self.uuid) {
+        if (comment.uuid == data.uuid) {
           this.updateReactionsSet(this.item.comments[index], data);
           return;
         }
         // TODO: Handle multi-level replies case
         _.forEach(this.item.comments[index].comments, (reply: SoComment, i2: any) => {
-          if (reply.uuid == data.self.uuid) {
+          if (reply.uuid == data.uuid) {
             this.updateReactionsSet(this.item.comments[index].comments[i2], data);
             done = true;
             return;
@@ -445,10 +439,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   private updateReactionsSet(srcObj: any, data: any) {
-    srcObj.reactions = data.reactions;
-    srcObj.likes = data.likes;
-    srcObj.dislikes = data.dislikes;
-    srcObj.shares = data.shares;
+    srcObj.reactions = _.get(data, 'reactions', []);
+    srcObj.likes = _.get(data, 'likes', []);
+    srcObj.dislikes = _.get(data, 'dislikes', []);
+    srcObj.shares = _.get(data, 'shares', []);
   }
 
   private updateItemComments(data: any) {

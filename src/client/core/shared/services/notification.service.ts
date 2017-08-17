@@ -121,8 +121,8 @@ export class NotificationService {
 
   addNewNofification(notification: any) {
     // Detect if this notification is new or an Undo notification
-    if (parseInt(_.get(JSON.parse(notification), 'id')) > this.latestNotifId) {
-      this.notifications.unshift(JSON.parse(notification));
+    if (parseInt(_.get(JSON.parse(notification.data), 'id')) > this.latestNotifId) {
+      this.notifications.unshift(JSON.parse(notification.data));
       this.newNotifCount++;
     }
   }
