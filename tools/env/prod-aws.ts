@@ -11,8 +11,7 @@ const ProdConfig: EnvConfig = {
     SOCIAL: 'https://social.wthapps.com',
     CHAT: 'https://chat.wthapps.com',
     CONTACT: 'https://contact.wthapps.com',
-  },
-  RES: 'https://s3-ap-southeast-1.amazonaws.com/env-staging'
+  }
 };
 
 export = ProdConfig;

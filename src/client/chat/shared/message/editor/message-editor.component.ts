@@ -184,18 +184,19 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  uploadFile(e: any) {
-    let files = e.target.files;
-    // Create a file uploading
-    this.chatService.createUploadingFile(files);
-    // this.chatService.uploadFiles(files);
+  changeFiles(event: any) {
+    let files = event.target.files;
+    if (files.length == 0) {
+      return;
+    }
+    this.uploadFile(files);
   }
 
-  uploadPhoto(e: any) {
-    // this.photoModal.close();
-    this.chatService.createUploadingFile();
-    this.chatService.uploadPhotos(e);
+  uploadFile(files: any) {
+    this.chatService.createUploadingFile(files);
   }
+
+
 
   placeCaretAtEnd(el: any) {
     el.focus();
@@ -234,7 +235,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
       this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
-          this.uploadPhoto(photos);
+          this.uploadFile(photos);
         },
         (error: any) => {
           console.error(error);

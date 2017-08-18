@@ -174,7 +174,6 @@ export class ChatService {
   }
 
   uploadFiles(files: any, parent?: any) {
-    // let groupId = this.storage.find('conversation_select').value.group_json.id;
     this.fileUploadHelper.upload(files, (event: any, file: any) => {
       let genericFile = new GenericFile({
         file: event.target['result'],
@@ -189,32 +188,23 @@ export class ChatService {
 
       // update current message and broadcast on server
       this.fileService.create(genericFile)
-        .subscribe((res: any) => {
-        console.log('uploaded file successfully!!!', res);
-          // this.removeUploadingFile(groupId);
-          // this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'File'});
+        .subscribe((response: any) => {
+          console.log('send file successfully', response);
       });
-
-      // this.apiBaseService.post('zone/chat/upload', {file: data, name: file.name, type: file.type})
-      //   .subscribe((res: any) => {
-      //   this.removeUploadingFile(groupId);
-      //   this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'File'});
-      // });
     });
   }
 
-  uploadPhotos(files: any) {
-    let groupId = this.storage.find('conversation_select').value.group_json.id;
-    this.fileUploadHelper.upload(files, (event: any, file: any) => {
-      let result = this.photoUploadService.uploadPhotos([file]).take(1)
-        .subscribe((res: any) => {
-          this.removeUploadingFile(groupId);
-          this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'Photo'});
-        }, (error: any) => {
-          console.log('Error uploading photos in chat service', error);
-        });
-    });
-  }
+  // uploadPhotos(files: any) {
+  //   let groupId = this.storage.find('conversation_select').value.group_json.id;
+  //   this.fileUploadHelper.upload(files, (event: any, file: any) => {
+  //     let result = this.photoUploadService.uploadPhotos([file]).take(1)
+  //       .subscribe((res: any) => {
+  //         this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'Photo'});
+  //       }, (error: any) => {
+  //         console.log('Error uploading photos in chat service', error);
+  //       });
+  //   });
+  // }
 
   uploadPhotoOnWeb(photo: any) {
     let groupId = this.storage.find('conversation_select').value.group_json.id;
@@ -231,17 +221,6 @@ export class ChatService {
     this.sendMessage(groupId, message, null, (response: any) => {
       this.uploadFiles(file, {id: response.data.id})
     });
-  }
-
-  removeUploadingFile(groupId: any) {
-    // let item = this.storage.find('chat_messages_group_' + groupId);
-    // let newValue = _.remove(item.value.data, (v: any) => {
-    //   return v.message_type != 'file_tmp';
-    // });
-    // item.value.data = newValue;
-    // let currentGroupId = this.storage.find('conversation_select').value.group_json.id;
-    // if (currentGroupId == groupId)
-    //   this.storage.save('current_chat_messages', item);
   }
 
   getUsersOnline() {
