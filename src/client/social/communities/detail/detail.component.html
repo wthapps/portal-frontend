@@ -29,20 +29,20 @@
             </div>
 
             <div class="hd-item-action-right-bottom">
-              <button class="btn btn-default" type="button" (click)="chooseMembers($event)"
-                      data-toggle="modal"
-                      data-target="#modal-social-share-com" *ngIf="isMember">
-                <i class="fa fa-user-plus"></i> Invite Member
-              </button>
+              <div class="btn-group">
+                <button class="btn btn-outline-default" type="button" (click)="chooseMembers($event)"
+                        data-toggle="modal"
+                        data-target="#modal-social-share-com" *ngIf="isMember">
+                  <i class="fa fa-user-plus"></i> Invite Member
+                </button>
+                <button class="btn btn-outline-default" type="button" (click)="askToJoin()"
+                        *ngIf="!isMember && !joinRequestId">
+                  <i class="fa fa-user-plus"></i> Ask to join
+                </button>
+              </div>
 
-              <button class="btn btn-default" type="button" (click)="askToJoin()"
-                      *ngIf="!isMember && !joinRequestId">
-                <i class="fa fa-user-plus"></i> Ask to join
-              </button>
-
-
-              <div class="btn-group pull-right" *ngIf="!isMember && joinRequestId != undefined">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+              <div class="btn-group" *ngIf="!isMember && joinRequestId != undefined">
+                <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                   Asked to join <span class="caret"></span>
                 </button>
@@ -53,8 +53,8 @@
                 </ul>
               </div>
 
-              <div class="btn-group pull-right" *ngIf="!isMember && invitationId != undefined">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+              <div class="btn-group" *ngIf="!isMember && invitationId != undefined">
+                <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                   Invited to join <span class="caret"></span>
                 </button>
@@ -65,36 +65,33 @@
                 </ul>
               </div>
 
-
               <!--community menu-->
-              <ul class="pull-right list-unstyled clearfix" *ngIf="isMember">
-                <li class=" dropdown">
-                  <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)"
-                          pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
-                    <i class="fa fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right">
-                    <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
-                    <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">
-                      {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications </a>
-                    </li>
-                    <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
-                    <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage
-                      members</a>
-                    </li>
-                    <li role="separator" class="divider"></li>
-                    <li>
-                      <a href="javascript:;" (click)="addFavourite(uuid)"> Favourites
-                        <i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
-                    <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
-                    <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
-                  </ul>
-                </li>
-              </ul>
+              <div class="btn-group" *ngIf="isMember">
+                <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)"
+                        pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
+                  <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">
+                    {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications </a>
+                  </li>
+                  <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
+                  <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage
+                    members</a>
+                  </li>
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <a href="javascript:;" (click)="addFavourite(uuid)"> Favourites
+                      <i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>
+                    </a>
+                  </li>
+                  <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
+                  <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
+                  <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
+                </ul>
+              </div>
             </div>
 
           </so-information>
