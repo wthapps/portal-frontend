@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { PostListComponent } from '../shared/post/post-list.component';
 
-declare let $ : any;
-declare let _ : any;
+declare let $: any;
+declare let _: any;
 
 @Component({
   moduleId: module.id,
@@ -12,8 +12,4 @@ declare let _ : any;
 
 export class ZSocialCommunityComponent {
   @ViewChild('posts') posts: PostListComponent;
-
-  constructor() {
-
-  }
 }

@@ -57,7 +57,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
               private commonEventService: CommonEventService) {
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
-    })
+    });
     this.page = 1;
     this.contact$ = this.contactService.contacts$;
 
@@ -69,7 +69,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       this.contactService.selectedObjects = [event.payload];
       this.doActionsToolbar(event);
       this.contactService.selectedObjects = tmp;
-    })
+    });
 
 
     this.route.params.forEach((params: Params) => {

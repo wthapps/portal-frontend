@@ -37,7 +37,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
   ngOnInit() {
     this.route.params.forEach((params: any) => {
       let contact = this.chatService.getContactSelect().value;
-      if(contact) {
+      if (contact) {
         this.chatService.getMessages(contact.group_json.id);
         if (contact.history) {
           this.chatService.updateHistory(contact);
@@ -47,7 +47,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
 
     this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatCommonEvent').subscribe((event: CommonEvent) => {
       this.doEvent(event);
-    })
+    });
 
     this.item = this.chatService.getCurrentMessages();
   }
@@ -77,11 +77,10 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
         this.conversationService.deleteMessage(event.payload.group_id, event.payload.id)
-          .subscribe((response: any) => {
-            console.log('delete ok!!!!');
-          }, error => {
-
-          });
+          .subscribe(
+            (response: any) => {
+              console.log('delete ok!!!!');
+            });
 
         break;
     }

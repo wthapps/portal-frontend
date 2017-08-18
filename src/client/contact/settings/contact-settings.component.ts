@@ -31,7 +31,7 @@ export class ZContactSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.apiBaseService.get(`contact/contacts/settings`).subscribe((res: any) => {
-      if(res.data && res.data.phone_default_code) {
+      if (res.data && res.data.phone_default_code) {
         this.form = this.fb.group({
           'id': res.data.id,
           'phone_default_code': res.data.phone_default_code,
@@ -56,9 +56,11 @@ export class ZContactSettingsComponent implements OnInit {
   }
 
   cancel() {
+    console.log('cancel');
   }
 
   open() {
+    console.log('open');
   }
 
   filterCountriesCode(event: any) {

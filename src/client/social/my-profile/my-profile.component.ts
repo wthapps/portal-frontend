@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { UserService } from "../../core/shared/services/user.service";
-import { ApiBaseService } from "../../core/shared/services/apibase.service";
+import { UserService } from '../../core/shared/services/user.service';
+import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
 @Component({
   moduleId: module.id,
@@ -10,7 +10,7 @@ import { ApiBaseService } from "../../core/shared/services/apibase.service";
   templateUrl: 'my-profile.component.html',
   styleUrls: ['my-profile.component.css']
 })
-export class ZSocialMyProfileComponent {
+export class ZSocialMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
 
   data: any;

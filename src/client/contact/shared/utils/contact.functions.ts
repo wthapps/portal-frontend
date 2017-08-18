@@ -27,9 +27,9 @@ export module _contact {
 
   export function isInternal(data: any) {
     if (_.isArray(data) && data.length > 0) {
-      return data[0].wthapps_user? true : false;
+      return data[0].wthapps_user ? true : false;
     } else {
-      return data.wthapps_user? true : false;
+      return data.wthapps_user ? true : false;
     }
   }
 
@@ -45,17 +45,17 @@ export module _contact {
     if (_.isArray(contacts) && contacts.length > 1) {
       let arr: any = [];
       let tmp = contacts[0].labels;
-      for(let i = 1; i < contacts.length; i++) {
+      for (let i = 1; i < contacts.length; i++) {
         if (contacts[i].labels.length == 0) return [];
         _.forEach(tmp, (label: any) => {
           let res = _.filter(contacts[i].labels, ['name', label.name]);
           if (!res || res.length == 0) {
-            _.remove(arr, (item : any) => {
+            _.remove(arr, (item: any) => {
               return item.name == label.name;
             });
           }
           arr = _.concat(res, arr);
-        })
+        });
         tmp = _.unionBy(arr, 'id');
       }
       return _.unionBy(tmp, 'id');

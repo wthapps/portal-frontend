@@ -33,7 +33,7 @@ export class ChatService {
               public photoUploadService: PhotoUploadService,
               public router: Router,
               public handler: HandlerService,
-  private fileService: GenericeFileService) {
+              private fileService: GenericeFileService) {
     // =============================
     this.storage.save('chat_conversations', null);
     this.storage.save('chat_recent_conversations', null);
@@ -190,10 +190,10 @@ export class ChatService {
       // update current message and broadcast on server
       this.fileService.create(genericFile)
         .subscribe((res: any) => {
-        console.log('uploaded file successfully!!!', res);
+          console.log('uploaded file successfully!!!', res);
           // this.removeUploadingFile(groupId);
           // this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'File'});
-      });
+        });
 
       // this.apiBaseService.post('zone/chat/upload', {file: data, name: file.name, type: file.type})
       //   .subscribe((res: any) => {
@@ -424,6 +424,6 @@ export class ChatService {
       .then((res: any) => {
         console.log('updatePhotoMessage: ', res);
         return res;
-    });
+      });
   }
 }

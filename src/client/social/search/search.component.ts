@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ServiceManager } from '../../core/shared/services/service-manager';
 import { Constants } from '../../core/shared/config/constants';
@@ -14,7 +14,7 @@ declare var _: any;
   templateUrl: 'search.component.html'
 })
 
-export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
+export class ZSocialSearchResultComponent implements OnDestroy {
   show: boolean = false;
   type: string = '';
   result: any;
@@ -26,11 +26,11 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   searchPostedBy: string = '';
   searchDate: string = '';
   searchDateValue: Date;
-  events:any;
-  show_more_posts:any;
-  show_more_communities:any;
-  show_more_members:any;
-  params:any;
+  events: any;
+  show_more_posts: any;
+  show_more_communities: any;
+  show_more_members: any;
+  params: any;
 
   readonly comUserStatus = Constants.soCommunityUserStatus;
   readonly friendStatus = Constants.friendStatus;
@@ -42,8 +42,8 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
               private socialService: SocialService) {
 
     this.events = this.router.events
-      .filter((event:any) => event instanceof NavigationEnd)
-      .subscribe((event:NavigationEnd) => {
+      .filter((event: any) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
         let paths = event.url.toString().split('/')[1].split('?');
         if (paths[1]) {
           this.params = paths[1].substring(2, paths[1].length);
@@ -69,10 +69,6 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit() {
-
-  }
-
   ngOnDestroy() {
     this.events.unsubscribe();
   }
@@ -80,7 +76,7 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   toggleFavourite(item: any, group: string) {
     this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
       (res: any) => {
-        if(!_.isEmpty(this.favourite)) {
+        if (!_.isEmpty(this.favourite)) {
           this.favourite = undefined;
         } else {
           this.favourite = res.data;
@@ -90,9 +86,9 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   }
 
   /*
-    Params format:
-    item: community / member object
-    group: community / members
+   Params format:
+   item: community / member object
+   group: community / members
    */
   getFavourite(item: any, group: string) {
     this.socialService.user.getFavourite(item.uuid, group).subscribe(
@@ -103,13 +99,13 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   }
 
   toggleFollow(item: any) {
-
+    console.log('toggleFollow');
   }
 
 
   // TODO:
   importToContacts(item: any) {
-
+    console.log('importToContacts');
   }
 
   sendJoinRequest(community: any) {
@@ -125,7 +121,7 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   }
 
   confirmLeaveCommunity(community: any) {
-    this.socialService.community.confirmLeaveCommunity(community).then((res:any) => community.user_status = this.comUserStatus.stranger);
+    this.socialService.community.confirmLeaveCommunity(community).then((res: any) => community.user_status = this.comUserStatus.stranger);
   }
 
   // leaveCommunity(community: any) {

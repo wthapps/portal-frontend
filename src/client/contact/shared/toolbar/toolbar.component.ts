@@ -31,7 +31,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
   }
 
   openAddModal() {
-    console.log("openAddModal");
+    console.log('openAddModal');
   }
 
   mergeDuplicate() {

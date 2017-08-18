@@ -29,6 +29,6 @@ export class KeyToValuePipe implements PipeTransform {
     if (newObj && newObj[objValue]) {
       return newObj[objValue];
     }
-    return "";
+    return '';
   }
 }

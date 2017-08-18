@@ -26,14 +26,17 @@
             <p class="bold">List sort by</p>
             <div class="row mb15">
               <div class="col-xs-12">
-                <p-radioButton name="contacts_sort_by" value="first_name" label="First Name" formControlName="contacts_sort_by"></p-radioButton>
+                <p-radioButton name="contacts_sort_by" value="first_name" label="First Name"
+                               formControlName="contacts_sort_by"></p-radioButton>
               </div>
               <div class="col-xs-12">
-                <p-radioButton name="contacts_sort_by" value="last_name" label="Last Name" formControlName="contacts_sort_by"></p-radioButton>
+                <p-radioButton name="contacts_sort_by" value="last_name" label="Last Name"
+                               formControlName="contacts_sort_by"></p-radioButton>
               </div>
             </div>
             <div class="form-group">
-              <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine" class="btn btn-outline-primary mr10">
+              <button type="button" [disabled]="!form.valid || form.pristine"
+                      class="btn btn-outline-primary mr10">
                 Done
               </button>
               <button type="button" class="btn btn-outline-default" (click)="cancel()">Cancel</button>

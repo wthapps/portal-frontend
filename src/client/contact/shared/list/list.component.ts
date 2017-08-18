@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -13,7 +13,7 @@ declare var _: any;
   templateUrl: 'list.component.html',
   styleUrls: ['list.component.css']
 })
-export class ZContactSharedListComponent implements OnInit {
+export class ZContactSharedListComponent {
   @Input() data: any;
 
   // descending: boolean = false;
@@ -24,10 +24,6 @@ export class ZContactSharedListComponent implements OnInit {
 
   constructor(public contactService: ZContactService) {
     this.desc$ = this.contactService.orderDesc$;
-  }
-
-  ngOnInit() {
-
   }
 
   onSort(event: any) {

@@ -1,5 +1,5 @@
 import { GenericFile } from '../../../core/shared/models/generic-file.model';
-export class Photo extends GenericFile{
+export class Photo extends GenericFile {
 
   dimensions: string;
   width: number;

@@ -24,7 +24,7 @@
               <div class="media-body">
                 <h4 class="bold">{{ data.name }}</h4>
                 <p>
-                  <small>{{ job_title }}</small>
+                  <small>{{ data.job_title }}</small>
                 </p>
                 <p *ngIf="data.labels.length > 0">
                   <span *ngFor="let label of data.labels" class="label label-default mr10">{{ label.name }}</span>
