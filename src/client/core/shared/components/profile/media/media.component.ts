@@ -97,12 +97,10 @@ export class PartialsProfileMediaComponent implements ProfileFormMixin {
 
   onOpenModal() {
     this.modal.open();
-    let _this = this;
-
-    _this.removeAll();
-
+    this.removeAll();
     _.map(this.data.media, (v: any)=> {
-      _this.addItem(v);
+      this.addItem(v);
     });
+    this.addItem();
   }
 }

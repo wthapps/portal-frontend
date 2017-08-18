@@ -74,9 +74,10 @@ export class PartialsProfileEducationComponent implements ProfileFormMixin, Prof
   onOpenModal() {
     this.modal.open();
     this.removeAll();
-
     _.map(this.data.educations, (v: any)=> {
       this.addEducation(v);
     });
+    this.addEducation();
+
   }
 }

@@ -93,11 +93,10 @@ export class PartialsProfileWorkComponent implements ProfileFormMixin, ProfileFo
 
   onOpenModal() {
     this.modal.open();
-
     this.removeAll();
-
     _.map(this.data.works, (v: any)=> {
       this.addWork(v);
     });
+    this.addWork();
   }
 }

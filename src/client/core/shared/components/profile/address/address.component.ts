@@ -103,13 +103,11 @@ export class PartialsProfileAddressComponent implements OnInit, ProfileFormMixin
 
   onOpenModal() {
     this.modal.open();
-    let _this = this;
-
-    _this.removeAll();
-
+    this.removeAll();
     _.map(this.data.addresses, (v: any)=> {
-      _this.addItem(v);
+      this.addItem(v);
     });
+    this.addItem();
   }
 
   getAddressControls() {
