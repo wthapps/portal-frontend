@@ -81,7 +81,7 @@ export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
       });
     } else {
       return this.fb.group({
-        category: ['', Validators.compose([Validators.required])],
+        category: ['mobile', Validators.compose([Validators.required])],
         country_alpha_code: [''],
         value: ['', Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });

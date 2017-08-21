@@ -53,7 +53,6 @@
                   && add_address.controls.category.touched
                   && form.value.addresses[i].category.length>1)}">
                   <select class="form-control" name="name" formControlName="category">
-                    <option value=""> -- Select One -- </option>
                     <option *ngFor="let et of addressType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>
                 </div>

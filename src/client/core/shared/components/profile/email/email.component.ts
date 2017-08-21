@@ -68,7 +68,7 @@ export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
       });
     } else {
       return this.fb.group({
-        category: ['', Validators.compose([Validators.required])],
+        category: ['work', Validators.compose([Validators.required])],
         value: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])]
       });
     }

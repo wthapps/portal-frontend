@@ -147,7 +147,7 @@ export class ZContactEditComponent implements OnChanges {
     let formGroup: any = null;
     switch (type) {
       case 'phones': {
-        let data: any = {category: '', value: ''};
+        let data: any = {category: 'mobile', value: ''};
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -163,7 +163,7 @@ export class ZContactEditComponent implements OnChanges {
         break;
       }
       case 'emails': {
-        let data: any = {category: '', value: ''};
+        let data: any = {category: 'work', value: ''};
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -180,7 +180,7 @@ export class ZContactEditComponent implements OnChanges {
       }
       case 'addresses': {
         let data: any = {
-          category: '',
+          category: 'work',
           address_line1: '',
           po_box: '',
           city: '',
@@ -213,7 +213,7 @@ export class ZContactEditComponent implements OnChanges {
         break;
       }
       case 'media': {
-        let data: any = {category: '', value: ''};
+        let data: any = {category: 'wthapps', value: ''};
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],

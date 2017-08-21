@@ -55,7 +55,6 @@
                   && form.controls.phones.controls[i].controls.category.touched
                   && form.value.phones[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
-                      <option value="">-- Select One --</option>
                       <option *ngFor="let et of phoneCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
@@ -110,7 +109,6 @@
                   && form.controls.emails.controls[i].controls.category.touched
                   && form.value.emails[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
-                      <option value="">-- Select One --</option>
                       <option *ngFor="let et of emailCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
@@ -166,7 +164,6 @@
                   && form.controls.addresses.controls[i].controls.category.touched
                   && form.value.addresses[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
-                      <option value="">-- Select One --</option>
                       <option *ngFor="let et of emailCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
@@ -237,7 +234,6 @@
                   && form.controls.media.controls[i].controls.category.touched
                   && form.value.media[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
-                      <option value="">-- Select One --</option>
                       <option *ngFor="let et of mediaCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
