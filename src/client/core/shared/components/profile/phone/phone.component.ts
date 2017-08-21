@@ -100,10 +100,10 @@ export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
   onOpenModal() {
     this.modal.open();
     this.removeAll();
-
     _.map(this.data.phones, (v: any)=> {
       this.addItem(v);
     });
+    this.addItem();
   }
 
   filterCountriesCode(event: any) {

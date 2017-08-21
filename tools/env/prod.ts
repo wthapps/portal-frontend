@@ -20,22 +20,7 @@ const ProdConfig: EnvConfig = {
     SOCIAL: `${protocol}://social-${fullDomain}`,
     CHAT: `${protocol}://chat-${fullDomain}`,
     CONTACT: `${protocol}://contact-${fullDomain}`
-  },
-  RES: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon'
+  }
 };
-
-// const ProdConfig: EnvConfig = {
-//   API:`${protocol}://${hostname}:${PORTS['api']}`,
-//   ENV: 'PROD',
-//   DOMAIN: `${hostname}`,
-//   SUB_DOMAIN: {
-//     APP: `${protocol}://${hostname}:${PORTS['portal']}`,
-//     MYACCOUNT: `${protocol}://${hostname}:${PORTS['my']}`,
-//     MEDIA: `${protocol}://${hostname}:${PORTS['media']}`,
-//     SOCIAL: `${protocol}://${hostname}:${PORTS['social']}`,
-//     CHAT: `${protocol}://${hostname}:${PORTS['chat']}`
-//   },
-//   RES: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon'
-// };
 
 export = ProdConfig;

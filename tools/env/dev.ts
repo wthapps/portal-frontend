@@ -15,8 +15,7 @@ const DevConfig: EnvConfig = {
     SOCIAL: 'http://localhost:3015',
     CHAT: 'http://localhost:3020',
     CONTACT: 'http://localhost:3025'
-  },
-  RES: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon'
+  }
 };
 
 export = DevConfig;

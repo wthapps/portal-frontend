@@ -45,7 +45,7 @@ export class MessageItemComponent implements OnInit {
       this.message.byMe = this.chatService.user.profile.id == this.message.display.id;
     } else {
       this.message.file_json = {};
-      this.message.file_json.thumbnail_url = Config.RES + '/portal-frontend/common-images/file/file_upload/filethumb.png';
+      this.message.file_json.thumbnail_url = 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png';
     }
 
   }

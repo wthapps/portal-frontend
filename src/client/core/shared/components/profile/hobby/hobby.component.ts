@@ -72,12 +72,10 @@ export class PartialsProfileHobbyComponent implements ProfileFormMixin, ProfileF
 
   onOpenModal() {
     this.modal.open();
-    let _this = this;
-
-    _this.removeAll();
-
+    this.removeAll();
     _.map(this.data.hobbies, (v: any)=> {
-      _this.addItem(v);
+      this.addItem(v);
     });
+    this.addItem();
   }
 }
