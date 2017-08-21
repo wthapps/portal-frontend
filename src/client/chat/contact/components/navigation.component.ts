@@ -9,7 +9,7 @@ import { ChatService } from '../../shared/services/chat.service';
 })
 export class ZChatContactMenuComponent implements OnInit {
   @Input() tab:any = 'all';
-  contactItem:any;
+  // contactItem:any;
   constant:any;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   menu:any = [
@@ -25,7 +25,7 @@ export class ZChatContactMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getConversations();
+    // this.contactItem = this.chatService.storage.find("chat_conversations");
     this.constant = this.chatService.constant;
   }
 

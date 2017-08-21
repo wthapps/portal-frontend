@@ -10,4 +10,3 @@ import { Component } from '@angular/core';
   styleUrls: ['toolbar.component.css']
 })
 export class ToolbarComponent { }
-
