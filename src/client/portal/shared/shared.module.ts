@@ -1,6 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { CoreSharedModule } from '../../core/shared/shared.module';
+import { PortalSharedHeaderComponent } from './header/header.component';
+import { PortalSharedFooterComponent } from './footer/footer.component';
 
 
 /**
@@ -12,8 +14,12 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
     CoreSharedModule.forRoot()
   ],
   declarations: [
+    PortalSharedHeaderComponent,
+    PortalSharedFooterComponent,
   ],
   exports: [
+    PortalSharedHeaderComponent,
+    PortalSharedFooterComponent,
     CoreSharedModule
   ]
 })

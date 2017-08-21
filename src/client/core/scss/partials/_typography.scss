@@ -72,13 +72,22 @@ body {
 }
 
 .link-text {
-  color: $text-color;
+  color: inherit;
   padding: 0;
   border-width: 0;
   background-color: transparent;
   &:hover, &:focus {
     text-decoration: none;
     outline: none;
+  }
+}
+
+.link-underline {
+  text-decoration: underline;
+  color: inherit;
+  &:hover, &:focus {
+    text-decoration: none;
+    color: inherit;
   }
 }
 
@@ -137,6 +146,7 @@ body {
   overflow-y: auto;
   margin-right: -10px;
 }
+
 .content-overflow-visible {
   overflow: visible;
 }
@@ -182,4 +192,12 @@ h1, h2, h3, h4, h5, h6,
 
 .hr-darken {
   border-color: #cdcdcd;
+}
+
+.bg-gray {
+  background-color: $light-grey;
+}
+
+.bg-dark {
+  background-color: $bg-dark;
 }

@@ -79,6 +79,7 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       content: "\f06e";
+      color: $input-color;
     }
     &.active {
       &:before {

@@ -1,9 +1,13 @@
+$theme-color: #F54A59; //New------
+
+
 // Colours partial
 $color: #2a363f;
 $color-inverse: #f54a59;
 $color-inverse-dark: darken($color-inverse, 10%);
 
 $text-color-fade: rgba(#4A4A4A, 0.8);
+$text-color-light: #9B9B9B; //New------
 
 $color-success: #6DD9AC;
 
@@ -31,3 +35,6 @@ $light-grey: #D8D8D8; //light section
 // Button Like & Dislike
 $button-like-color: #6EC8F5;
 $button-dislike-color: $color-inverse;
+
+
+$bg-dark: #434A54; //light section
