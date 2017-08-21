@@ -52,7 +52,6 @@
                   && add_phone['controls'].category.touched
                   && form.value.phones[i].category && form.value.phones[i].category.length > 1)}">
                   <select class="form-control" name="name" formControlName="category">
-                    <option value=""> -- Select One --</option>
                     <option *ngFor="let et of phoneType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>
                 </div>

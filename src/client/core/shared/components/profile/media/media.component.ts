@@ -80,7 +80,7 @@ export class PartialsProfileMediaComponent implements ProfileFormMixin {
       });
     } else {
       return this.fb.group({
-        category: ['', Validators.compose([Validators.required])],
+        category: ['facebook', Validators.compose([Validators.required])],
         value: ['', Validators.compose([Validators.required, CustomValidator.urlFormat])]
       });
     }

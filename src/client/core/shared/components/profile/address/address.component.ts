@@ -38,7 +38,11 @@ export class PartialsProfileAddressComponent implements OnInit, ProfileFormMixin
     },
     {
       category: 'work',
-      name: 'Work'
+      name: 'work'
+    },
+    {
+      category: 'other',
+      name: 'Other'
     }
   ];
   type: string = 'addresses';
@@ -76,7 +80,7 @@ export class PartialsProfileAddressComponent implements OnInit, ProfileFormMixin
       });
     } else {
       return this.fb.group({
-        category: ['', Validators.compose([Validators.required])],
+        category: ['home', Validators.compose([Validators.required])],
         address_line1: ['', Validators.compose([Validators.required])],
         po_box: [''],
         city: [''],
