@@ -63,7 +63,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
       .filter(event => event instanceof NavigationEnd)
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
-        if (event.url.indexOf('profile') !== -1) {
+        if (event.url.indexOf('my-profile') !== -1) {
           this.isProfileTab = true;
         } else {
           this.isProfileTab = false;
@@ -87,6 +87,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
 
   onMenu(event: string) {
     this.navigateService.navigateOrRedirect('', event);
+    console.log(event);
   }
 
   trackMenu(index: any, item: any) {

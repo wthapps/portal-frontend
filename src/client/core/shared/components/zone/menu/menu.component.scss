@@ -52,7 +52,7 @@ ul {
       }
     }
   }
-  &.active {
+  &.active, &.show {
     .menuleft-nav-sub {
       display: block;
       background-color: #f6f6f6;
