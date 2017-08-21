@@ -1,20 +1,19 @@
 import {
-  Component, ViewChild, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy,
-  Renderer, ElementRef
+  Component, ViewChild, OnInit, Input, Output, EventEmitter, OnDestroy,
+  ElementRef
 } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/do';
 
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
-import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
-import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialService } from '../services/social.service';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
@@ -32,15 +31,11 @@ declare var $: any;
   styleUrls: ['post-edit.component.css']
 })
 
-export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
+export class PostEditComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') modal: HdModalComponent;
-  // @ViewChild('privacyCustomModal') privacyCustomModal: PostPrivacyCustomComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
 
-
-  // For share
-  // @Input() isShare: boolean = false;
 
   mode: string = 'add'; // add or edit
   isShare: boolean = false; // if we are creating a new share that means isShare's value is 'true'
@@ -72,22 +67,15 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   uploadedPhotos: Array<any> = new Array<any>();
 
   parent: any = null;
-  // currentUser: User;
   profile$: Observable<any>;
   readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
-  // Subscription list
-  nextSubscription : Subscription;
-  dismissSubscription : Subscription;
-  uploadSubscription : Subscription;
+  private destroySubject: Subject<any> = new Subject<any>();
 
-  constructor(private apiService: ApiBaseService,
-              // private loading: LoadingService,
-              private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
               private socialService: SocialService,
               private photoSelectDataService : PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
-              private renderer: Renderer,
               private userService: UserService) {
   }
 
@@ -106,27 +94,13 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  ngOnChanges(data: any) {
-
-  }
-
   ngOnDestroy() {
-    this.unsubscribeAll();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
 
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
-
-  console.log('opening............:');
-    // load tags
-    // this.apiService.get(`media/tags`)
-    //   .subscribe((result: any) => {
-    //       this.objTags = result['data'];
-    //       this.tags = _.map(result['data'], 'name');
-    //     },
-    //     error => {
-    //       console.log('error', error);
-    //     });
 
     this.post = new SoPost();
     if(this.socialService.community.currentCommunity) {
@@ -164,12 +138,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     // Clear pending files in case of failure
     this.files.length = 0;
 
-    this.subscribePhotoSelectEvents();
+    // this.subscribePhotoSelectEvents();
   }
 
   close() {
     this.modal.close();
-    this.unsubscribeAll();
+    this.photoSelectDataService.close();
   }
 
   done(item: any) {
@@ -194,7 +168,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     console.log('adding................', options);
     this.saved.emit(options);
     $('.modal-backdrop').remove();
-    this.unsubscribeAll();
+    this.photoSelectDataService.close();
   }
 
   uploadFiles(files: Array<any>) {
@@ -245,7 +219,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     // this.photos.length = 0;
     this.dismissed.emit(photos);
     this.modal.open();
-    this.unsubscribeAll();
+    this.photoSelectDataService.close();
   }
 
   upload(files: Array<any>) {
@@ -304,15 +278,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
    * Tagging
    */
   addTag(tag: any) {
-    // let tagObj = _.find(this.objTags, ['name', tag]);
-    // if (tagObj == undefined) {
-    //   tagObj = {
-    //     id: null,
-    //     name: tag,
-    //     user_id: this.userService.profile.id
-    //   };
-    // }
-    // this.post.tags.push(tagObj);
     console.log('tag add', tag, this.post.tags);
   }
 
@@ -341,38 +306,15 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private subscribePhotoSelectEvents() {
-    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$).do(() => {
-      console.log('next sub: ', this.nextSubscription);
+    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.openObs$, this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable());
+
+    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
+      this.next(photos);
     });
 
-    if (this.needInitSubscription(this.nextSubscription)) {
-      this.nextSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
-        this.next(photos);
-      });
-    }
-
-    if (this.needInitSubscription(this.dismissSubscription)) {
-
-      this.dismissSubscription = this.photoSelectDataService.dismissObs$.subscribe((photos: any) => {
-        this.dismiss(photos);
-      });
-    }
-
-    if (this.needInitSubscription(this.uploadSubscription)) {
-      this.uploadSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
-        this.upload(files);
-      });
-    }
-  }
-
-  private needInitSubscription(sub : Subscription) {
-    return !sub || sub.closed;
-  }
-
-  private unsubscribeAll() {
-    _.forEach([this.nextSubscription, this.dismissSubscription, this.uploadSubscription], (sub: Subscription) => {
-      if (sub && !sub.closed)
-        sub.unsubscribe();
+    this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
+      this.upload(files);
     });
+
   }
 }

@@ -55,7 +55,7 @@
       </ul>
     </li>
 
-    <li class="has-sub has-action" [ngClass]="{'active': urls.contact == hostname}">
+    <li class="has-sub has-action" [ngClass]="{'active': urls.contact == hostname && !isProfileTab}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
         Contact
       </a>

@@ -47,7 +47,7 @@ export class PhotoModalDataService {
   }
 
   upload(files: any) {
-    console.log('photo modal uploading ...');
+    console.log('photo modal uploading ...', files);
     this.modalUploadSource.next(files);
   }
 

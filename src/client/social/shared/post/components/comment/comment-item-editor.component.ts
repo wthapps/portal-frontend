@@ -137,6 +137,8 @@ export class CommentItemEditorComponent implements OnInit {
     if ('files' in options) {
       this.files = options.files;
     }
+
+    this.hasUpdatedContent = true;
   }
 
   commentAction(photos?: any) {

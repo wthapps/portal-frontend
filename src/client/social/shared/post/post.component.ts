@@ -6,12 +6,13 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
-  EventEmitter, OnDestroy, ViewContainerRef, ComponentFactoryResolver, Type
+  EventEmitter, OnDestroy, ViewContainerRef, ComponentFactoryResolver
 } from '@angular/core';
 
-
-import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/merge';
 
@@ -36,6 +37,7 @@ import { SoComment } from '../../../core/shared/models/social_network/so-comment
 import { BaseEvent } from '../../../core/shared/event/base-event';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 
+
 declare var $: any;
 declare var _: any;
 
@@ -48,7 +50,6 @@ declare var _: any;
 export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
-
 
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
@@ -68,9 +69,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   showComments: boolean = true;
   modal: any;
 
-  // Subscription list
-  nextPhotoSubscription: Subscription;
-  uploadPhotoSubscription: Subscription;
+  private destroySubject: Subject<any> = new Subject<any>();
 
 
   constructor(public apiBaseService: ApiBaseService,
@@ -84,8 +83,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnInit() {
-    // this.photoModal.action = 'DONE';
-    // this.photoModal.photoList.multipleSelect = false;
     this.photoSelectDataService.init({multipleSelect: false});
   }
 
@@ -96,13 +93,11 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       this.item = new SoPost();
     }
     this.mapDisplay();
-    // if(changes['item'].currentValue.parent) {
-    //   this.parentItem = changes['item'].currentValue.parent;
-    // }
   }
 
   ngOnDestroy() {
-    this.unsubscribePhotoEvents();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   mapDisplay(): any {
@@ -183,10 +178,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.unknown;
     }
   }
-
-  /**
-   * Post actions
-   */
 
   viewDetail() {
     console.log('viewing details..........');
@@ -325,7 +316,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       Object.assign(this.commentEditor, {multipleSelect: false});
       this.openPhotoModal(event.data);
 
-      this.subscribePhotoEvents();
     }
 
     // View more comments
@@ -339,7 +329,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     _.merge(this.item, post);
     console.log('Synced comments', this.item);
   }
-
 
   mapPost(post: any) {
     return new SoPost().from(post);
@@ -423,7 +412,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           this.updateReactionsSet(this.item.comments[index], data);
           return;
         }
-        // TODO: Handle multi-level replies case
         _.forEach(this.item.comments[index].comments, (reply: SoComment, i2: any) => {
           if (reply.uuid == data.uuid) {
             this.updateReactionsSet(this.item.comments[index].comments[i2], data);
@@ -464,59 +452,38 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         });
       };
     });
-
-
   }
 
 
   private subscribePhotoEvents() {
     // Subscribe actions corresponding with photo modal actions
+    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.openObs$, this.photoSelectDataService.closeObs$, this.destroySubject.asObservable());
 
-    // let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$);
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
-
-    if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
-      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
+    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
           this.commentEditor.setCommentAttributes({photo: photos[0]});
+
           // this.commentEditor.commentAction(photos);
         },
         (error: any) => {
           console.error(error);
         }
       );
-    }
 
-    if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
-      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
-        .mergeMap((files: any) => {
-          this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
-          return this.photoUploadService.uploadPhotos(files);
-          // return Observable.from(['']);
-        }).subscribe(
-          (response: any) => {
-            console.log('response data: ', response.data);
-            // this.commentEditor.commentAction([res['current_photo']]);
-            this.commentEditor.setCommentAttributes({photo: response.data});
-            this.commentEditor.updateAttributes({hasUploadingPhoto: false});
-            // this.commentEditor.commentAction([res['data']]);
-          },
-          (error: any) => {
-            console.error(error);
-          }
-        );
-    }
-  }
-
-  private notAssignedSubscription(sub: Subscription) {
-    return !sub || sub.closed;
-  }
-
-  private unsubscribePhotoEvents() {
-    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
-      if (sub && !sub.closed)
-        sub.unsubscribe();
-    });
+    this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
+      .mergeMap((files: any) => {
+        this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
+        return this.photoUploadService.uploadPhotos(files);
+      }).subscribe(
+        (response: any) => {
+          console.log('response data: ', response.data);
+          this.commentEditor.setCommentAttributes({photo: response.data});
+          this.commentEditor.updateAttributes({hasUploadingPhoto: false});
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
   }
 }
 
