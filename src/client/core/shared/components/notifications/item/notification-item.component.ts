@@ -1,6 +1,10 @@
-import { Component, Input, HostBinding, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import {
+  Component, Input, HostBinding, ViewChild, ViewContainerRef,
+  OnInit
+} from '@angular/core';
 import { NotificationService } from '../../../services/notification.service';
 import { UndoNotificationComponent } from '../undo-notification.component';
+import { ApiBaseService } from '../../../services/apibase.service';
 
 @Component({
   moduleId: module.id,
@@ -10,7 +14,7 @@ import { UndoNotificationComponent } from '../undo-notification.component';
   entryComponents: [UndoNotificationComponent]
 })
 
-export class NotificationItemComponent {
+export class NotificationItemComponent implements OnInit {
   @ViewChild('undo_notification', {read: ViewContainerRef}) undoNotificationRef: ViewContainerRef;
   @HostBinding('class') classes: string = 'list-group list-notifications';
   @Input() size: string = 'default';
@@ -18,17 +22,23 @@ export class NotificationItemComponent {
 
   selectedNotifications: string[] = ['social'];
   communitiesUrl: string;
+  itemSettings: any = {};
+  showToggle: boolean;
 
 
-  constructor(public notificationService: NotificationService) {
+  constructor(public notificationService: NotificationService,
+              private apiBaseService: ApiBaseService
+  ) {
   }
 
+  ngOnInit() {
+    if(this.notification.object_type === 'SocialNetwork::Post')
+      this.showToggle = true;
+  }
 
   confirmHideNotification(notification: any) {
     console.debug('inside notification-item: confirmHideNotification !!!');
-    // this.notification.isHidden = true;
     this.hideNotification(notification);
-    // this.createUndoNotificationForm(notification);
   }
 
   getMoreNotifications() {
@@ -37,6 +47,42 @@ export class NotificationItemComponent {
 
   hideNotification(notification: any) {
     this.notificationService.hideNotification(notification);
+  }
+
+  toggleNotification() {
+    switch (this.notification.object_type) {
+      case 'SocialNetwork::Post':
+        console.debug('toggleNotification - object uuid: ', this.notification.object.uuid);
+        this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: this.notification.object.uuid})
+          .toPromise()
+          .then((res: any) => {
+          this.itemSettings = res.data;
+          });
+        break;
+      case 'SocialNetwork::Comment':
+        // TODO
+        break;
+      default:
+        console.log('toggleNotification  - unhandle object type');
+    }
+  }
+
+  getItemSettings() {
+    switch (this.notification.object_type) {
+      case 'SocialNetwork::Post':
+        console.debug('getItemSettings - object uuid: ', this.notification.object.uuid);
+        this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${this.notification.object.uuid}`)
+          .toPromise().then(
+          (res: any) => {
+            this.itemSettings = res.data.settings;
+          });
+        break;
+      case 'SocialNetwork::Comment':
+        // TODO
+        break;
+      default:
+        console.log('getItemSettings  - unhandle object type');
+    }
   }
 
   toggleViewNotifications() {

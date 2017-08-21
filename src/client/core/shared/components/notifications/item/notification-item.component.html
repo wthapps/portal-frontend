@@ -49,12 +49,12 @@
   </div>
   <div class="media-right">
     <div class="btn-group pull-right clearfix">
-      <button type="button" class="btn btn-xs btn-default dropdown-toggle"
+      <button type="button" class="btn btn-xs btn-default dropdown-toggle" (click)="getItemSettings()"
               aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu">
-        <li><a href="javascript:;" class="text-disable">Disable Notification for this post</a>
+        <li><a href="javascript:;" *ngIf="showToggle" (click)="toggleNotification()">{{ itemSettings?.mute ? 'Enable' : 'Disable'}} Notification for this post</a>
         <li><a href="javascript:;" (click)="confirmHideNotification(notification)">Hide this notification</a>
         </li>
       </ul>

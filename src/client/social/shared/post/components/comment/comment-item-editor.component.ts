@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Output, Input, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
+import { Observable } from 'rxjs/Observable';
+
 import {
   CommentCreateEvent,
   OpenPhotoModalEvent,
@@ -11,7 +13,6 @@ import {
 } from '../../../../events/social-events';
 import { SoComment } from '../../../../../core/shared/models/social_network/so-comment.model';
 import { UserService } from '../../../../../core/shared/services/user.service';
-import { Observable } from 'rxjs/Observable';
 import { User } from '../../../../../core/shared/models/user.model';
 import { ZChatEmojiService } from '../../../../../core/shared/emoji/emoji.service';
 import { Constants } from '../../../../../core/shared/config/constants';
@@ -90,8 +91,6 @@ export class CommentItemEditorComponent implements OnInit {
 
   onKey(e: any) {
     // Create, Update, Reply
-    console.debug('commentEditorForm - ng-prestine: ', this.commentEditorForm);
-
     if (e.keyCode == 13) {
 
       // this.comment.content = this.commentEditorForm.value.content;

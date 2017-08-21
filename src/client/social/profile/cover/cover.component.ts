@@ -34,9 +34,13 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
   favourite: any; // toggle favourites status for members, communities
 
   tooltip: any = Constants.tooltip;
+  readonly FRIEND_STATUS: any = {
+    STRANGER: 0,
+    REQUEST_SENT: 1,
+    FRIEND: 2
+  };
 
-  constructor(private apiBaseService: ApiBaseService,
-              private socialService: SocialService,
+  constructor(private socialService: SocialService,
               public userService: UserService,
               private zoneReportService: ZSharedReportService,
               private favoriteService: SocialFavoriteService,
@@ -54,7 +58,6 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
         this.userInfo.canEdit = true;
         // this.userInfo = Object.assign({}, this.userInfo, {canEdit: true});
       }
-
     }
     if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
       this.showFriends = this.userInfo.settings.show_friends.value;
@@ -63,6 +66,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      console.debug('cover route params: ', params);
       this.uuid = params['id'] ? params['id'] : this.userService.getProfileUuid();
 
       if (this.userService.profile.uuid != params['id']) {

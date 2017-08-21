@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
 import { NotificationChannelService } from '../channels/notification-channel.service';
@@ -23,6 +23,8 @@ export class NotificationService {
   nextLink: string;
   loadingDone: boolean = false;
   hasObjects: boolean;
+  outEvent: EventEmitter<any> = new EventEmitter();
+  inEvent: EventEmitter<any> = new EventEmitter();
 
   turnOffNotification(notification: any) {
     // TODO
@@ -64,11 +66,7 @@ export class NotificationService {
         break;
       case 'post':
         this.api.post(link, body)
-          .subscribe((result: any) => {
-              // Reload data
-              // TODO: Change notification content name and remove the actions
-              // _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
-
+          .toPromise().then((result: any) => {
               this.notifications = _.map(this.notifications, (notif: any) => {
                 if(notif.id === this.currentNotifId)
                   return Object.assign(notif, {actions: _.get(result, 'data.actions', []), response_actions: _.get(result, 'data.response_actions', [])});
@@ -84,7 +82,7 @@ export class NotificationService {
 
       case 'delete':
         this.api.delete(action.link)
-          .subscribe((result: any) => {
+          .toPromise().then((result: any) => {
             console.log('Notification service deleted');
             _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
           },
@@ -99,8 +97,6 @@ export class NotificationService {
 
 
   markAsSeen() {
-
-    console.log('markAsSeen', this.notifications.length);
     // this.notificationService.markAsSeen(this.notifications)
     let notif_ids = _.map(this.notifications, (i: any) => i.id);
     let body = {'ids' : notif_ids};
@@ -111,8 +107,6 @@ export class NotificationService {
         (result: any) => {
           this.countNewNotifications();
           _.each(this.notifications, (i: any) => i.seen_state = Constants.seenStatus.seen);
-
-
         },
         (error: any) => {
           console.log('error', error);
@@ -126,8 +120,6 @@ export class NotificationService {
       this.newNotifCount++;
     }
   }
-
-
 
   toggleReadStatus(notification: any) {
     this.currentNotifId = notification.id;

@@ -14,7 +14,7 @@ import { CommonEventAction } from '../core/shared/services/common-event/common-e
 import { CommonEvent } from '../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { LabelEditModalComponent } from './label/label-edit-modal.component';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { LabelService } from './label/label.service';
 import { Subject } from 'rxjs/Subject';
 import { Label } from './label/label.model';

@@ -6,7 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
 import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
