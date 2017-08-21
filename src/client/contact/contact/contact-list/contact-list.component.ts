@@ -73,6 +73,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
 
     this.route.params.forEach((params: Params) => {
+      this.contactService.resetSelectedObjects();
+      console.debug('inside contact-list ngOnInit: resetSelectedObjects' );
       if (params['search']) {
         this.contactService.search({search_value: params['search']});
       } else {

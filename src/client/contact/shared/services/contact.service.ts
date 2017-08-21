@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response, Http } from '@angular/http';
+import { Response } from '@angular/http';
 
 
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +13,6 @@ import { BaseEntityService } from '../../../core/shared/services/base-entity-ser
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
-import { _wu } from '../../../core/shared/utils/utils';
 import { LabelService } from '../../label/label.service';
 
 declare var _: any;
@@ -251,6 +250,12 @@ export class ZContactService extends BaseEntityService<any> {
     this.notifyContactsObservers();
   }
 
+  resetSelectedObjects() {
+    this.selectedObjects.length = 0;
+    this.notifyContactsObservers();
+    this.checkSelectAll();
+  }
+
   notifyContactsObservers(): void {
     let contacts: any[] = [];
     this.labelService.updateLabelCount(this.contacts);
@@ -269,7 +274,7 @@ export class ZContactService extends BaseEntityService<any> {
       if(selectedIds.indexOf(ct.uuid) > -1)
       return Object.assign(ct, {selected: true});
     else
-      return ct;
+      return Object.assign(ct, {selected: false});
     });
 
     this.contactsSubject.next(orderedContactsWSelected.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
