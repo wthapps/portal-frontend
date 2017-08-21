@@ -15,7 +15,7 @@ import {
 import { Ng2HdModule } from '../../../core/shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
-import { InputTextareaModule } from 'primeng/primeng';
+import { InputTextareaModule } from 'primeng/components/inputtextarea/inputtextarea';
 // import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 import { TagInputModule } from 'ngx-chips';
 import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';

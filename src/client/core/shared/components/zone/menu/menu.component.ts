@@ -58,7 +58,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    let currentUrl = this.router.url; /// this will give you current url
     this.hostname = window.location.origin;
     this.router.events
       .filter(event => event instanceof NavigationEnd)
@@ -73,7 +72,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
         this.currentLabel = this.extractLabel(event.url);
       });
     // your logic to know if its my home page.
-
   }
 
   extractLabel(url: string) {
@@ -88,9 +86,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
   }
 
   onMenu(event: string) {
-
     this.navigateService.navigateOrRedirect('', event);
-    // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
   trackMenu(index: any, item: any) {

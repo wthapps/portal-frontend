@@ -5,8 +5,7 @@ import {
   ViewChild,
   HostBinding,
   Input,
-  OnDestroy,
-  ComponentFactoryResolver
+  OnDestroy
 } from '@angular/core';
 
 import { SearchFormComponent } from './search/search-form.component';
@@ -16,7 +15,6 @@ import { UserService } from '../../services/user.service';
 import { WTHNavigateService } from '../../services/wth-navigate.service';
 import { ChannelService } from '../../channels/channel.service';
 import { NotificationService } from '../../services/notification.service';
-import { AppearancesChannelService } from '../../channels/appearances-channel.service';
 import { UndoNotificationComponent } from '../notifications/undo-notification.component';
 
 declare var $: any;
@@ -34,7 +32,6 @@ declare let App: any; //This App stands for ActionCable
   entryComponents: [UndoNotificationComponent]
 })
 export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
-  // @ViewChild('undo_notification', {read: ViewContainerRef}) undoNotificationRef: ViewContainerRef;
   @Input('headerOver') headerOver: boolean = false;
   @HostBinding('class') headerClass = 'header';
 
@@ -60,9 +57,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
-              public notificationService: NotificationService,
-              private componentFactoryResolver: ComponentFactoryResolver,
-              private appearancesChannelService: AppearancesChannelService) {
+              public notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -94,7 +89,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //  TODO: Unsubscribe all cable services when destroyed
+    this.channelService.unsubscribe();
   }
 
 
@@ -159,18 +154,9 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
     this.notificationService.hideNotification(notification);
   }
 
-  turnOffNotification(notification: any) {
-    console.log('turnOffNotification');
-  }
-
   countNewNotifications() {
     this.notificationService.countNewNotifications();
   }
-
-
-  // getLatestNotifications() {
-  //   this.notificationService.getLatestNotifications();
-  // }
 
   viewAllNotifications() {
     // Close mini notification dropdown box in the header

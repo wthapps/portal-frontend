@@ -4,6 +4,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { NotificationService } from '../../services/notification.service';
 import { Constants } from '../../config/constants';
+import { ApiBaseService } from '../../services/apibase.service';
 
 @Component({
   moduleId: module.id,
@@ -20,10 +21,13 @@ export class PartialsNotificationsComponent {
 
   selectedNotifications: string[] = ['social'];
   communitiesUrl: string;
+  showToggle: boolean;
+  itemSettings: any;
 
   tooltip: any = Constants.tooltip;
 
-  constructor(public notificationService: NotificationService) {
+  constructor(public notificationService: NotificationService,
+              private apiBaseService: ApiBaseService) {
   }
 
   getMoreNotifications() {
@@ -32,6 +36,40 @@ export class PartialsNotificationsComponent {
 
   hideNotification(notification: any) {
     this.notificationService.hideNotification(notification);
+  }
+
+  toggleNotification(notification: any) {
+    switch (notification.object_type) {
+      case 'SocialNetwork::Post':
+        this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: notification.object.uuid})
+          .toPromise()
+          .then((res: any) => {
+            this.itemSettings = res.data;
+          });
+        break;
+      case 'SocialNetwork::Comment':
+        // TODO
+        break;
+      default:
+        console.log('toggleNotification  - unhandle object type');
+    }
+  }
+
+  getItemSettings(notification: any) {
+    switch (notification.object_type) {
+      case 'SocialNetwork::Post':
+        this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${notification.object.uuid}`)
+          .toPromise().then(
+          (res: any) => {
+            this.itemSettings = res.data.settings;
+          });
+        break;
+      case 'SocialNetwork::Comment':
+        // TODO
+        break;
+      default:
+        console.log('getItemSettings  - unhandle object type');
+    }
   }
 
   confirmHideNotification(notification: any) {

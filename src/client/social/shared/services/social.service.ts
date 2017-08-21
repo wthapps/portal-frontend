@@ -8,6 +8,7 @@ import { UserService } from '../../../core/shared/services/user.service';
 import { SoCommunityService } from './community.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { User } from '../../../core/shared/models/user.model';
+import { NotificationService } from '../../../core/shared/services/notification.service';
 /**
  * Created by phat on 18/11/2016.
  */
@@ -35,7 +36,7 @@ export class SoUserService {
   };
 
 
-  constructor(private apiBaseService: ApiBaseService, private user: UserService) {
+  constructor(private apiBaseService: ApiBaseService, private user: UserService, private notificationService: NotificationService) {
     this.profile = user.profile;
   }
 
@@ -158,12 +159,7 @@ export class SoPostService {
   }
 
   getList(uuid: string = this.user.profile.uuid, type?: string) {
-    // switch (this.router.url) {
-    //   case '/home':
-    //     return this.getListSocialPosts(uuid, type);
-    // }
     return this.getListSocialPosts(uuid, type);
-    // return this.getListOtherPosts(uuid, type);
   }
 
   getSettings(uuid: string) {

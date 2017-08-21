@@ -44,7 +44,8 @@ export class ChannelService extends CableService {
   }
 
   unsubscribe() {
-    App.channel.unsubscribe();
+    if(App.channel)
+      App.channel.unsubscribe();
   }
 }
 

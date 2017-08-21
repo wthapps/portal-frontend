@@ -172,7 +172,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   getUserSettings(uuid: any) {
     this.socialService.community.getUserSettings(uuid).take(1).subscribe(
       (res: any) => {
-        console.log('inside getUserSettings', res);
         this.userSettings = res.data;
       }
     );
@@ -181,7 +180,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   toggleComNotification(uuid: any) {
     this.socialService.community.toggleComNotification(uuid).subscribe(
       (res: any) => {
-        console.log('inside toggleComNotification', res);
         this.userSettings = res.data;
       }
     );

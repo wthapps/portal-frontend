@@ -28,7 +28,7 @@
 
 import { Component, OnInit, } from '@angular/core';
 
-import { Message } from 'primeng/primeng';
+import { Message } from 'primeng/components/common/message';
 
 import { ToastsService } from './toast-message.service';
 

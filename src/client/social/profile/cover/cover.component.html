@@ -15,13 +15,13 @@
 
       <div class="hd-item-action-right-bottom" *ngIf="relationships">
         <div class="btn-group" role="group">
-          <ng-template [ngIf]="relationships.status == 0">
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.STRANGER">
             <button class="btn btn-outline-default" type="button" (click)="onAddfriend()">
               <i class="fa fa-user-plus"></i> Add Friend
             </button>
-          </ng-template>
+          </ng-container>
 
-          <ng-template [ngIf]="relationships.status == 2">
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.FRIEND">
             <div class="btn-group">
               <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
                       aria-haspopup="true"
@@ -36,9 +36,9 @@
                 </li>
               </ul>
             </div>
-          </ng-template>
+          </ng-container>
 
-          <ng-template [ngIf]="relationships.status == 1">
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.REQUEST_SENT">
             <div class="btn-group">
               <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false">
@@ -50,22 +50,29 @@
                 </li>
               </ul>
             </div>
-          </ng-template>
+          </ng-container>
 
-          <ng-template [ngIf]="userInfo.uuid !== userService.profile.uuid">
+          <ng-container *ngIf="userInfo.uuid !== userService.profile.uuid">
 
             <button type="button" class="btn btn-outline-default" *ngIf="!relationships?.follow"
                     (click)="follow(userInfo.uuid)">
-              <i class="fa fa-share"></i> Follow
+              <i class="fa fa-share"></i> Follow  <span class="caret"></span>
             </button>
 
-            <button type="button" class="btn btn-outline-default" *ngIf="relationships?.follow"
-                    (click)="unfollow(userInfo.uuid)">
-              <i class="fa fa-check"></i> Following
-            </button>
+            <ng-container *ngIf="relationships?.follow">
+              <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-check"></i> Following
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="javascript:;" (click)="unfollow(userInfo.uuid)">Unfollow</a>
+                </li>
+              </ul>
+            </ng-container>
 
 
-          </ng-template>
+          </ng-container>
 
         </div>
         <!--menu-->
@@ -76,7 +83,7 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <!--<li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>-->
-            <li><a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
+            <li *ngIf="relationships.status === FRIEND_STATUS.FRIEND" ><a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
               <i class="fa fa-check" *ngIf="favourite?.uuid"></i>
               {{ (!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites' }}
             </a></li>

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { AutoCompleteModule } from 'primeng/primeng';
-import { RadioButtonModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
+import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 
 import { PipeModule } from '../../pipe/pipe.module';
 
