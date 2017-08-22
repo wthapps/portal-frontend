@@ -41,10 +41,17 @@
           <i class="fa fa-share"></i> Follow
         </button>
 
-        <button type="button" class="btn btn-outline-default" *ngIf="data.is_following"
-                (click)="unfollow(data)">
-          <i class="fa fa-check"></i> Following
-        </button>
+        <ng-container *ngIf="data.is_following">
+          <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-check"></i> Following <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <a href="javascript:;" (click)="unfollow(data)">Unfollow</a>
+            </li>
+          </ul>
+        </ng-container>
       </div>
 
       <!--menu-->

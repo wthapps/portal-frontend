@@ -56,13 +56,13 @@
 
             <button type="button" class="btn btn-outline-default" *ngIf="!relationships?.follow"
                     (click)="follow(userInfo.uuid)">
-              <i class="fa fa-share"></i> Follow  <span class="caret"></span>
+              <i class="fa fa-share"></i> Follow
             </button>
 
             <ng-container *ngIf="relationships?.follow">
               <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-check"></i> Following
+                <i class="fa fa-check"></i> Following <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li>

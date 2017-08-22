@@ -34,7 +34,7 @@ export class ZSocialProfileAboutComponent implements OnInit {
   actions:any;
   data:any;
 
-  constructor(private apiBaseService: ApiBaseService, private route: ActivatedRoute, private profileDataService: ZSocialProfileDataService,
+  constructor(private profileDataService: ZSocialProfileDataService,
               ) {
   }
 

@@ -21,18 +21,16 @@ export class ZSocialProfilePostComponent implements OnInit {
 
   uuid: any;
   userInfo: any;
+  relationships: any;
 
-  constructor(private socialService: SocialService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private apiBaseService: ApiBaseService,
-              private profileDataService: ZSocialProfileDataService,
+  constructor(private profileDataService: ZSocialProfileDataService,
               private userService: UserService) {
   }
 
   ngOnInit() {
     this.profileDataService.profileData$.subscribe((res: any) => {
       this.userInfo = res.data;
+      this.relationships = res.relationships;
     });
   }
 

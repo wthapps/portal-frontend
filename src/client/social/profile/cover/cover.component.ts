@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
-import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
@@ -10,6 +11,7 @@ import { ZSharedReportService } from '../../../core/shared/components/zone/repor
 
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
+import { ZSocialProfileDataService } from '../profile-data.service';
 
 declare var _: any;
 
@@ -19,7 +21,7 @@ declare var _: any;
   templateUrl: 'cover.component.html'
 })
 
-export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
+export class ZSocialProfileCoverComponent implements OnInit {
 
   @Input() data: any;
 
@@ -45,39 +47,20 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges {
               private zoneReportService: ZSharedReportService,
               private favoriteService: SocialFavoriteService,
               private toastsService: ToastsService,
+              private profileDataService: ZSocialProfileDataService,
               private route: ActivatedRoute) {
   }
 
-  ngOnChanges(data: any) {
-    if (this.data) {
-
-      this.userInfo = this.data;
-
-      // Only user can change his own profile / cover image
-      if (this.userService.profile.uuid == this.userInfo.uuid) {
-        this.userInfo.canEdit = true;
-        // this.userInfo = Object.assign({}, this.userInfo, {canEdit: true});
-      }
-    }
-    if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
-      this.showFriends = this.userInfo.settings.show_friends.value;
-    }
-  }
-
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      console.debug('cover route params: ', params);
-      this.uuid = params['id'] ? params['id'] : this.userService.getProfileUuid();
 
-      if (this.userService.profile.uuid != params['id']) {
-        this.socialService.user.getRelationShips(params['id'])
-          .toPromise()
-          .then((res: any) => {
-              this.relationships = res.data
-            },
-          );
-      } else {
-        this.relationships = undefined;
+    this.profileDataService.profileData$
+      .subscribe((res: any) => { console.debug('profileData in cover: ', res);
+      this.userInfo = res.userInfo;
+      this.uuid = res.userInfo.uuid;
+      this.relationships = res.relationships;
+
+      if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
+        this.showFriends = _.get(this.userInfo, 'settings.show_friends.value', false);
       }
     });
   }

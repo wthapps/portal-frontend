@@ -19,7 +19,6 @@ export class ZSocialShareProfileMemberComponent {
   favourite: any; // toggle favourites status for members, communities
 
   friendStatus = Constants.friendStatus;
-
   tooltip: any = Constants.tooltip;
 
   constructor(private socialService: SocialService,
@@ -49,8 +48,6 @@ export class ZSocialShareProfileMemberComponent {
       }
     );
   }
-
-
 
   // TODO:
   importToContacts(item: any) {

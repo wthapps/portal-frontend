@@ -1,5 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-
+import { Component, OnInit, OnChanges, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import {
   FormGroup,
   AbstractControl,
@@ -7,8 +6,11 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { LoadingService } from '../../../../core/shared/components/loading/loading.service';
 import { ConfirmationService } from 'primeng/components/common/api';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+
+import { LoadingService } from '../../../../core/shared/components/loading/loading.service';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';
 
@@ -22,7 +24,7 @@ declare var _: any;
   templateUrl: 'preferences.component.html'
 })
 
-export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChanges {
+export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('modal') modal: ModalComponent;
   @Input() data: any;
@@ -35,6 +37,8 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   setting_notification_posts: AbstractControl;
   setting_notification_request: AbstractControl;
   hasChange: boolean = false;
+
+  private destroySubject: Subject<any> = new Subject<any>();
 
 
   constructor(private fb: FormBuilder,
@@ -53,10 +57,16 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   ngOnInit() {
-    this.form.valueChanges.subscribe(data => {
+    this.form.valueChanges.takeUntil(this.destroySubject.asObservable())
+      .subscribe(data => {
       this.hasChange = true;
       // console.log('form changes', data);
     });
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   ngOnChanges(data: any) {
@@ -105,6 +115,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   resetSettings() {
+    this.modal.close();
     this.confirmationService.confirm({
       message: 'Are you sure you want to reset settings',
       header: 'Reset Default',
@@ -113,14 +124,15 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
         this.socialService.community.resetSettings(this.data.uuid)
           .subscribe((result: any) => {
               this.data = result.data;
-              // this.updated.emit(result.data);
             },
             (error: any) => {
               console.log(error);
             }
-          );
+            );
+      },
+      reject: () => {
+        this.modal.open();
       }
     });
-    // this.modal.close();
   }
 }

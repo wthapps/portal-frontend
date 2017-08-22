@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
@@ -10,14 +9,18 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // Passing data between parent profile component and its children
 export class ZSocialProfileDataService {
   profileData$: Observable<any>;
-  private profileData: Subject<any> = new BehaviorSubject<any>({ userInfo: '', actions: []});
+  private profileDataSubject: BehaviorSubject<any> = new BehaviorSubject<any>({ userInfo: '', actions: [], relationships: {}});
 
   constructor() {
-    this.profileData$ = this.profileData.asObservable();
+    this.profileData$ = this.profileDataSubject.asObservable();
   }
 
   addData(data:any) {
-    this.profileData.next(data);
+    this.profileDataSubject.next(data);
+  }
+
+  getData() {
+    return this.profileDataSubject.getValue();
   }
 }
 
