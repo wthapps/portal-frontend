@@ -16,6 +16,7 @@ import { MyMyAppsModule } from './my-apps/my-apps.module';
 import { MyPaymentModule } from './payment/payment.module';
 import { MySettingModule } from './setting/setting.module';
 import { MyPlansModule } from './plans/plans.module';
+import { MyAdminModule } from './admin/admin.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { MyPlansModule } from './plans/plans.module';
     MyPaymentModule,
     MyPlansModule,
     MySettingModule,
+    MyAdminModule,
     MySharedModule.forRoot(),
     CoreSharedModule.forRoot()
   ],
