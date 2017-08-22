@@ -53,6 +53,10 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
       );
   }
 
+  goBack() {
+    this.router.navigate([{outlets: {detail: null}}]);
+  }
+
 
   save(options: any = {mode: 'edit', item: null, isShare: false}) {
     switch(options.mode) {
@@ -61,7 +65,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
           .subscribe((response: any) => {
               console.log('response', response);
               // Navigate to the new shared post
-              this.router.navigate(['/posts', response.data.uuid]);
+              this.router.navigate([{outlets: {detail: ['/posts', response.data.uuid]}}]);
               this.postEditModal.close();
             },
             (error: any) => {
