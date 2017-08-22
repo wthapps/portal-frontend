@@ -58,24 +58,24 @@
     </div>
 
     <div class="z-social-carousel">
-      <ul class="{{ parentItem.displayCss }}">
-        <li *ngFor="let photo of parentItem.photos;	let	i	=	index">
-          <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, i)">
-            <img class="img-full" [src]="photo.url" alt="">
-          </figure>
-          <figure *ngIf="i == 5 && parentItem.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, i)">
-            <img class="img-full" [src]="photo.url" alt="">
-          </figure>
-          <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, i)"
-             *ngIf="i == 5 && parentItem.remainPhotos != 0">
-                  <span>
-                    + {{ parentItem.remainPhotos }}
-                  </span>
-            <figure>
+      <ul class="carousel-thumb-style-6">
+          <li *ngFor="let photo of parentItem.photos;	let	i	=	index">
+            <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})">
               <img class="img-full" [src]="photo.url" alt="">
             </figure>
-          </a>
-        </li>
+            <figure *ngIf="i == 5 && parentItem.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})">
+              <img class="img-full" [src]="photo.url" alt="">
+            </figure>
+            <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})"
+               *ngIf="i == 5 && parentItem.remainPhotos != 0">
+                    <span>
+                      + {{ parentItem.remainPhotos }}
+                    </span>
+              <figure>
+                <img class="img-full" [src]="photo.url" alt="">
+              </figure>
+            </a>
+          </li>
       </ul>
     </div>
   </div>

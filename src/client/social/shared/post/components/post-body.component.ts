@@ -18,6 +18,7 @@ export class PostBodyComponent implements OnChanges {
   @Input() type: string;
   @Input() originalPost: SoPost;
   parentItem: SoPost = new SoPost();
+  originalParent: SoPost;
 
   showInfo: boolean = false;
   actions = {
@@ -42,7 +43,13 @@ export class PostBodyComponent implements OnChanges {
     }
 
     if (changes['item'].currentValue.parent_post) {
-      this.parentItem = changes['item'].currentValue.parent_post;
+      let parentItem: any = changes['item'].currentValue.parent_post;
+      let remainPhotos: number = parentItem.photos.length - 6;
+      this.originalParent = _.cloneDeep(parentItem);
+
+      parentItem.photos.splice(6);
+
+      this.parentItem = Object.assign(parentItem, {remainPhotos: remainPhotos});
     }
 
     this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
@@ -65,9 +72,8 @@ export class PostBodyComponent implements OnChanges {
         this.postItem.toggleComments();
         break;
       case this.actions.onShowPhotoDetail:
-        let photoIds = _.map(this.originalPost.photos, 'id');
-        console.log('this. item', this.originalPost.photos, data);
-        // this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, prevUrl: this.router.url}]}}]);
+        let post = _.get(data, 'parentItem', this.originalPost);
+        let photoIds = _.map(post.photos, 'id');
         this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds}]}}], { preserveQueryParams: true, preserveFragment: true });
 
         break;

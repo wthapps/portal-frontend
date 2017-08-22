@@ -41,7 +41,7 @@ export class WTHNavigateService {
 
     // Do not allow redirect to root path
     if (!_.isEmpty(path))
-      this.router.navigate(['/' + path], {queryParams: queryParams});
+      this.router.navigate([path, {outlets: {modal: null, detail: null}}], {queryParams: queryParams});
 
 
     // $(event.target.nextElementSibling).toggleClass('hidden');
