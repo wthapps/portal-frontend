@@ -211,16 +211,19 @@ export class ChatService {
     this.sendMessage(groupId, {type: 'file', id: photo.id, object: 'Photo'});
   }
 
-  createUploadingFile(file?: any) {
+  createUploadingFile(files?: any) {
     let groupId = this.storage.find('conversation_select').value.group_json.id;
     let message: Message = new Message({
       message: 'Sending file.....',
       message_type: 'file',
       content_type: 'media/generic'
     });
-    this.sendMessage(groupId, message, null, (response: any) => {
-      this.uploadFiles(file, {id: response.data.id})
-    });
+
+    for (let i = 0; i < files.length; i ++) {
+      this.sendMessage(groupId, message, null, (response: any) => {
+        this.uploadFiles([files[i]], {id: response.data.id})
+      });
+    }
   }
 
   getUsersOnline() {

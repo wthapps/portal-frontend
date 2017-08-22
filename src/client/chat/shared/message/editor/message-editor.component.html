@@ -36,7 +36,7 @@
           <span class="btn btn-default btn-style-1 fileinput-button"
                 pTooltip="{{ tooltip.sendFile }}" tooltipPosition="top">
             <i class="fa fa-paperclip"></i>
-            <input id="files" type="file" (change)="changeFiles($event)"/>
+            <input id="files" type="file" multiple="multiple" (change)="changeFiles($event)"/>
 
           </span>
           <div class="btn-group dropup">

@@ -5,7 +5,7 @@
     <div class="page-hero-txt">
       <div class="page-hero-tt">
         <h2 class="h1">Sign Up</h2>
-        <p>Let’s us know about you.</p>
+        <p>Welcome to WTHApps!</p>
       </div>
       <div class="page-hero-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
@@ -80,12 +80,20 @@
           </div>
           <div class="form-group">
             <small>By signing up, you agree to the
-              <a [routerLink]="['/policies/terms']" class="legal-link" target="_blank">Terms of Service</a> and
-              <a [routerLink]="['/policies/privacy']" target="_blank">Privacy Policy</a>
+              <a [routerLink]="['/policies/terms']" class="legal-link" target="_blank">Terms of Service</a>,
+              <a [routerLink]="['/policies/privacy']" target="_blank">Privacy Policy</a> and
+              <a [routerLink]="['/policies/cookies']" target="_blank">Cookies Use</a>
             </small>
           </div>
           <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-primary">Sign Up</button>
         </form>
+      </div>
+      <hr class="divider"/>
+      <div class="page-hero-tt">
+        <p>Already has an account?</p>
+      </div>
+      <div class="page-hero-body">
+        <a [routerLink]="['/login']" class="btn btn-block btn btn-outline-primary">Log in</a>
       </div>
     </div>
   </div>
