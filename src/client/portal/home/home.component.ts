@@ -23,16 +23,24 @@ import { CustomValidator } from '../../core/shared/validator/custom.validator';
   animations: [fadeInAnimation]
 })
 export class HomeComponent {
+  errorMessage: any;
 
   flagsRelease: boolean = Constants.flagsRelease;
 
+  tooltip: any = Constants.tooltip;
+
+  sex: number = 0;
   form: FormGroup;
   first_name: AbstractControl;
   last_name: AbstractControl;
   email: AbstractControl;
   password: AbstractControl;
+  birthday_day: AbstractControl;
+  birthday_month: AbstractControl;
+  birthday_year: AbstractControl;
+  //sexInput:AbstractControl;
+  accepted: AbstractControl;
 
-  errors: any;
   submitted: boolean = false;
 
   constructor(private router: Router,
@@ -59,7 +67,12 @@ export class HomeComponent {
         Validators.minLength(8),
         CustomValidator.lowercaseUppercase,
         CustomValidator.specialSymbolOrNumber
-      ])]
+      ])],
+      'birthday_day': ['0'],
+      'birthday_month': ['0'],
+      'birthday_year': ['0'],
+      //'sex': [],
+      'accepted': [false, Validators.compose([Validators.nullValidator])]
     });
 
     this.first_name = this.form.controls['first_name'];
@@ -74,32 +87,41 @@ export class HomeComponent {
       // start loading
       this.loadingService.start();
 
+      values.sex = this.sex;
+
       let body = JSON.stringify({
         first_name: values.first_name,
         last_name: values.last_name,
         email: values.email,
-        password: values.password
+        password: values.password,
+        birthday_day: values.birthday_day,
+        birthday_month: values.birthday_month,
+        birthday_year: values.birthday_year,
+        sex: values.sex,
+        accepted_policies: values.accepted === true ? true : false
       });
 
-      this.userService.signup('users', body).subscribe(
-        (res: any) => {
-          this.loadingService.stop();
-          this.router.navigateByUrl('/welcome');
-        },
-        error => {
-          // stop loading
-          this.loadingService.stop();
+      this.userService.signup('users', body)
+        .subscribe((result) => {
+            this.loadingService.stop();
+            window.location.href = Constants.baseUrls.myAccount;
+            // this.router.navigateByUrl('/welcome');
+          },
+          error => {
+            // stop loading
+            this.loadingService.stop();
 
-          console.log('error:', error);
-          let err: any = error;
+            console.log('error:', error);
+            let err: any = error;
 
-          this.errors = err;
-          //TODO refactoring code check signup
-          if (error.status === 422) {
-            this.errors = 'Email has already been taken';
-          }
-          this.toastsService.danger(this.errors);
-        });
+            this.errorMessage = err;
+            //TODO refactoring code check signup
+            if (error.status === 422) {
+              this.errorMessage = 'Email has already been taken';
+            }
+            this.toastsService.danger(this.errorMessage);
+
+          });
     }
   }
 }
