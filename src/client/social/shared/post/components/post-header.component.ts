@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 
 import { PostComponent } from '../index';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
@@ -70,7 +71,7 @@ export class PostHeaderComponent implements OnChanges {
     event.preventDefault();
     console.log('Toggle post notification: ', event);
 
-    this.socialService.post.togglePostNotification(uuid).subscribe((res: any) => {
+    this.socialService.post.togglePostNotification(uuid).toPromise().then((res: any) => {
       this.settings = res.data;
     });
   }
@@ -111,7 +112,7 @@ export class PostHeaderComponent implements OnChanges {
     // if (e.target.attributes['aria-expanded'].value === 'true')
     //   return;
 
-    this.socialService.post.getSettings(this.item.uuid).take(1).subscribe(
+    this.socialService.post.getSettings(this.item.uuid).toPromise().then(
       (res: any) => {
         this.settings = res.data.settings;
       });

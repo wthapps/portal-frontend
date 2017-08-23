@@ -2,31 +2,18 @@
   <!--Add new comment-->
   <comment-item-editor (eventEmitter)="onCallBack($event)" [parent]="item"
                        [mode]="commentEditorMode.Add"></comment-item-editor>
-
-  <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 0 && item.total_comments <= 1">-->
-  <!--{{ item.comments?.length }} of {{ item.total_comments }} Comment-->
-  <!--</div>-->
-  <!--<div class="z-social-comment-num" *ngIf="item.total_comments > 1">{{ item.comments?.length }} of {{ item.total_comments }}-->
-  <!--Comments-->
-  <!--</div>-->
   <input type="checkbox" class="read-more-state" attr.id="post-{{ item.uuid }}"/>
   <ul class="z-social-comment-list media-list read-more-wrap">
 
+    <li class="media" *ngFor="let comment of item.comments; let i = index; trackBy: trackItem">
 
-    <!--<li class="media" *ngFor="let comment of item.comments; let i = index" [ngClass]="{'read-more-target': (i > 2)}">-->
-    <li class="media" *ngFor="let comment of item.comments; let i = index">
-
-      <!--<div id="container-comment-{{ comment?.uuid }}-edit"></div>-->
-
-      <!--Edit comment-->
-
-      <ng-template [ngIf]="comment?.isEditting">
+      <ng-container *ngIf="comment?.isEditting">
         <comment-item-editor style="display: block"
                              (eventEmitter)="onCallBack($event)"
                              [parent]="item"
                              [originComment]="comment"
                              [mode]="commentEditorMode.Edit"></comment-item-editor>
-      </ng-template>
+      </ng-container>
 
       <div *ngIf="!comment?.isEditting">
         <div class="media-left">
@@ -60,9 +47,6 @@
               </li>
             </ul>
           </div>
-          <!--<a *ngIf="comment.photo" (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">-->
-          <!--<img *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">-->
-          <!--</a>-->
           <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
             <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{  tooltip.edit  }}"
                     tooltipPosition="top">
@@ -102,16 +86,16 @@
       </div>
 
 
-      <div class="media" *ngFor="let reply of comment.comments; let j = index">
+      <div class="media" *ngFor="let reply of comment.comments; let j = index; trackBy: trackItem">
         <!--Edit reply-->
-        <ng-template [ngIf]="reply?.isEditting">
+        <ng-container *ngIf="reply?.isEditting">
           <comment-item-editor style="display: block"
                                (eventEmitter)="onCallBack($event)"
                                [parent]="comment"
                                [parentType]="'SocialNetwork::Comment'"
                                [originComment]="reply"
                                [mode]="commentEditorMode.Edit"></comment-item-editor>
-        </ng-template>
+        </ng-container>
         <div *ngIf="!reply?.isEditting">
           <div class="media-left">
             <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
@@ -172,13 +156,13 @@
           </div>
         </div>
       </div>
-      <ng-template [ngIf]="comment?.isCreatingNewReply">
+      <ng-container *ngIf="comment?.isCreatingNewReply">
         <comment-item-editor style="display: block;"
                              (eventEmitter)="onCallBack($event)"
                              [parent]="comment"
                              [parentType]="'SocialNetwork::Comment'"
                              [mode]="commentEditorMode.Add"></comment-item-editor>
-      </ng-template>
+      </ng-container>
     </li>
   </ul>
   <div *ngIf="!loadingDone" class="z-social-comment-more">

@@ -13,6 +13,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/merge';
 
@@ -206,7 +207,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       accept: () => {
         this.loading.start();
         this.apiBaseService.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
-          .subscribe((result: any) => {
+          .toPromise().then((result: any) => {
               this.toast.success('Deleted post successfully', 'Delete Post');
               this.loading.stop();
               this.onDeleted.emit(result);
@@ -230,7 +231,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   onActions(event: BaseEvent) {
     if (event instanceof CommentCreateEvent) {
       let self: any = this;
-      this.createComment(event.data).subscribe(
+      this.createComment(event.data).toPromise().then(
         (res: any) => {
           console.log('response data', res.data);
 
@@ -254,7 +255,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
     // Update a comment
     if (event instanceof CommentUpdateEvent) {
-      this.updateComment(event.data).subscribe(
+      this.updateComment(event.data).toPromise().then(
         (res: any) => {
           this.updateItemComments(res.data);
 
@@ -264,7 +265,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
     // Delete a comment
     if (event instanceof DeleteCommentEvent) {
-      this.deleteComment(event.data.uuid).subscribe(
+      this.deleteComment(event.data.uuid).toPromise().then(
         (res: any) => {
           // this.item = new SoPost().from(res.data);
           _.remove(this.item.comments, {uuid: event.data.uuid});
@@ -274,7 +275,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
     // Create a reply
     if (event instanceof ReplyCreateEvent) {
-      this.createReply(event.data).subscribe(
+      this.createReply(event.data).toPromise().then(
         (res: any) => {
           // this.item = new SoPost().from(res.data);
           this.updateItemComments(res.data);
@@ -285,7 +286,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     // Update a reply
     if (event instanceof ReplyUpdateEvent) {
-      this.updateReply(event.data).subscribe(
+      this.updateReply(event.data).toPromise().then(
         (res: any) => {
           // this.item = new SoPost().from(res.data);
           this.updateItemComments(res.data);
@@ -296,7 +297,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     // Delete a reply
     if (event instanceof DeleteReplyEvent) {
-      this.deleteReply(event.data).subscribe(
+      this.deleteReply(event.data).toPromise().then(
         (res: any) => {
           let deletedReply: any = res.data;
           let commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
@@ -391,7 +392,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
 
     let data = {reaction: reaction, reaction_object: object, uuid: uuid};
-    this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).subscribe(
+    this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).toPromise().then(
       (res: any) => {
         this.updateItemReactions(object, Object.assign({}, data, res.data));
         this.mapDisplay();

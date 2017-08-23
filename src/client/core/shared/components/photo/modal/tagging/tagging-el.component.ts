@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ZMediaTaggingService } from './tagging.service';
 
 

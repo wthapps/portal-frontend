@@ -8,6 +8,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/toPromise';
 
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './index';
@@ -18,9 +19,6 @@ import { SoPost } from '../../../core/shared/models/social_network/so-post.model
 import { User } from '../../../core/shared/models/user.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { SocialDataService } from '../services/social-data.service';
-
-
-
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { UserService } from '../../../core/shared/services/user.service';
 
@@ -142,7 +140,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     }
     this.socialService.post.getList(this.uuid, this.type)
       // .finally(() => this.loadingService.stop('#post-list-loading'))
-      .subscribe(
+      .toPromise().then(
         (res: any) => {
           this.stopLoading();
           this.items = _.map(res.data, this.mapPost);
@@ -257,7 +255,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   viewMorePosts() {
     if (this.nextLink) {
       this.apiBaseService.get(this.nextLink).take(1)
-        .subscribe((res: any)=> {
+        .toPromise().then((res: any)=> {
         _.map(res.data, (v: any)=> {
           this.items.push(this.mapPost(v));
         });
