@@ -3,7 +3,7 @@ import { ZSocialFavoritesComponent } from './favorites/social-favorites.componen
 
 import { CoreSharedModule } from '../../core/shared/shared.module';
 
-import { SoUserService, SocialService, SoPostService } from './services/social.service';
+import { SocialService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
 
 import { PostModule } from './post/post.module';
@@ -27,6 +27,8 @@ import { ZSocialShareProfileModule } from './user/list.module';
 import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
 import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences-community.component';
 import { SocialDataService } from './services/social-data.service';
+import { SoUserService } from "./services/social-user.service";
+import { SoPostService } from "./services/social-post.service";
 
 
 /**

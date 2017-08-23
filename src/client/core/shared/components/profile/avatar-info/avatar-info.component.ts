@@ -9,14 +9,15 @@ import { QuestionBase } from '../../form/base/question-base';
 import { QuestionControlService } from '../../form/base/question-control.service';
 import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { UserInfo } from '../../../models/user/user-info.model';
-import { LoadingService } from '../../loading/loading.service';
-import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
-import { PhotoUploadService } from '../../../services/photo-upload.service';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { UserService } from '../../../services/user.service';
-import { ToastsService } from '../../toast/toast-message.service';
-// import { SocialService } from '../../../../../social/shared/services/social.service';
+import { LoadingService } from "../../loading/loading.service";
+import { PhotoModalDataService } from "../../../services/photo-modal-data.service";
+import { PhotoUploadService } from "../../../services/photo-upload.service";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import { SocialService } from "../../../../../social/shared/services/social.service";
+import { UserService } from "../../../services/user.service";
+import { ToastsService } from "../../toast/toast-message.service";
+import { ApiBaseService } from "../../../services/apibase.service";
 
 declare var _: any;
 
@@ -46,7 +47,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
   constructor(private questionControlService: QuestionControlService,
               private loadingService: LoadingService,
               private photoSelectDataService: PhotoModalDataService,
-              // private socialService: SocialService,
+              private apiBaseService: ApiBaseService,
               private userService: UserService,
               private toastsService: ToastsService,
               private photoUploadService: PhotoUploadService) {
@@ -168,27 +169,28 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
   onAction(event: any) {
     if (event.action == 'updateItem') {
       // Update profile via API call
-      // this.socialService.user.update(event.body)
-      //   .subscribe((result: any) => {
-      //     console.log('update profile sucess: ', result);
-      //     let toastMsg:string = '';
-      //     if (_.has(event.body, 'profile_image')) {
-      //       toastMsg = 'You have updated profile image successfully';
-      //       // Update user profile
-      //       if (this.socialService.user.profile.uuid === _.get(result, 'data.uuid')) {
-      //         Object.assign(this.socialService.user.profile, {'profile_image': result.data.profile_image});
-      //         Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
-      //         this.userService.updateProfile(this.userService.profile);
-      //       }
-      //     }
-      //     else if (_.has(event.body, 'cover_image')) {
-      //           toastMsg = 'You have updated cover image of this community successfully';
-      //     } else {
-      //       toastMsg = result.message;
-      //     }
-      //
-      //     this.toastsService.success(toastMsg);
-      //   });
+      // this.apiBaseService.put('zone/social_network/users/update', body).take(1);
+      this.apiBaseService.put('zone/social_network/users/update', event.body).take(1)
+        .subscribe((result: any) => {
+          console.log('update profile sucess: ', result);
+          let toastMsg:string = '';
+          if (_.has(event.body, 'profile_image')) {
+            toastMsg = 'You have updated profile image successfully';
+            // Update user profile
+            if (this.userService.profile.uuid === _.get(result, 'data.uuid')) {
+              Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
+              Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
+              this.userService.updateProfile(this.userService.profile);
+            }
+          }
+          else if (_.has(event.body, 'cover_image')) {
+                toastMsg = 'You have updated cover image of this community successfully';
+          } else {
+            toastMsg = result.message;
+          }
+
+          this.toastsService.success(toastMsg);
+        });
     }
   }
 }
