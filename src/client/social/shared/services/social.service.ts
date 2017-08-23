@@ -9,8 +9,8 @@ import { SoCommunityService } from './community.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { User } from '../../../core/shared/models/user.model';
 import { NotificationService } from '../../../core/shared/services/notification.service';
-import { SoUserService } from "./social-user.service";
-import { SoPostService } from "./social-post.service";
+import { SoUserService } from './social-user.service';
+import { SoPostService } from './social-post.service';
 /**
  * Created by phat on 18/11/2016.
  */

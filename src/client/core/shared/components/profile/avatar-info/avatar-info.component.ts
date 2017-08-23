@@ -9,15 +9,15 @@ import { QuestionBase } from '../../form/base/question-base';
 import { QuestionControlService } from '../../form/base/question-control.service';
 import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { UserInfo } from '../../../models/user/user-info.model';
-import { LoadingService } from "../../loading/loading.service";
-import { PhotoModalDataService } from "../../../services/photo-modal-data.service";
-import { PhotoUploadService } from "../../../services/photo-upload.service";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
-import { SocialService } from "../../../../../social/shared/services/social.service";
-import { UserService } from "../../../services/user.service";
-import { ToastsService } from "../../toast/toast-message.service";
-import { ApiBaseService } from "../../../services/apibase.service";
+import { LoadingService } from '../../loading/loading.service';
+import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
+import { PhotoUploadService } from '../../../services/photo-upload.service';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { SocialService } from '../../../../../social/shared/services/social.service';
+import { UserService } from '../../../services/user.service';
+import { ToastsService } from '../../toast/toast-message.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 
 declare var _: any;
 

@@ -21,7 +21,8 @@ import { PartialsProfileComponent } from './profile.component';
 import { PartialsProfileService } from './profile.service';
 import { PartialsFormModule } from '../form/partials-form.module';
 import { PartialsProfileEducationComponent } from './work-edu/education.component';
-import { CoverProfileModule } from "../cover-profile/cover-profile.module";
+import { CoverProfileModule } from '../cover-profile/cover-profile.module';
+import { ZSharedPhotoModule } from '../zone/photo/photo.module';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { CoverProfileModule } from "../cover-profile/cover-profile.module";
     ReactiveFormsModule,
     PartialsFormModule,
     CoverProfileModule,
+    ZSharedPhotoModule,
     PipeModule
   ],
   declarations: [

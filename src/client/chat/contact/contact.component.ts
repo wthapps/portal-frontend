@@ -15,7 +15,7 @@ export class ZChatContactComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.storage.find("chat_conversations");
+    this.contactItem = this.chatService.storage.find('chat_conversations');
   }
 
   newContact() {

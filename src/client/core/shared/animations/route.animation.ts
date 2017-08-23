@@ -1,4 +1,4 @@
-import { transition, style, trigger, animate, state, group } from "@angular/animations";
+import { transition, style, trigger, animate, state, group } from '@angular/animations';
 
 export let routeAnimation = trigger('routeAnimation', [
   transition('void => *', [
