@@ -14,7 +14,6 @@ import { PhotoModalDataService } from '../../../services/photo-modal-data.servic
 import { PhotoUploadService } from '../../../services/photo-upload.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { SocialService } from '../../../../../social/shared/services/social.service';
 import { UserService } from '../../../services/user.service';
 import { ToastsService } from '../../toast/toast-message.service';
 import { ApiBaseService } from '../../../services/apibase.service';
