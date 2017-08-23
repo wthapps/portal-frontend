@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   FormGroup
 } from '@angular/forms';
@@ -24,7 +24,8 @@ declare var _: any;
   moduleId: module.id,
   selector: 'partials-profile-avatar-info',
   templateUrl: 'avatar-info.component.html',
-  styleUrls: ['avatar-info.component.css']
+  styleUrls: ['avatar-info.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class PartialsProfileAvatarInfoComponent implements OnInit {

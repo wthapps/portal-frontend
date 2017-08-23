@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'so-profile',
@@ -11,7 +11,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
           </span>
       </div>
      </div>
-    `
+    `,
+    encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent {
   @Input() item: any;
