@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { fadeInAnimation } from '../../core/shared/animations/route.animation';
 
 /**
  * This class represents the lazy loaded ProductsComponent.
@@ -6,7 +7,12 @@ import { Component } from '@angular/core';
 @Component({
   moduleId: module.id,
   selector: 'sd-products',
-  templateUrl: 'products.component.html'
+  templateUrl: 'products.component.html',
+  styleUrls: ['products.component.css'],
+  host: {
+    "[@fadeInAnimation]": 'true'
+  },
+  animations: [fadeInAnimation]
 })
 
 export class ProductsComponent {

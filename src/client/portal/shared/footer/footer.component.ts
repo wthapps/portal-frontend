@@ -10,3 +10,11 @@ import { Component } from '@angular/core';
   styleUrls: ['footer.component.css'],
 })
 export class PortalSharedFooterComponent { }
+
+@Component({
+  moduleId: module.id,
+  selector: 'portal-shared-footer-promotion',
+  templateUrl: 'footer-promotion.component.html'
+})
+export class PortalSharedFooterPromotionComponent {
+}

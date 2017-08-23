@@ -5,30 +5,10 @@
 }
 
 .hero-banner {
-  background-image: url('/assets/images_new/home/hero-banner.jpg');
-  -webkit-background-size: cover;
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  color: #ffffff;
-  position: relative;
-  z-index: 2;
-  @include clearfix;
-
-  padding-top: 30px;
-  padding-bottom: 30px;
-  &:after {
-    content: "";
-    @include center(true, false);
-    bottom: -20px;
-    @include make-arrow(bottom, #191a1e, 20px, 20px);
-  }
-
   @media (min-width: $screen-sm-min) {
     padding-top: 10%;
     padding-bottom: 10%;
   }
-
   .hero-banner-img {
     text-align: center;
     img {
@@ -137,10 +117,30 @@
     figure {
       display: block;
       margin-bottom: 15px;
+
+      @media (max-width: $screen-xs-max) {
+        img {
+          height: 30px;
+          width: auto;
+        }
+      }
     }
-    p {
-      min-height: 38px;
-      margin-bottom: 30px;
+    @media (min-width: $screen-sm-min) {
+      p {
+        min-height: 38px;
+        margin-bottom: 30px;
+      }
+    }
+    @media (max-width: $screen-xs-max) {
+      text-align: center;
+      .row {
+        > div {
+          margin-bottom: 20px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
     }
   }
 }
@@ -156,3 +156,4 @@
     margin-right: auto;
   }
 }
+

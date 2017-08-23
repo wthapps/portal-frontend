@@ -1,0 +1,368 @@
+@import "../../core/scss/global";
+
+:host {
+  display: block;
+}
+
+.page-content {
+
+  .page-content-txt {
+    h4 {
+      font-size: 21px;
+      font-weight: normal;
+      font-family: $font-base;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+    @media (max-width: $screen-xs-max) {
+      figure, h4 {
+        text-align: center;
+      }
+      figure {
+        img {
+          height: 30px;
+          width: auto;
+        }
+      }
+      h4 {
+        margin-top: 15px;
+      }
+    }
+  }
+  .page-content-img {
+    margin-bottom: 20px;
+    @media (max-width: $screen-xs-max) {
+      text-align: center;
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  dl {
+    dd {
+      margin-bottom: 15px;
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.product-social {
+  .page-content-img {
+    text-align: center;
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (min-width: $screen-sm-min) {
+      float: right;
+      text-align: right;
+      margin-top: 50px;
+    }
+  }
+  .page-content-txt {
+    @media (min-width: $screen-sm-min) {
+      overflow: hidden;
+      padding-right: 80px;
+    }
+  }
+}
+
+.product-chat {
+  .page-content-img {
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 100%;
+    }
+    @media (min-width: $screen-sm-min) {
+      float: left;
+      text-align: left;
+      margin-top: 50px;
+    }
+  }
+  .page-content-txt {
+    @media (min-width: $screen-sm-min) {
+      overflow: hidden;
+      padding-left: 80px;
+    }
+  }
+}
+
+.product-picture {
+  .page-content-img {
+    text-align: center;
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (min-width: $screen-sm-min) {
+      float: right;
+      text-align: right;
+      margin-top: 50px;
+    }
+  }
+  .page-content-txt {
+    @media (min-width: $screen-sm-min) {
+      overflow: hidden;
+      padding-right: 80px;
+    }
+  }
+}
+
+.product-onemore {
+  h3 {
+    text-align: center;
+    margin-top: 0;
+    @media (min-width: $screen-sm-min) {
+      font-size: 36px;
+      margin-bottom: 60px;
+    }
+  }
+  .product-onemore-list {
+    > div {
+      margin-bottom: 20px;
+      @media (min-width: $screen-sm-min) {
+        margin-bottom: 60px;
+      }
+      @media (max-width: $screen-xs-max) {
+        img {
+          height: 30px;
+        }
+      }
+    }
+  }
+}
+
+@include keyframes(rotate360) {
+  to {
+    @include transform(rotate(360deg));
+  }
+}
+
+.product-social-img {
+  position: relative;
+  text-align: center;
+  @media (min-width: $screen-sm-min) {
+    float: right;
+  }
+  .img-2 {
+    position: relative;
+    z-index: 2;
+  }
+  .img-1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @include animation('rotate360 25s infinite linear');
+  }
+}
+
+$bubbleUp-ul: 62px;
+@include keyframes(bubbleUp-ul) {
+  0% {
+    top: 0;
+  }
+  23% {
+    top: 0;
+  }
+  25% {
+    top: -$bubbleUp-ul;
+  }
+  48% {
+    top: -$bubbleUp-ul;
+  }
+  50% {
+    top: -$bubbleUp-ul * 2;
+  }
+  73% {
+    top: -$bubbleUp-ul * 2;
+  }
+  75% {
+    top: -$bubbleUp-ul * 3;
+  }
+  98% {
+    top: -$bubbleUp-ul * 3;
+  }
+  100% {
+    top: -$bubbleUp-ul * 4;
+  }
+}
+
+@include keyframes(bubbleUp-li-3) {
+  0% {
+    left: -20px;
+    opacity: 0;
+  }
+  22% {
+    left: -20px;
+    opacity: 0;
+  }
+  24% {
+    left: -8px;
+    opacity: 1;
+  }
+  100% {
+    left: -8px;
+    opacity: 1;
+  }
+}
+
+@include keyframes(bubbleUp-li-4) {
+  0% {
+    right: -20px;
+    opacity: 0;
+  }
+  47% {
+    right: -20px;
+    opacity: 0;
+  }
+  49% {
+    right: -8px;
+    opacity: 1;
+  }
+  100% {
+    right: -8px;
+    opacity: 1;
+  }
+}
+
+@include keyframes(bubbleUp-li-5) {
+  0% {
+    right: -20px;
+    opacity: 0;
+  }
+  72% {
+    left: -20px;
+    opacity: 0;
+  }
+  74% {
+    left: -8px;
+    opacity: 1;
+  }
+  100% {
+    right: -8px;
+    opacity: 1;
+  }
+}
+
+@include keyframes(bubbleUp-li-6) {
+  0% {
+    right: -20px;
+    opacity: 0;
+  }
+  97% {
+    right: -20px;
+    opacity: 0;
+  }
+  99% {
+    right: -8px;
+    opacity: 1;
+  }
+  100% {
+    right: -8px;
+    opacity: 1;
+  }
+}
+
+.product-chat-img {
+  position: relative;
+  overflow: hidden;
+  width: 410px;
+  height: $bubbleUp-ul * 3;
+  margin-left: auto;
+  margin-right: auto;
+  @media (max-width: 410px + $grid-gutter-width) {
+    width: auto;
+    .product-chat-img-left, .product-chat-img-right {
+      img {
+        width: 60px;
+        height: auto;
+      }
+    }
+  }
+
+  .product-chat-img-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .product-chat-img-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul {
+    margin: 0 auto;
+    padding: 0;
+    list-style-type: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 144px;
+    top: 0;
+    @include animation('bubbleUp-ul 25s infinite ease-in-out');
+
+    > li {
+      margin-bottom: 5px;
+      left: -8px;
+      position: relative;
+      &:nth-child(2n) {
+        left: auto;
+        right: -8px;
+      }
+      &:nth-child(3) {
+        @include animation('bubbleUp-li-3 25s infinite ease-in-out');
+      }
+      &:nth-child(4) {
+        @include animation('bubbleUp-li-4 25s infinite ease-in-out');
+      }
+      &:nth-child(5) {
+        @include animation('bubbleUp-li-5 25s infinite ease-in-out');
+      }
+      &:nth-child(6) {
+        @include animation('bubbleUp-li-6 25s infinite ease-in-out');
+      }
+    }
+  }
+}
+
+@include keyframes(background-change) {
+  0% {
+    background-image: url('/assets/images_new/products/picture-img-1.png');
+  }
+  32% {
+    background-image: url('/assets/images_new/products/picture-img-1.png');
+  }
+  34% {
+    background-image: url('/assets/images_new/products/picture-img-2.png');
+  }
+  66% {
+    background-image: url('/assets/images_new/products/picture-img-2.png');
+  }
+  68% {
+    background-image: url('/assets/images_new/products/picture-img-3.png');
+  }
+  98% {
+    background-image: url('/assets/images_new/products/picture-img-3.png');
+  }
+}
+
+.product-picture-img {
+  position: relative;
+  img {
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-image: url('/assets/images_new/products/picture-img-1.png');
+    @include animation('background-change 15s infinite ease-in-out');
+  }
+}

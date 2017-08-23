@@ -240,23 +240,6 @@ $footer-height: 222px;
 
 }
 
-.page-content {
-  padding: 90px 0;
-  @media (max-width: $screen-xs-max) {
-    padding: 20px 0;
-  }
-  .h1 {
-    text-align: center;
-    margin: 0 0 20px;
-  }
-}
-
-.page-container {
-  padding: 30px 0;
-  @media (max-width: $screen-xs-max) {
-    padding: 15px 0;
-  }
-}
 
 /*.main-page-body {
   .page-body-control {
