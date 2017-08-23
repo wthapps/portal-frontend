@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'so-profile',
@@ -11,17 +11,18 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
           </span>
       </div>
      </div>
-    `
+    `,
+    encapsulation: ViewEncapsulation.None
 })
 export class ProfileComponent {
   @Input() item: any;
+  @Input() editable: boolean = false;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   changeProfileImage(event: any) {
     // Only allow user with canEdit priviledge update the cover / profile image
-    if (this.item.canEdit)
+    if (this.item.canEdit || this.editable)
       this.outEvent.emit(event);
   }
 
 }
-

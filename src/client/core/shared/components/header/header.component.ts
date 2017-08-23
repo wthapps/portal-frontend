@@ -138,7 +138,7 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
           // this.router.navigate(['/login']);
         },
         error => {
-          // this.userService.deleteUserInfo();
+          this.userService.deleteUserInfo();
           // this.router.navigate(['/login']);
           // console.log('logout error', error);
         }
@@ -222,6 +222,9 @@ export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
         break;
       case 'chat':
         url = `${Constants.baseUrls.chat}`;
+        break;
+      case 'contacts':
+        url = `${Constants.baseUrls.contact}`;
         break;
     }
 

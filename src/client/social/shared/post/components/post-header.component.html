@@ -128,8 +128,8 @@
     </div>
 
     <div *ngIf="!showDetail" class="dropdown pull-right">
-      <a [routerLink]="['/'+ postUrl, item.uuid]" class="btn btn-default btn-default-no-border"
-         pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top">
+      <a class="btn btn-default btn-default-no-border"
+         pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top" (click)="viewPostDetail(item.uuid)">
         <i class="fa fa-external-link"></i>
       </a>
     </div>

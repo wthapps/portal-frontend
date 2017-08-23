@@ -26,9 +26,27 @@
           </a>
           <ul class="dropdown-menu">
             <li>
+              <a (click)="redirectTo('social', '', $event)" href="javascript:;">
+                <i class="fa fa-globe"></i>
+                <span>Social</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="redirectTo('chat', '', $event)" href="javascript:;">
+                <i class="fa fa-comments"></i>
+                <span>Chat</span>
+              </a>
+            </li>
+            <li>
               <a (click)="redirectTo('media', '', $event)" href="javascript:;">
-                <i class="fa fa-bullseye"></i>
-                <span>Zone</span>
+                <i class="fa fa-picture-o"></i>
+                <span>Pictures</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="redirectTo('contacts', '', $event)" href="javascript:;">
+                <i class="fa fa-address-book"></i>
+                <span>Contacts</span>
               </a>
             </li>
             <li>
@@ -39,7 +57,7 @@
             </li>
             <li>
               <a (click)="redirectTo('my', 'my-apps', $event)" href="javascript:;">
-                <i class="fa fa-plug"></i>
+                <i class="fa fa-th-large"></i>
                 <span>My Apps</span>
               </a>
             </li>
@@ -125,6 +143,7 @@
             <li><a (click)="redirectTo('my', 'setting/profile', $event)" href="javascript:;">Profile</a></li>
             <li><a (click)="redirectTo('my', 'setting/account', $event)" href="javascript:;">Account</a></li>
             <li><a (click)="redirectTo('my', 'setting/preferences', $event)" href="javascript:;">Preferences</a></li>
+            <li><a (click)="redirectTo('my', 'admin/invitations', $event)" href="javascript:;">Invitations</a></li>
             <li role="separator" class="divider"></li>
             <li><a (click)="redirectTo('my', 'plans', $event)" href="javascript:;">Plans</a></li>
             <li role="separator" class="divider"></li>

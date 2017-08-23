@@ -5,7 +5,6 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
 import { SocialService } from '../../shared/services/social.service';
-import { ZSocialProfileDataService } from '../profile-data.service';
 
 
 

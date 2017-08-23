@@ -9,8 +9,6 @@ import { SoCommunityService } from './community.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { User } from '../../../core/shared/models/user.model';
 import { NotificationService } from '../../../core/shared/services/notification.service';
-import { SoUserService } from './social-user.service';
-import { SoPostService } from './social-post.service';
 /**
  * Created by phat on 18/11/2016.
  */
@@ -26,23 +24,25 @@ export let soReportEntity: any = Constants.soCommunityReportEntity;
 export let soFriendUrl: any = Constants.urls.soFriendUrl;
 
 @Injectable()
-export class SocialService {
-  constructor(public user: SoUserService,
-              public post: SoPostService,
-              public community: SoCommunityService,
-              private apiBaseService: ApiBaseService
-              ) {
-
+export class SoPostService {
+  constructor(private apiBaseService: ApiBaseService,
+              private user: UserService,
+              private  router: Router) {
   }
 
-  unfavourite(favouriteUuid: string) {
-    return this.apiBaseService.delete(`${soFavouritesUrl}/${favouriteUuid}`);
+  getList(uuid: string = this.user.profile.uuid, type?: string) {
+    return this.getListSocialPosts(uuid, type);
   }
 
-  // Params format:
-  // uuid: post / community / member uuid
-  // type: post / community / member
-  toggleFavourite(uuid: string, type: string) {
+  getSettings(uuid: string) {
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).debounceTime(250);
+  }
 
+  togglePostNotification(uuid: string) {
+    return this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: uuid});
+  }
+
+  private getListSocialPosts(uuid:any, type:string) {
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoUserPosts}/${uuid}`, {type: type});
   }
 }

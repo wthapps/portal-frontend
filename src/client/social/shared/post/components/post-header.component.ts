@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -36,6 +37,7 @@ export class PostHeaderComponent implements OnChanges {
 
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
+              private router: Router,
               public userService: UserService,
               private zoneReportService: ZSharedReportService) {
     this.user = this.socialService.user.profile;
@@ -53,6 +55,10 @@ export class PostHeaderComponent implements OnChanges {
   viewDetail(event: any) {
     event.preventDefault();
     this.postItem.viewDetail();
+  }
+
+  viewPostDetail(uuid: string) {
+    this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}]);
   }
 
   update(attr: any = {}, event: any) {

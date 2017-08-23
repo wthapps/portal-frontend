@@ -8,8 +8,8 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ApiBaseService } from '../../../services/apibase.service';
-import { ProfileFormMixin } from "../../../mixins/form/profile/profile-form.mixin";
-import { Mixin } from "../../../../design-patterns/decorator/mixin-decorator";
+import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
+import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 

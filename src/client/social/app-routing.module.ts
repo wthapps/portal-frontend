@@ -12,7 +12,7 @@ export const routes: Routes = [
   {path: 'home', component: ZSocialHomeComponent, canActivate: [AuthGuard]},
   {path: 'friends', component: ZSocialMembersComponent},
   {path: 'notifications', component: ZSocialNotificationsComponent},
-  {path: 'posts/:id', component: PostDetailComponent},
+  {path: 'posts/:id', component: PostDetailComponent, outlet: 'detail'},
   {path: 'my-profile', component: ZSocialMyProfileComponent}
 ];
 

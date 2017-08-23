@@ -9,6 +9,7 @@
     <div class="main-page-body">
       <router-outlet></router-outlet>
       <router-outlet name="modal"></router-outlet>
+      <router-outlet name="detail"></router-outlet>
     </div>
   </main>
   <wth-toast></wth-toast>
@@ -19,6 +20,5 @@
       <button class="btn btn-outline-default btn-min" type="button" (click)="cd.reject()">Cancel</button>
     </p-footer>
   </p-confirmDialog>
-  <post-photo-select #photoSelectModal22></post-photo-select>
+  <post-photo-select></post-photo-select>
 </div>
-

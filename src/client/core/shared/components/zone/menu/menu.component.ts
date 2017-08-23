@@ -85,9 +85,18 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     }
   }
 
+  clearOutlets() {
+    this.router.navigate([{outlets: {modal: null, detail: null}}]);
+  }
+
   onMenu(event: string) {
-    this.navigateService.navigateOrRedirect('', event);
+    this.navigateService.navigateOrRedirect('/', event);
     console.log(event);
+  }
+
+  onSubMenu(link: string) {
+    console.debug('onSubMenu:', link);
+    this.navigateService.navigateOrRedirect(link);
   }
 
   trackMenu(index: any, item: any) {

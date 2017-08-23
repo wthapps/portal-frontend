@@ -185,7 +185,7 @@
           <small>{{ message.created_at | timeFormat: "time_only" }}</small>
         </div>
       </div>
-      <div class="message-item-status">
+      <div class="message-item-status" *ngIf="message.byMe">
         <span>Sent <i class="fa fa-check-circle-o"></i></span>
       </div>
     </div>

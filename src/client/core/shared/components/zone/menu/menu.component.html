@@ -7,7 +7,7 @@
       </a>
       <ul [ngClass]="{'active': urls.social == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
-          <li *ngIf="social.name != ''" [routerLinkActive]="['active']"
+          <li *ngIf="social.name != ''" [routerLinkActive]="['active']" (click)="clearOutlets()"
               [ngClass]="{'hidden': social.link == '/search'}">
             <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
               <i class="{{ social.icon }}"></i> {{ social.name }}

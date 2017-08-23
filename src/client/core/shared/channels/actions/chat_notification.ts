@@ -30,9 +30,9 @@ export class ChatNotification implements Processable {
 
   updateDisplay(data:any) {
     let item = this.serviceManager.getStorageService().find('chat_conversations');
-    let index = _.findIndex(item.value.data, { id: data.group_user.id });
+    let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
     if(index != -1) {
-      item.value.data[index] = data.group_user;
+      item.value.data[index] = data.data.group_user;
       this.serviceManager.getChatCommonService().updateAll();
     }
   }
@@ -40,9 +40,9 @@ export class ChatNotification implements Processable {
   addNotification(data:any) {
     let item = this.serviceManager.getStorageService().find('chat_conversations');
     if(item && item.value) {
-      let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.group_id) return contact;});
+      let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.data.group_id) return contact;});
       if (contact && contact.notification) {
-        contact.notification_count = data.count;
+        contact.notification_count = data.data.count;
         this.serviceManager.getChatCommonService().updateAll();
       }
     }
@@ -50,24 +50,23 @@ export class ChatNotification implements Processable {
 
   addContact(data:any) {
     let item = this.serviceManager.getStorageService().find('chat_conversations');
-    let index = _.findIndex(item.value.data, { id: data.group_user.id });
+
+    let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
     if(index == -1) {
-      item.value.data.unshift(data.group_user);
+      item.value.data.unshift(data.data.group_user);
     } else {
-      item.value.data[index] = data.group_user;
+      item.value.data[index] = data.data.group_user;
     }
     this.serviceManager.getChatCommonService().updateAll();
   }
 
   updateConversationList(data:any) {
-    console.log(data);
     let item = this.serviceManager.getStorageService().find('chat_conversations');
-    item.value.data = data.group_users;
+    item.value.data = data.data.group_users;
     this.serviceManager.getChatCommonService().updateAll();
-    // this.serviceManager.getStorageService().save('chat_conversations', item);
   }
 
   addNotificationMessage(data:any) {
-    this.serviceManager.getChatCommonService().addMessage(data.group, data);
+    this.serviceManager.getChatCommonService().addMessage(data.data.group, data.data);
   }
 }

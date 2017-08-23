@@ -79,9 +79,16 @@ export class ChatCommonService {
   updateContactSelect() {
     let contactSelect = this.storage.find('conversation_select').value;
     let chatContacts = this.storage.find('chat_conversations').value.data;
-    for (let i = 0; i < chatContacts.length; i++) {
-      if (chatContacts[i] && chatContacts[i].id == contactSelect.id) {
-        this.storage.save('conversation_select', chatContacts[i]);
+    if (chatContacts) {
+      let isSet = false;
+      for (let i = 0; i < chatContacts.length; i++) {
+        if (chatContacts[i] && chatContacts[i].id == contactSelect.id) {
+          this.storage.save('conversation_select', chatContacts[i]);
+          isSet = true;
+        }
+      }
+      if (!isSet) {
+        this.setDefaultSelectContact();
       }
     }
   }

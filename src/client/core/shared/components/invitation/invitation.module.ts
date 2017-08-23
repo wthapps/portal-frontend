@@ -1,0 +1,29 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+
+import { PipeModule } from '../../pipe/pipe.module';
+import { InvitationCreatePartialComponent } from './invitation-create-partial.component';
+import { InvitationCreateModalComponent } from './invitation-create-modal.component';
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    Ng2Bs3ModalModule,
+    PipeModule
+  ],
+  declarations: [
+    InvitationCreatePartialComponent,
+    InvitationCreateModalComponent
+  ],
+  exports: [
+    InvitationCreatePartialComponent,
+    InvitationCreateModalComponent
+  ],
+  providers: []
+})
+
+export class InvitationModule {
+}

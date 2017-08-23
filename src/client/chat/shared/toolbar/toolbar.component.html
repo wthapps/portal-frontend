@@ -70,7 +70,7 @@
         <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1"
               class="fa fa-circle online"></span>
         <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1"
-              class="fa fa-circle offline"></span>
+              class="fa fa-circle"></span>
         <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
         {{ user_in_group.name }} <span class="caret"></span>
       </button>

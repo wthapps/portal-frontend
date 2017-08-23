@@ -1,7 +1,7 @@
 <div class="nav-menuleft">
   <aside class="aside-left">
     <div class="navgroup">
-      <h4 class="aside-title">Settings</h4>
+      <h5 class="aside-title">Settings</h5>
       <ul class="navgroup-menu">
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/setting/profile']">Profile</a>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="navgroup">
-      <h4 class="aside-title">Plans &amp; Billing</h4>
+      <h5 class="aside-title">Plans &amp; Billing</h5>
       <ul class="navgroup-menu">
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/plans']">Plans</a>
@@ -25,6 +25,14 @@
           <a [routerLink]="['/billing/details']">Billing Details</a>
         </li>
         <li [routerLinkActive]="['active']"><a [routerLink]="['/billing/history']">Billing History</a></li>
+      </ul>
+    </div>
+    <div class="navgroup">
+      <h5 class="aside-title">Administration</h5>
+      <ul class="navgroup-menu">
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/admin/invitations']">Invitations</a>
+        </li>
       </ul>
     </div>
   </aside>

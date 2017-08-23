@@ -1,5 +1,6 @@
 @import "../../../core/scss/custom-variables";
 @import "../../../core/scss/partials/colors";
+@import "../../../core/scss/global";
 .page-body-control-sub {
   padding-bottom: 6px !important;
   height: auto !important;
@@ -12,4 +13,8 @@
       text-transform: none;
     }
   }
+}
+
+.online {
+  color: $user-online;
 }
