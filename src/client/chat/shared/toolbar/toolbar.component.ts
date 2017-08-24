@@ -83,7 +83,6 @@ export class ZChatToolbarComponent implements OnInit {
   showDropdownMenu(e: any) {
     let showDropdownMenu_ul = e.target.nextElementSibling;
     if (e.screenX + 240 > window.innerWidth) {
-      showDropdownMenu_ul.style.right = 0;
       showDropdownMenu_ul.style.left = 'auto';
     }
   }

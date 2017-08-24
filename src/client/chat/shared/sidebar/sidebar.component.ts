@@ -47,8 +47,6 @@ export class ZChatSidebarComponent implements OnInit {
 
   onSelect(contact:any) {
     $('#chat-message-text').focus();
-    // Scroll to bottom when click
-    $('.page-body-chat-content-in').animate({ scrollTop: $(document).height() }, 'fast');
     this.chatService.selectContact(contact);
   }
 
