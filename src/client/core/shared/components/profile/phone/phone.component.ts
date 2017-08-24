@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit, HostBinding, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, HostBinding, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -20,7 +20,9 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'partials-profile-phone',
-  templateUrl: 'phone.component.html'
+  templateUrl: 'phone.component.html',
+  styleUrls: ['phone.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 

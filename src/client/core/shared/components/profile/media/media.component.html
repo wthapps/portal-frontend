@@ -58,10 +58,8 @@
                   && add_phone['controls'].value.touched
                   && form.value.media[i].value.length>1)}">
                   <input type="text" class="form-control" formControlName="value" placeholder="">
-                  <div
-                    *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
-                    <span
-                      *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.urlFormat"
+                  <div *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
+                    <span *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched"
                       class="help-block text-danger">
                       Link is not valid
                     </span>
