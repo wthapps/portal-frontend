@@ -5,7 +5,7 @@
         <!--<my-shared-menu></my-shared-menu>-->
       <!--</div>-->
 
-      <invitation-create-modal #modal></invitation-create-modal>
+      <invitation-create-modal #modal (event)="doEvent($event)"></invitation-create-modal>
 
       <!--<div class="col-sm-9">-->
         <!--&lt;!&ndash;<router-outlet></router-outlet>&ndash;&gt;-->

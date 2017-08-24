@@ -7,6 +7,7 @@ import { CoreSharedModule } from '../../../core/shared/shared.module';
 import { MyInvitationsComponent } from './invitations.component';
 import { MyInvitationsRoutingModule } from './invitations-routing.module';
 import { InvitationModule } from '../../../core/shared/components/invitation/invitation.module';
+import { InvitationService } from './invitation.service';
 
 
 @NgModule({
@@ -14,8 +15,7 @@ import { InvitationModule } from '../../../core/shared/components/invitation/inv
     CommonModule,
     CoreSharedModule,
     MyInvitationsRoutingModule,
-    MySharedModule.forRoot(),
-
+    MySharedModule.forRoot()
   ],
   declarations: [
     MyInvitationsComponent
@@ -23,7 +23,10 @@ import { InvitationModule } from '../../../core/shared/components/invitation/inv
   ],
   exports: [
     MyInvitationsComponent
+  ],
+  providers: [
   ]
+
 })
 
 export class MyInvitationsModule {
