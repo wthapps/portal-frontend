@@ -14,6 +14,7 @@ import { AboutService } from './about.service';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
+import { fadeInAnimation } from '../../core/shared/animations/route.animation';
 
 /**
  * This class represents the lazy loaded AboutComponent.
@@ -22,9 +23,13 @@ import { CustomValidator } from '../../core/shared/validator/custom.validator';
   moduleId: module.id,
   selector: 'sd-about',
   templateUrl: 'about.component.html',
-  styleUrls: ['about.component.css']
+  styleUrls: ['about.component.css'],
+  host: {
+    "[@fadeInAnimation]": 'true'
+  },
+  animations: [fadeInAnimation]
 })
-export class AboutComponent {
+export class AboutComponent implements OnInit {
   siteKey: string = '6LeZ0xIUAAAAABLfFeQpUGfK84j5aWgOnWbfJKM4';
   recaptchaState: boolean = false;
 
@@ -106,7 +111,7 @@ export class AboutComponent {
           (error: any) => {
             // stop loading
             this.loadingService.stop();
-            this.toastsService.danger('Invalid email or password');
+            this.toastsService.danger(error);
             //console.log('login error:', error);
           }
         );

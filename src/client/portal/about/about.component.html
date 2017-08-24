@@ -147,7 +147,7 @@
 
           <div class="form-group">
             <re-captcha #ReCaptchaComponent (captchaResponse)="handleCorrectCaptcha($event)"
-                        site_key="siteKey"></re-captcha>
+                        site_key="{{ siteKey }}"></re-captcha>
           </div>
 
           <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-primary btn-block">
