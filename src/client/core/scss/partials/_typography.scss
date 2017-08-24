@@ -203,6 +203,7 @@ h1, h2, h3, h4, h5, h6,
 
 .bg-dark {
   background-color: $bg-dark;
+  color: #ffffff;
 }
 
 .list-styled {
@@ -214,7 +215,6 @@ h1, h2, h3, h4, h5, h6,
     padding-left: 25px;
     margin-bottom: 15px;
     &:before {
-      content: '';
       position: absolute;
       color: $theme-color;
       left: 5px;

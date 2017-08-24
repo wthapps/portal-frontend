@@ -12,8 +12,6 @@
 @include font-face("Lato", Lato/Lato-Bold, bold, normal, ttf);
 @include font-face("Lato", Lato/Lato-BoldItalic, bold, italic, ttf);
 
-$font-style: 'Source Sans Pro', sans-serif;
-$font-base: 'Lato', sans-serif;
 
 @import "../../../assets/fonts/font-awesome/scss/_font-awesome.scss";
 

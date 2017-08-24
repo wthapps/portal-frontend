@@ -43,7 +43,6 @@
   @media (max-width: $screen-xs-max) {
     padding: 30px 0;
   }
-
 }
 
 .page-content-promo {
@@ -70,6 +69,32 @@
   @media (max-width: $screen-xs-max) {
     h4 {
       font-size: 30px;
+    }
+  }
+}
+
+.header-intro {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  h2 {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+    span {
+      display: inline-block;
+      border-bottom: 4px solid $theme-color;
+      padding: 0 20px 20px;
+    }
+  }
+  @media (min-width: $screen-sm-min) {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    h2 {
+      font-size: 48px;
+    }
+    p {
+      font-size: 21px;
     }
   }
 }

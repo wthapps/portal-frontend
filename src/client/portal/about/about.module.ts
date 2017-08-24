@@ -1,11 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ReCaptchaModule } from 'angular2-recaptcha';
+
 import { AboutComponent } from './about.component';
 import { AboutRoutingModule } from './about-routing.module';
+import { AboutService } from './about.service';
+import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [CommonModule, AboutRoutingModule],
+  imports: [
+    AboutRoutingModule,
+    PortalSharedModule.forRoot(),
+    ReCaptchaModule
+  ],
   declarations: [AboutComponent],
-  exports: [AboutComponent]
+  exports: [AboutComponent],
+  providers: [AboutService]
 })
-export class AboutModule { }
+export class AboutModule {
+}
