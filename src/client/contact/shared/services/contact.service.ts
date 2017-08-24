@@ -148,8 +148,8 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   checkSelectAll() {
-    let isSelectAll = _.isEqual(this.contactsSubject.getValue().map((c: any) => c.id).sort(), this.selectedObjects.map((c: any) => c.id).sort());
-    // console.debug('checkSelectAll: ', isSelectAll, this.contactsSubject.getValue().sort(), this.selectedObjects.sort());
+    // let isSelectAll = _.isEqual(this.contactsSubject.getValue().map((c: any) => c.id).sort(), this.selectedObjects.map((c: any) => c.id).sort());
+    let isSelectAll = this.contactsSubject.getValue().length === this.selectedObjects.length;
     this.isSelectAllSubject.next(isSelectAll);
   }
 
@@ -278,6 +278,7 @@ export class ZContactService extends BaseEntityService<any> {
     });
 
     this.contactsSubject.next(orderedContactsWSelected.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
+    this.checkSelectAll();
   }
 
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {

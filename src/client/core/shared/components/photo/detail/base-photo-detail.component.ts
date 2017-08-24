@@ -81,8 +81,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   doEvent(payload: any) {
     switch (payload.action) {
       case 'goBack':
-        console.log('goBack: ', this.router);
-        this.router.navigate([{outlets: {modal: null}}]);
+        this.goBack();
         // this.router.navigateByUrl(this.prevUrl);
         break;
       case 'changeMode':
@@ -138,9 +137,11 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         });
 
         break;
-
-
     }
+  }
+
+  goBack() {
+    this.router.navigate([{outlets: {modal: null}}]);
   }
 
   confirmUpdate(payload: any): Promise<any> {

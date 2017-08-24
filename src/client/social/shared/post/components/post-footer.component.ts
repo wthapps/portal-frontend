@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ConfirmationService } from 'primeng/components/common/api';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
@@ -21,9 +20,6 @@ import {
 import { CommentEditorMode } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
-import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../../core/shared/components/loading/loading.service';
-import { ToastsService } from '../../../../core/shared/components/toast/toast-message.service';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { PostService } from '../shared/post.service';
 import { Constants } from '../../../../core/shared/config/constants';

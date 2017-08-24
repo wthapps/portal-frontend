@@ -45,20 +45,6 @@ export class SoPhotoListComponent {
   constructor() {
   }
 
-  // loadPhotos() {
-  //   this.loading.start('.photo-grid-list');
-  //   this.apiService.get(`media/photos`).toPromise().then(
-  //     (response: any) => {
-  //       this.photos = response['data'];
-  //       this.loading.stop('.photo-grid-list');
-  //     },
-  //     (error: any) => {
-  //       // this.errorMessage = <any>error;
-  //       this.loading.stop('.photo-grid-list');
-  //     }
-  //   );
-  // }
-
   toggleSelectedItem(e: any, item: any) {
     let parent = $(e.target).parents('.row-img');
     let el = $(e.target).parents('.photo-box-img');

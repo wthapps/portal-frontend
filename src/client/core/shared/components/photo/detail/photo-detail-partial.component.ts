@@ -301,7 +301,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     // get cropped image data
     let editedData = this.cropper.getCroppedCanvas().toDataURL(this.photo.content_type);
     this.event.emit({action: 'confirmUpdate', editedData: editedData});
-    this.cancel();
+    // this.cancel();
   }
   /////////////////////////////////////////END-CROPPER/////////////////////////////////////
 
