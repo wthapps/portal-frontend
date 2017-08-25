@@ -62,7 +62,7 @@
 
 </div>
 <ng-template [ngIf]="item.value && showMemberBar">
-  <div *ngIf="item.value.group_json.group_type == 'multiple'" class="page-body-control-sub has-page-body-sidebar">
+  <div *ngIf="item.value.group_json.group_type == 'multiple' || item.value.group_json.group_type == 'support'" class="page-body-control-sub has-page-body-sidebar">
     <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
       <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
               class="btn btn-sm btn-outline-default dropdown-toggle" type="button"
