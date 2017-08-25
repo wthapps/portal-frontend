@@ -41,7 +41,7 @@
             <ul class="{{ item?.displayCss }}">
               <li *ngIf="comment.photo">
                 <figure
-                  (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id})">
+                  (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id, comment: comment})">
                   <img class="img-full" *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
                 </figure>
               </li>

@@ -12,6 +12,8 @@ import {
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/from';
@@ -37,6 +39,7 @@ import { PhotoModalDataService } from '../../../core/shared/services/photo-modal
 import { SoComment } from '../../../core/shared/models/social_network/so-comment.model';
 import { BaseEvent } from '../../../core/shared/event/base-event';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { PhotoService } from '../../../core/shared/services/photo.service';
 
 
 declare var $: any;
@@ -74,6 +77,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
 
   constructor(public apiBaseService: ApiBaseService,
+              private photoService: PhotoService,
               private loading: LoadingService,
               private confirmation: ConfirmationService,
               private photoSelectDataService: PhotoModalDataService,
@@ -81,6 +85,35 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               private componentFactoryResolver: ComponentFactoryResolver,
               private toast: ToastsService) {
     super();
+
+    this.photoService.modifiedPhotos$
+      .filter((object: any) => _.get(object, 'payload.post_id', -99) == this.item.id || _.get(object, 'payload.post_id', -99) == _.get(this.item, 'parentItem.id'))
+      .takeUntil(this.destroySubject.asObservable())
+      .subscribe((object: any) => {
+        console.debug('modifiedPhotos - post: ', object);
+        let post: SoPost = _.get(object, 'payload.post');
+        switch(object.action) {
+          case 'UPDATE':
+            let updatedPhoto = object.payload.photo;
+            let tempItem = _.cloneDeep(this.item);
+            // Update post photos
+            console.debug('item before update: ', tempItem, this.item);
+            tempItem = this.updatePhotoForPost(tempItem, updatedPhoto);
+
+            // Update parentPost as well
+            if(tempItem.parent_post) {
+              tempItem.parent_post = this.updatePhotoForPost(tempItem.parent_post, updatedPhoto);
+            }
+
+            this.item = tempItem;
+            this.mapDisplay();
+            console.debug('item after update: ', tempItem);
+            break;
+          case 'DELETE':
+            console.debug('unimplemented DELETE photo in post: ', object);
+            break;
+        }
+      });
   }
 
   ngOnInit() {
@@ -101,6 +134,27 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.destroySubject.unsubscribe();
   }
 
+  updatePhotoForPost(post: any, updatedPhoto: any): any {
+    post.photos = this.updatePhoto(post.photos, updatedPhoto);
+
+    for(let i = 0; i < post.comments.length; i++) {
+      if(post.comments[i].photo) {
+        post.comments[i].photo = _.get(this.updatePhoto([post.comments[i].photo], updatedPhoto), '0');
+      }
+    }
+    return post;
+  }
+
+  updatePhoto(currentPhotos: any[], updatedPhoto: any): any[] {
+    return _.map(currentPhotos, (photo: any) => {
+        if( photo.id === updatedPhoto.id )
+          return updatedPhoto
+        else
+          return photo
+      }
+    );
+  }
+
   mapDisplay(): any {
     // Clone object to display
     this.itemDisplay = _.cloneDeep(this.item);
@@ -111,8 +165,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.getRemainPhotos();
     // Right Photos than 6 will be remove for display
     this.removeRightPhotos();
-    // handle user privacy
-    this.privacyDisplay();
+    // // handle user privacy
+    // this.privacyDisplay();
     // classify reaction
     // this.classifyReactions();
   }
@@ -137,9 +191,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   removeRightPhotos() {
-    while (this.itemDisplay.photos.length > 6) {
-      this.itemDisplay.photos = _.dropRight(this.itemDisplay.photos);
-    }
+    // while (this.itemDisplay.photos.length > 6) {
+    //   this.itemDisplay.photos = _.dropRight(this.itemDisplay.photos);
+    // }
+    this.itemDisplay.photos.splice(6);
   }
 
   classifyReactions() {
@@ -161,38 +216,14 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     });
   }
 
-  privacyDisplay() {
-    switch (this.itemDisplay.privacy.toLowerCase()) {
-      case Constants.soPostPrivacy.public.data:
-        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.public;
-        break;
-      case Constants.soPostPrivacy.personal.data:
-        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.personal;
-        break;
-      case Constants.soPostPrivacy.friends.data:
-        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.friends;
-        break;
-      case Constants.soPostPrivacy.customFriend.data:
-        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.customCommunity;
-        break;
-      default:
-        this.itemDisplay.privacyDisplay = Constants.soPostPrivacy.unknown;
-    }
-  }
-
-  viewDetail() {
-    console.log('viewing details..........');
-    // this.posts.viewDetail();
-  }
-
   edit() {
-    this.modalOpened.emit({mode: 'edit', post: this.itemDisplay});
+    this.modalOpened.emit({mode: 'edit', post: this.item});
   }
 
   update(attr: any = {}) {
     console.log('attt ', attr);
     this.apiBaseService.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, attr)
-      .subscribe((result: any) => {
+      .toPromise().then((result: any) => {
           // this.item = result['data'];
           _.merge(this.item, new SoPost().from(result['data']).excludeComments());
           this.mapDisplay();
@@ -463,8 +494,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {
           this.commentEditor.setCommentAttributes({photo: photos[0]});
-
-          // this.commentEditor.commentAction(photos);
         },
         (error: any) => {
           console.error(error);

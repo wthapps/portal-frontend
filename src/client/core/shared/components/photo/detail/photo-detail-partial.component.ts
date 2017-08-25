@@ -97,6 +97,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
 
   loadMenu() {
     this.menus = new Array<any>();
+    let canDelete = this.module !== 'social';
+
     this.menus = [
       {
         text: 'Share',
@@ -123,13 +125,6 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         toolTip: Constants.tooltip.edit,
         iconClass: 'fa fa-edit',
         action: 'editPhoto'
-      },
-      {
-        text: 'Delete',
-        toolTip: Constants.tooltip.delete,
-        iconClass: 'fa fa-trash-o',
-        action: 'delete',
-        params: {}
       },
       {
         text: 'More',
@@ -161,6 +156,16 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         ]
       }
     ];
+
+    if (canDelete)
+      this.menus.splice(4,0,
+        {
+          text: 'Delete',
+          toolTip: Constants.tooltip.delete,
+          iconClass: 'fa fa-trash-o',
+          action: 'delete',
+          params: {}
+        });
   }
 
   // true --> next
@@ -223,11 +228,11 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   setMode(mode: number) {
-    if (mode == 1) {
-      $('.cropper-crop-box').show();
-    } else {
-      $('.cropper-crop-box').hide();
-    }
+    // if (mode == 1) {
+    //   $('.cropper-crop-box').show();
+    // } else {
+    //   $('.cropper-crop-box').hide();
+    // }
     this.mode = mode;
   }
 

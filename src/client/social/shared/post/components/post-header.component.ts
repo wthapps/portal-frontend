@@ -9,9 +9,7 @@ import { SoPost } from '../../../../core/shared/models/social_network/so-post.mo
 import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';
 import { Constants } from '../../../../core/shared/config/constants';
-import { User } from '../../../../core/shared/models/user.model';
 import { ZSharedReportService } from '../../../../core/shared/components/zone/report/report.service';
-
 
 declare var _: any;
 
@@ -30,7 +28,7 @@ export class PostHeaderComponent implements OnChanges {
   showInfo: boolean = false;
   showDetail: boolean = false;
   settings: any;
-  user: User;
+  // user: User;
   readonly postUrl: string = Constants.urls.posts;
   readonly profileUrl: string = Constants.urls.profile;
   profile$: Observable<any>;
@@ -41,7 +39,7 @@ export class PostHeaderComponent implements OnChanges {
               private router: Router,
               public userService: UserService,
               private zoneReportService: ZSharedReportService) {
-    this.user = this.socialService.user.profile;
+    // this.user = this.socialService.user.profile;
     this.profile$ = this.userService.profile$;
   }
 
@@ -108,16 +106,12 @@ export class PostHeaderComponent implements OnChanges {
 
   getSettings(e: any) {
     e.preventDefault();
-    // Only get settings when the pop up form shown up
-    // if (e.target.attributes['aria-expanded'].value === 'true')
-    //   return;
 
     this.socialService.post.getSettings(this.item.uuid).toPromise().then(
       (res: any) => {
         this.settings = res.data.settings;
       });
   }
-
 
   onReport() {
     this.zoneReportService.post(this.item.uuid);

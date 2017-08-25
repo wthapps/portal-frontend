@@ -24,6 +24,7 @@ import { UserService } from '../../../../core/shared/services/user.service';
 import { PostService } from '../shared/post.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { SoComment } from '../../../../core/shared/models/social_network/so-comment.model';
+import { PhotoService } from '../../../../core/shared/services/photo.service';
 
 declare var _: any;
 declare var $: any;
@@ -64,6 +65,7 @@ export class PostFooterComponent implements OnChanges {
 
   constructor(private router: Router,
               private postService: PostService,
+              public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
     this.user$ = this.userService.profile$;
@@ -89,6 +91,7 @@ export class PostFooterComponent implements OnChanges {
   onActions(action: any, params?: any) {
     let type = params.commentType;
     let data = params.data;
+    let comment = params.comment;
     switch (action) {
       case this.actions.onDeleteComment:
         this.eventEmitter.emit(new DeleteCommentEvent(data));
@@ -117,7 +120,7 @@ export class PostFooterComponent implements OnChanges {
         break;
       case this.actions.onShowPhotoDetail:
         // this.router.navigate([{outlets: {modal: ['comments', data, 'photos', type, {ids: [type]}]}}]);
-        this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type]}]}}]);
+        this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type], post_id: this.item.id}]}}]);
         break;
     }
   }

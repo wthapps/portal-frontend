@@ -377,6 +377,11 @@ export let Constants = {
   }
 };
 
+export let PhotoAction = {
+  update: 'UPDATE',
+  delete: 'DELETE'
+}
+
 export let MediaType = {
   photo: 'photo',
   album: 'album',
