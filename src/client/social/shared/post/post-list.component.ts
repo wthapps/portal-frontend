@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -33,7 +33,6 @@ declare var $: any;
 
 export class PostListComponent implements OnInit, OnDestroy {
   @ViewChild('postEditModal') postEditModal: PostEditComponent;
-  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
 
   @Input() type: string = undefined;
   @Input() community: any = undefined;

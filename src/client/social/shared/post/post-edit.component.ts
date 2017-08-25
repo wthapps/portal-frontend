@@ -20,7 +20,6 @@ import { PhotoModalDataService } from '../../../core/shared/services/photo-modal
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { EntitySelectComponent } from '../../../core/shared/components/entity-select/entity-select.component';
 
-
 declare var _: any;
 declare var $: any;
 
@@ -137,8 +136,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
     // Clear pending files in case of failure
     this.files.length = 0;
-
-    // this.subscribePhotoSelectEvents();
   }
 
   close() {
