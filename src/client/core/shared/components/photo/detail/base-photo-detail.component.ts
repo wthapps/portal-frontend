@@ -86,7 +86,6 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         (error: any) => {
           console.error('Error when loading photo ', error);
         });
-    ;
   }
 
   doEvent(payload: any) {
@@ -180,16 +179,6 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  updatePhotoService() {
-
-  }
-
-  private favourite() {
-    this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
-      this.photo.favorite = res.data.favorite;
-    });
-  }
-
   // Change image when delete current one: next, prev or go back to photo list
   deleteAndChangeImg() {
     // Remove images at index position
@@ -200,23 +189,18 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     //   this.imgNext();
   }
 
-  loadItem(id: number) {
-    // this.loading = true;
-    // return this.photoService.getPhoto(id)
-    //   .then((response: any) => {
-    //       this.photo = response.data;
-    //       this.loading = false;
-    //     },
-    //     (error: any) => {
-    //       console.error('Error when loading photo ', error);
-    //   });
-  }
-
   ngOnDestroy() {
     // this.routeSub.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
   }
+
+  private favourite() {
+    this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
+      this.photo.favorite = res.data.favorite;
+    });
+  }
+
 
 }
 

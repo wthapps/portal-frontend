@@ -33,7 +33,7 @@
   </div>
   <div *ngIf="selectedPhoto" class="photo-detail-content no-user-selected">
     <div class="photo-detail-img">
-      <figure [ngClass]="{'img-loading': loadingImg}">
+      <figure [ngClass]="{'img-loading': loading}">
         <img imgFull draggable="false" [src]="selectedPhoto.url" alt="" (load)="showLoading()">
       </figure>
 
