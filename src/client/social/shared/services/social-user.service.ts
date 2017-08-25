@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/toPromise';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { SoCommunityService } from './community.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { User } from '../../../core/shared/models/user.model';
 import { NotificationService } from '../../../core/shared/services/notification.service';
@@ -58,10 +58,6 @@ export class SoUserService {
         return this.ownFriendInfo;
       });
   }
-
-  // update(body: any) {
-  //   return this.apiBaseService.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
-  // }
 
   update(body: any) {
     return this.apiBaseService.put(`${soUsersUrl}/update`, body).take(1);

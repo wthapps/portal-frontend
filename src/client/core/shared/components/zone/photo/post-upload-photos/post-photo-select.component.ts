@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { Subscription } from 'rxjs/Subscription';
 
 import { SoPhotoListComponent } from '../photo-list/photo-list.component';
 import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';

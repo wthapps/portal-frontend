@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/observable/throw';
 
 import { CookieService } from 'ngx-cookie';
-
 import { Constants } from '../config/constants';
 
 @Injectable()
@@ -125,6 +125,8 @@ export class ApiBaseService {
 
   // TODO refactor
   private handleError(error: Response | any): any {
+    return Observable.throw(error);
+
     // redirect to login page if there is not a user logged in
     // if (error.status === 401 && error.statusText == 'Unauthorized') {
     //   this.router.navigate(['/login']);

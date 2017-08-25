@@ -6,6 +6,7 @@ import {
   FormBuilder
 } from '@angular/forms';
 
+import 'rxjs/add/operator/toPromise';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
@@ -108,7 +109,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
       accept: () => {
         this.loadingService.start();
         this.communityService.resetSettings(this.data.uuid)
-          .subscribe((res: any) => {
+          .toPromise().then((res: any) => {
               this.loadingService.stop();
               this.data = res.data;
               this.setupDataUpdated.emit(res.data);

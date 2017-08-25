@@ -18,8 +18,8 @@ export class ICountry {
 @Injectable()
 export class CountryService {
 
-  private countriesCodeSubject: BehaviorSubject<ICountry[]> = new BehaviorSubject<ICountry[]>([]);
   public countriesCode$: Observable<any>;
+  private countriesCodeSubject: BehaviorSubject<ICountry[]> = new BehaviorSubject<ICountry[]>([]);
 
   /**
    * Creates a new CountryService with the injected Http.

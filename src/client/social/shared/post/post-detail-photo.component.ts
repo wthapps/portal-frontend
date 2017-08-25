@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+
+import 'rxjs/add/operator/toPromise';
+
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Constants } from '../../../core/shared/config/constants';
-// import { SoPost } from '../../../shared/models/social_network/so-post.model';
-// import { ApiBaseService } from '../../../shared/services/apibase.service';
-// import { Constants } from '../../../shared/config/constants';
 
 
 declare var $: any;
@@ -60,7 +60,7 @@ export class PostDetailPhotoComponent extends BaseZoneSocialItem implements OnIn
 
   loadPost(uuid: string): void {
     this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + uuid)
-      .subscribe((response: any) => {
+      .toPromise().then((response: any) => {
           this.item = response.data;
           this.itemDisplay = _.cloneDeep(this.item);
           this.classifyReactions();

@@ -1,4 +1,7 @@
 import { Component, ElementRef, ViewChild, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+
+import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
@@ -11,7 +14,7 @@ declare var $: any;
   templateUrl: 'photo-list.component.html'
 })
 
-export class SoPhotoListComponent implements OnInit {
+export class SoPhotoListComponent {
   @ViewChild('filesSelection') fileSelection: ElementRef;
   @Input() showUpload: boolean = false;
   @Input() showFavourite: boolean = false;
@@ -39,35 +42,7 @@ export class SoPhotoListComponent implements OnInit {
     }
   }
 
-  constructor(private apiService: ApiBaseService, private loading: LoadingService) {
-  }
-
-  ngOnInit(): void {
-    // this.loading.start('.photo-grid-list');
-    // this.apiService.get(`zone/photos`).subscribe(
-    //   (response: any) => {
-    //     this.photos = response['data'];
-    //     this.loading.stop('.photo-grid-list');
-    //   },
-    //   error => {
-    //     // this.errorMessage = <any>error;
-    //     this.loading.stop('.photo-grid-list');
-    //   }
-    // );
-  }
-
-  loadPhotos() {
-    this.loading.start('.photo-grid-list');
-    this.apiService.get(`media/photos`).subscribe(
-      (response: any) => {
-        this.photos = response['data'];
-        this.loading.stop('.photo-grid-list');
-      },
-      (error: any) => {
-        // this.errorMessage = <any>error;
-        this.loading.stop('.photo-grid-list');
-      }
-    );
+  constructor() {
   }
 
   toggleSelectedItem(e: any, item: any) {

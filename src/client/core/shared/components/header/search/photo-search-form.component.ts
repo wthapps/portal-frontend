@@ -98,6 +98,10 @@ export class PhotoSearchFormComponent {
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: e.search}});
   }
 
+  onEscape(e?: any) {
+    console.log('inside onEscape', e);
+  }
+
   onKey(e: any) {
     console.log(e);
     if (!e.search) {

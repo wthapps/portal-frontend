@@ -17,11 +17,12 @@ declare var _: any;
 
 @Injectable()
 export class ZContactMenuService {
+
+  contactMenu$: Observable<any[]>;
   private contactMenuSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
-  contactMenu$: Observable<any[]> = this.contactMenuSubject.asObservable();
-
   constructor() {
+    this.contactMenu$ = this.contactMenuSubject.asObservable();
   }
 
 
@@ -114,6 +115,10 @@ export class ZContactMenuService {
     });
   }
 
+  notifyCMObservers(menus: any[] = this.contactMenuSubject.getValue()) {
+    this.contactMenuSubject.next(menus);
+  }
+
   private mapLabelToMenuItem(label: Label): any {
     return {
       id: label.id,
@@ -129,9 +134,5 @@ export class ZContactMenuService {
                 : label.name == 'chat' ? 'fa fa-comments-o'
                   : 'fa fa-folder-o'
     };
-  }
-
-  notifyCMObservers(menus: any[] = this.contactMenuSubject.getValue()) {
-    this.contactMenuSubject.next(menus);
   }
 }

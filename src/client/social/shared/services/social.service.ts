@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/debounceTime';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { UserService } from '../../../core/shared/services/user.service';
 import { SoCommunityService } from './community.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { User } from '../../../core/shared/models/user.model';
-import { NotificationService } from '../../../core/shared/services/notification.service';
 import { SoUserService } from './social-user.service';
 import { SoPostService } from './social-post.service';
 /**

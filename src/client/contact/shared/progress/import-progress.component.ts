@@ -12,7 +12,7 @@ import { ContactAddLabelModalComponent } from '../modal/contact-add-label/contac
   templateUrl: 'import-progress.component.html'
 })
 
-export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
+export class ZContactShareImportProgressComponent implements OnDestroy {
   @ViewChild('modalDock') modalDock: ModalDockComponent;
   @ViewChild('addLabel') addLabel: ContactAddLabelModalComponent;
 
@@ -21,7 +21,7 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     done: 2,
     error: 3,
     cancelled: 4
-  }
+  };
   importedContacts: Array<any> = [];
 
   importSubscription: Subscription;
@@ -45,10 +45,6 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-
-  }
-
   ngOnDestroy() {
     this.importSubscription.unsubscribe();
   }
@@ -66,7 +62,7 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
       .then((user: any) => {
           this.modalDock.open();
           this.importStatus = this.IMPORT_STATUS.importing;
-          return this.gapi.startImportContact(user)}
+          return this.gapi.startImportContact(user);}
           ,(err: any) => {
           this.importStatus = this.IMPORT_STATUS.error;
           return this.importDone(err);
@@ -117,7 +113,8 @@ export class ZContactShareImportProgressComponent implements OnInit, OnDestroy {
     }
     else {
       console.error('importDone w/ error: ', error);
-      this.importStatus = this.IMPORT_STATUS.error;}
+      this.importStatus = this.IMPORT_STATUS.error;
       return Promise.reject(error);
+    }
   }
 }

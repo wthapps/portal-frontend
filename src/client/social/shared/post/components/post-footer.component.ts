@@ -5,26 +5,26 @@ import {
   EventEmitter,
   OnChanges
 } from '@angular/core';
-import { ConfirmationService } from 'primeng/components/common/api';
+import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
+
 import {
   DeleteCommentEvent,
   CancelEditCommentEvent,
   CancelReplyCommentEvent,
   DeleteReplyEvent,
-  CancelEditReplyCommentEvent, ViewMoreCommentsEvent, ReplyCreateEvent
+  ViewMoreCommentsEvent
 } from '../../../events/social-events';
 import { CommentEditorMode } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
-import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../../core/shared/components/loading/loading.service';
-import { ToastsService } from '../../../../core/shared/components/toast/toast-message.service';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { PostService } from '../shared/post.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { SoComment } from '../../../../core/shared/models/social_network/so-comment.model';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { PhotoService } from '../../../../core/shared/services/photo.service';
 
 declare var _: any;
 declare var $: any;
@@ -63,12 +63,9 @@ export class PostFooterComponent implements OnChanges {
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private apiBaseService: ApiBaseService,
-              private loading: LoadingService,
-              private confirmation: ConfirmationService,
-              private toast: ToastsService,
-              private router: Router,
+  constructor(private router: Router,
               private postService: PostService,
+              public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
     this.user$ = this.userService.profile$;
@@ -81,9 +78,6 @@ export class PostFooterComponent implements OnChanges {
     this.totalComment = this.item.comment_count;
     if (this.totalComment === 0 || this.totalComment <= this.item.comments.length)
       this.loadingDone = true;
-
-    // this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
-    // this.hasDislike = _.findIndex(this.item.dslikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
   }
 
   hasLike(comment: any) {
@@ -97,6 +91,7 @@ export class PostFooterComponent implements OnChanges {
   onActions(action: any, params?: any) {
     let type = params.commentType;
     let data = params.data;
+    let comment = params.comment;
     switch (action) {
       case this.actions.onDeleteComment:
         this.eventEmitter.emit(new DeleteCommentEvent(data));
@@ -106,11 +101,6 @@ export class PostFooterComponent implements OnChanges {
         let commentType = type;
 
         console.log('editing..........:', data);
-        // show edit comment form
-        // $('#editComment-' + currentComment.uuid).show();
-
-        // hide current comment content
-        // $('#comment-' + currentComment.uuid).hide();
 
         currentComment.isEditting = true;
         break;
@@ -123,8 +113,6 @@ export class PostFooterComponent implements OnChanges {
 
         console.log('replying..........:', parent);
 
-        // this.eventEmitter.emit(new ReplyCreateEvent(data));
-        // $('#reply-' + parent.uuid).show();
         _.set(parent, 'isCreatingNewReply', true);
         break;
       case this.actions.openLikeDislike:
@@ -132,23 +120,18 @@ export class PostFooterComponent implements OnChanges {
         break;
       case this.actions.onShowPhotoDetail:
         // this.router.navigate([{outlets: {modal: ['comments', data, 'photos', type, {ids: [type]}]}}]);
-        this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type]}]}}]);
+        this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type], post_uuid: this.item.uuid}]}}]);
         break;
     }
   }
 
 
   onCallBack(event: any) {
-    // console.log('data:::::::', event);
     if (event instanceof CancelEditCommentEvent) {
-      // $('#editComment-' + event.data.uuid).hide();
-      // $('#comment-' + event.data.uuid).show();
-
       event.data.isEditting = false;
       return;
     }
     if (event instanceof CancelReplyCommentEvent) {
-      // $('#reply-' + event.data.uuid).hide();
       event.data.isEditting = false;
       return;
     }
@@ -159,22 +142,20 @@ export class PostFooterComponent implements OnChanges {
 
   notAllCommentsLoaded() {
     return ( this.totalComment > 0 && !this.loadingDone);
-    // return ( this.totalComment > 0  && !this.loadingDone) || ( this.item.comments.length < this.item.total_comments);
   }
 
   mapComment(comment: any) {
     return new SoComment().from(comment);
   }
 
-  getMoreComments() {
-    // if (this.loadingDone) {
-    //   console.error('All comments are loaded!')
-    //   return;
-    // }
+  trackItem(index: any, item: any) {
+    return item ? item.id : undefined;
+  }
 
+  getMoreComments() {
     let body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
     this.postService.loadComments(body)
-      .subscribe((result: any) => {
+      .toPromise().then((result: any) => {
           console.log('Get more comments successfully');
           if (this.commentPageIndex == 0) {
             // this.item.comments.length = 0; // Clear comments data in the first loading

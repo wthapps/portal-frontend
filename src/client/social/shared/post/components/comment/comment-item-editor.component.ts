@@ -65,8 +65,6 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    // console.log('mode::', this.comment);
     if (this.mode == CommentEditorMode.Add) {
       // this.comment = new SoComment();
     }
@@ -97,8 +95,9 @@ export class CommentItemEditorComponent implements OnInit {
       // this.comment.photo = this.commentEditorForm.value.photo;
       // this.post(this.comment);
 
-      if (this.checkValidForm())
-        this.post(this.commentEditorForm.value);
+      if (this.checkValidForm()) {
+        // this.comment.content = this.commentEditorForm.value;
+        this.post(this.commentEditorForm.value);}
       else
         this.cancel();
       return;
@@ -177,21 +176,9 @@ export class CommentItemEditorComponent implements OnInit {
     let emoj: any = e.replace(/\\/gi, '');
     this.comment.content += emoj;
     this.hasUpdatedContent = true;
-    // this.placeCaretAtEnd(document.getElementById('chat-message-text'));
   }
 
-
   cancel() {
-    // if (this.type == this.commentEditorMode.Edit) {
-    //   this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
-    //   this.commentContent = this.comment.content;
-    // }
-    // if (this.type == this.commentEditorMode.Reply) {
-    //   this.eventEmitter.emit(new CancelReplyCommentEvent(this.comment));
-    // }
-    // if (this.type == this.commentEditorMode.EditReply) {
-    //   this.eventEmitter.emit(new CancelEditReplyCommentEvent(this.reply));
-    // }
 
 
     this.comment.content = '';

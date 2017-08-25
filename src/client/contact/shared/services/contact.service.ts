@@ -129,7 +129,7 @@ export class ZContactService extends BaseEntityService<any> {
         }
       });
     });
-  };
+  }
 
   addItemSelectedObjects(item: any) {
     this.selectedObjects.push(item);
@@ -148,8 +148,8 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   checkSelectAll() {
-    let isSelectAll = _.isEqual(this.contactsSubject.getValue().map((c: any) => c.id).sort(), this.selectedObjects.map((c: any) => c.id).sort());
-    // console.debug('checkSelectAll: ', isSelectAll, this.contactsSubject.getValue().sort(), this.selectedObjects.sort());
+    // let isSelectAll = _.isEqual(this.contactsSubject.getValue().map((c: any) => c.id).sort(), this.selectedObjects.map((c: any) => c.id).sort());
+    let isSelectAll = this.contactsSubject.getValue().length === this.selectedObjects.length;
     this.isSelectAllSubject.next(isSelectAll);
   }
 
@@ -235,7 +235,7 @@ export class ZContactService extends BaseEntityService<any> {
         let clabels = _.map(contact.labels, 'name');
         if(_.indexOf(clabels, label) > -1)
           return contact;
-      })
+      });
     }
 
     return contacts;
@@ -278,6 +278,7 @@ export class ZContactService extends BaseEntityService<any> {
     });
 
     this.contactsSubject.next(orderedContactsWSelected.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
+    this.checkSelectAll();
   }
 
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
@@ -299,6 +300,22 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
+  public initialLoad(): Promise<any> {
+    if(this.initLoadSubject.getValue() === true) {
+      this.initLoadSubject.next(true);
+      return Promise.resolve(this.contacts);
+    }
+    return this.getAll().toPromise()
+      .then((res: any) => {
+        // this.contacts.push(...res.data);
+        this.contacts = res.data;
+        this.notifyContactsObservers();
+        this.initLoadSubject.next(true);
+        this.nextLink = _.get(res, 'page_metadata.links.next');
+        this.followingLoad(this.nextLink);
+      });
+  }
+
   private searchContact(name: string): any[] {
     let search_value = name.toLowerCase();
     if (search_value === '') {
@@ -312,7 +329,7 @@ export class ZContactService extends BaseEntityService<any> {
         || (phones_string.toLowerCase().indexOf(search_value) > -1)
       ) {
         return contact;
-      };
+      }
     });
 
     return contacts;
@@ -327,22 +344,6 @@ export class ZContactService extends BaseEntityService<any> {
         _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
         this.notifyContactsObservers();
         contacts.length = 0;
-      });
-  }
-
-  public initialLoad(): Promise<any> {
-    if(this.initLoadSubject.getValue() === true) {
-      this.initLoadSubject.next(true);
-      return Promise.resolve(this.contacts);
-    }
-    return this.getAll().toPromise()
-      .then((res: any) => {
-        // this.contacts.push(...res.data);
-        this.contacts = res.data;
-        this.notifyContactsObservers();
-        this.initLoadSubject.next(true);
-        this.nextLink = _.get(res, 'page_metadata.links.next');
-        this.followingLoad(this.nextLink);
       });
   }
 

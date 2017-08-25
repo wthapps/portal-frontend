@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/takeUntil';
 
 import { ApiBaseService } from './apibase.service';
-import { Observable } from 'rxjs/Observable';
 
 declare var _: any;
 
@@ -12,23 +14,27 @@ export class PhotoService {
 
   url = 'media/photos';
 
-  previewPhotos$: Observable<any[]>;
-  private previewPhotosSubject: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  closePreview$: Observable<any>;
+  modifiedPhotos$: Observable<any>;
+  private closePreviewSubject: Subject<any> = new Subject();
+  private modifiedPhotosSubject: BehaviorSubject<any> = new BehaviorSubject({action: null, payload: {}}); // including UPDATED and DELETED photos
 
   constructor(private apiBaseService: ApiBaseService) {
-    this.previewPhotos$ = this.previewPhotosSubject.asObservable();
+    this.closePreview$ = this.closePreviewSubject.asObservable();
+    this.modifiedPhotos$ = this.modifiedPhotosSubject.asObservable();
   }
 
-  clearPreviewPhotos() {
-    this.setPreviewPhotos([]);
+  closePreviewModal() {
+    this.closePreviewSubject.next('');
   }
 
-  setPreviewPhotos(photos: any[]): void {
-    this.previewPhotosSubject.next(photos);
+  setModifiedPhotos(options: any = {action: null, payload: {post_id: null, photo: null}}) {
+    console.debug('photo service - setModifiedPhotos: ', options);
+    this.modifiedPhotosSubject.next(options);
   }
 
-  getPreviewPhotos() {
-    return this.previewPhotosSubject.getValue();
+  getModifiedPhotos() {
+    return this.modifiedPhotosSubject.getValue();
   }
 
   listPhoto(body: any = {}): any {
@@ -52,10 +58,6 @@ export class PhotoService {
   }
 
   actionOneFavourite(item: any) {
-    // let body = JSON.stringify({
-    //   ids: [item.id],
-    //   setFavourite: (item.favorite) ? false : true
-    // });
     let body = {
       ids: [item.id],
       setFavourite: (item.favorite) ? false : true

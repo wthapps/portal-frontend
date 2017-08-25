@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Location } from '@angular/common';
+
+import 'rxjs/add/operator/toPromise';
+
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { PostEditComponent, PostService } from './index';
-import { Location } from '@angular/common';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
@@ -44,7 +47,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   loadPost(uuid: string): void {
     this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + uuid)
-      .subscribe((response: any) => {
+      .toPromise().then((response: any) => {
           this.item = new SoPost().from(response.data);
         },
         (error: any) => {
@@ -62,7 +65,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
     switch(options.mode) {
       case 'add':
         this.postService.add(options.item)
-          .subscribe((response: any) => {
+          .toPromise().then((response: any) => {
               console.log('response', response);
               // Navigate to the new shared post
               this.router.navigate([{outlets: {detail: ['/posts', response.data.uuid]}}]);
@@ -75,7 +78,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
         break;
       case 'edit':
         this.postService.update(options.item)
-          .subscribe((response: any) => {
+          .toPromise().then((response: any) => {
               // // Update item
               let updatedPost = new SoPost().from(response.data);
               delete updatedPost.comments;

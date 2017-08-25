@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { Observable } from 'rxjs/Observable';
+
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { TaggingElComponent } from './tagging/tagging-el.component';
 import { ApiBaseService } from '../../../services/apibase.service';
-import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 
 declare var $: any;

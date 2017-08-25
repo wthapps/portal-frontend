@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../core/shared/services/user.service';
+import { PhotoService } from '../../../../core/shared/services/photo.service';
 
 declare var _: any;
 
@@ -31,10 +32,11 @@ export class PostBodyComponent implements OnChanges {
   hasLike: boolean;
   hasDislike: boolean;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
+  constructor(private router: Router,
+              public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -42,7 +44,7 @@ export class PostBodyComponent implements OnChanges {
       this.showInfo = true;
     }
 
-    if (changes['item'].currentValue.parent_post) {
+    if (_.get(changes['item'], 'currentValue.parent_post')) {
       let parentItem: any = changes['item'].currentValue.parent_post;
       let remainPhotos: number = parentItem.photos.length - 6;
       this.originalParent = _.cloneDeep(parentItem);
@@ -74,8 +76,7 @@ export class PostBodyComponent implements OnChanges {
       case this.actions.onShowPhotoDetail:
         let post = _.get(data, 'parentItem', this.originalPost);
         let photoIds = _.map(post.photos, 'id');
-        this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds}]}}], { preserveQueryParams: true, preserveFragment: true });
-
+        this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, post_uuid: post.uuid}]}}], { preserveQueryParams: true, preserveFragment: true });
         break;
     }
   }

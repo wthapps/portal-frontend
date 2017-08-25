@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject, Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 
-
 import { SocialService } from './social.service';
+
 declare let _ : any;
 
 @Injectable()
@@ -23,7 +21,8 @@ export class SocialFavoriteService {
   getFavourites() {
     this.socialService.user.getFavourites()
       .filter(() => !this.loaded) // Only load data once
-      .toPromise().then(
+      .toPromise()
+      .then(
       (res: any) => {
         this.favorites = res.data;
         this.loaded = true;
@@ -68,7 +67,7 @@ export class SocialFavoriteService {
 
   unfavourite(favourite: any) {
     this.socialService.unfavourite(favourite.uuid).take(1)
-      .subscribe((response: any) => {
+      .toPromise().then((response: any) => {
         // _.remove(this.favourites.getValue(), (f: any) => f.uuid == favourite.uuid);
         this.removeFavorite(favourite);
       });
@@ -80,7 +79,7 @@ export class SocialFavoriteService {
   }
 
   unfriend(friend: any) {
-    this.socialService.user.unfriend(friend.uuid).subscribe(
+    this.socialService.user.unfriend(friend.uuid).toPromise().then(
       (res: any) => {
         _.remove(this.favorites, (f: any) => _.get(f, 'friend.uuid', '') == friend.uuid);
       },

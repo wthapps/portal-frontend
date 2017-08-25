@@ -1,4 +1,7 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
+
+import 'rxjs/add/operator/toPromise';
+
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ListComponent } from '../../../core/shared/ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
@@ -72,7 +75,7 @@ export class PostPrivacyCustomComponent implements OnInit {
 
   loadData(): void {
     this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}`)
-      .subscribe((result: any) => {
+      .toPromise().then((result: any) => {
           if (this.isCustomFriend()) {
             this.items = result['data']['friends'];
             this.itemNames = _.map(result['data']['friends'], 'name');

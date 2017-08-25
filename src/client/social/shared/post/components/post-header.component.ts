@@ -2,15 +2,14 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 
 import { PostComponent } from '../index';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { SocialService } from '../../../shared/services/social.service';
 import { Constants } from '../../../../core/shared/config/constants';
-import { User } from '../../../../core/shared/models/user.model';
 import { ZSharedReportService } from '../../../../core/shared/components/zone/report/report.service';
-
 
 declare var _: any;
 
@@ -29,7 +28,7 @@ export class PostHeaderComponent implements OnChanges {
   showInfo: boolean = false;
   showDetail: boolean = false;
   settings: any;
-  user: User;
+  // user: User;
   readonly postUrl: string = Constants.urls.posts;
   readonly profileUrl: string = Constants.urls.profile;
   profile$: Observable<any>;
@@ -40,7 +39,7 @@ export class PostHeaderComponent implements OnChanges {
               private router: Router,
               public userService: UserService,
               private zoneReportService: ZSharedReportService) {
-    this.user = this.socialService.user.profile;
+    // this.user = this.socialService.user.profile;
     this.profile$ = this.userService.profile$;
   }
 
@@ -50,11 +49,6 @@ export class PostHeaderComponent implements OnChanges {
     } else if (this.type == 'detail') {
       this.showDetail = true;
     }
-  }
-
-  viewDetail(event: any) {
-    event.preventDefault();
-    this.postItem.viewDetail();
   }
 
   viewPostDetail(uuid: string) {
@@ -70,7 +64,7 @@ export class PostHeaderComponent implements OnChanges {
     event.preventDefault();
     console.log('Toggle post notification: ', event);
 
-    this.socialService.post.togglePostNotification(uuid).subscribe((res: any) => {
+    this.socialService.post.togglePostNotification(uuid).toPromise().then((res: any) => {
       this.settings = res.data;
     });
   }
@@ -107,16 +101,12 @@ export class PostHeaderComponent implements OnChanges {
 
   getSettings(e: any) {
     e.preventDefault();
-    // Only get settings when the pop up form shown up
-    // if (e.target.attributes['aria-expanded'].value === 'true')
-    //   return;
 
-    this.socialService.post.getSettings(this.item.uuid).take(1).subscribe(
+    this.socialService.post.getSettings(this.item.uuid).toPromise().then(
       (res: any) => {
         this.settings = res.data.settings;
       });
   }
-
 
   onReport() {
     this.zoneReportService.post(this.item.uuid);
