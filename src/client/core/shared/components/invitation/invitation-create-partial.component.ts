@@ -40,7 +40,7 @@ export class InvitationCreatePartialComponent implements OnInit, OnChanges {
   // getFormControls: () => any;
 
   constructor(private fb: FormBuilder) {
-
+    console.log('testing inside partial::::');
   }
 
   ngOnInit() {
