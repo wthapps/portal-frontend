@@ -67,7 +67,7 @@ export class SocialFavoriteService {
 
   unfavourite(favourite: any) {
     this.socialService.unfavourite(favourite.uuid).take(1)
-      .subscribe((response: any) => {
+      .toPromise().then((response: any) => {
         // _.remove(this.favourites.getValue(), (f: any) => f.uuid == favourite.uuid);
         this.removeFavorite(favourite);
       });
@@ -79,7 +79,7 @@ export class SocialFavoriteService {
   }
 
   unfriend(friend: any) {
-    this.socialService.user.unfriend(friend.uuid).subscribe(
+    this.socialService.user.unfriend(friend.uuid).toPromise().then(
       (res: any) => {
         _.remove(this.favorites, (f: any) => _.get(f, 'friend.uuid', '') == friend.uuid);
       },

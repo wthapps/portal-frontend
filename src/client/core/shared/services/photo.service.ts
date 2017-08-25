@@ -28,10 +28,6 @@ export class PhotoService {
     this.closePreviewSubject.next('');
   }
 
-  getCurrentPost() {
-    return this.post;
-  }
-
   setModifiedPhotos(options: any = {action: null, payload: {post_id: null, photo: null}}) {
     console.debug('photo service - setModifiedPhotos: ', options);
     this.modifiedPhotosSubject.next(options);

@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
+
+import 'rxjs/add/operator/toPromise';
+
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { BaseSocialModal } from './shared/modal/base-social-modal';
 import { Constants } from '../../../core/shared/config/constants';
-// import { HdModalComponent } from '../../shared/ng2-hd/modal/index';
-// import { ApiBaseService } from '../../../shared/index';
 
 declare var _: any;
 
@@ -38,7 +39,7 @@ export class PostActivitiesComponent implements BaseSocialModal {
   loadData(): void {
 
     this.api.post(`zone/social_network/posts/show_activities`, JSON.stringify({post_id: this.item.uuid}))
-      .subscribe((result: any) => {
+      .toPromise().then((result: any) => {
           this.shares = result['data'];
         },
         error => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -42,7 +42,7 @@ export class ZSocialShareProfileMemberComponent {
    group: community / members
    */
   getFavourite(item: any, group: string) {
-    this.socialService.user.getFavourite(item.uuid, group).subscribe(
+    this.socialService.user.getFavourite(item.uuid, group).toPromise().then(
       (res: any) => {
         this.favourite = res.data;
       }
@@ -56,7 +56,7 @@ export class ZSocialShareProfileMemberComponent {
 
   addFriend(user: any) {
 
-    this.socialService.user.addFriend(user.uuid).subscribe(
+    this.socialService.user.addFriend(user.uuid).toPromise().then(
       (res: any) => {
         user.friend_status = Constants.friendStatus.pending;
       }
@@ -64,7 +64,7 @@ export class ZSocialShareProfileMemberComponent {
   }
 
   unfriend(user: any) {
-    this.socialService.user.unfriend(user.uuid).subscribe(
+    this.socialService.user.unfriend(user.uuid).toPromise().then(
       (res: any) => {
         // Currently not support unfriend status. May be updated later
         user.friend_status = Constants.friendStatus.stranger;
@@ -73,7 +73,7 @@ export class ZSocialShareProfileMemberComponent {
   }
 
   unfollow(friend: any) {
-    this.socialService.user.unfollow(friend.uuid).subscribe(
+    this.socialService.user.unfollow(friend.uuid).toPromise().then(
       (res: any) => {
         friend.is_following = false;
       },
@@ -81,7 +81,7 @@ export class ZSocialShareProfileMemberComponent {
   }
 
   follow(friend: any) {
-    this.socialService.user.follow(friend.uuid).subscribe(
+    this.socialService.user.follow(friend.uuid).toPromise().then(
       (res: any) => {
         // this.getUser();
         friend.is_following = true;

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { ConfirmationService } from 'primeng/components/common/api';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Constants } from '../../../core/shared/config/constants';

@@ -51,11 +51,6 @@ export class PostHeaderComponent implements OnChanges {
     }
   }
 
-  viewDetail(event: any) {
-    event.preventDefault();
-    this.postItem.viewDetail();
-  }
-
   viewPostDetail(uuid: string) {
     this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}]);
   }

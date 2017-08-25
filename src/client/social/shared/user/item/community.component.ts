@@ -1,6 +1,8 @@
 import {
   Component, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
+
+import 'rxjs/add/operator/toPromise';
 import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Constants } from '../../../../core/shared/config/constants';
@@ -49,7 +51,7 @@ export class ZSocialShareProfileCommunityComponent {
 
   sendJoinRequest() {
     this.socialService.community.askToJoin(this.data.uuid)
-      .subscribe((result: any) => {
+      .toPromise().then((result: any) => {
           // TODO: Update status of community
           this.data.user_status = Constants.soCommunityUserStatus.joinRequestSent;
         },
@@ -125,7 +127,7 @@ export class ZSocialShareProfileCommunityComponent {
   }
 
   getUserSettings(uuid: any) {
-    this.socialService.community.getUserSettings(uuid).take(1).subscribe(
+    this.socialService.community.getUserSettings(uuid).take(1).toPromise().then(
       (res: any) => {
         console.log('inside getUserSettings', res);
         this.userSettings = res.data;
@@ -134,7 +136,7 @@ export class ZSocialShareProfileCommunityComponent {
   }
 
   toggleComNotification(uuid: any) {
-    this.socialService.community.toggleComNotification(uuid).subscribe(
+    this.socialService.community.toggleComNotification(uuid).toPromise().then(
       (res: any) => {
         console.log('inside toggleComNotification', res);
         this.userSettings = res.data;

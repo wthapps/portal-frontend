@@ -28,7 +28,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   photo: Photo;
   id: number;
   ids: Array<number> = [];
-  post_id: any;
+  post_uuid: any;
   prevUrl: string;
   loading: boolean;
   mode: number;
@@ -67,8 +67,8 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         if(params['ids']) {
           this.ids = params['ids'].split(',').map(Number) || [];
         }
-        if(params['post_id'])
-          this.post_id = +params['post_id'];
+        if(params['post_uuid'])
+          this.post_uuid = params['post_uuid'];
         this.module = params['module'] || this.module;
         this.mode = params['mode'] || 0;
         this.showDetail = params['showDetail'] || false;
@@ -139,7 +139,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
               // considering remove item in ids array and back to preUrl
               // this.router.navigateByUrl(this.prevUrl);
               this.goBack();
-              this.photoService.setModifiedPhotos({action: 'DELETE', payload: {post_id: this.post_id, photo: this.photo}});
+              this.photoService.setModifiedPhotos({action: 'DELETE', payload: {post_uuid: this.post_uuid, photo: this.photo}});
 
               this.loadingService.stop();
             });
@@ -172,7 +172,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           }).toPromise()
             .then((response: any) => {
               this.photo = response.data;
-              this.photoService.setModifiedPhotos({action: 'UPDATE', payload: {post_id: this.post_id, photo: this.photo}});
+              this.photoService.setModifiedPhotos({action: 'UPDATE', payload: {post_uuid: this.post_uuid, photo: this.photo}});
               resolve(this.photo);
             });
         }

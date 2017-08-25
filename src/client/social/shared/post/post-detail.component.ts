@@ -65,7 +65,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
     switch(options.mode) {
       case 'add':
         this.postService.add(options.item)
-          .subscribe((response: any) => {
+          .toPromise().then((response: any) => {
               console.log('response', response);
               // Navigate to the new shared post
               this.router.navigate([{outlets: {detail: ['/posts', response.data.uuid]}}]);
@@ -78,7 +78,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
         break;
       case 'edit':
         this.postService.update(options.item)
-          .subscribe((response: any) => {
+          .toPromise().then((response: any) => {
               // // Update item
               let updatedPost = new SoPost().from(response.data);
               delete updatedPost.comments;

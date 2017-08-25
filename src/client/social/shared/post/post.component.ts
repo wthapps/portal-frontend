@@ -87,7 +87,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     super();
 
     this.photoService.modifiedPhotos$
-      .filter((object: any) => _.get(object, 'payload.post_id', -99) == this.item.id || _.get(object, 'payload.post_id', -99) == _.get(this.item, 'parentItem.id'))
+      .filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid'))
       .takeUntil(this.destroySubject.asObservable())
       .subscribe((object: any) => {
         console.debug('modifiedPhotos - post: ', object);

@@ -16,7 +16,7 @@ declare let _: any;
   templateUrl: 'social-favorites.component.html'
 })
 
-export class ZSocialFavoritesComponent implements OnInit {
+export class ZSocialFavoritesComponent {
   tooltip: any = Constants.tooltip;
 
   favorites$: Observable<any> = Observable.empty();
@@ -29,25 +29,8 @@ export class ZSocialFavoritesComponent implements OnInit {
     // this.favorites$ = this.favoriteService.favoritesObs;
   }
 
-  ngOnInit() {
-    // this.getFavourites();
-  }
-
-  // getFavourites() {
-  //   this.socialService.user.getFavourites().take(1).subscribe(
-  //     // (res: any) => {
-  //     //   this.favourites = res.data;
-  //     // }
-  //     this.favourites
-  //   );
-  // }
 
   unfavourite(favourite: any) {
-    // this.socialService.unfavourite(favourite.uuid).take(1)
-    //   .subscribe((response: any) => {
-    //     _.remove(this.favourites.getValue(), (f: any) => f.uuid == favourite.uuid);
-    // });
-
     this.favoriteService.unfavourite(favourite);
   }
 
@@ -56,16 +39,9 @@ export class ZSocialFavoritesComponent implements OnInit {
   }
 
   unfriend(friend: any) {
-    // this.socialService.user.unfriend(friend.uuid).subscribe(
-    //   (res: any) => {
-    //     _.remove(this.favourites.getValue(), (f: any) => _.get(f, 'friend.uuid', '') == friend.uuid);
-    //   },
-    // );
-
     this.favoriteService.unfriend(friend);
   }
 
-  // TODO:
   onReport(item: any) {
     this.zoneReportService.show(item);
     return false;

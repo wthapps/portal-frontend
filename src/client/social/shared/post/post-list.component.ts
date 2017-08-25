@@ -168,7 +168,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     // _.assign(options.item, {tags_json: options.item.tags, photos_json: options.item.photos});
     if (options.mode == 'add') {
       this.postService.add(options.item)
-        .subscribe((response: any) => {
+        .toPromise().then((response: any) => {
             console.log('response', response);
             this.items.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
             // this.loadPosts();
@@ -183,7 +183,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       // Update post content only, not reload comments
       this.postEditModal.close();
       this.postService.update(options.item)
-        .subscribe((response: any) => {
+        .toPromise().then((response: any) => {
             // this.loadPosts();
             let editedItem = _.map([response.data], this.mapPostNoComments)[0];
             let idx = _.findIndex(this.items, (i: SoPost) => {
