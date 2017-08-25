@@ -6,3 +6,21 @@ Header
   z-index: 1000;
   @include box-shadow($box-shadow-bottom);
 }
+
+.navbar-searchTop {
+  @media (min-width: $screen-sm-min) {
+    width: 250px;
+  }
+  @media (min-width: $screen-md-min) {
+    width: 300px;
+  }
+  @media (min-width: $screen-lg-min) {
+    width: 400px;
+  }
+  .ui-autocomplete {
+    position: inherit;
+    .ui-autocomplete-panel {
+      margin-top: 3px;
+    }
+  }
+}
