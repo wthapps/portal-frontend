@@ -59,10 +59,6 @@ export class SoUserService {
       });
   }
 
-  // update(body: any) {
-  //   return this.apiBaseService.put(`zone/social_network/users/${this.user.profile.uuid}`, body);
-  // }
-
   update(body: any) {
     return this.apiBaseService.put(`${soUsersUrl}/update`, body).take(1);
   }
