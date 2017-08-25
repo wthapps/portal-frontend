@@ -174,18 +174,20 @@ export class ChatService {
   }
 
   uploadFiles(files: any, parent?: any) {
+    for (let i = 0; i < files.length; i++) {
+      files[0].parent = {
+        id: parent.id,
+        uuid: '',
+        type: 'Chat::Message'
+      };
+    }
     this.fileUploadHelper.upload(files, (event: any, file: any) => {
       let genericFile = new GenericFile({
         file: event.target['result'],
         name: file.name,
         content_type: file.type,
-        parent: {
-          id: parent.id,
-          uuid: '',
-          type: 'Chat::Message'
-        },
+        parent: file.parent
       });
-
       // update current message and broadcast on server
       this.fileService.create(genericFile)
         .subscribe((response: any) => {
@@ -193,18 +195,6 @@ export class ChatService {
       });
     });
   }
-
-  // uploadPhotos(files: any) {
-  //   let groupId = this.storage.find('conversation_select').value.group_json.id;
-  //   this.fileUploadHelper.upload(files, (event: any, file: any) => {
-  //     let result = this.photoUploadService.uploadPhotos([file]).take(1)
-  //       .subscribe((res: any) => {
-  //         this.sendMessage(groupId, {type: 'file', id: res.data.id, object: 'Photo'});
-  //       }, (error: any) => {
-  //         console.log('Error uploading photos in chat service', error);
-  //       });
-  //   });
-  // }
 
   uploadPhotoOnWeb(photo: any) {
     let groupId = this.storage.find('conversation_select').value.group_json.id;

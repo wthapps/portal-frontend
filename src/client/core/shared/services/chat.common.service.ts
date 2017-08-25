@@ -62,17 +62,12 @@ export class ChatCommonService {
 
   updateItemInList(groupId: any, data: any) {
     let items = this.storage.find('chat_messages_group_' + groupId);
-    // let contactSelect = this.storage.find('conversation_select').value;
     if (items && items.value) {
-      let currentItemIndex = _.findIndex(items.value.data, {id: data.id});
-      // replace current item in array
-      items.value.data.splice(currentItemIndex, 1, data);
-      // if(contactSelect.group_json.id == groupId) {
-        this.storage.save('chat_messages_group_' + groupId, items);
-      // }
-      // if (!contactSelect.favourite) {
-      //   this.moveFristRecentList();
-      // }
+      for (let i = 0; i < items.value.data.length; i++) {
+        if(items.value.data[i].id == data.id) {
+          items.value.data[i] = data;
+        }
+      }
     }
   }
 

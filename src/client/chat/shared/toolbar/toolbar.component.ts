@@ -88,7 +88,13 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onDeleteConversation() {
-    this.chatService.deleteContact(this.item.value);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this conversation ?',
+      header: 'Delete Conversation',
+      accept: () => {
+        this.chatService.deleteContact(this.item.value);
+      }
+    });
   }
 
   onSelect(user: any) {
