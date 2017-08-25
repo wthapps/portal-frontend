@@ -41,6 +41,7 @@ import { PipeModule } from './pipe/pipe.module';
 import { LoadingModule } from './components/loading/loading.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
+import { HeaderNavbarModule } from './components/navbar/navbar.module';
 import { PartialsNotificationsModule } from './components/notifications/notifications.module';
 import { TablePricingModule } from './components/table-pricing/table-pricing.module';
 import { ToastsModule } from './components/toast/toast-message.module';
@@ -98,6 +99,7 @@ import { InvitationModule } from './components/invitation/invitation.module';
 
     FooterModule,
     HeaderModule,
+    HeaderNavbarModule,
     PartialsNotificationsModule,
     TablePricingModule,
     CoreChatSupportModule,

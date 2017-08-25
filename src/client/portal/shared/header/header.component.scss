@@ -4,45 +4,4 @@
   display: block;
 }
 
-.navbar-default {
-  background-color: #fff;
-  border-width: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  margin-bottom: 0;
-  font-family: $font-style;
-}
-
-.navbar-brand {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.nav-link, .navbar-default .navbar-nav > li > a {
-  line-height: 50px;
-  padding-top: 0;
-  padding-bottom: 0;
-  font-weight: bold;
-  font-size: 18px;
-  color: $text-color-light;
-  &:hover, &:focus, &:active {
-    color: $theme-color;
-  }
-}
-
-.navbar-default .navbar-right-active > li > a {
-  color: $text-color;
-}
-
-.navbar-default .navbar-nav > li {
-  &.active {
-    > a {
-      color: $theme-color;
-    }
-  }
-}
-
 

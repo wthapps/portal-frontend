@@ -5,7 +5,7 @@ import {
   ViewChild,
   HostBinding,
   Input,
-  OnDestroy
+  OnDestroy, ViewEncapsulation
 } from '@angular/core';
 
 import { SearchFormComponent } from './search/search-form.component';
@@ -29,7 +29,8 @@ declare let App: any; //This App stands for ActionCable
   selector: 'wth-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.css'],
-  entryComponents: [UndoNotificationComponent]
+  entryComponents: [UndoNotificationComponent],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input('headerOver') headerOver: boolean = false;
