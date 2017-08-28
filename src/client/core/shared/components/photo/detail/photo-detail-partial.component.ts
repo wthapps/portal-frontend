@@ -163,7 +163,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
           text: 'Delete',
           toolTip: Constants.tooltip.delete,
           iconClass: 'fa fa-trash-o',
-          action: 'delete',
+          action: 'confirmDelete',
           params: {}
         });
   }

@@ -19,7 +19,7 @@
 
         <!--mesasge menu-->
         <div class="message-item-menu dropdown"
-             *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'FileMedium')">
+             *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'FileMedium') && message.message_type !== 'message_deleted'">
           <i class="fa fa-sort-down" data-toggle="dropdown"
              pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
@@ -34,7 +34,7 @@
 
           <!--photos menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Media::Photo'">
-            <li *ngIf="message.file_json">
+            <li *ngIf="message.file_json && message.message_type !== 'message_deleted'">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
               </a>
@@ -43,7 +43,7 @@
 
           <!--other menu menu menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
-            <li *ngIf="message.file_json">
+            <li *ngIf="message.file_json && message.message_type !== 'message_deleted'">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
               </a>
@@ -69,6 +69,18 @@
               <div class="media-div-body">
                 <div class="media-div-heading">{{ message.message }}</div>
                 <!--<div class="text-fade">{{ message.file_json.size | bytes:3 }}</div>-->
+              </div>
+            </a>
+          </div>
+
+          <!--show failed sending -->
+          <div *ngIf="message.sending_status == -1" class="message-item-content-other-files">
+            <a class="media-div link-text" href="javascript:void(0);">
+              <div class="pull-left">
+                <i class="fa fa-file-o"></i>
+              </div>
+              <div class="media-div-body">
+                <div class="media-div-heading">Failed sending file</div>
               </div>
             </a>
           </div>

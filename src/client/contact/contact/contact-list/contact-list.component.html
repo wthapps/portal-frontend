@@ -8,6 +8,7 @@
         [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
         [showViewDetail]="false"
         [showEdit]="false"
+        [showInvitation]="showInvitation()"
         [number]="contactService.selectedObjects.length"
         [toggleFavourite]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'favourite')"
         [toggleBlacklist]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'blacklist')"
@@ -31,4 +32,5 @@
   </div>
 </div>
 <contact-add-label-modal #modal></contact-add-label-modal>
+<invitation-create-modal #invitationModal (event)="doEvent($event)"></invitation-create-modal>
 <!-- && contactService.selectedObjects.length==1 -->

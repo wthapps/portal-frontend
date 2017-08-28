@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import 'rxjs/add/operator/toPromise';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { PhotoService } from '../../core/shared/services/photo.service';
@@ -34,7 +35,7 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
     switch(event.action) {
       // Handle all of event in child class here
       case 'media:photo:load_sharing_info':
-        this.sharingService.getShared({objects: [this.id]}).subscribe((response: any) => {
+        this.sharingService.getShared({objects: [this.id]}).toPromise().then((response: any) => {
           this.recipients = response.data;
           this.photo.json_shares = response.data;
         });

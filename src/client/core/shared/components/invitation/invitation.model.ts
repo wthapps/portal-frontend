@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../core/shared/models/base-entity.model';
+import { BaseEntity } from '../../models/base-entity.model';
 export class Invitation extends BaseEntity {
 
   recipient_email: string;

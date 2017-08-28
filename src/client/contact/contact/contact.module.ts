@@ -9,10 +9,12 @@ import { ZContactListComponent } from './contact-list/contact-list.component';
 import { ZContactEditPageComponent } from './contact-edit/contact-edit-page.component';
 import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
 import { ZContactEditComponent } from './contact-edit/contact-edit.component';
+import { InvitationModule } from '../../core/shared/components/invitation/invitation.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    InvitationModule,
     ZContactRoutingModule,
 
     ZContactSharedModule.forRoot(),

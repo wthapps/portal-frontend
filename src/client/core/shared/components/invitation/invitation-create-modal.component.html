@@ -71,7 +71,7 @@
         <button type="button" class="btn btn-outline-default btn-min"
                 (click)="doEvent({action: 'cancel'})">Cancel</button>
         <button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right"
-                (click)="doEvent({action: 'done'})">Send Invitations
+                (click)="doEvent({action: 'invitation:send_to_recipients'})">Send Invitations
         </button>
       </div>
     </modal-footer>

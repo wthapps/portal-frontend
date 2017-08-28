@@ -62,12 +62,12 @@
 
     <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" *ngIf="objects" (dragenter)="onDragenter($event)"
          [ngClass]="viewOption" (dragleave)="onDragleave($event)">
-      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects.length">
+      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects.length;">
         <h4 class="photo-box-heading" *ngIf="group.key && ( viewOption != 'grid' || MIX_SCREEN.indexOf(currentPath) > -1 )">
           {{ group.key | titleCase }}
         </h4>
         <div *ngIf="group.value" class="clearfix">
-          <me-item *ngFor="let item of group.value" [type]="item.object_type" [object]="item"
+          <me-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"
                    (events)="onAction($event)"></me-item>
         </div>
         <me-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"

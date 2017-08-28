@@ -1,20 +1,17 @@
 import {
-  Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ElementRef,
-  ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy, ViewEncapsulation, ChangeDetectorRef
+  Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ComponentFactoryResolver, OnDestroy, ViewEncapsulation, ChangeDetectorRef
 } from '@angular/core';
 import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/toPromise';
+import { ConfirmationService } from 'primeng/components/common/api';
 
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/components/common/api';
-import { ZMediaAlbumService } from '../../album/album.service';
-import { PhotoService } from '../../../core/shared/services/photo.service';
-
 import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '../../../core/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '../../../core/shared/components/photo/modal/photo-edit-modal.component';
@@ -23,6 +20,8 @@ import { PhotoDetailPartialComponent } from '../../../core/shared/components/pho
 import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
 import { AlbumEditModalComponent } from '../../../core/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumCreateModalComponent } from '../../../core/shared/components/photo/modal/album-create-modal.component';
+import { ZMediaAlbumService } from '../../album/album.service';
+import { PhotoService } from '../../../core/shared/services/photo.service';
 import { ZMediaStore } from '../store/media.store';
 
 declare var _: any;
@@ -49,22 +48,13 @@ declare var $: any;
   ]
 })
 
-export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MediaListComponent implements AfterViewInit, OnDestroy {
   @Input() selectedObjects: Array<any> = new Array<any>();
-  // @Input() type: string = 'photo';
-  // @Input() objects: any;
-
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
-
-  // @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
-
 
   readonly LIST_TYPE = {photo: 'photo', album: 'album', mix: 'mix'};
   readonly TYPE_MAPPING: any = Constants.mediaListDetailTypeMapping;
   readonly MIX_SCREEN: Array<string> = ['shared-with-me', 'favourites'];
-
-  // modalComponent: any;
-  // modal: any;
 
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
   viewOption: string = 'grid';
@@ -117,7 +107,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(protected resolver: ComponentFactoryResolver,
-              protected elementRef: ElementRef,
               protected router: Router,
               protected route: ActivatedRoute,
               protected confirmationService: ConfirmationService,
@@ -129,11 +118,23 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
               protected cdr: ChangeDetectorRef,
               protected albumService: ZMediaAlbumService) {
 
-  }
+    this.photoService.modifiedPhotos$.takeUntil(this.destroySubject.asObservable()).subscribe((object: any) => {
+      switch(object.action) {
+        case 'update':
+          let updatedPhoto = object.payload.photo;
+          this.objects = this.objects.map((o: any) => { if(o.object_type === 'photo' && o.uuid == updatedPhoto.uuid)
+            return updatedPhoto;
+          else
+            return o;
+          });
 
-
-  ngOnInit(): void {
-
+          break;
+        case 'delete':
+          let deletedPhoto = object.payload.photo;
+          _.remove(this.objects, (o: any) => (o.object_type === 'photo' && o.uuid === deletedPhoto.uuid));
+          break;
+      };
+    });
   }
 
   ngAfterViewInit() {
@@ -179,14 +180,16 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loadingService.start('#list-photo');
     this.mediaObjectService.getObjects(url, moreOptions)
-      .takeUntil(this.destroySubject)
-      .subscribe((response: any)=> {
+      .toPromise()
+      .then((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
         if (response.data.length==0) {
           this.hasObjects = false;
         }
+      },(error: any) => {
+        this.loadingService.stop('#list-photo');
       });
 
   }
@@ -196,8 +199,8 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.nextLink != null) { // if there are more objects
       // this.mediaObjectService.getObjects(this.nextLink).subscribe((response: any)=> {
       this.mediaObjectService.loadMore(this.nextLink)
-        .takeUntil(this.destroySubject)
-        .subscribe((response: any)=> {
+        .toPromise()
+        .then((response: any)=> {
         // this.loadingService.stop('#list-photo');
         this.objects.push(...response.data);
         this.nextLink = response.page_metadata.links.next;
@@ -212,7 +215,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentPage = properties.currentPage;
     this.params = properties.params;
   }
-
 
   onDragenter(e: any) {
     e.preventDefault();
@@ -229,7 +231,6 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       options = {action: 'select', params: {selectedObjects: this.selectedObjects}};
     }
     if (options.action == 'openModal' && options.params.modalName == 'previewAllPhotos') {
-      console.log('medialist - onACtion -previewAllPhotos');
       this.selectAllPhotos();
       if(_.has(options, 'params.selectedObject')) {
         this.mediaStore.setCurrentSelectedObject(_.get(options, 'params.selectedObject'));
@@ -241,7 +242,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (options.action) {
       case 'select':
       case 'deselect':
-      case 'goBack':
+      // case 'goBack':
       case 'openModal':
       case 'previewAllPhotos':
       case 'updateDetailObject':
@@ -424,9 +425,8 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let self = this;
 
-    this.mediaObjectService.favourite(body)
-      .takeUntil(this.destroySubject)
-      .subscribe(
+    this.mediaObjectService.favourite(body).toPromise()
+      .then(
       (response: any) => {
         // update favourite attribute
         if (selectedIndex != -1) {
@@ -507,7 +507,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       this.photoService.updateInfo(selectedObject.id, body)
-        .subscribe((res: any) => {
+        .toPromise().then((res: any) => {
             // stop loading
             this.loadingService.stop();
           },
@@ -523,7 +523,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       this.albumService.updateInfo(selectedObject.id, body)
-        .subscribe((res: any) => {
+        .toPromise().then((res: any) => {
             // stop loading
             this.loadingService.stop();
           },
@@ -548,7 +548,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
         description: selectedObject.description
       });
       this.photoService.updateInfo(selectedObject.id, body)
-        .subscribe(
+        .toPromise().then(
           (res: any) => {
             this.loadingService.stop();
           },
@@ -563,7 +563,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
         description: selectedObject.description,
       });
       this.albumService.updateInfo(selectedObject.id, body)
-        .subscribe(
+        .toPromise().then(
           (res: any) => {
             this.loadingService.stop();
           },
@@ -584,7 +584,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
           let body = JSON.stringify({ids: objIds});
           this.loadingService.start();
 
-          this.photoService.deletePhoto(body).subscribe(
+          this.photoService.deletePhoto(body).toPromise().then(
             (res: any)=> {
               _.map(objIds, (id: any)=> {
                 _.remove(this.objects, ['id', id]);
@@ -606,7 +606,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     let objs = _.map(params.selectedObjects, (o: any) => _.pick(o, ['id', 'object_type'])); // ['1','2'];
 
     this.loadingService.start();
-    this.mediaObjectService.deleteObjects(objs, params.child_destroy).subscribe(
+    this.mediaObjectService.deleteObjects(objs, params.child_destroy).toPromise().then(
       (res: any) => {
         _.map(objs, (obj: any)=> {
           _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
@@ -632,7 +632,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
         accept: () => {
 
           this.loadingService.start();
-          this.mediaObjectService.deleteObjects(photos, params.child_destroy).subscribe(
+          this.mediaObjectService.deleteObjects(photos, params.child_destroy).toPromise().then(
             (res: any) => {
               _.map(photos, (obj: any)=> {
                 _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
@@ -679,7 +679,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
       accept: () => {
         this.loadingService.start();
 
-        this.albumService.removeFromAlbum(params.selectedObject.id, params.selectedObjects).subscribe(
+        this.albumService.removeFromAlbum(params.selectedObject.id, params.selectedObjects).toPromise().then(
           (response: any) => {
             console.log('before', this.objects);
             _.remove(this.objects, (object: any) => {
@@ -709,10 +709,16 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewDetails() {
+    // if (this.page != 'shared-with-me')
+    //   this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}]);
+    // else
+    //   this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}], {queryParams: {shared_with_me: true}});
+
+
     if (this.page != 'shared-with-me')
-      this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}]);
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {preserveQueryParams: true, preserveFragment: true});
     else
-      this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}], {queryParams: {shared_with_me: true}});
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}] }}], {preserveQueryParams: true, preserveFragment: true} );
   }
 
   slideShow() {
@@ -735,7 +741,7 @@ export class MediaListComponent implements OnInit, AfterViewInit, OnDestroy {
     // Add data to album detail if possible
     if (['album_detail', 'albums'].indexOf(this.currentPath) > -1)
       this.albumService.addToAlbum(this.params.id, photos).take(1)
-        .subscribe((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
+        .toPromise().then((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
           (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
 
     this.objects.unshift(...photos);

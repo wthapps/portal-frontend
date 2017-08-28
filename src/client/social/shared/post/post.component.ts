@@ -93,7 +93,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         console.debug('modifiedPhotos - post: ', object);
         let post: SoPost = _.get(object, 'payload.post');
         switch(object.action) {
-          case 'UPDATE':
+          case 'update':
             let updatedPhoto = object.payload.photo;
             let tempItem = _.cloneDeep(this.item);
             // Update post photos
@@ -109,7 +109,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
             this.mapDisplay();
             console.debug('item after update: ', tempItem);
             break;
-          case 'DELETE':
+          case 'delete':
             console.debug('unimplemented DELETE photo in post: ', object);
             break;
         }

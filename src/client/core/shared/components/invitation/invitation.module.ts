@@ -7,6 +7,7 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { PipeModule } from '../../pipe/pipe.module';
 import { InvitationCreatePartialComponent } from './invitation-create-partial.component';
 import { InvitationCreateModalComponent } from './invitation-create-modal.component';
+import { InvitationService } from './invitation.service';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { InvitationCreateModalComponent } from './invitation-create-modal.compon
     InvitationCreatePartialComponent,
     InvitationCreateModalComponent
   ],
-  providers: []
+  providers: [InvitationService]
 })
 
 export class InvitationModule {
