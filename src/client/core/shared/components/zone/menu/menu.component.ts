@@ -11,6 +11,8 @@ import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
+import { ApiBaseService } from "../../../services/apibase.service";
+import { ConfirmationService } from "primeng/components/common/confirmationservice";
 
 declare var $: any;
 declare var _: any;
@@ -50,6 +52,8 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
               private router: Router,
               private navigateService: WTHNavigateService,
               private location: Location,
+              private apiBaseService: ApiBaseService,
+              private confirmationService: ConfirmationService,
               private commonEventService: CommonEventService
               // private labelService: LabelService
   ) {
@@ -108,6 +112,21 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     //   event.event.preventDefault();
     // }
     this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
+  }
+
+  deleteLabel(label :any) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this label ?',
+      header: 'Delete label',
+      accept: () => {
+        this.apiBaseService.delete(`contact/labels/${label.id}`).subscribe((res: any) => {
+          _.remove(this.contactMenu, (label: any) => {
+            return label.id == res.data.id;
+          });
+        });
+      }
+    });
+
   }
 
   ngOnDestroy() {
