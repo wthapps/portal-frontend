@@ -716,9 +716,9 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
 
     if (this.page != 'shared-with-me')
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}]);
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {preserveQueryParams: true, preserveFragment: true});
     else
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}] }}] );
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}] }}], {preserveQueryParams: true, preserveFragment: true} );
   }
 
   slideShow() {

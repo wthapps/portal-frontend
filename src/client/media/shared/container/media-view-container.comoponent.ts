@@ -455,8 +455,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.router.navigate([{outlets: {modal: [
             'photos',
             this.mediaStore.getSelectedObjects()[selectedIdx].id,
-            {ids: ids2, mode: 0, prevUrl: this.router.url}
-          ]}}]
+            {ids: ids2, mode: 0}
+          ]}}], {preserveQueryParams: true, preserveFragment: true}
           );
 
         break;
@@ -466,8 +466,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.router.navigate([{outlets: {modal: [
             'photos',
             this.selectedObjects[0].id,
-            {ids: ids, mode: 0, prevUrl: this.router.url}
-          ]}}]
+            {ids: ids, mode: 0}
+          ]}}], {preserveQueryParams: true, preserveFragment: true}
           );
 
         break;
@@ -476,7 +476,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.router.navigate([
           `${this.selectedObjects[0].object_type}s`,
           this.selectedObjects[0].id,
-          {ids: ids, mode: 0, showDetail: true, prevUrl: this.router.url}
+          {ids: ids, mode: 0, showDetail: true}, {preserveQueryParams: true, preserveFragment: true}
         ]);
 
         // this.loadModalComponent(PhotoDetailModalComponent);

@@ -52,7 +52,7 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   viewPostDetail(uuid: string) {
-    this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}]);
+    this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}], {preserveQueryParams: true, preserveFragment: true});
   }
 
   update(attr: any = {}, event: any) {
