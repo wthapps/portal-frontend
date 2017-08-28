@@ -2,7 +2,7 @@ import {
   Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit,
   ComponentFactoryResolver, OnDestroy, Input, OnChanges, SimpleChanges, ChangeDetectorRef
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Subject } from 'rxjs/Subject';
@@ -382,12 +382,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   // TODO: Go back using previous path
   goBack() {
-    this.route.params.subscribe((params: any) => {
-      if (params['prevUrl'] !== undefined)
-        this.router.navigate([params['prevUrl']]);
-      else
-        this.location.back();
-    });
+    // this.route.params.subscribe((params: any) => {
+    //   if (params['prevUrl'] !== undefined)
+    //     this.router.navigate([params['prevUrl']]);
+    //   else
+    //     this.location.back();
+    // });
+    const tree: UrlTree = this.router.parseUrl(this.router.url);
+    if( tree.root.children.detail )
+      this.router.navigate([{outlets: {detail: null}}]);
+    else
+      this.location.back();
 
   }
 

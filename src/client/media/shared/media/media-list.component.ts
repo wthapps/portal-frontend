@@ -242,7 +242,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     switch (options.action) {
       case 'select':
       case 'deselect':
-      case 'goBack':
+      // case 'goBack':
       case 'openModal':
       case 'previewAllPhotos':
       case 'updateDetailObject':
@@ -709,10 +709,16 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   viewDetails() {
+    // if (this.page != 'shared-with-me')
+    //   this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}]);
+    // else
+    //   this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}], {queryParams: {shared_with_me: true}});
+
+
     if (this.page != 'shared-with-me')
-      this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}]);
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}]);
     else
-      this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}], {queryParams: {shared_with_me: true}});
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}] }}] );
   }
 
   slideShow() {

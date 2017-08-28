@@ -11,10 +11,12 @@ import { ZMediaAlbumDetailComponent } from './album-detail.component';
         path: 'albums',
         component: ZMediaAlbumComponent,
         children: [
-          {path: ':id', component: ZMediaAlbumDetailComponent},
           {path: '', component: ZMediaAlbumListComponent},
           {path: '*', component: ZMediaAlbumListComponent}
         ]
+      },
+      {
+        path: 'albums/:id', component: ZMediaAlbumDetailComponent, outlet: 'detail'
       }
     ])
   ],
