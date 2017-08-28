@@ -35,6 +35,7 @@
   [showNumber]="false"
   [showSocial]="data | isContactInternal"
   [showChat]="data | isContactInternal"
+  [showInvitation]="data.wthapps_user == null"
   [toggleFavourite]="data | contactHasLabel:'favourite'"
   [toggleBlacklist]="data | contactHasLabel:'blacklist'"
   (eventOut)="doActionsToolbar($event)">

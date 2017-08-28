@@ -73,6 +73,18 @@
             </a>
           </div>
 
+          <!--show failed sending -->
+          <div *ngIf="message.sending_status == -1" class="message-item-content-other-files">
+            <a class="media-div link-text" href="javascript:void(0);">
+              <div class="pull-left">
+                <i class="fa fa-file-o"></i>
+              </div>
+              <div class="media-div-body">
+                <div class="media-div-heading">Failed sending file</div>
+              </div>
+            </a>
+          </div>
+
           <!--photo type-->
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
             <figure>

@@ -91,7 +91,7 @@ export class InvitationCreateModalComponent implements OnInit {
   doEvent(options: any) {
     let data = this.form.value.items;
     switch (options.action) {
-      case 'done':
+      case 'invitation:send_to_recipients':
         // remove items whose email is empty
         _.remove(data, (item: any) => {
           if(item.email != '') {

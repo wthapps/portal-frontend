@@ -20,6 +20,10 @@ import { Constants } from '../../../core/shared/config/constants';
 import { _wu } from '../../../core/shared/utils/utils';
 import { _contact } from '../../shared/utils/contact.functions';
 import { LabelService } from '../../label/label.service';
+import { InvitationCreateModalComponent } from '../../../core/shared/components/invitation/invitation-create-modal.component';
+import { Recipient } from '../../../core/shared/components/invitation/recipient.model';
+import { InvitationService } from '../../../core/shared/components/invitation/invitation.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 declare var _: any;
 @Component({
@@ -29,6 +33,8 @@ declare var _: any;
 })
 export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
   @ViewChild('modal') modal: ContactAddLabelModalComponent;
+  @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
+
 
   ITEM_PER_PAGE: number = 20;
   page: number = 1;
@@ -47,14 +53,18 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   private destroySubject: Subject<any> = new Subject<any>();
 
-  constructor(public contactService: ZContactService,
-              private route: ActivatedRoute,
-              private cdr: ChangeDetectorRef,
-              private router: Router,
-              private confirmationService: ConfirmationService,
-              private labelService: LabelService,
-              private loadingService: LoadingService,
-              private commonEventService: CommonEventService) {
+  constructor(
+    public contactService: ZContactService,
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private labelService: LabelService,
+    private loadingService: LoadingService,
+    private commonEventService: CommonEventService,
+    private invitationService: InvitationService,
+    private toaster: ToastsService
+  ) {
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     });
@@ -74,7 +84,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
     this.route.params.forEach((params: Params) => {
       this.contactService.resetSelectedObjects();
-      console.debug('inside contact-list ngOnInit: resetSelectedObjects' );
       if (params['search']) {
         this.contactService.search({search_value: params['search']});
       } else {
@@ -135,7 +144,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   doEvent(event: any) {
-    console.log('doEvent in contact list:::', event);
     switch (event.action) {
       case 'open_add_label_modal':
         let labels: any[] = [];
@@ -157,6 +165,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
         this.contactService.update(selectedObjects).subscribe((res: any) => {
           console.log(res);
         });
+        break;
+      case 'invitation:send_to_recipients':
+          this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
+            this.invitationModal.close();
+            this.toaster.success('You have just sent invitation(s) successfully!');
+          });
         break;
     }
   }
@@ -212,6 +226,33 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     if (event.action == 'edit_contact') {
       this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'edit'}]).then();
     }
+
+    if (event.action == 'invitation:open_modal') {
+      let recipients: Array<Recipient> = new Array<Recipient>();
+      _.forEach(this.contactService.selectedObjects, (contact: any) => {
+        if(contact.wthapps_user == null) {
+          _.forEach(contact.emails, (email: any) => {
+            recipients.push(new Recipient({email: email.value, fullName: contact.name, contactId: contact.id}));
+          })
+        }
+      });
+      this.invitationModal.open({data: recipients});
+    }
+  }
+
+  showInvitation(): boolean {
+    let result = true;
+    _.forEach(this.contactService.selectedObjects, (contact: any) => {
+        if (contact.wthapps_user != null) {
+          result = false;
+          return;
+        }
+        if (contact.emails.length == 0 || contact.emails[0].value == '') {
+          result = false;
+          return;
+        }
+    });
+    return result;
   }
 
   addTags(event: any) {

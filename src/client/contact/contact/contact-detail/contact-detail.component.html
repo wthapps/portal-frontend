@@ -7,6 +7,7 @@
         [showTag]="false"
         [showSocial]="data | isContactInternal"
         [showChat]="data | isContactInternal"
+        [showInvitation]="data.wthapps_user == null"
         [toggleFavourite]="_contact.isContactsHasLabelName([data], 'favourite')"
         [toggleBlacklist]="_contact.isContactsHasLabelName([data], 'blacklist')"
         (eventOut)="doActionsToolbar($event)"

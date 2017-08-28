@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { InvitationService } from './invitation.service';
+import { InvitationService } from '../../../core/shared/components/invitation/invitation.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
@@ -39,7 +39,7 @@ export class MyInvitationsComponent implements OnInit {
   doEvent(event: any) {
     this.loadingService.start();
     switch (event.action) {
-      case 'done':
+      case 'invitation:send_to_recipients':
 
         this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
             this.loadingService.stop();
