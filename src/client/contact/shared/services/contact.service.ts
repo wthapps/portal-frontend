@@ -14,6 +14,7 @@ import { ContactImportContactDataService } from '../modal/import-contact/import-
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
 import { LabelService } from '../../label/label.service';
+import { Router } from "@angular/router";
 
 declare var _: any;
 
@@ -49,6 +50,7 @@ export class ZContactService extends BaseEntityService<any> {
               public labelService: LabelService,
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
+              public router: Router,
               private confirmationService: ConfirmationService) {
     super(apiBaseService);
     this.url = 'contact/contacts';
@@ -125,6 +127,7 @@ export class ZContactService extends BaseEntityService<any> {
           this.deleteSelectedContacts(contacts).then(() => {
             this.toastsService.success(`Delete ${contact_length} contacts successfully`);
             resolve();
+            this.router.navigate(['contacts']);
           });
         }
       });
