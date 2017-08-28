@@ -114,45 +114,6 @@ body {
   font-size: 18px;
 }
 
-.box-panel {
-  .box-panel-title {
-    font-weight: bold;
-    font-size: 24px;
-    border-bottom: 1px solid #4A4A4A;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    margin-top: 0;
-    line-height: 30px;
-  }
-
-  .box-panel-subtitle {
-    margin-bottom: 20px;
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 24px;
-  }
-
-  .box-panel-top {
-    @include clearfix;
-    padding-bottom: 10px;
-    border-bottom: 1px solid $light-slate;
-    margin: $grid-gutter-width/2 0;
-    h3 {
-      line-height: 30px;
-      font-weight: bold;
-      margin: 0;
-      display: inline-block;
-    }
-    > .view-more {
-      line-height: 30px;
-      float: right;
-    }
-  }
-
-  .list-group-item-heading {
-    @extend .box-panel-subtitle;
-  }
-}
 
 // Style for plan
 .p-plan-info {
