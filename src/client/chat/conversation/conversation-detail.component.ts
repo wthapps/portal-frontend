@@ -1,14 +1,18 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
+
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/toPromise';
+
 import { ChatService } from '../shared/services/chat.service';
 import { CommonEvent } from '../../core/shared/services/common-event/common-event';
 import { CommonEventAction } from '../../core/shared/services/common-event/common-event-action';
-import { Subscription } from 'rxjs/Subscription';
 import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
 import { CHAT_ACTIONS, FORM_MODE } from '../../core/shared/constant/chat-constant';
 import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
 import { ConversationService } from './conversation.service';
-import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
+import { PhotoService } from '../../core/shared/services/photo.service';
 
 declare var _: any;
 declare var $: any;
@@ -31,6 +35,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
               private commonEventService: CommonEventService,
               private router: Router,
               private route: ActivatedRoute,
+              private photoService: PhotoService,
               private conversationService: ConversationService) {
   }
 
@@ -77,7 +82,8 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
         this.conversationService.deleteMessage(event.payload.group_id, event.payload.id)
-          .subscribe(
+          .toPromise()
+          .then(
             (response: any) => {
               console.log('delete ok!!!!');
             });

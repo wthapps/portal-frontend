@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
+import 'rxjs/add/operator/toPromise';
+
 import { ZMediaFavoriteService } from './favourites.service';
 
 // import { LoadingService, ConfirmationService } from '../../../shared/index';
@@ -35,7 +37,7 @@ export class ZMediaFavoriteDetailComponent implements OnInit {
     });
 
 
-    this.favoriteService.list().subscribe((res: any)=> {
+    this.favoriteService.list().toPromise().then((res: any)=> {
       this.data = res.data;
       // this.nextLink = res.page_metadata.links.next;
     });
@@ -43,7 +45,7 @@ export class ZMediaFavoriteDetailComponent implements OnInit {
 
   onLoadMore(event: any) {
     event.preventDefault();
-    this.favoriteService.loadMore(this.nextLink).subscribe((res: any)=> {
+    this.favoriteService.loadMore(this.nextLink).toPromise().then((res: any)=> {
       _.map(res.data, (v: any)=> {
         this.data.push(v);
       });

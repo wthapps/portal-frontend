@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import 'rxjs/add/operator/toPromise';
+
 import { ChatService } from '../shared/services/chat.service';
 import { PhotoService } from '../../core/shared/services/photo.service';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { BasePhotoDetailComponent } from '../../core/shared/components/photo/detail/base-photo-detail.component';
+import { CommonEvent } from '../../core/shared/services/common-event/common-event';
+import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
+import { ConversationService } from '../conversation/conversation.service';
 
+declare let _: any;
 
 @Component({
   moduleId: module.id,
@@ -22,7 +28,9 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
     protected router: Router,
     protected confirmationService: ConfirmationService,
     protected loadingService: LoadingService,
-    private chatService: ChatService,
+    protected chatService: ChatService,
+    protected pubSubEventService: CommonEventService,
+    protected conversationService: ConversationService,
     protected photoService: PhotoService
   ) {
     super(route, router, confirmationService, loadingService, photoService);
@@ -55,10 +63,29 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
     }
   }
 
+  doAction(event: CommonEvent) {
+    var editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
+
+    this.pubSubEventService.broadcast(editingEvent);
+  }
+
   confirmUpdate(payload: any): Promise<any> {
     return super.confirmUpdate(payload)
       .then((res: any) => {
       this.doEvent({action: 'update', data: res});
     });
+  }
+
+  confirmDelete(payload: any): Promise<any> {
+    return super.confirmDelete(payload)
+      .then((res: any) => {
+        let conversationItem = this.chatService.getContactSelect();
+        console.debug('conversationItem: ', conversationItem);
+        return this.conversationService.deleteMessage(conversationItem.value.group_json.id, this.messageId)
+          .toPromise()
+          .then((response: any) => {
+            console.log('delete ok!!!! YAY');
+          });
+      });
   }
 }

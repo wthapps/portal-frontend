@@ -19,7 +19,7 @@
 
         <!--mesasge menu-->
         <div class="message-item-menu dropdown"
-             *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'FileMedium')">
+             *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'FileMedium') && message.message_type !== 'message_deleted'">
           <i class="fa fa-sort-down" data-toggle="dropdown"
              pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
@@ -34,7 +34,7 @@
 
           <!--photos menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Media::Photo'">
-            <li *ngIf="message.file_json">
+            <li *ngIf="message.file_json && message.message_type !== 'message_deleted'">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
               </a>
@@ -43,7 +43,7 @@
 
           <!--other menu menu menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
-            <li *ngIf="message.file_json">
+            <li *ngIf="message.file_json && message.message_type !== 'message_deleted'">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
               </a>

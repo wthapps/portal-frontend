@@ -106,7 +106,6 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(tree);
         break;
       case 'confirmUpdate':
-        console.debug('base-photo-detail: confirmUpdate', payload);
         this.confirmUpdate(payload);
 
         break;
@@ -124,30 +123,9 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           }
         );
         break;
-      case 'delete':
-
-        // Ask for user confirmation before deleting selected PHOTOS
-        this.confirmationService.confirm({
-          message: `Are you sure to delete photo ${this.photo.name}`,
-          accept: () => {
-            this.loadingService.start();
-            let body = JSON.stringify({ids: [this.photo.id]});
-            this.loadingService.start();
-            this.photoService.deletePhoto(body).subscribe((res: any)=> {
-
-              // considering remove item in ids array and back to preUrl
-              // this.router.navigateByUrl(this.prevUrl);
-              this.goBack();
-              this.photoService.setModifiedPhotos({action: 'DELETE', payload: {post_uuid: this.post_uuid, photo: this.photo}});
-
-              this.loadingService.stop();
-            });
-          },
-          reject: () => {
-            // Ask for user confirmation before deleting selected ALBUMS
-          }
-        });
-
+      case 'confirmDelete':
+        console.debug('base-photo-detail: confirmDelete', payload);
+        this.confirmDelete(payload);
         break;
     }
   }
@@ -171,9 +149,35 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           }).toPromise()
             .then((response: any) => {
               this.photo = response.data;
-              this.photoService.setModifiedPhotos({action: 'UPDATE', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+              this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
               resolve(this.photo);
             });
+        }
+      });
+    });
+  }
+
+  confirmDelete(payload: any): Promise<any> {
+    // Ask for user confirmation before deleting selected PHOTOS
+    return new Promise<any>((resolve: any) => {
+      this.confirmationService.confirm({
+        message: `Are you sure to delete photo ${this.photo.name}`,
+        accept: () => {
+          this.loadingService.start();
+          let body = JSON.stringify({ids: [this.photo.id]});
+          this.photoService.deletePhoto(body).toPromise().then((res: any)=> {
+
+            // considering remove item in ids array and back to preUrl
+            // this.router.navigateByUrl(this.prevUrl);
+            this.goBack();
+            this.photoService.setModifiedPhotos({action: 'delete', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+
+            this.loadingService.stop();
+            resolve(this.photo);
+          });
+        },
+        reject: () => {
+          // Ask for user confirmation before deleting selected ALBUMS
         }
       });
     });

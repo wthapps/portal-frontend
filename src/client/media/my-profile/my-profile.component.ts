@@ -1,5 +1,4 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { UserService } from '../../core/shared/services/user.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
@@ -15,13 +14,12 @@ export class ZMediaMyProfileComponent implements OnInit {
 
   data: any;
 
-  constructor(private route: ActivatedRoute,
-              private userService: UserService,
+  constructor(private userService: UserService,
               private apiBaseService: ApiBaseService) {
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).subscribe((res: any) => {
+    this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).toPromise().then((res: any) => {
       this.data = res.data;
     });
   }

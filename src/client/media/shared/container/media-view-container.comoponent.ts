@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/toPromise';
 
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
@@ -137,7 +138,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       this.list.objects.unshift(res);
     }
     if (this.page == 'album_detail') {
-      this.albumService.addToAlbum(this.params['id'], [res]).subscribe((res: any) => {
+      this.albumService.addToAlbum(this.params['id'], [res]).toPromise().then((res: any) => {
         this.list.objects = res.data;
       });
     }
@@ -329,7 +330,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   downloadAlbum(album: any) {
     let self = this;
-    this.albumService.getPhotosByAlbum(album.id).subscribe(
+    this.albumService.getPhotosByAlbum(album.id).toPromise().then(
       (response: any) => {
         self.download(response.data);
       }, (error: any) => {
@@ -339,7 +340,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   download(files: any) {
     _.each(files, (file: any) => {
-      this.mediaObjectService.download({id: file.id}).subscribe(
+      this.mediaObjectService.download({id: file.id}).toPromise().then(
         (response: any) => {
           var blob = new Blob([response.blob()], {type: file.content_type});
           saveAs(blob, file.name);

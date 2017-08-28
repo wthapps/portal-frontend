@@ -378,8 +378,8 @@ export let Constants = {
 };
 
 export let PhotoAction = {
-  update: 'UPDATE',
-  delete: 'DELETE'
+  update: 'update',
+  delete: 'delete'
 }
 
 export let MediaType = {
