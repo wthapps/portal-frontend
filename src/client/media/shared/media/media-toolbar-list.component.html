@@ -123,13 +123,13 @@
         [class.disabled]="noSelectedObjects">
       <li>
         <a *ngIf="page != 'shared-with-me' " class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'openModal', params: {modalName: 'previewModal'}})"
+           (click)="onAction({action: 'previewModal', params: {}})"
            pTooltip="{{ tooltip.preview}}" tooltipPosition="bottom">
           <i class="fa fa-eye"></i>
         </a>
         <!-- Not allow delete objects in preview modal in shared-with-me screen -->
         <a *ngIf="page == 'shared-with-me' " class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'openModal', params: {modalName: 'previewModal', canDelete: false}})"
+           (click)="onAction({action: 'previewModal', params: {canDelete: false}})"
            pTooltip="{{ tooltip.preview}}" tooltipPosition="bottom">
           <i class="fa fa-eye"></i>
         </a>

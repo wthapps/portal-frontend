@@ -10,11 +10,11 @@
 
   <div class="page-body-content-in">
 
-    <me-list-header *ngIf="objects.length > 0" [data]="objects" [viewOption]="viewOption"
+    <me-list-header *ngIf="objects?.length > 0" [data]="objects" [viewOption]="viewOption"
                     (outEvent)="actionSortbar($event)"></me-list-header>
 
 
-    <div *ngIf="!hasObjects && objects.length == 0" class="zone-no-photo text-center">
+    <div *ngIf="!hasObjects && objects?.length == 0" class="zone-no-photo text-center">
       <div *ngIf="page == 'search' ">
         <h3>Data not matched</h3>
         <h4>Please change your search criteria!</h4>
@@ -62,7 +62,7 @@
 
     <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" *ngIf="objects" (dragenter)="onDragenter($event)"
          [ngClass]="viewOption" (dragleave)="onDragleave($event)">
-      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects.length;">
+      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
         <h4 class="photo-box-heading" *ngIf="group.key && ( viewOption != 'grid' || MIX_SCREEN.indexOf(currentPath) > -1 )">
           {{ group.key | titleCase }}
         </h4>
