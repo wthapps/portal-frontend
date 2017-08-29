@@ -487,7 +487,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
         break;
       case 'previewDetailsModal':
-        ids = _.map(this.selectedObjects, 'id');
+        let ids: any[] = _.map(this.selectedObjects, 'id');
         this.router.navigate([
           `${this.selectedObjects[0].object_type}s`,
           this.selectedObjects[0].id,
