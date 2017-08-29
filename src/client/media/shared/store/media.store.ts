@@ -27,7 +27,7 @@ export class ZMediaStore {
   }
 
   public getCurrentSelectedIndex() {
-    return _.findIndex(this.selectedObjects, (o: any) => o.uuid == this.currentSelectedObject.uuid);
+    return _.findIndex(this.selectedObjects, (o: any) => _.get(o, 'uuid') == _.get(this.currentSelectedObject, 'uuid'));
   }
 
   public clearSelected() {

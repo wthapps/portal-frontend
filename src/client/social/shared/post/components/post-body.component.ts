@@ -76,7 +76,7 @@ export class PostBodyComponent implements OnChanges {
       case this.actions.onShowPhotoDetail:
         let post = _.get(data, 'parentItem', this.originalPost);
         let photoIds = _.map(post.photos, 'id');
-        this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, post_uuid: post.uuid}]}}], { preserveQueryParams: true, preserveFragment: true });
+        this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, post_uuid: post.uuid}]}}], { queryParamsHandling: 'preserve', preserveFragment: true });
         break;
     }
   }

@@ -29,7 +29,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
         this.params = params;
         this.showDetail = params['showDetail'] || false;
         return this.albumService.getAlbum(params['id']); })
-        .toPromise().then((res: any)=> {
+        .subscribe((res: any)=> {
           this.album = res.data;
       });
   }

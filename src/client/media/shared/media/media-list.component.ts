@@ -230,7 +230,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       this.selectObject(options.params.selectedObject);
       options = {action: 'select', params: {selectedObjects: this.selectedObjects}};
     }
-    if (options.action == 'openModal' && options.params.modalName == 'previewAllPhotos') {
+    if (options.action == 'previewAllPhotos') {
       this.selectAllPhotos();
       if(_.has(options, 'params.selectedObject')) {
         this.mediaStore.setCurrentSelectedObject(_.get(options, 'params.selectedObject'));
@@ -716,9 +716,9 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
 
     if (this.page != 'shared-with-me')
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {preserveQueryParams: true, preserveFragment: true});
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
     else
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}] }}], {preserveQueryParams: true, preserveFragment: true} );
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}] }}], {queryParamsHandling: 'preserve', preserveFragment: true} );
   }
 
   slideShow() {

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MediaViewContainerComponent } from '../shared/container/media-view-container.comoponent';
+import { MediaViewContainerComponent } from '../shared/container/media-view-container.component';
 
 declare var $: any;
 declare var _: any;

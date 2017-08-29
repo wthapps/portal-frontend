@@ -18,8 +18,6 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('photoList') photoList: SoPhotoListComponent;
   @Input() selectedItems: Array<any>;
-  // @Output() onNext: EventEmitter<any> = new EventEmitter<any>();
-  // @Output() onDismiss: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpload: EventEmitter<any> = new EventEmitter<any>();
   action: string = 'NEXT';
 

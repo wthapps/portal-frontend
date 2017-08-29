@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { MediaUploaderComponent } from './uploader/media-uploader.component';
-import { MediaViewContainerComponent } from './container/media-view-container.comoponent';
+import { MediaViewContainerComponent } from './container/media-view-container.component';
 import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
 import { MediaListComponent } from './media/media-list.component';
 import { MediaItemComponent } from './media/media-item.component';

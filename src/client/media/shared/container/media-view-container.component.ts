@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/withLatestFrom';
 
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
@@ -126,10 +127,18 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnInit() {
     // this.currentPath = `${this.objectType}s`;
-    this.currentPath = this.router.url.toString().split('/')[1].split('?')[0]; // currentPath: photos, albums, shared-with-me
-    this.currentPage = `${this.objectType}_${this.pageType}`;
-    // console.log('this. INit:', this.object, this.params);
+    // this.currentPath = this.router.url.toString().split('/')[1].split('?')[0]; // currentPath: photos, albums, shared-with-me
+    this.route.url
+      .withLatestFrom(this.route.parent.url)
+      .map((pair: any) => {
+        return _.find(pair, (url: any) => _.get(url, '0') != undefined)})
+      .map((url: any) => url[0].path)
+      .takeUntil(this.destroySubject)
+      .subscribe((url: any) => this.currentPath = url); // currentPath: photos, albums, shared-with-me
 
+    this.currentPage = `${this.objectType}_${this.pageType}`;
+
+    console.debug('media-view-container this.currentPath: ', this.currentPath);
     console.log(saveAs);
   }
 
@@ -186,17 +195,29 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
     })
+
     this.cdr.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['object'] != undefined && changes['object'].currentValue != undefined) {
-      if (this.toolbar != undefined) {
-        this.toolbar.updateProperties({object: this.object});
-      }
-      if (this.detailInfo != undefined) {
-        this.detailInfo.updateProperties({object: this.object});
-      }
+      // if (this.toolbar != undefined) {
+      //   this.toolbar.updateProperties({object: this.object});
+      // }
+      // if (this.detailInfo != undefined) {
+      //   this.detailInfo.updateProperties({object: this.object});
+      // }
+
+      this.updateObjectChanges();
+    }
+  }
+
+  updateObjectChanges() {
+    if (this.toolbar != undefined) {
+      this.toolbar.updateProperties({object: this.object});
+    }
+    if (this.detailInfo != undefined) {
+      this.detailInfo.updateProperties({object: this.object});
     }
   }
 
@@ -234,6 +255,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   // considering moving doAction into list-media
   doAction(event: any) {
+    console.debug('doAction: ', event);
     switch (event.action) {
       case 'select':
       case 'deselect':
@@ -258,6 +280,30 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
       case 'openUploadModal':
         this.mediaUploaderDataService.onShowUp();
+        break;
+
+      case 'previewAllPhotos':
+        let ids2 = _.map(this.mediaStore.getSelectedObjects(), 'id');
+        let selectedIdx = this.mediaStore.getCurrentSelectedIndex();
+
+        this.router.navigate([{outlets: {modal: [
+            'photos',
+            this.mediaStore.getSelectedObjects()[selectedIdx].id,
+            {ids: ids2, mode: 0}
+          ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        );
+
+        break;
+
+      case 'previewModal':
+        let ids = _.map(this.selectedObjects, 'id');
+        this.router.navigate([{outlets: {modal: [
+            'photos',
+            this.selectedObjects[0].id,
+            {ids: ids, mode: 0}
+          ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        );
+
         break;
       case 'updateMediaList':
         this.updateMediaList(event.params.data);
@@ -379,15 +425,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   }
 
-
-  // TODO: Go back using previous path
   goBack() {
-    // this.route.params.subscribe((params: any) => {
-    //   if (params['prevUrl'] !== undefined)
-    //     this.router.navigate([params['prevUrl']]);
-    //   else
-    //     this.location.back();
-    // });
     const tree: UrlTree = this.router.parseUrl(this.router.url);
     if( tree.root.children.detail )
       this.router.navigate([{outlets: {detail: null}}]);
@@ -448,35 +486,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         // Take selected photos from photo list screen OR uploaded photos from upload photo component
         options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
         break;
-      case 'previewAllPhotos':
-        let ids2 = _.map(this.mediaStore.getSelectedObjects(), 'id');
-        let selectedIdx = this.mediaStore.getCurrentSelectedIndex();
-
-        this.router.navigate([{outlets: {modal: [
-            'photos',
-            this.mediaStore.getSelectedObjects()[selectedIdx].id,
-            {ids: ids2, mode: 0}
-          ]}}], {preserveQueryParams: true, preserveFragment: true}
-          );
-
-        break;
-
-      case 'previewModal':
-        let ids = _.map(this.selectedObjects, 'id');
-        this.router.navigate([{outlets: {modal: [
-            'photos',
-            this.selectedObjects[0].id,
-            {ids: ids, mode: 0}
-          ]}}], {preserveQueryParams: true, preserveFragment: true}
-          );
-
-        break;
       case 'previewDetailsModal':
-        ids = _.map(this.selectedObjects, 'id');
+        let ids: any[] = _.map(this.selectedObjects, 'id');
         this.router.navigate([
           `${this.selectedObjects[0].object_type}s`,
           this.selectedObjects[0].id,
-          {ids: ids, mode: 0, showDetail: true}, {preserveQueryParams: true, preserveFragment: true}
+          {ids: ids, mode: 0, showDetail: true}, {queryParamsHandling: 'preserve', preserveFragment: true}
         ]);
 
         // this.loadModalComponent(PhotoDetailModalComponent);
@@ -496,6 +511,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         options = {};
         break;
     }
+    console.debug('OPENING modal', this.modal, options);
     if (this.modal) {
       this.modal.open(options);
     }

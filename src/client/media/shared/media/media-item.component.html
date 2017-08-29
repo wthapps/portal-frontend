@@ -12,7 +12,7 @@
     <div class="photo-box-input">
       <i class="fa fa-check"></i>
     </div>
-    <figure class="img-center-dv can-click" (dblclick)="onAction({action:'openModal', params: {modalName: 'previewAllPhotos', selectedObject: object}})">
+    <figure class="img-center-dv can-click" (dblclick)="onAction({action:'previewAllPhotos', params: {selectedObject: object}})">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center" [src]="object.thumbnail_url" alt="">
       </div>
