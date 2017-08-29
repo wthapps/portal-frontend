@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostBinding } from '@angular/core';
 
 import {
   FormGroup,
@@ -24,12 +24,11 @@ import { fadeInAnimation } from '../../core/shared/animations/route.animation';
   selector: 'sd-about',
   templateUrl: 'about.component.html',
   styleUrls: ['about.component.css'],
-  host: {
-    "[@fadeInAnimation]": 'true'
-  },
   animations: [fadeInAnimation]
 })
 export class AboutComponent implements OnInit {
+  @HostBinding('@fadeInAnimation') fadeInAnimation = true;
+
   siteKey: string = '6LeZ0xIUAAAAABLfFeQpUGfK84j5aWgOnWbfJKM4';
   recaptchaState: boolean = false;
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -17,12 +17,11 @@ import { CustomValidator } from '../../core/shared/validator/custom.validator';
   selector: 'sd-home',
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.css'],
-  host: {
-    "[@fadeInAnimation]": 'true'
-  },
   animations: [fadeInAnimation]
 })
 export class HomeComponent {
+  @HostBinding('@fadeInAnimation') fadeInAnimation = true;
+
   errorMessage: any;
 
   flagsRelease: boolean = Constants.flagsRelease;

@@ -310,7 +310,7 @@ $bubbleUp-ul: 62px;
     right: 0;
     width: 144px;
     top: 0;
-    @include animation('bubbleUp-ul 25s infinite ease-in-out');
+    @include animation('bubbleUp-ul 15s infinite ease-in-out');
 
     > li {
       margin-bottom: 5px;
@@ -321,16 +321,16 @@ $bubbleUp-ul: 62px;
         right: -8px;
       }
       &:nth-child(3) {
-        @include animation('bubbleUp-li-3 25s infinite ease-in-out');
+        @include animation('bubbleUp-li-3 15s infinite ease-in-out');
       }
       &:nth-child(4) {
-        @include animation('bubbleUp-li-4 25s infinite ease-in-out');
+        @include animation('bubbleUp-li-4 15s infinite ease-in-out');
       }
       &:nth-child(5) {
-        @include animation('bubbleUp-li-5 25s infinite ease-in-out');
+        @include animation('bubbleUp-li-5 15s infinite ease-in-out');
       }
       &:nth-child(6) {
-        @include animation('bubbleUp-li-6 25s infinite ease-in-out');
+        @include animation('bubbleUp-li-6 15s infinite ease-in-out');
       }
     }
   }

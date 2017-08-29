@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { fadeInAnimation } from '../../core/shared/animations/route.animation';
 
 @Component({
@@ -6,11 +6,9 @@ import { fadeInAnimation } from '../../core/shared/animations/route.animation';
   selector: 'sd-pricing',
   templateUrl: 'pricing.component.html',
   styleUrls: ['pricing.component.css'],
-  host: {
-    "[@fadeInAnimation]": 'true'
-  },
   animations: [fadeInAnimation]
 })
 
 export class PricingComponent {
+  @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 }

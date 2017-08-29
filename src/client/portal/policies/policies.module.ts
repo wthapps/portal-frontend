@@ -4,7 +4,6 @@ import { PoliciesRoutingModule } from './policies-routing.module';
 import { PoliciesComponent } from './policies.component';
 import { TermsComponent } from './terms.component';
 import { PrivacyComponent } from './privacy.component';
-import { CookiesComponent } from './cookies.component';
 
 import { PortalSharedModule } from '../shared/shared.module';
 
@@ -17,7 +16,6 @@ import { PortalSharedModule } from '../shared/shared.module';
   declarations: [
     PoliciesComponent,
     TermsComponent,
-    CookiesComponent,
     PrivacyComponent
   ],
   exports: [
