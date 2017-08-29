@@ -98,3 +98,29 @@
     }
   }
 }
+
+.form-box-sm {
+  max-width: 670px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  background-color: #ffffff;
+
+  @media (min-width: $screen-sm-min) {
+    padding: 50px;
+    .h1 {
+      font-size: 48px;
+    }
+    .h4 {
+      font-size: 21px;
+      margin-bottom: 20px;
+    }
+  }
+  .h1 {
+    margin-top: 0;
+    text-transform: uppercase;
+  }
+  .h4 {
+    font-weight: normal;
+  }
+}

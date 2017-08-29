@@ -122,16 +122,4 @@ export class RegisterComponent {
           });
     }
   }
-
-  hideShowPassword(event: any): void {
-    var target = event.target || event.srcElement || event.currentTarget;
-    let inputPass = $(target).prev();
-    if (inputPass.attr('type') == 'password') {
-      inputPass.attr('type', 'text');
-      $(target).addClass('active');
-    } else {
-      inputPass.attr('type', 'password');
-      $(target).removeClass('active');
-    }
-  }
 }
