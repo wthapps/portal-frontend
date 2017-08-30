@@ -508,6 +508,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       this.photoService.updateInfo(selectedObject.id, body)
         .toPromise().then((res: any) => {
             // stop loading
+            this.refreshPrimaryList();
             this.loadingService.stop();
           },
           (error: any) => {
@@ -524,6 +525,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       this.albumService.updateInfo(selectedObject.id, body)
         .toPromise().then((res: any) => {
             // stop loading
+            this.refreshPrimaryList();
             this.loadingService.stop();
           },
           (error: any) => {
@@ -549,6 +551,9 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       this.photoService.updateInfo(selectedObject.id, body)
         .toPromise().then(
           (res: any) => {
+            // Reload primary route item
+            this.refreshPrimaryList();
+
             this.loadingService.stop();
           },
           (error: any) => {
@@ -564,6 +569,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       this.albumService.updateInfo(selectedObject.id, body)
         .toPromise().then(
           (res: any) => {
+            this.refreshPrimaryList();
             this.loadingService.stop();
           },
           (error: any) => {
@@ -740,8 +746,12 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     this.objects.unshift(...photos);
   }
 
+  private refreshPrimaryList(): void {
+    this.router.navigate([], { queryParams: {r: new Date().getTime()}});
+  }
+
   private clearOutletsAndRefreshList(): void {
-    this.router.navigate(['./', {outlets: {detail: null, modal: null}}], { queryParams: {r: 1}});
+    this.router.navigate(['./', {outlets: {detail: null, modal: null}}], { queryParams: {r: new Date().getTime()}});
   }
 
   private selectAllPhotos() {
