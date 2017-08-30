@@ -1,5 +1,5 @@
 <div class="media" *ngIf="!notification?.isHidden">
-  <div class="media-left">
+  <div class="media-left can-click" (click)="viewProfile(notification?.actor)">
     <span class="avatar-xsm">
       <img [src]="notification?.actor.profile_image" alt="{{ notification?.actor?.name }}">
     </span>

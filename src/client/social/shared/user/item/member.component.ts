@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -22,6 +23,7 @@ export class ZSocialShareProfileMemberComponent {
   tooltip: any = Constants.tooltip;
 
   constructor(private socialService: SocialService,
+              private router: Router,
               private favoriteService: SocialFavoriteService) {
   }
 
@@ -47,6 +49,10 @@ export class ZSocialShareProfileMemberComponent {
         this.favourite = res.data;
       }
     );
+  }
+
+  viewProfile(item: any) {
+    this.router.navigate(['/profile', item.uuid]);
   }
 
   // TODO:

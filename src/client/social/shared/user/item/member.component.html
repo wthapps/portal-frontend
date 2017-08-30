@@ -1,5 +1,5 @@
 <div class="media media-no-hidden" *ngIf="data">
-  <div class="media-left">
+  <div class="media-left can-click" (click)="viewProfile(data)">
         <span class="avatar-sm">
           <img [src]="data.profile_image" alt="{{ data.name }}">
         </span>
