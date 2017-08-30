@@ -2,7 +2,7 @@ import {
   Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ComponentFactoryResolver, OnDestroy, ViewEncapsulation, ChangeDetectorRef
 } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -138,7 +138,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // this.getObjects();
     this.route.queryParams
       .filter(() => this.currentPath != undefined)
       .subscribe(
@@ -347,6 +346,9 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       //  Delete album itself in album detail screen
       case 'deleteAlbumAndBack':
         this.deleteAlbumAndBack(event.params);
+        break;
+      case 'refreshList':
+        this.refreshList();
         break;
       case 'removeFromAlbum':
         this.removeFromAlbum(event.params);
@@ -602,18 +604,18 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   // Allow delete photos in album (options)
   // Params format:
   // { objects: [{id: <value>, object_type: <value>}], child_destroy: <true/false> }
-  deleteMedia(params: any) {
+  deleteMedia(params: any): Promise<any> {
     let objs = _.map(params.selectedObjects, (o: any) => _.pick(o, ['id', 'object_type'])); // ['1','2'];
 
     this.loadingService.start();
-    this.mediaObjectService.deleteObjects(objs, params.child_destroy).toPromise().then(
+    return this.mediaObjectService.deleteObjects(objs, params.child_destroy).toPromise().then(
       (res: any) => {
         _.map(objs, (obj: any)=> {
           _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
         });
         this.loadingService.stop();
-        if (params.callback)
-          params.callback(); // Return back to previous screen OR go to next / previous photos
+        // if (params.callback)
+        //   params.callback(); // Return back to previous screen OR go to next / previous photos
       },
       (error: any) => this.loadingService.stop());
 
@@ -665,9 +667,9 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   // Delete album in album detail and go back to album list / favourite list
-  deleteAlbumAndBack(params: any) {
-    let newParams = Object.assign(params, {callback: this.location.back()});
-    return this.deleteMedia(newParams);
+  deleteAlbumAndBack(params: any): Promise<any> {
+    return this.deleteMedia(params)
+      .then(() => this.clearOutletsAndRefreshList());
   }
 
   removeFromAlbum(params: any) {
@@ -709,12 +711,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   viewDetails() {
-    // if (this.page != 'shared-with-me')
-    //   this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}]);
-    // else
-    //   this.router.navigate(['/albums', this.selectedObjects[0].id, {'prevUrl': this.router.url}], {queryParams: {shared_with_me: true}});
-
-
     if (this.page != 'shared-with-me')
       this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
     else
@@ -745,6 +741,10 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
           (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
 
     this.objects.unshift(...photos);
+  }
+
+  private clearOutletsAndRefreshList(): void {
+    this.router.navigate(['./', {outlets: {detail: null, modal: null}}], { queryParams: {r: 1}});
   }
 
   private selectAllPhotos() {

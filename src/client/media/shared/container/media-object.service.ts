@@ -14,17 +14,6 @@ export class MediaObjectService {
   }
 
   getObjects(path: string, queryString?: any): any {
-    // switch (currentPath) {
-    //   case 'photos':
-    //   case 'albums':
-    //     this.path = `${MEDIA_PATH}/${currentPath}`;
-    //     break;
-    //   case 'share-with-me':
-    //   case 'favourites':
-    //     this.path = `/${currentPath}`;
-    //     break;
-    // }
-
     console.log('this path', path, queryString);
     this.path = `${MEDIA_PATH}/${path}`;
     return this.api.get(this.path, queryString).take(1); // This subscription should take 1 input ONLY
