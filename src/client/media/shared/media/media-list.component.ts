@@ -347,9 +347,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       case 'deleteAlbumAndBack':
         this.deleteAlbumAndBack(event.params);
         break;
-      case 'refreshList':
-        this.refreshList();
-        break;
       case 'removeFromAlbum':
         this.removeFromAlbum(event.params);
         break;
