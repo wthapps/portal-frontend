@@ -80,6 +80,11 @@ export class HomeComponent {
     this.password = this.form.controls['password'];
   }
 
+  gotoHashtag(link: string, prodID: string) {
+    this.router.navigate([`${link}`], {fragment: prodID});
+    return false;
+  }
+
   onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
