@@ -1,4 +1,5 @@
 import { Component, Input, HostBinding, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
@@ -27,6 +28,7 @@ export class PartialsNotificationsComponent {
   tooltip: any = Constants.tooltip;
 
   constructor(public notificationService: NotificationService,
+              private router: Router,
               private apiBaseService: ApiBaseService) {
   }
 
@@ -36,6 +38,10 @@ export class PartialsNotificationsComponent {
 
   hideNotification(notification: any) {
     this.notificationService.hideNotification(notification);
+  }
+
+  viewProfile(user: any) {
+    this.router.navigate(['/profile', user.uuid]);
   }
 
   toggleNotification(notification: any) {

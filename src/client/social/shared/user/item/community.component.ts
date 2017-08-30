@@ -1,9 +1,9 @@
 import {
   Component, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/toPromise';
-import { ConfirmationService } from 'primeng/components/common/api';
 
 import { Constants } from '../../../../core/shared/config/constants';
 import { ServiceManager } from '../../../../core/shared/services/service-manager';
@@ -20,6 +20,7 @@ declare var _: any;
   moduleId: module.id,
   selector: 'z-social-share-profile-community',
   templateUrl: 'community.component.html',
+  styleUrls: ['community.component.css'],
   entryComponents: [
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent
@@ -33,7 +34,6 @@ export class ZSocialShareProfileCommunityComponent {
   modalComponent: any;
   modal: any;
 
-  // favourite: any; // toggle favourites status for members, communities
   userSettings: any;
   comUserStatus = Constants.soCommunityUserStatus;
   comUserRole = Constants.communityRole;
@@ -42,8 +42,8 @@ export class ZSocialShareProfileCommunityComponent {
   tooltip: any = Constants.tooltip;
 
   constructor(public serviceManager: ServiceManager,
-              private confirmationService: ConfirmationService,
               private socialService: SocialService,
+              private router: Router,
               private favoriteService: SocialFavoriteService,
               private zoneReportService: ZSharedReportService,
               private resolver: ComponentFactoryResolver) {
@@ -52,7 +52,6 @@ export class ZSocialShareProfileCommunityComponent {
   sendJoinRequest() {
     this.socialService.community.askToJoin(this.data.uuid)
       .toPromise().then((result: any) => {
-          // TODO: Update status of community
           this.data.user_status = Constants.soCommunityUserStatus.joinRequestSent;
         },
         (error: any) => {
@@ -60,18 +59,9 @@ export class ZSocialShareProfileCommunityComponent {
         });
   }
 
-  /*
-   Params format:
-   item: community / member object
-   group: community / members
-   */
-  // getFavourite() {
-  //   this.socialService.user.getFavourite(this.data.uuid, 'community').subscribe(
-  //     (res: any) => {
-  //       this.favourite = res.data;
-  //     }
-  //   );
-  // }
+  viewComDetail(data: any) {
+    this.router.navigate(['/' + this.communitiesUrl, data.uuid]);
+  }
 
   toggleFavourite() {
     this.favoriteService.addFavourite(this.data.uuid, 'community')
@@ -89,14 +79,6 @@ export class ZSocialShareProfileCommunityComponent {
       }
     );
   }
-
-  // leaveCommunity(community: any) {
-  //   this.socialService.community.leaveCommunity(community.uuid)
-  //     .subscribe((res: any) => {
-  //         community.user_status = this.comUserStatus.stranger;
-  //       }
-  //     );
-  // }
 
   onEdit() {
     this.loadModalComponent(ZSocialShareCommunityFormEditComponent);

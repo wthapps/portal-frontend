@@ -2,10 +2,11 @@ import {
   Component, Input, HostBinding, ViewChild, ViewContainerRef,
   OnInit
 } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { NotificationService } from '../../../services/notification.service';
 import { UndoNotificationComponent } from '../undo-notification.component';
 import { ApiBaseService } from '../../../services/apibase.service';
-
 @Component({
   moduleId: module.id,
   selector: 'notification-item',
@@ -27,6 +28,7 @@ export class NotificationItemComponent implements OnInit {
 
 
   constructor(public notificationService: NotificationService,
+              private router: Router,
               private apiBaseService: ApiBaseService
   ) {
   }
@@ -47,6 +49,10 @@ export class NotificationItemComponent implements OnInit {
 
   hideNotification(notification: any) {
     this.notificationService.hideNotification(notification);
+  }
+
+  viewProfile(user: any) {
+    this.router.navigate(['/profile', user.uuid]);
   }
 
   toggleNotification() {
