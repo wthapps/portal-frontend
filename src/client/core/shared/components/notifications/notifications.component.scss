@@ -1,6 +1,15 @@
 :host {
   display: block;
+
+  .fa-circle {
+    margin: 0;
+  }
+  &.list-notifications {
+    margin-bottom: 0;
+    .media {
+      overflow: visible;
+    }
+  }
 }
-.fa-circle {
-  margin: 0;
-}
+
+
