@@ -19,7 +19,7 @@
 
         <!--mesasge menu-->
         <div class="message-item-menu dropdown"
-             *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'FileMedium') && message.message_type !== 'message_deleted'">
+             *ngIf="message.message_type !== 'message_deleted' &&  message.message_type !== 'message_cancel'">
           <i class="fa fa-sort-down" data-toggle="dropdown"
              pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
@@ -41,9 +41,18 @@
             </li>
           </ul>
 
-          <!--other menu menu menu-->
+          <!--sending message menu-->
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.sending_status == 1">
+            <li>
+              <a (click)="cancle()" target="_blank" download>
+                Cancel
+              </a>
+            </li>
+          </ul>
+
+          <!--other menu -->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
-            <li *ngIf="message.file_json && message.message_type !== 'message_deleted'">
+            <li *ngIf="message.file_json && message.message_type !== 'message_deleted' && message.message_type !== 'message_cancel'">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
               </a>
@@ -188,6 +197,11 @@
         <!--text type-->
         <div class="message-item-content-text" *ngIf="message.message_type == 'message_deleted'">
           <span>This message has been deleted</span>
+        </div>
+
+        <!--text type-->
+        <div class="message-item-content-text" *ngIf="message.message_type == 'message_cancel'">
+          <span>Upload Canceled</span>
         </div>
 
       </div>

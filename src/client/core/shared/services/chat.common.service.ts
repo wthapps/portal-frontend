@@ -103,7 +103,7 @@ export class ChatCommonService {
 
   setDefaultSelectContact() {
     let res: any = this.storage.find('chat_conversations');
-    if (res && res.value && res.value.data[0]) {
+    if (res && res.value && res.value.data && res.value.data[0]) {
       this.storage.save('conversation_select', res.value.data[0]);
       this.handler.triggerEvent('on_default_conversation_select', res.value.data[0]);
     }
