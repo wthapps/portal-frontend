@@ -194,13 +194,13 @@
 
         </div>
 
-        <!--text type-->
+        <!--deleted type-->
         <div class="message-item-content-text" *ngIf="message.message_type == 'message_deleted'">
           <span>This message has been deleted</span>
         </div>
 
-        <!--text type-->
-        <div class="message-item-content-text" *ngIf="message.message_type == 'message_cancel'">
+        <!--cancel message type-->
+        <div class="message-item-content-text" *ngIf="message.sending_status == 2">
           <span>Upload Canceled</span>
         </div>
 
