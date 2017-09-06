@@ -49,6 +49,7 @@ docs
 lib
 test
 tmp
+*.lock
 
 gulpfile.js
 gulpfile.js.map
@@ -67,6 +68,7 @@ bower_components
 /src/client/assets/.tmp/
 
 *.js
+
 
 *_BAK*
 /src/html/
