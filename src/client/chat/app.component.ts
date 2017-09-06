@@ -6,6 +6,9 @@ import 'rxjs/add/operator/filter';
 
 import { Config } from '../core/shared/config/env.config';
 import { ChatService } from './shared/services/chat.service';
+import { ConfirmDialogModel } from '../core/shared/models/confirm-dialog.model';
+import { Constants } from '../core/shared/config/constants';
+import { WTHConfirmService } from '../core/shared/services/wth-confirm.service';
 
 
 /**
@@ -20,8 +23,18 @@ import { ChatService } from './shared/services/chat.service';
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(private router: Router, private chatService: ChatService) {
+  confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
+
+  constructor(private router: Router,
+              private chatService: ChatService,
+              private wthConfirmService: WTHConfirmService) {
     console.log('Environment config', Config);
+
+    this.wthConfirmService.confirmDialog$.subscribe(
+      (res: any) => {
+        this.confirmDialog = res;
+      }
+    );
   }
 
   ngOnInit() {

@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private confirmationService: ConfirmationService,
               public contactService: ZContactService,
               private labelService: LabelService,
-  protected wthConfirmService:WTHConfirmService) {
+              private wthConfirmService: WTHConfirmService) {
     console.log('Environment config', Config, this.confirmDialog);
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       (res: any) => {
         this.confirmDialog = res;
       }
-    )
+    );
   }
 
   ngOnInit() {

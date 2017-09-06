@@ -14,7 +14,16 @@
   </main>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
-  <p-confirmDialog header="Confirmation" width="670"></p-confirmDialog>
+  <p-confirmDialog header="Confirmation" width="670" #cd>
+    <p-footer>
+      <button class="btn btn-outline-default btn-min" type="button" pButton icon=""
+              label="{{ confirmDialog?.label?.reject ? confirmDialog?.label?.reject : 'Cancel' }}"
+              (click)="cd.reject()"></button>
+      <button class="btn btn-outline-primary btn-min" type="button" pButton icon=""
+              label="{{ confirmDialog?.label?.accept ? confirmDialog?.label?.accept : 'Done' }}"
+              (click)="cd.accept()"></button>
+    </p-footer>
+  </p-confirmDialog>
 </div>
 
 <post-photo-select></post-photo-select>
