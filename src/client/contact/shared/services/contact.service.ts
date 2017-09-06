@@ -15,6 +15,7 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
 import { LabelService } from '../../label/label.service';
 import { Router } from "@angular/router";
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare var _: any;
 
@@ -23,6 +24,8 @@ export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
   page: number = 1;
+
+  confirmDialog: any;
 
   // orderDesc: boolean = false;
   readonly startIndex: number = 0;
@@ -51,7 +54,8 @@ export class ZContactService extends BaseEntityService<any> {
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
               public router: Router,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private wthConfirmService: WTHConfirmService) {
     super(apiBaseService);
     this.url = 'contact/contacts';
 
@@ -72,7 +76,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   getAllContacts() {
-    return _.orderBy(this.contacts, ['name'], [ this.orderDescSubject.getValue() ? 'asc' : 'desc']);
+    return _.orderBy(this.contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
   }
 
   resetPageNumber() {
@@ -83,13 +87,13 @@ export class ZContactService extends BaseEntityService<any> {
 
     this.page += 1;
     let order: boolean = orderDesc || this.orderDescSubject.getValue();
-    if(order !== undefined)
+    if (order !== undefined)
       this.orderDescSubject.next(order);
     this.notifyContactsObservers();
   }
 
   changeSortOption(order?: string) {
-    if(order === undefined)
+    if (order === undefined)
       this.orderDescSubject.next(!this.orderDescSubject.getValue());
     else
       this.orderDescSubject.next((order !== 'asc'));
@@ -120,6 +124,14 @@ export class ZContactService extends BaseEntityService<any> {
     let contact_names: string = _.map(contacts, (ct: any) => ct.name).join(', ');
     let contact_length: number = contacts.length;
     return new Promise((resolve) => {
+
+      this.wthConfirmService.updateConfirmDialog({
+        label: {
+          accept: 'Delete',
+          reject: 'Cancel',
+        }
+      });
+
       this.confirmationService.confirm({
         message: `Are you sure you want to delete following ${contact_length} contacts:  ${contact_names} ?`,
         header: 'Delete Contacts',
@@ -204,9 +216,9 @@ export class ZContactService extends BaseEntityService<any> {
   create(body: any): Observable<any> {
     return super.create(body)
       .map((res: any) => {
-          this.createCallback(res.data);
-          return res;
-        });
+        this.createCallback(res.data);
+        return res;
+      });
   }
 
   addContact(data: any): Promise<any> {
@@ -223,7 +235,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   filter(options: any) {
     this.resetPageNumber();
-    let label=  _.get(options, 'label', 'undefined');
+    let label = _.get(options, 'label', 'undefined');
     this.filterOption = {'label': label};
 
     this.notifyContactsObservers();
@@ -236,7 +248,7 @@ export class ZContactService extends BaseEntityService<any> {
     else {
       contacts = _.filter(this.contacts, (contact: any)=> {
         let clabels = _.map(contact.labels, 'name');
-        if(_.indexOf(clabels, label) > -1)
+        if (_.indexOf(clabels, label) > -1)
           return contact;
       });
     }
@@ -263,9 +275,9 @@ export class ZContactService extends BaseEntityService<any> {
     let contacts: any[] = [];
     this.labelService.updateLabelCount(this.contacts);
 
-    if(_.has(this.filterOption, 'search')) {
+    if (_.has(this.filterOption, 'search')) {
       contacts = this.searchContact(this.filterOption.search);
-    } else if(_.has(this.filterOption, 'label')) {
+    } else if (_.has(this.filterOption, 'label')) {
       contacts = this.filterByLabel(this.filterOption.label);
     } else {
       contacts = this.contacts;
@@ -274,10 +286,10 @@ export class ZContactService extends BaseEntityService<any> {
     let orderedContacts: any[] = _.orderBy(contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
     let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
     let orderedContactsWSelected: any[] = _.map(orderedContacts, (ct: any) => {
-      if(selectedIds.indexOf(ct.uuid) > -1)
-      return Object.assign(ct, {selected: true});
-    else
-      return Object.assign(ct, {selected: false});
+      if (selectedIds.indexOf(ct.uuid) > -1)
+        return Object.assign(ct, {selected: true});
+      else
+        return Object.assign(ct, {selected: false});
     });
 
     this.contactsSubject.next(orderedContactsWSelected.slice(this.startIndex, this.page * this.ITEM_PER_PAGE));
@@ -286,25 +298,25 @@ export class ZContactService extends BaseEntityService<any> {
 
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
     let ids: any[] = _.map(contacts, 'id');
-    return this.apiBaseService.post(`${this.url}/merge_duplicate`,{ids: ids}).toPromise()
+    return this.apiBaseService.post(`${this.url}/merge_duplicate`, {ids: ids}).toPromise()
       .then((res: any) => {
-      let delete_ids: any[] = res.delete_ids;
-      let updated_contacts: any[] = res.data;
-      _.remove(this.contacts, (c: any) => delete_ids.indexOf(c.id) > -1);
-      _.remove(this.selectedObjects, (c: any) => delete_ids.indexOf(c.id) > -1);
+        let delete_ids: any[] = res.delete_ids;
+        let updated_contacts: any[] = res.data;
+        _.remove(this.contacts, (c: any) => delete_ids.indexOf(c.id) > -1);
+        _.remove(this.selectedObjects, (c: any) => delete_ids.indexOf(c.id) > -1);
 
-      for(let i=0; i< updated_contacts.length; i++) {
-        let idx: any = _.findIndex(this.contacts, [ 'id', updated_contacts[i].id]);
-        _.set(this.contacts, idx, updated_contacts[i]);
-      }
-      console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
-      this.notifyContactsObservers();
-      this.labelService.updateLabelCount(this.contacts);
+        for (let i = 0; i < updated_contacts.length; i++) {
+          let idx: any = _.findIndex(this.contacts, ['id', updated_contacts[i].id]);
+          _.set(this.contacts, idx, updated_contacts[i]);
+        }
+        console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
+        this.notifyContactsObservers();
+        this.labelService.updateLabelCount(this.contacts);
       });
   }
 
   public initialLoad(): Promise<any> {
-    if(this.initLoadSubject.getValue() === true) {
+    if (this.initLoadSubject.getValue() === true) {
       this.initLoadSubject.next(true);
       return Promise.resolve(this.contacts);
     }
@@ -351,7 +363,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private followingLoad(url: string) {
-    if(!_.isEmpty(url))
+    if (!_.isEmpty(url))
       this.apiBaseService.get(url).toPromise()
         .then((res: any) => {
           this.contacts.push(...res['data']);
@@ -376,7 +388,7 @@ export class ZContactService extends BaseEntityService<any> {
     });
 
     _.forEach(this.selectedObjects, (selected: any, index: number) => {
-      if(contact.id === selected.id) {
+      if (contact.id === selected.id) {
         this.selectedObjects[index] = contact;
         return;
       }

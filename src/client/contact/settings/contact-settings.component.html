@@ -37,9 +37,10 @@
             <div class="form-group">
               <button type="button" [disabled]="!form.valid || form.pristine"
                       class="btn btn-outline-primary mr10" (click)="onSubmit()">
-                Done
+                Update
               </button>
-              <button type="button" class="btn btn-outline-default" (click)="cancel()">Cancel</button>
+              <button type="button" class="btn btn-outline-default mr10" (click)="cancel()">Cancel</button>
+              <button type="button" class="btn btn-link">Reset Default</button>
             </div>
           </div>
         </div>

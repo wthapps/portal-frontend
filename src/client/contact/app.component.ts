@@ -22,6 +22,10 @@ import { ZContactSharedSettingsComponent } from './shared/modal/settings/setting
 import { ZContactService } from './shared/services/contact.service';
 import { Constants } from '../core/shared/config/constants';
 
+import { ConfirmDialogModel } from '../core/shared/models/confirm-dialog.model';
+import { constants } from 'os';
+import { WTHConfirmService } from '../core/shared/services/wth-confirm.service';
+
 /**
  * This class represents the main application component.
  */
@@ -46,6 +50,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   contactMenu: Array<any> = new Array<any>();
   contactEvents: any = Constants.contactEvents;
 
+  confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
+
   private destroySubject: Subject<any> = new Subject<any>();
 
 
@@ -54,8 +60,9 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private commonEventService: CommonEventService,
               private confirmationService: ConfirmationService,
               public contactService: ZContactService,
-              private labelService: LabelService) {
-    console.log('Environment config', Config);
+              private labelService: LabelService,
+  protected wthConfirmService:WTHConfirmService) {
+    console.log('Environment config', Config, this.confirmDialog);
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     });
@@ -64,6 +71,11 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       .subscribe((labels: any[]) => {
         this.labels = labels;
       });
+    this.wthConfirmService.confirmDialog$.subscribe(
+      (res: any) => {
+        this.confirmDialog = res;
+      }
+    )
   }
 
   ngOnInit() {

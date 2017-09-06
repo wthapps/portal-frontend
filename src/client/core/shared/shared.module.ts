@@ -66,6 +66,7 @@ import { AuthService } from './services/auth.service';
 import { GenericeFileService } from './services/generic-file.service';
 import { ShowHidePasswordModule } from './components/show-hide-password/show-hide-password.module';
 import { InvitationModule } from './components/invitation/invitation.module';
+import { WTHConfirmService } from './services/wth-confirm.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -140,6 +141,7 @@ export class CoreSharedModule {
         StorageService,
         HandlerService,
         WTHNavigateService,
+        WTHConfirmService,
         NotificationService,
         NotificationChannelService,
         AppearancesChannelService,

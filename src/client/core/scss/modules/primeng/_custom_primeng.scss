@@ -159,6 +159,17 @@ body {
   .ui-dialog-footer {
     &.ui-widget-content {
       border-width: 1px 0 0 0;
+      .ui-button-text {
+        padding: 0;
+      }
+      .ui-button {
+        @extend .btn;
+        @extend .btn-outline-default;
+        @extend .btn-min;
+      }
+      .btn-outline-primary {
+        @extend .btn-outline-primary;
+      }
     }
   }
 
@@ -217,4 +228,5 @@ body {
       border-right-color: rgba(#000, 0.6);
     }
   }
+
 }
