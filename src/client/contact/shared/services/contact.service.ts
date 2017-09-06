@@ -305,13 +305,14 @@ export class ZContactService extends BaseEntityService<any> {
         _.remove(this.contacts, (c: any) => delete_ids.indexOf(c.id) > -1);
         _.remove(this.selectedObjects, (c: any) => delete_ids.indexOf(c.id) > -1);
 
-        for (let i = 0; i < updated_contacts.length; i++) {
-          let idx: any = _.findIndex(this.contacts, ['id', updated_contacts[i].id]);
-          _.set(this.contacts, idx, updated_contacts[i]);
-        }
-        console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
-        this.notifyContactsObservers();
-        this.labelService.updateLabelCount(this.contacts);
+      for(let i=0; i< updated_contacts.length; i++) {
+        let idx: any = _.findIndex(this.contacts, [ 'id', updated_contacts[i].id]);
+        // _.set(this.contacts, idx, updated_contacts[i]);
+        this.contacts[idx] = updated_contacts[i];
+      };
+      console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
+      this.notifyContactsObservers();
+      this.labelService.updateLabelCount(this.contacts);
       });
   }
 
