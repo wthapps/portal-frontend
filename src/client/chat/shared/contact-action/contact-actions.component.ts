@@ -5,6 +5,7 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversation.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare let $: any;
 
@@ -28,7 +29,8 @@ export class ZChatContactActionsComponent implements OnInit {
   constructor(private router: Router,
               private chatService: ChatService,
               private zoneReportService: ZSharedReportService,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private wthConfirmService: WTHConfirmService) {
     this.conversationUrl = this.chatService.constant.conversationUrl;
     this.profileUrl = this.chatService.constant.profileUrl;
   }
@@ -73,6 +75,13 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   deleteContact() {
+
+    this.wthConfirmService.updateConfirmDialog({
+      label: {
+        accept: 'Delete'
+      }
+    });
+
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this contact ?',
       header: 'Delete Contact',

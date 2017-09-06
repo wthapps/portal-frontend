@@ -1,10 +1,15 @@
-<div class="text-center">
-  <p *ngIf="message[0] && message[0].display">
-    <a [routerLink]="['/profile', message[0].display.uuid]" class="link-text" style="font-weight: bold">
+<div class="text-center" *ngIf="message[0] && message[0].display">
+  <p>
+    <span class="avatar-xs ml-a mr-a">
+      <img [src]="message[0].display.image" alt="">
+    </span>
+  </p>
+  <p>
+    <a [routerLink]="['/profile', message[0].display.uuid]" class="link-text text-bold">
       {{ message[0].display.name }}</a> would like add you on WTH!Chat
   </p>
-  <small *ngIf="message[0]" class="text-fade">{{ message[0].created_at | timeFormat }}</small>
-  <p *ngIf="message[0]">{{ message[0].message }}</p>
+  <small class="text-fade">{{ message[0].created_at | timeFormat }}</small>
+  <p>{{ message[0].message }}</p>
   <button class="btn btn-outline-primary mr10" (click)="onAccept()">Accept</button>
-  <button type="button" class="btn btn-primary" (click)="onDecline()">Decline</button>
+  <button type="button" class="btn btn-outline-default" (click)="onDecline()">Ignore</button>
 </div>

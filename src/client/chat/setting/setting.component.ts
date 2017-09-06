@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ChatService } from '../shared/services/chat.service';
+import { WTHConfirmService } from '../../core/shared/services/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -20,17 +21,19 @@ export class ZChatSettingComponent implements OnInit {
   import_information: AbstractControl;
   online: AbstractControl;
   time_to_history: AbstractControl;
-  privacy:string;
-  setting:any;
+  privacy: string;
+  setting: any;
 
   constructor(private fb: FormBuilder,
               private location: Location,
               private chatService: ChatService,
-              private confirmationService: ConfirmationService) {}
+              private confirmationService: ConfirmationService,
+              private wthConfirmService: WTHConfirmService) {
+  }
 
   ngOnInit() {
     this.chatService.getSetting().subscribe(
-      (res:any) => {
+      (res: any) => {
         this.setting = res.data;
         this.form = this.fb.group({
           'import_information': this.setting.import_information,
@@ -50,7 +53,7 @@ export class ZChatSettingComponent implements OnInit {
   onSubmit(value: any) {
     value.privacy = this.privacy;
     this.chatService.updateSetting(value).subscribe(
-      (res:any) => {
+      (res: any) => {
         this.setting = res.data;
       }
     );
@@ -58,6 +61,12 @@ export class ZChatSettingComponent implements OnInit {
 
 
   onDeleteChat() {
+    this.wthConfirmService.updateConfirmDialog({
+      label: {
+        accept: 'Delete'
+      }
+    });
+
     this.confirmationService.confirm({
       message: 'Are you sure to delete conversation?',
       header: 'Delete',
@@ -68,12 +77,18 @@ export class ZChatSettingComponent implements OnInit {
   }
 
   resetSettings() {
+    this.wthConfirmService.updateConfirmDialog({
+      label: {
+        accept: 'Reset'
+      }
+    });
+
     this.confirmationService.confirm({
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
         this.chatService.restoreSetting().subscribe(
-          (res:any) => {
+          (res: any) => {
             this.setting = res.data;
             this.import_information.setValue(this.setting.import_information);
             this.online.setValue(this.setting.online);

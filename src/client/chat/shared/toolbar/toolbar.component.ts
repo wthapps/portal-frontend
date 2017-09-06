@@ -4,6 +4,7 @@ import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { Constants } from '../../../core/shared/config/constants';
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare let $: any;
 declare let _: any;
@@ -28,7 +29,9 @@ export class ZChatToolbarComponent implements OnInit {
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private chatService: ChatService, private confirmationService: ConfirmationService) {
+  constructor(private chatService: ChatService,
+              private confirmationService: ConfirmationService,
+              private wthConfirmService: WTHConfirmService) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }
 
@@ -88,6 +91,13 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onDeleteConversation() {
+    this.wthConfirmService.updateConfirmDialog({
+      label: {
+        accept: 'Delete'
+      }
+    });
+
+
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this conversation ?',
       header: 'Delete Conversation',
