@@ -13,7 +13,6 @@ import { ChatService } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants } from '../../../../core/shared/config/constants';
 
-
 declare var $: any;
 
 @Component({
@@ -23,7 +22,7 @@ declare var $: any;
   styleUrls: ['message-editor.component.css']
 })
 
-export class MessageEditorComponent implements OnInit, OnDestroy {
+export class MessageEditorComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
   emojiData: any = [];
@@ -121,8 +120,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
       this.appendedMessages.push(attributes.appendedMessage);
       this.message = attributes.appendedMessage;
       // this.message.message += this.buildQuoteMessage(attributes.appendedMessage);
-
-      console.log('testing:::::::::', this.appendedMessages[0]);
     }
     if ('mode' in attributes) {
       this.mode = attributes.mode;
@@ -245,7 +242,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   private buildQuoteMessage(message: any): string {
-    return `<blockquote contenteditable="false">      
+    return `<blockquote contenteditable="false">
     <strong *ngIf="message.is_quote">${message.display.name}</strong>
     <span *ngIf="message.is_quote">${message.created_at}</span>
     <p [innerHtml]="#{message.message}"></p>

@@ -17,6 +17,10 @@ export class ConversationService {
     return this.api.delete(`zone/chat/conversations/${conversationId}/messages/${id}`);
   }
 
+  cancelUpload(conversationId: number, id: number): Observable<any> {
+    return this.api.post(`zone/chat/conversations/${conversationId}/cancel_messages/${id}`);
+  }
+
   getLatestConversation(groupId: number) {
     return this.api.get('zone/chat/messages/' + groupId).toPromise().then(
       (response: any) => {

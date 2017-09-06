@@ -80,6 +80,14 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD:
         break;
+      case CHAT_ACTIONS.CHAT_MESSAGE_CANCEL:
+        this.conversationService.cancelUpload(event.payload.group_id, event.payload.id)
+          .toPromise()
+          .then(
+            (response: any) => {
+              console.log('delete ok!!!!');
+            });
+        break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
         this.conversationService.deleteMessage(event.payload.group_id, event.payload.id)
           .toPromise()

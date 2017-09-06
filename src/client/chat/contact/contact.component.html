@@ -2,7 +2,7 @@
   <z-chat-contact-navigation [tab]="'all'"></z-chat-contact-navigation>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem && contactItem.value">
+<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem && contactItem.value && contactItem.value.data">
   <div class="page-body-content-in">
     <div class="row media-user-row-group">
       <div class="col-sm-12"
@@ -37,7 +37,7 @@
 </div>
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar"
-     *ngIf="contactItem && contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length).length == 0 ">
+     *ngIf="contactItem && contactItem.value && contactItem.value.data && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length).length == 0 ">
   <div class="page-body-content-in">
     No data
   </div>
