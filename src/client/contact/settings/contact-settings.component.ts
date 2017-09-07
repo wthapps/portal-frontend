@@ -5,8 +5,14 @@ import 'rxjs/add/operator/toPromise';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CountryService } from '../../core/shared/components/countries/countries.service';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 declare var _: any;
+
+const DEFAULT_SETTING: any = {
+  'phone_default_code': 'Albania (+355)',
+  'contacts_sort_by': 'first_name'
+};
 
 @Component({
   moduleId: module.id,
@@ -21,23 +27,16 @@ export class ZContactSettingsComponent implements OnInit {
   countriesNameCode: any;
   filteredCountriesCode: any[];
 
-  constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
+  constructor(private fb: FormBuilder, private countryService: CountryService,
+              private apiBaseService: ApiBaseService,
+              private confirmationService: ConfirmationService) {
     // Init default
-    this.form = this.fb.group({
-      'phone_default_code': ['Albania (+355)'],
-      'contacts_sort_by': ['first_name']
-    });
+    this.form = this.fb.group(DEFAULT_SETTING);
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`contact/contacts/settings`).subscribe((res: any) => {
-      if (res.data && res.data.phone_default_code) {
-        this.form = this.fb.group({
-          'id': res.data.id,
-          'phone_default_code': res.data.phone_default_code,
-          'contacts_sort_by': res.data.contacts_sort_by
-        });
-      }
+    this.apiBaseService.get(`contact/contacts/settings`).toPromise().then((res: any) => {
+      this.setSettingForm(res.data);
     });
     this.countryService.getCountries().subscribe(
       (res: any) => {
@@ -57,6 +56,17 @@ export class ZContactSettingsComponent implements OnInit {
 
   cancel() {
     console.log('cancel');
+  }
+
+  confirmReset() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to reset settings?',
+      header: 'Reset Default',
+      accept: () => {
+        this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: Object.assign({}, this.form.value, DEFAULT_SETTING) })
+          .toPromise().then((res: any) => this.setSettingForm(res.data));
+      }
+    });
   }
 
   open() {
@@ -80,6 +90,16 @@ export class ZContactSettingsComponent implements OnInit {
     setTimeout(() => {
       this.filteredCountriesCode = this.countriesNameCode;
     }, 100);
+  }
+
+  private setSettingForm(data: any) {
+    if (data && data.phone_default_code) {
+      this.form = this.fb.group({
+        'id': data.id,
+        'phone_default_code': data.phone_default_code,
+        'contacts_sort_by': data.contacts_sort_by
+      });
+    }
   }
 
 }
