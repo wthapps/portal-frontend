@@ -26,7 +26,6 @@ export class NotificationItemComponent implements OnInit {
   itemSettings: any = {};
   showToggle: boolean;
 
-
   constructor(public notificationService: NotificationService,
               private router: Router,
               private apiBaseService: ApiBaseService
@@ -39,7 +38,6 @@ export class NotificationItemComponent implements OnInit {
   }
 
   confirmHideNotification(notification: any) {
-    console.debug('inside notification-item: confirmHideNotification !!!');
     this.hideNotification(notification);
   }
 

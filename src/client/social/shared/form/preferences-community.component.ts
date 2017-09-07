@@ -103,6 +103,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
   }
 
   resetSettings() {
+    this.modal.close();
     this.confirmationService.confirm({
       message: 'Are you sure you want to reset settings',
       header: 'Reset Default',
@@ -119,6 +120,9 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
               console.log(error);
             }
           );
+      },
+      reject: () => {
+        this.modal.open();
       }
     });
     // this.modal.close();
