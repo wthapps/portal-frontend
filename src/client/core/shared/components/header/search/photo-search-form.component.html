@@ -1,73 +1,3 @@
-<!--<div *ngIf="active" class="navbar-form navbar-left">
-  <div class="navbar-searchTop">
-    <div class="input-group">
-      <p-autoComplete [(ngModel)]="searchText" [suggestions]="suggestions" (completeMethod)="getSuggestions($event)"
-                      [delay]="500" (keyup.enter)="onEnter()"></p-autoComplete>
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" (click)="showSearchAdvanced()">
-          <i class="fa fa-caret-down" [ngClass]="{'fa-caret-up': searchAdvanced, 'fa-caret-down': !searchAdvanced}"></i>
-        </button>
-      </span>
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button">
-          <i class="fa fa-search" aria-hidden="true" (click)="onEnter()"></i>
-        </button>
-      </span>
-    </div>
-    <div *ngIf="searchAdvanced" class="navbar-searchTop-advanced">
-      <p class="bold">Advance Search</p>
-      <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate class="form-horizontal">
-        <div class="form-group">
-          <label class="col-sm-3 control-label">From</label>
-          <div class="col-sm-4">
-            <p-calendar [showIcon]="true" class="form-control-block" formControlName="searchFrom"></p-calendar>
-          </div>
-          <label class="col-sm-1 control-label">To</label>
-          <div class="col-sm-4">
-            <p-calendar [showIcon]="true" formControlName="searchTo"></p-calendar>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">File Type</label>
-          <div class="col-sm-9">
-            <input [formControl]="searchFileType" type="text" class="form-control" placeholder="">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Tags</label>
-          <div class="col-sm-9">
-            <input [formControl]="searchTags" type="text" class="form-control" placeholder="">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Owner</label>
-          <div class="col-sm-9">
-            <input [formControl]="searchOwner" type="text" class="form-control" placeholder="">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Group Share</label>
-          <div class="col-sm-9">
-            <input [formControl]="searchGroup" type="text" class="form-control" placeholder="">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Contact Share</label>
-          <div class="col-sm-9">
-            <input [formControl]="searchContact" type="text" class="form-control" placeholder="">
-          </div>
-        </div>
-
-        <div class="clearfix">
-          <button type="submit" class="btn btn-primary mr10">Search</button>
-          <button type="reset" class="btn btn-default">Reset</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>-->
-
-
 <div *ngIf="active" class="navbar-form navbar-left">
   <div class="navbar-searchTop">
 
@@ -79,7 +9,7 @@
       <div class="input-group-suggestions" *ngIf="show">
         <div class="list-group">
           <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="onNavigation(data)">
-            {{ data|json }}
+            {{ data }}
           </a>
         </div>
         <div class="list-group-footer">
