@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/toPromise';
@@ -6,6 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import { Constants } from '../../../../core/shared/config/constants';
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
+import * as fromMember from '../../../actions/member';
 
 declare var _: any;
 
@@ -16,6 +17,7 @@ declare var _: any;
 })
 export class ZSocialShareProfileMemberComponent {
   @Input() data: any;
+  @Output() outEvent: EventEmitter<any> = new EventEmitter();
 
   favourite: any; // toggle favourites status for members, communities
 
@@ -65,6 +67,7 @@ export class ZSocialShareProfileMemberComponent {
     this.socialService.user.addFriend(user.uuid).toPromise().then(
       (res: any) => {
         user.friend_status = Constants.friendStatus.pending;
+        this.outEvent.emit({action: fromMember.ACTIONS.ADD_FRIEND});
       }
     );
   }
@@ -74,6 +77,7 @@ export class ZSocialShareProfileMemberComponent {
       (res: any) => {
         // Currently not support unfriend status. May be updated later
         user.friend_status = Constants.friendStatus.stranger;
+        this.outEvent.emit({action: fromMember.ACTIONS.UNFRIEND});
       },
     );
   }
@@ -82,6 +86,7 @@ export class ZSocialShareProfileMemberComponent {
     this.socialService.user.unfollow(friend.uuid).toPromise().then(
       (res: any) => {
         friend.is_following = false;
+        this.outEvent.emit({action: fromMember.ACTIONS.UNFOLLOW});
       },
     );
   }
@@ -91,6 +96,7 @@ export class ZSocialShareProfileMemberComponent {
       (res: any) => {
         // this.getUser();
         friend.is_following = true;
+        this.outEvent.emit({action: fromMember.ACTIONS.FOLLOW});
       },
     );
   }

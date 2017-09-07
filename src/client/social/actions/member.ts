@@ -1,0 +1,8 @@
+
+export const ACTIONS: any = {
+  ADD_FRIEND: 'ADD_FRIEND',
+  UNFRIEND: 'UNFRIEND',
+  FOLLOW: 'FOLLOW',
+  UNFOLLOW: 'UNFOLLOW',
+  DELETE: 'DELETE'
+};

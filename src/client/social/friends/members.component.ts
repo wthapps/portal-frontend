@@ -10,6 +10,7 @@ import { LoadingService } from '../../core/shared/components/loading/loading.ser
 import { ZSharedReportService } from '../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../shared/services/social-favorites.service';
 import { Constants } from '../../core/shared/config/constants';
+import * as fromMember from '../actions/member';
 
 declare var $: any;
 declare var _: any;
@@ -115,20 +116,44 @@ export class ZSocialMembersComponent implements OnInit {
       this.loadingService.stop('#users-list');
   }
 
-  unfriend(user: any) {
-    this.socialService.user.unfriend(user.uuid).subscribe(
-      (res: any) => {
-        // this.getUser();
-        _.remove(this.list, (i: any) => i.uuid == user.uuid);
-
-        // User should unfollow this user as well
-        if (user.is_following)
-          this.totalFollowings -= 1;
-
+  onAction(event?: any) {
+    switch(event.action) {
+      case fromMember.ACTIONS.ADD_FRIEND:
+        this.totalFollowings -= 1;
         this.totalFollowers -= 1;
-      },
-    );
+        this.totalFriends += 1;
+        break;
+      case fromMember.ACTIONS.UNFRIEND:
+        this.totalFriends -= 1;
+        break;
+      case fromMember.ACTIONS.FOLLOW:
+        this.totalFollowings += 1;
+        break;
+      case fromMember.ACTIONS.UNFOLLOW:
+        this.totalFollowings -= 1;
+        break;
+      case fromMember.ACTIONS.DELETE:
+        break;
+      default:
+
+        break;
+    }
   }
+
+  // unfriend(user: any) {
+  //   this.socialService.user.unfriend(user.uuid).subscribe(
+  //     (res: any) => {
+  //       // this.getUser();
+  //       _.remove(this.list, (i: any) => i.uuid == user.uuid);
+  //
+  //       // User should unfollow this user as well
+  //       if (user.is_following)
+  //         this.totalFollowings -= 1;
+  //
+  //       this.totalFollowers -= 1;
+  //     },
+  //   );
+  // }
 
 
   reportFriend(friend: any) {
@@ -137,31 +162,31 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
 
-  unfollow(item: any) {
-    this.socialService.user.unfollow(item.uuid).subscribe(
-      (res: any) => {
-        // this.getUser();
-        if (_.get(res, 'success', false) == true)
-          this.totalFollowings -= 1;
-        if (this.currentState == this.friendTabs.followings)
-          _.remove(this.list, (i: any) => i.uuid == item.uuid);
+  // unfollow(item: any) {
+  //   this.socialService.user.unfollow(item.uuid).subscribe(
+  //     (res: any) => {
+  //       // this.getUser();
+  //       if (_.get(res, 'success', false) == true)
+  //         this.totalFollowings -= 1;
+  //       if (this.currentState == this.friendTabs.followings)
+  //         _.remove(this.list, (i: any) => i.uuid == item.uuid);
+  //
+  //       if (this.currentState == this.friendTabs.friends)
+  //         item.is_following = false;
+  //     },
+  //   );
+  // }
 
-        if (this.currentState == this.friendTabs.friends)
-          item.is_following = false;
-      },
-    );
-  }
-
-  follow(item: any) {
-    this.socialService.user.follow(item.uuid).subscribe(
-      (res: any) => {
-        if (_.get(res, 'success', false) == true)
-          this.totalFollowings += 1;
-        item.is_following = true;
-        console.log('Follow success: ', res.data);
-      },
-    );
-  }
+  // follow(item: any) {
+  //   this.socialService.user.follow(item.uuid).subscribe(
+  //     (res: any) => {
+  //       if (_.get(res, 'success', false) == true)
+  //         this.totalFollowings += 1;
+  //       item.is_following = true;
+  //       console.log('Follow success: ', res.data);
+  //     },
+  //   );
+  // }
 
 
   getUser() {
