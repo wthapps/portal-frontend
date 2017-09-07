@@ -20,6 +20,7 @@ import { EntitySelectComponent } from '../../../core/shared/components/entity-se
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
+import { User } from '../../../core/shared/models/user.model';
 
 declare let _: any;
 declare let $: any;
@@ -101,6 +102,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('posts') posts: PostListComponent;
 
   closeObs$: Observable<any>;
+  profile$: Observable<User>;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -118,6 +120,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
     // All subscriptions to photo select modal should be closed when 1 of following events are emitted
     this.closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
+    this.profile$ = this.userService.profile$;
   }
 
   ngOnInit() {

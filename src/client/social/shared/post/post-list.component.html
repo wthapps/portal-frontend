@@ -3,9 +3,11 @@
   <div class="panel-body">
     <div class="z-social-media">
       <div class="z-social-media-left">
+        <a [routerLink]="['/profile', (profile$ | async )?.uuid]">
         <div class="avatar-xs">
           <img [src]="(profile$ | async)?.profile_image" alt="Avatar Image">
         </div>
+        </a>
       </div>
       <div class="z-social-media-body">
         <div class="z-social-media-inputpost inputpost-new">

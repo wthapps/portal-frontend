@@ -1,10 +1,12 @@
 <modal #modal cssClass="modal-social modal-long" [animation]="false">
   <modal-body>
     <div class="z-social-media mb15">
-      <div class="z-social-media-left">
+      <div class="z-social-media-left pointer">
+        <a [routerLink]="['/profile', (profile$ | async)?.uuid]">
         <div class="avatar-xs">
           <img [src]="(profile$ | async)?.profile_image" alt="">
         </div>
+        </a>
       </div>
       <div class="z-social-media-body">
         <div class="z-heading">

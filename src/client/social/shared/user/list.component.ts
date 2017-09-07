@@ -1,8 +1,6 @@
-/**
- *
- */
+import { Component, OnInit, HostBinding, Input, OnChanges, EventEmitter, Output } from '@angular/core';
+import * as fromMember from '../../actions/member';
 
-import { Component, OnInit, HostBinding, Input, OnChanges } from '@angular/core';
 
 declare var _: any;
 
@@ -16,6 +14,7 @@ export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   @Input() type: string; // members, member, communities, community
   @Input() layout: string = 'list-group'; //row
   @Input() class: string = 'list-group-item'; //col-xs-6
+  @Output() outEvent: EventEmitter<any> = new EventEmitter();
 
   @HostBinding('class') classHost = this.layout;
 
@@ -33,12 +32,13 @@ export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
 
   onAction(event: any) {
     switch (event.action) {
-      case 'delete':
+      case fromMember.ACTIONS.DELETE:
         this.removeItem(event.data);
         break;
       default:
         break;
     }
+    this.outEvent.emit(event);
   }
 
   removeItem(data: any) {

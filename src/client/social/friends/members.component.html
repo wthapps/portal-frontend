@@ -87,7 +87,7 @@
           </div>
         </ng-template>
         <ng-template [ngIf]="list && list.length > 0">
-          <z-social-share-profile-list [data]="list" [type]="'member'">
+          <z-social-share-profile-list [data]="list" [type]="'member'" (outEvent)="onAction($event)">
           </z-social-share-profile-list>
         </ng-template>
       </div>
