@@ -207,8 +207,10 @@
                   <li><a href="javascript:;" *ngIf="isAdmin">Blacklist</a></li>
                 </ul>
               </div>
-              <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
-              <span>{{ item?.user.name }}</span>
+              <a [routerLink]="['/profile', item?.user?.uuid]">
+                <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
+                <span>{{ item?.user.name }}</span>
+              </a>
             </li>
           </ng-template>
         </ul>
@@ -216,11 +218,13 @@
         <ul class="list-group" *ngIf="selectedTab == 'invitations'">
           <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" data-id="invitation_{{ item.id }}">
-              <div class="dropdown pull-right">
-                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
-              </div>
-              <img [alt]="item?.accepter.name" [src]="item?.accepter?.profile_image" title="" width="30">
-              <span>{{ item?.accepter.name }}</span>
+                <div class="dropdown pull-right">
+                  <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
+                </div>
+              <a [routerLink]="['/profile', item?.accepter?.uuid]">
+                <img [alt]="item?.accepter.name" [src]="item?.accepter?.profile_image" title="" width="30">
+                <span>{{ item?.accepter.name }}</span>
+              </a>
             </li>
           </ng-template>
         </ul>
@@ -235,7 +239,7 @@
                 <a href="javascript:;" class="btn btn-link" (click)="acceptJoinRequest(item)">ACCEPT</a>
                 <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">REJECT</a>
               </div>
-              <a href="#">
+              <a [routerLink]="['/profile', item?.inviter?.uuid]">
                 <img [alt]="item?.inviter.name" [src]="item?.inviter.profile_image" title="" width="30">
                 <span>{{ item?.inviter.name }}</span>
               </a>

@@ -1,10 +1,5 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
-// import { ApiBaseService, LoadingService } from '../../../shared/index';
 import { PostEditComponent } from './index';
-import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { LoadingService } from '../../../core/shared/components/loading/loading.service';
-import { User } from '../../../core/shared/models/user.model';
-import { SocialService } from '../services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '../../../core/shared/config/constants';
@@ -17,28 +12,18 @@ declare var _: any;
   templateUrl: 'post-new.component.html'
 })
 
-export class PostNewComponent implements OnInit {
-  // @ViewChild('photoSelectModal') photoModal: PostPhotoSelectComponent;
+export class PostNewComponent {
   @ViewChild('postAddModal') postAddModal: PostEditComponent;
   @Output() onPostAdded: EventEmitter<any> = new EventEmitter<any>();
 
   selectedPhotos: Array<any> = new Array<any>();
   uploadPhotos: Array<any> = new Array<any>();
-  // files: Array<any> = new Array<any>();
-  // user: User;
   user$: Observable<any>;
 
   tooltip:any = Constants.tooltip;
 
-  constructor(private apiService: ApiBaseService,
-              private socialService: SocialService,
-              public userService: UserService,
-              private loadingService: LoadingService) {
+  constructor(public userService: UserService) {
     this.user$ =  this.userService.profile$;
-  }
-
-  ngOnInit(): void {
-      // this.user = this.socialService.user.profile;
   }
 
   open(event: any, choosePhotos?: boolean) {
