@@ -19,10 +19,10 @@
       <search-form #search></search-form>
 
       <ul *ngIf="userService.loggedIn" class="nav navbar-nav-top navbar-right">
-        <li class="dropdown navbar-nav-management">
+        <li id="step1" class="dropdown navbar-nav-management">
           <a class="navbar-nav-icon dropdown-toggle" href="#" data-toggle="dropdown"
              pTooltip="{{ tooltip.wthApps }}" tooltipPosition="bottom">
-            <i class="fa fa-list"></i>
+            <i class="fa fa-th"></i>
           </a>
           <ul class="dropdown-menu">
             <li>
@@ -49,7 +49,7 @@
                 <span>Contacts</span>
               </a>
             </li>
-            <li>
+            <!--<li>
               <a (click)="redirectTo('my', 'apps', $event)" href="javascript:;">
                 <i class="fa fa-list-alt"></i>
                 <span>Apps</span>
@@ -60,7 +60,7 @@
                 <i class="fa fa-th-large"></i>
                 <span>My Apps</span>
               </a>
-            </li>
+            </li>-->
           </ul>
         </li>
         <li class="dropdown navbar-nav-notification">
