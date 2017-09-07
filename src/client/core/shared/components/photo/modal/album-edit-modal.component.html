@@ -1,6 +1,6 @@
 <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <modal-header [show-close]="true">
-    <h4 class="modal-title">Information</h4>
+    <h4 class="modal-title"><i class="fa fa-info-circle"></i> Information</h4>
   </modal-header>
   <modal-body>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
@@ -21,8 +21,8 @@
       </div>
       <hr>
       <div class="clearfix text-right">
-        <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary">Save</button>
-        <button type="button" class="btn btn-outline-default" data-dismiss="modal">Cancel</button>
+        <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min">Save</button>
+        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
       </div>
     </form>
   </modal-body>

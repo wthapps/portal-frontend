@@ -40,6 +40,7 @@ import { SoComment } from '../../../core/shared/models/social_network/so-comment
 import { BaseEvent } from '../../../core/shared/event/base-event';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { PhotoService } from '../../../core/shared/services/photo.service';
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 
 declare var $: any;
@@ -83,7 +84,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
               private componentFactoryResolver: ComponentFactoryResolver,
-              private toast: ToastsService) {
+              private toast: ToastsService,
+              private wthConfirmService: WTHConfirmService) {
     super();
 
     this.photoService.modifiedPhotos$
@@ -232,6 +234,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   delete() {
+    this.wthConfirmService.updateConfirmDialog({
+      label: {
+        accept: 'Delete',
+        reject: 'Cancel',
+      }
+    });
+
     this.confirmation.confirm({
       message: 'Are you sure you want to delete this Post?',
       header: 'Delete Post',

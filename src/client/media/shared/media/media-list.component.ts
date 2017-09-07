@@ -1,5 +1,15 @@
 import {
-  Component, Input, Output, EventEmitter, AfterViewInit, OnInit, HostListener, ComponentFactoryResolver, OnDestroy, ViewEncapsulation, ChangeDetectorRef
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  AfterViewInit,
+  OnInit,
+  HostListener,
+  ComponentFactoryResolver,
+  OnDestroy,
+  ViewEncapsulation,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
@@ -23,6 +33,7 @@ import { AlbumCreateModalComponent } from '../../../core/shared/components/photo
 import { ZMediaAlbumService } from '../../album/album.service';
 import { PhotoService } from '../../../core/shared/services/photo.service';
 import { ZMediaStore } from '../store/media.store';
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare var _: any;
 declare var $: any;
@@ -110,6 +121,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
               protected router: Router,
               protected route: ActivatedRoute,
               protected confirmationService: ConfirmationService,
+              protected wthConfirmService: WTHConfirmService,
               protected loadingService: LoadingService,
               protected mediaObjectService: MediaObjectService,
               protected photoService: PhotoService,
@@ -119,13 +131,14 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
               protected albumService: ZMediaAlbumService) {
 
     this.photoService.modifiedPhotos$.takeUntil(this.destroySubject.asObservable()).subscribe((object: any) => {
-      switch(object.action) {
+      switch (object.action) {
         case 'update':
           let updatedPhoto = object.payload.photo;
-          this.objects = this.objects.map((o: any) => { if(o.object_type === 'photo' && o.uuid == updatedPhoto.uuid)
-            return updatedPhoto;
-          else
-            return o;
+          this.objects = this.objects.map((o: any) => {
+            if (o.object_type === 'photo' && o.uuid == updatedPhoto.uuid)
+              return updatedPhoto;
+            else
+              return o;
           });
 
           break;
@@ -133,7 +146,8 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
           let deletedPhoto = object.payload.photo;
           _.remove(this.objects, (o: any) => (o.object_type === 'photo' && o.uuid === deletedPhoto.uuid));
           break;
-      };
+      }
+      ;
     });
   }
 
@@ -171,7 +185,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       moreOptions = Object.assign({}, options, {'album': this.params['id']});
     } else if (this.params) {
       url = `photos`;
-      moreOptions= { album: this.params['id']};
+      moreOptions = {album: this.params['id']};
     } else {
       url = this.currentPath;
       moreOptions = options;
@@ -184,10 +198,10 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
         this.nextLink = response.page_metadata.links.next;
-        if (response.data.length==0) {
+        if (response.data.length == 0) {
           this.hasObjects = false;
         }
-      },(error: any) => {
+      }, (error: any) => {
         this.loadingService.stop('#list-photo');
       });
 
@@ -200,10 +214,10 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       this.mediaObjectService.loadMore(this.nextLink)
         .toPromise()
         .then((response: any)=> {
-        // this.loadingService.stop('#list-photo');
-        this.objects.push(...response.data);
-        this.nextLink = response.page_metadata.links.next;
-      });
+          // this.loadingService.stop('#list-photo');
+          this.objects.push(...response.data);
+          this.nextLink = response.page_metadata.links.next;
+        });
     }
 
   }
@@ -231,7 +245,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     }
     if (options.action == 'previewAllPhotos') {
       this.selectAllPhotos();
-      if(_.has(options, 'params.selectedObject')) {
+      if (_.has(options, 'params.selectedObject')) {
         this.mediaStore.setCurrentSelectedObject(_.get(options, 'params.selectedObject'));
       }
       // options = {action: 'select', params: {selectedObjects: this.selectedObjects}};
@@ -426,41 +440,41 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
     this.mediaObjectService.favourite(body).toPromise()
       .then(
-      (response: any) => {
-        // update favourite attribute
-        if (selectedIndex != -1) {
-          this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
-          // refresh objects if current page is favourite
+        (response: any) => {
+          // update favourite attribute
+          if (selectedIndex != -1) {
+            this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
+            // refresh objects if current page is favourite
 
-          // update for album detail page
-          if (params.hasOwnProperty('page') && params.page == 'album_detail') {
-            // this.object.favorite = (mode == 'add' ? true : false);
-            self.onAction({
-              action: 'updateDetailObject',
-              params: {properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}
+            // update for album detail page
+            if (params.hasOwnProperty('page') && params.page == 'album_detail') {
+              // this.object.favorite = (mode == 'add' ? true : false);
+              self.onAction({
+                action: 'updateDetailObject',
+                params: {properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}
+              });
+            }
+            if (mode == 'remove' && this.page == 'favorites') {
+              // here just handles un-favourite ONE object
+              this.objects.splice(selectedIndex, 1);
+            }
+            return;
+          }
+
+          _.map(this.selectedObjects, (object: any)=> {
+            object.favorite = (mode == 'add' ? true : false);
+          });
+          if (mode == 'remove' && this.page == 'favorites') {
+            _.remove(this.objects, (object: any) => {
+              return false == object.favorite;
             });
           }
-          if (mode == 'remove' && this.page == 'favorites') {
-            // here just handles un-favourite ONE object
-            this.objects.splice(selectedIndex, 1);
-          }
-         return;
-        }
 
-        _.map(this.selectedObjects, (object: any)=> {
-          object.favorite = (mode == 'add' ? true : false);
-        });
-        if (mode == 'remove' && this.page == 'favorites') {
-          _.remove(this.objects, (object: any) => {
-            return false == object.favorite;
-          });
+        },
+        (error: any) => {
+          console.log('error: ', error);
         }
-
-      },
-      (error: any) => {
-        console.log('error: ', error);
-      }
-    );
+      );
   }
 
   tag() {
@@ -507,16 +521,16 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
       this.photoService.updateInfo(selectedObject.id, body)
         .toPromise().then((res: any) => {
-            // stop loading
-            this.refreshPrimaryList();
-            this.loadingService.stop();
-          },
-          (error: any) => {
-            // stop loading
-            this.loadingService.stop();
-            console.log(error);
-          }
-        );
+          // stop loading
+          this.refreshPrimaryList();
+          this.loadingService.stop();
+        },
+        (error: any) => {
+          // stop loading
+          this.loadingService.stop();
+          console.log(error);
+        }
+      );
     } else if (selectedObject.object_type == 'album') {
       let body = JSON.stringify({
         name: selectedObject.name
@@ -524,16 +538,16 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
       this.albumService.updateInfo(selectedObject.id, body)
         .toPromise().then((res: any) => {
-            // stop loading
-            this.refreshPrimaryList();
-            this.loadingService.stop();
-          },
-          (error: any) => {
-            // stop loading
-            this.loadingService.stop();
-            console.log(error);
-          }
-        );
+          // stop loading
+          this.refreshPrimaryList();
+          this.loadingService.stop();
+        },
+        (error: any) => {
+          // stop loading
+          this.loadingService.stop();
+          console.log(error);
+        }
+      );
     }
   }
 
@@ -550,16 +564,16 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       });
       this.photoService.updateInfo(selectedObject.id, body)
         .toPromise().then(
-          (res: any) => {
-            // Reload primary route item
-            this.refreshPrimaryList();
+        (res: any) => {
+          // Reload primary route item
+          this.refreshPrimaryList();
 
-            this.loadingService.stop();
-          },
-          (error: any) => {
-            this.loadingService.stop();
-          }
-        );
+          this.loadingService.stop();
+        },
+        (error: any) => {
+          this.loadingService.stop();
+        }
+      );
 
     } else if (selectedObject.object_type == 'album') {
       let body = JSON.stringify({
@@ -568,14 +582,14 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       });
       this.albumService.updateInfo(selectedObject.id, body)
         .toPromise().then(
-          (res: any) => {
-            this.refreshPrimaryList();
-            this.loadingService.stop();
-          },
-          (error: any) => {
-            this.loadingService.stop();
-          }
-        );
+        (res: any) => {
+          this.refreshPrimaryList();
+          this.loadingService.stop();
+        },
+        (error: any) => {
+          this.loadingService.stop();
+        }
+      );
     }
   }
 
@@ -583,6 +597,13 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     let objType = this.selectedObjects[0].object_type;
     let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
     if (objType == 'photo') {
+
+      this.wthConfirmService.updateConfirmDialog({
+        label: {
+          accept: 'Delete'
+        }
+      });
+
       this.confirmationService.confirm({
         message: 'Are you sure to delete ' + this.selectedObjects.length + ' ' + objType + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
         accept: () => {
@@ -628,10 +649,16 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     // Ask for user confirmation before delete media items
     let photos = _.filter(params.selectedObjects, (o: any) => o.object_type == 'photo');
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
-    let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
+    let photos_count = photos.length + (photos.length > 1 ? ' photos?' : ' photo?');
 
-    if( photos.length > 0 ) {
+    if (photos.length > 0) {
       // Ask for user confirmation before deleting selected PHOTOS
+      this.wthConfirmService.updateConfirmDialog({
+        label: {
+          accept: 'Delete'
+        }
+      });
+
       this.confirmationService.confirm({
         message: 'Are you sure to delete ' + photos_count,
         accept: () => {
@@ -646,7 +673,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
               // Ask for user confirmation before deleting selected ALBUMS
               if (albums.length > 0)
-                this.onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: albums}});
+                this.onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: albums}});
             },
             (error: any) => this.loadingService.stop());
 
@@ -654,12 +681,12 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         reject: () => {
           // Ask for user confirmation before deleting selected ALBUMS
           if (albums.length > 0)
-            this.onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: albums}});
+            this.onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: albums}});
         }
       });
     } else {
       // Ask for user confirmation before deleting selected ALBUMS
-      this.onAction({action: 'openModal', params: {modalName:'deleteModal', selectedObjects: albums}});
+      this.onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: albums}});
     }
 
   }
@@ -715,9 +742,15 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
   viewDetails() {
     if (this.page != 'shared-with-me')
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {
+        queryParamsHandling: 'preserve',
+        preserveFragment: true
+      });
     else
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}] }}], {queryParamsHandling: 'preserve', preserveFragment: true} );
+      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}]}}], {
+        queryParamsHandling: 'preserve',
+        preserveFragment: true
+      });
   }
 
   slideShow() {
@@ -741,22 +774,22 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     if (['album_detail', 'albums'].indexOf(this.currentPath) > -1)
       this.albumService.addToAlbum(this.params.id, photos).take(1)
         .toPromise().then((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
-          (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
+        (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
 
     this.objects.unshift(...photos);
   }
 
   private refreshPrimaryList(): void {
-    this.router.navigate([], { queryParams: {r: new Date().getTime()}});
+    this.router.navigate([], {queryParams: {r: new Date().getTime()}});
   }
 
   private clearOutletsAndRefreshList(): void {
-    this.router.navigate(['./', {outlets: {detail: null, modal: null}}], { queryParams: {r: new Date().getTime()}});
+    this.router.navigate(['./', {outlets: {detail: null, modal: null}}], {queryParams: {r: new Date().getTime()}});
   }
 
   private selectAllPhotos() {
     this.selectedObjects.length = 0;
-    this.selectedObjects.push(..._.filter(this.objects, ['object_type','photo']));
+    this.selectedObjects.push(..._.filter(this.objects, ['object_type', 'photo']));
     this.mediaStore.selectObjects(this.selectedObjects);
   }
 
