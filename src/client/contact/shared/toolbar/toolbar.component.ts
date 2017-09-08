@@ -5,6 +5,7 @@ import { ZContactShareImportContactComponent } from '../modal/import-contact/imp
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { Constants } from '../../../core/shared/config/constants';
+import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
 
 declare var _: any;
 
@@ -17,6 +18,8 @@ declare var _: any;
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
   @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
+  @ViewChild('iCloudOAuthModal') iCloudOAuthModal: ICloudOAuthComponent;
+
   @Input() pageTitle: string = ''; // TODO will be removed
   @Input() hasBack: boolean = false;
   selectedContact: string;
@@ -47,15 +50,17 @@ export class ZContactSharedToolbarComponent implements OnInit {
 
     switch (event.name) {
       case 'google':
-        console.log('google import contact');
         this.contactService.importContactDataService.sendIn({action: 'contact:contact:open_import_progress:google'});
-
         break;
-      case 'yahoo':
+      case 'apple':
+        this.iCloudOAuthModal.open();
         break;
       case 'outlook':
         break;
       case 'others':
+        break;
+      case 'import_from_file':
+        console.log('you are importing from file');
         break;
       default:
         console.error('Unhandled import option: ', event.name);

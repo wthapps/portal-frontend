@@ -13,8 +13,8 @@
               <div class="photo-box can-click" (click)="onOptionSelected({name: data?.name})">
                 <div class="photo-box-figure">
                   <figure class="img-center-dv">
-                    <div class="photo-box-figure-in">
-                      <img [alt]="data.name" class="img-center" draggable="false" [src]="data.image">
+                    <div class="">
+                      <i [ngClass]="data.class"></i>
                     </div>
                   </figure>
                   <div class="photo-box-name">
@@ -25,6 +25,29 @@
                 </div>
               </div>
             </div>
+            <div class="row-img-item">
+              <div class="photo-box can-click">
+                <div class="photo-box-figure">
+                  <figure class="img-center-dv">
+                    <div >
+
+                      <!--<input #fileBrowse type="file" hFileSelect-->
+                             <!--style="font-size: 200px; position: absolute; top: -20px; left: -30px;"-->
+                             <!--(uploadOutput)="uploadOutput($event)"-->
+                             <!--autofocus="true">-->
+                      <h-fileUpload [auto]="true"
+                                    [icon]="'fa-file'"
+                                    [chooseLabel]="'Import from file'"
+                                    (onSelect)="select($event)"
+                                    (onProgress)="progress($event)">
+                      </h-fileUpload>
+                    </div>
+                  </figure>
+                </div>
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>

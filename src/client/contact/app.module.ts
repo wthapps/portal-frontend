@@ -31,6 +31,7 @@ import { ZContactSettingsModule } from './settings/contact-settings.module';
     CoreSharedModule.forRoot()
   ],
   declarations: [AppComponent],
+  exports: [],
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>'

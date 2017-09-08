@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { HdModalModule } from './modal/hd-modal.module';
 import { HdMultiSelectListModule } from './list/hd-list.module';
 import { HdTagInputModule } from './tag-input/tag-input.module';
+import { UploaderModule } from './components/uploader/uploader.module';
+import { HConfirmationService } from './services/confirmation.service';
 
 
 @NgModule({
@@ -12,14 +14,18 @@ import { HdTagInputModule } from './tag-input/tag-input.module';
     CommonModule,
     HdModalModule,
     HdMultiSelectListModule,
-    HdTagInputModule
+    HdTagInputModule,
+    UploaderModule
   ],
   declarations: [],
   exports: [
     HdModalModule,
     HdMultiSelectListModule,
-    HdTagInputModule
-  ]
+    HdTagInputModule,
+    UploaderModule
+  ],
+  providers: [HConfirmationService]
 })
 export class Ng2HdModule {
+
 }

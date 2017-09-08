@@ -21,6 +21,8 @@ import { ZContactSharedSettingsComponent } from './modal/settings/settings.compo
 import { ZContactMenuService } from './services/contact-menu.service';
 import { ZContactSharedActionsBarComponent } from './toolbar/actions-bar.component';
 import { ZContactPipeModule } from './pipe/pipe.module';
+import { ICloudOAuthComponent } from './modal/import-contact/icloud/icloud-oauth.component';
+import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -33,6 +35,9 @@ import { ZContactPipeModule } from './pipe/pipe.module';
     FormsModule,
     ReactiveFormsModule,
     ZContactPipeModule,
+
+    // custom component
+    Ng2HdModule,
 
     // third party libs
     TagInputModule,
@@ -51,16 +56,20 @@ import { ZContactPipeModule } from './pipe/pipe.module';
 
     //modal here
     ContactAddLabelModalComponent,
-    ZContactSharedSettingsComponent
+    ZContactSharedSettingsComponent,
+    ICloudOAuthComponent
   ],
   exports: [
     CommonModule,
     RouterModule,
     ZContactPipeModule,
 
+    // custom component
+    Ng2HdModule,
+
+
     // third party libs
     TagInputModule,
-
 
     ZContactSharedListComponent,
     ZContactSharedItemComponent,
@@ -72,7 +81,10 @@ import { ZContactPipeModule } from './pipe/pipe.module';
 
     // modal here
     ContactAddLabelModalComponent,
-    ZContactSharedSettingsComponent
+    ZContactSharedSettingsComponent,
+    ICloudOAuthComponent,
+
+
   ]
 })
 export class ZContactSharedModule {
