@@ -1,11 +1,10 @@
 import { Injectable }    from '@angular/core';
-import { ConfirmationService } from 'primeng/components/common/api';
 
 declare var _: any;
 
 @Injectable()
 export class DeactivateConfirmService {
-  constructor(private confirmationService: ConfirmationService) {
+  constructor() {
   }
 
   activate(x: any, y: any): any {

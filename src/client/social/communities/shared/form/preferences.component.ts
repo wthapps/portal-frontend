@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WTHConfirmService } from '../../../../core/shared/services/wth-confirm.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
@@ -44,7 +44,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   constructor(private fb: FormBuilder,
               private socialService: SocialService,
               private loadingService: LoadingService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WTHConfirmService,
               private userService: UserService) {
 
     this.form = fb.group({
@@ -116,7 +116,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
 
   resetSettings() {
     this.modal.close();
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to reset settings',
       header: 'Reset Default',
       accept: () => {

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/map';
@@ -10,7 +9,7 @@ import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
 import { ZMediaSharingService } from '../modal/sharing/sharing.service';
-import { Post } from '../../../../../social/shared/post/shared/post.model';
+import { WTHConfirmService } from '../../../services/wth-confirm.service';
 
 declare let _: any;
 declare let saveAs: any;
@@ -47,7 +46,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
 
   constructor(protected route: ActivatedRoute,
               protected router: Router,
-              protected confirmationService: ConfirmationService,
+              protected wthConfirmService: WTHConfirmService,
               protected loadingService: LoadingService,
               protected photoService: PhotoService,
               protected sharingService?: ZMediaSharingService
@@ -137,7 +136,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
 
   confirmUpdate(payload: any): Promise<any> {
     return new Promise<any>((resolve: any) => {
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
         header: 'Save Photo',
         accept: () => {
@@ -160,7 +159,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   confirmDelete(payload: any): Promise<any> {
     // Ask for user confirmation before deleting selected PHOTOS
     return new Promise<any>((resolve: any) => {
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: `Are you sure to delete photo ${this.photo.name}`,
         accept: () => {
           this.loadingService.start();

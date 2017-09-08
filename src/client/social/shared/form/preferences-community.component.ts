@@ -13,6 +13,7 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoCommunityService } from '../services/community.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -38,7 +39,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
               private loadingService: LoadingService,
               private userService: UserService,
               private communityService: SoCommunityService,
-              private confirmationService: ConfirmationService) {
+              private wthConfirmService: WTHConfirmService) {
     this.form = fb.group({
       'setting_notification_posts': [false],
       'setting_notification_request': [false]
@@ -104,7 +105,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
   resetSettings() {
     this.modal.close();
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to reset settings',
       header: 'Reset Default',
       accept: () => {

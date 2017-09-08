@@ -234,14 +234,16 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   delete() {
-    this.wthConfirmService.updateConfirmDialog({
-      label: {
-        accept: 'Delete',
-        reject: 'Cancel',
-      }
-    });
+    // this.wthConfirmService.updateConfirmDialog({
+    //   label: {
+    //     accept: 'Delete',
+    //     reject: 'Cancel',
+    //   }
+    // });
 
     this.confirmation.confirm({
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
       message: 'Are you sure you want to delete this Post?',
       header: 'Delete Post',
       accept: () => {

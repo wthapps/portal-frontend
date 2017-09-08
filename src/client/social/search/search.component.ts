@@ -37,8 +37,6 @@ export class ZSocialSearchResultComponent implements OnDestroy {
 
   constructor(private router: Router,
               public serviceManager: ServiceManager,
-              private loadingService: LoadingService,
-              private confirmationService: ConfirmationService,
               private socialService: SocialService) {
 
     this.events = this.router.events

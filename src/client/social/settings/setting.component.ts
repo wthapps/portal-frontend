@@ -18,7 +18,6 @@ export class ZSocialSettingComponent implements OnInit {
   user: SoUser = new SoUser();
 
   constructor(private socialService: SocialService,
-              private confirmationService: ConfirmationService,
               private wthConfirmService: WTHConfirmService) {
   //
   }
@@ -38,14 +37,9 @@ export class ZSocialSettingComponent implements OnInit {
   }
 
   resetSettings() {
-    this.wthConfirmService.updateConfirmDialog({
-      label: {
-        accept: 'Reset',
-        reject: 'Cancel',
-      }
-    });
-
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Reset',
+      rejectLabel: 'Cancel',
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {

@@ -11,6 +11,7 @@ import { BasePhotoDetailComponent } from '../../core/shared/components/photo/det
 import { CommonEvent } from '../../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
 import { ConversationService } from '../conversation/conversation.service';
+import { WTHConfirmService } from '../../core/shared/services/wth-confirm.service';
 
 declare let _: any;
 
@@ -26,14 +27,14 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
-    protected confirmationService: ConfirmationService,
+    protected wthConfirmService: WTHConfirmService,
     protected loadingService: LoadingService,
     protected chatService: ChatService,
     protected pubSubEventService: CommonEventService,
     protected conversationService: ConversationService,
     protected photoService: PhotoService
   ) {
-    super(route, router, confirmationService, loadingService, photoService);
+    super(route, router, wthConfirmService, loadingService, photoService);
   }
 
   ngOnInit() {

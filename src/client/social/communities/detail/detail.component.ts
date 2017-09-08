@@ -21,6 +21,7 @@ import { PhotoModalDataService } from '../../../core/shared/services/photo-modal
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 import { User } from '../../../core/shared/models/user.model';
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare let _: any;
 declare let $: any;
@@ -110,7 +111,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WTHConfirmService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private photoSelectDataService: PhotoModalDataService,
@@ -277,7 +278,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   deleteMember(user: any) {
     this.user = user;
     console.debug('user: ', user);
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
       message: `Are you sure to delete member ${this.user.name} from the community?`,
       header: 'Delete Member',
       accept: () => {
@@ -300,7 +303,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   makeAdmin(user: any) {
     this.user = user;
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Done',
+      rejectLabel: 'Cancel',
       message: `Are you sure to change role of member ${this.user ? this.user.name : ''} to admin?`,
       header: 'Make admin',
       accept: () => {

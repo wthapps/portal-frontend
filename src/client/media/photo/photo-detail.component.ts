@@ -8,6 +8,7 @@ import { PhotoService } from '../../core/shared/services/photo.service';
 import { BasePhotoDetailComponent } from '../../core/shared/components/photo/detail/base-photo-detail.component';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { ZMediaSharingService } from '../../core/shared/components/photo/modal/sharing/sharing.service';
+import { WTHConfirmService } from '../../core/shared/services/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -23,12 +24,12 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
-    protected confirmationService: ConfirmationService,
+    protected wthConfirmService: WTHConfirmService,
     protected loadingService: LoadingService,
     protected photoService: PhotoService,
     protected sharingService: ZMediaSharingService
   ) {
-    super(route, router, confirmationService, loadingService, photoService, sharingService);
+    super(route, router, wthConfirmService, loadingService, photoService, sharingService);
   }
 
   doEvent(event: any) {

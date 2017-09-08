@@ -10,6 +10,7 @@ import { Constants } from '../../../core/shared/config/constants';
 import { UserService } from '../../../core/shared/services/user.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare let _: any;
 /**
@@ -34,7 +35,7 @@ export class SoCommunityService  {
               private userService: UserService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
-              private confirmationService: ConfirmationService  ) {
+              private wthConfirmService: WTHConfirmService ) {
   }
 
 
@@ -57,7 +58,7 @@ export class SoCommunityService  {
     let pickAnotherAdmin = _.find(community.admins, (a: any) => a.id == this.userService.profile.id) != undefined  && !enoughAdmins;
 
     return new Promise<any>((resolve, reject) => {
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: pickAnotherAdmin ?
           `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
           `Are you sure to leave the community ${community.name}?`,
@@ -86,7 +87,7 @@ export class SoCommunityService  {
 
   confirmDeleteCommunity(community: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: `Are you sure to delete the community ${community.name}`,
         header: 'Delete Community',
         accept: () => {

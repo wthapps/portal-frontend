@@ -16,12 +16,10 @@
   <wth-loading></wth-loading>
   <p-confirmDialog header="Confirmation" width="670" #cd>
     <p-footer>
-      <button class="btn btn-outline-default btn-min" type="button" pButton icon=""
-              label="{{ confirmDialog?.label?.reject ? confirmDialog?.label?.reject : 'Cancel' }}"
-              (click)="cd.reject()"></button>
-      <button class="btn btn-outline-primary btn-min" type="button" pButton icon=""
-              label="{{ confirmDialog?.label?.accept ? confirmDialog?.label?.accept : 'Done' }}"
-              (click)="cd.accept()"></button>
+      <button class="btn btn-outline-default btn-min" type="button" icon="fa-close"
+              (click)="cd.reject()">{{(confirmInfo$ | async)?.rejectLabel}}</button>
+      <button class="btn btn-outline-primary btn-min" type="button" icon="fa-check"
+              (click)="cd.accept()">{{(confirmInfo$ | async)?.acceptLabel}}</button>
     </p-footer>
   </p-confirmDialog>
   <post-photo-select></post-photo-select>

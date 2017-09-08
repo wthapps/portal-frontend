@@ -13,6 +13,7 @@ import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
 import { ApiBaseService } from "../../../services/apibase.service";
 import { ConfirmationService } from "primeng/components/common/confirmationservice";
+import { WTHConfirmService } from '../../../services/wth-confirm.service';
 
 declare var $: any;
 declare var _: any;
@@ -53,7 +54,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
               private navigateService: WTHNavigateService,
               private location: Location,
               private apiBaseService: ApiBaseService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WTHConfirmService,
               private commonEventService: CommonEventService
               // private labelService: LabelService
   ) {
@@ -115,7 +116,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
   }
 
   deleteLabel(label :any) {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to delete this label ?',
       header: 'Delete label',
       accept: () => {
