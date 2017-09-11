@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CountryService } from '../../core/shared/components/countries/countries.service';
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
 
@@ -29,7 +29,7 @@ export class ZContactSettingsComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private countryService: CountryService,
               private apiBaseService: ApiBaseService,
-              private confirmationService: ConfirmationService) {
+              private wthConfirmService: WthConfirmService) {
     // Init default
     this.form = this.fb.group(DEFAULT_SETTING);
   }
@@ -59,7 +59,7 @@ export class ZContactSettingsComponent implements OnInit {
   }
 
   confirmReset() {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {

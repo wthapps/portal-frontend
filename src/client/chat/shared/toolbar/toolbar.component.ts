@@ -2,9 +2,8 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
-import { ConfirmationService } from 'primeng/components/common/api';
 import { Constants } from '../../../core/shared/config/constants';
-import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare let $: any;
 declare let _: any;
@@ -30,8 +29,7 @@ export class ZChatToolbarComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
   constructor(private chatService: ChatService,
-              private confirmationService: ConfirmationService,
-              private wthConfirmService: WTHConfirmService) {
+              private wthConfirmService: WthConfirmService) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }
 
@@ -98,7 +96,7 @@ export class ZChatToolbarComponent implements OnInit {
     });
 
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to delete this conversation ?',
       header: 'Delete Conversation',
       accept: () => {
@@ -135,7 +133,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onAddToBlackList(user: any) {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to add this contact to black list ?',
       header: 'Add To Black List',
       accept: () => {

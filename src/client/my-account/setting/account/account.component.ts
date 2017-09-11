@@ -7,12 +7,12 @@ import {
   Validators
 } from '@angular/forms';
 
-import { ConfirmationService } from 'primeng/components/common/api';
 
 import { UserService } from '../../../core/shared/services/user.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '../../../core/shared/config/constants';
 
 declare var $: any;
@@ -41,7 +41,7 @@ export class MyAccountComponent implements OnInit {
   constructor(private fb: FormBuilder,
               public userService: UserService,
               private toastsService: ToastsService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WthConfirmService,
               private loadingService: LoadingService) {
 
     this.form = fb.group({
@@ -122,7 +122,7 @@ export class MyAccountComponent implements OnInit {
      We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
      We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: bodyText,
       header: 'Cancel Membership',
       accept: () => {
@@ -148,7 +148,7 @@ export class MyAccountComponent implements OnInit {
      If you still want to delete your account, click "Delete My Account". <br>`;
     let body = JSON.stringify({permanent_deleted: true});
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: bodyText,
       header: 'Delete Account',
       accept: () => {

@@ -139,7 +139,7 @@
           <!-- Sender -->
           <message-actions-item
             *ngIf="message.byMe"
-            [avatar]=message.display.share_contact.profile_image
+            [avatar]=message?.display?.share_contact?.profile_image
             [url]="'profile/' + message.display.share_contact.uuid"
             [name]=message.display.share_contact.name
             [status]="'Share contact'"
@@ -149,7 +149,7 @@
           <!-- Receiver -->
           <message-actions-item
             *ngIf="!message.byMe"
-            [avatar]=message.display.share_contact.profile_image
+            [avatar]=message?.display?.share_contact?.profile_image
             [url]="'profile/' + message.display.share_contact.uuid"
             [name]=message.display.share_contact.name
             [status]="'Share contact'"
@@ -164,7 +164,7 @@
           <!-- sent_request -->
           <message-actions-item
             *ngIf="message.byMe && contactItem.value.status == 'sent_request'"
-            [avatar]=message.receiver.profile_image
+            [avatar]=message.receiver?.profile_image
             [url]="'profile/' + message.receiver.uuid"
             [name]=message.receiver.name
             [status]="'Requested'"
@@ -174,7 +174,7 @@
           <!-- contact already accepted -->
           <message-actions-item
             *ngIf="message.byMe && contactItem.value.status == 'accepted'"
-            [avatar]=message.receiver.profile_image
+            [avatar]=message.receiver?.profile_image
             [url]="'profile/' + message.receiver.uuid"
             [name]=message.receiver.name
             [status]="'accepted your request'"

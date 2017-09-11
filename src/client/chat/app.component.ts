@@ -8,7 +8,7 @@ import { Config } from '../core/shared/config/env.config';
 import { ChatService } from './shared/services/chat.service';
 import { ConfirmDialogModel } from '../core/shared/models/confirm-dialog.model';
 import { Constants } from '../core/shared/config/constants';
-import { WTHConfirmService } from '../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
 
 
 /**
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private chatService: ChatService,
-              private wthConfirmService: WTHConfirmService) {
+              private wthConfirmService: WthConfirmService) {
     console.log('Environment config', Config);
 
     this.wthConfirmService.confirmDialog$.subscribe(

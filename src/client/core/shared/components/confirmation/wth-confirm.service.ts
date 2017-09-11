@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+import { Confirmation } from 'primeng/components/common/confirmation';
 
 export interface ConfirmInfo {
   message: string,
@@ -24,7 +25,7 @@ const initConfirmInfo: ConfirmInfo = {
 
 
 @Injectable()
-export class WTHConfirmService {
+export class WthConfirmService {
   confirmDialog$: any;
   private confirmDialogSubject = new BehaviorSubject<ConfirmInfo>(initConfirmInfo);
 
@@ -40,7 +41,7 @@ export class WTHConfirmService {
     let moreOption = Object.assign({}, initConfirmInfo, option);
 
     this.confirmDialogSubject.next(moreOption);
-    this.confirmationService.confirm(moreOption);
+    this.confirmationService.confirm(option);
 
     return this;
   }

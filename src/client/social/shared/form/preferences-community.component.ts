@@ -7,13 +7,12 @@ import {
 } from '@angular/forms';
 
 import 'rxjs/add/operator/toPromise';
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { UserService } from '../../../core/shared/services/user.service';
 import { SoCommunityService } from '../services/community.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
-import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -39,7 +38,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
               private loadingService: LoadingService,
               private userService: UserService,
               private communityService: SoCommunityService,
-              private wthConfirmService: WTHConfirmService) {
+              private wthConfirmService: WthConfirmService) {
     this.form = fb.group({
       'setting_notification_posts': [false],
       'setting_notification_request': [false]

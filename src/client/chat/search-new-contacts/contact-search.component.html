@@ -20,7 +20,7 @@
            *ngFor="let contact of newContacts | chatUserNew:contactItem">
         <div class="media media-user-list">
           <div class="media-body">
-            <z-chat-share-user-icon [image]="contact.profile_image" [name]="contact.name" [size]="'xs'"
+            <z-chat-share-user-icon [image]="contact?.profile_image" [name]="contact.name" [size]="'xs'"
                                     [groupType]="'couple'" [userId]="contact.id">
             </z-chat-share-user-icon>
           </div>

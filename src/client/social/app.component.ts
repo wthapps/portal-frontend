@@ -8,11 +8,6 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 
 import { Config } from '../core/shared/config/env.config';
-import { Constants } from '../core/shared/config/constants';
-import { ConfirmDialogModel } from '../core/shared/models/confirm-dialog.model';
-import { WTHConfirmService, ConfirmInfo } from '../core/shared/services/wth-confirm.service';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
-
 
 
 /**
@@ -28,14 +23,13 @@ import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  confirmInfo$: Observable<ConfirmInfo>;
+  // confirmInfo$: Observable<ConfirmInfo>;
 
-  constructor(private router: Router,
-              private wthConfirmService: WTHConfirmService) {
+  constructor(private router: Router) {
     console.log('Environment config', Config);
-
-    this.confirmInfo$ = this.wthConfirmService.confirmDialog$
-      .do((res: any) => console.debug('confirmInfo$ : ', res));
+    //
+    // this.confirmInfo$ = this.wthConfirmService.confirmDialog$
+    //   .do((res: any) => console.debug('confirmInfo$ : ', res));
   }
 
   ngOnInit() {

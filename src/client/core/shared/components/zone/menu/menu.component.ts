@@ -12,8 +12,7 @@ import { Constants } from '../../../config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
 import { ApiBaseService } from "../../../services/apibase.service";
-import { ConfirmationService } from "primeng/components/common/confirmationservice";
-import { WTHConfirmService } from '../../../services/wth-confirm.service';
+import { WthConfirmService } from '../../confirmation/wth-confirm.service';
 
 declare var $: any;
 declare var _: any;
@@ -54,7 +53,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
               private navigateService: WTHNavigateService,
               private location: Location,
               private apiBaseService: ApiBaseService,
-              private wthConfirmService: WTHConfirmService,
+              private wthConfirmService: WthConfirmService,
               private commonEventService: CommonEventService
               // private labelService: LabelService
   ) {

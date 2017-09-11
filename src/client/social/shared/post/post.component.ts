@@ -27,7 +27,7 @@ import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { SoPost } from '../../../core/shared/models/social_network/so-post.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { Constants } from '../../../core/shared/config/constants';
 import {
@@ -40,7 +40,6 @@ import { SoComment } from '../../../core/shared/models/social_network/so-comment
 import { BaseEvent } from '../../../core/shared/event/base-event';
 import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
 import { PhotoService } from '../../../core/shared/services/photo.service';
-import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 
 declare var $: any;
@@ -80,12 +79,11 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   constructor(public apiBaseService: ApiBaseService,
               private photoService: PhotoService,
               private loading: LoadingService,
-              private confirmation: ConfirmationService,
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private toast: ToastsService,
-              private wthConfirmService: WTHConfirmService) {
+              private wthConfirmService: WthConfirmService) {
     super();
 
     this.photoService.modifiedPhotos$

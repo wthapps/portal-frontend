@@ -13,7 +13,7 @@
                *ngFor="let contact of contacts | wthFilterBy:'name':filter">
             <div class="media media-user-list media-middle">
               <div class="media-body">
-                <z-chat-share-user-icon [image]="contact.profile_image"
+                <z-chat-share-user-icon [image]="contact?.profile_image"
                                         [name]="contact.name"
                                         [size]="'xs'"
                                         [groupType]="'couple'"

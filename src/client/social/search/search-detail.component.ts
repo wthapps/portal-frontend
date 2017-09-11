@@ -3,8 +3,6 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ServiceManager } from '../../core/shared/services/service-manager';
 import { Constants } from '../../core/shared/config/constants';
 import { SocialService } from '../shared/services/social.service';
-import { ConfirmationService } from 'primeng/components/common/api';
-import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { UrlService } from '../../core/shared/services/url.service';
 
 declare var _: any;

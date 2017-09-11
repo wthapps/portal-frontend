@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { WTHConfirmService } from '../../../../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../../../../core/shared/components/confirmation/wth-confirm.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
@@ -44,7 +44,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   constructor(private fb: FormBuilder,
               private socialService: SocialService,
               private loadingService: LoadingService,
-              private wthConfirmService: WTHConfirmService,
+              private wthConfirmService: WthConfirmService,
               private userService: UserService) {
 
     this.form = fb.group({

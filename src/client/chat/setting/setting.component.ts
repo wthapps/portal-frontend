@@ -6,9 +6,8 @@ import {
   AbstractControl,
   FormBuilder
 } from '@angular/forms';
-import { ConfirmationService } from 'primeng/components/common/api';
 import { ChatService } from '../shared/services/chat.service';
-import { WTHConfirmService } from '../../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -27,8 +26,7 @@ export class ZChatSettingComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private location: Location,
               private chatService: ChatService,
-              private confirmationService: ConfirmationService,
-              private wthConfirmService: WTHConfirmService) {
+              private wthConfirmService: WthConfirmService) {
   }
 
   ngOnInit() {
@@ -67,7 +65,7 @@ export class ZChatSettingComponent implements OnInit {
       }
     });
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure to delete conversation?',
       header: 'Delete',
       accept: () => {
@@ -83,7 +81,7 @@ export class ZChatSettingComponent implements OnInit {
       }
     });
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {

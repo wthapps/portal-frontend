@@ -9,7 +9,7 @@ import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
 import { ZMediaSharingService } from '../modal/sharing/sharing.service';
-import { WTHConfirmService } from '../../../services/wth-confirm.service';
+import { WthConfirmService } from '../../confirmation/wth-confirm.service';
 
 declare let _: any;
 declare let saveAs: any;
@@ -46,7 +46,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
 
   constructor(protected route: ActivatedRoute,
               protected router: Router,
-              protected wthConfirmService: WTHConfirmService,
+              protected wthConfirmService: WthConfirmService,
               protected loadingService: LoadingService,
               protected photoService: PhotoService,
               protected sharingService?: ZMediaSharingService

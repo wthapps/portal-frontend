@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '../../core/shared/config/constants';
 
 @Component({
@@ -15,7 +15,7 @@ export class ZChatContactReceiveComponent implements OnInit {
   users: any;
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 
-  constructor(private chatService: ChatService, private confirmationService: ConfirmationService) {
+  constructor(private chatService: ChatService, private wthConfirmService: WthConfirmService) {
   }
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class ZChatContactReceiveComponent implements OnInit {
   }
 
   addBlackList(contact: any) {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to add this contact to black list ?',
       header: 'Add To Black List',
       accept: () => {

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CookieService } from 'ngx-cookie';
-import { ConfirmationService } from 'primeng/components/common/api';
-
+import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { UserService } from '../../core/shared/services/user.service';
@@ -25,7 +24,7 @@ export class MyPaymentConfirmComponent implements OnInit {
 
   constructor(private router: Router,
               private toastsService: ToastsService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WthConfirmService,
               private loadingService: LoadingService,
               private userService: UserService,
               private cookieService: CookieService) {
@@ -54,7 +53,7 @@ export class MyPaymentConfirmComponent implements OnInit {
 
     let body: string = JSON.stringify({plan_id: this.selected_plan.id});
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Confirm upgrading to ' + this.selected_plan.name + '. WTHApps will charged $' + this.selected_plan.price + ' per month',
       header: 'Update Plan',
       accept: () => {

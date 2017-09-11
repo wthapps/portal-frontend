@@ -14,7 +14,6 @@ import { CommonEventAction } from '../core/shared/services/common-event/common-e
 import { CommonEvent } from '../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { LabelEditModalComponent } from './label/label-edit-modal.component';
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { LabelService } from './label/label.service';
 import { Subject } from 'rxjs/Subject';
 import { Label } from './label/label.model';
@@ -23,8 +22,7 @@ import { ZContactService } from './shared/services/contact.service';
 import { Constants } from '../core/shared/config/constants';
 
 import { ConfirmDialogModel } from '../core/shared/models/confirm-dialog.model';
-import { constants } from 'os';
-import { WTHConfirmService } from '../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
 
 /**
  * This class represents the main application component.
@@ -58,10 +56,9 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   constructor(private router: Router,
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
-              private confirmationService: ConfirmationService,
               public contactService: ZContactService,
               private labelService: LabelService,
-              private wthConfirmService: WTHConfirmService) {
+              private wthConfirmService: WthConfirmService) {
     console.log('Environment config', Config, this.confirmDialog);
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
@@ -111,7 +108,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.modal.open();
         break;
       // case 'contact:label:delete_confirm':
-      //   this.confirmationService.confirm({
+      //   this.wthConfirmService.confirm({
       //     message: 'Are you sure to this label',
       //     accept: () => {
       //       event.action = 'contact:label:delete';

@@ -7,7 +7,7 @@
 // import { LoadingService } from '../../../../core/partials/loading/loading.service';
 // import { MediaListComponent } from '../../media/media-list.component';
 // import { Router } from '@angular/router';
-// import { ConfirmationService } from 'primeng/components/common/api';
+// import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 // import { ActivatedRoute } from '@angular/router';
 //
 // declare var _: any;

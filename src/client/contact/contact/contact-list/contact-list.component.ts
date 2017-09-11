@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { Config } from '../../../core/shared/config/env.config';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
@@ -24,6 +23,7 @@ import { InvitationCreateModalComponent } from '../../../core/shared/components/
 import { Recipient } from '../../../core/shared/components/invitation/recipient.model';
 import { InvitationService } from '../../../core/shared/components/invitation/invitation.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
 @Component({
@@ -58,7 +58,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private confirmationService: ConfirmationService,
+    private wthConfirmService: WthConfirmService,
     private labelService: LabelService,
     private loadingService: LoadingService,
     private commonEventService: CommonEventService,
