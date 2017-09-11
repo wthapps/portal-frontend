@@ -85,7 +85,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
           .toPromise()
           .then(
             (response: any) => {
-              console.log('delete ok!!!!');
+              console.log('cancel ok!!!!');
             });
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
@@ -98,6 +98,21 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
 
         break;
     }
+  }
+
+  drop(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
+    let data = e.dataTransfer.files;
+    if(data.length > 0) {
+      this.chatService.createUploadingFile(data);
+    }
+    return false;
+  }
+
+  drag(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   ngOnDestroy() {
