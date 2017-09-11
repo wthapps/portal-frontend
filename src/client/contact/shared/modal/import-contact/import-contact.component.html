@@ -38,8 +38,10 @@
                       <h-fileUpload [auto]="true"
                                     [icon]="'fa-file'"
                                     [chooseLabel]="'Import from file'"
+                                    customUpload="true"
                                     (onSelect)="select($event)"
-                                    (onProgress)="progress($event)">
+                                    (onProgress)="progress($event)"
+                                    (uploadHandler)="handleUpload($event)">
                       </h-fileUpload>
                     </div>
                   </figure>

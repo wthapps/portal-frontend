@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/cor
 import { ZContactService } from '../../services/contact.service';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { HConfirmationService } from '../../../../core/shared/ng2-hd/services/confirmation.service';
+import { GenericFileService } from '../../../../core/shared/services/generic-file.service';
+import { FileUploadHelper } from '../../../../core/shared/helpers/file/file-upload.helper';
+import { GenericFile } from '../../../../core/shared/models/generic-file.model';
 
 @Component({
   moduleId: module.id,
@@ -25,8 +28,12 @@ export class ZContactShareImportContactComponent {
   uploadInput: EventEmitter<any>;
   humanizeBytes: Function;
   dragOver: boolean;
+  private fileUploadHelper: FileUploadHelper;
 
-  constructor(private confirmationService: HConfirmationService) {
+  constructor(
+    private fileService: GenericFileService,
+    private confirmationService: HConfirmationService) {
+      this.fileUploadHelper = new FileUploadHelper();
   }
 
   // Format: { name }
@@ -45,47 +52,47 @@ export class ZContactShareImportContactComponent {
 
   select(event: any) {
     console.log('select event::::', event);
-    this.confirmationService.confirm({
-      message: 'testing customize label accepted?',
-      header: 'My Hosts',
-      acceptLabel: 'My customer accept',
-      accept: () => {
-        console.log('accepted::::');
-      }
-    });
   }
 
-  progress(event: any) {
-    console.log('progress event::::', event);
-  }
+  handleUpload(event: any) {
+    // show importing dock
 
-  uploadOutput(output: any): void {
 
-    console.log('inside upload Output event::::', output);
-
-    // if (output.type === 'allAddedToQueue') {
-    //   const event: any = {
-    //     type: 'uploadAll',
-    //     url: 'http://ngx-uploader.com/upload',
-    //     method: 'POST',
-    //     data: { foo: 'bar' },
-    //     concurrency: this.formData.concurrency
-    //   };
-    //
-    //   this.uploadInput.emit(event);
-    // } else if (output.type === 'addedToQueue'  && typeof output.file !== 'undefined') {
-    //   this.files.push(output.file);
-    // } else if (output.type === 'uploading' && typeof output.file !== 'undefined') {
-    //   const index = this.files.findIndex(file => typeof output.file !== 'undefined' && file.id === output.file.id);
-    //   this.files[index] = output.file;
-    // } else if (output.type === 'removed') {
-    //   this.files = this.files.filter((file: UploadFile) => file !== output.file);
-    // } else if (output.type === 'dragOver') {
-    //   this.dragOver = true;
-    // } else if (output.type === 'dragOut') {
-    //   this.dragOver = false;
-    // } else if (output.type === 'drop') {
-    //   this.dragOver = false;
+    // upload files
+    // for (let i = 0; i < event.files.length; i++) {
+    //   this.upload(event.files[i]);
     // }
+    console.log('uploading::::', event);
+
+    this.fileUploadHelper.upload(event.files, (event: any, file: any) => {
+      let genericFile = new GenericFile({
+        file: event.target['result'],
+        name: file.name,
+        content_type: file.type
+      });
+      // update current message and broadcast on server
+      this.fileService.create(genericFile)
+        .subscribe((response: any) => {
+          console.log('send file successfully', response);
+        });
+    });
+
+    // show result after importing from file
+  }
+
+  upload(file: any) {
+    this.fileUploadHelper.upload(file, (event: any, file: any) => {
+      let genericFile = new GenericFile({
+        file: event.target['result'],
+        name: file.name,
+        content_type: file.type
+      });
+      // update current message and broadcast on server
+      this.fileService.create(genericFile)
+        .subscribe((response: any) => {
+          console.log('send file successfully', response);
+        });
+    });
+
   }
 }

@@ -7,7 +7,7 @@ import { ApiBaseService } from './apibase.service';
 declare var _: any;
 
 @Injectable()
-export class GenericeFileService extends BaseEntityService<GenericFile> {
+export class GenericFileService extends BaseEntityService<GenericFile> {
 
 
   constructor(protected api: ApiBaseService) {
