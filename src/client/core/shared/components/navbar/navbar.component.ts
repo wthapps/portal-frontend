@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Constants } from '../../config/constants';
 import { WTHNavigateService } from '../../services/wth-navigate.service';
@@ -20,8 +20,6 @@ declare let App: any; //This App stands for ActionCable
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() logo: string = '';
-
   tooltip: any = Constants.tooltip;
 
   constructor(public userService: UserService,

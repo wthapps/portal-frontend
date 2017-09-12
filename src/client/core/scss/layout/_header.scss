@@ -7,6 +7,13 @@ Header
   @include box-shadow($box-shadow-bottom);
 }
 
+.navbar-default {
+  .navbar-toggle {
+    //border-color: $btn-default-border;
+    border-color: $btn-default-color;
+  }
+}
+
 .navbar-searchTop {
   @media (min-width: $screen-sm-min) {
     width: 250px;
