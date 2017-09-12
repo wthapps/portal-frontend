@@ -16,7 +16,8 @@
         <div class="btn-group header-nav-apps">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                   aria-haspopup="true"
-                  aria-expanded="false">
+                  aria-expanded="false"
+                  pTooltip="{{ tooltip.wthApps }}" tooltipPosition="bottom">
             <i class="fa fa-th"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
@@ -48,7 +49,8 @@
         </div>
 
         <div class="btn-group header-nav-notification visible-xs-inline-block">
-          <button (click)="viewAllNotifications()" type="button" class="btn btn-default dropdown-toggle">
+          <button (click)="viewAllNotifications()" type="button" class="btn btn-default dropdown-toggle"
+                  pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
             <i class="fa fa-bell-o"></i>
             <span class="notification-num" *ngIf="notificationService.newNotifCount > 0">
               {{ notificationService.newNotifCount }}
@@ -58,7 +60,8 @@
 
         <div class="btn-group header-nav-notification hidden-xs">
           <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
             <i class="fa fa-bell-o"></i>
             <span class="notification-num" *ngIf="notificationService.newNotifCount > 0">
               {{ notificationService.newNotifCount }}
