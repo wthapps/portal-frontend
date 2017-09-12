@@ -75,6 +75,9 @@
         border-color: transparent !important;
         @include box-shadow(none !important);
       }
+      &:hover, &:focus {
+        color: $theme-color;
+      }
     }
 
     &.open {
@@ -100,6 +103,21 @@
       }
     }
 
+  }
+}
+
+.header-nav-link {
+  .btn-link {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-weight: 700;
+    font-size: 18px;
+    color: $text-color;
+    font-family: $font-style;
+    &:hover, &:focus {
+      color: $theme-color;
+      text-decoration: none;
+    }
   }
 }
 
@@ -209,6 +227,9 @@
       font-family: $font-style;
       &, &:hover, &:focus {
         background-color: transparent !important;
+      }
+      &:hover, &:focus {
+        color: $theme-color;
       }
     }
   }

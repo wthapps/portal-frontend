@@ -1,5 +1,9 @@
 <div class="wrapper">
-  <wth-header></wth-header>
+  <wth-header-navbar class="header">
+    <a [routerLink]="['/']" class="navbar-brand" href="#">
+      <img src="/assets/images_new/logo.png" alt="WTHApps">
+    </a>
+  </wth-header-navbar>
   <main class="main">
     <router-outlet></router-outlet>
   </main>
