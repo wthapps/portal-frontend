@@ -59,13 +59,8 @@ export class ZChatSettingComponent implements OnInit {
 
 
   onDeleteChat() {
-    this.wthConfirmService.updateConfirmDialog({
-      label: {
-        accept: 'Delete'
-      }
-    });
-
     this.wthConfirmService.confirm({
+      acceptLabel: 'Delete',
       message: 'Are you sure to delete conversation?',
       header: 'Delete',
       accept: () => {
@@ -75,13 +70,8 @@ export class ZChatSettingComponent implements OnInit {
   }
 
   resetSettings() {
-    this.wthConfirmService.updateConfirmDialog({
-      label: {
-        accept: 'Reset'
-      }
-    });
-
     this.wthConfirmService.confirm({
+      acceptLabel: 'Reset',
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {

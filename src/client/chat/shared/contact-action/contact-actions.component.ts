@@ -73,14 +73,8 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   deleteContact() {
-
-    this.wthConfirmService.updateConfirmDialog({
-      label: {
-        accept: 'Delete'
-      }
-    });
-
     this.wthConfirmService.confirm({
+      acceptLabel: 'Delete',
       message: 'Are you sure you want to delete this contact ?',
       header: 'Delete Contact',
       accept: () => {

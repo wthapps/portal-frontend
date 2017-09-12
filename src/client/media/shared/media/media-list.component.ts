@@ -595,14 +595,8 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     let objType = this.selectedObjects[0].object_type;
     let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
     if (objType == 'photo') {
-
-      this.wthConfirmService.updateConfirmDialog({
-        label: {
-          accept: 'Delete'
-        }
-      });
-
       this.wthConfirmService.confirm({
+        acceptLabel: 'Delete',
         message: 'Are you sure to delete ' + this.selectedObjects.length + ' ' + objType + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
         accept: () => {
           let body = JSON.stringify({ids: objIds});
@@ -651,13 +645,8 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
     if (photos.length > 0) {
       // Ask for user confirmation before deleting selected PHOTOS
-      this.wthConfirmService.updateConfirmDialog({
-        label: {
-          accept: 'Delete'
-        }
-      });
-
       this.wthConfirmService.confirm({
+        acceptLabel: 'Delete',
         message: 'Are you sure to delete ' + photos_count,
         accept: () => {
 

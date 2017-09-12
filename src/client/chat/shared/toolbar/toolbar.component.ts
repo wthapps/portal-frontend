@@ -89,14 +89,8 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onDeleteConversation() {
-    this.wthConfirmService.updateConfirmDialog({
-      label: {
-        accept: 'Delete'
-      }
-    });
-
-
     this.wthConfirmService.confirm({
+      acceptLabel: 'Delete',
       message: 'Are you sure you want to delete this conversation ?',
       header: 'Delete Conversation',
       accept: () => {

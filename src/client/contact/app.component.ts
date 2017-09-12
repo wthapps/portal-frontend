@@ -23,6 +23,7 @@ import { Constants } from '../core/shared/config/constants';
 
 import { ConfirmDialogModel } from '../core/shared/models/confirm-dialog.model';
 import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
+import { GoogleApiService } from './shared/services/google-api.service';
 
 /**
  * This class represents the main application component.
@@ -58,6 +59,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private commonEventService: CommonEventService,
               public contactService: ZContactService,
               private labelService: LabelService,
+              private googleApiService: GoogleApiService,
               private wthConfirmService: WthConfirmService) {
     console.log('Environment config', Config, this.confirmDialog);
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
@@ -68,11 +70,11 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       .subscribe((labels: any[]) => {
         this.labels = labels;
       });
-    this.wthConfirmService.confirmDialog$.subscribe(
-      (res: any) => {
-        this.confirmDialog = res;
-      }
-    );
+    // this.wthConfirmService.confirmDialog$.subscribe(
+    //   (res: any) => {
+    //     this.confirmDialog = res;
+    //   }
+    // );
   }
 
   ngOnInit() {
@@ -85,7 +87,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
     this.labelService.getAllLabels()
       .then((labels: any[]) => console.debug('getAllLabels: ', labels))
-      .then(() => this.contactService.initialLoad());
+      .then(() => this.contactService.initialLoad())
+      .then(() => this.googleApiService.handleClientLoad());
   }
 
   ngOnDestroy() {

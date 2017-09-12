@@ -14,16 +14,17 @@
   <wth-loading></wth-loading>
   <z-contact-share-import-progress></z-contact-share-import-progress>
 
-  <h-confirmDialog header="Confirmation" width="670" #cd>
-    <p-footer>
-      <button class="btn btn-outline-default btn-min" type="button" pButton icon=""
-              label="{{cd.rejectLabel}}"
-              (click)="cd.reject()"></button>
-      <button class="btn btn-outline-primary btn-min" type="button" pButton icon=""
-              label="{{cd.acceptLabel}}"
-              (click)="cd.accept()"></button>
-    </p-footer>
-  </h-confirmDialog>
+  <!--<h-confirmDialog header="Confirmation" width="670" #cd>-->
+    <!--<p-footer>-->
+      <!--<button class="btn btn-outline-default btn-min" type="button" pButton icon=""-->
+              <!--label="{{cd.rejectLabel}}"-->
+              <!--(click)="cd.reject()"></button>-->
+      <!--<button class="btn btn-outline-primary btn-min" type="button" pButton icon=""-->
+              <!--label="{{cd.acceptLabel}}"-->
+              <!--(click)="cd.accept()"></button>-->
+    <!--</p-footer>-->
+  <!--</h-confirmDialog>-->
+  <wth-confirm></wth-confirm>
 </div>
 
 <ng-template #modalContainer></ng-template>
