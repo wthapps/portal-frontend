@@ -13,16 +13,17 @@
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
   <z-contact-share-import-progress></z-contact-share-import-progress>
-  <p-confirmDialog header="Confirmation" width="670" #cd>
+
+  <h-confirmDialog header="Confirmation" width="670" #cd>
     <p-footer>
       <button class="btn btn-outline-default btn-min" type="button" pButton icon=""
-              label="{{ confirmDialog?.label?.reject ? confirmDialog?.label?.reject : 'Cancel' }}"
+              label="{{cd.rejectLabel}}"
               (click)="cd.reject()"></button>
       <button class="btn btn-outline-primary btn-min" type="button" pButton icon=""
-              label="{{ confirmDialog?.label?.accept ? confirmDialog?.label?.accept : 'Done' }}"
+              label="{{cd.acceptLabel}}"
               (click)="cd.accept()"></button>
     </p-footer>
-  </p-confirmDialog>
+  </h-confirmDialog>
 </div>
 
 <ng-template #modalContainer></ng-template>

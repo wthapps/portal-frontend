@@ -5,13 +5,12 @@ import 'rxjs/add/operator/toPromise';
 
 import { ChatService } from '../shared/services/chat.service';
 import { PhotoService } from '../../core/shared/services/photo.service';
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { LoadingService } from '../../core/shared/components/loading/loading.service';
 import { BasePhotoDetailComponent } from '../../core/shared/components/photo/detail/base-photo-detail.component';
 import { CommonEvent } from '../../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
 import { ConversationService } from '../conversation/conversation.service';
-import { WTHConfirmService } from '../../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 
 declare let _: any;
 
@@ -27,7 +26,7 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
-    protected wthConfirmService: WTHConfirmService,
+    protected wthConfirmService: WthConfirmService,
     protected loadingService: LoadingService,
     protected chatService: ChatService,
     protected pubSubEventService: CommonEventService,

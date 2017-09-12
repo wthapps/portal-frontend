@@ -15,7 +15,7 @@ import { PhotoUploadService } from '../../../core/shared/services/photo-upload.s
 import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
 import { GenericFile } from '../../../core/shared/models/generic-file.model';
-import { GenericeFileService } from '../../../core/shared/services/generic-file.service';
+import { GenericFileService } from '../../../core/shared/services/generic-file.service';
 
 
 declare var _: any;
@@ -33,7 +33,7 @@ export class ChatService {
               public photoUploadService: PhotoUploadService,
               public router: Router,
               public handler: HandlerService,
-              private fileService: GenericeFileService) {
+              private fileService: GenericFileService) {
     // =============================
     this.storage.save('chat_conversations', null);
     this.storage.save('chat_recent_conversations', null);

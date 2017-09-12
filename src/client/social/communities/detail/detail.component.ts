@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/combineLatest';
 
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
@@ -21,7 +21,6 @@ import { PhotoModalDataService } from '../../../core/shared/services/photo-modal
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 import { User } from '../../../core/shared/models/user.model';
-import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare let _: any;
 declare let $: any;
@@ -111,7 +110,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
-              private wthConfirmService: WTHConfirmService,
+              private wthConfirmService: WthConfirmService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private photoSelectDataService: PhotoModalDataService,

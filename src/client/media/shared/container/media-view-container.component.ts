@@ -10,8 +10,6 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/withLatestFrom';
 
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
-
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
@@ -29,6 +27,7 @@ import { AlbumEditModalComponent } from '../../../core/shared/components/photo/m
 import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo/modal/album-delete-modal.component';
 import { AddToAlbumModalComponent } from '../../../core/shared/components/photo/modal/add-to-album-modal.component';
 import { ZMediaStore } from '../store/media.store';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 
 declare var saveAs: any;
@@ -121,7 +120,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private mediaUploaderDataService: MediaUploaderDataService,
               private mediaStore: ZMediaStore,
               private cdr: ChangeDetectorRef,
-              private confirmationService: ConfirmationService) {
+              private wthConfirmService: WthConfirmService) {
 
   }
 

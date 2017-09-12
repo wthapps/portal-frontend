@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
@@ -10,7 +10,6 @@ import { Constants } from '../../../core/shared/config/constants';
 import { UserService } from '../../../core/shared/services/user.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
-import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
 
 declare let _: any;
 /**
@@ -35,7 +34,7 @@ export class SoCommunityService  {
               private userService: UserService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
-              private wthConfirmService: WTHConfirmService ) {
+              private wthConfirmService: WthConfirmService ) {
   }
 
 

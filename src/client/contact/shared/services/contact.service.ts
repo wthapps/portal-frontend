@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
-import { ConfirmationService } from 'primeng/components/common/api';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { BaseEntityService } from '../../../core/shared/services/base-entity-service';
@@ -15,7 +14,7 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
 import { LabelService } from '../../label/label.service';
 import { Router } from "@angular/router";
-import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
 
@@ -54,8 +53,7 @@ export class ZContactService extends BaseEntityService<any> {
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
               public router: Router,
-              private confirmationService: ConfirmationService,
-              private wthConfirmService: WTHConfirmService) {
+              private wthConfirmService: WthConfirmService) {
     super(apiBaseService);
     this.url = 'contact/contacts';
 
@@ -132,7 +130,7 @@ export class ZContactService extends BaseEntityService<any> {
         }
       });
 
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: `Are you sure you want to delete following ${contact_length} contacts:  ${contact_names} ?`,
         header: 'Delete Contacts',
         accept: () => {

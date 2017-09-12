@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 import { Record } from './record';
 import { MyDNSService } from './dns.service';
@@ -31,7 +31,7 @@ export class MyDNSComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WthConfirmService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
               private dnsService: MyDNSService,
@@ -94,7 +94,7 @@ export class MyDNSComponent implements OnInit {
     } else {
       let record_item = _.find(this.records, {'id': id});
       let hostname = record_item.name + '.' + 'wthdns.com';
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: 'Are you sure to delete ' + hostname + ' ?',
         header: 'My Hosts',
         accept: () => {
@@ -116,7 +116,7 @@ export class MyDNSComponent implements OnInit {
   }
 
   showUpgrading(): void {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Upgrading your accounts to continue?',
       header: 'My Hosts',
       accept: () => {

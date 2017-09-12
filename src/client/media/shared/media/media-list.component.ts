@@ -17,7 +17,6 @@ import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/toPromise';
-import { ConfirmationService } from 'primeng/components/common/api';
 
 import { MediaObjectService } from '../container/media-object.service';
 import { Constants } from '../../../core/shared/config/constants';
@@ -33,7 +32,7 @@ import { AlbumCreateModalComponent } from '../../../core/shared/components/photo
 import { ZMediaAlbumService } from '../../album/album.service';
 import { PhotoService } from '../../../core/shared/services/photo.service';
 import { ZMediaStore } from '../store/media.store';
-import { WTHConfirmService } from '../../../core/shared/services/wth-confirm.service';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
 declare var $: any;
@@ -120,8 +119,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   constructor(protected resolver: ComponentFactoryResolver,
               protected router: Router,
               protected route: ActivatedRoute,
-              protected confirmationService: ConfirmationService,
-              protected wthConfirmService: WTHConfirmService,
+              protected wthConfirmService: WthConfirmService,
               protected loadingService: LoadingService,
               protected mediaObjectService: MediaObjectService,
               protected photoService: PhotoService,
@@ -604,7 +602,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         }
       });
 
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: 'Are you sure to delete ' + this.selectedObjects.length + ' ' + objType + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
         accept: () => {
           let body = JSON.stringify({ids: objIds});
@@ -659,7 +657,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         }
       });
 
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: 'Are you sure to delete ' + photos_count,
         accept: () => {
 
@@ -706,7 +704,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
     console.log('selected album & object', params.selectedObject, params.selectedObjects);
     let ids = _.map(params.selectedObjects, 'id');
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure to remove all selected photos from this album',
       accept: () => {
         this.loadingService.start();

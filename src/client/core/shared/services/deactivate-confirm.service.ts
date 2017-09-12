@@ -14,7 +14,7 @@ export class DeactivateConfirmService {
     }
     let decides: any = null;
     // let decides = new Promise<boolean>(resolve => {
-    //   this.confirmationService.confirm({
+    //   this.wthConfirmService.confirm({
     //     message: 'Leaving this page will lose your changes. Are you sure?',
     //     header: 'Discard changes?',
     //     accept: () => {

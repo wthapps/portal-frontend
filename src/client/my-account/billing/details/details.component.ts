@@ -8,8 +8,8 @@ import { Constants } from '../../../core/shared/config/constants';
 
 import { UserService } from '../../../core/shared/services/user.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
-import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -29,7 +29,7 @@ export class MyBillingDetailsComponent implements OnInit {
 
   constructor(public userService: UserService,
               private loadingService: LoadingService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WthConfirmService,
               private toastsService: ToastsService,
               private cookieService: CookieService) {
     //console.log(this.userService);
@@ -53,7 +53,7 @@ export class MyBillingDetailsComponent implements OnInit {
   onDelete(event: any): void {
     event.preventDefault();
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure to delete Billing details?',
       header: 'Delete billing details',
       accept: () => {
