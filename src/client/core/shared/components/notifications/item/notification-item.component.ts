@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../../services/notification.service';
 import { UndoNotificationComponent } from '../undo-notification.component';
 import { ApiBaseService } from '../../../services/apibase.service';
+
+declare let _: any;
+
 @Component({
   moduleId: module.id,
   selector: 'notification-item',
@@ -56,12 +59,15 @@ export class NotificationItemComponent implements OnInit {
   toggleNotification() {
     switch (this.notification.object_type) {
       case 'SocialNetwork::Post':
-        console.debug('toggleNotification - object uuid: ', this.notification.object.uuid);
-        this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: this.notification.object.uuid})
-          .toPromise()
-          .then((res: any) => {
-          this.itemSettings = res.data;
-          });
+        if(_.get(this.notification, 'object.uuid')) {
+          this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: _.get(this.notification, 'object.uuid')})
+            .toPromise()
+            .then((res: any) => {
+              this.itemSettings = res.data;
+            });
+        } else {
+          console.error('No uuid found in notification: ', this.notification);
+        }
         break;
       case 'SocialNetwork::Comment':
         // TODO

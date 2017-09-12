@@ -37,9 +37,6 @@ export class ZContactSharedToolbarComponent implements OnInit {
     console.log('openAddModal');
   }
 
-  mergeDuplicate() {
-    this.contactService.mergeDuplicateContacts().then((res: any) => console.log('merge duplicate is DONE'));
-  }
 
   openImportContactModal(options?: any) {
     this.importContactSelect.modal.open(options);

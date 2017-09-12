@@ -77,7 +77,6 @@ export class SoPhotoListComponent {
   }
 
   clearSelection() {
-    // TODO refactor jquery
     $('div.photo-box-img').removeClass('selected');
     this.selectedItems = [];
   }

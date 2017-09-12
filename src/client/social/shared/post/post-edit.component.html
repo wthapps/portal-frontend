@@ -86,7 +86,6 @@
                       textAreaAutoHeight
                       id="textarea-new-post"
                       placeholder="Share your ideas"
-                      [formControl]="descCtrl"
             >
             </textarea>
           </div>
@@ -97,7 +96,6 @@
                        (onRemove)="removeTag($event)"
                        (onAdd)="addTag($event)"
                        [formControl]="tagsCtrl">
-              <!--TODO: -->
               <tag-input-dropdown [autocompleteItems]="tags">
               </tag-input-dropdown>
             </tag-input>

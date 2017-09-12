@@ -105,8 +105,6 @@ export class ZSocialSearchDetailComponent implements OnDestroy {
   sendJoinRequest(community: any) {
     this.socialService.community.askToJoin(community.uuid)
       .subscribe((result: any) => {
-          // TODO: Update status of community
-          // this.invitationId = result.data.id;
           community.user_status = Constants.soCommunityUserStatus.joinRequestSent;
         },
         (error: any) => {
@@ -118,13 +116,6 @@ export class ZSocialSearchDetailComponent implements OnDestroy {
     this.socialService.community.confirmLeaveCommunity(community).then((res: any) => community.user_status = this.comUserStatus.stranger);
   }
 
-  // leaveCommunity(community: any) {
-  //   this.socialService.community.leaveCommunity(community.uuid)
-  //     .subscribe((response: any) => {
-  //         community.user_status = this.comUserStatus.stranger;
-  //       }
-  //     );
-  // }
 
   addFriend(user: any) {
 
