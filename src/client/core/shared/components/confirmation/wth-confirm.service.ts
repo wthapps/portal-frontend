@@ -33,9 +33,9 @@ export class WthConfirmService {
     this.confirmDialog$ = this.confirmDialogSubject.asObservable();
   }
 
-  updateConfirmDialog(dialog: any) {
-    this.confirmDialogSubject.next(dialog);
-  }
+  // updateConfirmDialog(dialog: any) {
+  //   this.confirmDialogSubject.next(dialog);
+  // }
 
   confirm(option: any) {
     let moreOption = Object.assign({}, initConfirmInfo, option);

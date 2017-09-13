@@ -42,7 +42,7 @@ export class GoogleApiService {
 
   constructor(public api: ApiBaseService,
               private contactService: ZContactService) {
-    this.handleClientLoad();
+    // this.handleClientLoad();
   }
 
   handleClientLoad() {

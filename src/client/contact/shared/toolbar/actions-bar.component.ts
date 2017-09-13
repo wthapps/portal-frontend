@@ -2,6 +2,7 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { EmitEventMixin } from '../../../core/shared/mixins/shared/emit-event.mixin';
 import { Mixin } from '../../../core/design-patterns/decorator/mixin-decorator';
 import { Constants } from '../../../core/shared/config/constants';
+import { ZContactService } from '../services/contact.service';
 
 
 declare var _: any;
@@ -34,4 +35,12 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   emitEvent: (value: any) => void;
 
   tooltip: any = Constants.tooltip;
+
+  constructor(private contactService: ZContactService) {
+
+  }
+
+  mergeDuplicate() {
+    this.contactService.mergeDuplicateContacts().then((res: any) => console.log('merge duplicate is DONE'));
+  }
 }

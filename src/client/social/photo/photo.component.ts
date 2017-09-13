@@ -70,36 +70,7 @@ export class ZSocialPhotoComponent extends BaseZoneSocialItem implements OnInit 
                      });
 
       });
-    // if (this.idComment)
-    //       return this.loadItem(this.apiBaseService.urls.zoneSoComments + '/' + this.idComment); // Load photos from comments
-    //     else
-    //       return this.loadItem(this.apiBaseService.urls.zoneSoPosts + '/' + this.postId); }) // Load photos from posts
-    // .subscribe((response: any) => {
-    //     this.item = response.data;
-    //     if(this.idComment) {
-    //       // TODO: Refractor this item to accept photo index of comment
-    //       this.selectedPhoto = this.item.photo;
-    //     } else {
-    //       this.selectedPhoto = this.item.photos[this.id];
-    //     }
-    //
-    //   },
-    //   ( error: any) => {
-    //     console.error('Error when loading photo ', error);
-    //   });
-    // this.loadPost('363ce443-72a8-4d1d-9966-bebf886e3e05');
   }
-
-  // loadPost(uuid: string): void {
-  //   this.loadItem(this.apiBaseService.urls.zonePhotos + '/' + uuid)
-  //     .subscribe((response: any) => {
-  //         this.item = response.data;
-  //         console.log(this.item);
-  //       },
-  //       error => {
-  //       }
-  //     );
-  // }
 
   actionPhoto(e: string) {
     console.log(e);

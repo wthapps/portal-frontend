@@ -44,6 +44,9 @@
           <i class="fa fa-pencil"></i> Edit Contact
         </a>
       </li>
+      <li *ngIf="contactService.selectedObjects.length > 1">
+        <a href="javascript:;" (click)="mergeDuplicate()">Merge duplicate contacts</a>
+      </li>
       <li>
         <a href="javascript:;" (click)="emitEvent({action: 'delete'})"><i class="fa fa-trash"></i> Delete</a>
       </li>

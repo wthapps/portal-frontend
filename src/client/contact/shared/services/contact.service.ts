@@ -123,14 +123,9 @@ export class ZContactService extends BaseEntityService<any> {
     let contact_length: number = contacts.length;
     return new Promise((resolve) => {
 
-      this.wthConfirmService.updateConfirmDialog({
-        label: {
-          accept: 'Delete',
-          reject: 'Cancel',
-        }
-      });
-
       this.wthConfirmService.confirm({
+        acceptLabel: 'Delete',
+        rejectLabel: 'Cancel',
         message: `Are you sure you want to delete following ${contact_length} contacts:  ${contact_names} ?`,
         header: 'Delete Contacts',
         accept: () => {
