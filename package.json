@@ -177,6 +177,7 @@
     "slick-carousel": "1.6.0",
     "svg-country-flags": "1.1.2",
     "systemjs": "0.20.14",
+    "tether-shepherd": "^1.8.1",
     "zone.js": "0.8.14"
   }
 }
