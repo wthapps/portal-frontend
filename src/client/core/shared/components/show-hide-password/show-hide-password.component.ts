@@ -5,7 +5,7 @@ import { Constants } from '../../config/constants';
   selector: 'show-hide-password',
   template: `<div class="has-password">
                 <ng-content></ng-content>
-                <span (click)="toggleShow($event)" class="hideShowPassword-toggle" pTooltip="{{ tooltip.showPassword }}" 
+                <span (click)="toggleShow()" class="hideShowPassword-toggle" pTooltip="{{ tooltip.showPassword }}" 
                 tooltipPosition="top"></span>
               </div>`
 })
