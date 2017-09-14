@@ -11,6 +11,7 @@ export class GenericFile {
   thumbnail_url: string;
   url: string;
   parent: any;
+  importing: boolean;
 
   created_at: string;
   updated_at: string;
@@ -27,6 +28,7 @@ export class GenericFile {
     this.thumbnail_url = obj && obj.thumbnail_url  || '#';
     this.url           = obj && obj.url            || '#';
     this.parent        = obj && obj.parent         || null;
+    this.importing     = obj && obj.importing      || false;
 
   }
 }

@@ -1,9 +1,9 @@
 <nav class="nav-tabs-wrap clearfix p0">
   <!-- Nav tabs -->
-  <ul class="nav nav-tabs nav-tabs-sm pull-left">
+  <ul class="nav nav-tabs nav-tabs-sm pull-left" *ngIf="count">
     <li *ngFor="let t of menu" [ngClass]="{'active': (t.tab == tab)}">
-      <a *ngIf="t.tab == tab" href="javascript:;">{{ t.text }}<!-- <span>99</span>--></a>
-      <a *ngIf="t.tab != tab" [routerLink]="[t.link]">{{ t.text }}<!-- <span>99</span>--></a>
+      <a *ngIf="t.tab == tab" href="javascript:;">{{ t.text }}<span class="text-fade">{{count[t.tab]}}</span></a>
+      <a *ngIf="t.tab != tab" [routerLink]="[t.link]">{{ t.text }}<span class="text-fade">{{count[t.tab]}}</span></a>
     </li>
   </ul>
   <div class="pull-right">

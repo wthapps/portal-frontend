@@ -16,13 +16,9 @@ import { Ng2HdModule } from '../../../core/shared/ng2-hd/index';
 import { RouterModule } from '@angular/router';
 
 import { InputTextareaModule } from 'primeng/components/inputtextarea/inputtextarea';
-// import { HdTagInputModule } from '../../shared/ng2-hd/tag-input/tag-input.module';
 import { TagInputModule } from 'ngx-chips';
 import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { CoreSharedModule } from '../../../core/shared/shared.module';
-// import { MemberListInviteComponent } from '../../communities/member/member-list-invite.component';
-// import { TagInputModule } from 'ng2-tag-input/dist/modules/ng2-tag-input.module';
-// import { FileSelectionComponent } from '../../../core/shared/components/zone/photo/file-select/file-selection.component';vi
 
 @NgModule({
   imports: [

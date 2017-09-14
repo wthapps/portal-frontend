@@ -16,10 +16,10 @@ export class ZContactShareImportContactComponent {
   @ViewChild('modal') modal: ModalComponent;
   @Output() optionSelected: EventEmitter<any> = new EventEmitter<any>();
 
-  readonly OAUTH_LIST: any = [
-    {name: 'google', text: 'Google Contacts', class: 'fa fa-google'},
-    {name: 'apple', text: 'iCloud Contacts', class: 'fa fa-apple'},
-    {name: 'outlook', text: 'Outlook Contacts', class: 'fa fa-windows'}
+  readonly PROVIDERS: any = [
+    {name: 'google', provider: 'google', type: 'google_contacts', text: 'Google Contacts', class: 'fa fa-google'},
+    {name: 'apple', provider: 'apple', type: 'apple_contacts', text: 'iCloud Contacts', class: 'fa fa-apple'},
+    {name: 'outlook', provider: 'microsoft', type: 'outlook_contacts', text: 'Outlook Contacts', class: 'fa fa-windows'}
   ];
 
 
@@ -37,38 +37,27 @@ export class ZContactShareImportContactComponent {
   }
 
   // Format: { name }
-  onOptionSelected(options: any) {
+  selectProvider(options: any) {
     this.optionSelected.emit(options);
-    // this.modal.close();
+    if(options.provider == 'import_file') return;
+    this.modal.close().then();
   }
 
-  changeFiles(event: any) {
-    let files = event.target.files;
-    if (files.length == 0) {
-      return;
-    }
-    console.log('do some thing here');
-  }
-
-  select(event: any) {
-    console.log('select event::::', event);
-  }
 
   handleUpload(event: any) {
     // show importing dock
-
 
     // upload files
     // for (let i = 0; i < event.files.length; i++) {
     //   this.upload(event.files[i]);
     // }
-    console.log('uploading::::', event);
 
     this.fileUploadHelper.upload(event.files, (event: any, file: any) => {
       let genericFile = new GenericFile({
         file: event.target['result'],
         name: file.name,
-        content_type: file.type
+        content_type: file.type,
+        importing: true
       });
       // update current message and broadcast on server
       this.fileService.create(genericFile)
@@ -85,7 +74,8 @@ export class ZContactShareImportContactComponent {
       let genericFile = new GenericFile({
         file: event.target['result'],
         name: file.name,
-        content_type: file.type
+        content_type: file.type,
+        importing: true
       });
       // update current message and broadcast on server
       this.fileService.create(genericFile)
