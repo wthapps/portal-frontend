@@ -8,7 +8,8 @@ import { ChatService } from '../../shared/services/chat.service';
   templateUrl: 'navigation.component.html'
 })
 export class ZChatContactMenuComponent implements OnInit {
-  @Input() tab:any = 'all';
+  @Input() tab: any = 'all';
+  @Input() count: any;
   // contactItem:any;
   constant:any;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
