@@ -26,7 +26,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private contactService: ZContactService) {
+  constructor(private contactService: ZContactService, private commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
@@ -43,24 +43,21 @@ export class ZContactSharedToolbarComponent implements OnInit {
   }
 
   onImportOptionSelected(event: any) {
-    console.debug('onImportOptionSelected: event - ', event);
 
-    switch (event.name) {
+    switch (event.provider) {
       case 'google':
-        this.contactService.importContactDataService.sendIn({action: 'contact:contact:open_import_progress:google'});
-        break;
       case 'apple':
-        this.iCloudOAuthModal.open();
-        break;
-      case 'outlook':
-        break;
-      case 'others':
-        break;
+      case 'microsoft':
+      case 'linkedin':
       case 'import_from_file':
-        console.log('you are importing from file');
+        this.commonEventService.broadcast({
+          channel: 'contact:contact:actions',
+          action: 'contact:contact:import_contact',
+          payload: event
+        });
         break;
       default:
-        console.error('Unhandled import option: ', event.name);
+        console.error('Unhandled import option: ', event.provider);
         break;
     }
   }

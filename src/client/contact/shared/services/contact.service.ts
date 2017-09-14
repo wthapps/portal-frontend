@@ -214,6 +214,10 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
+  import(payload: any): Observable<any> {
+    return this.api.post(`${this.url}/import`, payload);
+  }
+
   addContact(data: any): Promise<any> {
     return this.apiBaseService.post(`${this.url}`, data).toPromise().then((res: any) => this.createCallback(res.data));
   }
@@ -309,7 +313,7 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
-  public initialLoad(): Promise<any> {
+  initialLoad(): Promise<any> {
     if (this.initLoadSubject.getValue() === true) {
       this.initLoadSubject.next(true);
       return Promise.resolve(this.contacts);
@@ -324,6 +328,8 @@ export class ZContactService extends BaseEntityService<any> {
         this.followingLoad(this.nextLink);
       });
   }
+
+
 
   private searchContact(name: string): any[] {
     let search_value = name.toLowerCase();
