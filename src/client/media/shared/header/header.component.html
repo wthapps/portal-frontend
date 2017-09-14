@@ -1,4 +1,4 @@
-<div *ngIf="active" class="navbar-form navbar-left">
+<div class="navbar-form navbar-left">
   <div class="navbar-searchTop">
 
     <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
@@ -13,13 +13,9 @@
           </a>
         </div>
         <div class="list-group-footer">
-          <div class="row row-10">
-            <div class="col-md-12">
-              <a href="javascript:;" class="btn btn-block btn-link-inline" (click)="onEnter($event)">
-                Show all result
-              </a>
-            </div>
-          </div>
+          <a class="d-block" href="javascript:;" (click)="onEnter($event)">
+            Show all result
+          </a>
         </div>
       </div>
 

@@ -1,22 +1,24 @@
 import { Component, ViewChild } from '@angular/core';
-import { ServiceManager } from '../../../services/service-manager';
-import { Constants } from '../../../config/constants';
 import { Observable } from 'rxjs/Observable';
-import { TextBoxSearchComponent } from './components/textbox-search.component';
-import { SuggestionService } from '../../../services/suggestion.service';
-// import { ZContactService } from '../../../../../contact/shared/services/contact.service';
 
-declare let _: any;
+import { TextBoxSearchComponent } from '../../../core/shared/components/header/search/components/textbox-search.component';
+import { ServiceManager } from '../../../core/shared/services/service-manager';
+import { SuggestionService } from '../../../core/shared/services/suggestion.service';
 
+declare var _:any;
+
+/**
+ * This class represents the navigation bar component.
+ */
 @Component({
   moduleId: module.id,
-  templateUrl: 'contact-search-form.component.html',
+  selector: 'contact-shared-header',
+  templateUrl: 'header.component.html',
+  styleUrls: ['header.component.css'],
 })
-
-export class ContactSearchFormComponent {
+export class ZContactSharedHeaderComponent {
   constants: any;
   suggestions: any[] = [];
-  active: boolean;
   show: boolean = false;
   search: string;
   suggest$: Observable<any>;
@@ -24,12 +26,10 @@ export class ContactSearchFormComponent {
 
   constructor(public serviceManager: ServiceManager,
               public suggestService: SuggestionService) {
-    this.constants = this.serviceManager.getConstants();
-    this.active = this.constants.search.config.contactActive;
     this.suggestService.suggest$.subscribe((suggestions: any[]) => {
       this.suggestions.length = 0;
       this.suggestions.push(...suggestions);
-      console.log('suggestions received: ', this.suggestions, this.active);
+      console.log('suggestions received: ', this.suggestions);
     });
   }
 
@@ -79,5 +79,4 @@ export class ContactSearchFormComponent {
     // this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
     this.onEnter(event);
   }
-
 }

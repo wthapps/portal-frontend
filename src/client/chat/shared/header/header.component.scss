@@ -1,7 +1,8 @@
 @import "../../../core/scss/global";
 
 :host {
-  display: block;
+  display: inline-block;
+  float: left;
 }
 
 

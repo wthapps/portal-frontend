@@ -1,25 +1,25 @@
 import { Component, ViewChild } from '@angular/core';
-import { TextBoxSearchComponent } from './components/textbox-search.component';
-import { ServiceManager } from '../../../services/service-manager';
+import { TextBoxSearchComponent } from '../../../core/shared/components/header/search/components/textbox-search.component';
+import { ServiceManager } from '../../../core/shared/services/service-manager';
 
-declare let _: any;
+declare var _:any;
 
+/**
+ * This class represents the navigation bar component.
+ */
 @Component({
   moduleId: module.id,
-  templateUrl: 'social-search-form.component.html',
+  selector: 'social-shared-header',
+  templateUrl: 'header.component.html',
+  styleUrls: ['header.component.css'],
 })
-
-export class SocialSearchFormComponent {
-  constants: any;
+export class ZSocialSharedHeaderComponent {
   suggestions: any = [];
-  active: boolean;
   show: boolean = false;
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   constructor(public serviceManager: ServiceManager) {
-    this.constants = this.serviceManager.getConstants();
-    this.active = this.constants.search.config.socialActive;
   }
 
   onEnter(e: any) {
@@ -58,5 +58,4 @@ export class SocialSearchFormComponent {
       this.serviceManager.getRouter().navigate([`/communities/${data.uuid}`]);
     }
   }
-
 }

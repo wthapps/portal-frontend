@@ -29,6 +29,7 @@ import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences
 import { SocialDataService } from './services/social-data.service';
 import { SoUserService } from './services/social-user.service';
 import { SoPostService } from './services/social-post.service';
+import { ZSocialSharedHeaderComponent } from './header/header.component';
 
 
 /**
@@ -66,7 +67,9 @@ import { SoPostService } from './services/social-post.service';
 
     // Community
     ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent
+    ZSocialShareCommunityFormPreferenceComponent,
+
+    ZSocialSharedHeaderComponent
 
   ],
   exports: [
@@ -81,7 +84,9 @@ import { SoPostService } from './services/social-post.service';
     ZSocialShareProfileModule,
     // Community
     ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent
+    ZSocialShareCommunityFormPreferenceComponent,
+
+    ZSocialSharedHeaderComponent
   ]
 })
 export class ZSocialSharedModule {

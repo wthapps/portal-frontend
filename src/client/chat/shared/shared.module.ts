@@ -24,6 +24,7 @@ import { ChatService } from './services/chat.service';
 import { ChatCommonService } from '../../core/shared/services/chat.common.service';
 import { ZChatMessageModule } from './message/message.module';
 import { ChatContactService } from './services/chat-contact.service';
+import { ZChatSharedHeaderComponent } from './header/header.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -41,6 +42,7 @@ import { ChatContactService } from './services/chat-contact.service';
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
+    ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
@@ -62,6 +64,7 @@ import { ChatContactService } from './services/chat-contact.service';
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
+    ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,

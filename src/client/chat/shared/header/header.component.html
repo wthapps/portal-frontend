@@ -1,4 +1,4 @@
-<div *ngIf="active" class="navbar-form navbar-left">
+<div class="navbar-form navbar-left">
   <div class="navbar-searchTop">
     <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onKeyUpEvent)="onKey($event)"
                     [placeholder]="'Search something'">
@@ -17,19 +17,12 @@
             <span class="avatar-name-txt" *ngIf="data.group_json?.group_type == 'multiple' && !data.group_json.name">
                 {{ data.group_json.users_name }}</span>
           </a>
-
+        </div>
+        <div class="m10">
+          <a class="d-block" [routerLink]="['search']" (click)="show = false" [queryParams]="{q: search}"> Show all result </a>
         </div>
         <div class="list-group-footer">
-          <div class="row row-10">
-            <div class="col-md-6">
-              <a [routerLink]="['search']" class="btn btn-block btn-link-inline" (click)="show = false"
-                 [queryParams]="{q: search}"> Show all result </a>
-            </div>
-            <div class="col-md-6">
-              <a [routerLink]="['search_new_contacts']" class="btn btn-block btn-link-inline" (click)="show = false">
-                Search New Contact </a>
-            </div>
-          </div>
+          <a class="d-block" [routerLink]="['search_new_contacts']" (click)="show = false">Search New Contact </a>
         </div>
 
       </div>

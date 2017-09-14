@@ -11,6 +11,7 @@ import { ZMediaSharingService } from '../../core/shared/components/photo/modal/s
 import { ZMediaTaggingService } from '../../core/shared/components/photo/modal/tagging/tagging.service';
 import { ZMediaStore } from './store/media.store';
 import { CoreSharedModule } from '../../core/shared/shared.module';
+import { ZMediaSharedHeaderComponent } from './header/header.component';
 
 
 /**
@@ -26,14 +27,16 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
     MediaViewContainerComponent,
     MediaToolbarListComponent,
     MediaListComponent,
-    MediaItemComponent
+    MediaItemComponent,
+    ZMediaSharedHeaderComponent
   ],
   exports: [
     MediaUploaderComponent,
     MediaViewContainerComponent,
     MediaToolbarListComponent,
     MediaListComponent,
-    MediaItemComponent
+    MediaItemComponent,
+    ZMediaSharedHeaderComponent
   ]
 })
 export class ZMediaSharedModule {

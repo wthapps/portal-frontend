@@ -233,6 +233,7 @@
   text-align: center;
   min-width: inherit;
 }
+
 /*
 .btn {
   .fa-circle {
@@ -261,5 +262,11 @@
 .ui-dialog-footer, .modal-footer {
   .btn-min + .btn-min {
     margin-left: 10px;
+  }
+}
+
+.input-group-btn {
+  .btn-outline-default {
+    border-color: #ccc;
   }
 }

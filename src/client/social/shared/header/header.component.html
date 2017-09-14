@@ -1,4 +1,4 @@
-<div *ngIf="active" class="navbar-form navbar-left">
+<div class="navbar-form navbar-left">
   <div class="navbar-searchTop">
     <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onKeyUpEvent)="onKey($event)"
                     [placeholder]="'Search something'">
@@ -12,12 +12,8 @@
 
         </div>
         <div class="list-group-footer">
-          <div class="row row-10">
-            <div class="col-md-12">
-              <a [routerLink]="['search']" class="btn btn-block btn-link-inline" (click)="show = false"
-                 [queryParams]="{q: search}"> Show all result </a>
-            </div>
-          </div>
+          <a class="d-block" [routerLink]="['search']" (click)="show = false"
+             [queryParams]="{q: search}"> Show all result </a>
         </div>
 
       </div>

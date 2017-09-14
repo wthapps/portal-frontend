@@ -1,18 +1,34 @@
 @import '../../../scss/global';
 
-:host {
+wth-header-navbar {
   display: block;
+}
+
+.header-portal {
+  .header-nav {
+    .container-fluid {
+      max-width: 1200px;
+    }
+  }
 }
 
 .header-nav {
   position: relative;
   z-index: 1000;
   @include clearfix;
+  .container-fluid {
+    max-width: none;
+  }
   .header-nav-left {
     float: left;
   }
   .header-nav-right {
     float: right;
+  }
+
+  .navbar-form {
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 
   .btn-group {

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
-import { Confirmation } from 'primeng/components/common/confirmation';
 
 export interface ConfirmInfo {
   message: string,

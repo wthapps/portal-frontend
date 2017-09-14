@@ -23,6 +23,7 @@ import { ZContactSharedActionsBarComponent } from './toolbar/actions-bar.compone
 import { ZContactPipeModule } from './pipe/pipe.module';
 import { ICloudOAuthComponent } from './modal/import-contact/icloud/icloud-oauth.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
+import { ZContactSharedHeaderComponent } from './header/header.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -53,6 +54,7 @@ import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
     ZContactShareImportContactComponent,
     ZContactSharedToolbarComponent,
     ZContactSharedActionsBarComponent,
+    ZContactSharedHeaderComponent,
 
     //modal here
     ContactAddLabelModalComponent,
@@ -78,6 +80,7 @@ import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
     ZContactShareImportContactComponent,
     ZContactSharedToolbarComponent,
     ZContactSharedActionsBarComponent,
+    ZContactSharedHeaderComponent,
 
     // modal here
     ContactAddLabelModalComponent,

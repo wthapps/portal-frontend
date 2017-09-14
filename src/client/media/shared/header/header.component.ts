@@ -1,19 +1,23 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { ServiceManager } from '../../../services/service-manager';
-import { TextBoxSearchComponent } from './components/textbox-search.component';
 
-declare let _: any;
+import { TextBoxSearchComponent } from '../../../core/shared/components/header/search/components/textbox-search.component';
+import { ServiceManager } from '../../../core/shared/services/service-manager';
 
+declare var _:any;
+
+/**
+ * This class represents the navigation bar component.
+ */
 @Component({
   moduleId: module.id,
-  templateUrl: 'photo-search-form.component.html',
+  selector: 'media-shared-header',
+  templateUrl: 'header.component.html',
+  styleUrls: ['header.component.css'],
 })
-
-export class PhotoSearchFormComponent {
+export class ZMediaSharedHeaderComponent {
   constants: any;
   suggestions: any = [];
-  active: boolean = false;
   show: boolean = false;
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
@@ -29,9 +33,6 @@ export class PhotoSearchFormComponent {
   searchAdvanced: boolean = false;
 
   constructor(public serviceManager: ServiceManager) {
-    this.constants = this.serviceManager.getConstants();
-    this.active = this.constants.search.config.photoActive;
-
     this.createForm();
   }
 
