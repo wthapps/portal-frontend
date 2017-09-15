@@ -25,6 +25,6 @@ export class FileUploadComponent extends FileUpload {
 
   @Input() icon: string = 'fa-plus';
   constructor(domHandler: DomHandler, sanitizer: DomSanitizer, zone: NgZone){
-    super(sanitizer)
+    super(domHandler, sanitizer, zone);
   }
 }

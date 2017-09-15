@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { MySharedModule } from '../../shared/shared.module';
 import { CoreSharedModule } from '../../../core/shared/shared.module';
@@ -12,10 +11,9 @@ import { InvitationService } from '../../../core/shared/components/invitation/in
 
 @NgModule({
   imports: [
-    CommonModule,
-    CoreSharedModule,
     MyInvitationsRoutingModule,
-    MySharedModule.forRoot()
+    MySharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     MyInvitationsComponent

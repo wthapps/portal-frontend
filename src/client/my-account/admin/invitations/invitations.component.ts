@@ -17,11 +17,11 @@ declare let _: any;
 })
 
 export class MyInvitationsComponent implements OnInit {
-
   data: Array<any>;
   items: Array<any> = new Array<any>();
   selectedItems: Array<any> = [];
   isSelectAll: boolean;
+  TF: any[]= [true, false];
   modal: any;
   totalPending: number;
   totalAccepted: number;
@@ -68,6 +68,7 @@ export class MyInvitationsComponent implements OnInit {
     modal.open({data: this.data});
   }
 
+
   doEvent(event: any) {
     this.loadingService.start();
     switch (event.action) {
@@ -103,19 +104,29 @@ export class MyInvitationsComponent implements OnInit {
   }
 
   onSelect(item: any) {
-    if(!_.find(this.selectedItems, (i: any) => i.uuid === item.uuid))
+    let selectedItem = _.find(this.selectedItems, (i: any) => i.uuid === item.uuid);
+    if(!selectedItem) {
       this.selectedItems.push(item);
-    else
+      item = Object.assign({},item, {selected: true});
+      if(this.selectedItems.length === this.items.length)
+        this.isSelectAll = true;
+    }
+    else {
       _.remove(this.selectedItems, (i: any) => i.uuid === item.uuid);
+      item = Object.assign({},item, {selected: false});
+      this.isSelectAll = false;
+    }
   }
 
   onSelectAll() {
     if(this.selectedItems.length !== this.items.length) {
       this.selectedItems = [...this.items];
+      this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: true}));
       this.isSelectAll = true;
     }
     else {
       this.selectedItems.length = 0;
+      this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: false}));
       this.isSelectAll = false;
     }
   }

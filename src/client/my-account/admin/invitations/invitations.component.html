@@ -58,8 +58,13 @@
             <thead>
             <tr>
               <th>
-                <div class="contact-listbox-input" [ngClass]="{'active': isSelectAll}">
-                  <i (click)="onSelectAll()" class="fa fa-check"></i>
+                <!--<div class="contact-listbox-input">-->
+                  <!--<input type="checkbox" name="" value="" (click)="onSelectAll()">-->
+                <!--</div>-->
+
+                <div>
+                  <p-checkbox value="" label=""
+                              [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll($event)"></p-checkbox>
                 </div>
               </th>
               <th>Email</th>
@@ -72,9 +77,16 @@
             <tbody>
             <tr *ngFor="let item of items">
               <th>
-                <div class="contact-listbox-input">
-                  <!-- <i (click)="onSelect(item?.id)" class="fa fa-check"></i> -->
-                  <input type="checkbox" name="" value="" (click)="onSelect(item)">
+                <!--<div class="contact-listbox-input">-->
+                  <!--&lt;!&ndash; <i (click)="onSelect(item?.id)" class="fa fa-check"></i> &ndash;&gt;-->
+                  <!--<input type="checkbox" name="" value="" (click)="onSelect(item)">-->
+                <!--</div>-->
+
+                <div>
+                  <!-- <p-checkbox value="" label=""
+                              [(ngModel)]="item.selected" (onChange)="onSelect(item)"></p-checkbox> -->
+                  <p-checkbox value="" label=""
+                              [(ngModel)]="item.selected" binary="true" (onChange)="onSelect(item)"></p-checkbox>
                 </div>
               </th>
               <td><a rel="nofollow" target="_top"

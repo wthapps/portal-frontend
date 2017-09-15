@@ -9,6 +9,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
+import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
@@ -94,6 +95,7 @@ import { WthConfirmModule } from './components/confirmation/wth-confirm.module';
     ConfirmDialogModule,
     InfiniteScrollModule,
     InputSwitchModule,
+    CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
     CalendarModule,

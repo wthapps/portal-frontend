@@ -17,6 +17,7 @@ import { MyPaymentModule } from './payment/payment.module';
 import { MySettingModule } from './setting/setting.module';
 import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
+import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { MyAdminModule } from './admin/admin.module';
     MyPlansModule,
     MySettingModule,
     MyAdminModule,
+
     MySharedModule.forRoot(),
     CoreSharedModule.forRoot()
   ],

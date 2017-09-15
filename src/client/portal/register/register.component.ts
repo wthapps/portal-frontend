@@ -119,7 +119,7 @@ export class RegisterComponent {
             console.log('error:', error);
             let err = error;
 
-            this.errorMessage = err;
+            this.errorMessage = err.body.error;
             //TODO refactoring code check signup
             if (error.status === 422) {
               this.errorMessage = 'Email has already been taken';
