@@ -3,14 +3,13 @@ import { Router }         from '@angular/router';
 
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
-
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { Constants } from '../config/constants';
 
 import { ApiBaseService } from './apibase.service';
 import { User }           from '../models/user.model';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class UserService extends ApiBaseService {

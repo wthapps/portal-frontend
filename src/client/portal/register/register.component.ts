@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { UserService } from '../../core/shared/services/user.service';
@@ -36,9 +36,11 @@ export class RegisterComponent {
   accepted: AbstractControl;
 
   submitted: boolean = false;
+  invitationUuid: string;
 
   constructor(private fb: FormBuilder,
               private router: Router,
+              private route: ActivatedRoute,
               private userService: UserService,
               private toastsService: ToastsService,
               private loadingService: LoadingService) {
@@ -78,6 +80,10 @@ export class RegisterComponent {
     this.birthday_month = this.form.controls['birthday_month'];
     this.birthday_year = this.form.controls['birthday_year'];
     this.accepted = this.form.controls['accepted'];
+
+    this.route.queryParams.subscribe((queryParam: any) => {
+      this.invitationUuid = queryParam['invitation'];
+    });
   }
 
   onSubmit(values: any): void {
@@ -97,6 +103,7 @@ export class RegisterComponent {
         birthday_month: values.birthday_month,
         birthday_year: values.birthday_year,
         sex: values.sex,
+        invitationUuid: this.invitationUuid,
         accepted_policies: values.accepted === true ? true : false
       });
 
