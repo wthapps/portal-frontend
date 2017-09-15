@@ -21,7 +21,6 @@ export class MyInvitationsComponent implements OnInit {
   items: Array<any> = new Array<any>();
   selectedItems: Array<any> = [];
   isSelectAll: boolean;
-  TF: any[]= [true, false];
   modal: any;
   totalPending: number;
   totalAccepted: number;
