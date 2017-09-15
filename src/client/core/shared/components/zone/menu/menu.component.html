@@ -55,6 +55,23 @@
       </ul>
     </li>
 
+    <li class="has-sub" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
+      <a draggable="false" href="javascript:;" (click)="onMenu('note')">
+        Notes
+      </a>
+      <ul [ngClass]="{'active': urls.note == hostname}" class="menuleft-nav-sub">
+        <ng-template ngFor let-note [ngForOf]="noteMenu" let-i="index">
+          <li *ngIf="note.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': note.link == '/search'}">
+            <a draggable="false" [routerLink]="[note.link]" [queryParams]="{}">
+              <i class="{{ note.icon }}"></i> {{ note.name }}
+            </a>
+          </li>
+          <li class="divider" *ngIf="note.name == ''"></li>
+        </ng-template>
+
+      </ul>
+    </li>
+
     <li class="has-sub has-action"
         [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">

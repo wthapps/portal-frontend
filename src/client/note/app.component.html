@@ -5,8 +5,16 @@
     </a>
   </wth-header-navbar>
   <main class="main">
-    <router-outlet></router-outlet>
+    <div class="main-page-left">
+      <aside class="main-page-left-in aside-menu">
+        <z-shared-menu></z-shared-menu>
+      </aside>
+    </div>
+    <div class="main-page-body">
+      <router-outlet></router-outlet>
+    </div>
   </main>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
+  <wth-confirm></wth-confirm>
 </div>

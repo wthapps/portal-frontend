@@ -41,6 +41,7 @@
     "start-social": "npm start -- --app social --port 3015",
     "start-chat": "npm start -- --app chat --port 3020",
     "start-contact": "npm start -- --app contact --port 3025",
+    "start-note": "npm start -- --app note --port 3030",
     "start.deving": "gulp start.deving --color",
     "tasks.list": "gulp --tasks-simple --color",
     "test": "gulp test --color",

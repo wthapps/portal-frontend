@@ -11,6 +11,7 @@ const ProdConfig: EnvConfig = {
     SOCIAL: 'https://social.wthapps.com',
     CHAT: 'https://chat.wthapps.com',
     CONTACT: 'https://contact.wthapps.com',
+    NOTE: 'https://note.wthapps.com',
   }
 };
 

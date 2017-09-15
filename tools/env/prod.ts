@@ -19,7 +19,8 @@ const ProdConfig: EnvConfig = {
     MEDIA: `${protocol}://media-${fullDomain}`,
     SOCIAL: `${protocol}://social-${fullDomain}`,
     CHAT: `${protocol}://chat-${fullDomain}`,
-    CONTACT: `${protocol}://contact-${fullDomain}`
+    CONTACT: `${protocol}://contact-${fullDomain}`,
+    NOTE: `${protocol}://note-${fullDomain}`,
   }
 };
 

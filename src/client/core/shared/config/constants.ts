@@ -24,7 +24,8 @@ export let Constants = {
     media: Config.SUB_DOMAIN.MEDIA,
     social: Config.SUB_DOMAIN.SOCIAL,
     chat: Config.SUB_DOMAIN.CHAT,
-    contact: Config.SUB_DOMAIN.CONTACT
+    contact: Config.SUB_DOMAIN.CONTACT,
+    note: Config.SUB_DOMAIN.NOTE,
   },
 
   flagsRelease: false,
@@ -82,6 +83,12 @@ export let Constants = {
   windows: {
     scrollBarWidth: getBarwidth()
   },
+
+  noteMenuItems: [
+    {name: 'All Notes', value: 'all notes', link: '/', icon: 'fa fa-file'},
+    {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
+    {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
+  ],
 
   contactMenuItems: [
     {name: 'All Contacts', value: 'all contacts', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
