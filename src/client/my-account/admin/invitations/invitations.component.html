@@ -15,10 +15,6 @@
             </div>
 
           <hr class="line">
-          <div class="float box-panel-subtitle">
-            <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
-              <i class="fa fa-envelope-open-o"></i> Invite new members</a>
-          </div>
           <nav class="nav nav-tabs clearfix">
             <div class="pull-left btn-group hidden-md hidden-lg">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -43,16 +39,16 @@
                 <a [routerLink]="['./']" [queryParams]="{tab: TAB.ACCEPTED.value}"> {{ TAB.ACCEPTED.name }} {{ totalAccepted }}</a>
               </li>
             </ul>
-
           </nav>
 
           <div class="box-panel-subtitle">
-            <button class="btn btn-outline-secondary"
-                    (click)="onResend()"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
+              <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
+                <i class="fa fa-envelope-open-o"></i> Invite new members</a>
 
-
             <button class="btn btn-outline-secondary"
-                    (click)="onRemove()"><i class="fa fa-trash" aria-hidden="true"></i> Remove</button>
+                    (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o" aria-hidden="true" ></i> Resend</button>
+            <button class="btn btn-outline-secondary"
+                    (click)="onRemove()" [disabled]="selectedItems.length === 0"><i class="fa fa-trash" aria-hidden="true" ></i> Remove</button>
           </div>
           <br/>
 
@@ -62,9 +58,8 @@
             <thead>
             <tr>
               <th>
-                <div class="contact-listbox-input">
-                  <!-- <i (click)="onSelectedAll()" class="fa fa-check"></i> -->
-                  <input type="checkbox" name="" value="">
+                <div class="contact-listbox-input" [ngClass]="{'active': isSelectAll}">
+                  <i (click)="onSelectAll()" class="fa fa-check"></i>
                 </div>
               </th>
               <th>Email</th>
@@ -79,7 +74,7 @@
               <th>
                 <div class="contact-listbox-input">
                   <!-- <i (click)="onSelect(item?.id)" class="fa fa-check"></i> -->
-                  <input type="checkbox" name="" value="">
+                  <input type="checkbox" name="" value="" (click)="onSelect(item)">
                 </div>
               </th>
               <td><a rel="nofollow" target="_top"
@@ -87,11 +82,11 @@
               <td>{{ item.created_at | date:'yMMMd' }} {{ item.created_at | date:'H:mm:ss' }}</td>
               <td>{{ item.sent_count }}</td>
               <td>
-                <div>
+                <div *ngIf="currentTab == TAB.PENDING.value">
                   <button class="btn btn-outline-secondary"
-                          (click)="doEvent({action: 'resend', payload:{item: item}})"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
+                          (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
                   <button class="btn btn-outline-secondary"
-                          (click)="doEvent({action: 'resend', payload:{item: item}})"><i class="fa fa-trash" aria-hidden="true"></i> Cancel</button>
+                          (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i> Cancel</button>
                 </div>
               </td>
             </tr>

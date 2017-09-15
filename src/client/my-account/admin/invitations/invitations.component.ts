@@ -20,6 +20,8 @@ export class MyInvitationsComponent implements OnInit {
 
   data: Array<any>;
   items: Array<any> = new Array<any>();
+  selectedItems: Array<any> = [];
+  isSelectAll: boolean;
   modal: any;
   totalPending: number;
   totalAccepted: number;
@@ -40,17 +42,20 @@ export class MyInvitationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.invitationService.getAll().toPromise().then((response: any) => {
-      this.items = response.data;
-    });
 
     this.currentTab = this.TAB.PENDING.value;
-    this.route.queryParams.subscribe((queryParam: any) => {
+    this.route.queryParams.map((queryParam: any) => {
       this.currentTab = queryParam['tab'] || this.TAB.PENDING.value;
-      this.currentTabTitle = _.find(this.TAB, ['key', this.currentTab]);
-    });
+      this.currentTabTitle = _.find(this.TAB, ['value', this.currentTab]);
+      this.selectedItems.length = 0;
+      return queryParam;
+    }).switchMap(() => {
+      return this.invitationService.getByStatus({status: this.currentTab});
+    }).subscribe((response: any) => {
+      this.items = response.data;
+    });;
 
-    this.fakeCount();
+    // this.fakeCount();
   }
 
   fakeCount() {
@@ -98,18 +103,60 @@ export class MyInvitationsComponent implements OnInit {
   }
 
   onSelect(item: any) {
-    console.log('On Select: ', item);
+    if(!_.find(this.selectedItems, (i: any) => i.uuid === item.uuid))
+      this.selectedItems.push(item);
+    else
+      _.remove(this.selectedItems, (i: any) => i.uuid === item.uuid);
   }
 
   onSelectAll() {
-    console.log('On Select All');
+    if(this.selectedItems.length !== this.items.length) {
+      this.selectedItems = [...this.items];
+      this.isSelectAll = true;
+    }
+    else {
+      this.selectedItems.length = 0;
+      this.isSelectAll = false;
+    }
   }
 
-  onResend() {
+  onResend(item?: any) {
+    let ids: any[] = [];
 
+    if(item) {
+      ids = [item.id];
+    } else {
+      ids = _.map(this.selectedItems, 'id');
+    }
+
+    this.invitationService.multiResend({ids: ids}).toPromise().then((response: any) => {
+        this.loadingService.stop();
+        this.toaster.success('You have just resent invitations successfully!');
+      },
+      (error: any) => {
+        this.loadingService.stop();
+        this.toaster.danger('There is a error when you resent invitations!');
+      });
   }
 
-  onRemove() {
 
+  onRemove(item?: any) {
+    if(item) {
+      this.invitationService.multiDelete({'ids': [item.id]}).toPromise()
+        .then((res: any) => _.remove(this.items, (i: any) => i.uuid === item.uuid));
+    } else {
+      // Remove selected
+      let ids = _.map(this.selectedItems, 'id');
+      this.invitationService.multiDelete({'ids': ids}).toPromise()
+        .then((res: any) => _.remove(this.items, (i: any) => ids.indexOf(i.id) !== -1));
+    }
+  }
+
+  parseRecipient(item: any) {
+    return {
+      email: item.recipient_email,
+      fullName: item.recipient_full_name,
+      contactId: item.recipient_contact_id
+    }
   }
 }
