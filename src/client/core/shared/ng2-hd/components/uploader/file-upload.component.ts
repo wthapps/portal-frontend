@@ -1,18 +1,12 @@
 import {
   Component,
-  OnDestroy,
   Input,
-  Output,
-  EventEmitter,
-  ElementRef,
-  HostBinding, OnInit, AfterViewInit, AfterContentInit, NgZone
+  NgZone
 } from '@angular/core';
 
-import { DomHandler } from "primeng/components/dom/domhandler";
 import { DomSanitizer } from '@angular/platform-browser';
+import { DomHandler } from "primeng/components/dom/domhandler";
 import { FileUpload } from 'primeng/primeng';
-
-declare var $: any;
 
 @Component({
   moduleId: module.id,

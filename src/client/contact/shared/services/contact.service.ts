@@ -126,7 +126,7 @@ export class ZContactService extends BaseEntityService<any> {
       this.wthConfirmService.confirm({
         acceptLabel: 'Delete',
         rejectLabel: 'Cancel',
-        message: `Are you sure you want to delete following ${contact_length} contacts:  ${contact_names} ?`,
+        message: `Are you sure to delete following ${contact_length} contact(s)? ${contact_names}`,
         header: 'Delete Contacts',
         accept: () => {
           this.deleteSelectedContacts(contacts).then(() => {
@@ -220,10 +220,6 @@ export class ZContactService extends BaseEntityService<any> {
 
   addContact(data: any): Promise<any> {
     return this.apiBaseService.post(`${this.url}`, data).toPromise().then((res: any) => this.createCallback(res.data));
-  }
-
-  importGoogleContacts(data: any) {
-    return this.apiBaseService.post(`${this.url}/import_google_contacts`, data);
   }
 
   getGoogleApiConfig() {

@@ -61,7 +61,6 @@ export class GoogleApiService {
     // Initialize the gapi.client object, which app uses to make API requests.
     // Get API key and client ID from API Console.
     // 'scope' field specifies space-delimited list of access scopes.
-    console.debug('inside initClient, this: ', this);
     this.getGoogleApiConfig().then((cre_keys: any) => {
       gapi.client.init({
         'apiKey': cre_keys.API_KEY,
@@ -97,11 +96,22 @@ export class GoogleApiService {
           console.log('client request result: ', data);
           this.totalImporting = _.get(data, 'feed.entry', []).length;
           return this.mappingParams(_.get(data, 'feed.entry', []));
-        }, (err: any) => { return Promise.reject( err);
+        },
+        (err: any) => {
+          return Promise.reject( err);
         })
-        .then((mapped_data: any) => { return this.importContactsToDb({contacts: mapped_data}); }
-        , (err: any) => { return Promise.reject( err);})
-        .then((data: any) => { this.revokeAccess(); return Promise.resolve(data);});
+        .then((mapped_data: any) => { return this.importContactsToDb({
+            import_info: {provider: 'google'},
+            contacts: mapped_data
+        }); }
+        , (err: any) => {
+          this.revokeAccess();
+          return Promise.reject( err);
+        })
+        .then((data: any) => {
+          this.revokeAccess();
+          return Promise.resolve(data);
+        });
     else
       return Promise.reject(new Error(`access_token not found. Please recheck: ${user}`));
   }
@@ -167,12 +177,10 @@ export class GoogleApiService {
   }
 
   private importContactsToDb(json_data: any): Promise<any> {
-    return this.contactService.importGoogleContacts(json_data).toPromise()
+    return this.contactService.import(json_data).toPromise()
       .then((res: any) => { console.log('import contacts to DB successfully', res); return res.data;}
-      ,(err: any) => { console.error('import contacts ERRORS ', err); return Promise.reject(err);}
+        ,(err: any) => { console.error('import contacts ERRORS ', err); return Promise.reject(err);}
       );
   }
-
-
 }
 

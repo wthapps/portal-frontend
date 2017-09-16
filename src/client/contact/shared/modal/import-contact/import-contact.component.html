@@ -38,11 +38,13 @@
                              <!--autofocus="true">-->
                       <!--<span>   Import from file (.vcf, csv)</span>-->
 
-                      <h-fileUpload [auto]="true"
+                      <h-fileUpload #fileUpload
+                                    customUpload="true"
+                                    mode="basic"
+                                    accept=".vcf,.csv,.xls,.xlsx"
                                     [icon]="'fa-download'"
                                     [chooseLabel]="'Import from file'"
-                                    customUpload="true"
-                                    (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event})">
+                                    (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event}); fileUpload.clear();">
                       </h-fileUpload>
                     </div>
                   </figure>

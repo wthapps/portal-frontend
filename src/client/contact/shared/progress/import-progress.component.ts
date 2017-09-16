@@ -9,7 +9,6 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { Constants } from '../../../core/shared/config/constants';
 import { GenericFile } from '../../../core/shared/models/generic-file.model';
-import { GenericFileService } from '../../../core/shared/services/generic-file.service';
 import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.helper';
 
 @Component({
@@ -32,6 +31,8 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
 
   importSubscription: Subscription;
   importStatus: any;
+  successfulNum: number = 0;
+  failedNum: number = 0;
 
   private fileUploadHelper: FileUploadHelper;
 
@@ -39,8 +40,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
     private contactService: ZContactService,
     public gapi: GoogleApiService,
     public loadingService: LoadingService,
-    private commonEventService: CommonEventService,
-    private fileService: GenericFileService
+    private commonEventService: CommonEventService
   ) {
 
     this.fileUploadHelper = new FileUploadHelper();
@@ -62,10 +62,8 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
         this.importGoogleContacts();
         break;
       case 'apple':
-        this.importGoogleContacts();
         break;
       case 'microsoft':
-        this.importGoogleContacts();
         break;
       case 'import_from_file':
         this.importFile(event.payload);
@@ -87,6 +85,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       .then((data: any) => {
         if(data !== undefined) {
           this.importedContacts = data;
+          this.successfulNum = this.gapi.totalImporting;
           this.contactService.addMoreContacts(data);
           return this.importDone();
         } else {
@@ -108,11 +107,18 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
         importing: true
       });
 
+      this.modalDock.open();
+      this.importStatus = this.IMPORT_STATUS.importing;
       // update current message and broadcast on server
       this.contactService.import({
         import_info: { provider: payload.provider,  type: payload.type, name: payload.name, file: genericFile}
       }).subscribe((response: any) => {
-          console.log('send file successfully', response);
+          this.successfulNum = response.data.length;
+          this.importDone();
+        },
+        (error: any) => {
+          this.importStatus = this.IMPORT_STATUS.error;
+          this.importDone(error);
         });
     });
   }

@@ -30,9 +30,7 @@ export class ZContactShareImportContactComponent {
   dragOver: boolean;
   private fileUploadHelper: FileUploadHelper;
 
-  constructor(
-    private fileService: GenericFileService,
-    private confirmationService: HConfirmationService) {
+  constructor(private fileService: GenericFileService) {
       this.fileUploadHelper = new FileUploadHelper();
   }
 
@@ -83,6 +81,5 @@ export class ZContactShareImportContactComponent {
           console.log('send file successfully', response);
         });
     });
-
   }
 }

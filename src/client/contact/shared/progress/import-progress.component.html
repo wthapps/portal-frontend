@@ -22,7 +22,7 @@
       </div>
       <div class="media-body">
         <div *ngIf="importStatus==IMPORT_STATUS.importing">Importing {{ gapi.totalImporting > 0 ? 'total ' + gapi.totalImporting + ' contacts' : '' }}  ...</div>
-        <div *ngIf="importStatus==IMPORT_STATUS.done">{{ gapi.totalImporting }} contacts imported</div>
+        <div *ngIf="importStatus==IMPORT_STATUS.done">{{ successfulNum }} contacts imported</div>
         <div *ngIf="importStatus==IMPORT_STATUS.cancelled">{{ gapi.totalImporting }} contacts cancelled</div>
       </div>
     </div>
