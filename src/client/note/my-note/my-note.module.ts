@@ -10,7 +10,7 @@ import { ZNoteMyNoteNotesComponent } from './notes/notes.component';
 @NgModule({
   imports: [
     ZNoteMyNoteRoutingModule,
-    ZNoteSharedModule.forRoot()
+    ZNoteSharedModule.forRoot(),
   ],
   declarations: [
     ZNoteMyNoteComponent,

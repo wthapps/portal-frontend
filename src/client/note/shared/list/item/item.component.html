@@ -1,0 +1,21 @@
+<ng-template [ngIf]="item">
+  <div class="note-listbox-input">
+    <i (click)="onSelected()" class="fa fa-check"></i>
+  </div>
+  <div class="note-listbox-name">
+    {{ item.title }}
+  </div>
+  <div class="note-listbox-owner">
+    {{ item.description }}
+  </div>
+  <div class="note-listbox-owner">
+    {{ item.owner.name }}
+  </div>
+  <div class="note-listbox-date">
+    {{ item.date }}
+  </div>
+  <div class="note-listbox-action">
+
+  </div>
+</ng-template>
+
