@@ -17,9 +17,6 @@ export class ICloudOAuthComponent {
     {name: 'outlook', text: 'Outlook Contacts', image: '/assets/images/icons/contact-book-providers-64x64.svg'}
   ];
 
-  constructor() {
-  }
-
   open() {
     this.modal.open().then();
   }

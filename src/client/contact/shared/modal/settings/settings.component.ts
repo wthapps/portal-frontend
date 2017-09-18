@@ -52,7 +52,7 @@ export class ZContactSharedSettingsComponent implements OnInit {
 
   submit() {
     this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: this.form.value}).subscribe((res: any) => {
-
+      console.log('settings', res);
     });
     this.modal.close();
   }

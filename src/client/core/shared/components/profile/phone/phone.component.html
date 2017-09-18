@@ -67,7 +67,8 @@
                   <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
                                   [suggestions]="filteredCountriesCode"
                                   (completeMethod)="filterCountriesCode($event)" [size]="30"
-                                  [minLength]="1" placeholder="Select your country" [dropdown]="true"
+                                  [minLength]="1" placeholder="Select your country" [dropdown]="false"
+                                  [dropdownMode]="current"
                                   (onDropdownClick)="handleDropdownClick($event)">
                     <ng-template ngFor let-code let-i="index" pTemplate="item">
                       <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
@@ -112,7 +113,7 @@
       </button>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min pull-right ml10"
               (click)="onSubmit(form.value)">Done
       </button>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>

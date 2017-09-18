@@ -25,7 +25,7 @@ export class PhotoSelectModalComponent {
   files: Array<any> = new Array<any>();
 
 
-  public init() {
+  init() {
     this.action = 'DONE';
     this.photoList.multipleSelect = true;
   }

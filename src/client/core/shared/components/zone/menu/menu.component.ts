@@ -11,7 +11,7 @@ import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
-import { ApiBaseService } from "../../../services/apibase.service";
+import { ApiBaseService } from '../../../services/apibase.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';
 
 declare var $: any;

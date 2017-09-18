@@ -58,7 +58,7 @@ export class PostPhotoSelectComponent implements OnInit, OnDestroy {
     this.unsubscribeAll([this.initSubscription, this.openSubscription, this.closeSubscription]);
   }
 
-  public init(options: any) {
+  init(options: any) {
     this.action = 'DONE';
     if (_.get(options, 'multipleSelect', true) === true)
       this.photoList.multipleSelect = true;

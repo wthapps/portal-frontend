@@ -12,7 +12,7 @@ import {
         <div [ngClass]="{'ui-dialog ui-confirmdialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl}" 
             [style.display]="visible ? 'block' : 'none'" [style.width.px]="width" [style.height.px]="height" (mousedown)="moveOnTop()" [@dialogState]="visible ? 'visible' : 'hidden'">
             <div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top">
-                <span class="ui-dialog-title" *ngIf="header">{{header}}</span>
+                <span class="ui-dialog-title" *ngIf="header">{{ header }}</span>
                 <a *ngIf="closable" [ngClass]="{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}" href="#" role="button" (click)="close($event)">
                     <span class="fa fa-fw fa-close"></span>
                 </a>

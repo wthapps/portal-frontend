@@ -97,9 +97,10 @@ export class CommentItemEditorComponent implements OnInit {
 
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
-        this.post(this.commentEditorForm.value);}
-      else
+        this.post(this.commentEditorForm.value);
+      } else {
         this.cancel();
+      }
       return;
     }
     // Cancel comment

@@ -102,16 +102,16 @@ export class AlbumCreateModalComponent implements OnInit {
       });
   }
 
-  public viewAlbumDetail(albumId: number) {
+  viewAlbumDetail(albumId: number) {
     this.router.navigate(['./', {outlets: {detail: [`albums`, albumId]}}], { queryParams: {r: 1}});
   }
 
-  public onAction(action: string, data: any) {
+  onAction(action: string, data: any) {
     let options = {action: action, data: data};
     this.event.emit(options);
   }
 
-  public autoCompleteTags = (text: string): Observable<Response> => {
+  autoCompleteTags = (text: string): Observable<Response> => {
     return this.tagService.getTags(text)
       // .map(data => { console.log('autocompleteTags: ', data.json()); return data.json().map((t: any) => t.name)})
       .map(data => data.json().map((item: any) => item.name))

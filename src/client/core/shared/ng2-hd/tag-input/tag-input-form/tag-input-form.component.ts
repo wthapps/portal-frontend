@@ -22,21 +22,21 @@ import {
   templateUrl: 'tag-input-form.template.html'
 })
 export class TagInputFormComponent implements OnInit {
-  @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
-  @Output() public onBlur: EventEmitter<any> = new EventEmitter();
-  @Output() public onFocus: EventEmitter<any> = new EventEmitter();
-  @Output() public onKeyup: EventEmitter<any> = new EventEmitter();
-  @Output() public onKeydown: EventEmitter<any> = new EventEmitter();
+  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+  @Output() onBlur: EventEmitter<any> = new EventEmitter();
+  @Output() onFocus: EventEmitter<any> = new EventEmitter();
+  @Output() onKeyup: EventEmitter<any> = new EventEmitter();
+  @Output() onKeydown: EventEmitter<any> = new EventEmitter();
 
   // inputs
-  @Input() public placeholder: string;
-  @Input() public validators: ValidatorFn[] = [];
+  @Input() placeholder: string;
+  @Input() validators: ValidatorFn[] = [];
 
-  @Input() public inputId: string;
-  @Input() public inputClass: string;
+  @Input() inputId: string;
+  @Input() inputClass: string;
 
-  @ViewChild('input') public input: any;
-  public form: FormGroup;
+  @ViewChild('input') input: any;
+  form: FormGroup;
 
   constructor(private renderer: Renderer) {
   }

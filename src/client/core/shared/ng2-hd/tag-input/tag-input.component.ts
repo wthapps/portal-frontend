@@ -63,35 +63,35 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @desc keyboard keys with which a user can separate items
    * @type {Array}
    */
-  @Input() public separatorKeys: number[] = [];
+  @Input() separatorKeys: number[] = [];
 
   /**
    * @name placeholder
    * @desc the placeholder of the input text
    * @type {string}
    */
-  @Input() public placeholder: string = PLACEHOLDER;
+  @Input() placeholder: string = PLACEHOLDER;
 
   /**
    * @name secondaryPlaceholder
    * @desc placeholder to appear when the input is empty
    * @type {string}
    */
-  @Input() public secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
+  @Input() secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
 
   /**
    * @name maxItems
    * @desc maximum number of items that can be added
    * @type {number}
    */
-  @Input() public maxItems: number = undefined;
+  @Input() maxItems: number = undefined;
 
   /**
    * @name readonly
    * @desc if set to true, the user cannot remove/addItem new items
    * @type {boolean}
    */
-  @Input() public readonly: boolean = undefined;
+  @Input() readonly: boolean = undefined;
 
 
   /**
@@ -99,47 +99,47 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @desc array of Validators that are used to validate the tag before it gets appended to the list
    * @type {Validators[]}
    */
-  @Input() public validators: Array<any> = [];
+  @Input() validators: Array<any> = [];
 
   /**
    * @name autocomplete
    * @desc sets if autocomplete is enabled. By default it's not.
    * @type {boolean}
    */
-  @Input() public autocomplete: boolean = false;
+  @Input() autocomplete: boolean = false;
 
   /**
    * @name autocompleteItems
    * @desc array of items that will populate the autocomplete
    * @type {Array<string>}
    */
-  @Input() public autocompleteItems: string[] = undefined;
+  @Input() autocompleteItems: string[] = undefined;
 
   /**
    * - if set to true, it will only possible to add items from the autocomplete
    * @name onlyFromAutocomplete
    * @type {Boolean}
    */
-  @Input() public onlyFromAutocomplete: boolean = false;
+  @Input() onlyFromAutocomplete: boolean = false;
 
   /**
    * @name errorMessages
    * @type {Map<string, string>}
    */
-  @Input() public errorMessages: {[key: string]: string} = {};
+  @Input() errorMessages: {[key: string]: string} = {};
 
   /**
    * @name theme
    * @type {string}
    */
-  @Input() public theme: string = 'default';
+  @Input() theme: string = 'default';
 
   /**
    * - show autocomplete dropdown if the value of input is empty
    * @name showDropdownIfEmpty
    * @type {boolean}
    */
-  @Input() public showDropdownIfEmpty: boolean = false;
+  @Input() showDropdownIfEmpty: boolean = false;
 
   // outputs
 
@@ -149,91 +149,91 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @desc event emitted when adding a new item
    * @type {EventEmitter<string>}
    */
-  @Output() public onAdd = new EventEmitter<string>();
+  @Output() onAdd = new EventEmitter<string>();
 
   /**
    * @name onRemove
    * @desc event emitted when removing an existing item
    * @type {EventEmitter<string>}
    */
-  @Output() public onRemove = new EventEmitter<string>();
+  @Output() onRemove = new EventEmitter<string>();
 
   /**
    * @name onSelect
    * @desc event emitted when selecting an item
    * @type {EventEmitter<string>}
    */
-  @Output() public onSelect = new EventEmitter<string>();
+  @Output() onSelect = new EventEmitter<string>();
 
   /**
    * @name onFocus
    * @desc event emitted when the input is focused
    * @type {EventEmitter<string>}
    */
-  @Output() public onFocus = new EventEmitter<string>();
+  @Output() onFocus = new EventEmitter<string>();
 
   /**
    * @name onFocus
    * @desc event emitted when the input is blurred
    * @type {EventEmitter<string>}
    */
-  @Output() public onBlur = new EventEmitter<string>();
+  @Output() onBlur = new EventEmitter<string>();
 
   /**
    * @name onTextChange
    * @desc event emitted when the input value changes
    * @type {EventEmitter<string>}
    */
-  @Output() public onTextChange = new EventEmitter<string>();
+  @Output() onTextChange = new EventEmitter<string>();
 
   /**
    * @name template
    * @desc reference to the template if provided by the user
    * @type {ElementRef}
    */
-  @ViewChild('template') public template: ElementRef;
+  @ViewChild('template') template: ElementRef;
 
   /**
    * @name dropdown
    */
-  @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
+  @ViewChild(Ng2Dropdown) dropdown: Ng2Dropdown;
 
   /**
    * @name inputForm
    * @type {TagInputFormComponent}
    */
-  @ViewChild(TagInputFormComponent) public inputForm: TagInputFormComponent;
+  @ViewChild(TagInputFormComponent) inputForm: TagInputFormComponent;
 
   /**
    * list of items that match the current value of the input (for autocomplete)
    * @name itemsMatching
    * @type {String[]}
    */
-  public itemsMatching: string[] = [];
+  itemsMatching: string[] = [];
 
   /**
    * @name selectedTag
    * @desc reference to the current selected tag
    * @type {String}
    */
-  public selectedTag: string;
+  selectedTag: string;
 
   /**
    * - custom id assigned to the input
    * @name id
    */
-  @Input() public inputId: string;
+  @Input() inputId: string;
 
   /**
    * - custom class assigned to the input
    */
-  @Input() public inputClass: string;
+  @Input() inputClass: string;
 
   /**
    * @name onTextChangeDebounce
    * @type {number}
    */
-  @Input() public onTextChangeDebounce: number = 250;
+  @Input() onTextChangeDebounce: number = 250;
 
 
   items: any = [];
@@ -272,7 +272,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @desc removes an item from the array of the model
    * @param item {string}
    */
-  public removeItem(item: string): void {
+  removeItem(item: string): void {
     this.items = this.items.filter((_item: any) => _item !== item);
 
     // if the removed tag was selected, set it as undefined
@@ -291,7 +291,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @name addItem
    * @desc adds the current text model to the items array
    */
-  public addItem(isFromAutocomplete = false): void {
+  addItem(isFromAutocomplete = false): void {
     // if (this.autocomplete && this.dropdown.state.selectedItem && !isFromAutocomplete) {
     //     return;
     // }
@@ -330,7 +330,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     this.focus(true);
   }
 
-  public escapeDropdown(event: any) {
+  escapeDropdown(event: any) {
     //
   }
 
@@ -339,7 +339,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @desc selects item passed as parameter as the selected tag
    * @param item
    */
-  public selectItem(item: string): void {
+  selectItem(item: string): void {
     if (this.readonly) {
       const el = this.element.nativeElement;
       this.renderer.invokeElementMethod(el, FOCUS, []);
@@ -358,7 +358,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @param eventName
    * @param $event
    */
-  public fireEvents(eventName: string, $event?: any): void {
+  fireEvents(eventName: string, $event?: any): void {
     this.listeners[eventName].forEach(listener => listener.call(this, $event));
   }
 
@@ -368,7 +368,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @param $event
    * @param item
    */
-  public handleKeydown($event: any, item: string): void {
+  handleKeydown($event: any, item: string): void {
     const action = getAction($event.keyCode || $event.which);
     const itemIndex = this.items.indexOf(item);
 
@@ -383,7 +383,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @name focus
    * @param applyFocus
    */
-  public focus(applyFocus = false): void {
+  focus(applyFocus = false): void {
     if (this.readonly) {
       return;
     }
@@ -404,7 +404,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
   /**
    * @name blur
    */
-  public blur(): void {
+  blur(): void {
     this.onBlur.emit(this.inputForm.value.value);
   }
 
@@ -412,7 +412,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @name hasErrors
    * @returns {boolean}
    */
-  public hasErrors(): boolean {
+  hasErrors(): boolean {
     return this.inputForm && this.inputForm.hasErrors() ? true : false;
   }
 
@@ -420,7 +420,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @name isInputFocused
    * @returns {boolean}
    */
-  public isInputFocused(): boolean {
+  isInputFocused(): boolean {
     return this.inputForm && this.inputForm.isInputFocused() ? true : false;
   }
 
@@ -493,7 +493,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
    * @name maxItemsReached
    * @returns {boolean}
    */
-  public  maxItemsReached(): boolean {
+  maxItemsReached(): boolean {
     return this.maxItems !== undefined && this.items.length >= this.maxItems;
   }
 

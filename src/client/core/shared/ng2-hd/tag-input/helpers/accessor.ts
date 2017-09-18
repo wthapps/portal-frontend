@@ -9,11 +9,11 @@ export class TagInputAccessor implements ControlValueAccessor {
 
   private _onChangeCallback: (items: string[]) => void;
 
-  public get items(): string[] {
+  get items(): string[] {
     return this._items;
   }
 
-  public set items(items: string[]) {
+  set items(items: string[]) {
     this._items = items;
     this._onChangeCallback(items);
   }
