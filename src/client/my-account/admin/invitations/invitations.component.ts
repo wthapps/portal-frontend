@@ -53,8 +53,6 @@ export class MyInvitationsComponent implements OnInit {
     }).subscribe((response: any) => {
       this.items = response.data;
     });;
-
-    // this.fakeCount();
   }
 
   fakeCount() {

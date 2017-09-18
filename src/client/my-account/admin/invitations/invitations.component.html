@@ -58,18 +58,16 @@
             <thead>
             <tr>
               <th>
-                <!--<div class="contact-listbox-input">-->
-                  <!--<input type="checkbox" name="" value="" (click)="onSelectAll()">-->
-                <!--</div>-->
-
                 <div>
                   <p-checkbox value="" label=""
                               [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll($event)"></p-checkbox>
                 </div>
               </th>
               <th>Email</th>
-              <th>Sent date</th>
-              <th>Number of sent</th>
+              <ng-container *ngIf="currentTab == TAB.PENDING.value; else accepted_title">
+                <th>Sent date</th>
+                <!--<th>Number of sent</th>-->
+              </ng-container>
               <th>Action</th>
 
             </tr>
@@ -77,11 +75,6 @@
             <tbody>
             <tr *ngFor="let item of items">
               <th>
-                <!--<div class="contact-listbox-input">-->
-                  <!--&lt;!&ndash; <i (click)="onSelect(item?.id)" class="fa fa-check"></i> &ndash;&gt;-->
-                  <!--<input type="checkbox" name="" value="" (click)="onSelect(item)">-->
-                <!--</div>-->
-
                 <div>
                   <!-- <p-checkbox value="" label=""
                               [(ngModel)]="item.selected" (onChange)="onSelect(item)"></p-checkbox> -->
@@ -91,11 +84,10 @@
               </th>
               <td><a rel="nofollow" target="_top"
                      href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a></td>
-              <td>{{ item.created_at | date:'yMMMd' }} {{ item.created_at | date:'H:mm:ss' }}</td>
-              <td>{{ item.sent_count }}</td>
+              <ng-container *ngIf="(currentTab == TAB.PENDING.value); then pending_content else accepted_content"></ng-container>
               <td>
-                <div *ngIf="currentTab == TAB.PENDING.value">
-                  <button class="btn btn-outline-secondary"
+                <div>
+                  <button *ngIf="currentTab == TAB.PENDING.value" class="btn btn-outline-secondary"
                           (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
                   <button class="btn btn-outline-secondary"
                           (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i> Cancel</button>
@@ -109,3 +101,16 @@
     <!--</div>-->
   <!--</div>-->
 <!--</div>-->
+
+
+<ng-template #accepted_title>
+  <th>Accepted date</th>
+</ng-template>
+
+<ng-template #pending_content let-item>
+  <td>{{ item.created_at | date:'yMMMd' }} {{ item.created_at | date:'H:mm:ss' }}</td>
+  <!--<td>{{ item.sent_count }}</td>-->
+</ng-template>
+<ng-template #accepted_content let-item>
+  <td>{{ item?.accepted_date | date: 'yMMMd'}} {{ item.accepted_date | date:'H:mm:ss' }}</td>
+</ng-template>
