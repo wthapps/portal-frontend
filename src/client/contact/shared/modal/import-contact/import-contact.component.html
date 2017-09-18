@@ -15,7 +15,7 @@
                 <div class="photo-box-figure">
                   <figure class="img-center-dv">
                     <div class="">
-                      <i [ngClass]="p.class"></i>
+                      <i [ngClass]="p.class" style="font-size: 24px;"></i>
                     </div>
                   </figure>
                   <div class="photo-box-name">
@@ -38,7 +38,7 @@
                              <!--autofocus="true">-->
                       <!--<span>   Import from file (.vcf, csv)</span>-->
 
-                      <h-fileUpload #fileUpload
+                      <h-fileUpload #fileUpload styleClass="h-ui-file-upload"
                                     customUpload="true"
                                     mode="basic"
                                     accept=".vcf,.csv,.xls,.xlsx"
@@ -46,6 +46,7 @@
                                     [chooseLabel]="'Import from file'"
                                     (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event}); fileUpload.clear();">
                       </h-fileUpload>
+                      <div class="file-extensions" style="padding-left: 50px;">vcard, csv, excel</div>
                     </div>
                   </figure>
                 </div>

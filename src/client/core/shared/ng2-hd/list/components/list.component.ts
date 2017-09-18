@@ -69,35 +69,35 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @desc keyboard keys with which a user can separate items
    * @type {Array}
    */
-  @Input() public separatorKeys: number[] = [];
+  @Input() separatorKeys: number[] = [];
 
   /**
    * @name placeholder
    * @desc the placeholder of the input text
    * @type {string}
    */
-  @Input() public placeholder: string = PLACEHOLDER;
+  @Input() placeholder: string = PLACEHOLDER;
 
   /**
    * @name secondaryPlaceholder
    * @desc placeholder to appear when the input is empty
    * @type {string}
    */
-  @Input() public secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
+  @Input() secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
 
   /**
    * @name maxItems
    * @desc maximum number of items that can be added
    * @type {number}
    */
-  @Input() public maxItems: number = undefined;
+  @Input() maxItems: number = undefined;
 
   /**
    * @name readonly
    * @desc if set to true, the user cannot remove/addItem new items
    * @type {boolean}
    */
-  @Input() public readonly: boolean = undefined;
+  @Input() readonly: boolean = undefined;
 
 
   /**
@@ -105,21 +105,21 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @desc array of Validators that are used to validate the tag before it gets appended to the list
    * @type {Validators[]}
    */
-  @Input() public validators: Array<any> = [];
+  @Input() validators: Array<any> = [];
 
   /**
    * @name searchable
    * @desc sets if searchable is enabled. By default it's not.
    * @type {boolean}
    */
-  @Input() public searchable: boolean = false;
+  @Input() searchable: boolean = false;
 
   /**
    * @name searchItems
    * @desc array of items that will populate the autocomplete
    * @type {Array<any>}
    */
-  @Input() public searchItems: Array<any> = undefined;
+  @Input() searchItems: Array<any> = undefined;
 
   /**
    * @name searchItems
@@ -127,33 +127,33 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * the autocomplete
    * @type {Array<any>}
    */
-  @Input() public selectedItems: Array<any> = new Array<any>();
+  @Input() selectedItems: Array<any> = new Array<any>();
 
   /**
    * - if set to true, it will only possible to add items from the autocomplete
    * @name onlyFromAutocomplete
    * @type {Boolean}
    */
-  @Input() public onlyFromAutocomplete: boolean = false;
+  @Input() onlyFromAutocomplete: boolean = false;
 
   /**
    * @name errorMessages
    * @type {Map<string, string>}
    */
-  @Input() public errorMessages: {[key: string]: string} = {};
+  @Input() errorMessages: {[key: string]: string} = {};
 
   /**
    * @name theme
    * @type {string}
    */
-  @Input() public theme: string = 'default';
+  @Input() theme: string = 'default';
 
   /**
    * - show autocomplete dropdown if the value of input is empty
    * @name showDropdownIfEmpty
    * @type {boolean}
    */
-  @Input() public showDropdownIfEmpty: boolean = false;
+  @Input() showDropdownIfEmpty: boolean = false;
 
   // outputs
 
@@ -184,63 +184,63 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @desc event emitted when adding a new item
    * @type {EventEmitter<string>}
    */
-  @Output() public onAdd = new EventEmitter<any>();
+  @Output() onAdd = new EventEmitter<any>();
 
   /**
    * @name onRemove
    * @desc event emitted when removing an existing item
    * @type {EventEmitter<string>}
    */
-  @Output() public onRemove = new EventEmitter<any>();
+  @Output() onRemove = new EventEmitter<any>();
 
   /**
    * @name onSelect
    * @desc event emitted when selecting an item
    * @type {EventEmitter<string>}
    */
-  @Output() public onSelect = new EventEmitter<any>();
+  @Output() onSelect = new EventEmitter<any>();
 
   /**
    * @name onFocus
    * @desc event emitted when the input is focused
    * @type {EventEmitter<string>}
    */
-  @Output() public onFocus = new EventEmitter<any>();
+  @Output() onFocus = new EventEmitter<any>();
 
   /**
    * @name onFocus
    * @desc event emitted when the input is blurred
    * @type {EventEmitter<string>}
    */
-  @Output() public onBlur = new EventEmitter<any>();
+  @Output() onBlur = new EventEmitter<any>();
 
   /**
    * @name onTextChange
    * @desc event emitted when the input value changes
    * @type {EventEmitter<string>}
    */
-  @Output() public onTextChange = new EventEmitter<any>();
+  @Output() onTextChange = new EventEmitter<any>();
 
   /**
    * @name onListUpdate
    * @desc
    * @type {EventEmitter<string>}
    */
-  @Output() public onListUpdate = new EventEmitter<any>();
+  @Output() onListUpdate = new EventEmitter<any>();
 
   /**
    * @name onTextChange
    * @desc event emitted when the input value changes
    * @type {EventEmitter<string>}
    */
-  @Output() public onSelected = new EventEmitter<Array<any>>();
+  @Output() onSelected = new EventEmitter<Array<any>>();
 
   /**
    * @name template
    * @desc reference to the template if provided by the user
    * @type {ElementRef}
    */
-  @ViewChild('template') public template: ElementRef;
+  @ViewChild('template') template: ElementRef;
 
   // /**
   //  * @name dropdown
@@ -251,7 +251,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name inputForm
    * @type {SearchFormComponent}
    */
-  @ViewChild(SearchFormComponent) public inputForm: SearchFormComponent;
+  @ViewChild(SearchFormComponent) inputForm: SearchFormComponent;
 
 
 
@@ -260,14 +260,14 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name itemsSearching
    * @type {String[]}
    */
-  @Input() public itemsSearching: Array<any> = new Array<any>();
+  @Input() itemsSearching: Array<any> = new Array<any>();
 
   /**
    * @name selectedTag
    * @desc reference to the current selected tag
    * @type {String}
    */
-  public selectedTag: string;
+  selectedTag: string;
 
 
   /**
@@ -297,14 +297,14 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name transform
    * @desc function passed to the component to transform the value of the items, or reject them instead
    */
-  @Input() public transform: (item: string) => string = (item) => item;
+  @Input() transform: (item: string) => string = (item) => item;
 
   /**
    * @name removeItem
    * @desc removes an item from the array of the model
    * @param item {any}
    */
-  public removeItem(item: any): void {
+  removeItem(item: any): void {
 
     // remove selected item from list item
     if (_.find(this.itemsSearching, item) != undefined) {
@@ -332,7 +332,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name addItem
    * @desc adds the current text model to the items array
    */
-  public addItem(isFromAutocomplete: boolean = false): void {
+  addItem(isFromAutocomplete: boolean = false): void {
     // if (this.autocomplete && this.dropdown.state.selectedItem && !isFromAutocomplete) {
     //     return;
     // }
@@ -372,7 +372,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @desc selects item passed as parameter as the selected tag
    * @param item
    */
-  public selectItem(item: string): void {
+  selectItem(item: string): void {
     if (this.readonly) {
       const el = this.element.nativeElement;
       this.renderer.invokeElementMethod(el, FOCUS, []);
@@ -391,7 +391,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @param eventName
    * @param $event
    */
-  public fireEvents(eventName: string, $event?: any): void {
+  fireEvents(eventName: string, $event?: any): void {
     this.listeners[eventName].forEach(listener => listener.call(this, $event));
   }
 
@@ -401,7 +401,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @param $event
    * @param item
    */
-  public handleKeydown($event: any, item: string): void {
+  handleKeydown($event: any, item: string): void {
     const action = getAction($event.keyCode || $event.which);
     const itemIndex = this.items.indexOf(item);
 
@@ -416,7 +416,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name focus
    * @param applyFocus
    */
-  public focus(applyFocus = false): void {
+  focus(applyFocus = false): void {
     if (this.readonly) {
       return;
     }
@@ -437,7 +437,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   /**
    * @name blur
    */
-  public blur(): void {
+  blur(): void {
     this.onBlur.emit(this.inputForm.value.value);
   }
 
@@ -445,7 +445,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name hasErrors
    * @returns {boolean}
    */
-  public hasErrors(): boolean {
+  hasErrors(): boolean {
     return this.inputForm && this.inputForm.hasErrors() ? true : false;
   }
 
@@ -453,7 +453,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name isInputFocused
    * @returns {boolean}
    */
-  public isInputFocused(): boolean {
+  isInputFocused(): boolean {
     return this.inputForm && this.inputForm.isInputFocused() ? true : false;
   }
 
@@ -535,7 +535,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   //     // }
   // }
 
-  public toggleSelectItem(item: any, event: any): void {
+  toggleSelectItem(item: any, event: any): void {
     if (_.find(this.selectedItems, item) == undefined) {
       this.selectedItems.push(item);
 
@@ -546,11 +546,11 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
     this.onSelected.emit(this.selectedItems);
   }
 
-  public handleKeyPress() {
+  handleKeyPress() {
   //
   }
 
-  public registerEvent(eventName: string, callback: any) {
+  registerEvent(eventName: string, callback: any) {
     addListener.call(this, eventName, callback(this));
   }
 
@@ -559,7 +559,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name maxItemsReached
    * @returns {boolean}
    */
-  public maxItemsReached(): boolean {
+  maxItemsReached(): boolean {
     return this.maxItems !== undefined && this.items.length >= this.maxItems;
   }
 
@@ -568,7 +568,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @param value
    * @returns {string}
    */
-  public setInputValue(value: string): string {
+  setInputValue(value: string): string {
     const item = value ? this.transform(value) : '';
     const control = this.getControl();
 

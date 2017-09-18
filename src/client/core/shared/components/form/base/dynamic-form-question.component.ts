@@ -17,7 +17,7 @@ export class DynamicFormQuestionComponent {
     if (!this.form.controls[this.question.key].touched) {
       return true;
     }
-    return this.form.controls[this.question.key].valid
+    return this.form.controls[this.question.key].valid;
   }
 
   get isTouched() {

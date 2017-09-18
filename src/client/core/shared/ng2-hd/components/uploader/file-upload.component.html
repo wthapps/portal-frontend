@@ -34,8 +34,8 @@
       <div *ngIf="!fileTemplate">
         <div class="ui-fileupload-row" *ngFor="let file of files; let i = index;">
           <div><img [src]="file.objectURL" *ngIf="isImage(file)" [width]="previewWidth" /></div>
-          <div>{{file.name}}</div>
-          <div>{{formatSize(file.size)}}</div>
+          <div>{{ file.name }}</div>
+          <div>{{ formatSize(file.size) }}</div>
           <div><button type="button" icon="fa-close" pButton (click)="remove($event,i)"></button></div>
         </div>
       </div>
@@ -52,7 +52,7 @@
       [ngClass]="{'ui-fileupload-choose-selected': hasFiles(),'ui-state-focus': focus}">
   <span class="ui-button-icon-left fa"
         [ngClass]="{'fa-plus': !hasFiles()||auto, 'fa-upload': hasFiles()&&!auto}"></span>
-  <span class="ui-button-text ui-clickable">{{auto ? chooseLabel : hasFiles() ? files[0].name : chooseLabel}}</span>
+  <span class="ui-button-text ui-clickable">{{ auto ? chooseLabel : hasFiles() ? files[0].name : chooseLabel }}</span>
   <input #basicfileinput type="file"
          [accept]="accept"
          [multiple]="multiple"

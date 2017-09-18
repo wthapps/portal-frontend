@@ -42,10 +42,10 @@ export class FileDropDirective implements OnInit, OnDestroy {
   stopEvent = (e: Event) => {
     e.stopPropagation();
     e.preventDefault();
-  };
+  }
 
   @HostListener('drop', ['$event'])
-  public onDrop(e: any) {
+  onDrop(e: any) {
     e.stopPropagation();
     e.preventDefault();
 
@@ -55,7 +55,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
   }
 
   @HostListener('dragover', ['$event'])
-  public onDragOver(e: Event) {
+  onDragOver(e: Event) {
     if (!e) {
       return;
     }
@@ -65,7 +65,7 @@ export class FileDropDirective implements OnInit, OnDestroy {
   }
 
   @HostListener('dragleave', ['$event'])
-  public onDragLeave(e: Event) {
+  onDragLeave(e: Event) {
     if (!e) {
       return;
     }

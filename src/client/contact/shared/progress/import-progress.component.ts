@@ -114,6 +114,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
         import_info: { provider: payload.provider,  type: payload.type, name: payload.name, file: genericFile}
       }).subscribe((response: any) => {
           this.successfulNum = response.data.length;
+          this.contactService.addMoreContacts(response.data);
           this.importDone();
         },
         (error: any) => {
