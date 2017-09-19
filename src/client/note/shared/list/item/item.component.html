@@ -1,21 +1,20 @@
-<ng-template [ngIf]="item">
-  <div class="note-listbox-input">
+<div *ngIf="item" class="component-listbox-row" [ngClass]="{'item-folder': item.type == 'folder'}">
+  <div class="component-listbox-input">
     <i (click)="onSelected()" class="fa fa-check"></i>
   </div>
-  <div class="note-listbox-name">
-    {{ item.title }}
+  <div class="component-listbox-name">
+    <span class="can-click" (click)="onClick(item)">{{ item.name }}</span>
   </div>
-  <div class="note-listbox-owner">
-    {{ item.description }}
-  </div>
-  <div class="note-listbox-owner">
+  <div class="component-listbox-owner">
     {{ item.owner.name }}
   </div>
-  <div class="note-listbox-date">
-    {{ item.date }}
+  <div class="component-listbox-description">
+    {{ item.description }}
   </div>
-  <div class="note-listbox-action">
-
+  <div class="component-listbox-date">
+    {{ item.created_at | timeFormat }}
   </div>
-</ng-template>
-
+  <div class="component-listbox-action">
+    <z-note-shared-actions-bar class="action"></z-note-shared-actions-bar>
+  </div>
+</div>

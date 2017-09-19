@@ -61,6 +61,7 @@
     background-color: #ffffff;
     padding: 15px 30px;
     position: relative;
+    display: block;
     z-index: 3;
     @include clearfix;
     @include box-shadow($box-shadow-bottom);

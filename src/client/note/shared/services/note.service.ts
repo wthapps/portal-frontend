@@ -12,7 +12,9 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 export class ZNoteService extends BaseEntityService<any> {
 
   notes$: Observable<any[]>;
+  viewOption$: Observable<string>;
   private notesSubject = new BehaviorSubject<Note[]>([]);
+  private viewOptionSubject = new BehaviorSubject<string>('list');
 
   private apiUrl = '/api/zone/note/note.json';
 
@@ -22,6 +24,7 @@ export class ZNoteService extends BaseEntityService<any> {
     this.url = 'note/notes';
 
     this.notes$ = this.notesSubject.asObservable();
+    this.viewOption$ = this.viewOptionSubject.asObservable();
   }
 
   getList(): Observable<any[]> {
@@ -32,6 +35,10 @@ export class ZNoteService extends BaseEntityService<any> {
         this.notesSubject.next(notes);
       })
       .catch(this.handleError);
+  }
+
+  changeModeView(mode: string = 'list') {
+    this.viewOptionSubject.next(mode);
   }
 
   private handleError(error: Response) {

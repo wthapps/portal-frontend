@@ -1,29 +1,27 @@
-<div class="note-listbox-wrap">
-  <div class="note-listbox-header">
-    <div class="note-listbox-row">
-      <div class="note-listbox-input">
+<div [ngClass]="{'component-listbox-list': viewOption == 'list', 'component-listbox-grid': viewOption == 'grid'}">
+  <div class="component-listbox-header">
+    <div class="component-listbox-row">
+      <div class="component-listbox-input">
         <i (click)="onSelectedAll()" class="fa fa-check"></i>
       </div>
-      <div class="note-listbox-name">
-        <a href="#" class="note-listbox-block-link" (click)="onSort('name')">Name
-          <i class="fa fa-arrow-up"></i>
-        </a>
+      <div class="component-listbox-name">
+        <span class="can-click" (click)="onSort('name')">
+          Name <i class="fa fa-arrow-up"></i>
+        </span>
       </div>
-      <div class="note-listbox-owner">
+      <div class="component-listbox-owner">
         Owner
       </div>
-      <div class="note-listbox-date">
+      <div class="component-listbox-description">
+        Description
+      </div>
+      <div class="component-listbox-date">
         Create Date
       </div>
-      <div class="note-listbox-action">&nbsp;</div>
+      <div class="component-listbox-action">&nbsp;</div>
     </div>
   </div>
-  <div class="note-listbox-body">
-    <z-note-shared-item *ngFor="let item of data" [item]="item" class="note-listbox-row"></z-note-shared-item>
-  </div>
+
+  <z-note-shared-item *ngFor="let item of data" [item]="item" class="component-listbox-body"></z-note-shared-item>
+
 </div>
-
-<!--<p *ngFor="let contact of contactService.selectedObjects">-->
-<!--{{ contact.name }}-->
-<!--</p>-->
-

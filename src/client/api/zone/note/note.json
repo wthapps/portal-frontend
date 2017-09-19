@@ -1,13 +1,14 @@
 {
   "data": [
     {
-      "id": 4,
+      "id": 1,
       "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5a",
-      "title": "Sub folder title 01",
+      "name": "Sub folder name 01",
+      "parent_id": null,
       "description": "",
       "content": "",
       "type": "folder",
-      "date": null,
+      "created_at": "2017-09-18T09:34:04.996Z",
       "owner": {
         "id": 4,
         "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
@@ -23,13 +24,14 @@
       }
     },
     {
-      "id": 4,
+      "id": 2,
       "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
-      "title": "Sub folder title 02",
+      "name": "Sub folder name 02",
+      "parent_id": 1,
       "description": "",
       "content": "",
       "type": "folder",
-      "date": null,
+      "created_at": "2017-09-18T09:34:04.996Z",
       "owner": {
         "id": 4,
         "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
@@ -45,13 +47,14 @@
       }
     },
     {
-      "id": 4,
+      "id": 3,
       "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5c",
-      "title": "This is the long title of your not very long note 001 your not very long note 001",
+      "name": "This is the long name of your not very long note 001 your not very long note 001",
+      "parent_id": 1,
       "description": "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I…",
       "content": "content html",
       "type": "file",
-      "date": null,
+      "created_at": "2017-09-18T09:34:04.996Z",
       "owner": {
         "id": 4,
         "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",
@@ -69,11 +72,12 @@
     {
       "id": 4,
       "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5d",
-      "title": "This is the long title of your not very long note 001 your not very long note 002",
+      "name": "This is the long name of your not very long note 001 your not very long note 002",
+      "parent_id": 1,
       "description": "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I…",
       "content": "content html",
       "type": "file",
-      "date": null,
+      "created_at": "2017-09-18T09:34:04.996Z",
       "owner": {
         "id": 4,
         "uuid": "cbe518e0-4e8c-4dd8-961c-993651ebcd5b",

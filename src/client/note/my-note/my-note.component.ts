@@ -11,10 +11,14 @@ declare var _: any;
 })
 export class ZNoteMyNoteComponent implements OnInit {
   data: Note[] = [];
+  viewOption: string = 'list';
 
   constructor(private noteService: ZNoteService) {
     this.noteService.notes$.subscribe((res: any)=> {
       this.data = res.data;
+    });
+    this.noteService.viewOption$.subscribe((viewOption: any)=> {
+      this.viewOption = viewOption;
     });
   }
 

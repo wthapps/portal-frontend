@@ -1,4 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { Constants } from '../../../core/shared/config/constants';
+import { ZNoteService } from '../services/note.service';
 
 @Component({
   moduleId: module.id,
@@ -9,9 +11,21 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 export class ZNoteSharedToolBarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
 
-  constructor() {
+  tooltip: any = Constants.tooltip;
+
+  viewOption: string = 'list';
+
+  constructor(private noteService: ZNoteService) {
+    this.noteService.viewOption$.subscribe((viewOption: any)=> {
+      this.viewOption = viewOption;
+    });
   }
 
   ngOnInit() {
+
+  }
+
+  onChangeView(view: string) {
+    this.noteService.changeModeView(view);
   }
 }

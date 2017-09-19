@@ -1,0 +1,6 @@
+@mixin card() {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid #D7D7D7;
+  @include box-shadow(0 2px 4px 0 rgba(164, 164, 164, 0.40));
+}

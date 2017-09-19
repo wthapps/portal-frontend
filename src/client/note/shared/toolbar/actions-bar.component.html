@@ -1,0 +1,35 @@
+<ul class="page-body-control-menu">
+  <li>
+    <a href="javascript:;" class="btn btn-default" (click)="onEdit()"
+       pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
+      <i class="fa fa-pencil"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="btn btn-default" (click)="onShare()"
+       pTooltip="{{ tooltip.share }}" tooltipPosition="bottom">
+      <i class="fa fa-share-alt"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="btn btn-default" (click)="onDelete()"
+       pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
+      <i class="fa fa-trash-o"></i>
+    </a>
+  </li>
+  <li class="dropdown action">
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+            pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
+      <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right text-right">
+      <li role="presentation">
+        <a role="menuitem" tabindex="-1" href="#">Make copy</a>
+      </li>
+      <li role="presentation">
+        <a role="menuitem" tabindex="-1" href="#">Move to folder</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+

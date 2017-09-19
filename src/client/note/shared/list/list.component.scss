@@ -1,8 +1,101 @@
 @import '../../../core/scss/global';
+@import '../../../core/scss/modules/card';
 
-$note-listbox-input: 10px;
-$note-listbox-name: auto;
-$note-listbox-owner: 100px;
-$note-listbox-date: 100px;
-$note-listbox-action: 100px;
-$color-table-row: #F9F9F9;
+:host {
+  display: block;
+}
+
+$note-name: auto;
+$note-owner: 200px;
+$note-description: 200px;
+$note-date: 120px;
+$note-action: 200px;
+
+.component-listbox-list {
+  .component-listbox-name {
+    width: $note-name;
+  }
+
+  .component-listbox-owner {
+    width: $note-owner;
+  }
+
+  .component-listbox-description {
+    width: $note-description;
+  }
+
+  .component-listbox-date {
+    width: $note-date;
+  }
+
+  .component-listbox-action {
+    width: $note-action;
+  }
+
+}
+
+.component-listbox-action {
+  @include clearfix;
+  .page-body-control-menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    @include clearfix;
+    > li {
+      float: left;
+    }
+  }
+}
+
+.component-listbox-list {
+  .component-listbox-description {
+    display: none !important;
+  }
+}
+
+.component-listbox-grid {
+  display: block;
+  margin: 20px;
+  @include clearfix;
+  .component-listbox-header {
+    display: none !important;
+  }
+  .component-listbox-body {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+    margin-bottom: 20px;
+    .component-listbox-row {
+      @include card();
+      padding: 10px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+    }
+    .action {
+      float: right !important;
+    }
+    .component-listbox-input, .component-listbox-owner, .component-listbox-date {
+      display: none;
+    }
+    .component-listbox-name {
+      font-weight: bold;
+      margin-bottom: 10px;
+      overflow: hidden;
+      max-height: 36px;
+    }
+    .component-listbox-description {
+      margin-bottom: 20px;
+      overflow: hidden;
+      max-height: 96px;
+    }
+    .item-folder {
+      .component-listbox-name {
+        margin-bottom: 0;
+      }
+      .component-listbox-action, .component-listbox-description {
+        display: none;
+      }
+    }
+  }
+}

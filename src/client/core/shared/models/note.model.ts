@@ -2,7 +2,7 @@ import { User } from './user.model';
 export class Note {
   id: number;
   uuid: string;
-  title: string;
+  name: string;
   description: string;
   content: string;
   type: any;
@@ -12,7 +12,7 @@ export class Note {
   constructor(fields: {
     id?: number,
     uuid?: string,
-    title?: string,
+    name?: string,
     description?: string,
     content?: string,
     type?: any,

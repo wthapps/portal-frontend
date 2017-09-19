@@ -1,0 +1,60 @@
+.component-listbox-list {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #ffffff;
+  .component-listbox-header {
+    display: table-header-group;
+    .component-listbox-row {
+      > div {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    }
+  }
+  .component-listbox-body {
+    display: table-row-group;
+  }
+  .component-listbox-row {
+    display: table-row;
+    border-bottom: 1px solid $line;
+    > div {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 9px 10px;
+      min-height: 54px;
+      &:first-child, .first {
+        padding-left: 30px;
+      }
+      &:last-child, .last {
+        padding-right: 30px;
+      }
+    }
+    &.active, &:hover {
+      background-color: #F9F9F9;
+    }
+  }
+  .component-listbox-input {
+    width: 60px;
+    text-align: left;
+    .fa-check {
+      border: 1px solid $text-color;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      cursor: pointer;
+      &:before {
+        visibility: hidden;
+      }
+    }
+
+    &.active {
+      .fa-check {
+        color: $theme-color;
+        &:before {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}

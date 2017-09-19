@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants } from '../../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -7,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['actions-bar.component.css']
 })
 export class ZNoteSharedActionBarComponent implements OnInit {
+
+  tooltip: any = Constants.tooltip;
   constructor() {
   }
 
