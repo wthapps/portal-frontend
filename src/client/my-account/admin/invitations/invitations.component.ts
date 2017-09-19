@@ -82,21 +82,21 @@ export class MyInvitationsComponent implements OnInit {
         );
         this.modal.close();
         break;
-      case 'resend':
-        let recipient = {
-          email: event.payload.item.recipient_email,
-            fullName: event.payload.item.recipient_full_name,
-          contactId: event.payload.item.recipient_contact_id,
-        };
-        this.invitationService.resend({id: event.payload.item.id, recipient: recipient}).subscribe((response: any) => {
-          this.loadingService.stop();
-          this.toaster.success('You have just resent invitation successfully!');
-        },
-        (error: any) => {
-          this.loadingService.stop();
-          this.toaster.danger('There is a error when you resent invitation!');
-        });
-        break;
+      // case 'resend':
+      //   let recipient = {
+      //     email: event.payload.item.recipient_email,
+      //       fullName: event.payload.item.recipient_full_name,
+      //     contactId: event.payload.item.recipient_contact_id,
+      //   };
+      //   this.invitationService.resend({id: event.payload.item.id, recipient: recipient}).subscribe((response: any) => {
+      //     this.loadingService.stop();
+      //     this.toaster.success('You have just resent invitation successfully!');
+      //   },
+      //   (error: any) => {
+      //     this.loadingService.stop();
+      //     this.toaster.danger('There is a error when you resent invitation!');
+      //   });
+      //   break;
     }
   }
 
