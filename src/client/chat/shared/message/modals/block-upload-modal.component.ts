@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../../core/shared/services/common-event/common-event';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -11,10 +11,11 @@ declare var _: any;
   selector: 'block-upload-modal',
   templateUrl: 'block-upload-modal.component.html'
 })
-export class BlockUploadModal implements OnInit {
+export class BlockUploadModal implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
   file: any;
   fileUploadHelper: any;
+  event: any;
 
   constructor(private commonEventService: CommonEventService) {
     this.fileUploadHelper = new FileUploadHelper();
@@ -22,11 +23,14 @@ export class BlockUploadModal implements OnInit {
 
 
   ngOnInit() {
-    this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatBlockMessage').subscribe((event: CommonEvent) => {
-      console.log(event)
+    this.event = this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatBlockMessage').subscribe((event: CommonEvent) => {
       this.file = event.payload;
       this.file.extension = this.fileUploadHelper.getExtension(this.file.name)
       this.modal.open();
     });
+  }
+
+  ngOnDestroy() {
+    this.event.unsubscribe();
   }
 }
