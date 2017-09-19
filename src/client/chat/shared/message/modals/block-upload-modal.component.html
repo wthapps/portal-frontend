@@ -12,10 +12,10 @@
           <i class="fa fa-file-archive-o"></i>
         </div>
         <div class="media-body">
-          <strong>{{file.name}}</strong>
+          <strong>{{ file.name }}</strong>
           <div class="text-fade">
-            <ng-template [ngIf]="file.extension">Type: {{file.extension}} <br></ng-template>
-            Size: {{file.size | bytes }}
+            <ng-template [ngIf]="file.extension">Type: {{ file.extension }} <br></ng-template>
+            Size: {{ file.size | bytes }}
           </div>
 
         </div>

@@ -3,14 +3,14 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 export interface ConfirmInfo {
-  message: string,
-  header: string,
-  icon: string,
-  acceptLabel: string,
-  rejectLabel: string,
-  accept: Function,
+  message: string;
+  header: string;
+  icon: string;
+  acceptLabel: string;
+  rejectLabel: string;
+  accept: Function;
   reject: Function
-};
+}
 
 const initConfirmInfo: ConfirmInfo = {
   message: null,
@@ -20,7 +20,7 @@ const initConfirmInfo: ConfirmInfo = {
   rejectLabel: 'Cancel',
   accept: () => {},
   reject: () => {}
-};
+}
 
 
 @Injectable()

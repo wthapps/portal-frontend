@@ -130,7 +130,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.route.url
       .withLatestFrom(this.route.parent.url)
       .map((pair: any) => {
-        return _.find(pair, (url: any) => _.get(url, '0') != undefined)})
+        return _.find(pair, (url: any) => _.get(url, '0') != undefined);})
       .map((url: any) => url[0].path)
       .takeUntil(this.destroySubject)
       .subscribe((url: any) => this.currentPath = url); // currentPath: photos, albums, shared-with-me
@@ -194,7 +194,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     //  Listen to media uploader events
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
-    })
+    });
 
     this.cdr.detectChanges();
   }
@@ -531,7 +531,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   private refreshPrimaryList(): void {
     this.router.navigate([], {queryParams: {r: new Date().getTime()}});
-  };
+  }
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);

@@ -13,7 +13,7 @@ import { ContactImportContactDataService } from '../modal/import-contact/import-
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
 import { LabelService } from '../../label/label.service';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
@@ -302,7 +302,7 @@ export class ZContactService extends BaseEntityService<any> {
         let idx: any = _.findIndex(this.contacts, [ 'id', updated_contacts[i].id]);
         // _.set(this.contacts, idx, updated_contacts[i]);
         this.contacts[idx] = updated_contacts[i];
-      };
+      }
       console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
       this.notifyContactsObservers();
       this.labelService.updateLabelCount(this.contacts);
@@ -394,9 +394,9 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private deleteCallback(contact: any) {
-    _.remove(this.contacts, (ct: any) => {
-      ct.id === contact.id;
-    });
+    _.remove(this.contacts, (ct: any) =>
+      ct.id === contact.id
+    );
     this.notifyContactsObservers();
   }
 

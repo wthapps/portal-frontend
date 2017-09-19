@@ -79,7 +79,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.route.params
       .withLatestFrom(parentRouteParams)
       .map((paramsPair: any) => {
-        return _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined)})
+        return _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined);})
       .subscribe((params: any) => {
         this.showLoading = document.getElementById('post-list-loading') !== null;
         console.debug('post-list onInit: ', params);

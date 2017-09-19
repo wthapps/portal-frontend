@@ -25,7 +25,7 @@ export class BlockUploadModal implements OnInit, OnDestroy {
   ngOnInit() {
     this.event = this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatBlockMessage').subscribe((event: CommonEvent) => {
       this.file = event.payload;
-      this.file.extension = this.fileUploadHelper.getExtension(this.file.name)
+      this.file.extension = this.fileUploadHelper.getExtension(this.file.name);
       this.modal.open();
     });
   }
