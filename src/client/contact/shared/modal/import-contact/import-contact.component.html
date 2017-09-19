@@ -38,14 +38,14 @@
                              <!--autofocus="true">-->
                       <!--<span>   Import from file (.vcf, csv)</span>-->
 
-                      <h-fileUpload #fileUpload styleClass="h-ui-file-upload"
+                      <h-file-upload #fileUpload styleClass="h-ui-file-upload"
                                     customUpload="true"
                                     mode="basic"
                                     accept=".vcf,.csv,.xls,.xlsx"
                                     [icon]="'fa-download'"
                                     [chooseLabel]="'Import from file'"
                                     (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event}); fileUpload.clear();">
-                      </h-fileUpload>
+                      </h-file-upload>
                       <div class="file-extensions" style="padding-left: 50px;">vcard, csv, excel</div>
                     </div>
                   </figure>

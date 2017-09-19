@@ -10,7 +10,7 @@ import { FileUpload } from 'primeng/primeng';
 
 @Component({
   moduleId: module.id,
-  selector: 'h-fileUpload',
+  selector: 'h-file-upload',
   templateUrl: 'file-upload.component.html',
   styleUrls: ['file-upload.component.css'],
   providers: [DomHandler]

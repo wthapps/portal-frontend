@@ -22,7 +22,7 @@ declare var $: any;
   styleUrls: ['message-editor.component.css']
 })
 
-export class MessageEditorComponent implements OnInit {
+export class MessageEditorComponent implements OnInit, OnDestroy {
   tooltip: any = Constants.tooltip;
 
   emojiData: any = [];

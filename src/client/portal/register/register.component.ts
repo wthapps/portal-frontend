@@ -103,7 +103,7 @@ export class RegisterComponent {
         birthday_month: values.birthday_month,
         birthday_year: values.birthday_year,
         sex: values.sex,
-        invitationUuid: this.invitationUuid,
+        invitation_uuid: this.invitationUuid,
         accepted_policies: values.accepted === true ? true : false
       });
 
@@ -119,7 +119,7 @@ export class RegisterComponent {
             console.log('error:', error);
             let err = error;
 
-            this.errorMessage = err.body.error;
+            this.errorMessage = err.error;
             //TODO refactoring code check signup
             if (error.status === 422) {
               this.errorMessage = 'Email has already been taken';

@@ -7,7 +7,7 @@ import { HdMultiSelectListModule } from './list/hd-list.module';
 import { HdTagInputModule } from './tag-input/tag-input.module';
 import { UploaderModule } from './components/uploader/uploader.module';
 import { HConfirmationService } from './services/confirmation.service';
-import { ConfirmDialogModule } from './components/confirmdialog/confirmdialog';
+// import { ConfirmDialogModule } from './components/confirmdialog/confirmdialog';
 
 
 @NgModule({
@@ -17,7 +17,7 @@ import { ConfirmDialogModule } from './components/confirmdialog/confirmdialog';
     HdMultiSelectListModule,
     HdTagInputModule,
     UploaderModule,
-    ConfirmDialogModule
+    // ConfirmDialogModule
   ],
   declarations: [],
   exports: [
@@ -25,7 +25,7 @@ import { ConfirmDialogModule } from './components/confirmdialog/confirmdialog';
     HdMultiSelectListModule,
     HdTagInputModule,
     UploaderModule,
-    ConfirmDialogModule
+    // ConfirmDialogModule
   ],
   providers: [HConfirmationService]
 })

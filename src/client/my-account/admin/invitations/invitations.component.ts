@@ -52,7 +52,7 @@ export class MyInvitationsComponent implements OnInit {
       return this.invitationService.getByStatus({status: this.currentTab});
     }).subscribe((response: any) => {
       this.items = response.data;
-    });;
+    });
   }
 
   fakeCount() {
@@ -82,21 +82,21 @@ export class MyInvitationsComponent implements OnInit {
         );
         this.modal.close();
         break;
-      case 'resend':
-        let recipient = {
-          email: event.payload.item.recipient_email,
-            fullName: event.payload.item.recipient_full_name,
-          contactId: event.payload.item.recipient_contact_id,
-        };
-        this.invitationService.resend({id: event.payload.item.id, recipient: recipient}).subscribe((response: any) => {
-          this.loadingService.stop();
-          this.toaster.success('You have just resent invitation successfully!');
-        },
-        (error: any) => {
-          this.loadingService.stop();
-          this.toaster.danger('There is a error when you resent invitation!');
-        });
-        break;
+      // case 'resend':
+      //   let recipient = {
+      //     email: event.payload.item.recipient_email,
+      //       fullName: event.payload.item.recipient_full_name,
+      //     contactId: event.payload.item.recipient_contact_id,
+      //   };
+      //   this.invitationService.resend({id: event.payload.item.id, recipient: recipient}).subscribe((response: any) => {
+      //     this.loadingService.stop();
+      //     this.toaster.success('You have just resent invitation successfully!');
+      //   },
+      //   (error: any) => {
+      //     this.loadingService.stop();
+      //     this.toaster.danger('There is a error when you resent invitation!');
+      //   });
+      //   break;
     }
   }
 
@@ -107,8 +107,7 @@ export class MyInvitationsComponent implements OnInit {
       item = Object.assign({},item, {selected: true});
       if(this.selectedItems.length === this.items.length)
         this.isSelectAll = true;
-    }
-    else {
+    } else {
       _.remove(this.selectedItems, (i: any) => i.uuid === item.uuid);
       item = Object.assign({},item, {selected: false});
       this.isSelectAll = false;
@@ -120,8 +119,7 @@ export class MyInvitationsComponent implements OnInit {
       this.selectedItems = [...this.items];
       this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: true}));
       this.isSelectAll = true;
-    }
-    else {
+    } else {
       this.selectedItems.length = 0;
       this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: false}));
       this.isSelectAll = false;
@@ -165,6 +163,6 @@ export class MyInvitationsComponent implements OnInit {
       email: item.recipient_email,
       fullName: item.recipient_full_name,
       contactId: item.recipient_contact_id
-    }
+    };
   }
 }

@@ -3,14 +3,14 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 export interface ConfirmInfo {
-  message: string,
-  header: string,
-  icon: string,
-  acceptLabel: string,
-  rejectLabel: string,
-  accept: Function,
-  reject: Function
-};
+  message: string;
+  header: string;
+  icon: string;
+  acceptLabel: string;
+  rejectLabel: string;
+  accept: Function;
+  reject: Function;
+}
 
 const initConfirmInfo: ConfirmInfo = {
   message: null,
@@ -18,8 +18,8 @@ const initConfirmInfo: ConfirmInfo = {
   icon: null,
   acceptLabel: 'Done',
   rejectLabel: 'Cancel',
-  accept: () => {},
-  reject: () => {}
+  accept: () => { return; },
+  reject: () => { return; },
 };
 
 

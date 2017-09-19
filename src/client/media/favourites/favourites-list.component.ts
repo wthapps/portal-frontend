@@ -33,12 +33,15 @@ export class ZMediaFavoriteListComponent implements OnInit {
 
   ngOnInit() {
     // this.getFavorite();
+    return;
   }
 
   getFavorite(body:any = {}) {
+    return;
   }
 
   onLoadMore(event: any) {
+    return;
   }
 
 

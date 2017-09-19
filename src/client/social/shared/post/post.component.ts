@@ -148,9 +148,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   updatePhoto(currentPhotos: any[], updatedPhoto: any): any[] {
     return _.map(currentPhotos, (photo: any) => {
         if( photo.id === updatedPhoto.id )
-          return updatedPhoto
+          return updatedPhoto;
         else
-          return photo
+          return photo;
       }
     );
   }
@@ -491,7 +491,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           return;
         }
         });
-      };
+      }
     });
   }
 

@@ -130,7 +130,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.route.url
       .withLatestFrom(this.route.parent.url)
       .map((pair: any) => {
-        return _.find(pair, (url: any) => _.get(url, '0') != undefined)})
+        return _.find(pair, (url: any) => _.get(url, '0') != undefined);})
       .map((url: any) => url[0].path)
       .takeUntil(this.destroySubject)
       .subscribe((url: any) => this.currentPath = url); // currentPath: photos, albums, shared-with-me
@@ -148,6 +148,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     if (this.page == 'album_detail') {
       this.albumService.addToAlbum(this.params['id'], [res]).toPromise().then((res: any) => {
         this.list.objects = res.data;
+        this.refreshPrimaryList();
       });
     }
   }
@@ -193,20 +194,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     //  Listen to media uploader events
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doAction(event);
-    })
+    });
 
     this.cdr.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['object'] != undefined && changes['object'].currentValue != undefined) {
-      // if (this.toolbar != undefined) {
-      //   this.toolbar.updateProperties({object: this.object});
-      // }
-      // if (this.detailInfo != undefined) {
-      //   this.detailInfo.updateProperties({object: this.object});
-      // }
-
       this.updateObjectChanges();
     }
   }
@@ -324,7 +318,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   upload() {
     // this.loadModalComponent(MediaUloaderComponent);
-
+    return;
   }
 
   showUploadedPhoto(photo: any) {
@@ -354,7 +348,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   favourite() {
-
+    return;
   }
 
   tag() {
@@ -493,16 +487,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
           {ids: ids, mode: 0, showDetail: true}, {queryParamsHandling: 'preserve', preserveFragment: true}
         ]);
 
-        // this.loadModalComponent(PhotoDetailModalComponent);
-        // options = {show: true, showDetails: true, selectedObjects: this.selectedObjects, objects: this.list.objects};
-        //
-        // // Delete button should not be listed in shared with me screen
-        // if (this.page == Constants.mediaPageType.sharedWithMe) {
-        //   Object.assign(options, {'canDelete': false});
-        // }
-        // this.modal.event.subscribe((event: any) => {
-        //   this.doAction(event);
-        // });
         break;
       //  Add uploaded photos to album detail
       case 'photosSelectModal':
@@ -526,6 +510,10 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     });
 
     this.toolbar.updateProperties({object: this.object});
+  }
+
+  private refreshPrimaryList(): void {
+    this.router.navigate([], {queryParams: {r: new Date().getTime()}});
   }
 
   private loadModalComponent(component: any) {

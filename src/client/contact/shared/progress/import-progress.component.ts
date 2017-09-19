@@ -166,8 +166,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
     if (!error) {
       this.importStatus = this.IMPORT_STATUS.done;
       return Promise.resolve(this.importStatus);
-    }
-    else {
+    } else {
       console.error('importDone w/ error: ', error);
       this.importStatus = this.IMPORT_STATUS.error;
       return Promise.reject(error);

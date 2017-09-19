@@ -145,7 +145,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
           _.remove(this.objects, (o: any) => (o.object_type === 'photo' && o.uuid === deletedPhoto.uuid));
           break;
       }
-      ;
     });
   }
 
@@ -246,7 +245,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       if (_.has(options, 'params.selectedObject')) {
         this.mediaStore.setCurrentSelectedObject(_.get(options, 'params.selectedObject'));
       }
-      // options = {action: 'select', params: {selectedObjects: this.selectedObjects}};
     }
 
     this.doAction(options);
@@ -300,7 +298,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
   // considering moving doAction into list-media
   doAction(event: any) {
-    // console.log('event in list media::', event);
     switch (event.action) {
       case 'uploadPhoto':
         this.upload();
@@ -386,30 +383,28 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       case 'select':
       case 'deselect':
         this.setSelectedObjects(event.params.selectedObjects);
-        // this.toolbar.updateAttributes({selectedObjects: this.selectedObjects});
         break;
     }
   }
 
   upload() {
     // this.loadModalComponent(MediaUloaderComponent);
-
+    return;
   }
 
   setSelectedObjects(objects: any[]) {
-    // this.selectedObjects.length = 0;
-    // this.selectedObjects.concat(...objects);
     this.selectedObjects = objects;
     this.mediaStore.selectObjects(objects);
-    console.log('select Objects: ', objects, this.mediaStore.getSelectedObjects());
   }
 
   preview() {
+    return;
   }
 
   share() {
     // this.loadModalComponent(SharingModalComponent);
     // this.modal.open({selectedItems: this.selectedObjects});
+    return;
   }
 
   favourite(params: any) {
@@ -478,21 +473,24 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   tag() {
 
     // this.modal.open();
+    return;
   }
 
   addToAlbum(data?: any) {
     // this.loadModalComponent(AddToAlbumModalComponent);
     // let objects = (data != undefined) ? data : this.selectedObjects;
     // this.modal.open({selectedObjects: objects});
+    return;
   }
 
   viewInfo() {
     // this.loadModalComponent(ZMediaPhotoDetailComponent);
     // this.modal.open({show: true, showDetails: true, selectedObjects: this.selectedObjects});
+    return;
   }
 
   download() {
-
+    return;
   }
 
   edit() {
@@ -608,6 +606,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
                 _.remove(this.objects, ['id', id]);
               });
               this.loadingService.stop();
+              this.refreshPrimaryList();
             });
         }
       });
@@ -630,8 +629,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
           _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
         });
         this.loadingService.stop();
-        // if (params.callback)
-        //   params.callback(); // Return back to previous screen OR go to next / previous photos
+        this.refreshPrimaryList();
       },
       (error: any) => this.loadingService.stop());
 
@@ -680,7 +678,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
   // Hide media present in shared with me screen
   hideMedia(params: any, callback?: any) {
-
+    return;
   }
 
   // Delete album in album detail and go back to album list / favourite list
@@ -690,8 +688,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   removeFromAlbum(params: any) {
-
-    console.log('selected album & object', params.selectedObject, params.selectedObjects);
     let ids = _.map(params.selectedObjects, 'id');
     this.wthConfirmService.confirm({
       message: 'Are you sure to remove all selected photos from this album',
@@ -705,7 +701,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
               return (_.indexOf(ids, object.id) !== -1);
             });
 
-            console.log('after', this.objects);
             this.loadingService.stop();
           });
       }
@@ -741,11 +736,11 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   slideShow() {
-
+    return;
   }
 
   changeCoverImage() {
-
+    return;
   }
 
   showNewAlbum(data?: any) {
@@ -761,7 +756,9 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     if (['album_detail', 'albums'].indexOf(this.currentPath) > -1)
       this.albumService.addToAlbum(this.params.id, photos).take(1)
         .toPromise().then((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
-        (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id));
+        (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id))
+        .then(()=> this.refreshPrimaryList())
+      ;
 
     this.objects.unshift(...photos);
   }
@@ -819,6 +816,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadModalComponent(component: any) {
+    return;
   }
 
   private sort(data: any) {
