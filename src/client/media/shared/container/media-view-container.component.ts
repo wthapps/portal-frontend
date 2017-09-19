@@ -148,6 +148,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     if (this.page == 'album_detail') {
       this.albumService.addToAlbum(this.params['id'], [res]).toPromise().then((res: any) => {
         this.list.objects = res.data;
+        this.refreshPrimaryList();
       });
     }
   }
@@ -527,6 +528,10 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
     this.toolbar.updateProperties({object: this.object});
   }
+
+  private refreshPrimaryList(): void {
+    this.router.navigate([], {queryParams: {r: new Date().getTime()}});
+  };
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);
