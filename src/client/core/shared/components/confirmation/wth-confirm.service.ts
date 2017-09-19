@@ -9,7 +9,7 @@ export interface ConfirmInfo {
   acceptLabel: string;
   rejectLabel: string;
   accept: Function;
-  reject: Function
+  reject: Function;
 }
 
 const initConfirmInfo: ConfirmInfo = {
@@ -18,9 +18,9 @@ const initConfirmInfo: ConfirmInfo = {
   icon: null,
   acceptLabel: 'Done',
   rejectLabel: 'Cancel',
-  accept: () => {},
-  reject: () => {}
-}
+  accept: () => { return; },
+  reject: () => { return; },
+};
 
 
 @Injectable()

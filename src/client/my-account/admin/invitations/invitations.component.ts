@@ -119,8 +119,7 @@ export class MyInvitationsComponent implements OnInit {
       this.selectedItems = [...this.items];
       this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: true}));
       this.isSelectAll = true;
-    }
-    else {
+    } else {
       this.selectedItems.length = 0;
       this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: false}));
       this.isSelectAll = false;

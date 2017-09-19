@@ -42,13 +42,6 @@ export class InvitationCreateModalComponent implements OnInit {
     this.modal.close(options).then();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // if (changes['data'] != undefined && changes['data'].currentValue != undefined) {
-    //   this.data = changes['data'].currentValue;
-    //   this.initialize();
-    // }
-  }
-
   initialize() {
     if (this.data) {
       for (let i = 0; i < this.data.length; i++) {

@@ -201,13 +201,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['object'] != undefined && changes['object'].currentValue != undefined) {
-      // if (this.toolbar != undefined) {
-      //   this.toolbar.updateProperties({object: this.object});
-      // }
-      // if (this.detailInfo != undefined) {
-      //   this.detailInfo.updateProperties({object: this.object});
-      // }
-
       this.updateObjectChanges();
     }
   }
@@ -325,7 +318,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   upload() {
     // this.loadModalComponent(MediaUloaderComponent);
-
+    return;
   }
 
   showUploadedPhoto(photo: any) {
@@ -355,7 +348,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   favourite() {
-
+    return;
   }
 
   tag() {
@@ -494,16 +487,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
           {ids: ids, mode: 0, showDetail: true}, {queryParamsHandling: 'preserve', preserveFragment: true}
         ]);
 
-        // this.loadModalComponent(PhotoDetailModalComponent);
-        // options = {show: true, showDetails: true, selectedObjects: this.selectedObjects, objects: this.list.objects};
-        //
-        // // Delete button should not be listed in shared with me screen
-        // if (this.page == Constants.mediaPageType.sharedWithMe) {
-        //   Object.assign(options, {'canDelete': false});
-        // }
-        // this.modal.event.subscribe((event: any) => {
-        //   this.doAction(event);
-        // });
         break;
       //  Add uploaded photos to album detail
       case 'photosSelectModal':

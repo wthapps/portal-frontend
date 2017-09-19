@@ -98,8 +98,7 @@ export class ZSocialProfileCoverComponent implements OnInit {
               Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
               this.userService.updateProfile(this.userService.profile);
             }
-          }
-          else if (_.has(event.body, 'cover_image')) {
+          } else if (_.has(event.body, 'cover_image')) {
                 toastMsg = 'You have updated cover image of this community successfully';
           } else {
             toastMsg = result.message;

@@ -145,7 +145,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
           _.remove(this.objects, (o: any) => (o.object_type === 'photo' && o.uuid === deletedPhoto.uuid));
           break;
       }
-      ;
     });
   }
 
@@ -390,7 +389,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
   upload() {
     // this.loadModalComponent(MediaUloaderComponent);
-
+    return;
   }
 
   setSelectedObjects(objects: any[]) {
@@ -399,11 +398,13 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   preview() {
+    return;
   }
 
   share() {
     // this.loadModalComponent(SharingModalComponent);
     // this.modal.open({selectedItems: this.selectedObjects});
+    return;
   }
 
   favourite(params: any) {
@@ -472,21 +473,24 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   tag() {
 
     // this.modal.open();
+    return;
   }
 
   addToAlbum(data?: any) {
     // this.loadModalComponent(AddToAlbumModalComponent);
     // let objects = (data != undefined) ? data : this.selectedObjects;
     // this.modal.open({selectedObjects: objects});
+    return;
   }
 
   viewInfo() {
     // this.loadModalComponent(ZMediaPhotoDetailComponent);
     // this.modal.open({show: true, showDetails: true, selectedObjects: this.selectedObjects});
+    return;
   }
 
   download() {
-
+    return;
   }
 
   edit() {
@@ -674,7 +678,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
   // Hide media present in shared with me screen
   hideMedia(params: any, callback?: any) {
-
+    return;
   }
 
   // Delete album in album detail and go back to album list / favourite list
@@ -732,11 +736,11 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   slideShow() {
-
+    return;
   }
 
   changeCoverImage() {
-
+    return;
   }
 
   showNewAlbum(data?: any) {
@@ -812,6 +816,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadModalComponent(component: any) {
+    return;
   }
 
   private sort(data: any) {

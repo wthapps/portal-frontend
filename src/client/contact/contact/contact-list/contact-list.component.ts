@@ -233,7 +233,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
         if(contact.wthapps_user == null) {
           _.forEach(contact.emails, (email: any) => {
             recipients.push(new Recipient({email: email.value, fullName: contact.name, contactId: contact.id}));
-          })
+          });
         }
       });
       this.invitationModal.open({data: recipients});

@@ -3,6 +3,6 @@
     <button class="btn btn-outline-default btn-min" type="button" icon="fa-close"
             (click)="cd.reject()">{{ (confirmInfo$ | async)?.rejectLabel }}</button>
     <button class="btn btn-outline-primary btn-min" type="button" icon="fa-check"
-            (click)="cd.accept()">{{( confirmInfo$ | async)?.acceptLabel }}</button>
+            (click)="cd.accept()">{{ (confirmInfo$ | async)?.acceptLabel }}</button>
   </p-footer>
 </p-confirmDialog>

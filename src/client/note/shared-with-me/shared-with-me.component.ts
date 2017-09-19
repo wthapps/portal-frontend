@@ -5,11 +5,5 @@ import { Component, OnInit } from '@angular/core';
   selector: 'z-note-shared-with-me',
   templateUrl: 'shared-with-me.component.html'
 })
-export class ZNoteSharedWithMeComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-
-  }
+export class ZNoteSharedWithMeComponent {
 }
