@@ -9,6 +9,7 @@ import { ZChatShareRequestContactComponent } from '../modal/request-contact.comp
 import { ZChatShareUserIconComponent } from '../user/user-icon.component';
 import { MessageItemSimpleComponent } from './messages/message-simple-item.component';
 import { MessageItemActionComponent } from './messages/message-actions-item.component';
+import { BlockUploadModal } from './modals/block-upload-modal.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { MessageItemActionComponent } from './messages/message-actions-item.comp
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
+    BlockUploadModal,
     MessageItemComponent
   ],
   exports: [
@@ -33,6 +35,7 @@ import { MessageItemActionComponent } from './messages/message-actions-item.comp
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
+    BlockUploadModal,
     MessageItemComponent
   ],
   providers: [

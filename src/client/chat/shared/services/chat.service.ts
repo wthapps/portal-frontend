@@ -16,6 +16,7 @@ import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
 import { GenericFile } from '../../../core/shared/models/generic-file.model';
 import { GenericFileService } from '../../../core/shared/services/generic-file.service';
+import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 
 
 declare var _: any;
@@ -31,6 +32,7 @@ export class ChatService {
               public chatContactService: ChatContactService,
               public chatCommonService: ChatCommonService,
               public photoUploadService: PhotoUploadService,
+              public commonEventService: CommonEventService,
               public router: Router,
               public handler: HandlerService,
               private fileService: GenericFileService) {
@@ -202,18 +204,23 @@ export class ChatService {
   }
 
   createUploadingFile(files?: any) {
-    let groupId = this.storage.find('conversation_select').value.group_json.id;
-    let message: Message = new Message({
-      message: 'Sending file.....',
-      message_type: 'file',
-      content_type: 'media/generic'
-    });
-
-    for (let i = 0; i < files.length; i ++) {
-      this.sendMessage(groupId, message, null, (response: any) => {
-        this.uploadFiles([files[i]], {id: response.data.id})
+    this.fileUploadHelper.allowUpload(files, (filesAllow: any, filesNotAllow: any) => {
+      let groupId = this.storage.find('conversation_select').value.group_json.id;
+      let message: Message = new Message({
+        message: 'Sending file.....',
+        message_type: 'file',
+        content_type: 'media/generic'
       });
-    }
+
+      for (let i = 0; i < filesAllow.length; i++) {
+        this.sendMessage(groupId, message, null, (response: any) => {
+          this.uploadFiles([filesAllow[i]], {id: response.data.id})
+        });
+      }
+      for (let i = 0; i < filesNotAllow.length; i++) {
+        this.commonEventService.broadcast({channel: 'chatBlockMessage', payload: filesNotAllow[i]})
+      }
+    });
   }
 
   getUsersOnline() {

@@ -203,6 +203,10 @@
         <div class="message-item-content-text" *ngIf="message.sending_status == 2">
           <span>Upload Canceled</span>
         </div>
+        <!--can't upload message type-->
+        <div class="message-item-content-text" *ngIf="message.sending_status == 3">
+          <span>{{ message.message }}</span>
+        </div>
 
       </div>
       <div class="message-item-action"

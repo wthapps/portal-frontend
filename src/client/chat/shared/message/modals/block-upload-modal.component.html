@@ -1,0 +1,17 @@
+<modal #modal>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">Can not upload file</h4>
+    </modal-header>
+    <modal-body *ngIf="file">
+      This file type is not permitted for sercurity reasons.
+      <div class="">
+        <i class="fa fa-file-o"></i>
+        <p>{{file.name}}</p>
+        <p *ngIf="file.extension">Type: {{file.extension}}</p>
+        <p>Size: {{file.size | bytes }}</p>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button type="submit" class="btn btn-primary" (click)="modal.close()">Ok</button>
+    </modal-footer>
+</modal>
