@@ -1,7 +1,7 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"><i class="fa fa-cog"></i> Setttings</h4>
+      <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
     </modal-header>
 
     <modal-body>
@@ -13,7 +13,7 @@
                             [suggestions]="filteredCountriesCode"
                             (completeMethod)="filterCountriesCode($event)" [size]="30"
                             [minLength]="1" placeholder="Select your country" [dropdown]="true"
-                            (onDropdownClick)="handleDropdownClick($event)">
+                            (onDropdownClick)="handleDropdownClick()">
               <ng-template ngFor let-code let-i="index" pTemplate="item">
                 <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
               </ng-template>

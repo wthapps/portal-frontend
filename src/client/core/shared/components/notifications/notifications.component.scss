@@ -1,3 +1,5 @@
+$color-table-row: #F9F9F9;
+
 :host {
   display: block;
 
@@ -10,6 +12,13 @@
       overflow: visible;
     }
   }
+
+  .media.can-click {
+    &:hover {
+      background-color: $color-table-row;
+    }
+  }
+
 }
 
 

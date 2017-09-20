@@ -45,7 +45,6 @@ export class NotificationService {
     ;
   }
 
-  // TODO: Navigate to page of another module. Ex: From social to to media module
   doAction(action: any, notif_id: string) {
     let link: string = action.link;
     let method = action.method;
@@ -96,6 +95,15 @@ export class NotificationService {
       default:
         console.log('error', 'DoAction: Unhandled method ' + method + ' with method name: ' + method_name);
     }
+  }
+
+
+  navigateTo(actions: any[], notif_id: string): void {
+    if(_.get(actions[0], 'name') == 'view') {
+      this.doAction(actions[0], notif_id);
+    } else {
+      console.warn('Only support view action: ', actions);
+    };
   }
 
 

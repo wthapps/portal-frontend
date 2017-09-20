@@ -27,9 +27,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router) {
     console.log('Environment config', Config);
-    //
-    // this.confirmInfo$ = this.wthConfirmService.confirmDialog$
-    //   .do((res: any) => console.debug('confirmInfo$ : ', res));
   }
 
   ngOnInit() {

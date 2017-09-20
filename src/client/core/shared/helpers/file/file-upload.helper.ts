@@ -13,7 +13,7 @@ export class FileUploadHelper {
     let filesAllow: any = [];
     let filesNotAllow: any = [];
     this.processFiles(files, (event: any, file: any) => {
-      if (this.getExtension(file.name) == "exe") {
+      if (this.getExtension(file.name) == 'exe') {
         filesNotAllow.push(file)
       } else {
         filesAllow.push(file)

@@ -26,29 +26,29 @@ export const Process = function (arr: any = []) {
   for (let i = 0; i < arr.length; i++) {
     // Create method default
     let func = (event = {}, next = () => {}) => {
-      if(typeof arr[i] === "function") return arr[i](event, next)
-    }
+      if(typeof arr[i] === 'function') return arr[i](event, next)
+    };
     this.list.push(func);
   }
 
   this.next = (event: any) => {
     this.current++;
-    typeof this.list[this.current] === "function" && this.list[this.current](event, this.next);
-  }
+    typeof this.list[this.current] === 'function' && this.list[this.current](event, this.next);
+  };
 
   this.start = (event = {}, afterFunc = (event: any) => {}) => {
-    typeof this.list[this.current] === "function" && this.list[this.current](event, this.next);
+    typeof this.list[this.current] === 'function' && this.list[this.current](event, this.next);
     afterFunc(event);
-  }
+  };
 
   this.stop = (afterFunc = (event: any) => {}) => {
     this.list.length = 0;
     afterFunc(event);
-  }
+  };
 
   this.restart = (afterFunc = (event: any) => {}) => {
     afterFunc(event);
-  }
+  };
 
   return this;
-}
+};
