@@ -16,12 +16,12 @@
         <a class="link-text bold" [routerLink]="['/communities', notification?.community?.uuid]" *ngIf="notification?.community?.name">
           {{ notification?.community?.name }}</a>
       </p>
+      <p>
+        <small class="notifications-item-time text-fade">
+          {{ notification?.created_at | timeFormat }}
+        </small>
+      </p>
       <div *ngIf="notification?.actions[0]">
-        <p *ngIf="notification?.actions[0]?.name == 'view'">
-          <small class="notifications-item-time text-fade can-click">
-            {{ notification?.created_at | timeFormat }}
-          </small>
-        </p>
         <div *ngIf="notification?.actions[0]?.name != 'view'" class="notifications-item-button">
           <button *ngFor="let action of notification?.actions"
                   class="btn btn-sm mr5 text-capitalize" type="button"
@@ -34,11 +34,6 @@
         </div>
       </div>
       <div *ngIf="notification?.response_actions[0]">
-        <p>
-          <small class="notifications-item-time text-fade can-click">
-            {{ notification?.created_at | timeFormat }}
-          </small>
-        </p>
         <div class="notifications-item-button">
         <span *ngFor="let action of notification?.response_actions"
               class="btn-text btn-xs mr5 text-capitalize">
