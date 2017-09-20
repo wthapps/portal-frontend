@@ -106,6 +106,10 @@ export class PartialsNotificationsComponent {
     this.notificationService.doAction(action, notif_id);
   }
 
+  navigateTo(actions: any[], notif_id: string): void {
+    this.notificationService.navigateTo(actions, notif_id);
+  }
+
   open() {
     this.modal.open();
   }

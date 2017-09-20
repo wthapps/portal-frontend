@@ -13,17 +13,12 @@
   <link rel="manifest" href="<%= APP_BASE %>assets/images/favicons/manifest.json">
   <link rel="mask-icon" href="<%= APP_BASE %>assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
   <link rel="shortcut icon" href="<%= APP_BASE %>assets/images/favicons/favicon.ico">
-  <script src="https://apis.google.com/js/api.js"></script>
   <meta name="msapplication-config" content="<%= APP_BASE %>assets/images/favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
   <!-- Latest compiled and minified JavaScript -->
-  <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"
-          integrity="sha256-IyWBFJYclFY8Pn32bwWdSHmV4B9M5mby5bhPHEmeY8w=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"
           integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"
-          integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
   <!-- inject:css -->
   <!-- endinject -->
 </head>
@@ -39,6 +34,12 @@
     ga('create', '<%= GOOGLE_ANALYTICS_ID %>', 'auto');
     ga('send', 'pageview');
   </script>-->
+
+  <script src="https://apis.google.com/js/api.js" async></script>
+  <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"
+          integrity="sha256-IyWBFJYclFY8Pn32bwWdSHmV4B9M5mby5bhPHEmeY8w=" crossorigin="anonymous" async></script>
+  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" async></script>
 
   <script>
   // Fixes undefined module function in SystemJS bundle

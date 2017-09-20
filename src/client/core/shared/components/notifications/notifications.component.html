@@ -1,13 +1,14 @@
 <div class="list-group-item" *ngFor="let notification of notificationService.notifications"
      data-id="notification_{{ notification.id }}"
      [ngClass]="{'unread-notification': !notification?.is_read}">
-  <div class="media" *ngIf="!notification.isHidden">
+  <div class="media" *ngIf="!notification.isHidden" [ngClass]="{'can-click': (notification?.actions[0]?.name == 'view')}"
+       (click)="navigateTo(notification?.actions, notification?.id)">
     <div class="media-left can-click" (click)="viewProfile(notification?.actor)">
       <span class="avatar-xsm">
         <img [src]="notification?.actor?.profile_image" alt="{{ notification?.actor?.name }}">
       </span>
     </div>
-    <div class="media-body">
+    <div class="media-body" >
       <p class="media-heading">
         <a class="link-text bold" [routerLink]="['/profile', notification?.actor?.uuid]">
           {{ notification?.actor?.name }}</a>
@@ -17,8 +18,7 @@
       </p>
       <div *ngIf="notification?.actions[0]">
         <p *ngIf="notification?.actions[0]?.name == 'view'">
-          <small (click)="doAction(notification?.actions[0], notification?.id)"
-                 class="notifications-item-time text-fade can-click">
+          <small class="notifications-item-time text-fade can-click">
             {{ notification?.created_at | timeFormat }}
           </small>
         </p>

@@ -40,8 +40,14 @@ export class WTHNavigateService {
     }
 
     // Do not allow redirect to root path
-    if (!_.isEmpty(path))
-      this.router.navigate([path, {outlets: {modal: null, detail: null}}], {queryParams: queryParams});
+    if (!_.isEmpty(path)) {
+      if(path.indexOf('posts') > -1) {
+        let urls: string[] = path.split('/');
+        this.router.navigate([{outlets: {detail: [...urls]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+      } else {
+        this.router.navigate([path, {outlets: {modal: null, detail: null}}], {queryParams: queryParams});
+      }
+    }
 
 
     // $(event.target.nextElementSibling).toggleClass('hidden');
