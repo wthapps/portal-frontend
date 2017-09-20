@@ -24,13 +24,13 @@ export class ZNoteMyNoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.noteService.getList().subscribe(
-    //   res => {
-    //     console.log(res);
-    //   }
-    // );
-    this.apiBaseService.get(`note/folder`).subscribe((res: any) => {
+    this.noteService.getList().subscribe(
+      res => {
+        console.log(res);
+      }
+    );
+    /*this.apiBaseService.get(`note/folder`).subscribe((res: any) => {
       console.log(res)
-    })
+    });*/
   }
 }

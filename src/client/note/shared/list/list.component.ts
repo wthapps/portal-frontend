@@ -1,5 +1,6 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnInit } from '@angular/core';
 import { Note } from '../../../core/shared/models/note.model';
+import { ZNoteService } from '../services/note.service';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +10,21 @@ import { Note } from '../../../core/shared/models/note.model';
   encapsulation: ViewEncapsulation.None
 
 })
-export class ZNoteSharedListComponent {
+export class ZNoteSharedListComponent implements OnInit {
   @Input() data: Note[];
   @Input() viewOption: string = 'list';
+
+  selectedAll: boolean;
+
+  constructor(public noteService: ZNoteService) {
+  }
+
+  ngOnInit() {
+
+  }
+
+  onSelectedAll() {
+    this.noteService.onSelectAll();
+  }
+
 }

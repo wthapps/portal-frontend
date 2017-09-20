@@ -1,18 +1,18 @@
-<div *ngIf="item" class="component-listbox-row" [ngClass]="{'item-folder': item.type == 'folder'}">
-  <div class="component-listbox-input">
+<div *ngIf="data" class="component-listbox-row" [ngClass]="{'item-folder': data.type == 'folder'}">
+  <div class="component-listbox-input" [ngClass]="{'active': selected}">
     <i (click)="onSelected()" class="fa fa-check"></i>
   </div>
   <div class="component-listbox-name">
-    <span class="can-click" (click)="onClick(item)">{{ item.name }}</span>
+    <span class="can-click" (click)="onClick(data)">{{ data.name }}</span>
   </div>
   <div class="component-listbox-owner">
-    {{ item.owner.name }}
+    {{ data.owner.name }}
   </div>
   <div class="component-listbox-description">
-    {{ item.description }}
+    {{ data.description }}
   </div>
   <div class="component-listbox-date">
-    {{ item.created_at | timeFormat }}
+    {{ data.created_at | timeFormat }}
   </div>
   <div class="component-listbox-action">
     <z-note-shared-actions-bar class="action"></z-note-shared-actions-bar>

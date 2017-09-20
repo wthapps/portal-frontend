@@ -1,7 +1,7 @@
 <div [ngClass]="{'component-listbox-list': viewOption == 'list', 'component-listbox-grid': viewOption == 'grid'}">
   <div class="component-listbox-header">
     <div class="component-listbox-row">
-      <div class="component-listbox-input">
+      <div class="component-listbox-input" [ngClass]="{'active': (noteService.isSelectAll$ | async)}">
         <i (click)="onSelectedAll()" class="fa fa-check"></i>
       </div>
       <div class="component-listbox-name">
@@ -22,6 +22,11 @@
     </div>
   </div>
 
-  <z-note-shared-item *ngFor="let item of data" [item]="item" class="component-listbox-body"></z-note-shared-item>
-
+  <z-note-shared-item *ngFor="let item of data" [data]="item" class="component-listbox-body"></z-note-shared-item>
 </div>
+
+<ul>
+  <li *ngFor="let item of (noteService.selectedObjects$ | async)">
+    {{ item.name }}
+  </li>
+</ul>

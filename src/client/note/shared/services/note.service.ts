@@ -8,13 +8,20 @@ import { BaseEntityService } from '../../../core/shared/services/base-entity-ser
 import { Note } from '../../../core/shared/models/note.model';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
+declare var _: any;
+
 @Injectable()
 export class ZNoteService extends BaseEntityService<any> {
 
   notes$: Observable<any[]>;
   viewOption$: Observable<string>;
-  private notesSubject = new BehaviorSubject<Note[]>([]);
-  private viewOptionSubject = new BehaviorSubject<string>('list');
+  selectedObjects$: Observable<Note[]>;
+  isSelectAll$: Observable<boolean>;
+
+  private notesSubject: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
+  private viewOptionSubject: BehaviorSubject<string> = new BehaviorSubject<string>('list');
+  private selectedObjectsSubject: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
+  private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private apiUrl = '/api/zone/note/note.json';
 
@@ -25,6 +32,8 @@ export class ZNoteService extends BaseEntityService<any> {
 
     this.notes$ = this.notesSubject.asObservable();
     this.viewOption$ = this.viewOptionSubject.asObservable();
+    this.selectedObjects$ = this.selectedObjectsSubject.asObservable();
+    this.isSelectAll$ = this.isSelectAllSubject.asObservable();
   }
 
   getList(): Observable<any[]> {
@@ -37,8 +46,44 @@ export class ZNoteService extends BaseEntityService<any> {
       .catch(this.handleError);
   }
 
+
   changeModeView(mode: string = 'list') {
     this.viewOptionSubject.next(mode);
+  }
+
+  addItemSelectedObjects(item: any) {
+    let data: any = this.selectedObjectsSubject.getValue();
+    data.unshift(item);
+    this.selectedObjectsSubject.next(data);
+    this.checkSelectAll();
+  }
+
+  removeItemSelectedObjects(item: any) {
+    let collection: any = this.selectedObjectsSubject.getValue();
+    collection = collection.filter(
+      (v: any) => v.id !== item.id
+    );
+    this.selectedObjectsSubject.next(collection);
+  }
+
+  onSelectAll() {
+    this.selectedObjectsSubject.getValue().length = 0;
+
+    if (this.isSelectAllSubject.getValue()) {
+      this.isSelectAllSubject.next(false);
+    } else {
+      this.isSelectAllSubject.next(true);
+      let notesData: any = this.notesSubject.getValue();
+      this.selectedObjectsSubject.next(_.cloneDeep(notesData.data));
+    }
+  }
+
+  checkSelectAll() {
+    let notesData: any = this.notesSubject.getValue();
+    let selectedObjectsData: any = this.selectedObjectsSubject.getValue();
+    if (selectedObjectsData.length === notesData.data.length) {
+      this.isSelectAllSubject.next(true);
+    }
   }
 
   private handleError(error: Response) {
