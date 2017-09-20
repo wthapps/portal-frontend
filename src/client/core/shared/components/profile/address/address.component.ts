@@ -48,13 +48,13 @@ export class PartialsProfileAddressComponent implements OnInit, ProfileFormMixin
   type: string = 'addresses';
   deleteObjects: any = [];
 
-  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
-  }
-
   removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
   removeAll: () => void;
   getFormControls: () => any;
+
+  constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
