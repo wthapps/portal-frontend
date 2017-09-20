@@ -64,6 +64,10 @@ export class ZNoteService extends BaseEntityService<any> {
       (v: any) => v.id !== item.id
     );
     this.selectedObjectsSubject.next(collection);
+
+    if (collection.length == 0) {
+      this.isSelectAllSubject.next(false);
+    }
   }
 
   onSelectAll() {

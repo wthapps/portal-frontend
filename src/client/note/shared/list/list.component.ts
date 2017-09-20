@@ -14,8 +14,6 @@ export class ZNoteSharedListComponent implements OnInit {
   @Input() data: Note[];
   @Input() viewOption: string = 'list';
 
-  selectedAll: boolean;
-
   constructor(public noteService: ZNoteService) {
   }
 
