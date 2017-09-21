@@ -13,7 +13,7 @@
         <a class="link-text bold" [routerLink]="['/profile', notification?.actor?.uuid]">
           {{ notification?.actor?.name }}</a>
         <span [innerHTML]="notification.text"></span>
-        <a class="link-text bold" [routerLink]="['/communities', notification?.community?.uuid]" *ngIf="notification?.community?.name">
+        <a class="link-text bold" href="javascript:;" (click)="navigateToSocial(['/communities', notification?.community?.uuid])" *ngIf="notification?.community?.name">
           {{ notification?.community?.name }}</a>
       </p>
       <p>
