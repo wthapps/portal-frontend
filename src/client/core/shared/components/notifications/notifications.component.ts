@@ -110,6 +110,10 @@ export class PartialsNotificationsComponent {
     this.notificationService.navigateTo(actions, notif_id);
   }
 
+  navigateToSocial(urls: string[]) {
+    this.notificationService.navigateToSocial(urls);
+  }
+
   open() {
     this.modal.open();
   }

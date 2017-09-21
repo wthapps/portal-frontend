@@ -101,9 +101,12 @@ export class NotificationService {
   navigateTo(actions: any[], notif_id: string): void {
     if(_.get(actions[0], 'name') == 'view') {
       this.doAction(actions[0], notif_id);
-    } else {
-      console.warn('Only support view action: ', actions);
     };
+  }
+
+  navigateToSocial(urls: string[]) {
+    let link: string = urls.join('/');
+    this.navigateService.navigateOrRedirect(link, 'social');
   }
 
 
