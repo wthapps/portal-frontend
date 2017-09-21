@@ -37,6 +37,12 @@ export class ZNoteService extends BaseEntityService<any> {
   }
 
   getList(): Observable<any[]> {
+    // set selectedObjectsSubject is empty
+    this.selectedObjectsSubject.getValue().length = 0;
+
+    // set onSelectAll is false
+    this.isSelectAllSubject.next(false);
+
     // return this.apiBaseService.get(this.apiUrl)
     return this.http.get(this.apiUrl)
       .map((response: Response) => <any[]> response.json())
@@ -44,6 +50,47 @@ export class ZNoteService extends BaseEntityService<any> {
         this.notesSubject.next(notes);
       })
       .catch(this.handleError);
+  }
+
+  deleteNote(body?: any) {
+    /*return this.apiBaseService.delete(`${this.url}/${body.id}`)
+     .do(deletedNote => {
+     if (deletedNote) {
+     let collection: any = this.notesSubject.getValue();
+     collection.data = collection.data.filter(
+     (v: any) => v.id !== body.id
+     );
+     this.notesSubject.next(collection);
+     }
+     });*/
+
+    let collection: any = this.notesSubject.getValue();
+    if (body) { // deleted 1 note
+      collection.data = collection.data.filter(
+        (v: any) => v.id !== body.id
+      );
+
+      // update notesSubject
+      this.notesSubject.next(collection);
+
+      // update selectedObjectsSubject
+      _.remove(this.selectedObjectsSubject.getValue(), {'id': body.id});
+
+    } else { // deleted selectedObjects
+
+      // remove item from notesSubject
+      _.map(this.selectedObjectsSubject.getValue(), (v: any)=> {
+        _.remove(collection.data, {'id': v.id});
+      });
+
+      // set selectedObjectsSubject is empty
+      this.selectedObjectsSubject.getValue().length = 0;
+    }
+
+    // set onSelectAll is false
+    if (collection.data.length == 0) {
+      this.isSelectAllSubject.next(false);
+    }
   }
 
 

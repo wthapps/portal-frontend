@@ -1,4 +1,4 @@
-<ul class="page-body-control-menu">
+<ul class="page-body-control-menu" *ngIf="multiple && (noteService.selectedObjects$ | async).length > 0 || !multiple">
   <li>
     <a href="javascript:;" class="btn btn-default" (click)="onEdit()"
        pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
