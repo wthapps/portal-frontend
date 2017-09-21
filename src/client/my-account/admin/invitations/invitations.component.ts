@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
 import { InvitationService } from '../../../core/shared/components/invitation/invitation.service';
@@ -16,7 +17,7 @@ declare let _: any;
   providers: [InvitationService]
 })
 
-export class MyInvitationsComponent implements OnInit {
+export class MyInvitationsComponent implements OnInit, OnDestroy {
   data: Array<any>;
   items: Array<any> = new Array<any>();
   selectedItems: Array<any> = [];
@@ -26,6 +27,7 @@ export class MyInvitationsComponent implements OnInit {
   totalAccepted: number;
   currentTab: string;
   currentTabTitle: string;
+  private destroySubject: Subject<any> = new Subject();
 
   readonly TAB: any = {
     PENDING: { value: 'pending', name: 'Pending'},
@@ -43,7 +45,7 @@ export class MyInvitationsComponent implements OnInit {
   ngOnInit() {
 
     this.currentTab = this.TAB.PENDING.value;
-    this.route.queryParams.map((queryParam: any) => {
+    this.route.queryParams.takeUntil(this.destroySubject.asObservable()).map((queryParam: any) => {
       this.currentTab = queryParam['tab'] || this.TAB.PENDING.value;
       this.currentTabTitle = _.find(this.TAB, ['value', this.currentTab]);
       this.selectedItems.length = 0;
@@ -55,9 +57,9 @@ export class MyInvitationsComponent implements OnInit {
     });
   }
 
-  fakeCount() {
-    this.totalPending = 5;
-    this.totalAccepted = 6;
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   addRecipients(modal: any) {
@@ -67,36 +69,22 @@ export class MyInvitationsComponent implements OnInit {
 
 
   doEvent(event: any) {
-    this.loadingService.start();
+    this.loadingService.start('#loading');
     switch (event.action) {
       case 'invitation:send_to_recipients':
 
         this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
-            this.loadingService.stop();
+            this.items = _.uniqBy([...this.items, ...response.data], 'recipient_email');
+            this.loadingService.stop('#loading');
             this.toaster.success('You have just sent invitation(s) successfully!');
           },
           (error: any) => {
-            this.loadingService.stop();
+            this.loadingService.stop('#loading');
             this.toaster.danger('There is a error when you sent invitation(s)!');
           }
         );
         this.modal.close();
         break;
-      // case 'resend':
-      //   let recipient = {
-      //     email: event.payload.item.recipient_email,
-      //       fullName: event.payload.item.recipient_full_name,
-      //     contactId: event.payload.item.recipient_contact_id,
-      //   };
-      //   this.invitationService.resend({id: event.payload.item.id, recipient: recipient}).subscribe((response: any) => {
-      //     this.loadingService.stop();
-      //     this.toaster.success('You have just resent invitation successfully!');
-      //   },
-      //   (error: any) => {
-      //     this.loadingService.stop();
-      //     this.toaster.danger('There is a error when you resent invitation!');
-      //   });
-      //   break;
     }
   }
 
@@ -134,13 +122,14 @@ export class MyInvitationsComponent implements OnInit {
     } else {
       ids = _.map(this.selectedItems, 'id');
     }
+    this.loadingService.start('#loading');
 
     this.invitationService.multiResend({ids: ids}).toPromise().then((response: any) => {
-        this.loadingService.stop();
+        this.loadingService.stop('#loading');
         this.toaster.success('You have just resent invitations successfully!');
       },
       (error: any) => {
-        this.loadingService.stop();
+        this.loadingService.stop('#loading');
         this.toaster.danger('There is a error when you resent invitations!');
       });
   }

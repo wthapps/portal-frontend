@@ -1,106 +1,95 @@
-<!--<div class="page-container">-->
-  <!--<div class="container">-->
-    <!--<div class="row">-->
-      <!--<div class="col-sm-3">-->
-        <!--<my-shared-menu></my-shared-menu>-->
-      <!--</div>-->
+<invitation-create-modal #modal (event)="doEvent($event)"></invitation-create-modal>
 
-      <invitation-create-modal #modal (event)="doEvent($event)"></invitation-create-modal>
+<!--<div class="col-sm-9">-->
+<!--&lt;!&ndash;<router-outlet></router-outlet>&ndash;&gt;-->
+<div class="box-panel">
+    <div>
+      <h4 class="box-panel-subtitle">Invitations</h4>
+    </div>
 
-      <!--<div class="col-sm-9">-->
-        <!--&lt;!&ndash;<router-outlet></router-outlet>&ndash;&gt;-->
-        <div class="box-panel">
-            <div>
-              <h4 class="box-panel-subtitle">Invitations</h4>
-            </div>
+  <hr class="line">
+  <nav class="nav nav-tabs clearfix">
+    <div class="pull-left btn-group hidden-md hidden-lg">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+        {{ currentTabTitle?.name }} <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li [ngClass]="{'active': (currentTab == TAB?.PENDING?.value)}">
+          <a [routerLink]="['./']" [queryParams]="{tab: TAB?.PENDING?.value}"> {{ TAB?.PENDING?.name }} {{ totalPending }}</a>
+        </li>
+        <li [ngClass]="{'active': (currentTab == TAB.ACCEPTED.value)}">
+          <a [routerLink]="['./']" [queryParams]="{tab: TAB.ACCEPTED.value}"> {{ TAB.ACCEPTED.name }} {{ totalAccepted }}</a>
+        </li>
+      </ul>
+    </div>
 
-          <hr class="line">
-          <nav class="nav nav-tabs clearfix">
-            <div class="pull-left btn-group hidden-md hidden-lg">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">
-                {{ currentTabTitle?.name }} <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li [ngClass]="{'active': (currentTab == TAB?.PENDING?.value)}">
-                  <a [routerLink]="['./']" [queryParams]="{tab: TAB?.PENDING?.value}"> {{ TAB?.PENDING?.name }} {{ totalPending }}</a>
-                </li>
-                <li [ngClass]="{'active': (currentTab == TAB.ACCEPTED.value)}">
-                  <a [routerLink]="['./']" [queryParams]="{tab: TAB.ACCEPTED.value}"> {{ TAB.ACCEPTED.name }} {{ totalAccepted }}</a>
-                </li>
-              </ul>
-            </div>
+    <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
+      <li [ngClass]="{'active': (currentTab == TAB.PENDING.value)}">
+        <a [routerLink]="['./']" [queryParams]="{tab: TAB.PENDING.value}"> {{ TAB.PENDING.name }} {{ totalPending }}</a>
+      </li>
+      <li [ngClass]="{'active': (currentTab == TAB.ACCEPTED.value)}">
+        <a [routerLink]="['./']" [queryParams]="{tab: TAB.ACCEPTED.value}"> {{ TAB.ACCEPTED.name }} {{ totalAccepted }}</a>
+      </li>
+    </ul>
+  </nav>
+  <div id="loading"></div>
+  <div class="box-panel-subtitle">
+      <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
+        <i class="fa fa-envelope-open-o"></i> Invite new members</a>
 
-            <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
-              <li [ngClass]="{'active': (currentTab == TAB.PENDING.value)}">
-                <a [routerLink]="['./']" [queryParams]="{tab: TAB.PENDING.value}"> {{ TAB.PENDING.name }} {{ totalPending }}</a>
-              </li>
-              <li [ngClass]="{'active': (currentTab == TAB.ACCEPTED.value)}">
-                <a [routerLink]="['./']" [queryParams]="{tab: TAB.ACCEPTED.value}"> {{ TAB.ACCEPTED.name }} {{ totalAccepted }}</a>
-              </li>
-            </ul>
-          </nav>
-
-          <div class="box-panel-subtitle">
-              <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
-                <i class="fa fa-envelope-open-o"></i> Invite new members</a>
-
-            <button class="btn btn-outline-secondary"
-                    (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o" aria-hidden="true" ></i> Resend</button>
-            <button class="btn btn-outline-secondary"
-                    (click)="onRemove()" [disabled]="selectedItems.length === 0"><i class="fa fa-trash" aria-hidden="true" ></i> Remove</button>
-          </div>
-          <br/>
+    <button class="btn btn-outline-secondary"
+            (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o" aria-hidden="true" ></i> Resend</button>
+    <button class="btn btn-outline-secondary"
+            (click)="onRemove()" [disabled]="selectedItems.length === 0"><i class="fa fa-trash" aria-hidden="true" ></i> Remove</button>
+  </div>
+  <br/>
 
 
 
-          <table class="table table-striped table-middle">
-            <thead>
-            <tr>
-              <th>
-                <div>
-                  <p-checkbox value="" label=""
-                              [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll($event)"></p-checkbox>
-                </div>
-              </th>
-              <th>Email</th>
-              <ng-container *ngIf="currentTab == TAB.PENDING.value; else accepted_title">
-                <th>Sent date</th>
-                <!--<th>Number of sent</th>-->
-              </ng-container>
-              <th>Action</th>
-
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of items">
-              <th>
-                <div>
-                  <!-- <p-checkbox value="" label=""
-                              [(ngModel)]="item.selected" (onChange)="onSelect(item)"></p-checkbox> -->
-                  <p-checkbox value="" label=""
-                              [(ngModel)]="item.selected" binary="true" (onChange)="onSelect(item)"></p-checkbox>
-                </div>
-              </th>
-              <td><a rel="nofollow" target="_top"
-                     href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a></td>
-              <ng-container *ngIf="(currentTab == TAB.PENDING.value); then pending_content else accepted_content"></ng-container>
-              <td>
-                <div>
-                  <button *ngIf="currentTab == TAB.PENDING.value" class="btn btn-outline-secondary"
-                          (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
-                  <button class="btn btn-outline-secondary"
-                          (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i> Cancel</button>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+  <table class="table table-striped table-middle">
+    <thead>
+    <tr>
+      <th>
+        <div>
+          <p-checkbox value="" label=""
+                      [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll($event)"></p-checkbox>
         </div>
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
+      </th>
+      <th>Email</th>
+      <ng-container *ngIf="currentTab == TAB.PENDING.value; else accepted_title">
+        <th>Sent date</th>
+        <!--<th>Number of sent</th>-->
+      </ng-container>
+      <th>Action</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of items">
+      <th>
+        <div>
+          <!-- <p-checkbox value="" label=""
+                      [(ngModel)]="item.selected" (onChange)="onSelect(item)"></p-checkbox> -->
+          <p-checkbox value="" label=""
+                      [(ngModel)]="item.selected" binary="true" (onChange)="onSelect(item)"></p-checkbox>
+        </div>
+      </th>
+      <td><a rel="nofollow" target="_top"
+             href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a></td>
+      <ng-container *ngIf="(currentTab == TAB.PENDING.value) && item; then pending_content else accepted_content"></ng-container>
+      <td>
+        <div>
+          <button *ngIf="currentTab == TAB.PENDING.value" class="btn btn-outline-secondary"
+                  (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
+          <button class="btn btn-outline-secondary"
+                  (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i> Cancel</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
 
 <ng-template #accepted_title>

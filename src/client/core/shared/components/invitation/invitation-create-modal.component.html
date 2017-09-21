@@ -13,11 +13,11 @@
 
         <div>
           <div class="row row-12">
-            <div class="col-sm-7">
-              Email address
-            </div>
             <div class="col-sm-4 ml5">
               Full name
+            </div>
+            <div class="col-sm-7">
+              Email address
             </div>
           </div>
         </div>
@@ -27,6 +27,23 @@
             <div *ngIf="item" class="media-body" [formGroupName]="i">
 
               <div class="row row-10">
+
+                <div class="col-sm-4">
+                  <div class="form-group no-label" [ngClass]="{
+                    'has-error': (!item['controls'].fullName.valid
+                                && item['controls'].fullName.touched),
+                    'has-success': (item['controls'].fullName.valid
+                                && item['controls'].fullName.touched
+                                && form.value.items[i].fullName.length > 0)}">
+                    <input type="text" class="form-control" formControlName="fullName" placeholder="First name">
+                    <div *ngIf="!item['controls'].fullName.valid && item['controls'].fullName.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].fullName.errors.required">
+                        First name is required
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-sm-8">
 
                   <div class="form-group no-label"
@@ -46,10 +63,6 @@
                       </span>
                     </div>
                   </div>
-                </div>
-
-                <div class="col-sm-4">
-                  <input type="text" class="form-control" formControlName="fullName" placeholder="optional">
                 </div>
 
               </div>

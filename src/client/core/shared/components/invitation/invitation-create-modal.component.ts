@@ -29,12 +29,12 @@ export class InvitationCreateModalComponent implements OnInit {
     this.form = this.fb.group({
       'items': this.fb.array([])
     });
-    // this.initialize();
+    this.initialize();
   }
 
   open(options?: any) {
     this.data = options.data;
-    this.initialize();
+    // this.initialize();
     this.modal.open(options).then();
   }
 
@@ -44,9 +44,9 @@ export class InvitationCreateModalComponent implements OnInit {
 
   initialize() {
     if (this.data) {
-      for (let i = 0; i < this.data.length; i++) {
-        this.add(this.data[i]);
-      }
+      // for (let i = 0; i < this.data.length; i++) {
+      //   this.add(this.data[i]);
+      // }
     } else {
       for (let i = 0; i < this.noOfCtrl; i++) {
         this.add();
@@ -58,13 +58,13 @@ export class InvitationCreateModalComponent implements OnInit {
     if (item) {
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: [item.fullName],
+        fullName: [item.fullName, Validators.compose([Validators.required])],
         contactId: [item.contactId]
       });
     } else {
       return this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: [''],
+        fullName: ['', Validators.compose([Validators.required])],
         contactId: [null]
       });
     }
@@ -142,7 +142,7 @@ export class InvitationCreateModalComponent implements OnInit {
       return this.form.valid;
     }
     _.forEach(this.form.value.items, (item: any) => {
-      if(item.email != '') {
+      if(item.email != '' && item.fullName != '') {
         result = true;
       }
     });
