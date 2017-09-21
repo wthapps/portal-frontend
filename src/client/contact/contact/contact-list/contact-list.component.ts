@@ -102,7 +102,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.contactService.contacts$
       .takeUntil(this.destroySubject)
       .subscribe((contacts: any[]) => {
-        // this.contacts.length = 0;
         this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
         this.loadingService.stop();
       });
@@ -131,7 +130,6 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   onLoadMore() {
     this.page += 1;
-    // this.contacts = this.contactService.getAllContacts().slice(0, this.page * this.ITEM_PER_PAGE);
     this.contactService.onLoadMore();
   }
 
@@ -168,7 +166,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
         break;
       case 'invitation:send_to_recipients':
           this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
-            this.invitationModal.close();
+            // this.invitationModal.close();
             this.toaster.success('You have just sent invitation(s) successfully!');
           });
         break;
@@ -240,20 +238,20 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
   }
 
-  showInvitation(): boolean {
-    let result = true;
-    _.forEach(this.contactService.selectedObjects, (contact: any) => {
-        if (contact.wthapps_user != null) {
-          result = false;
-          return;
-        }
-        if (contact.emails.length == 0 || contact.emails[0].value == '') {
-          result = false;
-          return;
-        }
-    });
-    return result;
-  }
+  // showInvitation(): boolean {
+  //   let result = true;
+  //   _.forEach(this.contactService.selectedObjects, (contact: any) => {
+  //       if (contact.wthapps_user != null) {
+  //         result = false;
+  //         return;
+  //       }
+  //       if (contact.emails.length == 0 || contact.emails[0].value == '') {
+  //         result = false;
+  //         return;
+  //       }
+  //   });
+  //   return result;
+  // }
 
   addTags(event: any) {
     this.modal.open();

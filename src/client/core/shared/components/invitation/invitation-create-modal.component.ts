@@ -35,6 +35,7 @@ export class InvitationCreateModalComponent implements OnInit {
   open(options?: any) {
     this.data = options.data;
     // this.initialize();
+    this.fillData();
     this.modal.open(options).then();
   }
 
@@ -43,13 +44,15 @@ export class InvitationCreateModalComponent implements OnInit {
   }
 
   initialize() {
+    for (let i = 0; i < this.noOfCtrl; i++) {
+      this.add();
+    }
+  }
+
+  fillData() {
     if (this.data) {
-      // for (let i = 0; i < this.data.length; i++) {
-      //   this.add(this.data[i]);
-      // }
-    } else {
-      for (let i = 0; i < this.noOfCtrl; i++) {
-        this.add();
+      for (let i = 0; i < this.data.length; i++) {
+        this.add(this.data[i]);
       }
     }
   }
@@ -73,11 +76,10 @@ export class InvitationCreateModalComponent implements OnInit {
   add(item?: any) {
     const control = <FormArray>this.form.controls[this.type];
     if (item) {
-      control.push(this.create(item));
+      control.insert(0, this.create(item));
     } else {
-      control.push(this.create());
+      control.insert(0, this.create());
     }
-    // if (this.validItems()) this.form.setValue({valid: true});
   }
 
 
@@ -93,6 +95,7 @@ export class InvitationCreateModalComponent implements OnInit {
           return item.email == '';
         });
         options['payload'] = data;
+        this.modal.close();
         this.event.emit(options);
         break;
       case 'cancel':
