@@ -70,6 +70,12 @@ export class ZNoteService extends BaseEntityService<any> {
     }
   }
 
+  changeSortOption(name: string, descending: boolean) {
+    let collection: any = this.notesSubject.getValue();
+    collection.data = _.orderBy(collection.data, [name], [(descending ? 'desc' : 'asc')]);
+    this.notesSubject.next(collection);
+  }
+
   onSelectAll() {
     this.selectedObjectsSubject.getValue().length = 0;
 

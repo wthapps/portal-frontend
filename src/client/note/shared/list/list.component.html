@@ -8,7 +8,8 @@
       </div>
       <div class="component-listbox-name">
         <span class="can-click" (click)="onSort('name')">
-          Name <i class="fa fa-arrow-up"></i>
+          Name <i *ngIf="sortType == 'name'" class="fa"
+                  [ngClass]="{'fa-arrow-up': !sortDescending, 'fa-arrow-down': sortDescending}"></i>
         </span>
       </div>
       <div class="component-listbox-owner">
@@ -18,7 +19,10 @@
         Description
       </div>
       <div class="component-listbox-date">
-        Create Date
+        <span class="can-click" (click)="onSort('created_at')">
+          Create Date <i *ngIf="sortType == 'created_at'" class="fa"
+                         [ngClass]="{'fa-arrow-up': !sortDescending, 'fa-arrow-down': sortDescending}"></i>
+        </span>
       </div>
       <div class="component-listbox-action">&nbsp;</div>
     </div>
