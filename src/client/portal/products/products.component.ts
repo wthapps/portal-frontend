@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked } from '@angular/core';
+import { Component, AfterViewChecked, HostBinding } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -12,13 +12,11 @@ import { fadeInAnimation } from '../../core/shared/animations/route.animation';
   selector: 'sd-products',
   templateUrl: 'products.component.html',
   styleUrls: ['products.component.css'],
-  host: {
-    "[@fadeInAnimation]": 'true'
-  },
   animations: [fadeInAnimation]
 })
 
 export class ProductsComponent implements AfterViewChecked {
+  @HostBinding('@fadeInAnimation') fadeInAnimation = true;
   private scrollExecuted: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute) {
