@@ -156,7 +156,6 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   checkSelectAll() {
-    // let isSelectAll = _.isEqual(this.contactsSubject.getValue().map((c: any) => c.id).sort(), this.selectedObjects.map((c: any) => c.id).sort());
     let isSelectAll = this.contactsSubject.getValue().length === this.selectedObjects.length;
     this.isSelectAllSubject.next(isSelectAll);
   }
