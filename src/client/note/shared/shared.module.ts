@@ -5,6 +5,8 @@ import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
 import { ZNoteSharedListComponent } from './list/list.component';
 import { ZNoteSharedItemComponent } from './list/item/item.component';
 import { ZNoteService } from './services/note.service';
+import { ZNoteAddFolderModalComponent } from './modals/add-folder/add-folder-modal.component';
+import { TagInputModule } from 'ngx-chips';
 
 
 /**
@@ -13,6 +15,7 @@ import { ZNoteService } from './services/note.service';
 
 @NgModule({
   imports: [
+    TagInputModule,
     CoreSharedModule.forRoot()
   ],
   declarations: [
@@ -20,6 +23,7 @@ import { ZNoteService } from './services/note.service';
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
+    ZNoteAddFolderModalComponent,
   ],
   exports: [
     CoreSharedModule,
@@ -27,6 +31,7 @@ import { ZNoteService } from './services/note.service';
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
+    ZNoteAddFolderModalComponent,
   ]
 })
 export class ZNoteSharedModule {

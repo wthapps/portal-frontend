@@ -25,9 +25,10 @@ declare var _: any;
 })
 
 export class ZSharedMenuComponent implements OnInit, OnDestroy {
-
   @Input() contactMenu: Array<any>;
   @Input() totalContactCount: number = 0;
+  
+  noteFolders: Array<any>;
 
   /**public event for somewhere are able to subscribe*/
   event: Observable<any>;
@@ -73,10 +74,12 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
         } else {
           this.isProfileTab = false;
         }
-
         this.currentLabel = this.extractLabel(event.url);
       });
-    // your logic to know if its my home page.
+
+    this.commonEventService.filter((event: any) => event.channel == 'noteCommonEvent' && event.action == 'updateFolders').subscribe((event: any) => {
+      this.noteFolders = event.payload;
+    });
   }
 
   extractLabel(url: string) {
@@ -113,6 +116,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     //   event.event.preventDefault();
     // }
     this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
+    this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event});
   }
 
   deleteLabel(label :any) {
