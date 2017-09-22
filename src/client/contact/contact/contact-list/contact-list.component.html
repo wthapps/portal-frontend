@@ -8,7 +8,7 @@
         [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
         [showViewDetail]="false"
         [showEdit]="false"
-        [showInvitation]="showInvitation()"
+        [showInvitation]="contactService.selectedObjects && contactService.selectedObjects.length > 0"
         [number]="contactService.selectedObjects.length"
         [toggleFavourite]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'favourite')"
         [toggleBlacklist]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'blacklist')"

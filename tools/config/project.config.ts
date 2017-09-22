@@ -35,7 +35,6 @@ export class ProjectConfig extends SeedConfig {
       {src: 'moment/moment.js', inject: 'libs'},
       {src: 'cropper/dist/cropper.min.js', inject: 'libs'},
       {src: 'cropperjs/dist/cropper.min.js', inject: 'libs'},
-
       {src: 'tether/dist/js/tether.min.js', inject: 'libs'},
       {src: 'tether-shepherd/dist/js/shepherd.min.js', inject: 'libs'},
 
@@ -44,6 +43,9 @@ export class ProjectConfig extends SeedConfig {
 
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
+      { src: 'froala-editor/js/froala_editor.pkgd.min.js', inject: 'libs' },
+      { src: 'froala-editor/css/froala_editor.pkgd.min.css', inject: true },
+      { src: 'froala-editor/css/froala_style.min.css', inject: true }
     ];
 
     // Add `local` third-party libraries to be injected/bundled.
@@ -92,6 +94,13 @@ export class ProjectConfig extends SeedConfig {
         }
       },
       {
+        name: 'ng2-ckeditor',
+        path: 'node_modules/ng2-ckeditor/lib/index.js',
+        packageMeta: {
+          defaultJSExtension: 'cjs'
+        }
+      },
+      {
         name: 'ngx-infinite-scroll',
         path: 'node_modules/ngx-infinite-scroll/bundles/ngx-infinite-scroll.umd.js'
       },
@@ -108,6 +117,17 @@ export class ProjectConfig extends SeedConfig {
         packageMeta: {
           format: 'cjs'
         }
+      },
+      // required for dev build
+      {
+        name:'angular-froala-wysiwyg',
+        path:'node_modules/angular-froala-wysiwyg/bundles/angular-froala-wysiwyg.umd.min.js'
+      },
+
+      // required for prod build
+      {
+        name:'angular-froala-wysiwyg/*',
+        path:'node_modules/angular-froala-wysiwyg/bundles/angular-froala-wysiwyg.umd.min.js'
       }
     ];
 

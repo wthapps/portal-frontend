@@ -86,6 +86,7 @@ export let Constants = {
 
   noteMenuItems: [
     {name: 'All Notes', value: 'all notes', link: '/', icon: 'fa fa-file'},
+    {name: 'New Folder', value: 'new label', link: '#', icon: 'fa fa-plus', action: 'note:folder:create'},
     {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
     {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
   ],
@@ -405,4 +406,3 @@ export let MediaType = {
   favourites: 'favourites',
   sharedWithMe: 'sharedWithMe'
 };
-

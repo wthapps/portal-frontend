@@ -17,6 +17,7 @@ import { Message } from '../models/message.model';
 import { GenericFile } from '../../../core/shared/models/generic-file.model';
 import { GenericFileService } from '../../../core/shared/services/generic-file.service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
+import { _chat } from '../utils/chat.functions';
 
 
 declare var _: any;
@@ -228,20 +229,45 @@ export class ChatService {
   }
 
   loadMoreMessages() {
-    // TODO Optimize load times
-    let n: any = this.storage.find('number_message').value;
     let currentMessages: any = this.storage.find('current_chat_messages').value.data;
-    let page: any = Math.floor(currentMessages.length / n) + 1;
+    let page: any = parseInt(this.storage.find('current_chat_messages').value.page_metadata.page) + 1;
     let body: any = {page: page};
     let groupId: any = this.storage.find('conversation_select').value.group_json.id;
     this.apiBaseService.get('zone/chat/message/' + groupId, body).subscribe(
       (res: any) => {
-        let newMessages: any = _.concat(currentMessages, res.data);
-        newMessages = _.uniqBy(newMessages, 'id');
-        newMessages = _.orderBy(newMessages, ['id'], ['asc']);
-        res.data = newMessages;
+        res.data = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, res);
         this.storage.save('current_chat_messages', res);
+      }
+    );
+  }
+
+  searchMessages(text: any) {
+    let currentMessages: any = this.storage.find('current_chat_messages').value.data;
+    let page: any = parseInt(this.storage.find('current_chat_messages').value.page_metadata.page);
+    let body: any = {q: "message:1"};
+    let groupId: any = this.storage.find('conversation_select').value.group_json.id;
+
+    let sequenceCall = (nextPage: any, currentPage: any): any => {
+      if (nextPage == currentPage) {
+        return [];
+      }
+      this.apiBaseService.get('zone/chat/message/' + groupId, {page: nextPage}).subscribe(
+        (res: any) => {
+          res.data = _chat.combineMessages(this.storage.find('current_chat_messages').value.data, res.data);
+          this.storage.save('chat_messages_group_' + groupId, res);
+          this.storage.save('current_chat_messages', res);
+          sequenceCall(parseInt(res.page_metadata.page) + 1,  currentPage);
+        }
+      );
+    }
+
+    this.apiBaseService.get('zone/chat/message/' + groupId, body).subscribe(
+      (res: any) => {
+        res.data = _chat.combineMessages(currentMessages, res.data);
+        this.storage.save('chat_messages_group_' + groupId, res);
+        this.storage.save('current_chat_messages', res);
+        sequenceCall(res.page_metadata.page, page);
       }
     );
   }

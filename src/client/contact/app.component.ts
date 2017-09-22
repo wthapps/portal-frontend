@@ -70,11 +70,6 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       .subscribe((labels: any[]) => {
         this.labels = labels;
       });
-    // this.wthConfirmService.confirmDialog$.subscribe(
-    //   (res: any) => {
-    //     this.confirmDialog = res;
-    //   }
-    // );
   }
 
   ngOnInit() {
@@ -110,33 +105,6 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         this.loadModalComponent(ZContactSharedSettingsComponent);
         this.modal.open();
         break;
-      // case 'contact:label:delete_confirm':
-      //   this.wthConfirmService.confirm({
-      //     message: 'Are you sure to this label',
-      //     accept: () => {
-      //       event.action = 'contact:label:delete';
-      //       event.payload.selectedItem = this.getLabel(event.payload.selectedItem);
-      //       this.commonEventService.broadcast({
-      //         channel: Constants.contactEvents.common,
-      //         action: event.action,
-      //         payload: event.payload
-      //       });
-      //     }
-      //   });
-      //   break;
-      // case 'contact:label:create':
-      //   this.labelService.create(event.payload.label).subscribe(
-      //     (res: any) => {
-      //       console.log(res);
-      //     });
-      //   break;
-      // case 'contact:label:update':
-      //   let name = event.payload.label.name;
-      //   this.labelService.update(event.payload.label).subscribe(
-      //     (res: any) => {
-      //       console.log(res);
-      //     });
-      //   break;
       case 'contact:label:delete':
         let label = this.getLabel(event.payload.selectedItem);
         this.labelService.delete(label.id).subscribe(
@@ -148,7 +116,6 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   }
 
   private getLabel(name: string): Label {
-    // return _.find(this.labelService.getAllLabels(), {name: name});
     return this.labelService.getLabelByName(name);
   }
 

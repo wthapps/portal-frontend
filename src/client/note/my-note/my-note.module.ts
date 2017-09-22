@@ -5,6 +5,9 @@ import { ZNoteMyNoteComponent } from './my-note.component';
 import { ZNoteMyNoteRoutingModule } from './my-note-routing.module';
 import { ZNoteMyNoteFoldersComponent } from './folders/folders.component';
 import { ZNoteMyNoteNotesComponent } from './notes/notes.component';
+import { ZNoteEditModalComponent } from './notes/note-edit-modal.component';
+import { ZNoteCreateComponent } from './notes/note-create.component';
+import { ZNoteEditComponent } from './notes/note-edit.component';
 
 
 @NgModule({
@@ -15,12 +18,18 @@ import { ZNoteMyNoteNotesComponent } from './notes/notes.component';
   declarations: [
     ZNoteMyNoteComponent,
     ZNoteMyNoteFoldersComponent,
-    ZNoteMyNoteNotesComponent
+    ZNoteMyNoteNotesComponent,
+    ZNoteCreateComponent,
+    ZNoteEditComponent,
+    ZNoteEditModalComponent,
   ],
   exports: [
     ZNoteMyNoteComponent,
     ZNoteMyNoteFoldersComponent,
-    ZNoteMyNoteNotesComponent
+    ZNoteMyNoteNotesComponent,
+    ZNoteCreateComponent,
+    ZNoteEditComponent,
+    ZNoteEditModalComponent
   ],
   providers: []
 })

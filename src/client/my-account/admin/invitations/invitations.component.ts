@@ -27,13 +27,13 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
   totalAccepted: number;
   currentTab: string;
   currentTabTitle: string;
-  private destroySubject: Subject<any> = new Subject();
 
   readonly TAB: any = {
     PENDING: { value: 'pending', name: 'Pending'},
     ACCEPTED: { value: 'accepted', name: 'Accepted invitation'}
   };
 
+  private destroySubject: Subject<any> = new Subject();
   constructor(
     private invitationService: InvitationService,
     private toaster: ToastsService,
