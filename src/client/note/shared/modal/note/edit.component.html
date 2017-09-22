@@ -1,0 +1,63 @@
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg'" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{ titleModal }}</h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group no-label" [ngClass]="{'has-error': (!name.valid && name.touched)}">
+        <input [formControl]="name" type="text" class="form-control" id="note_form_name"
+               placeholder="Name">
+      </div>
+      <div class="form-group">
+        <p-editor formControlName="content" [style]="{'height':'320px'}"></p-editor>
+      </div>
+
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label for="note_form_tags" class="col-sm-2 col-md-1 control-label">Tags</label>
+          <div class="col-sm-10 col-md-11">
+            <input [formControl]="tags" type="text" class="form-control" id="note_form_tags"
+                   placeholder="Tags">
+          </div>
+        </div>
+      </div>
+
+      <hr>
+      <label>Attachment</label>
+      <div class="row row-img grid">
+        <div class="col-sm-3">
+          <div class="photo-box">
+            <div class="photo-box-action pt5">
+              <span class="label label-default">10kb</span>
+            </div>
+            <div class="photo-box-action photo-box-action-right">
+              <button class="btn btn-sm btn-outline-default" type="button">
+                <i class="fa fa-download"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-default" type="button">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+            <div class="photo-box-figure">
+              <figure class="img-center-dv">
+                <div class="photo-box-figure-in">
+                  <img class="img-center"
+                       src="https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/seed_files/media/building1.jpg">
+                </div>
+              </figure>
+              <div class="photo-box-name">
+                <span class="can-click">Photo no 1.jpg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid"
+              class="btn btn-outline-primary btn-min">Done
+      </button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+    </modal-footer>
+  </modal>
+</form>

@@ -39,6 +39,9 @@ export class ProjectConfig extends SeedConfig {
       {src: 'tether/dist/js/tether.min.js', inject: 'libs'},
       {src: 'tether-shepherd/dist/js/shepherd.min.js', inject: 'libs'},
 
+      //editor
+      {src: 'quill/dist/quill.min.js', inject: 'libs'},
+
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
     ];

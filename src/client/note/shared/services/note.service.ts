@@ -17,11 +17,13 @@ export class ZNoteService extends BaseEntityService<any> {
   viewOption$: Observable<string>;
   selectedObjects$: Observable<Note[]>;
   isSelectAll$: Observable<boolean>;
+  modalEvent$: Observable<any>;
 
   private notesSubject: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
   private viewOptionSubject: BehaviorSubject<string> = new BehaviorSubject<string>('list');
   private selectedObjectsSubject: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
   private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private modalEventSubject: BehaviorSubject<any> = new BehaviorSubject<any>({action: '', item: null});
 
   private apiUrl = '/api/zone/note/note.json';
 
@@ -34,6 +36,7 @@ export class ZNoteService extends BaseEntityService<any> {
     this.viewOption$ = this.viewOptionSubject.asObservable();
     this.selectedObjects$ = this.selectedObjectsSubject.asObservable();
     this.isSelectAll$ = this.isSelectAllSubject.asObservable();
+    this.modalEvent$ = this.modalEventSubject.asObservable();
   }
 
   getList(): Observable<any[]> {
@@ -142,6 +145,11 @@ export class ZNoteService extends BaseEntityService<any> {
       this.isSelectAllSubject.next(true);
     }
   }
+
+  modalEvent(event: any) {
+    this.modalEventSubject.next(event);
+  }
+
 
   private handleError(error: Response) {
     console.error(error);

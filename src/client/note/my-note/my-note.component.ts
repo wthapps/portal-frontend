@@ -30,7 +30,11 @@ export class ZNoteMyNoteComponent implements OnInit {
       }
     );
     /*this.apiBaseService.get(`note/folder`).subscribe((res: any) => {
-      console.log(res)
-    });*/
+     console.log(res)
+     });*/
+  }
+
+  onNewNote() {
+    this.noteService.modalEvent({action: 'note:open_modal_edit'});
   }
 }

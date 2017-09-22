@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+
 import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
@@ -14,7 +16,7 @@ import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { EditorModule } from 'primeng/components/editor/editor';
 
 import { ApiBaseService } from './services/apibase.service';
 import { ServiceManager } from './services/service-manager';
@@ -100,6 +102,7 @@ import { WthConfirmModule } from './components/confirmation/wth-confirm.module';
     AutoCompleteModule,
     CalendarModule,
     TooltipModule,
+    EditorModule,
     WthConfirmModule,
 
     FooterModule,

@@ -1,10 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CoreSharedModule } from '../../core/shared/shared.module';
+import { ZNoteService } from './services/note.service';
 import { ZNoteSharedToolBarComponent } from './toolbar/toolbar.component';
 import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
 import { ZNoteSharedListComponent } from './list/list.component';
 import { ZNoteSharedItemComponent } from './list/item/item.component';
-import { ZNoteService } from './services/note.service';
+import { ZNoteSharedModalEditComponent } from './modal/note/edit.component';
 
 
 /**
@@ -20,6 +21,7 @@ import { ZNoteService } from './services/note.service';
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
+    ZNoteSharedModalEditComponent,
   ],
   exports: [
     CoreSharedModule,
@@ -27,6 +29,7 @@ import { ZNoteService } from './services/note.service';
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
+    ZNoteSharedModalEditComponent,
   ]
 })
 export class ZNoteSharedModule {
