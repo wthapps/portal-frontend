@@ -1,0 +1,46 @@
+<!--<form novalidate>-->
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title"> Edit Note</h4>
+    </modal-header>
+
+    <modal-body>
+      <!--<ckeditor-->
+        <!--[(ngModel)]="ckeditorContent"-->
+        <!--[config]="{uiColor: '#99000'}"-->
+        <!--[readonly]="false"-->
+        <!--(change)="onChange($event)"-->
+        <!--(ready)="onReady($event)"-->
+        <!--(focus)="onFocus($event)"-->
+        <!--(blur)="onBlur($event)"-->
+        <!--debounce="500">-->
+        <!--<ckgroup-->
+          <!--[name]="'documenthandling'"-->
+          <!--[previous]="'1'">-->
+          <!--<ckbutton [name]="'saveButton'"-->
+            <!--[command]="'saveCmd'"-->
+            <!--(click)="save($event)"-->
+            <!--[icon]="'save.png'"-->
+            <!--[label]="'Save Document'"-->
+            <!--&gt;-->
+            <!--</ckbutton>-->
+        <!--</ckgroup>-->
+
+
+          <!--<ckbutton [name]="'saveButton'"-->
+                    <!--[command]="'saveCmd'"-->
+                    <!--(click)="save($event)"-->
+                    <!--[icon]="'save.png'"-->
+                    <!--[label]="'Save Document'"-->
+                    <!--[toolbar]="'clipboard,1'">-->
+          <!--</ckbutton>-->
+      <!--</ckeditor>-->
+      <div [froalaEditor]>Hello, Froala!</div>
+    </modal-body>
+
+    <modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button type="button" class="btn btn-outline-primary btn-min pull-right">Done</button>
+    </modal-footer>
+  </modal>
+<!--</form>-->

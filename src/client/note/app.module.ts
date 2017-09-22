@@ -20,6 +20,8 @@ import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
   imports: [
     BrowserModule,
     HttpModule,
+
+
     AppRoutingModule,
     ZNoteHomeModule,
     ZNoteMyNoteModule,

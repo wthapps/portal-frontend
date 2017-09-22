@@ -5,6 +5,8 @@ import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
 import { ZNoteSharedListComponent } from './list/list.component';
 import { ZNoteSharedItemComponent } from './list/item/item.component';
 import { ZNoteService } from './services/note.service';
+import { CKEditorComponent, CKEditorModule } from 'ng2-ckeditor';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { ZNoteAddFolderModalComponent } from './modals/add-folder/add-folder-modal.component';
 import { TagInputModule } from 'ngx-chips';
 
@@ -15,6 +17,9 @@ import { TagInputModule } from 'ngx-chips';
 
 @NgModule({
   imports: [
+    CKEditorModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
     TagInputModule,
     CoreSharedModule.forRoot()
   ],
@@ -23,15 +28,18 @@ import { TagInputModule } from 'ngx-chips';
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
-    ZNoteAddFolderModalComponent,
+    ZNoteAddFolderModalComponent
   ],
   exports: [
     CoreSharedModule,
+    CKEditorModule,
+    FroalaEditorModule,
+    FroalaViewModule,
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
-    ZNoteAddFolderModalComponent,
+    ZNoteAddFolderModalComponent
   ]
 })
 export class ZNoteSharedModule {
