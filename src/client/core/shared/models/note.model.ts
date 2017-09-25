@@ -7,6 +7,7 @@ export class Note {
   content: string;
   type: any;
   date: string;
+  created_at: string;
   owner: User;
 
   constructor(fields: {
@@ -17,6 +18,7 @@ export class Note {
     content?: string,
     type?: any,
     date?: string,
+    created_at?: string,
     owner?: User,
   }) {
     if (fields) Object.assign(this, fields);

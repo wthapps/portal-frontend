@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -6,7 +6,9 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 @Component({
   moduleId: module.id,
   selector: 'z-note-shared-modal-edit',
-  templateUrl: 'edit.component.html'
+  templateUrl: 'edit.component.html',
+  styleUrls: ['edit.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZNoteSharedModalEditComponent {

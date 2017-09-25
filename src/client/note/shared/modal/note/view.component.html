@@ -1,0 +1,72 @@
+<modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
+  <modal-header [show-close]="false">
+    <h4 class="modal-title pull-left">Note</h4>
+    <div class="modal-title-action">
+      <button class="btn btn-sm btn-default"><i class="fa fa-share-alt"></i></button>
+      <button class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i></button>
+      <div class="btn-group">
+        <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">Make a copy</a>
+          </li>
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">Move to folder</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </modal-header>
+  <modal-body>
+    <h4 class="text-normal mt0">{{ data.name }}</h4>
+    <div [innerHTML]="data.content"></div>
+    <hr class="divider">
+    <div class="row">
+      <div class="col-sm-6">
+        <label>Attachment</label>
+      </div>
+      <div class="col-sm-6 text-right">
+        <button class="btn btn-outline-default"><i class="fa fa-plus"></i> Add more</button>
+        <button class="btn btn-outline-default"><i class="fa fa-download"></i> Download all</button>
+      </div>
+    </div>
+    <div class="row row-img grid">
+      <div class="col-sm-3">
+        <div class="photo-box">
+          <div class="photo-box-action pt5">
+            <span class="label label-default">10kb</span>
+          </div>
+          <div class="photo-box-action photo-box-action-right">
+            <button class="btn btn-sm btn-outline-default" type="button">
+              <i class="fa fa-download"></i>
+            </button>
+          </div>
+          <div class="photo-box-figure">
+            <figure class="img-center-dv">
+              <div class="photo-box-figure-in">
+                <img class="img-center"
+                     src="https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/seed_files/media/building1.jpg">
+              </div>
+            </figure>
+            <div class="photo-box-name">
+              <span class="can-click"><i class="fa fa-picture-o"></i> Photo no 1.jpg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 col-md-1">Tags</label>
+        <div class="col-sm-10 col-md-11">
+          <span class="label label-default">Tstes</span>
+        </div>
+      </div>
+    </div>
+  </modal-body>
+</modal>

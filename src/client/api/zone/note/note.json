@@ -52,7 +52,7 @@
       "name": "chis is the long name of your not very long note 001 your not very long note 001",
       "parent_id": 1,
       "description": "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I…",
-      "content": "content html",
+      "content": "<h2>Designed for everyone, everywhere</h2><p>Bootstrap makes front-end web development faster and easier. It's made for folks of all skill levels, devices of all shapes, and projects of all sizes.</p>",
       "type": "file",
       "created_at": "2017-09-18T09:34:04.996Z",
       "owner": {

@@ -31,7 +31,6 @@ $note-action: 200px;
   .component-listbox-action {
     width: $note-action;
   }
-
 }
 
 .component-listbox-action {
@@ -81,8 +80,11 @@ $note-action: 200px;
     .component-listbox-name {
       font-weight: bold;
       margin-bottom: 10px;
-      overflow: hidden;
-      max-height: 36px;
+      span {
+        overflow: hidden;
+        max-height: 36px;
+        display: block;
+      }
     }
     .component-listbox-description {
       margin-bottom: 20px;
@@ -96,6 +98,26 @@ $note-action: 200px;
       .component-listbox-action, .component-listbox-description {
         display: none;
       }
+    }
+  }
+  .fa-file {
+    display: none;
+  }
+  .component-listbox-name.can-click {
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+    }
+  }
+  .component-listbox-action {
+    .page-body-control-menu {
+      position: relative;
+      z-index: 20;
     }
   }
 }

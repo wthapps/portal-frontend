@@ -1,0 +1,11 @@
+@import '../../../../core/scss/global';
+.photo-box {
+  .photo-box-action {
+    display: none;
+  }
+  &:hover {
+    .photo-box-action {
+      display: block;
+    }
+  }
+}

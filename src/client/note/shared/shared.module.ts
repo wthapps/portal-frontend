@@ -1,14 +1,16 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { TagInputModule } from 'ngx-chips';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+
 import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZNoteSharedToolBarComponent } from './toolbar/toolbar.component';
 import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
 import { ZNoteSharedListComponent } from './list/list.component';
 import { ZNoteSharedItemComponent } from './list/item/item.component';
 import { ZNoteService } from './services/note.service';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { ZNoteAddFolderModalComponent } from './modals/add-folder/add-folder-modal.component';
-import { TagInputModule } from 'ngx-chips';
 import { ZNoteSharedModalEditComponent } from './modal/note/edit.component';
+import { ZNoteSharedModalViewComponent } from './modal/note/view.component';
 
 
 /**
@@ -28,6 +30,7 @@ import { ZNoteSharedModalEditComponent } from './modal/note/edit.component';
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
     ZNoteSharedModalEditComponent,
+    ZNoteSharedModalViewComponent,
     ZNoteAddFolderModalComponent
   ],
   exports: [
@@ -39,6 +42,7 @@ import { ZNoteSharedModalEditComponent } from './modal/note/edit.component';
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
     ZNoteSharedModalEditComponent,
+    ZNoteSharedModalViewComponent,
     ZNoteAddFolderModalComponent
   ]
 })

@@ -10,6 +10,7 @@ import { ZNoteSharedModalEditComponent } from './shared/modal/note/edit.componen
 import { ZNoteAddFolderModalComponent } from './shared/modals/add-folder/add-folder-modal.component';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { ApiBaseService } from '../core/shared/services/apibase.service';
+import { ZNoteSharedModalViewComponent } from './shared/modal/note/view.component';
 
 
 /**
@@ -21,7 +22,8 @@ import { ApiBaseService } from '../core/shared/services/apibase.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
   entryComponents: [
-    ZNoteSharedModalEditComponent
+    ZNoteSharedModalEditComponent,
+    ZNoteSharedModalViewComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -64,6 +66,11 @@ export class AppComponent implements OnInit, OnDestroy {
     switch (event.action) {
       case 'note:open_modal_edit':
         this.loadModalComponent(ZNoteSharedModalEditComponent);
+        this.modal.open();
+        break;
+      case 'note:open_modal_view':
+        this.loadModalComponent(ZNoteSharedModalViewComponent);
+        this.modal.data = event.payload;
         this.modal.open();
         break;
       default:
