@@ -6,7 +6,7 @@ import { ZNoteSharedListComponent } from './list/list.component';
 import { ZNoteSharedItemComponent } from './list/item/item.component';
 import { ZNoteService } from './services/note.service';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
-import { ZNoteAddFolderModalComponent } from './modals/add-folder/add-folder-modal.component';
+import { ZNoteAddFolderModalComponent } from './modal/add-folder/add-folder-modal.component';
 import { TagInputModule } from 'ngx-chips';
 import { ZNoteSharedModalEditComponent } from './modal/note/edit.component';
 

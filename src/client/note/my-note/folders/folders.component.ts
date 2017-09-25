@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 
 @Component({
   moduleId: module.id,
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: 'folders.component.html'
 })
 export class ZNoteMyNoteFoldersComponent implements OnInit {
-  constructor() {
+  constructor(private commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
-
+    this.commonEventService.filter((event: any) => event.channel == "noteActionsBar").subscribe((event: any) => {
+      console.log(event);
+    });
   }
 }

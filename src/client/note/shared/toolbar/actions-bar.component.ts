@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
 import { Note } from '../../../core/shared/models/note.model';
+import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 
 @Component({
   moduleId: module.id,
@@ -14,9 +15,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() data: Note;
   tooltip: any = Constants.tooltip;
 
-
-
-  constructor(public noteService: ZNoteService) {
+  constructor(public noteService: ZNoteService, public commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
@@ -29,5 +28,9 @@ export class ZNoteSharedActionBarComponent implements OnInit {
       this.noteService.deleteNote(this.data);
     }
 
+  }
+
+  onEdit() {
+    this.commonEventService.broadcast({channel: "noteActionsBar", action: "edit", payload: this.data});
   }
 }
