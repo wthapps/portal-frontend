@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
 
 @Injectable()
 export class NoteActions {
   static NOTE_NOTE_CREATE = 'NOTE_NOTE_CREATE';
-  create(note): Action {
+  create(note: any): any {
     return {
       type: NoteActions.NOTE_NOTE_CREATE,
       payload: note
@@ -12,7 +11,7 @@ export class NoteActions {
   }
 
   static NOTE_NOTE_UPDATE = 'NOTE_NOTE_UPDATE';
-  update(note): Action {
+  update(note: any): any {
     return {
       type: NoteActions.NOTE_NOTE_UPDATE,
       payload: note
@@ -20,7 +19,7 @@ export class NoteActions {
   }
 
   static NOTE_NOTE_DELETE = 'NOTE_NOTE_DELETE';
-  delete(note): Action {
+  delete(note: any): any {
     return {
       type: NoteActions.NOTE_NOTE_DELETE,
       payload: note

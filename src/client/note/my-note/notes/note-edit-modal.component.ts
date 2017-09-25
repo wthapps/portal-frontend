@@ -10,10 +10,8 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 export class ZNoteEditModalComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   data: any;
-  ckeditorContent: string;
 
   constructor(private noteService: ZNoteService) {
-    this.ckeditorContent = `<p>My HTML</p>`;
   }
 
   ngOnInit() {

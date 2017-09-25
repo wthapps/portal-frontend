@@ -94,13 +94,6 @@ export class ProjectConfig extends SeedConfig {
         }
       },
       {
-        name: 'ng2-ckeditor',
-        path: 'node_modules/ng2-ckeditor/lib/index.js',
-        packageMeta: {
-          defaultJSExtension: 'cjs'
-        }
-      },
-      {
         name: 'ngx-infinite-scroll',
         path: 'node_modules/ngx-infinite-scroll/bundles/ngx-infinite-scroll.umd.js'
       },

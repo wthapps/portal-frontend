@@ -31,7 +31,12 @@ export class AppComponent implements OnInit, OnDestroy {
   modalComponent: any;
   modal: any;
 
-  constructor(private router: Router, private resolver: ComponentFactoryResolver, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService) {
+  constructor(private router: Router,
+              private resolver: ComponentFactoryResolver,
+              private commonEventService: CommonEventService,
+              private apiBaseService: ApiBaseService,
+              private noteService: ZNoteService
+  ) {
     console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent').subscribe((event: any) => {
       this.addFolder.open();
