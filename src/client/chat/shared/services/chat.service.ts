@@ -245,7 +245,7 @@ export class ChatService {
   searchMessages(text: any) {
     let currentMessages: any = this.storage.find('current_chat_messages').value.data;
     let page: any = parseInt(this.storage.find('current_chat_messages').value.page_metadata.page);
-    let body: any = {q: "message:1"};
+    let body: any = {q: 'message:1'};
     let groupId: any = this.storage.find('conversation_select').value.group_json.id;
 
     let sequenceCall = (nextPage: any, currentPage: any): any => {

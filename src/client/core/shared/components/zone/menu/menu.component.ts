@@ -27,7 +27,7 @@ declare var _: any;
 export class ZSharedMenuComponent implements OnInit, OnDestroy {
   @Input() contactMenu: Array<any>;
   @Input() totalContactCount: number = 0;
-  
+
   noteFolders: Array<any>;
 
   /**public event for somewhere are able to subscribe*/
@@ -119,7 +119,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event});
   }
 
-  deleteLabel(label :any) {
+  deleteLabel(label: any) {
     this.wthConfirmService.confirm({
       message: 'Are you sure you want to delete this label ?',
       header: 'Delete label',

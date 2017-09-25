@@ -34,4 +34,8 @@ export class ZNoteSharedModalEditComponent {
   open() {
     this.modal.open()
   }
+
+  onSubmit(value: any) {
+    console.log(value);
+  }
 }

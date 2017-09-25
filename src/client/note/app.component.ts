@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
         document.body.scrollTop = 0;
       });
     this.apiBaseService.get('note/folders').subscribe((res: any) => {
-      this.commonEventService.broadcast({channel: "noteCommonEvent", action: "updateFolders", payload: res.data})
+      this.commonEventService.broadcast({channel: 'noteCommonEvent', action: 'updateFolders', payload: res.data})
     });
   }
 

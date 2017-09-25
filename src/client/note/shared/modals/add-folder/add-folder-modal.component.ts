@@ -41,7 +41,7 @@ export class ZNoteAddFolderModalComponent implements OnInit, WthAppsBaseModal {
 
   submit() {
     this.apiBaseService.post('note/folders', {name: this.name}).subscribe((res: any) => {
-      this.commonEventService.broadcast({channel: "noteCommonEvent", action: "updateFolders", payload: res.data})
+      this.commonEventService.broadcast({channel: 'noteCommonEvent', action: 'updateFolders', payload: res.data})
       this.modal.close();
     });
   }
