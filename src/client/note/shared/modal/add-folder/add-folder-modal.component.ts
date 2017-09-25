@@ -19,7 +19,7 @@ export class ZNoteAddFolderModalComponent implements OnInit, WthAppsBaseModal {
   @ViewChild('modal') modal: ModalComponent;
   event: any;
   form: any;
-  name: any;
+  folder: any = {};
 
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService)  {
 
@@ -40,10 +40,17 @@ export class ZNoteAddFolderModalComponent implements OnInit, WthAppsBaseModal {
   }
 
   submit() {
-    this.apiBaseService.post('note/folders', {name: this.name}).subscribe((res: any) => {
-      this.commonEventService.broadcast({channel: 'noteCommonEvent', action: 'updateFolders', payload: res.data})
-      this.modal.close();
-    });
+    if (this.folder.id) {
+      this.apiBaseService.put('note/folders/' + this.folder.id, this.folder).subscribe((res: any) => {
+        this.commonEventService.broadcast({channel: 'noteCommonEvent', action: 'updateFolders', payload: res.data})
+        this.modal.close();
+      });
+    } else {
+      this.apiBaseService.post('note/folders', {name: this.folder.name}).subscribe((res: any) => {
+        this.commonEventService.broadcast({channel: 'noteCommonEvent', action: 'updateFolders', payload: res.data})
+        this.modal.close();
+      });
+    }
   }
 
 }

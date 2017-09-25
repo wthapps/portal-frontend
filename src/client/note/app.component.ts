@@ -10,8 +10,8 @@ import { ZNoteSharedModalEditComponent } from './shared/modal/note/edit.componen
 import { ZNoteAddFolderModalComponent } from './shared/modals/add-folder/add-folder-modal.component';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { ApiBaseService } from '../core/shared/services/apibase.service';
+import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
 import { ZNoteSharedModalViewComponent } from './shared/modal/note/view.component';
-
 
 /**
  * This class represents the main application component.
@@ -37,11 +37,32 @@ export class AppComponent implements OnInit, OnDestroy {
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
+              private wthConfirmService: WthConfirmService,
               private noteService: ZNoteService
   ) {
     console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent').subscribe((event: any) => {
-      this.addFolder.open();
+      if (event.action == "note:folder:create") {
+        // reset folder data
+        this.addFolder.folder = {};
+        this.addFolder.open();
+      }
+      if (event.action == "note:folder:edit") {
+        this.addFolder.folder = event.payload;
+        this.addFolder.open();
+      }
+
+      if (event.action == "note:folder:delete") {
+        this.wthConfirmService.confirm({
+          message: 'Are you sure you want to delete this folder?',
+          header: 'Delete Folder',
+          accept: () => {
+            this.apiBaseService.delete('note/folders/' + event.payload.id).subscribe((res: any) => {
+              this.commonEventService.broadcast({channel: 'noteCommonEvent', action: 'updateFolders', payload: res.data})
+            });
+          }
+        });
+      }
     });
     this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
   }

@@ -55,7 +55,7 @@
       </ul>
     </li>
 
-    <li class="has-sub" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
+    <li class="has-sub has-action" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('note')">
         Notes
       </a>
@@ -67,9 +67,19 @@
         </li>
         <ng-template ngFor let-folder [ngForOf]="noteFolders" let-i="index">
           <li>
-            <a [routerLink]="['/my-note/folders', folder.id]">
+            <a class="folder-title" [routerLink]="['/my-note/folders', folder.id]" class="">
               {{ folder.name }}
             </a>
+            <div class="menuleft-nav-sub-action" >
+              <span class="can-click"
+                    (click)="doEvent({action:'note:folder:edit', payload: folder})"
+                    title="edit folder name">
+                <i class="fa fa-pencil"></i>
+              </span>
+              <span class="can-click" (click)="doEvent({action:'note:folder:delete', payload: folder})" title="delete label">
+                <i class="fa fa-trash"></i>
+              </span>
+            </div>
           </li>
         </ng-template>
         <ng-template ngFor let-note [ngForOf]="noteMenu" let-i="index" >
@@ -77,7 +87,7 @@
             <a *ngIf="note.link != '#'" draggable="false" [routerLink]="[note.link]" [queryParams]="{}">
               <i class="{{ note.icon }}"></i> {{ note.name }}
             </a>
-            <a *ngIf="note.link == '#'" class="can-click" draggable="false" (click)="doEvent(note.action)">
+            <a *ngIf="note.link == '#'" class="can-click" draggable="false" (click)="doEvent({action: note.action})">
               <i class="{{ note.icon }}"></i> {{ note.name }}
             </a>
           </li>

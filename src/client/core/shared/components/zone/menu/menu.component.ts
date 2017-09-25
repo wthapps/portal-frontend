@@ -116,7 +116,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     //   event.event.preventDefault();
     // }
     this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
-    this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event});
+    this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event.action, payload: event.payload});
   }
 
   deleteLabel(label: any) {
