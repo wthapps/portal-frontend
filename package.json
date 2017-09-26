@@ -185,6 +185,7 @@
     "svg-country-flags": "1.1.2",
     "systemjs": "0.20.18",
     "tether-shepherd": "1.8.1",
+    "@ngrx/router-store": "github:ngrx/router-store-builds",
     "zone.js": "0.8.14"
   }
 }

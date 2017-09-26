@@ -23,6 +23,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() showEdit: boolean = true;
   @Input() showTag: boolean = true;
   @Input() showInvitation: boolean = true;
+  @Input() showQuickInvitation: boolean = false;
   // Toggle
   @Input() toggleFavourite: boolean = false;
   @Input() toggleBlacklist: boolean = false;
@@ -30,6 +31,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() number: number;
   // Order
   @Input() order: boolean = false;
+  @Input() data: any = {};
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
   emitEvent: (value: any) => void;

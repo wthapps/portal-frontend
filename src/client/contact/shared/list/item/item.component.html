@@ -32,6 +32,8 @@
 <!-- {{data | wthFilterBy:'labels' | json}} -->
 <z-contact-shared-actions-bar
   class="contact-listbox-action"
+  [data]="data"
+  [showQuickInvitation]="true"
   [showNumber]="false"
   [showSocial]="data | isContactInternal"
   [showChat]="data | isContactInternal"

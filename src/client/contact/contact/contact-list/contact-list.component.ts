@@ -227,7 +227,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
     if (event.action == 'invitation:open_modal') {
       let recipients: Array<Recipient> = new Array<Recipient>();
-      _.forEach(this.contactService.selectedObjects, (contact: any) => {
+      let objects: any[] = _.get(event, 'payload.objects', this.contactService.selectedObjects);
+      _.forEach(objects, (contact: any) => {
         if(contact.wthapps_user == null) {
           _.forEach(contact.emails, (email: any) => {
             recipients.push(new Recipient({email: email.value, fullName: contact.name, contactId: contact.id}));
