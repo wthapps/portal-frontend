@@ -154,6 +154,10 @@
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-4.0.5.tgz#1224763800621b7305f9b18bc17ee09b25c861d1"
 
+"@ngrx/store-devtools@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-4.0.0.tgz#b79c24773217df7fd9735ad21f9cbf2533c96e04"
+
 "@ngrx/store@4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-4.0.3.tgz#36abacdfa19bfb8506e40de80bae06050a1e15e9"
@@ -274,10 +278,6 @@
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.6.0.tgz#997b41a27752b4850af2683bc4a8d8222c25bd02"
 
-"@types/jquery@^2.0.40":
-  version "2.0.48"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.48.tgz#3e90d8cde2d29015e5583017f7830cb3975b2eef"
-
 "@types/micromatch@*":
   version "2.3.29"
   resolved "https://registry.yarnpkg.com/@types/micromatch/-/micromatch-2.3.29.tgz#6ce0280fe96f500127f0c8c0addf2d3f207e8cec"
@@ -307,6 +307,10 @@
 "@types/q@^0.0.32":
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-0.0.32.tgz#bd284e57c84f1325da702babfc82a5328190c0c5"
+
+"@types/quill@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@types/quill/-/quill-1.3.3.tgz#06e08fb017d9493e3708c5c13fbb8bf33ad03d9e"
 
 "@types/relateurl@*":
   version "0.2.28"
@@ -471,13 +475,6 @@ ambi@^2.2.0, ambi@^2.5.0:
 amdefine@>=0.0.4, amdefine@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
-
-angular-froala-wysiwyg@2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/angular-froala-wysiwyg/-/angular-froala-wysiwyg-2.7.0.tgz#db76834fe05297b47ae79cebf6778f247456146c"
-  dependencies:
-    "@types/jquery" "^2.0.40"
-    froala-editor "^2.7.0"
 
 angular2-recaptcha@0.6.0:
   version "0.6.0"
@@ -2470,7 +2467,7 @@ fn-args@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fn-args/-/fn-args-1.0.0.tgz#974dafa1aeac4ac7c21fa09cc3b80f650106ed32"
 
-font-awesome@4.7.0, font-awesome@>=4.4.0:
+font-awesome@4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
@@ -2531,13 +2528,6 @@ fresh@0.5.0:
 fresh@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.3.0.tgz#651f838e22424e7566de161d8358caa199f83d4f"
-
-froala-editor@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-2.7.0.tgz#d85acc6535541ca3811c6ca2287ab7e26d812428"
-  dependencies:
-    font-awesome ">=4.4.0"
-    jquery ">=1.11.0"
 
 from@~0:
   version "0.1.7"
@@ -3746,7 +3736,7 @@ jasminewd2@0.0.10:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/jasminewd2/-/jasminewd2-0.0.10.tgz#94f48ae2bc946cad643035467b4bb7ea9c1075ef"
 
-"jquery@>= 1.9.1", jquery@>=1.11.0, jquery@>=1.7.2, jquery@>=1.9.0:
+"jquery@>= 1.9.1", jquery@>=1.7.2, jquery@>=1.9.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
@@ -4679,10 +4669,6 @@ ng2-cable@1.0.5:
     rxjs "5.0.0-beta.12"
     zone.js "^0.6.6"
 
-ng2-ckeditor@1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/ng2-ckeditor/-/ng2-ckeditor-1.1.9.tgz#f865f0f99c5b069521e91b9bd2f9a23ee1aaf52f"
-
 ng2-material-dropdown@0.7.10:
   version "0.7.10"
   resolved "https://registry.yarnpkg.com/ng2-material-dropdown/-/ng2-material-dropdown-0.7.10.tgz#093471f2a9cadd726cbcb120b0ad7818a54fa5ed"
@@ -4700,6 +4686,13 @@ ngx-cookie@1.0.0:
 ngx-infinite-scroll@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-0.5.1.tgz#dd9452c602ff7c3222f0ca168481aa14140286b7"
+
+ngx-quill@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-1.5.1.tgz#865fd255e7d404d2f2579fe9ea47fe088a1d1d02"
+  dependencies:
+    "@types/quill" "^1.3.3"
+    quill "^1.3.2"
 
 no-case@^2.2.0:
   version "2.3.2"
@@ -5588,7 +5581,7 @@ quill-delta@3.6.1:
     extend "^3.0.1"
     fast-diff "1.1.1"
 
-quill@^1.3.2:
+quill@1.3.2, quill@^1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/quill/-/quill-1.3.2.tgz#fe396b4fa1d1439d76956ff92218a0cb90c09f3f"
   dependencies:

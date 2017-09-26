@@ -39,13 +39,10 @@ export class ProjectConfig extends SeedConfig {
       {src: 'tether-shepherd/dist/js/shepherd.min.js', inject: 'libs'},
 
       //editor
-      {src: 'quill/dist/quill.min.js', inject: 'libs'},
-
+      {src: 'quill/dist/quill.min.js', inject: 'libs'}
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
-      { src: 'froala-editor/js/froala_editor.pkgd.min.js', inject: 'libs' },
-      { src: 'froala-editor/css/froala_editor.pkgd.min.css', inject: true },
-      { src: 'froala-editor/css/froala_style.min.css', inject: true }
+
     ];
 
     // Add `local` third-party libraries to be injected/bundled.
@@ -111,16 +108,19 @@ export class ProjectConfig extends SeedConfig {
           format: 'cjs'
         }
       },
-      // required for dev build
       {
-        name:'angular-froala-wysiwyg',
-        path:'node_modules/angular-froala-wysiwyg/bundles/angular-froala-wysiwyg.umd.min.js'
+        name: 'ngx-quill',
+        path: 'node_modules/ngx-quill/bundles/ngx-quill.umd.js',
+        packageMeta: {
+          format: 'cjs'
+        }
       },
-
-      // required for prod build
       {
-        name:'angular-froala-wysiwyg/*',
-        path:'node_modules/angular-froala-wysiwyg/bundles/angular-froala-wysiwyg.umd.min.js'
+        name: 'quill',
+        path: 'node_modules/quill/dist/quill.js',
+        packageMeta: {
+          format: 'cjs'
+        }
       }
     ];
 

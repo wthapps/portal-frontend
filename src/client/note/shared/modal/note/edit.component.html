@@ -82,10 +82,11 @@
       </div>
     </modal-body>
     <modal-footer>
+
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
       <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid"
               class="btn btn-outline-primary btn-min">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </modal>
 </form>
