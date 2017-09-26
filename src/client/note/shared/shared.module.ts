@@ -11,7 +11,6 @@ import { ZNoteService } from './services/note.service';
 import { ZNoteAddFolderModalComponent } from './modal/add-folder/add-folder-modal.component';
 import { ZNoteSharedModalEditComponent } from './modal/note/edit.component';
 import { ZNoteSharedModalViewComponent } from './modal/note/view.component';
-import { ZNoteSharedModalViewComponent } from './modal/note/view.component';
 
 
 /**
