@@ -5,13 +5,13 @@ import { Note } from '../../../../core/shared/models/note.model';
 
 @Component({
   moduleId: module.id,
-  selector: 'z-note-shared-modal-view',
+  selector: 'z-note-shared-modal-note-view',
   templateUrl: 'view.component.html',
   styleUrls: ['edit.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 
-export class ZNoteSharedModalViewComponent {
+export class ZNoteSharedModalNoteViewComponent {
   @ViewChild('modal') modal: ModalComponent;
   @Input() data: Note;
 

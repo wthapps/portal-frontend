@@ -71,6 +71,7 @@ import { ShowHidePasswordModule } from './components/show-hide-password/show-hid
 import { InvitationModule } from './components/invitation/invitation.module';
 import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 import { WthConfirmModule } from './components/confirmation/wth-confirm.module';
+import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -103,6 +104,8 @@ import { WthConfirmModule } from './components/confirmation/wth-confirm.module';
     CalendarModule,
     TooltipModule,
     EditorModule,
+    PanelMenuModule,
+
     WthConfirmModule,
 
     FooterModule,

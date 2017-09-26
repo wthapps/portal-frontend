@@ -47,7 +47,7 @@ export class ZNoteSharedItemComponent implements OnInit {
     if (this.data.type == 'folder') {
       this.router.navigate([`my-note/folders`, this.data.id]);
     } else {
-      this.noteService.modalEvent({action: 'note:open_modal_view', payload: this.data});
+      this.noteService.modalEvent({action: 'note:open_modal_note_view', payload: this.data});
     }
 
   }

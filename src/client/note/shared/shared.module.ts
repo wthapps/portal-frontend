@@ -6,11 +6,12 @@ import { ZNoteSharedListComponent } from './list/list.component';
 import { ZNoteSharedItemComponent } from './list/item/item.component';
 import { ZNoteService } from './services/note.service';
 import { ZNoteAddFolderModalComponent } from './modal/add-folder/add-folder-modal.component';
-import { ZNoteSharedModalEditComponent } from './modal/note/edit.component';
-import { ZNoteSharedModalViewComponent } from './modal/note/view.component';
+import { ZNoteSharedModalNoteEditComponent } from './modal/note/edit.component';
+import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
 import { QuillModule } from 'ngx-quill';
 import { TagInputModule } from 'ngx-chips';
+import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
 
 
 /**
@@ -28,9 +29,11 @@ import { TagInputModule } from 'ngx-chips';
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
-    ZNoteSharedModalEditComponent,
-    ZNoteSharedModalViewComponent,
-    ZNoteAddFolderModalComponent
+    ZNoteAddFolderModalComponent,
+
+    ZNoteSharedModalNoteEditComponent,
+    ZNoteSharedModalNoteViewComponent,
+    ZNoteSharedModalFolderEditComponent,
   ],
   exports: [
     CoreSharedModule,
@@ -38,9 +41,11 @@ import { TagInputModule } from 'ngx-chips';
     ZNoteSharedActionBarComponent,
     ZNoteSharedListComponent,
     ZNoteSharedItemComponent,
-    ZNoteSharedModalEditComponent,
-    ZNoteSharedModalViewComponent,
-    ZNoteAddFolderModalComponent
+    ZNoteAddFolderModalComponent,
+
+    ZNoteSharedModalNoteEditComponent,
+    ZNoteSharedModalNoteViewComponent,
+    ZNoteSharedModalFolderEditComponent
   ]
 })
 export class ZNoteSharedModule {

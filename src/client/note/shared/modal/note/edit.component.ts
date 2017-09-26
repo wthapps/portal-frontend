@@ -5,13 +5,13 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 @Component({
   moduleId: module.id,
-  selector: 'z-note-shared-modal-edit',
+  selector: 'z-note-shared-modal-note-edit',
   templateUrl: 'edit.component.html',
   styleUrls: ['edit.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 
-export class ZNoteSharedModalEditComponent {
+export class ZNoteSharedModalNoteEditComponent {
   @ViewChild('modal') modal: ModalComponent;
 
   titleModal: string = 'New Note';

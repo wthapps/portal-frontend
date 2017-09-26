@@ -6,12 +6,13 @@ import 'rxjs/add/operator/filter';
 
 import { Config } from '../core/shared/config/env.config';
 import { ZNoteService } from './shared/services/note.service';
-import { ZNoteSharedModalEditComponent } from './shared/modal/note/edit.component';
 import { ZNoteAddFolderModalComponent } from './shared/modal/add-folder/add-folder-modal.component';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { ApiBaseService } from '../core/shared/services/apibase.service';
 import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
-import { ZNoteSharedModalViewComponent } from './shared/modal/note/view.component';
+import { ZNoteSharedModalNoteEditComponent } from './shared/modal/note/edit.component';
+import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
+import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
 
 /**
  * This class represents the main application component.
@@ -22,8 +23,9 @@ import { ZNoteSharedModalViewComponent } from './shared/modal/note/view.componen
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
   entryComponents: [
-    ZNoteSharedModalEditComponent,
-    ZNoteSharedModalViewComponent
+    ZNoteSharedModalNoteEditComponent,
+    ZNoteSharedModalNoteViewComponent,
+    ZNoteSharedModalFolderEditComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -38,11 +40,12 @@ export class AppComponent implements OnInit, OnDestroy {
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
-              private noteService: ZNoteService
-  ) {
+              private noteService: ZNoteService) {
     console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent').subscribe((event: any) => {
-      if (event.action == "note:folder:create") {
+      this.doEvent(event);
+
+      /*if (event.action == "note:folder:create") {
         // reset folder data
         this.addFolder.folder = {};
         this.addFolder.open();
@@ -58,11 +61,15 @@ export class AppComponent implements OnInit, OnDestroy {
           header: 'Delete Folder',
           accept: () => {
             this.apiBaseService.delete('note/folders/' + event.payload.id).subscribe((res: any) => {
-              this.commonEventService.broadcast({channel: 'noteCommonEvent', action: 'updateFolders', payload: res.data})
+              this.commonEventService.broadcast({
+                channel: 'noteCommonEvent',
+                action: 'updateFolders',
+                payload: res.data
+              })
             });
           }
         });
-      }
+      }*/
     });
     this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
   }
@@ -85,12 +92,16 @@ export class AppComponent implements OnInit, OnDestroy {
   doEvent(event: any) {
     console.log(event);
     switch (event.action) {
-      case 'note:open_modal_edit':
-        this.loadModalComponent(ZNoteSharedModalEditComponent);
+      case 'note:folder:create':
+        this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
         this.modal.open();
         break;
-      case 'note:open_modal_view':
-        this.loadModalComponent(ZNoteSharedModalViewComponent);
+      case 'note:open_modal_note_edit':
+        this.loadModalComponent(ZNoteSharedModalNoteEditComponent);
+        this.modal.open();
+        break;
+      case 'note:open_modal_note_view':
+        this.loadModalComponent(ZNoteSharedModalNoteViewComponent);
         this.modal.data = event.payload;
         this.modal.open();
         break;
