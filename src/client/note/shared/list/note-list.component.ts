@@ -6,13 +6,13 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-note-shared-list',
-  templateUrl: 'list.component.html',
-  styleUrls: ['list.component.css'],
+  selector: 'note-list',
+  templateUrl: 'note-list.component.html',
+  styleUrls: ['note-list.component.css'],
   encapsulation: ViewEncapsulation.None
 
 })
-export class ZNoteSharedListComponent implements OnInit {
+export class NoteListComponent implements OnInit {
   @Input() data: Note[];
   @Input() viewOption: string = 'list';
 

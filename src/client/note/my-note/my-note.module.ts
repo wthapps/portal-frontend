@@ -5,7 +5,6 @@ import { ZNoteMyNoteComponent } from './my-note.component';
 import { ZNoteMyNoteRoutingModule } from './my-note-routing.module';
 import { ZNoteMyNoteFoldersComponent } from './folders/folders.component';
 import { ZNoteMyNoteNotesComponent } from './notes/notes.component';
-import { ZNoteEditModalComponent } from './notes/note-edit-modal.component';
 import { ZNoteCreateComponent } from './notes/note-create.component';
 import { ZNoteEditComponent } from './notes/note-edit.component';
 
@@ -20,16 +19,14 @@ import { ZNoteEditComponent } from './notes/note-edit.component';
     ZNoteMyNoteFoldersComponent,
     ZNoteMyNoteNotesComponent,
     ZNoteCreateComponent,
-    ZNoteEditComponent,
-    ZNoteEditModalComponent,
+    ZNoteEditComponent
   ],
   exports: [
     ZNoteMyNoteComponent,
     ZNoteMyNoteFoldersComponent,
     ZNoteMyNoteNotesComponent,
     ZNoteCreateComponent,
-    ZNoteEditComponent,
-    ZNoteEditModalComponent
+    ZNoteEditComponent
   ],
   providers: []
 })

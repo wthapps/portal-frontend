@@ -87,7 +87,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
       {
         label: 'File 1',
         icon: 'fa-folder-o',
-        icon: 'fa-folder-o',
         items: [
           {
             label: 'File 1-0',

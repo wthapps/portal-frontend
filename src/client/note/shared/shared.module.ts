@@ -2,14 +2,14 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZNoteSharedToolBarComponent } from './toolbar/toolbar.component';
 import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
-import { ZNoteSharedListComponent } from './list/list.component';
-import { ZNoteSharedItemComponent } from './list/item/item.component';
+import { NoteListComponent } from './list/note-list.component';
+import { NoteItemComponent } from './list/item/note-item.component';
+import { FolderItemComponent } from './list/item/folder-item.component';
+
 import { ZNoteService } from './services/note.service';
-import { ZNoteAddFolderModalComponent } from './modal/add-folder/add-folder-modal.component';
-import { ZNoteSharedModalNoteEditComponent } from './modal/note/edit.component';
+import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
-import { QuillModule } from 'ngx-quill';
 import { TagInputModule } from 'ngx-chips';
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
 
@@ -20,18 +20,17 @@ import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.compone
 
 @NgModule({
   imports: [
-    QuillModule,
     TagInputModule,
     CoreSharedModule.forRoot()
   ],
   declarations: [
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
-    ZNoteSharedListComponent,
-    ZNoteSharedItemComponent,
-    ZNoteAddFolderModalComponent,
+    NoteListComponent,
+    NoteItemComponent,
+    FolderItemComponent,
 
-    ZNoteSharedModalNoteEditComponent,
+    NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
   ],
@@ -39,11 +38,11 @@ import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.compone
     CoreSharedModule,
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
-    ZNoteSharedListComponent,
-    ZNoteSharedItemComponent,
-    ZNoteAddFolderModalComponent,
+    NoteListComponent,
+    NoteItemComponent,
+    FolderItemComponent,
 
-    ZNoteSharedModalNoteEditComponent,
+    NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent
   ]

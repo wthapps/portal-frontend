@@ -9,10 +9,10 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-note-shared-item',
-  templateUrl: 'item.component.html'
+  selector: 'folder-item',
+  templateUrl: 'folder-item.component.html'
 })
-export class ZNoteSharedItemComponent implements OnInit {
+export class FolderItemComponent implements OnInit {
   @Input() data: Note;
   tooltip: any = Constants.tooltip;
 
@@ -47,8 +47,7 @@ export class ZNoteSharedItemComponent implements OnInit {
     if (this.data.type == 'folder') {
       this.router.navigate([`my-note/folders`, this.data.id]);
     } else {
-      this.noteService.modalEvent({action: 'note:open_modal_note_view', payload: this.data});
+      this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
     }
-
   }
 }

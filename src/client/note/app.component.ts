@@ -6,11 +6,10 @@ import 'rxjs/add/operator/filter';
 
 import { Config } from '../core/shared/config/env.config';
 import { ZNoteService } from './shared/services/note.service';
-import { ZNoteAddFolderModalComponent } from './shared/modal/add-folder/add-folder-modal.component';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { ApiBaseService } from '../core/shared/services/apibase.service';
 import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
-import { ZNoteSharedModalNoteEditComponent } from './shared/modal/note/edit.component';
+import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
 import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
 
@@ -23,14 +22,13 @@ import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
   entryComponents: [
-    ZNoteSharedModalNoteEditComponent,
+    NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
-  @ViewChild('addFolder') addFolder: ZNoteAddFolderModalComponent;
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -96,13 +94,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
         this.modal.open();
         break;
-      case 'note:open_modal_note_edit':
-        this.loadModalComponent(ZNoteSharedModalNoteEditComponent);
-        this.modal.open();
-        break;
-      case 'note:open_modal_note_view':
-        this.loadModalComponent(ZNoteSharedModalNoteViewComponent);
-        this.modal.data = event.payload;
+      case 'note:open_note_edit_modal':
+        this.loadModalComponent(NoteEditModalComponent);
         this.modal.open();
         break;
       default:

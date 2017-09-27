@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ZNoteService } from '../../shared/services/note.service';
-import { ZNoteEditModalComponent } from './note-edit-modal.component';
+import { NoteEditModalComponent } from '../../shared/modal/note/note-edit-modal.component';
 
 @Component({
   moduleId: module.id,
@@ -8,7 +8,7 @@ import { ZNoteEditModalComponent } from './note-edit-modal.component';
   templateUrl: 'note-edit.component.html'
 })
 export class ZNoteEditComponent implements OnInit {
-  @ViewChild('editModal') editModal: ZNoteEditModalComponent;
+  @ViewChild('modal') modal: NoteEditModalComponent;
 
   data: any;
 
@@ -16,6 +16,6 @@ export class ZNoteEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.editModal.open();
+    this.modal.open();
   }
 }

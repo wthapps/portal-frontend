@@ -107,20 +107,6 @@ export class ProjectConfig extends SeedConfig {
         packageMeta: {
           format: 'cjs'
         }
-      },
-      {
-        name: 'ngx-quill',
-        path: 'node_modules/ngx-quill/bundles/ngx-quill.umd.js',
-        packageMeta: {
-          format: 'cjs'
-        }
-      },
-      {
-        name: 'quill',
-        path: 'node_modules/quill/dist/quill.js',
-        packageMeta: {
-          format: 'cjs'
-        }
       }
     ];
 

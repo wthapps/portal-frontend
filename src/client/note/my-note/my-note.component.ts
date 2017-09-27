@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ZNoteService } from '../shared/services/note.service';
-import { Note } from '../../core/shared/models/note.model';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
 declare var _: any;
@@ -11,7 +10,7 @@ declare var _: any;
   templateUrl: 'my-note.component.html'
 })
 export class ZNoteMyNoteComponent implements OnInit {
-  data: Note[] = [];
+  data: Array<any> = new Array<any>();
   viewOption: string = 'list';
 
   constructor(private noteService: ZNoteService, private apiBaseService: ApiBaseService) {
@@ -24,17 +23,17 @@ export class ZNoteMyNoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.noteService.getList().subscribe(
+    this.noteService.getAll().subscribe(
       res => {
+        this.data = res.data;
         console.log(res);
       }
     );
-    /*this.apiBaseService.get(`note/folder`).subscribe((res: any) => {
-     console.log(res)
-     });*/
   }
 
   onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_modal_note_edit'});
+
+
+    this.noteService.modalEvent({action: 'note:open_note_edit_modal'});
   }
 }

@@ -7,7 +7,7 @@ import { Note } from '../../../../core/shared/models/note.model';
   moduleId: module.id,
   selector: 'z-note-shared-modal-note-view',
   templateUrl: 'view.component.html',
-  styleUrls: ['edit.component.css'],
+  styleUrls: ['note-edit-modal.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 

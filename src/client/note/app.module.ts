@@ -31,7 +31,12 @@ import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
     ZNoteMyProfileModule,
     ZNoteSettingsModule,
     ZNoteSharedModule.forRoot(),
-    CoreSharedModule.forRoot()
+
+    //adds ngrx here
+    // StoreModule.forRoot({ noteActions: noteReducer}),
+    // EffectsModule.forRoot([NoteEffects]),
+
+    CoreSharedModule.forRoot(),
   ],
   declarations: [AppComponent],
   providers: [{
