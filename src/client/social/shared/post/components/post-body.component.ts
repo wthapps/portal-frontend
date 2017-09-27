@@ -27,7 +27,8 @@ export class PostBodyComponent implements OnChanges {
     openActivities: 4,
     onShowPhotoDetail: 5,
     openLikeDislike: 6,
-    toggleComments: 7
+    toggleComments: 7,
+    onShowPostDetail: 8
   };
   hasLike: boolean;
   hasDislike: boolean;
@@ -77,6 +78,10 @@ export class PostBodyComponent implements OnChanges {
         let post = _.get(data, 'parentItem', this.originalPost);
         let photoIds = _.map(post.photos, 'id');
         this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, post_uuid: post.uuid}]}}], { queryParamsHandling: 'preserve', preserveFragment: true });
+        break;
+      case this.actions.onShowPostDetail:
+        let parentUuid = data;
+        this.router.navigate(([{outlets: {detail: ['posts', parentUuid]}}]));
         break;
     }
   }

@@ -43,7 +43,7 @@
   <div *ngIf="!item.is_post">
     <hr/>
     <div class="form-group">
-      Shared from <a [routerLink]="['/posts/', parentItem.uuid]">{{ parentItem.owner.name }}</a>
+      Shared from <a href="javascript:;" (click)="onActions(actions.onShowPostDetail, parentItem.uuid)">{{ parentItem.owner.name }}</a>
     </div>
     <div class="z-social-post-content">
       <div class="z-social-post-txt">

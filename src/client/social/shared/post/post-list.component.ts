@@ -75,16 +75,15 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.profile$ = this.userService.profile$;
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.params;
+    this.showLoading = document.getElementById('post-list-loading') !== null;
 
     this.route.params
-      .withLatestFrom(parentRouteParams)
+      .combineLatest(parentRouteParams)
+      .takeUntil(this.destroySubject)
       .map((paramsPair: any) => {
+        this.startLoading();
         return _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined);})
       .subscribe((params: any) => {
-        this.showLoading = document.getElementById('post-list-loading') !== null;
-        console.debug('post-list onInit: ', params);
-
-        this.startLoading();
         this.uuid = _.get(params, 'id');  // this can be user uuid or community uuid
         // Load if items empty
         if (this.type != 'search') {
