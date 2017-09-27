@@ -230,4 +230,79 @@ body {
     }
   }
 
+  .well-folder-tree {
+    background-color: #f7f7f7 !important;
+    padding: 15px;
+    .ui-panelmenu {
+      .ui-panelmenu-header {
+        margin-left: -15px;
+        background-color: transparent;
+        &:not(.ui-state-active):hover {
+          background-color: transparent;
+        }
+        &.ui-state-active {
+          a, span {
+            color: $theme-color;
+          }
+        }
+        a {
+          text-decoration: none !important;
+        }
+      }
+      .ui-panelmenu-panel {
+        border-width: 0;
+      }
+
+      .ui-panelmenu-content {
+        .ui-menuitem-link {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: block;
+        }
+      }
+    }
+
+    .ui-widget-content {
+      background-color: transparent;
+      border-width: 0;
+    }
+
+    .fa-caret-right {
+      &:before {
+        content: '\f054';
+      }
+    }
+
+    .fa-caret-down {
+      &:before {
+        content: '\f078';
+      }
+    }
+    .fa-caret-down, .fa-caret-down ~ span, .fa-caret-down ~ .ui-menuitem-text {
+      color: $theme-color;
+    }
+  }
+
+  .well-folder-tree-left {
+    overflow: hidden;
+    .well-folder-tree {
+      padding-top: 0;
+      padding-bottom: 0;
+      width: $main-page-left-sm;
+      @media (min-width: $screen-md-min) {
+        width: $main-page-left;
+      }
+      .ui-panelmenu {
+        .ui-panelmenu-header {
+          > a {
+            padding-left: 30px;
+          }
+        }
+        .ui-panelmenu-content {
+          margin-left: 20px;
+        }
+      }
+    }
+  }
 }

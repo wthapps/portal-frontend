@@ -82,6 +82,11 @@
             </div>
           </li>
         </ng-template>
+        <li class="well-folder-tree-left">
+          <div class="well-folder-tree">
+            <p-panelMenu [model]="noteFoldersTree"></p-panelMenu>
+          </div>
+        </li>
         <ng-template ngFor let-note [ngForOf]="noteMenu" let-i="index" >
           <li *ngIf="note.name != '' && i > 0" [routerLinkActive]="['active']" [ngClass]="{'hidden': note.link == '/search'}">
             <a *ngIf="note.link != '#'" draggable="false" [routerLink]="[note.link]" [queryParams]="{}">

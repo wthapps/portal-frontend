@@ -1,45 +1,5 @@
 @import '../../../../core/scss/global';
 
-body {
-  .well-folder-tree {
-    background-color: #f7f7f7;
-    padding: 15px;
-    .ui-panelmenu {
-      .ui-panelmenu-header {
-        margin-left: -10px;
-        background-color: transparent;
-        &:not(.ui-state-active):hover {
-          background-color: transparent;
-        }
-        &.ui-state-active {
-          a, span {
-            color: $theme-color;
-          }
-        }
-        a {
-          text-decoration: none !important;
-        }
-      }
-      .ui-panelmenu-panel {
-        border-width: 0;
-      }
-    }
-
-    .ui-widget-content {
-      background-color: transparent;
-      border-width: 0;
-    }
-
-    .fa-caret-right {
-      &:before {
-        content: '\f054';
-      }
-    }
-
-    .fa-caret-down {
-      &:before {
-        content: '\f078';
-      }
-    }
-  }
+:host {
+  display: block;
 }

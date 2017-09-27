@@ -29,6 +29,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
   @Input() totalContactCount: number = 0;
 
   noteFolders: Array<any>;
+  noteFoldersTree: any = [];
 
   /**public event for somewhere are able to subscribe*/
   event: Observable<any>;
@@ -80,6 +81,30 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     this.commonEventService.filter((event: any) => event.channel == 'noteCommonEvent' && event.action == 'updateFolders').subscribe((event: any) => {
       this.noteFolders = event.payload;
     });
+
+
+    this.noteFoldersTree = [
+      {
+        label: 'File 1',
+        icon: 'fa-folder-o',
+        icon: 'fa-folder-o',
+        items: [
+          {
+            label: 'File 1-0',
+            icon: 'fa-folder-o',
+            items: [],
+            command: (event: any)=> this.loadMenu(event)
+          }
+        ],
+        command: (event: any)=> this.loadMenu(event)
+      },
+      {
+        label: 'File 2',
+        icon: 'fa-folder-o',
+        items: [],
+        command: (event: any)=> this.loadMenu(event)
+      }
+    ];
   }
 
   extractLabel(url: string) {
@@ -137,5 +162,28 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.commonEventSub.unsubscribe();
     this.destroySubject.unsubscribe();
+  }
+
+
+  loadMenu(event: any) {
+    console.log(event);
+
+    event.originalEvent.stopPropagation();
+    console.log(event.originalEvent.target.className);
+    if (event.originalEvent.target.className == 'ui-menuitem-text') {
+      alert('choose this folder');
+      event.item.expanded = false;
+    } else {
+      if (event.item.expanded) {
+        let menuItem: any = {
+          label: 'File 1-1',
+          icon: 'fa-folder-o',
+          items: [],
+          command: (event: any)=> this.loadMenu(event)
+        };
+        event.item.items.push(menuItem);
+
+      }
+    }
   }
 }

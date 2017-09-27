@@ -9,8 +9,7 @@ declare var $: any;
   moduleId: module.id,
   selector: 'z-note-shared-modal-folder-edit',
   templateUrl: 'edit.component.html',
-  styleUrls: ['edit.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['edit.component.css']
 })
 
 export class ZNoteSharedModalFolderEditComponent implements OnInit {
