@@ -2,6 +2,8 @@ import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 
 declare var $: any;
 
@@ -21,8 +23,9 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
 
   form: FormGroup;
   name: AbstractControl;
+  folder: any = {};
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -31,28 +34,15 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.menuItems = [
-      {
-        label: 'File 1',
-        icon: 'fa-folder-o',
-        icon: 'fa-folder-o',
-        items: [
-          {
-            label: 'File 1-0',
-            icon: 'fa-folder-o',
-            items: [],
-            command: (event: any)=> this.loadMenu(event)
-          }
-        ],
-        command: (event: any)=> this.loadMenu(event)
-      },
-      {
-        label: 'File 2',
-        icon: 'fa-folder-o',
-        items: [],
-        command: (event: any)=> this.loadMenu(event)
+    this.apiBaseService.get(`note/folders`).subscribe((event: any) => {
+      for (let folder of event.data) {
+        folder.label = folder.name;
+        folder.icon = 'fa-folder-o';
+        folder.items = [];
+        folder.command = (event: any)=> this.loadMenu(event)
+        this.menuItems.push(folder);
       }
-    ];
+    });
   }
 
   open() {
@@ -60,29 +50,39 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   }
 
   loadMenu(event: any) {
-    console.log(event);
-
     event.originalEvent.stopPropagation();
-    console.log(event.originalEvent.target.className);
     if (event.originalEvent.target.className == 'ui-menuitem-text') {
-      alert('choose this folder');
+      this.folder.parent_id = event.item.id;
       event.item.expanded = false;
     } else {
       if (event.item.expanded) {
-        let menuItem: any = {
-          label: 'File 1-1',
-          icon: 'fa-folder-o',
-          items: [],
-          command: (event: any)=> this.loadMenu(event)
-        };
-        event.item.items.push(menuItem);
-
+        this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
+          event.item.items.length = 0;
+          for (let folder of res.data) {
+            folder.label = folder.name;
+            folder.icon = 'fa-folder-o';
+            folder.items = [];
+            folder.command = (event: any)=> this.loadMenu(event)
+            event.item.items.push(folder);
+          }
+        });
       }
     }
   }
 
 
   onSubmit(value: any) {
-    console.log(value);
+    this.folder.name = value.name;
+    if (this.folder.id) {
+      this.apiBaseService.put('note/folders/' + this.folder.id, this.folder).subscribe((res: any) => {
+        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data})
+        this.modal.close();
+      });
+    } else {
+      this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
+        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data})
+        this.modal.close();
+      });
+    }
   }
 }
