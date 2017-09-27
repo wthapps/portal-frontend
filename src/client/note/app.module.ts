@@ -14,6 +14,10 @@ import { ZNoteMySharingModule } from './my-sharing/my-sharing.module';
 import { ZNoteSearchModule } from './search/search.module';
 import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { noteReducer } from './shared/reducers/note-reducer';
+import { NoteEffects } from './shared/effects/note-effects';
 
 
 @NgModule({
@@ -33,8 +37,8 @@ import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
     ZNoteSharedModule.forRoot(),
 
     //adds ngrx here
-    // StoreModule.forRoot({ noteActions: noteReducer}),
-    // EffectsModule.forRoot([NoteEffects]),
+    StoreModule.forRoot({ noteActions: noteReducer}),
+    EffectsModule.forRoot([NoteEffects]),
 
     CoreSharedModule.forRoot(),
   ],

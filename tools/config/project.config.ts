@@ -107,6 +107,18 @@ export class ProjectConfig extends SeedConfig {
         packageMeta: {
           format: 'cjs'
         }
+      },
+      {
+        name: '@ngrx/core',
+        path: 'node_modules/@ngrx/core/bundles/core.min.umd.js'
+      },
+      {
+        name: '@ngrx/store',
+        path: 'node_modules/@ngrx/store/bundles/store.umd.js'
+      },
+      {
+        name: '@ngrx/effects',
+        path: 'node_modules/@ngrx/effects/bundles/effects.umd.js'
       }
     ];
 
