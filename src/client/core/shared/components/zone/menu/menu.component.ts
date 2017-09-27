@@ -78,7 +78,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
         this.currentLabel = this.extractLabel(event.url);
       });
 
-    this.commonEventService.filter((event: any) => event.channel == 'noteCommonEvent' && event.action == 'updateFolders').subscribe((event: any) => {
+    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
       this.noteFolders = event.payload;
     });
 
