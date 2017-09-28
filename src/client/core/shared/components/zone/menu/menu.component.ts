@@ -79,31 +79,16 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
       });
 
     this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
-      this.noteFolders = event.payload;
-    });
-
-
-    this.noteFoldersTree = [
-      {
-        label: 'File 1',
-        icon: 'fa-folder-o',
-        items: [
-          {
-            label: 'File 1-0',
-            icon: 'fa-folder-o',
-            items: [],
-            command: (event: any)=> this.loadMenu(event)
-          }
-        ],
-        command: (event: any)=> this.loadMenu(event)
-      },
-      {
-        label: 'File 2',
-        icon: 'fa-folder-o',
-        items: [],
-        command: (event: any)=> this.loadMenu(event)
+      for (let folder of event.payload) {
+        if (!event.payload.parent_id) {
+          folder.label = folder.name;
+          folder.icon = 'fa-folder-o';
+          folder.items = [];
+          folder.command = (event: any)=> this.loadMenu(event)
+          this.noteFoldersTree.push(folder);
+        }
       }
-    ];
+    });
   }
 
   extractLabel(url: string) {
@@ -165,23 +150,21 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
 
 
   loadMenu(event: any) {
-    console.log(event);
-
     event.originalEvent.stopPropagation();
-    console.log(event.originalEvent.target.className);
     if (event.originalEvent.target.className == 'ui-menuitem-text') {
-      alert('choose this folder');
       event.item.expanded = false;
     } else {
       if (event.item.expanded) {
-        let menuItem: any = {
-          label: 'File 1-1',
-          icon: 'fa-folder-o',
-          items: [],
-          command: (event: any)=> this.loadMenu(event)
-        };
-        event.item.items.push(menuItem);
-
+        this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
+          event.item.items.length = 0;
+          for (let folder of res.data) {
+            folder.label = folder.name;
+            folder.icon = 'fa-folder-o';
+            folder.items = [];
+            folder.command = (event: any)=> this.loadMenu(event)
+            event.item.items.push(folder);
+          }
+        });
       }
     }
   }
