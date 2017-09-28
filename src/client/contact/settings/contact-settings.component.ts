@@ -83,15 +83,6 @@ export class ZContactSettingsComponent implements OnInit {
     }
   }
 
-  handleDropdownClick() {
-    this.filteredCountriesCode = [];
-
-    //mimic remote call
-    setTimeout(() => {
-      this.filteredCountriesCode = this.countriesNameCode;
-    }, 100);
-  }
-
   private setSettingForm(data: any) {
     if (data && data.phone_default_code) {
       this.form = this.fb.group({

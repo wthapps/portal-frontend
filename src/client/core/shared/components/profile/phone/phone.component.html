@@ -67,9 +67,8 @@
                   <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
                                   [suggestions]="filteredCountriesCode"
                                   (completeMethod)="filterCountriesCode($event)" [size]="30"
-                                  [minLength]="1" placeholder="Select your country" [dropdown]="false"
-                                  [dropdownMode]="current"
-                                  (onDropdownClick)="handleDropdownClick($event)">
+                                  [minLength]="1" placeholder="Select your country"
+                                  [dropdown]="true">
                     <ng-template ngFor let-code let-i="index" pTemplate="item">
                       <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
                     </ng-template>
