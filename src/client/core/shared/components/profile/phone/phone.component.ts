@@ -41,7 +41,7 @@ export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
   countriesCode: any;
   countriesNameCode: any;
 
-  filteredCountriesCode: any[];
+  filteredCountriesCode: Array<any> = new Array<any>();
 
   phoneType: any = Constants.phoneType;
 
@@ -116,14 +116,5 @@ export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
         this.filteredCountriesCode.push(brand);
       }
     }
-  }
-
-  handleDropdownClick() {
-    this.filteredCountriesCode = [];
-
-    //mimic remote call
-    setTimeout(() => {
-      this.filteredCountriesCode = this.countriesNameCode;
-    }, 100);
   }
 }

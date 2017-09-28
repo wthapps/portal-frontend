@@ -14,11 +14,11 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/compiler-cli@^4.3.0":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-4.4.1.tgz#17b3be903efe1ed3bb2b1e29140634b500fdb265"
+"@angular/compiler-cli@4.4.3":
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-4.4.3.tgz#183af81f141186b8d660b06429592d40b7540a4a"
   dependencies:
-    "@angular/tsc-wrapped" "4.3.6"
+    "@angular/tsc-wrapped" "4.4.3"
     minimist "^1.2.0"
     reflect-metadata "^0.1.2"
 
@@ -62,9 +62,9 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-server@^4.3.0":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-4.4.1.tgz#c2af60fb2eb45720cc6ba72a9971bab67f6718bb"
+"@angular/platform-server@4.4.3":
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-4.4.3.tgz#e65dce9de54d6ca6649cc9894c5c7a3247baaf4c"
   dependencies:
     parse5 "^3.0.1"
     tslib "^1.7.1"
@@ -83,9 +83,9 @@
     base64-js "^1.1.2"
     jshashes "^1.0.5"
 
-"@angular/tsc-wrapped@4.3.6":
-  version "4.3.6"
-  resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-4.3.6.tgz#1aa66e0ab2c4799a4ad14b675e13953aa5fcd436"
+"@angular/tsc-wrapped@4.4.3":
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-4.4.3.tgz#2d3f38210a1d4db03fc86dcf1e095812b85cd119"
   dependencies:
     tsickle "^0.21.0"
 
@@ -153,6 +153,10 @@
 "@ngrx/effects@4.0.5":
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-4.0.5.tgz#1224763800621b7305f9b18bc17ee09b25c861d1"
+
+"@ngrx/router-store@github:ngrx/router-store-builds":
+  version "4.0.4"
+  resolved "https://codeload.github.com/ngrx/router-store-builds/tar.gz/a67118ede369d045ac7a6472c447e4049f63553f"
 
 "@ngrx/store-devtools@4.0.0":
   version "4.0.0"
