@@ -148,11 +148,11 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     this.destroySubject.unsubscribe();
   }
 
-
   loadMenu(event: any) {
     event.originalEvent.stopPropagation();
     if (event.originalEvent.target.className == 'ui-menuitem-text') {
-      event.item.expanded = false;
+      event.item.expanded = !event.item.expanded;
+      this.router.navigate(['/my-note/folders', event.item.id]);
     } else {
       if (event.item.expanded) {
         this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
