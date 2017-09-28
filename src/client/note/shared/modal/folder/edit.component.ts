@@ -50,9 +50,14 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
 
   loadMenu(event: any) {
     event.originalEvent.stopPropagation();
-    if (event.originalEvent.target.className == 'ui-menuitem-text') {
+    let htmlTarget: any = event.originalEvent.target;
+    if ($(htmlTarget).hasClass('ui-menuitem-text')) {
       this.folder.parent_id = event.item.id;
       event.item.expanded = false;
+
+      $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
+      $(htmlTarget).closest('a').addClass('active');
+
     } else {
       if (event.item.expanded) {
         this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
@@ -61,7 +66,7 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
             folder.label = folder.name;
             folder.icon = 'fa-folder-o';
             folder.items = [];
-            folder.command = (event: any)=> this.loadMenu(event)
+            folder.command = (event: any)=> this.loadMenu(event);
             event.item.items.push(folder);
           }
         });

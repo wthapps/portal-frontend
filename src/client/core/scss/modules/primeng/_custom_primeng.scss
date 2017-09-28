@@ -242,7 +242,8 @@ body {
         }
         &.ui-state-active {
           a, span {
-            color: $theme-color;
+            //color: $theme-color;
+            color: #373a3c;
           }
         }
         a {
@@ -279,12 +280,20 @@ body {
         content: '\f078';
       }
     }
-    .fa-caret-down, .fa-caret-down ~ span, .fa-caret-down ~ .ui-menuitem-text {
+    /*.fa-caret-down, .fa-caret-down ~ span, .fa-caret-down ~ .ui-menuitem-text {
       color: $theme-color;
+    }*/
+    .ui-menuitem-text, .ui-menuitem-link, .ui-panelmenu-headerlink-hasicon {
+      &.active {
+        color: $theme-color !important;
+        span {
+          color: $theme-color !important;
+        }
+      }
     }
   }
 
-  .well-folder-tree-left {
+  /*.well-folder-tree-left {
     overflow: hidden;
     .well-folder-tree {
       padding-top: 0;
@@ -301,6 +310,89 @@ body {
         }
         .ui-panelmenu-content {
           margin-left: 20px;
+        }
+      }
+    }
+  }*/
+}
+
+body {
+  .well-folder-tree-left {
+    padding-right: 0 !important;
+    &:hover {
+      background-color: transparent !important;
+    }
+    .well-folder-tree {
+      padding: 0;
+      &:hover {
+        background-color: transparent !important;
+      }
+      .ui-panelmenu {
+        .ui-panelmenu-header {
+          margin-left: 0;
+          margin-right: 0;
+          .ui-panelmenu-headerlink-hasicon {
+            margin: 0;
+            padding: 10px 15px 10px 30px;
+            line-height: 1;
+            &:hover {
+              background-color: lighten(#d8d8d8, 5%);
+            }
+          }
+        }
+
+        .ui-panelmenu-content {
+          margin: 0;
+          padding: 0;
+
+          .ui-menuitem-link {
+            padding: 9px 15px 9px 30px;
+            line-height: 1;
+            &:hover {
+              background-color: lighten(#d8d8d8, 5%);
+            }
+          }
+
+          ul {
+            margin: 0;
+            padding: 0;
+            li {
+              margin: 0;
+              padding: 0;
+            }
+          }
+
+          .ui-menuitem {
+            .ui-menuitem-link {
+              padding-left: 45px;
+            }
+            .ui-menuitem {
+              .ui-menuitem-link {
+                padding-left: 60px;
+              }
+              .ui-menuitem {
+                .ui-menuitem-link {
+                  padding-left: 75px;
+                }
+                .ui-menuitem {
+                  .ui-menuitem-link {
+                    padding-left: 90px;
+                  }
+                  .ui-menuitem {
+                    .ui-menuitem-link {
+                      padding-left: 105px;
+                    }
+                    .ui-menuitem {
+                      .ui-menuitem-link {
+                        padding-left: 120px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
         }
       }
     }

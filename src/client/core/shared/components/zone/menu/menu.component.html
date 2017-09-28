@@ -61,7 +61,7 @@
       </a>
       <ul [ngClass]="{'active': urls.note == hostname}" class="menuleft-nav-sub">
         <li>
-          <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']">
+          <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']" (click)="onNoteClick($event)">
             {{ noteMenu[0].name }}
           </a>
         </li>
@@ -89,7 +89,8 @@
         </li>
         <ng-template ngFor let-note [ngForOf]="noteMenu" let-i="index" >
           <li *ngIf="note.name != '' && i > 0" [routerLinkActive]="['active']" [ngClass]="{'hidden': note.link == '/search'}">
-            <a *ngIf="note.link != '#'" draggable="false" [routerLink]="[note.link]" [queryParams]="{}">
+            <a *ngIf="note.link != '#'" draggable="false" [routerLink]="[note.link]" [queryParams]="{}"
+               (click)="onNoteClick($event)">
               <i class="{{ note.icon }}"></i> {{ note.name }}
             </a>
             <a *ngIf="note.link == '#'" class="can-click" draggable="false" (click)="doEvent({action: note.action})">

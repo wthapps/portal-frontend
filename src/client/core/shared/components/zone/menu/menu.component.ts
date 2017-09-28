@@ -84,7 +84,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
           folder.label = folder.name;
           folder.icon = 'fa-folder-o';
           folder.items = [];
-          folder.command = (event: any)=> this.loadMenu(event)
+          folder.command = (event: any)=> this.loadMenu(event);
           this.noteFoldersTree.push(folder);
         }
       }
@@ -148,12 +148,16 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
     this.destroySubject.unsubscribe();
   }
 
+  onNoteClick(event: any) {
+    $(event.target).closest('ul').find('.well-folder-tree a').removeClass('active');
+  }
+
   loadMenu(event: any) {
     event.originalEvent.stopPropagation();
-    if (event.originalEvent.target.className == 'ui-menuitem-text') {
-      event.item.expanded = !event.item.expanded;
-      this.router.navigate(['/my-note/folders', event.item.id]);
-    } else {
+
+    let htmlTarget: any = event.originalEvent.target;
+    if ($(htmlTarget).hasClass('fa-caret-right') || $(htmlTarget).hasClass('fa-caret-down')) {
+      console.log(event);
       if (event.item.expanded) {
         this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
           event.item.items.length = 0;
@@ -161,11 +165,17 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
             folder.label = folder.name;
             folder.icon = 'fa-folder-o';
             folder.items = [];
-            folder.command = (event: any)=> this.loadMenu(event)
+            folder.command = (event: any)=> this.loadMenu(event);
             event.item.items.push(folder);
           }
         });
       }
+    } else {
+      this.router.navigate(['/my-note/folders', event.item.id]);
+      event.item.expanded = !event.item.expanded;
+
+      $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
+      $(htmlTarget).closest('a').addClass('active');
     }
   }
 }
