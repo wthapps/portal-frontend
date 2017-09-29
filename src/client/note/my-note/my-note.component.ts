@@ -14,26 +14,16 @@ export class ZNoteMyNoteComponent implements OnInit {
   viewOption: string = 'list';
 
   constructor(private noteService: ZNoteService, private apiBaseService: ApiBaseService) {
-    this.noteService.notes$.subscribe((res: any)=> {
-      this.data = res.data;
-    });
-    this.noteService.viewOption$.subscribe((viewOption: any)=> {
-      this.viewOption = viewOption;
-    });
   }
 
   ngOnInit() {
-    this.noteService.getAll().subscribe(
-      res => {
-        this.data = res.data;
-        console.log(res);
-      }
-    );
+    this.apiBaseService.get(`note/dashboards`, {parent_id: null}).subscribe((res: any) => {
+      console.log(res);
+      this.data = res.data;
+    })
   }
 
   onNewNote() {
-
-
     this.noteService.modalEvent({action: 'note:open_note_edit_modal'});
   }
 }

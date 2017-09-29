@@ -73,10 +73,9 @@
       <hr class="divider">
       <div class="form-horizontal">
         <div class="form-group">
-          <label for="note_form_tags" class="col-sm-2 col-md-1 control-label">Tags</label>
+          <label class="col-sm-2 col-md-1 control-label">Tags</label>
           <div class="col-sm-10 col-md-11">
-            <input [formControl]="tags" type="text" class="form-control" id="note_form_tags"
-                   placeholder="Tags">
+            <h-chip [tags]="note.tags"></h-chip>
           </div>
         </div>
       </div>

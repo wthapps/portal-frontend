@@ -7,12 +7,18 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
   templateUrl: 'folders.component.html'
 })
 export class ZNoteMyNoteFoldersComponent implements OnInit {
+  data: any;
+
   constructor(private commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
-    this.commonEventService.filter((event: any) => event.channel == "noteActionsBar").subscribe((event: any) => {
+    this.commonEventService.filter((event: any) => event.channel == 'noteActionsBar').subscribe((event: any) => {
       console.log(event);
     });
+  }
+
+  createNote() {
+    console.log('creating::: note');
   }
 }

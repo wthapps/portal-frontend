@@ -13,10 +13,16 @@ const plugins = <any>gulpLoadPlugins();
  * environment.
  */
 export = () => {
-  return gulp.src(join(Config.APP_SRC, 'index.html'))
+  return gulp
+    .src(join(Config.APP_SRC, 'index.html'))
     .pipe(injectJs())
     .pipe(injectCss())
-    .pipe(plugins.template(new TemplateLocalsBuilder().withoutStringifiedEnvConfig().build()))
+    .pipe(
+      plugins.template(
+        new TemplateLocalsBuilder().withoutStringifiedEnvConfig().build(),
+        Config.TEMPLATE_CONFIG
+      )
+    )
     .pipe(gulp.dest(Config.APP_DEST));
 };
 
@@ -35,7 +41,10 @@ function inject(...files: Array<string>) {
  * Injects the bundled JavaScript shims and application bundles for the production environment.
  */
 function injectJs() {
-  return inject(join(Config.JS_DEST, Config.JS_PROD_SHIMS_BUNDLE), join(Config.JS_DEST, Config.JS_PROD_APP_BUNDLE));
+  return inject(
+    join(Config.JS_DEST, Config.JS_PROD_SHIMS_BUNDLE),
+    join(Config.JS_DEST, Config.JS_PROD_APP_BUNDLE)
+  );
 }
 
 /**

@@ -78,18 +78,18 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         this.currentLabel = this.extractLabel(event.url);
       });
 
-    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe(
-      (event: any) => {
-        for (let folder of event.payload) {
-          if (!event.payload.parent_id) {
-            folder.label = folder.name;
-            folder.icon = 'fa-folder-o';
-            folder.items = [];
-            folder.command = (event: any)=> this.loadMenu(event);
-            this.noteFoldersTree.push(folder);
-          }
+    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
+      this.noteFoldersTree.length = 0;
+      for (let folder of event.payload) {
+        if (!folder.parent_id) {
+          folder.label = folder.name;
+          folder.icon = 'fa-folder-o';
+          folder.items = [];
+          folder.command = (event: any)=> this.loadMenu(event);
+          this.noteFoldersTree.push(folder);
         }
-      });
+      }
+    });
   }
 
   ngAfterViewInit() {

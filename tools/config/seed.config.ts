@@ -3,7 +3,9 @@ import * as slash from 'slash';
 import { argv } from 'yargs';
 
 import {
-  BuildType, ExtendPackages, InjectableDependency,
+  BuildType,
+  ExtendPackages,
+  InjectableDependency,
   SourceMapExplorerOutputFormat
 } from './seed.config.interfaces';
 
@@ -231,14 +233,24 @@ export class SeedConfig {
   /**
    * Seed tasks which are composition of other tasks.
    */
-  SEED_COMPOSITE_TASKS = join(process.cwd(), this.TOOLS_DIR, 'config', 'seed.tasks.json');
+  SEED_COMPOSITE_TASKS = join(
+    process.cwd(),
+    this.TOOLS_DIR,
+    'config',
+    'seed.tasks.json'
+  );
 
   /**
    * Project tasks which are composition of other tasks
    * and aim to override the tasks defined in
    * SEED_COMPOSITE_TASKS.
    */
-  PROJECT_COMPOSITE_TASKS = join(process.cwd(), this.TOOLS_DIR, 'config', 'project.tasks.json');
+  PROJECT_COMPOSITE_TASKS = join(
+    process.cwd(),
+    this.TOOLS_DIR,
+    'config',
+    'project.tasks.json'
+  );
 
   /**
    * The destination folder for the generated documentation.
@@ -286,7 +298,9 @@ export class SeedConfig {
    * The folder for the built files, corresponding to the current environment.
    * @type {string}
    */
-  APP_DEST = this.BUILD_TYPE === BUILD_TYPES.DEVELOPMENT ? this.DEV_DEST : this.PROD_DEST;
+  APP_DEST = this.BUILD_TYPE === BUILD_TYPES.DEVELOPMENT
+    ? this.DEV_DEST
+    : this.PROD_DEST;
 
   /**
    * The folder for the built CSS files.
@@ -340,7 +354,10 @@ export class SeedConfig {
    * Set ENABLE_SCSS environment variable to 'true' or '1'
    * @type {boolean}
    */
-  ENABLE_SCSS = ['true', '1'].indexOf(`${process.env.ENABLE_SCSS}`.toLowerCase()) !== -1 || argv['scss'] || false;
+  ENABLE_SCSS = ['true', '1'].indexOf(
+    `${process.env.ENABLE_SCSS}`.toLowerCase()) !== -1 ||
+    argv['scss'] ||
+    false;
 
   /**
    * Enable tslint emit error by setting env variable FORCE_TSLINT_EMIT_ERROR
@@ -353,6 +370,43 @@ export class SeedConfig {
    * @type {string[]}
    */
   EXTRA_WATCH_PATHS: string[] = [];
+
+  /**
+   * Defines the template config.
+   */
+  TEMPLATE_CONFIG = {
+    /**
+     * Used to detect `data` property values to be HTML-escaped.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    escape: /<%-([\s\S]+?)%>/g,
+
+    /**
+     * Used to detect code to be evaluated.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    evaluate: /<%([\s\S]+?)%>/g,
+
+    /**
+     * Used to detect `data` property values to inject.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    interpolate: /<%=([\s\S]+?)%>/g,
+
+    /**
+     * Used to reference the data object in the template text.
+     *
+     * @memberOf _.templateSettings
+     * @type {string}
+     */
+    variable: ''
+  };
 
   /**
    * The list of NPM dependcies to be injected in the `index.html`.
@@ -415,6 +469,7 @@ export class SeedConfig {
       '@angular/animations': 'node_modules/@angular/animations/bundles/animations.umd.js',
       '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
       '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
+      '@angular/common/http': 'node_modules/@angular/common/bundles/common-http.umd.js',
       '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
       '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
       '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
@@ -423,6 +478,7 @@ export class SeedConfig {
       '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
       '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
       '@angular/animations/browser': 'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+      'tslib': 'node_modules/tslib/tslib.js',
 
       '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
       '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
@@ -475,8 +531,13 @@ export class SeedConfig {
       // You will have to include entries for each individual application in
       // `src/client`.
       [join(this.TMP_DIR, this.BOOTSTRAP_DIR, '*')]: `${this.TMP_DIR}/${this.BOOTSTRAP_DIR}/*`,
-      '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
-      '@angular/animations/browser': 'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+      '@angular/platform-browser/animations':
+        'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
+      '@angular/animations/browser':
+        'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+      '@angular/common/http':
+        'node_modules/@angular/common/bundles/common-http.umd.js',
+      'tslib': 'node_modules/tslib/tslib.js',
       'dist/tmp/node_modules/*': 'dist/tmp/node_modules/*',
       'dist/tmp/core/*': 'dist/tmp/core/*',
       'node_modules/*': 'node_modules/*',
@@ -527,7 +588,7 @@ export class SeedConfig {
         main: 'bundles/service-worker.umd.js',
         defaultExtension: 'js'
       },
-      'rxjs': {
+      rxjs: {
         main: 'Rx.js',
         defaultExtension: 'js'
       }
@@ -774,7 +835,9 @@ function appVersion(): number | string {
 function getBuildType() {
   let type = (argv['build-type'] || argv['env'] || '').toLowerCase();
   let base: string[] = argv['_'];
-  let prodKeyword = !!base.filter(o => o.indexOf(BUILD_TYPES.PRODUCTION) >= 0).pop();
+  let prodKeyword = !!base
+    .filter(o => o.indexOf(BUILD_TYPES.PRODUCTION) >= 0)
+    .pop();
   if ((base && prodKeyword) || type === BUILD_TYPES.PRODUCTION) {
     return BUILD_TYPES.PRODUCTION;
   } else {

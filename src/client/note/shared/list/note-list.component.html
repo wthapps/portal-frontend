@@ -28,7 +28,10 @@
     </div>
   </div>
 
-  <note-item *ngFor="let item of data" [data]="item" class="component-listbox-body"></note-item>
+  <ng-template ngFor let-item [ngForOf]="data">
+    <note-item *ngIf="item.object_type == 'note'"  [data]="item" class="component-listbox-body"></note-item>
+    <folder-item *ngIf="item.object_type == 'folder'" [data]="item" class="component-listbox-body"></folder-item>
+  </ng-template>
 </div>
 
 <ul>

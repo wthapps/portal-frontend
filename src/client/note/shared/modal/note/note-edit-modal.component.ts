@@ -1,8 +1,10 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZNoteService } from '../../services/note.service';
+import { Note } from '../../../../core/shared/models/note.model';
+
 
 @Component({
   moduleId: module.id,
@@ -14,6 +16,7 @@ import { ZNoteService } from '../../services/note.service';
 
 export class NoteEditModalComponent {
   @ViewChild('modal') modal: ModalComponent;
+  @Input() note: Note = new Note();
 
   titleModal: string = 'New Note';
 
@@ -23,6 +26,7 @@ export class NoteEditModalComponent {
   tags: AbstractControl;
 
   constructor(private fb: FormBuilder, private noteService: ZNoteService) {
+
     this.form = fb.group({
       'title': ['', Validators.compose([Validators.required])],
       'content': [''],
@@ -38,6 +42,8 @@ export class NoteEditModalComponent {
     this.modal.open().then();
   }
 
+
+
   onSubmit(value: any) {
     this.noteService.create(value).subscribe(
       (response: any) => {
@@ -49,4 +55,5 @@ export class NoteEditModalComponent {
       }
     );
   }
+
 }
