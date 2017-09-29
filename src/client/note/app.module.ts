@@ -16,8 +16,18 @@ import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module'
 import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { noteReducer } from './shared/reducers/note-reducer';
+// import * as appReducers from './shared/reducers/index';
+
+import { reducers } from './shared/reducers/index';
+import * as fromFolder from './shared/models/folder';
+import * as fromNote from './shared/models/note';
+// import { reducer } from './shared/reducers/index';
 import { NoteEffects } from './shared/effects/note-effects';
+import { RouterModule } from '@angular/router';
+
+
+// import { reducers, metaReducers } from './shared/reducers/index';
+// import { NoteEffects } from './shared/effects/note-effects';
 
 
 @NgModule({
@@ -36,9 +46,15 @@ import { NoteEffects } from './shared/effects/note-effects';
     ZNoteSettingsModule,
     ZNoteSharedModule.forRoot(),
 
-    //adds ngrx here
-    StoreModule.forRoot({ noteActions: noteReducer}),
+    StoreModule.forRoot({
+      notes: fromNote.reducer,
+      folder: fromFolder.reducer
+    }),
+
     EffectsModule.forRoot([NoteEffects]),
+
+    // StoreRouterConnectingModule,
+
 
     CoreSharedModule.forRoot(),
   ],

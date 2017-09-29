@@ -3,6 +3,10 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZNoteService } from '../../services/note.service';
+import { Store } from '@ngrx/store';
+
+import * as fromRoot from '../../reducers/index';
+import * as note from '../../actions/note';
 import { Note } from '../../../../core/shared/models/note.model';
 
 
@@ -25,8 +29,7 @@ export class NoteEditModalComponent {
   content: AbstractControl;
   tags: AbstractControl;
 
-  constructor(private fb: FormBuilder, private noteService: ZNoteService) {
-
+  constructor(private fb: FormBuilder, private noteService: ZNoteService, private store: Store<fromRoot.State>) {
     this.form = fb.group({
       'title': ['', Validators.compose([Validators.required])],
       'content': [''],
@@ -42,18 +45,20 @@ export class NoteEditModalComponent {
     this.modal.open().then();
   }
 
-
-
   onSubmit(value: any) {
-    this.noteService.create(value).subscribe(
-      (response: any) => {
-        console.log('create note successful:::', response);
-
-      },
-      (error: any) => {
-        console.log('create note error:::', error);
-      }
-    );
+    this.store.dispatch(new note.Add(value));
+    this.modal.close();
   }
-
+  //   this.noteService.create(value).subscribe(
+  //     (response: any) => {
+  //       console.log('create note successful:::', response);
+  //       this.modal.close();
+  //
+  //     },
+  //     (error: any) => {
+  //       console.log('create note error:::', error);
+  //       this.modal.close();
+  //     }
+  //   );
+  // }
 }

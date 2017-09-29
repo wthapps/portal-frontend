@@ -1,6 +1,8 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
+import * as fromRoot from '../reducers/index';
+import { Store } from '@ngrx/store';
 
 @Component({
   moduleId: module.id,
@@ -15,7 +17,7 @@ export class ZNoteSharedToolBarComponent implements OnInit {
 
   viewOption: string = 'list';
 
-  constructor(private noteService: ZNoteService) {
+  constructor(private noteService: ZNoteService, private store: Store<fromRoot.State>) {
     this.noteService.viewOption$.subscribe((viewOption: any)=> {
       this.viewOption = viewOption;
     });

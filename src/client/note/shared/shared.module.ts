@@ -11,6 +11,8 @@ import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
+import { CommonModule } from '@angular/common';
+import { NoteService } from '../my-note/notes/note.service';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 
 
@@ -21,6 +23,8 @@ import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 @NgModule({
   imports: [
     Ng2HdModule,
+    CommonModule,
+    TagInputModule,
     CoreSharedModule.forRoot()
   ],
   declarations: [
@@ -52,7 +56,8 @@ export class ZNoteSharedModule {
     return {
       ngModule: ZNoteSharedModule,
       providers: [
-        ZNoteService
+        ZNoteService,
+        NoteService
       ]
     };
   }
