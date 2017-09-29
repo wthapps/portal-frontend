@@ -1,0 +1,14 @@
+<md-form-field class="tag-wrapper">
+  <md-chip-list mdPrefix #chipList>
+    <md-chip class="md-chip-wrapper" *ngFor="let tag of tags" [selectable]="selectable"
+             [removable]="removable" (remove)="remove(tag)">
+      {{ tag.name }}
+      <md-icon mdChipRemove *ngIf="removable"><i class="fa fa-times"></i></md-icon>
+    </md-chip>
+  </md-chip-list>
+  <input mdInput placeholder="Add tags..."
+         [mdChipInputFor]="chipList"
+         [mdChipInputSeparatorKeyCodes]="separatorKeysCodes"
+         [mdChipInputAddOnBlur]="addOnBlur"
+         (mdChipInputTokenEnd)="add($event)" />
+</md-form-field>

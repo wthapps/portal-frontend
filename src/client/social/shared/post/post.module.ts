@@ -26,8 +26,7 @@ import { CoreSharedModule } from '../../../core/shared/shared.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    // Ng2HdModule,
-    // HdTagInputModule,
+    Ng2HdModule,
     CoreSharedModule.forRoot(),
     TagInputModule,
     BrowserAnimationsModule,
@@ -54,7 +53,6 @@ import { CoreSharedModule } from '../../../core/shared/shared.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    // HdTagInputModule,
     Ng2HdModule,
 
     TagInputModule,

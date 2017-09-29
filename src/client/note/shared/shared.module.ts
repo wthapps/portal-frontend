@@ -10,8 +10,8 @@ import { ZNoteService } from './services/note.service';
 import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
-import { TagInputModule } from 'ngx-chips';
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
+import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 
 
 /**
@@ -20,7 +20,7 @@ import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.compone
 
 @NgModule({
   imports: [
-    TagInputModule,
+    Ng2HdModule,
     CoreSharedModule.forRoot()
   ],
   declarations: [

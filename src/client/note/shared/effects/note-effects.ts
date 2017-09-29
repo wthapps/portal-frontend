@@ -7,10 +7,6 @@ import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class NoteEffects {
-  constructor(
-    private api: ApiBaseService,
-    private actions$: Actions
-  ) {}
 
   // Listen for the 'LOGIN' action
   @Effect() create$: Observable<any> = this.actions$.ofType('CREATE')
@@ -20,5 +16,12 @@ export class NoteEffects {
         .map(data => ({ type: 'CREATE_SUCCESS', payload: data }))
         // If request fails, dispatch failed action
         .catch(() => of({ type: 'CREATE_FAILED' }))
-    );
+  );
+
+  constructor(
+    private api: ApiBaseService,
+    private actions$: Actions
+  ) {}
+
+
 }

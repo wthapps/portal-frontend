@@ -17,13 +17,19 @@ export = () => {
     Config.TOOLS_DIR + '/manual_typings/**/*.d.ts',
     join(Config.E2E_SRC, '**/*.ts')
   ];
-  let result = gulp.src(src)
+  let result = gulp
+    .src(src)
     .pipe(plugins.plumber())
     .pipe(plugins.sourcemaps.init())
     .pipe(tsProject());
 
   return result.js
     .pipe(plugins.sourcemaps.write())
-    .pipe(plugins.template(new TemplateLocalsBuilder().withStringifiedSystemConfigDev().build()))
+    .pipe(
+      plugins.template(
+        new TemplateLocalsBuilder().withStringifiedSystemConfigDev().build(),
+        Config.TEMPLATE_CONFIG
+      )
+    )
     .pipe(gulp.dest(Config.E2E_DEST));
 };
