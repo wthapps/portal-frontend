@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
@@ -24,7 +24,7 @@ declare var _: any;
   styleUrls: ['menu.component.css']
 })
 
-export class ZSharedMenuComponent implements OnInit, OnDestroy {
+export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() contactMenu: Array<any>;
   @Input() totalContactCount: number = 0;
 
@@ -78,17 +78,36 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
         this.currentLabel = this.extractLabel(event.url);
       });
 
-    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
-      for (let folder of event.payload) {
-        if (!event.payload.parent_id) {
-          folder.label = folder.name;
-          folder.icon = 'fa-folder-o';
-          folder.items = [];
-          folder.command = (event: any)=> this.loadMenu(event);
-          this.noteFoldersTree.push(folder);
+    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe(
+      (event: any) => {
+        for (let folder of event.payload) {
+          if (!event.payload.parent_id) {
+            folder.label = folder.name;
+            folder.icon = 'fa-folder-o';
+            folder.items = [];
+            folder.command = (event: any)=> this.loadMenu(event);
+            this.noteFoldersTree.push(folder);
+          }
         }
+      });
+  }
+
+  ngAfterViewInit() {
+    let html_append = '<i class="fa fa-pencil"></i> <i class="fa fa-trash-o"></i>';
+
+    $('body').on({
+      mouseenter: (e: any)=> {
+        console.log(e.target);
+        if ($(e.target).closest('div').find('i').length == 0) {
+          $(e.target).append(html_append);
+        }
+      },
+      mouseleave: (e: any)=> {
+        console.log(e.target);
+        $(e.target).closest('div').find('i').remove();
       }
-    });
+    }, '.well-folder-tree-left .ui-panelmenu-headerlink-hasicon, .well-folder-tree-left .ui-menuitem-link');
+
   }
 
   extractLabel(url: string) {
@@ -170,6 +189,16 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy {
           }
         });
       }
+    } else if ($(htmlTarget).hasClass('fa-pencil')) {
+      event.item.expanded = !event.item.expanded;
+
+      console.log('edit');
+
+    } else if ($(htmlTarget).hasClass('fa-trash-o')) {
+      event.item.expanded = !event.item.expanded;
+
+      console.log('delete');
+
     } else {
       this.router.navigate(['/my-note/folders', event.item.id]);
       event.item.expanded = !event.item.expanded;

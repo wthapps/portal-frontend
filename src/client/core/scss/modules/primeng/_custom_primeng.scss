@@ -395,6 +395,25 @@ body {
 
         }
       }
+
+      .fa-trash-o, .fa-pencil {
+        position: absolute;
+        right: 0;
+        top: 0;
+        line-height: 35px;
+        width: 30px;
+        height: 35px;
+        text-align: center;
+        &:hover {
+          background-color: #9B9B9B;
+          &:before {
+            color: $theme-color !important;
+          }
+        }
+      }
+      .fa-pencil {
+        right: 30px;
+      }
     }
   }
 }
