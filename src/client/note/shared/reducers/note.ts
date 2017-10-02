@@ -51,16 +51,21 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     }
     case note.LOAD_SUCCESS:
       return Object.assign({}, state, {notes: action['payload']});
-    case note.NOTES_REMOVED:
-      const ids = action['payload'];
-      const notes = state.notes.filter((n: any) => ids.indexOf(n.id) > -1)
+    case note.NOTES_DELETED:
+      const ids = _.map(action['payload'], 'id');
+      console.debug('Notes deleted: ', ids , state.notes);
+      const notes = state.notes.filter((n: any) => ids.indexOf(n.id) == -1)
       return Object.assign({}, state, {notes: notes});
     case note.CHANGE_SORT_ORDER:
       const rOrderDesc = !state.orderDesc;
       return Object.assign({}, state, { orderDesc: rOrderDesc});
     case note.SELECT:
       const id = action['payload'];
-      return state;
+      const index = state.selectedIds.indexOf(id);
+      if(index == -1)
+        return Object.assign({}, state, {selectedIds: state.selectedIds.concat(id)});
+      else
+        return Object.assign({}, state, {selectedIds: state.selectedIds.splice(index)});
     default: {
       return state;
     }

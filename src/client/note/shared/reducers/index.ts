@@ -6,8 +6,8 @@ import {
   MetaReducer,
 } from '@ngrx/store';
 
-import * as fromNote from '../models/note';
-import * as fromFolder from '../models/folder';
+import * as fromNote from './note';
+import * as fromFolder from './folder';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means

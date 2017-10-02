@@ -1,12 +1,15 @@
 
 
-import { Note } from '../models/note';
+import { Note } from '../reducers/note';
 import { Action } from '@ngrx/store';
+export const UPDATE = 'UPDATE';
 export const NOTES_UPDATED = 'NOTES_UPDATED';
 export const NOTE_UPDATED = 'NOTE_UPDATED';
 export const ADD = 'NOTE_ADD';
 export const NOTES_ADDED = 'NOTES_ADDED';
-export const NOTES_REMOVED = 'NOTES_REMOVED';
+export const DELETE = 'DELETE';
+export const MULTI_DELETE = 'MULTI_DELETE';
+export const NOTES_DELETED = 'NOTES_DELETED';
 export const LOAD_SUCCESS = 'LOAD_SUCCESS';
 export const SELECT = 'SELECT';
 export const DESELECT = 'DESELECT';
@@ -14,6 +17,14 @@ export const DESELECT_ALL = 'DESELECT_ALL';
 export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER';
 
 // Actions
+
+export class Update implements Action {
+  readonly type = UPDATE;
+
+  constructor(public payload: Note) {
+  }
+}
+
 export class NotesUpdated implements Action {
   readonly  type = NOTES_UPDATED;
 
@@ -50,22 +61,29 @@ export class LoadSuccess implements Action {
   }
 }
 
-export class NotesRemoved implements Action {
-  readonly type = NOTES_REMOVED;
+export class Delete implements Action {
+  readonly type = DELETE;
 
   constructor(public payload: number[]) {
   }
 }
 
-export class Select implements Action {
-  readonly type = SELECT;
+export class MultiDelete implements Action {
+  readonly type = MULTI_DELETE;
 
-  constructor(public payload: number) {
+  constructor() {
   }
 }
 
-export class Deselect implements Action {
-  readonly type = DESELECT;
+export class NotesDeleted implements Action {
+  readonly type = NOTES_DELETED;
+
+  constructor(public payload: Note[]) {
+  }
+}
+
+export class Select implements Action {
+  readonly type = SELECT;
 
   constructor(public payload: number) {
   }
@@ -81,4 +99,4 @@ export class ChangeSortOrder implements Action {
 }
 
 // TODO: Add RouterState | Activated Route
-export type NoteActions = Add | NotesUpdated | NoteUpdated | NotesAdded | NotesRemoved |  LoadSuccess | ChangeSortOrder | Select | Deselect | DeselectAll;
+export type NoteActions = Add | Update | NotesUpdated | NoteUpdated | NotesAdded | Delete | MultiDelete | NotesDeleted |  LoadSuccess | ChangeSortOrder | Select | DeselectAll;

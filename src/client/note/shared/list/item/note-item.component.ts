@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { Note } from '../../../../core/shared/models/note.model';
 import { Constants } from '../../../../core/shared/config/constants';
 import { ZNoteService } from '../../services/note.service';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers/index';
+import * as note from '../../actions/note';
 
 declare var _: any;
 
@@ -19,6 +22,7 @@ export class NoteItemComponent implements OnInit {
   selected: boolean = false;
 
   constructor(private noteService: ZNoteService,
+              private store: Store<fromRoot.State>,
               private router: Router) {
     this.noteService.isSelectAll$.subscribe((isSelectAll: boolean)=> {
       this.selected = isSelectAll;
@@ -31,11 +35,13 @@ export class NoteItemComponent implements OnInit {
 
   onSelected() {
     this.selected = !this.selected;
-    if (this.selected) {
-      this.noteService.addItemSelectedObjects(this.data);
-    } else {
-      this.noteService.removeItemSelectedObjects(this.data);
-    }
+    // if (this.selected) {
+    //   this.noteService.addItemSelectedObjects(this.data);
+    // } else {
+    //   this.noteService.removeItemSelectedObjects(this.data);
+    // }
+
+    this.store.dispatch(new note.Select(this.data.id));
   }
 
   onClick() {

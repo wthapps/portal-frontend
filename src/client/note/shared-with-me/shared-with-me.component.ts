@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { ZNoteService } from '../shared/services/note.service';
 import * as fromRoot from '../shared/reducers/index';
 import * as fromNote from '../shared/actions/note';
-import { Note } from '../shared/models/note';
+import { Note } from '../shared/reducers/note';
 
 @Component({
   moduleId: module.id,

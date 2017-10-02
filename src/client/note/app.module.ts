@@ -19,8 +19,8 @@ import { EffectsModule } from '@ngrx/effects';
 // import * as appReducers from './shared/reducers/index';
 
 import { reducers } from './shared/reducers/index';
-import * as fromFolder from './shared/models/folder';
-import * as fromNote from './shared/models/note';
+import * as fromFolder from './shared/reducers/folder';
+import * as fromNote from './shared/reducers/note';
 // import { reducer } from './shared/reducers/index';
 import { NoteEffects } from './shared/effects/note-effects';
 import { RouterModule } from '@angular/router';

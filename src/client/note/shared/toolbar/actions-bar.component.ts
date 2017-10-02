@@ -3,6 +3,10 @@ import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
 import { Note } from '../../../core/shared/models/note.model';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
+import * as note from '../actions/note';
+import * as fromRoot from '../reducers/index';
+import { Store } from '@ngrx/store';
+
 
 @Component({
   moduleId: module.id,
@@ -12,10 +16,12 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 })
 export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
-  @Input() data: any;
+  @Input() data: Note;
   tooltip: any = Constants.tooltip;
 
-  constructor(public noteService: ZNoteService, public commonEventService: CommonEventService) {
+  constructor(public noteService: ZNoteService,
+              private store: Store<fromRoot.State>,
+              public commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
@@ -23,9 +29,12 @@ export class ZNoteSharedActionBarComponent implements OnInit {
 
   onDelete() {
     if (this.multiple) {
+      // TODO:
       this.noteService.deleteNote();
     } else {
-      this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:delete', payload: this.data});
+      // this.noteService.deleteNote(this.data);
+      let id = this.data.id;
+      this.store.dispatch(new note.Delete([id]));
     }
 
   }
