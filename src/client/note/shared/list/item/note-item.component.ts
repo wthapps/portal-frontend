@@ -16,7 +16,7 @@ declare var _: any;
   templateUrl: 'note-item.component.html'
 })
 export class NoteItemComponent implements OnInit {
-  @Input() data: Note;
+  @Input() data: any;
   tooltip: any = Constants.tooltip;
 
   selected: boolean = false;

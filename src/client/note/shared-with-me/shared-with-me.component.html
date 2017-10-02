@@ -3,6 +3,7 @@
     <i class="fa fa-plus"></i> New Note
   </button>
 </z-note-shared-toolbar>
+
 <div class="page-body-content has-page-body-control gray-light">
   <note-list [data]="notes$ | async" [viewOption]="viewOption" [orderDesc]="orderDesc$| async"></note-list>
 </div>

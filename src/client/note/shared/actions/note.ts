@@ -1,7 +1,5 @@
-
-
-import { Note } from '../reducers/note';
 import { Action } from '@ngrx/store';
+import { Note } from '../../../core/shared/models/note.model';
 export const UPDATE = '[Note] Update';
 export const NOTES_UPDATED = '[Notes] Updated';
 export const NOTE_UPDATED = '[Note] Updated';

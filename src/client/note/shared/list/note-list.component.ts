@@ -33,13 +33,13 @@ export class NoteListComponent implements OnInit {
   }
 
   onSort(name: any) {
-    if (this.sortType == name) {
-      this.sortDescending = !this.sortDescending;
-    } else {
-      this.sortDescending = false;
-    }
-    this.sortType = name;
-    this.noteService.changeSortOption(this.sortType, this.sortDescending);
+    // if (this.sortType == name) {
+    //   this.sortDescending = !this.sortDescending;
+    // } else {
+    //   this.sortDescending = false;
+    // }
+    // this.sortType = name;
+    // this.noteService.changeSortOption(this.sortType, this.sortDescending);
 
     this.store.dispatch(new note.ChangeSortOrder());
   }

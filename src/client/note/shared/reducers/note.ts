@@ -2,26 +2,29 @@ import { createSelector, Store, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { ActivatedRouteSnapshot, Params } from '@angular/router';
+
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+
 import { User } from '../../../core/shared/models/user.model';
 import { NoteService } from '../../my-note/notes/note.service';
 import { ZNoteService } from '../services/note.service';
 import * as note from '../actions/note';
+import { Note } from '../../../core/shared/models/note.model';
 
-declare var _: any;
+declare let _: any;
 
 // Constants
 export const PAGE_SIZE = 10;
 
 // State
-export interface Note {
-  id: string;
-  uuid: string;
-  title: string;
-  owner: User;
-  content: string
-}
+// export interface Note {
+//   id: string;
+//   uuid: string;
+//   title: string;
+//   owner: User;
+//   content: string
+// }
 export interface  Filters {
   folder: string };
 // export type State = { notes: {[id: number]: Note}, page: number, orderDesc: boolean, filters: Filters };
@@ -43,14 +46,16 @@ export const noteInitialState: State = {
 
 
 // Reducer
-export function reducer(state: State = noteInitialState, action: note.NoteActions): any {
+export function reducer(state: State = noteInitialState, action: note.NoteActions): State {
   switch (action.type) {
     case note.NOTES_ADDED: {
       const notes = [...state.notes, ...action['payload']];
       return Object.assign({}, state, {notes: notes});
     }
     case note.LOAD_SUCCESS:
-      return Object.assign({}, state, {notes: action['payload']});
+      const inotes = [...action['payload']];
+      console.debug('Load success: ', state, ' - payload: ', inotes );
+      return Object.assign({}, state, {notes: inotes });
     case note.NOTES_DELETED:
       const ids = _.map(action['payload'], 'id');
       console.debug('Notes deleted: ', ids , state.notes);
@@ -75,9 +80,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
 export const getNotes = (state: State ) => state.notes;
 export const getPage = (state: State ) => state.page;
 export const getOrderDesc = (state: State ) => state.orderDesc;
-export const getSortedNotes = createSelector(getNotes, getOrderDesc, (notes: Note[], orderDesc: boolean) => {
+export const getSortedNotes = createSelector(getNotes, getOrderDesc, (notes, orderDesc) => {
   const cloneNotes = [...notes];
   return cloneNotes.sort((a: Note, b: Note) => {
    return (((a.title >= b.title) && orderDesc) ? 1 : -1) ;
   });
-})
+});

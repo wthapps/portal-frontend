@@ -55,6 +55,7 @@ import { RouterModule } from '@angular/router';
 
     // StoreRouterConnectingModule,
 
+    // !(String('<%= BUILD_TYPE %>') === 'prod') ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
 
     CoreSharedModule.forRoot(),
   ],
