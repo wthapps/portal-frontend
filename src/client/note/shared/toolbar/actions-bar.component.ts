@@ -12,7 +12,7 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 })
 export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
-  @Input() data: Note;
+  @Input() data: any;
   tooltip: any = Constants.tooltip;
 
   constructor(public noteService: ZNoteService, public commonEventService: CommonEventService) {
@@ -25,12 +25,12 @@ export class ZNoteSharedActionBarComponent implements OnInit {
     if (this.multiple) {
       this.noteService.deleteNote();
     } else {
-      this.noteService.deleteNote(this.data);
+      this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:delete', payload: this.data});
     }
 
   }
 
   onEdit() {
-    this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'edit', payload: this.data});
+    this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: this.data});
   }
 }

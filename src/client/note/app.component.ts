@@ -40,34 +40,8 @@ export class AppComponent implements OnInit, OnDestroy {
               private wthConfirmService: WthConfirmService,
               private noteService: ZNoteService) {
     console.log('Environment config', Config);
-    this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent').subscribe((event: any) => {
+    this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent' || event.channel == 'noteActionsBar').subscribe((event: any) => {
       this.doEvent(event);
-
-      /*if (event.action == "note:folder:create") {
-        // reset folder data
-        this.addFolder.folder = {};
-        this.addFolder.open();
-      }
-      if (event.action == "note:folder:edit") {
-        this.addFolder.folder = event.payload;
-        this.addFolder.open();
-      }
-
-      if (event.action == "note:folder:delete") {
-        this.wthConfirmService.confirm({
-          message: 'Are you sure you want to delete this folder?',
-          header: 'Delete Folder',
-          accept: () => {
-            this.apiBaseService.delete('note/folders/' + event.payload.id).subscribe((res: any) => {
-              this.commonEventService.broadcast({
-                channel: 'noteFolderEvent',
-                action: 'updateFolders',
-                payload: res.data
-              })
-            });
-          }
-        });
-      }*/
     });
     this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
   }
@@ -78,9 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
-    this.apiBaseService.get('note/folders').subscribe((res: any) => {
-      this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data})
-    });
   }
 
   ngOnDestroy() {
@@ -97,6 +68,26 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'note:open_note_edit_modal':
         this.loadModalComponent(NoteEditModalComponent);
         this.modal.open();
+        break;
+      case 'note:folder:edit':
+        this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
+        this.modal.folder = event.payload;
+        this.modal.open();
+        break;
+      case 'note:folder:delete':
+        this.wthConfirmService.confirm({
+          message: 'Are you sure you want to delete this folder?',
+          header: 'Delete Folder',
+          accept: () => {
+            this.apiBaseService.delete('note/folders/' + event.payload.id).subscribe((res: any) => {
+              this.commonEventService.broadcast({
+                channel: 'noteFolderEvent',
+                action: 'updateFolders',
+                payload: res.data
+              })
+            });
+          }
+        });
         break;
       default:
         break;

@@ -13,7 +13,7 @@ declare var _: any;
 
 })
 export class NoteListComponent implements OnInit {
-  @Input() data: Note[];
+  @Input() data: any[];
   @Input() viewOption: string = 'list';
 
   sortType: string = 'name';

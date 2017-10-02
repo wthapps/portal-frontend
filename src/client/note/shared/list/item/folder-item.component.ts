@@ -13,7 +13,7 @@ declare var _: any;
   templateUrl: 'folder-item.component.html'
 })
 export class FolderItemComponent implements OnInit {
-  @Input() data: Note;
+  @Input() data: any;
   tooltip: any = Constants.tooltip;
 
   selected: boolean = false;

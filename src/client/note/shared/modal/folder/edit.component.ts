@@ -35,13 +35,18 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   ngOnInit(): void {
     this.apiBaseService.get(`note/folders`).subscribe((event: any) => {
       for (let folder of event.data) {
-        folder.label = folder.name;
-        folder.icon = 'fa-folder-o';
-        folder.items = [];
-        folder.command = (event: any)=> this.loadMenu(event)
-        this.menuItems.push(folder);
+        if(this.folder && this.folder.id == folder.id) {
+          continue;
+        } else {
+          folder.label = folder.name;
+          folder.icon = 'fa-folder-o';
+          folder.items = [];
+          folder.command = (event: any)=> this.loadMenu(event)
+          this.menuItems.push(folder);
+        }
       }
     });
+    this.name.setValue(this.folder.name)
   }
 
   open() {
