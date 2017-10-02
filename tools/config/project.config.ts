@@ -65,7 +65,6 @@ export class ProjectConfig extends SeedConfig {
       //{'node_modules/immutable/dist/immutable.js': [ 'Map' ]},
     ];
 
-
     let additionalPackages: ExtendPackages[] = [
       {
         name: 'ngx-cookie',
@@ -113,20 +112,22 @@ export class ProjectConfig extends SeedConfig {
       },
       {
         name: '@ngrx/core',
-        path: 'node_modules/@ngrx/core/bundles/core.min.umd.js'
+        path: 'node_modules/@ngrx/core/bundles/core.min.umd.js',
+        packageMeta: {
+          defaultExtension: 'js'
+        }
       },
       {
         name: '@ngrx/store',
-        path: 'node_modules/@ngrx/store/bundles/store.umd.js'
+        path: 'node_modules/@ngrx/store/bundles/store.umd.js',
+        packageMeta: {
+          defaultExtension: 'js'
+        }
       },
       {
         name: '@ngrx/effects',
-        path: 'node_modules/@ngrx/effects/bundles/effects.umd.js'
-      },
-      {
-        name:'@angular/material',
-        path:'node_modules/@angular/material/bundles/material.umd.js',
-        packageMeta:{
+        path: 'node_modules/@ngrx/effects/bundles/effects.umd.js',
+        packageMeta: {
           defaultExtension: 'js'
         }
       },
@@ -188,7 +189,12 @@ export class ProjectConfig extends SeedConfig {
       }
     ];
 
+    this.SYSTEM_BUILDER_CONFIG.packageConfigPaths = [
+      `${this.NPM_BASE}@angular/*/package.json`,
+      `${this.NPM_BASE}@ngrx/*/package.json`,
+    ];
     this.addPackagesBundles(additionalPackages);
+
 
     // Add packages (e.g. ng2-translate)
     // let additionalPackages: ExtendPackages[] = [{
