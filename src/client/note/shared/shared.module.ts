@@ -24,7 +24,6 @@ import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
   imports: [
     Ng2HdModule,
     CommonModule,
-    TagInputModule,
     CoreSharedModule.forRoot()
   ],
   declarations: [

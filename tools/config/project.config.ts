@@ -148,6 +148,10 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/@angular/cdk/bundles/cdk-coercion.umd.js'
       },
       {
+        name: '@angular/material',
+        path: 'node_modules/@angular/material/bundles/material.umd.js'
+      },
+      {
         name: '@angular/cdk/collections',
         path: 'node_modules/@angular/cdk/bundles/cdk-collections.umd.js'
       },

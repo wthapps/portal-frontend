@@ -2,19 +2,19 @@
 
 import { Note } from '../reducers/note';
 import { Action } from '@ngrx/store';
-export const UPDATE = 'UPDATE';
-export const NOTES_UPDATED = 'NOTES_UPDATED';
-export const NOTE_UPDATED = 'NOTE_UPDATED';
-export const ADD = 'NOTE_ADD';
-export const NOTES_ADDED = 'NOTES_ADDED';
-export const DELETE = 'DELETE';
-export const MULTI_DELETE = 'MULTI_DELETE';
-export const NOTES_DELETED = 'NOTES_DELETED';
-export const LOAD_SUCCESS = 'LOAD_SUCCESS';
-export const SELECT = 'SELECT';
-export const DESELECT = 'DESELECT';
-export const DESELECT_ALL = 'DESELECT_ALL';
-export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER';
+export const UPDATE = '[Note] Update';
+export const NOTES_UPDATED = '[Notes] Updated';
+export const NOTE_UPDATED = '[Note] Updated';
+export const ADD = '[Note] Add';
+export const NOTES_ADDED = '[Notes] Added';
+export const DELETE = '[Note] Delete';
+export const MULTI_DELETE = '[Note] Multi-Delete';
+export const NOTES_DELETED = '[Notes] Deleted';
+export const LOAD_SUCCESS = '[Note] Load Success';
+export const SELECT = '[Note] Select';
+export const DESELECT = '[Note] Deselect';
+export const DESELECT_ALL = '[Note] Deselect All';
+export const CHANGE_SORT_ORDER = '[Note] Change Sort Order';
 
 // Actions
 
