@@ -39,6 +39,10 @@ export class ZNoteSharedActionBarComponent implements OnInit {
 
   }
 
+  onShare() {
+    this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:sharing', payload: this.data});
+  }
+
   onEdit() {
     this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: this.data});
   }

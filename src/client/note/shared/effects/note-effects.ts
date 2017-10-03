@@ -24,10 +24,9 @@ export class NoteEffects {
     .ofType(note.ADD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-    return this.noteService.create(payload)
-      .map((res: any) => new note.NotesAdded([res['data']]))
-      .catch(() => of(new note.NotesAdded([])))
-      ;
+      return this.noteService.create(payload)
+        .map((res: any) => new note.NotesAdded([res['data']]))
+        .catch(() => of(new note.NotesAdded([])));
     });
 
   @Effect() updateNote = this.actions
@@ -36,8 +35,7 @@ export class NoteEffects {
     .switchMap((payload: any) => {
       return this.noteService.update(payload)
         .map((res: any) => new note.NoteUpdated(res['data']))
-        .catch(() => empty())
-        ;
+        .catch(() => empty());
     });
 
 
@@ -47,8 +45,7 @@ export class NoteEffects {
     .switchMap((payload: any) => {
       return this.noteService.delete(payload)
         .map((res: any) => new note.NotesDeleted([res.data]))
-        .catch(() => of(new note.NotesDeleted([])))
-        ;
+        .catch(() => of(new note.NotesDeleted([])));
     });
 
 

@@ -12,6 +12,7 @@ import { WthConfirmService } from '../core/shared/components/confirmation/wth-co
 import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
 import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
+import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing.component';
 
 /**
  * This class represents the main application component.
@@ -24,7 +25,8 @@ import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.
   entryComponents: [
     NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
-    ZNoteSharedModalFolderEditComponent
+    ZNoteSharedModalFolderEditComponent,
+    ZNoteSharedModalSharingComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -71,6 +73,11 @@ export class AppComponent implements OnInit, OnDestroy {
         break;
       case 'note:folder:edit':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
+        this.modal.folder = event.payload;
+        this.modal.open();
+        break;
+      case 'note:folder:sharing':
+        this.loadModalComponent(ZNoteSharedModalSharingComponent);
         this.modal.folder = event.payload;
         this.modal.open();
         break;

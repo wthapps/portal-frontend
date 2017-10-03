@@ -1,0 +1,91 @@
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title">Sharing</h4>
+  </modal-header>
+  <modal-body>
+    <div class="alert alert-danger" *ngIf="hasChanged">
+      <i class="fa fa-exclamation-triangle"></i> You have made changes that you need to save!
+    </div>
+
+    <div class="form-group">
+      <p-autoComplete [(ngModel)]="textContacts"
+                      [suggestions]="filteredContacts"
+                      [multiple]="true"
+                      [minLength]="1"
+                      field="name"
+                      (onSelect)="selectContact($event)"
+                      (onUnselect)="unSelectContact($event)"
+                      (completeMethod)="contactTerm$.next($event)">
+      </p-autoComplete>
+    </div>
+
+    <div class="modal-body-collapse">
+      <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
+         aria-controls="collapseExample">
+        Shared with 5 Contacts
+      </a>
+      <div class="collapse in" id="collapseContact">
+        <div class="modal-body-collapse-in">
+          <div class="media-list-item">
+            <div class="media">
+              <div class="media-body">
+                Shared users
+              </div>
+              <div class="media-right">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                    View only <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="#"><i class="fa fa-check"></i> View only</a></li>
+                    <li><a href="#">Can re-share</a></li>
+                    <li><a href="#">Can edit &amp; re-share</a></li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!--Loop-->
+          <div class="media-list-item">
+            <div class="media">
+              <div class="media-left">
+                <figure>
+                  <img [src]="'http://localhost:44444/system/thumbnails/user_default.png'" alt="">
+                </figure>
+              </div>
+              <div class="media-body">
+                name
+              </div>
+              <div class="media-right">
+
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                    View only <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="#"><i class="fa fa-check"></i> View only</a></li>
+                    <li><a href="#">Can re-share</a></li>
+                    <li><a href="#">Can edit &amp; re-share</a></li>
+                  </ul>
+                </div>
+
+                <button class="btn btn-sm btn-outline-default"><i class="fa fa-times"></i> Remove</button>
+              </div>
+            </div>
+          </div>
+          <!--end Loop-->
+        </div>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
+    <button type="button" [ngClass]="{'text-disable': !hasChanged}"
+            [disabled]="!hasChanged" (click)="save()"
+            class="btn btn-outline-primary btn-min">Save changes
+    </button>
+  </modal-footer>
+</modal>
