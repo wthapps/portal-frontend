@@ -11,8 +11,13 @@ export const NOTES_DELETED = '[Notes] Deleted';
 export const LOAD_SUCCESS = '[Note] Load Success';
 export const SELECT = '[Note] Select';
 export const DESELECT = '[Note] Deselect';
-export const DESELECT_ALL = '[Note] Deselect All';
+export const SELECT_ALL = '[Note] Deselect All';
 export const CHANGE_SORT_ORDER = '[Note] Change Sort Order';
+export const LOAD = '[Note] Load';
+export const LOAD_DONE = '[Note] Load Done';
+export const LOAD_FAIL = '[Note] Load Failed';
+export const INIT_LOAD = '[Note] Init Load';
+export const INIT_LOAD_DONE = '[Note] Init Load Done';
 
 // Actions
 
@@ -52,8 +57,23 @@ export class NotesAdded implements Action {
   }
 }
 
+export class Load implements Action {
+  readonly type = LOAD;
+
+  // parent_id: Selected folder id
+  constructor(public payload: {parent_id: string | null}) {
+  }
+}
+
 export class LoadSuccess implements Action {
   readonly type = LOAD_SUCCESS;
+
+  constructor(public payload: Note[]) {
+  }
+}
+
+export class LoadFail implements Action {
+  readonly type = LOAD_FAIL;
 
   constructor(public payload: Note[]) {
   }
@@ -62,7 +82,7 @@ export class LoadSuccess implements Action {
 export class Delete implements Action {
   readonly type = DELETE;
 
-  constructor(public payload: number[]) {
+  constructor(public payload: {id: number, object_type: string}[]) {
   }
 }
 
@@ -76,25 +96,32 @@ export class MultiDelete implements Action {
 export class NotesDeleted implements Action {
   readonly type = NOTES_DELETED;
 
-  constructor(public payload: Note[]) {
+  constructor(public payload: {id: number, object_type: string}[]) {
   }
 }
 
 export class Select implements Action {
   readonly type = SELECT;
 
-  constructor(public payload: number) {
+  constructor(public payload: {id: string, object_type: string}) {
   }
 }
 
-export class DeselectAll implements Action {
-  readonly type = DESELECT_ALL;
+export class SelectAll implements Action {
+  readonly type = SELECT_ALL;
 }
 
 export class ChangeSortOrder implements Action {
   readonly type = CHANGE_SORT_ORDER;
+}
 
+export class InitLoad implements Action {
+  readonly type = INIT_LOAD;
+}
+
+export class InitLoadDone implements Action {
+  readonly type = INIT_LOAD_DONE;
 }
 
 // TODO: Add RouterState | Activated Route
-export type NoteActions = Add | Update | NotesUpdated | NoteUpdated | NotesAdded | Delete | MultiDelete | NotesDeleted |  LoadSuccess | ChangeSortOrder | Select | DeselectAll;
+export type NoteActions = Add | Update | NotesUpdated | NoteUpdated | NotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad | InitLoadDone;

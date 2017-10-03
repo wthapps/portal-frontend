@@ -16,6 +16,7 @@ import 'rxjs/add/operator/map';
 
 
 import * as note from '../actions/note';
+import * as fromRoot from '../reducers/index';
 
 
 @Injectable()
@@ -24,9 +25,10 @@ export class NoteEffects {
     .ofType(note.ADD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-      return this.noteService.create(payload)
-        .map((res: any) => new note.NotesAdded([res['data']]))
-        .catch(() => of(new note.NotesAdded([])));
+    return this.noteService.create(payload)
+      .map((res: any) => new note.NotesAdded([res['data']]))
+      .catch(() => of(new note.NotesAdded([])))
+      ;
     });
 
   @Effect() updateNote = this.actions
@@ -35,7 +37,8 @@ export class NoteEffects {
     .switchMap((payload: any) => {
       return this.noteService.update(payload)
         .map((res: any) => new note.NoteUpdated(res['data']))
-        .catch(() => empty());
+        .catch(() => empty())
+        ;
     });
 
 
@@ -43,13 +46,43 @@ export class NoteEffects {
     .ofType(note.DELETE)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-      return this.noteService.delete(payload)
-        .map((res: any) => new note.NotesDeleted([res.data]))
-        .catch(() => of(new note.NotesDeleted([])));
+      return this.noteService.multiDelete(payload)
+        .map((res: any) => new note.NotesDeleted(res.data))
+        .catch(() => of(new note.NotesDeleted([])))
+        ;
     });
 
+  @Effect() multiDeleteItems = this.actions
+    .ofType(note.MULTI_DELETE)
+    .withLatestFrom(this.store, (action: any, state: any) => state.notes.selectedIds)
+    .switchMap((selectedIds: any[]) => {
+      return this.noteService.multiDelete(selectedIds)
+        .map((res: any) => new note.NotesDeleted(res.data))
+        .catch(() => of(new note.NotesDeleted([])))
+        ;
+    });
 
-  constructor(private actions: Actions, public noteService: ZNoteService) {
+  @Effect() load = this.actions
+    .ofType(note.LOAD)
+    .map((action: any) => action['payload'])
+    .switchMap((payload: any) => {
+    return this.apiBaseService.get(`note/dashboards`, {parent_id: payload['parent_id']})
+      .map((res: any) => new note.LoadSuccess(res.data))
+      .catch(() => of(new note.LoadSuccess([])));
+    });
+
+  // @Effect() initLoad = this.actions
+  //   .ofType(note.INIT_LOAD)
+  //   .map((action: any) => action['payload'])
+  //   .switchMap((payload: any) => {
+  //   return this.apiBaseService.get(`note/dashboards`, {parent_id: null})
+  //     .map((res: any) => new note.InitLoadDone([res.data]))
+  //     .catch(() => of(new note.InitLoadDone([])));
+  //   })
+
+
+  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
+              private store: Store<fromRoot.State>) {
   }
 
 }

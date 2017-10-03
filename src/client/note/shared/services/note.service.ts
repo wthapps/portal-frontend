@@ -39,6 +39,10 @@ export class ZNoteService extends BaseEntityService<any> {
     this.modalEvent$ = this.modalEventSubject.asObservable();
   }
 
+  multiDelete(body: any): Observable<any> {
+    return this.apiBaseService.post(`${this.url}/multi_delete`, {objects: body});
+  }
+
   getList(): Observable<any[]> {
     // set selectedObjectsSubject is empty
     this.selectedObjectsSubject.getValue().length = 0;

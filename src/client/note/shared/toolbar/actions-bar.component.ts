@@ -6,6 +6,7 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -17,11 +18,13 @@ import { Store } from '@ngrx/store';
 export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
   @Input() data: Note;
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
+  selectedIds$: Observable<any[]>;
 
   constructor(public noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               public commonEventService: CommonEventService) {
+    this.selectedIds$ = this.store.select(fromRoot.getSelectedIds);
   }
 
   ngOnInit() {
@@ -30,11 +33,12 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   onDelete() {
     if (this.multiple) {
       // TODO:
-      this.noteService.deleteNote();
+      // this.noteService.deleteNote();
+      this.store.dispatch(new note.MultiDelete());
     } else {
       // this.noteService.deleteNote(this.data);
-      let id = this.data.id;
-      this.store.dispatch(new note.Delete([id]));
+      // let id = this.data.id;
+      this.store.dispatch(new note.Delete([{id: this.data.id, object_type: this.data.object_type}]));
     }
 
   }

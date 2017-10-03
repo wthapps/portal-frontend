@@ -1,41 +1,34 @@
 import { Action } from '@ngrx/store';
+import * as folder from '../actions/folder';
 
-export const OPEN_SIDENAV = '[Layout] Open Sidenav';
-export const CLOSE_SIDENAV = '[Layout] Close Sidenav';
 
-export class OpenSidenav implements Action {
-  readonly type = OPEN_SIDENAV;
+export interface Folder {
+  id: string,
+  uuid: string,
+  name: string,
+  folders: Folder[]
 }
-
-export class CloseSidenav implements Action {
-  readonly type = CLOSE_SIDENAV;
-}
-
-export type Actions = OpenSidenav | CloseSidenav;
 
 export interface State {
-  showSidenav: boolean;
+  folders: Folder[]
 }
 
 const initialState: State = {
-  showSidenav: false,
+  folders: [],
 };
 
-export function reducer(state = initialState, action: Actions): State {
+// TODO
+export function reducer(state = initialState, action: folder.Actions): State {
   switch (action.type) {
-    case CLOSE_SIDENAV:
-      return {
-        showSidenav: false,
-      };
+    case folder.FOLDERS_DELETED:
+      return state;
 
-    case OPEN_SIDENAV:
-      return {
-        showSidenav: true,
-      };
+    case folder.FOLDER_ADDED:
+      return state;
 
     default:
       return state;
   }
 }
 
-export const getShowSidenav = (state: State) => state.showSidenav;
+export const getFolders = (state: State) => state.folders;

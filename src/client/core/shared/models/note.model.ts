@@ -10,6 +10,7 @@ export class Note extends BaseEntity {
   user_id: number;
   folder: any;
   folder_id: number;
+  object_type: string = 'note';
 
   constructor(attributes: any={}) {
     super(attributes);

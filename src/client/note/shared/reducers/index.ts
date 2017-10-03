@@ -40,3 +40,8 @@ export const getNotesState = (state: State) => state.notes;
 export const getNotesEntities = createSelector(getNotesState, fromNote.getNotes);
 export const getOrderDesc = createSelector(getNotesState, fromNote.getOrderDesc);
 export const getSortedNotes = createSelector(getNotesState, fromNote.getSortedNotes);
+export const getFolderEntities = createSelector(getNotesState, fromNote.getFolders);
+export const getSortedFolders = createSelector(getNotesState, fromNote.getSortedFolders);
+export const getSelectAll = createSelector(getNotesState, fromNote.getSelectAll);
+export const getSelectedIds = createSelector(getNotesState, fromNote.getSelectedIds);
+
