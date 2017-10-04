@@ -389,6 +389,11 @@ export let Constants = {
       accept: 'DONE',
       reject: 'CANCEL'
     }
+  },
+
+  modal: {
+    edit: 'edit',
+    add: 'add'
   }
 };
 

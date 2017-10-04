@@ -55,10 +55,6 @@ export class FolderItemComponent implements OnInit {
   }
 
   onView() {
-    if (this.data.type == 'folder') {
-      this.router.navigate([`my-note/folders`, this.data.id]);
-    } else {
-      this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
-    }
+    this.router.navigate([`my-note/folders`, this.data.id]);
   }
 }

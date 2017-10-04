@@ -36,7 +36,7 @@ export class NoteEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
       return this.noteService.update(payload)
-        .map((res: any) => new note.NoteUpdated(res['data']))
+        .map((res: any) => new note.NotesUpdated([res['data']]))
         .catch(() => empty())
         ;
     });

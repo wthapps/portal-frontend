@@ -4,7 +4,7 @@
   </button>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <note-list [noteItems]="noteItems$ | async" [folderItems]="folderItems$ | async" [viewOption]="viewOption" [orderDesc]="orderDesc$ | async"></note-list>
+  <note-list [noteItems]="noteItems$ | async" [folderItems]="folderItems$ | async" [viewOption]="(nodeState$ | async)?.viewMode" [orderDesc]="orderDesc$ | async"></note-list>
 </div>
 
 <!--<div *ngIf="data">-->

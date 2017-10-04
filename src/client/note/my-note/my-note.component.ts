@@ -23,11 +23,13 @@ export class ZNoteMyNoteComponent implements OnInit {
   public noteItems$: Observable<Note[]>;
   public folderItems$: Observable<Folder[]>;
   public orderDesc$: Observable<boolean>;
+  public nodeState$: Observable<any>;
 
   constructor(private noteService: ZNoteService, private apiBaseService: ApiBaseService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes).do((n: any) => console.debug('Notes: ', n));
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
+    this.nodeState$ = this.store.select(fromRoot.getNotesState);
   }
 
   ngOnInit() {
