@@ -21,6 +21,10 @@ export const ITEM_TYPE = {
   NOTE: 'note',
   FOLDER: 'folder'
 }
+export const VIEW_MODE = {
+  LIST: 'list',
+  GRID: 'grid'
+};
 
 // State
 export interface  Filters {
@@ -34,6 +38,7 @@ export interface State {
   orderDesc: boolean;
   selectedIds: {id: string, object_type: string}[];
   selectAll: boolean;
+  viewMode: string;
 };
 
 export const noteInitialState: State = {
@@ -42,7 +47,8 @@ export const noteInitialState: State = {
   page: 0,
   orderDesc: true,
   selectedIds: [],
-  selectAll: false
+  selectAll: false,
+  viewMode: VIEW_MODE.LIST,
 };
 
 
@@ -52,6 +58,16 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.NOTES_ADDED: {
       const notes = [...state.notes, ...action['payload']];
       return Object.assign({}, state, {notes: notes});
+    }
+    case note.NOTES_UPDATED: {
+      const notes3 = [...state.notes];
+      action.payload.forEach((uNote: Note) => {
+        let idx: any =  notes3.findIndex((n: any) => n.id == uNote.id);
+        if(idx > -1)
+          notes3.splice(idx, 1, uNote);
+      });
+
+      return Object.assign({}, state, {notes: notes3});
     }
     case note.LOAD_SUCCESS:
       const items = [...action['payload']];
@@ -99,6 +115,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         folders.map((n: any) => Object.assign(n, {'selected': false}));
       }
       return Object.assign({}, state, {selectedIds: selectedIds, selectAll: selectAll, notes: inotes, folders: folders});
+    case note.CHANGE_VIEW_MODE:
+      return {...state, viewMode: action.payload};
     default: {
       return state;
     }
@@ -111,6 +129,7 @@ export const getOrderDesc = (state: State ) => state.orderDesc;
 export const getFolders = (state: State ) => state.folders;
 export const getSelectAll = (state: State ) => state.selectAll;
 export const getSelectedIds = (state: State ) => state.selectedIds;
+export const getViewMode = (state: State ) => state.viewMode;
 
 export const getSortedNotes = createSelector(getNotes, getOrderDesc, (notes, orderDesc) => {
   const cloneNotes = [...notes];

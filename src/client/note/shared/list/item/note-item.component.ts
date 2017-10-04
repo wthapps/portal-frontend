@@ -18,7 +18,7 @@ declare var _: any;
   templateUrl: 'note-item.component.html'
 })
 export class NoteItemComponent implements OnInit {
-  @Input() data: any;
+  @Input() data: Note = new Note();
   tooltip: any = Constants.tooltip;
 
   selected: boolean = false;
@@ -55,11 +55,6 @@ export class NoteItemComponent implements OnInit {
   }
 
   onView() {
-    if (this.data.type == 'folder') {
-      this.router.navigate([`my-note/folders`, this.data.id]);
-    } else {
-      this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
-    }
-
+    this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
   }
 }

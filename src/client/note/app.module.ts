@@ -16,14 +16,12 @@ import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module'
 import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-// import * as appReducers from './shared/reducers/index';
 
 import { reducers } from './shared/reducers/index';
 import * as fromFolder from './shared/reducers/folder';
 import * as fromNote from './shared/reducers/note';
-// import { reducer } from './shared/reducers/index';
 import { NoteEffects } from './shared/effects/note-effects';
-import { RouterModule } from '@angular/router';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 // import { reducers, metaReducers } from './shared/reducers/index';
@@ -50,10 +48,11 @@ import { RouterModule } from '@angular/router';
       notes: fromNote.reducer,
       folder: fromFolder.reducer
     }),
+    // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
     EffectsModule.forRoot([NoteEffects]),
 
-    // StoreRouterConnectingModule,
+    // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
     // !(String('<%= BUILD_TYPE %>') === 'prod') ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
 

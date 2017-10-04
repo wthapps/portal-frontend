@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
 import { Note } from '../../../../core/shared/models/note.model';
+import { Constants } from '../../../../core/shared/config/constants';
 
 
 @Component({
@@ -29,11 +30,34 @@ export class NoteEditModalComponent {
   content: AbstractControl;
   tags: AbstractControl;
 
+  private editMode: string = Constants.modal.add;
+
   constructor(private fb: FormBuilder, private noteService: ZNoteService, private store: Store<fromRoot.State>) {
-    this.form = fb.group({
-      'title': ['', Validators.compose([Validators.required])],
-      'content': [''],
-      'tags': [''],
+    // this.form = fb.group({
+    //   'title': ['', Validators.compose([Validators.required])],
+    //   'content': [''],
+    //   'tags': [''],
+    // });
+    //
+    // this.title = this.form.controls['title'];
+    // this.content = this.form.controls['content'];
+    // this.tags = this.form.controls['tags'];
+
+    this.assignFormValue(this.note);
+  }
+
+  open(options: any = {mode: Constants.modal.add, note: Note}) {
+    this.modal.open().then();
+    this.editMode = options.mode;
+
+    this.assignFormValue(this.note);
+  }
+
+  assignFormValue(data: Note) {
+    this.form = this.fb.group({
+      'title': [data.title, Validators.compose([Validators.required])],
+      'content': [data.content],
+      'tags': [data.tags],
     });
 
     this.title = this.form.controls['title'];
@@ -41,12 +65,12 @@ export class NoteEditModalComponent {
     this.tags = this.form.controls['tags'];
   }
 
-  open(options?: any) {
-    this.modal.open().then();
-  }
 
   onSubmit(value: any) {
-    this.store.dispatch(new note.Add(value));
+    if(this.editMode == Constants.modal.add)
+      this.store.dispatch(new note.Add(value));
+    else
+      this.store.dispatch(new note.Update({...value, id: this.note.id}));
     this.modal.close();
   }
   //   this.noteService.create(value).subscribe(

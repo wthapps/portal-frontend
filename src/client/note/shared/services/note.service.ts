@@ -100,7 +100,6 @@ export class ZNoteService extends BaseEntityService<any> {
     }
   }
 
-
   changeModeView(mode: string = 'list') {
     this.viewOptionSubject.next(mode);
   }

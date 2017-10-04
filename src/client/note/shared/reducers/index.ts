@@ -44,4 +44,5 @@ export const getFolderEntities = createSelector(getNotesState, fromNote.getFolde
 export const getSortedFolders = createSelector(getNotesState, fromNote.getSortedFolders);
 export const getSelectAll = createSelector(getNotesState, fromNote.getSelectAll);
 export const getSelectedIds = createSelector(getNotesState, fromNote.getSelectedIds);
+export const getViewMode = createSelector(getNotesState, fromNote.getViewMode);
 

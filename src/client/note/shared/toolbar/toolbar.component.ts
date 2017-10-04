@@ -4,6 +4,8 @@ import { ZNoteService } from '../services/note.service';
 import * as fromRoot from '../reducers/index';
 import { Store } from '@ngrx/store';
 
+import * as note from '../actions/note';
+
 @Component({
   moduleId: module.id,
   selector: 'z-note-shared-toolbar',
@@ -28,6 +30,7 @@ export class ZNoteSharedToolBarComponent implements OnInit {
   }
 
   onChangeView(view: string) {
-    this.noteService.changeModeView(view);
+    // this.noteService.changeModeView(view);
+    this.store.dispatch(new note.ChangeViewMode(view));
   }
 }

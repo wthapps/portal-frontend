@@ -3,7 +3,7 @@ import * as folder from '../actions/folder';
 
 
 export interface Folder {
-  id: string,
+  id: number,
   uuid: string,
   name: string,
   folders: Folder[]
