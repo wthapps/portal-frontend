@@ -109,7 +109,7 @@ export class AppComponent implements OnInit, OnDestroy {
         break;
       case 'note:folder:sharing':
         this.loadModalComponent(ZNoteSharedModalSharingComponent);
-        this.modal.folder = event.payload;
+        this.modal.sharedObjects = [event.payload];
         this.modal.open();
         break;
       case 'note:folder:delete':

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -9,6 +9,10 @@ import { CommonEventService } from '../../../../core/shared/services/common-even
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 import { Constants } from '../../../../core/shared/config/constants';
 import { ZMediaSharingService } from '../../../../core/shared/components/photo/modal/sharing/sharing.service';
+import { Store } from '@ngrx/store';
+import * as fromShareModal from '../../reducers/share-modal';
+import { AutoComplete } from 'primeng/primeng';
+
 
 declare var $: any;
 
@@ -19,10 +23,10 @@ declare var $: any;
   styleUrls: ['sharing.component.css']
 })
 
-export class ZNoteSharedModalSharingComponent implements OnInit {
+export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('auto') auto: AutoComplete;
 
-  mode: number = 0;
   operation: any = {
     read: 0,
     edit: 2,
@@ -33,15 +37,13 @@ export class ZNoteSharedModalSharingComponent implements OnInit {
     deleting: 90
   };
 
-  contacts: any = [];
-  sharedContacts: any = [];
-
-  textContacts: Array<any> = [];
   filteredContacts: any = [];
-
   selectedContacts: any = [];
-  removedContacts: any = [];
-  hasChanged: boolean = false;
+  sharedContacts: any = [];
+  sharedObjects: any = [];
+  subscription: any;
+  changed: boolean = false;
+  showCancelButton: boolean = false;
 
   contactTerm$ = new Subject<string>();
 
@@ -49,14 +51,29 @@ export class ZNoteSharedModalSharingComponent implements OnInit {
 
   constructor(private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
+              private store: Store<any>,
               private mediaSharingService: ZMediaSharingService) {
-
+    this.subscription = store.select('share').subscribe((state: any) => {
+      this.selectedContacts = state.current.selectedContacts;
+      this.sharedContacts = state.current.sharedContacts;
+      this.changed = state.changed;
+      this.showCancelButton = state.showCancelButton;
+      if(this.auto) {
+        this.auto.value = this.selectedContacts;
+        this.auto.onModelChange(this.auto.value);
+      }
+    });
     this.contactTerm$
       .debounceTime(Constants.searchDebounceTime)
       .distinctUntilChanged()
       .switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
       .subscribe((res: any) => {
-          this.filteredContacts = res['data'];
+          this.filteredContacts = [];
+          for(let i in res.data) {
+            if(res.data[i].wthapps_user) {
+              this.filteredContacts.push(res.data[i].wthapps_user);
+            }
+          }
         }, (error: any)=> {
           console.log('error', error);
         }
@@ -67,51 +84,36 @@ export class ZNoteSharedModalSharingComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   open() {
-    this.modal.open()
+    this.modal.open();
+    if (this.sharedObjects.length == 1) {
+      this.apiBaseService.post(`note/sharings/get_sharing_info_object`, {object_id: this.sharedObjects[0].id}).subscribe((res: any) => {
+        this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
+        this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
+      });
+    }
+  }
+
+  selectContact(contact: any) {
+    this.store.dispatch({type: fromShareModal.ADD_SELECTED_CONTACT, payload: contact});
+  }
+
+  remove(contact: any) {
+    this.store.dispatch({type: fromShareModal.REMOVE_SHARED_CONTACT, payload: contact});
   }
 
   cancel() {
-    // cancel removing items
-    if (this.mode == this.operation.editing || this.mode == this.operation.deleting) {
-      this.removedContacts = [];
-      this.mode = this.operation.read;
-      return;
-    }
-    this.modal.close().then();
-  }
-
-  onSubmit(value: any) {
-    console.log(value);
-  }
-
-
-
-  selectContact(contact: any) {
-    this.selectedContacts.push(contact);
-    this.setMode();
-    console.log(this.selectedContacts);
+    this.store.dispatch({type: fromShareModal.CANCEL_ACTIONS});
   }
 
   save() {
-    console.log('asfasdf');
-  }
-
-  private resetData() {
-    this.mode = this.operation.read;
-    this.hasChanged = false;
-    this.removedContacts = [];
-    this.selectedContacts = [];
-    this.textContacts = [];
-  }
-
-  private setMode() {
-    let count = this.removedContacts.length + this.selectedContacts.length;
-    if (count == 0) {
-      this.mode = this.operation.read;
-    } else if (count > 0) {
-      this.mode = this.sharedContacts.length == 0 ? this.operation.creating : this.operation.editing;
-    }
-    this.hasChanged = this.mode != this.operation.read ? true : false;
+    this.store.dispatch({type: fromShareModal.SAVE});
+    this.apiBaseService.post(`note/sharings`, {objects: this.sharedObjects, recipients: this.sharedContacts}).subscribe((res: any) => {
+      console.log(res);
+    });
   }
 }

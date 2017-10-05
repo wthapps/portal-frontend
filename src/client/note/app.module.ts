@@ -20,6 +20,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './shared/reducers/index';
 import * as fromFolder from './shared/reducers/folder';
 import * as fromNote from './shared/reducers/note';
+import * as fromShareModal from './shared/reducers/share-modal';
 import { NoteEffects } from './shared/effects/note-effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FolderEffects } from './shared/effects/folder-effects';
@@ -46,8 +47,10 @@ import { FolderEffects } from './shared/effects/folder-effects';
     ZNoteSharedModule.forRoot(),
 
     StoreModule.forRoot({
+
       notes: fromNote.reducer,
-      folders: fromFolder.reducer
+      share: fromShareModal.reducer,
+      folder: fromFolder.reducer
     }),
     // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
@@ -56,7 +59,6 @@ import { FolderEffects } from './shared/effects/folder-effects';
     // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
     // !(String('<%= BUILD_TYPE %>') === 'prod') ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
-
     CoreSharedModule.forRoot(),
   ],
   declarations: [AppComponent],
