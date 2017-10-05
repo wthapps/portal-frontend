@@ -1,0 +1,17 @@
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" (onDismiss)="dismiss($event)" style="z-index: 1111;">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title pull-left">Add photo</h4>
+  </modal-header>
+  <modal-body>
+    <h-file-select-list #photoList [showUpload]="true" (onFilesChanged)="chooseFiles($event)"></h-file-select-list>
+  </modal-body>
+  <modal-footer>
+    <span class="modal-title pull-left">
+      {{ photoList.selectedItems.length }} photo<span *ngIf="photoList.selectedItems.length > 1">s</span> selected
+    </span>
+
+    <button type="button" class="btn btn-outline-primary btn-min"
+            (click)="next($event)" [disabled]="photoList.selectedItems.length <= 0">{{ action }}
+    </button>
+  </modal-footer>
+</modal>

@@ -5,7 +5,7 @@ export class Note extends BaseEntity {
   content: string = '';
 
   tags: Array<any> = new Array<any>();
-  attachments: Array<any>;
+  attachments: Array<any> = new Array<any>();
   user: any;
   user_id: number;
   folder: any;
