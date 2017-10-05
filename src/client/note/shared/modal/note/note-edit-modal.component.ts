@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -10,6 +10,7 @@ import * as note from '../../actions/note';
 import { Note } from '../../../../core/shared/models/note.model';
 import { Constants } from '../../../../core/shared/config/constants';
 
+declare var Quill: any;
 
 @Component({
   moduleId: module.id,
@@ -19,7 +20,7 @@ import { Constants } from '../../../../core/shared/config/constants';
   encapsulation: ViewEncapsulation.None
 })
 
-export class NoteEditModalComponent {
+export class NoteEditModalComponent implements AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
   @Input() note: Note = new Note();
 
@@ -46,6 +47,20 @@ export class NoteEditModalComponent {
     this.assignFormValue(this.note);
   }
 
+  ngAfterViewInit() {
+    // Add custom to whitelist
+    let Font = Quill.import('formats/font');
+    Font.whitelist = ['sans-serif', 'serif', 'monospace', 'lato'];
+    Quill.register(Font, true);
+
+    let Size = Quill.import('attributors/style/size');
+    Size.whitelist = [
+      '9px', '10px', '11px', '12px', '13px', '14px', '18px', '24px', '36px', '48px', '64px', '72px'
+    ];
+    Quill.register(Size, true);
+
+  }
+
   open(options: any = {mode: Constants.modal.add, note: Note}) {
     this.modal.open().then();
     this.editMode = options.mode;
@@ -54,11 +69,20 @@ export class NoteEditModalComponent {
   }
 
   assignFormValue(data: Note) {
-    this.form = this.fb.group({
-      'title': [data.title, Validators.compose([Validators.required])],
-      'content': [data.content],
-      'tags': [data.tags],
-    });
+    console.log(data);
+    if (data) {
+      this.form = this.fb.group({
+        'title': [data.title, Validators.compose([Validators.required])],
+        'content': [data.content],
+        'tags': [data.tags],
+      });
+    } else {
+      this.form = this.fb.group({
+        'title': ['', Validators.compose([Validators.required])],
+        'content': [''],
+        'tags': [''],
+      });
+    }
 
     this.title = this.form.controls['title'];
     this.content = this.form.controls['content'];
@@ -67,12 +91,13 @@ export class NoteEditModalComponent {
 
 
   onSubmit(value: any) {
-    if(this.editMode == Constants.modal.add)
+    if (this.editMode == Constants.modal.add)
       this.store.dispatch(new note.Add(value));
     else
       this.store.dispatch(new note.Update({...value, id: this.note.id}));
     this.modal.close();
   }
+
   //   this.noteService.create(value).subscribe(
   //     (response: any) => {
   //       console.log('create note successful:::', response);

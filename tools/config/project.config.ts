@@ -42,7 +42,10 @@ export class ProjectConfig extends SeedConfig {
       {src: '@angular/material/prebuilt-themes/indigo-pink.css', inject: true},
 
       //editor
-      {src: 'quill/dist/quill.min.js', inject: 'libs'}
+      {src: 'quill/dist/quill.min.js', inject: 'libs'},
+      // {src: 'katex/dist/katex.min.js', inject: 'libs'}
+      //end editor
+
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       // {src: 'lodash/lodash.min.js', inject: 'libs'},
 
