@@ -4,11 +4,11 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'file-selection',
-  templateUrl: 'file-selection.component.html'
+  selector: 'file-browse',
+  templateUrl: 'file-browse.component.html'
 })
 
-export class FileSelectionComponent implements OnInit {
+export class FileBrowseComponent implements OnInit {
   @ViewChild('fileBrowse') inputFiles: ElementRef;
   @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
   @Input() multipleSelect: boolean = true;

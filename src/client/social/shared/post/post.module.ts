@@ -36,8 +36,6 @@ import { CoreSharedModule } from '../../../core/shared/shared.module';
   ],
   declarations: [
     PostNewComponent,
-    // FileSelectionComponent,
-    // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
     PostActivitiesComponent,
@@ -57,8 +55,6 @@ import { CoreSharedModule } from '../../../core/shared/shared.module';
 
     TagInputModule,
     PostNewComponent,
-    // FileSelectionComponent,
-    // SoPhotoListComponent,
     PostEditComponent,
     PostNewComponent,
     PostActivitiesComponent,

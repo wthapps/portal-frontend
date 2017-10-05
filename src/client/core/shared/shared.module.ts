@@ -52,7 +52,7 @@ import { CoreChatSupportModule } from './components/chat-support/chat-support.mo
 import { UploadCropImageModule } from './components/upload-crop-image/upload-crop-image.module';
 import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
 import { ZSharedMenuModule } from './components/zone/menu/menu.module';
-import { ZSharedPhotoModule } from './components/zone/photo/photo.module';
+import { FileModule } from './components/file/file.module';
 import { DisplayLinkModule } from './components/link/display-link.module';
 import { ZSharedReportModule } from './components/zone/report/report.module';
 import { PartialsProfileModule } from './components/profile/profile.module';
@@ -118,7 +118,7 @@ import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
     BreadcrumbModule,
     ZSharedMenuModule,
     ZSharedMenuModule,
-    ZSharedPhotoModule,
+    FileModule,
     DisplayLinkModule,
     ZSharedReportModule,
     PartialsProfileModule,

@@ -19,7 +19,6 @@ import { PostListComponent } from './post/post-list.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../friends/members.component';
-import { SoPhotoListComponent } from './post/photo-list.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { CoverProfileModule } from '../../core/shared/components/cover-profile/cover-profile.module';
 import { SocialFavoriteService } from './services/social-favorites.service';
@@ -47,7 +46,6 @@ import { ZSocialSharedHeaderComponent } from './header/header.component';
   ],
   declarations: [
     ZSocialFavoritesComponent,
-    SoPhotoListComponent,
 
     ZSocialMembersComponent,
     // List Posts
@@ -74,7 +72,6 @@ import { ZSocialSharedHeaderComponent } from './header/header.component';
   ],
   exports: [
     ZSocialFavoritesComponent,
-    SoPhotoListComponent,
     PostListComponent,
     PostComponent,
     ZSocialNotificationsComponent,

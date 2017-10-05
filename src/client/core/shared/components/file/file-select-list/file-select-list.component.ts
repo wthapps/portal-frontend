@@ -1,17 +1,17 @@
 import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { LoadingService } from '../../../loading/loading.service';
-import { ApiBaseService } from '../../../../services/apibase.service';
+import { LoadingService } from '../../loading/loading.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 
 declare var _: any;
 declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'so-photo-list',
-  templateUrl: 'photo-list.component.html'
+  selector: 'h-file-select-list',
+  templateUrl: 'file-select-list.component.html'
 })
 
-export class SoPhotoListComponent {
+export class FileSelectListComponent {
   @ViewChild('filesSelection') fileSelection: ElementRef;
   @Input() showUpload: boolean = false;
   @Input() showFavourite: boolean = false;

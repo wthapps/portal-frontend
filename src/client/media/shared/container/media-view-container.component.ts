@@ -14,7 +14,6 @@ import { MediaToolbarListComponent } from '../media/media-toolbar-list.component
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
-import { PhotoSelectModalComponent } from '../../../core/shared/components/zone/photo/upload-photos/photo-select-modal.component';
 import { ZMediaAlbumService } from '../../album/album.service';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { SharingModalComponent } from '../../../core/shared/components/photo/modal/sharing/sharing-modal.component';
@@ -28,6 +27,7 @@ import { AlbumDeleteModalComponent } from '../../../core/shared/components/photo
 import { AddToAlbumModalComponent } from '../../../core/shared/components/photo/modal/add-to-album-modal.component';
 import { ZMediaStore } from '../store/media.store';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+import { FileSelectComponent } from '../../../core/shared/components/file/file-select/file-select.component';
 
 
 declare var saveAs: any;
@@ -55,7 +55,8 @@ declare var _: any;
     AlbumDetailInfoComponent,
     AlbumDeleteModalComponent,
 
-    PhotoSelectModalComponent,
+    // FileSelectModalComponent,
+    FileSelectComponent,
     PhotoDetailPartialComponent,
     PhotoEditModalComponent,
     AddToAlbumModalComponent
@@ -490,7 +491,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       //  Add uploaded photos to album detail
       case 'photosSelectModal':
-        this.loadModalComponent(PhotoSelectModalComponent);
+        this.loadModalComponent(FileSelectComponent);
         options = {};
         break;
     }

@@ -7,6 +7,7 @@ import { HdMultiSelectListModule } from './list/hd-list.module';
 import { UploaderModule } from './components/uploader/uploader.module';
 import { HConfirmationService } from './services/confirmation.service';
 import { ChipModule } from './components/chip/chip.module';
+import { EditorModule } from './components/editor/editor.component';
 // import { ConfirmDialogModule } from './components/confirmdialog/confirmdialog';
 
 
@@ -16,7 +17,8 @@ import { ChipModule } from './components/chip/chip.module';
     HdModalModule,
     HdMultiSelectListModule,
     UploaderModule,
-    ChipModule
+    ChipModule,
+    EditorModule
     // ConfirmDialogModule
   ],
   declarations: [
@@ -25,7 +27,8 @@ import { ChipModule } from './components/chip/chip.module';
     HdModalModule,
     HdMultiSelectListModule,
     UploaderModule,
-    ChipModule
+    ChipModule,
+    EditorModule
     // ConfirmDialogModule
   ],
   providers: [HConfirmationService]

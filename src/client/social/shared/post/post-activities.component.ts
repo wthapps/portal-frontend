@@ -4,8 +4,8 @@ import 'rxjs/add/operator/toPromise';
 
 import { HdModalComponent } from '../../../core/shared/ng2-hd/modal/components/modal';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { BaseSocialModal } from './shared/modal/base-social-modal';
 import { Constants } from '../../../core/shared/config/constants';
+import { WthAppsBaseModal } from '../../../core/shared/interfaces/wthapps-base-modal';
 
 declare var _: any;
 
@@ -15,9 +15,10 @@ declare var _: any;
   templateUrl: 'post-activities.component.html'
 })
 
-export class PostActivitiesComponent implements BaseSocialModal {
+export class PostActivitiesComponent implements WthAppsBaseModal {
   @ViewChild('modal') modal: HdModalComponent;
 
+  event: any;
   tooltip: any = Constants.tooltip;
 
   shares: Array<any> = new Array<any>();
@@ -47,7 +48,7 @@ export class PostActivitiesComponent implements BaseSocialModal {
         });
   }
 
-  close(body?: any) {
+  close(options?: any) {
 
   }
 }
