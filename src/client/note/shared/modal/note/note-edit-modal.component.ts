@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, ViewChild, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -14,6 +14,7 @@ import { Subject } from 'rxjs/Subject';
 import { PhotoUploadService } from '../../../../core/shared/services/photo-upload.service';
 
 declare var _: any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -23,7 +24,7 @@ declare var _: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class NoteEditModalComponent implements OnDestroy {
+export class NoteEditModalComponent implements AfterViewInit, OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
   @Input() note: Note = new Note();
 
@@ -42,9 +43,16 @@ export class NoteEditModalComponent implements OnDestroy {
               private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private photoSelectDataService: PhotoModalDataService,
-              private photoUploadService: PhotoUploadService
-  ) {
+              private photoUploadService: PhotoUploadService) {
     this.assignFormValue(this.note);
+  }
+
+  ngAfterViewInit(): void {
+    $(document).on('hidden.bs.modal', '.modal', ()=> {
+      if ($('.modal:visible').length) {
+        $(document.body).addClass('modal-open');
+      }
+    });
   }
 
   open(options: any = {mode: Constants.modal.add, note: Note}) {
@@ -70,9 +78,9 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   /*
-  * Ignore if the file is uploading
-  * Delete if the file was uploaded
-  * */
+   * Ignore if the file is uploading
+   * Delete if the file was uploaded
+   * */
   cancelUpload(file: any) {
 
     this.note.attachments = _.pull(this.note.attachments, file);
@@ -87,7 +95,7 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   onSubmit(value: any) {
-    if(this.editMode == Constants.modal.add)
+    if (this.editMode == Constants.modal.add)
       this.store.dispatch(new note.Add(value));
     else
       this.store.dispatch(new note.Update({...value, id: this.note.id}));
@@ -105,7 +113,7 @@ export class NoteEditModalComponent implements OnDestroy {
       this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
     );
 
-    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
+    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos: any) => {
       this.note.attachments.push(...photos);
       console.log('this.attachment:::', this.note.attachments);
     });
@@ -119,7 +127,7 @@ export class NoteEditModalComponent implements OnDestroy {
 
   private uploadFiles(files: Array<any>) {
 
-    _.forEach(files,(file: any) => {
+    _.forEach(files, (file: any) => {
       this.photoUploadService.uploadPhotos([file])
         .subscribe((response: any) => {
           let index = _.indexOf(this.note.attachments, file);
@@ -134,8 +142,6 @@ export class NoteEditModalComponent implements OnDestroy {
 
 
   }
-
-
 
 
 }
