@@ -21,6 +21,7 @@ const DEBOUNCE_MS = 1000;
 
 declare var _: any;
 declare var $: any;
+declare var Quill: any;
 
 @Component({
   moduleId: module.id,
@@ -95,6 +96,17 @@ export class NoteEditModalComponent implements OnDestroy {
         $(document.body).addClass('modal-open');
       }
     });
+
+    // Add custom to whitelist
+    let Font = Quill.import('formats/font');
+    Font.whitelist = ['sans-serif', 'serif', 'monospace', 'lato'];
+    Quill.register(Font, true);
+
+    let Size = Quill.import('attributors/style/size');
+    Size.whitelist = [
+      '9px', '10px', '11px', '12px', '13px', '14px', '18px', '24px', '36px', '48px', '64px', '72px'
+    ];
+    Quill.register(Size, true);
   }
 
   open(options: any = {mode: Constants.modal.add, note: Note}) {
