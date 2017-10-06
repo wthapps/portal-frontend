@@ -18,6 +18,7 @@ import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing
 import * as fromRoot from './shared/reducers/index';
 import * as fromFolder from './shared/reducers/folder';
 import { Folder } from './shared/reducers/folder';
+import { Subject } from 'rxjs';
 
 
 /**
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   modalComponent: any;
   modal: any;
   folders$: Observable<Folder[]>;
+  destroySubject: Subject<any> = new Subject();
 
   constructor(private router: Router,
               private resolver: ComponentFactoryResolver,
@@ -55,9 +57,17 @@ export class AppComponent implements OnInit, OnDestroy {
     });
     this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
 
-    this.folders$ = this.store.select(fromRoot.getFoldersTree)
-      .map((folders: any[]) => { return folders.map((f: any) => fromFolder.mapFolderToItem(f));})
-      .do((folders: any[]) => console.debug('app folders: ', folders));
+    this.store.select(fromRoot.getFoldersTree)
+      // .map((folders: any[]) => { return folders.map((f: any) => fromFolder.mapFolderToItem(f));})
+      .do((folders: any[]) => console.debug('app folders: ', folders))
+      .takeUntil(this.destroySubject)
+      .subscribe((folders: any[]) => {
+        this.commonEventService.broadcast({
+          channel: 'noteFolderEvent',
+          action: 'updateFolders',
+          payload: folders
+        })
+      });
   }
 
   ngOnInit() {
@@ -70,6 +80,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   doEvent(event: any) {

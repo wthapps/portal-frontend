@@ -127,7 +127,7 @@ export class NoteEditModalComponent implements OnDestroy {
 
   redo() {
     console.debug('Perform REDO');
-    this.store.dispatch(new note.Redo());
+    // this.store.dispatch(new note.Redo());
   }
   /*
    * Ignore if the file is uploading
@@ -141,9 +141,8 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   selectFiles() {
-    this.subscribePhotoSelectEvents();
-
     this.photoSelectDataService.open({return: true});
+    this.subscribePhotoSelectEvents();
   }
 
   onSubmit(value: any) {
@@ -158,7 +157,7 @@ export class NoteEditModalComponent implements OnDestroy {
 
   private subscribePhotoSelectEvents() {
     let closeObs$ = this.photoSelectDataService.closeObs$.merge(
-      // this.photoSelectDataService.openObs$,
+      this.photoSelectDataService.openObs$,
       this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
     );
 
