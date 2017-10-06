@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '../../core/shared/models/note.model';
 
@@ -26,7 +26,7 @@ export class ZNoteMyNoteComponent implements OnInit {
   public nodeState$: Observable<any>;
 
   constructor(private noteService: ZNoteService, private apiBaseService: ApiBaseService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
-    this.noteItems$ = this.store.select(fromRoot.getSortedNotes).do((n: any) => console.debug('Notes: ', n));
+    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);

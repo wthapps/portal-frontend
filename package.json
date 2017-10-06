@@ -163,6 +163,7 @@
     "@ngrx/router-store": "github:ngrx/router-store-builds",
     "@ngrx/store": "4.0.3",
     "@ngrx/store-devtools": "4.0.0",
+    "angular2-hotkeys": "^2.0.3",
     "angular2-recaptcha": "0.6.0",
     "bootstrap": "3.3.7",
     "bootstrap-sass": "3.3.7",

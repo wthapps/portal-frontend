@@ -27,9 +27,9 @@ declare var _: any;
 export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() contactMenu: Array<any>;
   @Input() totalContactCount: number = 0;
+  @Input() noteFoldersTree: any[] = [];
 
   noteFolders: Array<any>;
-  noteFoldersTree: any = [];
 
   /**public event for somewhere are able to subscribe*/
   event: Observable<any>;
@@ -78,18 +78,18 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         this.currentLabel = this.extractLabel(event.url);
       });
 
-    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
-      this.noteFoldersTree.length = 0;
-      for (let folder of event.payload) {
-        if (!folder.parent_id) {
-          folder.label = folder.name;
-          folder.icon = 'fa-folder-o';
-          folder.items = [];
-          folder.command = (event: any)=> this.loadMenu(event);
-          this.noteFoldersTree.push(folder);
-        }
-      }
-    });
+    // this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
+    //   this.noteFoldersTree.length = 0;
+    //   for (let folder of event.payload) {
+    //     if (!folder.parent_id) {
+    //       folder.label = folder.name;
+    //       folder.icon = 'fa-folder-o';
+    //       folder.items = [];
+    //       folder.command = (event: any)=> this.loadMenu(event);
+    //       this.noteFoldersTree.push(folder);
+    //     }
+    //   }
+    // });
   }
 
   ngAfterViewInit() {

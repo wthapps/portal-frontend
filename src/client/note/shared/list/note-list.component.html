@@ -31,9 +31,12 @@
     <!--<note-item *ngIf="item?.object_type == 'note'"  [data]="item" class="component-listbox-body"></note-item>-->
     <!--<folder-item *ngIf="item?.object_type == 'folder'" [data]="item" class="component-listbox-body"></folder-item>-->
   <!--</ng-template>-->
+
   <ng-container *ngFor="let item of folderItems">
     <folder-item [data]="item" class="component-listbox-body"></folder-item>
   </ng-container>
+
+  <div class="clearfix"></div>
 
   <ng-container *ngFor="let item of noteItems">
     <note-item [data]="item" class="component-listbox-body"></note-item>

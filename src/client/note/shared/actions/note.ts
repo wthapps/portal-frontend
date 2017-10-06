@@ -1,7 +1,9 @@
 import { Action } from '@ngrx/store';
 import { Note } from '../../../core/shared/models/note.model';
+export const EDIT = '[Note] Edit';
 export const UPDATE = '[Note] Update';
-export const NOTES_UPDATED = '[Notes] Updated';
+export const NOTE_UPDATED = '[Note] Updated';
+export const MULTI_NOTES_UPDATED = '[Notes] Updated';
 export const ADD = '[Note] Add';
 export const NOTES_ADDED = '[Notes] Added';
 export const DELETE = '[Note] Delete';
@@ -16,6 +18,8 @@ export const LOAD_FAIL = '[Note] Load Failed';
 export const INIT_LOAD = '[Note] Init Load';
 export const INIT_LOAD_DONE = '[Note] Init Load Done';
 export const CHANGE_VIEW_MODE = '[Note] Change View Mode';
+export const UNDO = '[Note] Undo';
+export const REDO = '[Note] Redo';
 
 // Actions
 
@@ -26,8 +30,22 @@ export class Update implements Action {
   }
 }
 
-export class NotesUpdated implements Action {
-  readonly  type = NOTES_UPDATED;
+export class Edit implements Action {
+  readonly type = EDIT;
+
+  constructor(public payload: Note) {
+  }
+}
+
+export class NoteUpdated implements Action {
+  readonly  type = NOTE_UPDATED;
+
+  constructor(public payload: Note) {
+  }
+}
+
+export class MultiNotesUpdated implements Action {
+  readonly  type = MULTI_NOTES_UPDATED;
 
   constructor(public payload: Note[]) {
   }
@@ -117,10 +135,18 @@ export class ChangeViewMode implements Action {
   readonly type = CHANGE_VIEW_MODE;
 
   constructor(public payload: string) {
-
   }
 }
 
+export class Undo implements Action {
+  readonly type = UNDO;
+}
+
+export class Redo implements Action {
+  readonly type = REDO;
+}
+
 // TODO: Add RouterState | Activated Route
-export type NoteActions = Add | Update | NotesUpdated | NotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad | InitLoadDone | ChangeViewMode;
+export type NoteActions = Add | Update | Edit | NoteUpdated | MultiNotesUpdated | NotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad
+  | InitLoadDone | ChangeViewMode | Undo | Redo;
 

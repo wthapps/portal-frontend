@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import './operators';
 import 'rxjs/add/operator/filter';
 
@@ -13,6 +15,10 @@ import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.comp
 import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
 import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
 import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing.component';
+import * as fromRoot from './shared/reducers/index';
+import * as fromFolder from './shared/reducers/folder';
+import { Folder } from './shared/reducers/folder';
+
 
 /**
  * This class represents the main application component.
@@ -34,18 +40,24 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
+  folders$: Observable<Folder[]>;
 
   constructor(private router: Router,
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
+              private store: Store<fromRoot.State>,
               private noteService: ZNoteService) {
     console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent' || event.channel == 'noteActionsBar').subscribe((event: any) => {
       this.doEvent(event);
     });
     this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
+
+    this.folders$ = this.store.select(fromRoot.getFoldersTree)
+      .map((folders: any[]) => { return folders.map((f: any) => fromFolder.mapFolderToItem(f));})
+      .do((folders: any[]) => console.debug('app folders: ', folders));
   }
 
   ngOnInit() {

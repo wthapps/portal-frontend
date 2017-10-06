@@ -15,13 +15,13 @@ import * as fromFolder from './folder';
  */
 export interface State {
   notes: fromNote.State;
-  // folders: fromFolder.State;
+  folders: fromFolder.State;
   // router: fromRouter.RouterReducerState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   notes: fromNote.reducer,
-  // folder: fromFolder.reducer,
+  folders: fromFolder.reducer,
   // routerReducer: fromRouter.routerReducer
 };
 
@@ -44,5 +44,9 @@ export const getFolderEntities = createSelector(getNotesState, fromNote.getFolde
 export const getSortedFolders = createSelector(getNotesState, fromNote.getSortedFolders);
 export const getSelectAll = createSelector(getNotesState, fromNote.getSelectAll);
 export const getSelectedIds = createSelector(getNotesState, fromNote.getSelectedIds);
+export const getCurrentNote = createSelector(getNotesState, fromNote.getCurrentNote);
 export const getViewMode = createSelector(getNotesState, fromNote.getViewMode);
 
+export const getFoldersState = (state: State) => state.folders;
+// export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFoldersTree);
+export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFolders);

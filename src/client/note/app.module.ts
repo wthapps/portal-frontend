@@ -22,6 +22,7 @@ import * as fromFolder from './shared/reducers/folder';
 import * as fromNote from './shared/reducers/note';
 import { NoteEffects } from './shared/effects/note-effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FolderEffects } from './shared/effects/folder-effects';
 
 
 // import { reducers, metaReducers } from './shared/reducers/index';
@@ -46,11 +47,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
     StoreModule.forRoot({
       notes: fromNote.reducer,
-      folder: fromFolder.reducer
+      folders: fromFolder.reducer
     }),
     // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
-    EffectsModule.forRoot([NoteEffects]),
+    EffectsModule.forRoot([NoteEffects, FolderEffects]),
 
     // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 

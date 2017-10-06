@@ -65,10 +65,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
-
-
 
   open() {
     this.modal.open()

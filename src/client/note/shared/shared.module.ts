@@ -12,9 +12,9 @@ import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
 import { CommonModule } from '@angular/common';
-import { NoteService } from '../my-note/notes/note.service';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZNoteSharedModalSharingComponent } from './modal/sharing/sharing.component';
+import { ZFolderService } from './services/folder.service';
 
 
 /**
@@ -59,7 +59,7 @@ export class ZNoteSharedModule {
       ngModule: ZNoteSharedModule,
       providers: [
         ZNoteService,
-        NoteService
+        ZFolderService
       ]
     };
   }

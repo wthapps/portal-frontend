@@ -10,6 +10,7 @@ export const FOLDER_ADDED = '[Folder] Added';
 export const DELETE = '[Folder] Delete';
 export const MULTI_DELETE = '[Folder] Multi Delete';
 export const FOLDERS_DELETED = '[Folders] Deleted';
+export const LOAD_ALL = '[Folder] Load All';
 export const LOAD_SUCCESS = '[Folder] Load Success';
 export const SELECT = '[Folder] Select';
 export const DESELECT_ALL = '[Folder] Deselect All';
@@ -51,6 +52,10 @@ export class FolderAdded implements Action {
 
   constructor(public payload: Folder) {
   }
+}
+
+export class LoadAll implements Action {
+  readonly type = LOAD_ALL;
 }
 
 export class LoadSuccess implements Action {
@@ -98,4 +103,4 @@ export class ChangeSortOrder implements Action {
 }
 
 // TODO: Add RouterState | Activated Route
-export type Actions = Add | Update | FoldersUpdated | FolderUpdated | FolderAdded | Delete | MultiDelete | FoldersDeleted |  LoadSuccess | ChangeSortOrder | Select | DeselectAll;
+export type Actions = Add | Update | FoldersUpdated | FolderUpdated | FolderAdded | Delete | MultiDelete | FoldersDeleted | LoadAll | LoadSuccess | ChangeSortOrder | Select | DeselectAll;

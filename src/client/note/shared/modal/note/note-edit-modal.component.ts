@@ -1,17 +1,24 @@
-import { Component, Input, OnDestroy, ViewChild, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit, ViewEncapsulation, OnDestroy, HostListener } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { ZNoteService } from '../../services/note.service';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/takeUntil';
+
 
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
 import { Note } from '../../../../core/shared/models/note.model';
 import { Constants } from '../../../../core/shared/config/constants';
+import { ZNoteService } from '../../services/note.service';
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { Subject } from 'rxjs/Subject';
 import { PhotoUploadService } from '../../../../core/shared/services/photo-upload.service';
+
+const DEBOUNCE_MS = 1000;
 
 declare var _: any;
 declare var $: any;
@@ -23,10 +30,23 @@ declare var $: any;
   styleUrls: ['note-edit-modal.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-
-export class NoteEditModalComponent implements AfterViewInit, OnDestroy {
+export class NoteEditModalComponent implements OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
   @Input() note: Note = new Note();
+
+  @HostListener('document:keypress', ['$event'])
+  onKeyDown(ev: KeyboardEvent) {
+    console.debug('on key press', ev);
+
+    if(ev.key == 'z' && ev.ctrlKey ) {
+      this.undo();
+    }
+
+    if(ev.key == 'y' && ev.ctrlKey ) {
+      this.redo();
+    }
+
+  }
 
   titleModal: string = 'New Note';
 
@@ -36,15 +56,36 @@ export class NoteEditModalComponent implements AfterViewInit, OnDestroy {
   tags: AbstractControl;
   files: Array<any> = new Array<any>();
 
+  closeSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
   private editMode: string = Constants.modal.add;
+
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService) {
-    this.assignFormValue(this.note);
+
+    this.store.select(fromRoot.getCurrentNote).takeUntil(this.closeSubject)
+      .subscribe((note: Note) => {
+        this.assignFormValue(note)
+      });
+  }
+
+  ngOnDestroy() {
+    this.closeSubject.next('');
+    this.closeSubject.unsubscribe();
+  }
+
+  registerAutoSave() {
+
+    // Auto save
+    this.form.get('content').valueChanges.takeUntil(this.closeSubject).debounceTime(DEBOUNCE_MS)
+      .subscribe(() => {
+        console.log('Auto save note: ', this.form.value, this.note);
+        this.store.dispatch(new note.Update({...this.form.value, id: this.note.id}));
+      });
   }
 
   ngAfterViewInit(): void {
@@ -63,13 +104,14 @@ export class NoteEditModalComponent implements AfterViewInit, OnDestroy {
     this.editMode = options.mode;
 
     this.assignFormValue(this.note);
+    this.registerAutoSave();
   }
 
   assignFormValue(data: Note) {
     this.form = this.fb.group({
-      'title': [data.title, Validators.compose([Validators.required])],
-      'content': [data.content],
-      'tags': [data.tags],
+      'title': [_.get(data, 'title', ''), Validators.compose([Validators.required])],
+      'content': [_.get(data, 'content', '')],
+      'tags': [_.get(data, 'tags', '')],
     });
 
     this.title = this.form.controls['title'];
@@ -77,6 +119,15 @@ export class NoteEditModalComponent implements AfterViewInit, OnDestroy {
     this.tags = this.form.controls['tags'];
   }
 
+  undo() {
+    console.debug('Perform UNDO');
+    this.store.dispatch(new note.Undo());
+  }
+
+  redo() {
+    console.debug('Perform REDO');
+    this.store.dispatch(new note.Redo());
+  }
   /*
    * Ignore if the file is uploading
    * Delete if the file was uploaded
@@ -95,11 +146,12 @@ export class NoteEditModalComponent implements AfterViewInit, OnDestroy {
   }
 
   onSubmit(value: any) {
-    if (this.editMode == Constants.modal.add)
+    if(this.editMode == Constants.modal.add)
       this.store.dispatch(new note.Add(value));
     else
       this.store.dispatch(new note.Update({...value, id: this.note.id}));
-    this.modal.close();
+    this.modal.close()
+      .then(() => { this.closeSubject.next(''); });
   }
 
   ngOnDestroy() {
