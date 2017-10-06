@@ -52,6 +52,6 @@ export class ZNoteMyNoteComponent implements OnInit {
   }
 
   onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_note_edit_modal'});
+    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
   }
 }
