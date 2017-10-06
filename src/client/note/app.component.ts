@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import './operators';
 import 'rxjs/add/operator/filter';
+import { Subject } from 'rxjs/Subject';
 
 import { Config } from '../core/shared/config/env.config';
 import { ZNoteService } from './shared/services/note.service';
@@ -18,7 +19,6 @@ import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing
 import * as fromRoot from './shared/reducers/index';
 import * as fromFolder from './shared/reducers/folder';
 import { Folder } from './shared/reducers/folder';
-import { Subject } from 'rxjs';
 
 
 /**
