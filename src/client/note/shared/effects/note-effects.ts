@@ -26,8 +26,8 @@ export class NoteEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
     return this.noteService.create(payload)
-      .map((res: any) => new note.NotesAdded([res['data']]))
-      .catch(() => of(new note.NotesAdded([])))
+      .map((res: any) => new note.MultiNotesAdded([res['data']]))
+      .catch(() => of(new note.MultiNotesAdded([])))
       ;
     });
 

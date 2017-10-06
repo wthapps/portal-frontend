@@ -5,7 +5,8 @@ export const UPDATE = '[Note] Update';
 export const NOTE_UPDATED = '[Note] Updated';
 export const MULTI_NOTES_UPDATED = '[Notes] Updated';
 export const ADD = '[Note] Add';
-export const NOTES_ADDED = '[Notes] Added';
+export const NOTE_ADDED = '[Note] Added';
+export const MULTI_NOTES_ADDED = '[Notes] Multi Added';
 export const DELETE = '[Note] Delete';
 export const MULTI_DELETE = '[Note] Multi-Delete';
 export const NOTES_DELETED = '[Notes] Deleted';
@@ -57,9 +58,15 @@ export class Add implements Action {
   constructor(public payload: Note) {
   }
 }
+export class NoteAdded implements Action {
+  readonly type = NOTE_ADDED;
 
-export class NotesAdded implements Action {
-  readonly type = NOTES_ADDED;
+  constructor(public payload: Note) {
+  }
+}
+
+export class MultiNotesAdded implements Action {
+  readonly type = MULTI_NOTES_ADDED;
 
   constructor(public payload: Note[]) {
   }
@@ -147,6 +154,6 @@ export class Redo implements Action {
 }
 
 // TODO: Add RouterState | Activated Route
-export type NoteActions = Add | Update | Edit | NoteUpdated | MultiNotesUpdated | NotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad
+export type NoteActions = Add | Update | Edit | NoteUpdated | MultiNotesUpdated | NoteAdded | MultiNotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad
   | InitLoadDone | ChangeViewMode | Undo | Redo;
 

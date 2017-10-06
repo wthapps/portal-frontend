@@ -58,7 +58,12 @@ export const noteInitialState: State = {
 // Reducer
 export function reducer(state: State = noteInitialState, action: note.NoteActions): State {
   switch (action.type) {
-    case note.NOTES_ADDED: {
+    case note.NOTE_ADDED: {
+      const notes = [...state.notes, action['payload']];
+      // return Object.assign({}, state, {notes: notes, currentNote: action['payload']});
+      return {...state, notes: notes, currentNote: action['payload']};
+    }
+    case note.MULTI_NOTES_ADDED: {
       const notes = [...state.notes, ...action['payload']];
       return Object.assign({}, state, {notes: notes});
     }

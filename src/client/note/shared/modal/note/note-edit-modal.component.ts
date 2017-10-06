@@ -7,6 +7,9 @@ import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/toPromise';
 
 
 import * as fromRoot from '../../reducers/index';
@@ -35,16 +38,16 @@ export class NoteEditModalComponent implements OnDestroy {
   @Input() note: Note = new Note();
 
   @HostListener('document:keypress', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
+  onKeyPress(ev: KeyboardEvent) {
     console.debug('on key press', ev);
 
-    if(ev.key == 'z' && ev.ctrlKey ) {
-      this.undo();
-    }
-
-    if(ev.key == 'y' && ev.ctrlKey ) {
-      this.redo();
-    }
+    // if(ev.key == 'z' && ev.ctrlKey ) {
+    //   this.undo();
+    // }
+    //
+    // if(ev.key == 'y' && ev.ctrlKey ) {
+    //   this.redo();
+    // }
 
   }
 
@@ -57,8 +60,10 @@ export class NoteEditModalComponent implements OnDestroy {
   files: Array<any> = new Array<any>();
 
   closeSubject: Subject<any> = new Subject<any>();
+  private noSaveSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
   private editMode: string = Constants.modal.add;
+  private parentId: string;
 
 
   constructor(private fb: FormBuilder,
@@ -81,12 +86,18 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   registerAutoSave() {
-
-    // Auto save
-    this.form.get('content').valueChanges.takeUntil(this.closeSubject).debounceTime(DEBOUNCE_MS)
+      // Auto save
+    this.form.valueChanges
+      .takeUntil(this.noSaveSubject.merge(this.closeSubject))
+      .debounceTime(DEBOUNCE_MS)
       .subscribe(() => {
         console.log('Auto save note: ', this.form.value, this.note);
-        this.store.dispatch(new note.Update({...this.form.value, id: this.note.id}));
+
+        if(this.editMode == Constants.modal.add) {
+          this.onFirstSave();
+        } else {
+          this.store.dispatch(new note.Update({...this.form.value, id: this.note.id}));
+        }
       });
   }
 
@@ -109,10 +120,11 @@ export class NoteEditModalComponent implements OnDestroy {
     Quill.register(Size, true);
   }
 
-  open(options: any = {mode: Constants.modal.add, note: Note}) {
+  open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {
     if (this.note === undefined) {
       this.note = new Note();
     }
+    this.parentId = _.get(options, 'parent_id');
     this.modal.open().then();
     this.editMode = options.mode;
 
@@ -135,11 +147,19 @@ export class NoteEditModalComponent implements OnDestroy {
   undo() {
     console.debug('Perform UNDO');
     this.store.dispatch(new note.Undo());
+
+    // Stop and restart auto-save feature
+    this.noSaveSubject.next('');
+    this.registerAutoSave();
   }
 
   redo() {
     console.debug('Perform REDO');
     // this.store.dispatch(new note.Redo());
+    // this.noSaveSubject.next('');
+
+    this.noSaveSubject.next('');
+    this.registerAutoSave();
   }
   /*
    * Ignore if the file is uploading
@@ -158,14 +178,28 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   onSubmit(value: any) {
-    if(this.editMode == Constants.modal.add)
-      this.store.dispatch(new note.Add(value));
+    if(this.editMode == Constants.modal.add) {
+      this.store.dispatch(new note.Add({...value, parent_id: this.parentId}));
+    }
     else
       this.store.dispatch(new note.Update({...value, id: this.note.id}));
     this.modal.close()
       .then(() => { this.closeSubject.next(''); });
   }
 
+  /**
+   * Save post and change to EDIT mode
+   */
+  onFirstSave() {
+    if(this.editMode == Constants.modal.add) {
+      console.debug('on First save params: ', {...this.form.value, parent_id: this.parentId});
+      this.noteService.create({...this.form.value, parent_id: this.parentId}).toPromise()
+        .then((res: any) => {
+        this.note = res.data;
+        this.editMode = Constants.modal.edit;
+      })
+    }
+  }
 
   private subscribePhotoSelectEvents() {
     let closeObs$ = this.photoSelectDataService.closeObs$.merge(

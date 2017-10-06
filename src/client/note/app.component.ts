@@ -21,6 +21,8 @@ import * as fromFolder from './shared/reducers/folder';
 import { Folder } from './shared/reducers/folder';
 
 
+declare var _: any;
+
 /**
  * This class represents the main application component.
  */
@@ -98,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
         break;
       case 'note:open_note_add_modal':
         this.loadModalComponent(NoteEditModalComponent);
-        this.modal.open({mode: 'add'});
+        this.modal.open({mode: 'add', parent_id: _.get(event, 'payload.parent_id')});
         break;
       case 'note:folder:edit':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);

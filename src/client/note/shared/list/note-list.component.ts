@@ -11,13 +11,13 @@ import { Folder } from '../reducers/folder';
 
 declare var _: any;
 
+
 @Component({
   moduleId: module.id,
   selector: 'note-list',
   templateUrl: 'note-list.component.html',
   styleUrls: ['note-list.component.css'],
   encapsulation: ViewEncapsulation.None
-
 })
 export class NoteListComponent implements OnInit {
   @Input() data: any[];
@@ -25,15 +25,17 @@ export class NoteListComponent implements OnInit {
   @Input() folderItems: Folder[];
   @Input() viewOption: string = 'list';
   @Input() orderDesc: boolean;
+  @Input() isSelectAll: boolean;
 
   sortType: string = 'name';
   // sortDescending: boolean = false;
-  selectedIds$: Observable<any[]>;
-  isSelectAll$: Observable<boolean>;
+
+  readonly VIEW_MODE = {
+    GRID: 'grid',
+    LIST: 'list'
+  };
 
   constructor(public noteService: ZNoteService, public store: Store<fromRoot.State>) {
-    this.selectedIds$ = this.store.select(fromRoot.getSelectedIds);
-    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
   }
 
   ngOnInit() {

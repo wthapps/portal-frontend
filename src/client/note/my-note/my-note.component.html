@@ -4,9 +4,18 @@
   </button>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <note-list [noteItems]="noteItems$ | async" [folderItems]="folderItems$ | async" [viewOption]="(nodeState$ | async)?.viewMode" [orderDesc]="orderDesc$ | async"></note-list>
+  <note-list [noteItems]="noteItems$ | async" [folderItems]="folderItems$ | async" [viewOption]="(nodeState$ | async)?.viewMode" [orderDesc]="orderDesc$ | async" [isSelectAll]="(nodeState$ | async)?.isSelectAll"></note-list>
 </div>
 
 <!--<div *ngIf="data">-->
   <!--<div> no data here!!!!</div>-->
 <!--</div>-->
+
+
+
+<ul>
+  <li *ngFor="let item of (selectedIds$ | async)">
+    {{ item.id }} - {{ item.object_type }}
+  </li>
+</ul>
+

@@ -1,8 +1,8 @@
-<div [ngClass]="{'component-listbox-list': viewOption == 'list', 'component-listbox-grid': viewOption == 'grid'}">
+<div [ngClass]="{'component-listbox-list': viewOption == VIEW_MODE.LIST, 'component-listbox-grid': viewOption == VIEW_MODE.GRID}">
   <div class="component-listbox-header">
     <div class="component-listbox-row">
       <div class="component-listbox-input"
-           [ngClass]="{'active': (isSelectAll$ | async)}">
+           [ngClass]="{'active': isSelectAll}">
         <i (click)="onSelectedAll()" class="fa fa-check"></i>
       </div>
       <div class="component-listbox-name">
@@ -44,9 +44,3 @@
   </ng-container>
 
 </div>
-
-<ul>
-  <li *ngFor="let item of (selectedIds$ | async)">
-    {{ item.id }} - {{ item.object_type }}
-  </li>
-</ul>
