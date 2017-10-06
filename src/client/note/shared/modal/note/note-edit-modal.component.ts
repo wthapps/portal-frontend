@@ -15,7 +15,6 @@ import { Note } from '../../../../core/shared/models/note.model';
 import { Constants } from '../../../../core/shared/config/constants';
 import { ZNoteService } from '../../services/note.service';
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
-import { Subject } from 'rxjs/Subject';
 import { PhotoUploadService } from '../../../../core/shared/services/photo-upload.service';
 
 const DEBOUNCE_MS = 1000;
@@ -76,6 +75,8 @@ export class NoteEditModalComponent implements OnDestroy {
   ngOnDestroy() {
     this.closeSubject.next('');
     this.closeSubject.unsubscribe();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
   registerAutoSave() {
@@ -154,10 +155,6 @@ export class NoteEditModalComponent implements OnDestroy {
       .then(() => { this.closeSubject.next(''); });
   }
 
-  ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
-  }
 
   private subscribePhotoSelectEvents() {
     let closeObs$ = this.photoSelectDataService.closeObs$.merge(
