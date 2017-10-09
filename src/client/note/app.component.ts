@@ -39,7 +39,7 @@ declare var _: any;
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  routerSubscription: Subscription;
+  
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -73,15 +73,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.routerSubscription = this.router.events
+    this.router.events
       .filter(event => event instanceof NavigationEnd)
+      .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
   }
 
   ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
   }
