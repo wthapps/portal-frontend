@@ -7,7 +7,6 @@ export const REMOVE_SHARED_CONTACT = 'NOTE_SHARE_MODAL_REMOVE_SHARED_CONTACT';
 export const CANCEL_ACTIONS = 'NOTE_SHARE_MODAL_CANCEL_ACTIONS';
 export const SAVE = 'NOTE_SHARE_MODAL_SAVE';
 
-
 declare let _: any;
 let empty: any = function(): any {
 	return {

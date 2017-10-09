@@ -44,6 +44,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   subscription: any;
   changed: boolean = false;
   showCancelButton: boolean = false;
+  mode: string = 'create';
 
   contactTerm$ = new Subject<string>();
 
@@ -91,9 +92,11 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   open() {
     this.modal.open();
     if (this.sharedObjects.length == 1) {
-      this.apiBaseService.post(`note/sharings/get_sharing_info_object`, {object_id: this.sharedObjects[0].id}).subscribe((res: any) => {
+      this.apiBaseService.post(`note/sharings/get_sharing_info_object`, {object_id: this.sharedObjects[0].id, object_type: this.sharedObjects[0].object_type}).subscribe((res: any) => {
         this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
-        this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
+        if (res.data.length > 0) {
+          this.mode = 'edit'
+        }
       });
     }
   }
@@ -111,9 +114,21 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.store.dispatch({type: fromShareModal.SAVE});
-    this.apiBaseService.post(`note/sharings`, {objects: this.sharedObjects, recipients: this.sharedContacts}).subscribe((res: any) => {
-      console.log(res);
-    });
+    if(this.mode == 'create') {
+      this.store.dispatch({type: fromShareModal.SAVE});
+      this.apiBaseService.post(`note/sharings`, {objects: this.sharedObjects, recipients: this.sharedContacts}).subscribe((res: any) => {
+        if (res.data.length > 0) {
+          this.mode = 'edit'
+        }
+      });
+    } else {
+      // Only update single object
+      let object = this.sharedObjects[0];
+      this.store.dispatch({type: fromShareModal.SAVE});
+      this.apiBaseService.put(`note/sharings/${object.id}`, {object: object, recipients: this.sharedContacts}).subscribe((res: any) => {
+        this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
+        this.store.dispatch({type: fromShareModal.SAVE});
+      });
+    }
   }
 }
