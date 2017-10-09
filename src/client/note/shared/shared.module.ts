@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZNoteSharedModalSharingComponent } from './modal/sharing/sharing.component';
 import { ZFolderService } from './services/folder.service';
+import { MixedEntityService } from './mixed-enity/mixed-entity.service';
 
 
 /**
@@ -59,7 +60,8 @@ export class ZNoteSharedModule {
       ngModule: ZNoteSharedModule,
       providers: [
         ZNoteService,
-        ZFolderService
+        ZFolderService,
+        MixedEntityService
       ]
     };
   }

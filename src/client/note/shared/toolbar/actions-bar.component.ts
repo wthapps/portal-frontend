@@ -24,7 +24,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   constructor(public noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               public commonEventService: CommonEventService) {
-    this.selectedIds$ = this.store.select(fromRoot.getSelectedIds);
+    // this.selectedIds$ = this.store.select(fromRoot.getSelectedIds);
   }
 
   ngOnInit() {

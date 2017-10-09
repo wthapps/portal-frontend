@@ -17,7 +17,6 @@ import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.comp
 import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
 import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing.component';
 import * as fromRoot from './shared/reducers/index';
-import * as fromFolder from './shared/reducers/folder';
 import { Folder } from './shared/reducers/folder';
 
 
@@ -39,7 +38,7 @@ declare var _: any;
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  
+
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -53,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private wthConfirmService: WthConfirmService,
               private store: Store<fromRoot.State>,
               private noteService: ZNoteService) {
-    console.log('Environment config', Config);
+    // console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent' || event.channel == 'noteActionsBar').subscribe((event: any) => {
       this.doEvent(event);
     });
@@ -87,7 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   doEvent(event: any) {
-    console.log(event);
+    // console.log(event);
     switch (event.action) {
       case 'note:folder:create':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);

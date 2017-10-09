@@ -14,7 +14,7 @@ let empty: any = function(): any {
 		selectedContacts: [],
 		sharedContacts: []
 	}
-}
+};
 export function reducer(state: any = {
 	saved: empty(),
 	current: empty(),

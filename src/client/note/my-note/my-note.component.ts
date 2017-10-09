@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ZNoteService } from '../shared/services/note.service';
-import { ApiBaseService } from '../../core/shared/services/apibase.service';
+// import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
 import { Store } from '@ngrx/store';
 
@@ -9,6 +9,8 @@ import * as note from '../shared/actions/note';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '../../core/shared/models/note.model';
+import { AppStore } from '../shared/app-store';
+import { MixedEntityAction } from '../shared/mixed-enity/mixed-entity.action';
 
 declare var _: any;
 
@@ -19,15 +21,25 @@ declare var _: any;
 })
 export class ZNoteMyNoteComponent implements OnInit {
   // data: Array<any> = new Array<any>();
-  viewOption: string = 'list';
-  public noteItems$: Observable<Note[]>;
-  public folderItems$: Observable<Folder[]>;
-  public orderDesc$: Observable<boolean>;
-  public nodeState$: Observable<any>;
-  public selectedIds$: Observable<any[]>;
+  viewOption: string = 'grid';
+  noteItems$: Observable<Note[]>;
+  folderItems$: Observable<Folder[]>;
+  orderDesc$: Observable<boolean>;
+  nodeState$: Observable<any>;
+  selectedIds$: Observable<any[]>;
 
-  constructor(private noteService: ZNoteService, private apiBaseService: ApiBaseService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
-    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
+  items: Observable<any>;
+  selectedObjects: Observable<Array<any>>;
+  selectingObjects: Observable<Array<any>>;
+
+  constructor(private noteService: ZNoteService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
+    this.items = this.store.select('mixedEntity').do((store: any) => {
+      console.log('tesing::::', store);
+    });
+
+
+    // this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
+
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
@@ -35,22 +47,8 @@ export class ZNoteMyNoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.apiBaseService.get(`note/dashboards`, {parent_id: null}).subscribe((res: any) => {
-    //   this.data = res.data;
-    //   this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: this.data});
-    // });
-    // this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
-    //   let tmp = _.clone(event.payload);
-    //   this.data.length = 0;
-    //
-    //   for (let item of tmp) {
-    //     if (!item.parent_id) {
-    //       this.data.push(item);
-    //     }
-    //   }
-    // });
-
-    this.store.dispatch(new note.Load({parent_id: null}));
+    this.store.dispatch(MixedEntityAction.getAll({parent_id: null}));
+    // this.store.dispatch(new note.Load({parent_id: null}));
   }
 
   onNewNote() {

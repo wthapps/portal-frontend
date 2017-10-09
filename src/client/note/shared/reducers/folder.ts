@@ -14,7 +14,7 @@ export interface State {
 }
 
 const initialState: State = {
-  folders: [],
+  folders: []
 };
 
 // TODO

@@ -146,8 +146,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let selectAll: boolean = false;
       let inotes: any[] = state.notes;
       let folders: any[] = state.folders;
-      if(state.selectedIds.length !== state.folders.length + state.notes.length) {
-        selectedIds = [...state.folders, ...state.notes];
+      if(state.selectedIds.length !== state.folders.length + state.notes.length)
+      {
+        selectedIds = [...state.folders, ...state.notes]
         selectAll = true;
         inotes.map((n: any) => Object.assign(n, {'selected': true}));
         folders.map((n: any) => Object.assign(n, {'selected': true}));

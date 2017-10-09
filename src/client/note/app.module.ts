@@ -14,20 +14,11 @@ import { ZNoteMySharingModule } from './my-sharing/my-sharing.module';
 import { ZNoteSearchModule } from './search/search.module';
 import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
+
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { reducers } from './shared/reducers/index';
-import * as fromFolder from './shared/reducers/folder';
-import * as fromNote from './shared/reducers/note';
-import * as fromShareModal from './shared/reducers/share-modal';
-import { NoteEffects } from './shared/effects/note-effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { FolderEffects } from './shared/effects/folder-effects';
-
-
-// import { reducers, metaReducers } from './shared/reducers/index';
-// import { NoteEffects } from './shared/effects/note-effects';
+import { AppEffects, AppStore } from './shared/app-store';
 
 
 @NgModule({
@@ -46,19 +37,16 @@ import { FolderEffects } from './shared/effects/folder-effects';
     ZNoteSettingsModule,
     ZNoteSharedModule.forRoot(),
 
-    StoreModule.forRoot({
+    StoreModule.forRoot(AppStore),
 
-      notes: fromNote.reducer,
-      share: fromShareModal.reducer,
-      folders: fromFolder.reducer
-    }),
     // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
-    EffectsModule.forRoot([NoteEffects, FolderEffects]),
+    EffectsModule.forRoot(AppEffects),
 
     // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
     // !(String('<%= BUILD_TYPE %>') === 'prod') ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
+
     CoreSharedModule.forRoot(),
   ],
   declarations: [AppComponent],

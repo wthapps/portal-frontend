@@ -20,10 +20,11 @@ declare var _: any;
   encapsulation: ViewEncapsulation.None
 })
 export class NoteListComponent implements OnInit {
-  @Input() data: any[];
+  @Input() data: Array<any>;
+  @Input() items: any[];
   @Input() noteItems: Note[];
   @Input() folderItems: Folder[];
-  @Input() viewOption: string = 'list';
+  @Input() viewOption: string = 'grid';
   @Input() orderDesc: boolean;
   @Input() isSelectAll: boolean;
 
@@ -50,7 +51,7 @@ export class NoteListComponent implements OnInit {
     // this.sortType = name;
     // this.noteService.changeSortOption(this.sortType, this.sortDescending);
 
-    this.store.dispatch(new note.ChangeSortOrder());
+    // this.store.dispatch(new note.ChangeSortOrder());
   }
 
   onSelectedAll() {

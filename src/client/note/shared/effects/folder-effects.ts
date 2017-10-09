@@ -33,7 +33,7 @@ export class FolderEffects {
     });
 
   @Effect() init$: Observable<any> = defer(() => {
-    console.debug('init load folders: ')
+    console.debug('init load folders: ');
     return this.folderService.getRootFolders();
   })
     .map((res: any) => new folder.LoadSuccess(res.data))
@@ -42,7 +42,7 @@ export class FolderEffects {
   @Effect() loadAll = this.actions
     .ofType(folder.LOAD_ALL)
     .switchMap(() => {
-      console.debug('Load ALL folders: ')
+      console.debug('Load ALL folders: ');
       return this.folderService.getAll()
         .map((res: any) => new folder.FolderAdded(res['data']))
         .catch(() => empty())
