@@ -11,7 +11,7 @@ import { ActionBase } from '../actions/action-base';
 export class MixedEntityEffects {
 
   @Effect()
-  getAll: Observable<Action> = this.actions
+  getAll: Observable<any> = this.actions
     .ofType(MixedEntityAction.GET_ALL)
     .map((action: any) => action.payload)
     .switchMap((queryParams: any) => {

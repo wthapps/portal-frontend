@@ -8,7 +8,7 @@ import {
 
 import * as fromNote from './note';
 import * as fromFolder from './folder';
-
+import * as fromMixedEntity from '../mixed-enity/mixed-entity.reducer';
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
  * our top level state interface is just a map of keys to inner state types.
@@ -16,12 +16,14 @@ import * as fromFolder from './folder';
 export interface State {
   notes: fromNote.State;
   folders: fromFolder.State;
+  mixedEntity: fromMixedEntity.State;
   // router: fromRouter.RouterReducerState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   notes: fromNote.reducer,
   folders: fromFolder.reducer,
+  mixedEntity: fromMixedEntity.reducer
   // routerReducer: fromRouter.routerReducer
 };
 

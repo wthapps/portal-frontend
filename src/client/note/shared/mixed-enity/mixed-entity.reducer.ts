@@ -1,6 +1,13 @@
 import { MixedEntityAction } from './mixed-entity.action';
 import { ActionBase } from '../actions/action-base';
 
+export interface State {
+  item: null;
+  items: Array<any>,
+  selectedItems: Array<any>;
+  selectingItems: Array<any>;
+};
+
 const INITIAL: any = {
   item: null,
   items: new Array<any>(),
@@ -8,7 +15,7 @@ const INITIAL: any = {
   selectingItems: new Array<any>()
 };
 
-export function mixedEntityReducer(state: any = INITIAL, action: any): any {
+export function reducer(state: any = INITIAL, action: any): any {
   switch (action.type) {
     case MixedEntityAction.GET_ALL:
       console.log('GET_ALL::::', state, action.payload);
@@ -21,6 +28,4 @@ export function mixedEntityReducer(state: any = INITIAL, action: any): any {
       return state;
   }
 }
-
-export const MixedEntityReducer = mixedEntityReducer;
 

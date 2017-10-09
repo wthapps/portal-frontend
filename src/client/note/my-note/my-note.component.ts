@@ -26,20 +26,16 @@ export class ZNoteMyNoteComponent implements OnInit {
   folderItems$: Observable<Folder[]>;
   orderDesc$: Observable<boolean>;
   nodeState$: Observable<any>;
-  public selectedObjects$: Observable<any[]>;
+  selectedObjects$: Observable<any[]>;
 
   items: Observable<any>;
-  selectedObjects: Observable<Array<any>>;
-  selectingObjects: Observable<Array<any>>;
 
   constructor(private noteService: ZNoteService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
-    this.items = this.store.select('mixedEntity').do((store: any) => {
-      console.log('tesing::::', store);
-    });
+    // this.items = this.store.select('mixedEntity').do((store: any) => {
+    //   console.log('tesing::::', store);
+    // });
 
-
-    // this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
-
+    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
@@ -47,8 +43,8 @@ export class ZNoteMyNoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(MixedEntityAction.getAll({parent_id: null}));
-    // this.store.dispatch(new note.Load({parent_id: null}));
+    // this.store.dispatch(MixedEntityAction.getAll({parent_id: null}));
+    this.store.dispatch(new note.Load({parent_id: null}));
   }
 
   onNewNote() {

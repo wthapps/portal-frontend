@@ -20,7 +20,7 @@ declare var _: any;
   encapsulation: ViewEncapsulation.None
 })
 export class NoteListComponent implements OnInit {
-  @Input() data: Array<any>;
+  @Input() data: any[];
   @Input() items: any[];
   @Input() noteItems: Note[];
   @Input() folderItems: Folder[];
