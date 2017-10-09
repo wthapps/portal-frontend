@@ -50,7 +50,7 @@ import { FolderEffects } from './shared/effects/folder-effects';
 
       notes: fromNote.reducer,
       share: fromShareModal.reducer,
-      folder: fromFolder.reducer
+      folders: fromFolder.reducer
     }),
     // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
