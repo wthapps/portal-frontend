@@ -1,5 +1,5 @@
-<ul class="page-body-control-menu">
-  <li>
+<ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0">
+  <li *ngIf="selectedObjects.length <= 1">
     <a href="javascript:;" class="btn btn-default" (click)="onEdit()"
        pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
       <i class="fa fa-pencil"></i>

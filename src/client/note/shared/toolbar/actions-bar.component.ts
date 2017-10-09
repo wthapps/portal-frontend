@@ -6,8 +6,8 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-
+import 'rxjs/add/operator/take';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -18,13 +18,15 @@ import { Observable } from 'rxjs/Observable';
 export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
   @Input() data: Note;
+  @Input() selectedObjects: any[] = [];
   readonly tooltip: any = Constants.tooltip;
-  selectedIds$: Observable<any[]>;
+  // selectedObjects$: Observable<any[]>;
 
   constructor(public noteService: ZNoteService,
               private store: Store<fromRoot.State>,
+              private wthConfirm: WthConfirmService,
               public commonEventService: CommonEventService) {
-    // this.selectedIds$ = this.store.select(fromRoot.getSelectedIds);
+    // this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
   }
 
   ngOnInit() {
@@ -34,11 +36,22 @@ export class ZNoteSharedActionBarComponent implements OnInit {
     if (this.multiple) {
       // TODO:
       // this.noteService.deleteNote();
-      this.store.dispatch(new note.MultiDelete());
+
+      this.wthConfirm.confirm({
+        message: 'Are you sure you want to delete following objects?',
+        header: 'Delete Objects',
+        accept: () => {
+          this.store.dispatch(new note.MultiDelete());
+        }
+      });
     } else {
-      // this.noteService.deleteNote(this.data);
-      // let id = this.data.id;
-      this.store.dispatch(new note.Delete([{id: this.data.id, object_type: this.data.object_type}]));
+      this.wthConfirm.confirm({
+        message: 'Are you sure you want to delete this object?',
+        header: 'Delete Object',
+        accept: () => {
+          this.store.dispatch(new note.Delete([{id: this.data.id, object_type: this.data.object_type}]));
+        }
+      });
     }
 
   }
@@ -48,6 +61,23 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   }
 
   onEdit() {
-    this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: this.data});
+    // this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: this.data});
+    this.store.select(fromRoot.getFirstSelectedObject)
+      .take(1)
+      .subscribe((selectedObject: any) => {
+        if(!selectedObject) {
+          console.error('No selected Objects to Edit');
+          return;
+        }
+        switch (selectedObject.object_type) {
+          case 'note':
+            this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
+            break;
+          case 'folder':
+            this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: selectedObject});
+            break;
+        }
+      });
+    ;
   }
 }

@@ -37,7 +37,7 @@ export interface State {
   folders: Folder[] | null;
   page: number;
   orderDesc: boolean;
-  selectedIds: {id: string, object_type: string}[];
+  selectedObjects: {id: string, object_type: string}[];
   selectAll: boolean;
   viewMode: string;
 };
@@ -49,7 +49,7 @@ export const noteInitialState: State = {
   folders: [],
   page: 0,
   orderDesc: true,
-  selectedIds: [],
+  selectedObjects: [],
   selectAll: false,
   viewMode: VIEW_MODE.LIST,
 };
@@ -59,16 +59,16 @@ export const noteInitialState: State = {
 export function reducer(state: State = noteInitialState, action: note.NoteActions): State {
   switch (action.type) {
     case note.NOTE_ADDED: {
-      const notes = [...state.notes, action['payload']];
+      let notes = [...state.notes, action['payload']];
       // return Object.assign({}, state, {notes: notes, currentNote: action['payload']});
       return {...state, notes: notes, currentNote: action['payload']};
     }
     case note.MULTI_NOTES_ADDED: {
-      const notes = [...state.notes, ...action['payload']];
+      let notes = [...state.notes, ...action['payload']];
       return Object.assign({}, state, {notes: notes});
     }
     case note.MULTI_NOTES_UPDATED: {
-      const notes3 = [...state.notes];
+      let notes3 = [...state.notes];
       action.payload.forEach((uNote: Note) => {
         let idx: any =  notes3.findIndex((n: any) => n.id == uNote.id);
         if(idx > -1)
@@ -78,11 +78,11 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       return Object.assign({}, state, {notes: notes3});
     }
     case note.NOTE_UPDATED: {
-      const notes3 = [...state.notes];
+      let notes4 = [...state.notes];
       let uNote: Note = action.payload;
-      let idx: any =  notes3.findIndex((n: any) => n.id == uNote.id);
+      let idx: any =  notes4.findIndex((n: any) => n.id == uNote.id);
       if(idx > -1)
-        notes3.splice(idx, 1, uNote);
+        notes4.splice(idx, 1, uNote);
       let noteStack: Note[] = [...state.noteHistory.stack];
 
       if(noteStack.length >= UNDO_STACK_SIZE) {
@@ -92,63 +92,65 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         noteStack.unshift(uNote);
       }
 
-      return Object.assign({}, state, {notes: notes3, noteHistory: {stack: noteStack, stackId: 0}});
+      return Object.assign({}, state, {notes: notes4,
+        noteHistory: {stack: noteStack, stackId: 0},
+        selectedObjects: noteInitialState.selectedObjects,
+        selectAll: noteInitialState.selectAll});
     }
     case note.EDIT: {
       return {...state, currentNote: action.payload, noteHistory: {id: action.payload.id, stackId: 0, stack: []}};
     }
     case note.UNDO: {
-      const stackId = state.noteHistory.stackId++;
-      const currentNote = state.noteHistory.stack[stackId];
-      const noteHistory = {...state.noteHistory, stackId: stackId};
+      let stackId = state.noteHistory.stackId++;
+      let currentNote = state.noteHistory.stack[stackId];
+      let noteHistory = {...state.noteHistory, stackId: stackId};
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.REDO: {
-      const stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId-- : 0;
-      const currentNote = state.noteHistory.stack[stackId];
-      const noteHistory = {...state.noteHistory, stackId: stackId};
+      let stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId-- : 0;
+      let currentNote = state.noteHistory.stack[stackId];
+      let noteHistory = {...state.noteHistory, stackId: stackId};
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.LOAD_SUCCESS:
-      const items = [...action['payload']];
+      let items = [...action['payload']];
       return Object.assign({}, state, {
         notes: items.filter((i: any) => i.object_type == ITEM_TYPE.NOTE),
         folders: items.filter((i: any) => i.object_type == ITEM_TYPE.FOLDER),
-        selectedIds: noteInitialState.selectedIds,
+        selectedObjects: noteInitialState.selectedObjects,
         selectAll: noteInitialState.selectAll});
     case note.NOTES_DELETED:
-      const noteIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.NOTE) return n.id});
-      const folderIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.FOLDER) return n.id});
-      const notes2 = [...state.notes].filter((n: any) => noteIds.indexOf(n.id) == -1);
-      const folders2 = [...state.folders].filter((n: any) => folderIds.indexOf(n.id) == -1);
+      let noteIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.NOTE) return n.id});
+      let folderIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.FOLDER) return n.id});
+      let notes2 = [...state.notes].filter((n: any) => noteIds.indexOf(n.id) == -1);
+      let folders2 = [...state.folders].filter((n: any) => folderIds.indexOf(n.id) == -1);
       return Object.assign({}, state, {
         notes: notes2,
         folders: folders2,
-        selectedIds: noteInitialState.selectedIds,
+        selectedObjects: noteInitialState.selectedObjects,
         selectAll: noteInitialState.selectAll
       });
     case note.CHANGE_SORT_ORDER:
-      const rOrderDesc = !state.orderDesc;
+      let rOrderDesc = !state.orderDesc;
       return Object.assign({}, state, { orderDesc: rOrderDesc});
     case note.SELECT:
-      const selected = action['payload'];
-      const index = state.selectedIds.findIndex((o: any) => o.id == selected.id && o.object_type == selected.object_type);
-      let newSelectedIds: any[]= [];
+      let selected = action['payload'];
+      let index = state.selectedObjects.findIndex((o: any) => o.id == selected.id && o.object_type == selected.object_type);
+      let newselectedObjects: any[]= [];
       if(index == -1)
-        newSelectedIds = [...state.selectedIds, selected];
+        newselectedObjects = [...state.selectedObjects, selected];
       else
-        newSelectedIds = state.selectedIds.filter((o: any, idx: number) => idx !== index);
+        newselectedObjects = state.selectedObjects.filter((o: any, idx: number) => idx !== index);
 
 
-      return Object.assign({}, state, {selectedIds: newSelectedIds});
+      return Object.assign({}, state, {selectedObjects: newselectedObjects});
     case note.SELECT_ALL:
-      let selectedIds: any[] = [];
+      let selectedObjects: any[] = [];
       let selectAll: boolean = false;
       let inotes: any[] = state.notes;
       let folders: any[] = state.folders;
-      if(state.selectedIds.length !== state.folders.length + state.notes.length)
-      {
-        selectedIds = [...state.folders, ...state.notes]
+      if(state.selectedObjects.length !== state.folders.length + state.notes.length) {
+        selectedObjects = [...state.folders, ...state.notes];
         selectAll = true;
         inotes.map((n: any) => Object.assign(n, {'selected': true}));
         folders.map((n: any) => Object.assign(n, {'selected': true}));
@@ -156,7 +158,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         inotes.map((n: any) => Object.assign(n, {'selected': false}));
         folders.map((n: any) => Object.assign(n, {'selected': false}));
       }
-      return Object.assign({}, state, {selectedIds: selectedIds, selectAll: selectAll, notes: inotes, folders: folders});
+      return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
     case note.CHANGE_VIEW_MODE:
       return {...state, viewMode: action.payload};
     default: {
@@ -170,10 +172,34 @@ export const getPage = (state: State ) => state.page;
 export const getOrderDesc = (state: State ) => state.orderDesc;
 export const getFolders = (state: State ) => state.folders;
 export const getSelectAll = (state: State ) => state.selectAll;
-export const getSelectedIds = (state: State ) => state.selectedIds;
+export const getSelectedObjects = (state: State ) => state.selectedObjects;
 export const getViewMode = (state: State ) => state.viewMode;
 export const getCurrentNote = (state: State ) => state.currentNote;
 
+
+export const getFirstSelectedObject = (state: State) => {
+  let obj: any = state.selectedObjects[0] || {};
+
+  // TODO: Testing
+  switch(obj['object_type']) {
+    case 'note': {
+      let idx: any = state.notes.findIndex((o: any) => o.id == obj.id && o.object_type == obj.object_type)
+      if(idx > -1)
+        return state.notes[idx];
+      else
+        return {};
+    }
+    case 'folder': {
+      let idx: any = state.folders.findIndex((o: any) => o.id == obj.id && o.object_type == obj.object_type)
+      if(idx > -1)
+        return state.folders[idx];
+      else
+        return {};
+    }
+    default:
+      return {};
+  }
+}
 
 export const getSortedNotes = createSelector(getNotes, getOrderDesc, (notes, orderDesc) => {
   const cloneNotes = [...notes];

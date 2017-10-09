@@ -197,6 +197,7 @@ export class NoteEditModalComponent implements OnDestroy {
         .then((res: any) => {
         this.note = res.data;
         this.editMode = Constants.modal.edit;
+        this.store.dispatch(new note.MultiNotesAdded([res['data']]));
       })
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Input } from '@angular/core';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
 import * as fromRoot from '../reducers/index';
@@ -14,6 +14,7 @@ import * as note from '../actions/note';
 })
 export class ZNoteSharedToolBarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
+  @Input() selectedObjects: any[]=[];
 
   tooltip: any = Constants.tooltip;
 

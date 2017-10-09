@@ -53,9 +53,9 @@ export class NoteEffects {
 
   @Effect() multiDeleteItems = this.actions
     .ofType(note.MULTI_DELETE)
-    .withLatestFrom(this.store, (action: any, state: any) => state.notes.selectedIds)
-    .switchMap((selectedIds: any[]) => {
-      return this.noteService.multiDelete(selectedIds)
+    .withLatestFrom(this.store, (action: any, state: any) => state.notes.selectedObjects)
+    .switchMap((selectedObjects: any[]) => {
+      return this.noteService.multiDelete(selectedObjects)
         .map((res: any) => new note.NotesDeleted(res.data))
         .catch(() => of(new note.NotesDeleted([])))
         ;
@@ -69,6 +69,7 @@ export class NoteEffects {
       .map((res: any) => new note.LoadSuccess(res.data))
       .catch(() => of(new note.LoadSuccess([])));
     });
+
 
   // @Effect() initLoad = this.actions
   //   .ofType(note.INIT_LOAD)

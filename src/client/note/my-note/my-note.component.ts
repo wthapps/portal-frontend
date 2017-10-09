@@ -26,7 +26,7 @@ export class ZNoteMyNoteComponent implements OnInit {
   folderItems$: Observable<Folder[]>;
   orderDesc$: Observable<boolean>;
   nodeState$: Observable<any>;
-  selectedIds$: Observable<any[]>;
+  public selectedObjects$: Observable<any[]>;
 
   items: Observable<any>;
   selectedObjects: Observable<Array<any>>;
@@ -43,7 +43,7 @@ export class ZNoteMyNoteComponent implements OnInit {
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
-    this.selectedIds$ = this.store.select(fromRoot.getSelectedIds);
+    this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
   }
 
   ngOnInit() {

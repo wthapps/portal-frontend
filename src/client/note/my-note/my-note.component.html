@@ -1,4 +1,10 @@
-<z-note-shared-toolbar>
+
+<ul>
+  <li *ngFor="let item of (selectedObjects$ | async)">
+    {{ item.id }} - {{ item.object_type }}
+  </li>
+</ul>
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)">
   <button (click)="onNewNote()" class="btn btn-outline-primary" type="button">
     <i class="fa fa-plus"></i> New Note
   </button>
@@ -12,15 +18,4 @@
   </note-list>
 </div>
 
-<!--<div *ngIf="data">-->
-  <!--<div> no data here!!!!</div>-->
-<!--</div>-->
-
-
-
-<ul>
-  <li *ngFor="let item of (selectedIds$ | async)">
-    {{ item.id }} - {{ item.object_type }}
-  </li>
-</ul>
 
