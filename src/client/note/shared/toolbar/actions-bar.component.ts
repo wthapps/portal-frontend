@@ -65,7 +65,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
     this.store.select(fromRoot.getFirstSelectedObject)
       .take(1)
       .subscribe((selectedObject: any) => {
-        if(!selectedObject) {
+        if (!selectedObject) {
           console.error('No selected Objects to Edit');
           return;
         }
@@ -74,10 +74,33 @@ export class ZNoteSharedActionBarComponent implements OnInit {
             this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
             break;
           case 'folder':
-            this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: selectedObject});
+            this.commonEventService.broadcast({
+              channel: 'noteActionsBar',
+              action: 'note:folder:edit',
+              payload: selectedObject
+            });
             break;
         }
       });
-    ;
+  }
+
+  onMoveToFolder() {
+    this.store.select(fromRoot.getFirstSelectedObject)
+      .take(1)
+      .subscribe((selectedObject: any) => {
+        if (!selectedObject) {
+          console.error('No selected Objects to Edit');
+          return;
+        }
+        switch (selectedObject.object_type) {
+          case 'folder':
+            this.commonEventService.broadcast({
+              channel: 'noteActionsBar',
+              action: 'note:folder:move_to_folder',
+              payload: selectedObject
+            });
+            break;
+        }
+      });
   }
 }

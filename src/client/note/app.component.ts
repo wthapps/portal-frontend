@@ -15,6 +15,7 @@ import { WthConfirmService } from '../core/shared/components/confirmation/wth-co
 import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
 import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
+import { ZNoteSharedModalFolderMoveComponent } from './shared/modal/folder/move.component';
 import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing.component';
 import * as fromRoot from './shared/reducers/index';
 import { Folder } from './shared/reducers/folder';
@@ -34,11 +35,11 @@ declare var _: any;
     NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
-    ZNoteSharedModalSharingComponent
+    ZNoteSharedModalSharingComponent,
+    ZNoteSharedModalFolderMoveComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
-
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -109,6 +110,11 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'note:folder:sharing':
         this.loadModalComponent(ZNoteSharedModalSharingComponent);
         this.modal.sharedObjects = [event.payload];
+        this.modal.open();
+        break;
+      case 'note:folder:move_to_folder':
+        this.loadModalComponent(ZNoteSharedModalFolderMoveComponent);
+        this.modal.selectedObjects = [event.payload];
         this.modal.open();
         break;
       case 'note:folder:delete':
