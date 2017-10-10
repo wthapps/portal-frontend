@@ -57,6 +57,8 @@ export class NoteEditModalComponent implements OnDestroy {
   title: AbstractControl;
   content: AbstractControl;
   tags: AbstractControl;
+  attachments: AbstractControl;
+
   files: Array<any> = new Array<any>();
 
   closeSubject: Subject<any> = new Subject<any>();
@@ -137,11 +139,13 @@ export class NoteEditModalComponent implements OnDestroy {
       'title': [_.get(data, 'title', ''), Validators.compose([Validators.required])],
       'content': [_.get(data, 'content', '')],
       'tags': [_.get(data, 'tags', '')],
+      'attachments':[_.get(data, 'attachments', '')]
     });
 
     this.title = this.form.controls['title'];
     this.content = this.form.controls['content'];
     this.tags = this.form.controls['tags'];
+    this.attachments = this.form.controls['attachments'];
   }
 
   undo() {
@@ -210,14 +214,12 @@ export class NoteEditModalComponent implements OnDestroy {
 
     this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos: any) => {
       this.note.attachments.push(...photos);
-      console.log('this.attachment:::', this.note.attachments);
     });
 
     this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
       this.note.attachments.push(...files);
       this.uploadFiles(files);
     });
-
   }
 
   private uploadFiles(files: Array<any>) {
