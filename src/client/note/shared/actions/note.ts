@@ -76,7 +76,7 @@ export class Load implements Action {
   readonly type = LOAD;
 
   // parent_id: Selected folder id
-  constructor(public payload: {parent_id: number | null}) {
+  constructor(public payload: any) {
   }
 }
 
@@ -156,4 +156,3 @@ export class Redo implements Action {
 // TODO: Add RouterState | Activated Route
 export type NoteActions = Add | Update | Edit | NoteUpdated | MultiNotesUpdated | NoteAdded | MultiNotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad
   | InitLoadDone | ChangeViewMode | Undo | Redo;
-

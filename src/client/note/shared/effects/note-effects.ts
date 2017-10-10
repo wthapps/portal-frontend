@@ -65,7 +65,7 @@ export class NoteEffects {
     .ofType(note.LOAD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-    return this.apiBaseService.get(`note/mixed_entities`, {parent_id: payload['parent_id']})
+    return this.apiBaseService.get(`note/mixed_entities`, payload)
       .map((res: any) => new note.LoadSuccess(res.data))
       .catch(() => of(new note.LoadSuccess([])));
     });
