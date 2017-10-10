@@ -33,7 +33,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   }
 
   onDelete() {
-    if (this.multiple) {
+    if (this.multiple || this.selectedObjects.length > 1) {
       // TODO:
       // this.noteService.deleteNote();
 
@@ -45,19 +45,23 @@ export class ZNoteSharedActionBarComponent implements OnInit {
         }
       });
     } else {
+      let data: any = this.selectedObjects[0];
       this.wthConfirm.confirm({
         message: 'Are you sure you want to delete this object?',
         header: 'Delete Object',
         accept: () => {
-          this.store.dispatch(new note.Delete([{id: this.data.id, object_type: this.data.object_type}]));
+          this.store.dispatch(new note.Delete([{id: data.id, object_type: data.object_type}]));
         }
       });
     }
-
   }
 
   onShare() {
-    this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:sharing', payload: this.data});
+    // TODO: Share multiple folders and notes
+    if(this.selectedObjects.length > 0) {
+      let data = this.selectedObjects[0];
+      this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:sharing', payload: data});
+    }
   }
 
   onEdit() {
@@ -65,6 +69,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
       let selectedObject = this.selectedObjects[0];
       switch (selectedObject.object_type) {
         case 'note':
+          this.store.dispatch(new note.Edit(selectedObject));
           this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
           break;
         case 'folder':

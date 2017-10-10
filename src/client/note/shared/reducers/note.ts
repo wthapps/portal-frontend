@@ -87,7 +87,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         );
     }
     case note.EDIT: {
-      return {...state, currentNote: action['payload'], noteHistory: {id: action['payload']['id'], stackId: 0, stack: []}};
+      let idx: any = action['payload']['id'];
+      let currentNote = state.notes[idx];
+      return {...state, currentNote: currentNote, noteHistory: {id: idx, stackId: 0, stack: []}};
     }
     case note.UNDO: {
       let stackId = state.noteHistory.stackId++;

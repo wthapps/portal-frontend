@@ -9,6 +9,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/toPromise';
 
 
@@ -35,7 +36,9 @@ declare var Quill: any;
 })
 export class NoteEditModalComponent implements OnDestroy {
   @ViewChild('modal') modal: ModalComponent;
-  @Input() note: Note = new Note();
+  // @Input() note: Note = new Note();
+
+  private note: Note = new Note();
 
   @HostListener('document:keypress', ['$event'])
   onKeyPress(ev: KeyboardEvent) {
@@ -58,7 +61,6 @@ export class NoteEditModalComponent implements OnDestroy {
   content: AbstractControl;
   tags: AbstractControl;
   attachments: AbstractControl;
-
   files: Array<any> = new Array<any>();
 
   closeSubject: Subject<any> = new Subject<any>();
@@ -74,10 +76,6 @@ export class NoteEditModalComponent implements OnDestroy {
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService) {
 
-    this.store.select(fromRoot.getCurrentNote).takeUntil(this.closeSubject)
-      .subscribe((note: Note) => {
-        this.assignFormValue(note)
-      });
   }
 
   ngOnDestroy() {
@@ -98,7 +96,8 @@ export class NoteEditModalComponent implements OnDestroy {
         if(this.editMode == Constants.modal.add) {
           this.onFirstSave();
         } else {
-          this.store.dispatch(new note.Update({...this.form.value, id: this.note.id}));
+          let noteObj: any = Object.assign({}, this.note, this.form.value);
+          this.store.dispatch(new note.Update(noteObj));
         }
       });
   }
@@ -123,14 +122,22 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {
-    if (this.note === undefined) {
-      this.note = new Note();
-    }
+    // if (this.note === undefined) {
+    //   this.note = new Note();
+    // }
     this.parentId = _.get(options, 'parent_id');
     this.modal.open().then();
     this.editMode = options.mode;
 
-    this.assignFormValue(this.note);
+    // this.assignFormValue(this.note);
+
+    this.store.select(fromRoot.getCurrentNote)
+      // .takeUntil(this.closeSubject)
+      .take(1)
+      .subscribe((note: Note) => {
+        console.debug('assign form value: ', note);
+        this.assignFormValue(note)
+      });
     this.registerAutoSave();
   }
 
@@ -139,13 +146,14 @@ export class NoteEditModalComponent implements OnDestroy {
       'title': [_.get(data, 'title', ''), Validators.compose([Validators.required])],
       'content': [_.get(data, 'content', '')],
       'tags': [_.get(data, 'tags', '')],
-      'attachments':[_.get(data, 'attachments', '')]
+      'attachments': [_.get(data, 'attachments', '')]
     });
 
     this.title = this.form.controls['title'];
     this.content = this.form.controls['content'];
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
+    this.note = Object.assign({}, new Note(), data);
   }
 
   undo() {
