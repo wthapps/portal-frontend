@@ -91,15 +91,10 @@ export class NoteEditModalComponent implements OnDestroy {
       .takeUntil(this.noSaveSubject.merge(this.closeSubject))
       .debounceTime(DEBOUNCE_MS)
       .subscribe(() => {
-        console.log('Auto save note: ', this.form.value, this.note);
-
         if(this.editMode == Constants.modal.add) {
           this.onFirstSave();
         } else {
           let noteObj: any = Object.assign({}, this.note, this.form.value);
-          if(noteObj.attachments == '') {
-            noteObj.attachments = [];
-          }
           this.store.dispatch(new note.Update(noteObj));
         }
       });
@@ -148,8 +143,8 @@ export class NoteEditModalComponent implements OnDestroy {
     this.form = this.fb.group({
       'title': [_.get(data, 'title', ''), Validators.compose([Validators.required])],
       'content': [_.get(data, 'content', '')],
-      'tags': [_.get(data, 'tags', '')],
-      'attachments': [_.get(data, 'attachments', '')]
+      'tags': [_.get(data, 'tags', [])],
+      'attachments': [_.get(data, 'attachments', [])]
     });
 
     this.title = this.form.controls['title'];
@@ -208,7 +203,6 @@ export class NoteEditModalComponent implements OnDestroy {
    */
   onFirstSave() {
     if(this.editMode == Constants.modal.add) {
-      console.debug('on First save params: ', {...this.form.value, parent_id: this.parentId});
       this.noteService.create({...this.form.value, parent_id: this.parentId}).toPromise()
         .then((res: any) => {
         this.note = res.data;
