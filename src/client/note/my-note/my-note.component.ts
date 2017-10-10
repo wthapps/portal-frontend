@@ -27,6 +27,7 @@ export class ZNoteMyNoteComponent implements OnInit {
   orderDesc$: Observable<boolean>;
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
+  isSelectAll$: Observable<boolean>;
 
   items: Observable<any>;
 
@@ -39,6 +40,7 @@ export class ZNoteMyNoteComponent implements OnInit {
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
+    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
   }
 

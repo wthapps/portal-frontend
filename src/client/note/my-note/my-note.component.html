@@ -1,3 +1,9 @@
+
+<!--<ul>-->
+  <!--<li *ngFor="let item of (selectedObjects$ | async)">-->
+    <!--{{ item.id }} - {{ item.object_type }}-->
+  <!--</li>-->
+<!--</ul>-->
 <z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)">
   <button (click)="onNewNote()" class="btn btn-outline-primary" type="button">
     <i class="fa fa-plus"></i> New Note
@@ -14,16 +20,10 @@
              [folderItems]="folderItems$ | async"
              [viewOption]="(nodeState$ | async)?.viewMode"
              [orderDesc]="orderDesc$ | async"
-             [isSelectAll]="(nodeState$ | async)?.isSelectAll">
+             [isSelectAll]="isSelectAll$ | async">
 
   </note-list>
 
 </div>
 
 
-
-<ul>
-  <li *ngFor="let item of (selectedObjects$ | async)">
-    {{ item.id }} - {{ item.object_type }}
-  </li>
-</ul>

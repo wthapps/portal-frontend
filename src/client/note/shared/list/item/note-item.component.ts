@@ -21,7 +21,7 @@ export class NoteItemComponent implements OnInit {
   @Input() data: Note = new Note();
   tooltip: any = Constants.tooltip;
 
-  selected: boolean = false;
+  // selected: boolean = false;
   isSelectAll$: Observable<boolean>;
 
   constructor(private noteService: ZNoteService,
@@ -35,11 +35,10 @@ export class NoteItemComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 
   onSelected() {
-    this.selected = !this.selected;
+    // this.selected = !this.selected;
     // if (this.selected) {
     //   this.noteService.addItemSelectedObjects(this.data);
     // } else {

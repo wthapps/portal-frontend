@@ -1,13 +1,5 @@
 import { createSelector, Store, Action } from '@ngrx/store';
-import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
-import { ActivatedRouteSnapshot, Params } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-
-import { User } from '../../../core/shared/models/user.model';
-import { ZNoteService } from '../services/note.service';
 import * as note from '../actions/note';
 import { Note } from '../../../core/shared/models/note.model';
 import { Folder } from './folder';
@@ -31,10 +23,10 @@ export interface  Filters {
   folder: string };
 
 export interface State {
-  notes: Note[] | null;
+  notes: {[id: number]: Note};
   currentNote: Note | null;
   noteHistory: { id: number | string, stackId: number, stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
-  folders: Folder[] | null;
+  folders: {[id: number]: Folder};
   page: number;
   orderDesc: boolean;
   selectedObjects: {id: string, object_type: string}[];
@@ -43,10 +35,10 @@ export interface State {
 };
 
 export const noteInitialState: State = {
-  notes: [],
+  notes: {},
   currentNote: null,
   noteHistory: {id: '', stackId: -1, stack: []},
-  folders: [],
+  folders: {},
   page: 0,
   orderDesc: true,
   selectedObjects: [],
@@ -59,46 +51,43 @@ export const noteInitialState: State = {
 export function reducer(state: State = noteInitialState, action: note.NoteActions): State {
   switch (action.type) {
     case note.NOTE_ADDED: {
-      let notes = [...state.notes, action['payload']];
-      // return Object.assign({}, state, {notes: notes, currentNote: action['payload']});
+      let hNote: any = {};
+      hNote[action['payload']['id']] = action['payload'];
+      let notes = {...state.notes, hNote};
       return {...state, notes: notes, currentNote: action['payload']};
     }
     case note.MULTI_NOTES_ADDED: {
-      let notes = [...state.notes, ...action['payload']];
+      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {acc[item.id] = item; return acc;}, {});
+      let notes: any = {...state.notes, ...hNotes};
       return Object.assign({}, state, {notes: notes});
     }
     case note.MULTI_NOTES_UPDATED: {
-      let notes3 = [...state.notes];
-      action.payload.forEach((uNote: Note) => {
-        let idx: any =  notes3.findIndex((n: any) => n.id == uNote.id);
-        if(idx > -1)
-          notes3.splice(idx, 1, uNote);
-      });
+      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {acc[item.id] = item; return acc;}, {});
+      let notes3: any = {...state.notes, ...hNotes};
 
       return Object.assign({}, state, {notes: notes3});
     }
     case note.NOTE_UPDATED: {
-      let notes4 = [...state.notes];
-      let uNote: Note = action.payload;
-      let idx: any =  notes4.findIndex((n: any) => n.id == uNote.id);
-      if(idx > -1)
-        notes4.splice(idx, 1, uNote);
+      let hNote: any = {};
+      let idx: any = action['payload']['id'];
+      hNote[idx] = {...action['payload'], selected: state.notes[idx].selected};
+      let notes4: any = {...state.notes, ...hNote}
+
       let noteStack: Note[] = [...state.noteHistory.stack];
 
       if(noteStack.length >= UNDO_STACK_SIZE) {
         noteStack.pop();
-        noteStack.unshift(uNote);
+        noteStack.unshift(action['payload']);
       } else {
-        noteStack.unshift(uNote);
+        noteStack.unshift(action['payload']);
       }
 
       return Object.assign({}, state, {notes: notes4,
-        noteHistory: {stack: noteStack, stackId: 0},
-        selectedObjects: noteInitialState.selectedObjects,
-        selectAll: noteInitialState.selectAll});
+        noteHistory: {stack: noteStack, stackId: 0}}
+        );
     }
     case note.EDIT: {
-      return {...state, currentNote: action.payload, noteHistory: {id: action.payload.id, stackId: 0, stack: []}};
+      return {...state, currentNote: action['payload'], noteHistory: {id: action['payload']['id'], stackId: 0, stack: []}};
     }
     case note.UNDO: {
       let stackId = state.noteHistory.stackId++;
@@ -112,29 +101,43 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let noteHistory = {...state.noteHistory, stackId: stackId};
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
-    case note.LOAD_SUCCESS:
-      let items = [...action['payload']];
+    case note.LOAD_SUCCESS: {
+      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == ITEM_TYPE.NOTE)
+          acc[item.id] = item;
+        return acc;}, {});
+      let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == ITEM_TYPE.FOLDER)
+          acc[item.id] = item;
+        return acc;}, {});
+
       return Object.assign({}, state, {
-        notes: items.filter((i: any) => i.object_type == ITEM_TYPE.NOTE),
-        folders: items.filter((i: any) => i.object_type == ITEM_TYPE.FOLDER),
+        notes: hNotes,
+        folders: hFolders,
         selectedObjects: noteInitialState.selectedObjects,
         selectAll: noteInitialState.selectAll});
-    case note.NOTES_DELETED:
+    }
+    case note.NOTES_DELETED: {
       let noteIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.NOTE) return n.id});
       let folderIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.FOLDER) return n.id});
-      let notes2 = [...state.notes].filter((n: any) => noteIds.indexOf(n.id) == -1);
-      let folders2 = [...state.folders].filter((n: any) => folderIds.indexOf(n.id) == -1);
+      let notes2 = {...state.notes};
+      noteIds.forEach((n: any) => delete notes2[n]);
+      let folders2 = {...state.folders};
+      folderIds.forEach((f: any) => delete folders2[f]);
+
       return Object.assign({}, state, {
         notes: notes2,
         folders: folders2,
         selectedObjects: noteInitialState.selectedObjects,
         selectAll: noteInitialState.selectAll
       });
-    case note.CHANGE_SORT_ORDER:
+    }
+    case note.CHANGE_SORT_ORDER: {
       let rOrderDesc = !state.orderDesc;
-      return Object.assign({}, state, { orderDesc: rOrderDesc});
-    case note.SELECT:
-      let selected = action['payload'];
+      return {...state, orderDesc: rOrderDesc};
+    }
+    case note.SELECT: {
+      let selected: any = action['payload'];
       let index = state.selectedObjects.findIndex((o: any) => o.id == selected.id && o.object_type == selected.object_type);
       let newselectedObjects: any[]= [];
       if(index == -1)
@@ -142,25 +145,48 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       else
         newselectedObjects = state.selectedObjects.filter((o: any, idx: number) => idx !== index);
 
-
-      return Object.assign({}, state, {selectedObjects: newselectedObjects});
-    case note.SELECT_ALL:
+      // Update NOTE/FOLDER state
+      if(selected.object_type == ITEM_TYPE.NOTE) {
+        let notes: any = {...state.notes};
+        notes[selected.id].selected = !notes[selected.id].selected;
+        return {...state, selectedObjects: newselectedObjects, notes: notes};
+      }
+      if(selected.object_type == ITEM_TYPE.FOLDER) {
+        let folders: any = {...state.folders};
+        folders[selected.id]['selected'] = !folders[selected.id]['selected'];
+        return {...state, selectedObjects: newselectedObjects, folders: folders};
+      }
+      return {...state};
+    }
+    case note.SELECT_ALL: {
       let selectedObjects: any[] = [];
       let selectAll: boolean = false;
-      let inotes: any[] = state.notes;
-      let folders: any[] = state.folders;
-      if(state.selectedObjects.length !== state.folders.length + state.notes.length) {
-        selectedObjects = [...state.folders, ...state.notes];
+      let inotes: any = {};
+      let folders: any = {};
+      if(state.selectedObjects.length !== Object.keys(state.folders).length + Object.keys(state.notes).length) {
+        Object.keys(state.notes).forEach((idx: any) => {
+          selectedObjects.push({id: idx, object_type: ITEM_TYPE.NOTE});
+          inotes[idx] = {...state.notes[idx], selected: true};
+        });
+        Object.keys(state.folders).forEach((idx: any) => {
+          selectedObjects.push({id: idx, object_type: ITEM_TYPE.FOLDER});
+          folders[idx] = {...state.folders[idx], selected: true};
+        });
         selectAll = true;
-        inotes.map((n: any) => Object.assign(n, {'selected': true}));
-        folders.map((n: any) => Object.assign(n, {'selected': true}));
       } else {
-        inotes.map((n: any) => Object.assign(n, {'selected': false}));
-        folders.map((n: any) => Object.assign(n, {'selected': false}));
+        Object.keys(state.notes).forEach((idx: any) => {
+          inotes[idx] = {...state.notes[idx], selected: false};
+        });
+        Object.keys(state.folders).forEach((idx: any) => {
+          folders[idx] = {...state.folders[idx], selected: false};
+        });
+
       }
       return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
-    case note.CHANGE_VIEW_MODE:
+    }
+    case note.CHANGE_VIEW_MODE: {
       return {...state, viewMode: action.payload};
+    }
     default: {
       return state;
     }
@@ -182,19 +208,11 @@ export const getFirstSelectedObject = (state: State) => {
 
   // TODO: Testing
   switch(obj['object_type']) {
-    case 'note': {
-      let idx: any = state.notes.findIndex((o: any) => o.id == obj.id && o.object_type == obj.object_type)
-      if(idx > -1)
-        return state.notes[idx];
-      else
-        return {};
+    case ITEM_TYPE.NOTE: {
+      return state.notes[obj.id];
     }
-    case 'folder': {
-      let idx: any = state.folders.findIndex((o: any) => o.id == obj.id && o.object_type == obj.object_type)
-      if(idx > -1)
-        return state.folders[idx];
-      else
-        return {};
+    case ITEM_TYPE.FOLDER: {
+      return state.folders[obj.id];
     }
     default:
       return {};
@@ -202,12 +220,17 @@ export const getFirstSelectedObject = (state: State) => {
 }
 
 export const getSortedNotes = createSelector(getNotes, getOrderDesc, (notes, orderDesc) => {
-  const cloneNotes = [...notes];
+  // Convert original HASH notes to an sorted ARRAY notes
+  let cloneNotes: any[] = [];
+  Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
   return cloneNotes.sort((a: Note, b: Note) => compareBy(a, b, orderDesc, 'title'));
 });
 
 export const getSortedFolders = createSelector(getFolders, getOrderDesc, (folders, orderDesc) => {
-  return [...folders].sort((a: Folder, b: Folder) =>compareBy(a, b, orderDesc, 'name'));
+  // Convert original HASH folders to an sorted ARRAY folders
+  let cloneFolders: any[] = [];
+  Object.keys(folders).forEach((idx: any) => cloneFolders.push(folders[idx]));
+  return cloneFolders.sort((a: Folder, b: Folder) => compareBy(a, b, orderDesc, 'name'));
 });
 
 export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'title'): number {

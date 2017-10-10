@@ -1,5 +1,5 @@
 <div *ngIf="data" class="component-listbox-row" [ngClass]="{'item-folder': data.object_type == 'folder'}">
-  <div class="component-listbox-input" [ngClass]="{'active': selected || data?.selected || (isSelectAll$ | async)}">
+  <div class="component-listbox-input" [ngClass]="{'active': data?.selected || (isSelectAll$ | async)}">
     <i (click)="onSelected()" class="fa fa-check"></i>
   </div>
   <div class="component-listbox-name can-click" (click)="onClick()" (dblclick)="onView()">
@@ -17,6 +17,6 @@
     {{ data.created_at | timeFormat }}
   </div>
   <div class="component-listbox-action">
-    <z-note-shared-actions-bar class="action" [data]="data"></z-note-shared-actions-bar>
+    <z-note-shared-actions-bar class="action" [data]="data" [selectedObjects]="[data]"></z-note-shared-actions-bar>
   </div>
 </div>

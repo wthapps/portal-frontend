@@ -23,7 +23,7 @@ export class FolderItemComponent implements OnInit {
   @Input() data: any;
   tooltip: any = Constants.tooltip;
 
-  selected: boolean = false;
+  // selected: boolean = false;
   isSelectAll$: Observable<boolean>;
 
   constructor(private noteService: ZNoteService,
@@ -39,7 +39,7 @@ export class FolderItemComponent implements OnInit {
   }
 
   onSelected() {
-    this.selected = !this.selected;
+    // this.selected = !this.selected;
     // if (this.selected) {
     //   this.noteService.addItemSelectedObjects(this.data);
     // } else {

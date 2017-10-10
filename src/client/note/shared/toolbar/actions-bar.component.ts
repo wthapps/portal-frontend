@@ -61,27 +61,17 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   }
 
   onEdit() {
-    // this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: this.data});
-    this.store.select(fromRoot.getFirstSelectedObject)
-      .take(1)
-      .subscribe((selectedObject: any) => {
-        if (!selectedObject) {
-          console.error('No selected Objects to Edit');
-          return;
-        }
-        switch (selectedObject.object_type) {
-          case 'note':
-            this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
-            break;
-          case 'folder':
-            this.commonEventService.broadcast({
-              channel: 'noteActionsBar',
-              action: 'note:folder:edit',
-              payload: selectedObject
-            });
-            break;
-        }
-      });
+    if(this.selectedObjects.length > 0) {
+      let selectedObject = this.selectedObjects[0];
+      switch (selectedObject.object_type) {
+        case 'note':
+          this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
+          break;
+        case 'folder':
+          this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: selectedObject});
+          break;
+      }
+    }
   }
 
   onMoveToFolder() {

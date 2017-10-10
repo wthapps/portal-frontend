@@ -51,7 +51,7 @@ export class NoteListComponent implements OnInit {
     // this.sortType = name;
     // this.noteService.changeSortOption(this.sortType, this.sortDescending);
 
-    // this.store.dispatch(new note.ChangeSortOrder());
+    this.store.dispatch(new note.ChangeSortOrder());
   }
 
   onSelectedAll() {
