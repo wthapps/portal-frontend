@@ -97,6 +97,9 @@ export class NoteEditModalComponent implements OnDestroy {
           this.onFirstSave();
         } else {
           let noteObj: any = Object.assign({}, this.note, this.form.value);
+          if(noteObj.attachments == '') {
+            noteObj.attachments = [];
+          }
           this.store.dispatch(new note.Update(noteObj));
         }
       });
@@ -193,8 +196,9 @@ export class NoteEditModalComponent implements OnDestroy {
     if(this.editMode == Constants.modal.add) {
       this.store.dispatch(new note.Add({...value, parent_id: this.parentId}));
     }
-    else
+    else {
       this.store.dispatch(new note.Update({...value, id: this.note.id}));
+    }
     this.modal.close()
       .then(() => { this.closeSubject.next(''); });
   }
@@ -244,9 +248,6 @@ export class NoteEditModalComponent implements OnDestroy {
           console.log('Error when uploading files ', err);
         });
     });
-
-
   }
-
 
 }
