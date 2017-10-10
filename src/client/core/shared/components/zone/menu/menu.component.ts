@@ -201,7 +201,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log('delete');
 
     } else {
-      this.router.navigate(['/my-note/folders', event.item.id]);
+      this.router.navigate(['/folders', event.item.id]);
       event.item.expanded = !event.item.expanded;
 
       $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');

@@ -67,7 +67,7 @@
         </li>
         <ng-template ngFor let-folder [ngForOf]="noteFolders" let-i="index">
           <li>
-            <a class="folder-title" [routerLink]="['/my-note/folders', folder.id]" class="">
+            <a class="folder-title" [routerLink]="['/folders', folder.id]" class="">
               {{ folder.name }}
             </a>
             <div class="menuleft-nav-sub-action" >

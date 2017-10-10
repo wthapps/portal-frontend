@@ -55,6 +55,6 @@ export class FolderItemComponent implements OnInit {
   }
 
   onView() {
-    this.router.navigate([`my-note/folders`, this.data.id]);
+    this.router.navigate([`/folders`, this.data.id]);
   }
 }

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { ZNoteHomeModule } from './home/home.module';
+import { ZNoteFoldersModule } from './folders/folders.module';
 import { ZNoteSharedModule } from './shared/shared.module';
 import { CoreSharedModule } from '../core/shared/shared.module';
 import { ZNoteSettingsModule } from './settings/settings.module';
@@ -26,9 +27,9 @@ import { AppEffects, AppStore } from './shared/app-store';
     BrowserModule,
     HttpModule,
 
-
     AppRoutingModule,
     ZNoteHomeModule,
+    ZNoteFoldersModule,
     ZNoteMyNoteModule,
     ZNoteMySharingModule,
     ZNoteSearchModule,
