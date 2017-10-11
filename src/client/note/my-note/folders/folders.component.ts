@@ -15,7 +15,7 @@ import * as note from '../../shared/actions/note';
   selector: 'z-note-my-note-folders',
   templateUrl: 'folders.component.html'
 })
-export class ZNoteMyNoteFoldersComponent implements OnInit {
+export class ZNoteMyNoteFoldersComponent {
   // data: any;
   // viewOption: string = 'list';
   // public noteState$: Observable<any>;
