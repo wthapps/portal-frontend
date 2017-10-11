@@ -130,8 +130,8 @@ export class NoteEditModalComponent implements OnDestroy {
     // this.assignFormValue(this.note);
 
     this.store.select(fromRoot.getCurrentNote)
-      // .takeUntil(this.closeSubject)
-      .take(1)
+      .takeUntil(this.closeSubject)
+      // .take(1)
       .subscribe((note: Note) => {
         console.debug('assign form value: ', note);
         this.assignFormValue(note)

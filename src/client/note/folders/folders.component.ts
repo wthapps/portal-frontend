@@ -44,6 +44,6 @@ export class ZNoteFoldersComponent implements OnInit {
   }
 
   onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
+    this.noteService.modalEvent({action: 'note:open_note_add_modal', payload: { parent_id: this.route.snapshot.params['id']}});
   }
 }
