@@ -32,10 +32,6 @@ export class ZNoteMyNoteComponent implements OnInit {
   items: Observable<any>;
 
   constructor(private noteService: ZNoteService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
-    // this.items = this.store.select('mixedEntity').do((store: any) => {
-    //   console.log('tesing::::', store);
-    // });
-
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
@@ -47,6 +43,9 @@ export class ZNoteMyNoteComponent implements OnInit {
   ngOnInit() {
     // this.store.dispatch(MixedEntityAction.getAll({parent_id: null}));
     this.store.dispatch(new note.Load({parent_id: null}));
+    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
+      this.store.dispatch({type: note.SET_FOLDERS, payload: event.payload});
+    });
   }
 
   onNewNote() {

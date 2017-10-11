@@ -21,6 +21,7 @@ export const INIT_LOAD_DONE = '[Note] Init Load Done';
 export const CHANGE_VIEW_MODE = '[Note] Change View Mode';
 export const UNDO = '[Note] Undo';
 export const REDO = '[Note] Redo';
+export const SET_FOLDERS = '[Note] Set Folders';
 
 // Actions
 
@@ -154,5 +155,4 @@ export class Redo implements Action {
 }
 
 // TODO: Add RouterState | Activated Route
-export type NoteActions = Add | Update | Edit | NoteUpdated | MultiNotesUpdated | NoteAdded | MultiNotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad
-  | InitLoadDone | ChangeViewMode | Undo | Redo;
+export type NoteActions = any;
