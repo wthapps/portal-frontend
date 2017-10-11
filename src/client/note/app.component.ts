@@ -100,6 +100,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.modal.note = event.payload;
         this.modal.open({mode: 'edit', parent_id: _.get(event, 'payload.parent_id')});
         break;
+      case 'note:open_note_view_modal':
+        this.loadModalComponent(ZNoteSharedModalNoteViewComponent);
+        this.modal.data = event.payload;
+        this.modal.open();
+        break;
       case 'note:open_note_add_modal':
         this.loadModalComponent(NoteEditModalComponent);
         this.modal.open({mode: 'add', parent_id: _.get(event, 'payload.parent_id')});

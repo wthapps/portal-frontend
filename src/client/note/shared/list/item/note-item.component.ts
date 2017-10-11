@@ -20,6 +20,8 @@ declare var _: any;
 export class NoteItemComponent implements OnInit {
   @Input() data: Note = new Note();
   tooltip: any = Constants.tooltip;
+  @Input() readonly: boolean = false;
+
 
   // selected: boolean = false;
   isSelectAll$: Observable<boolean>;
@@ -54,6 +56,10 @@ export class NoteItemComponent implements OnInit {
   }
 
   onView() {
-    this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
+    if(this.readonly) {
+      this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
+    } else {
+      this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
+    }
   }
 }

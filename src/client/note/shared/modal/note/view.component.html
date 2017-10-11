@@ -1,7 +1,7 @@
 <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
   <modal-header [show-close]="false">
     <h4 class="modal-title pull-left">Note</h4>
-    <div class="modal-title-action">
+    <!-- <div class="modal-title-action">
       <button class="btn btn-sm btn-default"><i class="fa fa-share-alt"></i></button>
       <button class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i></button>
       <div class="btn-group">
@@ -17,14 +17,13 @@
           </li>
         </ul>
       </div>
-
-    </div>
+    </div> -->
   </modal-header>
   <modal-body>
-    <h4 class="text-normal mt0">{{ data.name }}</h4>
+    <h4 class="text-normal mt0">{{ data.title }}</h4>
     <div [innerHTML]="data.content"></div>
     <hr class="divider">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-sm-6">
         <label>Attachment</label>
       </div>
@@ -32,8 +31,8 @@
         <button class="btn btn-outline-default"><i class="fa fa-plus"></i> Add more</button>
         <button class="btn btn-outline-default"><i class="fa fa-download"></i> Download all</button>
       </div>
-    </div>
-    <div class="row row-img grid">
+    </div> -->
+    <!-- <div class="row row-img grid">
       <div class="col-sm-3">
         <div class="photo-box">
           <div class="photo-box-action pt5">
@@ -57,9 +56,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <hr class="divider">
+    <!-- <hr class="divider">
     <div class="form-horizontal">
       <div class="form-group">
         <label class="col-sm-2 col-md-1">Tags</label>
@@ -67,6 +66,6 @@
           <span class="label label-default">Tstes</span>
         </div>
       </div>
-    </div>
+    </div> -->
   </modal-body>
 </modal>

@@ -16,7 +16,7 @@
   <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
     {{ data.created_at | timeFormat }}
   </div>
-  <div class="component-listbox-action">
+  <div class="component-listbox-action" *ngIf="!readonly">
     <z-note-shared-actions-bar class="action" [data]="data" [selectedObjects]="[data]"></z-note-shared-actions-bar>
   </div>
 </div>

@@ -19,6 +19,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
   @Input() data: Note;
   @Input() selectedObjects: any[] = [];
+  
   readonly tooltip: any = Constants.tooltip;
   // selectedObjects$: Observable<any[]>;
 

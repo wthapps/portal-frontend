@@ -14,9 +14,8 @@ import { Note } from '../../core/shared/models/note.model';
   selector: 'z-note-shared-with-me',
   templateUrl: 'shared-with-me.component.html'
 })
-export class ZNoteSharedWithMeComponent implements OnDestroy, OnInit {
+export class ZNoteSharedWithMeComponent implements OnInit {
   viewOption: string = 'list';
-  private destroySubject: Subject<any> = new Subject<any>();
 
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<any>;
@@ -39,11 +38,6 @@ export class ZNoteSharedWithMeComponent implements OnDestroy, OnInit {
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.store.dispatch(new note.Load({parent_id: null, shared_with_me: true}));
-  }
-
-  ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
   }
 
   onNewNote() {
