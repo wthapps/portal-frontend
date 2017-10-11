@@ -10,8 +10,7 @@
   <div class="component-listbox-owner can-click" (click)="onClick()" (dblclick)="onView()">
     {{ data.user?.name }}
   </div>
-  <div class="component-listbox-description can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ data.description }}
+  <div class="component-listbox-description can-click" (click)="onClick()" (dblclick)="onView()" [innerHTML]="data?.content">
   </div>
   <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
     {{ data.created_at | timeFormat }}

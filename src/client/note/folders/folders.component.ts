@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
+import * as folder from '../shared/actions/folder';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '../../core/shared/models/note.model';
@@ -24,6 +25,7 @@ export class ZNoteFoldersComponent implements OnInit {
   orderDesc$: Observable<boolean>;
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
+  currentFolderPath$: Observable<any[]>;
 
   items: Observable<any>;
 
@@ -35,15 +37,17 @@ export class ZNoteFoldersComponent implements OnInit {
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
+    this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
   }
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
       this.store.dispatch(new note.Load({parent_id: +params['id']}));
+      this.store.dispatch(new folder.SetCurrentFolder(+params['id']));
     });
   }
 
   onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_note_add_modal', payload: { parent_id: this.route.snapshot.params['id']}});
+    this.noteService.modalEvent({action: 'note:open_note_add_modal', payload: { parent_id: +this.route.snapshot.params['id']}});
   }
 }

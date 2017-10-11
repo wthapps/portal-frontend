@@ -36,7 +36,11 @@ export class FolderEffects {
     console.debug('init load folders: ');
     return this.folderService.getRootFolders();
   })
-    .map((res: any) => new folder.LoadSuccess(res.data))
+    .switchMap((res: any) => {
+    return [
+      new folder.LoadSuccess(res.data),
+      // new folder.LoadAll(),
+    ];})
     .catch(() => empty());
 
   @Effect() loadAll = this.actions
@@ -44,9 +48,18 @@ export class FolderEffects {
     .switchMap(() => {
       console.debug('Load ALL folders: ');
       return this.folderService.getAll()
-        .map((res: any) => new folder.FolderAdded(res['data']))
+        .map((res: any) => new folder.LoadSuccess(res['data']))
         .catch(() => empty())
         ;
+    });
+
+  @Effect() setCurrentFolder = this.actions
+    .ofType(folder.SET_CURRENT)
+    .map((action: any) => action['payload'])
+    .switchMap((payload: any) => {
+      return this.folderService.getFolderPath(payload)
+        .map((res: any) => new folder.SetCurrentFolderPath(res['data']))
+        .catch(() => empty());
     });
 
   constructor(private actions: Actions, public folderService: ZFolderService) {
