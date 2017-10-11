@@ -41,6 +41,12 @@ export class ZNoteFoldersComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       this.store.dispatch(new note.Load({parent_id: +params['id']}));
     });
+
+    this.route.params
+      .switchMap(
+        (params: Params) => {
+          console.log(params);
+        }).subscribe((res: any) => console.log(res));
   }
 
   onNewNote() {

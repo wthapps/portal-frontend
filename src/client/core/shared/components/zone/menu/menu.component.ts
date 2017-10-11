@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, OnChanges, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, Params } from '@angular/router';
 
 
 import { Observable } from 'rxjs/Observable';
@@ -79,35 +79,71 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         this.currentLabel = this.extractLabel(event.url);
       });
 
-    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
-      this.noteFoldersTree.length = 0;
-      for (let folder of event.payload) {
-        if (!folder.parent_id) {
-          folder.label = folder.name;
-          folder.icon = 'fa-folder-o';
-          folder.items = [];
-          folder.command = (event: any)=> this.loadMenu(event);
-          this.noteFoldersTree.push(folder);
+    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent').subscribe((event: any) => {
+      console.log(event);
+
+      if (event.action == 'updateFolders') {
+        this.noteFoldersTree.length = 0;
+        for (let folder of event.payload) {
+          if (!folder.parent_id) {
+            folder.label = folder.name;
+            folder.icon = 'fa-folder-o';
+            folder.styleClass = `js-note-folders-tree-${folder.id}`;
+            folder.items = [];
+            folder.command = (eventClick: any)=> this.loadMenu(eventClick);
+            this.noteFoldersTree.push(folder);
+          }
         }
+      } else if (event.action == 'updateFoldersTree') {
+
+        console.log('event------', event);
+        $('[class^=\'js-note-folders-tree-\']').remove('active');
+        console.log($('.js-note-folders-tree-' + event.payload.id + ' > a'));
+        $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
+        if (event.payload.parent_id) {
+          console.log('click');
+        }
+
+        // let currentFolder: any = _.find(this.noteFoldersTree, ['id', event.payload.parent_id]);
+        //
+        // console.log('currentFolder:', currentFolder);
+        //
+        // if (currentFolder) {
+        //   $('[class^=\'js-note-folders-tree-\']').remove('active');
+        //   $('.' + currentFolder.styleClass + ' > a').addClass('active');
+        //
+        //   currentFolder.items.length = 0;
+        //   _.map(event.payload.data, (folder: any)=> {
+        //     folder.label = folder.name;
+        //     folder.icon = 'fa-folder-o';
+        //     folder.styleClass = `js-note-folders-tree-${folder.id}`;
+        //     folder.items = [];
+        //     folder.command = (eventClick: any)=> this.loadMenu(eventClick);
+        //     currentFolder.items.push(folder);
+        //   });
+        //   // currentFolder.expanded = true;
+        //   console.log(this.noteFoldersTree, 'this.noteFoldersTree');
+        // }
       }
+
     });
   }
 
   ngAfterViewInit() {
-    let html_append = '<i class="fa fa-pencil"></i> <i class="fa fa-trash-o"></i>';
+    /*let html_append = '<i class="fa fa-pencil"></i> <i class="fa fa-trash-o"></i>';
 
-    $('body').on({
-      mouseenter: (e: any)=> {
-        console.log(e.target);
-        if ($(e.target).closest('div').find('i').length == 0) {
-          $(e.target).append(html_append);
-        }
-      },
-      mouseleave: (e: any)=> {
-        console.log(e.target);
-        $(e.target).closest('div').find('i').remove();
-      }
-    }, '.well-folder-tree-left .ui-panelmenu-headerlink-hasicon, .well-folder-tree-left .ui-menuitem-link');
+     $('body').on({
+     mouseenter: (e: any)=> {
+     console.log(e.target);
+     if ($(e.target).closest('div').find('i').length == 0) {
+     $(e.target).append(html_append);
+     }
+     },
+     mouseleave: (e: any)=> {
+     console.log(e.target);
+     $(e.target).closest('div').find('i').remove();
+     }
+     }, '.well-folder-tree-left .ui-panelmenu-headerlink-hasicon, .well-folder-tree-left .ui-menuitem-link');*/
 
   }
 
@@ -184,21 +220,22 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
           for (let folder of res.data) {
             folder.label = folder.name;
             folder.icon = 'fa-folder-o';
+            folder.styleClass = `js-note-folders-tree-${folder.id}`;
             folder.items = [];
             folder.command = (event: any)=> this.loadMenu(event);
             event.item.items.push(folder);
           }
         });
       }
-    } else if ($(htmlTarget).hasClass('fa-pencil')) {
-      event.item.expanded = !event.item.expanded;
+      /*} else if ($(htmlTarget).hasClass('fa-pencil')) {
+       event.item.expanded = !event.item.expanded;
 
-      console.log('edit');
+       console.log('edit');
 
-    } else if ($(htmlTarget).hasClass('fa-trash-o')) {
-      event.item.expanded = !event.item.expanded;
+       } else if ($(htmlTarget).hasClass('fa-trash-o')) {
+       event.item.expanded = !event.item.expanded;
 
-      console.log('delete');
+       console.log('delete');*/
 
     } else {
       this.router.navigate(['/folders', event.item.id]);

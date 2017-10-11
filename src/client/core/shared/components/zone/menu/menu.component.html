@@ -60,8 +60,9 @@
         Notes
       </a>
       <ul [ngClass]="{'active': urls.note == hostname}" class="menuleft-nav-sub">
-        <li>
+        <li [routerLinkActive]="['active']">
           <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']" (click)="onNoteClick($event)">
+          <!--<a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']">-->
             {{ noteMenu[0].name }}
           </a>
         </li>
