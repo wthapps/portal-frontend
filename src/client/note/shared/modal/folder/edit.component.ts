@@ -55,30 +55,36 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
 
   loadMenu(event: any) {
     event.originalEvent.stopPropagation();
+
     let htmlTarget: any = event.originalEvent.target;
-    if ($(htmlTarget).hasClass('ui-menuitem-text')) {
-      this.folder.parent_id = event.item.id;
-      event.item.expanded = false;
-
-      $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
-      $(htmlTarget).closest('a').addClass('active');
-
-    } else {
+    if ($(htmlTarget).hasClass('fa-caret-right') || $(htmlTarget).hasClass('fa-caret-down')) {
+      console.log(event);
       if (event.item.expanded) {
         this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
           event.item.items.length = 0;
           for (let folder of res.data) {
             folder.label = folder.name;
             folder.icon = 'fa-folder-o';
+            folder.styleClass = `js-note-folders-tree-${folder.id}`;
             folder.items = [];
             folder.command = (event: any)=> this.loadMenu(event);
             event.item.items.push(folder);
           }
         });
       }
+    } else {
+      this.folder.parent_id = event.item.id;
+      event.item.expanded = !event.item.expanded;
+
+      $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
+      $(htmlTarget).closest('a').addClass('active');
     }
   }
 
+  setDestinationFolder(folder: any) {
+    this.folder = folder;
+    $('.well-folder-tree-root + .well-folder-tree .ui-panelmenu-panel a').removeClass('active');
+  }
 
   onSubmit(value: any) {
     this.folder.name = value.name;

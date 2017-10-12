@@ -308,6 +308,11 @@ body {
       color: $theme-color;
     }*/
     .ui-menuitem-text, .ui-menuitem-link, .ui-panelmenu-headerlink-hasicon {
+      white-space: nowrap;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+
       &.active {
         color: $theme-color !important;
         span {

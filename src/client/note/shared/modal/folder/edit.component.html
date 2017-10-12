@@ -9,6 +9,12 @@
                placeholder="Name">
       </div>
       <p>Choose the location for your folder </p>
+      <div class="well-folder-tree-root">
+        <a [ngClass]="{'active': folder.parent_id == null}" href="javascript:;"
+           (click)="setDestinationFolder({name: 'My notes', parent_id: null})">
+          My Notes
+        </a>
+      </div>
       <div class="well-folder-tree">
         <p-panelMenu [model]="menuItems"></p-panelMenu>
       </div>
