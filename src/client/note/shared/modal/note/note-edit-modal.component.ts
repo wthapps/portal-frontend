@@ -128,25 +128,15 @@ export class NoteEditModalComponent implements OnDestroy {
     this.editMode = options.mode;
 
     this.assignFormValue(this.note);
-
-    // this.store.select(fromRoot.getCurrentNote)
-    //   .takeUntil(this.closeSubject)
-    //   // .take(1)
-    //   .subscribe((note: Note) => {
-    //     console.debug('assign form value: ', note);
-    //     this.assignFormValue(note)
-    //   });
     this.registerAutoSave();
   }
 
-  updateCurrentNote() {
-
-    this.store.select(fromRoot.getCurrentNote)
-      // .takeUntil(this.closeSubject)
-      .take(1)
-      .subscribe((note: Note) => {
-        console.debug('assign form value: ', note);
-        this.assignFormValue(note)
+  updateCurrentNote(): Promise<any> {
+    return this.store.select(fromRoot.getCurrentNote)
+      .toPromise()
+      .then((note: Note) => {
+        console.debug('update form value: ', note);
+        this.updateFormValue(note);
       });
   }
 
@@ -159,7 +149,20 @@ export class NoteEditModalComponent implements OnDestroy {
     });
 
     this.title = this.form.controls['title'];
-    this.content = this.form.controls['content'];
+    this.content = this.form.get('content');
+    this.tags = this.form.controls['tags'];
+    this.attachments = this.form.controls['attachments'];
+    this.note = Object.assign({}, new Note(), data);
+  }
+
+  updateFormValue(data: Note) {
+    this.form.controls['title'].setValue(_.get(data, 'title', ''));
+    this.form.controls['content'].setValue(_.get(data, 'content', ''));
+    this.form.controls['tags'].setValue(_.get(data, 'tags', []));
+    this.form.controls['attachments'].setValue(_.get(data, 'attachments', []));
+
+    this.title = this.form.controls['title'];
+    this.content = this.form.get('content');
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
     this.note = Object.assign({}, new Note(), data);
@@ -171,8 +174,9 @@ export class NoteEditModalComponent implements OnDestroy {
 
     // Stop and restart auto-save feature
     this.noSaveSubject.next('');
-    this.registerAutoSave();
-    this.updateCurrentNote();
+    this.updateCurrentNote()
+      .then(() => this.registerAutoSave())
+    ;
   }
 
   redo() {
@@ -181,8 +185,9 @@ export class NoteEditModalComponent implements OnDestroy {
     // this.noSaveSubject.next('');
 
     this.noSaveSubject.next('');
-    this.registerAutoSave();
-    this.updateCurrentNote();
+    this.updateCurrentNote()
+      .then(() => this.registerAutoSave());
+    ;
   }
   /*
    * Ignore if the file is uploading
@@ -240,6 +245,7 @@ export class NoteEditModalComponent implements OnDestroy {
       this.uploadFiles(files);
     });
   }
+
 
   private uploadFiles(files: Array<any>) {
 
