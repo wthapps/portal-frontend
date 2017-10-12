@@ -98,19 +98,19 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
     }
   }
 
+  setDestinationFolder(folder: any) {
+    this.folder = folder;
+  }
+
   onMove() {
-
-    console.log('this.folder:', this.folder);
-    console.log('this.selectedObjects', this.selectedObjects);
-
-
-    _.map(this.selectedObjects, (v: any) => {
-      v.parent_id = this.folder.parent_id;
-      console.log('this.selectedObjects - v:', v);
-      this.apiBaseService.put('note/folders/' + v.id, v).subscribe((res: any) => {
-        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data});
-        this.modal.close();
-      });
-    })
+    _.forEach(this.selectedObjects, (item: any) => {
+      item.parent_id = this.folder.parent_id;
+    });
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:move_to_folder',
+      payload: this.selectedObjects
+    });
+    this.modal.close();
   }
 }

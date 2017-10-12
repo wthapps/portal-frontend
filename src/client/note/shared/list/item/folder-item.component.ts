@@ -46,7 +46,7 @@ export class FolderItemComponent implements OnInit {
     //   this.noteService.removeItemSelectedObjects(this.data);
     // }
 
-    this.store.dispatch(new note.Select({id: this.data.id, object_type: this.data.object_type}));
+    this.store.dispatch(new note.Select({id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}));
   }
 
   onClick() {

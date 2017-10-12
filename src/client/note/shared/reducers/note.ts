@@ -26,10 +26,10 @@ export interface State {
   notes: {[id: number]: Note};
   currentNote: Note | null;
   noteHistory: { id: number | string, stackId: number, stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
-  folders: {[id: number]: Folder};
+  folders: {[id: number]: Folder}; //{1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
   page: number;
   orderDesc: boolean;
-  selectedObjects: {id: string, object_type: string}[];
+  selectedObjects: {id: string, object_type: string, parent_id: number}[];
   selectAll: boolean;
   viewMode: string;
 };
@@ -49,6 +49,7 @@ export const noteInitialState: State = {
 
 // Reducer
 export function reducer(state: State = noteInitialState, action: note.NoteActions): State {
+  let stateClone = _.clone(state);
   switch (action.type) {
     case note.NOTE_ADDED: {
       let hNote: any = {};
@@ -66,6 +67,16 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let notes3: any = {...state.notes, ...hNotes};
 
       return Object.assign({}, state, {notes: notes3});
+    }
+    case note.SET_FOLDERS: {
+      let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == ITEM_TYPE.FOLDER)
+          acc[item.id] = item;
+        return acc;}, {});
+
+      return Object.assign({}, state, {
+        folders: hFolders
+      });
     }
     case note.NOTE_UPDATED: {
       let hNote: any = {};
@@ -187,6 +198,11 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         });
 
       }
+      return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
+    }
+
+    case note.MOVE_TO_FOLDER: {
+
       return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
     }
     case note.CHANGE_VIEW_MODE: {
