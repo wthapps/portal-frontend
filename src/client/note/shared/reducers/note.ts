@@ -95,6 +95,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let notes4: any = {...state.notes, ...hNote};
 
       let noteStack: Note[] = [...state.noteHistory.stack];
+      // let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);
 
       if(noteStack.length >= UNDO_STACK_SIZE) {
         noteStack.pop();
@@ -110,13 +111,13 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.EDIT: {
       let idx: any = action['payload']['id'];
       let currentNote = idx ? state.notes[idx] : new Note();
-      return {...state, currentNote: currentNote, noteHistory: {id: idx, stackId: 0, stack: []}};
+      return {...state, currentNote: currentNote, noteHistory: {id: idx, stackId: 0, stack: [currentNote]}};
     }
     case note.RESET_CURRENT_NOTE: {
       return {...state, currentNote: new Note(), noteHistory: {id: null, stackId: 0, stack: []}};
     }
     case note.UNDO: {
-      let stackId =  state.noteHistory.stackId + 1;
+      let stackId =  (state.noteHistory.stackId + 1 < state.noteHistory.stack.length ) ? state.noteHistory.stackId + 1 : state.noteHistory.stackId;
       let currentNote = state.noteHistory.stack[stackId];
       let noteHistory = {...state.noteHistory, stackId: stackId};
       return {...state, currentNote: currentNote, noteHistory: noteHistory};

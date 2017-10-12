@@ -4,10 +4,12 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/toPromise';
@@ -68,13 +70,14 @@ export class NoteEditModalComponent implements OnDestroy {
   private destroySubject: Subject<any> = new Subject<any>();
   private editMode: string = Constants.modal.add;
   private parentId: string;
-
+  private noSave$: Observable<any>;
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService) {
+    this.noSave$ = this.noSaveSubject.asObservable().merge(this.destroySubject, this.closeSubject);
 
   }
 
@@ -88,8 +91,9 @@ export class NoteEditModalComponent implements OnDestroy {
   registerAutoSave() {
       // Auto save
     this.form.valueChanges
-      .takeUntil(this.noSaveSubject.merge(this.closeSubject))
+      .takeUntil(this.noSave$)
       .debounceTime(DEBOUNCE_MS)
+      .takeUntil(this.noSave$)
       .subscribe(() => {
         if(this.editMode == Constants.modal.add) {
           this.onFirstSave();
@@ -120,21 +124,19 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {
-    // if (this.note === undefined) {
-    //   this.note = new Note();
-    // }
     this.parentId = _.get(options, 'parent_id');
     this.modal.open().then();
     this.editMode = options.mode;
 
     this.assignFormValue(this.note);
+    this.updateCurrentNote();
     this.registerAutoSave();
   }
 
-  updateCurrentNote(): Promise<any> {
-    return this.store.select(fromRoot.getCurrentNote)
-      .toPromise()
-      .then((note: Note) => {
+  updateCurrentNote(): void {
+    this.store.select(fromRoot.getCurrentNote)
+      .takeUntil(this.closeSubject.merge(this.destroySubject))
+      .subscribe((note: Note) => {
         console.debug('update form value: ', note);
         this.updateFormValue(note);
       });
@@ -174,20 +176,16 @@ export class NoteEditModalComponent implements OnDestroy {
 
     // Stop and restart auto-save feature
     this.noSaveSubject.next('');
-    this.updateCurrentNote()
-      .then(() => this.registerAutoSave())
+    this.registerAutoSave();
     ;
   }
 
   redo() {
     console.debug('Perform REDO');
-    // this.store.dispatch(new note.Redo());
-    // this.noSaveSubject.next('');
+    this.store.dispatch(new note.Redo());
 
     this.noSaveSubject.next('');
-    this.updateCurrentNote()
-      .then(() => this.registerAutoSave());
-    ;
+    this.registerAutoSave();
   }
   /*
    * Ignore if the file is uploading
