@@ -19,6 +19,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
   @Input() data: Note;
   @Input() selectedObjects: any[] = [];
+  
   readonly tooltip: any = Constants.tooltip;
   // selectedObjects$: Observable<any[]>;
 
@@ -69,7 +70,6 @@ export class ZNoteSharedActionBarComponent implements OnInit {
       let selectedObject = this.selectedObjects[0];
       switch (selectedObject.object_type) {
         case 'note':
-          this.store.dispatch(new note.Edit(selectedObject));
           this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
           break;
         case 'folder':

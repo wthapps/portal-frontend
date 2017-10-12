@@ -19,6 +19,7 @@ import { ZNoteSharedModalFolderMoveComponent } from './shared/modal/folder/move.
 import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing.component';
 import * as fromRoot from './shared/reducers/index';
 import { Folder } from './shared/reducers/folder';
+import * as note from './shared/actions/note';
 
 
 declare var _: any;
@@ -95,11 +96,18 @@ export class AppComponent implements OnInit, OnDestroy {
         break;
       case 'note:open_note_edit_modal':
         this.loadModalComponent(NoteEditModalComponent);
+        this.store.dispatch(new note.Edit(event.payload));
         this.modal.note = event.payload;
-        this.modal.open({mode: 'edit'});
+        this.modal.open({mode: 'edit', parent_id: _.get(event, 'payload.parent_id')});
+        break;
+      case 'note:open_note_view_modal':
+        this.loadModalComponent(ZNoteSharedModalNoteViewComponent);
+        this.modal.data = event.payload;
+        this.modal.open();
         break;
       case 'note:open_note_add_modal':
         this.loadModalComponent(NoteEditModalComponent);
+        this.store.dispatch(new note.ResetCurrentNote());
         this.modal.open({mode: 'add', parent_id: _.get(event, 'payload.parent_id')});
         break;
       case 'note:folder:edit':

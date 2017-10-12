@@ -14,11 +14,15 @@ import { Note } from '../../core/shared/models/note.model';
   selector: 'z-note-shared-with-me',
   templateUrl: 'shared-with-me.component.html'
 })
-export class ZNoteSharedWithMeComponent implements OnDestroy, OnInit {
-  public notes$: Observable<Note[]>;
-  public orderDesc$: Observable<boolean>;
+export class ZNoteSharedWithMeComponent implements OnInit {
   viewOption: string = 'list';
-  private destroySubject: Subject<any> = new Subject<any>();
+
+  noteItems$: Observable<Note[]>;
+  folderItems$: Observable<any>;
+  orderDesc$: Observable<boolean>;
+  nodeState$: Observable<any>;
+  selectedObjects$: Observable<any[]>;
+  isSelectAll$: Observable<boolean>;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -27,20 +31,13 @@ export class ZNoteSharedWithMeComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.route.params
-      .takeUntil(this.destroySubject)
-      .switchMap((params: any) => { return this.noteService.getAll();})
-      .subscribe((res: any) => {
-        this.store.dispatch(new note.LoadSuccess(res.data));
-      });
-
-    this.notes$ = this.store.select(fromRoot.getSortedNotes);
+    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
+    this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
-  }
-
-  ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
+    this.nodeState$ = this.store.select(fromRoot.getNotesState);
+    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
+    this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
+    this.store.dispatch(new note.Load({parent_id: null, shared_with_me: true}));
   }
 
   onNewNote() {

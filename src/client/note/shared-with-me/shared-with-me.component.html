@@ -1,9 +1,15 @@
-<z-note-shared-toolbar>
+
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)">
   <button (click)="onNewNote()" class="btn btn-outline-primary" type="button">
     <i class="fa fa-plus"></i> New Note
   </button>
 </z-note-shared-toolbar>
-
 <div class="page-body-content has-page-body-control gray-light">
-  <note-list [data]="notes$ | async" [viewOption]="viewOption" [orderDesc]="orderDesc$| async"></note-list>
+  <note-list [noteItems]="noteItems$ | async"
+             [folderItems]="folderItems$ | async"
+             [viewOption]="(nodeState$ | async)?.viewMode"
+             [orderDesc]="orderDesc$ | async"
+             [readonly]="true"
+             [isSelectAll]="isSelectAll$ | async">
+  </note-list>
 </div>

@@ -174,7 +174,7 @@
           <div class="col-sm-3 mb10" *ngFor="let att of note.attachments">
             <div class="photo-box" >
               <div class="photo-box-action photo-box-action-right">
-                <button class="btn btn-sm btn-outline-default" type="button" (click)="cancelUpload(att)">
+                <button class="btn btn-sm btn-sm btn-default" type="button" (click)="cancelUpload(att)">
                   <i class="fa fa-times"></i>
                 </button>
               </div>
@@ -202,15 +202,15 @@
           </div>
         </div>
 
-        <hr class="divider">
-        <div class="form-horizontal">
-          <div class="form-group">
-            <label class="col-sm-2 col-md-1 control-label">Labels</label>
-            <div class="col-sm-10 col-md-11">
-              <h-chip [tags]="note?.tags"></h-chip>
-            </div>
-          </div>
-        </div>
+        <!--<hr class="divider">-->
+        <!--<div class="form-horizontal">-->
+          <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 col-md-1 control-label">Labels</label>-->
+            <!--<div class="col-sm-10 col-md-11">-->
+              <!--<h-chip [tags]="note?.tags"></h-chip>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
 
     </modal-body>
 
