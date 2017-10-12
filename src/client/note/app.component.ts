@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
     switch (event.action) {
       case 'note:folder:create':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
-        this.modal.open();
+        this.modal.open({mode: 'add'});
         break;
       case 'note:open_note_edit_modal':
         this.loadModalComponent(NoteEditModalComponent);
@@ -116,7 +116,7 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'note:folder:edit':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
         this.modal.folder = event.payload;
-        this.modal.open();
+        this.modal.open({mode: 'edit'});
         break;
       case 'note:folder:sharing':
         this.loadModalComponent(ZNoteSharedModalSharingComponent);
@@ -128,6 +128,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.modal.selectedObjects = event.payload;
         this.modal.open();
         break;
+
+      // TODO move all of below services to store effect
       case 'note:mixed_entity:move_to_folder':
         this.mixedEntityService.update({payload: event.payload}, true)
           .subscribe((res: any) => {
