@@ -93,6 +93,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         noteStack.unshift(action['payload']);
       }
 
+      console.debug('NOTE_UPDATED: current node: ', state.currentNote, ' note stack: ', state.noteHistory);
+
       return Object.assign({}, state, {notes: notes4,
         noteHistory: {stack: noteStack, stackId: 0}}
         );
@@ -109,12 +111,14 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let stackId = state.noteHistory.stackId++;
       let currentNote = state.noteHistory.stack[stackId];
       let noteHistory = {...state.noteHistory, stackId: stackId};
+      console.debug('UNDO: current node: ', state.currentNote, ' note stack: ', state.noteHistory);
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.REDO: {
       let stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId-- : 0;
       let currentNote = state.noteHistory.stack[stackId];
       let noteHistory = {...state.noteHistory, stackId: stackId};
+      console.debug('REDO: current node: ', state.currentNote, ' note stack: ', state.noteHistory);
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.LOAD_SUCCESS: {
@@ -203,7 +207,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
 
     case note.MOVE_TO_FOLDER: {
 
-      return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
+      // return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
+      return {...state};
     }
     case note.CHANGE_VIEW_MODE: {
       return {...state, viewMode: action.payload};
