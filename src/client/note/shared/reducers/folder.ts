@@ -52,6 +52,7 @@ export function reducer(state = initialState, action: folder.Actions): State {
 }
 
 export const getFolders = (state: State) => state.folders;
+export const getCurrentFolder = (state: State) => state.currentFolder;
 export const getCurrentFolderPath = (state: State) => state.currentFolderPath;
 
 export const getFoldersTree = (state: State) => {
