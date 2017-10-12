@@ -18,8 +18,14 @@ export class BaseEntityService<T> {
     return this.api.get(`${this.url}/${id}`);
   }
 
-  create(body: any): Observable<any> {
-    return this.api.post(this.url, body);
+  create(body: any, multiple: boolean=false): Observable<any> {
+    if(multiple) {
+      // this case body MUST be an array
+      let payload = {payload: body, multiple: true};
+      return this.api.post(this.url, payload);
+    } else {
+      return this.api.post(this.url, body);
+    }
   }
 
   update(body: any, multiple: boolean=false): Observable<any> {

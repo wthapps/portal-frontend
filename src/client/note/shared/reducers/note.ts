@@ -12,7 +12,7 @@ export const UNDO_STACK_SIZE = 10;
 export const ITEM_TYPE = {
   NOTE: 'note',
   FOLDER: 'folder'
-}
+};
 export const VIEW_MODE = {
   LIST: 'list',
   GRID: 'grid'
@@ -58,9 +58,19 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       return {...state, notes: notes, currentNote: action['payload']};
     }
     case note.MULTI_NOTES_ADDED: {
-      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {acc[item.id] = item; return acc;}, {});
+      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == ITEM_TYPE.NOTE)
+          acc[item.id] = item;
+        return acc;}, {});
+      let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == ITEM_TYPE.FOLDER)
+          acc[item.id] = item;
+        return acc;}, {});
+
       let notes: any = {...state.notes, ...hNotes};
-      return Object.assign({}, state, {notes: notes});
+      let folders : any = {...state.folders, ...hFolders};
+
+      return Object.assign({}, state, {notes: notes, folders: folders});
     }
     case note.MULTI_NOTES_UPDATED: {
       let hNotes: any = action['payload'].reduce((acc: any, item: any) => {acc[item.id] = item; return acc;}, {});
@@ -93,8 +103,6 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         noteStack.unshift(action['payload']);
       }
 
-      console.debug('NOTE_UPDATED: current node: ', state.currentNote, ' note stack: ', state.noteHistory);
-
       return Object.assign({}, state, {notes: notes4,
         noteHistory: {stack: noteStack, stackId: 0}}
         );
@@ -108,17 +116,15 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       return {...state, currentNote: new Note(), noteHistory: {id: null, stackId: 0, stack: []}};
     }
     case note.UNDO: {
-      let stackId = state.noteHistory.stackId++;
+      let stackId =  state.noteHistory.stackId + 1;
       let currentNote = state.noteHistory.stack[stackId];
       let noteHistory = {...state.noteHistory, stackId: stackId};
-      console.debug('UNDO: current node: ', state.currentNote, ' note stack: ', state.noteHistory);
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.REDO: {
-      let stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId-- : 0;
+      let stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId - 1 : 0;
       let currentNote = state.noteHistory.stack[stackId];
       let noteHistory = {...state.noteHistory, stackId: stackId};
-      console.debug('REDO: current node: ', state.currentNote, ' note stack: ', state.noteHistory);
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.LOAD_SUCCESS: {
@@ -138,16 +144,16 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         selectAll: noteInitialState.selectAll});
     }
     case note.NOTES_DELETED: {
-      let noteIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.NOTE) return n.id});
-      let folderIds: any = action['payload'].map((n: any) => { if(n['object_type'] == ITEM_TYPE.FOLDER) return n.id});
-      let notes2 = {...state.notes};
+      let noteIds: any[] = action['payload'].reduce((acc: any[], item: any) => {if(item['object_type'] == ITEM_TYPE.NOTE) acc.push(item.id); return acc;}, []);
+      let folderIds: any[] = action['payload'].reduce((acc: any[], item: any) => {if(item['object_type'] == ITEM_TYPE.FOLDER) acc.push(item.id); return acc;}, []);
+      let notes2: any = {...state.notes};
       noteIds.forEach((n: any) => delete notes2[n]);
-      let folders2 = {...state.folders};
+      let folders2: any = {...state.folders};
       folderIds.forEach((f: any) => delete folders2[f]);
 
       return Object.assign({}, state, {
-        notes: notes2,
-        folders: folders2,
+        notes: notes2 || {},
+        folders: folders2 || {},
         selectedObjects: noteInitialState.selectedObjects,
         selectAll: noteInitialState.selectAll
       });
@@ -261,9 +267,9 @@ export const getSortedFolders = createSelector(getFolders, getOrderDesc, (folder
 
 export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'title'): number {
   let o = orderDesc ? 1 : -1;
-  if((objA.title > objB.title))
+  if(objA[field] > objB[field])
     return 1*o;
-  if((objA.title < objB.title))
+  if(objA[field] < objB[field])
     return -1*o;
 
   return 0;

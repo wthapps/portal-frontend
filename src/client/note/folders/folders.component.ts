@@ -48,26 +48,6 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.route.params.forEach((params: Params) => {
-    //   this.store.dispatch(new note.Load({parent_id: +params['id']}));
-    //   this.store.dispatch(new folder.SetCurrentFolder(+params['id']));
-    //
-    //   if (this.sub && !this.sub.closed) {
-    //     this.sub.unsubscribe();
-    //   }
-    //   this.sub = this.store.select(fromRoot.getCurrentFolderPath).subscribe(
-    //     (res: any)=> {
-    //       console.log(res);
-    //       // this.commonEventService.broadcast(
-    //       //   {
-    //       //     channel: 'noteFolderEvent',
-    //       //     action: 'updateFoldersTree',
-    //       //     payload: res
-    //       //   });
-    //     }
-    //   );
-    // });
-
     this.sub = this.route.params.subscribe(params => {
       console.log(+params['id']);
       let id = +params['id'];

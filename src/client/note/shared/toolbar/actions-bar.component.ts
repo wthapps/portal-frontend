@@ -19,7 +19,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
   @Input() data: any;
   @Input() selectedObjects: any[] = [];
-  
+
   readonly tooltip: any = Constants.tooltip;
   // selectedObjects$: Observable<any[]>;
 
@@ -79,11 +79,18 @@ export class ZNoteSharedActionBarComponent implements OnInit {
     }
   }
 
-  onMoveToFolder(data?: any) {
-    console.log('data:::', data);
+  moveToFolder(data?: any) {
     this.commonEventService.broadcast({
       channel: 'noteActionsBar',
       action: 'note:mixed_entity:open_move_to_folder_modal',
+      payload: this.selectedObjects
+    });
+  }
+
+  makeACopy(data?: any) {
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:make_a_copy',
       payload: this.selectedObjects
     });
   }
