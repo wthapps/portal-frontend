@@ -230,6 +230,28 @@ body {
     }
   }
 
+  .well-folder-tree-root {
+    background-color: #f7f7f7 !important;
+    padding: 15px 15px 0;
+    a, span {
+      display: block;
+      color: #373a3c;
+      padding: 5px 0;
+      &:hover, &.active {
+        text-decoration: none;
+      }
+      &.active {
+        color: $theme-color !important;
+        span {
+          color: $theme-color !important;
+        }
+      }
+    }
+    & + .well-folder-tree {
+      padding-left: 30px;
+      padding-top: 0;
+    }
+  }
   .well-folder-tree {
     background-color: #f7f7f7 !important;
     padding: 15px;
@@ -255,6 +277,8 @@ body {
       }
 
       .ui-panelmenu-content {
+        padding: 0;
+        margin-bottom: 0;
         .ui-menuitem-link {
           white-space: nowrap;
           text-overflow: ellipsis;
