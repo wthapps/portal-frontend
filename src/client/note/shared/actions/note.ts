@@ -23,7 +23,8 @@ export const UNDO = '[Note] Undo';
 export const REDO = '[Note] Redo';
 export const SET_FOLDERS = '[Note] Set Folders';
 export const RESET_CURRENT_NOTE = '[Note] Reset Current Note';
-
+export const MOVE_TO_FOLDER = '[MixedEntity] MOVE_TO_FOLDER';
+export const MAKE_A_COPY    = '[MixedEntity] MAKE_A_COPY';
 
 // Actions
 
@@ -82,6 +83,7 @@ export class MultiNotesAdded implements Action {
 export class Load implements Action {
   readonly type = LOAD;
 
+  // parent_id: Selected folder id
   constructor(public payload: any) {
   }
 }
@@ -159,10 +161,18 @@ export class Redo implements Action {
   readonly type = REDO;
 }
 
-// TODO: Add RouterState | Activated Route
-<<<<<<< HEAD
+export class MoveToFolder implements Action {
+  readonly type = MOVE_TO_FOLDER;
+
+  constructor(public payload: {}) {
+  }
+}
+
+export class MakeACopy implements Action {
+  readonly type = MAKE_A_COPY;
+
+  constructor(public payload: {}) {
+  }
+}
+
 export type NoteActions = any;
-=======
-export type NoteActions = Add | Update | Edit | NoteUpdated | MultiNotesUpdated | NoteAdded | MultiNotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad
-  | InitLoadDone | ChangeViewMode | Undo | Redo | ResetCurrentNote;
->>>>>>> 8b6cca278fff89baf8e94bc40a11011d4142acc4

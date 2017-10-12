@@ -17,7 +17,7 @@ import { WthConfirmService } from '../../../core/shared/components/confirmation/
 })
 export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;
-  @Input() data: Note;
+  @Input() data: any;
   @Input() selectedObjects: any[] = [];
   
   readonly tooltip: any = Constants.tooltip;
@@ -79,23 +79,12 @@ export class ZNoteSharedActionBarComponent implements OnInit {
     }
   }
 
-  onMoveToFolder() {
-    this.store.select(fromRoot.getFirstSelectedObject)
-      .take(1)
-      .subscribe((selectedObject: any) => {
-        if (!selectedObject) {
-          console.error('No selected Objects to Edit');
-          return;
-        }
-        switch (selectedObject.object_type) {
-          case 'folder':
-            this.commonEventService.broadcast({
-              channel: 'noteActionsBar',
-              action: 'note:folder:move_to_folder',
-              payload: selectedObject
-            });
-            break;
-        }
-      });
+  onMoveToFolder(data?: any) {
+    console.log('data:::', data);
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:open_move_to_folder_modal',
+      payload: this.selectedObjects
+    });
   }
 }

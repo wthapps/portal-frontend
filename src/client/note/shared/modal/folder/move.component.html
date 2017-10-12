@@ -6,6 +6,15 @@
     <modal-body>
       <p>Choose folder to move to</p>
       <div class="form-group">
+        <div>
+          <ul>
+            <li>
+              <a href="javascript:void(0);" (click)="setDestinationFolder({name: 'My notes', parent_id: null})">
+                My Notes
+              </a>
+            </li>
+          </ul>
+        </div>
         <div class="well-folder-tree">
           <p-panelMenu [model]="menuItems"></p-panelMenu>
         </div>
