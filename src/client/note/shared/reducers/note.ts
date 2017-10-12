@@ -71,7 +71,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let hNote: any = {};
       let idx: any = action['payload']['id'];
       hNote[idx] = {...action['payload'], selected: state.notes[idx].selected};
-      let notes4: any = {...state.notes, ...hNote}
+      let notes4: any = {...state.notes, ...hNote};
 
       let noteStack: Note[] = [...state.noteHistory.stack];
 

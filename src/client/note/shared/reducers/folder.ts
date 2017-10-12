@@ -34,9 +34,14 @@ export function reducer(state = initialState, action: folder.Actions): State {
       return state;
     }
     case folder.SET_FOLDER_PATH: {
-      let convertedPath = action['payload'];
-      console.debug('folder Path: ', convertedPath);
-      return {...state, currentFolderPath: convertedPath};
+      let convertedPath: any[] = action['payload'];
+      let curr: any = convertedPath[convertedPath.length - 1];
+      console.debug('folder Path: ', convertedPath, curr);
+      return {...state, currentFolderPath: convertedPath, currentFolder: curr};
+    }
+    case folder.UPDATE_CURRENT: {
+
+      return {...state};
     }
     case folder.LOAD_SUCCESS: {
       return {...state, folders: action['payload']};

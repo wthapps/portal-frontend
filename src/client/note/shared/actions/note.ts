@@ -80,7 +80,6 @@ export class MultiNotesAdded implements Action {
 export class Load implements Action {
   readonly type = LOAD;
 
-  // parent_id: Selected folder id
   constructor(public payload: any) {
   }
 }
