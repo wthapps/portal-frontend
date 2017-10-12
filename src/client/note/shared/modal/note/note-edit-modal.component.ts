@@ -44,13 +44,13 @@ export class NoteEditModalComponent implements OnDestroy {
   onKeyPress(ev: KeyboardEvent) {
     console.debug('on key press', ev);
 
-    // if(ev.key == 'z' && ev.ctrlKey ) {
-    //   this.undo();
-    // }
-    //
-    // if(ev.key == 'y' && ev.ctrlKey ) {
-    //   this.redo();
-    // }
+    if(ev.key == 'b' && ev.ctrlKey ) {
+      this.undo();
+    }
+
+    if(ev.key == 'n' && ev.ctrlKey ) {
+      this.redo();
+    }
 
   }
 
@@ -139,6 +139,17 @@ export class NoteEditModalComponent implements OnDestroy {
     this.registerAutoSave();
   }
 
+  updateCurrentNote() {
+
+    this.store.select(fromRoot.getCurrentNote)
+      // .takeUntil(this.closeSubject)
+      .take(1)
+      .subscribe((note: Note) => {
+        console.debug('assign form value: ', note);
+        this.assignFormValue(note)
+      });
+  }
+
   assignFormValue(data: Note) {
     this.form = this.fb.group({
       'title': [_.get(data, 'title', ''), Validators.compose([Validators.required])],
@@ -161,6 +172,7 @@ export class NoteEditModalComponent implements OnDestroy {
     // Stop and restart auto-save feature
     this.noSaveSubject.next('');
     this.registerAutoSave();
+    this.updateCurrentNote();
   }
 
   redo() {
@@ -170,6 +182,7 @@ export class NoteEditModalComponent implements OnDestroy {
 
     this.noSaveSubject.next('');
     this.registerAutoSave();
+    this.updateCurrentNote();
   }
   /*
    * Ignore if the file is uploading

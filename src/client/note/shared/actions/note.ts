@@ -126,7 +126,7 @@ export class NotesDeleted implements Action {
 export class Select implements Action {
   readonly type = SELECT;
 
-  constructor(public payload: {id: number, object_type: string}) {
+  constructor(public payload: {id: number, object_type: string, parent_id: number}) {
   }
 }
 
