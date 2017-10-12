@@ -24,6 +24,8 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   name: AbstractControl;
   folder: any = {};
 
+  mode: string = 'add';
+
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
@@ -49,8 +51,14 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
     this.name.setValue(this.folder.name)
   }
 
-  open() {
-    this.modal.open()
+  open(options?: any ) {
+    this.mode= options.mode;
+    if(this.mode == 'add') {
+      this.titleModal = 'Add Folder';
+    } else if(this.mode == 'edit') {
+      this.titleModal = 'Edit Folder';
+    }
+    this.modal.open();
   }
 
   loadMenu(event: any) {

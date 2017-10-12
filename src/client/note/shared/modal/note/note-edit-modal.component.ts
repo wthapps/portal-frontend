@@ -193,10 +193,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
    * Delete if the file was uploaded
    * */
   cancelUpload(file: any) {
-
     this.note.attachments = _.pull(this.note.attachments, file);
-
-    console.log('canceling uploading:::', file);
+    this.form.controls['attachments'].setValue(this.note.attachments);
   }
 
   selectFiles() {
@@ -238,6 +236,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
     this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos: any) => {
       this.note.attachments.push(...photos);
+      this.form.controls['attachments'].setValue(this.note.attachments);
     });
 
     this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
@@ -253,10 +252,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       this.photoUploadService.uploadPhotos([file])
         .subscribe((response: any) => {
           let index = _.indexOf(this.note.attachments, file);
-
-          console.log('uploaded:::', index, file, response.data);
           this.note.attachments[index] = response.data;
-
+          this.form.controls['attachments'].setValue(this.note.attachments);
         }, (err: any) => {
           console.log('Error when uploading files ', err);
         });
