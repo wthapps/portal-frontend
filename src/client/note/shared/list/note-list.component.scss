@@ -94,6 +94,11 @@ $note-action: 200px;
     .item-folder {
       .component-listbox-name {
         margin-bottom: 0;
+        span {
+          white-space: nowrap;
+          -ms-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+        }
       }
       .component-listbox-action, .component-listbox-description {
         display: none;
